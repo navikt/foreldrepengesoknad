@@ -6,6 +6,8 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './Tidslinje.stories.tsx';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const {
     FPAdopsjon,
     FPTerminInnvilget,
@@ -28,9 +30,9 @@ describe('<Tidslinje>', () => {
             setHandlers(FPAdopsjon.parameters.msw);
             const { container } = render(<FPAdopsjon />);
 
-            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            const button = await screen.findByRole('button', { name: messages['tidslinje.visHele'] });
             await userEvent.click(button);
-            expect(screen.getByRole('button', { name: 'Kompakt visning' })).toBeInTheDocument();
+            expect(screen.getByRole('button', { name: messages['tidslinje.visKompakt'] })).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 4, completed: 2 });
 
             const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
@@ -45,8 +47,8 @@ describe('<Tidslinje>', () => {
             expect(within(timelineDatoer[2]!).getByText(/senere/i)).toBeInTheDocument();
             expect(within(timelineDatoer[3]!).getByText(/25. nov. 2028/i)).toBeInTheDocument();
 
-            await userEvent.click(screen.getByRole('button', { name: 'Kompakt visning' }));
-            expect(screen.getByRole('button', { name: 'Vis hele prosessen' })).toBeInTheDocument();
+            await userEvent.click(screen.getByRole('button', { name: messages['tidslinje.visKompakt'] }));
+            expect(screen.getByRole('button', { name: messages['tidslinje.visHele'] })).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 3, completed: 2 });
         }),
     );
@@ -57,7 +59,7 @@ describe('<Tidslinje>', () => {
             setHandlers(FPAdopsjon.parameters.msw);
             const { container } = render(<FPAdopsjon />);
 
-            expect(await screen.findByRole('button', { name: 'Vis hele prosessen' })).toBeInTheDocument();
+            expect(await screen.findByRole('button', { name: messages['tidslinje.visHele'] })).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 3, completed: 2 });
 
             const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
@@ -73,7 +75,7 @@ describe('<Tidslinje>', () => {
             setHandlers(FPTerminInnvilget.parameters.msw);
             const { container } = render(<FPTerminInnvilget />);
 
-            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            const button = await screen.findByRole('button', { name: messages['tidslinje.visHele'] });
             await userEvent.click(button);
             verifiserHendelseStatus({ container, antall: 5, completed: 5 });
 
@@ -94,7 +96,7 @@ describe('<Tidslinje>', () => {
             setHandlers(FPMedTilbakekreving.parameters.msw);
             const { container } = render(<FPMedTilbakekreving />);
 
-            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            const button = await screen.findByRole('button', { name: messages['tidslinje.visHele'] });
             await userEvent.click(button);
             verifiserHendelseStatus({ container, antall: 6, completed: 6 });
 
@@ -116,7 +118,7 @@ describe('<Tidslinje>', () => {
             setHandlers(FPMedTilbakekreving.parameters.msw);
             const { container } = render(<FPMedTilbakekreving />);
 
-            expect(await screen.findByRole('button', { name: 'Vis hele prosessen' })).toBeInTheDocument();
+            expect(await screen.findByRole('button', { name: messages['tidslinje.visHele'] })).toBeInTheDocument();
 
             verifiserHendelseStatus({ container, antall: 3, completed: 3 });
 
@@ -135,7 +137,7 @@ describe('<Tidslinje>', () => {
             setHandlers(FPEtterlysIM.parameters.msw);
             const { container } = render(<FPEtterlysIM />);
 
-            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            const button = await screen.findByRole('button', { name: messages['tidslinje.visHele'] });
             await userEvent.click(button);
             verifiserHendelseStatus({ container, antall: 5, completed: 2 });
 
@@ -156,7 +158,7 @@ describe('<Tidslinje>', () => {
             setHandlers(FPForTidligSøknad.parameters.msw);
             const { container } = render(<FPForTidligSøknad />);
 
-            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            const button = await screen.findByRole('button', { name: messages['tidslinje.visHele'] });
             await userEvent.click(button);
             verifiserHendelseStatus({ container, antall: 4, completed: 1 });
 
@@ -176,7 +178,7 @@ describe('<Tidslinje>', () => {
             setHandlers(FPManglerDokumentasjon.parameters.msw);
             const { container } = render(<FPManglerDokumentasjon />);
 
-            const visHeleProsessenButton = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            const visHeleProsessenButton = await screen.findByRole('button', { name: messages['tidslinje.visHele'] });
             await userEvent.click(visHeleProsessenButton);
             verifiserHendelseStatus({ container, antall: 4, completed: 1 });
 
@@ -208,7 +210,7 @@ describe('<Tidslinje>', () => {
             setHandlers(FPManglerDokumentasjon.parameters.msw);
             const { container } = render(<FPManglerDokumentasjon />);
 
-            expect(await screen.findByRole('button', { name: 'Vis hele prosessen' })).toBeInTheDocument();
+            expect(await screen.findByRole('button', { name: messages['tidslinje.visHele'] })).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 3, completed: 1 });
 
             const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
@@ -224,7 +226,7 @@ describe('<Tidslinje>', () => {
             setHandlers(FPNySøknad.parameters.msw);
             const { container } = render(<FPNySøknad />);
 
-            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            const button = await screen.findByRole('button', { name: messages['tidslinje.visHele'] });
             await userEvent.click(button);
 
             verifiserHendelseStatus({ container, antall: 5, completed: 2 });
@@ -244,7 +246,7 @@ describe('<Tidslinje>', () => {
             setHandlers(SVPInnvilget.parameters.msw);
             const { container } = render(<SVPInnvilget />);
 
-            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            const button = await screen.findByRole('button', { name: messages['tidslinje.visHele'] });
             await userEvent.click(button);
             verifiserHendelseStatus({ container, antall: 5, completed: 4 });
 
@@ -263,7 +265,7 @@ describe('<Tidslinje>', () => {
             setHandlers(SVPUnderBehandling.parameters.msw);
             const { container } = render(<SVPUnderBehandling />);
 
-            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            const button = await screen.findByRole('button', { name: messages['tidslinje.visHele'] });
             await userEvent.click(button);
             verifiserHendelseStatus({ container, antall: 3, completed: 1 });
 
@@ -284,7 +286,7 @@ describe('<Tidslinje>', () => {
             setHandlers(ESAdopsjonInnvilget.parameters.msw);
             const { container } = render(<ESAdopsjonInnvilget />);
 
-            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            const button = await screen.findByRole('button', { name: messages['tidslinje.visHele'] });
             await userEvent.click(button);
             verifiserHendelseStatus({ container, antall: 3, completed: 2 });
 
@@ -301,7 +303,7 @@ describe('<Tidslinje>', () => {
             setHandlers(ESAdopsjonInnvilget.parameters.msw);
             const { container } = render(<ESAdopsjonInnvilget mockDate={new Date('2025-12-31').getTime()} />);
 
-            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            const button = await screen.findByRole('button', { name: messages['tidslinje.visHele'] });
             await userEvent.click(button);
             verifiserHendelseStatus({ container, antall: 3, completed: 3 });
 
@@ -318,7 +320,7 @@ describe('<Tidslinje>', () => {
             setHandlers(ESAdopsjonAvslag.parameters.msw);
             const { container } = render(<ESAdopsjonAvslag />);
 
-            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            const button = await screen.findByRole('button', { name: messages['tidslinje.visHele'] });
             await userEvent.click(button);
             verifiserHendelseStatus({ container, antall: 3, completed: 2 });
 
@@ -335,7 +337,7 @@ describe('<Tidslinje>', () => {
             setHandlers(ESUnderBehandling.parameters.msw);
             const { container } = render(<ESUnderBehandling />);
 
-            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+            const button = await screen.findByRole('button', { name: messages['tidslinje.visHele'] });
             await userEvent.click(button);
             verifiserHendelseStatus({ container, antall: 3, completed: 2 });
 
@@ -352,7 +354,7 @@ describe('<Tidslinje>', () => {
             setHandlers(ESUnderBehandling.parameters.msw);
             const { container } = render(<ESUnderBehandling />);
 
-            expect(await screen.findByRole('button', { name: 'Vis hele prosessen' })).toBeInTheDocument();
+            expect(await screen.findByRole('button', { name: messages['tidslinje.visHele'] })).toBeInTheDocument();
             verifiserHendelseStatus({ container, antall: 3, completed: 2 });
 
             const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');

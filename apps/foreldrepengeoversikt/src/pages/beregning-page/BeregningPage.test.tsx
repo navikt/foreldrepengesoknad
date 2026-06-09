@@ -5,6 +5,8 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './BeregningPage.stories.tsx';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const {
     BeregningDelvisRefusjon,
     BeregningDirekteUtbetaling,
@@ -23,10 +25,10 @@ describe('<BeregningPage>', () => {
             setHandlers(BeregningDelvisRefusjon.parameters.msw);
             render(<BeregningDelvisRefusjon />);
 
-            expect(await screen.findByText('Beregning av foreldrepenger')).toBeInTheDocument();
+            expect(await screen.findByText(messages['beregning.page.heading'])).toBeInTheDocument();
             expect(await screen.findByText('Dagsats: 3 004 kr')).toBeInTheDocument();
 
-            const merOmBeregningen = await screen.findByText('Mer om beregningen');
+            const merOmBeregningen = await screen.findByText(messages['beregning.tittel']);
             merOmBeregningen.click();
 
             const beregningCard = within(merOmBeregningen.closest('section')!);
@@ -35,14 +37,14 @@ describe('<BeregningPage>', () => {
             ).toBeInTheDocument();
             expect(await beregningCard.findByText('Frilans')).toBeInTheDocument();
 
-            expect(await screen.findByText('Utbetalingsplan')).toBeInTheDocument();
+            expect(await screen.findByText(messages['beregning.utbetalingsvisning.tittel'])).toBeInTheDocument();
             const januarExpansionCard = await screen.findByTestId('expansioncard-Januar');
             expect(within(januarExpansionCard).getByText('Vi skal betale til deg: 39 368 kr')).toBeInTheDocument();
             expect(
                 within(januarExpansionCard).getByText('Vi skal betale til arbeidsgiver: 2 688 kr'),
             ).toBeInTheDocument();
 
-            expect(await screen.findByText('Feriepenger')).toBeInTheDocument();
+            expect(await screen.findByText(messages['beregning.feriepenger.tittel'])).toBeInTheDocument();
             expect(await screen.findByText('Opptjent i 2026')).toBeInTheDocument();
             expect(await screen.findByText('10 594 kr som vi betaler til deg.')).toBeInTheDocument();
             expect(await screen.findByText('1 175 kr som vi betaler til arbeidsgiveren din.')).toBeInTheDocument();
@@ -67,11 +69,11 @@ describe('<BeregningPage>', () => {
 
             expect(await screen.findByText('Du får dekket foreldrepenger opptil 780 960 kr (6 G)')).toBeInTheDocument();
 
-            expect(await screen.findByText('Utbetalingsplan')).toBeInTheDocument();
+            expect(await screen.findByText(messages['beregning.utbetalingsvisning.tittel'])).toBeInTheDocument();
             const januarExpansionCard = await screen.findByTestId('expansioncard-November');
             expect(within(januarExpansionCard).getByText('Vi skal betale til deg: 39 052 kr')).toBeInTheDocument();
 
-            expect(await screen.findByText('Feriepenger')).toBeInTheDocument();
+            expect(await screen.findByText(messages['beregning.feriepenger.tittel'])).toBeInTheDocument();
             expect(await screen.findByText('Opptjent i 2025')).toBeInTheDocument();
             expect(await screen.findByText('11 030 kr som vi betaler til deg.')).toBeInTheDocument();
             expect(await screen.findByText('De utbetales innen utgangen av mai 2026.')).toBeInTheDocument();
@@ -89,7 +91,7 @@ describe('<BeregningPage>', () => {
             render(<BeregningSvpDirekteUtbetaling />);
 
             // SVP-specific heading
-            expect(await screen.findByText('Beregning av svangerskapspenger')).toBeInTheDocument();
+            expect(await screen.findByText(messages['beregning.page.heading.svp'])).toBeInTheDocument();
 
             // Dagsats ExpansionCard should NOT be shown for SVP
             expect(screen.queryByText('Dagsats: 2 077 kr')).not.toBeInTheDocument();
@@ -103,14 +105,14 @@ describe('<BeregningPage>', () => {
             expect(screen.queryByText('Siden du har', { exact: false })).not.toBeInTheDocument();
 
             // Utbetalingsplan renders
-            expect(await screen.findByText('Utbetalingsplan')).toBeInTheDocument();
+            expect(await screen.findByText(messages['beregning.utbetalingsvisning.tittel'])).toBeInTheDocument();
             const marsExpansionCard = await screen.findByTestId('expansioncard-Mars');
             expect(
                 within(marsExpansionCard).getByText('Vi skal betale til deg:', { exact: false }),
             ).toBeInTheDocument();
 
             // Feriepenger section renders
-            expect(await screen.findByText('Feriepenger')).toBeInTheDocument();
+            expect(await screen.findByText(messages['beregning.feriepenger.tittel'])).toBeInTheDocument();
             expect(await screen.findByText('Opptjent i 2026')).toBeInTheDocument();
             expect(await screen.findByText('7 893 kr som vi betaler til deg.')).toBeInTheDocument();
         }),
@@ -122,7 +124,7 @@ describe('<BeregningPage>', () => {
             setHandlers(BeregningDagpenger.parameters.msw);
             render(<BeregningDagpenger />);
 
-            expect(await screen.findByText('Beregning')).toBeInTheDocument();
+            expect(await screen.findByText(messages['beregning.heading'])).toBeInTheDocument();
             expect(await screen.findByRole('link', { name: 'I vedtaksbrevet ditt' })).toBeInTheDocument();
             expect(
                 screen.queryByText('Nav har fastsatt årsinntekten din til:', { exact: false }),
@@ -136,7 +138,7 @@ describe('<BeregningPage>', () => {
             setHandlers(BeregningAAP.parameters.msw);
             render(<BeregningAAP />);
 
-            expect(await screen.findByText('Beregning')).toBeInTheDocument();
+            expect(await screen.findByText(messages['beregning.heading'])).toBeInTheDocument();
             expect(await screen.findByRole('link', { name: 'I vedtaksbrevet ditt' })).toBeInTheDocument();
             expect(
                 screen.queryByText('Nav har fastsatt årsinntekten din til:', { exact: false }),
@@ -150,7 +152,7 @@ describe('<BeregningPage>', () => {
             setHandlers(BeregningKunYtelse.parameters.msw);
             render(<BeregningKunYtelse />);
 
-            expect(await screen.findByText('Beregning')).toBeInTheDocument();
+            expect(await screen.findByText(messages['beregning.heading'])).toBeInTheDocument();
             expect(await screen.findByRole('link', { name: 'I vedtaksbrevet ditt' })).toBeInTheDocument();
             expect(
                 screen.queryByText('Nav har fastsatt årsinntekten din til:', { exact: false }),
@@ -164,7 +166,7 @@ describe('<BeregningPage>', () => {
             setHandlers(BeregningMedNaturalytelser.parameters.msw);
             render(<BeregningMedNaturalytelser />);
 
-            expect(await screen.findByText('Beregning av foreldrepenger')).toBeInTheDocument();
+            expect(await screen.findByText(messages['beregning.page.heading'])).toBeInTheDocument();
             expect(await screen.findByRole('link', { name: 'inntektsmeldingen' })).toBeInTheDocument();
         }),
     );
@@ -175,7 +177,7 @@ describe('<BeregningPage>', () => {
             setHandlers(BeregningCrossYear.parameters.msw);
             render(<BeregningCrossYear />);
 
-            const utbetalingsplanHeading = await screen.findByText('Utbetalingsplan');
+            const utbetalingsplanHeading = await screen.findByText(messages['beregning.utbetalingsvisning.tittel']);
             expect(utbetalingsplanHeading).toBeInTheDocument();
 
             const utbetalingsplanContainer =

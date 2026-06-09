@@ -10,6 +10,8 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './SkjemaSteg.stories';
 
+import messages from '../../intl/nb_NO.json';
+
 const { SkalIkkeFeileOpplasting, MedVedlegg, MedToTilrettelegginger, ErTypeFrilans, KanMaxHaToVedlegg } =
     composeStories(stories);
 
@@ -28,24 +30,24 @@ describe('<SkjemaSteg>', () => {
                 />,
             );
 
-            expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
-            expect(screen.getAllByText('Last opp skjema')).toHaveLength(2);
+            expect(await screen.findByText(messages['Svangerskapspengesøknad.pagetitle'])).toBeInTheDocument();
+            expect(screen.getAllByText(messages['steps.label.skjema.en'])).toHaveLength(2);
             expect(
-                screen.getByText('Last opp skjema for risiko og tilrettelegging i svangerskapet'),
+                screen.getByText(messages['skjema.vedlegg.label.arbeidsgiver']),
             ).toBeInTheDocument();
 
             await userEvent.click(screen.getByText('Neste steg'));
 
-            expect(await screen.findByText('Du må laste opp minst ett dokument')).toBeInTheDocument();
+            expect(await screen.findByText(messages['SkjemaSteg.MinstEttDokument'])).toBeInTheDocument();
 
             const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-            const fileInput = screen.getByLabelText('Last opp skjema for risiko og tilrettelegging i svangerskapet');
+            const fileInput = screen.getByLabelText(messages['skjema.vedlegg.label.arbeidsgiver']);
             await userEvent.upload(fileInput, file);
 
             await userEvent.click(screen.getByText('Neste steg'));
-            expect(screen.queryByText('Du må laste opp minst ett dokument')).not.toBeInTheDocument();
+            expect(screen.queryByText(messages['SkjemaSteg.MinstEttDokument'])).not.toBeInTheDocument();
             expect(
-                await screen.findByText('Last opp skjema for risiko og tilrettelegging i svangerskapet'),
+                await screen.findByText(messages['skjema.vedlegg.label.arbeidsgiver']),
             ).toBeInTheDocument();
 
             expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
@@ -84,7 +86,7 @@ describe('<SkjemaSteg>', () => {
             setHandlers(MedVedlegg.parameters.msw);
             render(<MedVedlegg />);
 
-            expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
+            expect(await screen.findByText(messages['Svangerskapspengesøknad.pagetitle'])).toBeInTheDocument();
             expect(screen.getByText('Filnavn1.jpg')).toBeInTheDocument();
         }),
     );
@@ -95,9 +97,9 @@ describe('<SkjemaSteg>', () => {
             setHandlers(MedToTilrettelegginger.parameters.msw);
             render(<MedToTilrettelegginger />);
 
-            expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
+            expect(await screen.findByText(messages['Svangerskapspengesøknad.pagetitle'])).toBeInTheDocument();
             expect(screen.getAllByText('Last opp skjema for Omsorgspartner Vestfold AS')).toHaveLength(2);
-            expect(screen.getByText('Om ditt arbeidsforhold i')).toBeInTheDocument();
+            expect(screen.getByText(messages['Bedriftsbanner.detail'])).toBeInTheDocument();
             expect(screen.getByText('Omsorgspartner Vestfold AS')).toBeInTheDocument();
         }),
     );
@@ -108,9 +110,9 @@ describe('<SkjemaSteg>', () => {
             setHandlers(ErTypeFrilans.parameters.msw);
             render(<ErTypeFrilans />);
 
-            expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
+            expect(await screen.findByText(messages['Svangerskapspengesøknad.pagetitle'])).toBeInTheDocument();
             expect(
-                screen.getByText('Last opp bekreftelse for krav til svangerskapspenger til frilans'),
+                screen.getByText(messages['skjema.vedlegg.label.frilanser']),
             ).toBeInTheDocument();
             expect(
                 screen.getByText(/Her skal du laste opp bekreftelsen som er skrevet av din lege eller jordmor./),
@@ -124,10 +126,10 @@ describe('<SkjemaSteg>', () => {
             setHandlers(KanMaxHaToVedlegg.parameters.msw);
             render(<KanMaxHaToVedlegg />);
 
-            expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
+            expect(await screen.findByText(messages['Svangerskapspengesøknad.pagetitle'])).toBeInTheDocument();
 
             const file1 = new File(['hello'], 'hello.png', { type: 'image/png' });
-            const fileInput = screen.getByLabelText('Last opp skjema for risiko og tilrettelegging i svangerskapet');
+            const fileInput = screen.getByLabelText(messages['skjema.vedlegg.label.arbeidsgiver']);
             await userEvent.upload(fileInput, file1);
 
             await userEvent.click(screen.getByText('Neste steg'));

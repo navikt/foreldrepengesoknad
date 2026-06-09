@@ -10,6 +10,8 @@ import { BarnetErAdoptertPlanlegger } from '@navikt/fp-types';
 import { endreFordelingMedSlider } from '../../../vitest/testHelpers';
 import * as stories from './FordelingSteg.stories';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const {
     FlereForsørgereEttBarn,
     FlereForsørgereEttBarn80ProsentDekningsgrad,
@@ -35,7 +37,7 @@ describe('<FordelingSteg>', () => {
 
         const utils = render(<FlereForsørgereEttBarn gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['FordelingSteg.Tittel'])).toHaveLength(2);
 
         await endreFordelingMedSlider(utils, 45);
 
@@ -64,7 +66,7 @@ describe('<FordelingSteg>', () => {
 
         const utils = render(<FlereForsørgereEttBarn gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['FordelingSteg.Tittel'])).toHaveLength(2);
 
         await endreFordelingMedSlider(utils, 80);
 
@@ -73,7 +75,7 @@ describe('<FordelingSteg>', () => {
                 'Dette er regnet ut fra at barnet blir født på termin og om dere tar sammenhengende permisjon fra tre uker før termin.',
             ),
         ).toBeInTheDocument();
-        expect(screen.getByText('Permisjonen kan se sånn ut med fordelingen dere valgte:')).toBeInTheDocument();
+        expect(screen.getByText(messages['FordelingsdetaljerPanel.Infoboks.HvisAdopsjonDel2'])).toBeInTheDocument();
         expect(screen.getByText('Klara: 11. des. 2023 – 2. aug. 2024')).toBeInTheDocument();
         expect(screen.getByText('Espen: 5. aug. 2024 – 15. nov. 2024')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Neste'));
@@ -111,7 +113,7 @@ describe('<FordelingSteg>', () => {
             />,
         );
 
-        expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['FordelingSteg.Tittel'])).toHaveLength(2);
         await endreFordelingMedSlider(utils, 80);
 
         expect(
@@ -119,7 +121,7 @@ describe('<FordelingSteg>', () => {
                 'Dette er regnet ut fra at barnet ble født 1. jan. 2024 og om dere tar sammenhengende permisjon fra tre uker før fødsel.',
             ),
         ).toBeInTheDocument();
-        expect(screen.getByText('Permisjonen kan se sånn ut med fordelingen dere valgte:')).toBeInTheDocument();
+        expect(screen.getByText(messages['FordelingsdetaljerPanel.Infoboks.HvisAdopsjonDel2'])).toBeInTheDocument();
         expect(screen.getByText('Klara: 11. des. 2023 – 2. aug. 2024')).toBeInTheDocument();
         expect(screen.getByText('Espen: 5. aug. 2024 – 15. nov. 2024')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Neste'));
@@ -156,16 +158,16 @@ describe('<FordelingSteg>', () => {
             />,
         );
 
-        expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['FordelingSteg.Tittel'])).toHaveLength(2);
         await endreFordelingMedSlider(utils, 80);
 
-        expect(screen.getByText('Perioden deres')).toBeInTheDocument();
+        expect(screen.getByText(messages['FordelingsdetaljerPanel.InfoboksTittel'])).toBeInTheDocument();
         expect(
             screen.getByText(
                 'Dette er regnet ut fra dere overtok omsorgen den 8. juli 2025 og dere tar permisjon sammenhengende fra overtakelsen.',
             ),
         ).toBeInTheDocument();
-        expect(screen.getByText('Permisjonen kan se sånn ut med fordelingen dere valgte:')).toBeInTheDocument();
+        expect(screen.getByText(messages['FordelingsdetaljerPanel.Infoboks.HvisAdopsjonDel2'])).toBeInTheDocument();
 
         expect(screen.getByText('Klara: 8. juli 2025 – 2. mars 2026')).toBeInTheDocument();
         expect(screen.getByText('Espen: 3. mars 2026 – 15. juni 2026')).toBeInTheDocument();
@@ -191,7 +193,7 @@ describe('<FordelingSteg>', () => {
 
         render(<FlereForsørgereEttBarn gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['FordelingSteg.Tittel'])).toHaveLength(2);
 
         // Med 1 barn og 100% dekningsgrad er det 16 uker = 80 dager, ingen restdager
         expect(
@@ -208,7 +210,7 @@ describe('<FordelingSteg>', () => {
         // 80% med 1 barn har 101 dager fellesperiode = 20 uker + 1 dag
         render(<FlereForsørgereEttBarn80ProsentDekningsgrad gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['FordelingSteg.Tittel'])).toHaveLength(2);
 
         expect(
             screen.getByText(
@@ -227,7 +229,7 @@ describe('<FordelingSteg>', () => {
         // 80% med 2 barn har 207 dager fellesperiode = 41 uker + 2 dager
         render(<FlereForsørgereToBarn80ProsentDekningsgrad gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['FordelingSteg.Tittel'])).toHaveLength(2);
 
         expect(
             screen.getByText(

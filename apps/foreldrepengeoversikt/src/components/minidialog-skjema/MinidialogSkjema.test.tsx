@@ -8,6 +8,8 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './MinidialogSkjema.stories';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const { SkalIkkeFeileOpplasting } = composeStories(stories);
 
 describe('<MinidialogSkjema>', () => {
@@ -27,15 +29,14 @@ describe('<MinidialogSkjema>', () => {
                 ),
             ).toBeInTheDocument();
 
-            await userEvent.click(screen.getByText('Nei'));
+            await userEvent.click(screen.getByText(messages['felles.nei']));
 
             expect(
-                screen.getByText(
-                    'Saken vil bli behandlet med de opplysningene vi har tilgjengelig. Vi sender deg et vedtak når saken er ferdig behandlet.',
+                screen.getByText(messages['minidialog.tilbakekreving.veilederpanel'],
                 ),
             ).toBeInTheDocument();
 
-            await userEvent.click(screen.getByText('Send'));
+            await userEvent.click(screen.getByText(messages['miniDialog.tilbakekreving.sendButton']));
 
             expect(send).toHaveBeenCalledTimes(1);
             expect(send).toHaveBeenNthCalledWith(1, {
@@ -71,17 +72,16 @@ describe('<MinidialogSkjema>', () => {
 
             expect(screen.getByText('Svar på tilbakebetalingen:')).toBeInTheDocument();
 
-            await userEvent.click(screen.getByText('Send'));
+            await userEvent.click(screen.getByText(messages['miniDialog.tilbakekreving.sendButton']));
 
             expect(screen.getAllByText('Feltet "Svar på tilbakebetalingen " må inneholde minst 25 tegn.')).toHaveLength(
                 2,
             );
 
-            expect(screen.getByText('Last opp dokumenter')).toBeInTheDocument();
+            expect(screen.getByText(messages['lastOppDokumenter'])).toBeInTheDocument();
 
             expect(
-                screen.queryByText(
-                    'Saken vil bli behandlet med de opplysningene vi har tilgjengelig. Vi sender deg et vedtak når saken er ferdig behandlet.',
+                screen.queryByText(messages['minidialog.tilbakekreving.veilederpanel'],
                 ),
             ).not.toBeInTheDocument();
 
@@ -90,7 +90,7 @@ describe('<MinidialogSkjema>', () => {
                 'Dette er et svar som er minst 25 tegn langt',
             );
 
-            await userEvent.click(screen.getByText('Send'));
+            await userEvent.click(screen.getByText(messages['miniDialog.tilbakekreving.sendButton']));
 
             expect(send).toHaveBeenCalledTimes(1);
             expect(send).toHaveBeenNthCalledWith(1, {

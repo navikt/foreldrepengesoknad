@@ -4,6 +4,8 @@ import userEvent from '@testing-library/user-event';
 
 import * as stories from './UttaksplanListe.innsyn.fødsel.mor.stories';
 
+import messages from '../intl/messages/nb_NO.json';
+
 const { MorAleneOmOmsorg, PrematurUker, AvslåttePerioder } = composeStories(stories);
 
 describe('<UttaksplanListe - innsyn - fødsel mor >', () => {
@@ -17,10 +19,10 @@ describe('<UttaksplanListe - innsyn - fødsel mor >', () => {
 
         await userEvent.click(screen.getByText('24. feb. 26 - 15. juni 26'));
 
-        expect(screen.getAllByText('Skal ikke jobbe i denne perioden')).toHaveLength(3);
+        expect(screen.getAllByText(messages['uttaksplan.periodeListeContent.skalIkkeJobbe'])).toHaveLength(3);
 
-        expect(screen.queryByText('Endre')).not.toBeInTheDocument();
-        expect(screen.queryByText('Slett')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['uttaksplan.endre'])).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['uttaksplan.slett'])).not.toBeInTheDocument();
     });
 
     it('Prematuruker for mor', async () => {
@@ -31,16 +33,15 @@ describe('<UttaksplanListe - innsyn - fødsel mor >', () => {
 
         await userEvent.click(screen.getByText('13. aug. 25 - 10. okt. 25'));
 
-        expect(screen.getByText('Denne perioden er endret fra foreldrepenger til pleiepenger.')).toBeInTheDocument();
+        expect(screen.getByText(messages['uttaksplan.periodeListeContent.prematuruker1'])).toBeInTheDocument();
         expect(
-            screen.getByText(
-                'Endringen påvirker ikke hvor mye tid du har fått - bare hvilken ytelse som gjelder i denne perioden.',
+            screen.getByText(messages['uttaksplan.periodeListeContent.prematuruker2'],
             ),
         ).toBeInTheDocument();
-        expect(screen.getByText('Denne perioden kan ikke endres eller slettes.')).toBeInTheDocument();
+        expect(screen.getByText(messages['uttaksplan.periodeListeContent.prematuruker3'])).toBeInTheDocument();
 
-        expect(screen.queryByText('Endre')).not.toBeInTheDocument();
-        expect(screen.queryByText('Slett')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['uttaksplan.endre'])).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['uttaksplan.slett'])).not.toBeInTheDocument();
     });
 
     it('Avslåtte perioder vises med korrekt tekst og er ikkje redigerbare', async () => {
@@ -59,10 +60,10 @@ describe('<UttaksplanListe - innsyn - fødsel mor >', () => {
         await userEvent.click(screen.getByText('13. okt. 25 - 21. nov. 25'));
 
         // Sjekk at innhaldet viser "Trekte dager" (vises både i header og i innhald)
-        expect(screen.getAllByText('Trekte dager').length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(messages['uttaksplan.periodeListeHeader.avslåttAnnet']).length).toBeGreaterThanOrEqual(1);
 
         // Skal ikkje ha endre/slett-knappar
-        expect(screen.queryByText('Endre')).not.toBeInTheDocument();
-        expect(screen.queryByText('Slett')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['uttaksplan.endre'])).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['uttaksplan.slett'])).not.toBeInTheDocument();
     });
 });

@@ -9,6 +9,8 @@ import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
 
 import * as stories from './EgenNæringSteg.stories';
 
+import messages from '../../intl/nb_NO.json';
+
 const { Default } = composeStories(stories);
 
 describe('<EgenNæringSteg>', () => {
@@ -34,7 +36,7 @@ describe('<EgenNæringSteg>', () => {
         await userEvent.type(startdatoInput, dayjs('2023-04-30').format('DD.MM.YYYY'));
         await userEvent.tab();
 
-        expect(screen.getByText('Jobber du der fortsatt?')).toBeInTheDocument();
+        expect(screen.getByText(messages['ArbeidIUtlandetFieldArray.næring.pågående'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[1]!);
 
         const næringsresultatInput = screen.getByLabelText(
@@ -45,7 +47,7 @@ describe('<EgenNæringSteg>', () => {
         expect(
             screen.getByText('Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?'),
         ).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[2]!);
+        await userEvent.click(screen.getAllByText(messages['nei'])[2]!);
 
         await userEvent.click(screen.getByText('Neste steg'));
 

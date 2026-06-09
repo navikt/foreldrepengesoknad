@@ -6,6 +6,8 @@ import { SøknadRoutes } from 'appData/routes';
 
 import * as stories from './UtenlandsoppholdSteg.stories';
 
+import messages from '../../intl/nb_NO.json';
+
 const { Default } = composeStories(stories);
 
 describe('<UtenlandsoppholdSteg>', () => {
@@ -15,7 +17,7 @@ describe('<UtenlandsoppholdSteg>', () => {
 
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['steps.label.utenlandsopphold'])).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Jeg har bodd i Norge'));
 
@@ -57,7 +59,7 @@ describe('<UtenlandsoppholdSteg>', () => {
 
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['steps.label.utenlandsopphold'])).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Jeg har bodd helt eller delvis i utlandet'));
 
@@ -94,7 +96,7 @@ describe('<UtenlandsoppholdSteg>', () => {
 
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['steps.label.utenlandsopphold'])).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Jeg har bodd i Norge'));
 
@@ -131,7 +133,7 @@ describe('<UtenlandsoppholdSteg>', () => {
 
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['steps.label.utenlandsopphold'])).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Jeg har bodd helt eller delvis i utlandet'));
 

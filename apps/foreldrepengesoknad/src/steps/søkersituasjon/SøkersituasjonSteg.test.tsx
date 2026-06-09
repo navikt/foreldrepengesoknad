@@ -6,6 +6,8 @@ import { SøknadRoutes } from 'appData/routes';
 
 import * as stories from './SøkersituasjonSteg.stories';
 
+import messages from '../../intl/nb_NO.json';
+
 const { Mor, Far } = composeStories(stories);
 
 describe('<SøkersituasjonSteg>', () => {
@@ -15,11 +17,11 @@ describe('<SøkersituasjonSteg>', () => {
 
         render(<Mor gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Velg det som gjelder for deg')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Fødsel'));
+        expect(await screen.findByText(messages['søkersituasjon.text.situasjon'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['søkersituasjon.radioButton.fødsel']));
 
-        expect(screen.getByText('Hva søker du som?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Mor'));
+        expect(screen.getByText(messages['søkersituasjon.text.rolle'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['søkersituasjon.radioButton.mor']));
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -47,11 +49,11 @@ describe('<SøkersituasjonSteg>', () => {
 
         render(<Mor gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Velg det som gjelder for deg')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Fødsel'));
+        expect(await screen.findByText(messages['søkersituasjon.text.situasjon'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['søkersituasjon.radioButton.fødsel']));
 
-        expect(screen.getByText('Hva søker du som?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Medmor'));
+        expect(screen.getByText(messages['søkersituasjon.text.rolle'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['søkersituasjon.radioButton.medmor']));
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -74,11 +76,11 @@ describe('<SøkersituasjonSteg>', () => {
 
         render(<Mor gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Velg det som gjelder for deg')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Adopsjon'));
+        expect(await screen.findByText(messages['søkersituasjon.text.situasjon'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['søkersituasjon.radioButton.adopsjon']));
 
-        expect(screen.getByText('Hva søker du som?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Mor'));
+        expect(screen.getByText(messages['søkersituasjon.text.rolle'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['søkersituasjon.radioButton.mor']));
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -101,10 +103,10 @@ describe('<SøkersituasjonSteg>', () => {
 
         render(<Far gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Velg det som gjelder for deg')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Adopsjon'));
+        expect(await screen.findByText(messages['søkersituasjon.text.situasjon'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['søkersituasjon.radioButton.adopsjon']));
 
-        expect(screen.queryByText('Hva søker du som?')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['søkersituasjon.text.rolle'])).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
 

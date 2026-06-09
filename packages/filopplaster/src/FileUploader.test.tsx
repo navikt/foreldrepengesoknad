@@ -6,6 +6,8 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './FileUploader.stories';
 
+import messages from './intl/messages/nb_NO.json';
+
 const { Default, OpplastningTimeout } = composeStories(stories);
 
 describe('FileUploader', () => {
@@ -24,7 +26,7 @@ describe('FileUploader', () => {
             await userEvent.upload(fileInput, file);
 
             expect(await screen.findByText('test-document.pdf')).toBeInTheDocument();
-            expect(screen.queryByText('Laster opp...')).not.toBeInTheDocument();
+            expect(screen.queryByText(messages['FileInput.Vedlegg.Uploading'])).not.toBeInTheDocument();
         }),
     );
 

@@ -7,6 +7,8 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './EttersendingPage.stories';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const { SkalIkkeFeileOpplasting, SkalFeileOpplasting } = composeStories(stories);
 
 vi.mock('react-router-dom', async () => {
@@ -31,10 +33,10 @@ describe('<EttersendingPage>', () => {
                 ),
             ).toBeInTheDocument();
 
-            await userEvent.selectOptions(utils.getByLabelText('Hva inneholder dokumentene dine?'), 'I000060');
+            await userEvent.selectOptions(utils.getByLabelText(messages['ettersending.hva']), 'I000060');
 
             const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-            const fileInput = screen.getByLabelText('Last opp dokumenter');
+            const fileInput = screen.getByLabelText(messages['lastOppDokumenter']);
             await userEvent.upload(fileInput, file);
 
             expect(await screen.findByText('Lastet opp (1) - Annet dokument')).toBeInTheDocument();
@@ -56,10 +58,10 @@ describe('<EttersendingPage>', () => {
                 ),
             ).toBeInTheDocument();
 
-            await userEvent.selectOptions(utils.getByLabelText('Hva inneholder dokumentene dine?'), 'I000060');
+            await userEvent.selectOptions(utils.getByLabelText(messages['ettersending.hva']), 'I000060');
 
             const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-            const fileInput = screen.getByLabelText('Last opp dokumenter');
+            const fileInput = screen.getByLabelText(messages['lastOppDokumenter']);
             await userEvent.upload(fileInput, file);
 
             expect(await screen.findByText('Vedlegg med feil')).toBeInTheDocument();
@@ -81,7 +83,7 @@ describe('<EttersendingPage>', () => {
                 ),
             ).toBeInTheDocument();
 
-            const select = utils.getByLabelText('Hva inneholder dokumentene dine?');
+            const select = utils.getByLabelText(messages['ettersending.hva']);
             const optionsTextContent = within(select)
                 .getAllByRole('option')
                 .map((o) => o.textContent);
@@ -107,20 +109,20 @@ describe('<EttersendingPage>', () => {
                 ),
             ).toBeInTheDocument();
 
-            const select = utils.getByLabelText('Hva inneholder dokumentene dine?');
+            const select = utils.getByLabelText(messages['ettersending.hva']);
             const optionsTextContent = within(select)
                 .getAllByRole('option')
                 .map((o) => o.textContent);
-            expect(optionsTextContent.at(-1)).toBe('Annet dokument');
+            expect(optionsTextContent.at(-1)).toBe(messages['ettersendelse.I000060']);
         }),
     );
 
     it('skal filtrere bort irrelevante dokumenttyper basert på verdier i queryparam', () => {
         const utils = render(<SkalIkkeFeileOpplasting skjematypeQueryParamValue="I000141,I000063" />);
 
-        const select = utils.getByLabelText('Hva inneholder dokumentene dine?');
+        const select = utils.getByLabelText(messages['ettersending.hva']);
         const preselectedOption = within(select).getByRole('option', { selected: true });
-        expect(preselectedOption.textContent).toBe('Velg type dokument');
+        expect(preselectedOption.textContent).toBe(messages['ettersendelse.select.defaultValue']);
 
         const optionsTextContent = within(select)
             .getAllByRole('option', { selected: false })
@@ -133,9 +135,9 @@ describe('<EttersendingPage>', () => {
 
     it('skal preselektere dokumenttype dersom kun én manglende dokumenttype i queryparam', () => {
         const utils = render(<SkalIkkeFeileOpplasting skjematypeQueryParamValue="I000141" />);
-        const select = utils.getByLabelText('Hva inneholder dokumentene dine?');
+        const select = utils.getByLabelText(messages['ettersending.hva']);
         const preselectedOption = () => within(select).getByRole('option', { selected: true });
 
-        expect(preselectedOption().textContent).toBe('Terminbekreftelse');
+        expect(preselectedOption().textContent).toBe(messages['ettersendelse.I000062']);
     });
 });

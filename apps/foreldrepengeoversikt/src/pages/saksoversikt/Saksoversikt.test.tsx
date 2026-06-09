@@ -5,6 +5,8 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './Saksoversikt.stories';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const {
     Engangsstønad,
     Foreldrepenger,
@@ -32,11 +34,11 @@ describe('<Saksoversikt>', () => {
             setHandlers(Engangsstønad.parameters.msw);
             render(<Engangsstønad />);
 
-            expect(await screen.findByText('Dette har du søkt om')).toBeInTheDocument();
+            expect(await screen.findByText(messages['saksoversikt.dinPlan.søktOm'])).toBeInTheDocument();
 
             expect(screen.getByText('Engangsstønad på 92 648 kr')).toBeInTheDocument();
             expect(screen.getByText('Utbetales til kontonummer 23232323 hvis søknaden innvilges')).toBeInTheDocument();
-            expect(screen.getByText('Endre kontonummer')).toBeInTheDocument();
+            expect(screen.getByText(messages['saksoversikt.endre.kontonr'])).toBeInTheDocument();
         }),
     );
 
@@ -45,7 +47,7 @@ describe('<Saksoversikt>', () => {
         mswWrapper(async ({ setHandlers }) => {
             setHandlers(Foreldrepenger.parameters.msw);
             render(<Foreldrepenger />);
-            expect(await screen.findByText('Endre planen din')).toBeInTheDocument();
+            expect(await screen.findByText(messages['saksoversikt.endrePlanenDin'])).toBeInTheDocument();
         }),
     );
 
@@ -56,11 +58,11 @@ describe('<Saksoversikt>', () => {
             render(<Svangerskapspenger />);
 
             // Sjekk at tittel er på plass sånn at vi vet siden har lastet ...
-            expect(await screen.findByText('Din sak')).toBeInTheDocument();
+            expect(await screen.findByText(messages['header.dinSak'])).toBeInTheDocument();
             expect((await screen.findAllByText('Svangerskapspenger')).length).toBeGreaterThan(0);
 
             // ... når vi senere skal sjekke for at noe ikke eksisterer.
-            expect(screen.queryByText('Endre planen din')).not.toBeInTheDocument();
+            expect(screen.queryByText(messages['saksoversikt.endrePlanenDin'])).not.toBeInTheDocument();
         }),
     );
 
@@ -71,11 +73,11 @@ describe('<Saksoversikt>', () => {
             render(<Engangsstønad />);
 
             // Sjekk at tittel er på plass sånn at vi vet siden har lastet ...
-            expect(await screen.findByText('Din sak')).toBeInTheDocument();
+            expect(await screen.findByText(messages['header.dinSak'])).toBeInTheDocument();
             expect((await screen.findAllByText('Engangsstønad')).length).toBeGreaterThan(0);
 
             // ... når vi senere skal sjekke for at noe ikke eksisterer.
-            expect(screen.queryByText('Endre planen din')).not.toBeInTheDocument();
+            expect(screen.queryByText(messages['saksoversikt.endrePlanenDin'])).not.toBeInTheDocument();
         }),
     );
 
@@ -96,7 +98,7 @@ describe('<Saksoversikt>', () => {
                 setHandlers(ForeldrepengerTestAvSkyraGammelInnsending.parameters.msw);
                 render(<ForeldrepengerTestAvSkyraGammelInnsending />);
 
-                expect(await screen.findByText('Din sak')).toBeInTheDocument();
+                expect(await screen.findByText(messages['header.dinSak'])).toBeInTheDocument();
                 expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();
             }),
         );
@@ -128,7 +130,7 @@ describe('<Saksoversikt>', () => {
                 setHandlers(ForeldrepengerEndringssøknad.parameters.msw);
                 render(<ForeldrepengerEndringssøknad />);
 
-                expect(await screen.findByText('Din sak')).toBeInTheDocument();
+                expect(await screen.findByText(messages['header.dinSak'])).toBeInTheDocument();
                 expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();
             }),
         );
@@ -139,7 +141,7 @@ describe('<Saksoversikt>', () => {
                 setHandlers(EngangsstønadTestAvSkyraNyligInnsending.parameters.msw);
                 render(<EngangsstønadTestAvSkyraNyligInnsending />);
 
-                expect(await screen.findByText('Din sak')).toBeInTheDocument();
+                expect(await screen.findByText(messages['header.dinSak'])).toBeInTheDocument();
                 expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();
             }),
         );
@@ -150,7 +152,7 @@ describe('<Saksoversikt>', () => {
                 setHandlers(SvangerskapspengerTestAvSkyraNyligInnsending.parameters.msw);
                 render(<SvangerskapspengerTestAvSkyraNyligInnsending />);
 
-                expect(await screen.findByText('Din sak')).toBeInTheDocument();
+                expect(await screen.findByText(messages['header.dinSak'])).toBeInTheDocument();
                 expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();
             }),
         );

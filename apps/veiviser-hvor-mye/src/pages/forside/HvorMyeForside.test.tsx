@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 
 import * as stories from './HvorMyeForside.stories';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const { Default } = composeStories(stories);
 
 vi.mock('react-router-dom', async () => {
@@ -25,11 +27,10 @@ describe('<HvorMyeForside>', () => {
 
         render(<Default />);
 
-        expect(await screen.findAllByText('Hvor mye kan jeg få i foreldrepenger?')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['HvorMyeForside.Title'])).toHaveLength(2);
 
         expect(
-            screen.getByText(
-                'Denne veiviseren er for deg som ønsker å vite omtrent hvor mye foreldrepenger du kan få fra Nav.',
+            screen.getByText(messages['HvorMyeForside.Innhold'],
             ),
         ).toBeInTheDocument();
 

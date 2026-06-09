@@ -5,6 +5,8 @@ import dayjs from 'dayjs';
 
 import * as stories from './FerieSteg.stories';
 
+import messages from '../../intl/nb_NO.json';
+
 const { Default } = composeStories(stories);
 
 describe('<FerieSteg>', () => {
@@ -14,11 +16,11 @@ describe('<FerieSteg>', () => {
         const gåTilNesteSide = vi.fn();
         render(<Default gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
-        expect(screen.getByText('Har du planlagt ferie i perioden du skal ha svangerskapspenger?')).toBeInTheDocument();
+        expect(await screen.findByText(messages['Svangerskapspengesøknad.pagetitle'])).toBeInTheDocument();
+        expect(screen.getByText(messages['ferie.harDuPlanlagtFerie.label'])).toBeInTheDocument();
         await user.click(screen.getByText('Neste steg'));
-        expect(screen.getAllByText('Må oppgis')).toHaveLength(2);
-        await user.click(screen.getByText('Nei'));
+        expect(screen.getAllByText(messages['ferie.harDuPlanlagtFerie.validering'])).toHaveLength(2);
+        await user.click(screen.getByText(messages['nei']));
         await user.click(screen.getByText('Neste steg'));
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
@@ -37,24 +39,24 @@ describe('<FerieSteg>', () => {
         const gåTilNesteSide = vi.fn();
         render(<Default gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
-        expect(screen.getByText('Har du planlagt ferie i perioden du skal ha svangerskapspenger?')).toBeInTheDocument();
+        expect(await screen.findByText(messages['Svangerskapspengesøknad.pagetitle'])).toBeInTheDocument();
+        expect(screen.getByText(messages['ferie.harDuPlanlagtFerie.label'])).toBeInTheDocument();
         await user.click(screen.getByText('Ja'));
-        expect(screen.getByText('Legg til flere ferier')).toBeInTheDocument();
+        expect(screen.getByText(messages['ferie.periode.leggTil'])).toBeInTheDocument();
 
         await user.click(screen.getByText('Neste steg'));
-        expect(screen.getAllByText('Du må oppgi en ferieperiode')).toHaveLength(3);
+        expect(screen.getAllByText(messages['ferie.antallPerioder.validering.dato.obligatorisk'])).toHaveLength(3);
 
-        const fradatoInput = screen.getByLabelText('Første feriedag');
+        const fradatoInput = screen.getByLabelText(messages['ferie.periode.førsteDag']);
         await user.type(fradatoInput, dayjs('2010-10-30').format('DD.MM.YYYY'));
         await user.tab();
-        expect(screen.getAllByText('Må være etter første fraværsdag')).toHaveLength(2);
+        expect(screen.getAllByText(messages['ferie.antallPerioder.validering.dato.etterFørsteFraværsDag'])).toHaveLength(2);
 
-        const tildatoInput = screen.getByLabelText('Siste feriedag');
+        const tildatoInput = screen.getByLabelText(messages['ferie.periode.sisteDag']);
 
         await user.type(tildatoInput, dayjs('2030-10-30').format('DD.MM.YYYY'));
         await user.tab();
-        expect(screen.getAllByText('Må være før siste fraværsdag')).toHaveLength(2);
+        expect(screen.getAllByText(messages['ferie.antallPerioder.validering.dato.førSisteFraværsDag'])).toHaveLength(2);
 
         await user.clear(fradatoInput);
         await user.clear(tildatoInput);
@@ -63,7 +65,7 @@ describe('<FerieSteg>', () => {
         await user.tab();
         await user.type(tildatoInput, 'asd');
         await user.tab();
-        expect(screen.getAllByText('Du må oppgi en dato')).toHaveLength(3);
+        expect(screen.getAllByText(messages['ferie.antallPerioder.validering.dato.gyldig'])).toHaveLength(3);
 
         await user.clear(fradatoInput);
         await user.clear(tildatoInput);
@@ -73,7 +75,7 @@ describe('<FerieSteg>', () => {
         await user.type(tildatoInput, dayjs('2024-10-29').format('DD.MM.YYYY'));
         await user.tab();
         await user.click(screen.getByText('Neste steg'));
-        expect(screen.getAllByText('Fra dato må være før til dato')).toHaveLength(2);
+        expect(screen.getAllByText(messages['ferie.antallPerioder.validering.dato.førTilDato'])).toHaveLength(2);
 
         await user.type(tildatoInput, dayjs('2024-10-31').format('DD.MM.YYYY'));
         await user.tab();
@@ -86,8 +88,8 @@ describe('<FerieSteg>', () => {
 
         await user.click(screen.getByText('Ja'));
 
-        const fradatoInput = screen.getByText('Første feriedag');
-        const tildatoInput = screen.getByText('Siste feriedag');
+        const fradatoInput = screen.getByText(messages['ferie.periode.førsteDag']);
+        const tildatoInput = screen.getByText(messages['ferie.periode.sisteDag']);
 
         await user.type(fradatoInput, dayjs('2024-10-30').format('DD.MM.YYYY'));
         await user.tab();
@@ -121,43 +123,43 @@ describe('<FerieSteg>', () => {
 
         await user.click(screen.getByText('Ja'));
 
-        await user.type(screen.getAllByText('Første feriedag')[0]!, dayjs('2024-11-01').format('DD.MM.YYYY'));
+        await user.type(screen.getAllByText(messages['ferie.periode.førsteDag'])[0]!, dayjs('2024-11-01').format('DD.MM.YYYY'));
         await user.tab();
-        await user.type(screen.getAllByText('Siste feriedag')[0]!, dayjs('2024-11-05').format('DD.MM.YYYY'));
+        await user.type(screen.getAllByText(messages['ferie.periode.sisteDag'])[0]!, dayjs('2024-11-05').format('DD.MM.YYYY'));
         await user.tab();
 
-        await user.click(screen.getByText('Legg til flere ferier'));
-        await user.type(screen.getAllByText('Første feriedag')[1]!, dayjs('2024-11-03').format('DD.MM.YYYY'));
+        await user.click(screen.getByText(messages['ferie.periode.leggTil']));
+        await user.type(screen.getAllByText(messages['ferie.periode.førsteDag'])[1]!, dayjs('2024-11-03').format('DD.MM.YYYY'));
         await user.tab();
-        await user.type(screen.getAllByText('Siste feriedag')[1]!, dayjs('2024-11-08').format('DD.MM.YYYY'));
+        await user.type(screen.getAllByText(messages['ferie.periode.sisteDag'])[1]!, dayjs('2024-11-08').format('DD.MM.YYYY'));
         await user.tab();
         await user.click(screen.getByText('Neste steg'));
         expect(screen.getAllByText('Overlapper med 1. periode')).toHaveLength(2);
 
-        await user.click(screen.getByText('Legg til flere ferier'));
-        await user.type(screen.getAllByText('Første feriedag')[2]!, dayjs('2024-11-06').format('DD.MM.YYYY'));
+        await user.click(screen.getByText(messages['ferie.periode.leggTil']));
+        await user.type(screen.getAllByText(messages['ferie.periode.førsteDag'])[2]!, dayjs('2024-11-06').format('DD.MM.YYYY'));
         await user.tab();
-        await user.type(screen.getAllByText('Siste feriedag')[2]!, dayjs('2024-11-12').format('DD.MM.YYYY'));
+        await user.type(screen.getAllByText(messages['ferie.periode.sisteDag'])[2]!, dayjs('2024-11-12').format('DD.MM.YYYY'));
         await user.tab();
         await user.click(screen.getByText('Neste steg'));
         expect(screen.getAllByText('Overlapper med 2. periode')).toHaveLength(2);
 
         await user.clear(screen.getAllByLabelText('Første feriedag')[1]!);
-        await user.type(screen.getAllByText('Første feriedag')[1]!, dayjs('2024-11-06').format('DD.MM.YYYY'));
+        await user.type(screen.getAllByText(messages['ferie.periode.førsteDag'])[1]!, dayjs('2024-11-06').format('DD.MM.YYYY'));
         await user.tab();
         expect(screen.queryAllByText('Overlapper med 1. periode')).toHaveLength(0);
         await user.click(screen.getByText('Neste steg'));
         expect(screen.getAllByText('Overlapper med 2. periode')).toHaveLength(2);
 
         await user.clear(screen.getAllByLabelText('Første feriedag')[2]!);
-        await user.type(screen.getAllByText('Første feriedag')[2]!, dayjs('2024-11-09').format('DD.MM.YYYY'));
+        await user.type(screen.getAllByText(messages['ferie.periode.førsteDag'])[2]!, dayjs('2024-11-09').format('DD.MM.YYYY'));
         await user.tab();
         expect(screen.queryAllByText('Overlapper med 2. periode')).toHaveLength(0);
 
-        expect(screen.getAllByText('Fjern perioden')).toHaveLength(2);
+        expect(screen.getAllByText(messages['perioder.varierende.slett'])).toHaveLength(2);
         await user.click(screen.getByLabelText('Fjern 3. periode'));
         await user.click(screen.getByLabelText('Fjern 2. periode'));
-        expect(screen.queryAllByText('Fjern perioden')).toHaveLength(0);
+        expect(screen.queryAllByText(messages['perioder.varierende.slett'])).toHaveLength(0);
 
         await user.click(screen.getByText('Neste steg'));
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
@@ -187,24 +189,24 @@ describe('<FerieSteg>', () => {
 
         await user.click(screen.getByText('Ja'));
 
-        await user.type(screen.getAllByText('Første feriedag')[0]!, dayjs('2024-10-30').format('DD.MM.YYYY'));
+        await user.type(screen.getAllByText(messages['ferie.periode.førsteDag'])[0]!, dayjs('2024-10-30').format('DD.MM.YYYY'));
         await user.tab();
-        await user.type(screen.getAllByText('Siste feriedag')[0]!, dayjs('2024-10-31').format('DD.MM.YYYY'));
-        await user.tab();
-
-        await user.click(screen.getByText('Legg til flere ferier'));
-        await user.click(screen.getByText('Legg til flere ferier'));
-
-        expect(screen.getAllByText('Fjern perioden')).toHaveLength(2);
-
-        await user.type(screen.getAllByText('Første feriedag')[1]!, dayjs('2024-11-01').format('DD.MM.YYYY'));
-        await user.tab();
-        await user.type(screen.getAllByText('Siste feriedag')[1]!, dayjs('2024-11-04').format('DD.MM.YYYY'));
+        await user.type(screen.getAllByText(messages['ferie.periode.sisteDag'])[0]!, dayjs('2024-10-31').format('DD.MM.YYYY'));
         await user.tab();
 
-        await user.type(screen.getAllByText('Første feriedag')[2]!, dayjs('2024-11-06').format('DD.MM.YYYY'));
+        await user.click(screen.getByText(messages['ferie.periode.leggTil']));
+        await user.click(screen.getByText(messages['ferie.periode.leggTil']));
+
+        expect(screen.getAllByText(messages['perioder.varierende.slett'])).toHaveLength(2);
+
+        await user.type(screen.getAllByText(messages['ferie.periode.førsteDag'])[1]!, dayjs('2024-11-01').format('DD.MM.YYYY'));
         await user.tab();
-        await user.type(screen.getAllByText('Siste feriedag')[2]!, dayjs('2024-11-08').format('DD.MM.YYYY'));
+        await user.type(screen.getAllByText(messages['ferie.periode.sisteDag'])[1]!, dayjs('2024-11-04').format('DD.MM.YYYY'));
+        await user.tab();
+
+        await user.type(screen.getAllByText(messages['ferie.periode.førsteDag'])[2]!, dayjs('2024-11-06').format('DD.MM.YYYY'));
+        await user.tab();
+        await user.type(screen.getAllByText(messages['ferie.periode.sisteDag'])[2]!, dayjs('2024-11-08').format('DD.MM.YYYY'));
         await user.tab();
 
         await user.click(screen.getByLabelText('Fjern 3. periode'));

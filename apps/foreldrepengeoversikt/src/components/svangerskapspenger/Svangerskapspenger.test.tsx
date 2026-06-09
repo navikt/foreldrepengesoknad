@@ -8,6 +8,8 @@ import { SvangerskapspengeSak } from '../../types/Sak';
 import { lagKronologiskeSvpPerioder } from './Svangerskapspenger';
 import * as stories from './Svangerskapspenger.stories';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const { SøknadUtenVedtak, Case1 } = composeStories(stories);
 
 const AKTIVITET = {
@@ -108,7 +110,7 @@ describe('lagKronologiskeSvpPerioder', () => {
 describe('<Svangerskapspenger>', () => {
     it('Skal vise i tittel at det er fra søknaden', () => {
         render(<SøknadUtenVedtak />);
-        expect(screen.getByText('Dette har du søkt om')).toBeInTheDocument();
+        expect(screen.getByText(messages['saksoversikt.dinPlan.søktOm'])).toBeInTheDocument();
     });
     it('Skal vise i tittel at det er fra vedtak', () => {
         render(<Case1 />);

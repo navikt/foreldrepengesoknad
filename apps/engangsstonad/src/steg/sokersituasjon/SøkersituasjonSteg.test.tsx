@@ -6,6 +6,8 @@ import { Path } from 'appData/paths';
 
 import * as stories from './SøkersituasjonSteg.stories';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const { Default } = composeStories(stories);
 
 describe('<SøkersituasjonSteg>', () => {
@@ -14,18 +16,18 @@ describe('<SøkersituasjonSteg>', () => {
         const mellomlagreOgNaviger = vi.fn();
 
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />);
-        expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
+        expect(await screen.findByText(messages['Engangsstønad.Pagetitle'])).toBeInTheDocument();
 
-        expect(screen.getAllByText('Din situasjon')).toHaveLength(2);
+        expect(screen.getAllByText(messages['useStepConfig.Søkersituasjon'])).toHaveLength(2);
         expect(screen.getByText('Steg 1 av 4')).toBeInTheDocument();
-        expect(screen.getByText('Hva gjelder for deg?')).toBeInTheDocument();
+        expect(screen.getByText(messages['SøkersituasjonSteg.Situasjon'])).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
-        expect(screen.getAllByText('Du må oppgi hva som gjelder for deg')).toHaveLength(2);
+        expect(screen.getAllByText(messages['SøkersituasjonSteg.Validering.OppgiFodselEllerAdopsjon'])).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Fødsel'));
+        await userEvent.click(screen.getByText(messages['SøkersituasjonSteg.Fødsel']));
 
         await userEvent.click(screen.getByText('Neste steg'));
 

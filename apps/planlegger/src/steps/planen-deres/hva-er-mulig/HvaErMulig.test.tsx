@@ -3,6 +3,8 @@ import { render, screen } from '@testing-library/react';
 
 import * as stories from './HvaErMulig.stories';
 
+import messages from '../../../intl/messages/nb_NO.json';
+
 const {
     FødselMorOgFarBeggeHarRett,
     FødselMorOgMedmorBeggeHarRett,
@@ -22,16 +24,16 @@ describe('<HvaErMulig>', () => {
     //MorOgFar
     it('skal vise info for mor og far fødsel hvor begge har rett', async () => {
         render(<FødselMorOgFarBeggeHarRett />);
-        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
+        expect(await screen.findByText(messages['HvaErMulig.Tittel'])).toBeInTheDocument();
 
-        expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
-        expect(screen.getByText('Dette kan du ikke endre:')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.MyeDuKanEndre'])).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.KanIkkeEndres'])).toBeInTheDocument();
         expect(screen.getByText('Tre uker før termin:')).toBeInTheDocument();
         expect(screen.getByText('Seks uker etter fødsel:')).toBeInTheDocument();
-        expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.LeggeTilFerie'])).toBeInTheDocument();
         expect(screen.getByText('Når far tar fellesperiode')).toBeInTheDocument();
-        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
-        expect(screen.getByText('Foreldrepenger samtidig')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.JobbeSamtidig'])).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.ForeldrepengerSamtidig'])).toBeInTheDocument();
         expect(screen.getByText('2 uker rundt fødsel:')).toBeInTheDocument();
         expect(screen.getByText('Opptil 100 %:')).toBeInTheDocument();
         expect(screen.getByText('Til sammen 100 %:')).toBeInTheDocument();
@@ -39,15 +41,15 @@ describe('<HvaErMulig>', () => {
     });
     it('skal vise info for mor og far fødsel hvor kun mor har rett', async () => {
         render(<FødselMorOgFarKunMorHarRett />);
-        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
+        expect(await screen.findByText(messages['HvaErMulig.Tittel'])).toBeInTheDocument();
 
-        expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
-        expect(screen.getByText('Dette kan du ikke endre:')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.MyeDuKanEndre'])).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.KanIkkeEndres'])).toBeInTheDocument();
         expect(screen.getByText('Tre uker før termin:')).toBeInTheDocument();
         expect(screen.getByText('Seks uker etter fødsel:')).toBeInTheDocument();
-        expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
-        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
-        expect(screen.queryByText('Foreldrepenger samtidig')).not.toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.LeggeTilFerie'])).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.JobbeSamtidig'])).toBeInTheDocument();
+        expect(screen.queryByText(messages['HvaErMulig.ForeldrepengerSamtidig'])).not.toBeInTheDocument();
         expect(screen.queryByText('2 uker rundt fødsel:')).not.toBeInTheDocument();
         expect(screen.queryByText('Opptil 100 %:')).not.toBeInTheDocument();
         expect(screen.queryByText('Til sammen 100 %:')).not.toBeInTheDocument();
@@ -56,25 +58,25 @@ describe('<HvaErMulig>', () => {
     });
     it('skal vise info for mor og far fødsel hvor kun far har rett', async () => {
         render(<FødselMorOgFarKunFarHarRett />);
-        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
+        expect(await screen.findByText(messages['HvaErMulig.Tittel'])).toBeInTheDocument();
 
-        expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.MyeDuKanEndre'])).toBeInTheDocument();
 
-        expect(screen.queryByText('Dette kan du ikke endre:')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['HvaErMulig.KanIkkeEndres'])).not.toBeInTheDocument();
         expect(screen.queryByText('Tre uker før termin:')).not.toBeInTheDocument();
         expect(screen.queryByText('Seks uker etter fødsel:')).not.toBeInTheDocument();
 
-        expect(screen.getByText('To uker rundt fødsel')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.ToUkerRundtFødsel'])).toBeInTheDocument();
 
-        expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.LeggeTilFerie'])).toBeInTheDocument();
 
-        expect(screen.getByText('Foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.ForeldrepengerUtenAktivitetskrav'])).toBeInTheDocument();
         expect(screen.queryByText(/mor som føder er i aktivitet/)).not.toBeInTheDocument();
-        expect(screen.getByText('Foreldrepenger med aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.ForeldrepengerMedAktivitetskrav'])).toBeInTheDocument();
         expect(screen.getByText(/Mor må være i/)).toBeInTheDocument();
 
-        expect(screen.queryByText('Jobbe samtidig')).not.toBeInTheDocument();
-        expect(screen.queryByText('Foreldrepenger samtidig')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['HvaErMulig.JobbeSamtidig'])).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['HvaErMulig.ForeldrepengerSamtidig'])).not.toBeInTheDocument();
         expect(screen.queryByText('2 uker rundt fødsel:')).not.toBeInTheDocument();
         expect(screen.queryByText('Opptil 100 %:')).not.toBeInTheDocument();
         expect(screen.queryByText('Til sammen 100 %:')).not.toBeInTheDocument();
@@ -83,16 +85,16 @@ describe('<HvaErMulig>', () => {
     });
     it('skal vise info for mor og far fødsel hvor begge har rett - tvilling og trilling', async () => {
         render(<FødselMorOgFarBeggeHarRettTvilling />);
-        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
+        expect(await screen.findByText(messages['HvaErMulig.Tittel'])).toBeInTheDocument();
 
-        expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
-        expect(screen.getByText('Dette kan du ikke endre:')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.MyeDuKanEndre'])).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.KanIkkeEndres'])).toBeInTheDocument();
         expect(screen.getByText('Tre uker før termin:')).toBeInTheDocument();
         expect(screen.getByText('Seks uker etter fødsel:')).toBeInTheDocument();
-        expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.LeggeTilFerie'])).toBeInTheDocument();
         expect(screen.getByText('Når far tar fellesperiode')).toBeInTheDocument();
-        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
-        expect(screen.getByText('Foreldrepenger samtidig')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.JobbeSamtidig'])).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.ForeldrepengerSamtidig'])).toBeInTheDocument();
         expect(screen.getByText('2 uker rundt fødsel:')).toBeInTheDocument();
         expect(screen.getByText('Flerbarnsdager opptil 200 %:')).toBeInTheDocument();
         expect(screen.getByText('Opptil 100 %:')).toBeInTheDocument();
@@ -102,16 +104,16 @@ describe('<HvaErMulig>', () => {
     //MorOgMedmor
     it('skal vise info for mor og medmor fødsel hvor begge har rett', async () => {
         render(<FødselMorOgMedmorBeggeHarRett />);
-        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
+        expect(await screen.findByText(messages['HvaErMulig.Tittel'])).toBeInTheDocument();
 
-        expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
-        expect(screen.getByText('Dette kan du ikke endre:')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.MyeDuKanEndre'])).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.KanIkkeEndres'])).toBeInTheDocument();
         expect(screen.getByText('Tre uker før termin:')).toBeInTheDocument();
         expect(screen.getByText('Seks uker etter fødsel:')).toBeInTheDocument();
-        expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.LeggeTilFerie'])).toBeInTheDocument();
         expect(screen.getByText('Når medmor tar fellesperiode')).toBeInTheDocument();
-        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
-        expect(screen.getByText('Foreldrepenger samtidig')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.JobbeSamtidig'])).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.ForeldrepengerSamtidig'])).toBeInTheDocument();
         expect(screen.getByText('2 uker rundt fødsel:')).toBeInTheDocument();
         expect(screen.getByText('Opptil 100 %:')).toBeInTheDocument();
         expect(screen.getByText('Til sammen 100 %:')).toBeInTheDocument();
@@ -119,15 +121,15 @@ describe('<HvaErMulig>', () => {
     });
     it('skal vise info for mor og medmor fødsel hvor kun mor har rett', async () => {
         render(<FødselMorOgMedmorKunMorHarRett />);
-        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
+        expect(await screen.findByText(messages['HvaErMulig.Tittel'])).toBeInTheDocument();
 
-        expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
-        expect(screen.getByText('Dette kan du ikke endre:')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.MyeDuKanEndre'])).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.KanIkkeEndres'])).toBeInTheDocument();
         expect(screen.getByText('Tre uker før termin:')).toBeInTheDocument();
         expect(screen.getByText('Seks uker etter fødsel:')).toBeInTheDocument();
-        expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
-        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
-        expect(screen.queryByText('Foreldrepenger samtidig')).not.toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.LeggeTilFerie'])).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.JobbeSamtidig'])).toBeInTheDocument();
+        expect(screen.queryByText(messages['HvaErMulig.ForeldrepengerSamtidig'])).not.toBeInTheDocument();
         expect(screen.queryByText('2 uker rundt fødsel:')).not.toBeInTheDocument();
         expect(screen.queryByText('Opptil 100 %:')).not.toBeInTheDocument();
         expect(screen.queryByText('Til sammen 100 %:')).not.toBeInTheDocument();
@@ -136,24 +138,24 @@ describe('<HvaErMulig>', () => {
     });
     it('skal vise info for mor og medmor fødsel hvor kun medmor har rett', async () => {
         render(<FødselMorOgMedmorKunMedmorHarRett />);
-        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
+        expect(await screen.findByText(messages['HvaErMulig.Tittel'])).toBeInTheDocument();
 
-        expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.MyeDuKanEndre'])).toBeInTheDocument();
 
-        expect(screen.queryByText('Dette kan du ikke endre:')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['HvaErMulig.KanIkkeEndres'])).not.toBeInTheDocument();
         expect(screen.queryByText('Tre uker før termin:')).not.toBeInTheDocument();
         expect(screen.queryByText('Seks uker etter fødsel:')).not.toBeInTheDocument();
 
-        expect(screen.getByText('To uker rundt fødsel')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.ToUkerRundtFødsel'])).toBeInTheDocument();
 
-        expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
-        expect(screen.getByText('Foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.LeggeTilFerie'])).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.ForeldrepengerUtenAktivitetskrav'])).toBeInTheDocument();
         expect(screen.getByText(/mor som føder er i aktivitet/)).toBeInTheDocument();
-        expect(screen.getByText('Foreldrepenger med aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.ForeldrepengerMedAktivitetskrav'])).toBeInTheDocument();
         expect(screen.getByText(/Mor som føder/)).toBeInTheDocument();
 
-        expect(screen.queryByText('Jobbe samtidig')).not.toBeInTheDocument();
-        expect(screen.queryByText('Foreldrepenger samtidig')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['HvaErMulig.JobbeSamtidig'])).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['HvaErMulig.ForeldrepengerSamtidig'])).not.toBeInTheDocument();
         expect(screen.queryByText('2 uker rundt fødsel:')).not.toBeInTheDocument();
         expect(screen.queryByText('Opptil 100 %:')).not.toBeInTheDocument();
         expect(screen.queryByText('Til sammen 100 %:')).not.toBeInTheDocument();
@@ -163,15 +165,15 @@ describe('<HvaErMulig>', () => {
     //FarOgFar
     it('skal vise info for far og far fødsel hvor begge har rett', async () => {
         render(<FødselFarOgFarBeggeHarRett />);
-        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
+        expect(await screen.findByText(messages['HvaErMulig.Tittel'])).toBeInTheDocument();
 
-        expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
-        expect(screen.getByText('To uker rundt fødsel')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.MyeDuKanEndre'])).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.ToUkerRundtFødsel'])).toBeInTheDocument();
         expect(screen.getByText(/Fedre får ofte permisjon dekket/)).toBeInTheDocument();
-        expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
-        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.LeggeTilFerie'])).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.JobbeSamtidig'])).toBeInTheDocument();
 
-        expect(screen.getByText('Foreldrepenger samtidig')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.ForeldrepengerSamtidig'])).toBeInTheDocument();
         expect(screen.getByText(/Dere kan ha foreldrepenger/)).toBeInTheDocument();
 
         expect(screen.queryByText('2 uker rundt fødsel:')).not.toBeInTheDocument();
@@ -179,7 +181,7 @@ describe('<HvaErMulig>', () => {
         expect(screen.queryByText('Til sammen 100 %:')).not.toBeInTheDocument();
         expect(screen.queryByText('Opptil 150 %:')).not.toBeInTheDocument();
 
-        expect(screen.queryByText('Dette kan du ikke endre:')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['HvaErMulig.KanIkkeEndres'])).not.toBeInTheDocument();
         expect(screen.queryByText('Tre uker før termin:')).not.toBeInTheDocument();
         expect(screen.queryByText('Seks uker etter fødsel:')).not.toBeInTheDocument();
         expect(screen.queryByText('Når medmor tar fellesperiode')).not.toBeInTheDocument();
@@ -187,16 +189,16 @@ describe('<HvaErMulig>', () => {
     it('skal vise info for far og far fødsel hvor kun far1 har rett', async () => {
         render(<FødselFarOgFarKunFar1HarRett />);
 
-        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
+        expect(await screen.findByText(messages['HvaErMulig.Tittel'])).toBeInTheDocument();
 
-        expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
-        expect(screen.getByText('To uker rundt fødsel')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.MyeDuKanEndre'])).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.ToUkerRundtFødsel'])).toBeInTheDocument();
         expect(screen.getByText(/Fedre får ofte permisjon/)).toBeInTheDocument();
-        expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
-        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.LeggeTilFerie'])).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.JobbeSamtidig'])).toBeInTheDocument();
 
-        expect(screen.queryByText('Foreldrepenger samtidig')).not.toBeInTheDocument();
-        expect(screen.queryByText('Dette kan du ikke endre:')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['HvaErMulig.ForeldrepengerSamtidig'])).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['HvaErMulig.KanIkkeEndres'])).not.toBeInTheDocument();
         expect(screen.queryByText('Tre uker før termin:')).not.toBeInTheDocument();
         expect(screen.queryByText('Seks uker etter fødsel:')).not.toBeInTheDocument();
         expect(screen.queryByText('Når medmor tar fellesperiode')).not.toBeInTheDocument();
@@ -209,16 +211,16 @@ describe('<HvaErMulig>', () => {
     it('skal vise info for aleneforsørger mor fødsel', async () => {
         render(<FødselAleneforsørgerMor />);
 
-        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
+        expect(await screen.findByText(messages['HvaErMulig.Tittel'])).toBeInTheDocument();
 
-        expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
-        expect(screen.getByText('Dette kan du ikke endre:')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.MyeDuKanEndre'])).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.KanIkkeEndres'])).toBeInTheDocument();
         expect(screen.getByText('Tre uker før termin:')).toBeInTheDocument();
         expect(screen.getByText('Seks uker etter fødsel:')).toBeInTheDocument();
-        expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
-        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.LeggeTilFerie'])).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.JobbeSamtidig'])).toBeInTheDocument();
 
-        expect(screen.queryByText('Foreldrepenger samtidig')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['HvaErMulig.ForeldrepengerSamtidig'])).not.toBeInTheDocument();
         expect(screen.queryByText('2 uker rundt fødsel:')).not.toBeInTheDocument();
         expect(screen.queryByText('Opptil 100 %:')).not.toBeInTheDocument();
         expect(screen.queryByText('Til sammen 100 %:')).not.toBeInTheDocument();
@@ -231,16 +233,16 @@ describe('<HvaErMulig>', () => {
     //Mor og far
     it('skal vise info for mor og far adopsjon hvor begge har rett', async () => {
         render(<AdopsjonMorOgFarBeggeHarRett />);
-        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
+        expect(await screen.findByText(messages['HvaErMulig.Tittel'])).toBeInTheDocument();
 
-        expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
-        expect(screen.queryByText('Dette kan du ikke endre:')).not.toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.MyeDuKanEndre'])).toBeInTheDocument();
+        expect(screen.queryByText(messages['HvaErMulig.KanIkkeEndres'])).not.toBeInTheDocument();
         expect(screen.queryByText('Tre uker før termin:')).not.toBeInTheDocument();
         expect(screen.queryByText('Seks uker etter fødsel:')).not.toBeInTheDocument();
-        expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.LeggeTilFerie'])).toBeInTheDocument();
         expect(screen.getByText('Når far tar fellesperiode')).toBeInTheDocument();
-        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
-        expect(screen.getByText('Foreldrepenger samtidig')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.JobbeSamtidig'])).toBeInTheDocument();
+        expect(screen.getByText(messages['HvaErMulig.ForeldrepengerSamtidig'])).toBeInTheDocument();
         expect(screen.queryByText('2 uker rundt fødsel:')).not.toBeInTheDocument();
         expect(screen.getByText('Opptil 100 %:')).toBeInTheDocument();
         expect(screen.getByText('Til sammen 100 %:')).toBeInTheDocument();

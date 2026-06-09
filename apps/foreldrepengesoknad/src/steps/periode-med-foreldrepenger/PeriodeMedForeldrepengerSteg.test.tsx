@@ -9,6 +9,8 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './PeriodeMedForeldrepengerSteg.stories';
 
+import messages from '../../intl/nb_NO.json';
+
 const {
     FarEllerMedmorAleneomsorgFødsel,
     FarEllerMedmorFødselBeggeHarRett,
@@ -39,8 +41,8 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 />,
             );
 
-            expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
-            expect(screen.getByText('Hvor lang periode med foreldrepenger vil du ha?')).toBeInTheDocument();
+            expect(await screen.findAllByText(messages['steps.label.periodeMedForeldrepenger'])).toHaveLength(2);
+            expect(screen.getByText(messages['uttaksplaninfo.dekningsgrad.label.ikkeDeltUttak'])).toBeInTheDocument();
 
             await userEvent.click(screen.getByText('Neste steg'));
 
@@ -81,11 +83,10 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 />,
             );
 
-            expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
-            expect(screen.getByText('Hvor lang periode med foreldrepenger vil dere ha?')).toBeInTheDocument();
+            expect(await screen.findAllByText(messages['steps.label.periodeMedForeldrepenger'])).toHaveLength(2);
+            expect(screen.getByText(messages['uttaksplaninfo.dekningsgrad.label.deltUttak'])).toBeInTheDocument();
             expect(
-                screen.getByText(
-                    'Dette valget gjelder for begge og kan ikke endres senere. Den totale utbetalingen blir omtrent lik om man velger 100 % eller 80 %.',
+                screen.getByText(messages['uttaksplaninfo.dekningsgrad.beskrivelse.etterFørsteJuli2024'],
                 ),
             ).toBeInTheDocument();
 
@@ -123,8 +124,8 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 />,
             );
 
-            expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
-            expect(screen.getByText('Hvor lang periode med foreldrepenger vil du ha?')).toBeInTheDocument();
+            expect(await screen.findAllByText(messages['steps.label.periodeMedForeldrepenger'])).toHaveLength(2);
+            expect(screen.getByText(messages['uttaksplaninfo.dekningsgrad.label.ikkeDeltUttak'])).toBeInTheDocument();
 
             expect(
                 screen.getByText(
@@ -171,8 +172,8 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 />,
             );
 
-            expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
-            expect(screen.getByText('Hvor lang periode med foreldrepenger vil dere ha?')).toBeInTheDocument();
+            expect(await screen.findAllByText(messages['steps.label.periodeMedForeldrepenger'])).toHaveLength(2);
+            expect(screen.getByText(messages['uttaksplaninfo.dekningsgrad.label.deltUttak'])).toBeInTheDocument();
 
             expect(
                 screen.getByText(
@@ -219,8 +220,8 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 />,
             );
 
-            expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
-            expect(screen.getByText('Hvor lang periode med foreldrepenger vil dere ha?')).toBeInTheDocument();
+            expect(await screen.findAllByText(messages['steps.label.periodeMedForeldrepenger'])).toHaveLength(2);
+            expect(screen.getByText(messages['uttaksplaninfo.dekningsgrad.label.deltUttak'])).toBeInTheDocument();
 
             expect(
                 screen.getByText('Dere får lenger periode med foreldrepenger siden barnet er født før uke 33'),
@@ -265,8 +266,8 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 />,
             );
 
-            expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
-            expect(screen.getByText('Hvor lang periode med foreldrepenger vil dere ha?')).toBeInTheDocument();
+            expect(await screen.findAllByText(messages['steps.label.periodeMedForeldrepenger'])).toHaveLength(2);
+            expect(screen.getByText(messages['uttaksplaninfo.dekningsgrad.label.deltUttak'])).toBeInTheDocument();
 
             expect(
                 screen.getByText('Dere får lenger periode med foreldrepenger siden dere skal ha tvillinger'),
@@ -311,8 +312,8 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 />,
             );
 
-            expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
-            expect(screen.getByText('Hvor lang periode med foreldrepenger vil du ha?')).toBeInTheDocument();
+            expect(await screen.findAllByText(messages['steps.label.periodeMedForeldrepenger'])).toHaveLength(2);
+            expect(screen.getByText(messages['uttaksplaninfo.dekningsgrad.label.ikkeDeltUttak'])).toBeInTheDocument();
 
             expect(
                 screen.getByText('Du får lenger periode med foreldrepenger siden du skal ha flere barn'),
@@ -357,9 +358,9 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 />,
             );
 
-            expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.periodeMedForeldrepenger'])).toHaveLength(2);
 
-            expect(screen.queryByText('Hvor lang periode med foreldrepenger vil du ha?')).not.toBeInTheDocument();
+            expect(screen.queryByText(messages['uttaksplaninfo.dekningsgrad.label.ikkeDeltUttak'])).not.toBeInTheDocument();
 
             expect(screen.getByText('Dere har valgt 49 uker med 100% foreldrepenger')).toBeInTheDocument();
             expect(
@@ -400,8 +401,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             );
 
             expect(
-                await screen.findByText(
-                    'Hvis barnet deres blir født etter 1. juli, vil dere få en lengre periode hvis dere velger 80 prosent foreldrepenger',
+                await screen.findByText(messages['InfoOmUtvidet80ProsentPeriode.Heading'],
                 ),
             ).toBeInTheDocument();
             MockDate.reset();
@@ -422,8 +422,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             );
 
             expect(
-                screen.queryByText(
-                    'Hvis barnet deres blir født etter 1. juli, vil dere få en lengre periode hvis dere velger 80 prosent foreldrepenger',
+                screen.queryByText(messages['InfoOmUtvidet80ProsentPeriode.Heading'],
                 ),
             ).not.toBeInTheDocument();
             MockDate.reset();
@@ -445,8 +444,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             );
 
             expect(
-                await screen.findByText(
-                    'Hvis barnet deres blir født etter 1. juli, vil dere få en lengre periode hvis dere velger 80 prosent foreldrepenger',
+                await screen.findByText(messages['InfoOmUtvidet80ProsentPeriode.Heading'],
                 ),
             ).toBeInTheDocument();
             MockDate.reset();
@@ -468,8 +466,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             );
 
             expect(
-                screen.queryByText(
-                    'Hvis barnet deres blir født etter 1. juli, vil dere få en lengre periode hvis dere velger 80 prosent foreldrepenger',
+                screen.queryByText(messages['InfoOmUtvidet80ProsentPeriode.Heading'],
                 ),
             ).not.toBeInTheDocument();
             MockDate.reset();
@@ -489,14 +486,13 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.periodeMedForeldrepenger'])).toHaveLength(2);
             expect(
-                screen.getByText(
-                    'Dette valget gjelder for begge og kan ikke endres senere. Den totale utbetalingen blir høyere ved å velge 100% foreldrepenger.',
+                screen.getByText(messages['uttaksplaninfo.dekningsgrad.beskrivelse.førFørsteJuli2024'],
                 ),
             ).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
-            expect(screen.getByText('Hva lønner seg for oss?')).toBeInTheDocument();
+            await userEvent.click(screen.getByText(messages['uttaksplaninfo.dekningsgrad.readmore.header']));
+            expect(screen.getByText(messages['uttaksplaninfo.dekningsgrad.readmore.header'])).toBeInTheDocument();
 
             MockDate.reset();
         }),
@@ -515,14 +511,13 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.periodeMedForeldrepenger'])).toHaveLength(2);
             expect(
-                screen.getByText(
-                    'Dette valget gjelder for begge og kan ikke endres senere. Den totale utbetalingen blir høyere ved å velge 100% foreldrepenger.',
+                screen.getByText(messages['uttaksplaninfo.dekningsgrad.beskrivelse.førFørsteJuli2024'],
                 ),
             ).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
-            expect(screen.getByText('Hva lønner seg for oss?')).toBeInTheDocument();
+            await userEvent.click(screen.getByText(messages['uttaksplaninfo.dekningsgrad.readmore.header']));
+            expect(screen.getByText(messages['uttaksplaninfo.dekningsgrad.readmore.header'])).toBeInTheDocument();
 
             MockDate.reset();
         }),
@@ -542,14 +537,13 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.periodeMedForeldrepenger'])).toHaveLength(2);
             expect(
-                screen.getByText(
-                    'Dette valget gjelder for begge og kan ikke endres senere. Den totale utbetalingen blir omtrent lik om man velger 100 % eller 80 %.',
+                screen.getByText(messages['uttaksplaninfo.dekningsgrad.beskrivelse.etterFørsteJuli2024'],
                 ),
             ).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
-            expect(screen.getByText('Hva lønner seg for oss?')).toBeInTheDocument();
+            await userEvent.click(screen.getByText(messages['uttaksplaninfo.dekningsgrad.readmore.header']));
+            expect(screen.getByText(messages['uttaksplaninfo.dekningsgrad.readmore.header'])).toBeInTheDocument();
 
             MockDate.reset();
         }),
@@ -568,14 +562,13 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.periodeMedForeldrepenger'])).toHaveLength(2);
             expect(
-                screen.getByText(
-                    'Dette valget gjelder for begge og kan ikke endres senere. Den totale utbetalingen blir høyere ved å velge 100% foreldrepenger.',
+                screen.getByText(messages['uttaksplaninfo.dekningsgrad.beskrivelse.førFørsteJuli2024'],
                 ),
             ).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
-            expect(screen.getByText('Hva lønner seg for oss?')).toBeInTheDocument();
+            await userEvent.click(screen.getByText(messages['uttaksplaninfo.dekningsgrad.readmore.header']));
+            expect(screen.getByText(messages['uttaksplaninfo.dekningsgrad.readmore.header'])).toBeInTheDocument();
 
             MockDate.reset();
         }),
@@ -595,17 +588,16 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.periodeMedForeldrepenger'])).toHaveLength(2);
             expect(
-                screen.getByText(
-                    'Dette valget gjelder for begge og kan ikke endres senere. Den totale utbetalingen blir omtrent lik om man velger 100 % eller 80 %.',
+                screen.getByText(messages['uttaksplaninfo.dekningsgrad.beskrivelse.etterFørsteJuli2024'],
                     {
                         exact: false,
                     },
                 ),
             ).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
-            expect(screen.getByText('Hva lønner seg for oss?')).toBeInTheDocument();
+            await userEvent.click(screen.getByText(messages['uttaksplaninfo.dekningsgrad.readmore.header']));
+            expect(screen.getByText(messages['uttaksplaninfo.dekningsgrad.readmore.header'])).toBeInTheDocument();
 
             MockDate.reset();
         }),

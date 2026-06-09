@@ -5,6 +5,8 @@ import { vi } from 'vitest';
 
 import * as stories from './ByttBrowserModal.stories';
 
+import messages from '../intl/messages/nb_NO.json';
+
 vi.mock('detect-browser', () => ({
     detect: vi.fn(),
 }));
@@ -20,13 +22,13 @@ describe('<ByttBrowserModal>', () => {
         vi.mocked(detect).mockReturnValue({ name: 'ie' } as BrowserInfo);
 
         render(<Default />);
-        expect(await screen.findByText('Vi ser du bruker en utdatert nettleser')).toBeInTheDocument();
+        expect(await screen.findByText(messages['ByttBrowserModal.Utdatert'])).toBeInTheDocument();
     });
 
     it('skal ikke vise modal når ikke IE', () => {
         vi.mocked(detect).mockReturnValue({ name: 'chrome' } as BrowserInfo);
 
         render(<Default />);
-        expect(screen.queryByText('Vi ser du bruker en utdatert nettleser')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['ByttBrowserModal.Utdatert'])).not.toBeInTheDocument();
     });
 });

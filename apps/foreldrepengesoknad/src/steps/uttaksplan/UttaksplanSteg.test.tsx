@@ -7,6 +7,8 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './UttaksplanSteg.stories';
 
+import messages from '../../intl/nb_NO.json';
+
 const infoTekst = [
     'I denne søknaden søker du kun for deg selv.',
     'Du kan legge inn foreldrepenger for den andre forelderen, men informasjonen vil ikke bli sendt inn.',
@@ -31,7 +33,7 @@ describe('<UttaksplanSteg>', () => {
                 />,
             );
 
-            expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.uttaksplan'])).toHaveLength(2);
 
             const juni = screen.getByTestId('year:2024;month:5');
 
@@ -51,7 +53,7 @@ describe('<UttaksplanSteg>', () => {
 
             await userEvent.click(screen.getByText('Neste steg'));
 
-            expect(await screen.findByText('Du har ikke lagt til noen perioder i planen')).toBeInTheDocument();
+            expect(await screen.findByText(messages['UttaksplanSteg.IngenPerioder'])).toBeInTheDocument();
         }),
     );
 
@@ -70,13 +72,13 @@ describe('<UttaksplanSteg>', () => {
             );
 
             // Planen er lastet med perioder (ikke tom)
-            expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
-            expect(screen.queryByText('Du har ikke lagt til noen perioder i planen')).not.toBeInTheDocument();
+            expect(await screen.findAllByText(messages['steps.label.uttaksplan'])).toHaveLength(2);
+            expect(screen.queryByText(messages['UttaksplanSteg.IngenPerioder'])).not.toBeInTheDocument();
 
             await userEvent.click(screen.getByText('Neste steg'));
 
             // Ingen feilmelding om tom plan
-            expect(screen.queryByText('Du har ikke lagt til noen perioder i planen')).not.toBeInTheDocument();
+            expect(screen.queryByText(messages['UttaksplanSteg.IngenPerioder'])).not.toBeInTheDocument();
 
             // Uttaksplanen ble lagret med innhold
             const uttaksplanAction = gåTilNesteSide.mock.calls.find(
@@ -101,12 +103,12 @@ describe('<UttaksplanSteg>', () => {
                 />,
             );
 
-            expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.uttaksplan'])).toHaveLength(2);
 
             await userEvent.click(screen.getByText('Neste steg'));
 
             // Valideringen skal ikke blokkere når standardforslaget har perioder
-            expect(screen.queryByText('Du har ikke lagt til noen perioder i planen')).not.toBeInTheDocument();
+            expect(screen.queryByText(messages['UttaksplanSteg.IngenPerioder'])).not.toBeInTheDocument();
 
             // Uttaksplanen ble lagret med innhold
             const uttaksplanAction = gåTilNesteSide.mock.calls.find(
@@ -124,7 +126,7 @@ describe('<UttaksplanSteg>', () => {
 
             render(<FødselMorOgFarKunMorHarRett />);
 
-            expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.uttaksplan'])).toHaveLength(2);
             expect(screen.queryByText(infoTekst)).not.toBeInTheDocument();
         }),
     );
@@ -143,7 +145,7 @@ describe('<UttaksplanSteg>', () => {
                 />,
             );
 
-            expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.uttaksplan'])).toHaveLength(2);
 
             // Gå til redigeringsmodus og ekspander mobilpanelet
             await userEvent.click(screen.getByText('Start redigering'));
@@ -181,7 +183,7 @@ describe('<UttaksplanSteg>', () => {
                 />,
             );
 
-            expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.uttaksplan'])).toHaveLength(2);
 
             // Gå til redigeringsmodus og ekspander mobilpanelet
             await userEvent.click(screen.getByText('Start redigering'));
@@ -220,12 +222,12 @@ describe('<UttaksplanSteg>', () => {
                 />,
             );
 
-            expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.uttaksplan'])).toHaveLength(2);
 
             await userEvent.click(screen.getByText('Neste steg'));
 
             expect(
-                await screen.findAllByText('Du må fylle ut informasjon om mors aktivitet i de markerte periodene'),
+                await screen.findAllByText(messages['UttaksplanSteg.MorsAktivitetIkkeValgt']),
             ).toHaveLength(2);
         }),
     );

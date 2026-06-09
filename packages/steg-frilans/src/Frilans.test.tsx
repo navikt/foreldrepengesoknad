@@ -5,18 +5,20 @@ import dayjs from 'dayjs';
 
 import * as stories from './Frilans.stories';
 
+import messages from './intl/messages/nb_NO.json';
+
 const { Default } = composeStories(stories);
 
 describe('<Arbeid som frilanser>', () => {
     it('skal vise feilmelding når ingenting er fylt eller huket av', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Når startet du som frilanser?')).toBeInTheDocument();
+        expect(await screen.findByText(messages['FrilansPanel.Oppstart'])).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(screen.getAllByText('Du må oppgi en startdato.')[0]).toBeInTheDocument();
-        expect(screen.getAllByText('Du må oppgi om du fortsatt jobber som frilanser.')[0]).toBeInTheDocument();
+        expect(screen.getAllByText(messages['FrilansPanel.Valideringsfeil.FraOgMedDato.Påkrevd'])[0]).toBeInTheDocument();
+        expect(screen.getAllByText(messages['FrilansPanel.Valideringsfeil.JobberFremdelesSomFrilans.Påkrevd'])[0]).toBeInTheDocument();
     });
 
     it('skal ikke vise feilmelding, alt er utfylt', async () => {
@@ -24,14 +26,14 @@ describe('<Arbeid som frilanser>', () => {
 
         render(<Default saveOnNext={saveOnNext} />);
 
-        expect(await screen.findByText('Når startet du som frilanser?')).toBeInTheDocument();
-        expect(screen.getByText('Jobber du fortsatt som frilanser?')).toBeInTheDocument();
+        expect(await screen.findByText(messages['FrilansPanel.Oppstart'])).toBeInTheDocument();
+        expect(screen.getByText(messages['FrilansPanel.JobberFremdelesSomFrilans'])).toBeInTheDocument();
 
-        const frilansStartdatoInput = screen.getByLabelText('Når startet du som frilanser?');
+        const frilansStartdatoInput = screen.getByLabelText(messages['FrilansPanel.Oppstart']);
         await userEvent.type(frilansStartdatoInput, dayjs('2023-12-30').format('DD.MM.YYYY'));
         await userEvent.tab();
 
-        expect(screen.getByText('Jobber du fortsatt som frilanser?')).toBeInTheDocument();
+        expect(screen.getByText(messages['FrilansPanel.JobberFremdelesSomFrilans'])).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -47,17 +49,17 @@ describe('<Arbeid som frilanser>', () => {
     it('validering av dato på feil format', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Når startet du som frilanser?')).toBeInTheDocument();
-        expect(screen.getByText('Jobber du fortsatt som frilanser?')).toBeInTheDocument();
+        expect(await screen.findByText(messages['FrilansPanel.Oppstart'])).toBeInTheDocument();
+        expect(screen.getByText(messages['FrilansPanel.JobberFremdelesSomFrilans'])).toBeInTheDocument();
 
-        const frilansStartdatoInput = screen.getByLabelText('Når startet du som frilanser?');
+        const frilansStartdatoInput = screen.getByLabelText(messages['FrilansPanel.Oppstart']);
         await userEvent.type(frilansStartdatoInput, 'sjnkf');
         await userEvent.tab();
 
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(
-            screen.getAllByText('Startdatoen må være en gyldig dato på formatet dd.mm.åååå.')[0],
+            screen.getAllByText(messages['FrilansPanel.Valideringsfeil.FraOgMedDato.GyldigDato'])[0],
         ).toBeInTheDocument();
     });
 
@@ -66,7 +68,7 @@ describe('<Arbeid som frilanser>', () => {
 
         render(<Default onFortsettSenere={vi.fn()} onAvsluttOgSlett={onAvsluttOgSlett} />);
 
-        expect(await screen.findByText('Når startet du som frilanser?')).toBeInTheDocument();
+        expect(await screen.findByText(messages['FrilansPanel.Oppstart'])).toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText('Slett søknaden')[0]!);
         await userEvent.click(screen.getAllByText('Slett søknaden')[1]!);
@@ -88,21 +90,21 @@ describe('<Arbeid som frilanser>', () => {
     it('skal vise feilmelding når sluttdato er før startdato', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Når startet du som frilanser?')).toBeInTheDocument();
+        expect(await screen.findByText(messages['FrilansPanel.Oppstart'])).toBeInTheDocument();
 
-        const frilansStartdatoInput = screen.getByLabelText('Når startet du som frilanser?');
+        const frilansStartdatoInput = screen.getByLabelText(messages['FrilansPanel.Oppstart']);
         await userEvent.type(frilansStartdatoInput, dayjs('2024-06-15').format('DD.MM.YYYY'));
         await userEvent.tab();
 
-        await userEvent.click(screen.getByText('Nei'));
+        await userEvent.click(screen.getByText(messages['FrilansPanel.JobberFremdelesSomFrilans.Nei']));
 
-        const sluttdatoInput = screen.getByLabelText('Når sluttet du som frilanser?');
+        const sluttdatoInput = screen.getByLabelText(messages['FrilansPanel.SluttetDato']);
         await userEvent.type(sluttdatoInput, dayjs('2024-05-01').format('DD.MM.YYYY'));
         await userEvent.tab();
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(screen.getAllByText('Sluttdatoen kan ikke være før startdatoen.')[0]).toBeInTheDocument();
+        expect(screen.getAllByText(messages['FrilansPanel.Valideringsfeil.TilOgMedDato.FørStartdato'])[0]).toBeInTheDocument();
     });
 
     it('skal ikke vise feilmelding når sluttdato er lik startdato', async () => {
@@ -110,21 +112,21 @@ describe('<Arbeid som frilanser>', () => {
 
         render(<Default saveOnNext={saveOnNext} />);
 
-        expect(await screen.findByText('Når startet du som frilanser?')).toBeInTheDocument();
+        expect(await screen.findByText(messages['FrilansPanel.Oppstart'])).toBeInTheDocument();
 
-        const frilansStartdatoInput = screen.getByLabelText('Når startet du som frilanser?');
+        const frilansStartdatoInput = screen.getByLabelText(messages['FrilansPanel.Oppstart']);
         await userEvent.type(frilansStartdatoInput, dayjs('2024-06-15').format('DD.MM.YYYY'));
         await userEvent.tab();
 
-        await userEvent.click(screen.getByText('Nei'));
+        await userEvent.click(screen.getByText(messages['FrilansPanel.JobberFremdelesSomFrilans.Nei']));
 
-        const sluttdatoInput = screen.getByLabelText('Når sluttet du som frilanser?');
+        const sluttdatoInput = screen.getByLabelText(messages['FrilansPanel.SluttetDato']);
         await userEvent.type(sluttdatoInput, dayjs('2024-06-15').format('DD.MM.YYYY'));
         await userEvent.tab();
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(screen.queryByText('Sluttdatoen kan ikke være før startdatoen.')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['FrilansPanel.Valideringsfeil.TilOgMedDato.FørStartdato'])).not.toBeInTheDocument();
 
         expect(saveOnNext).toHaveBeenCalledTimes(1);
         expect(saveOnNext).toHaveBeenNthCalledWith(1, {

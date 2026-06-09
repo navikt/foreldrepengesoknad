@@ -6,6 +6,8 @@ import { Path } from 'appData/paths';
 
 import * as stories from './Velkommen.stories';
 
+import messages from '../intl/messages/nb_NO.json';
+
 const { Default } = composeStories(stories);
 
 describe('<Velkommen>', () => {
@@ -21,15 +23,15 @@ describe('<Velkommen>', () => {
                 mellomlagreOgNaviger={mellomlagreOgNaviger}
             />,
         );
-        expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
+        expect(await screen.findByText(messages['Engangsstønad.Pagetitle'])).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Start søknaden'));
+        await userEvent.click(screen.getByText(messages['Velkommen.StartSøknad']));
 
-        expect(screen.getByText('Du må bekrefte at du har lest og forstått')).toBeInTheDocument();
+        expect(screen.getByText(messages['Velkommen.Validering.BekreftLestOgForståttRettigheter'])).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Ja, jeg har forstått mine plikter.'));
+        await userEvent.click(screen.getByText(messages['Velkommen.Samtykke']));
 
-        await userEvent.click(screen.getByText('Start søknaden'));
+        await userEvent.click(screen.getByText(messages['Velkommen.StartSøknad']));
 
         expect(startSøknad).toHaveBeenCalledTimes(1);
         expect(startSøknad).toHaveBeenNthCalledWith(1, true);

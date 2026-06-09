@@ -4,6 +4,8 @@ import userEvent from '@testing-library/user-event';
 
 import * as stories from './ArbeidsforholdOgInntektPanel.stories';
 
+import messages from './intl/messages/nb_NO.json';
+
 const { ForSvangerskapspenger } = composeStories(stories);
 
 describe('<ArbeidsforholdOgInntektPanel>', () => {
@@ -15,17 +17,17 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
         expect(
             screen.getByText('Har du jobbet og hatt inntekt som selvstendig næringsdrivende de siste 4 ukene?'),
         ).toBeInTheDocument();
-        expect(screen.getByText('Har du jobbet i utlandet de siste 4 ukene?')).toBeInTheDocument();
+        expect(screen.getByText(messages['inntektsinformasjon.hattArbeidIUtlandet'])).toBeInTheDocument();
 
         expect(screen.getByText('Neste steg')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(screen.getAllByText('Du må oppgi om du har arbeidet som frilanser de siste 4 ukene.')).toHaveLength(2);
+        expect(screen.getAllByText(messages['valideringsfeil.frilans.påkrevd'])).toHaveLength(2);
         expect(
-            screen.getAllByText('Du må oppgi om du har hatt inntekt som selvstendig næringsdrivende de siste 4 ukene.'),
+            screen.getAllByText(messages['valideringsfeil.hattInntektSomNæringsdrivende.påkrevd']),
         ).toHaveLength(2);
-        expect(screen.getAllByText('Du må oppgi om du har arbeidet i utlandet de siste 4 ukene.')).toHaveLength(2);
+        expect(screen.getAllByText(messages['valideringsfeil.hattArbeidIUtlandet.påkrevd'])).toHaveLength(2);
     });
 
     it('skal ikke vise feilmelding', async () => {
@@ -35,9 +37,9 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
 
         expect(await screen.findAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
 
-        await userEvent.click(screen.getAllByText('Nei')[0]!);
+        await userEvent.click(screen.getAllByText(messages['inntektsinformasjon.nei'])[0]!);
 
-        await userEvent.click(screen.getAllByText('Nei')[1]!);
+        await userEvent.click(screen.getAllByText(messages['inntektsinformasjon.nei'])[1]!);
 
         await userEvent.click(screen.getAllByText('Ja')[2]!);
         expect(screen.getByText('Neste steg')).toBeInTheDocument();
@@ -45,13 +47,13 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(
-            screen.queryByText('Du må oppgi om du har arbeidet som frilanser de siste 4 ukene.'),
+            screen.queryByText(messages['valideringsfeil.frilans.påkrevd']),
         ).not.toBeInTheDocument();
         expect(
-            screen.queryByText('Du må oppgi om du har hatt inntekt som selvstendig næringsdrivende de siste 4 ukene.'),
+            screen.queryByText(messages['valideringsfeil.hattInntektSomNæringsdrivende.påkrevd']),
         ).not.toBeInTheDocument();
         expect(
-            screen.queryByText('Du må oppgi om du har arbeidet i utlandet de siste 4 ukene.'),
+            screen.queryByText(messages['valideringsfeil.hattArbeidIUtlandet.påkrevd']),
         ).not.toBeInTheDocument();
 
         expect(saveOnNext).toHaveBeenCalledTimes(1);

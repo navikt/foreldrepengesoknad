@@ -8,6 +8,8 @@ import { DELT_UTTAK_80_TO_BARN, DELT_UTTAK_100_TO_BARN } from '@navikt/fp-utils-
 import { endreFordelingMedSlider } from '../../../vitest/testHelpers';
 import * as stories from './PlanenDeresSteg_Fødsel.stories';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom');
     return {
@@ -375,7 +377,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         render(<FarOgFarBeggeHarRett />);
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
-        expect(screen.getByText('Dere har oppgitt at dere begge har rett til foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText(messages['OversiktSteg.Infoboks.FarOgFar.BeggeHarRett.DereHarOppgitt'])).toBeInTheDocument();
 
         expect(screen.getByText('100 % i 40 uker').closest('button')?.getAttribute('aria-checked')).toBe('true');
         expect(screen.getByText('80 % i 52 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe(
@@ -398,7 +400,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         render(<FarOgFarKunFarHarRett />);
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
-        expect(screen.getByText('Dere har oppgitt at kun én av dere har rett til foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText(messages['OversiktSteg.Infoboks.FarOgFar.DereHarOppgitt'])).toBeInTheDocument();
 
         expect(screen.getByText('100 % i 40 uker').closest('button')?.getAttribute('aria-checked')).toBe('true');
         expect(screen.getByText('80 % i 52 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe(
@@ -421,7 +423,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         render(<FarOgFarKunMedfarHarRett />);
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
-        expect(screen.getByText('Dere har oppgitt at kun én av dere har rett til foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText(messages['OversiktSteg.Infoboks.FarOgFar.DereHarOppgitt'])).toBeInTheDocument();
 
         expect(screen.getByText('100 % i 40 uker').closest('button')?.getAttribute('aria-checked')).toBe('true');
         expect(screen.getByText('80 % i 52 uker + 1 dag').closest('button')?.getAttribute('aria-checked')).toBe(
@@ -433,7 +435,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
-        expect(screen.getAllByText('Barnehageplass')[0]).toBeInTheDocument();
+        expect(screen.getAllByText(messages['BarnehageplassOppsummering.Tittel'])[0]).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:1;dayColor:GREENOUTLINE;with-icon')).toBeInTheDocument();
@@ -458,8 +460,8 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         expect(screen.getByText('Mors periode')).toBeInTheDocument();
         expect(screen.getByText('Fars periode')).toBeInTheDocument();
-        expect(screen.getByText('Fødsel')).toBeInTheDocument();
-        expect(screen.getAllByText('Barnehageplass')[0]).toBeInTheDocument();
+        expect(screen.getByText(messages['OmBarnetSteg.Fødsel'])).toBeInTheDocument();
+        expect(screen.getAllByText(messages['BarnehageplassOppsummering.Tittel'])[0]).toBeInTheDocument();
 
         const mars = screen.getByTestId('year:2024;month:2');
         expect(within(mars).getByTestId('day:22;dayColor:BLUE')).toBeInTheDocument();
@@ -500,7 +502,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(screen.getByText('Mors periode')).toBeInTheDocument();
         expect(screen.getByText('Fars periode')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
-        expect(screen.getAllByText('Barnehageplass')[0]).toBeInTheDocument();
+        expect(screen.getAllByText(messages['BarnehageplassOppsummering.Tittel'])[0]).toBeInTheDocument();
 
         const juni = screen.getByTestId('year:2024;month:5');
         expect(within(juni).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(15);
@@ -533,7 +535,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(screen.getByText('Mors periode')).toBeInTheDocument();
         expect(screen.getByText('Fars periode')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
-        expect(screen.getAllByText('Barnehageplass')[0]).toBeInTheDocument();
+        expect(screen.getAllByText(messages['BarnehageplassOppsummering.Tittel'])[0]).toBeInTheDocument();
 
         const juni = screen.getByTestId('year:2024;month:5');
         expect(within(juni).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(15);
@@ -692,7 +694,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByRole('button', { name: 'Oppsummering' }));
+        await userEvent.click(screen.getByRole('button', { name: messages['OppsummeringHeader.Tittel'] }));
 
         const uttaksplanDispatch = gåTilNesteSide.mock.calls.find(
             ([action]) => action.key === 'UTTAKSPLAN' && action.type === 'update',

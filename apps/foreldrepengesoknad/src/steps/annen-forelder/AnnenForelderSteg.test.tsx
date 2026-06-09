@@ -11,6 +11,8 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './AnnenForelderSteg.stories';
 
+import messages from '../../intl/nb_NO.json';
+
 const {
     AnnenForelderFraOppgittBarn,
     SkalOppgiPersonalia,
@@ -35,8 +37,8 @@ describe('<AnnenForelderSteg>', () => {
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
 
-        expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Nei, jeg har aleneomsorg'));
+        expect(screen.getByText(messages['annenForelder.aleneOmOmsorg'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['annenForelder.aleneOmOmsorg.nei']));
 
         expect(
             screen.getByText(
@@ -107,18 +109,17 @@ describe('<AnnenForelderSteg>', () => {
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
 
-        expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
+        expect(screen.getByText(messages['annenForelder.aleneOmOmsorg'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[0]!);
 
-        expect(screen.getByText('Har den andre forelderen rett til foreldrepenger i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[0]!);
+        expect(screen.getByText(messages['annenForelder.harRettPåForeldrepengerINorge'])).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(messages['nei'])[0]!);
 
         expect(
-            screen.getByText(
-                'Har den andre forelderen oppholdt seg fast i et annet EØS-land enn Norge ett år før barnet ble født?',
+            screen.getByText(messages['annenForelder.harOppholdtSegIEØS'],
             ),
         ).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[1]!);
+        await userEvent.click(screen.getAllByText(messages['nei'])[1]!);
 
         await userEvent.click(screen.getByText('Neste steg'));
         expect(screen.queryByText('Dere kan avtale at LEALAUS tar ut foreldrepenger.')).not.toBeInTheDocument();
@@ -161,27 +162,25 @@ describe('<AnnenForelderSteg>', () => {
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
 
-        expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
+        expect(screen.getByText(messages['annenForelder.aleneOmOmsorg'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[0]!);
 
-        expect(screen.getByText('Har den andre forelderen rett til foreldrepenger i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[0]!);
+        expect(screen.getByText(messages['annenForelder.harRettPåForeldrepengerINorge'])).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(messages['nei'])[0]!);
 
         expect(
-            screen.getByText(
-                'Har den andre forelderen oppholdt seg fast i et annet EØS-land enn Norge ett år før barnet ble født?',
+            screen.getByText(messages['annenForelder.harOppholdtSegIEØS'],
                 { exact: false },
             ),
         ).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[2]!);
 
         expect(
-            screen.getByText(
-                'Har den andre forelderen rett til pengestøtte i et annet EØS-land som tilsvarer foreldrepenger i Norge?',
+            screen.getByText(messages['annenForelder.harRettPåForeldrepengerIEØS'],
                 { exact: false },
             ),
         ).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[2]!);
+        await userEvent.click(screen.getAllByText(messages['nei'])[2]!);
 
         await userEvent.click(screen.getByText('Neste steg'));
         expect(screen.queryByText('Dere kan avtale at LEALAUS tar ut foreldrepenger.')).not.toBeInTheDocument();
@@ -216,22 +215,22 @@ describe('<AnnenForelderSteg>', () => {
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
 
-        expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
+        expect(screen.getByText(messages['annenForelder.aleneOmOmsorg'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[0]!);
 
-        expect(screen.getByText('Har den andre forelderen rett til foreldrepenger i Norge?')).toBeInTheDocument();
+        expect(screen.getByText(messages['annenForelder.harRettPåForeldrepengerINorge'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[1]!);
 
-        await userEvent.click(screen.getAllByText('Nei')[1]!);
+        await userEvent.click(screen.getAllByText(messages['nei'])[1]!);
 
         expect(
-            screen.getByText('Du må si ifra til den andre forelderen om søknaden før du kan gå videre.'),
+            screen.getByText(messages['annenForelder.erAnnenForelderInformert.veileder']),
         ).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(
-            screen.getAllByText('Du må si ifra til den andre forelderen om søknaden før du kan gå videre.'),
+            screen.getAllByText(messages['annenForelder.erAnnenForelderInformert.veileder']),
         ).toHaveLength(3);
     });
 
@@ -248,13 +247,13 @@ describe('<AnnenForelderSteg>', () => {
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
 
-        expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
+        expect(screen.getByText(messages['annenForelder.aleneOmOmsorg'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[0]!);
 
-        expect(screen.getByText('Har den andre forelderen rett til foreldrepenger i Norge?')).toBeInTheDocument();
+        expect(screen.getByText(messages['annenForelder.harRettPåForeldrepengerINorge'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[1]!);
 
-        expect(screen.getByText('Har du orientert den andre forelderen om søknaden din?')).toBeInTheDocument();
+        expect(screen.getByText(messages['annenForelder.spørsmål.erAnnenForelderInformert'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[2]!);
 
         await userEvent.click(screen.getByText('Neste steg'));
@@ -294,9 +293,9 @@ describe('<AnnenForelderSteg>', () => {
             />,
         );
 
-        expect(await screen.findAllByText('Den andre forelderen')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['steps.label.annenForelder'])).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Jeg kan ikke oppgi den andre forelderen'));
+        await userEvent.click(screen.getByText(messages['annenForelder.spørsmål.kanOppgis']));
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -327,23 +326,23 @@ describe('<AnnenForelderSteg>', () => {
             />,
         );
 
-        expect(await screen.findAllByText('Den andre forelderen')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['steps.label.annenForelder'])).toHaveLength(2);
 
-        const fornavnInput = screen.getByLabelText('Fornavnet til den andre forelderen');
+        const fornavnInput = screen.getByLabelText(messages['annenForelder.spørsmål.fornavn']);
         await userEvent.type(fornavnInput, 'Espen');
-        const etternavnInput = screen.getByLabelText('Etternavnet til den andre forelderen');
+        const etternavnInput = screen.getByLabelText(messages['annenForelder.spørsmål.etternavn']);
         await userEvent.type(etternavnInput, 'Utvikler');
 
-        const fødselsnrInput = screen.getByLabelText('Fødselsnummer eller D-nummer til den andre forelderen');
+        const fødselsnrInput = screen.getByLabelText(messages['annenForelder.spørsmål.fnr']);
         await userEvent.type(fødselsnrInput, '05057923424');
 
-        await userEvent.click(screen.getByText('Fødselsnummeret er ikke fra Norge'));
+        await userEvent.click(screen.getByText(messages['annenForelder.spørsmål.utenlandskFnr']));
 
-        const hvorBorSelect = screen.getByLabelText('Hvor bor den andre forelderen?');
+        const hvorBorSelect = screen.getByLabelText(messages['annenForelder.bostedsland']);
         await userEvent.selectOptions(hvorBorSelect, 'Oman');
 
-        expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Nei, jeg har aleneomsorg'));
+        expect(screen.getByText(messages['annenForelder.aleneOmOmsorg'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['annenForelder.aleneOmOmsorg.nei']));
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -379,9 +378,9 @@ describe('<AnnenForelderSteg>', () => {
         expect(await screen.findByText('TALENTFULL MYGG')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Nei, jeg har aleneomsorg'));
+        await userEvent.click(screen.getByText(messages['annenForelder.aleneOmOmsorg.nei']));
 
-        const datoAleneInput = screen.getByLabelText('Dato du ble alene om omsorgen');
+        const datoAleneInput = screen.getByLabelText(messages['annenForelder.datoForAleneomsorg']);
         await userEvent.type(datoAleneInput, dayjs().format('DD.MM.YYYY'));
         await userEvent.tab();
 
@@ -417,23 +416,21 @@ describe('<AnnenForelderSteg>', () => {
 
         expect(await screen.findByText('TALENTFULL MYGG')).toBeInTheDocument();
 
-        expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
+        expect(screen.getByText(messages['annenForelder.aleneOmOmsorg'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[0]!);
 
-        expect(screen.getByText('Har den andre forelderen rett til foreldrepenger i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[0]!);
+        expect(screen.getByText(messages['annenForelder.harRettPåForeldrepengerINorge'])).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(messages['nei'])[0]!);
 
         expect(
-            screen.getByText(
-                'Har den andre forelderen oppholdt seg fast i et annet EØS-land enn Norge ett år før barnet ble født?',
+            screen.getByText(messages['annenForelder.harOppholdtSegIEØS'],
                 { exact: false },
             ),
         ).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[2]!);
 
         expect(
-            screen.getByText(
-                'Har den andre forelderen rett til pengestøtte i et annet EØS-land som tilsvarer foreldrepenger i Norge?',
+            screen.getByText(messages['annenForelder.harRettPåForeldrepengerIEØS'],
                 {
                     exact: false,
                 },
@@ -441,10 +438,10 @@ describe('<AnnenForelderSteg>', () => {
         ).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[3]!);
 
-        await userEvent.click(screen.getAllByText('Nei')[2]!);
+        await userEvent.click(screen.getAllByText(messages['nei'])[2]!);
 
-        expect(screen.getByText('Mottar den andre forelderen uføretrygd?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[3]!);
+        expect(screen.getByText(messages['annenForelder.erMorUfør'])).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(messages['nei'])[3]!);
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -476,21 +473,21 @@ describe('<AnnenForelderSteg>', () => {
     it('skal ikke vise infoboks om farskapsportal når mor søker på termin, annen forelder er en medmor og har rett i Norge', async () => {
         render(<MorUfødtBarn />);
 
-        expect(await screen.findAllByText('Den andre forelderen')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['steps.label.annenForelder'])).toHaveLength(2);
 
-        const fornavnInput = screen.getByLabelText('Fornavnet til den andre forelderen');
+        const fornavnInput = screen.getByLabelText(messages['annenForelder.spørsmål.fornavn']);
         await userEvent.type(fornavnInput, 'Espen');
-        const etternavnInput = screen.getByLabelText('Etternavnet til den andre forelderen');
+        const etternavnInput = screen.getByLabelText(messages['annenForelder.spørsmål.etternavn']);
         await userEvent.type(etternavnInput, 'Utvikler');
 
-        const fødselsnrInput = screen.getByLabelText('Fødselsnummer eller D-nummer til den andre forelderen');
+        const fødselsnrInput = screen.getByLabelText(messages['annenForelder.spørsmål.fnr']);
         //Endrer fnr på annen forelder til en kvinnelig fnr:
         await userEvent.type(fødselsnrInput, '05057923824');
 
-        expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
+        expect(screen.getByText(messages['annenForelder.aleneOmOmsorg'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[0]!);
 
-        expect(screen.getByText('Har den andre forelderen rett til foreldrepenger i Norge?')).toBeInTheDocument();
+        expect(screen.getByText(messages['annenForelder.harRettPåForeldrepengerINorge'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[1]!);
 
         expect(screen.queryByText('Her kan far erklære farskap digitalt', { exact: false })).not.toBeInTheDocument();
@@ -502,10 +499,10 @@ describe('<AnnenForelderSteg>', () => {
             setHandlers(FarFødtBarnMorHarVedtak.parameters.msw);
             render(<FarFødtBarnMorHarVedtak />);
 
-            expect(await screen.findAllByText('Den andre forelderen')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.annenForelder'])).toHaveLength(2);
             await waitFor(() => {
                 expect(
-                    screen.queryByText('Har den andre forelderen rett til foreldrepenger i Norge?', { exact: false }),
+                    screen.queryByText(messages['annenForelder.harRettPåForeldrepengerINorge'], { exact: false }),
                 ).not.toBeInTheDocument();
             });
         }),
@@ -516,9 +513,9 @@ describe('<AnnenForelderSteg>', () => {
             setHandlers(FarFødtBarnMorHarAvslåttVedtak.parameters.msw);
             render(<FarFødtBarnMorHarAvslåttVedtak />);
 
-            expect(await screen.findAllByText('Den andre forelderen')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.annenForelder'])).toHaveLength(2);
             expect(
-                await screen.findByText('Har den andre forelderen rett til foreldrepenger i Norge?', { exact: false }),
+                await screen.findByText(messages['annenForelder.harRettPåForeldrepengerINorge'], { exact: false }),
             ).toBeInTheDocument();
         }),
     );

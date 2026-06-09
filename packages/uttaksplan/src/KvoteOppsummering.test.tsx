@@ -5,6 +5,8 @@ import { describe, expect, it } from 'vitest';
 
 import * as stories from './KvoteOppsummering.stories';
 
+import messages from './intl/messages/nb_NO.json';
+
 const {
     EnRettFarAlleDagerBrukt,
     BeggeRettMorAlleDagerBrukt,
@@ -34,8 +36,7 @@ describe('<KvoteOppsummering >', () => {
             ),
         ).toBeInTheDocument();
         expect(
-            screen.getByText(
-                'Hvis du ønsker å bruke mer foreldrepenger enn det som ligger i planen nå, kan du sende en endringssøknad.',
+            screen.getByText(messages['kvote.beskrivelse.endre.du'],
                 { exact: false },
             ),
         ).toBeInTheDocument();
@@ -53,8 +54,7 @@ describe('<KvoteOppsummering >', () => {
             screen.queryByText('Espen må sende søknad selv for å bruke sine uker med foreldrepenger.'),
         ).not.toBeInTheDocument();
         expect(
-            screen.getByText(
-                'Hvis du ønsker å bruke mer foreldrepenger enn det som ligger i planen nå, kan du sende en endringssøknad.',
+            screen.getByText(messages['kvote.beskrivelse.endre.du'],
             ),
         ).toBeInTheDocument();
     });
@@ -62,7 +62,7 @@ describe('<KvoteOppsummering >', () => {
     it('<BeggeRettMorAlleDagerBrukt >', () => {
         render(<BeggeRettMorAlleDagerBrukt />);
 
-        expect(screen.getByText('Alle dager er lagt inn i planen')).toBeInTheDocument();
+        expect(screen.getByText(messages['kvote.tittel.allTidIPlan'])).toBeInTheDocument();
         expect(
             screen.getByText('16 uker av fellesperioden, 18 uker til Helga og 15 uker til Espen er lagt til i planen.'),
         ).toBeInTheDocument();
@@ -70,7 +70,7 @@ describe('<KvoteOppsummering >', () => {
     it('<EnRettFarAlleDagerBrukt >', () => {
         render(<EnRettFarAlleDagerBrukt />);
 
-        expect(screen.getByText('Alle dager er lagt inn i planen')).toBeInTheDocument();
+        expect(screen.getByText(messages['kvote.tittel.allTidIPlan'])).toBeInTheDocument();
         expect(screen.getByText('Du har lagt til 40 uker i planen.')).toBeInTheDocument();
     });
     it('<EnRettFarLedigeDager >', async () => {
@@ -78,8 +78,7 @@ describe('<KvoteOppsummering >', () => {
 
         expect(screen.getByText('2 uker ligger ikke i planen.')).toBeInTheDocument();
         expect(
-            screen.queryByText(
-                'Hvis du ønsker å bruke mer foreldrepenger enn det som ligger i planen nå, kan du sende en endringssøknad.',
+            screen.queryByText(messages['kvote.beskrivelse.endre.du'],
             ),
         ).not.toBeInTheDocument();
 
@@ -110,7 +109,7 @@ describe('<KvoteOppsummering >', () => {
         await userEvent.click(expandButton);
 
         expect(screen.getAllByText('Medmorkvote - 15 uker')).toHaveLength(1);
-        expect(screen.queryByText('Fedrekvote')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['kvote.kvote.Fedrekvote'])).not.toBeInTheDocument();
     });
 
     it('<BeggeRettMorIngenDagerBrukt - Fars kvote skal være "Fedrekvote" >', async () => {
@@ -120,7 +119,7 @@ describe('<KvoteOppsummering >', () => {
         const expandButton = screen.getByRole('button', { expanded: false });
         await userEvent.click(expandButton);
         expect(screen.getAllByText('Fedrekvote - 15 uker')).toHaveLength(1);
-        expect(screen.queryByText('Medmorkvote')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['kvote.kvote.Medmorkvote'])).not.toBeInTheDocument();
     });
 
     it('<MorHarPrematuruker - 8 uker og 3 dager av fellesperioden skal være brukt opp av pleiepenger >', async () => {
@@ -135,7 +134,7 @@ describe('<KvoteOppsummering >', () => {
                 '8 uker og 3 dager er lagt til for Helga, 0 dager er lagt til for Espen og 17 uker gjenstår',
             ),
         ).toHaveLength(1);
-        expect(screen.queryByText('Medmorkvote')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['kvote.kvote.Medmorkvote'])).not.toBeInTheDocument();
     });
 
     it('<BeggeRettMangeOvertrukneDagerMedOverføringsÅrsak - Skal vise kvote istedetfor navn ved overtrukket dager med overføringsårsak >', () => {

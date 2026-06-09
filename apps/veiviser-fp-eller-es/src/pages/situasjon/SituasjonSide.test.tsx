@@ -4,6 +4,8 @@ import userEvent from '@testing-library/user-event';
 
 import * as stories from './SituasjonSide.stories';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const { Default } = composeStories(stories);
 
 describe('<SituasjonSide>', () => {
@@ -11,28 +13,27 @@ describe('<SituasjonSide>', () => {
         const setFpEllerEsSituasjon = vi.fn();
         const utils = render(<Default setFpEllerEsSituasjon={setFpEllerEsSituasjon} />);
 
-        expect(await screen.findByText('Foreldrepenger eller engangsstønad')).toBeInTheDocument();
+        expect(await screen.findByText(messages['FpEllerEs.Tittel'])).toBeInTheDocument();
 
-        expect(screen.getByText('Hvem er du?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Mor'));
+        expect(screen.getByText(messages['SituasjonSide.HvemErDu'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['SituasjonSide.Mor']));
 
         expect(
-            screen.getByText(
-                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
+            screen.getByText(messages['SituasjonSide.ArbeidEllerNav'],
             ),
         ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
 
-        expect(screen.getByText('Har du hatt inntekt 6 av de 10 siste månedene?')).toBeInTheDocument();
+        expect(screen.getByText(messages['SituasjonSide.HarDuHattInntekt'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[1]!);
 
-        const hvorMye = utils.getByLabelText('Omtrent hvor mye tjener du i måneden før skatt?');
+        const hvorMye = utils.getByLabelText(messages['SituasjonSide.LønnFørSkatt']);
         await userEvent.type(hvorMye, '50000');
 
-        expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
+        expect(screen.getByText(messages['SituasjonSide.BorDuINorge'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[2]!);
 
-        await userEvent.click(screen.getByText('Se resultatet'));
+        await userEvent.click(screen.getByText(messages['SituasjonSide.SeResultatet']));
 
         expect(setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
             borDuINorge: true,
@@ -49,31 +50,30 @@ describe('<SituasjonSide>', () => {
         const setFpEllerEsSituasjon = vi.fn();
         const utils = render(<Default setFpEllerEsSituasjon={setFpEllerEsSituasjon} />);
 
-        expect(await screen.findByText('Foreldrepenger eller engangsstønad')).toBeInTheDocument();
+        expect(await screen.findByText(messages['FpEllerEs.Tittel'])).toBeInTheDocument();
 
-        expect(screen.getByText('Hvem er du?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Mor'));
+        expect(screen.getByText(messages['SituasjonSide.HvemErDu'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['SituasjonSide.Mor']));
 
         expect(
-            screen.getByText(
-                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
+            screen.getByText(messages['SituasjonSide.ArbeidEllerNav'],
             ),
         ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
 
-        expect(screen.getByText('Har du hatt inntekt 6 av de 10 siste månedene?')).toBeInTheDocument();
+        expect(screen.getByText(messages['SituasjonSide.HarDuHattInntekt'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[1]!);
 
-        const hvorMye = utils.getByLabelText('Omtrent hvor mye tjener du i måneden før skatt?');
+        const hvorMye = utils.getByLabelText(messages['SituasjonSide.LønnFørSkatt']);
         await userEvent.type(hvorMye, '50000');
 
-        expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[2]!);
+        expect(screen.getByText(messages['SituasjonSide.BorDuINorge'])).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(messages['SituasjonSide.Nei'])[2]!);
 
-        expect(screen.getByText('Jobber du i Norge?')).toBeInTheDocument();
+        expect(screen.getByText(messages['SituasjonSide.JobberDuINorge'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[3]!);
 
-        await userEvent.click(screen.getByText('Se resultatet'));
+        await userEvent.click(screen.getByText(messages['SituasjonSide.SeResultatet']));
 
         expect(setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
             borDuINorge: false,
@@ -90,37 +90,35 @@ describe('<SituasjonSide>', () => {
         const setFpEllerEsSituasjon = vi.fn();
         const utils = render(<Default setFpEllerEsSituasjon={setFpEllerEsSituasjon} />);
 
-        expect(await screen.findByText('Foreldrepenger eller engangsstønad')).toBeInTheDocument();
+        expect(await screen.findByText(messages['FpEllerEs.Tittel'])).toBeInTheDocument();
 
-        expect(screen.getByText('Hvem er du?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Mor'));
+        expect(screen.getByText(messages['SituasjonSide.HvemErDu'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['SituasjonSide.Mor']));
 
         expect(
-            screen.getByText(
-                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
+            screen.getByText(messages['SituasjonSide.ArbeidEllerNav'],
             ),
         ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
 
-        expect(screen.getByText('Har du hatt inntekt 6 av de 10 siste månedene?')).toBeInTheDocument();
+        expect(screen.getByText(messages['SituasjonSide.HarDuHattInntekt'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[1]!);
 
-        const hvorMye = utils.getByLabelText('Omtrent hvor mye tjener du i måneden før skatt?');
+        const hvorMye = utils.getByLabelText(messages['SituasjonSide.LønnFørSkatt']);
         await userEvent.type(hvorMye, '50000');
 
-        expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[2]!);
+        expect(screen.getByText(messages['SituasjonSide.BorDuINorge'])).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(messages['SituasjonSide.Nei'])[2]!);
 
-        expect(screen.getByText('Jobber du i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[3]!);
+        expect(screen.getByText(messages['SituasjonSide.JobberDuINorge'])).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(messages['SituasjonSide.Nei'])[3]!);
 
         expect(
-            screen.getByText(
-                'For å kunne ha rett til foreldrepenger eller engangsstønad må man være medlem av folketrygden',
+            screen.getByText(messages['SituasjonSide.MåVæreMedlem'],
             ),
         ).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Se resultatet'));
+        await userEvent.click(screen.getByText(messages['SituasjonSide.SeResultatet']));
 
         expect(setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
             borDuINorge: false,
@@ -137,28 +135,27 @@ describe('<SituasjonSide>', () => {
         const setFpEllerEsSituasjon = vi.fn();
         const utils = render(<Default setFpEllerEsSituasjon={setFpEllerEsSituasjon} />);
 
-        expect(await screen.findByText('Foreldrepenger eller engangsstønad')).toBeInTheDocument();
+        expect(await screen.findByText(messages['FpEllerEs.Tittel'])).toBeInTheDocument();
 
-        expect(screen.getByText('Hvem er du?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Mor'));
+        expect(screen.getByText(messages['SituasjonSide.HvemErDu'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['SituasjonSide.Mor']));
 
         expect(
-            screen.getByText(
-                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
+            screen.getByText(messages['SituasjonSide.ArbeidEllerNav'],
             ),
         ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
 
-        expect(screen.getByText('Har du hatt inntekt 6 av de 10 siste månedene?')).toBeInTheDocument();
+        expect(screen.getByText(messages['SituasjonSide.HarDuHattInntekt'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[1]!);
 
-        const hvorMye = utils.getByLabelText('Omtrent hvor mye tjener du i måneden før skatt?');
+        const hvorMye = utils.getByLabelText(messages['SituasjonSide.LønnFørSkatt']);
         await userEvent.type(hvorMye, '5000');
 
-        expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
+        expect(screen.getByText(messages['SituasjonSide.BorDuINorge'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[2]!);
 
-        await userEvent.click(screen.getByText('Se resultatet'));
+        await userEvent.click(screen.getByText(messages['SituasjonSide.SeResultatet']));
 
         expect(setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
             borDuINorge: true,
@@ -175,31 +172,30 @@ describe('<SituasjonSide>', () => {
         const setFpEllerEsSituasjon = vi.fn();
         const utils = render(<Default setFpEllerEsSituasjon={setFpEllerEsSituasjon} />);
 
-        expect(await screen.findByText('Foreldrepenger eller engangsstønad')).toBeInTheDocument();
+        expect(await screen.findByText(messages['FpEllerEs.Tittel'])).toBeInTheDocument();
 
-        expect(screen.getByText('Hvem er du?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Mor'));
+        expect(screen.getByText(messages['SituasjonSide.HvemErDu'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['SituasjonSide.Mor']));
 
         expect(
-            screen.getByText(
-                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
+            screen.getByText(messages['SituasjonSide.ArbeidEllerNav'],
             ),
         ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
 
-        expect(screen.getByText('Har du hatt inntekt 6 av de 10 siste månedene?')).toBeInTheDocument();
+        expect(screen.getByText(messages['SituasjonSide.HarDuHattInntekt'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[1]!);
 
-        const hvorMye = utils.getByLabelText('Omtrent hvor mye tjener du i måneden før skatt?');
+        const hvorMye = utils.getByLabelText(messages['SituasjonSide.LønnFørSkatt']);
         await userEvent.type(hvorMye, '5000');
 
-        expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[2]!);
+        expect(screen.getByText(messages['SituasjonSide.BorDuINorge'])).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(messages['SituasjonSide.Nei'])[2]!);
 
-        expect(screen.getByText('Jobber du i Norge?')).toBeInTheDocument();
+        expect(screen.getByText(messages['SituasjonSide.JobberDuINorge'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[3]!);
 
-        await userEvent.click(screen.getByText('Se resultatet'));
+        await userEvent.click(screen.getByText(messages['SituasjonSide.SeResultatet']));
 
         expect(setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
             borDuINorge: false,
@@ -216,31 +212,30 @@ describe('<SituasjonSide>', () => {
         const setFpEllerEsSituasjon = vi.fn();
         const utils = render(<Default setFpEllerEsSituasjon={setFpEllerEsSituasjon} />);
 
-        expect(await screen.findByText('Foreldrepenger eller engangsstønad')).toBeInTheDocument();
+        expect(await screen.findByText(messages['FpEllerEs.Tittel'])).toBeInTheDocument();
 
-        expect(screen.getByText('Hvem er du?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Mor'));
+        expect(screen.getByText(messages['SituasjonSide.HvemErDu'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['SituasjonSide.Mor']));
 
         expect(
-            screen.getByText(
-                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
+            screen.getByText(messages['SituasjonSide.ArbeidEllerNav'],
             ),
         ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
 
-        expect(screen.getByText('Har du hatt inntekt 6 av de 10 siste månedene?')).toBeInTheDocument();
+        expect(screen.getByText(messages['SituasjonSide.HarDuHattInntekt'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[1]!);
 
-        const hvorMye = utils.getByLabelText('Omtrent hvor mye tjener du i måneden før skatt?');
+        const hvorMye = utils.getByLabelText(messages['SituasjonSide.LønnFørSkatt']);
         await userEvent.type(hvorMye, '5000');
 
-        expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[2]!);
+        expect(screen.getByText(messages['SituasjonSide.BorDuINorge'])).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(messages['SituasjonSide.Nei'])[2]!);
 
-        expect(screen.getByText('Jobber du i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[3]!);
+        expect(screen.getByText(messages['SituasjonSide.JobberDuINorge'])).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(messages['SituasjonSide.Nei'])[3]!);
 
-        await userEvent.click(screen.getByText('Se resultatet'));
+        await userEvent.click(screen.getByText(messages['SituasjonSide.SeResultatet']));
 
         expect(setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
             borDuINorge: false,
@@ -257,29 +252,28 @@ describe('<SituasjonSide>', () => {
         const setFpEllerEsSituasjon = vi.fn();
         render(<Default setFpEllerEsSituasjon={setFpEllerEsSituasjon} />);
 
-        expect(await screen.findByText('Foreldrepenger eller engangsstønad')).toBeInTheDocument();
+        expect(await screen.findByText(messages['FpEllerEs.Tittel'])).toBeInTheDocument();
 
-        expect(screen.getByText('Hvem er du?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Mor'));
+        expect(screen.getByText(messages['SituasjonSide.HvemErDu'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['SituasjonSide.Mor']));
 
         expect(
-            screen.getByText(
-                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
+            screen.getByText(messages['SituasjonSide.ArbeidEllerNav'],
             ),
         ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
 
-        expect(screen.getByText('Har du hatt inntekt 6 av de 10 siste månedene?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[1]!);
+        expect(screen.getByText(messages['SituasjonSide.HarDuHattInntekt'])).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(messages['SituasjonSide.Nei'])[1]!);
 
         expect(
-            screen.getByText('For å kunne ha rett til foreldrepenger må man ha jobbet 6 av de 10 siste månedene'),
+            screen.getByText(messages['SituasjonSide.JobbetMinst6av10']),
         ).toBeInTheDocument();
 
-        expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
+        expect(screen.getByText(messages['SituasjonSide.BorDuINorge'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[2]!);
 
-        await userEvent.click(screen.getByText('Se resultatet'));
+        await userEvent.click(screen.getByText(messages['SituasjonSide.SeResultatet']));
 
         expect(setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
             borDuINorge: true,
@@ -296,35 +290,34 @@ describe('<SituasjonSide>', () => {
         const setFpEllerEsSituasjon = vi.fn();
         render(<Default setFpEllerEsSituasjon={setFpEllerEsSituasjon} />);
 
-        expect(await screen.findByText('Foreldrepenger eller engangsstønad')).toBeInTheDocument();
+        expect(await screen.findByText(messages['FpEllerEs.Tittel'])).toBeInTheDocument();
 
-        expect(screen.getByText('Hvem er du?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Mor'));
+        expect(screen.getByText(messages['SituasjonSide.HvemErDu'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['SituasjonSide.Mor']));
 
         expect(
-            screen.getByText(
-                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
+            screen.getByText(messages['SituasjonSide.ArbeidEllerNav'],
             ),
         ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
 
-        expect(screen.getByText('Har du hatt inntekt 6 av de 10 siste månedene?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[1]!);
+        expect(screen.getByText(messages['SituasjonSide.HarDuHattInntekt'])).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(messages['SituasjonSide.Nei'])[1]!);
 
         expect(
-            screen.getByText('For å kunne ha rett til foreldrepenger må man ha jobbet 6 av de 10 siste månedene'),
+            screen.getByText(messages['SituasjonSide.JobbetMinst6av10']),
         ).toBeInTheDocument();
 
-        expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[2]!);
+        expect(screen.getByText(messages['SituasjonSide.BorDuINorge'])).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(messages['SituasjonSide.Nei'])[2]!);
 
-        expect(screen.getByText('Jobber du i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[3]!);
+        expect(screen.getByText(messages['SituasjonSide.JobberDuINorge'])).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(messages['SituasjonSide.Nei'])[3]!);
 
         expect(screen.getByText(/For å kunne ha rett til foreldrepenger eller engangsstønad/)).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[3]!);
 
-        await userEvent.click(screen.getByText('Se resultatet'));
+        await userEvent.click(screen.getByText(messages['SituasjonSide.SeResultatet']));
 
         expect(setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
             borDuINorge: false,
@@ -344,34 +337,33 @@ describe('<SituasjonSide>', () => {
             const setFpEllerEsSituasjon = vi.fn();
             render(<Default setFpEllerEsSituasjon={setFpEllerEsSituasjon} />);
 
-            expect(await screen.findByText('Foreldrepenger eller engangsstønad')).toBeInTheDocument();
+            expect(await screen.findByText(messages['FpEllerEs.Tittel'])).toBeInTheDocument();
 
-            expect(screen.getByText('Hvem er du?')).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Mor'));
+            expect(screen.getByText(messages['SituasjonSide.HvemErDu'])).toBeInTheDocument();
+            await userEvent.click(screen.getByText(messages['SituasjonSide.Mor']));
 
             expect(
-                screen.getByText(
-                    'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
+                screen.getByText(messages['SituasjonSide.ArbeidEllerNav'],
                 ),
             ).toBeInTheDocument();
             await userEvent.click(screen.getByText('Ja'));
 
-            expect(screen.getByText('Har du hatt inntekt 6 av de 10 siste månedene?')).toBeInTheDocument();
-            await userEvent.click(screen.getAllByText('Nei')[1]!);
+            expect(screen.getByText(messages['SituasjonSide.HarDuHattInntekt'])).toBeInTheDocument();
+            await userEvent.click(screen.getAllByText(messages['SituasjonSide.Nei'])[1]!);
 
             expect(
-                screen.getByText('For å kunne ha rett til foreldrepenger må man ha jobbet 6 av de 10 siste månedene'),
+                screen.getByText(messages['SituasjonSide.JobbetMinst6av10']),
             ).toBeInTheDocument();
 
-            expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
-            await userEvent.click(screen.getAllByText('Nei')[2]!);
+            expect(screen.getByText(messages['SituasjonSide.BorDuINorge'])).toBeInTheDocument();
+            await userEvent.click(screen.getAllByText(messages['SituasjonSide.Nei'])[2]!);
 
-            expect(screen.getByText('Jobber du i Norge?')).toBeInTheDocument();
-            await userEvent.click(screen.getAllByText('Nei')[3]!);
+            expect(screen.getByText(messages['SituasjonSide.JobberDuINorge'])).toBeInTheDocument();
+            await userEvent.click(screen.getAllByText(messages['SituasjonSide.Nei'])[3]!);
 
             expect(screen.getByText(/For å kunne ha rett til foreldrepenger eller engangsstønad/)).toBeInTheDocument();
 
-            await userEvent.click(screen.getByText('Se resultatet'));
+            await userEvent.click(screen.getByText(messages['SituasjonSide.SeResultatet']));
 
             expect(setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
                 borDuINorge: false,
@@ -389,31 +381,30 @@ describe('<SituasjonSide>', () => {
         const setFpEllerEsSituasjon = vi.fn();
         const utils = render(<Default setFpEllerEsSituasjon={setFpEllerEsSituasjon} />);
 
-        expect(await screen.findByText('Foreldrepenger eller engangsstønad')).toBeInTheDocument();
+        expect(await screen.findByText(messages['FpEllerEs.Tittel'])).toBeInTheDocument();
 
-        expect(screen.getByText('Hvem er du?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Mor'));
+        expect(screen.getByText(messages['SituasjonSide.HvemErDu'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['SituasjonSide.Mor']));
 
         expect(
-            screen.getByText(
-                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
+            screen.getByText(messages['SituasjonSide.ArbeidEllerNav'],
             ),
         ).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Nei'));
+        await userEvent.click(screen.getByText(messages['SituasjonSide.Nei']));
 
-        expect(screen.getByText('Har du andre inntektskilder?')).toBeInTheDocument();
+        expect(screen.getByText(messages['SituasjonSide.HarDuHattAndeInntektskilder'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[1]!);
 
-        expect(screen.getByText('Har du hatt inntekt 6 av de 10 siste månedene?')).toBeInTheDocument();
+        expect(screen.getByText(messages['SituasjonSide.HarDuHattInntekt'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[2]!);
 
-        const hvorMye = utils.getByLabelText('Omtrent hvor mye tjener du i måneden før skatt?');
+        const hvorMye = utils.getByLabelText(messages['SituasjonSide.LønnFørSkatt']);
         await userEvent.type(hvorMye, '50000');
 
-        expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
+        expect(screen.getByText(messages['SituasjonSide.BorDuINorge'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[3]!);
 
-        await userEvent.click(screen.getByText('Se resultatet'));
+        await userEvent.click(screen.getByText(messages['SituasjonSide.SeResultatet']));
 
         expect(setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
             borDuINorge: true,
@@ -430,25 +421,24 @@ describe('<SituasjonSide>', () => {
         const setFpEllerEsSituasjon = vi.fn();
         render(<Default setFpEllerEsSituasjon={setFpEllerEsSituasjon} />);
 
-        expect(await screen.findByText('Foreldrepenger eller engangsstønad')).toBeInTheDocument();
+        expect(await screen.findByText(messages['FpEllerEs.Tittel'])).toBeInTheDocument();
 
-        expect(screen.getByText('Hvem er du?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Mor'));
+        expect(screen.getByText(messages['SituasjonSide.HvemErDu'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['SituasjonSide.Mor']));
 
         expect(
-            screen.getByText(
-                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
+            screen.getByText(messages['SituasjonSide.ArbeidEllerNav'],
             ),
         ).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Nei'));
+        await userEvent.click(screen.getByText(messages['SituasjonSide.Nei']));
 
-        expect(screen.getByText('Har du andre inntektskilder?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[1]!);
+        expect(screen.getByText(messages['SituasjonSide.HarDuHattAndeInntektskilder'])).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText(messages['SituasjonSide.Nei'])[1]!);
 
-        expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
+        expect(screen.getByText(messages['SituasjonSide.BorDuINorge'])).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[2]!);
 
-        await userEvent.click(screen.getByText('Se resultatet'));
+        await userEvent.click(screen.getByText(messages['SituasjonSide.SeResultatet']));
 
         expect(setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
             borDuINorge: true,
@@ -464,7 +454,7 @@ describe('<SituasjonSide>', () => {
     it('Melding om 1/2G skal først vises onBlur, men så skjules hvis man deretter skriver høyere beløp', async () => {
         const setFpEllerEsSituasjon = vi.fn();
         const utils = render(<Default setFpEllerEsSituasjon={setFpEllerEsSituasjon} />);
-        await userEvent.click(screen.getByText('Mor'));
+        await userEvent.click(screen.getByText(messages['SituasjonSide.Mor']));
         await userEvent.click(screen.getByText('Ja'));
         await userEvent.click(screen.getAllByText('Ja')[1]!);
         await userEvent.click(screen.getAllByText('Ja')[2]!);
@@ -480,7 +470,7 @@ describe('<SituasjonSide>', () => {
             ).not.toBeInTheDocument();
 
         // Skal først vise under 1/2G melding når det tabbes og beløpet er under
-        const hvorMye = utils.getByLabelText('Omtrent hvor mye tjener du i måneden før skatt?');
+        const hvorMye = utils.getByLabelText(messages['SituasjonSide.LønnFørSkatt']);
         await userEvent.type(hvorMye, '5');
         alertErIkkeSynlig();
         await userEvent.tab();

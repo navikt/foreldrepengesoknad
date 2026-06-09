@@ -9,6 +9,8 @@ import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './TilretteleggingSteg.stories';
 
+import messages from '../../intl/nb_NO.json';
+
 const { ForArbeidsforhold } = composeStories(stories);
 
 describe('<TilretteleggingSteg>', () => {
@@ -16,15 +18,15 @@ describe('<TilretteleggingSteg>', () => {
     it('skal vise feilmelding når ingenting er fylt eller huket av', async () => {
         render(<ForArbeidsforhold />);
 
-        expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['Svangerskapspengesøknad.pagetitle'])).toBeInTheDocument();
         expect(
-            screen.getByText('Fra hvilken dato har du behov for tilrettelegging eller omplassering?'),
+            screen.getByText(messages['tilrettelegging.tilrettelagtArbeidFom.label.en']),
         ).toBeInTheDocument();
 
         await user.click(screen.getByText('Neste steg'));
 
-        expect(screen.getAllByText('Du må oppgi startdatoen for behov for tilrettelegging.')[0]).toBeInTheDocument();
-        expect(screen.getAllByText('Du må oppgi hvor mye du kan jobbe.')[0]).toBeInTheDocument();
+        expect(screen.getAllByText(messages['valideringsfeil.tilrettelagtArbeidFom.mangler'])[0]).toBeInTheDocument();
+        expect(screen.getAllByText(messages['valideringsfeil.tilrettelagtArbeidType.mangler'])[0]).toBeInTheDocument();
     });
 
     it('skal ikke vise feilmelding, alt er utfylt', async () => {
@@ -38,25 +40,24 @@ describe('<TilretteleggingSteg>', () => {
             />,
         );
         expect(
-            await screen.findByText('Fra hvilken dato har du behov for tilrettelegging eller omplassering?'),
+            await screen.findByText(messages['tilrettelegging.tilrettelagtArbeidFom.label.en']),
         ).toBeInTheDocument();
 
-        const tilretteleggingsdatoInput = screen.getByLabelText(
-            'Fra hvilken dato har du behov for tilrettelegging eller omplassering?',
+        const tilretteleggingsdatoInput = screen.getByLabelText(messages['tilrettelegging.tilrettelagtArbeidFom.label.en'],
         );
         await user.type(tilretteleggingsdatoInput, dayjs().format('DD.MM.YYYY'));
         await user.tab();
 
-        expect(screen.getByText('Hvor mye kan du jobbe?')).toBeInTheDocument();
+        expect(screen.getByText(messages['tilrettelegging.tilrettelagtArbeidType.label.en'])).toBeInTheDocument();
 
-        await user.click(screen.getByText('Jeg kan jobbe redusert'));
+        await user.click(screen.getByText(messages['tilrettelegging.tilrettelagtArbeidType.delvis']));
 
-        await user.click(screen.getByText('Nei, jeg skal ha perioder med ulik arbeidsprosent'));
+        await user.click(screen.getByText(messages['tilrettelegging.tilretteleggingPeriodetype.variert']));
 
         await user.click(screen.getByText('Neste steg'));
 
-        expect(screen.queryByText('Du må oppgi startdatoen for behov for tilrettelegging.')).not.toBeInTheDocument();
-        expect(screen.queryByText('Du må oppgi hvor mye du kan jobbe.')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['valideringsfeil.tilrettelagtArbeidFom.mangler'])).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['valideringsfeil.tilrettelagtArbeidType.mangler'])).not.toBeInTheDocument();
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
@@ -82,124 +83,121 @@ describe('<TilretteleggingSteg>', () => {
         render(<ForArbeidsforhold />);
 
         expect(
-            await screen.findByText('Fra hvilken dato har du behov for tilrettelegging eller omplassering?'),
+            await screen.findByText(messages['tilrettelegging.tilrettelagtArbeidFom.label.en']),
         ).toBeInTheDocument();
 
-        const tilretteleggingsdatoInput = screen.getByLabelText(
-            'Fra hvilken dato har du behov for tilrettelegging eller omplassering?',
+        const tilretteleggingsdatoInput = screen.getByLabelText(messages['tilrettelegging.tilrettelagtArbeidFom.label.en'],
         );
         await user.type(tilretteleggingsdatoInput, dayjs().add(40, 'days').format('DD.MM.YYYY'));
         await user.tab();
         await user.click(screen.getByText('Neste steg'));
 
         expect(
-            screen.getAllByText('Startdatoen for behov for tilrettelegging må være mer enn 3 uker før termindato.')[0],
+            screen.getAllByText(messages['valideringsfeil.tilrettelagtArbeidFom.måVæreMerEnnTreUkerFørTermin'])[0],
         ).toBeInTheDocument();
     });
 
     it('redusert valgt', async () => {
         render(<ForArbeidsforhold />);
 
-        expect(await screen.findByText('Jeg kan jobbe redusert')).toBeInTheDocument();
-        await user.click(screen.getByText('Jeg kan jobbe redusert'));
+        expect(await screen.findByText(messages['tilrettelegging.tilrettelagtArbeidType.delvis'])).toBeInTheDocument();
+        await user.click(screen.getByText(messages['tilrettelegging.tilrettelagtArbeidType.delvis']));
 
         await user.click(screen.getByText('Neste steg'));
 
         expect(
-            screen.getByText('Skal du ha den samme stillingsprosenten gjennom hele svangerskapet?'),
+            screen.getByText(messages['tilrettelegging.tilretteleggingPeriodetype.label']),
         ).toBeInTheDocument();
     });
 
     it('spørsmål om fra-dato vises når man har valgt at man ikke kan jobbe', async () => {
         render(<ForArbeidsforhold />);
-        expect(await screen.findByText('Jeg kan ikke jobbe')).toBeInTheDocument();
-        await user.click(screen.getByText('Jeg kan ikke jobbe'));
+        expect(await screen.findByText(messages['tilrettelegging.tilrettelagtArbeidType.ingen'])).toBeInTheDocument();
+        await user.click(screen.getByText(messages['tilrettelegging.tilrettelagtArbeidType.ingen']));
 
         await user.click(screen.getByText('Neste steg'));
 
-        expect(screen.getByText('Fra hvilken dato skal du være borte fra jobb?')).toBeInTheDocument();
+        expect(screen.getByText(messages['tilrettelegging.sammePeriodeFremTilTerminFom.label.ingen'])).toBeInTheDocument();
     });
 
     it('redusert valgt, ikke oppgitt stillingsprosent', async () => {
         render(<ForArbeidsforhold />);
 
-        expect(await screen.findByText('Jeg kan jobbe redusert')).toBeInTheDocument();
-        await user.click(screen.getByText('Jeg kan jobbe redusert'));
+        expect(await screen.findByText(messages['tilrettelegging.tilrettelagtArbeidType.delvis'])).toBeInTheDocument();
+        await user.click(screen.getByText(messages['tilrettelegging.tilrettelagtArbeidType.delvis']));
 
         await user.click(screen.getByText('Neste steg'));
 
         expect(
-            screen.getAllByText(
-                'Du må oppgi om du skal ha den samme stillingsprosenten gjennom hele svangerskapet.',
+            screen.getAllByText(messages['valideringsfeil.tilretteleggingPeriodeType.mangler'],
             )[0],
         ).toBeInTheDocument();
     });
 
     it('spørsmål om stillingsprosent skal vises når redusert arbeidstid og samme stillingsprosent er valgt', async () => {
         render(<ForArbeidsforhold />);
-        expect(await screen.findByText('Jeg kan jobbe redusert')).toBeInTheDocument();
+        expect(await screen.findByText(messages['tilrettelegging.tilrettelagtArbeidType.delvis'])).toBeInTheDocument();
 
-        await user.click(screen.getByText('Jeg kan jobbe redusert'));
+        await user.click(screen.getByText(messages['tilrettelegging.tilrettelagtArbeidType.delvis']));
         await user.click(screen.getByText('Ja'));
 
-        expect(screen.getByText('Hvilken stillingsprosent skal du jobbe?')).toBeInTheDocument();
+        expect(screen.getByText(messages['tilrettelegging.stillingsprosent.label'])).toBeInTheDocument();
     });
 
     it('feilmelding ved ikke oppgitt stillingsprosent', async () => {
         render(<ForArbeidsforhold />);
 
-        expect(await screen.findByText('Jeg kan jobbe redusert')).toBeInTheDocument();
+        expect(await screen.findByText(messages['tilrettelegging.tilrettelagtArbeidType.delvis'])).toBeInTheDocument();
 
-        await user.click(screen.getByText('Jeg kan jobbe redusert'));
+        await user.click(screen.getByText(messages['tilrettelegging.tilrettelagtArbeidType.delvis']));
         await user.click(screen.getByText('Ja'));
-        expect(screen.getByText('Hvilken stillingsprosent skal du jobbe?')).toBeInTheDocument();
+        expect(screen.getByText(messages['tilrettelegging.stillingsprosent.label'])).toBeInTheDocument();
 
         await user.click(screen.getByText('Neste steg'));
 
-        expect(screen.getAllByText('Du må oppgi stillingsprosenten du skal jobbe.')[0]).toBeInTheDocument();
+        expect(screen.getAllByText(messages['valideringsfeil.stillingsprosent.required'])[0]).toBeInTheDocument();
     });
     it('feilmelding ved stillingsprosent i feil format', async () => {
         render(<ForArbeidsforhold />);
 
-        expect(await screen.findByText('Jeg kan jobbe redusert')).toBeInTheDocument();
+        expect(await screen.findByText(messages['tilrettelegging.tilrettelagtArbeidType.delvis'])).toBeInTheDocument();
 
-        await user.click(screen.getByText('Jeg kan jobbe redusert'));
+        await user.click(screen.getByText(messages['tilrettelegging.tilrettelagtArbeidType.delvis']));
         await user.click(screen.getByText('Ja'));
-        expect(screen.getByText('Hvilken stillingsprosent skal du jobbe?')).toBeInTheDocument();
+        expect(screen.getByText(messages['tilrettelegging.stillingsprosent.label'])).toBeInTheDocument();
 
-        const stillingsprosentInput = screen.getByLabelText('Hvilken stillingsprosent skal du jobbe?');
+        const stillingsprosentInput = screen.getByLabelText(messages['tilrettelegging.stillingsprosent.label']);
         await user.type(stillingsprosentInput, 'bla bla');
         await user.click(screen.getByText('Neste steg'));
 
-        expect(screen.getAllByText('Stillingsprosent må være et tall.')[0]).toBeInTheDocument();
+        expect(screen.getAllByText(messages['valideringsfeil.stillingsprosent.måVæreEtTall'])[0]).toBeInTheDocument();
     });
     it('feilmelding ved ikke oppgitt redusert fra-dato', async () => {
         render(<ForArbeidsforhold />);
 
-        expect(await screen.findByText('Jeg kan jobbe redusert')).toBeInTheDocument();
+        expect(await screen.findByText(messages['tilrettelegging.tilrettelagtArbeidType.delvis'])).toBeInTheDocument();
 
-        await user.click(screen.getByText('Jeg kan jobbe redusert'));
+        await user.click(screen.getByText(messages['tilrettelegging.tilrettelagtArbeidType.delvis']));
         await user.click(screen.getByText('Ja'));
-        expect(screen.getByText('Fra hvilken dato skal du jobbe redusert?')).toBeInTheDocument();
+        expect(screen.getByText(messages['tilrettelegging.sammePeriodeFremTilTerminFom.label.delvis'])).toBeInTheDocument();
 
         await user.click(screen.getByText('Neste steg'));
 
-        expect(screen.getAllByText('Du må oppgi fra hvilken dato du skal jobbe redusert.')[0]).toBeInTheDocument();
+        expect(screen.getAllByText(messages['valideringsfeil.sammePeriodeFremTilTerminFom.påkrevd.delvis'])[0]).toBeInTheDocument();
     });
     it('feilmelding ved ikke oppgitt redusert til-dato', async () => {
         render(<ForArbeidsforhold />);
 
-        expect(await screen.findByText('Jeg kan jobbe redusert')).toBeInTheDocument();
+        expect(await screen.findByText(messages['tilrettelegging.tilrettelagtArbeidType.delvis'])).toBeInTheDocument();
 
-        await user.click(screen.getByText('Jeg kan jobbe redusert'));
+        await user.click(screen.getByText(messages['tilrettelegging.tilrettelagtArbeidType.delvis']));
         await user.click(screen.getByText('Ja'));
-        expect(screen.getByText('Frem til hvilken dato skal du jobbe redusert?')).toBeInTheDocument();
+        expect(screen.getByText(messages['tilrettelegging.enPeriodeMedTilretteleggingTomType.label.delvis'])).toBeInTheDocument();
 
         await user.click(screen.getByText('Neste steg'));
 
         expect(
-            screen.getAllByText(
-                'Du må oppgi om du skal jobbe redusert frem til tre uker før termin eller frem til en annen dato.',
+            screen.getAllByText(messages['valideringsfeil.tomType.påkrevd.delvis.tilTermin'],
             )[0],
         ).toBeInTheDocument();
     });
@@ -207,38 +205,37 @@ describe('<TilretteleggingSteg>', () => {
     it('redusert frem til en dato valgt', async () => {
         render(<ForArbeidsforhold />);
 
-        expect(await screen.findByText('Jeg kan jobbe redusert')).toBeInTheDocument();
+        expect(await screen.findByText(messages['tilrettelegging.tilrettelagtArbeidType.delvis'])).toBeInTheDocument();
 
-        await user.click(screen.getByText('Jeg kan jobbe redusert'));
+        await user.click(screen.getByText(messages['tilrettelegging.tilrettelagtArbeidType.delvis']));
         await user.click(screen.getByText('Ja'));
-        expect(screen.getByText('Frem til hvilken dato skal du jobbe redusert?')).toBeInTheDocument();
-        await user.click(screen.getByText('Frem til en dato'));
+        expect(screen.getByText(messages['tilrettelegging.enPeriodeMedTilretteleggingTomType.label.delvis'])).toBeInTheDocument();
+        await user.click(screen.getByText(messages['perioder.varierende.tomType.valgfriDato']));
         await user.click(screen.getByText('Neste steg'));
 
-        expect(screen.getByText('Dato du skal tilbake til din opprinnelige stillingsprosent')).toBeInTheDocument();
+        expect(screen.getByText(messages['tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato.label.delvis'])).toBeInTheDocument();
     });
 
     it('validering av dato på feil format', async () => {
         render(<ForArbeidsforhold />);
 
         expect(
-            await screen.findByText('Fra hvilken dato har du behov for tilrettelegging eller omplassering?'),
+            await screen.findByText(messages['tilrettelegging.tilrettelagtArbeidFom.label.en']),
         ).toBeInTheDocument();
 
-        expect(screen.getByText('Jeg kan jobbe redusert')).toBeInTheDocument();
+        expect(screen.getByText(messages['tilrettelegging.tilrettelagtArbeidType.delvis'])).toBeInTheDocument();
 
-        await user.click(screen.getByText('Jeg kan jobbe redusert'));
+        await user.click(screen.getByText(messages['tilrettelegging.tilrettelagtArbeidType.delvis']));
         await user.click(screen.getByText('Ja'));
 
-        expect(screen.getByText('Fra hvilken dato skal du jobbe redusert?')).toBeInTheDocument();
+        expect(screen.getByText(messages['tilrettelegging.sammePeriodeFremTilTerminFom.label.delvis'])).toBeInTheDocument();
 
-        await user.click(screen.getByText('Frem til en dato'));
+        await user.click(screen.getByText(messages['perioder.varierende.tomType.valgfriDato']));
 
-        const tilretteleggingsdatoInput = screen.getByLabelText(
-            'Fra hvilken dato har du behov for tilrettelegging eller omplassering?',
+        const tilretteleggingsdatoInput = screen.getByLabelText(messages['tilrettelegging.tilrettelagtArbeidFom.label.en'],
         );
-        const fraDatoRedusertInput = screen.getByLabelText('Fra hvilken dato skal du jobbe redusert?');
-        const tilbakeDatoInput = screen.getByLabelText('Dato du skal tilbake til din opprinnelige stillingsprosent');
+        const fraDatoRedusertInput = screen.getByLabelText(messages['tilrettelegging.sammePeriodeFremTilTerminFom.label.delvis']);
+        const tilbakeDatoInput = screen.getByLabelText(messages['tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato.label.delvis']);
 
         await user.type(tilretteleggingsdatoInput, 'fdkmv');
         await user.type(fraDatoRedusertInput, 'fdkmv');
@@ -247,18 +244,15 @@ describe('<TilretteleggingSteg>', () => {
         await user.click(screen.getByText('Neste steg'));
 
         expect(
-            screen.getAllByText(
-                'Startdatoen for behov for tilrettelegging må være en gyldig dato på formatet dd.mm.åååå.',
+            screen.getAllByText(messages['valideringsfeil.tilrettelagtArbeidFom.gyldigDato'],
             )[0],
         ).toBeInTheDocument();
         expect(
-            screen.getAllByText(
-                'Datoen du skal begynne å jobbe redusert må være en gyldig dato på formatet dd.mm.åååå.',
+            screen.getAllByText(messages['valideringsfeil.sammePeriodeFremTilTerminFom.gyldigDato.delvis'],
             )[0],
         ).toBeInTheDocument();
         expect(
-            screen.getAllByText(
-                'Datoen du skal tilbake til din opprinnelige stillingsprosent må være på formatet dd.mm.åååå.',
+            screen.getAllByText(messages['valideringsfeil.sammePeriodeFremTilTerminTom.gyldigDato.delvis'],
             )[0],
         ).toBeInTheDocument();
     });

@@ -10,6 +10,8 @@ import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
 
 import * as stories from './SenereUtenlandsoppholdSteg.stories';
 
+import messages from '../../intl/nb_NO.json';
+
 const { Default } = composeStories(stories);
 
 describe('<SenereUtenlandsoppholdSteg>', () => {
@@ -19,7 +21,7 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
 
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['steps.label.boIUtlandetIFremtid'])).toHaveLength(2);
 
         await userEvent.selectOptions(screen.getByLabelText('Hvilket land skal du bo i?'), 'CA');
 
@@ -60,7 +62,7 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
 
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['steps.label.boIUtlandetIFremtid'])).toHaveLength(2);
         await userEvent.click(screen.getByText('Forrige steg'));
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
@@ -88,7 +90,7 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
             />,
         );
 
-        expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['steps.label.boIUtlandetIFremtid'])).toHaveLength(2);
         await userEvent.click(screen.getByText('Forrige steg'));
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);

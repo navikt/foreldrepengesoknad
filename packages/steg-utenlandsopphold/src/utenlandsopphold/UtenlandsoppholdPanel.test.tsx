@@ -4,6 +4,8 @@ import userEvent from '@testing-library/user-event';
 
 import * as stories from './UtenlandsoppholdPanel.stories';
 
+import messages from '../intl/messages/nb_NO.json';
+
 const { Default } = composeStories(stories);
 
 describe('UtenlandsoppholdPanel', () => {
@@ -13,16 +15,16 @@ describe('UtenlandsoppholdPanel', () => {
         expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
         expect(screen.getByText('Steg 2 av 2')).toBeInTheDocument();
 
-        expect(screen.getByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
-        expect(screen.getByText('Hvor skal du bo de neste 12 månedene?')).toBeInTheDocument();
-        expect(screen.getByText('Medlemskap i norsk folketrygd')).toBeInTheDocument();
+        expect(screen.getByText(messages['UtenlandsoppholdSteg.Siste12Måneder.Spørsmål'])).toBeInTheDocument();
+        expect(screen.getByText(messages['UtenlandsoppholdSteg.Neste12Måneder.Spørsmål'])).toBeInTheDocument();
+        expect(screen.getByText(messages['UtenlandsoppholdSteg.HjelpeTekstES.Tittel'])).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
 
-        expect(screen.getAllByText('Du må oppgi hvor du har bodd de siste 12 månedene')).toHaveLength(2);
-        expect(screen.getAllByText('Du må oppgi hvor du skal bo de neste 12 månedene')).toHaveLength(2);
+        expect(screen.getAllByText(messages['UtenlandsoppholdSteg.Siste12Måneder.IsRequired'])).toHaveLength(2);
+        expect(screen.getAllByText(messages['UtenlandsoppholdSteg.Neste12Måneder.IsRequired'])).toHaveLength(2);
     });
 
     it('skal oppgi at en har bodd i Norge og skal bo i Norge', async () => {
@@ -32,8 +34,8 @@ describe('UtenlandsoppholdPanel', () => {
 
         expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Jeg har bodd i Norge'));
-        await userEvent.click(screen.getByText('Jeg skal bo i Norge'));
+        await userEvent.click(screen.getByText(messages['UtenlandsoppholdSteg.Siste12MånederInfotekst.Radiobutton.BoddINorge']));
+        await userEvent.click(screen.getByText(messages['UtenlandsoppholdSteg.Neste12MånederInfotekst.Radiobutton.BoddINorge']));
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -51,8 +53,8 @@ describe('UtenlandsoppholdPanel', () => {
 
         expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Jeg har bodd helt eller delvis i utlandet'));
-        await userEvent.click(screen.getByText('Jeg skal bo i Norge'));
+        await userEvent.click(screen.getByText(messages['UtenlandsoppholdSteg.Siste12MånederInfotekst.Radiobutton.BoddIUtlandet']));
+        await userEvent.click(screen.getByText(messages['UtenlandsoppholdSteg.Neste12MånederInfotekst.Radiobutton.BoddINorge']));
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -70,8 +72,8 @@ describe('UtenlandsoppholdPanel', () => {
 
         expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Jeg har bodd i Norge'));
-        await userEvent.click(screen.getByText('Jeg skal bo helt eller delvis i utlandet'));
+        await userEvent.click(screen.getByText(messages['UtenlandsoppholdSteg.Siste12MånederInfotekst.Radiobutton.BoddINorge']));
+        await userEvent.click(screen.getByText(messages['UtenlandsoppholdSteg.Neste12MånederInfotekst.Radiobutton.BoddIUtlandet']));
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -89,8 +91,8 @@ describe('UtenlandsoppholdPanel', () => {
 
         expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Jeg har bodd helt eller delvis i utlandet'));
-        await userEvent.click(screen.getByText('Jeg skal bo helt eller delvis i utlandet'));
+        await userEvent.click(screen.getByText(messages['UtenlandsoppholdSteg.Siste12MånederInfotekst.Radiobutton.BoddIUtlandet']));
+        await userEvent.click(screen.getByText(messages['UtenlandsoppholdSteg.Neste12MånederInfotekst.Radiobutton.BoddIUtlandet']));
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -109,7 +111,7 @@ describe('UtenlandsoppholdPanel', () => {
 
         expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Jeg har bodd helt eller delvis i utlandet'));
+        await userEvent.click(screen.getByText(messages['UtenlandsoppholdSteg.Siste12MånederInfotekst.Radiobutton.BoddIUtlandet']));
 
         await userEvent.click(screen.getByText('Forrige steg'));
 

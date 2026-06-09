@@ -3,6 +3,8 @@ import { render, screen, within } from '@testing-library/react';
 
 import * as stories from './PlanenDeresSteg_Adopsjon.stories';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const {
     MorOgFarBeggeHarRett,
     MorOgFarKunMorHarRett,
@@ -38,7 +40,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
 
         expect(screen.getByText('Mors periode')).toBeInTheDocument();
         expect(screen.getByText('Fars periode')).toBeInTheDocument();
-        expect(screen.getByText('Adopsjon')).toBeInTheDocument();
+        expect(screen.getByText(messages['OmBarnetSteg.Adopsjon'])).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:7;dayColor:GRAY')).toBeInTheDocument();
@@ -70,7 +72,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
         expect(screen.getByText('Din periode')).toBeInTheDocument();
-        expect(screen.getByText('Adopsjon')).toBeInTheDocument();
+        expect(screen.getByText(messages['OmBarnetSteg.Adopsjon'])).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:7;dayColor:GRAY')).toBeInTheDocument();
@@ -98,7 +100,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
 
         expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Dine foreldrepenger med aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText('Adopsjon')).toBeInTheDocument();
+        expect(screen.getByText(messages['OmBarnetSteg.Adopsjon'])).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:7;dayColor:GRAY')).toBeInTheDocument();
@@ -126,7 +128,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
 
         expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Dine foreldrepenger med aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText('Adopsjon')).toBeInTheDocument();
+        expect(screen.getByText(messages['OmBarnetSteg.Adopsjon'])).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:7;dayColor:GRAY')).toBeInTheDocument();
@@ -156,7 +158,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
 
         expect(screen.getByText('Mors periode')).toBeInTheDocument();
         expect(screen.getByText('Medmors periode')).toBeInTheDocument();
-        expect(screen.getByText('Adopsjon')).toBeInTheDocument();
+        expect(screen.getByText(messages['OmBarnetSteg.Adopsjon'])).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:7;dayColor:GRAY')).toBeInTheDocument();
@@ -188,7 +190,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
         expect(screen.getByText('Din periode')).toBeInTheDocument();
-        expect(screen.getByText('Adopsjon')).toBeInTheDocument();
+        expect(screen.getByText(messages['OmBarnetSteg.Adopsjon'])).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:7;dayColor:GRAY')).toBeInTheDocument();
@@ -216,7 +218,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
 
         expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Dine foreldrepenger med aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText('Adopsjon')).toBeInTheDocument();
+        expect(screen.getByText(messages['OmBarnetSteg.Adopsjon'])).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:7;dayColor:GRAY')).toBeInTheDocument();
@@ -244,7 +246,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
 
         expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Dine foreldrepenger med aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText('Adopsjon')).toBeInTheDocument();
+        expect(screen.getByText(messages['OmBarnetSteg.Adopsjon'])).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:7;dayColor:GRAY')).toBeInTheDocument();
@@ -271,7 +273,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
         expect(screen.getByText('Din periode')).toBeInTheDocument();
-        expect(screen.getByText('Adopsjon')).toBeInTheDocument();
+        expect(screen.getByText(messages['OmBarnetSteg.Adopsjon'])).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:7;dayColor:GRAY')).toBeInTheDocument();
@@ -298,7 +300,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
         expect(screen.getByText('Din periode')).toBeInTheDocument();
-        expect(screen.getByText('Adopsjon')).toBeInTheDocument();
+        expect(screen.getByText(messages['OmBarnetSteg.Adopsjon'])).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:7;dayColor:GRAY')).toBeInTheDocument();
@@ -327,7 +329,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(sliderHeadings.some((heading) => heading.textContent === '16 uker')).toBe(true);
 
         expect(screen.getByText('Fars periode')).toBeInTheDocument();
-        expect(screen.getByText('Adopsjon')).toBeInTheDocument();
+        expect(screen.getByText(messages['OmBarnetSteg.Adopsjon'])).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:7;dayColor:GRAY')).toBeInTheDocument();
@@ -361,7 +363,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
 
         expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
 
-        expect(screen.getByText('Adopsjon')).toBeInTheDocument();
+        expect(screen.getByText(messages['OmBarnetSteg.Adopsjon'])).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:7;dayColor:GRAY')).toBeInTheDocument();
@@ -388,7 +390,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
         expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText('Adopsjon')).toBeInTheDocument();
+        expect(screen.getByText(messages['OmBarnetSteg.Adopsjon'])).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:7;dayColor:GRAY')).toBeInTheDocument();
@@ -411,7 +413,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
         expect(screen.getByText('Din periode')).toBeInTheDocument();
-        expect(screen.getByText('Adopsjon')).toBeInTheDocument();
+        expect(screen.getByText(messages['OmBarnetSteg.Adopsjon'])).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:5;dayColor:NONE')).toBeInTheDocument();

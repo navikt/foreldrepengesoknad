@@ -6,6 +6,8 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './DinPlan.stories';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const { Default, FarSøker, MorMedFarSomHarTattOverMødrekvote } = composeStories(stories);
 
 describe('<Default>', () => {
@@ -15,9 +17,9 @@ describe('<Default>', () => {
             setHandlers(Default.parameters.msw);
             render(<Default />);
 
-            expect(await screen.findByText('Liste')).toBeInTheDocument();
-            expect(screen.getByText('Endre planen')).toBeInTheDocument();
-            expect(screen.getByText('Kalender')).toBeInTheDocument();
+            expect(await screen.findByText(messages['DinPlan.Liste'])).toBeInTheDocument();
+            expect(screen.getByText(messages['DinPlan.EndrePlan'])).toBeInTheDocument();
+            expect(screen.getByText(messages['DinPlan.Kalender'])).toBeInTheDocument();
 
             const allButtons = screen.getAllByRole('button');
 
@@ -44,9 +46,9 @@ describe('<Default>', () => {
             setHandlers(Default.parameters.msw);
             render(<Default />);
 
-            expect(await screen.findByText('Liste')).toBeInTheDocument();
+            expect(await screen.findByText(messages['DinPlan.Liste'])).toBeInTheDocument();
 
-            await userEvent.click(screen.getByText('Kalender'));
+            await userEvent.click(screen.getByText(messages['DinPlan.Kalender']));
 
             expect(screen.getByText('Din periode')).toBeInTheDocument();
             expect(screen.getByText('Fødsel')).toBeInTheDocument();
@@ -61,9 +63,9 @@ describe('<Default>', () => {
             setHandlers(FarSøker.parameters.msw);
             render(<FarSøker />);
 
-            expect(await screen.findByText('Liste')).toBeInTheDocument();
+            expect(await screen.findByText(messages['DinPlan.Liste'])).toBeInTheDocument();
 
-            await userEvent.click(screen.getByText('Kalender'));
+            await userEvent.click(screen.getByText(messages['DinPlan.Kalender']));
 
             expect(screen.getByText('Helgas periode')).toBeInTheDocument();
             expect(screen.getByText('Fødsel')).toBeInTheDocument();
@@ -123,7 +125,7 @@ describe('<MorMedFarSomHarTattOverMødrekvote>', () => {
             setHandlers(MorMedFarSomHarTattOverMødrekvote.parameters.msw);
             render(<MorMedFarSomHarTattOverMødrekvote />);
 
-            expect(await screen.findByText('Liste')).toBeInTheDocument();
+            expect(await screen.findByText(messages['DinPlan.Liste'])).toBeInTheDocument();
 
             // Overføringen til far skal vises som hans periode, ikke som tapte dager for mor
             expect(screen.getAllByText('Espen har foreldrepenger').length).toBeGreaterThan(0);
@@ -132,7 +134,7 @@ describe('<MorMedFarSomHarTattOverMødrekvote>', () => {
             ).toBeInTheDocument();
             expect(screen.queryByText('Dager du kan tape')).not.toBeInTheDocument();
 
-            await userEvent.click(screen.getByText('Kalender'));
+            await userEvent.click(screen.getByText(messages['DinPlan.Kalender']));
 
             // Far sine overtatte dager i seksukersperioden skal være grønne, ikke svarte (tapte dager)
             const april2025 = screen.getByTestId('year:2025;month:3');

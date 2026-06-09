@@ -7,6 +7,8 @@ import dayjs from 'dayjs';
 
 import * as stories from './EgenNæringSteg.stories';
 
+import messages from '../../intl/nb_NO.json';
+
 const { Default } = composeStories(stories);
 
 describe('<EgenNæringSteg>', () => {
@@ -43,7 +45,7 @@ describe('<EgenNæringSteg>', () => {
         expect(
             screen.getByText('Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?'),
         ).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[2]!);
+        await userEvent.click(screen.getAllByText(messages['nei'])[2]!);
 
         await userEvent.click(screen.getByText('Neste steg'));
 

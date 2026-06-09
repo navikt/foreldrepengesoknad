@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 
 import * as stories from './HvorLangPeriodeSteg.stories';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const {
     FlereForsørgereEttBarnKunMorHarRett,
     FarOgFarBeggeHarRett,
@@ -34,7 +36,7 @@ describe('<HvorLangPeriodePlanleggerSteg>', () => {
 
         render(<FlereForsørgereEttBarnKunMorHarRett gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['HvorLangPeriodeSteg.Tittel'])).toHaveLength(2);
 
         await userEvent.click(screen.getByText('100 % utbetaling over 49 uker'));
 
@@ -45,7 +47,7 @@ describe('<HvorLangPeriodePlanleggerSteg>', () => {
         expect(screen.getByText('Siste dag med foreldrepenger kan bli onsdag 13. august 2025')).toBeInTheDocument();
 
         expect(screen.queryByText('Når bare far skal ha foreldrepenger')).not.toBeInTheDocument();
-        expect(screen.queryByText('Når bare én av fedrene skal ha foreldrepenger')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['HvorLangPeriodeSteg.Infoboks.KunEnAvFedreneHarRett'])).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste'));
 
@@ -83,7 +85,7 @@ describe('<HvorLangPeriodePlanleggerSteg>', () => {
             />,
         );
 
-        expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['HvorLangPeriodeSteg.Tittel'])).toHaveLength(2);
 
         await userEvent.click(screen.getByText('100 % utbetaling over 49 uker'));
 
@@ -114,7 +116,7 @@ describe('<HvorLangPeriodePlanleggerSteg>', () => {
                 gåTilNesteSide={gåTilNesteSide}
             />,
         );
-        expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['HvorLangPeriodeSteg.Tittel'])).toHaveLength(2);
         await userEvent.click(screen.getByText('100 % utbetaling over 40 uker'));
 
         expect(
@@ -130,12 +132,12 @@ describe('<HvorLangPeriodePlanleggerSteg>', () => {
 
         render(<FarOgFarBeggeHarRett gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['HvorLangPeriodeSteg.Tittel'])).toHaveLength(2);
 
         await userEvent.click(screen.getByText('100 % utbetaling over 40 uker'));
 
         expect(screen.queryByText('Når bare far skal ha foreldrepenger')).not.toBeInTheDocument();
-        expect(screen.queryByText('Når bare én av fedrene skal ha foreldrepenger')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['HvorLangPeriodeSteg.Infoboks.KunEnAvFedreneHarRett'])).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste'));
 
@@ -165,8 +167,8 @@ describe('<HvorLangPeriodePlanleggerSteg>', () => {
 
         render(<FlereForsørgereFarOgFarKunFar1HarRettAdopsjon gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
-        expect(screen.getByText('Når bare én av fedrene skal ha foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findAllByText(messages['HvorLangPeriodeSteg.Tittel'])).toHaveLength(2);
+        expect(screen.getByText(messages['HvorLangPeriodeSteg.Infoboks.KunEnAvFedreneHarRett'])).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('100 % utbetaling over 40 uker'));
 
@@ -198,8 +200,8 @@ describe('<HvorLangPeriodePlanleggerSteg>', () => {
 
         render(<FlereForsørgereFarOgFarKunFar1HarRettFødsel gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
-        expect(screen.queryByText('Når bare én av fedrene skal ha foreldrepenger')).not.toBeInTheDocument();
+        expect(await screen.findAllByText(messages['HvorLangPeriodeSteg.Tittel'])).toHaveLength(2);
+        expect(screen.queryByText(messages['HvorLangPeriodeSteg.Infoboks.KunEnAvFedreneHarRett'])).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('100 % utbetaling over 40 uker'));
 
@@ -225,22 +227,22 @@ describe('<HvorLangPeriodePlanleggerSteg>', () => {
 
     it('skal vise infoboks når kun far skal ha foreldrepenger', async () => {
         render(<FlereForsørgereKunFarHarRett />);
-        expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['HvorLangPeriodeSteg.Tittel'])).toHaveLength(2);
         expect(screen.getByText('Når bare far skal ha foreldrepenger')).toBeInTheDocument();
-        expect(screen.queryByText('Når bare én av fedrene skal ha foreldrepenger')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['HvorLangPeriodeSteg.Infoboks.KunEnAvFedreneHarRett'])).not.toBeInTheDocument();
     });
 
     it('skal vise infoboks når kun en av fedrene skal ha foreldrepenger', async () => {
         render(<FlereForsørgereFarOgFarKunFar1HarRettAdopsjon />);
-        expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
-        expect(screen.getByText('Når bare én av fedrene skal ha foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findAllByText(messages['HvorLangPeriodeSteg.Tittel'])).toHaveLength(2);
+        expect(screen.getByText(messages['HvorLangPeriodeSteg.Infoboks.KunEnAvFedreneHarRett'])).toBeInTheDocument();
         expect(screen.queryByText('Når bare far skal ha foreldrepenger')).not.toBeInTheDocument();
     });
 
     it('skal vise Forslag hvor lenge, omsorgsovertakelse tilbake i tid', async () => {
         render(<FlereForsørgereEttBarnBeggeHarRettAdopsjon />);
 
-        expect(screen.getByText('80 % eller 100 %?')).toBeInTheDocument();
+        expect(screen.getByText(messages['HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTittel'])).toBeInTheDocument();
         expect(screen.getByText('Hvor lang periode med foreldrepenger ønsker dere?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('100 % utbetaling over 49 uker'));

@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 
 import * as stories from './FpEllerEsForside.stories';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const { Default } = composeStories(stories);
 
 vi.mock('react-router-dom', async () => {
@@ -25,11 +27,10 @@ describe('<FpEllerEsForside>', () => {
 
         render(<Default />);
 
-        expect(await screen.findAllByText('Foreldrepenger eller engangsstønad?')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['FpEllerEsForside.Title'])).toHaveLength(2);
 
         expect(
-            screen.getByText(
-                'Denne veiviseren er for deg som ønsker å vite om du har rett til foreldrepenger og/eller engangsstønad.',
+            screen.getByText(messages['FpEllerEsForside.Innhold'],
             ),
         ).toBeInTheDocument();
 

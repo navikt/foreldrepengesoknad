@@ -7,6 +7,8 @@ import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './SenereUtenlandsoppholdPanel.stories';
 
+import messages from '../intl/messages/nb_NO.json';
+
 const { Default } = composeStories(stories);
 
 describe('<SenereUtenlandsoppholdPanel>', () => {
@@ -16,25 +18,25 @@ describe('<SenereUtenlandsoppholdPanel>', () => {
         expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
         expect(screen.getByText('Steg 2 av 2')).toBeInTheDocument();
 
-        expect(screen.getByText('Hvilket land skal du bo i?')).toBeInTheDocument();
-        expect(screen.getByText('Fra og med')).toBeInTheDocument();
-        expect(screen.getByText('Til og med')).toBeInTheDocument();
+        expect(screen.getByText(messages['SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Spørsmål.HvilketLandSkalDuBoI'])).toBeInTheDocument();
+        expect(screen.getByText(messages['TidligereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Fraogmed'])).toBeInTheDocument();
+        expect(screen.getByText(messages['TidligereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Tilogmed'])).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
 
-        expect(screen.getAllByText('Du må oppgi et land du skal oppholde deg i')).toHaveLength(2);
-        expect(screen.getAllByText('Du må oppgi en fra og med dato')).toHaveLength(2);
+        expect(screen.getAllByText(messages['SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.LandDuSkalBoIPåkreved'])).toHaveLength(2);
+        expect(screen.getAllByText(messages['TidligereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.LandFomDuSkalBoIPåkreved'])).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Legg til flere opphold i utlandet'));
+        await userEvent.click(screen.getByText(messages['TidligereUtenlandsoppholdSteg.Knapp.LeggTilLand']));
 
-        expect(screen.getByText('Slett dette oppholdet')).toBeInTheDocument();
+        expect(screen.getByText(messages['TidligereUtenlandsoppholdSteg.Knapp.SlettOpphold'])).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(screen.getAllByText('Du må oppgi et land du skal oppholde deg i')).toHaveLength(3);
-        expect(screen.getAllByText('Du må oppgi en fra og med dato')).toHaveLength(3);
+        expect(screen.getAllByText(messages['SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.LandDuSkalBoIPåkreved'])).toHaveLength(3);
+        expect(screen.getAllByText(messages['TidligereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.LandFomDuSkalBoIPåkreved'])).toHaveLength(3);
     });
 
     it('skal fylle ut to perioder og så gå videre', async () => {
@@ -44,17 +46,17 @@ describe('<SenereUtenlandsoppholdPanel>', () => {
 
         expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
 
-        await userEvent.selectOptions(utils.getByLabelText('Hvilket land skal du bo i?'), 'CA');
+        await userEvent.selectOptions(utils.getByLabelText(messages['SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Spørsmål.HvilketLandSkalDuBoI']), 'CA');
 
-        const fraOgMed = utils.getByLabelText('Fra og med');
+        const fraOgMed = utils.getByLabelText(messages['TidligereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Fraogmed']);
         await userEvent.type(fraOgMed, dayjs().add(1, 'day').format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(fraOgMed);
 
-        const tilOgMed = utils.getByLabelText('Til og med');
+        const tilOgMed = utils.getByLabelText(messages['TidligereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Tilogmed']);
         await userEvent.type(tilOgMed, dayjs().add(20, 'day').format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(tilOgMed);
 
-        await userEvent.click(screen.getByText('Legg til flere opphold i utlandet'));
+        await userEvent.click(screen.getByText(messages['TidligereUtenlandsoppholdSteg.Knapp.LeggTilLand']));
 
         await userEvent.selectOptions(utils.getAllByLabelText('Hvilket land skal du bo i?')[1]!, 'AS');
 
@@ -90,17 +92,17 @@ describe('<SenereUtenlandsoppholdPanel>', () => {
 
         expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
 
-        await userEvent.selectOptions(utils.getByLabelText('Hvilket land skal du bo i?'), 'CA');
+        await userEvent.selectOptions(utils.getByLabelText(messages['SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Spørsmål.HvilketLandSkalDuBoI']), 'CA');
 
-        const fraOgMed = utils.getByLabelText('Fra og med');
+        const fraOgMed = utils.getByLabelText(messages['TidligereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Fraogmed']);
         await userEvent.type(fraOgMed, dayjs().add(1, 'day').format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(fraOgMed);
 
-        const tilOgMed = utils.getByLabelText('Til og med');
+        const tilOgMed = utils.getByLabelText(messages['TidligereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Tilogmed']);
         await userEvent.type(tilOgMed, dayjs().add(20, 'day').format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(tilOgMed);
 
-        await userEvent.click(screen.getByText('Legg til flere opphold i utlandet'));
+        await userEvent.click(screen.getByText(messages['TidligereUtenlandsoppholdSteg.Knapp.LeggTilLand']));
 
         await userEvent.selectOptions(utils.getAllByLabelText('Hvilket land skal du bo i?')[1]!, 'AS');
 
@@ -115,7 +117,7 @@ describe('<SenereUtenlandsoppholdPanel>', () => {
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
-        expect(screen.getAllByText('Det kan ikke være flere utenlandsopphold i samme periode')).toHaveLength(5);
+        expect(screen.getAllByText(messages['TidligereUtenlandsoppholdSteg.Valideringsfeil.Utenlandsopphold.Overlapp'])).toHaveLength(5);
     });
 
     it('skal legge til periode og så fjerne den', async () => {
@@ -123,13 +125,13 @@ describe('<SenereUtenlandsoppholdPanel>', () => {
 
         expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Legg til flere opphold i utlandet'));
+        await userEvent.click(screen.getByText(messages['TidligereUtenlandsoppholdSteg.Knapp.LeggTilLand']));
 
-        expect(screen.getAllByText('Hvilket land skal du bo i?')).toHaveLength(2);
+        expect(screen.getAllByText(messages['SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Spørsmål.HvilketLandSkalDuBoI'])).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Slett dette oppholdet'));
+        await userEvent.click(screen.getByText(messages['TidligereUtenlandsoppholdSteg.Knapp.SlettOpphold']));
 
-        expect(screen.getByText('Hvilket land skal du bo i?')).toBeInTheDocument();
+        expect(screen.getByText(messages['SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Spørsmål.HvilketLandSkalDuBoI'])).toBeInTheDocument();
     });
 
     it('skal lagre uvalidert data når en går til forrige steg', async () => {
@@ -140,7 +142,7 @@ describe('<SenereUtenlandsoppholdPanel>', () => {
 
         expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
 
-        await userEvent.selectOptions(screen.getByLabelText('Hvilket land skal du bo i?'), 'CA');
+        await userEvent.selectOptions(screen.getByLabelText(messages['SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Spørsmål.HvilketLandSkalDuBoI']), 'CA');
 
         await userEvent.click(screen.getByText('Forrige steg'));
 

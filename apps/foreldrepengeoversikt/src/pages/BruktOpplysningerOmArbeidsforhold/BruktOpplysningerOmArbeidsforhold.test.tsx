@@ -3,13 +3,15 @@ import { render, screen } from '@testing-library/react';
 
 import * as stories from './BruktOpplysningerOmArbeidsforhold.stories';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const { Default } = composeStories(stories);
 
 describe('<BruktOpplysningerOmArbeidsforhold>', () => {
     it('Skal vise side som informerer om at Nav har brukt opplysninger om arbeidsforholdet', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Nav har hentet opplysninger om arbeidsforholdet ditt')).toBeInTheDocument();
+        expect(await screen.findByText(messages['BruktOpplysningerOmArbeidsforhold.tittel'])).toBeInTheDocument();
 
         expect(
             screen.getByText(

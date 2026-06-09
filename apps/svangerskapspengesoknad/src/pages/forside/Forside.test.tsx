@@ -7,6 +7,8 @@ import { applyRequestHandlers } from 'msw-storybook-addon';
 
 import * as stories from './Forside.stories';
 
+import messages from '../../intl/nb_NO.json';
+
 const { Default, MedEksisterendeSøknad } = composeStories(stories);
 
 describe('<Forside>', () => {
@@ -23,17 +25,17 @@ describe('<Forside>', () => {
             />,
         );
 
-        expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['Svangerskapspengesøknad.pagetitle'])).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Start søknaden'));
+        await userEvent.click(screen.getByText(messages['Forside.begynnMedSøknad']));
 
-        expect(screen.getByText('Du må bekrefte at du har lest og forstått dine plikter.')).toBeInTheDocument();
+        expect(screen.getByText(messages['Forside.valideringsfeil.harForståttRettigheterOgPlikter'])).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Ja, jeg har forstått mine plikter.'));
+        await userEvent.click(screen.getByText(messages['Forside.samtykke']));
 
-        expect(screen.queryByText('Du må bekrefte at du har lest og forstått dine plikter.')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['Forside.valideringsfeil.harForståttRettigheterOgPlikter'])).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Start søknaden'));
+        await userEvent.click(screen.getByText(messages['Forside.begynnMedSøknad']));
 
         expect(setHarGodkjentVilkår).toHaveBeenCalledTimes(1);
 
@@ -60,7 +62,7 @@ describe('<Forside>', () => {
             />,
         );
 
-        expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['Svangerskapspengesøknad.pagetitle'])).toBeInTheDocument();
         expect(await screen.findByText(/Du har en søknad til behandling/)).toBeInTheDocument();
     });
 });

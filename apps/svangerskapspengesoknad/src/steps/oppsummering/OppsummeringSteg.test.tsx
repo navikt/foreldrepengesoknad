@@ -4,14 +4,16 @@ import userEvent from '@testing-library/user-event';
 
 import * as stories from './OppsummeringSteg.stories';
 
+import messages from '../../intl/nb_NO.json';
+
 const { Default } = composeStories(stories);
 
 describe('<OppsummeringSteg>', () => {
     it('skal vise feilmelding når vilkår ikke er godkjent', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
-        expect(screen.getAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findByText(messages['Svangerskapspengesøknad.pagetitle'])).toBeInTheDocument();
+        expect(screen.getAllByText(messages['steps.label.oppsummering'])).toHaveLength(2);
         expect(screen.getByText('Send søknaden')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Send søknaden'));

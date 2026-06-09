@@ -9,6 +9,8 @@ import { FRILANS_ID } from '@navikt/fp-types';
 
 import * as stories from './FrilansSteg.stories';
 
+import messages from '../../intl/nb_NO.json';
+
 const { Default } = composeStories(stories);
 
 describe('<FrilansSteg>', () => {
@@ -29,8 +31,8 @@ describe('<FrilansSteg>', () => {
         await userEvent.click(screen.getByText('Ja'));
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(screen.queryByText('Du må oppgi startdatoen for behov for tilrettelegging.')).not.toBeInTheDocument();
-        expect(screen.queryByText('Du må oppgi hvor mye du kan jobbe.')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['valideringsfeil.tilrettelagtArbeidFom.mangler'])).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['valideringsfeil.tilrettelagtArbeidType.mangler'])).not.toBeInTheDocument();
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {

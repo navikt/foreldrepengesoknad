@@ -5,6 +5,8 @@ import { ContextDataType } from 'appData/PlanleggerDataContext';
 
 import * as stories from './HvorMyeSteg.stories';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const { FlereForsørgere, AleneforsørgerMor } = composeStories(stories);
 
 describe('<HvorMyeSteg>', () => {
@@ -12,7 +14,7 @@ describe('<HvorMyeSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const utils = render(<FlereForsørgere gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Hvor mye')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['HvorMyeSteg.Tittel'])).toHaveLength(2);
 
         const morLønn = utils.getByLabelText('Hva tjener Klara ca. i måneden? (valgfritt)');
         await userEvent.type(morLønn, '1000');
@@ -30,7 +32,7 @@ describe('<HvorMyeSteg>', () => {
 
     it('skal kun vise inputfelt for mor', async () => {
         render(<AleneforsørgerMor />);
-        expect(await screen.findAllByText('Hvor mye')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['HvorMyeSteg.Tittel'])).toHaveLength(2);
         expect(screen.getByText('Hva tjener du ca. i måneden? (valgfritt)')).toBeInTheDocument();
         expect(screen.queryByText('Hva tjener Espen ca. i måneden? (valgfritt)')).not.toBeInTheDocument();
     });

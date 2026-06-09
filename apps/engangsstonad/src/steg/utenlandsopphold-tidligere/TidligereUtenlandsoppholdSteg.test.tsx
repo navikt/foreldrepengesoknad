@@ -10,6 +10,8 @@ import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
 
 import * as stories from './TidligereUtenlandsoppholdSteg.stories';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const { Default } = composeStories(stories);
 
 describe('<TidligereUtenlandsoppholdSteg>', () => {
@@ -19,8 +21,8 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
 
         const utils = render(<Default gåTilNesteSide={nesteStegFn} mellomlagreOgNaviger={mellomlagreOgNaviger} />);
 
-        expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
-        expect(screen.getAllByText('Har bodd i utlandet')).toHaveLength(2);
+        expect(await screen.findByText(messages['Engangsstønad.Pagetitle'])).toBeInTheDocument();
+        expect(screen.getAllByText(messages['useStepConfig.TidligereUtenlandsopphold'])).toHaveLength(2);
         expect(screen.getByText('Steg 4 av 5')).toBeInTheDocument();
 
         await userEvent.selectOptions(utils.getByLabelText('Hvilket land bodde du i?'), 'CA');

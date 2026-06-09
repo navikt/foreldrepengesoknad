@@ -14,6 +14,8 @@ import {
 
 import { getUttaksplanMedFriUtsettelsesperiode, mapTilEndringssøknadDto, mapTilSøknadDto } from './apiUtils';
 
+import messages from '../intl/nb_NO.json';
+
 const DEFAULT_SØKER_INFO = {
     arbeidsforhold: [
         {
@@ -146,7 +148,7 @@ describe('mapTilSøknadDto', () => {
             throw new Error('type er ikkje fødsel');
         }
         expect(Object.hasOwn(barn, 'fnr')).toBe(false);
-        expect(barn.type).toEqual('fødsel');
+        expect(barn.type).toEqual(messages['fødsel']);
         expect(barn.fødselsdato).toEqual(barnMock.fødselsdatoer[0]);
         expect(barn.termindato).toEqual(barnMock.termindato);
     });

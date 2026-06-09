@@ -3,6 +3,8 @@ import { render, screen } from '@testing-library/react';
 
 import * as stories from './DinePlikter.stories';
 
+import messages from '../../../intl/nb_NO.json';
+
 const { Default } = composeStories(stories);
 
 describe('<DinePlikter>', () => {
@@ -10,8 +12,7 @@ describe('<DinePlikter>', () => {
         render(<Default />);
 
         expect(
-            screen.queryByText(
-                'Jeg forstår at hvis jeg gir uriktige eller holder tilbake opplysninger kan det få konsekvenser for retten min til foreldrepenger.',
+            screen.queryByText(messages['velkommen.dinePlikter.listeElement.2'],
             ),
         ).toBeInTheDocument();
     });

@@ -10,6 +10,8 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './OmBarnetSteg.stories';
 
+import messages from '../../intl/nb_NO.json';
+
 vi.mock('utils/hooks/useSaveLoadedRoute', () => {
     return { default: vi.fn() };
 });
@@ -32,20 +34,20 @@ describe('<OmBarnetSteg>', () => {
 
         render(<MorFødsel gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+        expect(await screen.findByText(messages['omBarnet.erBarnetFødt'])).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Ja'));
 
-        expect(screen.getByText('Hvor mange barn har du fått?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Ett barn'));
+        expect(screen.getByText(messages['omBarnet.antallBarn.født'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['omBarnet.radiobutton.ettBarn']));
 
-        const barnFødtInput = screen.getByLabelText('Når ble barnet født?');
+        const barnFødtInput = screen.getByLabelText(messages['omBarnet.fødselsdato']);
         await userEvent.type(barnFødtInput, dayjs().format(DDMMYYYY_DATE_FORMAT));
         await userEvent.tab();
 
-        const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
+        const termindatoInput = screen.getByLabelText(messages['omBarnet.termindato.født']);
         expect(
-            screen.queryByText('Termindato er hentet fra søknaden til den andre forelderen'),
+            screen.queryByText(messages['omBarnet.termindato.født.beskrivelse']),
         ).not.toBeInTheDocument();
         await userEvent.type(termindatoInput, dayjs().subtract(10, 'days').format(DDMMYYYY_DATE_FORMAT));
         await userEvent.tab();
@@ -78,19 +80,19 @@ describe('<OmBarnetSteg>', () => {
 
         render(<MorFødsel gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+        expect(await screen.findByText(messages['omBarnet.erBarnetFødt'])).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
 
-        expect(screen.getByText('Hvor mange barn har du fått?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Flere barn'));
+        expect(screen.getByText(messages['omBarnet.antallBarn.født'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['omBarnet.radiobutton.flere']));
 
         await userEvent.selectOptions(screen.getByLabelText('Antall barn'), '4');
 
-        const barnFødtInput = screen.getByLabelText('Når ble det eldste barnet født?');
+        const barnFødtInput = screen.getByLabelText(messages['omBarnet.fødselsdato.flereBarn']);
         await userEvent.type(barnFødtInput, dayjs().format(DDMMYYYY_DATE_FORMAT));
         await userEvent.tab();
 
-        const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
+        const termindatoInput = screen.getByLabelText(messages['omBarnet.termindato.født']);
         await userEvent.type(termindatoInput, dayjs().subtract(10, 'days').format(DDMMYYYY_DATE_FORMAT));
         await userEvent.tab();
 
@@ -122,7 +124,7 @@ describe('<OmBarnetSteg>', () => {
 
         render(<MorFødsel gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+        expect(await screen.findByText(messages['omBarnet.erBarnetFødt'])).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige steg'));
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
@@ -140,18 +142,18 @@ describe('<OmBarnetSteg>', () => {
         const mellomlagreSøknadOgNaviger = vi.fn();
         render(<MorFødsel gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+        expect(await screen.findByText(messages['omBarnet.erBarnetFødt'])).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Nei'));
+        await userEvent.click(screen.getByText(messages['nei']));
 
-        expect(screen.getByText('Hvor mange barn venter du?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Ett barn'));
+        expect(screen.getByText(messages['omBarnet.antallBarn.termin'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['omBarnet.radiobutton.ettBarn']));
 
-        const termindatoInput = screen.getByLabelText('Når er termindatoen?');
+        const termindatoInput = screen.getByLabelText(messages['omBarnet.termindato.termin']);
         await userEvent.type(termindatoInput, dayjs().format(DDMMYYYY_DATE_FORMAT));
         await userEvent.tab();
 
-        const termindatoDatertInput = screen.getByLabelText('Når er terminbekreftelsen datert?');
+        const termindatoDatertInput = screen.getByLabelText(messages['omBarnet.terminbekreftelseDato']);
         await userEvent.type(termindatoDatertInput, dayjs().subtract(10, 'days').format(DDMMYYYY_DATE_FORMAT));
         await userEvent.tab();
 
@@ -182,23 +184,23 @@ describe('<OmBarnetSteg>', () => {
         const mellomlagreSøknadOgNaviger = vi.fn();
         render(<MorFødsel gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Nei'));
+        expect(await screen.findByText(messages['omBarnet.erBarnetFødt'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['nei']));
 
-        await userEvent.click(screen.getByText('Ett barn'));
+        await userEvent.click(screen.getByText(messages['omBarnet.radiobutton.ettBarn']));
 
         const today = dayjs();
-        const termindatoInput = screen.getByLabelText('Når er termindatoen?');
+        const termindatoInput = screen.getByLabelText(messages['omBarnet.termindato.termin']);
         await userEvent.type(termindatoInput, today.format(DDMMYYYY_DATE_FORMAT));
         await userEvent.tab();
 
-        const termindatoDatertInput = screen.getByLabelText('Når er terminbekreftelsen datert?');
+        const termindatoDatertInput = screen.getByLabelText(messages['omBarnet.terminbekreftelseDato']);
         await userEvent.type(termindatoDatertInput, today.format(DDMMYYYY_DATE_FORMAT));
         await userEvent.tab();
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(screen.queryByText('Dato på terminbekreftelse kan ikke være frem i tid')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['valideringsfeil.omBarnet.terminbekreftelseDato.kanIkkeVæreFremITid'])).not.toBeInTheDocument();
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -213,22 +215,22 @@ describe('<OmBarnetSteg>', () => {
     it('skal avvise morgondagens dato som terminbekreftelsesdato', async () => {
         render(<MorFødsel />);
 
-        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Nei'));
+        expect(await screen.findByText(messages['omBarnet.erBarnetFødt'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['nei']));
 
-        await userEvent.click(screen.getByText('Ett barn'));
+        await userEvent.click(screen.getByText(messages['omBarnet.radiobutton.ettBarn']));
 
-        const termindatoInput = screen.getByLabelText('Når er termindatoen?');
+        const termindatoInput = screen.getByLabelText(messages['omBarnet.termindato.termin']);
         await userEvent.type(termindatoInput, dayjs().format(DDMMYYYY_DATE_FORMAT));
         await userEvent.tab();
 
-        const termindatoDatertInput = screen.getByLabelText('Når er terminbekreftelsen datert?');
+        const termindatoDatertInput = screen.getByLabelText(messages['omBarnet.terminbekreftelseDato']);
         await userEvent.type(termindatoDatertInput, dayjs().add(1, 'day').format(DDMMYYYY_DATE_FORMAT));
         await userEvent.tab();
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(screen.getAllByText('Dato på terminbekreftelse kan ikke være frem i tid').length).toBeGreaterThan(0);
+        expect(screen.getAllByText(messages['valideringsfeil.omBarnet.terminbekreftelseDato.kanIkkeVæreFremITid']).length).toBeGreaterThan(0);
     });
 
     it('skal søke stebarnsadopsjon for ett barn', async () => {
@@ -237,17 +239,17 @@ describe('<OmBarnetSteg>', () => {
 
         render(<ForAdopsjon gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Gjelder søknaden din stebarnsadopsjon?')).toBeInTheDocument();
+        expect(await screen.findByText(messages['omBarnet.adopsjonGjelder'])).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
 
-        const stebarnsadopsjonInput = screen.getByLabelText('Oppgi datoen for stebarnsadopsjon');
+        const stebarnsadopsjonInput = screen.getByLabelText(messages['omBarnet.adopsjonsdato.stebarn']);
         await userEvent.type(stebarnsadopsjonInput, dayjs().format(DDMMYYYY_DATE_FORMAT));
         await userEvent.tab();
 
-        expect(screen.getByText('Hvor mange barn skal du adoptere?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Ett barn'));
+        expect(screen.getByText(messages['omBarnet.antallBarn.adopsjon.født'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['omBarnet.radiobutton.ettBarn']));
 
-        const barnetFødtInput = screen.getByLabelText('Når ble barnet født?');
+        const barnetFødtInput = screen.getByLabelText(messages['omBarnet.fødselsdato']);
         await userEvent.type(barnetFødtInput, dayjs().subtract(10, 'days').format('DD.MM.YYYY'));
         await userEvent.tab();
 
@@ -279,31 +281,31 @@ describe('<OmBarnetSteg>', () => {
 
         render(<ForAdopsjon gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Gjelder søknaden din stebarnsadopsjon?')).toBeInTheDocument();
+        expect(await screen.findByText(messages['omBarnet.adopsjonGjelder'])).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
 
-        const stebarnsadopsjonInput = screen.getByLabelText('Oppgi datoen for stebarnsadopsjon');
+        const stebarnsadopsjonInput = screen.getByLabelText(messages['omBarnet.adopsjonsdato.stebarn']);
         await userEvent.type(stebarnsadopsjonInput, dayjs().format(DDMMYYYY_DATE_FORMAT));
         await userEvent.tab();
 
-        expect(screen.getByText('Hvor mange barn skal du adoptere?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Flere barn'));
+        expect(screen.getByText(messages['omBarnet.antallBarn.adopsjon.født'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['omBarnet.radiobutton.flere']));
 
         await userEvent.selectOptions(screen.getByLabelText('Antall barn'), '4');
 
-        const barn1FødtInput = screen.getByLabelText('Når er det første barnet født?');
+        const barn1FødtInput = screen.getByLabelText(messages['omBarnet.fødselsdato.adopsjon.1']);
         await userEvent.type(barn1FødtInput, dayjs().subtract(10, 'days').format('DD.MM.YYYY'));
         await userEvent.tab();
 
-        const barn2FødtInput = screen.getByLabelText('Når er det andre barnet født?');
+        const barn2FødtInput = screen.getByLabelText(messages['omBarnet.fødselsdato.adopsjon.2']);
         await userEvent.type(barn2FødtInput, dayjs().subtract(15, 'days').format('DD.MM.YYYY'));
         await userEvent.tab();
 
-        const barn3FødtInput = screen.getByLabelText('Når er det tredje barnet født?');
+        const barn3FødtInput = screen.getByLabelText(messages['omBarnet.fødselsdato.adopsjon.3']);
         await userEvent.type(barn3FødtInput, dayjs().subtract(20, 'days').format('DD.MM.YYYY'));
         await userEvent.tab();
 
-        const barn4FødtInput = screen.getByLabelText('Når er det fjerde barnet født?');
+        const barn4FødtInput = screen.getByLabelText(messages['omBarnet.fødselsdato.adopsjon.4']);
         await userEvent.type(barn4FødtInput, dayjs().subtract(25, 'days').format('DD.MM.YYYY'));
         await userEvent.tab();
 
@@ -340,22 +342,22 @@ describe('<OmBarnetSteg>', () => {
         async () => {
             render(<ForAdopsjon />);
 
-            expect(await screen.findByText('Gjelder søknaden din stebarnsadopsjon?')).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Nei'));
+            expect(await screen.findByText(messages['omBarnet.adopsjonGjelder'])).toBeInTheDocument();
+            await userEvent.click(screen.getByText(messages['nei']));
 
-            const overtaOmsorgDatoInput = screen.getByLabelText('Når overtar du omsorgen?');
+            const overtaOmsorgDatoInput = screen.getByLabelText(messages['omBarnet.adopsjonsdato.annetBarn']);
             await userEvent.type(overtaOmsorgDatoInput, dayjs().format(DDMMYYYY_DATE_FORMAT));
             await userEvent.tab();
 
-            expect(screen.getByText('Hvor mange barn skal du adoptere?')).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Ett barn'));
+            expect(screen.getByText(messages['omBarnet.antallBarn.adopsjon.født'])).toBeInTheDocument();
+            await userEvent.click(screen.getByText(messages['omBarnet.radiobutton.ettBarn']));
 
-            const barnetFødtInput = screen.getByLabelText('Når ble barnet født?');
+            const barnetFødtInput = screen.getByLabelText(messages['omBarnet.fødselsdato']);
             await userEvent.type(barnetFødtInput, dayjs().format(DDMMYYYY_DATE_FORMAT));
             await userEvent.tab();
 
-            expect(screen.queryByText('Adopterer du fra utlandet?')).not.toBeInTheDocument();
-            expect(screen.queryByText('Når kommer barnet til Norge?')).not.toBeInTheDocument();
+            expect(screen.queryByText(messages['omBarnet.adopteresFraUtlandet'])).not.toBeInTheDocument();
+            expect(screen.queryByText(messages['omBarnet.ankomstDato'])).not.toBeInTheDocument();
         },
     );
 
@@ -365,19 +367,18 @@ describe('<OmBarnetSteg>', () => {
 
         render(<FarFødsel />);
 
-        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Nei'));
+        expect(await screen.findByText(messages['omBarnet.erBarnetFødt'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['nei']));
 
-        expect(screen.getByText('Hvor mange barn venter dere?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Ett barn'));
+        expect(screen.getByText(messages['omBarnet.antallBarn.termin.far'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['omBarnet.radiobutton.ettBarn']));
 
-        const termindatoInput = screen.getByLabelText('Når er termindatoen?');
+        const termindatoInput = screen.getByLabelText(messages['omBarnet.termindato.termin']);
         await userEvent.type(termindatoInput, dayjs('2022-08-01').format(DDMMYYYY_DATE_FORMAT));
         await userEvent.tab();
 
         expect(
-            screen.getByText(
-                'Du kan søke om foreldrepenger tidligst i 22. svangerskapsuke. Du er dessverre for tidlig ute, og får ikke søkt før senere.',
+            screen.getByText(messages['omBarnet.termindato.erForTidligTilÅSøkePåTermin.innhold'],
                 {
                     exact: false,
                 },
@@ -393,19 +394,18 @@ describe('<OmBarnetSteg>', () => {
 
         render(<MedmorFødsel />);
 
-        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Nei'));
+        expect(await screen.findByText(messages['omBarnet.erBarnetFødt'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['nei']));
 
-        expect(screen.getByText('Hvor mange barn venter dere?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Ett barn'));
+        expect(screen.getByText(messages['omBarnet.antallBarn.termin.far'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['omBarnet.radiobutton.ettBarn']));
 
-        const termindatoInput = screen.getByLabelText('Når er termindatoen?');
+        const termindatoInput = screen.getByLabelText(messages['omBarnet.termindato.termin']);
         await userEvent.type(termindatoInput, dayjs('2022-08-01').format(DDMMYYYY_DATE_FORMAT));
         await userEvent.tab();
 
         expect(
-            screen.getByText(
-                'Du kan søke om foreldrepenger tidligst i 22. svangerskapsuke. Du er dessverre for tidlig ute, og får ikke søkt før senere.',
+            screen.getByText(messages['omBarnet.termindato.erForTidligTilÅSøkePåTermin.innhold'],
                 {
                     exact: false,
                 },
@@ -421,13 +421,13 @@ describe('<OmBarnetSteg>', () => {
 
         render(<FarFødsel />);
 
-        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Nei'));
+        expect(await screen.findByText(messages['omBarnet.erBarnetFødt'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['nei']));
 
-        expect(screen.getByText('Hvor mange barn venter dere?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Ett barn'));
+        expect(screen.getByText(messages['omBarnet.antallBarn.termin.far'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['omBarnet.radiobutton.ettBarn']));
 
-        const termindatoInput = screen.getByLabelText('Når er termindatoen?');
+        const termindatoInput = screen.getByLabelText(messages['omBarnet.termindato.termin']);
         await userEvent.type(termindatoInput, dayjs('2022-08-02').format('DD.MM.YYYY'));
         await userEvent.tab();
 
@@ -437,7 +437,7 @@ describe('<OmBarnetSteg>', () => {
             }),
         ).not.toBeInTheDocument();
 
-        const termindatoDatertInput = screen.getByLabelText('Når er terminbekreftelsen datert?');
+        const termindatoDatertInput = screen.getByLabelText(messages['omBarnet.terminbekreftelseDato']);
         await userEvent.type(termindatoDatertInput, dayjs().format('DD.MM.YYYY'));
         await userEvent.tab();
 
@@ -452,13 +452,13 @@ describe('<OmBarnetSteg>', () => {
 
         render(<MedmorFødsel />);
 
-        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Nei'));
+        expect(await screen.findByText(messages['omBarnet.erBarnetFødt'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['nei']));
 
-        expect(screen.getByText('Hvor mange barn venter dere?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Ett barn'));
+        expect(screen.getByText(messages['omBarnet.antallBarn.termin.far'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['omBarnet.radiobutton.ettBarn']));
 
-        const termindatoInput = screen.getByLabelText('Når er termindatoen?');
+        const termindatoInput = screen.getByLabelText(messages['omBarnet.termindato.termin']);
         await userEvent.type(termindatoInput, dayjs('2022-08-02').format('DD.MM.YYYY'));
         await userEvent.tab();
 
@@ -468,7 +468,7 @@ describe('<OmBarnetSteg>', () => {
             }),
         ).not.toBeInTheDocument();
 
-        const termindatoDatertInput = screen.getByLabelText('Når er terminbekreftelsen datert?');
+        const termindatoDatertInput = screen.getByLabelText(messages['omBarnet.terminbekreftelseDato']);
         await userEvent.type(termindatoDatertInput, dayjs().format('DD.MM.YYYY'));
         await userEvent.tab();
 
@@ -498,7 +498,7 @@ describe('<OmBarnetSteg>', () => {
             expect(screen.getByText('KLØKTIG')).toBeInTheDocument();
             expect(screen.getByText('Født 15. mars 2021')).toBeInTheDocument();
 
-            const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
+            const termindatoInput = screen.getByLabelText(messages['omBarnet.termindato.født']);
             await userEvent.type(termindatoInput, dayjs('2021-03-01').format(DDMMYYYY_DATE_FORMAT));
             await userEvent.tab();
 
@@ -547,7 +547,7 @@ describe('<OmBarnetSteg>', () => {
             expect(await screen.findByText('Barnet du søker foreldrepenger for:')).toBeInTheDocument();
             expect(screen.getByText('KLØKTIG')).toBeInTheDocument();
             expect(screen.getByText('Født 15. mars 2021')).toBeInTheDocument();
-            expect(screen.queryByText('Hva var termindatoen?')).not.toBeInTheDocument();
+            expect(screen.queryByText(messages['omBarnet.termindato.født'])).not.toBeInTheDocument();
 
             await userEvent.click(screen.getByText('Neste steg'));
 
@@ -592,7 +592,7 @@ describe('<OmBarnetSteg>', () => {
         expect(screen.getByText('LYST')).toBeInTheDocument();
         expect(screen.getByText('SNILT')).toBeInTheDocument();
 
-        const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
+        const termindatoInput = screen.getByLabelText(messages['omBarnet.termindato.født']);
         await userEvent.type(termindatoInput, dayjs('2022-07-17').format(DDMMYYYY_DATE_FORMAT));
         await userEvent.tab();
 
@@ -638,7 +638,7 @@ describe('<OmBarnetSteg>', () => {
 
             expect(await screen.findByText('Barnet du søker foreldrepenger for:')).toBeInTheDocument();
             expect(
-                await screen.findByText('Termindato er hentet fra søknaden til den andre forelderen'),
+                await screen.findByText(messages['omBarnet.termindato.født.beskrivelse']),
             ).toBeInTheDocument();
 
             await userEvent.click(screen.getByText('Neste steg'));

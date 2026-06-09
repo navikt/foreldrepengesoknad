@@ -3,6 +3,8 @@ import { render, screen } from '@testing-library/react';
 
 import * as stories from './HarIkkeSaker.stories';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const { HarOppdatertSak, Default } = composeStories(stories);
 
 describe('<HarIkkeSaker>', () => {
@@ -10,23 +12,23 @@ describe('<HarIkkeSaker>', () => {
         render(<HarOppdatertSak />);
 
         expect(
-            await screen.findByText('Du har ingen søknader om foreldrepenger, engangsstønad eller svangerskapspenger'),
+            await screen.findByText(messages['HarIkkeSaker.IngenSoknader']),
         ).toBeInTheDocument();
-        expect(screen.getByText('Les om hva du har rett på')).toBeInTheDocument();
-        expect(screen.getByText('Søk om foreldrepenger')).toBeInTheDocument();
-        expect(screen.getByText('Søk om svangerskapspenger')).toBeInTheDocument();
-        expect(screen.getByText('Søk om engangsstønad')).toBeInTheDocument();
+        expect(screen.getByText(messages['SøkelenkerPanel.HarRett'])).toBeInTheDocument();
+        expect(screen.getByText(messages['SøkelenkerPanel.SokFp'])).toBeInTheDocument();
+        expect(screen.getByText(messages['SøkelenkerPanel.SokSvp'])).toBeInTheDocument();
+        expect(screen.getByText(messages['SøkelenkerPanel.SokEs'])).toBeInTheDocument();
     });
 
     it('skal kun vise lenker', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Les om hva du har rett på')).toBeInTheDocument();
-        expect(screen.getByText('Søk om foreldrepenger')).toBeInTheDocument();
-        expect(screen.getByText('Søk om svangerskapspenger')).toBeInTheDocument();
-        expect(screen.getByText('Søk om engangsstønad')).toBeInTheDocument();
+        expect(await screen.findByText(messages['SøkelenkerPanel.HarRett'])).toBeInTheDocument();
+        expect(screen.getByText(messages['SøkelenkerPanel.SokFp'])).toBeInTheDocument();
+        expect(screen.getByText(messages['SøkelenkerPanel.SokSvp'])).toBeInTheDocument();
+        expect(screen.getByText(messages['SøkelenkerPanel.SokEs'])).toBeInTheDocument();
         expect(
-            screen.queryByText('Du har ingen søknader om foreldrepenger, engangsstønad eller svangerskapspenger'),
+            screen.queryByText(messages['HarIkkeSaker.IngenSoknader']),
         ).not.toBeInTheDocument();
     });
 });

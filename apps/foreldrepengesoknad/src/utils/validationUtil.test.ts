@@ -37,7 +37,7 @@ describe('validationUtil', () => {
 
         const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer')(andrePartFnr);
 
-        expect(resultat).toBe('Du kan ikke oppgi ditt eget fødselsnummer');
+        expect(resultat).toBe(messages['valideringsfeil.fødselsnummer.ugyldigEgetFødselsnummer']);
     });
 
     it('skal gi feilmelding når andre parts fnr er tom string', () => {
@@ -46,7 +46,7 @@ describe('validationUtil', () => {
 
         const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer')(andrePartFnr);
 
-        expect(resultat).toBe('Du må skrive et gyldig fødselsnummer');
+        expect(resultat).toBe(messages['valideringsfeil.fødselsnummer.ugyldigFødselsnummer']);
     });
 
     it('skal gi feilmelding når annen part er under seksten', () => {
@@ -55,7 +55,7 @@ describe('validationUtil', () => {
 
         const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer')(andrePartFnr);
 
-        expect(resultat).toBe('Feil i fødselsnummer. Den andre forelderen må være over seksten år gammel');
+        expect(resultat).toBe(messages['valideringsfeil.fødselsnummer.underSeksten']);
     });
 
     it('skal gi feilmelding når frn er utenlandsk og fnr er tom string', () => {
@@ -65,7 +65,7 @@ describe('validationUtil', () => {
 
         const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer', erUtenlandskFnr)(andrePartFnr);
 
-        expect(resultat).toBe('Fødselsnummer må fylles ut');
+        expect(resultat).toBe(messages['valideringsfeil.fødselsnummer.required']);
     });
 
     it('skal ikke gi feilmelding når frn er utenlandsk og fnr ikke tom string', () => {

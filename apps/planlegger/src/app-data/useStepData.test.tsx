@@ -14,6 +14,8 @@ import { ContextDataType, PlanleggerDataContext } from './PlanleggerDataContext'
 import { PlanleggerRoutes } from './routes';
 import { useStepData } from './useStepData';
 
+import messages from '../intl/messages/nb_NO.json';
+
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: nbMessages,
 };
@@ -49,47 +51,47 @@ describe('useStepData', () => {
                 {
                     id: '/hvem-planlegger',
                     isSelected: false,
-                    label: 'Hvem planlegger?',
+                    label: messages['HvemPlanleggerSteg.HvemPlanlegger'],
                 },
                 {
                     id: '/om-barnet',
                     isSelected: false,
-                    label: 'Barnet',
+                    label: messages['OmBarnetSteg.Tittel'],
                 },
                 {
                     id: '/barnehageplass',
                     isSelected: false,
-                    label: 'Barnehageplass',
+                    label: messages['BarnehageplassOppsummering.Tittel'],
                 },
                 {
                     id: '/arbeidssituasjon',
                     isSelected: false,
-                    label: 'Arbeidssituasjon',
+                    label: messages['ArbeidssituasjonSteg.Tittel'],
                 },
                 {
                     id: '/hvor-mye',
                     isSelected: false,
-                    label: 'Hvor mye',
+                    label: messages['HvorMyeSteg.Tittel'],
                 },
                 {
                     id: '/hvor-lenge',
                     isSelected: false,
-                    label: 'Hvor lenge',
+                    label: messages['HvorLangPeriodeSteg.Tittel'],
                 },
                 {
                     id: '/fordeling',
                     isSelected: false,
-                    label: 'Fordeling',
+                    label: messages['FordelingSteg.Tittel'],
                 },
                 {
                     id: '/planen-deres',
                     isSelected: false,
-                    label: 'Planen',
+                    label: messages['PlanenDeresSteg.Tittel'],
                 },
                 {
                     id: '/oppsummering',
                     isSelected: false,
-                    label: 'Oppsummering',
+                    label: messages['OppsummeringHeader.Tittel'],
                 },
             ]),
         );
@@ -113,47 +115,47 @@ describe('useStepData', () => {
                 {
                     id: '/hvem-planlegger',
                     isSelected: false,
-                    label: 'Hvem planlegger?',
+                    label: messages['HvemPlanleggerSteg.HvemPlanlegger'],
                 },
                 {
                     id: '/om-barnet',
                     isSelected: false,
-                    label: 'Barnet',
+                    label: messages['OmBarnetSteg.Tittel'],
                 },
                 {
                     id: '/barnehageplass',
                     isSelected: false,
-                    label: 'Barnehageplass',
+                    label: messages['BarnehageplassOppsummering.Tittel'],
                 },
                 {
                     id: '/arbeidssituasjon',
                     isSelected: false,
-                    label: 'Arbeidssituasjon',
+                    label: messages['ArbeidssituasjonSteg.Tittel'],
                 },
                 {
                     id: '/hvor-mye',
                     isSelected: false,
-                    label: 'Hvor mye',
+                    label: messages['HvorMyeSteg.Tittel'],
                 },
                 {
                     id: '/hvor-lenge',
                     isSelected: false,
-                    label: 'Hvor lenge',
+                    label: messages['HvorLangPeriodeSteg.Tittel'],
                 },
                 {
                     id: '/fordeling',
                     isSelected: false,
-                    label: 'Fordeling',
+                    label: messages['FordelingSteg.Tittel'],
                 },
                 {
                     id: '/planen-deres',
                     isSelected: false,
-                    label: 'Planen',
+                    label: messages['PlanenDeresSteg.Tittel'],
                 },
                 {
                     id: '/oppsummering',
                     isSelected: true,
-                    label: 'Oppsummering',
+                    label: messages['OppsummeringHeader.Tittel'],
                 },
             ]),
         );
@@ -177,17 +179,17 @@ describe('useStepData', () => {
                 {
                     id: '/hvem-planlegger',
                     isSelected: false,
-                    label: 'Hvem planlegger?',
+                    label: messages['HvemPlanleggerSteg.HvemPlanlegger'],
                 },
                 {
                     id: '/om-barnet',
                     isSelected: false,
-                    label: 'Barnet',
+                    label: messages['OmBarnetSteg.Tittel'],
                 },
                 {
                     id: '/oppsummering',
                     isSelected: true,
-                    label: 'Oppsummering',
+                    label: messages['OppsummeringHeader.Tittel'],
                 },
             ]),
         );
@@ -220,47 +222,47 @@ describe('useStepData', () => {
                 {
                     id: '/hvem-planlegger',
                     isSelected: false,
-                    label: 'Hvem planlegger?',
+                    label: messages['HvemPlanleggerSteg.HvemPlanlegger'],
                 },
                 {
                     id: '/om-barnet',
                     isSelected: false,
-                    label: 'Barnet',
+                    label: messages['OmBarnetSteg.Tittel'],
                 },
                 {
                     id: '/barnehageplass',
                     isSelected: false,
-                    label: 'Barnehageplass',
+                    label: messages['BarnehageplassOppsummering.Tittel'],
                 },
                 {
                     id: '/arbeidssituasjon',
                     isSelected: false,
-                    label: 'Arbeidssituasjon',
+                    label: messages['ArbeidssituasjonSteg.Tittel'],
                 },
                 {
                     id: '/hvor-mye',
                     isSelected: false,
-                    label: 'Hvor mye',
+                    label: messages['HvorMyeSteg.Tittel'],
                 },
                 {
                     id: '/hvor-lenge',
                     isSelected: false,
-                    label: 'Hvor lenge',
+                    label: messages['HvorLangPeriodeSteg.Tittel'],
                 },
                 {
                     id: '/fordeling',
                     isSelected: false,
-                    label: 'Fordeling',
+                    label: messages['FordelingSteg.Tittel'],
                 },
                 {
                     id: '/planen-deres',
                     isSelected: false,
-                    label: 'Planen',
+                    label: messages['PlanenDeresSteg.Tittel'],
                 },
                 {
                     id: '/oppsummering',
                     isSelected: true,
-                    label: 'Oppsummering',
+                    label: messages['OppsummeringHeader.Tittel'],
                 },
             ]),
         );
@@ -293,42 +295,42 @@ describe('useStepData', () => {
                 {
                     id: '/hvem-planlegger',
                     isSelected: false,
-                    label: 'Hvem planlegger?',
+                    label: messages['HvemPlanleggerSteg.HvemPlanlegger'],
                 },
                 {
                     id: '/om-barnet',
                     isSelected: false,
-                    label: 'Barnet',
+                    label: messages['OmBarnetSteg.Tittel'],
                 },
                 {
                     id: '/arbeidssituasjon',
                     isSelected: false,
-                    label: 'Arbeidssituasjon',
+                    label: messages['ArbeidssituasjonSteg.Tittel'],
                 },
                 {
                     id: '/hvor-mye',
                     isSelected: false,
-                    label: 'Hvor mye',
+                    label: messages['HvorMyeSteg.Tittel'],
                 },
                 {
                     id: '/hvor-lenge',
                     isSelected: false,
-                    label: 'Hvor lenge',
+                    label: messages['HvorLangPeriodeSteg.Tittel'],
                 },
                 {
                     id: '/fordeling',
                     isSelected: false,
-                    label: 'Fordeling',
+                    label: messages['FordelingSteg.Tittel'],
                 },
                 {
                     id: '/planen-deres',
                     isSelected: false,
-                    label: 'Planen',
+                    label: messages['PlanenDeresSteg.Tittel'],
                 },
                 {
                     id: '/oppsummering',
                     isSelected: true,
-                    label: 'Oppsummering',
+                    label: messages['OppsummeringHeader.Tittel'],
                 },
             ]),
         );
@@ -361,42 +363,42 @@ describe('useStepData', () => {
                 {
                     id: '/hvem-planlegger',
                     isSelected: false,
-                    label: 'Hvem planlegger?',
+                    label: messages['HvemPlanleggerSteg.HvemPlanlegger'],
                 },
                 {
                     id: '/om-barnet',
                     isSelected: false,
-                    label: 'Barnet',
+                    label: messages['OmBarnetSteg.Tittel'],
                 },
                 {
                     id: '/barnehageplass',
                     isSelected: false,
-                    label: 'Barnehageplass',
+                    label: messages['BarnehageplassOppsummering.Tittel'],
                 },
                 {
                     id: '/arbeidssituasjon',
                     isSelected: false,
-                    label: 'Arbeidssituasjon',
+                    label: messages['ArbeidssituasjonSteg.Tittel'],
                 },
                 {
                     id: '/hvor-mye',
                     isSelected: false,
-                    label: 'Hvor mye',
+                    label: messages['HvorMyeSteg.Tittel'],
                 },
                 {
                     id: '/hvor-lenge',
                     isSelected: false,
-                    label: 'Hvor lenge',
+                    label: messages['HvorLangPeriodeSteg.Tittel'],
                 },
                 {
                     id: '/planen-deres',
                     isSelected: false,
-                    label: 'Planen',
+                    label: messages['PlanenDeresSteg.Tittel'],
                 },
                 {
                     id: '/oppsummering',
                     isSelected: true,
-                    label: 'Oppsummering',
+                    label: messages['OppsummeringHeader.Tittel'],
                 },
             ]),
         );
@@ -428,42 +430,42 @@ describe('useStepData', () => {
                 {
                     id: '/hvem-planlegger',
                     isSelected: false,
-                    label: 'Hvem planlegger?',
+                    label: messages['HvemPlanleggerSteg.HvemPlanlegger'],
                 },
                 {
                     id: '/om-barnet',
                     isSelected: false,
-                    label: 'Barnet',
+                    label: messages['OmBarnetSteg.Tittel'],
                 },
                 {
                     id: '/barnehageplass',
                     isSelected: false,
-                    label: 'Barnehageplass',
+                    label: messages['BarnehageplassOppsummering.Tittel'],
                 },
                 {
                     id: '/arbeidssituasjon',
                     isSelected: false,
-                    label: 'Arbeidssituasjon',
+                    label: messages['ArbeidssituasjonSteg.Tittel'],
                 },
                 {
                     id: '/hvor-mye',
                     isSelected: false,
-                    label: 'Hvor mye',
+                    label: messages['HvorMyeSteg.Tittel'],
                 },
                 {
                     id: '/hvor-lenge',
                     isSelected: false,
-                    label: 'Hvor lenge',
+                    label: messages['HvorLangPeriodeSteg.Tittel'],
                 },
                 {
                     id: '/planen-deres',
                     isSelected: false,
-                    label: 'Planen',
+                    label: messages['PlanenDeresSteg.Tittel'],
                 },
                 {
                     id: '/oppsummering',
                     isSelected: true,
-                    label: 'Oppsummering',
+                    label: messages['OppsummeringHeader.Tittel'],
                 },
             ]),
         );
@@ -496,42 +498,42 @@ describe('useStepData', () => {
                 {
                     id: '/hvem-planlegger',
                     isSelected: false,
-                    label: 'Hvem planlegger?',
+                    label: messages['HvemPlanleggerSteg.HvemPlanlegger'],
                 },
                 {
                     id: '/om-barnet',
                     isSelected: false,
-                    label: 'Barnet',
+                    label: messages['OmBarnetSteg.Tittel'],
                 },
                 {
                     id: '/barnehageplass',
                     isSelected: false,
-                    label: 'Barnehageplass',
+                    label: messages['BarnehageplassOppsummering.Tittel'],
                 },
                 {
                     id: '/arbeidssituasjon',
                     isSelected: false,
-                    label: 'Arbeidssituasjon',
+                    label: messages['ArbeidssituasjonSteg.Tittel'],
                 },
                 {
                     id: '/hvor-mye',
                     isSelected: false,
-                    label: 'Hvor mye',
+                    label: messages['HvorMyeSteg.Tittel'],
                 },
                 {
                     id: '/hvor-lenge',
                     isSelected: false,
-                    label: 'Hvor lenge',
+                    label: messages['HvorLangPeriodeSteg.Tittel'],
                 },
                 {
                     id: '/planen-deres',
                     isSelected: false,
-                    label: 'Planen',
+                    label: messages['PlanenDeresSteg.Tittel'],
                 },
                 {
                     id: '/oppsummering',
                     isSelected: true,
-                    label: 'Oppsummering',
+                    label: messages['OppsummeringHeader.Tittel'],
                 },
             ]),
         );
@@ -564,27 +566,27 @@ describe('useStepData', () => {
                 {
                     id: '/hvem-planlegger',
                     isSelected: false,
-                    label: 'Hvem planlegger?',
+                    label: messages['HvemPlanleggerSteg.HvemPlanlegger'],
                 },
                 {
                     id: '/om-barnet',
                     isSelected: false,
-                    label: 'Barnet',
+                    label: messages['OmBarnetSteg.Tittel'],
                 },
                 {
                     id: '/barnehageplass',
                     isSelected: false,
-                    label: 'Barnehageplass',
+                    label: messages['BarnehageplassOppsummering.Tittel'],
                 },
                 {
                     id: '/arbeidssituasjon',
                     isSelected: false,
-                    label: 'Arbeidssituasjon',
+                    label: messages['ArbeidssituasjonSteg.Tittel'],
                 },
                 {
                     id: '/oppsummering',
                     isSelected: true,
-                    label: 'Oppsummering',
+                    label: messages['OppsummeringHeader.Tittel'],
                 },
             ]),
         );

@@ -9,6 +9,8 @@ import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './OmBarnetSteg.stories';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const { VisSideForAdopsjonKvinne, VisSideForAdopsjonMann, VisSideForFodsel } = composeStories(stories);
 
 describe('<OmBarnetSteg>', () => {
@@ -19,27 +21,27 @@ describe('<OmBarnetSteg>', () => {
         const utils = render(
             <VisSideForAdopsjonKvinne gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />,
         );
-        expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
+        expect(await screen.findByText(messages['Engangsstønad.Pagetitle'])).toBeInTheDocument();
 
-        expect(screen.getAllByText('Barnet')).toHaveLength(2);
+        expect(screen.getAllByText(messages['OmBarnetOppsummering.tittel'])).toHaveLength(2);
         expect(screen.getByText('Steg 2 av 4')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
-        expect(screen.getAllByText('Du må oppgi om du adopterer ektefelles barn')).toHaveLength(2);
-        expect(screen.getAllByText('Du må oppgi dato for omsorgsovertakelsen')).toHaveLength(2);
-        expect(screen.getAllByText('Du må oppgi antall barn du skal adoptere')).toHaveLength(2);
+        expect(screen.getAllByText(messages['AdopsjonPanel.Spørsmål.Required'])).toHaveLength(2);
+        expect(screen.getAllByText(messages['AdopsjonPanel.OvertaOmsorg.DuMåOppgi'])).toHaveLength(2);
+        expect(screen.getAllByText(messages['AdopsjonPanel.Antallbarn.Required'])).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Ja'));
 
-        const adopsjonsdato = utils.getByLabelText('Fra hvilken dato adopterer du din ektefelles barn?');
+        const adopsjonsdato = utils.getByLabelText(messages['AdopsjonPanel.Spørsmål.Stebarnsadopsjondato']);
         await userEvent.type(adopsjonsdato, dayjs().format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(adopsjonsdato);
 
-        await userEvent.click(screen.getByText('Ett barn'));
+        await userEvent.click(screen.getByText(messages['AdopsjonPanel.Radiobutton.Ettbarn']));
 
-        const fødselsdato = utils.getByLabelText('Fødselsdato');
+        const fødselsdato = utils.getByLabelText(messages['AdopsjonFodselFieldArray.Fødselsdato']);
         await userEvent.type(fødselsdato, dayjs().subtract(10, 'day').format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(fødselsdato);
 
@@ -73,27 +75,27 @@ describe('<OmBarnetSteg>', () => {
         const utils = render(
             <VisSideForAdopsjonMann gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />,
         );
-        expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
+        expect(await screen.findByText(messages['Engangsstønad.Pagetitle'])).toBeInTheDocument();
 
-        expect(screen.getAllByText('Barnet')).toHaveLength(2);
+        expect(screen.getAllByText(messages['OmBarnetOppsummering.tittel'])).toHaveLength(2);
         expect(screen.getByText('Steg 2 av 4')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Nei'));
+        await userEvent.click(screen.getByText(messages['AdopsjonPanel.Nei']));
 
-        const adopsjonsdato = utils.getByLabelText('Når overtar du omsorgen?');
+        const adopsjonsdato = utils.getByLabelText(messages['AdopsjonPanel.Spørsmål.Overtaomsorgdato']);
         await userEvent.type(adopsjonsdato, dayjs().format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(adopsjonsdato);
 
-        await userEvent.click(screen.getByText('Ett barn'));
+        await userEvent.click(screen.getByText(messages['AdopsjonPanel.Radiobutton.Ettbarn']));
 
-        const fødselsdato = utils.getByLabelText('Fødselsdato');
+        const fødselsdato = utils.getByLabelText(messages['AdopsjonFodselFieldArray.Fødselsdato']);
         await userEvent.type(fødselsdato, dayjs().subtract(10, 'day').format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(fødselsdato);
 
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
-        expect(screen.getAllByText('Du må oppgi om du adopterer alene')).toHaveLength(2);
+        expect(screen.getAllByText(messages['AdopsjonPanel.AdoptererDuAlene.Required'])).toHaveLength(2);
 
         await userEvent.click(screen.getAllByText('Ja')[1]!);
 
@@ -128,32 +130,32 @@ describe('<OmBarnetSteg>', () => {
         const utils = render(
             <VisSideForAdopsjonKvinne gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />,
         );
-        expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
+        expect(await screen.findByText(messages['Engangsstønad.Pagetitle'])).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Ja'));
 
-        const adopsjonsdato = utils.getByLabelText('Fra hvilken dato adopterer du din ektefelles barn?');
+        const adopsjonsdato = utils.getByLabelText(messages['AdopsjonPanel.Spørsmål.Stebarnsadopsjondato']);
         await userEvent.type(adopsjonsdato, dayjs().format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(adopsjonsdato);
 
-        await userEvent.click(screen.getByText('Tre eller flere barn'));
+        await userEvent.click(screen.getByText(messages['AdopsjonPanel.Radiobutton.Flere']));
 
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
-        expect(screen.getAllByText('Du må oppgi antall barn du skal overta omsorgen for')).toHaveLength(2);
+        expect(screen.getAllByText(messages['AdopsjonPanel.Antallbarndropdown.Required'])).toHaveLength(2);
 
-        await userEvent.selectOptions(utils.getByLabelText('Hvor mange barn overtar du omsorgen for?'), '3');
+        await userEvent.selectOptions(utils.getByLabelText(messages['AdopsjonPanel.AntallBarn.Omsorgsovertakelse']), '3');
 
-        const fødselsdatoFørsteBarn = utils.getByLabelText('Når er det første barnet født?');
+        const fødselsdatoFørsteBarn = utils.getByLabelText(messages['AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.1']);
         await userEvent.type(fødselsdatoFørsteBarn, dayjs().subtract(10, 'day').format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(fødselsdatoFørsteBarn);
 
-        const fødselsdatoAndreBarn = utils.getByLabelText('Når er det andre barnet født?');
+        const fødselsdatoAndreBarn = utils.getByLabelText(messages['AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.2']);
         await userEvent.type(fødselsdatoAndreBarn, dayjs().subtract(5, 'day').format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(fødselsdatoAndreBarn);
 
-        const fødselsdatoTredjeBarn = utils.getByLabelText('Når er det tredje barnet født?');
+        const fødselsdatoTredjeBarn = utils.getByLabelText(messages['AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.3']);
         await userEvent.type(fødselsdatoTredjeBarn, dayjs().subtract(1, 'day').format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(fødselsdatoTredjeBarn);
 
@@ -191,26 +193,26 @@ describe('<OmBarnetSteg>', () => {
         const utils = render(
             <VisSideForFodsel gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />,
         );
-        expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
+        expect(await screen.findByText(messages['Engangsstønad.Pagetitle'])).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(await screen.findByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
-        expect(screen.getAllByText('Du må oppgi om barnet er født')).toHaveLength(2);
-        expect(screen.getAllByText('Du må oppgi termindato')).toHaveLength(2);
-        expect(screen.getAllByText('Du må oppgi hvor mange barn du venter')).toHaveLength(2);
+        expect(screen.getAllByText(messages['FødselPanel.Spørsmål.ErBarnetFødt.Required'])).toHaveLength(2);
+        expect(screen.getAllByText(messages['FødselPanel.Termindato.DuMåOppgi'])).toHaveLength(2);
+        expect(screen.getAllByText(messages['FødselPanel.AntallBarn.Venter.Required'])).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Ja'));
 
-        const fødselsdato = utils.getByLabelText('Fødselsdato');
+        const fødselsdato = utils.getByLabelText(messages['AdopsjonFodselFieldArray.Fødselsdato']);
         await userEvent.type(fødselsdato, dayjs().format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(fødselsdato);
 
-        const termindato = utils.getByLabelText('Termindato');
+        const termindato = utils.getByLabelText(messages['FødselPanel.Termindato']);
         await userEvent.type(termindato, dayjs().format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(termindato);
 
-        await userEvent.click(screen.getByText('Ett barn'));
+        await userEvent.click(screen.getByText(messages['AdopsjonPanel.Radiobutton.Ettbarn']));
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -247,21 +249,21 @@ describe('<OmBarnetSteg>', () => {
         const utils = render(
             <VisSideForFodsel gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />,
         );
-        expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
+        expect(await screen.findByText(messages['Engangsstønad.Pagetitle'])).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Nei'));
+        await userEvent.click(screen.getByText(messages['AdopsjonPanel.Nei']));
 
-        const termindato = utils.getByLabelText('Termindato');
+        const termindato = utils.getByLabelText(messages['FødselPanel.Termindato']);
         await userEvent.type(termindato, dayjs().format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(termindato);
 
         expect(screen.getAllByLabelText('Hvor mange barn venter du?')[0]).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Tre eller flere barn'));
+        await userEvent.click(screen.getByText(messages['AdopsjonPanel.Radiobutton.Flere']));
 
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
-        expect(screen.getAllByText('Du må oppgi hvor mange barn du venter')).toHaveLength(2);
+        expect(screen.getAllByText(messages['FødselPanel.AntallBarn.Venter.Required'])).toHaveLength(2);
 
         await userEvent.selectOptions(utils.getAllByLabelText('Hvor mange barn venter du?')[1]!, '3');
 

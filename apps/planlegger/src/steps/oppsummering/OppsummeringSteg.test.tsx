@@ -4,6 +4,8 @@ import userEvent from '@testing-library/user-event';
 
 import * as stories from './OppsummeringSteg.stories';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const {
     KunMorHarRett,
     FlereForsørgereHundreProsentTermin,
@@ -21,8 +23,8 @@ describe('<OppsummeringSteg>', () => {
     it('skal vise info der det er flere forsørgere og ingen har rett til foreldrepenger', async () => {
         render(<HarIkkeRett />);
 
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
-        expect(screen.getByText('Ingen av dere har rett til foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findAllByText(messages['OppsummeringHeader.Tittel'])).toHaveLength(2);
+        expect(screen.getByText(messages['OppsummeringSteg.Infoboks.IngenHarRett'])).toBeInTheDocument();
 
         expect(
             screen.getByText('Basert på svarene deres har ingen av dere rett på foreldrepenger.'),
@@ -32,12 +34,12 @@ describe('<OppsummeringSteg>', () => {
     it('skal vise info der det er flere forsørgere og begge har rett til foreldrepenger - fødsel', async () => {
         render(<FlereForsørgereHundreProsentTermin />);
 
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['OppsummeringHeader.Tittel'])).toHaveLength(2);
         expect(screen.getByText('Dette svarte dere')).toBeInTheDocument();
 
-        expect(screen.getByText('Barnet')).toBeInTheDocument();
+        expect(screen.getByText(messages['OmBarnetSteg.Tittel'])).toBeInTheDocument();
 
-        expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
+        expect(screen.getByText(messages['ArbeidssituasjonSteg.Tittel'])).toBeInTheDocument();
         expect(
             screen.getByText(
                 'Både Klara og Espen har jobbet minst 6 av de siste 10 månedene, og har tjent 68 274,50 kr eller mer det siste året.',
@@ -55,15 +57,15 @@ describe('<OppsummeringSteg>', () => {
     it('skal vise info der det er flere forsørgere og begge har rett til foreldrepenger - adopsjon', async () => {
         render(<FlereForsørgereHundreProsentAdopsjon />);
 
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['OppsummeringHeader.Tittel'])).toHaveLength(2);
         expect(screen.getByText('Dette svarte dere')).toBeInTheDocument();
 
-        expect(screen.getByText('Barnet')).toBeInTheDocument();
+        expect(screen.getByText(messages['OmBarnetSteg.Tittel'])).toBeInTheDocument();
         expect(
             screen.getByText('Barnet skal adopteres med omsorgsovertakelse 10. okt. 2024 og ble født 10. juli 2024.'),
         ).toBeInTheDocument();
 
-        expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
+        expect(screen.getByText(messages['ArbeidssituasjonSteg.Tittel'])).toBeInTheDocument();
         expect(
             screen.getByText(
                 'Både Klara og Esther har jobbet minst 6 av de siste 10 månedene, og har tjent 68 274,50 kr eller mer det siste året.',
@@ -81,7 +83,7 @@ describe('<OppsummeringSteg>', () => {
     it('skal vise en periode ved fødsel far og far', async () => {
         render(<FarOgFarFødsel />);
 
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['OppsummeringHeader.Tittel'])).toHaveLength(2);
         expect(screen.getByText('Dere valgte 100 % i 40 uker.')).toBeInTheDocument();
         expect(screen.getByText(/Periode:/)).toBeInTheDocument();
         expect(screen.getByText(/25. nov. 2024 – 31. jan. 2025/)).toBeInTheDocument();
@@ -90,7 +92,7 @@ describe('<OppsummeringSteg>', () => {
     it('skal vise perioder for begge fedrene ved adopsjon far og far', async () => {
         render(<FarOgFarAdopsjonKunFar1HarRett />);
 
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['OppsummeringHeader.Tittel'])).toHaveLength(2);
 
         expect(screen.getByText('Periode:')).toBeInTheDocument();
         expect(screen.getByText('14. okt. 2024 – 18. juli 2025')).toBeInTheDocument();
@@ -100,12 +102,12 @@ describe('<OppsummeringSteg>', () => {
     it('skal vise info der det er flere forsørgere og kun mor har rett til foreldrepenger', async () => {
         render(<KunMorHarRett />);
 
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['OppsummeringHeader.Tittel'])).toHaveLength(2);
         expect(screen.getByText('Dette svarte dere')).toBeInTheDocument();
 
-        expect(screen.getByText('Barnet')).toBeInTheDocument();
+        expect(screen.getByText(messages['OmBarnetSteg.Tittel'])).toBeInTheDocument();
 
-        expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
+        expect(screen.getByText(messages['ArbeidssituasjonSteg.Tittel'])).toBeInTheDocument();
         expect(
             screen.getByText(
                 'Klara har jobbet minst 6 av de siste 10 månedene og tjent 68 274,50 kr eller mer det siste året.',
@@ -123,21 +125,21 @@ describe('<OppsummeringSteg>', () => {
 
     it('skal vise at mor som er ufør aleneforsørger ikke har rett på foreldrepenger', async () => {
         render(<AleneforsørgerMorErUfør />);
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
-        expect(screen.getByText('Du har ikke rett til foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findAllByText(messages['OppsummeringHeader.Tittel'])).toHaveLength(2);
+        expect(screen.getByText(messages['OppsummeringSteg.Infoboks.IngenHarRettDeg'])).toBeInTheDocument();
     });
 
     it('skal vise info for far og far, kun far 2 har rett', async () => {
         render(<OppsummeringFarOgFarKunFar2HarRett />);
 
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['OppsummeringHeader.Tittel'])).toHaveLength(2);
 
         expect(screen.getByText('Dette svarte dere')).toBeInTheDocument();
 
-        expect(screen.getByText('Barnet')).toBeInTheDocument();
+        expect(screen.getByText(messages['OmBarnetSteg.Tittel'])).toBeInTheDocument();
         expect(screen.getByText('Barnet har termin 24. okt. 2024.')).toBeInTheDocument();
 
-        expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
+        expect(screen.getByText(messages['ArbeidssituasjonSteg.Tittel'])).toBeInTheDocument();
         expect(
             screen.getByText(
                 'Espen har ikke jobbet minst 6 av de siste 10 månedene og tjent 68 274,50 kr eller mer det siste året.',
@@ -158,9 +160,9 @@ describe('<OppsummeringSteg>', () => {
     it('skal vise info om hvor mye-steget der det er flere forsørgere og begge har rett til foreldrepenger - fødsel', async () => {
         render(<FlereForsørgereHundreProsentTermin />);
 
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['OppsummeringHeader.Tittel'])).toHaveLength(2);
 
-        expect(screen.getAllByText('Hvor mye?')).toHaveLength(2);
+        expect(screen.getAllByText(messages['HvorMyeOppsummering.Tittel'])).toHaveLength(2);
         expect(
             screen.getByText(
                 'Klara vil få rundt 2 308 kr per dag hvis dere velger 100 % foreldrepenger eller 1 846 kr per dag med 80 %.',
@@ -177,38 +179,38 @@ describe('<OppsummeringSteg>', () => {
     it('skal ikke vise info om hvor mye-steget lønn ikke er oppgitt for noen av foreldrene', async () => {
         render(<FlereForsørgereHundreProsentTermin hvorMye={{}} />);
 
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['OppsummeringHeader.Tittel'])).toHaveLength(2);
 
         // Sjekk at ExpansionCard med "Hvor mye?" ikke finnes
-        const hvorMyeExpansionCard = screen.queryByRole('heading', { name: 'Hvor mye?' });
+        const hvorMyeExpansionCard = screen.queryByRole('heading', { name: messages['HvorMyeOppsummering.Tittel'] });
         expect(hvorMyeExpansionCard).not.toBeInTheDocument();
     });
 
     it('skal vise info om barnehage - fødsel', async () => {
         render(<FlereForsørgereHundreProsentTermin />);
 
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['OppsummeringHeader.Tittel'])).toHaveLength(2);
 
         expect(screen.getByText('Planen deres')).toBeInTheDocument();
-        expect(screen.getAllByText('Hvor mye?')).toHaveLength(2);
-        expect(screen.getAllByText('Barnehageplass')).toHaveLength(2);
+        expect(screen.getAllByText(messages['HvorMyeOppsummering.Tittel'])).toHaveLength(2);
+        expect(screen.getAllByText(messages['BarnehageplassOppsummering.Tittel'])).toHaveLength(2);
         expect(screen.getByText('Dette svarte dere')).toBeInTheDocument();
     });
     it('skal ikke vise info om barnehage – adopsjon', async () => {
         render(<FarOgFarAdopsjonKunFar1HarRett />);
 
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['OppsummeringHeader.Tittel'])).toHaveLength(2);
 
         expect(screen.getByText('Planen deres')).toBeInTheDocument();
-        expect(screen.getAllByText('Hvor mye?')).toHaveLength(2);
+        expect(screen.getAllByText(messages['HvorMyeOppsummering.Tittel'])).toHaveLength(2);
         expect(screen.getByText('Dette svarte dere')).toBeInTheDocument();
 
-        expect(screen.queryByText('Barnehageplass')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['BarnehageplassOppsummering.Tittel'])).not.toBeInTheDocument();
     });
     it('skal kun vise fars uttak i hvor mye-steget, der det er mor og far, men kun far rett til foreldrepenger', async () => {
         render(<MorOgFarKunFarHarRett />);
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
-        const hvorMyeHeading = screen.getAllByText('Hvor mye?')[0]!;
+        expect(await screen.findAllByText(messages['OppsummeringHeader.Tittel'])).toHaveLength(2);
+        const hvorMyeHeading = screen.getAllByText(messages['HvorMyeOppsummering.Tittel'])[0]!;
         const expansionCard = hvorMyeHeading.closest('.navds-expansioncard');
         if (expansionCard) {
             const vismerButton = expansionCard.querySelector('button[aria-expanded="false"]');
@@ -226,7 +228,7 @@ describe('<OppsummeringSteg>', () => {
 
     it('Skal vise "du" og ikke fornavn når søker er aleneforsørger', async () => {
         render(<AleneforsørgerÅttiProsentFødselToBarn />);
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['OppsummeringHeader.Tittel'])).toHaveLength(2);
         const hvorMyeHeading = screen.getAllByText('Dette svarte du')[0]!;
         const expansionCard = hvorMyeHeading.closest('.navds-expansioncard');
         if (expansionCard) {
@@ -248,7 +250,7 @@ describe('<OppsummeringSteg>', () => {
             initialGlobals: { locale: 'nb' },
         });
         render(<StoryWithNorsk />);
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['OppsummeringHeader.Tittel'])).toHaveLength(2);
 
         // Sjekk at surveyen rendres med norsk tittel
         expect(screen.getByText('Frivillig spørreundersøkelse')).toBeInTheDocument();
@@ -259,7 +261,7 @@ describe('<OppsummeringSteg>', () => {
             initialGlobals: { locale: 'nn' },
         });
         render(<StoryWithNynorsk />);
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['OppsummeringHeader.Tittel'])).toHaveLength(2);
 
         // Sjekk at surveyen rendres med nynorsk tittel
         expect(screen.getByText('Frivillig spørjeundersøking')).toBeInTheDocument();

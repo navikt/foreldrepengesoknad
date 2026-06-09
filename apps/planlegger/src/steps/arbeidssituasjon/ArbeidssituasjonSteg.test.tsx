@@ -8,6 +8,8 @@ import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 
 import * as stories from './ArbeidssituasjonSteg.stories';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const {
     ArbeidssituasjonMorOgFar,
     ArbeidssituasjonFarOgFar,
@@ -34,7 +36,7 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         render(<ArbeidssituasjonMorOgFar gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['ArbeidssituasjonSteg.Tittel'])).toHaveLength(2);
 
         await userEvent.click(
             screen.getByText(
@@ -67,7 +69,7 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         render(<ArbeidssituasjonMorOgFar gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['ArbeidssituasjonSteg.Tittel'])).toHaveLength(2);
 
         await userEvent.click(
             screen.getByText(
@@ -75,7 +77,7 @@ describe('<ArbeidssituasjonSteg>', () => {
             ),
         );
 
-        await userEvent.click(screen.getByText('Nei'));
+        await userEvent.click(screen.getByText(messages['DefaultMessage.Nei']));
 
         expect(screen.getByText('Espen har ikke rett til foreldrepenger')).toBeInTheDocument();
 
@@ -96,11 +98,11 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         render(<ArbeidssituasjonMorOgFar gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['ArbeidssituasjonSteg.Tittel'])).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Er ufør'));
+        await userEvent.click(screen.getByText(messages['ArbeidssituasjonSteg.Ufør']));
 
-        await userEvent.click(screen.getByText('Nei'));
+        await userEvent.click(screen.getByText(messages['DefaultMessage.Nei']));
 
         await userEvent.click(screen.getByText('Neste'));
 
@@ -119,11 +121,11 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         render(<ArbeidssituasjonMorOgFar gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['ArbeidssituasjonSteg.Tittel'])).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Ingen av disse'));
+        await userEvent.click(screen.getByText(messages['ArbeidssituasjonSteg.Ingen']));
 
-        await userEvent.click(screen.getByText('Nei'));
+        await userEvent.click(screen.getByText(messages['DefaultMessage.Nei']));
 
         await userEvent.click(screen.getByText('Neste'));
 
@@ -142,9 +144,9 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         render(<ArbeidssituasjonFarOgFar gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['ArbeidssituasjonSteg.Tittel'])).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Nei'));
+        await userEvent.click(screen.getByText(messages['DefaultMessage.Nei']));
 
         await userEvent.click(screen.getAllByText('Ja')[1]!);
 
@@ -165,7 +167,7 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         render(<ArbeidssituasjonAleneforsørger gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['ArbeidssituasjonSteg.Tittel'])).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Ja'));
 
@@ -187,11 +189,11 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         render(<ArbeidssituasjonAleneforsørger gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['ArbeidssituasjonSteg.Tittel'])).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Nei'));
+        await userEvent.click(screen.getByText(messages['DefaultMessage.Nei']));
 
-        expect(screen.getByText('Du har ikke rett til foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText(messages['OppsummeringSteg.Infoboks.IngenHarRettDeg'])).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste'));
 
@@ -207,8 +209,8 @@ describe('<ArbeidssituasjonSteg>', () => {
     it('skal omtale medmor som medmor hvis navn ikke er oppgit', async () => {
         render(<ArbeidssituasjonMorOgMedmorUtenNavn />);
 
-        expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);
-        await userEvent.click(screen.getByText('Ingen av disse'));
+        expect(await screen.findAllByText(messages['ArbeidssituasjonSteg.Tittel'])).toHaveLength(2);
+        await userEvent.click(screen.getByText(messages['ArbeidssituasjonSteg.Ingen']));
 
         expect(
             screen.getByText('Har medmor jobbet minst 6 av de siste 10 månedene', { exact: false }),

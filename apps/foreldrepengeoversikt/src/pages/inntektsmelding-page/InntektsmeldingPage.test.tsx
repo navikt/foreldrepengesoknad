@@ -5,6 +5,8 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './InntektsmeldingPage.stories';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const {
     UtenRefusjon,
     DelvisRefusjon,
@@ -89,7 +91,7 @@ describe('<InntektsmeldingPage>', () => {
             setHandlers(EnBortfaltNaturalytelse.parameters.msw);
             render(<EnBortfaltNaturalytelse />);
 
-            expect(await screen.findByText('Naturalytelser eller “frynsegoder” under permisjonen')).toBeInTheDocument();
+            expect(await screen.findByText(messages['inntektsmelding.naturalytelser.tittel'])).toBeInTheDocument();
             expect(
                 await screen.findByText('10.09.2024 får du ikke lenger Fri transport til en verdi av 998 kr.'),
             ).toBeInTheDocument();
@@ -102,7 +104,7 @@ describe('<InntektsmeldingPage>', () => {
             setHandlers(FlereBortfalteNaturalytelser.parameters.msw);
             render(<FlereBortfalteNaturalytelser />);
 
-            expect(await screen.findByText('Naturalytelser eller “frynsegoder” under permisjonen')).toBeInTheDocument();
+            expect(await screen.findByText(messages['inntektsmelding.naturalytelser.tittel'])).toBeInTheDocument();
             expect(
                 await screen.findByText(
                     'Mellom 10.09.2024 og 11.10.2024 får du ikke lenger Fri transport til en verdi av 998 kr.',

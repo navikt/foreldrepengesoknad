@@ -11,6 +11,8 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './TidligereUtenlandsoppholdSteg.stories';
 
+import messages from '../../intl/nb_NO.json';
+
 const { Default } = composeStories(stories);
 
 describe('<TidligereUtenlandsoppholdSteg>', () => {
@@ -23,7 +25,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
             setHandlers(Default.parameters.msw);
             render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-            expect(await screen.findAllByText('Har bodd i utlandet')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.utenlandsopphold.tidligere'])).toHaveLength(2);
 
             await userEvent.selectOptions(screen.getByLabelText('Hvilket land bodde du i?'), 'CA');
 
@@ -74,7 +76,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
                 />,
             );
 
-            expect(await screen.findAllByText('Har bodd i utlandet')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.utenlandsopphold.tidligere'])).toHaveLength(2);
 
             await userEvent.selectOptions(screen.getByLabelText('Hvilket land bodde du i?'), 'CA');
 
@@ -119,7 +121,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
             setHandlers(Default.parameters.msw);
             render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-            expect(await screen.findAllByText('Har bodd i utlandet')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.utenlandsopphold.tidligere'])).toHaveLength(2);
             await userEvent.click(screen.getByText('Forrige steg'));
 
             expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);

@@ -5,6 +5,8 @@ import { ContextDataType } from 'appData/PlanleggerDataContext';
 
 import * as stories from './HvemPlanleggerSteg.stories';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const { Default, MedEksisterendeData } = composeStories(stories);
 
 describe('<HvemPlanleggerSteg>', () => {
@@ -13,14 +15,14 @@ describe('<HvemPlanleggerSteg>', () => {
 
         const utils = render(<Default gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Hvem planlegger?')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['HvemPlanleggerSteg.HvemPlanlegger'])).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Mor og far'));
+        await userEvent.click(screen.getByText(messages['HvemPlanleggerSteg.MorOgFar']));
 
-        const morNavn = utils.getByLabelText('Hva heter mor? (valgfritt)');
+        const morNavn = utils.getByLabelText(messages['HvemPlanleggerSteg.Mor']);
         await userEvent.type(morNavn, 'Helga');
 
-        const farNavn = utils.getByLabelText('Hva heter far? (valgfritt)');
+        const farNavn = utils.getByLabelText(messages['HvemPlanleggerSteg.Far']);
         await userEvent.type(farNavn, 'Espen');
 
         await userEvent.click(screen.getByText('Neste'));
@@ -41,14 +43,14 @@ describe('<HvemPlanleggerSteg>', () => {
 
         const utils = render(<Default gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Hvem planlegger?')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['HvemPlanleggerSteg.HvemPlanlegger'])).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Mor og medmor'));
+        await userEvent.click(screen.getByText(messages['HvemPlanleggerSteg.MorOgMedmor']));
 
-        const morNavn = utils.getByLabelText('Hva heter mor? (valgfritt)');
+        const morNavn = utils.getByLabelText(messages['HvemPlanleggerSteg.Mor']);
         await userEvent.type(morNavn, 'Helga');
 
-        const farNavn = utils.getByLabelText('Hva heter medmor? (valgfritt)');
+        const farNavn = utils.getByLabelText(messages['HvemPlanleggerSteg.Medmor']);
         await userEvent.type(farNavn, 'Olga');
 
         await userEvent.click(screen.getByText('Neste'));
@@ -69,9 +71,9 @@ describe('<HvemPlanleggerSteg>', () => {
 
         const utils = render(<Default gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Hvem planlegger?')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['HvemPlanleggerSteg.HvemPlanlegger'])).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Far og far'));
+        await userEvent.click(screen.getByText(messages['HvemPlanleggerSteg.FarOgFar']));
 
         const far1Navn = utils.getAllByLabelText('Hva heter far? (valgfritt)')[0]!;
         await userEvent.type(far1Navn, 'Espen');
@@ -97,9 +99,9 @@ describe('<HvemPlanleggerSteg>', () => {
 
         render(<Default gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Hvem planlegger?')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['HvemPlanleggerSteg.HvemPlanlegger'])).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Bare mor med aleneomsorg'));
+        await userEvent.click(screen.getByText(messages['HvemPlanleggerSteg.BareMor']));
 
         await userEvent.click(screen.getByText('Neste'));
 
@@ -117,9 +119,9 @@ describe('<HvemPlanleggerSteg>', () => {
 
         render(<Default gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Hvem planlegger?')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['HvemPlanleggerSteg.HvemPlanlegger'])).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Bare far med aleneomsorg'));
+        await userEvent.click(screen.getByText(messages['HvemPlanleggerSteg.BareFar']));
 
         await userEvent.click(screen.getByText('Neste'));
 
@@ -134,11 +136,11 @@ describe('<HvemPlanleggerSteg>', () => {
     it('skal vise infoboks for mor med aleneomsorg', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Bare mor med aleneomsorg')).toBeInTheDocument();
+        expect(await screen.findByText(messages['HvemPlanleggerSteg.BareMor'])).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Bare mor med aleneomsorg'));
+        await userEvent.click(screen.getByText(messages['HvemPlanleggerSteg.BareMor']));
 
-        expect(await screen.findByText('Aleneomsorg')).toBeInTheDocument();
+        expect(await screen.findByText(messages['HvemPlanleggerSteg.Infoboks'])).toBeInTheDocument();
         expect(screen.getByText(/Å ha aleneomsorg betyr/)).toBeInTheDocument();
     });
 
@@ -147,9 +149,9 @@ describe('<HvemPlanleggerSteg>', () => {
 
         render(<MedEksisterendeData gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Hvem planlegger?')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['HvemPlanleggerSteg.HvemPlanlegger'])).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Mor og medmor'));
+        await userEvent.click(screen.getByText(messages['HvemPlanleggerSteg.MorOgMedmor']));
 
         await userEvent.click(screen.getByText('Neste'));
 

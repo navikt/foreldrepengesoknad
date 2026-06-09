@@ -11,6 +11,8 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './ManglendeVedlegg.stories';
 
+import messages from '../../intl/nb_NO.json';
+
 const {
     Termindatodokumentasjon,
     Omsorgsovertakelsedokumentasjon,
@@ -35,7 +37,7 @@ describe('<ManglendeVedlegg>', () => {
                 />,
             );
 
-            expect(await screen.findByText('Dokumentasjon av termindato')).toBeInTheDocument();
+            expect(await screen.findByText(messages['manglendeVedlegg.terminbekreftelse.tittel'])).toBeInTheDocument();
 
             await userEvent.click(screen.getByText('Neste steg'));
 
@@ -85,10 +87,10 @@ describe('<ManglendeVedlegg>', () => {
                 />,
             );
 
-            expect(await screen.findByText('Dokumentasjon av termindato')).toBeInTheDocument();
+            expect(await screen.findByText(messages['manglendeVedlegg.terminbekreftelse.tittel'])).toBeInTheDocument();
 
             const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-            const fileInput = screen.getByLabelText('Dokumentasjon av termindato');
+            const fileInput = screen.getByLabelText(messages['manglendeVedlegg.terminbekreftelse.tittel']);
             await userEvent.upload(fileInput, file);
 
             await userEvent.click(screen.getByText('Neste steg'));
@@ -134,7 +136,7 @@ describe('<ManglendeVedlegg>', () => {
                 />,
             );
 
-            expect(await screen.findByText('Dokumentasjon om omsorgsovertakelse')).toBeInTheDocument();
+            expect(await screen.findByText(messages['manglendeVedlegg.omsorgsovertakelse.tittel'])).toBeInTheDocument();
 
             await userEvent.click(screen.getByText('Neste steg'));
 
@@ -184,10 +186,10 @@ describe('<ManglendeVedlegg>', () => {
                 />,
             );
 
-            expect(await screen.findByText('Dokumentasjon om omsorgsovertakelse')).toBeInTheDocument();
+            expect(await screen.findByText(messages['manglendeVedlegg.omsorgsovertakelse.tittel'])).toBeInTheDocument();
 
             const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-            const fileInput = screen.getByLabelText('Dokumentasjon om omsorgsovertakelse');
+            const fileInput = screen.getByLabelText(messages['manglendeVedlegg.omsorgsovertakelse.tittel']);
             await userEvent.upload(fileInput, file);
 
             await userEvent.click(screen.getByText('Neste steg'));
@@ -234,7 +236,7 @@ describe('<ManglendeVedlegg>', () => {
                 />,
             );
 
-            expect(await screen.findByText('Dokumentasjon av aleneomsorg')).toBeInTheDocument();
+            expect(await screen.findByText(messages['manglendeVedlegg.aleneomsorg.tittel'])).toBeInTheDocument();
 
             await userEvent.click(screen.getByText('Neste steg'));
 
@@ -284,10 +286,10 @@ describe('<ManglendeVedlegg>', () => {
                 />,
             );
 
-            expect(await screen.findByText('Dokumentasjon av aleneomsorg')).toBeInTheDocument();
+            expect(await screen.findByText(messages['manglendeVedlegg.aleneomsorg.tittel'])).toBeInTheDocument();
 
             const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-            const fileInput = screen.getByLabelText('Dokumentasjon av aleneomsorg');
+            const fileInput = screen.getByLabelText(messages['manglendeVedlegg.aleneomsorg.tittel']);
             await userEvent.upload(fileInput, file);
 
             await userEvent.click(screen.getByText('Neste steg'));
@@ -334,7 +336,7 @@ describe('<ManglendeVedlegg>', () => {
             );
 
             // Verifiser at "Ingen dokumentasjon påkrevd" melding vises
-            expect(await screen.findByText('Dokumentasjon på at mor er i arbeid')).toBeInTheDocument();
+            expect(await screen.findByText(messages['manglendeVedlegg.morJobber.label'])).toBeInTheDocument();
             expect(
                 await screen.findByText(
                     'Du trenger ikke sende inn dokumentasjon. Vi innhenter opplysninger om mors arbeid ' +
@@ -367,7 +369,7 @@ describe('<ManglendeVedlegg>', () => {
                 />,
             );
 
-            expect(await screen.findByText('Dokumentasjon på at mor er i arbeid')).toBeInTheDocument();
+            expect(await screen.findByText(messages['manglendeVedlegg.morJobber.label'])).toBeInTheDocument();
             expect(
                 await screen.findByText(
                     'Du må legge ved bekreftelse fra Eline sin arbeidsgiver som viser hvilken periode hun skal jobbe og i hvilken stillingsprosent.' +
@@ -401,7 +403,7 @@ describe('<ManglendeVedlegg>', () => {
             );
 
             // Verifiser at "Ingen dokumentasjon påkrevd" melding vises
-            expect(await screen.findByText('Dokumentasjon på at mor er i arbeid')).toBeInTheDocument();
+            expect(await screen.findByText(messages['manglendeVedlegg.morJobber.label'])).toBeInTheDocument();
             expect(
                 await screen.findByText(
                     'Du trenger ikke sende inn dokumentasjon. Vi innhenter opplysninger om mors arbeid ' +

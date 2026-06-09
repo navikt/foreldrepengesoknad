@@ -30,27 +30,27 @@ const intlMock = createIntl(
 describe('prosentValideringGradering', () => {
     it('skal returnere påkrevd-feilmelding når verdi er tom', () => {
         const validator = prosentValideringGradering(intlMock, undefined);
-        expect(validator('')).toBe('Du må oppgi stillingsprosenten du skal jobbe');
+        expect(validator('')).toBe(messages['leggTilPeriodePanel.stillingsprosent.påkrevd']);
     });
 
     it('skal returnere feilmelding når stillingsprosent ikke er et tall', () => {
         const validator = prosentValideringGradering(intlMock, undefined);
-        expect(validator('abc')).toBe('Stillingsprosenten må være et tall');
+        expect(validator('abc')).toBe(messages['leggTilPeriodePanel.stillingsprosent.måVæreEtTall']);
     });
 
     it('skal returnere feilmelding når tallet ikke er større enn 0', () => {
         const validator = prosentValideringGradering(intlMock, undefined);
-        expect(validator('0')).toBe('Stillingsprosenten må være et tall større enn 0');
+        expect(validator('0')).toBe(messages['leggTilPeriodePanel.stillingsprosent.måVæreStørreEnn0']);
     });
 
     it('skal returnere feilmelding når tallet er større enn 100', () => {
         const validator = prosentValideringGradering(intlMock, undefined);
-        expect(validator('100')).toBe('Stillingsprosenten må være et tall mindre enn 100');
+        expect(validator('100')).toBe(messages['leggTilPeriodePanel.stillingsprosent.måVæreMindreEnn100']);
     });
 
     it('skal returnere feilmelding når stillingsprosent + samtidiguttaksprosent > 100', () => {
         const validator = prosentValideringGradering(intlMock, '60');
-        expect(validator('50')).toBe('Stillingsprosent og samtidig uttak kan ikke utgjøre mer enn 100 % sammenlagt');
+        expect(validator('50')).toBe(messages['leggTilPeriodePanel.stillingsprosent.samtidigUttak']);
     });
 
     it('skal returnere null når verdi er gyldig', () => {
@@ -62,27 +62,27 @@ describe('prosentValideringGradering', () => {
 describe('valideringSamtidigUttak', () => {
     it('skal returnere påkrevd-feilmelding når verdi er tom', () => {
         const validator = valideringSamtidigUttak(intlMock, undefined);
-        expect(validator('')).toBe('Du må oppgi prosenten med samtidig uttak');
+        expect(validator('')).toBe(messages['leggTilPeriodePanel.samtidiguttaksprosent.påkrevd']);
     });
 
     it('skal returnere feilmelding når stillingsprosent ikke er et tall', () => {
         const validator = valideringSamtidigUttak(intlMock, undefined);
-        expect(validator('abc')).toBe('Prosenten må være et tall');
+        expect(validator('abc')).toBe(messages['leggTilPeriodePanel.samtidiguttaksprosent.måVæreEtTall']);
     });
 
     it('skal returnere feilmelding når tallet ikke er større enn 0', () => {
         const validator = valideringSamtidigUttak(intlMock, undefined);
-        expect(validator('0')).toBe('Prosenten må være et tall større enn 0');
+        expect(validator('0')).toBe(messages['leggTilPeriodePanel.samtidiguttaksprosent.måVæreStørreEnn0']);
     });
 
     it('skal returnere feilmelding når tallet er større enn 100', () => {
         const validator = valideringSamtidigUttak(intlMock, undefined);
-        expect(validator('101')).toBe('Prosenten må være et tall mindre eller lik 100');
+        expect(validator('101')).toBe(messages['leggTilPeriodePanel.samtidiguttaksprosent.måVæreMindreEnn100']);
     });
 
     it('skal returnere feilmelding når stillingsprosent + samtidiguttaksprosent > 100', () => {
         const validator = valideringSamtidigUttak(intlMock, '70');
-        expect(validator('40')).toBe('Stillingsprosent og samtidig uttak kan ikke utgjøre mer enn 100 % sammenlagt');
+        expect(validator('40')).toBe(messages['leggTilPeriodePanel.stillingsprosent.samtidigUttak']);
     });
 
     it('skal returnere null når verdi er gyldig', () => {
@@ -190,7 +190,7 @@ describe('useFormSubmitValidator', () => {
         const valider = result.current;
         const feilmelding = valider(nyePerioder, formValues);
 
-        expect(feilmelding).toBe('Mor kan ikke kombinere foreldrepenger med arbeid de første seks ukene');
+        expect(feilmelding).toBe(messages['endreTidsPeriodeModal.kanIkkeKombinere']);
     });
 
     it('skal returnere feilmelding dersom far kombinerer arbeid og mødrekvote de første 6 ukene', () => {
@@ -221,7 +221,7 @@ describe('useFormSubmitValidator', () => {
         const valider = result.current;
         const feilmelding = valider(nyePerioder, formValues);
 
-        expect(feilmelding).toBe('Mor kan ikke kombinere foreldrepenger med arbeid de første seks ukene');
+        expect(feilmelding).toBe(messages['endreTidsPeriodeModal.kanIkkeKombinere']);
     });
 
     it('skal ikke returnere feilmelding dersom far/medmor har valgt mer enn 2 uker i intervallet to uker før famDato og seks uker etter', () => {
@@ -252,8 +252,7 @@ describe('useFormSubmitValidator', () => {
         const valider = result.current;
         const feilmelding = valider(perioder, formValues);
 
-        expect(feilmelding).toBe(
-            'Du kan ikke velge mer enn to uker totalt i perioden to uker før og seks uker etter fødsel/termin',
+        expect(feilmelding).toBe(messages['LeggTilEllerEndrePeriodeForm.FarMedmor.MerEnnToUkerRundtFamiliehendelse'],
         );
     });
 
@@ -294,8 +293,7 @@ describe('useFormSubmitValidator', () => {
         const valider = result.current;
         const feilmelding = valider(perioder, formValues);
 
-        expect(feilmelding).toBe(
-            'Du kan ikke velge mer enn to uker totalt i perioden to uker før og seks uker etter fødsel/termin',
+        expect(feilmelding).toBe(messages['LeggTilEllerEndrePeriodeForm.FarMedmor.MerEnnToUkerRundtFamiliehendelse'],
         );
     });
 
@@ -438,8 +436,7 @@ describe('useFormSubmitValidator', () => {
         const valider = result.current;
         const feilmelding = valider(perioder, formValues);
 
-        expect(feilmelding).toBe(
-            'Du kan ikke velge mer enn to uker totalt i perioden to uker før og seks uker etter fødsel/termin',
+        expect(feilmelding).toBe(messages['LeggTilEllerEndrePeriodeForm.FarMedmor.MerEnnToUkerRundtFamiliehendelse'],
         );
     });
 
@@ -501,6 +498,6 @@ describe('useFormSubmitValidator', () => {
         const valider = result.current;
         const feilmelding = valider(perioder, formValues);
 
-        expect(feilmelding).toBe('Dere kan ikke ha mer enn 150 % foreldrepenger til sammen');
+        expect(feilmelding).toBe(messages['LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.KanIkkeHaMerEnn150Prosent']);
     });
 });

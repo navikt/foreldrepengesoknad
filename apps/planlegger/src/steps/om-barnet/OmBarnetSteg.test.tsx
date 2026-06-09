@@ -8,6 +8,8 @@ import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './OmBarnetSteg.stories';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const { AleneforsørgerFar, FlereForsørgereMorOgMor } = composeStories(stories);
 
 describe('<OmBarnetPlanleggerSteg>', () => {
@@ -16,15 +18,15 @@ describe('<OmBarnetPlanleggerSteg>', () => {
 
         const utils = render(<AleneforsørgerFar gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Barnet')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['OmBarnetSteg.Tittel'])).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Fødsel'));
+        await userEvent.click(screen.getByText(messages['OmBarnetSteg.Fødsel']));
 
-        await userEvent.click(screen.getByText('Ett'));
+        await userEvent.click(screen.getByText(messages['OmBarnetSteg.Ett']));
 
-        await userEvent.click(screen.getByText('Nei'));
+        await userEvent.click(screen.getByText(messages['DefaultMessage.Nei']));
 
-        const termindato = utils.getByLabelText('Når er termindato?');
+        const termindato = utils.getByLabelText(messages['ErIkkeFødtPanel.Termin']);
         await userEvent.type(termindato, dayjs().format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(termindato);
 
@@ -50,15 +52,15 @@ describe('<OmBarnetPlanleggerSteg>', () => {
 
         const utils = render(<AleneforsørgerFar gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Barnet')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['OmBarnetSteg.Tittel'])).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Fødsel'));
+        await userEvent.click(screen.getByText(messages['OmBarnetSteg.Fødsel']));
 
-        await userEvent.click(screen.getByText('Ett'));
+        await userEvent.click(screen.getByText(messages['OmBarnetSteg.Ett']));
 
-        await userEvent.click(screen.getByText('Nei'));
+        await userEvent.click(screen.getByText(messages['DefaultMessage.Nei']));
 
-        const termindato = utils.getByLabelText('Når er termindato?');
+        const termindato = utils.getByLabelText(messages['ErIkkeFødtPanel.Termin']);
         await userEvent.type(termindato, dayjs().subtract(10, 'days').format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(termindato);
 
@@ -85,11 +87,11 @@ describe('<OmBarnetPlanleggerSteg>', () => {
 
         const utils = render(<AleneforsørgerFar gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Barnet')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['OmBarnetSteg.Tittel'])).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Fødsel'));
+        await userEvent.click(screen.getByText(messages['OmBarnetSteg.Fødsel']));
 
-        await userEvent.click(screen.getByText('Ett'));
+        await userEvent.click(screen.getByText(messages['OmBarnetSteg.Ett']));
 
         await userEvent.click(screen.getByText('Ja'));
 
@@ -97,7 +99,7 @@ describe('<OmBarnetPlanleggerSteg>', () => {
         await userEvent.type(fødselsdato, dayjs().format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(fødselsdato);
 
-        const termindato = utils.getByLabelText('Når var termindato?');
+        const termindato = utils.getByLabelText(messages['ErFødtPanel.NårVarTermin']);
         await userEvent.type(termindato, dayjs().subtract(10, 'days').format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(termindato);
 
@@ -125,11 +127,11 @@ describe('<OmBarnetPlanleggerSteg>', () => {
 
         const utils = render(<AleneforsørgerFar gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findAllByText('Barnet')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['OmBarnetSteg.Tittel'])).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('Adopsjon'));
+        await userEvent.click(screen.getByText(messages['OmBarnetSteg.Adopsjon']));
 
-        await userEvent.click(screen.getByText('Ett'));
+        await userEvent.click(screen.getByText(messages['OmBarnetSteg.Ett']));
 
         const omsorgsovertakelseDato = utils.getByLabelText('Når tar du over omsorgen for barnet?');
         await userEvent.type(omsorgsovertakelseDato, dayjs().format(DDMMYYYY_DATE_FORMAT));
@@ -160,8 +162,8 @@ describe('<OmBarnetPlanleggerSteg>', () => {
     it('skal ikke kunne velge adopsjon for mor og medmor', async () => {
         render(<FlereForsørgereMorOgMor />);
 
-        expect(await screen.findAllByText('Barnet')).toHaveLength(2);
+        expect(await screen.findAllByText(messages['OmBarnetSteg.Tittel'])).toHaveLength(2);
 
-        expect(screen.getByRole('radio', { name: 'Adopsjon' })).toBeDisabled();
+        expect(screen.getByRole('radio', { name: messages['OmBarnetSteg.Adopsjon'] })).toBeDisabled();
     });
 });

@@ -7,6 +7,8 @@ import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './OppsummeringSteg.stories';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const { BarnetErFodt, AdopsjonAvEktefellesBarn, BarnetErIkkeFodt, HarTidligereOgFremtidigeUtenlandsopphold } =
     composeStories(stories);
 
@@ -16,17 +18,17 @@ describe('<OppsummeringSteg>', () => {
 
         render(<BarnetErFodt sendSøknad={sendSøknad} />);
 
-        expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
+        expect(await screen.findByText(messages['Engangsstønad.Pagetitle'])).toBeInTheDocument();
 
-        expect(screen.getAllByText('Oppsummering')).toHaveLength(2);
+        expect(screen.getAllByText(messages['useStepConfig.Oppsummering'])).toHaveLength(2);
         expect(screen.getByText('Steg 4 av 4')).toBeInTheDocument();
 
-        expect(screen.getAllByText('Barnet')).toHaveLength(2);
-        expect(screen.getByText('Søknaden gjelder')).toBeInTheDocument();
-        expect(screen.getByText('ett barn')).toBeInTheDocument();
-        expect(screen.getByText('Termindato')).toBeInTheDocument();
+        expect(screen.getAllByText(messages['OmBarnetOppsummering.tittel'])).toHaveLength(2);
+        expect(screen.getByText(messages['OmBarnetOppsummering.SoknadenGjelder'])).toBeInTheDocument();
+        expect(screen.getByText(messages['OmBarnetOppsummering.EttBarn'])).toBeInTheDocument();
+        expect(screen.getByText(messages['FødselPanel.Termindato'])).toBeInTheDocument();
         expect(screen.getByText(dayjs().subtract(9, 'day').format(DDMMYYYY_DATE_FORMAT))).toBeInTheDocument();
-        expect(screen.getByText('Fødselsdato')).toBeInTheDocument();
+        expect(screen.getByText(messages['AdopsjonFodselFieldArray.Fødselsdato'])).toBeInTheDocument();
         expect(screen.getByText(dayjs().subtract(10, 'day').format(DDMMYYYY_DATE_FORMAT))).toBeInTheDocument();
 
         expect(screen.getByText('Utenlandsopphold')).toBeInTheDocument();
@@ -55,15 +57,15 @@ describe('<OppsummeringSteg>', () => {
 
         render(<AdopsjonAvEktefellesBarn sendSøknad={sendSøknad} />);
 
-        expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
+        expect(await screen.findByText(messages['Engangsstønad.Pagetitle'])).toBeInTheDocument();
 
-        expect(screen.getAllByText('Barnet')).toHaveLength(2);
-        expect(screen.getByText('Søknaden gjelder')).toBeInTheDocument();
-        expect(screen.getByText('ett barn')).toBeInTheDocument();
-        expect(screen.getByText('Adopsjonsdato')).toBeInTheDocument();
+        expect(screen.getAllByText(messages['OmBarnetOppsummering.tittel'])).toHaveLength(2);
+        expect(screen.getByText(messages['OmBarnetOppsummering.SoknadenGjelder'])).toBeInTheDocument();
+        expect(screen.getByText(messages['OmBarnetOppsummering.EttBarn'])).toBeInTheDocument();
+        expect(screen.getByText(messages['OmBarnetOppsummering.MedAdopsjonsdato'])).toBeInTheDocument();
         expect(screen.getAllByText('01.01.2023')).toHaveLength(2);
-        expect(screen.getByText('Fødselsdato')).toBeInTheDocument();
-        expect(screen.getByText('Bekreftelse på omsorgsovertakelse')).toBeInTheDocument();
+        expect(screen.getByText(messages['AdopsjonFodselFieldArray.Fødselsdato'])).toBeInTheDocument();
+        expect(screen.getByText(messages['DokumentasjonOppsummering.adopsjonsdokumenter'])).toBeInTheDocument();
         expect(screen.getByText('filnavn.pdf')).toBeInTheDocument();
 
         await userEvent.click(
@@ -82,16 +84,16 @@ describe('<OppsummeringSteg>', () => {
 
         render(<BarnetErIkkeFodt sendSøknad={sendSøknad} />);
 
-        expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
+        expect(await screen.findByText(messages['Engangsstønad.Pagetitle'])).toBeInTheDocument();
 
-        expect(screen.getAllByText('Barnet')).toHaveLength(2);
-        expect(screen.getByText('Søknaden gjelder')).toBeInTheDocument();
-        expect(screen.getByText('ett barn')).toBeInTheDocument();
-        expect(screen.getByText('Termindato')).toBeInTheDocument();
+        expect(screen.getAllByText(messages['OmBarnetOppsummering.tittel'])).toHaveLength(2);
+        expect(screen.getByText(messages['OmBarnetOppsummering.SoknadenGjelder'])).toBeInTheDocument();
+        expect(screen.getByText(messages['OmBarnetOppsummering.EttBarn'])).toBeInTheDocument();
+        expect(screen.getByText(messages['FødselPanel.Termindato'])).toBeInTheDocument();
         expect(screen.getByText('02.01.2023')).toBeInTheDocument();
-        expect(screen.getByText('Når fikk du terminbekreftelse?')).toBeInTheDocument();
+        expect(screen.getByText(messages['DokumentasjonOppsummering.Terminbekreftelse'])).toBeInTheDocument();
         expect(screen.getByText('01.01.2023')).toBeInTheDocument();
-        expect(screen.getByText('Terminbekreftelse')).toBeInTheDocument();
+        expect(screen.getByText(messages['DokumentasjonOppsummering.TerminbekreftelseDokument'])).toBeInTheDocument();
         expect(screen.getByText('filnavn.pdf')).toBeInTheDocument();
 
         await userEvent.click(
@@ -110,7 +112,7 @@ describe('<OppsummeringSteg>', () => {
 
         render(<HarTidligereOgFremtidigeUtenlandsopphold sendSøknad={sendSøknad} />);
 
-        expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
+        expect(await screen.findByText(messages['Engangsstønad.Pagetitle'])).toBeInTheDocument();
 
         expect(screen.getByText('Utenlandsopphold')).toBeInTheDocument();
 

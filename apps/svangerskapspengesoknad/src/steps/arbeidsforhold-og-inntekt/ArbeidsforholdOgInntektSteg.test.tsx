@@ -6,6 +6,8 @@ import { SøknadRoute } from 'appData/routes';
 
 import * as stories from './ArbeidsforholdOgInntektSteg.stories';
 
+import messages from '../../intl/nb_NO.json';
+
 const { Default } = composeStories(stories);
 
 describe('<ArbeidsforholdOgInntektSteg>', () => {
@@ -15,11 +17,11 @@ describe('<ArbeidsforholdOgInntektSteg>', () => {
 
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['Svangerskapspengesøknad.pagetitle'])).toBeInTheDocument();
 
-        await userEvent.click(screen.getAllByText('Nei')[0]!);
+        await userEvent.click(screen.getAllByText(messages['nei'])[0]!);
 
-        await userEvent.click(screen.getAllByText('Nei')[1]!);
+        await userEvent.click(screen.getAllByText(messages['nei'])[1]!);
 
         await userEvent.click(screen.getAllByText('Ja')[2]!);
         expect(screen.getByText('Neste steg')).toBeInTheDocument();

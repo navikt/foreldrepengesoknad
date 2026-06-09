@@ -8,6 +8,8 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './AppContainer.stories';
 
+import messages from './intl/messages/nb_NO.json';
+
 const { HvorMyeVeiviserMockaStønadskvoterOgSatser } = composeStories(stories);
 
 describe('<AppContainer>', () => {
@@ -24,14 +26,14 @@ describe('<AppContainer>', () => {
             setHandlers(HvorMyeVeiviserMockaStønadskvoterOgSatser.parameters.msw);
             const utils = render(<HvorMyeVeiviserMockaStønadskvoterOgSatser />);
 
-            expect(await screen.findAllByText('Hvor mye kan jeg få i foreldrepenger?')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['HvorMyeForside.Title'])).toHaveLength(2);
             await userEvent.click(screen.getByText('Start'));
 
             const forrigeMåned = dayjs().subtract(1, 'month');
 
-            expect(screen.getByText('Hvor mye kan jeg få i foreldrepenger?')).toBeInTheDocument();
-            expect(screen.getByText('Hva er din nåværende arbeidssituasjon?')).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Arbeidstaker eller frilanser'));
+            expect(screen.getByText(messages['HvorMyeForside.Title'])).toBeInTheDocument();
+            expect(screen.getByText(messages['ArbeidssituasjonSide.Arbeidssituasjon'])).toBeInTheDocument();
+            await userEvent.click(screen.getByText(messages['ArbeidssituasjonSide.ArbeidEllerFrilans']));
 
             const måned1 = utils.getByLabelText(
                 capitalizeFirstLetter(forrigeMåned.subtract(2, 'month').format('MMMM YYYY')),
@@ -44,16 +46,16 @@ describe('<AppContainer>', () => {
             const måned3 = utils.getByLabelText(capitalizeFirstLetter(forrigeMåned.format('MMMM YYYY')));
             await userEvent.type(måned3, '10000');
 
-            await userEvent.click(screen.getByText('Se resultatet'));
-            await expect(screen.findByText('Oppsummering')).resolves.toBeInTheDocument();
-            // expect(screen.getByText('Oppsummering')).toBeInTheDocument();
+            await userEvent.click(screen.getByText(messages['ArbeidssituasjonSide.SeResultatet']));
+            await expect(screen.findByText(messages['OppsummeringSide.Oppsummering'])).resolves.toBeInTheDocument();
+            // expect(screen.getByText(messages['OppsummeringSide.Oppsummering'])).toBeInTheDocument();
             expect(
                 screen.getByText('Gjennomsnittlig utbetaling med 100 % foreldrepenger i 49 uker'),
             ).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Tilbake til spørsmålene'));
+            await userEvent.click(screen.getByText(messages['OppsummeringSide.Tilbake']));
 
-            expect(screen.getByText('Hvor mye kan jeg få i foreldrepenger?')).toBeInTheDocument();
-            expect(screen.getByText('Hva er din nåværende arbeidssituasjon?')).toBeInTheDocument();
+            expect(screen.getByText(messages['HvorMyeForside.Title'])).toBeInTheDocument();
+            expect(screen.getByText(messages['ArbeidssituasjonSide.Arbeidssituasjon'])).toBeInTheDocument();
         }),
     );
 });

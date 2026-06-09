@@ -7,6 +7,8 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './FordelingSteg.stories';
 
+import messages from '../../intl/nb_NO.json';
+
 const {
     MorAleneomsorgDekning80EttBarnFør1Okt2021,
     MorAleneomsorgEttBarnPrematurFødsel,
@@ -52,7 +54,7 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText('56 + 3 uker til deg')).toBeInTheDocument();
             expect(screen.getAllByText('3 uker', { exact: false })).toHaveLength(2);
             expect(screen.getByText('kan kun brukes før fødsel.', { exact: false })).toBeInTheDocument();
@@ -64,29 +66,29 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
                 screen.getByText('Siden du har fått barn før 1. oktober 2021', { exact: false }),
             ).toBeInTheDocument();
 
-            await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
+            await userEvent.click(screen.getByText(messages['fordeling.påvirkninger.tittel']));
             expect(screen.getByText('Hvis du får et nytt barn før det har gått tre år')).toBeInTheDocument();
-            expect(screen.getByText('Hvis du jobber samtidig som du har foreldrepenger')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.påvirkninger.jobb.tittel'])).toBeInTheDocument();
 
-            expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.spørsmål'])).toBeInTheDocument();
             expect(screen.getByText('Tre uker før fødsel fra 31. august 2021')).toBeInTheDocument();
-            expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.annenDato'])).toBeInTheDocument();
 
             await userEvent.click(screen.getByText('Neste steg'));
 
             expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
             expect(
-                screen.getAllByText('Du må oppgi når du ønsker å starte din periode med foreldrepenger.'),
+                screen.getAllByText(messages['fordeling.oppstartValg.måOppgis']),
             ).toHaveLength(2);
 
-            await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            expect(screen.getByText('Hvilken dato vil du starte?')).toBeInTheDocument();
+            await userEvent.click(screen.getByText(messages['fordeling.oppstartValg.annenDato']));
+            expect(screen.getByText(messages['fordeling.oppstartDato.input'])).toBeInTheDocument();
             await userEvent.click(screen.getByText('Neste steg'));
 
             expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
-            expect(screen.getAllByText('Du må oppgi dato når du vil starte dine foreldrepenger.')).toHaveLength(2);
+            expect(screen.getAllByText(messages['fordeling.oppstartDato.måOppgis'])).toHaveLength(2);
 
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartDato.input']);
             await userEvent.type(oppstart, '31.08.2021');
             fireEvent.blur(oppstart);
             expect(screen.getByText('3 uker før fødsel.')).toBeInTheDocument();
@@ -109,15 +111,15 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            await userEvent.click(await screen.findByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            await userEvent.click(await screen.findByText(messages['fordeling.oppstartValg.annenDato']));
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartDato.input']);
             await userEvent.type(oppstart, '21.09.2021');
             fireEvent.blur(oppstart);
             expect(screen.getByText('På fødselsdato')).toBeInTheDocument();
             expect(screen.getByText('Du mister 3 uker.')).toBeInTheDocument();
             expect(
-                screen.getByText('Du kan endre datoer senere, også etter du har sendt søknaden.'),
+                screen.getByText(messages['fordeling.oppstartValg.morFødsel.info']),
             ).toBeInTheDocument();
         }),
     );
@@ -132,15 +134,15 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            await userEvent.click(await screen.findByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            await userEvent.click(await screen.findByText(messages['fordeling.oppstartValg.annenDato']));
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartDato.input']);
             await userEvent.type(oppstart, '15.07.2021');
             fireEvent.blur(oppstart);
             expect(screen.getByText('9 uker og 3 dager før fødsel.')).toBeInTheDocument();
             expect(screen.getByText('6 uker og 3 dager tas fra fellesperioden.')).toBeInTheDocument();
             expect(
-                screen.getByText('Du kan endre datoer senere, også etter du har sendt søknaden.'),
+                screen.getByText(messages['fordeling.oppstartValg.morFødsel.info']),
             ).toBeInTheDocument();
         }),
     );
@@ -155,9 +157,9 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            await userEvent.click(await screen.findByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            await userEvent.click(await screen.findByText(messages['fordeling.oppstartValg.annenDato']));
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartDato.input']);
             await userEvent.type(oppstart, '30.08.2021');
             fireEvent.blur(oppstart);
             expect(screen.getByText('3 uker og 1 dag før fødsel.')).toBeInTheDocument();
@@ -175,9 +177,9 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            await userEvent.click(await screen.findByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            await userEvent.click(await screen.findByText(messages['fordeling.oppstartValg.annenDato']));
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartDato.input']);
             await userEvent.type(oppstart, '01.09.2021');
             fireEvent.blur(oppstart);
             expect(screen.getByText('2 uker og 4 dager før fødsel.')).toBeInTheDocument();
@@ -195,9 +197,9 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            await userEvent.click(await screen.findByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            await userEvent.click(await screen.findByText(messages['fordeling.oppstartValg.annenDato']));
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartDato.input']);
             await userEvent.type(oppstart, '20.09.2021');
             fireEvent.blur(oppstart);
             expect(screen.getByText('1 dag før fødsel.')).toBeInTheDocument();
@@ -215,16 +217,15 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            await userEvent.click(screen.getByText(messages['fordeling.oppstartValg.annenDato']));
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartDato.input']);
             await userEvent.type(oppstart, 'x');
             fireEvent.blur(oppstart);
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
             expect(
-                screen.getAllByText(
-                    'Dato du vil starte dine foreldrepenger må være en gyldig dato på formatet dd.mm.åååå.',
+                screen.getAllByText(messages['fordeling.oppstartDato.gyldig'],
                 ),
             ).toHaveLength(2);
         }),
@@ -240,9 +241,9 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            await userEvent.click(screen.getByText(messages['fordeling.oppstartValg.annenDato']));
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartDato.input']);
             await userEvent.type(oppstart, '22.09.2021');
             fireEvent.blur(oppstart);
 
@@ -262,9 +263,9 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            await userEvent.click(screen.getByText(messages['fordeling.oppstartValg.annenDato']));
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartDato.input']);
             await userEvent.type(oppstart, '28.06.2021');
             fireEvent.blur(oppstart);
 
@@ -286,15 +287,15 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            await userEvent.click(screen.getByText(messages['fordeling.oppstartValg.annenDato']));
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartDato.input']);
             await userEvent.type(oppstart, '03.07.2021');
             fireEvent.blur(oppstart);
 
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
-            expect(screen.getAllByText('Oppstartsdato for foreldrepenger må være en ukedag.')).toHaveLength(2);
+            expect(screen.getAllByText(messages['fordeling.oppstartsdato.ukedag'])).toHaveLength(2);
         }),
     );
 });
@@ -313,7 +314,7 @@ describe('Fordeling - MorAleneomsorgEttBarnPrematurFødsel', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText('58 uker og 4 dager + 3 uker til deg')).toBeInTheDocument();
             expect(screen.getByText('kan kun brukes før fødsel.', { exact: false })).toBeInTheDocument();
             expect(screen.getByText('6 uker', { exact: false })).toBeInTheDocument();
@@ -325,19 +326,18 @@ describe('Fordeling - MorAleneomsorgEttBarnPrematurFødsel', () => {
                 screen.getByText('er lagt til fordi barnet ble født før svangerskapsuke 33.', { exact: false }),
             ).toBeInTheDocument();
             expect(
-                screen.queryByText(
-                    'Siden du har fått barn før 1. oktober 2021, må du bruke foreldrepengeperioden din sammenhengende eller søke om utsettelse.',
+                screen.queryByText(messages['fordeling.sammenhengendeUttak.info.enHarRett'],
                 ),
             ).not.toBeInTheDocument();
 
-            await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
+            await userEvent.click(screen.getByText(messages['fordeling.påvirkninger.tittel']));
             expect(screen.getByText('Hvis du får et nytt barn før det har gått tre år')).toBeInTheDocument();
-            expect(screen.getByText('Hvis du jobber samtidig som du har foreldrepenger')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.påvirkninger.jobb.tittel'])).toBeInTheDocument();
 
-            expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.spørsmål'])).toBeInTheDocument();
             expect(screen.queryByText(/Tre uker før fødsel fra/)).not.toBeInTheDocument();
             expect(screen.queryByText('På fødselsdato')).not.toBeInTheDocument();
-            const oppstart = utils.getByLabelText('Når vil du starte permisjonen din med foreldrepenger?');
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartValg.spørsmål']);
 
             await userEvent.type(oppstart, '21.09.2023');
             fireEvent.blur(oppstart);
@@ -360,8 +360,8 @@ describe('Fordeling - MorAleneomsorgEttBarnPrematurFødsel', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            const oppstart = utils.getByLabelText('Når vil du starte permisjonen din med foreldrepenger?');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartValg.spørsmål']);
             await userEvent.type(oppstart, '22.09.2023');
             fireEvent.blur(oppstart);
 
@@ -381,8 +381,8 @@ describe('Fordeling - MorAleneomsorgEttBarnPrematurFødsel', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            const oppstart = utils.getByLabelText('Når vil du starte permisjonen din med foreldrepenger?');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartValg.spørsmål']);
             await userEvent.type(oppstart, '20.09.2023');
             fireEvent.blur(oppstart);
 
@@ -409,7 +409,7 @@ describe('Fordeling - MorAleneomsorgAdopsjonTrillinger', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText('92 uker til deg')).toBeInTheDocument();
             expect(
                 screen.getByText('kan brukes når som helst innen tre år etter omsorgsovertakelsen.', { exact: false }),
@@ -417,15 +417,15 @@ describe('Fordeling - MorAleneomsorgAdopsjonTrillinger', () => {
             expect(screen.queryByText('6 uker', { exact: false })).not.toBeInTheDocument();
             expect(screen.queryByText('fødsel.', { exact: false })).not.toBeInTheDocument();
 
-            await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
+            await userEvent.click(screen.getByText(messages['fordeling.påvirkninger.tittel']));
             expect(screen.getByText('Hvis du får et nytt barn før det har gått tre år')).toBeInTheDocument();
-            expect(screen.getByText('Hvis du jobber samtidig som du har foreldrepenger')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.påvirkninger.jobb.tittel'])).toBeInTheDocument();
 
-            expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.spørsmål'])).toBeInTheDocument();
             expect(screen.queryByText(/Tre uker før fødsel fra/)).not.toBeInTheDocument();
             expect(screen.queryByText('På fødselsdato')).not.toBeInTheDocument();
             expect(screen.getByText('På omsorgsovertakelsen, 21. februar 2024')).toBeInTheDocument();
-            expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.annenDato'])).toBeInTheDocument();
 
             await userEvent.click(screen.getByText('På omsorgsovertakelsen, 21. februar 2024'));
             await userEvent.click(screen.getByText('Neste steg'));
@@ -444,9 +444,9 @@ describe('Fordeling - MorAleneomsorgAdopsjonTrillinger', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            await userEvent.click(screen.getByText(messages['fordeling.oppstartValg.annenDato']));
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartDato.input']);
             await userEvent.type(oppstart, '20.02.2024');
             fireEvent.blur(oppstart);
 
@@ -473,19 +473,19 @@ describe('Fordeling - FarMedmorAleneomsorgFødtTvillinger', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText('77 uker til deg')).toBeInTheDocument();
             expect(screen.getByText('Disse ukene kan brukes når som helst før barna fyller 3 år.')).toBeInTheDocument();
 
-            await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
+            await userEvent.click(screen.getByText(messages['fordeling.påvirkninger.tittel']));
             expect(screen.getByText('Hvis du får et nytt barn før det har gått tre år')).toBeInTheDocument();
-            expect(screen.getByText('Hvis du jobber samtidig som du har foreldrepenger')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.påvirkninger.jobb.tittel'])).toBeInTheDocument();
 
-            expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.spørsmål'])).toBeInTheDocument();
             expect(screen.queryByText(/Tre uker før fødsel fra/)).not.toBeInTheDocument();
             expect(screen.queryByText('På fødselsdato')).not.toBeInTheDocument();
             expect(screen.getByText('På datoen jeg ble alene om omsorgen, 23. september 2023')).toBeInTheDocument();
-            expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.annenDato'])).toBeInTheDocument();
 
             await userEvent.click(screen.getByText('På datoen jeg ble alene om omsorgen, 23. september 2023'));
             await userEvent.click(screen.getByText('Neste steg'));
@@ -504,9 +504,9 @@ describe('Fordeling - FarMedmorAleneomsorgFødtTvillinger', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            await userEvent.click(screen.getByText(messages['fordeling.oppstartValg.annenDato']));
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartDato.input']);
             await userEvent.type(oppstart, '22.09.2023');
             fireEvent.blur(oppstart);
 
@@ -533,24 +533,23 @@ describe('Fordeling - FarMedmorAleneomsorgFødtFireBarnFør1Okt2021', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText('92 uker til deg')).toBeInTheDocument();
             expect(
                 screen.queryByText('Disse ukene kan brukes når som helst før barna fyller 3 år.'),
             ).not.toBeInTheDocument();
             expect(screen.getByText('med foreldrepenger.', { exact: false })).toBeInTheDocument();
             expect(
-                screen.getByText(
-                    'Siden du har fått barn før 1. oktober 2021, må du bruke foreldrepengeperioden din sammenhengende eller søke om utsettelse.',
+                screen.getByText(messages['fordeling.sammenhengendeUttak.info.enHarRett'],
                 ),
             ).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
+            await userEvent.click(screen.getByText(messages['fordeling.påvirkninger.tittel']));
             expect(screen.getByText('Hvis du får et nytt barn før det har gått tre år')).toBeInTheDocument();
-            expect(screen.getByText('Hvis du jobber samtidig som du har foreldrepenger')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.påvirkninger.jobb.tittel'])).toBeInTheDocument();
 
-            expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.spørsmål'])).toBeInTheDocument();
             expect(screen.getByText('På datoen jeg ble alene om omsorgen, 21. september 2021')).toBeInTheDocument();
-            expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.annenDato'])).toBeInTheDocument();
 
             await userEvent.click(screen.getByText('På datoen jeg ble alene om omsorgen, 21. september 2021'));
             await userEvent.click(screen.getByText('Neste steg'));
@@ -574,17 +573,16 @@ describe('Fordeling - FarMedmorAleneomsorgFødtTreBarnFørWLB', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText('92 uker til deg')).toBeInTheDocument();
             expect(screen.getByText('Disse ukene kan brukes når som helst før barna fyller 3 år.')).toBeInTheDocument();
             expect(
-                screen.queryByText(
-                    'Siden du har fått barn før 1. oktober 2021, må du bruke foreldrepengeperioden din sammenhengende eller søke om utsettelse.',
+                screen.queryByText(messages['fordeling.sammenhengendeUttak.info.enHarRett'],
                 ),
             ).not.toBeInTheDocument();
-            expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.spørsmål'])).toBeInTheDocument();
             expect(screen.getByText('På datoen jeg ble alene om omsorgen, 21. september 2022')).toBeInTheDocument();
-            expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.annenDato'])).toBeInTheDocument();
         }),
     );
 });
@@ -605,19 +603,19 @@ describe('Fordeling - FarMedmorAleneomsorgEttBarnTerminEtterWLB', () => {
 
             MockDate.set(new Date('2024-09-12'));
 
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText('46 uker til deg')).toBeInTheDocument();
             expect(screen.getByText('Disse ukene kan brukes når som helst før barna fyller 3 år.')).toBeInTheDocument();
 
-            await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
+            await userEvent.click(screen.getByText(messages['fordeling.påvirkninger.tittel']));
             expect(screen.getByText('Hvis du får et nytt barn før det har gått tre år')).toBeInTheDocument();
-            expect(screen.getByText('Hvis du jobber samtidig som du har foreldrepenger')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.påvirkninger.jobb.tittel'])).toBeInTheDocument();
             expect(screen.getByText('Hvis barna blir født før svangerskapsuke 33')).toBeInTheDocument();
 
-            expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.spørsmål'])).toBeInTheDocument();
             expect(screen.queryByText('På termindato')).not.toBeInTheDocument();
             expect(screen.getByText('På datoen jeg blir alene om omsorgen, 21. september 2024')).toBeInTheDocument();
-            expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.annenDato'])).toBeInTheDocument();
 
             MockDate.reset();
         }),
@@ -638,7 +636,7 @@ describe('Fordeling - FarMedmorAleneomsorgPrematurtFødtBarn', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText('54 uker og 3 dager til deg')).toBeInTheDocument();
             expect(
                 screen.getByText('Disse ukene kan brukes når som helst før barnet fyller 3 år.'),
@@ -649,8 +647,7 @@ describe('Fordeling - FarMedmorAleneomsorgPrematurtFødtBarn', () => {
             ).toBeInTheDocument();
 
             expect(
-                screen.queryByText(
-                    'Siden du har fått barn før 1. oktober 2021, må du bruke foreldrepengeperioden din sammenhengende eller søke om utsettelse.',
+                screen.queryByText(messages['fordeling.sammenhengendeUttak.info.enHarRett'],
                 ),
             ).not.toBeInTheDocument();
         }),
@@ -670,13 +667,12 @@ describe('Fordeling - FarMedmorAleneomsorgAdopsjonFireBarn', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText('92 uker til deg')).toBeInTheDocument();
             expect(screen.getAllByText('92 uker', { exact: false })).toHaveLength(2);
             expect(screen.getByText('med foreldrepenger.', { exact: false })).toBeInTheDocument();
             expect(
-                screen.getByText(
-                    'Siden du har fått barn før 1. oktober 2021, må du bruke foreldrepengeperioden din sammenhengende eller søke om utsettelse.',
+                screen.getByText(messages['fordeling.sammenhengendeUttak.info.enHarRett'],
                 ),
             ).toBeInTheDocument();
         }),
@@ -692,9 +688,9 @@ describe('Fordeling - FarMedmorAleneomsorgAdopsjonFireBarn', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            await userEvent.click(screen.getByText(messages['fordeling.oppstartValg.annenDato']));
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartDato.input']);
             await userEvent.type(oppstart, '20.08.2021');
             fireEvent.blur(oppstart);
 
@@ -721,8 +717,8 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            expect(screen.getByText('Fødsel')).toBeInTheDocument();
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            expect(screen.getByText(messages['søkersituasjon.radioButton.fødsel'])).toBeInTheDocument();
             expect(screen.getByText('Din del')).toBeInTheDocument();
             expect(screen.getByText('Fellesperiode')).toBeInTheDocument();
             expect(screen.getByText("Hans' del")).toBeInTheDocument();
@@ -742,27 +738,27 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
             expect(screen.getAllByText('kan brukes når som helst før barnet fyller 3 år.')).toHaveLength(2);
             expect(screen.getByText('2 av disse ukene')).toBeInTheDocument();
 
-            await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
+            await userEvent.click(screen.getByText(messages['fordeling.påvirkninger.tittel']));
             expect(
                 screen.getByText('Hvis barnet blir innlagt på sykehus de første 6 ukene etter fødsel.'),
             ).toBeInTheDocument();
             expect(screen.getByText('Hvis du blir syk de første seks ukene med foreldrepenger')).toBeInTheDocument();
-            expect(screen.getByText('Hvis du blir syk eller innlagt på helseinstitusjon')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.påvirkninger.morSykISinPeriode.tittel'])).toBeInTheDocument();
             expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
-            expect(screen.getByText('Hvis du jobber samtidig som du har foreldrepenger')).toBeInTheDocument();
-            expect(screen.getByText('Hvis dere har foreldrepenger samtidig')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.påvirkninger.jobb.tittel'])).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.påvirkninger.samtidigUttak.tittel'])).toBeInTheDocument();
             expect(screen.queryByText('Hvis barnet blir født før svangerskapsuke 33')).not.toBeInTheDocument();
 
             expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
-            expect(screen.getByText('Jeg vil ha hele fellesperioden')).toBeInTheDocument();
-            expect(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha')).toBeInTheDocument();
-            expect(screen.getByText('Jeg ønsker ikke å legge til fellesperiode nå')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.fordelingsvalg.option.alt'])).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.fordelingsvalg.option.valgfritt'])).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.fordelingsvalg.option.senere'])).toBeInTheDocument();
 
-            expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.spørsmål'])).toBeInTheDocument();
             expect(screen.queryByText(/Tre uker før fødsel fra/)).not.toBeInTheDocument();
 
-            await userEvent.click(screen.getByText('Jeg vil ha hele fellesperioden'));
-            const oppstart = utils.getByLabelText('Når vil du starte permisjonen din med foreldrepenger?');
+            await userEvent.click(screen.getByText(messages['fordeling.fordelingsvalg.option.alt']));
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartValg.spørsmål']);
             await userEvent.type(oppstart, '21.09.2023');
             expect(screen.getByText('På fødselsdato')).toBeInTheDocument();
             expect(screen.getByText('Du mister 3 uker.')).toBeInTheDocument();
@@ -784,14 +780,14 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
-            expect(screen.getAllByText('Du må oppgi hvordan du vil fordele fellesperioden.')).toHaveLength(2);
-            expect(screen.getAllByText('Du må oppgi dato når du vil starte dine foreldrepenger.')).toHaveLength(2);
-            await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
+            expect(screen.getAllByText(messages['fordeling.fordelingsvalg.måOppgis'])).toHaveLength(2);
+            expect(screen.getAllByText(messages['fordeling.oppstartDato.måOppgis'])).toHaveLength(2);
+            await userEvent.click(screen.getByText(messages['fordeling.fordelingsvalg.option.valgfritt']));
             await userEvent.click(screen.getByText('Neste steg'));
-            expect(screen.getAllByText('Du må oppgi en lengde på fellesperioden din.')).toHaveLength(2);
+            expect(screen.getAllByText(messages['fordeling.antallUkerDager.måOppgis'])).toHaveLength(2);
         }),
     );
 
@@ -805,15 +801,15 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            expect(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha')).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
-            const ukerInput = utils.getByLabelText('Uker');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            expect(screen.getByText(messages['fordeling.fordelingsvalg.option.valgfritt'])).toBeInTheDocument();
+            await userEvent.click(screen.getByText(messages['fordeling.fordelingsvalg.option.valgfritt']));
+            const ukerInput = utils.getByLabelText(messages['fordeling.antallUker.spørsmål']);
             await userEvent.type(ukerInput, 'test');
             fireEvent.blur(ukerInput);
             await userEvent.click(screen.getByText('Neste steg'));
             expect(
-                screen.getAllByText('Antall uker du ønsker å ha av fellesperioden må være et heltall større enn 0.'),
+                screen.getAllByText(messages['fordeling.antallUker.ugyldigFormat']),
             ).toHaveLength(2);
         }),
     );
@@ -828,15 +824,15 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            expect(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha')).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
-            const ukerInput = utils.getByLabelText('Uker');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            expect(screen.getByText(messages['fordeling.fordelingsvalg.option.valgfritt'])).toBeInTheDocument();
+            await userEvent.click(screen.getByText(messages['fordeling.fordelingsvalg.option.valgfritt']));
+            const ukerInput = utils.getByLabelText(messages['fordeling.antallUker.spørsmål']);
             await userEvent.type(ukerInput, '1,5');
             fireEvent.blur(ukerInput);
             await userEvent.click(screen.getByText('Neste steg'));
             expect(
-                screen.getAllByText('Antall uker du ønsker å ha av fellesperioden må være et heltall større enn 0.'),
+                screen.getAllByText(messages['fordeling.antallUker.ugyldigFormat']),
             ).toHaveLength(2);
         }),
     );
@@ -851,10 +847,10 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            expect(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha')).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
-            const ukerInput = utils.getByLabelText('Uker');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            expect(screen.getByText(messages['fordeling.fordelingsvalg.option.valgfritt'])).toBeInTheDocument();
+            await userEvent.click(screen.getByText(messages['fordeling.fordelingsvalg.option.valgfritt']));
+            const ukerInput = utils.getByLabelText(messages['fordeling.antallUker.spørsmål']);
             await userEvent.type(ukerInput, '21');
             fireEvent.blur(ukerInput);
             await userEvent.click(screen.getByText('Neste steg'));
@@ -872,15 +868,15 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            expect(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha')).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
-            const ukerInput = utils.getByLabelText('Uker');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            expect(screen.getByText(messages['fordeling.fordelingsvalg.option.valgfritt'])).toBeInTheDocument();
+            await userEvent.click(screen.getByText(messages['fordeling.fordelingsvalg.option.valgfritt']));
+            const ukerInput = utils.getByLabelText(messages['fordeling.antallUker.spørsmål']);
             await userEvent.type(ukerInput, '-1');
             fireEvent.blur(ukerInput);
             await userEvent.click(screen.getByText('Neste steg'));
             expect(
-                screen.getAllByText('Antall uker du ønsker å ha av fellesperioden må være et heltall større enn 0.'),
+                screen.getAllByText(messages['fordeling.antallUker.ugyldigFormat']),
             ).toHaveLength(2);
         }),
     );
@@ -895,11 +891,11 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            expect(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha')).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
-            expect(screen.getByText('Hvor mye av fellesperioden skal du ha?')).toBeInTheDocument();
-            const ukerInput = utils.getByLabelText('Uker');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            expect(screen.getByText(messages['fordeling.fordelingsvalg.option.valgfritt'])).toBeInTheDocument();
+            await userEvent.click(screen.getByText(messages['fordeling.fordelingsvalg.option.valgfritt']));
+            expect(screen.getByText(messages['fordeling.antallUkerDager.spørsmål'])).toBeInTheDocument();
+            const ukerInput = utils.getByLabelText(messages['fordeling.antallUker.spørsmål']);
             await userEvent.type(ukerInput, '3');
             fireEvent.blur(ukerInput);
             expect(screen.getByText('3 uker til deg')).toBeInTheDocument();
@@ -917,9 +913,9 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            expect(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha')).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Jeg ønsker ikke å legge til fellesperiode nå'));
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            expect(screen.getByText(messages['fordeling.fordelingsvalg.option.valgfritt'])).toBeInTheDocument();
+            await userEvent.click(screen.getByText(messages['fordeling.fordelingsvalg.option.senere']));
             expect(
                 screen.getByText(
                     'I planen din på neste steg vil ikke fellesperioden vises fordi du har valgt å fordele denne senere.',
@@ -944,12 +940,12 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
-            expect(screen.getByText('Hvor mye av fellesperioden skal du ha?')).toBeInTheDocument();
-            expect(screen.getByText('Uker')).toBeInTheDocument();
-            expect(screen.getByText('Dager')).toBeInTheDocument();
+            await userEvent.click(screen.getByText(messages['fordeling.fordelingsvalg.option.valgfritt']));
+            expect(screen.getByText(messages['fordeling.antallUkerDager.spørsmål'])).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.antallUker.spørsmål'])).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.antallDager.spørsmål'])).toBeInTheDocument();
         }),
     );
     it(
@@ -962,14 +958,14 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
-            expect(screen.getByText('Hvor mye av fellesperioden skal du ha?')).toBeInTheDocument();
+            await userEvent.click(screen.getByText(messages['fordeling.fordelingsvalg.option.valgfritt']));
+            expect(screen.getByText(messages['fordeling.antallUkerDager.spørsmål'])).toBeInTheDocument();
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
-            expect(screen.getAllByText('Du må oppgi en lengde på fellesperioden din.')).toHaveLength(3);
-            const dagerInput = utils.getByLabelText('Dager');
+            expect(screen.getAllByText(messages['fordeling.antallUkerDager.måOppgis'])).toHaveLength(3);
+            const dagerInput = utils.getByLabelText(messages['fordeling.antallDager.spørsmål']);
             await userEvent.type(dagerInput, '1');
         }),
     );
@@ -983,14 +979,14 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
-            expect(screen.getByText('Hvor mye av fellesperioden skal du ha?')).toBeInTheDocument();
-            const dagerInput = utils.getByLabelText('Dager');
+            await userEvent.click(screen.getByText(messages['fordeling.fordelingsvalg.option.valgfritt']));
+            expect(screen.getByText(messages['fordeling.antallUkerDager.spørsmål'])).toBeInTheDocument();
+            const dagerInput = utils.getByLabelText(messages['fordeling.antallDager.spørsmål']);
             await userEvent.type(dagerInput, '1');
             await userEvent.click(screen.getByText('Neste steg'));
-            expect(screen.queryByText('Du må oppgi en lengde på fellesperioden din.')).not.toBeInTheDocument();
+            expect(screen.queryByText(messages['fordeling.antallUkerDager.måOppgis'])).not.toBeInTheDocument();
         }),
     );
     it(
@@ -1003,14 +999,14 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
-            expect(screen.getByText('Hvor mye av fellesperioden skal du ha?')).toBeInTheDocument();
-            const ukerInput = utils.getByLabelText('Uker');
+            await userEvent.click(screen.getByText(messages['fordeling.fordelingsvalg.option.valgfritt']));
+            expect(screen.getByText(messages['fordeling.antallUkerDager.spørsmål'])).toBeInTheDocument();
+            const ukerInput = utils.getByLabelText(messages['fordeling.antallUker.spørsmål']);
             await userEvent.type(ukerInput, '2');
             await userEvent.click(screen.getByText('Neste steg'));
-            expect(screen.queryByText('Du må oppgi en lengde på fellesperioden din.')).not.toBeInTheDocument();
+            expect(screen.queryByText(messages['fordeling.antallUkerDager.måOppgis'])).not.toBeInTheDocument();
         }),
     );
     it(
@@ -1023,16 +1019,16 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
-            expect(screen.getByText('Hvor mye av fellesperioden skal du ha?')).toBeInTheDocument();
-            const dagerInput = utils.getByLabelText('Dager');
+            await userEvent.click(screen.getByText(messages['fordeling.fordelingsvalg.option.valgfritt']));
+            expect(screen.getByText(messages['fordeling.antallUkerDager.spørsmål'])).toBeInTheDocument();
+            const dagerInput = utils.getByLabelText(messages['fordeling.antallDager.spørsmål']);
             await userEvent.type(dagerInput, '1,4');
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
             expect(
-                screen.getAllByText('Antall dager du ønsker å ha av fellesperioden må være et heltall større enn 0.'),
+                screen.getAllByText(messages['fordeling.antallDager.ugyldigFormat']),
             ).toHaveLength(2);
         }),
     );
@@ -1046,16 +1042,16 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
-            expect(screen.getByText('Hvor mye av fellesperioden skal du ha?')).toBeInTheDocument();
-            const dagerInput = utils.getByLabelText('Dager');
+            await userEvent.click(screen.getByText(messages['fordeling.fordelingsvalg.option.valgfritt']));
+            expect(screen.getByText(messages['fordeling.antallUkerDager.spørsmål'])).toBeInTheDocument();
+            const dagerInput = utils.getByLabelText(messages['fordeling.antallDager.spørsmål']);
             await userEvent.type(dagerInput, 'to');
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
             expect(
-                screen.getAllByText('Antall dager du ønsker å ha av fellesperioden må være et heltall større enn 0.'),
+                screen.getAllByText(messages['fordeling.antallDager.ugyldigFormat']),
             ).toHaveLength(2);
         }),
     );
@@ -1069,16 +1065,16 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
-            expect(screen.getByText('Hvor mye av fellesperioden skal du ha?')).toBeInTheDocument();
-            const dagerInput = utils.getByLabelText('Dager');
+            await userEvent.click(screen.getByText(messages['fordeling.fordelingsvalg.option.valgfritt']));
+            expect(screen.getByText(messages['fordeling.antallUkerDager.spørsmål'])).toBeInTheDocument();
+            const dagerInput = utils.getByLabelText(messages['fordeling.antallDager.spørsmål']);
             await userEvent.type(dagerInput, '-2');
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
             expect(
-                screen.getAllByText('Antall dager du ønsker å ha av fellesperioden må være et heltall større enn 0.'),
+                screen.getAllByText(messages['fordeling.antallDager.ugyldigFormat']),
             ).toHaveLength(2);
         }),
     );
@@ -1092,11 +1088,11 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
-            expect(screen.getByText('Hvor mye av fellesperioden skal du ha?')).toBeInTheDocument();
-            const dagerInput = utils.getByLabelText('Dager');
+            await userEvent.click(screen.getByText(messages['fordeling.fordelingsvalg.option.valgfritt']));
+            expect(screen.getByText(messages['fordeling.antallUkerDager.spørsmål'])).toBeInTheDocument();
+            const dagerInput = utils.getByLabelText(messages['fordeling.antallDager.spørsmål']);
             await userEvent.type(dagerInput, '102');
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
@@ -1113,13 +1109,13 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
-            expect(screen.getByText('Hvor mye av fellesperioden skal du ha?')).toBeInTheDocument();
-            const dagerInput = utils.getByLabelText('Dager');
+            await userEvent.click(screen.getByText(messages['fordeling.fordelingsvalg.option.valgfritt']));
+            expect(screen.getByText(messages['fordeling.antallUkerDager.spørsmål'])).toBeInTheDocument();
+            const dagerInput = utils.getByLabelText(messages['fordeling.antallDager.spørsmål']);
             await userEvent.type(dagerInput, '92');
-            const ukerInput = utils.getByLabelText('Uker');
+            const ukerInput = utils.getByLabelText(messages['fordeling.antallUker.spørsmål']);
             await userEvent.type(ukerInput, '2');
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
@@ -1142,8 +1138,8 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            expect(screen.queryByText('Fødsel')).not.toBeInTheDocument();
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            expect(screen.queryByText(messages['søkersituasjon.radioButton.fødsel'])).not.toBeInTheDocument();
             expect(screen.getByText('Termin')).toBeInTheDocument();
             expect(screen.getByText('Din del')).toBeInTheDocument();
             expect(screen.getByText('Fellesperiode')).toBeInTheDocument();
@@ -1158,37 +1154,37 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
             expect(screen.getAllByText('kan brukes når som helst før barnet fyller 3 år.')).toHaveLength(2);
             expect(screen.getByText('2 av disse ukene')).toBeInTheDocument();
 
-            await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
+            await userEvent.click(screen.getByText(messages['fordeling.påvirkninger.tittel']));
             expect(
                 screen.getByText('Hvis barnet blir innlagt på sykehus de første 6 ukene etter fødsel.'),
             ).toBeInTheDocument();
             expect(screen.getByText('Hvis du blir syk de første seks ukene med foreldrepenger')).toBeInTheDocument();
-            expect(screen.getByText('Hvis du blir syk eller innlagt på helseinstitusjon')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.påvirkninger.morSykISinPeriode.tittel'])).toBeInTheDocument();
             expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
-            expect(screen.getByText('Hvis du jobber samtidig som du har foreldrepenger')).toBeInTheDocument();
-            expect(screen.getByText('Hvis dere har foreldrepenger samtidig')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.påvirkninger.jobb.tittel'])).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.påvirkninger.samtidigUttak.tittel'])).toBeInTheDocument();
             expect(screen.getByText('Hvis barnet blir født før svangerskapsuke 33')).toBeInTheDocument();
 
             expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
-            expect(screen.getByText('Jeg vil ha hele fellesperioden')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.fordelingsvalg.option.alt'])).toBeInTheDocument();
 
-            expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.spørsmål'])).toBeInTheDocument();
             expect(screen.getByText(/Tre uker før fødsel fra/)).toBeInTheDocument();
 
             await userEvent.click(screen.getByText('Neste steg'));
 
-            await userEvent.click(screen.getByText('Jeg vil ha hele fellesperioden'));
+            await userEvent.click(screen.getByText(messages['fordeling.fordelingsvalg.option.alt']));
             expect(screen.getByText('16 uker til deg')).toBeInTheDocument();
 
-            expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            expect(screen.getByText(messages['fordeling.oppstartValg.spørsmål'])).toBeInTheDocument();
+            await userEvent.click(screen.getByText(messages['fordeling.oppstartValg.annenDato']));
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartDato.input']);
             await userEvent.type(oppstart, '21.06.2024');
             fireEvent.blur(oppstart);
             expect(screen.getByText('På termindato')).toBeInTheDocument();
             expect(screen.getByText('Du mister 3 uker.')).toBeInTheDocument();
             expect(
-                screen.getByText('Du kan endre datoer senere, også etter du har sendt søknaden.'),
+                screen.getByText(messages['fordeling.oppstartValg.morFødsel.info']),
             ).toBeInTheDocument();
             await userEvent.click(screen.getByText('Neste steg'));
             expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
@@ -1205,10 +1201,10 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
-            expect(screen.getAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            await userEvent.click(screen.getByText(messages['fordeling.oppstartValg.annenDato']));
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartDato.input']);
+            expect(screen.getAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             await userEvent.type(oppstart, '20.06.2024');
             fireEvent.blur(oppstart);
             expect(screen.getByText('1 dag før termin.')).toBeInTheDocument();
@@ -1226,9 +1222,9 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            await userEvent.click(screen.getByText(messages['fordeling.oppstartValg.annenDato']));
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartDato.input']);
             await userEvent.type(oppstart, '30.05.2024');
             fireEvent.blur(oppstart);
             expect(screen.getByText('3 uker og 1 dag før termin.')).toBeInTheDocument();
@@ -1248,9 +1244,9 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            await userEvent.click(screen.getByText(messages['fordeling.oppstartValg.annenDato']));
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartDato.input']);
             await userEvent.type(oppstart, '22.06.2024');
             fireEvent.blur(oppstart);
 
@@ -1269,9 +1265,9 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            await userEvent.click(screen.getByText(messages['fordeling.oppstartValg.annenDato']));
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartDato.input']);
             await userEvent.type(oppstart, '28.03.2024');
             fireEvent.blur(oppstart);
 
@@ -1298,15 +1294,15 @@ describe('Fordeling - MorDeltUttakTvillingerFødt', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.queryByText('Termin')).not.toBeInTheDocument();
-            expect(screen.getByText('Fødsel')).toBeInTheDocument();
+            expect(screen.getByText(messages['søkersituasjon.radioButton.fødsel'])).toBeInTheDocument();
             expect(screen.getByText('33 uker kan deles, fellesperiode')).toBeInTheDocument();
             expect(screen.getAllByText('brukes når som helst før barna fyller 3 år.', { exact: false })).toHaveLength(
                 3,
             );
 
-            await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
+            await userEvent.click(screen.getByText(messages['fordeling.påvirkninger.tittel']));
             expect(
                 screen.getByText('Hvis barna blir innlagt på sykehus de første 6 ukene etter fødsel.'),
             ).toBeInTheDocument();
@@ -1318,13 +1314,13 @@ describe('Fordeling - MorDeltUttakTvillingerFødt', () => {
                 ),
             ).toBeInTheDocument();
 
-            await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
+            await userEvent.click(screen.getByText(messages['fordeling.påvirkninger.tittel']));
             expect(screen.queryByText('Hvis barnet blir født før svangerskapsuke 33')).not.toBeInTheDocument();
 
             expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
-            expect(screen.getByText('Jeg vil ha hele fellesperioden')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.fordelingsvalg.option.alt'])).toBeInTheDocument();
 
-            expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.spørsmål'])).toBeInTheDocument();
             expect(screen.getByText(/Tre uker før fødsel fra/)).toBeInTheDocument();
         }),
     );
@@ -1344,8 +1340,8 @@ describe('Fordeling - MorDeltUttakFarSøkteMorsKvoteOgFellesperiode', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            expect(screen.queryByText('Fødsel')).not.toBeInTheDocument();
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            expect(screen.queryByText(messages['søkersituasjon.radioButton.fødsel'])).not.toBeInTheDocument();
             expect(screen.getByText('Termin')).toBeInTheDocument();
             expect(screen.getByText('1 uke og 4 dager')).toBeInTheDocument();
             expect(
@@ -1364,7 +1360,7 @@ describe('Fordeling - MorDeltUttakFarSøkteMorsKvoteOgFellesperiode', () => {
                 ),
             ).toBeInTheDocument();
 
-            await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
+            await userEvent.click(screen.getByText(messages['fordeling.påvirkninger.tittel']));
             expect(screen.getByText('Hvis barnet blir født før svangerskapsuke 33')).toBeInTheDocument();
         }),
     );
@@ -1384,8 +1380,8 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            expect(screen.getByText('Fødsel')).toBeInTheDocument();
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            expect(screen.getByText(messages['søkersituasjon.radioButton.fødsel'])).toBeInTheDocument();
             expect(screen.getByText('Hannes del')).toBeInTheDocument();
             expect(screen.getByText('Din del')).toBeInTheDocument();
 
@@ -1399,20 +1395,20 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021', () => {
                 }),
             ).toBeInTheDocument();
 
-            expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.spørsmål'])).toBeInTheDocument();
             expect(screen.queryByText('På fødselsdato')).not.toBeInTheDocument();
 
-            await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
+            await userEvent.click(screen.getByText(messages['fordeling.påvirkninger.tittel']));
             expect(
                 screen.queryByText('Hvis barnet blir innlagt på sykehus de første 6 ukene etter fødsel.'),
             ).not.toBeInTheDocument();
             expect(
                 screen.queryByText('Hvis du blir syk de første seks ukene med foreldrepenger'),
             ).not.toBeInTheDocument();
-            expect(screen.queryByText('Hvis du blir syk eller innlagt på helseinstitusjon')).not.toBeInTheDocument();
+            expect(screen.queryByText(messages['fordeling.påvirkninger.morSykISinPeriode.tittel'])).not.toBeInTheDocument();
             expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
-            expect(screen.getByText('Hvis du jobber samtidig som du har foreldrepenger')).toBeInTheDocument();
-            expect(screen.getByText('Hvis dere har foreldrepenger samtidig')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.påvirkninger.jobb.tittel'])).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.påvirkninger.samtidigUttak.tittel'])).toBeInTheDocument();
             expect(
                 screen.getByText('Hvis du blir syk, eller hvis du eller barnet blir innlagt på helseinstitusjon'),
             ).toBeInTheDocument();
@@ -1429,8 +1425,8 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            const oppstart = utils.getByLabelText('Når vil du starte permisjonen din med foreldrepenger?');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartValg.spørsmål']);
             await userEvent.type(oppstart, '20.07.2021');
             fireEvent.blur(oppstart);
             await userEvent.click(screen.getByText('Neste steg'));
@@ -1455,8 +1451,8 @@ describe('Fordeling - FarMedmorSøkerDeltUttakTrillingerFødtFørWLB', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            expect(screen.getByText('Fødsel')).toBeInTheDocument();
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            expect(screen.getByText(messages['søkersituasjon.radioButton.fødsel'])).toBeInTheDocument();
             expect(screen.getByText('Hannes del')).toBeInTheDocument();
             expect(screen.getByText('Din del')).toBeInTheDocument();
 
@@ -1473,7 +1469,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakTrillingerFødtFørWLB', () => {
                 ),
             ).toBeInTheDocument();
 
-            expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.spørsmål'])).toBeInTheDocument();
             expect(screen.queryByText('På fødselsdato')).not.toBeInTheDocument();
         }),
     );
@@ -1488,8 +1484,8 @@ describe('Fordeling - FarMedmorSøkerDeltUttakTrillingerFødtFørWLB', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            const oppstart = utils.getByLabelText('Når vil du starte permisjonen din med foreldrepenger?');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartValg.spørsmål']);
             await userEvent.type(oppstart, '20.07.2022');
             fireEvent.blur(oppstart);
             await userEvent.click(screen.getByText('Neste steg'));
@@ -1514,23 +1510,23 @@ describe('Fordeling - FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText('15 uker til deg')).toBeInTheDocument();
             expect(screen.getByText('2 av disse ukene')).toBeInTheDocument();
             expect(
                 screen.getByText('kan brukes i perioden rundt fødsel, samtidig med Hanne.', { exact: false }),
             ).toBeInTheDocument();
-            expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.spørsmål'])).toBeInTheDocument();
             expect(
                 screen.getByText('Mange får dekket permisjon de første to ukene rundt fødsel fra arbeidsgiveren sin.', {
                     exact: false,
                 }),
             ).toBeInTheDocument();
-            expect(screen.getByText('Fra termindato')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.påFødsel.barnErIkkeFødt'])).toBeInTheDocument();
             expect(
                 screen.getByText('Jeg vil ha to uker med foreldrepenger som starter på termindato.', { exact: false }),
             ).toBeInTheDocument();
-            expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.annenDato'])).toBeInTheDocument();
         }),
     );
 
@@ -1544,9 +1540,9 @@ describe('Fordeling - FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            await userEvent.click(screen.getByText(messages['fordeling.oppstartValg.annenDato']));
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartDato.input']);
             await userEvent.type(oppstart, '05.07.2024');
             fireEvent.blur(oppstart);
             await userEvent.click(screen.getByText('Neste steg'));
@@ -1574,7 +1570,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText('20 uker kan deles, fellesperiode')).toBeInTheDocument();
             expect(screen.getByText('12 uker og 4 dager av disse', { exact: false })).toBeInTheDocument();
             expect(
@@ -1588,7 +1584,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
             ).toBeInTheDocument();
             expect(screen.queryByText('flerbarnsdager')).not.toBeInTheDocument();
 
-            expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.spørsmål'])).toBeInTheDocument();
             expect(
                 screen.getByText('Mange får dekket permisjon de første to ukene rundt fødsel fra arbeidsgiveren sin.', {
                     exact: false,
@@ -1600,7 +1596,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
                     exact: false,
                 }),
             ).toBeInTheDocument();
-            expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.annenDato'])).toBeInTheDocument();
         }),
     );
 
@@ -1615,9 +1611,9 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            await userEvent.click(screen.getByText(messages['fordeling.oppstartValg.annenDato']));
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartDato.input']);
             await userEvent.type(oppstart, '20.02.2024');
             fireEvent.blur(oppstart);
             await userEvent.click(screen.getByText('Neste steg'));
@@ -1647,7 +1643,7 @@ describe('Fordeling - FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode', () => 
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText('15 + 3 uker til Hanne')).toBeInTheDocument();
             expect(screen.getByText('16 uker kan deles, fellesperiode')).toBeInTheDocument();
 
@@ -1669,10 +1665,10 @@ describe('Fordeling - FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode', () => 
                 screen.getByText('Hannes siste dag med foreldrepenger er mandag 12. august 2024.'),
             ).toBeInTheDocument();
             expect(screen.getByText('Fra Hanne sin søknad.')).toBeInTheDocument();
-            expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.spørsmål'])).toBeInTheDocument();
             expect(screen.getByText('Da barnet ble født')).toBeInTheDocument();
             expect(screen.getByText('Første dag etter Hanne, 13. august 2024')).toBeInTheDocument();
-            expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.annenDato'])).toBeInTheDocument();
         }),
     );
 });
@@ -1690,11 +1686,11 @@ describe('Fordeling - MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgra
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            expect(screen.getByText(messages['fordeling.oppstartValg.spørsmål'])).toBeInTheDocument();
             expect(screen.getByText('På omsorgsovertakelsen, 21. februar 2021')).toBeInTheDocument();
             expect(screen.getByText('På ankomstdagen til Norge, 21. mai 2021')).toBeInTheDocument();
-            expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.annenDato'])).toBeInTheDocument();
         }),
     );
 });
@@ -1713,7 +1709,7 @@ describe('Fordeling - MorSøkerFarHarRettIEØSTerminDekningsgrad80', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText('19 + 3 uker til deg')).toBeInTheDocument();
             expect(screen.getByText("18 uker som påvirkes av Hans' foreldrepenger")).toBeInTheDocument();
             expect(
@@ -1744,7 +1740,7 @@ describe('Fordeling - FarMedmorSøkerMorHarRettIEØSAdopsjon', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText('19 uker til deg')).toBeInTheDocument();
             expect(
                 screen.getByText('kan brukes når som helst innen tre år etter omsorgsovertakelsen.', { exact: false }),
@@ -1777,15 +1773,15 @@ describe('Fordeling - BareMorHarRettTermin', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText('43 + 3 uker til deg')).toBeInTheDocument();
             expect(screen.getByText('6 uker')).toBeInTheDocument();
             expect(screen.getByText('er satt av til rett etter fødsel.', { exact: false })).toBeInTheDocument();
             expect(screen.getByText('40 uker')).toBeInTheDocument();
             expect(screen.getByText('kan brukes når som helst før barnet fyller 3 år.')).toBeInTheDocument();
-            expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.spørsmål'])).toBeInTheDocument();
             expect(screen.getByText(/Tre uker før fødsel fra/)).toBeInTheDocument();
-            expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.annenDato'])).toBeInTheDocument();
         }),
     );
 });
@@ -1803,25 +1799,25 @@ describe('Fordeling - BareMorHarRettAdopsjon', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText('46 uker til deg')).toBeInTheDocument();
             expect(
                 screen.getByText('kan brukes når som helst innen tre år etter omsorgsovertakelsen.', { exact: false }),
             ).toBeInTheDocument();
-            expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.spørsmål'])).toBeInTheDocument();
             expect(screen.getByText('På omsorgsovertakelsen, 21. august 2022')).toBeInTheDocument();
-            expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
+            expect(screen.getByText(messages['fordeling.oppstartValg.annenDato'])).toBeInTheDocument();
+            await userEvent.click(screen.getByText(messages['fordeling.påvirkninger.tittel']));
             expect(screen.getByText('Hvis du får et nytt barn før det har gått tre år')).toBeInTheDocument();
-            expect(screen.getByText('Hvis du jobber samtidig som du har foreldrepenger')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.påvirkninger.jobb.tittel'])).toBeInTheDocument();
             expect(
                 screen.queryByText('Hvis barnet blir innlagt på sykehus de første 6 ukene etter fødsel.'),
             ).not.toBeInTheDocument();
             expect(
                 screen.queryByText('Hvis du blir syk de første seks ukene med foreldrepenger'),
             ).not.toBeInTheDocument();
-            expect(screen.queryByText('Hvis du blir syk eller innlagt på helseinstitusjon')).not.toBeInTheDocument();
-            expect(screen.queryByText('Hvis dere har foreldrepenger samtidig')).not.toBeInTheDocument();
+            expect(screen.queryByText(messages['fordeling.påvirkninger.morSykISinPeriode.tittel'])).not.toBeInTheDocument();
+            expect(screen.queryByText(messages['fordeling.påvirkninger.samtidigUttak.tittel'])).not.toBeInTheDocument();
             expect(
                 screen.queryByText('Hvis du blir syk, eller hvis du eller barnet blir innlagt på helseinstitusjon'),
             ).not.toBeInTheDocument();
@@ -1842,7 +1838,7 @@ describe('Fordeling - BareFarHarRettOgMorErUførTermin4Barn', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText('106 uker til deg')).toBeInTheDocument();
             expect(screen.getByText('75 uker', { exact: false })).toBeInTheDocument();
             expect(
@@ -1858,12 +1854,12 @@ describe('Fordeling - BareFarHarRettOgMorErUførTermin4Barn', () => {
                 }),
             ).toBeInTheDocument();
 
-            expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
-            expect(screen.getByText('Fra termindato')).toBeInTheDocument();
-            expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
+            expect(screen.getByText(messages['fordeling.oppstartValg.spørsmål'])).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.påFødsel.barnErIkkeFødt'])).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.annenDato'])).toBeInTheDocument();
+            await userEvent.click(screen.getByText(messages['fordeling.påvirkninger.tittel']));
             expect(screen.getByText('Hvis du får et nytt barn før det har gått tre år')).toBeInTheDocument();
-            expect(screen.getByText('Hvis du jobber samtidig som du har foreldrepenger')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.påvirkninger.jobb.tittel'])).toBeInTheDocument();
             expect(screen.getByText('Hvis barna blir født før svangerskapsuke 33')).toBeInTheDocument();
             expect(
                 screen.queryByText('Hvis barnet blir innlagt på sykehus de første 6 ukene etter fødsel.'),
@@ -1871,8 +1867,8 @@ describe('Fordeling - BareFarHarRettOgMorErUførTermin4Barn', () => {
             expect(
                 screen.queryByText('Hvis du blir syk de første seks ukene med foreldrepenger'),
             ).not.toBeInTheDocument();
-            expect(screen.queryByText('Hvis du blir syk eller innlagt på helseinstitusjon')).not.toBeInTheDocument();
-            expect(screen.queryByText('Hvis dere har foreldrepenger samtidig')).not.toBeInTheDocument();
+            expect(screen.queryByText(messages['fordeling.påvirkninger.morSykISinPeriode.tittel'])).not.toBeInTheDocument();
+            expect(screen.queryByText(messages['fordeling.påvirkninger.samtidigUttak.tittel'])).not.toBeInTheDocument();
             expect(
                 screen.queryByText('Hvis du blir syk, eller hvis du eller barnet blir innlagt på helseinstitusjon'),
             ).not.toBeInTheDocument();
@@ -1899,7 +1895,7 @@ describe('Fordeling - BareFarHarRettOgMorErIkkeUførFødtBarn', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText('50 uker til deg')).toBeInTheDocument();
             expect(screen.getByText('8 uker')).toBeInTheDocument();
             expect(
@@ -1915,9 +1911,9 @@ describe('Fordeling - BareFarHarRettOgMorErIkkeUførFødtBarn', () => {
                 }),
             ).toBeInTheDocument();
 
-            expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.spørsmål'])).toBeInTheDocument();
             expect(screen.getByText('Da barnet ble født')).toBeInTheDocument();
-            expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.annenDato'])).toBeInTheDocument();
         }),
     );
     it(
@@ -1931,9 +1927,9 @@ describe('Fordeling - BareFarHarRettOgMorErIkkeUførFødtBarn', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            await userEvent.click(screen.getByText(messages['fordeling.oppstartValg.annenDato']));
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartDato.input']);
             await userEvent.type(oppstart, '05.01.2024');
             fireEvent.blur(oppstart);
 
@@ -1964,7 +1960,7 @@ describe('Fordeling - BareFarHarRettTvillingerFødtFør1Okt2021', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText('57 uker til deg')).toBeInTheDocument();
             expect(
                 screen.getByText('kan brukes av deg hvis Hanne er i aktivitet.', { exact: false }),
@@ -1973,11 +1969,10 @@ describe('Fordeling - BareFarHarRettTvillingerFødtFør1Okt2021', () => {
                 screen.queryByText('kan brukes av deg uten krav til Hannes aktivitet.', { exact: false }),
             ).not.toBeInTheDocument();
             expect(
-                screen.getByText(
-                    'Siden du har fått barn før 1. oktober 2021, må du bruke foreldrepengeperioden din sammenhengende eller søke om utsettelse.',
+                screen.getByText(messages['fordeling.sammenhengendeUttak.info.enHarRett'],
                 ),
             ).toBeInTheDocument();
-            expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.spørsmål'])).toBeInTheDocument();
         }),
     );
     it(
@@ -1991,9 +1986,9 @@ describe('Fordeling - BareFarHarRettTvillingerFødtFør1Okt2021', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            await userEvent.click(screen.getByText(messages['fordeling.oppstartValg.annenDato']));
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartDato.input']);
             await userEvent.type(oppstart, '05.01.2024');
             fireEvent.blur(oppstart);
             await userEvent.click(screen.getByText('Neste steg'));
@@ -2018,11 +2013,11 @@ describe('Fordeling - BareFarHarRettAdopsjonMorErUfør', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
             expect(screen.getByText('40 uker til deg')).toBeInTheDocument();
-            expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.spørsmål'])).toBeInTheDocument();
             expect(screen.getByText('På omsorgsovertakelsen, 21. februar 2024')).toBeInTheDocument();
-            expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+            expect(screen.getByText(messages['fordeling.oppstartValg.annenDato'])).toBeInTheDocument();
         }),
     );
 
@@ -2036,9 +2031,9 @@ describe('Fordeling - BareFarHarRettAdopsjonMorErUfør', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            expect(await screen.findAllByText(messages['steps.label.fordeling'])).toHaveLength(2);
+            await userEvent.click(screen.getByText(messages['fordeling.oppstartValg.annenDato']));
+            const oppstart = utils.getByLabelText(messages['fordeling.oppstartDato.input']);
             await userEvent.type(oppstart, '20.02.2024');
             fireEvent.blur(oppstart);
 

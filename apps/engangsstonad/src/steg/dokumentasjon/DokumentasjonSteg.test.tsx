@@ -11,6 +11,8 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './DokumentasjonSteg.stories';
 
+import messages from '../../intl/messages/nb_NO.json';
+
 const { Terminbekreftelse, Adopsjonsbekreftelse } = composeStories(stories);
 
 describe('<DokumentasjonSteg>', () => {
@@ -24,26 +26,26 @@ describe('<DokumentasjonSteg>', () => {
             const utils = render(
                 <Terminbekreftelse gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />,
             );
-            expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
+            expect(await screen.findByText(messages['Engangsstønad.Pagetitle'])).toBeInTheDocument();
 
-            expect(screen.getAllByText('Bekreft termin')).toHaveLength(2);
+            expect(screen.getAllByText(messages['useStepConfig.Termin'])).toHaveLength(2);
             expect(screen.getByText('Steg 3 av 5')).toBeInTheDocument();
 
             await userEvent.click(screen.getByText('Neste steg'));
 
             expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
-            expect(screen.getAllByText('Du må oppgi terminbekreftelse dato')).toHaveLength(2);
+            expect(screen.getAllByText(messages['TerminDokPanel.Validering.TerminbekreftelseDato.DuMåOppgi'])).toHaveLength(2);
 
-            const terminbekreftelse = utils.getByLabelText('Når fikk du terminbekreftelsen?');
+            const terminbekreftelse = utils.getByLabelText(messages['TerminDokPanel.Terminbekreftelsesdato']);
             await userEvent.type(terminbekreftelse, dayjs().format(DDMMYYYY_DATE_FORMAT));
             fireEvent.blur(terminbekreftelse);
 
             await userEvent.click(screen.getByText('Neste steg'));
 
-            expect(screen.getByText('Du må laste opp bekreftelse på termindato')).toBeInTheDocument();
+            expect(screen.getByText(messages['DokumentasjonSteg.MinstEttDokumentTermin'])).toBeInTheDocument();
 
             const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-            const fileInput = screen.getByLabelText('Last opp bekreftelse på termindato');
+            const fileInput = screen.getByLabelText(messages['TerminDokPanel.Vedlegg.Terminbekreftelse']);
 
             await userEvent.upload(fileInput, file);
 
@@ -91,19 +93,19 @@ describe('<DokumentasjonSteg>', () => {
             render(
                 <Adopsjonsbekreftelse gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />,
             );
-            expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
+            expect(await screen.findByText(messages['Engangsstønad.Pagetitle'])).toBeInTheDocument();
 
-            expect(screen.getAllByText('Bekreft adopsjon')).toHaveLength(2);
+            expect(screen.getAllByText(messages['useStepConfig.Adopsjon'])).toHaveLength(2);
             expect(screen.getByText('Steg 3 av 5')).toBeInTheDocument();
 
             await userEvent.click(screen.getByText('Neste steg'));
 
             await userEvent.click(screen.getByText('Neste steg'));
 
-            expect(screen.getByText('Du må laste opp bekreftelse på adopsjon')).toBeInTheDocument();
+            expect(screen.getByText(messages['DokumentasjonSteg.MinstEttDokumentAdopsjon'])).toBeInTheDocument();
 
             const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-            const fileInput = screen.getByLabelText('Bekreftelse på adopsjon');
+            const fileInput = screen.getByLabelText(messages['AdopsjonDokPanel.Vedlegg.Adopsjon']);
             await userEvent.upload(fileInput, file);
 
             await userEvent.click(screen.getByText('Neste steg'));

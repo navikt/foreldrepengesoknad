@@ -7,6 +7,8 @@ import MockDate from 'mockdate';
 
 import * as stories from './Forside.stories';
 
+import messages from '../../intl/nb_NO.json';
+
 vi.mock('utils/hooks/useSaveLoadedRoute', () => {
     return { default: vi.fn() };
 });
@@ -48,13 +50,13 @@ describe('<Forside>', () => {
 
         render(<Default onDispatch={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
-        expect(screen.getByText('Start søknaden')).toBeInTheDocument();
+        expect(await screen.findByText(messages['søknad.pagetitle'])).toBeInTheDocument();
+        expect(screen.getByText(messages['velkommen.begynnMedSøknad'])).toBeInTheDocument();
         expect(screen.queryByText(/saken er under behandling/)).not.toBeInTheDocument();
         expect(screen.queryByText(/saken er ferdig behandlet/)).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Jeg bekrefter at jeg har lest og forstått'));
-        await userEvent.click(screen.getByText('Start søknaden'));
+        await userEvent.click(screen.getByText(messages['velkommen.samtykke']));
+        await userEvent.click(screen.getByText(messages['velkommen.begynnMedSøknad']));
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
@@ -78,18 +80,18 @@ describe('<Forside>', () => {
             />,
         );
 
-        expect(await screen.findByText('Hvilket barn gjelder søknaden din?')).toBeInTheDocument();
+        expect(await screen.findByText(messages['velkommen.intro.harSaker.barnVelger.label'])).toBeInTheDocument();
         expect(screen.getByText('Evig Lykkelig født 06. desember 2022')).toBeInTheDocument();
         expect(screen.getByText('Saksnummer 123456, saken er ferdig behandlet')).toBeInTheDocument();
-        expect(screen.getByText('Et annet barn')).toBeInTheDocument();
-        expect(screen.queryByText('Det vil opprettes en ny sak')).toBeInTheDocument();
-        expect(screen.queryByText('Jeg bekrefter at jeg har lest og forstått')).toBeInTheDocument();
+        expect(screen.getByText(messages['omBarnet.gjelderAnnetBarn'])).toBeInTheDocument();
+        expect(screen.queryByText(messages['velkommen.intro.harSaker.barnVelger.info'])).toBeInTheDocument();
+        expect(screen.queryByText(messages['velkommen.samtykke'])).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Evig Lykkelig født 06. desember 2022'));
-        await userEvent.click(screen.getByText('Jeg bekrefter at jeg har lest og forstått'));
+        await userEvent.click(screen.getByText(messages['velkommen.samtykke']));
 
-        expect(await screen.findByText('Endre søknad')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Endre søknad'));
+        expect(await screen.findByText(messages['velkommen.endreSøknad'])).toBeInTheDocument();
+        await userEvent.click(screen.getByText(messages['velkommen.endreSøknad']));
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
@@ -104,26 +106,26 @@ describe('<Forside>', () => {
     it('skal måtte bekrefte at de har lest og forstått', async () => {
         render(<HarOpprettetFPSakFødselMedBarnetIPDL />);
 
-        expect(await screen.findByText('Hvilket barn gjelder søknaden din?')).toBeInTheDocument();
-        expect(screen.queryByText('Du må bekrefte at du har lest og forstått dine plikter.')).not.toBeInTheDocument();
+        expect(await screen.findByText(messages['velkommen.intro.harSaker.barnVelger.label'])).toBeInTheDocument();
+        expect(screen.queryByText(messages['valideringsfeil.velkommen.harForståttRettigheterOgPlikter.påkrevd'])).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Evig Lykkelig født 06. desember 2022'));
-        await userEvent.click(screen.getByText('Endre søknad'));
+        await userEvent.click(screen.getByText(messages['velkommen.endreSøknad']));
 
-        expect(screen.getByText('Du må bekrefte at du har lest og forstått dine plikter.')).toBeInTheDocument();
+        expect(screen.getByText(messages['valideringsfeil.velkommen.harForståttRettigheterOgPlikter.påkrevd'])).toBeInTheDocument();
     });
 
     it('skal måtte velge et barn for å fortsette', async () => {
         render(<HarOpprettetFPSakFødselMedBarnetIPDL />);
 
-        expect(await screen.findByText('Hvilket barn gjelder søknaden din?')).toBeInTheDocument();
+        expect(await screen.findByText(messages['velkommen.intro.harSaker.barnVelger.label'])).toBeInTheDocument();
         expect(
-            screen.queryByText('For å komme videre, må du velge et av alternativene ovenfor.'),
+            screen.queryByText(messages['steg.footer.spørsmålMåBesvares']),
         ).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Start søknaden'));
+        await userEvent.click(screen.getByText(messages['velkommen.begynnMedSøknad']));
 
-        expect(screen.getByText('For å komme videre, må du velge et av alternativene ovenfor.')).toBeInTheDocument();
+        expect(screen.getByText(messages['steg.footer.spørsmålMåBesvares'])).toBeInTheDocument();
     });
 
     it('skal kunne søke på nytt barn', async () => {
@@ -137,14 +139,14 @@ describe('<Forside>', () => {
             />,
         );
 
-        expect(await screen.findByText('Hvilket barn gjelder søknaden din?')).toBeInTheDocument();
+        expect(await screen.findByText(messages['velkommen.intro.harSaker.barnVelger.label'])).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Et annet barn'));
-        await userEvent.click(screen.getByText('Jeg bekrefter at jeg har lest og forstått'));
+        await userEvent.click(screen.getByText(messages['omBarnet.gjelderAnnetBarn']));
+        await userEvent.click(screen.getByText(messages['velkommen.samtykke']));
 
-        expect(screen.queryByText('Endre søknad')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['velkommen.endreSøknad'])).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Start søknaden'));
+        await userEvent.click(screen.getByText(messages['velkommen.begynnMedSøknad']));
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
@@ -159,81 +161,81 @@ describe('<Forside>', () => {
     it('skal vise velkommen-side med løpende behandling sak status og mulighet for endring', async () => {
         render(<HarFPSakUnderBehandlingTermin />);
 
-        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['søknad.pagetitle'])).toBeInTheDocument();
         expect(screen.getByText('Barn med termin 28. juni 2024')).toBeInTheDocument();
         expect(screen.getByText('Saksnummer 123456, saken er under behandling')).toBeInTheDocument();
-        expect(screen.getByText('Et annet barn')).toBeInTheDocument();
-        expect(screen.getByText('Start søknaden')).toBeInTheDocument();
+        expect(screen.getByText(messages['omBarnet.gjelderAnnetBarn'])).toBeInTheDocument();
+        expect(screen.getByText(messages['velkommen.begynnMedSøknad'])).toBeInTheDocument();
     });
 
     it('skal vise velkommen-side for endringssøknad med løpende behandling sak status og mulighet for endring', async () => {
         render(<HarEndringssøknadUnderBehandlingAdopsjonBarnIPDL />);
 
-        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['søknad.pagetitle'])).toBeInTheDocument();
         expect(screen.getByText('Evig Lykkelig adoptert 08. desember 2022')).toBeInTheDocument();
         expect(screen.getByText('Saksnummer 123456, saken er under behandling')).toBeInTheDocument();
-        expect(screen.getByText('Et annet barn')).toBeInTheDocument();
+        expect(screen.getByText(messages['omBarnet.gjelderAnnetBarn'])).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Evig Lykkelig adoptert 08. desember 2022'));
 
-        expect(screen.getByText('Endre søknad')).toBeInTheDocument();
+        expect(screen.getByText(messages['velkommen.endreSøknad'])).toBeInTheDocument();
     });
 
     it('skal vise flere saker', async () => {
         render(<HarFlereSaker />);
 
-        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['søknad.pagetitle'])).toBeInTheDocument();
         expect(screen.getByText('Evig Lykkelig født 06. desember 2022')).toBeInTheDocument();
         expect(screen.getByText('Saksnummer 123456, saken er ferdig behandlet')).toBeInTheDocument();
         expect(screen.getByText('Barn med termin 28. juni 2024')).toBeInTheDocument();
         expect(screen.getByText('Saksnummer 555555, saken er under behandling')).toBeInTheDocument();
-        expect(screen.getByText('Et annet barn')).toBeInTheDocument();
-        expect(screen.getByText('Det vil opprettes en ny sak')).toBeInTheDocument();
+        expect(screen.getByText(messages['omBarnet.gjelderAnnetBarn'])).toBeInTheDocument();
+        expect(screen.getByText(messages['velkommen.intro.harSaker.barnVelger.info'])).toBeInTheDocument();
     });
 
     it('skal greie å vise sak på fødsel uten å ha mottat barn fra pdl"', async () => {
         render(<HarSakFødselUtenBarnIPDL />);
 
-        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['søknad.pagetitle'])).toBeInTheDocument();
         expect(screen.getByText('Barn født 06. desember 2022')).toBeInTheDocument();
         expect(screen.getByText('Saksnummer 123456, saken er ferdig behandlet')).toBeInTheDocument();
-        expect(screen.getByText('Et annet barn')).toBeInTheDocument();
+        expect(screen.getByText(messages['omBarnet.gjelderAnnetBarn'])).toBeInTheDocument();
     });
 
     it('skal greie å vise sak på adopsjon uten å ha mottat barn fra pdl', async () => {
         render(<HarSakAdopsjonUtenBarnIPDL />);
 
-        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['søknad.pagetitle'])).toBeInTheDocument();
         expect(screen.getByText('Barn adoptert 06. desember 2022')).toBeInTheDocument();
         expect(screen.getByText('Saksnummer 123456, saken er ferdig behandlet')).toBeInTheDocument();
-        expect(screen.getByText('Et annet barn')).toBeInTheDocument();
+        expect(screen.getByText(messages['omBarnet.gjelderAnnetBarn'])).toBeInTheDocument();
     });
 
     it('skal greie å vise sak på adopsjon med navn på barna hentet fra PDL', async () => {
         render(<HarSakAdopsjonMedBarnIPDL />);
 
-        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['søknad.pagetitle'])).toBeInTheDocument();
         expect(screen.getByText('Evig Lykkelig adoptert 06. desember 2022')).toBeInTheDocument();
         expect(screen.getByText('Saksnummer 123456, saken er ferdig behandlet')).toBeInTheDocument();
-        expect(screen.getByText('Et annet barn')).toBeInTheDocument();
+        expect(screen.getByText(messages['omBarnet.gjelderAnnetBarn'])).toBeInTheDocument();
     });
 
     it('skal greie å vise sak med tvillinger med navn og skal ikke vise barna dobbelt når de også kommer inn fra PDL', async () => {
         render(<HarSakFødselTvillinger />);
 
-        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['søknad.pagetitle'])).toBeInTheDocument();
         expect(screen.getByText('Evig Lykkelig og Grønn født 06. desember 2022')).toBeInTheDocument();
         expect(screen.getByText('Saksnummer 123456, saken er under behandling')).toBeInTheDocument();
-        expect(screen.getByText('Et annet barn')).toBeInTheDocument();
+        expect(screen.getByText(messages['omBarnet.gjelderAnnetBarn'])).toBeInTheDocument();
     });
 
     it('skal greie å vise sak med trillinger med navn', async () => {
         render(<HarSakFødselTrillinger />);
 
-        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['søknad.pagetitle'])).toBeInTheDocument();
         expect(screen.getByText('Evig Lykkelig, Grønn og Sommerlig født 06. desember 2022')).toBeInTheDocument();
         expect(screen.getByText('Saksnummer 123456, saken er ferdig behandlet')).toBeInTheDocument();
-        expect(screen.getByText('Et annet barn')).toBeInTheDocument();
+        expect(screen.getByText(messages['omBarnet.gjelderAnnetBarn'])).toBeInTheDocument();
     });
 
     //Ingen saker, og noen av barna er døde.
@@ -241,17 +243,17 @@ describe('<Forside>', () => {
         MockDate.set(new Date('2025-10-25'));
         render(<HarIngenSakerOgEttBarn />);
 
-        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['søknad.pagetitle'])).toBeInTheDocument();
         expect(screen.getByText('Oriental født 06. desember 2022')).toBeInTheDocument();
-        expect(screen.getByText('Et annet barn')).toBeInTheDocument();
+        expect(screen.getByText(messages['omBarnet.gjelderAnnetBarn'])).toBeInTheDocument();
     });
 
     it('skal vise tvillinger fra PDL når ingen saker', async () => {
         render(<HarIngenSakerOgTvillinger />);
 
-        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['søknad.pagetitle'])).toBeInTheDocument();
         expect(screen.getByText('Oriental og Vakker født 06. desember 2022')).toBeInTheDocument();
-        expect(screen.getByText('Et annet barn')).toBeInTheDocument();
+        expect(screen.getByText(messages['omBarnet.gjelderAnnetBarn'])).toBeInTheDocument();
     });
 
     it('skal vise ett barn fra PDL uten navn når barnet er dødfødt for mindre enn 3 mnd siden', async () => {
@@ -259,9 +261,9 @@ describe('<Forside>', () => {
 
         render(<HarIngenSakerOgEtDødfødtBarn />);
 
-        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['søknad.pagetitle'])).toBeInTheDocument();
         expect(screen.getByText('Barn født', { exact: false })).toBeInTheDocument();
-        expect(screen.getByText('Et annet barn')).toBeInTheDocument();
+        expect(screen.getByText(messages['omBarnet.gjelderAnnetBarn'])).toBeInTheDocument();
 
         MockDate.reset();
     });
@@ -271,9 +273,9 @@ describe('<Forside>', () => {
 
         render(<HarIngenSakerOgEtDødfødtBarn />);
 
-        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['søknad.pagetitle'])).toBeInTheDocument();
         expect(screen.queryByText('Barn født', { exact: false })).not.toBeInTheDocument();
-        expect(screen.queryByText('Et annet barn')).not.toBeInTheDocument();
+        expect(screen.queryByText(messages['omBarnet.gjelderAnnetBarn'])).not.toBeInTheDocument();
 
         MockDate.reset();
     });
@@ -283,9 +285,9 @@ describe('<Forside>', () => {
 
         render(<HarIngenSakerOgEttDødtBarn />);
 
-        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['søknad.pagetitle'])).toBeInTheDocument();
         expect(screen.getByText('Barn født', { exact: false })).toBeInTheDocument();
-        expect(screen.getByText('Et annet barn')).toBeInTheDocument();
+        expect(screen.getByText(messages['omBarnet.gjelderAnnetBarn'])).toBeInTheDocument();
 
         MockDate.reset();
     });
@@ -295,9 +297,9 @@ describe('<Forside>', () => {
 
         render(<HarIngenSakerOgToDødeTvillinger />);
 
-        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['søknad.pagetitle'])).toBeInTheDocument();
         expect(screen.getByText('Tvillinger født', { exact: false })).toBeInTheDocument();
-        expect(screen.getByText('Et annet barn')).toBeInTheDocument();
+        expect(screen.getByText(messages['omBarnet.gjelderAnnetBarn'])).toBeInTheDocument();
 
         MockDate.reset();
     });
@@ -307,7 +309,7 @@ describe('<Forside>', () => {
 
         render(<HarIngenSakerOgToDødeTvillinger />);
 
-        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['søknad.pagetitle'])).toBeInTheDocument();
         expect(screen.queryByText('Tvillinger født', { exact: false })).not.toBeInTheDocument();
         expect(screen.queryByText('SEt annet barn')).not.toBeInTheDocument();
 
@@ -319,9 +321,9 @@ describe('<Forside>', () => {
 
         render(<HarIngenSakerMedEnLevendeOgEnDødfødtTvilling />);
 
-        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['søknad.pagetitle'])).toBeInTheDocument();
         expect(screen.getByText('Tvillinger født', { exact: false })).toBeInTheDocument();
-        expect(screen.getByText('Et annet barn')).toBeInTheDocument();
+        expect(screen.getByText(messages['omBarnet.gjelderAnnetBarn'])).toBeInTheDocument();
 
         MockDate.reset();
     });
@@ -331,7 +333,7 @@ describe('<Forside>', () => {
 
         render(<HarIngenSakerMedEnLevendeOgEnDødfødtTvilling />);
 
-        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['søknad.pagetitle'])).toBeInTheDocument();
         expect(screen.queryByText('Oriental')).not.toBeInTheDocument();
         expect(screen.queryByText('Tvillinger født', { exact: false })).not.toBeInTheDocument();
         expect(screen.queryByText('Søknaden min gjelder et annet barn')).not.toBeInTheDocument();
@@ -343,9 +345,9 @@ describe('<Forside>', () => {
 
         render(<HarIngenSakerMedEnLevendeOgEnDødTvilling />);
 
-        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['søknad.pagetitle'])).toBeInTheDocument();
         expect(screen.getByText('Tvillinger født', { exact: false })).toBeInTheDocument();
-        expect(screen.getByText('Et annet barn')).toBeInTheDocument();
+        expect(screen.getByText(messages['omBarnet.gjelderAnnetBarn'])).toBeInTheDocument();
 
         MockDate.reset();
     });
@@ -354,10 +356,10 @@ describe('<Forside>', () => {
     it('skal vise velkommen-side med sak på fødsel tvillinger der den ene er død. Navn skal ikke vises', async () => {
         render(<HarSakMedEnLevendeOgEnDødfødtTvilling />);
 
-        expect(await screen.findByText('Hvilket barn gjelder søknaden din?')).toBeInTheDocument();
+        expect(await screen.findByText(messages['velkommen.intro.harSaker.barnVelger.label'])).toBeInTheDocument();
         expect(screen.getByText('Tvillinger født 06. desember 2022')).toBeInTheDocument();
         expect(screen.getByText('Saksnummer 123456, saken er under behandling')).toBeInTheDocument();
-        expect(screen.getByText('Et annet barn')).toBeInTheDocument();
+        expect(screen.getByText(messages['omBarnet.gjelderAnnetBarn'])).toBeInTheDocument();
     });
 
     it('skal vise velkommen-side med sak på fødsel der barnet døde for mer enn 3 mnd siden. Navn skal ikke vises', async () => {
@@ -365,10 +367,10 @@ describe('<Forside>', () => {
 
         render(<HarSakMedEtDødtBarn />);
 
-        expect(await screen.findByText('Hvilket barn gjelder søknaden din?', { exact: false })).toBeInTheDocument();
+        expect(await screen.findByText(messages['velkommen.intro.harSaker.barnVelger.label'], { exact: false })).toBeInTheDocument();
         expect(screen.getByText('Barn født 06. desember 2022')).toBeInTheDocument();
         expect(screen.getByText('Saksnummer 123456, saken er ferdig behandlet')).toBeInTheDocument();
-        expect(screen.getByText('Et annet barn')).toBeInTheDocument();
+        expect(screen.getByText(messages['omBarnet.gjelderAnnetBarn'])).toBeInTheDocument();
 
         MockDate.reset();
     });
@@ -378,13 +380,13 @@ describe('<Forside>', () => {
 
         render(<HarSakMedEtDødtBarn />);
 
-        expect(await screen.findByText('Hvilket barn gjelder søknaden din?', { exact: false })).toBeInTheDocument();
+        expect(await screen.findByText(messages['velkommen.intro.harSaker.barnVelger.label'], { exact: false })).toBeInTheDocument();
         expect(screen.getByText('Barn født', { exact: false })).toBeInTheDocument();
 
         expect(screen.getByText('Saksnummer 123456, saken er ferdig behandlet')).toBeInTheDocument();
         expect(screen.queryByText(/Evig Lykkelig/)).not.toBeInTheDocument();
-        expect(screen.getByText('Et annet barn')).toBeInTheDocument();
-        expect(screen.queryByText('Endre søknad')).not.toBeInTheDocument();
+        expect(screen.getByText(messages['omBarnet.gjelderAnnetBarn'])).toBeInTheDocument();
+        expect(screen.queryByText(messages['velkommen.endreSøknad'])).not.toBeInTheDocument();
 
         MockDate.reset();
     });
@@ -392,62 +394,62 @@ describe('<Forside>', () => {
     it('skal vise velkommen-side med sak på adopsjon der barnet døde. Navn skal ikke vises', async () => {
         render(<HarSakAdopsjonMedEtDødtBarn />);
 
-        expect(await screen.findByText('Hvilket barn gjelder søknaden din?')).toBeInTheDocument();
+        expect(await screen.findByText(messages['velkommen.intro.harSaker.barnVelger.label'])).toBeInTheDocument();
         expect(screen.getByText('Barn adoptert 06. desember 2022')).toBeInTheDocument();
         expect(screen.getByText('Saksnummer 123456, saken er ferdig behandlet')).toBeInTheDocument();
         expect(screen.queryByText(/Oriental/)).not.toBeInTheDocument();
-        expect(screen.getByText('Et annet barn')).toBeInTheDocument();
-        expect(screen.queryByText('Endre søknad')).not.toBeInTheDocument();
+        expect(screen.getByText(messages['omBarnet.gjelderAnnetBarn'])).toBeInTheDocument();
+        expect(screen.queryByText(messages['velkommen.endreSøknad'])).not.toBeInTheDocument();
     });
 
     it('skal vise velkommen-side med sak på tvillinger som lever. Navn skal  vises', async () => {
         render(<HarSakMedOppgittBarnTvillingerAlleLever />);
 
-        expect(await screen.findByText('Hvilket barn gjelder søknaden din?')).toBeInTheDocument();
+        expect(await screen.findByText(messages['velkommen.intro.harSaker.barnVelger.label'])).toBeInTheDocument();
         expect(screen.getByText('Oriental og Vakker født 06. desember 2022')).toBeInTheDocument();
-        expect(screen.getByText('Et annet barn')).toBeInTheDocument();
-        expect(screen.queryByText('Endre søknad')).not.toBeInTheDocument();
+        expect(screen.getByText(messages['omBarnet.gjelderAnnetBarn'])).toBeInTheDocument();
+        expect(screen.queryByText(messages['velkommen.endreSøknad'])).not.toBeInTheDocument();
     });
 
     it('skal vise velkommen-side med sak på tvillinger som der en er dødfødt. Navn skal ikkevises', async () => {
         render(<HarSakMedOppgittBarnMedEnLevendeOgEnDødfødtTvilling />);
-        expect(await screen.findByText('Hvilket barn gjelder søknaden din?')).toBeInTheDocument();
+        expect(await screen.findByText(messages['velkommen.intro.harSaker.barnVelger.label'])).toBeInTheDocument();
         expect(screen.getByText('Tvillinger født 06. desember 2022')).toBeInTheDocument();
-        expect(screen.getByText('Et annet barn')).toBeInTheDocument();
-        expect(screen.queryByText('Endre søknad')).not.toBeInTheDocument();
+        expect(screen.getByText(messages['omBarnet.gjelderAnnetBarn'])).toBeInTheDocument();
+        expect(screen.queryByText(messages['velkommen.endreSøknad'])).not.toBeInTheDocument();
     });
 
     it('skal vise velkommen-side med sak på trillinger som der en er død. Navn skal ikkevises', async () => {
         render(<HarSakMedTrillingerEnErDød />);
-        expect(await screen.findByText('Hvilket barn gjelder søknaden din?')).toBeInTheDocument();
+        expect(await screen.findByText(messages['velkommen.intro.harSaker.barnVelger.label'])).toBeInTheDocument();
         expect(screen.getByText('Trillinger født 06. desember 2022')).toBeInTheDocument();
-        expect(screen.getByText('Et annet barn')).toBeInTheDocument();
-        expect(screen.queryByText('Endre søknad')).not.toBeInTheDocument();
+        expect(screen.getByText(messages['omBarnet.gjelderAnnetBarn'])).toBeInTheDocument();
+        expect(screen.queryByText(messages['velkommen.endreSøknad'])).not.toBeInTheDocument();
     });
 
     it('skal koble sak med PDL barn født innen Termin - 17uker', async () => {
         render(<HarSakPåTerminSomSkalKoblesMedFødtPDLBarnFødtInnenTerminMinus17uker />);
-        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['søknad.pagetitle'])).toBeInTheDocument();
         expect(await screen.findByText('Hanne født 01. mars 2024')).toBeInTheDocument();
         expect(screen.getByText('Saksnummer 123456, saken er under behandling')).toBeInTheDocument();
         expect(screen.queryByText('Barn med termin 28. juni 2024')).not.toBeInTheDocument();
     });
     it('skal koble sak med PDL barn født innen Termin + 6 uker', async () => {
         render(<HarSakPåTerminSomSkalKoblesMedFødtPDLBarnFødtInnenTerminPlus6uker />);
-        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['søknad.pagetitle'])).toBeInTheDocument();
         expect(await screen.findByText('Hanne født 09. august 2024')).toBeInTheDocument();
         expect(screen.getByText('Saksnummer 123456, saken er under behandling')).toBeInTheDocument();
         expect(screen.queryByText('Barn med termin 28. juni 2024')).not.toBeInTheDocument();
     });
     it('skal ikke koble sak med PDL barn født før Termin - 17uker', async () => {
         render(<HarSakPåTerminSomIkkeSkalKoblesMedPDLBarnFødtForTidlig />);
-        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['søknad.pagetitle'])).toBeInTheDocument();
         expect(screen.getByText('Hanne født 29. februar 2024')).toBeInTheDocument();
         expect(screen.getByText('Barn med termin 28. juni 2024')).toBeInTheDocument();
     });
     it('skal ikke koble sak med PDL barn født etter Termin+6uker', async () => {
         render(<HarSakPåTerminSomIkkeSkalKoblesMedMedPDLBarnFødtForSent />);
-        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findByText(messages['søknad.pagetitle'])).toBeInTheDocument();
         expect(screen.getByText('Hanne født 10. august 2024')).toBeInTheDocument();
         expect(screen.getByText('Barn med termin 28. juni 2024')).toBeInTheDocument();
     });
