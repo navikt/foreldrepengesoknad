@@ -1,6 +1,6 @@
 import { PencilIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { ReactElement, useState } from 'react';
+import { ReactElement, ReactNode, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -299,54 +299,10 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         harPeriodeDerMorsAktivitetIkkeErValgt,
     });
 
-    const hvaVilDuGjøreAlternativer: ReactElement[] = [];
-    if (visLeggTilFerie) {
-        hvaVilDuGjøreAlternativer.push(
-            <Radio value={'LEGG_TIL_FERIE' satisfies HvaVilDuGjøre} key="LEGG_TIL_FERIE">
-                {erNyPeriodeModus ? (
-                    <FormattedMessage id="uttaksplan.valgPanel.leggTilFerie" />
-                ) : (
-                    <FormattedMessage id="uttaksplan.valgPanel.leggTilFerie.endre" />
-                )}
-            </Radio>,
-        );
-    }
-    if (visLeggTilUtsettelse) {
-        hvaVilDuGjøreAlternativer.push(
-            <Radio value={'LEGG_TIL_UTSETTELSE' satisfies HvaVilDuGjøre} key="LEGG_TIL_UTSETTELSE">
-                <FormattedMessage id="uttaksplan.valgPanel.leggTilUtsettelse" />
-            </Radio>,
-        );
-    }
-    if (visLeggTilPause) {
-        hvaVilDuGjøreAlternativer.push(
-            <Radio value={'LEGG_TIL_PAUSE' satisfies HvaVilDuGjøre} key="LEGG_TIL_PAUSE">
-                <FormattedMessage id="uttaksplan.valgPanel.leggTilPause" />
-            </Radio>,
-        );
-    }
-    if (visLeggTilOpphold) {
-        hvaVilDuGjøreAlternativer.push(
-            <Radio value={'LEGG_TIL_OPPHOLD' satisfies HvaVilDuGjøre} key="LEGG_TIL_OPPHOLD">
-                {erNyPeriodeModus ? (
-                    <FormattedMessage id="uttaksplan.valgPanel.leggTilOpphold" />
-                ) : (
-                    <FormattedMessage id="uttaksplan.valgPanel.leggTilOpphold.endre" />
-                )}
-            </Radio>,
-        );
-    }
-    if (visLeggTilPeriode) {
-        hvaVilDuGjøreAlternativer.push(
-            <Radio value={'LEGG_TIL_PERIODE' satisfies HvaVilDuGjøre} key="LEGG_TIL_PERIODE">
-                {erNyPeriodeModus ? (
-                    <FormattedMessage id="uttaksplan.valgPanel.leggTilPeriode" />
-                ) : (
-                    <FormattedMessage id="uttaksplan.valgPanel.leggTilPeriode.endre" />
-                )}
-            </Radio>,
-        );
-    }
+    const hvaVilDuGjøreAlternativer = lagHvaVilDuGjøreAlternativer(
+        { visLeggTilFerie, visLeggTilUtsettelse, visLeggTilPause, visLeggTilOpphold, visLeggTilPeriode },
+        erNyPeriodeModus,
+    );
 
     return (
         <VStack
@@ -490,4 +446,58 @@ const leggTilDatoOgHvaVilDuGjøre = (
               hvaVilDuGjøre: 'LEGG_TIL_PERIODE',
           }
         : undefined;
+};
+
+type HvaVilDuGjøreSynlighet = {
+    visLeggTilFerie: boolean;
+    visLeggTilUtsettelse: boolean;
+    visLeggTilPause: boolean;
+    visLeggTilOpphold: boolean;
+    visLeggTilPeriode: boolean;
+};
+
+const lagHvaVilDuGjøreAlternativer = (
+    synlighet: HvaVilDuGjøreSynlighet,
+    erNyPeriodeModus: boolean,
+): ReactElement[] => {
+    const alternativer: Array<{ vis: boolean; value: HvaVilDuGjøre; nyTekst: ReactNode; endreTekst: ReactNode }> = [
+        {
+            vis: synlighet.visLeggTilFerie,
+            value: 'LEGG_TIL_FERIE',
+            nyTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilFerie" />,
+            endreTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilFerie.endre" />,
+        },
+        {
+            vis: synlighet.visLeggTilUtsettelse,
+            value: 'LEGG_TIL_UTSETTELSE',
+            nyTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilUtsettelse" />,
+            endreTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilUtsettelse" />,
+        },
+        {
+            vis: synlighet.visLeggTilPause,
+            value: 'LEGG_TIL_PAUSE',
+            nyTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilPause" />,
+            endreTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilPause" />,
+        },
+        {
+            vis: synlighet.visLeggTilOpphold,
+            value: 'LEGG_TIL_OPPHOLD',
+            nyTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilOpphold" />,
+            endreTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilOpphold.endre" />,
+        },
+        {
+            vis: synlighet.visLeggTilPeriode,
+            value: 'LEGG_TIL_PERIODE',
+            nyTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilPeriode" />,
+            endreTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilPeriode.endre" />,
+        },
+    ];
+
+    return alternativer
+        .filter((alternativ) => alternativ.vis)
+        .map((alternativ) => (
+            <Radio value={alternativ.value} key={alternativ.value}>
+                {erNyPeriodeModus ? alternativ.nyTekst : alternativ.endreTekst}
+            </Radio>
+        ));
 };
