@@ -30,7 +30,7 @@ import { useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
 import { useListePanelInfoAlerts } from '../../regler/alert/informasjonsAlertHooks';
 import { lagHvaVilDuGjøreValidatorer } from '../../regler/felt/hvaVilDuGjøre';
 import { useGyldigeKvotetyper } from '../../regler/kvotetype/kvoteRegler';
-import { useHvaVilDuGjøreValgSynlighet } from '../../regler/synlighet/hvaVilDuGjøreValg';
+import { useHvaVilDuGjøreValgSynlighet, HvaVilDuGjøreValgSynlighet } from '../../regler/synlighet/hvaVilDuGjøreValg';
 import {
     Uttaksplanperiode,
     erEøsUttakPeriode,
@@ -271,8 +271,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const harGyldigTidsperiode =
         !!fomValue && !!tomValue && dayjs(fomValue).isValid() && dayjs(tomValue).isValid();
 
-    const { visLeggTilFerie, visLeggTilUtsettelse, visLeggTilPause, visLeggTilOpphold, visLeggTilPeriode } =
-        useHvaVilDuGjøreValgSynlighet(perioder);
+    const hvaVilDuGjøreSynlighet = useHvaVilDuGjøreValgSynlighet(perioder);
 
     const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useGyldigeKvotetyper({
         valgtePerioder: perioder,
@@ -299,10 +298,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         harPeriodeDerMorsAktivitetIkkeErValgt,
     });
 
-    const hvaVilDuGjøreAlternativer = lagHvaVilDuGjøreAlternativer(
-        { visLeggTilFerie, visLeggTilUtsettelse, visLeggTilPause, visLeggTilOpphold, visLeggTilPeriode },
-        erNyPeriodeModus,
-    );
+    const hvaVilDuGjøreAlternativer = lagHvaVilDuGjøreAlternativer(hvaVilDuGjøreSynlighet, erNyPeriodeModus);
 
     return (
         <VStack
@@ -448,16 +444,8 @@ const leggTilDatoOgHvaVilDuGjøre = (
         : undefined;
 };
 
-type HvaVilDuGjøreSynlighet = {
-    visLeggTilFerie: boolean;
-    visLeggTilUtsettelse: boolean;
-    visLeggTilPause: boolean;
-    visLeggTilOpphold: boolean;
-    visLeggTilPeriode: boolean;
-};
-
 const lagHvaVilDuGjøreAlternativer = (
-    synlighet: HvaVilDuGjøreSynlighet,
+    synlighet: HvaVilDuGjøreValgSynlighet,
     erNyPeriodeModus: boolean,
 ): ReactElement[] => {
     const alternativer: Array<{ vis: boolean; value: HvaVilDuGjøre; nyTekst: ReactNode; endreTekst: ReactNode }> = [

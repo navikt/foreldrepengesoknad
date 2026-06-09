@@ -108,7 +108,7 @@ type HvaVilDuGjøreValgKontekst = {
     valgtePerioder: Periode[];
 };
 
-type HvaVilDuGjøreValgSynlighet = {
+export type HvaVilDuGjøreValgSynlighet = {
     visLeggTilFerie: boolean;
     visLeggTilUtsettelse: boolean;
     visLeggTilPause: boolean;
