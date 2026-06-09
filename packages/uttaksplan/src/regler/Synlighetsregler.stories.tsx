@@ -17,6 +17,7 @@ import {
 import {
     VIS_BEGGE_RADIO,
     VIS_FAR_MEDMOR_RADIO,
+    VIS_FORELDER_VALG,
     VIS_KONTO_FAR_MEDMOR_RADIOGRUPPE,
     VIS_KONTO_MOR_RADIOGRUPPE,
     VIS_MOR_RADIO,
@@ -65,7 +66,9 @@ const FORELDER_VALG_OMRÅDE: Synlighetsområde = {
     område: 'Hvilke alternativ vises i «Hvem gjelder perioden»-radiogruppen?',
     beskrivelse:
         'Når brukeren legger til eller endrer en periode, må det velges hvilken forelder perioden gjelder. ' +
-        'Reglene under bestemmer hvilke alternativ (Mor, Far/medmor, Begge) som er tilgjengelige.',
+        'Reglene under bestemmer hvilke alternativ (Mor, Far/medmor, Begge) som er tilgjengelige. Finnes det ' +
+        'bare ett tilgjengelig alternativ — typisk når bare én forelder har rett — skjules hele spørsmålet, og ' +
+        'forelderverdien settes automatisk (se forelderValg.visForelderValg).',
     seOgså: [
         {
             tekst: 'Hvilke kvotetyper er gyldige for mor? (Kvotetyperegler)',
@@ -77,6 +80,7 @@ const FORELDER_VALG_OMRÅDE: Synlighetsområde = {
         },
     ],
     regler: [
+        VIS_FORELDER_VALG,
         VIS_MOR_RADIO,
         VIS_FAR_MEDMOR_RADIO,
         VIS_BEGGE_RADIO,

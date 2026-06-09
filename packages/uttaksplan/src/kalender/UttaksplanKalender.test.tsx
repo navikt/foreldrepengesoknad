@@ -1592,6 +1592,24 @@ describe('UttaksplanKalender', () => {
         expect(within(mai).getAllByTestId('dayColor:BEIGEOUTLINE', { exact: false })).toHaveLength(4);
     });
 
+    it('skal skjule forelder-spørsmålet og sette verdien bak panseret når kun far har rett', async () => {
+        render(<KunFarHarRettOgHarPauseperiode />);
+
+        const juni = screen.getByTestId('year:2024;month:5');
+
+        await userEvent.click(within(juni).getByText('17', { exact: true }));
+        await userEvent.click(within(juni).getByText('20', { exact: true }));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getAllByText('Legg til')[0]!);
+
+        // Når kun far har rett til foreldrepenger, skal spørsmålet om hvem som
+        // skal ha foreldrepenger ikke vises. Verdien settes bak panseret, og vi
+        // går rett til kvotetype-spørsmålet "Far skal ha?".
+        expect(screen.getByText('Far skal ha?')).toBeInTheDocument();
+        expect(screen.queryByText('Hvem skal ha foreldrepenger?')).not.toBeInTheDocument();
+    });
+
     it('skal vise avslåtte periode korrekt og så markere som hull når en sletter', async () => {
         render(<SkalViseAvslåttPeriodeKorrekt />);
 

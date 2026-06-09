@@ -747,6 +747,32 @@ describe('UttaksplanListe', () => {
         ]);
     });
 
+    it('skal skjule forelder-spørsmålet og sette verdien bak panseret når kun far har rett', async () => {
+        const oppdaterUttaksplan = vi.fn();
+
+        render(<KunFarHarRettOgHarPauseperiode oppdaterUttaksplan={oppdaterUttaksplan} />);
+
+        expect(await screen.findByText('24. mai 24 - 28. mai 24')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Legg til periode'));
+        expect(await screen.findByText('Hva vil du gjøre?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Legge til periode med foreldrepenger'));
+
+        expect(await screen.findByText('Hvilke datoer skal perioden være?')).toBeInTheDocument();
+        const fraOgMedDato = screen.getByLabelText('Fra og med dato');
+        await userEvent.type(fraOgMedDato, dayjs('2024-06-14').format('DD.MM.YYYY'));
+        await userEvent.tab();
+        const tilOgMedDato = screen.getByLabelText('Til og med dato');
+        await userEvent.type(tilOgMedDato, dayjs('2024-06-20').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        // Når kun far har rett til foreldrepenger, skal spørsmålet om hvem som
+        // skal ha foreldrepenger ikke vises. Verdien settes bak panseret, og vi
+        // går rett til kvotetype-spørsmålet "Far skal ha?".
+        expect(await screen.findByText('Far skal ha?')).toBeInTheDocument();
+        expect(screen.queryByText('Hvem skal ha foreldrepenger?')).not.toBeInTheDocument();
+    });
+
     it('Skal ikke kunne legge til ferieperiode etter 6-ukerperioden for kun far har rett', async () => {
         const oppdaterUttaksplan = vi.fn();
 
