@@ -172,4 +172,4 @@ const fjernOverlappUtenSamtidigUttak = (
 // vekk seinare. Difor skal han ikkje skjula annen part sin reelle periode (t.d. når far har teke over
 // mødrekvoten medan mor sin mødrekvoteperiode er avslått).
 const okkupererTid = (periode: UttakPeriode_fpoversikt): boolean =>
-    !(periode.resultat?.innvilget === false && periode.resultat.trekkerDager === false);
+    !(periode.resultat?.innvilget === false && periode.resultat?.trekkerDager === false);
