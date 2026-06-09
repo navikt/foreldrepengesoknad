@@ -4,6 +4,7 @@ import { Alert, BodyShort, VStack } from '@navikt/ds-react';
 
 import { TapteDagerForklaring } from '../../../../../felles/TapteDagerForklaring';
 import { usePeriodeDetaljerAlerts } from '../../../../../regler/alert/informasjonsAlertHooks';
+import { erTapteDagerHull } from '../../../../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../../utils/lagHullPerioder';
 import { useKalenderRedigeringContext } from '../../../context/KalenderRedigeringContext';
 import { finnValgtePerioder } from '../../../utils/kalenderPeriodeUtils';
@@ -24,9 +25,15 @@ export const PeriodeDetaljerOgInfoMeldinger = () => {
         eksisterendePerioderSomErValgt,
     });
 
-    const tapteDagerFom = [...sammenslåtteValgtePerioder]
-        .map((p) => p.fom)
-        .sort((a, b) => a.localeCompare(b))[0];
+    // Forklaringen skal kun vises når de valgte dagene faktisk overlapper et
+    // «dager du kan miste»-hull, ikke for vilkårlige nye dager.
+    const valgteTapteDagerHull = uttakPerioderInkludertTapteDager
+        .filter(erTapteDagerHull)
+        .filter((hull) =>
+            sammenslåtteValgtePerioder.some((valgt) => valgt.fom <= hull.tom && valgt.tom >= hull.fom),
+        );
+
+    const tapteDagerFom = valgteTapteDagerHull.map((hull) => hull.fom).sort((a, b) => a.localeCompare(b))[0];
 
     return (
         <VStack gap="space-16">
