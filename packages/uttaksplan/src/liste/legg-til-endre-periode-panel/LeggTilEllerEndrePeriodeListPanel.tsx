@@ -1,5 +1,6 @@
 import { PencilIcon } from '@navikt/aksel-icons';
-import { useState } from 'react';
+import dayjs from 'dayjs';
+import { ReactElement, ReactNode, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -29,6 +30,7 @@ import { useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
 import { useListePanelInfoAlerts, useKanKunErstatte } from '../../regler/alert/informasjonsAlertHooks';
 import { lagHvaVilDuGjøreValidatorer } from '../../regler/felt/hvaVilDuGjøre';
 import { useGyldigeKvotetyper } from '../../regler/kvotetype/kvoteRegler';
+import { useHvaVilDuGjøreValgSynlighet, HvaVilDuGjøreValgSynlighet } from '../../regler/synlighet/hvaVilDuGjøreValg';
 import {
     Uttaksplanperiode,
     erEøsUttakPeriode,
@@ -81,7 +83,6 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const {
         uttakPerioder,
         foreldreInfo: { søker, rettighetType },
-        familiesituasjon,
         familiehendelsedato,
         erPeriodeneTilAnnenPartLåst,
     } = useUttaksplanData();
@@ -276,6 +277,12 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     };
 
     const perioder = fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [];
+
+    const harGyldigTidsperiode =
+        !!fomValue && !!tomValue && dayjs(fomValue).isValid() && dayjs(tomValue).isValid();
+
+    const hvaVilDuGjøreSynlighet = useHvaVilDuGjøreValgSynlighet(perioder);
+
     const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useGyldigeKvotetyper({
         valgtePerioder: perioder,
         harValgtSamtidigUttak: forelder === 'BEGGE',
@@ -300,6 +307,8 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         harValgtFerieEllerOpphold: hvaVilDuGjøre === 'LEGG_TIL_FERIE' || hvaVilDuGjøre === 'LEGG_TIL_OPPHOLD',
         harPeriodeDerMorsAktivitetIkkeErValgt,
     });
+
+    const hvaVilDuGjøreAlternativer = lagHvaVilDuGjøreAlternativer(hvaVilDuGjøreSynlighet, erNyPeriodeModus);
 
     return (
         <VStack
@@ -337,52 +346,24 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                 )}
                 {!visEndreEllerForskyvPanel && (
                     <VStack gap="space-32">
-                        <RhfRadioGroup
-                            name="hvaVilDuGjøre"
-                            label={intl.formatMessage({ id: 'uttaksplan.valgPanel.label' })}
-                            control={formMethods.control}
-                            validate={[
-                                isRequired(intl.formatMessage({ id: 'leggTilPeriodePanel.hvaVilDuGjøre.påkrevd' })),
-                                ...hvaVilDuGjøreFeltvalidatorer,
-                            ]}
-                            onChange={resetFormValuesVedEndringAvHvaVilDuGjøre}
-                        >
-                            <Radio value={'LEGG_TIL_FERIE' satisfies HvaVilDuGjøre} autoFocus>
-                                {erNyPeriodeModus ? (
-                                    <FormattedMessage id="uttaksplan.valgPanel.leggTilFerie" />
-                                ) : (
-                                    <FormattedMessage id="uttaksplan.valgPanel.leggTilFerie.endre" />
-                                )}
-                            </Radio>
-                            <>
-                                {søker === 'MOR' && familiesituasjon !== 'adopsjon' && (
-                                    <Radio value={'LEGG_TIL_UTSETTELSE' satisfies HvaVilDuGjøre}>
-                                        <FormattedMessage id="uttaksplan.valgPanel.leggTilUtsettelse" />
-                                    </Radio>
-                                )}
-                                {søker === 'FAR_MEDMOR' && rettighetType === 'BARE_SØKER_RETT' && (
-                                    <Radio value={'LEGG_TIL_PAUSE' satisfies HvaVilDuGjøre}>
-                                        <FormattedMessage id="uttaksplan.valgPanel.leggTilPause" />
-                                    </Radio>
-                                )}
-                            </>
-                            <Radio value={'LEGG_TIL_OPPHOLD' satisfies HvaVilDuGjøre}>
-                                {erNyPeriodeModus ? (
-                                    <FormattedMessage id="uttaksplan.valgPanel.leggTilOpphold" />
-                                ) : (
-                                    <FormattedMessage id="uttaksplan.valgPanel.leggTilOpphold.endre" />
-                                )}
-                            </Radio>
-                            <Radio value={'LEGG_TIL_PERIODE' satisfies HvaVilDuGjøre}>
-                                {erNyPeriodeModus ? (
-                                    <FormattedMessage id="uttaksplan.valgPanel.leggTilPeriode" />
-                                ) : (
-                                    <FormattedMessage id="uttaksplan.valgPanel.leggTilPeriode.endre" />
-                                )}
-                            </Radio>
-                        </RhfRadioGroup>
-
                         <TidsperiodeSpørsmål />
+
+                        {harGyldigTidsperiode && (
+                            <RhfRadioGroup
+                                name="hvaVilDuGjøre"
+                                label={intl.formatMessage({ id: 'uttaksplan.valgPanel.label' })}
+                                control={formMethods.control}
+                                validate={[
+                                    isRequired(
+                                        intl.formatMessage({ id: 'leggTilPeriodePanel.hvaVilDuGjøre.påkrevd' }),
+                                    ),
+                                    ...hvaVilDuGjøreFeltvalidatorer,
+                                ]}
+                                onChange={resetFormValuesVedEndringAvHvaVilDuGjøre}
+                            >
+                                {hvaVilDuGjøreAlternativer}
+                            </RhfRadioGroup>
+                        )}
 
                         {hvaVilDuGjøre === 'LEGG_TIL_PERIODE' && fomValue && tomValue && (
                             <LeggTilEllerEndrePeriodeFellesForm
@@ -464,4 +445,50 @@ const leggTilDatoOgHvaVilDuGjøre = (
               hvaVilDuGjøre: 'LEGG_TIL_PERIODE',
           }
         : undefined;
+};
+
+const lagHvaVilDuGjøreAlternativer = (
+    synlighet: HvaVilDuGjøreValgSynlighet,
+    erNyPeriodeModus: boolean,
+): ReactElement[] => {
+    const alternativer: Array<{ vis: boolean; value: HvaVilDuGjøre; nyTekst: ReactNode; endreTekst: ReactNode }> = [
+        {
+            vis: synlighet.visLeggTilFerie,
+            value: 'LEGG_TIL_FERIE',
+            nyTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilFerie" />,
+            endreTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilFerie.endre" />,
+        },
+        {
+            vis: synlighet.visLeggTilUtsettelse,
+            value: 'LEGG_TIL_UTSETTELSE',
+            nyTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilUtsettelse" />,
+            endreTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilUtsettelse" />,
+        },
+        {
+            vis: synlighet.visLeggTilPause,
+            value: 'LEGG_TIL_PAUSE',
+            nyTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilPause" />,
+            endreTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilPause" />,
+        },
+        {
+            vis: synlighet.visLeggTilOpphold,
+            value: 'LEGG_TIL_OPPHOLD',
+            nyTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilOpphold" />,
+            endreTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilOpphold.endre" />,
+        },
+        {
+            vis: synlighet.visLeggTilPeriode,
+            value: 'LEGG_TIL_PERIODE',
+            nyTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilPeriode" />,
+            endreTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilPeriode.endre" />,
+        },
+    ];
+
+    return alternativer
+        .filter((alternativ) => alternativ.vis)
+        .map((alternativ) => (
+            <Radio value={alternativ.value} key={alternativ.value}>
+                {erNyPeriodeModus ? alternativ.nyTekst : alternativ.endreTekst}
+            </Radio>
+        ));
 };
