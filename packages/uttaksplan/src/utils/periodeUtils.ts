@@ -11,7 +11,7 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { Tidsperioden, Uttaksdagen } from '@navikt/fp-utils';
+import { Tidsperioden, Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
 
 import {
     Uttaksplanperiode,
@@ -48,6 +48,52 @@ export const getAntallUttaksdagerIVinduRundtFødsel = (
     }
 
     return Uttaksdagen.denneEllerNeste(overlappFom).getUttaksdagerFremTilOgMedDato(overlappTom);
+};
+
+// virkedagar × prosent / 100, runda ned til 1 desimal og uttrykt i tideler (heiltal).
+const tidelerNedrundet = (dager: number, prosent: number): number => Math.floor((dager * prosent) / 10);
+
+/**
+ * Reknar talet på trekkdagar for ein periode i *tideler* (heiltal).
+ *
+ * Trekkdagar summerast i heiltal (tideler) i staden for desimaltal for å unngå
+ * flyttalsfeil. Eit døme: ti graderte dagar à 0,6 dag gir i flyttal
+ * 5,999999999999999 i staden for 6,0, og ein etterfølgjande `Math.floor` ville
+ * då telje 5 dagar og late ein dag stå att som «ubrukt» i telleverket.
+ *
+ * Matchar fp-sak (`no.nav.foreldrepenger.regler.uttak ... TrekkdagerUtregningUtil`
+ * / `Trekkdager`): trekkdagar = virkedagar × utbetalingsgrad / 100, runda *ned*
+ * til 1 desimal (RoundingMode.DOWN) per periode.
+ */
+export const finnAntallTidelerÅTrekke = (
+    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    erFødsel: boolean,
+    familiehendelsedato: string,
+): number => {
+    if (erEøsUttakPeriode(periode)) {
+        // EØS-trekkdagar kjem ferdig utrekna (maks 1 desimal) frå fp-sak.
+        return Math.round(periode.trekkdager * 10);
+    }
+
+    const arbeidstidprosent = periode.gradering?.arbeidstidprosent;
+    const samtidigUttak = periode.samtidigUttak;
+    const dager = Uttaksperioden.getAntallUttaksdager(periode);
+
+    if (arbeidstidprosent) {
+        const utbetalingsgrad = 100 - arbeidstidprosent;
+        // Mor sin gradering i tidsrommet 3 veker før / 6 veker etter familiehendinga
+        // gir ikkje forlenging av stønadsperioden – dagane i vinduet trekkjast som heile.
+        if (erFødsel && periode.forelder === 'MOR') {
+            const dagerIVindu = getAntallUttaksdagerIVinduRundtFødsel(periode.fom, periode.tom, familiehendelsedato);
+            const dagerUtenforVindu = dager - dagerIVindu;
+            return dagerIVindu * 10 + tidelerNedrundet(dagerUtenforVindu, utbetalingsgrad);
+        }
+        return tidelerNedrundet(dager, utbetalingsgrad);
+    }
+    if (samtidigUttak) {
+        return tidelerNedrundet(dager, samtidigUttak);
+    }
+    return dager * 10;
 };
 
 export const erUttaksperiode = (periode: Uttaksplanperiode) => {
