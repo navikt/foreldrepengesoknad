@@ -18,6 +18,7 @@ const {
     FødselMorOgFarBeggeHarRettAnnenPartTomtVedtak,
     FødselMorOgFarKunMorHarRett,
     FødselFarBeggeHarRettStarterPåTermin,
+    NySøknadFørVedtakMedEksisterendeSak,
 } = composeStories(stories);
 
 describe('<UttaksplanSteg>', () => {
@@ -206,6 +207,62 @@ describe('<UttaksplanSteg>', () => {
 
             // Tilbakestill-knappen er nå deaktivert (planen er tilbakestilt til standardforslaget)
             expect(screen.getByRole('button', { name: 'Tilbakestill plan' })).toBeDisabled();
+        }),
+    );
+
+    it(
+        'TFP-6962: skal kunne gå videre med forhåndsutfylt plan fra eksisterende sak når det er en ny søknad (ikke endringssøknad)',
+        mswWrapper(async ({ setHandlers }) => {
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreSøknadOgNaviger = vi.fn();
+            setHandlers(NySøknadFørVedtakMedEksisterendeSak.parameters.msw);
+
+            render(
+                <NySøknadFørVedtakMedEksisterendeSak
+                    gåTilNesteSide={gåTilNesteSide}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                />,
+            );
+
+            expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+
+            await userEvent.click(screen.getByText('Neste steg'));
+
+            // Skal IKKE blokkere med endringssøknad-feilmeldingen for en ny søknad
+            expect(
+                screen.queryByText('Du må gjøre en endring for å kunne søke om endring'),
+            ).not.toBeInTheDocument();
+
+            // Navigasjon til neste steg skal ha skjedd
+            const navigasjonsAction = gåTilNesteSide.mock.calls.find(
+                ([action]) => action.key === ContextDataType.APP_ROUTE,
+            );
+            expect(navigasjonsAction).toBeDefined();
+        }),
+    );
+
+    it(
+        'TFP-6962: skal fortsatt vise endringssøknad-feilmelding når det faktisk er en endringssøknad uten nye perioder',
+        mswWrapper(async ({ setHandlers }) => {
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreSøknadOgNaviger = vi.fn();
+            setHandlers(NySøknadFørVedtakMedEksisterendeSak.parameters.msw);
+
+            render(
+                <NySøknadFørVedtakMedEksisterendeSak
+                    gåTilNesteSide={gåTilNesteSide}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                    erEndringssøknad
+                />,
+            );
+
+            expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+
+            await userEvent.click(screen.getByText('Neste steg'));
+
+            expect(
+                await screen.findByText('Du må gjøre en endring for å kunne søke om endring'),
+            ).toBeInTheDocument();
         }),
     );
 
