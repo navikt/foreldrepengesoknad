@@ -2,6 +2,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { Alert, BodyShort, VStack } from '@navikt/ds-react';
 
+import { TapteDagerForklaring } from '../../../../../felles/TapteDagerForklaring';
 import { usePeriodeDetaljerAlerts } from '../../../../../regler/alert/informasjonsAlertHooks';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../../utils/lagHullPerioder';
 import { useKalenderRedigeringContext } from '../../../context/KalenderRedigeringContext';
@@ -23,12 +24,19 @@ export const PeriodeDetaljerOgInfoMeldinger = () => {
         eksisterendePerioderSomErValgt,
     });
 
+    const tapteDagerFom = [...sammenslåtteValgtePerioder]
+        .map((p) => p.fom)
+        .sort((a, b) => a.localeCompare(b))[0];
+
     return (
         <VStack gap="space-16">
             {eksisterendePerioderSomErValgt.length === 0 && (
-                <BodyShort>
-                    <FormattedMessage id="RedigeringPanel.NyeDagerForklaring" />
-                </BodyShort>
+                <>
+                    <BodyShort>
+                        <FormattedMessage id="RedigeringPanel.NyeDagerForklaring" />
+                    </BodyShort>
+                    {tapteDagerFom && <TapteDagerForklaring fom={tapteDagerFom} />}
+                </>
             )}
 
             {eksisterendePerioderSomErValgt.length > 0 && (

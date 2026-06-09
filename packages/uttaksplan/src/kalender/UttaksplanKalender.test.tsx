@@ -33,7 +33,7 @@ describe('UttaksplanKalender', () => {
 
         expect(screen.getByText('Din periode')).toBeInTheDocument();
         expect(screen.getByText('Fødsel')).toBeInTheDocument();
-        expect(screen.getByText('Dager du kan tape')).toBeInTheDocument();
+        expect(screen.getByText('Dager du kan miste')).toBeInTheDocument();
         expect(screen.getByText('Du har jobb og foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Du og Hans har permisjon samtidig')).toBeInTheDocument();
         expect(screen.getByText("Hans' periode")).toBeInTheDocument();
@@ -77,7 +77,7 @@ describe('UttaksplanKalender', () => {
         render(<FarSøkerMedTapteDagerOgFerie />);
         expect(screen.getByText('Din periode')).toBeInTheDocument();
         expect(screen.getByText('Fødsel')).toBeInTheDocument();
-        expect(screen.getByText('Dager du kan tape')).toBeInTheDocument();
+        expect(screen.getByText('Dager du kan miste')).toBeInTheDocument();
         expect(screen.getByText('Du har ferie')).toBeInTheDocument();
         expect(screen.getByText('Helg')).toBeInTheDocument();
         const juli = screen.getByTestId('year:2021;month:6');
