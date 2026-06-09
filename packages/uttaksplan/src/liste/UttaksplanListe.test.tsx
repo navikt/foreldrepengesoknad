@@ -749,8 +749,6 @@ describe('UttaksplanListe', () => {
         expect(await screen.findByText('24. mai 24 - 28. mai 24')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Legg til periode'));
-        expect(await screen.findByText('Hva vil du gjøre?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Legge til periode med foreldrepenger'));
 
         expect(await screen.findByText('Hvilke datoer skal perioden være?')).toBeInTheDocument();
         const fraOgMedDato = screen.getByLabelText('Fra og med dato');
@@ -759,6 +757,9 @@ describe('UttaksplanListe', () => {
         const tilOgMedDato = screen.getByLabelText('Til og med dato');
         await userEvent.type(tilOgMedDato, dayjs('2024-06-20').format('DD.MM.YYYY'));
         await userEvent.tab();
+
+        expect(await screen.findByText('Hva vil du gjøre?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Legge til periode med foreldrepenger'));
 
         // Når kun far har rett til foreldrepenger, skal spørsmålet om hvem som
         // skal ha foreldrepenger ikke vises. Verdien settes bak panseret, og vi
