@@ -259,12 +259,20 @@ describe('<UttaksplanSteg>', () => {
             );
             expect(uttaksplanAction).toBeDefined();
 
-            const uttaksplan = uttaksplanAction![0].data as { forelder: string; kontoType: string }[];
+            const uttaksplan = uttaksplanAction![0].data as Array<{
+                forelder: string;
+                kontoType: string;
+                fom: string;
+                tom: string;
+            }>;
             const farPerioder = uttaksplan.filter((p) => p.forelder === 'FAR_MEDMOR');
 
-            // Forslaget skal kun inneholde de to ukene ved termin, ikke gjenstående fedrekvote i fremtiden
+            // Forslaget skal kun inneholde de to ukene ved termin (10 uttaksdager), ikke gjenstående fedrekvote i fremtiden
             expect(farPerioder).toHaveLength(1);
             expect(farPerioder[0]!.kontoType).toBe('FEDREKVOTE');
+            // Perioden skal starte på termindato (2024-07-01) og vare nøyaktig 10 uttaksdager (tom: 2024-07-12)
+            expect(farPerioder[0]!.fom).toBe('2024-07-01');
+            expect(farPerioder[0]!.tom).toBe('2024-07-12');
         }),
     );
 });
