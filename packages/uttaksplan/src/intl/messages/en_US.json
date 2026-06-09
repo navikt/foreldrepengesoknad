@@ -68,6 +68,8 @@
     "uttaksplan.periodeListeContent.skalIkkeJobbe": "Will not work during this period",
     "uttaksplan.periodeListeContent.periodeUtenUttak": "Will not receive parental benefits",
     "uttaksplan.periodeListeContent.tapteDager": "Days that may be lost",
+    "uttaksplan.tapteDager.forklaring.beggeRettFørsteSeksUker": "The mother must have parental benefits during the first six weeks after the birth. She may postpone the days, but only if she is hospitalised or too ill to care for the child, or if the child is hospitalised.",
+    "uttaksplan.tapteDager.forklaring.bareFarMedmorRett": "If the mother does not meet the activity requirements, the days will be deducted from the number of days you can receive parental benefits with activity requirements. If she is in an approved activity, you can pause your parental benefits. This will make it possible for you to save the parental benefits with activity requirements for later.",
     "uttaksplan.periodeListeContent.morsAktivitet.Arbeid": "Mother is working",
     "uttaksplan.periodeListeContent.morsAktivitet.ArbeidOgUtdanning": "Mother is working and studying",
     "uttaksplan.periodeListeContent.morsAktivitet.Innlagt": "Mother is hospitalized",

@@ -384,7 +384,7 @@ describe('UttaksplanListe', () => {
         const fjerdeRad = within(screen.getByTestId('2024-04-04 - 2024-05-02'));
         expect(fjerdeRad.getByText('04. april 24 - 02. mai 24')).toBeInTheDocument();
         expect(fjerdeRad.getByText('4 uker og 1 dag')).toBeInTheDocument();
-        expect(fjerdeRad.getAllByText('Dager du kan tape')).toHaveLength(2);
+        expect(fjerdeRad.getAllByText('Dager du kan miste')).toHaveLength(2);
 
         const femteRad = within(screen.getByTestId('2024-05-03 - 2024-05-15'));
         expect(femteRad.getByText('03. mai 24 - 15. mai 24')).toBeInTheDocument();
@@ -422,7 +422,7 @@ describe('UttaksplanListe', () => {
         expect(sjetteRad.getAllByText('Hanne har foreldrepenger')).toHaveLength(2);
 
         expect(screen.queryByText('Uten Foreldrepenger')).not.toBeInTheDocument();
-        expect(screen.queryByText('Dager du kan tape')).not.toBeInTheDocument();
+        expect(screen.queryByText('Dager du kan miste')).not.toBeInTheDocument();
     });
 
     it('Skal ikke kunne redigere en EØS-periode', async () => {
