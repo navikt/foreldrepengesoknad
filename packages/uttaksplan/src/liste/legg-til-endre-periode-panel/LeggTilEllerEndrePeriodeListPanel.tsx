@@ -61,6 +61,15 @@ interface Props {
     setValgtPeriodeIndex?: (valgtPeriodeIndex: number | undefined) => void;
 }
 
+const erGradertMorsUttak = (
+    hvaVilDuGjøre: HvaVilDuGjøre | undefined,
+    forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined,
+    skalDuKombinereArbeidOgUttakMor: boolean | undefined,
+): boolean =>
+    hvaVilDuGjøre === 'LEGG_TIL_PERIODE' &&
+    (forelder === 'MOR' || forelder === 'BEGGE') &&
+    skalDuKombinereArbeidOgUttakMor === true;
+
 export const LeggTilEllerEndrePeriodeListPanel = ({
     erNyPeriodeModus,
     uttaksplanperiode,
@@ -104,24 +113,15 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const ønskerFlerbarnsdager = formMethods.watch('ønskerFlerbarnsdager');
     const skalDuKombinereArbeidOgUttakMor = formMethods.watch('skalDuKombinereArbeidOgUttakMor');
 
-    const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } = useVisForskyvEllerErstattPanel(
-        fomValue && tomValue
-            ? [
-                  {
-                      fom: fomValue,
-                      tom: tomValue,
-                  },
-              ]
-            : [],
-    );
+    const valgtePerioder = fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [];
+
+    const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } =
+        useVisForskyvEllerErstattPanel(valgtePerioder);
 
     const kanKunErstatte = useKanKunErstatte({
-        valgtePerioder: fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [],
+        valgtePerioder,
         erFerie: hvaVilDuGjøre === 'LEGG_TIL_FERIE',
-        erGradert:
-            hvaVilDuGjøre === 'LEGG_TIL_PERIODE' &&
-            (forelder === 'MOR' || forelder === 'BEGGE') &&
-            skalDuKombinereArbeidOgUttakMor === true,
+        erGradert: erGradertMorsUttak(hvaVilDuGjøre, forelder, skalDuKombinereArbeidOgUttakMor),
     });
 
     const handleAddPeriode = (nyPeriode: UttakPeriode_fpoversikt[], skalForskyve: boolean) => {
