@@ -250,6 +250,14 @@ describe('<UttaksplanSteg>', () => {
 
             expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
 
+            // Spørsmålet om automatisk justering skal stå fast med ein gong forslaget startar på termin,
+            // utan at far/medmor må redigere planen i kalenderen eller lista først (TFP-7021).
+            expect(
+                screen.getByText(/ønsker du at vi endrer den til å starte fra fødselsdato/),
+            ).toBeInTheDocument();
+
+            // Far/medmor må svare på spørsmålet før dei kan gå vidare.
+            await userEvent.click(screen.getByRole('radio', { name: 'Nei' }));
             await userEvent.click(screen.getByText('Neste steg'));
 
             expect(screen.queryByText('Du har ikke lagt til noen perioder i planen')).not.toBeInTheDocument();

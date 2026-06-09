@@ -89,11 +89,14 @@ export const UttaksplanForm = ({
     const termindato = getTermindato(barn);
     const uttaksdagPåEllerEtterTermin = termindato ? Uttaksdagen.denneEllerNeste(termindato).getDato() : undefined;
 
-    const perioderRundtFødselForFarMedmor = gjeldendeUttaksplan
-        ? finnPerioderRundtFødsel(gjeldendeUttaksplan, barn).filter(
-              (p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.forelder === 'FAR_MEDMOR',
-          )
-        : [];
+    // Når far/medmor kommer rett fra planleggeren ligg uttaket i defaultUttaksperioder fram til
+    // planen blir redigert (då blir uttaksplan-context fyllt). Bruk same fallback som onSubmit slik
+    // at spørsmålet om automatisk justering står fast med ein gong, utan at brukaren må tukle med planen.
+    const planForVisning = gjeldendeUttaksplan ?? defaultUttaksperioder;
+
+    const perioderRundtFødselForFarMedmor = finnPerioderRundtFødsel(planForVisning, barn).filter(
+        (p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.forelder === 'FAR_MEDMOR',
+    );
 
     const periodeRundtFødsel = perioderRundtFødselForFarMedmor[0];
 
@@ -152,7 +155,7 @@ export const UttaksplanForm = ({
                     <VStack gap="space-16">
                         <AutomatiskJusteringInfotekst
                             harSvartJaPåAutoJustering={harSvartJaPåAutoJustering}
-                            uttaksplan={gjeldendeUttaksplan!}
+                            uttaksplan={planForVisning}
                         />
                         <RhfRadioGroup
                             name="ønskerJustertUttakVedFødsel"
