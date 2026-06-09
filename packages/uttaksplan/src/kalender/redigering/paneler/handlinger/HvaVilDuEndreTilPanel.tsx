@@ -1,4 +1,4 @@
-import { ChevronDownIcon, ChevronUpIcon, PencilIcon } from '@navikt/aksel-icons';
+import { ChevronDownIcon, ChevronUpIcon, PencilIcon, PlusIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -16,8 +16,8 @@ import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/Utta
 import { getVarighetString } from '../../../../utils/dateUtils';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
-import { BlåRamme } from '../../../redigering/utils/BlåRamme';
 import { useKalenderRedigeringContext } from '../../context/KalenderRedigeringContext';
+import { BlåRamme } from '../../utils/BlåRamme';
 import { finnAntallDager, finnValgtePerioder } from '../../utils/kalenderPeriodeUtils';
 import { useErDesktop, useMediaResetMinimering } from '../../utils/useMediaActions';
 import { PeriodeDetaljerOgInfoMeldinger } from './eksisterende-perioder/PeriodeDetaljerOgInfoMeldinger';
@@ -79,15 +79,11 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
         erGradert: false,
     });
 
-    const {
-        skalViseUtsettelsesknapp,
-        skalVisePauseknapp,
-        skalViseFerieknapp,
-        skalViseLeggTilKnappetekst,
-    } = useKnapperIRedigeringspanelSynlighet({
-        sammenslåtteValgtePerioder,
-        eksisterendePerioderSomErValgt,
-    });
+    const { skalViseUtsettelsesknapp, skalVisePauseknapp, skalViseFerieknapp, skalViseLeggTilKnappetekst } =
+        useKnapperIRedigeringspanelSynlighet({
+            sammenslåtteValgtePerioder,
+            eksisterendePerioderSomErValgt,
+        });
 
     const leggTilEllerForskyvPeriode = (skalForskyve: boolean) => {
         leggTilUttaksplanPerioder(
@@ -160,68 +156,53 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
                             </HStack>
                         )}
                         {!harPeriodeMedPleiepenger && !harValgtEøsPeriode && (
-                            <VStack gap="space-12">
-                                <Show above="md">
+                            <HStack gap="space-12" wrap={false} className="w-full">
+                                <div className="flex-1">
                                     <LeggTilOgEndreKnapp
                                         åpneRedigeringsmodus={åpneRedigeringsmodus}
                                         skalViseLeggTilKnappetekst={skalViseLeggTilKnappetekst}
                                     />
-                                </Show>
-                                <HStack gap="space-12" justify="space-between" className="w-full">
-                                    <Show below="md" className="flex-1">
-                                        <LeggTilOgEndreKnapp
-                                            åpneRedigeringsmodus={åpneRedigeringsmodus}
-                                            skalViseLeggTilKnappetekst={skalViseLeggTilKnappetekst}
-                                        />
-                                    </Show>
-                                    {skalViseFerieknapp && (
-                                        <Button
-                                            variant="secondary"
-                                            size="small"
-                                            onClick={() =>
-                                                erEksisterendePerioderEtterValgteDager && !kanKunErstatte
-                                                    ? setVisEndreEllerForskyvPanel(true)
-                                                    : leggTilEllerForskyvPeriode(false)
-                                            }
-                                            type="button"
-                                        >
-                                            {skalViseLeggTilKnappetekst ? (
-                                                <FormattedMessage id="RedigeringPanel.LeggTilFerie" />
-                                            ) : (
-                                                <FormattedMessage id="RedigeringPanel.EndreTilFerie" />
-                                            )}
-                                        </Button>
-                                    )}
-                                    {skalViseUtsettelsesknapp && (
-                                        <Button
-                                            variant="secondary"
-                                            size="small"
-                                            onClick={() => setVisUtsettelsePanel(true)}
-                                            type="button"
-                                        >
-                                            <FormattedMessage id="RedigeringPanel.LeggTilUtsettelse" />
-                                        </Button>
-                                    )}
-                                    {skalVisePauseknapp && (
-                                        <Button
-                                            variant="secondary"
-                                            size="small"
-                                            onClick={() => setVisPausePanel(true)}
-                                            type="button"
-                                        >
-                                            <FormattedMessage id="RedigeringPanel.LeggTilPause" />
-                                        </Button>
-                                    )}
+                                </div>
+                                {skalViseFerieknapp && (
                                     <Button
-                                        type="button"
-                                        variant="tertiary"
+                                        variant="secondary"
                                         size="small"
-                                        onClick={() => setValgtePerioder([])}
+                                        className="flex-1"
+                                        onClick={() =>
+                                            erEksisterendePerioderEtterValgteDager && !kanKunErstatte
+                                                ? setVisEndreEllerForskyvPanel(true)
+                                                : leggTilEllerForskyvPeriode(false)
+                                        }
+                                        type="button"
                                     >
-                                        <FormattedMessage id="RedigeringPanel.LukkRedigeringsmodus" />
+                                        {skalViseLeggTilKnappetekst ? (
+                                            <FormattedMessage id="RedigeringPanel.LeggTilFerie" />
+                                        ) : (
+                                            <FormattedMessage id="RedigeringPanel.EndreTilFerie" />
+                                        )}
                                     </Button>
-                                </HStack>
-                            </VStack>
+                                )}
+                                {skalViseUtsettelsesknapp && (
+                                    <Button
+                                        variant="secondary"
+                                        size="small"
+                                        onClick={() => setVisUtsettelsePanel(true)}
+                                        type="button"
+                                    >
+                                        <FormattedMessage id="RedigeringPanel.LeggTilUtsettelse" />
+                                    </Button>
+                                )}
+                                {skalVisePauseknapp && (
+                                    <Button
+                                        variant="secondary"
+                                        size="small"
+                                        onClick={() => setVisPausePanel(true)}
+                                        type="button"
+                                    >
+                                        <FormattedMessage id="RedigeringPanel.LeggTilPause" />
+                                    </Button>
+                                )}
+                            </HStack>
                         )}
                     </VStack>
                 </div>
@@ -345,9 +326,17 @@ const LeggTilOgEndreKnapp = ({
 
     if (!(harValgtPeriodeFørFamDato && familiesituasjon === 'adopsjon')) {
         return (
-            <Button variant="primary" size="small" onClick={åpneRedigeringsmodus} type="button" className="w-full">
+            <Button
+                variant="primary"
+                size="small"
+                onClick={åpneRedigeringsmodus}
+                type="button"
+                className="w-full"
+                icon={<PlusIcon aria-hidden className="md:hidden" />}
+                iconPosition="left"
+            >
                 {skalViseLeggTilKnappetekst ? (
-                    <FormattedMessage id="RedigeringPanel.AddUttaksplan" />
+                    <FormattedMessage id="RedigeringPanel.NyPeriode" />
                 ) : (
                     <FormattedMessage id="RedigeringPanel.RedigerUttaksplan" />
                 )}

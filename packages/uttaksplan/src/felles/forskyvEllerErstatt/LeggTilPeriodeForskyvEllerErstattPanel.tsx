@@ -46,11 +46,12 @@ export const LeggTilPeriodeForskyvEllerErstattPanel = ({
                     </VStack>
                 </Radio>
             </RadioGroup>
-            <HStack justify="space-between">
+            <HStack gap="space-12" className="w-full">
                 <Button
                     type="button"
                     variant="primary"
                     size="small"
+                    className="flex-1"
                     onClick={() => leggTilEllerForskyvPeriode(skalForskyvePeriode ?? false)}
                     disabled={skalForskyvePeriode === undefined}
                 >
@@ -60,9 +61,10 @@ export const LeggTilPeriodeForskyvEllerErstattPanel = ({
                     type="button"
                     variant="secondary"
                     size="small"
+                    className="flex-1"
                     onClick={() => setVisEndreEllerForskyvPanel(false)}
                 >
-                    <FormattedMessage id="RedigeringPanel.LukkRedigeringsmodus" />
+                    <FormattedMessage id="RedigeringPanel.Tilbake" />
                 </Button>
             </HStack>
         </VStack>

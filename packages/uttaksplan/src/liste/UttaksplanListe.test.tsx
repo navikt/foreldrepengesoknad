@@ -49,7 +49,7 @@ describe('UttaksplanListe', () => {
 
         await userEvent.click(screen.getByText('Endre uten å flytte resten av planen'));
 
-        await userEvent.click(screen.getByText('Fortsett'));
+        await userEvent.click(screen.getByText('Legg til'));
 
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
         expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
@@ -145,7 +145,7 @@ describe('UttaksplanListe', () => {
 
         await userEvent.click(screen.getByText('Endre uten å flytte resten av planen'));
 
-        await userEvent.click(screen.getByText('Fortsett'));
+        await userEvent.click(screen.getByText('Legg til'));
 
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
         expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
@@ -290,7 +290,7 @@ describe('UttaksplanListe', () => {
 
         await userEvent.click(screen.getByText('Endre uten å flytte resten av planen'));
 
-        await userEvent.click(screen.getByText('Fortsett'));
+        await userEvent.click(screen.getByText('Legg til'));
 
         expect(await screen.findByText('15. des. 25 - 17. des. 25')).toBeInTheDocument();
         expect(screen.queryByText('12. des. 25 - 15. des. 25')).not.toBeInTheDocument();
