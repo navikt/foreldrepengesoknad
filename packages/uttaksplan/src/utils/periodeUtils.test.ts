@@ -1,6 +1,10 @@
 import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
-import { harPeriodeDerMorsAktivitetIkkeErValgt, harPeriodeMedUkjentGraderingsaktivitet } from './periodeUtils';
+import {
+    finnAntallTidelerÅTrekke,
+    harPeriodeDerMorsAktivitetIkkeErValgt,
+    harPeriodeMedUkjentGraderingsaktivitet,
+} from './periodeUtils';
 
 const lagFarPeriode = (overrides: Partial<UttakPeriode_fpoversikt> = {}): UttakPeriode_fpoversikt => ({
     fom: '2025-06-02',
@@ -176,5 +180,19 @@ describe('harPeriodeMedUkjentGraderingsaktivitet', () => {
 
     it('skal returnere false for tom liste', () => {
         expect(harPeriodeMedUkjentGraderingsaktivitet([])).toBe(false);
+    });
+});
+
+describe('finnAntallTidelerÅTrekke', () => {
+    it('skal runde desimalprosent eksakt ned til 1 desimal utan flyttals-underflyt', () => {
+        const periodeMed25Uttaksdager = lagFarPeriode({
+            fom: '2025-06-02',
+            tom: '2025-07-04',
+            samtidigUttak: 9.2,
+        });
+
+        const tideler = finnAntallTidelerÅTrekke(periodeMed25Uttaksdager, false, '2025-01-01');
+
+        expect(tideler).toBe(23);
     });
 });

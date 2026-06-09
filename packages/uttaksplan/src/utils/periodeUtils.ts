@@ -50,8 +50,21 @@ export const getAntallUttaksdagerIVinduRundtFødsel = (
     return Uttaksdagen.denneEllerNeste(overlappFom).getUttaksdagerFremTilOgMedDato(overlappTom);
 };
 
+const getDesimalSomSkalertHeltall = (verdi: number): { verdi: bigint; skala: bigint } => {
+    const tekst = verdi.toString().includes('e') ? verdi.toFixed(10).replace(/\.?0+$/, '') : verdi.toString();
+    const [heltall, desimaler = ''] = tekst.split('.');
+
+    return {
+        verdi: BigInt(`${heltall}${desimaler}`),
+        skala: 10n ** BigInt(desimaler.length),
+    };
+};
+
 // virkedagar × prosent / 100, runda ned til 1 desimal og uttrykt i tideler (heiltal).
-const tidelerNedrundet = (dager: number, prosent: number): number => Math.floor((dager * prosent) / 10);
+const tidelerNedrundet = (dager: number, prosent: number): number => {
+    const { verdi, skala } = getDesimalSomSkalertHeltall(prosent);
+    return Number((BigInt(dager) * verdi) / (skala * 10n));
+};
 
 /**
  * Reknar talet på trekkdagar for ein periode i *tideler* (heiltal).
