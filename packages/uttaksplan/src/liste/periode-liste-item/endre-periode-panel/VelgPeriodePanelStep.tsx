@@ -29,6 +29,7 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
     const {
         foreldreInfo: { søker, navnPåForeldre, rettighetType },
         uttakPerioder,
+        kanVelgeArbeidsgiver,
     } = useUttaksplanData();
 
     const formMethods = useForm<FormValues>();
@@ -72,7 +73,7 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
                                             className="text-ax-danger-800"
                                         />
                                     )}
-                                    {harPeriodeMedUkjentGraderingsaktivitet([p]) && (
+                                    {kanVelgeArbeidsgiver && harPeriodeMedUkjentGraderingsaktivitet([p]) && (
                                         <ExclamationmarkTriangleFillIcon
                                             title={intl.formatMessage({
                                                 id: 'PeriodeListeHeader.GraderingsaktivitetIkkeValgt',

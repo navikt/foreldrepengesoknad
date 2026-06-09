@@ -427,7 +427,7 @@ describe('UttaksplanKalender', () => {
 
         const juni = screen.getByTestId('year:2024;month:5');
 
-        await userEvent.click(within(juni).getByTestId('day:14;dayColor:GREENSTRIPED;with-icon'));
+        await userEvent.click(within(juni).getByTestId('day:14;dayColor:GREENSTRIPED'));
         await userEvent.click(within(juni).getByTestId('day:21;dayColor:GREENOUTLINE'));
 
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[2]!);
@@ -743,7 +743,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getByText('Fortsett'));
 
-        expect(within(september).getByTestId('day:7;dayColor:LIGHTGREENBLUE;with-icon')).toBeInTheDocument();
+        expect(within(september).getByTestId('day:7;dayColor:LIGHTGREENBLUE')).toBeInTheDocument();
     });
 
     it('mor og far tar samtidig uttak - dersom kombinert uttak er mer enn 100 % skal man ikke kunne ta mer enn 50 % fellesperiode', async () => {
@@ -815,7 +815,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getByText('Fortsett'));
 
-        expect(within(september).getByTestId('day:7;dayColor:LIGHTGREENBLUE;with-icon')).toBeInTheDocument();
+        expect(within(september).getByTestId('day:7;dayColor:LIGHTGREENBLUE')).toBeInTheDocument();
     });
 
     it('mor og far tar samtidig uttak - fedrekvote + mødrekvote kan ikke være mer enn 100 % til sammen', async () => {
