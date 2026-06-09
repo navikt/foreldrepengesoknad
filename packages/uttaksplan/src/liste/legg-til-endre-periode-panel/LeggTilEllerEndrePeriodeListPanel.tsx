@@ -26,7 +26,7 @@ import {
     FormValues as UtsettelseFormValues,
 } from '../../felles/utsettelse/LeggTilUtsettelseForm';
 import { useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
-import { useListePanelInfoAlerts } from '../../regler/alert/informasjonsAlertHooks';
+import { useListePanelInfoAlerts, useKanKunErstatte } from '../../regler/alert/informasjonsAlertHooks';
 import { lagHvaVilDuGjøreValidatorer } from '../../regler/felt/hvaVilDuGjøre';
 import { useGyldigeKvotetyper } from '../../regler/kvotetype/kvoteRegler';
 import {
@@ -60,6 +60,15 @@ interface Props {
     setIsLeggTilPeriodePanelOpen: (isOpen: boolean) => void;
     setValgtPeriodeIndex?: (valgtPeriodeIndex: number | undefined) => void;
 }
+
+const erGradertMorsUttak = (
+    hvaVilDuGjøre: HvaVilDuGjøre | undefined,
+    forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined,
+    skalDuKombinereArbeidOgUttakMor: boolean | undefined,
+): boolean =>
+    hvaVilDuGjøre === 'LEGG_TIL_PERIODE' &&
+    (forelder === 'MOR' || forelder === 'BEGGE') &&
+    skalDuKombinereArbeidOgUttakMor === true;
 
 export const LeggTilEllerEndrePeriodeListPanel = ({
     erNyPeriodeModus,
@@ -104,16 +113,16 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const ønskerFlerbarnsdager = formMethods.watch('ønskerFlerbarnsdager');
     const skalDuKombinereArbeidOgUttakMor = formMethods.watch('skalDuKombinereArbeidOgUttakMor');
 
-    const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } = useVisForskyvEllerErstattPanel(
-        fomValue && tomValue
-            ? [
-                  {
-                      fom: fomValue,
-                      tom: tomValue,
-                  },
-              ]
-            : [],
-    );
+    const valgtePerioder = fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [];
+
+    const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } =
+        useVisForskyvEllerErstattPanel(valgtePerioder);
+
+    const kanKunErstatte = useKanKunErstatte({
+        valgtePerioder,
+        erFerie: hvaVilDuGjøre === 'LEGG_TIL_FERIE',
+        erGradert: erGradertMorsUttak(hvaVilDuGjøre, forelder, skalDuKombinereArbeidOgUttakMor),
+    });
 
     const handleAddPeriode = (nyPeriode: UttakPeriode_fpoversikt[], skalForskyve: boolean) => {
         const builder = new UttakPeriodeBuilder(uttakPerioder, 'liste');
@@ -163,6 +172,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
 
         if (
             !harPeriodeDerMorsAktivitetIkkeErValgt &&
+            !kanKunErstatte &&
             erDetEksisterendePerioderEtterValgtePerioder(uttakPerioder, [
                 {
                     fom: uttaksplanperiode?.fom ?? notEmpty(fomValue),
@@ -321,13 +331,6 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 {visEndreEllerForskyvPanel && fomValue && tomValue && (
                     <LeggTilPeriodeForskyvEllerErstattPanel
-                        valgtePerioder={[{ fom: fomValue, tom: tomValue }]}
-                        erFerie={hvaVilDuGjøre === 'LEGG_TIL_FERIE'}
-                        erGradert={
-                            hvaVilDuGjøre === 'LEGG_TIL_PERIODE' &&
-                            (forelder === 'MOR' || forelder === 'BEGGE') &&
-                            skalDuKombinereArbeidOgUttakMor === true
-                        }
                         setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
                         leggTilEllerForskyvPeriode={leggIListe}
                     />

@@ -996,13 +996,13 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getByText('Legg til'));
 
-        expect(await screen.findByText('Hva skal skje med resten av planen?')).toBeInTheDocument();
+        // Mor sine senere perioder er låst, så «Endre uten å flytte resten av
+        // planen» er eneste mulige valg. Da skal spørsmålet ikke vises, og
+        // endringen utføres direkte uten å flytte resten av planen.
+        expect(screen.queryByText('Hva skal skje med resten av planen?')).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Endre uten å flytte resten av planen'));
-
-        await userEvent.click(screen.getByText('Fortsett'));
-
-        expect(within(juni).getByTestId('day:14;dayColor:LIGHTBLUEGREEN')).toBeInTheDocument();
+        const juniEtter = screen.getByTestId('year:2024;month:5');
+        expect(await within(juniEtter).findByTestId('day:14;dayColor:LIGHTBLUEGREEN')).toBeInTheDocument();
     });
 
     it('dersom far/medmor tar ut fedrekvoten i perioden rundt fødsel forbeholdt mor må han laste opp dokumentasjon', async () => {
@@ -1061,7 +1061,7 @@ describe('UttaksplanKalender', () => {
         expect(within(juni).getByTestId('day:17;dayColor:BLUESTRIPED')).toBeInTheDocument();
     });
 
-    it('skal ikke kunne forskyve perioder når en har valgt dager før familiehendelsesdato', async () => {
+    it('skal ikke vise forskyvspørsmålet når en har valgt dager før familiehendelsesdato', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 
         const april = screen.getByTestId('year:2024;month:3');
@@ -1075,18 +1075,14 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getByText('Endre til ferie'));
 
-        expect(await screen.findByText('Hva skal skje med resten av planen?')).toBeInTheDocument();
-        expect(
-            screen.getByText('Du kan ikke forskyve perioder når du har valgt dager før seks uker etter fødsel/termin'),
-        ).toBeInTheDocument();
-        expect(screen.getByLabelText('Endre og flytt resten av planen')).toBeDisabled();
+        // Når «Endre og flytt resten av planen» ikke er mulig (valgt dager før seks
+        // uker etter fødsel/termin) er «Endre uten å flytte» eneste valg. Da skal
+        // spørsmålet ikke vises – endringen utføres direkte uten å flytte planen.
+        expect(screen.queryByText('Hva skal skje med resten av planen?')).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Endre uten å flytte resten av planen'));
-
-        await userEvent.click(screen.getByText('Fortsett'));
-
-        expect(within(april).getByTestId('day:1;dayColor:BLUEOUTLINE')).toBeInTheDocument();
-        expect(within(april).getByTestId('day:19;dayColor:BLACK')).toBeInTheDocument();
+        const aprilEtter = screen.getByTestId('year:2024;month:3');
+        expect(await within(aprilEtter).findByTestId('day:1;dayColor:BLUEOUTLINE')).toBeInTheDocument();
+        expect(within(aprilEtter).getByTestId('day:19;dayColor:BLACK')).toBeInTheDocument();
     });
 
     it('skal kunne velge å forskyve periodene ved endring til fars periode', async () => {

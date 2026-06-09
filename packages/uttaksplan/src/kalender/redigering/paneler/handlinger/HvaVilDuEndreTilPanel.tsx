@@ -10,6 +10,7 @@ import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
+import { useKanKunErstatte } from '../../../../regler/alert/informasjonsAlertHooks';
 import { useKnapperIRedigeringspanelSynlighet } from '../../../../regler/synlighet/knapperIRedigeringspanel';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
@@ -72,6 +73,12 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
         sammenslåtteValgtePerioder,
     );
 
+    const kanKunErstatte = useKanKunErstatte({
+        valgtePerioder: sammenslåtteValgtePerioder,
+        erFerie: true,
+        erGradert: false,
+    });
+
     const {
         skalViseUtsettelsesknapp,
         skalVisePauseknapp,
@@ -116,9 +123,6 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
             {!erMinimert && visEndreEllerForskyvPanel && (
                 <Box padding="space-24">
                     <LeggTilPeriodeForskyvEllerErstattPanel
-                        valgtePerioder={sammenslåtteValgtePerioder}
-                        erFerie
-                        erGradert={false}
                         setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
                         leggTilEllerForskyvPeriode={leggTilEllerForskyvPeriode}
                     />
@@ -175,7 +179,7 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
                                             variant="secondary"
                                             size="small"
                                             onClick={() =>
-                                                erEksisterendePerioderEtterValgteDager
+                                                erEksisterendePerioderEtterValgteDager && !kanKunErstatte
                                                     ? setVisEndreEllerForskyvPanel(true)
                                                     : leggTilEllerForskyvPeriode(false)
                                             }

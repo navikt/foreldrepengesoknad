@@ -198,8 +198,9 @@ export const IKKE_REDIGERBAR_PLEIEPENGER = lagAlertregel<PeriodeDetaljerKontekst
 export const SENERE_PERIODER_READONLY = lagAlertregel<ForskyvEllerErstattKontekst>({
     id: 'informasjonsAlerts.senerePerioderReadonly',
     beskrivelse:
-        'Brukeren har valgt forskyv eller erstatt, og det finnes senere perioder i ' +
-        'planen som ikke kan endres. Alerten forklarer at disse blir stående.',
+        'Brukeren legger inn eller endrer en periode, og det finnes senere perioder i ' +
+        'planen som ikke kan endres. Da er «Endre uten å flytte resten av planen» det ' +
+        'eneste mulige valget, og spørsmålet «Hva skal skje med resten av planen?» vises ikke.',
     visningssteder: ['forskyv-eller-erstatt'],
     meldinger: [
         <FormattedMessage key="RedigeringPanel.SenerePerioderReadonly" id="RedigeringPanel.SenerePerioderReadonly" />,
@@ -213,8 +214,9 @@ export const VALGTE_DAGER_FØR_SEKS_UKER = lagAlertregel<ForskyvEllerErstattKont
     id: 'informasjonsAlerts.valgteDagerFørSeksUkerEtterFamDato',
     beskrivelse:
         'Brukeren har valgt dager som ligger innenfor seks uker etter familiehendelses' +
-        'datoen (gjelder ikke adopsjon). Alerten forklarer konsekvenser for ' +
-        'forskyv/erstatt-operasjonen.',
+        'datoen (gjelder ikke adopsjon). Da kan ikke resten av planen flyttes, så ' +
+        'spørsmålet «Hva skal skje med resten av planen?» vises ikke – endringen ' +
+        'utføres direkte uten å flytte resten av planen.',
     visningssteder: ['forskyv-eller-erstatt'],
     meldinger: [
         <FormattedMessage
@@ -231,8 +233,9 @@ export const VALGTE_DAGER_FØR_FAMHEND = lagAlertregel<ForskyvEllerErstattKontek
     id: 'informasjonsAlerts.valgteDagerFørFamiliehendelsesdato',
     beskrivelse:
         'Brukeren har valgt dager før familiehendelsesdatoen, men ikke innenfor seks ' +
-        'uker etter (gjelder ikke adopsjon). Alerten forklarer konsekvenser for ' +
-        'forskyv/erstatt.',
+        'uker etter (gjelder ikke adopsjon). Da kan ikke resten av planen flyttes, så ' +
+        'spørsmålet «Hva skal skje med resten av planen?» vises ikke – endringen ' +
+        'utføres direkte uten å flytte resten av planen.',
     visningssteder: ['forskyv-eller-erstatt'],
     meldinger: [
         <FormattedMessage
