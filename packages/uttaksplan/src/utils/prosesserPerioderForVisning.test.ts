@@ -137,4 +137,32 @@ describe('prosesserPerioderForVisning', () => {
             },
         ]);
     });
+
+    it('beheld annen part sin reelle periode når søkar sin overlappande periode er avslått og ikkje trekkjer dagar', () => {
+        const perioderSøker: UttakPeriode_fpoversikt[] = [
+            {
+                fom: '2025-03-25',
+                tom: '2025-05-06',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                flerbarnsdager: false,
+                resultat: { innvilget: false, trekkerDager: false, trekkerMinsterett: false, årsak: 'ANNET' },
+            },
+        ];
+        const perioderAnnenPart: UttakPeriode_fpoversikt[] = [
+            {
+                fom: '2025-03-25',
+                tom: '2025-05-06',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'MØDREKVOTE',
+                overføringÅrsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
+                flerbarnsdager: false,
+                resultat: { innvilget: true, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+            },
+        ];
+
+        const result = prosesserPerioderForVisning(perioderSøker, perioderAnnenPart);
+
+        expect(result).toContainEqual(perioderAnnenPart[0]);
+    });
 });
