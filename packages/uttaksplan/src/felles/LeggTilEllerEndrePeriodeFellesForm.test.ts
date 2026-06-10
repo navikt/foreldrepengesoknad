@@ -65,4 +65,18 @@ describe('mapFraFormValuesTilUttakPeriode', () => {
 
         expect(periode?.gradering?.aktivitet).toEqual({ type: 'ANNET' });
     });
+
+    it('beheld ANNET når plassholdaren ANNET ligg i hvorSkalDuJobbe i søknaden (ikkje reelt valg)', () => {
+        const values = {
+            forelder: 'MOR',
+            kontoTypeMor: 'MØDREKVOTE',
+            skalDuKombinereArbeidOgUttakMor: true,
+            stillingsprosentMor: '50',
+            hvorSkalDuJobbe: 'ANNET',
+        } satisfies LeggTilEllerEndrePeriodeFormFormValues;
+
+        const [periode] = mapFraFormValuesTilUttakPeriode(values, PERIODE, 'MOR', true);
+
+        expect(periode?.gradering?.aktivitet).toEqual({ type: 'ANNET' });
+    });
 });

@@ -55,7 +55,7 @@ export const useFinnFørsteSubmitFeilmelding = ({ opprinneligPlan }: UseFinnFør
         const søkersPerioder = perioder.filter(
             (periode) => Uttaksperioden.erIkkeEøsPeriode(periode) && periode.forelder === søkersForelder,
         );
-        return harPeriodeMedUkjentGraderingsaktivitet(søkersPerioder);
+        return harPeriodeMedUkjentGraderingsaktivitet(søkersPerioder, søkersForelder);
     };
 
     const harKunPerioderForDenAndreForelderen = (perioder: UttaksplanPerioder) =>
