@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, Box, Button, HStack, Heading, Show, VStack } from '@navikt/ds-react';
+import { Box, Button, Chips, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
@@ -17,7 +17,6 @@ import { getVarighetString } from '../../../../utils/dateUtils';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from '../../context/KalenderRedigeringContext';
-import { BlåRamme } from '../../utils/BlåRamme';
 import { finnAntallDager, finnValgtePerioder } from '../../utils/kalenderPeriodeUtils';
 import { useErDesktop, useMediaResetMinimering } from '../../utils/useMediaActions';
 import { PeriodeDetaljerOgInfoMeldinger } from './eksisterende-perioder/PeriodeDetaljerOgInfoMeldinger';
@@ -214,7 +213,7 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
 const HeaderForDesktop = () => {
     const intl = useIntl();
 
-    const { sammenslåtteValgtePerioder } = useKalenderRedigeringContext();
+    const { sammenslåtteValgtePerioder, setValgtePerioder } = useKalenderRedigeringContext();
 
     return (
         <Box background="accent-soft" padding="space-8" style={{ cursor: 'pointer' }}>
@@ -225,18 +224,16 @@ const HeaderForDesktop = () => {
                         <FormattedMessage id="RedigeringPanel.EndreTil" />
                     </Heading>
                 </HStack>
-                <HStack>
-                    <BlåRamme>
-                        <BodyShort size="small">
-                            <FormattedMessage
-                                id="RedigeringPanel.ValgteDager"
-                                values={{
-                                    varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
-                                }}
-                            />
-                        </BodyShort>
-                    </BlåRamme>
-                </HStack>
+                <Chips size="small">
+                    <Chips.Removable onDelete={() => setValgtePerioder([])}>
+                        {intl.formatMessage(
+                            { id: 'RedigeringPanel.ValgteDager' },
+                            {
+                                varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
+                            },
+                        )}
+                    </Chips.Removable>
+                </Chips>
             </VStack>
         </Box>
     );
@@ -251,7 +248,7 @@ const HeaderForMobil = ({
 }) => {
     const intl = useIntl();
 
-    const { sammenslåtteValgtePerioder } = useKalenderRedigeringContext();
+    const { sammenslåtteValgtePerioder, setValgtePerioder } = useKalenderRedigeringContext();
 
     return (
         <Box
@@ -295,14 +292,21 @@ const HeaderForMobil = ({
                 </HStack>
 
                 {!erMinimert && (
-                    <BlåRamme>
-                        <FormattedMessage
-                            id="RedigeringPanel.ValgteDager"
-                            values={{
-                                varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
+                    <Chips size="small">
+                        <Chips.Removable
+                            onDelete={() => {
+                                setValgtePerioder([]);
                             }}
-                        />
-                    </BlåRamme>
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            {intl.formatMessage(
+                                { id: 'RedigeringPanel.ValgteDager' },
+                                {
+                                    varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
+                                },
+                            )}
+                        </Chips.Removable>
+                    </Chips>
                 )}
             </VStack>
         </Box>

@@ -955,7 +955,9 @@ describe('UttaksplanKalender', () => {
 
         const foreldrepengerFørFødsel = within(screen.getByTestId(`eksisterende-periode-2024-03-14-2024-04-03`));
 
-        expect(foreldrepengerFørFødsel.queryByRole('button', { name: 'Slett dager fra periode' })).not.toBeInTheDocument();
+        expect(
+            foreldrepengerFørFødsel.queryByRole('button', { name: 'Slett dager fra periode' }),
+        ).not.toBeInTheDocument();
     });
 
     it('skal automatisk få opp mor sin gradering når far velger BEGGE etter å ha trykket på mors periode', async () => {
