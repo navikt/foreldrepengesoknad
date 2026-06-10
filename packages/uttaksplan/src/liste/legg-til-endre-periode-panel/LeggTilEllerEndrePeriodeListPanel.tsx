@@ -81,6 +81,7 @@ const byggEnkelHandlingPerioder = (
 ): UttakPeriode_fpoversikt[] | undefined => {
     switch (hvaVilDuGjøre) {
         case 'LEGG_TIL_FERIE':
+            // forelder settes til MOR fordi feltet er påkrevd, men ferie behandles likt for alle foreldre
             return [{ fom, tom, forelder: 'MOR', utsettelseÅrsak: 'LOVBESTEMT_FERIE', flerbarnsdager: false }];
         case 'LEGG_TIL_UTSETTELSE':
             return [{ fom, tom, forelder: søker, utsettelseÅrsak: values.utsettelseÅrsak, flerbarnsdager: false }];
