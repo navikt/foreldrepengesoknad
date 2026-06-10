@@ -34,10 +34,12 @@ type EksisterendeValgtePeriodeKontekst = {
 
 type GraderingsaktivitetListeKontekst = {
     perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>;
+    søker: BrukerRolleSak_fpoversikt;
 };
 
 type GraderingsaktivitetPeriodeKontekst = {
     periode: Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager;
+    søker: BrukerRolleSak_fpoversikt;
 };
 
 export type PeriodeDetaljerKontekst = {
@@ -267,7 +269,7 @@ export const MANGLER_GRADERINGSAKTIVITET_LISTE = lagAlertregel<Graderingsaktivit
     ],
     variant: 'warning',
     type: 'kontekstuell',
-    skalVises: (ctx) => harPeriodeMedUkjentGraderingsaktivitet([...ctx.perioder]),
+    skalVises: (ctx) => harPeriodeMedUkjentGraderingsaktivitet([...ctx.perioder], ctx.søker),
 });
 
 export const MANGLER_GRADERINGSAKTIVITET_KALENDER = lagAlertregel<GraderingsaktivitetListeKontekst>({
@@ -285,7 +287,7 @@ export const MANGLER_GRADERINGSAKTIVITET_KALENDER = lagAlertregel<Graderingsakti
     ],
     variant: 'warning',
     type: 'kontekstuell',
-    skalVises: (ctx) => harPeriodeMedUkjentGraderingsaktivitet([...ctx.perioder]),
+    skalVises: (ctx) => harPeriodeMedUkjentGraderingsaktivitet([...ctx.perioder], ctx.søker),
 });
 
 export const GRADERINGSAKTIVITET_IKKE_VALGT_EKSISTERENDE = lagAlertregel<GraderingsaktivitetPeriodeKontekst>({
@@ -303,7 +305,7 @@ export const GRADERINGSAKTIVITET_IKKE_VALGT_EKSISTERENDE = lagAlertregel<Graderi
     ],
     variant: 'warning',
     type: 'kontekstuell',
-    skalVises: (ctx) => harPeriodeMedUkjentGraderingsaktivitet([ctx.periode]),
+    skalVises: (ctx) => harPeriodeMedUkjentGraderingsaktivitet([ctx.periode], ctx.søker),
 });
 
 /**

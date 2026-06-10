@@ -70,7 +70,8 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                 const erPleiepengerPeriode =
                     erAvslåttPeriode && p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
 
-                const morsAktivitetIkkeValgtAlert = alertsForPeriode(p).morsAktivitetIkkeValgt;
+                const { morsAktivitetIkkeValgt: morsAktivitetIkkeValgtAlert, graderingsaktivitetIkkeValgt: graderingsaktivitetIkkeValgtAlert } =
+                    alertsForPeriode(p);
 
                 return (
                     <HStack
@@ -143,6 +144,16 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                                     className="mt-3 mb-1 p-2"
                                 >
                                     <BodyShort>{morsAktivitetIkkeValgtAlert.melding}</BodyShort>
+                                </Alert>
+                            )}
+
+                            {graderingsaktivitetIkkeValgtAlert && (
+                                <Alert
+                                    variant={graderingsaktivitetIkkeValgtAlert.variant}
+                                    size="small"
+                                    className="mt-3 mb-1 p-2"
+                                >
+                                    <BodyShort>{graderingsaktivitetIkkeValgtAlert.melding}</BodyShort>
                                 </Alert>
                             )}
                         </VStack>

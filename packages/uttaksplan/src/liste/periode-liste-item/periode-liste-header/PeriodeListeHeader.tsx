@@ -55,7 +55,7 @@ export const PeriodeListeHeader = ({ uttaksplanperioder, isOpen }: Props) => {
 
     const harMorsAktivitetIkkeErValgt = harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, uttaksplanperioder);
     const harUkjentGraderingsaktivitet =
-        kanVelgeArbeidsgiver && harPeriodeMedUkjentGraderingsaktivitet(uttaksplanperioder);
+        kanVelgeArbeidsgiver && harPeriodeMedUkjentGraderingsaktivitet(uttaksplanperioder, søker);
     const harValideringsfeil = harMorsAktivitetIkkeErValgt || harUkjentGraderingsaktivitet;
     const valideringsfeilTekstId = harMorsAktivitetIkkeErValgt
         ? 'PeriodeListeHeader.MorsAktivitetIkkeValgt'

@@ -73,7 +73,7 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
                                             className="text-ax-danger-800"
                                         />
                                     )}
-                                    {kanVelgeArbeidsgiver && harPeriodeMedUkjentGraderingsaktivitet([p]) && (
+                                    {kanVelgeArbeidsgiver && harPeriodeMedUkjentGraderingsaktivitet([p], søker) && (
                                         <ExclamationmarkTriangleFillIcon
                                             title={intl.formatMessage({
                                                 id: 'PeriodeListeHeader.GraderingsaktivitetIkkeValgt',

@@ -17,7 +17,7 @@ describe('mapFraFormValuesTilUttakPeriode', () => {
             hvorSkalDuJobbe: '123456789',
         } satisfies LeggTilEllerEndrePeriodeFormFormValues;
 
-        const [periode] = mapFraFormValuesTilUttakPeriode(values, PERIODE, 'MOR');
+        const [periode] = mapFraFormValuesTilUttakPeriode(values, PERIODE, 'MOR', true);
 
         expect(periode?.gradering).toBeUndefined();
     });
@@ -31,8 +31,38 @@ describe('mapFraFormValuesTilUttakPeriode', () => {
             hvorSkalDuJobbe: 'FRILANS',
         } satisfies LeggTilEllerEndrePeriodeFormFormValues;
 
-        const [periode] = mapFraFormValuesTilUttakPeriode(values, PERIODE, 'FAR_MEDMOR');
+        const [periode] = mapFraFormValuesTilUttakPeriode(values, PERIODE, 'FAR_MEDMOR', true);
 
         expect(periode?.gradering).toBeUndefined();
+    });
+
+    it('setter gradering-aktivitet frå valgt arbeidsgiver i søknaden (kanVelgeArbeidsgiver = true)', () => {
+        const values = {
+            forelder: 'MOR',
+            kontoTypeMor: 'MØDREKVOTE',
+            skalDuKombinereArbeidOgUttakMor: true,
+            stillingsprosentMor: '50',
+            hvorSkalDuJobbe: '123456789',
+        } satisfies LeggTilEllerEndrePeriodeFormFormValues;
+
+        const [periode] = mapFraFormValuesTilUttakPeriode(values, PERIODE, 'MOR', true);
+
+        expect(periode?.gradering?.aktivitet).toEqual({
+            type: 'ORDINÆRT_ARBEID',
+            arbeidsgiver: { id: '123456789' },
+        });
+    });
+
+    it('setter gradering-aktivitet til ANNET i planleggaren (kanVelgeArbeidsgiver = false)', () => {
+        const values = {
+            forelder: 'MOR',
+            kontoTypeMor: 'MØDREKVOTE',
+            skalDuKombinereArbeidOgUttakMor: true,
+            stillingsprosentMor: '50',
+        } satisfies LeggTilEllerEndrePeriodeFormFormValues;
+
+        const [periode] = mapFraFormValuesTilUttakPeriode(values, PERIODE, 'MOR', false);
+
+        expect(periode?.gradering?.aktivitet).toEqual({ type: 'ANNET' });
     });
 });

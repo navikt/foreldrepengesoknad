@@ -93,7 +93,7 @@ export const useEksisterendeValgtePeriodeAlerts = (): ((
         }),
         graderingsaktivitetIkkeValgt:
             kanVelgeArbeidsgiver && erSøkersIkkeEøsPeriode(periode, søker)
-                ? tilAktiv(GRADERINGSAKTIVITET_IKKE_VALGT_EKSISTERENDE, { periode })
+                ? tilAktiv(GRADERINGSAKTIVITET_IKKE_VALGT_EKSISTERENDE, { periode, søker })
                 : undefined,
     });
 };
@@ -111,6 +111,7 @@ export const useUttaksplanListeAlerts = (
         manglerGraderingsaktivitetAlert: kanVelgeArbeidsgiver
             ? tilAktiv(MANGLER_GRADERINGSAKTIVITET_LISTE, {
                   perioder: filtrerSøkersIkkeEøsPerioder(perioder, søker),
+                  søker,
               })
             : undefined,
     };
@@ -129,6 +130,7 @@ export const useUttaksplanKalenderAlerts = (
         manglerGraderingsaktivitetAlert: kanVelgeArbeidsgiver
             ? tilAktiv(MANGLER_GRADERINGSAKTIVITET_KALENDER, {
                   perioder: filtrerSøkersIkkeEøsPerioder(perioder, søker),
+                  søker,
               })
             : undefined,
     };

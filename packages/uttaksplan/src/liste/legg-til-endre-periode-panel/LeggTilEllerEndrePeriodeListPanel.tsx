@@ -85,6 +85,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         foreldreInfo: { søker, rettighetType },
         familiehendelsedato,
         erPeriodeneTilAnnenPartLåst,
+        kanVelgeArbeidsgiver,
     } = useUttaksplanData();
 
     const [feilmelding, setFeilmelding] = useState<string | undefined>();
@@ -254,7 +255,10 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                 return;
             }
             const mapped = omitMany(values, ['fom', 'tom', 'hvaVilDuGjøre']);
-            handleAddPeriode(mapFraFormValuesTilUttakPeriode(mapped, { fom, tom }, søker), skalForskyve);
+            handleAddPeriode(
+                mapFraFormValuesTilUttakPeriode(mapped, { fom, tom }, søker, kanVelgeArbeidsgiver),
+                skalForskyve,
+            );
         }
 
         setIsLeggTilPeriodePanelOpen(false);
