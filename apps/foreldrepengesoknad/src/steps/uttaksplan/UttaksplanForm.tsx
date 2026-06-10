@@ -90,7 +90,7 @@ export const UttaksplanForm = ({
     const uttaksdagPåEllerEtterTermin = termindato ? Uttaksdagen.denneEllerNeste(termindato).getDato() : undefined;
 
     // Når far/medmor kommer rett fra planleggeren ligg uttaket i defaultUttaksperioder fram til
-    // planen blir redigert (då blir uttaksplan-context fyllt). Bruk same fallback som onSubmit slik
+    // planen blir redigert (då blir uttaksplan-context fylt). Bruk same fallback som onSubmit slik
     // at spørsmålet om automatisk justering står fast med ein gong, utan at brukaren må tukle med planen.
     const planForVisning = gjeldendeUttaksplan ?? defaultUttaksperioder;
 
