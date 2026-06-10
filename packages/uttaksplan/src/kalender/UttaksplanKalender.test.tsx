@@ -1217,7 +1217,7 @@ describe('UttaksplanKalender', () => {
         expect(div.queryByText('Endre')).not.toBeInTheDocument();
         expect(div.queryByText('Endre til ferie')).not.toBeInTheDocument();
         expect(div.queryByText('Ny periode')).not.toBeInTheDocument();
-        expect(div.queryByText('Legg til utsettelse')).not.toBeInTheDocument();
+        expect(div.queryByText('+ Utsettelse')).not.toBeInTheDocument();
         expect(div.getByText('Avbryt')).toBeInTheDocument();
 
         await userEvent.click(div.getByText('Avbryt'));
@@ -1234,7 +1234,7 @@ describe('UttaksplanKalender', () => {
         expect(div2.getByText('Avslått periode')).toBeInTheDocument();
 
         expect(div2.getAllByText('Endre')).toHaveLength(1);
-        expect(div2.getByText('Legg til utsettelse')).toBeInTheDocument();
+        expect(div2.getByText('+ Utsettelse')).toBeInTheDocument();
     });
 
     it('skal lukke dialog for forskyv/erstatt om en endrer på dager i kalender', async () => {
@@ -1289,11 +1289,11 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
 
         expect(screen.getByText('Barnet er innlagt')).toBeInTheDocument();
-        expect(screen.getByText('Legg til utsettelse')).toBeInTheDocument();
+        expect(screen.getByText('+ Utsettelse')).toBeInTheDocument();
 
         await userEvent.click(within(januar).getByTestId('day:22;dayColor:BLUE'));
 
-        await userEvent.click(screen.getByText('Legg til utsettelse'));
+        await userEvent.click(screen.getByText('+ Utsettelse'));
 
         await userEvent.selectOptions(screen.getByLabelText('Velg hvorfor du skal utsette'), 'SØKER_SYKDOM');
 
@@ -1313,7 +1313,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
 
-        await userEvent.click(screen.getByText('Legg til utsettelse'));
+        await userEvent.click(screen.getByText('+ Utsettelse'));
 
         expect(screen.getByText('Velg hvorfor du skal utsette')).toBeInTheDocument();
 
@@ -1338,7 +1338,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(januar).getByTestId('day:22;dayColor:BLUE'));
 
-        expect(screen.getByText('Legg til utsettelse')).toBeInTheDocument();
+        expect(screen.getByText('+ Utsettelse')).toBeInTheDocument();
     });
 
     it('skal starte redigeringsmodus når en trykker på knapp Start redigering og fjerne valg når en trykker Stopp redigering', async () => {
