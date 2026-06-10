@@ -11,6 +11,7 @@
         "tsc:watch": "tsc --noEmit --watch"
     },
     "dependencies": {
+        "@grafana/faro-web-sdk": "2.7.1",
         "@navikt/aksel-icons": "8.10.5",
         "@navikt/ds-react": "8.10.5",
         "@navikt/fp-types": "workspace:*",
