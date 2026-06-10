@@ -117,7 +117,6 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
     });
 
     const harNesteSteg =
-        !morsAktivitetIkkeOppgittAlert &&
         !kanKunErstatte &&
         erDetEksisterendePerioderEtterValgtePerioder(uttakPerioder, sammenslåtteValgtePerioder);
 

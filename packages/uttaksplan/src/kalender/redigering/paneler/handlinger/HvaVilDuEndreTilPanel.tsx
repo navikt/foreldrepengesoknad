@@ -157,12 +157,10 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
                         )}
                         {!harPeriodeMedPleiepenger && !harValgtEøsPeriode && (
                             <HStack gap="space-12" wrap={false} className="w-full">
-                                <div className="flex-1">
-                                    <LeggTilOgEndreKnapp
-                                        åpneRedigeringsmodus={åpneRedigeringsmodus}
-                                        skalViseLeggTilKnappetekst={skalViseLeggTilKnappetekst}
-                                    />
-                                </div>
+                                <LeggTilOgEndreKnapp
+                                    åpneRedigeringsmodus={åpneRedigeringsmodus}
+                                    skalViseLeggTilKnappetekst={skalViseLeggTilKnappetekst}
+                                />
                                 {skalViseFerieknapp && (
                                     <Button
                                         variant="secondary"
@@ -186,6 +184,7 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
                                     <Button
                                         variant="secondary"
                                         size="small"
+                                        className="flex-1"
                                         onClick={() => setVisUtsettelsePanel(true)}
                                         type="button"
                                     >
@@ -196,6 +195,7 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
                                     <Button
                                         variant="secondary"
                                         size="small"
+                                        className="flex-1"
                                         onClick={() => setVisPausePanel(true)}
                                         type="button"
                                     >
@@ -331,7 +331,7 @@ const LeggTilOgEndreKnapp = ({
                 size="small"
                 onClick={åpneRedigeringsmodus}
                 type="button"
-                className="w-full"
+                className="flex-1"
                 icon={<PlusIcon aria-hidden className="md:hidden" />}
                 iconPosition="left"
             >

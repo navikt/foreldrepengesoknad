@@ -225,7 +225,7 @@
     "RedigeringPanel.EndreTilFerie": "Endre til ferie",
     "RedigeringPanel.AvslåttPeriode": "Avslått periode",
     "RedigeringPanel.LeggTilFerie": "Legg til ferie",
-    "RedigeringPanel.LeggTilUtsettelse": "Legg til utsettelse",
+    "RedigeringPanel.LeggTilUtsettelse": "+ Utsettelse",
     "RedigeringPanel.LeggTilPause": "Legg til pause",
     "RedigeringPanel.ValgtDagerFørFamiliehendelsesdato": "Du kan ikke forskyve perioder når du har valgt minst en dag før fødsel/termin",
     "RedigeringPanel.ValgtDagerFørSeksUkerEtterFamDato": "Du kan ikke forskyve perioder når du har valgt dager før seks uker etter fødsel/termin",
@@ -272,8 +272,6 @@
     "RedigeringPanel.EndrePlanen": "Endre uten å flytte resten av planen",
     "RedigeringPanel.EndrePlanenDetaljer": "Dagene legges inn og erstatter det som ligger der. Du får dagene til gode og kan legge dem til senere",
 
-    "RedigeringPanel.Fortsett": "Fortsett",
-    "RedigeringPanel.Tilbake": "Tilbake",
     "RedigeringPanel.LeggTilPeriode": "Legg til",
     "RedigeringPanel.LeggTilPeriode.Tilbake": "Tilbake",
     "RedigeringPanel.LeggTilPeriode.Fortsett": "Fortsett",

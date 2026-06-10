@@ -226,7 +226,7 @@
     "RedigeringPanel.AvslåttPeriode": "Rejected period",
     "RedigeringPanel.EndreTilFerie": "Change to vacation",
     "RedigeringPanel.LeggTilFerie": "Add vacation",
-    "RedigeringPanel.LeggTilUtsettelse": "Add postponement",
+    "RedigeringPanel.LeggTilUtsettelse": "+ Postponement",
     "RedigeringPanel.LeggTilPause": "Add break",
     "RedigeringPanel.ValgtDagerFørFamiliehendelsesdato": "You cannot push existing periods when you have selected at least one day before birth",
     "RedigeringPanel.ValgtDagerFørSeksUkerEtterFamDato": "You cannot push existing periods when you have selected days before six weeks after birth",
@@ -272,8 +272,6 @@
     "RedigeringPanel.EndrePlanen": "Change without moving the rest of the plan",
     "RedigeringPanel.EndrePlanenDetaljer": "Days will be added and replace what is there. You will get the days credited and can add them later.",
 
-    "RedigeringPanel.Fortsett": "Continue",
-    "RedigeringPanel.Tilbake": "Back",
     "RedigeringPanel.LeggTilPeriode": "Add",
     "RedigeringPanel.LeggTilPeriode.Tilbake": "Back",
     "RedigeringPanel.LeggTilPeriode.Fortsett": "Continue",
