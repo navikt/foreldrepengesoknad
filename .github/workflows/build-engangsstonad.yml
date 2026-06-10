@@ -38,7 +38,7 @@ jobs:
       id-token: write
     steps:
       - name: Login GAR
-        uses: nais/login@v0
+        uses: nais/login@d6ab5d83f735e9f155eb9d7d29cd20ae46820ea9 # ratchet:nais/login@v0
         id: login
         with:
           team: teamforeldrepenger
@@ -52,12 +52,12 @@ jobs:
           docker rm "$cid"
       - name: Upload static files to CDN
         id: upload
-        uses: nais/deploy/actions/cdn-upload/v2@master
+        uses: nais/deploy/actions/cdn-upload/v2@a7f8690f9b367fcbf5348a0a1e21d44f1aae50eb # ratchet:nais/deploy/actions/cdn-upload/v2@v2
         with:
           team: teamforeldrepenger
           source: ./cdn-dist
           source_keep_parent_name: false
-          destination: /engangsstonad/dist
+          destination: /engangsstonad/soknad
       - run: 'echo "uploaded file ${{ steps.upload.outputs.uploaded }}"'
 
   deploy-dev:
