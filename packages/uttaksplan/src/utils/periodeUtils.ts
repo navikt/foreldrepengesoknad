@@ -173,25 +173,35 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
 };
 
 /**
- * Sjekker om noken periode har gradering der aktivitet-typen er ORDINÆRT_ARBEID, men
- * arbeidsgiver manglar. Dette skjer typisk når ein plan kjem inn frå planleggar-appen
- * (som ikkje veit om søkjar sine arbeidsforhold) – då blir aktivitetstypen brukt som
- * orgnummer, noko som er ugyldig. Brukar må velje konkret arbeidsgiver/frilans/sjølvst.
- * før planen kan sendast inn.
+ * Sjekker om innlogga brukar (søkjar) har ein periode med gradering der aktiviteten ikkje
+ * er valt. Dette skjer typisk når ein plan kjem inn frå planleggar-appen (som ikkje veit om
+ * søkjar sine arbeidsforhold) – då blir aktivitetstypen sett til 'ANNET' som markør.
+ * Brukar må velje konkret arbeidsgiver/frilans/sjølvst. før planen kan sendast inn.
+ *
+ * Berre søkjar sine eigne periodar blir flagga – annen part sine periodar kan ein ikkje
+ * oppgi aktivitet for i skjema, og dei skal difor ikkje blokkere innsending.
  */
 export const harPeriodeMedUkjentGraderingsaktivitet = (
     perioder: UttaksplanperiodeMedKunTapteDager[] | Uttaksplanperiode[],
+    søker: BrukerRolleSak_fpoversikt,
 ) => {
     return perioder.some((periode) => {
-        if (!erVanligUttakPeriode(periode)) {
+        if (!erVanligUttakPeriode(periode) || periode.forelder !== søker) {
             return false;
         }
         const aktivitet = periode.gradering?.aktivitet;
-        if (aktivitet?.type !== 'ORDINÆRT_ARBEID') {
+        if (!aktivitet) {
             return false;
         }
-        const arbeidsgiverId = aktivitet.arbeidsgiver?.id;
-        return !arbeidsgiverId || arbeidsgiverId === aktivitet.type;
+        if (aktivitet.type === 'ANNET') {
+            return true;
+        }
+        // Defensivt for eldre/innkomande planar: ORDINÆRT_ARBEID utan gyldig arbeidsgiver.
+        if (aktivitet.type === 'ORDINÆRT_ARBEID') {
+            const arbeidsgiverId = aktivitet.arbeidsgiver?.id;
+            return !arbeidsgiverId || arbeidsgiverId === aktivitet.type;
+        }
+        return false;
     });
 };
 

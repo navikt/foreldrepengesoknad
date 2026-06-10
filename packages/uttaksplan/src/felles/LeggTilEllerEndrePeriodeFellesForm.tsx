@@ -628,6 +628,7 @@ export const mapFraFormValuesTilUttakPeriode = (
     values: LeggTilEllerEndrePeriodeFormFormValues,
     periode: { fom: string; tom: string },
     søker: BrukerRolleSak_fpoversikt,
+    kanVelgeArbeidsgiver: boolean,
 ): UttakPeriode_fpoversikt[] => {
     const nye = new Array<UttakPeriode_fpoversikt>();
 
@@ -641,7 +642,7 @@ export const mapFraFormValuesTilUttakPeriode = (
             forelder: 'MOR',
             gradering:
                 !erOverføringMor && values.skalDuKombinereArbeidOgUttakMor
-                    ? getGradering(søker === 'MOR', values.stillingsprosentMor, values.hvorSkalDuJobbe)
+                    ? getGradering(søker === 'MOR', values.stillingsprosentMor, values.hvorSkalDuJobbe, kanVelgeArbeidsgiver)
                     : undefined,
             samtidigUttak:
                 values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentMor) : undefined,
@@ -663,7 +664,12 @@ export const mapFraFormValuesTilUttakPeriode = (
             forelder: 'FAR_MEDMOR',
             gradering:
                 !erOverføringFarMedmor && values.skalDuKombinereArbeidOgUttakFarMedmor
-                    ? getGradering(søker === 'FAR_MEDMOR', values.stillingsprosentFarMedmor, values.hvorSkalDuJobbe)
+                    ? getGradering(
+                          søker === 'FAR_MEDMOR',
+                          values.stillingsprosentFarMedmor,
+                          values.hvorSkalDuJobbe,
+                          kanVelgeArbeidsgiver,
+                      )
                     : undefined,
             samtidigUttak:
                 values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentFarMedmor) : undefined,
@@ -763,8 +769,12 @@ const getGradering = (
     erSøker: boolean,
     stillingsprosent: string | undefined,
     hvorSkalDuJobbe: string | undefined,
+    kanVelgeArbeidsgiver: boolean,
 ): Gradering_fpoversikt => {
-    if (erSøker) {
+    // I planleggaren (kanVelgeArbeidsgiver === false) kan ein ikkje oppi aktivitet, så vi set alltid ANNET.
+    // 'ANNET' i hvorSkalDuJobbe er ein plassholdar (typisk frå planleggar-import) – brukaren har då
+    // ikkje valt ein reell aktivitet, så vi held på ANNET slik at detektoren framleis flaggar perioden.
+    if (erSøker && kanVelgeArbeidsgiver && hvorSkalDuJobbe !== 'ANNET') {
         return {
             aktivitet: {
                 type: finnAktivitetType(hvorSkalDuJobbe),
