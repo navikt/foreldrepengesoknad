@@ -20,8 +20,14 @@ export const initFaro = ({ app }: InitFaroOptions) => {
         return;
     }
 
+    // Samme image promoteres til dev-gcp og prod-gcp, så collector-URL må velges i
+    // runtime. dev-gcp bruker det eksterne dev-endepunktet, prod-gcp det ordinære.
+    // Se https://docs.nais.io/observability/frontend/reference/auto-configuration/
+    const erDevMiljo = globalThis.location.hostname.endsWith('dev.nav.no');
+    const url = erDevMiljo ? 'https://telemetry.ekstern.dev.nav.no/collect' : 'https://telemetry.nav.no/collect';
+
     initializeFaro({
-        url: 'https://telemetry.nav.no/collect',
+        url,
         paused: globalThis.location.hostname === 'localhost',
         app,
         instrumentations: [...getWebInstrumentations()],

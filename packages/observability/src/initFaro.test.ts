@@ -17,8 +17,8 @@ describe('initFaro', () => {
         vi.clearAllMocks();
     });
 
-    it('initialiserer Faro mot NAIS-collectoren med app-metadata', () => {
-        vi.stubGlobal('location', { hostname: 'engangsstonad.nav.no' });
+    it('bruker prod-collector i prod-miljø (www.nav.no)', () => {
+        vi.stubGlobal('location', { hostname: 'www.nav.no' });
 
         initFaro({ app: APP });
 
@@ -28,6 +28,19 @@ describe('initFaro', () => {
             expect.objectContaining({
                 url: 'https://telemetry.nav.no/collect',
                 app: APP,
+                paused: false,
+            }),
+        );
+    });
+
+    it('bruker dev-collector i dev-miljø (www.intern.dev.nav.no)', () => {
+        vi.stubGlobal('location', { hostname: 'www.intern.dev.nav.no' });
+
+        initFaro({ app: APP });
+
+        expect(initializeFaro).toHaveBeenCalledWith(
+            expect.objectContaining({
+                url: 'https://telemetry.ekstern.dev.nav.no/collect',
                 paused: false,
             }),
         );
