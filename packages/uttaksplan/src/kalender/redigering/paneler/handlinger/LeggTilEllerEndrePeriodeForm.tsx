@@ -183,9 +183,9 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
                             disabled={!formMethods.formState.isDirty}
                         >
                             {harNesteSteg ? (
-                                <FormattedMessage id="LeggTilPeriodePanel.LeggTil" />
+                                <FormattedMessage id="RedigeringPanel.LeggTilPeriode.Fortsett" />
                             ) : (
-                                <FormattedMessage id="RedigeringPanel.Fortsett" />
+                                <FormattedMessage id="RedigeringPanel.LeggTilPeriode" />
                             )}
                         </Button>
                         <Button
@@ -195,7 +195,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
                             className="flex-1"
                             onClick={lukkRedigeringsmodus}
                         >
-                            <FormattedMessage id="LeggTilPeriodePanel.Avbryt" />
+                            <FormattedMessage id="RedigeringPanel.LeggTilPeriode.Tilbake" />
                         </Button>
                     </HStack>
                 </VStack>

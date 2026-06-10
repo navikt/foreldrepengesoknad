@@ -55,7 +55,7 @@ export const LeggTilPeriodeForskyvEllerErstattPanel = ({
                     onClick={() => leggTilEllerForskyvPeriode(skalForskyvePeriode ?? false)}
                     disabled={skalForskyvePeriode === undefined}
                 >
-                    <FormattedMessage id="RedigeringPanel.Fortsett" />
+                    <FormattedMessage id="RedigeringPanel.LeggTilPeriode" />
                 </Button>
                 <Button
                     type="button"
@@ -64,7 +64,7 @@ export const LeggTilPeriodeForskyvEllerErstattPanel = ({
                     className="flex-1"
                     onClick={() => setVisEndreEllerForskyvPanel(false)}
                 >
-                    <FormattedMessage id="RedigeringPanel.Tilbake" />
+                    <FormattedMessage id="RedigeringPanel.LeggTilPeriode.Tilbake" />
                 </Button>
             </HStack>
         </VStack>
