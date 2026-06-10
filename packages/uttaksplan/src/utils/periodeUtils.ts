@@ -50,8 +50,21 @@ export const getAntallUttaksdagerIVinduRundtFødsel = (
     return Uttaksdagen.denneEllerNeste(overlappFom).getUttaksdagerFremTilOgMedDato(overlappTom);
 };
 
+const fjernAvsluttendeNullerFraDesimal = (tekst: string): string => {
+    if (!tekst.includes('.')) {
+        return tekst;
+    }
+
+    let slutt = tekst.length;
+    while (slutt > 0 && tekst[slutt - 1] === '0') {
+        slutt -= 1;
+    }
+
+    return tekst[slutt - 1] === '.' ? tekst.slice(0, slutt - 1) : tekst.slice(0, slutt);
+};
+
 const getDesimalSomSkalertHeltall = (verdi: number): { verdi: bigint; skala: bigint } => {
-    const tekst = verdi.toString().includes('e') ? verdi.toFixed(10).replace(/\.?0+$/, '') : verdi.toString();
+    const tekst = verdi.toString().includes('e') ? fjernAvsluttendeNullerFraDesimal(verdi.toFixed(10)) : verdi.toString();
     const [heltall, desimaler = ''] = tekst.split('.');
 
     return {
