@@ -168,7 +168,7 @@ describe('UttaksplanListe', () => {
                 forelder: 'MOR',
                 gradering: {
                     aktivitet: {
-                        type: 'ORDINÆRT_ARBEID',
+                        type: 'ANNET',
                     },
                     arbeidstidprosent: 50,
                 },
