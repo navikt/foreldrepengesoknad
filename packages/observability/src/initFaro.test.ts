@@ -8,7 +8,7 @@ vi.mock('@grafana/faro-web-sdk', () => ({
     getWebInstrumentations: vi.fn(() => []),
 }));
 
-const APP = { name: 'engangsstonad', namespace: 'teamforeldrepenger', version: '1.2.3' };
+const APP = { name: 'engangsstonad', namespace: 'teamforeldrepenger' };
 
 describe('initFaro', () => {
     afterEach(() => {
@@ -18,6 +18,7 @@ describe('initFaro', () => {
     });
 
     it('bruker prod-collector i prod-miljø (www.nav.no)', () => {
+        vi.stubEnv('VITE_SENTRY_RELEASE', '1.2.3');
         vi.stubGlobal('location', { hostname: 'www.nav.no' });
 
         initFaro({ app: APP });
@@ -27,7 +28,7 @@ describe('initFaro', () => {
         expect(initializeFaro).toHaveBeenCalledWith(
             expect.objectContaining({
                 url: 'https://telemetry.nav.no/collect',
-                app: APP,
+                app: { ...APP, version: '1.2.3' },
                 paused: false,
             }),
         );
