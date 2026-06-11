@@ -53,7 +53,7 @@ const lagDeltUttakForFarMedmor = (
     const fedrekvote = stønadskvoter.find((k) => k.konto === 'FEDREKVOTE');
     const fellesperiode = stønadskvoter.find((k) => k.konto === 'FELLESPERIODE');
 
-    // MOR's periods are always anchored to helgejustertFamDato
+    // Mors perioder er alltid ankret til helgejustertFamDato
     let tidsperiode = getTidsperiodeString(
         Uttaksdagen.denne(helgejustertFamDato).getDatoAntallUttaksdagerTidligere(15),
         foreldrepengerFørFødsel ? foreldrepengerFørFødsel.dager : 15,
@@ -113,8 +113,8 @@ const lagDeltUttakForFarMedmor = (
             flerbarnsdager: false,
         });
     } else {
-        // FAR starts after the family event date: generate MOR's periods from helgejustertFamDato,
-        // then FAR's FEDREKVOTE from FAR's chosen start date.
+        // Far starter etter familiehendelsesdato: generer mors perioder fra helgejustertFamDato,
+        // og fars FEDREKVOTE fra fars valgte startdato.
         let currentMorFomDate = helgejustertFamDato;
 
         tidsperiode = getTidsperiodeString(currentMorFomDate, mødrekvote ? mødrekvote.dager : 0);
