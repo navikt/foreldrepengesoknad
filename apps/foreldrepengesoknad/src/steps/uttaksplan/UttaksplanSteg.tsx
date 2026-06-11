@@ -58,7 +58,13 @@ export const UttaksplanSteg = ({
     const dekningsgrad = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
     const eksisterendeSaksnummer = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
+    const kommerFraPlanlegger = !!useContextGetData(ContextDataType.KOMMER_FRA_PLANLEGGER);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
+
+    // Når søknaden er overført fra planleggeren ligg den overførte planen i uttaksplan-context, men
+    // den kan ikkje reknast ut på nytt her (planleggeren sender ikkje med fordeling). Me tar difor vare
+    // på den opprinnelege planen slik at "Tilbakestill plan" kan hente han opp igjen etter "Fjern alt".
+    const [opprinneligPlanleggerplan] = useState(() => (kommerFraPlanlegger ? uttaksplan : undefined));
 
     const eksisterendeSak = foreldrepengerSaker?.find((sak) => sak.saksnummer === eksisterendeSaksnummer);
 
@@ -129,7 +135,7 @@ export const UttaksplanSteg = ({
             ? annenPartVedtakQuery.data.perioder
             : undefined;
     const tidligereUttaksperioder = uttaksplanForEksisterendeSak ?? annenPartsPerioderEllerUndefined;
-    const defaultUttaksperioder = tidligereUttaksperioder ?? nyttUttaksplanForslag;
+    const defaultUttaksperioder = opprinneligPlanleggerplan ?? tidligereUttaksperioder ?? nyttUttaksplanForslag;
 
     const erPlanenEndret =
         uttaksplan !== undefined &&
