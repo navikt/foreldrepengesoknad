@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook } from '@testing-library/react';
 import { API_URLS } from 'appData/queries';
-import ky, { ResponsePromise } from 'ky';
+import ky, { type KyResponse } from 'ky';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Dokumentasjon } from 'types/Dokumentasjon';
@@ -102,7 +102,7 @@ describe('useEsSendSøknad', () => {
     });
 
     it('skal sende inn korrekt data ved adopsjon', async () => {
-        const postMock = vi.spyOn(ky, 'post').mockResolvedValue({} as ResponsePromise<void>);
+        const postMock = vi.spyOn(ky, 'post').mockResolvedValue({} as unknown as KyResponse);
         const deleteMock = vi.spyOn(ky, 'delete');
 
         const omBarnetAdopsjon: BarnDto = {
@@ -152,7 +152,7 @@ describe('useEsSendSøknad', () => {
     });
 
     it('skal sende inn korrekt data når barnet er født', async () => {
-        const postMock = vi.spyOn(ky, 'post').mockResolvedValue({} as ResponsePromise<void>);
+        const postMock = vi.spyOn(ky, 'post').mockResolvedValue({} as unknown as KyResponse);
         const deleteMock = vi.spyOn(ky, 'delete');
 
         const omBarnetErFødt: BarnDto = {
@@ -192,7 +192,7 @@ describe('useEsSendSøknad', () => {
     });
 
     it('skal sende inn korrekt data når en venter på fødsel', async () => {
-        const postMock = vi.spyOn(ky, 'post').mockResolvedValue({} as ResponsePromise<void>);
+        const postMock = vi.spyOn(ky, 'post').mockResolvedValue({} as unknown as KyResponse);
         const deleteMock = vi.spyOn(ky, 'delete');
 
         const omBarnetVenterPåFødsel: BarnDto = {
