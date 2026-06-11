@@ -9,7 +9,6 @@ import { DELT_UTTAK_100 } from '@navikt/fp-utils-test';
 
 import { useUttaksplanForslag } from './useUttaksplanForslag';
 
-// Familiehendelsesdato: mandag 1. juli 2024
 const FØDSELSDATO = '2024-07-01';
 
 const STØNADSKVOTE: KontoBeregningDto = {
