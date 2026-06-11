@@ -19,9 +19,7 @@ const STØNADSKVOTE: KontoBeregningDto = {
 
 const getWrapper =
     (initialState: ConstructorParameters<typeof Object>[0]) =>
-    ({ children }: { children: ReactNode }) => (
-        <FpDataContext initialState={initialState}>{children}</FpDataContext>
-    );
+    ({ children }: { children: ReactNode }) => <FpDataContext initialState={initialState}>{children}</FpDataContext>;
 
 const baseFarDeltUttakContext = {
     [ContextDataType.SØKERSITUASJON]: { situasjon: 'fødsel' as const, rolle: 'far' as const },
@@ -43,7 +41,7 @@ const baseFarDeltUttakContext = {
 
 describe('useUttaksplanForslag – far med delt uttak', () => {
     describe('når far starter på familiehendelsesdato (harFødselspermisjon)', () => {
-        it('genererer plan med samtidigattak på familiehendelsesdato', () => {
+        it('genererer plan med samtidig uttak på familiehendelsesdato', () => {
             const { result } = renderHook(() => useUttaksplanForslag(STØNADSKVOTE), {
                 wrapper: getWrapper({
                     ...baseFarDeltUttakContext,
@@ -64,7 +62,7 @@ describe('useUttaksplanForslag – far med delt uttak', () => {
                 flerbarnsdager: false,
             });
 
-            // MOR og FAR: samtidigattak fra familiehendelsesdato (10 dager)
+            // MOR og FAR: samtidig uttak fra familiehendelsesdato (10 dager)
             expect(perioder[1]).toMatchObject({
                 forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
@@ -85,15 +83,20 @@ describe('useUttaksplanForslag – far med delt uttak', () => {
                 forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
                 fom: '2024-07-15',
+                tom: '2024-10-11',
+                flerbarnsdager: false,
             });
 
-            // MOR: FELLESPERIODE
+            // MOR: FELLESPERIODE (80 dager)
             expect(perioder[4]).toMatchObject({
                 forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
+                fom: '2024-10-14',
+                tom: '2025-01-31',
+                flerbarnsdager: false,
             });
 
-            // FAR har ingen separat FEDREKVOTE utover samtidigattak
+            // FAR har ingen separat FEDREKVOTE utover samtidig uttak
             expect(perioder).toHaveLength(5);
             expect(perioder.filter((p) => p.forelder === 'FAR_MEDMOR')).toHaveLength(1);
         });
@@ -126,25 +129,32 @@ describe('useUttaksplanForslag – far med delt uttak', () => {
                 tom: '2024-06-28',
             });
 
-            // MOR: MØDREKVOTE skal starte på familiehendelsesdato, ikke på fars dato
+            // MOR: MØDREKVOTE skal starte på familiehendelsesdato, ikke på fars dato (75 dager)
             expect(perioder[1]).toMatchObject({
                 forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
                 fom: FØDSELSDATO,
+                tom: '2024-10-11',
+                flerbarnsdager: false,
             });
             expect(perioder[1].fom).not.toBe(farStartdato);
 
-            // MOR: FELLESPERIODE følger etter MØDREKVOTE
+            // MOR: FELLESPERIODE følger etter MØDREKVOTE (80 dager)
             expect(perioder[2]).toMatchObject({
                 forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
+                fom: '2024-10-14',
+                tom: '2025-01-31',
+                flerbarnsdager: false,
             });
 
-            // FAR: FEDREKVOTE skal starte på fars valgte dato
+            // FAR: FEDREKVOTE skal starte på fars valgte dato (75 dager)
             expect(perioder[3]).toMatchObject({
                 forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
                 fom: farStartdato,
+                tom: '2025-01-13',
+                flerbarnsdager: false,
             });
         });
 
@@ -163,9 +173,33 @@ describe('useUttaksplanForslag – far med delt uttak', () => {
             });
 
             const perioder = result.current;
-            const farPeriode = perioder.find((p) => p.forelder === 'FAR_MEDMOR');
 
-            expect(farPeriode?.fom).toBe(farStartdato);
+            expect(perioder).toHaveLength(4);
+
+            expect(perioder[0]).toMatchObject({
+                forelder: 'MOR',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                fom: '2024-06-10',
+                tom: '2024-06-28',
+            });
+            expect(perioder[1]).toMatchObject({
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                fom: FØDSELSDATO,
+                tom: '2024-10-11',
+            });
+            expect(perioder[2]).toMatchObject({
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                fom: '2024-10-14',
+                tom: '2025-01-31',
+            });
+            expect(perioder[3]).toMatchObject({
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                fom: farStartdato,
+                tom: '2024-11-13',
+            });
         });
 
         it('respekterer helgejustering av oppstartsdato', () => {
@@ -180,10 +214,16 @@ describe('useUttaksplanForslag – far med delt uttak', () => {
                 }),
             });
 
-            const farPeriode = result.current.find((p) => p.forelder === 'FAR_MEDMOR');
+            const perioder = result.current;
+            const farPeriode = perioder.find((p) => p.forelder === 'FAR_MEDMOR');
 
             // Uttaksdagen.denneEllerNeste justerer lørdag til mandag
-            expect(farPeriode?.fom).toBe('2024-10-07');
+            expect(farPeriode).toMatchObject({
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                fom: '2024-10-07',
+                tom: '2025-01-17',
+            });
         });
     });
 
@@ -191,7 +231,16 @@ describe('useUttaksplanForslag – far med delt uttak', () => {
         it('returnerer tom liste når annen parts perioder er oppgitt (ikke-støttet case)', () => {
             // useUttaksplanForslag returnerer [] når annenPartsPerioder er ikke-tom
             const { result } = renderHook(
-                () => useUttaksplanForslag(STØNADSKVOTE, [{ fom: '2024-07-01', tom: '2024-09-01', forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false }]),
+                () =>
+                    useUttaksplanForslag(STØNADSKVOTE, [
+                        {
+                            fom: '2024-07-01',
+                            tom: '2024-09-01',
+                            forelder: 'MOR',
+                            kontoType: 'MØDREKVOTE',
+                            flerbarnsdager: false,
+                        },
+                    ]),
                 {
                     wrapper: getWrapper({
                         ...baseFarDeltUttakContext,
