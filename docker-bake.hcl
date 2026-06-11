@@ -100,6 +100,8 @@ target "planlegger" {
   args = {
     APP    = "planlegger",
     SERVER = "server-uinnlogget"
+    # Asset-URL-er peker på CDN. Må matche destination i cdn-upload (teamforeldrepenger + /foreldrepenger/planlegger).
+    VITE_CDN_URL = "https://cdn.nav.no/teamforeldrepenger/foreldrepenger/planlegger/"
   }
 }
 
