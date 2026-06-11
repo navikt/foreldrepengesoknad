@@ -30,35 +30,16 @@ jobs:
 
   upload-to-CDN:
     name: Upload assets to CDN
-    runs-on: ubuntu-latest
     if: github.ref_name == 'master'
     needs: build-app
     permissions:
       contents: read
       id-token: write
-    steps:
-      - name: Login GAR
-        uses: nais/login@d6ab5d83f735e9f155eb9d7d29cd20ae46820ea9 # ratchet:nais/login@v0
-        id: login
-        with:
-          team: teamforeldrepenger
-      - name: Extract dist from built image
-        env:
-          IMAGE: ${{ steps.login.outputs.registry }}/${{ github.repository }}/engangsstonad:${{ needs.build-app.outputs.build-version }}
-        run: |
-          docker pull "$IMAGE"
-          cid=$(docker create "$IMAGE")
-          docker cp "$cid:/app/public" ./cdn-dist
-          docker rm "$cid"
-      - name: Upload static files to CDN
-        id: upload
-        uses: nais/deploy/actions/cdn-upload/v2@a7f8690f9b367fcbf5348a0a1e21d44f1aae50eb # ratchet:nais/deploy/actions/cdn-upload/v2@v2
-        with:
-          team: teamforeldrepenger
-          source: ./cdn-dist
-          source_keep_parent_name: false
-          destination: /engangsstonad/soknad
-      - run: 'echo "uploaded file ${{ steps.upload.outputs.uploaded }}"'
+    uses: navikt/fp-gha-workflows/.github/workflows/cdn-upload.yml@main
+    with:
+      image: ${{ needs.build-app.outputs.build-version }}
+      image_suffix: '/engangsstonad'
+      destination: '/engangsstonad/soknad'
 
   deploy-dev:
     name: Deploy dev
