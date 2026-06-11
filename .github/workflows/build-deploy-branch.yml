@@ -36,11 +36,31 @@ jobs:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
+  upload-to-CDN:
+    name: Upload assets to CDN
+    needs: build-app
+    permissions:
+      contents: read
+      id-token: write
+    uses: navikt/fp-gha-workflows/.github/workflows/cdn-upload.yml@main
+    with:
+      image: ${{ needs.build-app.outputs.build-version }}
+      image_suffix: '/${{ inputs.app }}'
+      # Destinasjon = appens vite base (samme verdi som i build-<app>.yml)
+      destination: >-
+        ${{ inputs.app == 'engangsstonad' && '/engangsstonad/soknad'
+        || inputs.app == 'foreldrepengeoversikt' && '/foreldrepenger/oversikt'
+        || inputs.app == 'foreldrepengesoknad' && '/foreldrepenger/soknad'
+        || inputs.app == 'svangerskapspengesoknad' && '/svangerskapspenger/soknad'
+        || inputs.app == 'planlegger' && '/foreldrepenger/planlegger'
+        || inputs.app == 'veiviser-fp-eller-es' && '/foreldrepenger/foreldrepenger-eller-engangsstonad'
+        || inputs.app == 'veiviser-hvor-mye' && '/foreldrepenger/hvor-mye' }}
+
   deploy-dev:
     name: Deploy dev
     permissions:
       id-token: write
-    needs: build-app
+    needs: [build-app, upload-to-CDN]
     uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main
     with:
       gar: true
