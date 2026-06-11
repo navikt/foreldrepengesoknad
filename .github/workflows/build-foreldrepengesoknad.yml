@@ -11,21 +11,25 @@ on:
       - '.deploy/foreldrepengesoknad/**'
       - '.deploy/naiserator.yaml'
       - '.github/workflows/build-foreldrepengesoknad.yml'
+      - '.github/workflows/build.yml'
+      - 'turbo.json'
       - 'Dockerfile'
-      - 'docker-bake.hcl'
       - 'pnpm-lock.yaml'
 
 jobs:
   build-app:
     name: Build
     permissions:
+      contents: read
       packages: write
       id-token: write
-    uses: navikt/fp-gha-workflows/.github/workflows/build-docker-bake.yml@main
+    uses: ./.github/workflows/build.yml
     with:
       runs-on: 'ubuntu-latest-4-cores' # default: ubuntu-latest
+      build-image: ${{ github.ref_name == 'master' }} # default: true
       push-image: ${{ github.ref_name == 'master' }} # default: false
-      bake-target: 'foreldrepengesoknad'
+      app: foreldrepengesoknad
+      image_suffix: '/foreldrepengesoknad'
     secrets:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}

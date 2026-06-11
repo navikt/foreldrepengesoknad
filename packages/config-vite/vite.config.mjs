@@ -87,7 +87,9 @@ const createConfig = (setupFileDirName) => {
                         ],
                         setupFiles: setupFileDirName,
                         browser: {
-                            headless: false,
+                            // Headless i CI (GitHub Actions setter CI=true), headed lokalt for enklere debugging.
+                            //eslint-disable-next-line no-undef
+                            headless: !!process.env.CI,
                             enabled: true,
                             provider: playwright(),
                             instances: [{ browser: 'chromium' }],

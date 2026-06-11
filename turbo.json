@@ -1,34 +1,53 @@
 {
     "$schema": "https://turbo.build/schema.json",
-    "globalPassThroughEnv": ["PACKAGES_AUTH_TOKEN", "SENTRY_AUTH_TOKEN"],
+    "globalPassThroughEnv": ["PACKAGES_AUTH_TOKEN", "SENTRY_AUTH_TOKEN", "VITE_SENTRY_RELEASE"],
+    "globalDependencies": [
+        "turbo.json",
+        "pnpm-lock.yaml",
+        "knip.ts",
+        "Dockerfile",
+        ".prettierrc",
+        "packages/config-eslint/eslint.config.mjs",
+        "packages/config-typescript/tsconfig.json",
+        "packages/config-vite/vite.config.mjs"
+    ],
     "tasks": {
-        "test": {
-            "dependsOn": ["build", "lint", "^test"],
-            "inputs": ["src/**/*.tsx", "src/**/*.ts"]
-        },
-        "build": {
-            "dependsOn": ["^build", "lint"],
-            "outputs": ["dist/**", "lib/**"]
-        },
         "dev": {
+            "cache": false,
             "persistent": true
         },
-        "lint": {
-            "dependsOn": ["eslint", "tsc"]
+        "generate": {
+            "cache": false
         },
-        "eslint": {},
-        "eslint:fix": {},
+        "generate:local": {
+            "cache": false
+        },
+        "tsc": {
+            "outputs": []
+        },
+        "eslint": {
+            "outputs": []
+        },
+        "eslint:fix": {
+            "outputs": []
+        },
         "prettier:fix": {
-            "dependsOn": ["build"]
+            "outputs": []
         },
-        "tsc": {},
+        "test": {
+            "dependsOn": ["build", "^test"],
+            "outputs": []
+        },
         "test:browser": {
-            "dependsOn": ["build", "lint", "^test:browser"],
-            "inputs": ["src/**/*.tsx", "src/**/*.ts"]
+            "dependsOn": ["build", "^test:browser"],
+            "outputs": []
         },
         "build:storybook": {
-            "dependsOn": ["build"],
             "outputs": [".storybook-static-build/**"]
+        },
+        "build": {
+            "dependsOn": ["^build", "tsc"],
+            "outputs": ["dist/**", "lib/**"]
         }
     },
     "globalEnv": [
