@@ -52,8 +52,10 @@ RUN pnpm exec turbo test
 FROM --platform=${BUILDPLATFORM} builder AS client
 ARG APP
 ARG SENTRY_RELEASE
+ARG VITE_CDN_URL=""
 WORKDIR /usr/src/app/apps/${APP}
 ENV VITE_SENTRY_RELEASE=$SENTRY_RELEASE
+ENV VITE_CDN_URL=$VITE_CDN_URL
 RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN \
     SENTRY_AUTH_TOKEN=$(cat /run/secrets/SENTRY_AUTH_TOKEN) pnpm exec turbo test
 RUN mv /usr/src/app/apps/${APP}/dist /public

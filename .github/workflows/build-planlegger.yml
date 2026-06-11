@@ -46,7 +46,7 @@ jobs:
     permissions:
       id-token: write
     if: github.ref_name == 'master'
-    needs: build-app
+    needs: [build-app, upload-to-CDN]
     uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main
     with:
       gar: true
