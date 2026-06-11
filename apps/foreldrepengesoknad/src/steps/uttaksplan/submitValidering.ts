@@ -21,15 +21,17 @@ type SubmitValideringsregel = {
 
 interface UseFinnFørsteSubmitFeilmeldingProps {
     opprinneligPlan: UttaksplanPerioder | undefined;
+    erEndringssøknad: boolean;
 }
 
-export const useFinnFørsteSubmitFeilmelding = ({ opprinneligPlan }: UseFinnFørsteSubmitFeilmeldingProps) => {
+export const useFinnFørsteSubmitFeilmelding = ({
+    opprinneligPlan,
+    erEndringssøknad,
+}: UseFinnFørsteSubmitFeilmeldingProps) => {
     const intl = useIntl();
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
-    const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
-    const erEndringssøknad = !!valgtEksisterendeSaksnr;
     const erAntallDagerOvertrukket = useErAntallDagerOvertrukketIUttaksplan();
 
     const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);

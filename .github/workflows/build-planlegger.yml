@@ -28,16 +28,32 @@ jobs:
       push-image: ${{ github.ref_name == 'master' }} # default: false
       app: planlegger
       image_suffix: '/planlegger'
+      # Bakes inn i asset-referansene (renderBuiltUrl) slik at planlegger laster assets fra CDN.
+      # Må matche upload-to-CDN destination (teamforeldrepenger + /foreldrepenger/planlegger).
+      vite-cdn-url: 'https://cdn.nav.no/teamforeldrepenger/foreldrepenger/planlegger/'
     secrets:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+
+  upload-to-CDN:
+    name: Upload assets to CDN
+    if: github.ref_name == 'master'
+    needs: build-app
+    permissions:
+      contents: read
+      id-token: write
+    uses: navikt/fp-gha-workflows/.github/workflows/cdn-upload.yml@main
+    with:
+      image: ${{ needs.build-app.outputs.build-version }}
+      image_suffix: '/planlegger'
+      destination: '/foreldrepenger/planlegger'
 
   deploy-dev:
     name: Deploy dev
     permissions:
       id-token: write
     if: github.ref_name == 'master'
-    needs: build-app
+    needs: [build-app, upload-to-CDN]
     uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main
     with:
       gar: true

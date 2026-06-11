@@ -40,6 +40,7 @@ interface UttaksplanFormProps {
     scrollToKvoteOppsummering: () => void;
     eksisterendeSak: FpSak_fpoversikt | undefined;
     opprinneligPlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined;
+    erEndringssøknad: boolean;
 }
 
 export const UttaksplanForm = ({
@@ -51,6 +52,7 @@ export const UttaksplanForm = ({
     scrollToKvoteOppsummering,
     eksisterendeSak,
     opprinneligPlan,
+    erEndringssøknad,
 }: UttaksplanFormProps) => {
     const intl = useIntl();
 
@@ -59,12 +61,9 @@ export const UttaksplanForm = ({
     const harJustertUttakVedFødsel = useContextGetData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
 
-    const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
-
     const oppdaterHarJustertUttakVedFødsel = useContextSaveData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
-    const erEndringssøknad = !!valgtEksisterendeSaksnr;
     const uttaksplanMedKunNyePerioder =
         uttaksplan?.filter((p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.resultat === undefined) ?? [];
     const gjeldendeUttaksplan = erEndringssøknad ? uttaksplanMedKunNyePerioder : uttaksplan;
@@ -119,7 +118,7 @@ export const UttaksplanForm = ({
         isUfødtBarn(barn) &&
         barn.termindato !== undefined;
 
-    const finnFørsteSubmitFeilmelding = useFinnFørsteSubmitFeilmelding({ opprinneligPlan });
+    const finnFørsteSubmitFeilmelding = useFinnFørsteSubmitFeilmelding({ opprinneligPlan, erEndringssøknad });
 
     const onSubmit = (formValues: FormValues) => {
         const planForValidering = gjeldendeUttaksplan ?? defaultUttaksperioder;

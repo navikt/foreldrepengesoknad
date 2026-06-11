@@ -37,6 +37,11 @@ on:
         required: true
         type: string
         description: App som skal bygges
+      vite-cdn-url:
+        required: false
+        type: string
+        description: 'CDN-URL som bakes inn i appens asset-referanser ved bygg (kun planlegger i dag)'
+        default: ''
     outputs:
       build-version:
         description: 'Build version'
@@ -101,6 +106,7 @@ jobs:
         env:
           VITE_SENTRY_RELEASE: ${{ steps.sentry_release_key.outputs.SENTRY_RELEASE }}
           SENTRY_AUTH_TOKEN: ${{ inputs.push-image && secrets.SENTRY_AUTH_TOKEN || '' }}
+          VITE_CDN_URL: ${{ inputs.vite-cdn-url }}
 
       - name: Bygg server
         run: pnpm --filter @navikt/${{ steps.server.outputs.server }} run build

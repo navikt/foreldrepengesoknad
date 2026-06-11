@@ -40,19 +40,31 @@ interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
     foreldrepengerSaker?: FpSak_fpoversikt[];
+    erEndringssøknad: boolean;
 }
 
-export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbrytSøknad, foreldrepengerSaker }: Props) => {
+export const UttaksplanSteg = ({
+    søkerInfo,
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+    foreldrepengerSaker,
+    erEndringssøknad,
+}: Props) => {
     const intl = useIntl();
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const dekningsgrad = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
-    const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
     const eksisterendeSaksnummer = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
+    const kommerFraPlanlegger = !!useContextGetData(ContextDataType.KOMMER_FRA_PLANLEGGER);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
+
+    // Når søknaden er overført fra planleggeren ligg den overførte planen i uttaksplan-context, men
+    // den kan ikkje reknast ut på nytt her (planleggeren sender ikkje med fordeling). Me tar difor vare
+    // på den opprinnelege planen slik at "Tilbakestill plan" kan hente han opp igjen etter "Fjern alt".
+    const [opprinneligPlanleggerplan] = useState(() => (kommerFraPlanlegger ? uttaksplan : undefined));
 
     const eksisterendeSak = foreldrepengerSaker?.find((sak) => sak.saksnummer === eksisterendeSaksnummer);
 
@@ -65,8 +77,6 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
         },
         [oppdaterUttaksplan],
     );
-
-    const erEndringssøknad = !!valgtEksisterendeSaksnr;
 
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad, eksisterendeSak);
     const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger, erEndringssøknad, eksisterendeSak);
@@ -125,7 +135,7 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
             ? annenPartVedtakQuery.data.perioder
             : undefined;
     const tidligereUttaksperioder = uttaksplanForEksisterendeSak ?? annenPartsPerioderEllerUndefined;
-    const defaultUttaksperioder = tidligereUttaksperioder ?? nyttUttaksplanForslag;
+    const defaultUttaksperioder = opprinneligPlanleggerplan ?? tidligereUttaksperioder ?? nyttUttaksplanForslag;
 
     const erPlanenEndret =
         uttaksplan !== undefined &&
@@ -229,6 +239,7 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
                         defaultUttaksperioder={defaultUttaksperioder}
                         eksisterendeSak={eksisterendeSak}
                         opprinneligPlan={uttaksplanForEksisterendeSak}
+                        erEndringssøknad={erEndringssøknad}
                     />
                 </UttaksplanDataProvider>
             </Step>
