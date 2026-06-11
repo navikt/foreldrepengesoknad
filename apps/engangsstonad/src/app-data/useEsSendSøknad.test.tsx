@@ -95,8 +95,6 @@ const getWrapper =
         </IntlProvider>
     );
 
-vi.mock('ky');
-
 describe('useEsSendSøknad', () => {
     afterEach(() => {
         vi.restoreAllMocks();
@@ -104,11 +102,8 @@ describe('useEsSendSøknad', () => {
     });
 
     it('skal sende inn korrekt data ved adopsjon', async () => {
-        const postMock = vi.mocked(ky.post);
-        postMock.mockReturnValue({
-            json: () => Promise.resolve(),
-        } as ResponsePromise<void>);
-        const deleteMock = vi.mocked(ky.delete);
+        const postMock = vi.spyOn(ky, 'post').mockResolvedValue({} as ResponsePromise<void>);
+        const deleteMock = vi.spyOn(ky, 'delete');
 
         const omBarnetAdopsjon: BarnDto = {
             type: 'adopsjon',
@@ -157,11 +152,8 @@ describe('useEsSendSøknad', () => {
     });
 
     it('skal sende inn korrekt data når barnet er født', async () => {
-        const postMock = vi.mocked(ky.post);
-        postMock.mockReturnValue({
-            json: () => Promise.resolve(),
-        } as ResponsePromise<void>);
-        const deleteMock = vi.mocked(ky.delete);
+        const postMock = vi.spyOn(ky, 'post').mockResolvedValue({} as ResponsePromise<void>);
+        const deleteMock = vi.spyOn(ky, 'delete');
 
         const omBarnetErFødt: BarnDto = {
             type: 'fødsel',
@@ -200,11 +192,8 @@ describe('useEsSendSøknad', () => {
     });
 
     it('skal sende inn korrekt data når en venter på fødsel', async () => {
-        const postMock = vi.mocked(ky.post);
-        postMock.mockReturnValue({
-            json: () => Promise.resolve(),
-        } as ResponsePromise<void>);
-        const deleteMock = vi.mocked(ky.delete);
+        const postMock = vi.spyOn(ky, 'post').mockResolvedValue({} as ResponsePromise<void>);
+        const deleteMock = vi.spyOn(ky, 'delete');
 
         const omBarnetVenterPåFødsel: BarnDto = {
             type: 'termin',
