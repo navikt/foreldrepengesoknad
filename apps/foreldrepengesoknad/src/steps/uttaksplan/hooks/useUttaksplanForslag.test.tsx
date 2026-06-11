@@ -98,7 +98,7 @@ describe('useUttaksplanForslag – far med delt uttak', () => {
 
             // FAR har ingen separat FEDREKVOTE utover samtidig uttak
             expect(perioder).toHaveLength(5);
-            expect(perioder.filter((p) => p.forelder === 'FAR_MEDMOR')).toHaveLength(1);
+            expect(perioder.filter((p) => 'forelder' in p && p.forelder === 'FAR_MEDMOR')).toHaveLength(1);
         });
     });
 
@@ -137,7 +137,7 @@ describe('useUttaksplanForslag – far med delt uttak', () => {
                 tom: '2024-10-11',
                 flerbarnsdager: false,
             });
-            expect(perioder[1].fom).not.toBe(farStartdato);
+            expect(perioder[1]!.fom).not.toBe(farStartdato);
 
             // MOR: FELLESPERIODE følger etter MØDREKVOTE (80 dager)
             expect(perioder[2]).toMatchObject({
@@ -215,7 +215,7 @@ describe('useUttaksplanForslag – far med delt uttak', () => {
             });
 
             const perioder = result.current;
-            const farPeriode = perioder.find((p) => p.forelder === 'FAR_MEDMOR');
+            const farPeriode = perioder.find((p) => 'forelder' in p && p.forelder === 'FAR_MEDMOR');
 
             // Uttaksdagen.denneEllerNeste justerer lørdag til mandag
             expect(farPeriode).toMatchObject({
