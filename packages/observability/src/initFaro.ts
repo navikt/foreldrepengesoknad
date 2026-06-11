@@ -6,8 +6,6 @@ type InitFaroOptions = {
         name: string;
         /** Må matche `metadata.namespace` i naiserator.yaml. */
         namespace: string;
-        /** Brukes til å sammenligne metrikker på tvers av deploys. */
-        version?: string;
     };
 };
 
@@ -29,7 +27,11 @@ export const initFaro = ({ app }: InitFaroOptions) => {
     initializeFaro({
         url,
         paused: globalThis.location.hostname === 'localhost',
-        app,
+        app: {
+            ...app,
+            // Brukes til å sammenligne metrikker på tvers av deploys.
+            version: import.meta.env.VITE_SENTRY_RELEASE,
+        },
         instrumentations: [...getWebInstrumentations()],
     });
 };
