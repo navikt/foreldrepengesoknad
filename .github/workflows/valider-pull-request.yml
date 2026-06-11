@@ -67,7 +67,7 @@ jobs:
         run: pnpm dlx playwright install --with-deps chromium
 
       - name: Kjør browser tests
-        run: pnpm exec turbo run test:browser --filter=./apps/* --only
+        run: pnpm exec turbo run test:browser --filter=./apps/* --only --continue
 
   knip-it:
     name: Kjør Knip
