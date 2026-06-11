@@ -45,11 +45,13 @@ jobs:
   build-and-test:
     name: Build and test
     permissions:
+      contents: read
       packages: write
       id-token: write
     runs-on: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' && 'ubuntu-latest') || inputs.runs-on }}
     env:
       TZ: 'Europe/Oslo'
+      APP: ${{ inputs.app }}
     outputs:
       build-version: ${{ steps.generate-build-version.outputs.build-version }}
     steps:
@@ -76,7 +78,7 @@ jobs:
       - name: Bestem server
         id: server
         run: |
-          case "${{ inputs.app }}" in
+          case "$APP" in
             planlegger|veiviser-fp-eller-es|veiviser-hvor-mye)
               echo "server=server-uinnlogget" >> "$GITHUB_OUTPUT" ;;
             *)
@@ -92,10 +94,10 @@ jobs:
         if: inputs.push-image
         id: sentry_release_key
         run: |
-          echo "SENTRY_RELEASE=${{ inputs.app }}-$(git rev-parse --short HEAD)-$(date +%Y.%m.%d.%H%M%S)" >> "$GITHUB_OUTPUT"
+          echo "SENTRY_RELEASE=$APP-$(git rev-parse --short HEAD)-$(date +%Y.%m.%d.%H%M%S)" >> "$GITHUB_OUTPUT"
 
       - name: Bygg og test app
-        run: pnpm exec turbo run build test --filter=${{ inputs.app }}
+        run: pnpm exec turbo run build test --filter="$APP"
         env:
           VITE_SENTRY_RELEASE: ${{ steps.sentry_release_key.outputs.SENTRY_RELEASE }}
           SENTRY_AUTH_TOKEN: ${{ inputs.push-image && secrets.SENTRY_AUTH_TOKEN || '' }}
