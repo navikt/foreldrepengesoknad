@@ -10,7 +10,13 @@ import { AnnenForelder } from 'types/AnnenForelder';
 import { FellesperiodeFordelingValg, Fordeling, OppstartValg } from 'types/Fordeling';
 
 import { BarnType } from '@navikt/fp-constants';
-import { Barn, Dekningsgrad, FpPersonopplysningerDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
+import {
+    Barn,
+    Dekningsgrad,
+    FpPersonopplysningerDto_fpoversikt,
+    SøkersituasjonFp,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
 import {
     ALENE_OM_OMSORG_80_FARMEDMOR,
     ALENE_OM_OMSORG_100_FARMEDMOR,
@@ -71,6 +77,8 @@ type StoryArgs = {
     søkerInfo: FpPersonopplysningerDto_fpoversikt;
     dekningsgrad: Dekningsgrad;
     fordeling: Fordeling;
+    valgtEksisterendeSaksnr?: string;
+    uttaksplan?: UttakPeriode_fpoversikt[];
 } & ComponentProps<typeof UttaksplanSteg>;
 
 const meta = {
@@ -80,6 +88,7 @@ const meta = {
     args: {
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
+        erEndringssøknad: false,
     },
     render: ({
         søkerInfo,
@@ -91,6 +100,9 @@ const meta = {
         barnet,
         dekningsgrad,
         fordeling,
+        erEndringssøknad,
+        valgtEksisterendeSaksnr,
+        uttaksplan,
     }) => {
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.UTTAKSPLAN]}>
@@ -107,12 +119,15 @@ const meta = {
                         [ContextDataType.ANNEN_FORELDER]: annenForelder,
                         [ContextDataType.FORDELING]: fordeling,
                         [ContextDataType.PERIODE_MED_FORELDREPENGER]: dekningsgrad,
+                        [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: valgtEksisterendeSaksnr,
+                        [ContextDataType.UTTAKSPLAN]: uttaksplan,
                     }}
                 >
                     <UttaksplanSteg
                         søkerInfo={søkerInfo}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
+                        erEndringssøknad={erEndringssøknad}
                     />
                 </FpDataContext>
             </MemoryRouter>
@@ -659,5 +674,48 @@ export const FødselFarBeggeHarRettStarterPåTermin: Story = {
         fordeling: {
             oppstartAvForeldrepengerValg: OppstartValg.FAMILIEHENDELSESDATO,
         },
+    },
+};
+
+const INNVILGET_RESULTAT = {
+    innvilget: true,
+    trekkerDager: true,
+    trekkerMinsterett: false,
+    årsak: 'ANNET',
+} as const;
+
+// Plan lastet fra en eksisterende, ikke-vedtatt sak: alle periodene har resultat (kommer fra gjeldende vedtak).
+const INNVILGET_PLAN_FRA_EKSISTERENDE_SAK: UttakPeriode_fpoversikt[] = [
+    {
+        fom: '2024-06-10',
+        tom: '2024-06-28',
+        forelder: 'MOR',
+        kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+        flerbarnsdager: false,
+        resultat: INNVILGET_RESULTAT,
+    },
+    {
+        fom: '2024-07-01',
+        tom: '2024-09-20',
+        forelder: 'MOR',
+        kontoType: 'MØDREKVOTE',
+        flerbarnsdager: false,
+        resultat: INNVILGET_RESULTAT,
+    },
+];
+
+/**
+ * TFP-6962: Bruker har en eksisterende sak (uten vedtak) og søker på nytt med ny sats før vedtak.
+ * Dette er en ny førstegangssøknad (erEndringssøknad=false), men VALGT_EKSISTERENDE_SAKSNR er satt
+ * og planen er forhåndsutfylt med innvilgede perioder (resultat satt). Brukeren skal kunne gå videre
+ * uten å få feilmeldingen "Du må gjøre en endring for å kunne søke om endring".
+ */
+export const NySøknadFørVedtakMedEksisterendeSak: Story = {
+    parameters: FødselMorOgFarBeggeHarRett.parameters,
+    args: {
+        ...FødselMorOgFarBeggeHarRett.args,
+        erEndringssøknad: false,
+        valgtEksisterendeSaksnr: '123456789',
+        uttaksplan: INNVILGET_PLAN_FRA_EKSISTERENDE_SAK,
     },
 };

@@ -40,16 +40,22 @@ interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
     foreldrepengerSaker?: FpSak_fpoversikt[];
+    erEndringssøknad: boolean;
 }
 
-export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbrytSøknad, foreldrepengerSaker }: Props) => {
+export const UttaksplanSteg = ({
+    søkerInfo,
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+    foreldrepengerSaker,
+    erEndringssøknad,
+}: Props) => {
     const intl = useIntl();
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const dekningsgrad = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
-    const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
     const eksisterendeSaksnummer = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
@@ -65,8 +71,6 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
         },
         [oppdaterUttaksplan],
     );
-
-    const erEndringssøknad = !!valgtEksisterendeSaksnr;
 
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad, eksisterendeSak);
     const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger, erEndringssøknad, eksisterendeSak);
@@ -229,6 +233,7 @@ export const UttaksplanSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbryt
                         defaultUttaksperioder={defaultUttaksperioder}
                         eksisterendeSak={eksisterendeSak}
                         opprinneligPlan={uttaksplanForEksisterendeSak}
+                        erEndringssøknad={erEndringssøknad}
                     />
                 </UttaksplanDataProvider>
             </Step>
