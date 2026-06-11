@@ -19,6 +19,7 @@ const {
     FødselMorOgFarKunMorHarRett,
     FødselFarBeggeHarRettStarterPåTermin,
     NySøknadFørVedtakMedEksisterendeSak,
+    FødselMorOgFarBeggeHarRettOverførtFraPlanlegger,
 } = composeStories(stories);
 
 describe('<UttaksplanSteg>', () => {
@@ -263,6 +264,48 @@ describe('<UttaksplanSteg>', () => {
             expect(
                 await screen.findByText('Du må gjøre en endring for å kunne søke om endring'),
             ).toBeInTheDocument();
+        }),
+    );
+
+    it(
+        'skal hente opp den overførte planen frå planleggeren igjen med "Tilbakestill plan" etter "Fjern alt"',
+        mswWrapper(async ({ setHandlers }) => {
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreSøknadOgNaviger = vi.fn();
+            setHandlers(FødselMorOgFarBeggeHarRettOverførtFraPlanlegger.parameters.msw);
+
+            render(
+                <FødselMorOgFarBeggeHarRettOverførtFraPlanlegger
+                    gåTilNesteSide={gåTilNesteSide}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                />,
+            );
+
+            // Den overførte planen er vist (ikkje tom)
+            expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+
+            // Gå til redigeringsmodus og ekspander mobilpanelet
+            await userEvent.click(screen.getByText('Start redigering'));
+            await userEvent.click(screen.getAllByText('Du kan velge datoer i kalenderen')[0]!);
+
+            // Den overførte planen er utgangspunktet, så "Tilbakestill plan" er deaktivert frå start
+            expect(screen.getByRole('button', { name: 'Tilbakestill plan' })).toBeDisabled();
+
+            // Fjern alt tømmer planen og aktiverer "Tilbakestill plan"
+            await userEvent.click(screen.getByText('Fjern alt'));
+            expect(await screen.findByText('Ønsker du å fjerne alt som er lagt til?')).toBeInTheDocument();
+            const fjernAltModal = screen.getByRole('dialog');
+            await userEvent.click(within(fjernAltModal).getByText('Fjern alt'));
+
+            expect(screen.getByRole('button', { name: 'Tilbakestill plan' })).not.toBeDisabled();
+
+            // Tilbakestill plan skal hente opp den overførte planen igjen
+            await userEvent.click(screen.getByRole('button', { name: 'Tilbakestill plan' }));
+            expect(await screen.findByText('Ønsker du å tilbakestille planen?')).toBeInTheDocument();
+            await userEvent.click(screen.getByRole('button', { name: 'Tilbakestill' }));
+
+            // Planen er tilbake til utgangspunktet, så "Tilbakestill plan" er deaktivert igjen
+            expect(screen.getByRole('button', { name: 'Tilbakestill plan' })).toBeDisabled();
         }),
     );
 

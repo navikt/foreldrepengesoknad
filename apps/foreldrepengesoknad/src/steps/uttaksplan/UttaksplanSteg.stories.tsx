@@ -15,6 +15,7 @@ import {
     Dekningsgrad,
     FpPersonopplysningerDto_fpoversikt,
     SøkersituasjonFp,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import {
@@ -76,9 +77,10 @@ type StoryArgs = {
     barnet: Barn;
     søkerInfo: FpPersonopplysningerDto_fpoversikt;
     dekningsgrad: Dekningsgrad;
-    fordeling: Fordeling;
+    fordeling?: Fordeling;
     valgtEksisterendeSaksnr?: string;
-    uttaksplan?: UttakPeriode_fpoversikt[];
+    uttaksplan?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    kommerFraPlanlegger?: boolean;
 } & ComponentProps<typeof UttaksplanSteg>;
 
 const meta = {
@@ -103,6 +105,7 @@ const meta = {
         erEndringssøknad,
         valgtEksisterendeSaksnr,
         uttaksplan,
+        kommerFraPlanlegger,
     }) => {
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.UTTAKSPLAN]}>
@@ -121,6 +124,7 @@ const meta = {
                         [ContextDataType.PERIODE_MED_FORELDREPENGER]: dekningsgrad,
                         [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: valgtEksisterendeSaksnr,
                         [ContextDataType.UTTAKSPLAN]: uttaksplan,
+                        [ContextDataType.KOMMER_FRA_PLANLEGGER]: kommerFraPlanlegger,
                     }}
                 >
                     <UttaksplanSteg
@@ -717,5 +721,49 @@ export const NySøknadFørVedtakMedEksisterendeSak: Story = {
         erEndringssøknad: false,
         valgtEksisterendeSaksnr: '123456789',
         uttaksplan: INNVILGET_PLAN_FRA_EKSISTERENDE_SAK,
+    },
+};
+
+// Søknad overført frå planleggeren: uttaksplanen ligg i context, men fordeling manglar (planleggeren
+// sender ikkje med fordeling). Brukast for å verifisere at "Tilbakestill plan" hentar opp den overførte
+// planen igjen etter "Fjern alt".
+const planleggerUttaksplan = [
+    {
+        forelder: 'MOR',
+        kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+        fom: '2024-06-10',
+        tom: '2024-06-28',
+        flerbarnsdager: false,
+    },
+    {
+        forelder: 'MOR',
+        kontoType: 'MØDREKVOTE',
+        fom: '2024-07-01',
+        tom: '2024-09-06',
+        flerbarnsdager: false,
+    },
+    {
+        forelder: 'MOR',
+        kontoType: 'FELLESPERIODE',
+        fom: '2024-09-09',
+        tom: '2024-11-15',
+        flerbarnsdager: false,
+    },
+    {
+        forelder: 'FAR_MEDMOR',
+        kontoType: 'FEDREKVOTE',
+        fom: '2024-11-18',
+        tom: '2025-01-24',
+        flerbarnsdager: false,
+    },
+] satisfies UttakPeriode_fpoversikt[];
+
+export const FødselMorOgFarBeggeHarRettOverførtFraPlanlegger: Story = {
+    parameters: FødselMorOgFarBeggeHarRett.parameters,
+    args: {
+        ...FødselMorOgFarBeggeHarRett.args,
+        fordeling: undefined,
+        uttaksplan: planleggerUttaksplan,
+        kommerFraPlanlegger: true,
     },
 };
