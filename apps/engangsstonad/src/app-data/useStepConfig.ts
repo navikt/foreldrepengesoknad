@@ -40,12 +40,17 @@ const skalViseUtenlandsoppholdSteg = (path: Path, getData: GetData): boolean => 
 const skalViseDokumentasjonSteg = (path: Path, getData: GetData): boolean => {
     const barn = getData(ContextDataType.OM_BARNET);
     const dokumentasjon = getData(ContextDataType.DOKUMENTASJON);
-    const harVedlegg = !!dokumentasjon && dokumentasjon.vedlegg.length > 0;
     if (path === Path.TERMINBEKREFTELSE) {
-        return barn?.type === 'termin' || (harVedlegg && erTerminDokumentasjon(dokumentasjon));
+        return (
+            barn?.type === 'termin' ||
+            (!!dokumentasjon && dokumentasjon.vedlegg.length > 0 && erTerminDokumentasjon(dokumentasjon))
+        );
     }
     if (path === Path.ADOPSJONSBEKREFTELSE) {
-        return barn?.type === 'adopsjon' || (harVedlegg && !erTerminDokumentasjon(dokumentasjon));
+        return (
+            barn?.type === 'adopsjon' ||
+            (!!dokumentasjon && dokumentasjon.vedlegg.length > 0 && !erTerminDokumentasjon(dokumentasjon))
+        );
     }
     return false;
 };
