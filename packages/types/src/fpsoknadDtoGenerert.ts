@@ -654,7 +654,7 @@ export type AnnenOpptjeningType =
     | 'VARTPENGER';
 
 export type FrilansDto = {
-    jobberFremdelesSomFrilans?: boolean;
+    tom?: string;
     oppstart: string;
 };
 

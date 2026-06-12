@@ -21,15 +21,17 @@ type SubmitValideringsregel = {
 
 interface UseFinnFørsteSubmitFeilmeldingProps {
     opprinneligPlan: UttaksplanPerioder | undefined;
+    erEndringssøknad: boolean;
 }
 
-export const useFinnFørsteSubmitFeilmelding = ({ opprinneligPlan }: UseFinnFørsteSubmitFeilmeldingProps) => {
+export const useFinnFørsteSubmitFeilmelding = ({
+    opprinneligPlan,
+    erEndringssøknad,
+}: UseFinnFørsteSubmitFeilmeldingProps) => {
     const intl = useIntl();
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
-    const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
-    const erEndringssøknad = !!valgtEksisterendeSaksnr;
     const erAntallDagerOvertrukket = useErAntallDagerOvertrukketIUttaksplan();
 
     const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
@@ -55,7 +57,7 @@ export const useFinnFørsteSubmitFeilmelding = ({ opprinneligPlan }: UseFinnFør
         const søkersPerioder = perioder.filter(
             (periode) => Uttaksperioden.erIkkeEøsPeriode(periode) && periode.forelder === søkersForelder,
         );
-        return harPeriodeMedUkjentGraderingsaktivitet(søkersPerioder);
+        return harPeriodeMedUkjentGraderingsaktivitet(søkersPerioder, søkersForelder);
     };
 
     const harKunPerioderForDenAndreForelderen = (perioder: UttaksplanPerioder) =>
@@ -136,8 +138,16 @@ export const harKunPerioderForAnnenForelder = (
     return perioder.every((periode) => Uttaksperioden.erEøsPeriode(periode) || periode.forelder !== søkersForelder);
 };
 
-const erKunUtsettelser = (perioder: UttaksplanPerioder) => {
+export const erKunUtsettelser = (perioder: UttaksplanPerioder) => {
     if (perioder.length === 0) {
+        return false;
+    }
+
+    // Ferie er ein utsettelse som legg dagar tilbake i beholdninga, og er ein gyldig søknad åleine.
+    const harFerie = perioder.some(
+        (periode) => Uttaksperioden.erIkkeEøsPeriode(periode) && periode.utsettelseÅrsak === 'LOVBESTEMT_FERIE',
+    );
+    if (harFerie) {
         return false;
     }
 

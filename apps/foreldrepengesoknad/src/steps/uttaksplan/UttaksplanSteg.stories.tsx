@@ -10,7 +10,14 @@ import { AnnenForelder } from 'types/AnnenForelder';
 import { FellesperiodeFordelingValg, Fordeling, OppstartValg } from 'types/Fordeling';
 
 import { BarnType } from '@navikt/fp-constants';
-import { Barn, Dekningsgrad, FpPersonopplysningerDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
+import {
+    Barn,
+    Dekningsgrad,
+    FpPersonopplysningerDto_fpoversikt,
+    SøkersituasjonFp,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
 import {
     ALENE_OM_OMSORG_80_FARMEDMOR,
     ALENE_OM_OMSORG_100_FARMEDMOR,
@@ -70,7 +77,10 @@ type StoryArgs = {
     barnet: Barn;
     søkerInfo: FpPersonopplysningerDto_fpoversikt;
     dekningsgrad: Dekningsgrad;
-    fordeling: Fordeling;
+    fordeling?: Fordeling;
+    valgtEksisterendeSaksnr?: string;
+    uttaksplan?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    kommerFraPlanlegger?: boolean;
 } & ComponentProps<typeof UttaksplanSteg>;
 
 const meta = {
@@ -80,6 +90,7 @@ const meta = {
     args: {
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
+        erEndringssøknad: false,
     },
     render: ({
         søkerInfo,
@@ -91,6 +102,10 @@ const meta = {
         barnet,
         dekningsgrad,
         fordeling,
+        erEndringssøknad,
+        valgtEksisterendeSaksnr,
+        uttaksplan,
+        kommerFraPlanlegger,
     }) => {
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.UTTAKSPLAN]}>
@@ -107,12 +122,16 @@ const meta = {
                         [ContextDataType.ANNEN_FORELDER]: annenForelder,
                         [ContextDataType.FORDELING]: fordeling,
                         [ContextDataType.PERIODE_MED_FORELDREPENGER]: dekningsgrad,
+                        [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: valgtEksisterendeSaksnr,
+                        [ContextDataType.UTTAKSPLAN]: uttaksplan,
+                        [ContextDataType.KOMMER_FRA_PLANLEGGER]: kommerFraPlanlegger,
                     }}
                 >
                     <UttaksplanSteg
                         søkerInfo={søkerInfo}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
+                        erEndringssøknad={erEndringssøknad}
                     />
                 </FpDataContext>
             </MemoryRouter>
@@ -610,5 +629,141 @@ export const FødselMorOgFarBeggeHarRettAnnenPartTomtVedtak: Story = {
     },
     args: {
         ...FødselMorOgFarBeggeHarRett.args,
+    },
+};
+
+// Story der far med begge rett melder at han ønsker å starte på termin.
+// Forslaget skal kun inneholde to uker med uttak (fedrekvote simultant med mødrekvote),
+// ikke gjenstående fedrekvote plassert langt frem i tid.
+export const FødselFarBeggeHarRettStarterPåTermin: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+                http.post(API_URLS.konto, () =>
+                    HttpResponse.json({
+                        '80': {
+                            kontoer: DELT_UTTAK_80,
+                            minsteretter: MINSTERETTER,
+                        },
+                        '100': {
+                            kontoer: DELT_UTTAK_100,
+                            minsteretter: MINSTERETTER,
+                        },
+                    }),
+                ),
+            ],
+        },
+    },
+    args: {
+        søkerInfo: søkerInfoMann,
+        søkersituasjon: {
+            situasjon: 'fødsel',
+            rolle: 'far',
+        },
+        barnet: {
+            type: BarnType.UFØDT,
+            antallBarn: 1,
+            termindato: '2024-07-01',
+        },
+        annenForelder: {
+            fnr: '26499118626',
+            fornavn: 'Olga',
+            etternavn: 'Utvikler',
+            kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
+            harRettPåForeldrepengerINorge: true,
+        },
+        dekningsgrad: '100',
+        fordeling: {
+            oppstartAvForeldrepengerValg: OppstartValg.FAMILIEHENDELSESDATO,
+        },
+    },
+};
+
+const INNVILGET_RESULTAT = {
+    innvilget: true,
+    trekkerDager: true,
+    trekkerMinsterett: false,
+    årsak: 'ANNET',
+} as const;
+
+// Plan lastet fra en eksisterende, ikke-vedtatt sak: alle periodene har resultat (kommer fra gjeldende vedtak).
+const INNVILGET_PLAN_FRA_EKSISTERENDE_SAK: UttakPeriode_fpoversikt[] = [
+    {
+        fom: '2024-06-10',
+        tom: '2024-06-28',
+        forelder: 'MOR',
+        kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+        flerbarnsdager: false,
+        resultat: INNVILGET_RESULTAT,
+    },
+    {
+        fom: '2024-07-01',
+        tom: '2024-09-20',
+        forelder: 'MOR',
+        kontoType: 'MØDREKVOTE',
+        flerbarnsdager: false,
+        resultat: INNVILGET_RESULTAT,
+    },
+];
+
+/**
+ * TFP-6962: Bruker har en eksisterende sak (uten vedtak) og søker på nytt med ny sats før vedtak.
+ * Dette er en ny førstegangssøknad (erEndringssøknad=false), men VALGT_EKSISTERENDE_SAKSNR er satt
+ * og planen er forhåndsutfylt med innvilgede perioder (resultat satt). Brukeren skal kunne gå videre
+ * uten å få feilmeldingen "Du må gjøre en endring for å kunne søke om endring".
+ */
+export const NySøknadFørVedtakMedEksisterendeSak: Story = {
+    parameters: FødselMorOgFarBeggeHarRett.parameters,
+    args: {
+        ...FødselMorOgFarBeggeHarRett.args,
+        erEndringssøknad: false,
+        valgtEksisterendeSaksnr: '123456789',
+        uttaksplan: INNVILGET_PLAN_FRA_EKSISTERENDE_SAK,
+    },
+};
+
+// Søknad overført frå planleggeren: uttaksplanen ligg i context, men fordeling manglar (planleggeren
+// sender ikkje med fordeling). Brukast for å verifisere at "Tilbakestill plan" hentar opp den overførte
+// planen igjen etter "Fjern alt".
+const planleggerUttaksplan = [
+    {
+        forelder: 'MOR',
+        kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+        fom: '2024-06-10',
+        tom: '2024-06-28',
+        flerbarnsdager: false,
+    },
+    {
+        forelder: 'MOR',
+        kontoType: 'MØDREKVOTE',
+        fom: '2024-07-01',
+        tom: '2024-09-06',
+        flerbarnsdager: false,
+    },
+    {
+        forelder: 'MOR',
+        kontoType: 'FELLESPERIODE',
+        fom: '2024-09-09',
+        tom: '2024-11-15',
+        flerbarnsdager: false,
+    },
+    {
+        forelder: 'FAR_MEDMOR',
+        kontoType: 'FEDREKVOTE',
+        fom: '2024-11-18',
+        tom: '2025-01-24',
+        flerbarnsdager: false,
+    },
+] satisfies UttakPeriode_fpoversikt[];
+
+export const FødselMorOgFarBeggeHarRettOverførtFraPlanlegger: Story = {
+    parameters: FødselMorOgFarBeggeHarRett.parameters,
+    args: {
+        ...FødselMorOgFarBeggeHarRett.args,
+        fordeling: undefined,
+        uttaksplan: planleggerUttaksplan,
+        kommerFraPlanlegger: true,
     },
 };

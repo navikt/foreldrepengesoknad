@@ -94,7 +94,6 @@ const SENERE_UTENLANDSOPPHOLD: UtenlandsoppholdPeriode[] = [
 ];
 
 const FRILANS = {
-    jobberFremdelesSomFrilans: true,
     oppstart: '2024-01-01',
 };
 

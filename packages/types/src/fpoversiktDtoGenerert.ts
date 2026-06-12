@@ -353,8 +353,7 @@ export type BehandlingTilstand_fpoversikt =
     | 'VENT_TIDLIG_SØKNAD'
     | 'VENT_MELDEKORT'
     | 'VENT_DOKUMENTASJON'
-    | 'VENT_INNTEKTSMELDING'
-    | 'PROSESSERER';
+    | 'VENT_INNTEKTSMELDING';
 
 export type Beregningsgrunnlag_fpoversikt = {
     beregningAktivitetStatuser: BeregningAktivitetStatus_fpoversikt[];

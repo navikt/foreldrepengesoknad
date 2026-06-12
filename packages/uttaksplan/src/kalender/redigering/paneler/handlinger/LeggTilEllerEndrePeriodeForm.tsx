@@ -20,7 +20,7 @@ import {
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { useFormSubmitValidator } from '../../../../felles/uttaksplanValidatorer';
-import { useLeggTilEndreSkjemaInfoAlerts } from '../../../../regler/alert/informasjonsAlertHooks';
+import { useLeggTilEndreSkjemaInfoAlerts, useKanKunErstatte } from '../../../../regler/alert/informasjonsAlertHooks';
 import { erEøsUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
@@ -39,6 +39,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         uttakPerioder,
         foreldreInfo: { søker },
         erPeriodeneTilAnnenPartLåst,
+        kanVelgeArbeidsgiver,
     } = useUttaksplanData();
 
     const { sammenslåtteValgtePerioder, leggTilUttaksplanPerioder, setValgtePerioder, setEndredePerioder } =
@@ -107,6 +108,15 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
             : [],
     );
 
+    const erGradertMor =
+        skalDuKombinereArbeidOgUttakMor === true && (forelder === 'MOR' || forelder === 'BEGGE');
+
+    const kanKunErstatte = useKanKunErstatte({
+        valgtePerioder: sammenslåtteValgtePerioder,
+        erFerie: false,
+        erGradert: erGradertMor,
+    });
+
     const onSubmit = (values: LeggTilEllerEndrePeriodeFormFormValues) => {
         const submitFeilmelding = formSubmitValidator(sammenslåtteValgtePerioder, values);
 
@@ -118,6 +128,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
 
         if (
             !morsAktivitetIkkeOppgittAlert &&
+            !kanKunErstatte &&
             erDetEksisterendePerioderEtterValgtePerioder(uttakPerioder, sammenslåtteValgtePerioder)
         ) {
             setVisEndreEllerForskyvPanel(true);
@@ -129,7 +140,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
     const leggIKalender = (skalForskyve: boolean) => {
         leggTilUttaksplanPerioder(
             sammenslåtteValgtePerioder.flatMap((periode) =>
-                mapFraFormValuesTilUttakPeriode(formMethods.getValues(), periode, søker),
+                mapFraFormValuesTilUttakPeriode(formMethods.getValues(), periode, søker, kanVelgeArbeidsgiver),
             ),
             skalForskyve,
         );
@@ -144,9 +155,6 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
             {visEndreEllerForskyvPanel && (
                 <LeggTilPeriodeForskyvEllerErstattPanel
-                    valgtePerioder={sammenslåtteValgtePerioder}
-                    erFerie={false}
-                    erGradert={skalDuKombinereArbeidOgUttakMor === true && (forelder === 'MOR' || forelder === 'BEGGE')}
                     setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
                     leggTilEllerForskyvPeriode={leggIKalender}
                 />

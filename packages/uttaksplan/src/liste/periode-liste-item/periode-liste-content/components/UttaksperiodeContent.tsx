@@ -29,8 +29,9 @@ interface Props {
 export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
     const {
-        foreldreInfo: { rettighetType },
+        foreldreInfo: { rettighetType, søker },
         uttakPerioder,
+        kanVelgeArbeidsgiver,
     } = useUttaksplanData();
     const erAvslått = erAvslåttPeriode(periode);
     const morsAktivitet = erVanligUttakPeriode(periode) && periode.morsAktivitet ? periode.morsAktivitet : undefined;
@@ -58,7 +59,7 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
                     className="text-ax-danger-800"
                 />
             )}
-            {harPeriodeMedUkjentGraderingsaktivitet([periode]) && (
+            {kanVelgeArbeidsgiver && harPeriodeMedUkjentGraderingsaktivitet([periode], søker) && (
                 <ExclamationmarkTriangleFillIcon
                     title={intl.formatMessage({ id: 'PeriodeListeHeader.GraderingsaktivitetIkkeValgt' })}
                     fontSize="1.5rem"

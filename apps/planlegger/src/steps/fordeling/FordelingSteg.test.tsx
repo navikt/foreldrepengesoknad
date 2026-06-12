@@ -10,8 +10,6 @@ import { BarnetErAdoptertPlanlegger } from '@navikt/fp-types';
 import { endreFordelingMedSlider } from '../../../vitest/testHelpers';
 import * as stories from './FordelingSteg.stories';
 
-// TODO: Benytt dayjs for å håndtere datoer i testene. Spesielt for å sørge for at fremtidige datoer alltid er fremtidige.
-
 const {
     FlereForsørgereEttBarn,
     FlereForsørgereEttBarn80ProsentDekningsgrad,

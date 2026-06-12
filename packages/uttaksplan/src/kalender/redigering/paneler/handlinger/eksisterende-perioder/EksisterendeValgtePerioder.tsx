@@ -10,7 +10,7 @@ import {
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Alert, BodyShort, HStack, Heading, Spacer, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, HStack, Heading, Spacer, Tooltip, VStack } from '@navikt/ds-react';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
@@ -25,6 +25,7 @@ import { useUttaksplanData } from '../../../../../context/UttaksplanDataContext'
 import { UttakPeriodeMedAntallDager } from '../../../../../kalender/redigering/utils/kalenderPeriodeUtils';
 import { useEksisterendeValgtePeriodeAlerts } from '../../../../../regler/alert/informasjonsAlertHooks';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../../types/UttaksplanPeriode';
+import { getVarighetString } from '../../../../../utils/dateUtils';
 
 import { useKalenderRedigeringContext } from '../../../context/KalenderRedigeringContext';
 
@@ -69,7 +70,8 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                 const erPleiepengerPeriode =
                     erAvslåttPeriode && p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
 
-                const morsAktivitetIkkeValgtAlert = alertsForPeriode(p).morsAktivitetIkkeValgt;
+                const { morsAktivitetIkkeValgt: morsAktivitetIkkeValgtAlert, graderingsaktivitetIkkeValgt: graderingsaktivitetIkkeValgtAlert } =
+                    alertsForPeriode(p);
 
                 return (
                     <HStack
@@ -118,12 +120,7 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                                 </BodyShort>
                             )}
 
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="RedigeringPanel.Dager"
-                                    values={{ antall: p.valgteDagerIPeriode }}
-                                />
-                            </BodyShort>
+                            <BodyShort>{getVarighetString(p.valgteDagerIPeriode, intl, 'kompakt')}</BodyShort>
 
                             {erPleiepengerPeriode && (
                                 <BodyShort>
@@ -149,18 +146,34 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                                     <BodyShort>{morsAktivitetIkkeValgtAlert.melding}</BodyShort>
                                 </Alert>
                             )}
+
+                            {graderingsaktivitetIkkeValgtAlert && (
+                                <Alert
+                                    variant={graderingsaktivitetIkkeValgtAlert.variant}
+                                    size="small"
+                                    className="mt-3 mb-1 p-2"
+                                >
+                                    <BodyShort>{graderingsaktivitetIkkeValgtAlert.melding}</BodyShort>
+                                </Alert>
+                            )}
                         </VStack>
                         <Spacer />
 
                         {!erEøsUttakPeriode(p) && !erAnnenPartsPeriodeLåst && !erPleiepengerPeriode && (
-                            <TrashIcon
-                                title={intl.formatMessage({ id: 'RedigeringPanel.SlettPeriode' })}
-                                fontSize="1.5rem"
-                                className="cursor-pointer hover:opacity-70"
-                                onClick={() => {
-                                    slettPeriode(p, false);
-                                }}
-                            />
+                            <Tooltip content={intl.formatMessage({ id: 'RedigeringPanel.SlettPeriode' })}>
+                                <Button
+                                    type="button"
+                                    variant="secondary"
+                                    size="small"
+                                    data-color="danger"
+                                    icon={<TrashIcon aria-hidden />}
+                                    aria-label={intl.formatMessage({ id: 'RedigeringPanel.SlettPeriode' })}
+                                    className="self-start"
+                                    onClick={() => {
+                                        slettPeriode(p, false);
+                                    }}
+                                />
+                            </Tooltip>
                         )}
                     </HStack>
                 );

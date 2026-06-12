@@ -25,7 +25,9 @@ export const useLoggOverlappIVedtak = (
         }
         lastCheckedFingerprint.current = fingerprint;
 
-        const perioderUttaksplan = uttaksplan.filter((p): p is UttakPeriode_fpoversikt => 'forelder' in p);
+        const perioderUttaksplan = uttaksplan
+            .filter((p): p is UttakPeriode_fpoversikt => 'forelder' in p)
+            .filter(okkupererTid);
         const ugyldigeOverlapp = finnUgyldigeOverlapp(perioderUttaksplan);
         if (ugyldigeOverlapp.length > 0) {
             withScope((scope) => {
@@ -50,6 +52,12 @@ export const useLoggOverlappIVedtak = (
 
 const erOverlappande = (a: UttakPeriode_fpoversikt, b: UttakPeriode_fpoversikt): boolean =>
     dayjs(a.fom).isSameOrBefore(b.tom, 'day') && dayjs(b.fom).isSameOrBefore(a.tom, 'day');
+
+// Avslåtte periodar utan trekkdagar okkuperer ikkje tid i planen og blir filtrert vekk før visning
+// (sjå filtrerBortPerioderUtenTrekkdager i UttaksplanDataContext). Dei skal difor ikkje reknast som
+// ugyldige overlapp her, sjølv om dei overlappar annen part sin reelle periode i mellomresultatet.
+const okkupererTid = (periode: UttakPeriode_fpoversikt): boolean =>
+    !(periode.resultat?.innvilget === false && periode.resultat?.trekkerDager === false);
 
 const finnUgyldigeOverlapp = (
     perioder: UttakPeriode_fpoversikt[],

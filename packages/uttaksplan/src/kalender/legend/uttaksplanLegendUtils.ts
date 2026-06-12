@@ -175,6 +175,7 @@ const LEGEND_LABELS: Record<LegendLabel, LegendLabelKonfig> = {
     ADOPSJON: {
         rekkefølge: 11,
         klikkbar: true,
+        ikon: 'FAMILIEHENDELSE',
         tekst: ({ intl }) => intl.formatMessage({ id: 'kalender.adopsjon' }),
     },
     BARNEHAGEPLASS: {

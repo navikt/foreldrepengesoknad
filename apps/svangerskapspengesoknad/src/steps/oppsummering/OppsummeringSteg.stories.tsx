@@ -208,7 +208,7 @@ const meta = {
                             ],
                         },
                         [ContextDataType.FRILANS]: {
-                            jobberFremdelesSomFrilans: false,
+                            tom: '2023-06-01',
                             oppstart: '2023-01-01',
                         },
                         [ContextDataType.VALGTE_ARBEIDSFORHOLD]: [ARBEIDSFORHOLD_ID],

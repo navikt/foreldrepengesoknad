@@ -1,6 +1,10 @@
 import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
-import { harPeriodeDerMorsAktivitetIkkeErValgt, harPeriodeMedUkjentGraderingsaktivitet } from './periodeUtils';
+import {
+    finnAntallTidelerÅTrekke,
+    harPeriodeDerMorsAktivitetIkkeErValgt,
+    harPeriodeMedUkjentGraderingsaktivitet,
+} from './periodeUtils';
 
 const lagFarPeriode = (overrides: Partial<UttakPeriode_fpoversikt> = {}): UttakPeriode_fpoversikt => ({
     fom: '2025-06-02',
@@ -100,7 +104,33 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
 });
 
 describe('harPeriodeMedUkjentGraderingsaktivitet', () => {
-    it('skal returnere true når periode har gradering med ORDINÆRT_ARBEID uten arbeidsgiver', () => {
+    it('skal returnere true når søkers periode har gradering med ANNET (frå planleggaren)', () => {
+        const perioder = [
+            lagMorPeriode({
+                gradering: {
+                    arbeidstidprosent: 60,
+                    aktivitet: { type: 'ANNET' },
+                },
+            }),
+        ];
+
+        expect(harPeriodeMedUkjentGraderingsaktivitet(perioder, 'MOR')).toBe(true);
+    });
+
+    it('skal returnere false når ANNET-perioden tilhøyrer annen part (ikkje søker)', () => {
+        const perioder = [
+            lagFarPeriode({
+                gradering: {
+                    arbeidstidprosent: 60,
+                    aktivitet: { type: 'ANNET' },
+                },
+            }),
+        ];
+
+        expect(harPeriodeMedUkjentGraderingsaktivitet(perioder, 'MOR')).toBe(false);
+    });
+
+    it('skal returnere true når søkers periode har gradering med ORDINÆRT_ARBEID uten arbeidsgiver', () => {
         const perioder = [
             lagMorPeriode({
                 gradering: {
@@ -110,7 +140,7 @@ describe('harPeriodeMedUkjentGraderingsaktivitet', () => {
             }),
         ];
 
-        expect(harPeriodeMedUkjentGraderingsaktivitet(perioder)).toBe(true);
+        expect(harPeriodeMedUkjentGraderingsaktivitet(perioder, 'MOR')).toBe(true);
     });
 
     it('skal returnere false når ORDINÆRT_ARBEID har gyldig arbeidsgiver', () => {
@@ -126,7 +156,7 @@ describe('harPeriodeMedUkjentGraderingsaktivitet', () => {
             }),
         ];
 
-        expect(harPeriodeMedUkjentGraderingsaktivitet(perioder)).toBe(false);
+        expect(harPeriodeMedUkjentGraderingsaktivitet(perioder, 'MOR')).toBe(false);
     });
 
     it('skal returnere true når arbeidsgiver-id er aktivitetstype-plassholdaren ORDINÆRT_ARBEID', () => {
@@ -142,7 +172,7 @@ describe('harPeriodeMedUkjentGraderingsaktivitet', () => {
             }),
         ];
 
-        expect(harPeriodeMedUkjentGraderingsaktivitet(perioder)).toBe(true);
+        expect(harPeriodeMedUkjentGraderingsaktivitet(perioder, 'MOR')).toBe(true);
     });
 
     it('skal returnere false for FRILANS uten arbeidsgiver', () => {
@@ -152,7 +182,7 @@ describe('harPeriodeMedUkjentGraderingsaktivitet', () => {
             }),
         ];
 
-        expect(harPeriodeMedUkjentGraderingsaktivitet(perioder)).toBe(false);
+        expect(harPeriodeMedUkjentGraderingsaktivitet(perioder, 'MOR')).toBe(false);
     });
 
     it('skal returnere false for SELVSTENDIG_NÆRINGSDRIVENDE uten arbeidsgiver', () => {
@@ -165,16 +195,30 @@ describe('harPeriodeMedUkjentGraderingsaktivitet', () => {
             }),
         ];
 
-        expect(harPeriodeMedUkjentGraderingsaktivitet(perioder)).toBe(false);
+        expect(harPeriodeMedUkjentGraderingsaktivitet(perioder, 'MOR')).toBe(false);
     });
 
     it('skal returnere false når perioden ikke har gradering', () => {
         const perioder = [lagMorPeriode()];
 
-        expect(harPeriodeMedUkjentGraderingsaktivitet(perioder)).toBe(false);
+        expect(harPeriodeMedUkjentGraderingsaktivitet(perioder, 'MOR')).toBe(false);
     });
 
     it('skal returnere false for tom liste', () => {
-        expect(harPeriodeMedUkjentGraderingsaktivitet([])).toBe(false);
+        expect(harPeriodeMedUkjentGraderingsaktivitet([], 'MOR')).toBe(false);
+    });
+});
+
+describe('finnAntallTidelerÅTrekke', () => {
+    it('skal runde desimalprosent eksakt ned til 1 desimal utan flyttals-underflyt', () => {
+        const periodeMed25Uttaksdager = lagFarPeriode({
+            fom: '2025-06-02',
+            tom: '2025-07-04',
+            samtidigUttak: 9.2,
+        });
+
+        const tideler = finnAntallTidelerÅTrekke(periodeMed25Uttaksdager, false, '2025-01-01');
+
+        expect(tideler).toBe(23);
     });
 });

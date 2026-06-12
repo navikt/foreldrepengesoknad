@@ -28,6 +28,19 @@ jobs:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
+  upload-to-CDN:
+    name: Upload assets to CDN
+    if: github.ref_name == 'master'
+    needs: build-app
+    permissions:
+      contents: read
+      id-token: write
+    uses: navikt/fp-gha-workflows/.github/workflows/cdn-upload.yml@main
+    with:
+      image: ${{ needs.build-app.outputs.build-version }}
+      image_suffix: '/engangsstonad'
+      destination: '/engangsstonad/soknad'
+
   deploy-dev:
     name: Deploy dev
     permissions:

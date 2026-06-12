@@ -12,15 +12,13 @@ interface Props {
     errors: ErrorSummaryError[];
 }
 
-//TODO Fjern FP postfix. Er litt misvisande da det kan sjå ut som denne er spesifikk for FP-appen
-
-export const ErrorSummaryFp = ({ errorRef, errors }: Props) => {
+export const ErrorSummaryFelles = ({ errorRef, errors }: Props) => {
     return (
         <ErrorSummary
             size="small"
             ref={errorRef}
             headingTag="h3"
-            heading={<FormattedMessage id={'ErrorSummaryFp.Tittel'} />}
+            heading={<FormattedMessage id={'ErrorSummaryFelles.Tittel'} />}
         >
             {Object.values(errors).map((error) => (
                 <ErrorSummary.Item

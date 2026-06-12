@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -98,6 +99,17 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
 
     const erBareFarHarRett = søker === 'FAR_MEDMOR' && rettighetType === 'BARE_SØKER_RETT';
 
+    // Når bare én forelder kan ha foreldrepenger for den valgte perioden, skjuler
+    // vi forelder-spørsmålet (se VIS_FORELDER_VALG) og setter verdien bak panseret.
+    // Da slipper brukeren å svare på et spørsmål med kun ett gyldig alternativ.
+    const { visForelderValg, enesteMuligeForelder } = forelderValgSynlighet;
+
+    useEffect(() => {
+        if (forelder === undefined && enesteMuligeForelder !== undefined) {
+            formMethods.setValue('forelder', enesteMuligeForelder, { shouldDirty: false });
+        }
+    }, [forelder, enesteMuligeForelder, formMethods]);
+
     const blokkerendeAlert = useBlokkerendeAlert({
         valgtePerioder,
         erMorGyldigForelder: forelderValgSynlighet.erMorGyldigForelder,
@@ -148,37 +160,41 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
 
     return (
         <>
-            <RhfRadioGroup
-                name="forelder"
-                control={formMethods.control}
-                validate={[isRequired(intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.Forelder.Påkrevd' }))]}
-                label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.Forelder.HvemGjelder' })}
-                onChange={resetFormValuesVedEndringAvForelder}
-            >
-                {
-                    [
-                        forelderValgSynlighet.visMorRadio && (
-                            <Radio key="mor" value="MOR">
-                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Mor" />
-                            </Radio>
-                        ),
-                        forelderValgSynlighet.visFarMedmorRadio && (
-                            <Radio key="far" value="FAR_MEDMOR">
-                                {erMedmorDelAvSøknaden ? (
-                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Medmor" />
-                                ) : (
-                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Far" />
-                                )}
-                            </Radio>
-                        ),
-                        forelderValgSynlighet.visBeggeRadio && (
-                            <Radio key="begge" value="BEGGE">
-                                <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Begge" />
-                            </Radio>
-                        ),
-                    ].filter(Boolean) as React.ReactElement[]
-                }
-            </RhfRadioGroup>
+            {visForelderValg && (
+                <RhfRadioGroup
+                    name="forelder"
+                    control={formMethods.control}
+                    validate={[
+                        isRequired(intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.Forelder.Påkrevd' })),
+                    ]}
+                    label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.Forelder.HvemGjelder' })}
+                    onChange={resetFormValuesVedEndringAvForelder}
+                >
+                    {
+                        [
+                            forelderValgSynlighet.visMorRadio && (
+                                <Radio key="mor" value="MOR">
+                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Mor" />
+                                </Radio>
+                            ),
+                            forelderValgSynlighet.visFarMedmorRadio && (
+                                <Radio key="far" value="FAR_MEDMOR">
+                                    {erMedmorDelAvSøknaden ? (
+                                        <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Medmor" />
+                                    ) : (
+                                        <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Far" />
+                                    )}
+                                </Radio>
+                            ),
+                            forelderValgSynlighet.visBeggeRadio && (
+                                <Radio key="begge" value="BEGGE">
+                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Begge" />
+                                </Radio>
+                            ),
+                        ].filter(Boolean) as React.ReactElement[]
+                    }
+                </RhfRadioGroup>
+            )}
 
             {feltSynlighet.visFlerbarnsdager && (
                 <RhfRadioGroup
@@ -201,7 +217,9 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                 </RhfRadioGroup>
             )}
 
-            {forelder !== undefined && <hr className="text-ax-border-neutral-subtle" />}
+            {forelder !== undefined && (visForelderValg || feltSynlighet.visFlerbarnsdager) && (
+                <hr className="text-ax-border-neutral-subtle" />
+            )}
 
             {forelderValgSynlighet.visKontoMorRadiogruppe && (
                 <RhfRadioGroup
@@ -610,6 +628,7 @@ export const mapFraFormValuesTilUttakPeriode = (
     values: LeggTilEllerEndrePeriodeFormFormValues,
     periode: { fom: string; tom: string },
     søker: BrukerRolleSak_fpoversikt,
+    kanVelgeArbeidsgiver: boolean,
 ): UttakPeriode_fpoversikt[] => {
     const nye = new Array<UttakPeriode_fpoversikt>();
 
@@ -623,7 +642,7 @@ export const mapFraFormValuesTilUttakPeriode = (
             forelder: 'MOR',
             gradering:
                 !erOverføringMor && values.skalDuKombinereArbeidOgUttakMor
-                    ? getGradering(søker === 'MOR', values.stillingsprosentMor, values.hvorSkalDuJobbe)
+                    ? getGradering(søker === 'MOR', values.stillingsprosentMor, values.hvorSkalDuJobbe, kanVelgeArbeidsgiver)
                     : undefined,
             samtidigUttak:
                 values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentMor) : undefined,
@@ -645,7 +664,12 @@ export const mapFraFormValuesTilUttakPeriode = (
             forelder: 'FAR_MEDMOR',
             gradering:
                 !erOverføringFarMedmor && values.skalDuKombinereArbeidOgUttakFarMedmor
-                    ? getGradering(søker === 'FAR_MEDMOR', values.stillingsprosentFarMedmor, values.hvorSkalDuJobbe)
+                    ? getGradering(
+                          søker === 'FAR_MEDMOR',
+                          values.stillingsprosentFarMedmor,
+                          values.hvorSkalDuJobbe,
+                          kanVelgeArbeidsgiver,
+                      )
                     : undefined,
             samtidigUttak:
                 values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentFarMedmor) : undefined,
@@ -745,8 +769,12 @@ const getGradering = (
     erSøker: boolean,
     stillingsprosent: string | undefined,
     hvorSkalDuJobbe: string | undefined,
+    kanVelgeArbeidsgiver: boolean,
 ): Gradering_fpoversikt => {
-    if (erSøker) {
+    // I planleggaren (kanVelgeArbeidsgiver === false) kan ein ikkje oppi aktivitet, så vi set alltid ANNET.
+    // 'ANNET' i hvorSkalDuJobbe er ein plassholdar (typisk frå planleggar-import) – brukaren har då
+    // ikkje valt ein reell aktivitet, så vi held på ANNET slik at detektoren framleis flaggar perioden.
+    if (erSøker && kanVelgeArbeidsgiver && hvorSkalDuJobbe !== 'ANNET') {
         return {
             aktivitet: {
                 type: finnAktivitetType(hvorSkalDuJobbe),

@@ -1846,7 +1846,7 @@ export const MarkerPeriodeNårGraderingsaktivitetMangler: Story = {
                 samtidigUttak: 40,
                 gradering: {
                     arbeidstidprosent: 60,
-                    aktivitet: { type: 'ORDINÆRT_ARBEID' },
+                    aktivitet: { type: 'ANNET' },
                 },
                 flerbarnsdager: false,
             },

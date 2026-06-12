@@ -30,6 +30,7 @@ export const PeriodeListeHeader = ({ uttaksplanperioder, isOpen }: Props) => {
         familiehendelsedato,
         foreldreInfo: { rettighetType, søker, navnPåForeldre },
         familiesituasjon,
+        kanVelgeArbeidsgiver,
     } = useUttaksplanData();
 
     const førsteFom = getFørsteUttaksplanperiodeFom(uttaksplanperioder);
@@ -53,7 +54,8 @@ export const PeriodeListeHeader = ({ uttaksplanperioder, isOpen }: Props) => {
     );
 
     const harMorsAktivitetIkkeErValgt = harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, uttaksplanperioder);
-    const harUkjentGraderingsaktivitet = harPeriodeMedUkjentGraderingsaktivitet(uttaksplanperioder);
+    const harUkjentGraderingsaktivitet =
+        kanVelgeArbeidsgiver && harPeriodeMedUkjentGraderingsaktivitet(uttaksplanperioder, søker);
     const harValideringsfeil = harMorsAktivitetIkkeErValgt || harUkjentGraderingsaktivitet;
     const valideringsfeilTekstId = harMorsAktivitetIkkeErValgt
         ? 'PeriodeListeHeader.MorsAktivitetIkkeValgt'

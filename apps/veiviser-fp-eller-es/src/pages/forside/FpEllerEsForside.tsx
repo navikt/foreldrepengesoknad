@@ -25,7 +25,7 @@ export const FpEllerEsForside = () => {
                 header={<FormattedMessage id="FpEllerEsForside.Foreldrepenger" />}
                 headingLevel="2"
                 color="gray"
-                icon={<InformationIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                icon={<InformationIcon fontSize="1.5rem" aria-hidden />}
             >
                 <BodyShort>
                     <FormattedMessage id="FpEllerEsForside.FpErstatte" />
@@ -35,7 +35,7 @@ export const FpEllerEsForside = () => {
                 header={<FormattedMessage id="FpEllerEsForside.Engangsstønad" />}
                 headingLevel="2"
                 color="gray"
-                icon={<InformationIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                icon={<InformationIcon fontSize="1.5rem" aria-hidden />}
             >
                 <BodyShort>
                     <FormattedMessage id="FpEllerEsForside.EsEngangssum" />

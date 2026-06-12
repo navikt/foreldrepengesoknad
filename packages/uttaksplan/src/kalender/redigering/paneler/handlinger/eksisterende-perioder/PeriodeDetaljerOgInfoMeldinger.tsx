@@ -2,7 +2,9 @@ import { FormattedMessage } from 'react-intl';
 
 import { Alert, BodyShort, VStack } from '@navikt/ds-react';
 
+import { TapteDagerForklaring } from '../../../../../felles/TapteDagerForklaring';
 import { usePeriodeDetaljerAlerts } from '../../../../../regler/alert/informasjonsAlertHooks';
+import { erTapteDagerHull } from '../../../../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../../utils/lagHullPerioder';
 import { useKalenderRedigeringContext } from '../../../context/KalenderRedigeringContext';
 import { finnValgtePerioder } from '../../../utils/kalenderPeriodeUtils';
@@ -23,12 +25,25 @@ export const PeriodeDetaljerOgInfoMeldinger = () => {
         eksisterendePerioderSomErValgt,
     });
 
+    // Forklaringen skal kun vises når de valgte dagene faktisk overlapper et
+    // «dager du kan miste»-hull, ikke for vilkårlige nye dager.
+    const valgteTapteDagerHull = uttakPerioderInkludertTapteDager
+        .filter(erTapteDagerHull)
+        .filter((hull) =>
+            sammenslåtteValgtePerioder.some((valgt) => valgt.fom <= hull.tom && valgt.tom >= hull.fom),
+        );
+
+    const tapteDagerFom = valgteTapteDagerHull.map((hull) => hull.fom).sort((a, b) => a.localeCompare(b))[0];
+
     return (
         <VStack gap="space-16">
             {eksisterendePerioderSomErValgt.length === 0 && (
-                <BodyShort>
-                    <FormattedMessage id="RedigeringPanel.NyeDagerForklaring" />
-                </BodyShort>
+                <>
+                    <BodyShort>
+                        <FormattedMessage id="RedigeringPanel.NyeDagerForklaring" />
+                    </BodyShort>
+                    {tapteDagerFom && <TapteDagerForklaring fom={tapteDagerFom} />}
+                </>
             )}
 
             {eksisterendePerioderSomErValgt.length > 0 && (

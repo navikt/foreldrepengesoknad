@@ -6,7 +6,7 @@ import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './DinPlan.stories';
 
-const { Default, FarSøker } = composeStories(stories);
+const { Default, FarSøker, MorMedFarSomHarTattOverMødrekvote } = composeStories(stories);
 
 describe('<Default>', () => {
     it(
@@ -112,6 +112,33 @@ describe('<Default>', () => {
             expect(within(april2025).getByTestId('day:1;dayColor:BLUE')).toBeInTheDocument();
             expect(within(april2025).getByTestId('day:22;dayColor:BLUE')).toBeInTheDocument();
             expect(within(april2025).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(16);
+        }),
+    );
+});
+
+describe('<MorMedFarSomHarTattOverMødrekvote>', () => {
+    it(
+        'Skal vise at far har tatt over mødrekvoten – ikke tapte dager – i mors plan',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(MorMedFarSomHarTattOverMødrekvote.parameters.msw);
+            render(<MorMedFarSomHarTattOverMødrekvote />);
+
+            expect(await screen.findByText('Liste')).toBeInTheDocument();
+
+            // Overføringen til far skal vises som hans periode, ikke som tapte dager for mor
+            expect(screen.getAllByText('Espen har foreldrepenger').length).toBeGreaterThan(0);
+            expect(
+                screen.getByText('Overføring av Helgas kvote fordi Helga er innlagt på helseinstitusjon'),
+            ).toBeInTheDocument();
+            expect(screen.queryByText('Dager du kan tape')).not.toBeInTheDocument();
+
+            await userEvent.click(screen.getByText('Kalender'));
+
+            // Far sine overtatte dager i seksukersperioden skal være grønne, ikke svarte (tapte dager)
+            const april2025 = screen.getByTestId('year:2025;month:3');
+            expect(within(april2025).getByTestId('day:7;dayColor:GREEN')).toBeInTheDocument();
+            expect(within(april2025).queryByTestId('day:7;dayColor:BLACK')).not.toBeInTheDocument();
+            expect(within(april2025).queryAllByTestId('dayColor:BLACK', { exact: false })).toHaveLength(0);
         }),
     );
 });

@@ -11,7 +11,11 @@ import { formatDate } from '@navikt/fp-utils';
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { genererPeriodeKey, getStønadskvoteNavn } from '../../../liste/utils/uttaksplanListeUtils';
 import { Uttaksplanperiode, erEøsUttakPeriode, erVanligUttakPeriode } from '../../../types/UttaksplanPeriode';
-import { harPeriodeDerMorsAktivitetIkkeErValgt, harPeriodeMedUkjentGraderingsaktivitet } from '../../../utils/periodeUtils';
+import {
+    erAvslåttPeriode,
+    harPeriodeDerMorsAktivitetIkkeErValgt,
+    harPeriodeMedUkjentGraderingsaktivitet,
+} from '../../../utils/periodeUtils';
 
 interface Props {
     perioder: Uttaksplanperiode[];
@@ -29,6 +33,7 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
     const {
         foreldreInfo: { søker, navnPåForeldre, rettighetType },
         uttakPerioder,
+        kanVelgeArbeidsgiver,
     } = useUttaksplanData();
 
     const formMethods = useForm<FormValues>();
@@ -72,7 +77,7 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
                                             className="text-ax-danger-800"
                                         />
                                     )}
-                                    {harPeriodeMedUkjentGraderingsaktivitet([p]) && (
+                                    {kanVelgeArbeidsgiver && harPeriodeMedUkjentGraderingsaktivitet([p], søker) && (
                                         <ExclamationmarkTriangleFillIcon
                                             title={intl.formatMessage({
                                                 id: 'PeriodeListeHeader.GraderingsaktivitetIkkeValgt',
@@ -88,6 +93,8 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
                                             erEøsPeriode: erEøsUttakPeriode(p),
                                             morsAktivitet,
                                             konto: erVanligUttakPeriode(p) ? p.kontoType : undefined,
+                                            erAleneOmOmsorg: rettighetType === 'ALENEOMSORG',
+                                            erAvslått: erAvslåttPeriode(p),
                                         })}`}
                                 </HStack>
                             </Radio>

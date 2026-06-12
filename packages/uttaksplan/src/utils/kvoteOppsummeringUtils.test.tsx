@@ -93,3 +93,37 @@ describe('summerDagerIPerioder – mors gradering i 3v før / 6v etter familiehe
         expect(dager).toBe(15);
     });
 });
+
+describe('summerDagerIPerioder – summering av graderte dagar (ingen flyttalsfeil)', () => {
+    const lagFellesperiodeEndag = (dato: string): UttakPeriode_fpoversikt => ({
+        fom: dato,
+        tom: dato,
+        forelder: 'MOR',
+        kontoType: 'FELLESPERIODE',
+        flerbarnsdager: false,
+        gradering: { arbeidstidprosent: 40, aktivitet: { type: 'ORDINÆRT_ARBEID' } },
+    });
+
+    it('skal telje 6 dagar (ikkje 5) for ti graderte endagsperiodar à 0,6 dag', () => {
+        // Kvar dag med 40 % arbeid trekkjer 0,6 dag. 10 × 0,6 = 6,0 dagar.
+        // I flyttal blir summen 5,999999999999999, og ein naiv Math.floor på
+        // summen ville (feilaktig) gitt 5 og late ein fellesperiodedag stå att.
+        const enUkedagPerHverdag = [
+            '2024-04-01',
+            '2024-04-02',
+            '2024-04-03',
+            '2024-04-04',
+            '2024-04-05',
+            '2024-04-08',
+            '2024-04-09',
+            '2024-04-10',
+            '2024-04-11',
+            '2024-04-12',
+        ];
+        const perioder = enUkedagPerHverdag.map(lagFellesperiodeEndag);
+
+        const dager = summerDagerIPerioder(perioder, KONTOER.kontoer, 'adopsjon', FAMILIEHENDELSESDATO);
+
+        expect(dager).toBe(6);
+    });
+});

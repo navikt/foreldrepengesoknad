@@ -11,7 +11,7 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { Tidsperioden, Uttaksdagen } from '@navikt/fp-utils';
+import { Tidsperioden, Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
 
 import {
     Uttaksplanperiode,
@@ -48,6 +48,78 @@ export const getAntallUttaksdagerIVinduRundtFødsel = (
     }
 
     return Uttaksdagen.denneEllerNeste(overlappFom).getUttaksdagerFremTilOgMedDato(overlappTom);
+};
+
+const fjernAvsluttendeNullerFraDesimal = (tekst: string): string => {
+    if (!tekst.includes('.')) {
+        return tekst;
+    }
+
+    let slutt = tekst.length;
+    while (slutt > 0 && tekst[slutt - 1] === '0') {
+        slutt -= 1;
+    }
+
+    return tekst[slutt - 1] === '.' ? tekst.slice(0, slutt - 1) : tekst.slice(0, slutt);
+};
+
+const getDesimalSomSkalertHeltall = (verdi: number): { verdi: bigint; skala: bigint } => {
+    const tekst = verdi.toString().includes('e') ? fjernAvsluttendeNullerFraDesimal(verdi.toFixed(10)) : verdi.toString();
+    const [heltall, desimaler = ''] = tekst.split('.');
+
+    return {
+        verdi: BigInt(`${heltall}${desimaler}`),
+        skala: 10n ** BigInt(desimaler.length),
+    };
+};
+
+// virkedagar × prosent / 100, runda ned til 1 desimal og uttrykt i tideler (heiltal).
+const tidelerNedrundet = (dager: number, prosent: number): number => {
+    const { verdi, skala } = getDesimalSomSkalertHeltall(prosent);
+    return Number((BigInt(dager) * verdi) / (skala * 10n));
+};
+
+/**
+ * Reknar talet på trekkdagar for ein periode i *tideler* (heiltal).
+ *
+ * Trekkdagar summerast i heiltal (tideler) i staden for desimaltal for å unngå
+ * flyttalsfeil. Eit døme: ti graderte dagar à 0,6 dag gir i flyttal
+ * 5,999999999999999 i staden for 6,0, og ein etterfølgjande `Math.floor` ville
+ * då telje 5 dagar og late ein dag stå att som «ubrukt» i telleverket.
+ *
+ * Matchar fp-sak (`no.nav.foreldrepenger.regler.uttak ... TrekkdagerUtregningUtil`
+ * / `Trekkdager`): trekkdagar = virkedagar × utbetalingsgrad / 100, runda *ned*
+ * til 1 desimal (RoundingMode.DOWN) per periode.
+ */
+export const finnAntallTidelerÅTrekke = (
+    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    erFødsel: boolean,
+    familiehendelsedato: string,
+): number => {
+    if (erEøsUttakPeriode(periode)) {
+        // EØS-trekkdagar kjem ferdig utrekna (maks 1 desimal) frå fp-sak.
+        return Math.round(periode.trekkdager * 10);
+    }
+
+    const arbeidstidprosent = periode.gradering?.arbeidstidprosent;
+    const samtidigUttak = periode.samtidigUttak;
+    const dager = Uttaksperioden.getAntallUttaksdager(periode);
+
+    if (arbeidstidprosent) {
+        const utbetalingsgrad = 100 - arbeidstidprosent;
+        // Mor sin gradering i tidsrommet 3 veker før / 6 veker etter familiehendinga
+        // gir ikkje forlenging av stønadsperioden – dagane i vinduet trekkjast som heile.
+        if (erFødsel && periode.forelder === 'MOR') {
+            const dagerIVindu = getAntallUttaksdagerIVinduRundtFødsel(periode.fom, periode.tom, familiehendelsedato);
+            const dagerUtenforVindu = dager - dagerIVindu;
+            return dagerIVindu * 10 + tidelerNedrundet(dagerUtenforVindu, utbetalingsgrad);
+        }
+        return tidelerNedrundet(dager, utbetalingsgrad);
+    }
+    if (samtidigUttak) {
+        return tidelerNedrundet(dager, samtidigUttak);
+    }
+    return dager * 10;
 };
 
 export const erUttaksperiode = (periode: Uttaksplanperiode) => {
@@ -173,25 +245,35 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
 };
 
 /**
- * Sjekker om noken periode har gradering der aktivitet-typen er ORDINÆRT_ARBEID, men
- * arbeidsgiver manglar. Dette skjer typisk når ein plan kjem inn frå planleggar-appen
- * (som ikkje veit om søkjar sine arbeidsforhold) – då blir aktivitetstypen brukt som
- * orgnummer, noko som er ugyldig. Brukar må velje konkret arbeidsgiver/frilans/sjølvst.
- * før planen kan sendast inn.
+ * Sjekker om innlogga brukar (søkjar) har ein periode med gradering der aktiviteten ikkje
+ * er valt. Dette skjer typisk når ein plan kjem inn frå planleggar-appen (som ikkje veit om
+ * søkjar sine arbeidsforhold) – då blir aktivitetstypen sett til 'ANNET' som markør.
+ * Brukar må velje konkret arbeidsgiver/frilans/sjølvst. før planen kan sendast inn.
+ *
+ * Berre søkjar sine eigne periodar blir flagga – annen part sine periodar kan ein ikkje
+ * oppgi aktivitet for i skjema, og dei skal difor ikkje blokkere innsending.
  */
 export const harPeriodeMedUkjentGraderingsaktivitet = (
     perioder: UttaksplanperiodeMedKunTapteDager[] | Uttaksplanperiode[],
+    søker: BrukerRolleSak_fpoversikt,
 ) => {
     return perioder.some((periode) => {
-        if (!erVanligUttakPeriode(periode)) {
+        if (!erVanligUttakPeriode(periode) || periode.forelder !== søker) {
             return false;
         }
         const aktivitet = periode.gradering?.aktivitet;
-        if (aktivitet?.type !== 'ORDINÆRT_ARBEID') {
+        if (!aktivitet) {
             return false;
         }
-        const arbeidsgiverId = aktivitet.arbeidsgiver?.id;
-        return !arbeidsgiverId || arbeidsgiverId === aktivitet.type;
+        if (aktivitet.type === 'ANNET') {
+            return true;
+        }
+        // Defensivt for eldre/innkomande planar: ORDINÆRT_ARBEID utan gyldig arbeidsgiver.
+        if (aktivitet.type === 'ORDINÆRT_ARBEID') {
+            const arbeidsgiverId = aktivitet.arbeidsgiver?.id;
+            return !arbeidsgiverId || arbeidsgiverId === aktivitet.type;
+        }
+        return false;
     });
 };
 

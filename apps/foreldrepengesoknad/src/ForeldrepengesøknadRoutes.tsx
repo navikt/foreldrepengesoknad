@@ -70,6 +70,7 @@ const renderSøknadRoutes = ({
                             mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                             avbrytSøknad={avbrytSøknad}
                             foreldrepengerSaker={foreldrepengerSaker}
+                            erEndringssøknad={erEndringssøknad}
                         />
                     }
                 />
@@ -166,6 +167,7 @@ const renderSøknadRoutes = ({
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                         foreldrepengerSaker={foreldrepengerSaker}
+                        erEndringssøknad={erEndringssøknad}
                     />
                 }
             />

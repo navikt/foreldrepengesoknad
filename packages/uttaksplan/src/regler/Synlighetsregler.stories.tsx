@@ -17,6 +17,7 @@ import {
 import {
     VIS_BEGGE_RADIO,
     VIS_FAR_MEDMOR_RADIO,
+    VIS_FORELDER_VALG,
     VIS_KONTO_FAR_MEDMOR_RADIOGRUPPE,
     VIS_KONTO_MOR_RADIOGRUPPE,
     VIS_MOR_RADIO,
@@ -27,6 +28,13 @@ import {
     SKAL_VISE_PAUSEKNAPP,
     SKAL_VISE_UTSETTELSESKNAPP,
 } from './synlighet/knapperIRedigeringspanel';
+import {
+    VIS_LEGG_TIL_FERIE_VALG,
+    VIS_LEGG_TIL_OPPHOLD_VALG,
+    VIS_LEGG_TIL_PAUSE_VALG,
+    VIS_LEGG_TIL_PERIODE_VALG,
+    VIS_LEGG_TIL_UTSETTELSE_VALG,
+} from './synlighet/hvaVilDuGjøreValg';
 import { Synlighetsområde } from './synlighet/types';
 
 /**
@@ -65,7 +73,9 @@ const FORELDER_VALG_OMRÅDE: Synlighetsområde = {
     område: 'Hvilke alternativ vises i «Hvem gjelder perioden»-radiogruppen?',
     beskrivelse:
         'Når brukeren legger til eller endrer en periode, må det velges hvilken forelder perioden gjelder. ' +
-        'Reglene under bestemmer hvilke alternativ (Mor, Far/medmor, Begge) som er tilgjengelige.',
+        'Reglene under bestemmer hvilke alternativ (Mor, Far/medmor, Begge) som er tilgjengelige. Finnes det ' +
+        'bare ett tilgjengelig alternativ — typisk når bare én forelder har rett — skjules hele spørsmålet, og ' +
+        'forelderverdien settes automatisk (se forelderValg.visForelderValg).',
     seOgså: [
         {
             tekst: 'Hvilke kvotetyper er gyldige for mor? (Kvotetyperegler)',
@@ -77,6 +87,7 @@ const FORELDER_VALG_OMRÅDE: Synlighetsområde = {
         },
     ],
     regler: [
+        VIS_FORELDER_VALG,
         VIS_MOR_RADIO,
         VIS_FAR_MEDMOR_RADIO,
         VIS_BEGGE_RADIO,
@@ -105,6 +116,28 @@ const FELT_SYNLIGHET_OMRÅDE: Synlighetsområde = {
     ],
 };
 
+const HVA_VIL_DU_GJØRE_VALG_OMRÅDE: Synlighetsområde = {
+    id: 'hvaVilDuGjøreValg',
+    område: 'Hvilke alternativ vises i «Hva vil du gjøre»-radiogruppen (listevisning)?',
+    beskrivelse:
+        'I listevisningens «Legg til / endre periode»-panel velger brukeren datoer først. Reglene under ' +
+        'bestemmer hvilke alternativ (Ferie, Utsettelse, Pause, Periode uten foreldrepenger, Periode med ' +
+        'foreldrepenger) som vises for det valgte tidsrommet — slik at brukeren bare ser de gyldige valgene.',
+    seOgså: [
+        {
+            tekst: 'Tilsvarende «Legg til»-knapper i kalendervisningen',
+            onClick: linkTo('Uttaksplan/Synlighetsregler (dokumentasjon)', 'AlleSynlighetsregler'),
+        },
+    ],
+    regler: [
+        VIS_LEGG_TIL_FERIE_VALG,
+        VIS_LEGG_TIL_UTSETTELSE_VALG,
+        VIS_LEGG_TIL_PAUSE_VALG,
+        VIS_LEGG_TIL_OPPHOLD_VALG,
+        VIS_LEGG_TIL_PERIODE_VALG,
+    ],
+};
+
 const KNAPPER_I_REDIGERINGSPANEL_OMRÅDE: Synlighetsområde = {
     id: 'knapperIRedigeringspanel',
     område: 'Hvilke «Legg til»-knapper vises i redigeringspanelet?',
@@ -123,6 +156,7 @@ const KNAPPER_I_REDIGERINGSPANEL_OMRÅDE: Synlighetsområde = {
 const ALLE_SYNLIGHETSREGLER: readonly Synlighetsområde[] = [
     FORELDER_VALG_OMRÅDE,
     FELT_SYNLIGHET_OMRÅDE,
+    HVA_VIL_DU_GJØRE_VALG_OMRÅDE,
     KNAPPER_I_REDIGERINGSPANEL_OMRÅDE,
 ];
 

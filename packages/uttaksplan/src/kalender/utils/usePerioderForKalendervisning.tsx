@@ -4,6 +4,7 @@ import { IntlShape, useIntl } from 'react-intl';
 
 import {
     Barn,
+    BrukerRolleSak_fpoversikt,
     NavnPåForeldre,
     RettighetType_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
@@ -43,6 +44,7 @@ export const usePerioderForKalendervisning = (
         foreldreInfo: { søker, navnPåForeldre, rettighetType },
         familiehendelsedato,
         uttakPerioder,
+        kanVelgeArbeidsgiver,
     } = useUttaksplanData();
 
     const saksperioderInkludertTapteDager = useAlleUttakPerioderInklTapteDager();
@@ -77,6 +79,8 @@ export const usePerioderForKalendervisning = (
                     isUpdated,
                     rettighetType,
                     uttakPerioder,
+                    kanVelgeArbeidsgiver,
+                    søker,
                 ),
             ];
         }
@@ -97,6 +101,8 @@ export const usePerioderForKalendervisning = (
                     isUpdated,
                     rettighetType,
                     uttakPerioder,
+                    kanVelgeArbeidsgiver,
+                    søker,
                 ),
             ];
         }
@@ -110,7 +116,13 @@ export const usePerioderForKalendervisning = (
                 color,
                 srText: getKalenderSkjermlesertekstForPeriode(periode, navnPåForeldre, intl),
                 isUpdated,
-                ...leggTilIkonVedPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, periode, uttakPerioder),
+                ...leggTilVarselikonVedManglendeObligatoriskeValg(
+                    rettighetType,
+                    periode,
+                    uttakPerioder,
+                    kanVelgeArbeidsgiver,
+                    søker,
+                ),
             } satisfies CalendarPeriod,
         ];
     }, []);
@@ -347,10 +359,18 @@ const splittPeriodeITo = (
     isUpdated: boolean,
     rettighetType: RettighetType_fpoversikt,
     allePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    kanVelgeArbeidsgiver: boolean,
+    søker: BrukerRolleSak_fpoversikt,
 ): CalendarPeriod[] => {
     const forrige = Uttaksdagen.forrige(dato).getDato();
     const neste = Uttaksdagen.neste(dato).getDato();
-    const ikonProps = leggTilIkonVedPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, periode, allePerioder);
+    const ikonProps = leggTilVarselikonVedManglendeObligatoriskeValg(
+        rettighetType,
+        periode,
+        allePerioder,
+        kanVelgeArbeidsgiver,
+        søker,
+    );
 
     const lagPeriode = (fom: string, tom: string): CalendarPeriod => ({
         fom,
@@ -372,17 +392,19 @@ const splittPeriodeITo = (
     return [lagPeriode(periode.fom, forrige), lagPeriode(neste, periode.tom)];
 };
 
-const leggTilIkonVedPeriodeDerMorsAktivitetIkkeErValgt = (
+const leggTilVarselikonVedManglendeObligatoriskeValg = (
     rettighetType: RettighetType_fpoversikt,
     periode: UttaksplanperiodeMedKunTapteDager,
     allePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    kanVelgeArbeidsgiver: boolean,
+    søker: BrukerRolleSak_fpoversikt,
 ) => {
     const morsPerioder = allePerioder.filter(
         (p): p is UttakPeriode_fpoversikt => erVanligUttakPeriode(p) && p.forelder === 'MOR',
     );
     if (
         harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [periode, ...morsPerioder]) ||
-        harPeriodeMedUkjentGraderingsaktivitet([periode])
+        (kanVelgeArbeidsgiver && harPeriodeMedUkjentGraderingsaktivitet([periode], søker))
     ) {
         return {
             icon: <ExclamationmarkTriangleFillIcon aria-hidden color="var(--ax-warning-600)" />,
