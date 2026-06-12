@@ -1,4 +1,4 @@
-import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
+import { ContextDataMap, ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
 import { useEsNavigator } from 'appData/useEsNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useForm } from 'react-hook-form';
@@ -39,10 +39,12 @@ export const OmBarnetSteg = ({ kjønn, mellomlagreOgNaviger }: Props) => {
     const onSubmit = (formValues: FormValues) => {
         const barnDto = mapBarnFraFormTilDto(formValues, søkersituasjon.situasjon);
         oppdaterOmBarnet(barnDto);
+        const ferskeData: Partial<ContextDataMap> = { [ContextDataType.OM_BARNET]: barnDto };
         if (formValues.erBarnetFødt === true) {
             oppdaterDokumentasjon(undefined);
+            ferskeData[ContextDataType.DOKUMENTASJON] = undefined;
         }
-        return navigator.goToNextDefaultStep({ [ContextDataType.OM_BARNET]: barnDto });
+        return navigator.goToNextDefaultStep(ferskeData);
     };
 
     const formMethods = useForm<FormValues>({
