@@ -9,7 +9,11 @@ import {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
-import { harPeriodeDerMorsAktivitetIkkeErValgt, harPeriodeMedUkjentGraderingsaktivitet, useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan';
+import {
+    harPeriodeDerMorsAktivitetIkkeErValgt,
+    harPeriodeMedUkjentGraderingsaktivitet,
+    useErAntallDagerOvertrukketIUttaksplan,
+} from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 export type UttaksplanPerioder = Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
@@ -102,7 +106,7 @@ export const useFinnFørsteSubmitFeilmelding = ({
     };
 };
 
-const harBrukerKunSlettetPerioder = (
+export const harBrukerKunSlettetPerioder = (
     perioder: UttaksplanPerioder | undefined,
     opprinneligPlan: UttaksplanPerioder | undefined,
 ) => {
@@ -116,7 +120,7 @@ const harBrukerKunSlettetPerioder = (
 
     if (erKunSaksperioder) {
         const harSlettetPeriode = perioder
-            ? !perioder.every((periode, index) => periode === opprinneligPlan[index])
+            ? perioder.length < opprinneligPlan.length && perioder.every((periode) => opprinneligPlan.includes(periode))
             : false;
         return harSlettetPeriode;
     }
