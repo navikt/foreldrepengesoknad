@@ -31,6 +31,10 @@ export const initSentry = ({ dsn }: InitSentryOptions) => {
                 return null;
             }
 
+            if (feilFraDomOversettelse(event)) {
+                return null;
+            }
+
             return event;
         },
     });
@@ -78,6 +82,18 @@ const feilFraBrowserExtensions = (event: Sentry.ErrorEvent) => {
     );
 
     return harDistributorBreadcrumbs || harDistributorStacktrace;
+};
+
+/**
+ * Nettleseren sine oversettelsesverktøy (f.eks. Google Translate / Chrome "oversett siden") bytter ut tekstnoder
+ * og pakker dem i egne element. Når React seinare skal avmontere subtreet, er noden ikkje lenger eit direkte barn
+ * av forelderen, og commit-fasen kastar "Failed to execute 'removeChild'/'insertBefore' on 'Node': The node ...
+ * is not a child of this node". Dette er ikkje vår feil og kan ikkje fiksast i koden vår, så vi luker det bort.
+ */
+const DOM_OVERSETTELSE_FEIL = /(removeChild|insertBefore)[\s\S]*not a child of this node/i;
+
+const feilFraDomOversettelse = (event: Sentry.ErrorEvent) => {
+    return (event.exception?.values ?? []).some((ex) => ex.value && DOM_OVERSETTELSE_FEIL.test(ex.value));
 };
 
 /**
