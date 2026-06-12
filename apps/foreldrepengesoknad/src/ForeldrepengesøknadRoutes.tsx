@@ -6,7 +6,7 @@ import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
 import { useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
 import { useSendSøknad } from 'appData/useSendSøknad';
 import { Forside } from 'pages/forside/Forside';
-import { Søknadsmetadata } from 'pages/forside/useStartSøknad';
+import { Søknadsmetadata } from 'pages/forside/utils/useStartSøknad';
 import { KvitteringPage } from 'pages/kvittering/KvitteringPage';
 import { useCallback, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';

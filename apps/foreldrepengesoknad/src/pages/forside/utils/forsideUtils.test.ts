@@ -3,8 +3,8 @@ import dayjs from 'dayjs';
 import { FpBarnDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 
 import { getSelectableBarnOptions, bestemSøknadsstart } from './forsideUtils';
-import { ValgtBarn, ValgtBarnType } from '../../types/ValgtBarn';
-import { SelectableBarnOptions } from './types/ForsideFormValues';
+import { ValgtBarn, ValgtBarnType } from '../../../types/ValgtBarn';
+import { SelectableBarnOptions } from '../types/ForsideFormValues';
 
 const fødselsdato = dayjs().subtract(1, 'year').format('YYYY-MM-DD');
 const sak = {

@@ -13,9 +13,9 @@ import {
 import { captureMessage } from '@navikt/fp-observability';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 
-import { ValgtBarn } from '../../types/ValgtBarn';
+import { ValgtBarn } from '../../../types/ValgtBarn';
 import { bestemSøknadsstart } from './forsideUtils';
-import { ForsideFormValues } from './types/ForsideFormValues';
+import { ForsideFormValues } from '../types/ForsideFormValues';
 
 export type Søknadsmetadata = {
     harGodkjentVilkår: boolean;

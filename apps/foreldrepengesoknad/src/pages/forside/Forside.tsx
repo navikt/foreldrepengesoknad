@@ -12,11 +12,11 @@ import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 import { BarnVelger } from './BarnVelger';
 import { DinePlikter } from './dine-plikter/DinePlikter';
-import { getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './forsideUtils';
+import { getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './utils/forsideUtils';
 import { DinePersonopplysningerModal } from './modaler/DinePersonopplysningerModal';
 import { ForsideFormValues } from './types/ForsideFormValues';
-import { useFjernPlanleggerDataFraUrl } from './useFjernPlanleggerDataFraUrl';
-import { Søknadsmetadata, useStartSøknad } from './useStartSøknad';
+import { useFjernPlanleggerDataFraUrl } from './utils/useFjernPlanleggerDataFraUrl';
+import { Søknadsmetadata, useStartSøknad } from './utils/useStartSøknad';
 
 interface Props {
     saker: FpSak_fpoversikt[];

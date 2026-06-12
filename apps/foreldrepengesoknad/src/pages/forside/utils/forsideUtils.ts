@@ -16,7 +16,7 @@ import {
 } from '@navikt/fp-types';
 import { Uttaksdagen, isISODateString, sorterPersonEtterEldstOgNavn } from '@navikt/fp-utils';
 
-import { ForsideFormValues, SelectableBarnOptions } from './types/ForsideFormValues';
+import { ForsideFormValues, SelectableBarnOptions } from '../types/ForsideFormValues';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
