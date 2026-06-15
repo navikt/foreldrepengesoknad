@@ -13,6 +13,15 @@
             content="Her finner du alt om din sak om foreldrepenger, svangerskapspenger eller engangssøknad. Du kan sende inn ny søknad eller ettersende vedlegg"
         />
         <script type="text/json" id="nav:appSettings">{{{APP_SETTINGS}}}</script>
+        <style>
+            /* Kritisk CSS: reserver full viewport-høyde for app-roten allerede ved
+               første paint, før JS-bundlen (med global CSS) og SPA-innholdet lastes.
+               Hindrer at den server-injiserte dekoratør-footeren først tegnes inne i
+               viewporten og deretter dyttes under folden – en stor layout shift (CLS). */
+            #app {
+                min-height: 100vh;
+            }
+        </style>
     </head>
     <body>
         <main id="app"></main>
