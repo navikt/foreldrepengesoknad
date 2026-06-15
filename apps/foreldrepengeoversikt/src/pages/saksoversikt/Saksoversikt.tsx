@@ -134,7 +134,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                 <ContentSection
                     heading={intl.formatMessage({ id: 'saksoversikt.tidslinje' })}
                     showSkeleton={tidslinjeHendelserQuery.isPending || manglendeVedleggQuery.isPending}
-                    skeleton={<TidslinjeSkeleton />}
+                    skeleton={<TidslinjeSkeleton ytelse={gjeldendeSak.ytelse} />}
                     className="mb-2"
                 >
                     <Tidslinje
