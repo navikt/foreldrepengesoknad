@@ -1,4 +1,4 @@
-import { ContextDataMap, ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
 import { useEsNavigator } from 'appData/useEsNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { FormattedMessage } from 'react-intl';
@@ -24,21 +24,14 @@ export const UtenlandsoppholdSteg = ({ mellomlagreOgNaviger }: Props) => {
     const lagre = (formValues: Utenlandsopphold) => {
         oppdaterUtenlandsopphold(formValues);
 
-        // Send dei nullstilte periodene med som ferske data, elles ser lagAppStegliste
-        // framleis dei gamle periodene i context og navigerer til eit steg brukaren
-        // nettopp har svart nei på.
-        const ferskeData: Partial<ContextDataMap> = { [ContextDataType.UTENLANDSOPPHOLD]: formValues };
-
         if (!formValues.harBoddUtenforNorgeSiste12Mnd) {
             oppdaterTidligereUtenlandsopphold(undefined);
-            ferskeData[ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE] = undefined;
         }
         if (!formValues.skalBoUtenforNorgeNeste12Mnd) {
             oppdaterSenereUtenlandsopphold(undefined);
-            ferskeData[ContextDataType.UTENLANDSOPPHOLD_SENERE] = undefined;
         }
 
-        return navigator.goToNextDefaultStep(ferskeData);
+        return navigator.goToNextDefaultStep();
     };
 
     return (
