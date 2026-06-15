@@ -31,7 +31,7 @@ export const SenereUtenlandsoppholdSteg = ({ mellomlagreOgNaviger }: Props) => {
                 saveOnNext={lagre}
                 saveOnPrevious={oppdaterSenereUtenlandsopphold}
                 onFortsettSenere={navigator.fortsettSøknadSenere}
-                onStepChange={navigator.goToNextStep}
+                onStepChange={navigator.goToStep}
                 onAvsluttOgSlett={navigator.avbrytSøknad}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
