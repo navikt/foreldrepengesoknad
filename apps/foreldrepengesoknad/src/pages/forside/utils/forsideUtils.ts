@@ -16,6 +16,8 @@ import {
 } from '@navikt/fp-types';
 import { Uttaksdagen, isISODateString, sorterPersonEtterEldstOgNavn } from '@navikt/fp-utils';
 
+import { ForsideFormValues, SelectableBarnOptions } from '../types/ForsideFormValues';
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -269,4 +271,39 @@ export const sorterSelectableBarnEtterYngst = (b1: ValgtBarn, b2: ValgtBarn) => 
         : dayjs(b1.sortableDato).isAfter(b2.sortableDato, 'd')
           ? -1
           : 0;
+};
+
+/**
+ * Reint beslutningstre for kva slags søknad eit forside-val skal starte.
+ * Held seg fri for side-effektar slik at det kan unit-testast utan å rendre sida.
+ */
+export type Søknadsstart =
+    | { type: 'PLANLAGT_BARN' }
+    | { type: 'NYTT_BARN' }
+    | { type: 'ENDRING'; valgteBarn: ValgtBarn; sak: FpSak_fpoversikt }
+    | { type: 'NY_FRA_BARN'; valgteBarn: ValgtBarn };
+
+export const bestemSøknadsstart = (
+    values: ForsideFormValues,
+    selectableBarn: ValgtBarn[],
+    saker: FpSak_fpoversikt[],
+): Søknadsstart => {
+    if (values.valgteBarn === SelectableBarnOptions.SØKNAD_GJELDER_PLANLAGT_BARN) {
+        return { type: 'PLANLAGT_BARN' };
+    }
+
+    const valgteBarn = selectableBarn.find((sb) => sb.id === values.valgteBarn);
+    if (valgteBarn === undefined) {
+        return { type: 'NYTT_BARN' };
+    }
+
+    const valgtEksisterendeSak = valgteBarn.kanSøkeOmEndring
+        ? saker.find((sak) => sak.saksnummer === valgteBarn.sak?.saksnummer)
+        : undefined;
+
+    if (valgtEksisterendeSak) {
+        return { type: 'ENDRING', valgteBarn, sak: valgtEksisterendeSak };
+    }
+
+    return { type: 'NY_FRA_BARN', valgteBarn };
 };
