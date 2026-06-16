@@ -2351,8 +2351,8 @@ importers:
   packages/utils-test:
     dependencies:
       '@formatjs/cli-lib':
-        specifier: 8.7.10
-        version: 8.7.10
+        specifier: 8.6.0
+        version: 8.6.0
       '@navikt/ds-react':
         specifier: 8.12.1
         version: 8.12.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -3310,8 +3310,8 @@ packages:
   '@formatjs/bigdecimal@0.2.6':
     resolution: {integrity: sha512-aPzKsGQOkQRHUEbyO/ZtYfr4EqaBQnSs6U4tzTla1xBnIdEHgY2GqEqso28UMwWRkzKqqTj5+/6BmuOsRkfn2A==}
 
-  '@formatjs/cli-lib@8.7.10':
-    resolution: {integrity: sha512-GIRkFRLj7HvCma/Z8K7D4AGIWV6PrbwRZUGuu+viXbzNHLphwQ306+RLk0Q6FAaEJpUH73m53edStOraWWsBKA==}
+  '@formatjs/cli-lib@8.6.0':
+    resolution: {integrity: sha512-yFBeAGG95b6QnvUhfwcOvcDm4MB0/mgU/mWHwfu4vt11kwqtjnjTfC3Z032Y0g6oB6wKGP/zMeBjxkikVnEILw==}
     engines: {node: '>= 20.12.0'}
     peerDependencies:
       '@glimmer/env': '*'
@@ -3340,39 +3340,16 @@ packages:
       vue:
         optional: true
 
-  '@formatjs/cli-native-darwin-arm64@1.1.5':
-    resolution: {integrity: sha512-zGt7OenQakyh8a+eAgCx/zUInbQXYT0UNzeOaYlnaKmU9yr78wsVAGGhPc85gchnQ7gIXSWOKhwIzvfSMFGU7w==}
+  '@formatjs/cli-native-darwin-arm64@1.1.0':
+    resolution: {integrity: sha512-ygEpFpmRjbAKanWaeto/eUItyuK18667mdDzpDg3CTzc15WYzjZKnwJNFUuPFvFA4hiod1tnhXT1eiXmc1wWNg==}
     cpu: [arm64]
     os: [darwin]
 
-  '@formatjs/cli-native-linux-arm64-musl@1.0.3':
-    resolution: {integrity: sha512-1qq9EZIY87cnptTd2PywI41s/DlkJBzNID6AofHCYm8sunXfj+vYAIQOSZnctNm7/u1ZlSJ/VjxHSS1NIC4tTw==}
-    cpu: [arm64]
-    os: [linux]
-    libc: [musl]
-
-  '@formatjs/cli-native-linux-arm64@1.2.5':
-    resolution: {integrity: sha512-G1Ou5CFDM2hfqmD2jfXJJpHL7DL7f7OxlMXf6VPWvUYu+jcvpEj0KdEtmz5poh8rWzfHbOf4MfqC6WNhExJD5A==}
-    cpu: [arm64]
-    os: [linux]
-    libc: [glibc]
-
-  '@formatjs/cli-native-linux-x64-musl@1.0.3':
-    resolution: {integrity: sha512-wb90O1S7cad8QKmHQ2I5glN9O9m+y+V29mrvvxFbKAVmVbKB7oyjhoau/jtuHQ/Yv2tfah3CYCj+1iaDNlJmYg==}
-    cpu: [x64]
-    os: [linux]
-    libc: [musl]
-
-  '@formatjs/cli-native-linux-x64@1.1.5':
-    resolution: {integrity: sha512-v/EtDIMC7C3cOpYpRJDvUImQFHBveFP+PTggZJbi88zXCeMMEL6eMwbMlJezUIwvYjgH1FWQargCgwOnI3lVdg==}
+  '@formatjs/cli-native-linux-x64@1.1.0':
+    resolution: {integrity: sha512-AxORf5LR14HvXU4ov9gnhLrNIS2DYKqKMkRkprUhuh+ljba1riF05msK8KzslEPYQoeYKc5A0OZp57poh4xz/g==}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
-
-  '@formatjs/cli-native-win32-x64@1.1.6':
-    resolution: {integrity: sha512-fsPOUB4JePy6VJfQV+oorLfozbb9IfYRAncGZ54VZg77Uj2aOP2h/KLhQmgippNlgi0Q77EB8QDMzNQfaKpVAA==}
-    cpu: [x64]
-    os: [win32]
 
   '@formatjs/fast-memoize@3.1.6':
     resolution: {integrity: sha512-H5aexk1Le7T9TPmscacZ+1pR6CTa2n1wq+HDVGXhH8TzUlQQpeXzZs91dRtmFHrbeNbjPFPfQujUqm7MHgVoXQ==}
@@ -3380,8 +3357,14 @@ packages:
   '@formatjs/icu-messageformat-parser@3.5.11':
     resolution: {integrity: sha512-NVsuNsc2dUVG9+4HBJ/srScxtA/18LqGgwtop/tuN/OIBjVl6QA+0KhfZQddDD9sEh2LeVjLFPGVU3ixa3blcA==}
 
+  '@formatjs/icu-messageformat-parser@3.5.8':
+    resolution: {integrity: sha512-uZLvzLFN7iV2l8cbDdROwgKGtdELeLI4bpnsuz1DnyscHDxn8TdDE0anHzcfjtWK66XYCllGLV3Mi3CYcEPg/g==}
+
   '@formatjs/icu-skeleton-parser@2.1.10':
     resolution: {integrity: sha512-XuSva+8ZGawk8VnD5VD6UeH8KarQ/Z022zgjHDoHmlNiAewstXuuzXc0Hk5pGFSdG+nNw5bfJKXqj1ZXHn9yUA==}
+
+  '@formatjs/icu-skeleton-parser@2.1.8':
+    resolution: {integrity: sha512-iX5i0O15gPf69l1WqmLFYwn7wq53lauvytvWFnHamIfX/5Ta56gpFj6fdeHRcKTV58IhrKv8QOvWfTYZYm7f+g==}
 
   '@formatjs/intl-localematcher@0.8.10':
     resolution: {integrity: sha512-P/IC3qws3jH+1fEs+o0RIFgXKRaQlFehjS5W0FPAqdo6hgzawLl+eD0q0JjheQ3XtoOe5n8WSYfX06KQZI/QJA==}
@@ -3392,8 +3375,8 @@ packages:
   '@formatjs/intl@4.1.13':
     resolution: {integrity: sha512-dufOl09iREq8V+laVdlGuyoqNmuzqDvyeA3O3k+0XQfvKJgK8bBWFKqYYWejFMKeOij/4LuPKJA+LsshpXQ4sw==}
 
-  '@formatjs/ts-transformer@4.4.13':
-    resolution: {integrity: sha512-MQZyDrwULZ7MrJz6ar4cuCWCVn8HTlEXMEJffZfhpGJMI+RLx6WwmM7aCGeVa7q3rcV9ChAGFym5Bm2ZBUwV8A==}
+  '@formatjs/ts-transformer@4.4.8':
+    resolution: {integrity: sha512-L1QP73tO2hzjGQtDrSw4tI263b7j/vxbpstANP89XwYZTaBURe93MO9hp+8FnTORIYopBZHaa4nveC/XDBzKlg==}
     engines: {node: '>= 20.12.0'}
     peerDependencies:
       ts-jest: ^29
@@ -3558,6 +3541,9 @@ packages:
       '@types/react': ^17.0.30 || ^18 || ^19
       react: ^17 || ^18 || ^19
       react-dom: ^17 || ^18 || ^19
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   '@navikt/ds-tailwind@8.12.1':
     resolution: {integrity: sha512-inhRlTK126xBoZDFPHODz/y+2z2yJk9Q9Qifxq90YkmHMTIwALIqDokuRW4aZThhScJ7x2WZ3JD7bWqEqT0DYg==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/8.12.1/e31f9936b996bfd8acab8c15ae7ba5011affbdca}
@@ -3574,6 +3560,9 @@ packages:
     peerDependencies:
       html-react-parser: '>=5.x'
       react: '>=17.x'
+    peerDependenciesMeta:
+      react:
+        optional: true
 
   '@navikt/oasis@4.1.4':
     resolution: {integrity: sha512-v+LW8V5CTiHkfIXhceQ8RXRtrBktCK8wSFYmiR6hmzl9CJRYRLUpFC7YbLiC7jwHIuLHKUyl+Zawf8zQm6fDeQ==, tarball: https://npm.pkg.github.com/download/@navikt/oasis/4.1.4/0d9c93820b9b6d93b1bd9da134feb95461ad8a47}
@@ -8372,11 +8361,12 @@ snapshots:
 
   '@formatjs/bigdecimal@0.2.6': {}
 
-  '@formatjs/cli-lib@8.7.10':
+  '@formatjs/cli-lib@8.6.0':
     dependencies:
-      '@babel/types': 7.29.7
-      '@formatjs/icu-messageformat-parser': 3.5.11
-      '@formatjs/ts-transformer': 4.4.13
+      '@formatjs/icu-messageformat-parser': 3.5.8
+      '@formatjs/icu-skeleton-parser': 2.1.8
+      '@formatjs/ts-transformer': 4.4.8
+      '@types/estree': 1.0.9
       '@types/fs-extra': 11.0.4
       '@types/node': 24.13.2
       commander: 14.0.3
@@ -8386,31 +8376,15 @@ snapshots:
       loud-rejection: 2.2.0
       typescript: 6.0.3
     optionalDependencies:
-      '@formatjs/cli-native-darwin-arm64': 1.1.5
-      '@formatjs/cli-native-linux-arm64': 1.2.5
-      '@formatjs/cli-native-linux-arm64-musl': 1.0.3
-      '@formatjs/cli-native-linux-x64': 1.1.5
-      '@formatjs/cli-native-linux-x64-musl': 1.0.3
-      '@formatjs/cli-native-win32-x64': 1.1.6
+      '@formatjs/cli-native-darwin-arm64': 1.1.0
+      '@formatjs/cli-native-linux-x64': 1.1.0
     transitivePeerDependencies:
       - ts-jest
 
-  '@formatjs/cli-native-darwin-arm64@1.1.5':
+  '@formatjs/cli-native-darwin-arm64@1.1.0':
     optional: true
 
-  '@formatjs/cli-native-linux-arm64-musl@1.0.3':
-    optional: true
-
-  '@formatjs/cli-native-linux-arm64@1.2.5':
-    optional: true
-
-  '@formatjs/cli-native-linux-x64-musl@1.0.3':
-    optional: true
-
-  '@formatjs/cli-native-linux-x64@1.1.5':
-    optional: true
-
-  '@formatjs/cli-native-win32-x64@1.1.6':
+  '@formatjs/cli-native-linux-x64@1.1.0':
     optional: true
 
   '@formatjs/fast-memoize@3.1.6': {}
@@ -8419,7 +8393,13 @@ snapshots:
     dependencies:
       '@formatjs/icu-skeleton-parser': 2.1.10
 
+  '@formatjs/icu-messageformat-parser@3.5.8':
+    dependencies:
+      '@formatjs/icu-skeleton-parser': 2.1.8
+
   '@formatjs/icu-skeleton-parser@2.1.10': {}
+
+  '@formatjs/icu-skeleton-parser@2.1.8': {}
 
   '@formatjs/intl-localematcher@0.8.10':
     dependencies:
@@ -8436,10 +8416,9 @@ snapshots:
       '@formatjs/icu-messageformat-parser': 3.5.11
       intl-messageformat: 11.2.8
 
-  '@formatjs/ts-transformer@4.4.13':
+  '@formatjs/ts-transformer@4.4.8':
     dependencies:
-      '@formatjs/icu-messageformat-parser': 3.5.11
-      '@types/babel__core': 7.20.5
+      '@formatjs/icu-messageformat-parser': 3.5.8
       '@types/node': 24.13.2
       json-stable-stringify: 1.3.0
       typescript: 6.0.3
@@ -8632,11 +8611,12 @@ snapshots:
       '@floating-ui/react-dom': 2.1.8(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@navikt/aksel-icons': 8.12.1
       '@navikt/ds-tokens': 8.12.1
-      '@types/react': 19.2.17
       date-fns: 4.4.0
       react: 19.2.7
       react-day-picker: 9.14.0(react@19.2.7)
       react-dom: 19.2.7(react@19.2.7)
+    optionalDependencies:
+      '@types/react': 19.2.17
 
   '@navikt/ds-tailwind@8.12.1': {}
 
@@ -8650,6 +8630,7 @@ snapshots:
       csp-header: 6.3.1
       html-react-parser: 6.1.1(@types/react@19.2.17)(react@19.2.7)
       js-cookie: 3.0.7
+    optionalDependencies:
       react: 19.2.7
 
   '@navikt/oasis@4.1.4':
@@ -10425,7 +10406,7 @@ snapshots:
       has-property-descriptors: 1.0.2
       has-proto: 1.2.0
       has-symbols: 1.1.0
-      hasown: 2.0.3
+      hasown: 2.0.4
       internal-slot: 1.1.0
       is-array-buffer: 3.0.5
       is-callable: 1.2.7
@@ -10473,11 +10454,11 @@ snapshots:
       es-errors: 1.3.0
       get-intrinsic: 1.3.0
       has-tostringtag: 1.0.2
-      hasown: 2.0.3
+      hasown: 2.0.4
 
   es-shim-unscopables@1.1.0:
     dependencies:
-      hasown: 2.0.3
+      hasown: 2.0.4
 
   es-to-primitive@1.3.0:
     dependencies:
@@ -10947,7 +10928,7 @@ snapshots:
       call-bound: 1.0.4
       define-properties: 1.2.1
       functions-have-names: 1.2.3
-      hasown: 2.0.3
+      hasown: 2.0.4
       is-callable: 1.2.7
 
   functions-have-names@1.2.3: {}
@@ -10970,7 +10951,7 @@ snapshots:
       get-proto: 1.0.1
       gopd: 1.2.0
       has-symbols: 1.1.0
-      hasown: 2.0.3
+      hasown: 2.0.4
       math-intrinsics: 1.1.0
 
   get-proto@1.0.1:
@@ -11131,7 +11112,7 @@ snapshots:
   internal-slot@1.1.0:
     dependencies:
       es-errors: 1.3.0
-      hasown: 2.0.3
+      hasown: 2.0.4
       side-channel: 1.1.0
 
   intl-messageformat@11.2.8:

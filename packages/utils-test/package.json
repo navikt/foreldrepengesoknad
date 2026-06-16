@@ -16,7 +16,7 @@
         "tsc:watch": "tsc --noEmit --watch"
     },
     "dependencies": {
-        "@formatjs/cli-lib": "8.7.10",
+        "@formatjs/cli-lib": "8.6.0",
         "@navikt/ds-react": "8.12.1",
         "@navikt/fp-types": "workspace:*",
         "@tanstack/react-query": "5.101.0",
