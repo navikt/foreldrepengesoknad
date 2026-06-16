@@ -1,0 +1,28 @@
+diff --git a/dist/index.esm.mjs b/dist/index.esm.mjs
+index 30d3a6f0e818bfdf7dc41076b9979918da34dc0c..ad129002bea188a039604e5d215fbdc849b178ab 100644
+--- a/dist/index.esm.mjs
++++ b/dist/index.esm.mjs
+@@ -1627,7 +1627,6 @@ function createFormControl(props = {}) {
+     };
+     const updateErrors = (name, error) => {
+         set(_formState.errors, name, error);
+-        _formState.errors = { ..._formState.errors };
+         _subjects.state.next({
+             errors: _formState.errors,
+         });
+@@ -1758,7 +1757,6 @@ function createFormControl(props = {}) {
+             error
+                 ? set(_formState.errors, name, error)
+                 : unset(_formState.errors, name);
+-            _formState.errors = { ..._formState.errors };
+         }
+         if ((error ? !deepEqual(previousFieldError, error) : previousFieldError) ||
+             !isEmptyObject(fieldState) ||
+@@ -1794,7 +1792,6 @@ function createFormControl(props = {}) {
+                         : set(_formState.errors, name, error)
+                     : unset(_formState.errors, name);
+             }
+-            _formState.errors = { ..._formState.errors };
+         }
+         else {
+             _formState.errors = errors;

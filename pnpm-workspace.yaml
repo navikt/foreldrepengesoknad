@@ -4,9 +4,6 @@ packages:
   - server
   - server-uinnlogget
 
-overrides:
-  js-cookie: 3.0.7
-
 ignoredBuiltDependencies:
   - '@parcel/watcher'
   - esbuild
@@ -19,3 +16,8 @@ minimumReleaseAgeExclude:
 
 onlyBuiltDependencies:
   - msw
+
+overrides:
+  js-cookie: 3.0.7
+patchedDependencies:
+  react-hook-form@7.79.0: patches/react-hook-form@7.79.0.patch

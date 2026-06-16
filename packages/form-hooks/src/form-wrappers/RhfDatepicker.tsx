@@ -1,14 +1,14 @@
 import dayjs, { Dayjs } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import React, { ComponentProps, JSX, ReactNode, useCallback, useMemo, useState } from 'react';
-import { FieldValues, UseControllerProps, useController, useFormContext } from 'react-hook-form';
+import { FieldValues, UseControllerProps, useController } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
 import { DatePicker, useDatepicker } from '@navikt/ds-react';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT, TIDENES_ENDE, TIDENES_MORGEN } from '@navikt/fp-constants';
 
-import { ValidationReturnType, getError, getValidationRules } from './formUtils';
+import { ValidationReturnType, getValidationRules } from './formUtils';
 
 dayjs.extend(customParseFormat);
 
@@ -50,11 +50,8 @@ export const RhfDatepicker = <T extends FieldValues>({
     const { name, control } = controllerProps;
 
     const intl = useIntl();
-    const {
-        formState: { errors },
-    } = useFormContext();
 
-    const { field } = useController({
+    const { field, fieldState } = useController({
         name,
         control,
         rules: {
@@ -64,6 +61,8 @@ export const RhfDatepicker = <T extends FieldValues>({
 
     const defaultDate = field.value ? dayjs(field.value, ISO_DATE_FORMAT, true).format(DDMMYYYY_DATE_FORMAT) : '';
     const [fieldValue, setFieldValue] = useState<string>(() => (isValidDateString(defaultDate) ? defaultDate : ''));
+
+    const errorMessage = useMemo(() => fieldState.error?.message, [fieldState.error?.message]);
 
     const { datepickerProps, inputProps } = useDatepicker({
         onDateChange: (date) => {
@@ -123,7 +122,7 @@ export const RhfDatepicker = <T extends FieldValues>({
                 value={fieldValue}
                 label={label}
                 description={description}
-                error={customErrorFormatter ? customErrorFormatter(getError(errors, name)) : getError(errors, name)}
+                error={customErrorFormatter ? customErrorFormatter(errorMessage) : errorMessage}
                 placeholder={intl.formatMessage({ id: 'Skjema.input.dato.placeholder' })}
                 autoFocus={autofocusWhenEmpty && field.value === undefined}
             />
