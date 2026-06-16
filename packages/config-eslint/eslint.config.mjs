@@ -90,10 +90,10 @@ export default [
                 {
                     patterns: [
                         {
-                            group: ['@navikt/fp-*/src/*', '@navikt/fp-*/src'],
+                            group: ['@navikt/fp-*/src', '@navikt/fp-*/src/**'],
                             message:
                                 'Importer fra pakkens public API (f.eks. @navikt/fp-utils), ikke interne /src/-stier. Mangler eksporten? Legg den til i pakkens index.ts.',
-                        },
+                        }
                     ],
                 },
             ],
