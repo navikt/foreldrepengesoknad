@@ -120,8 +120,6 @@ export const harBrukerKunSlettetPerioder = (
     );
 
     if (erKunSaksperioder) {
-        // Samanlikn på verdi, ikkje referanse: opprinneligPlan blir rekna ut på nytt (nye objekt)
-        // ved kvar render via prosesserPerioderForVisning, så referanselikheit held ikkje i praksis.
         const harSlettetPeriode = perioder
             ? perioder.length < opprinneligPlan.length &&
               perioder.every((periode) =>
