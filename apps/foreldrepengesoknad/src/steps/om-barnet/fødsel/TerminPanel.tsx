@@ -20,8 +20,8 @@ import { EksternArbeidsforholdDto_fpoversikt, Søkerrolle, SøkersituasjonFp } f
 import {
     isBeforeTodayOrToday,
     isRequired,
-    isValidDate,
-    isValidDateString as isValidDateBoolean,
+    isValidDate as isValidDateValidator,
+    isValidDateString,
     terminbekreftelsedatoIsValid,
 } from '@navikt/fp-validation';
 
@@ -45,8 +45,7 @@ export const TerminPanel = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtN
 
     const formMethods = useFormContext<UfødtBarn>();
     const termindato = formMethods.watch('termindato');
-    const erForTidligTilÅSøkePåTermin =
-        termindato && isValidDateBoolean(termindato) ? !erIUke22Pluss3(termindato) : false;
+    const erForTidligTilÅSøkePåTermin = termindato && isValidDateString(termindato) ? !erIUke22Pluss3(termindato) : false;
 
     const søkerErFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const farMedMorSøkerPåTermin = søkerErFarMedmor && termindato;
@@ -75,7 +74,7 @@ export const TerminPanel = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtN
                         useStrategyAbsolute
                         validate={[
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.omBarnet.termindato.duMåOppgi' })),
-                            isValidDate(
+                            isValidDateValidator(
                                 intl.formatMessage({ id: 'valideringsfeil.omBarnet.termindato.ugyldigDatoFormat' }),
                             ),
                             (termindatoVerdi) => {
@@ -121,7 +120,7 @@ export const TerminPanel = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtN
                         isRequired(
                             intl.formatMessage({ id: 'valideringsfeil.omBarnet.terminbekreftelseDato.duMåOppgi' }),
                         ),
-                        isValidDate(
+                        isValidDateValidator(
                             intl.formatMessage({
                                 id: 'valideringsfeil.omBarnet.terminbekreftelseDato.ugyldigDatoFormat',
                             }),
