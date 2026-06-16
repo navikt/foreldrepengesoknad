@@ -43,8 +43,8 @@ export default [
     {
         rules: {
             ...vitest.configs.recommended.rules,
-            'eqeqeq': [ERROR, 'always'],
-            'curly': [ERROR, 'all'],
+            eqeqeq: [ERROR, 'always'],
+            curly: [ERROR, 'all'],
             'max-len': [ERROR, 160],
             'no-console': ERROR,
             'no-debugger': ERROR,
@@ -85,6 +85,18 @@ export default [
             'no-unused-vars': OFF,
             '@typescript-eslint/no-unused-vars': [ERROR, { ignoreRestSiblings: true }],
             'no-duplicate-imports': ERROR,
+            'no-restricted-imports': [
+                ERROR,
+                {
+                    patterns: [
+                        {
+                            group: ['@navikt/fp-*/src/*', '@navikt/fp-*/src'],
+                            message:
+                                'Importer fra pakkens public API (f.eks. @navikt/fp-utils), ikke interne /src/-stier. Mangler eksporten? Legg den til i pakkens index.ts.',
+                        },
+                    ],
+                },
+            ],
             '@typescript-eslint/array-type': [ERROR, { default: 'array-simple' }],
             '@typescript-eslint/ban-ts-comment': ERROR,
             'import-x/no-default-export': ERROR,

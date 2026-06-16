@@ -2,8 +2,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Hide, Show } from '@navikt/ds-react';
 
-import { capitalizeFirstLetter } from '@navikt/fp-utils';
-import { periodFormat } from '@navikt/fp-utils/src/periodUtils';
+import { capitalizeFirstLetter, periodFormat } from '@navikt/fp-utils';
 
 interface PeriodeRadProps {
     hvem: string;

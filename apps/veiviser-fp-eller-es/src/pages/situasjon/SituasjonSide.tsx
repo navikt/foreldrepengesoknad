@@ -13,8 +13,7 @@ import { RhfForm, RhfNumericField } from '@navikt/fp-form-hooks';
 import { Satser } from '@navikt/fp-types';
 import { BluePanel, Infobox, VeiviserPage } from '@navikt/fp-ui';
 import { formatCurrencyWithKr, useScrollBehaviour } from '@navikt/fp-utils';
-import { isValidDecimal, isValidNumberForm } from '@navikt/fp-validation';
-import { formatValue } from '@navikt/fp-validation/src/form/numberFormValidation';
+import { formatValue, isValidDecimal, isValidNumberForm } from '@navikt/fp-validation';
 
 import { BlueRadioGroup } from '../BlueRadioGroup';
 

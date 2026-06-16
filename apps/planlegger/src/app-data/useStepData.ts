@@ -8,7 +8,7 @@ import { HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { erFlereSøkere } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 
-import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
+import { DATE_3_YEARS_AGO } from '@navikt/fp-constants';
 import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { ProgressStep } from '@navikt/fp-ui';
 

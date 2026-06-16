@@ -18,9 +18,9 @@ import {
     UttakPeriode_fpoversikt,
     isAdoptertBarn,
     isFødtBarn,
+    isIkkeUtfyltTypeBarn,
     isUfødtBarn,
 } from '@navikt/fp-types';
-import { isIkkeUtfyltTypeBarn } from '@navikt/fp-types/src/Barn';
 import { Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 

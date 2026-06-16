@@ -29,6 +29,7 @@ export {
     isValidInteger,
     hasMaxValue,
     hasMinValue,
+    formatValue,
 } from './src/form/numberFormValidation';
 export { isValidNumber } from './src/other/numberValidation';
 export {
@@ -46,6 +47,7 @@ export {
     isAfterDate,
     isPeriodNotOverlappingOthers,
     isLessThanOneAndHalfYearsAgo,
+    isLessThanThreeWeeksBeforeFødsel,
     isBeforeToday,
     terminbekreftelsedatoMåVæreUtstedetEtter22Svangerskapsuke as terminbekreftelsedatoIsValid,
     isWeekday,

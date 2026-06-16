@@ -14,8 +14,7 @@ import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react';
 import { links } from '@navikt/fp-constants';
 import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { IconCircleWrapper, Infobox, StepButtons } from '@navikt/fp-ui';
-import { beregnBarnehagestartDato } from '@navikt/fp-utils';
-import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
+import { beregnBarnehagestartDato, useScrollBehaviour } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 export const barnehagestartDato = (barnet: OmBarnetPlanlegger): string | undefined => {

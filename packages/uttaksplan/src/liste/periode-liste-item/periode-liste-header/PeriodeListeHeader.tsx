@@ -4,13 +4,16 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HGrid, HStack, Heading, Hide, Show } from '@navikt/ds-react';
 
-import { DDMMMYY_DATE_FORMAT } from '@navikt/fp-constants/src/dates';
+import { DDMMMYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { Uttaksplanperiode } from '../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../utils/dateUtils';
-import { harPeriodeDerMorsAktivitetIkkeErValgt, harPeriodeMedUkjentGraderingsaktivitet } from '../../../utils/periodeUtils';
+import {
+    harPeriodeDerMorsAktivitetIkkeErValgt,
+    harPeriodeMedUkjentGraderingsaktivitet,
+} from '../../../utils/periodeUtils';
 import {
     erUttaksplanperiodeFamiliehendelseDato,
     getFørsteUttaksplanperiodeFom,

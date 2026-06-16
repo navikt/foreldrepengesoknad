@@ -11,8 +11,10 @@ export { OpprinneligSøkt } from './src/opprinneligSøkt';
 export { DEFAULT_SATSER } from './src/grunnbeløp';
 export {
     DATE_4_YEARS_AGO,
+    DATE_3_YEARS_AGO,
     ISO_DATE_REGEX,
     ISO_DATE_FORMAT,
+    DDMMMYY_DATE_FORMAT,
     DDMMYY_DATE_FORMAT,
     DDMMM_DATE_FORMAT,
     DDMMYYYY_DATE_FORMAT,

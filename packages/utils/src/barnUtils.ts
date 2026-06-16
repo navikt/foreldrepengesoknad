@@ -1,7 +1,13 @@
 import dayjs from 'dayjs';
 
-import { Barn, Familiesituasjon, isFødtBarn } from '@navikt/fp-types';
-import { isAdoptertBarn, isIkkeUtfyltTypeBarn, isUfødtBarn } from '@navikt/fp-types/src/Barn';
+import {
+    Barn,
+    Familiesituasjon,
+    isAdoptertBarn,
+    isFødtBarn,
+    isIkkeUtfyltTypeBarn,
+    isUfødtBarn,
+} from '@navikt/fp-types';
 
 export const getFamiliehendelsedato = (barn: Barn): string => {
     if (isFødtBarn(barn) || isIkkeUtfyltTypeBarn(barn)) {

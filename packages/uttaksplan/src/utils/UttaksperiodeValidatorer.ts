@@ -3,7 +3,7 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import minMax from 'dayjs/plugin/minMax';
 
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants/src/dates';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { Tidsperioden, Uttaksdagen } from '@navikt/fp-utils';
 
 dayjs.extend(minMax);
