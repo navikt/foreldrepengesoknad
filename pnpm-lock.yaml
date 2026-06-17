@@ -4,6 +4,147 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    '@navikt/aksel-icons':
+      specifier: 8.12.1
+      version: 8.12.1
+    '@navikt/ds-css':
+      specifier: 8.12.1
+      version: 8.12.1
+    '@navikt/ds-react':
+      specifier: 8.12.1
+      version: 8.12.1
+    '@navikt/ds-tailwind':
+      specifier: 8.12.1
+      version: 8.12.1
+    '@navikt/nav-dekoratoren-moduler':
+      specifier: 4.2.2
+      version: 4.2.2
+    '@sentry/vite-plugin':
+      specifier: 5.3.0
+      version: 5.3.0
+    '@storybook/addon-links':
+      specifier: 10.4.4
+      version: 10.4.4
+    '@storybook/react-vite':
+      specifier: 10.4.4
+      version: 10.4.4
+    '@tanstack/react-query':
+      specifier: 5.101.0
+      version: 5.101.0
+    '@tanstack/react-query-devtools':
+      specifier: 5.101.0
+      version: 5.101.0
+    '@testing-library/dom':
+      specifier: 10.4.1
+      version: 10.4.1
+    '@testing-library/jest-dom':
+      specifier: 6.9.1
+      version: 6.9.1
+    '@testing-library/react':
+      specifier: 16.3.2
+      version: 16.3.2
+    '@testing-library/user-event':
+      specifier: 14.6.1
+      version: 14.6.1
+    '@types/express':
+      specifier: 5.0.6
+      version: 5.0.6
+    '@types/lodash':
+      specifier: 4.17.24
+      version: 4.17.24
+    '@types/morgan':
+      specifier: 1.9.10
+      version: 1.9.10
+    '@types/node':
+      specifier: 25.9.3
+      version: 25.9.3
+    '@types/react':
+      specifier: 19.2.17
+      version: 19.2.17
+    '@types/react-dom':
+      specifier: 19.2.3
+      version: 19.2.3
+    classnames:
+      specifier: 2.5.1
+      version: 2.5.1
+    dayjs:
+      specifier: 1.11.21
+      version: 1.11.21
+    dotenv:
+      specifier: 17.4.2
+      version: 17.4.2
+    esbuild:
+      specifier: 0.28.1
+      version: 0.28.1
+    eslint:
+      specifier: 10.5.0
+      version: 10.5.0
+    express:
+      specifier: 5.2.1
+      version: 5.2.1
+    http-proxy-middleware:
+      specifier: 4.1.0
+      version: 4.1.0
+    i18n-iso-countries:
+      specifier: 7.14.0
+      version: 7.14.0
+    jsdom:
+      specifier: 29.1.1
+      version: 29.1.1
+    ky:
+      specifier: 2.0.2
+      version: 2.0.2
+    lodash:
+      specifier: 4.18.1
+      version: 4.18.1
+    mockdate:
+      specifier: 3.0.5
+      version: 3.0.5
+    morgan:
+      specifier: 1.11.0
+      version: 1.11.0
+    mustache-express:
+      specifier: 1.3.2
+      version: 1.3.2
+    react:
+      specifier: 19.2.7
+      version: 19.2.7
+    react-dom:
+      specifier: 19.2.7
+      version: 19.2.7
+    react-hook-form:
+      specifier: 7.78.0
+      version: 7.78.0
+    react-intl:
+      specifier: 10.1.13
+      version: 10.1.13
+    react-router-dom:
+      specifier: 7.17.0
+      version: 7.17.0
+    storybook:
+      specifier: 10.4.4
+      version: 10.4.4
+    storybook-react-intl:
+      specifier: 10.2.1
+      version: 10.2.1
+    tailwindcss:
+      specifier: 4.3.1
+      version: 4.3.1
+    ts-node:
+      specifier: ^10.9.2
+      version: 10.9.2
+    typescript:
+      specifier: 6.0.3
+      version: 6.0.3
+    vite:
+      specifier: 8.0.16
+      version: 8.0.16
+    vitest:
+      specifier: 4.1.8
+      version: 4.1.8
+
 overrides:
   js-cookie: 3.0.7
 
@@ -22,7 +163,7 @@ importers:
         specifier: 6.0.2
         version: 6.0.2(prettier@3.8.4)
       '@types/node':
-        specifier: 25.9.3
+        specifier: 'catalog:'
         version: 25.9.3
       knip:
         specifier: 6.16.1
@@ -37,19 +178,19 @@ importers:
         specifier: 3.8.4
         version: 3.8.4
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
 
   apps/engangsstonad:
     dependencies:
       '@navikt/ds-css':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-react':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@navikt/ds-tailwind':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/fp-app-shell':
         specifier: workspace:*
@@ -88,37 +229,37 @@ importers:
         specifier: workspace:*
         version: link:../../packages/validation
       '@navikt/nav-dekoratoren-moduler':
-        specifier: 4.2.2
+        specifier: 'catalog:'
         version: 4.2.2(html-react-parser@6.1.1(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)
       '@sentry/vite-plugin':
-        specifier: 5.3.0
+        specifier: 'catalog:'
         version: 5.3.0
       '@tanstack/react-query':
-        specifier: 5.101.0
+        specifier: 'catalog:'
         version: 5.101.0(react@19.2.7)
       dayjs:
-        specifier: 1.11.21
+        specifier: 'catalog:'
         version: 1.11.21
       ky:
-        specifier: 2.0.2
+        specifier: 'catalog:'
         version: 2.0.2
       lodash:
-        specifier: 4.18.1
+        specifier: 'catalog:'
         version: 4.18.1
       react:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7
       react-dom:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7(react@19.2.7)
       react-hook-form:
-        specifier: 7.78.0
+        specifier: 'catalog:'
         version: 7.78.0(react@19.2.7)
       react-intl:
-        specifier: 10.1.13
+        specifier: 'catalog:'
         version: 10.1.13(@types/react@19.2.17)(react@19.2.7)
       react-router-dom:
-        specifier: 7.17.0
+        specifier: 'catalog:'
         version: 7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
     devDependencies:
       '@navikt/fp-config-eslint':
@@ -134,82 +275,82 @@ importers:
         specifier: workspace:*
         version: link:../../packages/utils-test
       '@storybook/react-vite':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(esbuild@0.28.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@6.0.3)(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/dom':
-        specifier: 10.4.1
+        specifier: 'catalog:'
         version: 10.4.1
       '@testing-library/jest-dom':
-        specifier: 6.9.1
+        specifier: 'catalog:'
         version: 6.9.1
       '@testing-library/react':
-        specifier: 16.3.2
+        specifier: 'catalog:'
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@testing-library/user-event':
-        specifier: 14.6.1
+        specifier: 'catalog:'
         version: 14.6.1(@testing-library/dom@10.4.1)
       '@types/express':
-        specifier: 5.0.6
+        specifier: 'catalog:'
         version: 5.0.6
       '@types/lodash':
-        specifier: 4.17.24
+        specifier: 'catalog:'
         version: 4.17.24
       '@types/react':
-        specifier: 19.2.17
+        specifier: 'catalog:'
         version: 19.2.17
       '@types/react-dom':
-        specifier: 19.2.3
+        specifier: 'catalog:'
         version: 19.2.3(@types/react@19.2.17)
       dotenv:
-        specifier: 17.4.2
+        specifier: 'catalog:'
         version: 17.4.2
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       express:
-        specifier: 5.2.1
+        specifier: 'catalog:'
         version: 5.2.1
       http-proxy-middleware:
-        specifier: 4.1.0
+        specifier: 'catalog:'
         version: 4.1.0
       jsdom:
-        specifier: 29.1.1
+        specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@1.8.0)
       mustache-express:
-        specifier: 1.3.2
+        specifier: 'catalog:'
         version: 1.3.2
       storybook:
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       tailwindcss:
-        specifier: 4.3.1
+        specifier: 'catalog:'
         version: 4.3.1
       ts-node:
-        specifier: ^10.9.2
+        specifier: 'catalog:'
         version: 10.9.2(@types/node@25.9.3)(typescript@6.0.3)
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       vite:
-        specifier: 8.0.16
+        specifier: 'catalog:'
         version: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
-        specifier: 4.1.8
+        specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@25.9.3)(@vitest/browser-playwright@4.1.8)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@25.9.3)(typescript@6.0.3))(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   apps/foreldrepengeoversikt:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-css':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-react':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@navikt/ds-tailwind':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/fp-app-shell':
         specifier: workspace:*
@@ -242,40 +383,40 @@ importers:
         specifier: workspace:*
         version: link:../../packages/validation
       '@navikt/nav-dekoratoren-moduler':
-        specifier: 4.2.2
+        specifier: 'catalog:'
         version: 4.2.2(html-react-parser@6.1.1(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)
       '@sentry/vite-plugin':
-        specifier: 5.3.0
+        specifier: 'catalog:'
         version: 5.3.0
       '@tanstack/react-query':
-        specifier: 5.101.0
+        specifier: 'catalog:'
         version: 5.101.0(react@19.2.7)
       classnames:
-        specifier: 2.5.1
+        specifier: 'catalog:'
         version: 2.5.1
       dayjs:
-        specifier: 1.11.21
+        specifier: 'catalog:'
         version: 1.11.21
       jotai:
         specifier: 2.20.1
         version: 2.20.1(@babel/core@7.29.7)(@babel/template@7.29.7)(@types/react@19.2.17)(react@19.2.7)
       ky:
-        specifier: 2.0.2
+        specifier: 'catalog:'
         version: 2.0.2
       lodash:
-        specifier: 4.18.1
+        specifier: 'catalog:'
         version: 4.18.1
       react:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7
       react-dom:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7(react@19.2.7)
       react-intl:
-        specifier: 10.1.13
+        specifier: 'catalog:'
         version: 10.1.13(@types/react@19.2.17)(react@19.2.7)
       react-router-dom:
-        specifier: 7.17.0
+        specifier: 'catalog:'
         version: 7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
     devDependencies:
       '@navikt/fp-config-eslint':
@@ -291,94 +432,94 @@ importers:
         specifier: workspace:*
         version: link:../../packages/utils-test
       '@storybook/react-vite':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(esbuild@0.28.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@6.0.3)(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/dom':
-        specifier: 10.4.1
+        specifier: 'catalog:'
         version: 10.4.1
       '@testing-library/jest-dom':
-        specifier: 6.9.1
+        specifier: 'catalog:'
         version: 6.9.1
       '@testing-library/react':
-        specifier: 16.3.2
+        specifier: 'catalog:'
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@testing-library/user-event':
-        specifier: 14.6.1
+        specifier: 'catalog:'
         version: 14.6.1(@testing-library/dom@10.4.1)
       '@types/express':
-        specifier: 5.0.6
+        specifier: 'catalog:'
         version: 5.0.6
       '@types/jsdom':
         specifier: 28.0.3
         version: 28.0.3
       '@types/lodash':
-        specifier: 4.17.24
+        specifier: 'catalog:'
         version: 4.17.24
       '@types/morgan':
-        specifier: 1.9.10
+        specifier: 'catalog:'
         version: 1.9.10
       '@types/node':
-        specifier: 25.9.3
+        specifier: 'catalog:'
         version: 25.9.3
       '@types/react':
-        specifier: 19.2.17
+        specifier: 'catalog:'
         version: 19.2.17
       '@types/react-dom':
-        specifier: 19.2.3
+        specifier: 'catalog:'
         version: 19.2.3(@types/react@19.2.17)
       dotenv:
-        specifier: 17.4.2
+        specifier: 'catalog:'
         version: 17.4.2
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       express:
-        specifier: 5.2.1
+        specifier: 'catalog:'
         version: 5.2.1
       http-proxy-middleware:
-        specifier: 4.1.0
+        specifier: 'catalog:'
         version: 4.1.0
       jsdom:
-        specifier: 29.1.1
+        specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@1.8.0)
       morgan:
-        specifier: 1.11.0
+        specifier: 'catalog:'
         version: 1.11.0
       mustache-express:
-        specifier: 1.3.2
+        specifier: 'catalog:'
         version: 1.3.2
       storybook:
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       tailwindcss:
-        specifier: 4.3.1
+        specifier: 'catalog:'
         version: 4.3.1
       ts-node:
-        specifier: ^10.9.2
+        specifier: 'catalog:'
         version: 10.9.2(@types/node@25.9.3)(typescript@6.0.3)
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       vite:
-        specifier: 8.0.16
+        specifier: 'catalog:'
         version: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
-        specifier: 4.1.8
+        specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@25.9.3)(@vitest/browser-playwright@4.1.8)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@25.9.3)(typescript@6.0.3))(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   apps/foreldrepengesoknad:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-css':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-react':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@navikt/ds-tailwind':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/fnrvalidator':
         specifier: 2.2.1
@@ -432,40 +573,40 @@ importers:
         specifier: workspace:*
         version: link:../../packages/validation
       '@navikt/nav-dekoratoren-moduler':
-        specifier: 4.2.2
+        specifier: 'catalog:'
         version: 4.2.2(html-react-parser@6.1.1(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)
       '@sentry/vite-plugin':
-        specifier: 5.3.0
+        specifier: 'catalog:'
         version: 5.3.0
       '@tanstack/react-query':
-        specifier: 5.101.0
+        specifier: 'catalog:'
         version: 5.101.0(react@19.2.7)
       classnames:
-        specifier: 2.5.1
+        specifier: 'catalog:'
         version: 2.5.1
       dayjs:
-        specifier: 1.11.21
+        specifier: 'catalog:'
         version: 1.11.21
       ky:
-        specifier: 2.0.2
+        specifier: 'catalog:'
         version: 2.0.2
       lodash:
-        specifier: 4.18.1
+        specifier: 'catalog:'
         version: 4.18.1
       react:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7
       react-dom:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7(react@19.2.7)
       react-hook-form:
-        specifier: 7.78.0
+        specifier: 'catalog:'
         version: 7.78.0(react@19.2.7)
       react-intl:
-        specifier: 10.1.13
+        specifier: 'catalog:'
         version: 10.1.13(@types/react@19.2.17)(react@19.2.7)
       react-router-dom:
-        specifier: 7.17.0
+        specifier: 'catalog:'
         version: 7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
     devDependencies:
       '@navikt/fp-config-eslint':
@@ -481,88 +622,88 @@ importers:
         specifier: workspace:*
         version: link:../../packages/utils-test
       '@storybook/react-vite':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(esbuild@0.28.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@6.0.3)(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/dom':
-        specifier: 10.4.1
+        specifier: 'catalog:'
         version: 10.4.1
       '@testing-library/jest-dom':
-        specifier: 6.9.1
+        specifier: 'catalog:'
         version: 6.9.1
       '@testing-library/react':
-        specifier: 16.3.2
+        specifier: 'catalog:'
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@testing-library/user-event':
-        specifier: 14.6.1
+        specifier: 'catalog:'
         version: 14.6.1(@testing-library/dom@10.4.1)
       '@types/express':
-        specifier: 5.0.6
+        specifier: 'catalog:'
         version: 5.0.6
       '@types/lodash':
-        specifier: 4.17.24
+        specifier: 'catalog:'
         version: 4.17.24
       '@types/node':
-        specifier: 25.9.3
+        specifier: 'catalog:'
         version: 25.9.3
       '@types/react':
-        specifier: 19.2.17
+        specifier: 'catalog:'
         version: 19.2.17
       '@types/react-dom':
-        specifier: 19.2.3
+        specifier: 'catalog:'
         version: 19.2.3(@types/react@19.2.17)
       dotenv:
-        specifier: 17.4.2
+        specifier: 'catalog:'
         version: 17.4.2
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       express:
-        specifier: 5.2.1
+        specifier: 'catalog:'
         version: 5.2.1
       http-proxy-middleware:
-        specifier: 4.1.0
+        specifier: 'catalog:'
         version: 4.1.0
       jsdom:
-        specifier: 29.1.1
+        specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@1.8.0)
       mockdate:
-        specifier: 3.0.5
+        specifier: 'catalog:'
         version: 3.0.5
       mustache-express:
-        specifier: 1.3.2
+        specifier: 'catalog:'
         version: 1.3.2
       storybook:
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       tailwindcss:
-        specifier: 4.3.1
+        specifier: 'catalog:'
         version: 4.3.1
       ts-node:
-        specifier: ^10.9.2
+        specifier: 'catalog:'
         version: 10.9.2(@types/node@25.9.3)(typescript@6.0.3)
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       vite:
-        specifier: 8.0.16
+        specifier: 'catalog:'
         version: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
-        specifier: 4.1.8
+        specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@25.9.3)(@vitest/browser-playwright@4.1.8)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@25.9.3)(typescript@6.0.3))(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   apps/planlegger:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-css':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-react':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@navikt/ds-tailwind':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/fp-app-shell':
         specifier: workspace:*
@@ -592,40 +733,40 @@ importers:
         specifier: workspace:*
         version: link:../../packages/validation
       '@navikt/nav-dekoratoren-moduler':
-        specifier: 4.2.2
+        specifier: 'catalog:'
         version: 4.2.2(html-react-parser@6.1.1(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)
       '@sentry/vite-plugin':
-        specifier: 5.3.0
+        specifier: 'catalog:'
         version: 5.3.0
       '@tanstack/react-query':
-        specifier: 5.101.0
+        specifier: 'catalog:'
         version: 5.101.0(react@19.2.7)
       dayjs:
-        specifier: 1.11.21
+        specifier: 'catalog:'
         version: 1.11.21
       ky:
-        specifier: 2.0.2
+        specifier: 'catalog:'
         version: 2.0.2
       lodash:
-        specifier: 4.18.1
+        specifier: 'catalog:'
         version: 4.18.1
       morgan:
-        specifier: 1.11.0
+        specifier: 'catalog:'
         version: 1.11.0
       react:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7
       react-dom:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7(react@19.2.7)
       react-hook-form:
-        specifier: 7.78.0
+        specifier: 'catalog:'
         version: 7.78.0(react@19.2.7)
       react-intl:
-        specifier: 10.1.13
+        specifier: 'catalog:'
         version: 10.1.13(@types/react@19.2.17)(react@19.2.7)
       react-router-dom:
-        specifier: 7.17.0
+        specifier: 'catalog:'
         version: 7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
     devDependencies:
       '@navikt/fp-config-eslint':
@@ -641,85 +782,85 @@ importers:
         specifier: workspace:*
         version: link:../../packages/utils-test
       '@storybook/react-vite':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(esbuild@0.28.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@6.0.3)(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/dom':
-        specifier: 10.4.1
+        specifier: 'catalog:'
         version: 10.4.1
       '@testing-library/jest-dom':
-        specifier: 6.9.1
+        specifier: 'catalog:'
         version: 6.9.1
       '@testing-library/react':
-        specifier: 16.3.2
+        specifier: 'catalog:'
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@testing-library/user-event':
-        specifier: 14.6.1
+        specifier: 'catalog:'
         version: 14.6.1(@testing-library/dom@10.4.1)
       '@types/express':
-        specifier: 5.0.6
+        specifier: 'catalog:'
         version: 5.0.6
       '@types/lodash':
-        specifier: 4.17.24
+        specifier: 'catalog:'
         version: 4.17.24
       '@types/morgan':
-        specifier: 1.9.10
+        specifier: 'catalog:'
         version: 1.9.10
       '@types/react':
-        specifier: 19.2.17
+        specifier: 'catalog:'
         version: 19.2.17
       '@types/react-dom':
-        specifier: 19.2.3
+        specifier: 'catalog:'
         version: 19.2.3(@types/react@19.2.17)
       dotenv:
-        specifier: 17.4.2
+        specifier: 'catalog:'
         version: 17.4.2
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       express:
-        specifier: 5.2.1
+        specifier: 'catalog:'
         version: 5.2.1
       http-proxy-middleware:
-        specifier: 4.1.0
+        specifier: 'catalog:'
         version: 4.1.0
       jsdom:
-        specifier: 29.1.1
+        specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@1.8.0)
       mustache-express:
-        specifier: 1.3.2
+        specifier: 'catalog:'
         version: 1.3.2
       storybook:
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       tailwindcss:
-        specifier: 4.3.1
+        specifier: 'catalog:'
         version: 4.3.1
       ts-node:
-        specifier: ^10.9.2
+        specifier: 'catalog:'
         version: 10.9.2(@types/node@25.9.3)(typescript@6.0.3)
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       vite:
-        specifier: 8.0.16
+        specifier: 'catalog:'
         version: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
-        specifier: 4.1.8
+        specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@25.9.3)(@vitest/browser-playwright@4.1.8)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@25.9.3)(typescript@6.0.3))(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   apps/svangerskapspengesoknad:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-css':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-react':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@navikt/ds-tailwind':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/fp-app-shell':
         specifier: workspace:*
@@ -767,37 +908,37 @@ importers:
         specifier: workspace:*
         version: link:../../packages/validation
       '@navikt/nav-dekoratoren-moduler':
-        specifier: 4.2.2
+        specifier: 'catalog:'
         version: 4.2.2(html-react-parser@6.1.1(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)
       '@sentry/vite-plugin':
-        specifier: 5.3.0
+        specifier: 'catalog:'
         version: 5.3.0
       '@tanstack/react-query':
-        specifier: 5.101.0
+        specifier: 'catalog:'
         version: 5.101.0(react@19.2.7)
       dayjs:
-        specifier: 1.11.21
+        specifier: 'catalog:'
         version: 1.11.21
       ky:
-        specifier: 2.0.2
+        specifier: 'catalog:'
         version: 2.0.2
       lodash:
-        specifier: 4.18.1
+        specifier: 'catalog:'
         version: 4.18.1
       react:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7
       react-dom:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7(react@19.2.7)
       react-hook-form:
-        specifier: 7.78.0
+        specifier: 'catalog:'
         version: 7.78.0(react@19.2.7)
       react-intl:
-        specifier: 10.1.13
+        specifier: 'catalog:'
         version: 10.1.13(@types/react@19.2.17)(react@19.2.7)
       react-router-dom:
-        specifier: 7.17.0
+        specifier: 'catalog:'
         version: 7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
     devDependencies:
       '@navikt/fp-config-eslint':
@@ -813,85 +954,85 @@ importers:
         specifier: workspace:*
         version: link:../../packages/utils-test
       '@storybook/react-vite':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(esbuild@0.28.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@6.0.3)(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/dom':
-        specifier: 10.4.1
+        specifier: 'catalog:'
         version: 10.4.1
       '@testing-library/jest-dom':
-        specifier: 6.9.1
+        specifier: 'catalog:'
         version: 6.9.1
       '@testing-library/react':
-        specifier: 16.3.2
+        specifier: 'catalog:'
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@testing-library/user-event':
-        specifier: 14.6.1
+        specifier: 'catalog:'
         version: 14.6.1(@testing-library/dom@10.4.1)
       '@types/express':
-        specifier: 5.0.6
+        specifier: 'catalog:'
         version: 5.0.6
       '@types/lodash':
-        specifier: 4.17.24
+        specifier: 'catalog:'
         version: 4.17.24
       '@types/react':
-        specifier: 19.2.17
+        specifier: 'catalog:'
         version: 19.2.17
       '@types/react-dom':
-        specifier: 19.2.3
+        specifier: 'catalog:'
         version: 19.2.3(@types/react@19.2.17)
       dotenv:
-        specifier: 17.4.2
+        specifier: 'catalog:'
         version: 17.4.2
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       express:
-        specifier: 5.2.1
+        specifier: 'catalog:'
         version: 5.2.1
       http-proxy-middleware:
-        specifier: 4.1.0
+        specifier: 'catalog:'
         version: 4.1.0
       jsdom:
-        specifier: 29.1.1
+        specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@1.8.0)
       mockdate:
-        specifier: 3.0.5
+        specifier: 'catalog:'
         version: 3.0.5
       mustache-express:
-        specifier: 1.3.2
+        specifier: 'catalog:'
         version: 1.3.2
       storybook:
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       tailwindcss:
-        specifier: 4.3.1
+        specifier: 'catalog:'
         version: 4.3.1
       ts-node:
-        specifier: ^10.9.2
+        specifier: 'catalog:'
         version: 10.9.2(@types/node@25.9.3)(typescript@6.0.3)
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       vite:
-        specifier: 8.0.16
+        specifier: 'catalog:'
         version: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
-        specifier: 4.1.8
+        specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@25.9.3)(@vitest/browser-playwright@4.1.8)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@25.9.3)(typescript@6.0.3))(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   apps/veiviser-fp-eller-es:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-css':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-react':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@navikt/ds-tailwind':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/fp-app-shell':
         specifier: workspace:*
@@ -918,28 +1059,28 @@ importers:
         specifier: workspace:*
         version: link:../../packages/validation
       '@sentry/vite-plugin':
-        specifier: 5.3.0
+        specifier: 'catalog:'
         version: 5.3.0
       dayjs:
-        specifier: 1.11.21
+        specifier: 'catalog:'
         version: 1.11.21
       morgan:
-        specifier: 1.11.0
+        specifier: 'catalog:'
         version: 1.11.0
       react:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7
       react-dom:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7(react@19.2.7)
       react-hook-form:
-        specifier: 7.78.0
+        specifier: 'catalog:'
         version: 7.78.0(react@19.2.7)
       react-intl:
-        specifier: 10.1.13
+        specifier: 'catalog:'
         version: 10.1.13(@types/react@19.2.17)(react@19.2.7)
       react-router-dom:
-        specifier: 7.17.0
+        specifier: 'catalog:'
         version: 7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
     devDependencies:
       '@navikt/fp-config-eslint':
@@ -955,79 +1096,79 @@ importers:
         specifier: workspace:*
         version: link:../../packages/utils-test
       '@storybook/react-vite':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(esbuild@0.28.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@6.0.3)(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/dom':
-        specifier: 10.4.1
+        specifier: 'catalog:'
         version: 10.4.1
       '@testing-library/jest-dom':
-        specifier: 6.9.1
+        specifier: 'catalog:'
         version: 6.9.1
       '@testing-library/react':
-        specifier: 16.3.2
+        specifier: 'catalog:'
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@testing-library/user-event':
-        specifier: 14.6.1
+        specifier: 'catalog:'
         version: 14.6.1(@testing-library/dom@10.4.1)
       '@types/express':
-        specifier: 5.0.6
+        specifier: 'catalog:'
         version: 5.0.6
       '@types/morgan':
-        specifier: 1.9.10
+        specifier: 'catalog:'
         version: 1.9.10
       '@types/react':
-        specifier: 19.2.17
+        specifier: 'catalog:'
         version: 19.2.17
       '@types/react-dom':
-        specifier: 19.2.3
+        specifier: 'catalog:'
         version: 19.2.3(@types/react@19.2.17)
       dotenv:
-        specifier: 17.4.2
+        specifier: 'catalog:'
         version: 17.4.2
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       express:
-        specifier: 5.2.1
+        specifier: 'catalog:'
         version: 5.2.1
       jsdom:
-        specifier: 29.1.1
+        specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@1.8.0)
       mustache-express:
-        specifier: 1.3.2
+        specifier: 'catalog:'
         version: 1.3.2
       storybook:
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       tailwindcss:
-        specifier: 4.3.1
+        specifier: 'catalog:'
         version: 4.3.1
       ts-node:
-        specifier: ^10.9.2
+        specifier: 'catalog:'
         version: 10.9.2(@types/node@25.9.3)(typescript@6.0.3)
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       vite:
-        specifier: 8.0.16
+        specifier: 'catalog:'
         version: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
-        specifier: 4.1.8
+        specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@25.9.3)(@vitest/browser-playwright@4.1.8)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@25.9.3)(typescript@6.0.3))(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   apps/veiviser-hvor-mye:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-css':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-react':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@navikt/ds-tailwind':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/fp-app-shell':
         specifier: workspace:*
@@ -1054,34 +1195,34 @@ importers:
         specifier: workspace:*
         version: link:../../packages/validation
       '@sentry/vite-plugin':
-        specifier: 5.3.0
+        specifier: 'catalog:'
         version: 5.3.0
       '@tanstack/react-query':
-        specifier: 5.101.0
+        specifier: 'catalog:'
         version: 5.101.0(react@19.2.7)
       dayjs:
-        specifier: 1.11.21
+        specifier: 'catalog:'
         version: 1.11.21
       ky:
-        specifier: 2.0.2
+        specifier: 'catalog:'
         version: 2.0.2
       morgan:
-        specifier: 1.11.0
+        specifier: 'catalog:'
         version: 1.11.0
       react:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7
       react-dom:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7(react@19.2.7)
       react-hook-form:
-        specifier: 7.78.0
+        specifier: 'catalog:'
         version: 7.78.0(react@19.2.7)
       react-intl:
-        specifier: 10.1.13
+        specifier: 'catalog:'
         version: 10.1.13(@types/react@19.2.17)(react@19.2.7)
       react-router-dom:
-        specifier: 7.17.0
+        specifier: 'catalog:'
         version: 7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
     devDependencies:
       '@navikt/fp-config-eslint':
@@ -1097,67 +1238,67 @@ importers:
         specifier: workspace:*
         version: link:../../packages/utils-test
       '@storybook/react-vite':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(esbuild@0.28.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@6.0.3)(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/dom':
-        specifier: 10.4.1
+        specifier: 'catalog:'
         version: 10.4.1
       '@testing-library/jest-dom':
-        specifier: 6.9.1
+        specifier: 'catalog:'
         version: 6.9.1
       '@testing-library/react':
-        specifier: 16.3.2
+        specifier: 'catalog:'
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@testing-library/user-event':
-        specifier: 14.6.1
+        specifier: 'catalog:'
         version: 14.6.1(@testing-library/dom@10.4.1)
       '@types/express':
-        specifier: 5.0.6
+        specifier: 'catalog:'
         version: 5.0.6
       '@types/morgan':
-        specifier: 1.9.10
+        specifier: 'catalog:'
         version: 1.9.10
       '@types/react':
-        specifier: 19.2.17
+        specifier: 'catalog:'
         version: 19.2.17
       '@types/react-dom':
-        specifier: 19.2.3
+        specifier: 'catalog:'
         version: 19.2.3(@types/react@19.2.17)
       dotenv:
-        specifier: 17.4.2
+        specifier: 'catalog:'
         version: 17.4.2
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       express:
-        specifier: 5.2.1
+        specifier: 'catalog:'
         version: 5.2.1
       http-proxy-middleware:
-        specifier: 4.1.0
+        specifier: 'catalog:'
         version: 4.1.0
       jsdom:
-        specifier: 29.1.1
+        specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@1.8.0)
       mustache-express:
-        specifier: 1.3.2
+        specifier: 'catalog:'
         version: 1.3.2
       storybook:
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       tailwindcss:
-        specifier: 4.3.1
+        specifier: 'catalog:'
         version: 4.3.1
       ts-node:
-        specifier: ^10.9.2
+        specifier: 'catalog:'
         version: 10.9.2(@types/node@25.9.3)(typescript@6.0.3)
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       vite:
-        specifier: 8.0.16
+        specifier: 'catalog:'
         version: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
-        specifier: 4.1.8
+        specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@25.9.3)(@vitest/browser-playwright@4.1.8)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@25.9.3)(typescript@6.0.3))(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/app-shell:
@@ -1166,7 +1307,7 @@ importers:
         specifier: 6.3.10
         version: 6.3.10
       '@navikt/ds-react':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@navikt/fp-observability':
         specifier: workspace:*
@@ -1181,31 +1322,31 @@ importers:
         specifier: workspace:*
         version: link:../utils
       '@navikt/nav-dekoratoren-moduler':
-        specifier: 4.2.2
+        specifier: 'catalog:'
         version: 4.2.2(html-react-parser@6.1.1(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)
       '@tanstack/react-query':
-        specifier: 5.101.0
+        specifier: 'catalog:'
         version: 5.101.0(react@19.2.7)
       '@tanstack/react-query-devtools':
-        specifier: 5.101.0
+        specifier: 'catalog:'
         version: 5.101.0(@tanstack/react-query@5.101.0(react@19.2.7))(react@19.2.7)
       dayjs:
-        specifier: 1.11.21
+        specifier: 'catalog:'
         version: 1.11.21
       i18n-iso-countries:
-        specifier: 7.14.0
+        specifier: 'catalog:'
         version: 7.14.0
       ky:
-        specifier: 2.0.2
+        specifier: 'catalog:'
         version: 2.0.2
       react:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7
       react-dom:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7(react@19.2.7)
       react-router-dom:
-        specifier: 7.17.0
+        specifier: 'catalog:'
         version: 7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
     devDependencies:
       '@navikt/fp-config-eslint':
@@ -1215,19 +1356,19 @@ importers:
         specifier: workspace:*
         version: link:../config-typescript
       '@types/react':
-        specifier: 19.2.17
+        specifier: 'catalog:'
         version: 19.2.17
       '@types/react-dom':
-        specifier: 19.2.3
+        specifier: 'catalog:'
         version: 19.2.3(@types/react@19.2.17)
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       vite:
-        specifier: 8.0.16
+        specifier: 'catalog:'
         version: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
 
   packages/config-eslint:
@@ -1242,7 +1383,7 @@ importers:
         specifier: 1.6.20
         version: 1.6.20(@typescript-eslint/eslint-plugin@8.61.0(@typescript-eslint/parser@8.61.0(eslint@10.5.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.5.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.5.0(jiti@2.7.0))(typescript@6.0.3)(vitest@4.1.8)
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       eslint-config-prettier:
         specifier: 10.1.8
@@ -1263,7 +1404,7 @@ importers:
         specifier: 17.6.0
         version: 17.6.0
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       typescript-eslint:
         specifier: 8.61.0
@@ -1272,7 +1413,7 @@ importers:
   packages/config-typescript:
     devDependencies:
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
 
   packages/config-vite:
@@ -1287,22 +1428,22 @@ importers:
         specifier: 4.1.8
         version: 4.1.8(msw@2.14.6(@types/node@25.9.3)(typescript@6.0.3))(playwright@1.60.0)(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))(vitest@4.1.8)
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       vite:
-        specifier: 8.0.16
+        specifier: 'catalog:'
         version: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vite-plugin-compression2:
         specifier: 2.5.3
         version: 2.5.3
       vitest:
-        specifier: 4.1.8
+        specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@25.9.3)(@vitest/browser-playwright@4.1.8)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@25.9.3)(typescript@6.0.3))(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/constants:
     dependencies:
       dayjs:
-        specifier: 1.11.21
+        specifier: 'catalog:'
         version: 1.11.21
     devDependencies:
       '@navikt/fp-config-eslint':
@@ -1312,19 +1453,19 @@ importers:
         specifier: workspace:*
         version: link:../config-typescript
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
 
   packages/filopplaster:
     dependencies:
       '@navikt/ds-css':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-react':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@navikt/fp-constants':
         specifier: workspace:*
@@ -1336,19 +1477,19 @@ importers:
         specifier: workspace:*
         version: link:../ui
       dayjs:
-        specifier: 1.11.21
+        specifier: 'catalog:'
         version: 1.11.21
       ky:
-        specifier: 2.0.2
+        specifier: 'catalog:'
         version: 2.0.2
       react:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7
       react-dom:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7(react@19.2.7)
       react-intl:
-        specifier: 10.1.13
+        specifier: 'catalog:'
         version: 10.1.13(@types/react@19.2.17)(react@19.2.7)
     devDependencies:
       '@navikt/fp-config-eslint':
@@ -1364,37 +1505,37 @@ importers:
         specifier: workspace:*
         version: link:../utils-test
       '@storybook/react-vite':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(esbuild@0.28.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@6.0.3)(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/jest-dom':
-        specifier: 6.9.1
+        specifier: 'catalog:'
         version: 6.9.1
       '@testing-library/react':
-        specifier: 16.3.2
+        specifier: 'catalog:'
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@testing-library/user-event':
-        specifier: 14.6.1
+        specifier: 'catalog:'
         version: 14.6.1(@testing-library/dom@10.4.1)
       '@types/react':
-        specifier: 19.2.17
+        specifier: 'catalog:'
         version: 19.2.17
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       jsdom:
-        specifier: 29.1.1
+        specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@1.8.0)
       storybook:
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       vite:
-        specifier: 8.0.16
+        specifier: 'catalog:'
         version: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
-        specifier: 4.1.8
+        specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@25.9.3)(@vitest/browser-playwright@4.1.8)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@25.9.3)(typescript@6.0.3))(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/form-hooks:
@@ -1403,10 +1544,10 @@ importers:
         specifier: 2.0.1
         version: 2.0.1(react-dom@19.2.7(react@19.2.7))(react-hook-form@7.78.0(react@19.2.7))(react@19.2.7)
       '@navikt/ds-css':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-react':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@navikt/fp-constants':
         specifier: workspace:*
@@ -1418,23 +1559,23 @@ importers:
         specifier: workspace:*
         version: link:../utils
       dayjs:
-        specifier: 1.11.21
+        specifier: 'catalog:'
         version: 1.11.21
       react:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7
       react-dom:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7(react@19.2.7)
       react-hook-form:
-        specifier: 7.78.0
+        specifier: 'catalog:'
         version: 7.78.0(react@19.2.7)
       react-intl:
-        specifier: 10.1.13
+        specifier: 'catalog:'
         version: 10.1.13(@types/react@19.2.17)(react@19.2.7)
     devDependencies:
       '@navikt/ds-tailwind':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/fp-config-eslint':
         specifier: workspace:*
@@ -1449,49 +1590,49 @@ importers:
         specifier: workspace:*
         version: link:../utils-test
       '@storybook/addon-links':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react@19.2.17)(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       '@storybook/react-vite':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(esbuild@0.28.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@6.0.3)(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/jest-dom':
-        specifier: 6.9.1
+        specifier: 'catalog:'
         version: 6.9.1
       '@testing-library/react':
-        specifier: 16.3.2
+        specifier: 'catalog:'
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@testing-library/user-event':
-        specifier: 14.6.1
+        specifier: 'catalog:'
         version: 14.6.1(@testing-library/dom@10.4.1)
       '@types/react':
-        specifier: 19.2.17
+        specifier: 'catalog:'
         version: 19.2.17
       '@types/react-dom':
-        specifier: 19.2.3
+        specifier: 'catalog:'
         version: 19.2.3(@types/react@19.2.17)
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       jsdom:
-        specifier: 29.1.1
+        specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@1.8.0)
       storybook:
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       storybook-react-intl:
-        specifier: 10.2.1
+        specifier: 'catalog:'
         version: 10.2.1(react-dom@19.2.7(react@19.2.7))(react-intl@10.1.13(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       tailwindcss:
-        specifier: 4.3.1
+        specifier: 'catalog:'
         version: 4.3.1
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       vite:
-        specifier: 8.0.16
+        specifier: 'catalog:'
         version: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
-        specifier: 4.1.8
+        specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@25.9.3)(@vitest/browser-playwright@4.1.8)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@25.9.3)(typescript@6.0.3))(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/observability:
@@ -1500,10 +1641,10 @@ importers:
         specifier: 2.7.1
         version: 2.7.1
       '@navikt/aksel-icons':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-react':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@navikt/fp-types':
         specifier: workspace:*
@@ -1512,10 +1653,10 @@ importers:
         specifier: 10.57.0
         version: 10.57.0
       react:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7
       react-intl:
-        specifier: 10.1.13
+        specifier: 'catalog:'
         version: 10.1.13(@types/react@19.2.17)(react@19.2.7)
     devDependencies:
       '@navikt/fp-config-eslint':
@@ -1528,40 +1669,40 @@ importers:
         specifier: workspace:*
         version: link:../config-vite
       '@types/node':
-        specifier: 25.9.3
+        specifier: 'catalog:'
         version: 25.9.3
       '@types/react':
-        specifier: 19.2.17
+        specifier: 'catalog:'
         version: 19.2.17
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       jsdom:
-        specifier: 29.1.1
+        specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@1.8.0)
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       vite:
-        specifier: 8.0.16
+        specifier: 'catalog:'
         version: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
-        specifier: 4.1.8
+        specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@25.9.3)(@vitest/browser-playwright@4.1.8)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@25.9.3)(typescript@6.0.3))(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/server-utils:
     dependencies:
       '@navikt/nav-dekoratoren-moduler':
-        specifier: 4.2.2
+        specifier: 'catalog:'
         version: 4.2.2(html-react-parser@6.1.1(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)
       '@navikt/vite-mode':
         specifier: 0.13.7
         version: 0.13.7(express@5.2.1)
       express:
-        specifier: 5.2.1
+        specifier: 'catalog:'
         version: 5.2.1
       morgan:
-        specifier: 1.11.0
+        specifier: 'catalog:'
         version: 1.11.0
       winston:
         specifier: 3.19.0
@@ -1574,28 +1715,28 @@ importers:
         specifier: workspace:*
         version: link:../config-typescript
       '@types/express':
-        specifier: 5.0.6
+        specifier: 'catalog:'
         version: 5.0.6
       '@types/morgan':
-        specifier: 1.9.10
+        specifier: 'catalog:'
         version: 1.9.10
       '@types/node':
-        specifier: 25.9.3
+        specifier: 'catalog:'
         version: 25.9.3
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
 
   packages/steg-arbeidsforhold-og-inntekt:
     dependencies:
       '@navikt/ds-css':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-react':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@navikt/fp-constants':
         specifier: workspace:*
@@ -1619,20 +1760,20 @@ importers:
         specifier: workspace:*
         version: link:../validation
       react:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7
       react-dom:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7(react@19.2.7)
       react-hook-form:
-        specifier: 7.78.0
+        specifier: 'catalog:'
         version: 7.78.0(react@19.2.7)
       react-intl:
-        specifier: 10.1.13
+        specifier: 'catalog:'
         version: 10.1.13(@types/react@19.2.17)(react@19.2.7)
     devDependencies:
       '@navikt/ds-tailwind':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/fp-config-eslint':
         specifier: workspace:*
@@ -1647,55 +1788,55 @@ importers:
         specifier: workspace:*
         version: link:../utils-test
       '@storybook/addon-links':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react@19.2.17)(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       '@storybook/react-vite':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(esbuild@0.28.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@6.0.3)(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/jest-dom':
-        specifier: 6.9.1
+        specifier: 'catalog:'
         version: 6.9.1
       '@testing-library/react':
-        specifier: 16.3.2
+        specifier: 'catalog:'
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@testing-library/user-event':
-        specifier: 14.6.1
+        specifier: 'catalog:'
         version: 14.6.1(@testing-library/dom@10.4.1)
       '@types/react':
-        specifier: 19.2.17
+        specifier: 'catalog:'
         version: 19.2.17
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       jsdom:
-        specifier: 29.1.1
+        specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@1.8.0)
       storybook:
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       storybook-react-intl:
-        specifier: 10.2.1
+        specifier: 'catalog:'
         version: 10.2.1(react-dom@19.2.7(react@19.2.7))(react-intl@10.1.13(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       tailwindcss:
-        specifier: 4.3.1
+        specifier: 'catalog:'
         version: 4.3.1
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       vite:
-        specifier: 8.0.16
+        specifier: 'catalog:'
         version: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
-        specifier: 4.1.8
+        specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@25.9.3)(@vitest/browser-playwright@4.1.8)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@25.9.3)(typescript@6.0.3))(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/steg-egen-næring:
     dependencies:
       '@navikt/ds-css':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-react':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@navikt/fp-constants':
         specifier: workspace:*
@@ -1719,23 +1860,23 @@ importers:
         specifier: workspace:*
         version: link:../validation
       dayjs:
-        specifier: 1.11.21
+        specifier: 'catalog:'
         version: 1.11.21
       react:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7
       react-dom:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7(react@19.2.7)
       react-hook-form:
-        specifier: 7.78.0
+        specifier: 'catalog:'
         version: 7.78.0(react@19.2.7)
       react-intl:
-        specifier: 10.1.13
+        specifier: 'catalog:'
         version: 10.1.13(@types/react@19.2.17)(react@19.2.7)
     devDependencies:
       '@navikt/ds-tailwind':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/fp-config-eslint':
         specifier: workspace:*
@@ -1750,55 +1891,55 @@ importers:
         specifier: workspace:*
         version: link:../utils-test
       '@storybook/addon-links':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react@19.2.17)(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       '@storybook/react-vite':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(esbuild@0.28.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@6.0.3)(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/jest-dom':
-        specifier: 6.9.1
+        specifier: 'catalog:'
         version: 6.9.1
       '@testing-library/react':
-        specifier: 16.3.2
+        specifier: 'catalog:'
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@testing-library/user-event':
-        specifier: 14.6.1
+        specifier: 'catalog:'
         version: 14.6.1(@testing-library/dom@10.4.1)
       '@types/react':
-        specifier: 19.2.17
+        specifier: 'catalog:'
         version: 19.2.17
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       jsdom:
-        specifier: 29.1.1
+        specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@1.8.0)
       storybook:
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       storybook-react-intl:
-        specifier: 10.2.1
+        specifier: 'catalog:'
         version: 10.2.1(react-dom@19.2.7(react@19.2.7))(react-intl@10.1.13(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       tailwindcss:
-        specifier: 4.3.1
+        specifier: 'catalog:'
         version: 4.3.1
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       vite:
-        specifier: 8.0.16
+        specifier: 'catalog:'
         version: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
-        specifier: 4.1.8
+        specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@25.9.3)(@vitest/browser-playwright@4.1.8)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@25.9.3)(typescript@6.0.3))(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/steg-frilans:
     dependencies:
       '@navikt/ds-css':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-react':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@navikt/fp-constants':
         specifier: workspace:*
@@ -1816,23 +1957,23 @@ importers:
         specifier: workspace:*
         version: link:../validation
       dayjs:
-        specifier: 1.11.21
+        specifier: 'catalog:'
         version: 1.11.21
       react:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7
       react-dom:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7(react@19.2.7)
       react-hook-form:
-        specifier: 7.78.0
+        specifier: 'catalog:'
         version: 7.78.0(react@19.2.7)
       react-intl:
-        specifier: 10.1.13
+        specifier: 'catalog:'
         version: 10.1.13(@types/react@19.2.17)(react@19.2.7)
     devDependencies:
       '@navikt/ds-tailwind':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/fp-config-eslint':
         specifier: workspace:*
@@ -1847,58 +1988,58 @@ importers:
         specifier: workspace:*
         version: link:../utils-test
       '@storybook/addon-links':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react@19.2.17)(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       '@storybook/react-vite':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(esbuild@0.28.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@6.0.3)(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/jest-dom':
-        specifier: 6.9.1
+        specifier: 'catalog:'
         version: 6.9.1
       '@testing-library/react':
-        specifier: 16.3.2
+        specifier: 'catalog:'
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@testing-library/user-event':
-        specifier: 14.6.1
+        specifier: 'catalog:'
         version: 14.6.1(@testing-library/dom@10.4.1)
       '@types/react':
-        specifier: 19.2.17
+        specifier: 'catalog:'
         version: 19.2.17
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       jsdom:
-        specifier: 29.1.1
+        specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@1.8.0)
       storybook:
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       storybook-react-intl:
-        specifier: 10.2.1
+        specifier: 'catalog:'
         version: 10.2.1(react-dom@19.2.7(react@19.2.7))(react-intl@10.1.13(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       tailwindcss:
-        specifier: 4.3.1
+        specifier: 'catalog:'
         version: 4.3.1
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       vite:
-        specifier: 8.0.16
+        specifier: 'catalog:'
         version: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
-        specifier: 4.1.8
+        specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@25.9.3)(@vitest/browser-playwright@4.1.8)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@25.9.3)(typescript@6.0.3))(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/steg-kvittering:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-css':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-react':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@navikt/fp-types':
         specifier: workspace:*
@@ -1907,17 +2048,17 @@ importers:
         specifier: workspace:*
         version: link:../ui
       react:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7
       react-dom:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7(react@19.2.7)
       react-intl:
-        specifier: 10.1.13
+        specifier: 'catalog:'
         version: 10.1.13(@types/react@19.2.17)(react@19.2.7)
     devDependencies:
       '@navikt/ds-tailwind':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/fp-config-eslint':
         specifier: workspace:*
@@ -1932,52 +2073,52 @@ importers:
         specifier: workspace:*
         version: link:../utils-test
       '@storybook/addon-links':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react@19.2.17)(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       '@storybook/react-vite':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(esbuild@0.28.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@6.0.3)(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/jest-dom':
-        specifier: 6.9.1
+        specifier: 'catalog:'
         version: 6.9.1
       '@testing-library/react':
-        specifier: 16.3.2
+        specifier: 'catalog:'
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@types/react':
-        specifier: 19.2.17
+        specifier: 'catalog:'
         version: 19.2.17
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       jsdom:
-        specifier: 29.1.1
+        specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@1.8.0)
       storybook:
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       storybook-react-intl:
-        specifier: 10.2.1
+        specifier: 'catalog:'
         version: 10.2.1(react-dom@19.2.7(react@19.2.7))(react-intl@10.1.13(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       tailwindcss:
-        specifier: 4.3.1
+        specifier: 'catalog:'
         version: 4.3.1
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       vite:
-        specifier: 8.0.16
+        specifier: 'catalog:'
         version: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
-        specifier: 4.1.8
+        specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@25.9.3)(@vitest/browser-playwright@4.1.8)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@25.9.3)(typescript@6.0.3))(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/steg-oppsummering:
     dependencies:
       '@navikt/ds-css':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-react':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@navikt/fp-types':
         specifier: workspace:*
@@ -1992,23 +2133,23 @@ importers:
         specifier: workspace:*
         version: link:../validation
       dayjs:
-        specifier: 1.11.21
+        specifier: 'catalog:'
         version: 1.11.21
       i18n-iso-countries:
-        specifier: 7.14.0
+        specifier: 'catalog:'
         version: 7.14.0
       react:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7
       react-dom:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7(react@19.2.7)
       react-intl:
-        specifier: 10.1.13
+        specifier: 'catalog:'
         version: 10.1.13(@types/react@19.2.17)(react@19.2.7)
     devDependencies:
       '@navikt/ds-tailwind':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/fp-config-eslint':
         specifier: workspace:*
@@ -2023,58 +2164,58 @@ importers:
         specifier: workspace:*
         version: link:../utils-test
       '@storybook/addon-links':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react@19.2.17)(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       '@storybook/react-vite':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(esbuild@0.28.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@6.0.3)(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/jest-dom':
-        specifier: 6.9.1
+        specifier: 'catalog:'
         version: 6.9.1
       '@testing-library/react':
-        specifier: 16.3.2
+        specifier: 'catalog:'
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@testing-library/user-event':
-        specifier: 14.6.1
+        specifier: 'catalog:'
         version: 14.6.1(@testing-library/dom@10.4.1)
       '@types/react':
-        specifier: 19.2.17
+        specifier: 'catalog:'
         version: 19.2.17
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       jsdom:
-        specifier: 29.1.1
+        specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@1.8.0)
       storybook:
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       storybook-react-intl:
-        specifier: 10.2.1
+        specifier: 'catalog:'
         version: 10.2.1(react-dom@19.2.7(react@19.2.7))(react-intl@10.1.13(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       tailwindcss:
-        specifier: 4.3.1
+        specifier: 'catalog:'
         version: 4.3.1
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       vite:
-        specifier: 8.0.16
+        specifier: 'catalog:'
         version: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
-        specifier: 4.1.8
+        specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@25.9.3)(@vitest/browser-playwright@4.1.8)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@25.9.3)(typescript@6.0.3))(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/steg-utenlandsopphold:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-css':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-react':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@navikt/fp-constants':
         specifier: workspace:*
@@ -2095,23 +2236,23 @@ importers:
         specifier: workspace:*
         version: link:../validation
       dayjs:
-        specifier: 1.11.21
+        specifier: 'catalog:'
         version: 1.11.21
       react:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7
       react-dom:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7(react@19.2.7)
       react-hook-form:
-        specifier: 7.78.0
+        specifier: 'catalog:'
         version: 7.78.0(react@19.2.7)
       react-intl:
-        specifier: 10.1.13
+        specifier: 'catalog:'
         version: 10.1.13(@types/react@19.2.17)(react@19.2.7)
     devDependencies:
       '@navikt/ds-tailwind':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/fp-config-eslint':
         specifier: workspace:*
@@ -2126,46 +2267,46 @@ importers:
         specifier: workspace:*
         version: link:../utils-test
       '@storybook/addon-links':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react@19.2.17)(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       '@storybook/react-vite':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(esbuild@0.28.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@6.0.3)(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/jest-dom':
-        specifier: 6.9.1
+        specifier: 'catalog:'
         version: 6.9.1
       '@testing-library/react':
-        specifier: 16.3.2
+        specifier: 'catalog:'
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@testing-library/user-event':
-        specifier: 14.6.1
+        specifier: 'catalog:'
         version: 14.6.1(@testing-library/dom@10.4.1)
       '@types/react':
-        specifier: 19.2.17
+        specifier: 'catalog:'
         version: 19.2.17
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       jsdom:
-        specifier: 29.1.1
+        specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@1.8.0)
       storybook:
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       storybook-react-intl:
-        specifier: 10.2.1
+        specifier: 'catalog:'
         version: 10.2.1(react-dom@19.2.7(react@19.2.7))(react-intl@10.1.13(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       tailwindcss:
-        specifier: 4.3.1
+        specifier: 'catalog:'
         version: 4.3.1
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       vite:
-        specifier: 8.0.16
+        specifier: 'catalog:'
         version: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
-        specifier: 4.1.8
+        specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@25.9.3)(@vitest/browser-playwright@4.1.8)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@25.9.3)(typescript@6.0.3))(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/types:
@@ -2181,22 +2322,22 @@ importers:
         specifier: workspace:*
         version: link:../config-eslint
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
 
   packages/ui:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-css':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-react':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@navikt/fp-constants':
         specifier: workspace:*
@@ -2214,23 +2355,23 @@ importers:
         specifier: ^1.4.0
         version: 1.4.0(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       dayjs:
-        specifier: 1.11.21
+        specifier: 'catalog:'
         version: 1.11.21
       detect-browser:
         specifier: 5.3.0
         version: 5.3.0
       react:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7
       react-dom:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7(react@19.2.7)
       react-intl:
-        specifier: 10.1.13
+        specifier: 'catalog:'
         version: 10.1.13(@types/react@19.2.17)(react@19.2.7)
     devDependencies:
       '@navikt/ds-tailwind':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/fp-config-eslint':
         specifier: workspace:*
@@ -2245,46 +2386,46 @@ importers:
         specifier: workspace:*
         version: link:../utils-test
       '@storybook/addon-links':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react@19.2.17)(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       '@storybook/react-vite':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(esbuild@0.28.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@6.0.3)(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/jest-dom':
-        specifier: 6.9.1
+        specifier: 'catalog:'
         version: 6.9.1
       '@testing-library/react':
-        specifier: 16.3.2
+        specifier: 'catalog:'
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@testing-library/user-event':
-        specifier: 14.6.1
+        specifier: 'catalog:'
         version: 14.6.1(@testing-library/dom@10.4.1)
       '@types/react':
-        specifier: 19.2.17
+        specifier: 'catalog:'
         version: 19.2.17
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       jsdom:
-        specifier: 29.1.1
+        specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@1.8.0)
       storybook:
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       storybook-react-intl:
-        specifier: 10.2.1
+        specifier: 'catalog:'
         version: 10.2.1(react-dom@19.2.7(react@19.2.7))(react-intl@10.1.13(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       tailwindcss:
-        specifier: 4.3.1
+        specifier: 'catalog:'
         version: 4.3.1
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       vite:
-        specifier: 8.0.16
+        specifier: 'catalog:'
         version: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
-        specifier: 4.1.8
+        specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@25.9.3)(@vitest/browser-playwright@4.1.8)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@25.9.3)(typescript@6.0.3))(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/utils:
@@ -2296,19 +2437,19 @@ importers:
         specifier: workspace:*
         version: link:../types
       dayjs:
-        specifier: 1.11.21
+        specifier: 'catalog:'
         version: 1.11.21
       i18n-iso-countries:
-        specifier: 7.14.0
+        specifier: 'catalog:'
         version: 7.14.0
       lz-string:
         specifier: 1.5.0
         version: 1.5.0
       react:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7
       react-intl:
-        specifier: 10.1.13
+        specifier: 'catalog:'
         version: 10.1.13(@types/react@19.2.17)(react@19.2.7)
     devDependencies:
       '@navikt/fp-config-eslint':
@@ -2324,55 +2465,55 @@ importers:
         specifier: workspace:*
         version: link:../utils-test
       '@testing-library/jest-dom':
-        specifier: 6.9.1
+        specifier: 'catalog:'
         version: 6.9.1
       '@types/node':
-        specifier: 25.9.3
+        specifier: 'catalog:'
         version: 25.9.3
       '@types/react':
-        specifier: 19.2.17
+        specifier: 'catalog:'
         version: 19.2.17
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       jsdom:
-        specifier: 29.1.1
+        specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@1.8.0)
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       vite:
-        specifier: 8.0.16
+        specifier: 'catalog:'
         version: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
-        specifier: 4.1.8
+        specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@25.9.3)(@vitest/browser-playwright@4.1.8)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@25.9.3)(typescript@6.0.3))(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/utils-test:
     dependencies:
       '@navikt/ds-react':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
       '@tanstack/react-query':
-        specifier: 5.101.0
+        specifier: 'catalog:'
         version: 5.101.0(react@19.2.7)
       '@tanstack/react-query-devtools':
-        specifier: 5.101.0
+        specifier: 'catalog:'
         version: 5.101.0(@tanstack/react-query@5.101.0(react@19.2.7))(react@19.2.7)
       react:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7
       react-dom:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7(react@19.2.7)
       react-intl:
-        specifier: 10.1.13
+        specifier: 'catalog:'
         version: 10.1.13(@types/react@19.2.17)(react@19.2.7)
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
     devDependencies:
       '@navikt/fp-config-eslint':
@@ -2382,49 +2523,49 @@ importers:
         specifier: workspace:*
         version: link:../config-typescript
       '@storybook/react-vite':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(esbuild@0.28.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@6.0.3)(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/jest-dom':
-        specifier: 6.9.1
+        specifier: 'catalog:'
         version: 6.9.1
       '@types/node':
-        specifier: 25.9.3
+        specifier: 'catalog:'
         version: 25.9.3
       '@types/react':
-        specifier: 19.2.17
+        specifier: 'catalog:'
         version: 19.2.17
       '@types/react-dom':
-        specifier: 19.2.3
+        specifier: 'catalog:'
         version: 19.2.3(@types/react@19.2.17)
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       jsdom:
-        specifier: 29.1.1
+        specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@1.8.0)
       mockdate:
-        specifier: 3.0.5
+        specifier: 'catalog:'
         version: 3.0.5
       storybook:
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       vite:
-        specifier: 8.0.16
+        specifier: 'catalog:'
         version: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
-        specifier: 4.1.8
+        specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@25.9.3)(@vitest/browser-playwright@4.1.8)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@25.9.3)(typescript@6.0.3))(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/uttaksplan:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-css':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/ds-react':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@navikt/fp-constants':
         specifier: workspace:*
@@ -2448,7 +2589,7 @@ importers:
         specifier: workspace:*
         version: link:../validation
       dayjs:
-        specifier: 1.11.21
+        specifier: 'catalog:'
         version: 1.11.21
       html2canvas:
         specifier: 1.4.1
@@ -2457,20 +2598,20 @@ importers:
         specifier: 4.2.1
         version: 4.2.1
       lodash:
-        specifier: 4.18.1
+        specifier: 'catalog:'
         version: 4.18.1
       react:
-        specifier: 19.2.7
+        specifier: 'catalog:'
         version: 19.2.7
       react-hook-form:
-        specifier: 7.78.0
+        specifier: 'catalog:'
         version: 7.78.0(react@19.2.7)
       react-intl:
-        specifier: 10.1.13
+        specifier: 'catalog:'
         version: 10.1.13(@types/react@19.2.17)(react@19.2.7)
     devDependencies:
       '@navikt/ds-tailwind':
-        specifier: 8.12.1
+        specifier: 'catalog:'
         version: 8.12.1
       '@navikt/fp-config-eslint':
         specifier: workspace:*
@@ -2485,52 +2626,52 @@ importers:
         specifier: workspace:*
         version: link:../utils-test
       '@storybook/addon-links':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react@19.2.17)(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       '@storybook/react-vite':
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(esbuild@0.28.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@6.0.3)(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/jest-dom':
-        specifier: 6.9.1
+        specifier: 'catalog:'
         version: 6.9.1
       '@testing-library/react':
-        specifier: 16.3.2
+        specifier: 'catalog:'
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@testing-library/user-event':
-        specifier: 14.6.1
+        specifier: 'catalog:'
         version: 14.6.1(@testing-library/dom@10.4.1)
       '@types/lodash':
-        specifier: 4.17.24
+        specifier: 'catalog:'
         version: 4.17.24
       '@types/react':
-        specifier: 19.2.17
+        specifier: 'catalog:'
         version: 19.2.17
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       jsdom:
-        specifier: 29.1.1
+        specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@1.8.0)
       mockdate:
-        specifier: 3.0.5
+        specifier: 'catalog:'
         version: 3.0.5
       storybook:
-        specifier: 10.4.4
+        specifier: 'catalog:'
         version: 10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       storybook-react-intl:
-        specifier: 10.2.1
+        specifier: 'catalog:'
         version: 10.2.1(react-dom@19.2.7(react@19.2.7))(react-intl@10.1.13(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)(storybook@10.4.4(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.8.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       tailwindcss:
-        specifier: 4.3.1
+        specifier: 'catalog:'
         version: 4.3.1
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       vite:
-        specifier: 8.0.16
+        specifier: 'catalog:'
         version: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
-        specifier: 4.1.8
+        specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@25.9.3)(@vitest/browser-playwright@4.1.8)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@25.9.3)(typescript@6.0.3))(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/validation:
@@ -2542,7 +2683,7 @@ importers:
         specifier: workspace:*
         version: link:../utils
       dayjs:
-        specifier: 1.11.21
+        specifier: 'catalog:'
         version: 1.11.21
     devDependencies:
       '@navikt/fp-config-eslint':
@@ -2555,25 +2696,25 @@ importers:
         specifier: workspace:*
         version: link:../config-vite
       '@testing-library/jest-dom':
-        specifier: 6.9.1
+        specifier: 'catalog:'
         version: 6.9.1
       '@types/node':
-        specifier: 25.9.3
+        specifier: 'catalog:'
         version: 25.9.3
       eslint:
-        specifier: 10.5.0
+        specifier: 'catalog:'
         version: 10.5.0(jiti@2.7.0)
       jsdom:
-        specifier: 29.1.1
+        specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@1.8.0)
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       vite:
-        specifier: 8.0.16
+        specifier: 'catalog:'
         version: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
-        specifier: 4.1.8
+        specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@25.9.3)(@vitest/browser-playwright@4.1.8)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@25.9.3)(typescript@6.0.3))(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   server:
@@ -2585,35 +2726,35 @@ importers:
         specifier: 4.1.4
         version: 4.1.4
       express:
-        specifier: 5.2.1
+        specifier: 'catalog:'
         version: 5.2.1
       http-proxy-middleware:
-        specifier: 4.1.0
+        specifier: 'catalog:'
         version: 4.1.0
     devDependencies:
       '@navikt/fp-config-typescript':
         specifier: workspace:*
         version: link:../packages/config-typescript
       '@types/express':
-        specifier: 5.0.6
+        specifier: 'catalog:'
         version: 5.0.6
       '@types/node':
-        specifier: 25.9.3
+        specifier: 'catalog:'
         version: 25.9.3
       '@types/supertest':
         specifier: 7.2.0
         version: 7.2.0
       esbuild:
-        specifier: 0.28.1
+        specifier: 'catalog:'
         version: 0.28.1
       supertest:
         specifier: 7.2.2
         version: 7.2.2
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       vitest:
-        specifier: 4.1.8
+        specifier: 'catalog:'
         version: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@25.9.3)(@vitest/browser-playwright@4.1.8)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@25.9.3)(typescript@6.0.3))(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   server-uinnlogget:
@@ -2622,26 +2763,26 @@ importers:
         specifier: workspace:*
         version: link:../packages/server-utils
       express:
-        specifier: 5.2.1
+        specifier: 'catalog:'
         version: 5.2.1
       http-proxy-middleware:
-        specifier: 4.1.0
+        specifier: 'catalog:'
         version: 4.1.0
     devDependencies:
       '@navikt/fp-config-typescript':
         specifier: workspace:*
         version: link:../packages/config-typescript
       '@types/express':
-        specifier: 5.0.6
+        specifier: 'catalog:'
         version: 5.0.6
       '@types/node':
-        specifier: 25.9.3
+        specifier: 'catalog:'
         version: 25.9.3
       esbuild:
-        specifier: 0.28.1
+        specifier: 'catalog:'
         version: 0.28.1
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
 
 packages:
@@ -2664,24 +2805,12 @@ packages:
   '@asamuzakjp/nwsapi@2.3.9':
     resolution: {integrity: sha512-n8GuYSrI9bF7FFZ/SjhwevlHc8xaVlb/7HmHelnc/PZXBD2ZR49NnN9sMMuDdEGPeeRQ5d0hqlSlEpgCX3Wl0Q==}
 
-  '@babel/code-frame@7.29.0':
-    resolution: {integrity: sha512-9NhCeYjq9+3uxgdtp20LSiJXJvN0FeCtNGpJxuMFZ1Kv3cWUNb6DOhJwUvcVCzKGR66cw4njwM6hrJLqgOwbcw==}
-    engines: {node: '>=6.9.0'}
-
   '@babel/code-frame@7.29.7':
     resolution: {integrity: sha512-Aup7aUOfpbAUg2ROOJN6Iw5f9DMBlzu0mIkm/malLQFN/YQgO48wCj0Kxa3sEHJvPVFg7siR+qRInwXd2qhQKw==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/compat-data@7.29.3':
-    resolution: {integrity: sha512-LIVqM46zQWZhj17qA8wb4nW/ixr2y1Nw+r1etiAWgRM6U1IqP+LNhL1yg440jYZR72jCWcWbLWzIosH+uP1fqg==}
-    engines: {node: '>=6.9.0'}
-
   '@babel/compat-data@7.29.7':
     resolution: {integrity: sha512-locTkQyKvwIEgBzVrn8693ebc97F2U8ZHjbXwDXJ5Fn2TCpNwTlKcaKLkdHop5c/icOFE7qt7Q9JC5hnKNa6Gg==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/core@7.29.0':
-    resolution: {integrity: sha512-CGOfOJqWjg2qW/Mb6zNsDm+u5vFQ8DxXfbM09z69p5Z6+mE1ikP2jUXw+j42Pf1XTYED2Rni5f95npYeuwMDQA==}
     engines: {node: '>=6.9.0'}
 
   '@babel/core@7.29.7':
@@ -2696,10 +2825,6 @@ packages:
     resolution: {integrity: sha512-DkXD5OJQaAQIdZ1bt3UZdEnHAn9Imd3IVBdX03UFe+ony9Ojw5pzr9YVKGDY1jt+Gcn/FnGkNf8r+Vj5NOJWtQ==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/helper-compilation-targets@7.28.6':
-    resolution: {integrity: sha512-JYtls3hqi15fcx5GaSNL7SCTJ2MNmjrkHXg4FSpOA/grxK8KwyZ5bubHsCq8FXCkua6xhuaaBit+3b7+VZRfcA==}
-    engines: {node: '>=6.9.0'}
-
   '@babel/helper-compilation-targets@7.29.7':
     resolution: {integrity: sha512-wem6WaBj4NaVYVdNhLPPVacES6ZJ+KBBfSkTMD3YZxbP3rm3Di85tJU5ljaUNhaOynt+Aj0xruhYuzQBt8n71g==}
     engines: {node: '>=6.9.0'}
@@ -2712,19 +2837,9 @@ packages:
     resolution: {integrity: sha512-3nQVUAtvkKH9zahfWgw96Jc/uFOmjACE1kQz82E2lqWmHBgjzbNlsC22nuQTfahmWeQtTq5nQ/4Nnd2A1wj4zA==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/helper-module-imports@7.28.6':
-    resolution: {integrity: sha512-l5XkZK7r7wa9LucGw9LwZyyCUscb4x37JWTPz7swwFE/0FMQAGpiWUZn8u9DzkSBWEcK25jmvubfpw2dnAMdbw==}
-    engines: {node: '>=6.9.0'}
-
   '@babel/helper-module-imports@7.29.7':
     resolution: {integrity: sha512-ejHwrQQYcm9xnTivShn2IDOlIzInN34AXskvq9QicvCtEzq1Vzclu/tKF8Jq1Cg8JG2GL6/EmjgsCT7lXepE3g==}
     engines: {node: '>=6.9.0'}
-
-  '@babel/helper-module-transforms@7.28.6':
-    resolution: {integrity: sha512-67oXFAYr2cDLDVGLXTEABjdBJZ6drElUSI7WKp70NrpyISso3plG9SAGEF6y7zbha/wOzUByWWTJvEDVNIUGcA==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0
 
   '@babel/helper-module-transforms@7.29.7':
     resolution: {integrity: sha512-UPUVSyXbOh627KiCIGQSgwWzGeBKLkaJ9PJEdrngIwMSzxLR4jS4+f1f1jb7VzBbg8nFLaYotvVPFCTqdrmTAg==}
@@ -2748,16 +2863,8 @@ packages:
     resolution: {integrity: sha512-qehxGkRj55h/ff8EMaJ+cYhyaKlHIxqYDn682wQD7RNp9UujOQsHog2uS0r2vzr4pW+sXf90NeeayjcNaX3fFg==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/helper-validator-option@7.27.1':
-    resolution: {integrity: sha512-YvjJow9FxbhFFKDSuFnVCe2WxXk1zWc22fFePVNEaWJEu8IrZVlda6N0uHwzZrUM1il7NC9Mlp4MaJYbYd9JSg==}
-    engines: {node: '>=6.9.0'}
-
   '@babel/helper-validator-option@7.29.7':
     resolution: {integrity: sha512-N9ZErrD+yW5geCDtBqnOoxmR8+tNKiGuxKlDpuJxfsqpa2dFcexaziGAE/qoHLiDDreVNMupxGmSoNlyvsA3gw==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/helpers@7.29.2':
-    resolution: {integrity: sha512-HoGuUs4sCZNezVEKdVcwqmZN8GoHirLUcLaYVNBK2J0DadGtdcqgr3BCbvH8+XUo4NGjNl3VOtSjEKNzqfFgKw==}
     engines: {node: '>=6.9.0'}
 
   '@babel/helpers@7.29.7':
@@ -3482,9 +3589,6 @@ packages:
       '@types/react': ^17.0.30 || ^18 || ^19
       react: ^17 || ^18 || ^19
       react-dom: ^17 || ^18 || ^19
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
 
   '@navikt/ds-tailwind@8.12.1':
     resolution: {integrity: sha512-inhRlTK126xBoZDFPHODz/y+2z2yJk9Q9Qifxq90YkmHMTIwALIqDokuRW4aZThhScJ7x2WZ3JD7bWqEqT0DYg==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/8.12.1/e31f9936b996bfd8acab8c15ae7ba5011affbdca}
@@ -3501,9 +3605,6 @@ packages:
     peerDependencies:
       html-react-parser: '>=5.x'
       react: '>=17.x'
-    peerDependenciesMeta:
-      react:
-        optional: true
 
   '@navikt/oasis@4.1.4':
     resolution: {integrity: sha512-v+LW8V5CTiHkfIXhceQ8RXRtrBktCK8wSFYmiR6hmzl9CJRYRLUpFC7YbLiC7jwHIuLHKUyl+Zawf8zQm6fDeQ==, tarball: https://npm.pkg.github.com/download/@navikt/oasis/4.1.4/0d9c93820b9b6d93b1bd9da134feb95461ad8a47}
@@ -4969,11 +5070,6 @@ packages:
   acorn-walk@8.3.5:
     resolution: {integrity: sha512-HEHNfbars9v4pgpW6SO1KSPkfoS0xVOM/9UzkJltjlsHZmJasxg8aXkuZa7SMf8vKGIBhpUsPluQSqhJFCqebw==}
     engines: {node: '>=0.4.0'}
-
-  acorn@8.16.0:
-    resolution: {integrity: sha512-UVJyE9MttOsBQIDKw1skb9nAwQuR5wuGD3+82K6JgJlm/Y+KI92oNsMNGZCYdDsVtRHSak0pcV5Dno5+4jh9sw==}
-    engines: {node: '>=0.4.0'}
-    hasBin: true
 
   acorn@8.17.0:
     resolution: {integrity: sha512-xRQbDb9BnwDafYNn6Vwl839DYVjqXYb1XVGtWAZ1kcDc6iwAL4hg3B1dZlRiuENFeO2H53gFG3in621AdERVAg==}
@@ -7635,41 +7731,13 @@ snapshots:
 
   '@asamuzakjp/nwsapi@2.3.9': {}
 
-  '@babel/code-frame@7.29.0':
-    dependencies:
-      '@babel/helper-validator-identifier': 7.28.5
-      js-tokens: 4.0.0
-      picocolors: 1.1.1
-
   '@babel/code-frame@7.29.7':
     dependencies:
       '@babel/helper-validator-identifier': 7.29.7
       js-tokens: 4.0.0
       picocolors: 1.1.1
 
-  '@babel/compat-data@7.29.3': {}
-
   '@babel/compat-data@7.29.7': {}
-
-  '@babel/core@7.29.0':
-    dependencies:
-      '@babel/code-frame': 7.29.0
-      '@babel/generator': 7.29.1
-      '@babel/helper-compilation-targets': 7.28.6
-      '@babel/helper-module-transforms': 7.28.6(@babel/core@7.29.0)
-      '@babel/helpers': 7.29.2
-      '@babel/parser': 7.29.3
-      '@babel/template': 7.28.6
-      '@babel/traverse': 7.29.0
-      '@babel/types': 7.29.0
-      '@jridgewell/remapping': 2.3.5
-      convert-source-map: 2.0.0
-      debug: 4.4.3
-      gensync: 1.0.0-beta.2
-      json5: 2.2.3
-      semver: 6.3.1
-    transitivePeerDependencies:
-      - supports-color
 
   '@babel/core@7.29.7':
     dependencies:
@@ -7707,14 +7775,6 @@ snapshots:
       '@jridgewell/trace-mapping': 0.3.31
       jsesc: 3.1.0
 
-  '@babel/helper-compilation-targets@7.28.6':
-    dependencies:
-      '@babel/compat-data': 7.29.3
-      '@babel/helper-validator-option': 7.27.1
-      browserslist: 4.28.2
-      lru-cache: 5.1.1
-      semver: 6.3.1
-
   '@babel/helper-compilation-targets@7.29.7':
     dependencies:
       '@babel/compat-data': 7.29.7
@@ -7727,26 +7787,10 @@ snapshots:
 
   '@babel/helper-globals@7.29.7': {}
 
-  '@babel/helper-module-imports@7.28.6':
-    dependencies:
-      '@babel/traverse': 7.29.0
-      '@babel/types': 7.29.0
-    transitivePeerDependencies:
-      - supports-color
-
   '@babel/helper-module-imports@7.29.7':
     dependencies:
       '@babel/traverse': 7.29.7
       '@babel/types': 7.29.7
-    transitivePeerDependencies:
-      - supports-color
-
-  '@babel/helper-module-transforms@7.28.6(@babel/core@7.29.0)':
-    dependencies:
-      '@babel/core': 7.29.0
-      '@babel/helper-module-imports': 7.28.6
-      '@babel/helper-validator-identifier': 7.28.5
-      '@babel/traverse': 7.29.0
     transitivePeerDependencies:
       - supports-color
 
@@ -7767,14 +7811,7 @@ snapshots:
 
   '@babel/helper-validator-identifier@7.29.7': {}
 
-  '@babel/helper-validator-option@7.27.1': {}
-
   '@babel/helper-validator-option@7.29.7': {}
-
-  '@babel/helpers@7.29.2':
-    dependencies:
-      '@babel/template': 7.28.6
-      '@babel/types': 7.29.0
 
   '@babel/helpers@7.29.7':
     dependencies:
@@ -7793,9 +7830,9 @@ snapshots:
 
   '@babel/template@7.28.6':
     dependencies:
-      '@babel/code-frame': 7.29.0
+      '@babel/code-frame': 7.29.7
       '@babel/parser': 7.29.3
-      '@babel/types': 7.29.0
+      '@babel/types': 7.29.7
 
   '@babel/template@7.29.7':
     dependencies:
@@ -7805,7 +7842,7 @@ snapshots:
 
   '@babel/traverse@7.29.0':
     dependencies:
-      '@babel/code-frame': 7.29.0
+      '@babel/code-frame': 7.29.7
       '@babel/generator': 7.29.1
       '@babel/helper-globals': 7.28.0
       '@babel/parser': 7.29.3
@@ -8427,12 +8464,11 @@ snapshots:
       '@floating-ui/react-dom': 2.1.8(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@navikt/aksel-icons': 8.12.1
       '@navikt/ds-tokens': 8.12.1
+      '@types/react': 19.2.17
       date-fns: 4.4.0
       react: 19.2.7
       react-day-picker: 9.14.0(react@19.2.7)
       react-dom: 19.2.7(react@19.2.7)
-    optionalDependencies:
-      '@types/react': 19.2.17
 
   '@navikt/ds-tailwind@8.12.1': {}
 
@@ -8446,7 +8482,6 @@ snapshots:
       csp-header: 6.3.1
       html-react-parser: 6.1.1(@types/react@19.2.17)(react@19.2.7)
       js-cookie: 3.0.7
-    optionalDependencies:
       react: 19.2.7
 
   '@navikt/oasis@4.1.4':
@@ -8923,7 +8958,7 @@ snapshots:
 
   '@sentry/bundler-plugin-core@5.3.0':
     dependencies:
-      '@babel/core': 7.29.0
+      '@babel/core': 7.29.7
       '@sentry/babel-plugin-component-annotate': 5.3.0
       '@sentry/cli': 2.58.5
       dotenv: 16.6.1
@@ -9174,7 +9209,7 @@ snapshots:
 
   '@testing-library/dom@10.4.1':
     dependencies:
-      '@babel/code-frame': 7.29.0
+      '@babel/code-frame': 7.29.7
       '@babel/runtime': 7.29.2
       '@types/aria-query': 5.0.4
       aria-query: 5.3.0
@@ -9663,9 +9698,7 @@ snapshots:
 
   acorn-walk@8.3.5:
     dependencies:
-      acorn: 8.16.0
-
-  acorn@8.16.0: {}
+      acorn: 8.17.0
 
   acorn@8.17.0: {}
 
@@ -12214,7 +12247,7 @@ snapshots:
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
       '@types/node': 25.9.3
-      acorn: 8.16.0
+      acorn: 8.17.0
       acorn-walk: 8.3.5
       arg: 4.1.3
       create-require: 1.1.1

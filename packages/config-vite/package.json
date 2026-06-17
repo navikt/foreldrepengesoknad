@@ -7,10 +7,10 @@
         "@tailwindcss/vite": "4.3.1",
         "@vitejs/plugin-react": "6.0.2",
         "@vitest/browser-playwright": "4.1.8",
-        "typescript": "6.0.3",
-        "vite": "8.0.16",
+        "typescript": "catalog:",
+        "vite": "catalog:",
         "vite-plugin-compression2": "2.5.3",
-        "vitest": "4.1.8"
+        "vitest": "catalog:"
     },
     "packageManager": "pnpm@10.33.1",
     "scripts": {
