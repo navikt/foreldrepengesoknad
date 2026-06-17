@@ -212,6 +212,9 @@ const lagOffscreenContainer = (): HTMLDivElement => {
     container.style.top = '0';
     container.style.backgroundColor = '#ffffff';
     container.style.width = 'max-content';
+    container.style.pointerEvents = 'none';
+    container.setAttribute('aria-hidden', 'true');
+    container.setAttribute('inert', '');
     document.body.appendChild(container);
     return container;
 };
