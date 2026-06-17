@@ -13,7 +13,7 @@ import { BodyLong, BodyShort, Link, Radio, Spacer, VStack } from '@navikt/ds-rea
 import { links } from '@navikt/fp-constants';
 import { RhfForm, RhfTextField, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
-import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
+import { useScrollBehaviour } from '@navikt/fp-utils';
 import { isRequired } from '@navikt/fp-validation';
 
 import { usePlanleggerNavigator } from '../../app-data/usePlanleggerNavigator';

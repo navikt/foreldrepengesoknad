@@ -6,7 +6,7 @@ import { VStack } from '@navikt/ds-react';
 import { Satser } from '@navikt/fp-types';
 import { VeiviserPage } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils';
-import { formatValue } from '@navikt/fp-validation/src/form/numberFormValidation';
+import { formatValue } from '@navikt/fp-validation';
 
 import { FpEllerEsSituasjon } from '../situasjon/SituasjonSide';
 import { HarIkkeRett } from './HarIkkeRett';

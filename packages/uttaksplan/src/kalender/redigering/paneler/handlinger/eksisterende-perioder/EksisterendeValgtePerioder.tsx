@@ -13,11 +13,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, BodyShort, Button, HStack, Heading, Spacer, Tooltip, VStack } from '@navikt/ds-react';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import {
-    BrukerRolleSak_fpoversikt,
-    UttakPeriode_fpoversikt,
-    UttakUtsettelseÅrsak_fpoversikt,
-} from '@navikt/fp-types/src/genererteTyper';
+import { BrukerRolleSak_fpoversikt, UttakPeriode_fpoversikt, UttakUtsettelseÅrsak_fpoversikt } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
@@ -26,7 +22,6 @@ import { UttakPeriodeMedAntallDager } from '../../../../../kalender/redigering/u
 import { useEksisterendeValgtePeriodeAlerts } from '../../../../../regler/alert/informasjonsAlertHooks';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../../utils/dateUtils';
-
 import { useKalenderRedigeringContext } from '../../../context/KalenderRedigeringContext';
 
 interface Props {
@@ -48,10 +43,7 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
     return (
         <VStack gap="space-12">
             <BodyShort>
-                <FormattedMessage
-                    id="RedigeringPanel.EksisterendePerioder"
-                    values={{ antall: perioder.length }}
-                />
+                <FormattedMessage id="RedigeringPanel.EksisterendePerioder" values={{ antall: perioder.length }} />
             </BodyShort>
             {perioder.map((p, index) => {
                 const erSamtidigUttaksperiodeSomAlleredeErHåndtert =
@@ -67,11 +59,12 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
 
                 const erAvslåttPeriode = erVanligUttakPeriode(p) && p.resultat?.innvilget === false;
 
-                const erPleiepengerPeriode =
-                    erAvslåttPeriode && p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
+                const erPleiepengerPeriode = erAvslåttPeriode && p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
 
-                const { morsAktivitetIkkeValgt: morsAktivitetIkkeValgtAlert, graderingsaktivitetIkkeValgt: graderingsaktivitetIkkeValgtAlert } =
-                    alertsForPeriode(p);
+                const {
+                    morsAktivitetIkkeValgt: morsAktivitetIkkeValgtAlert,
+                    graderingsaktivitetIkkeValgt: graderingsaktivitetIkkeValgtAlert,
+                } = alertsForPeriode(p);
 
                 return (
                     <HStack

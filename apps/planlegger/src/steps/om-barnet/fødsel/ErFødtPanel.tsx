@@ -8,7 +8,7 @@ import { formatError } from 'utils/customErrorFormatter';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
 
-import { DATE_3_YEARS_AGO, ISO_DATE_REGEX } from '@navikt/fp-constants/src/dates';
+import { DATE_3_YEARS_AGO, ISO_DATE_REGEX } from '@navikt/fp-constants';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';

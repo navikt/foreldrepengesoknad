@@ -3,7 +3,7 @@ import isBetween from 'dayjs/plugin/isBetween';
 import { Barn } from 'types/Barn';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { dagenFør, treUkerSiden } from '@navikt/fp-utils/src/dateUtils';
+import { dagenFør, treUkerSiden } from '@navikt/fp-utils';
 
 dayjs.extend(isBetween);
 

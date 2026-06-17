@@ -20,7 +20,7 @@ import { links } from '@navikt/fp-constants';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { HvorLangPeriodePlanlegger, KontoBeregningDto } from '@navikt/fp-types';
 import { DekningsgradUtbetalingEksempel, Infobox } from '@navikt/fp-ui';
-import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
+import { useScrollBehaviour } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { NårBareEnPartHarRettInfoboks } from './infoboks/NårBareEnPartHarRettInfoboks';

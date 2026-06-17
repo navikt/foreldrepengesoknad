@@ -15,7 +15,7 @@ import { BodyShort, Box, Heading, InlineMessage, Spacer, VStack } from '@navikt/
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { FordelingPlanlegger, KontoBeregningDto } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
-import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
+import { useScrollBehaviour } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { FordelingSlider } from '../../components/FordelingSlider';
