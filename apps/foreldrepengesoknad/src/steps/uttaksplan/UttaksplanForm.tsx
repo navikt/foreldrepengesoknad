@@ -25,7 +25,7 @@ import { Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { GåTilbakeModal } from './GåTilbakeModal';
-import { useFinnFørsteSubmitFeilmelding } from './submitValidering';
+import { erSammePeriodeInkludertDatoer, useFinnFørsteSubmitFeilmelding } from './submitValidering';
 
 type FormValues = {
     ønskerJustertUttakVedFødsel?: boolean;
@@ -65,7 +65,12 @@ export const UttaksplanForm = ({
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
     const uttaksplanMedKunNyePerioder =
-        uttaksplan?.filter((p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.resultat === undefined) ?? [];
+        uttaksplan?.filter(
+            (p) =>
+                Uttaksperioden.erIkkeEøsPeriode(p) &&
+                (p.resultat === undefined ||
+                    (opprinneligPlan !== undefined && !opprinneligPlan.some((o) => erSammePeriodeInkludertDatoer(p, o)))),
+        ) ?? [];
     const gjeldendeUttaksplan = erEndringssøknad ? uttaksplanMedKunNyePerioder : uttaksplan;
 
     const navigator = useFpNavigator(

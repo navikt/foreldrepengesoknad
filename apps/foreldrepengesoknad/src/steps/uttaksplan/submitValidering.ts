@@ -132,7 +132,7 @@ export const harBrukerKunSlettetPerioder = (
     return false;
 };
 
-const erSammePeriodeInkludertDatoer = (a: UttaksplanPerioder[number], b: UttaksplanPerioder[number]) =>
+export const erSammePeriodeInkludertDatoer = (a: UttaksplanPerioder[number], b: UttaksplanPerioder[number]) =>
     a.fom === b.fom && a.tom === b.tom && erPerioderEkslFomTomLike(a, b);
 
 export const harKunPerioderForAnnenForelder = (
