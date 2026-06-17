@@ -15,25 +15,25 @@
     "dependencies": {
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-types": "workspace:*",
-        "dayjs": "1.11.21",
-        "i18n-iso-countries": "7.14.0",
+        "dayjs": "catalog:",
+        "i18n-iso-countries": "catalog:",
         "lz-string": "1.5.0",
-        "react": "19.2.7",
-        "react-intl": "10.1.13"
+        "react": "catalog:",
+        "react-intl": "catalog:"
     },
     "devDependencies": {
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
-        "@testing-library/jest-dom": "6.9.1",
-        "@types/node": "25.9.3",
-        "@types/react": "19.2.17",
-        "eslint": "10.5.0",
-        "jsdom": "29.1.1",
-        "typescript": "6.0.3",
-        "vite": "8.0.16",
-        "vitest": "4.1.8"
+        "@testing-library/jest-dom": "catalog:",
+        "@types/node": "catalog:",
+        "@types/react": "catalog:",
+        "eslint": "catalog:",
+        "jsdom": "catalog:",
+        "typescript": "catalog:",
+        "vite": "catalog:",
+        "vitest": "catalog:"
     },
     "packageManager": "pnpm@10.33.1"
 }

@@ -16,29 +16,29 @@
         "tsc:watch": "tsc --noEmit --watch"
     },
     "dependencies": {
-        "@navikt/ds-react": "8.12.1",
+        "@navikt/ds-react": "catalog:",
         "@navikt/fp-types": "workspace:*",
-        "@tanstack/react-query": "5.101.0",
-        "@tanstack/react-query-devtools": "5.101.0",
-        "react": "19.2.7",
-        "react-dom": "19.2.7",
-        "react-intl": "10.1.13",
-        "typescript": "6.0.3"
+        "@tanstack/react-query": "catalog:",
+        "@tanstack/react-query-devtools": "catalog:",
+        "react": "catalog:",
+        "react-dom": "catalog:",
+        "react-intl": "catalog:",
+        "typescript": "catalog:"
     },
     "devDependencies": {
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
-        "@storybook/react-vite": "10.4.4",
-        "@testing-library/jest-dom": "6.9.1",
-        "@types/node": "25.9.3",
-        "@types/react": "19.2.17",
-        "@types/react-dom": "19.2.3",
-        "eslint": "10.5.0",
-        "jsdom": "29.1.1",
-        "mockdate": "3.0.5",
-        "storybook": "10.4.4",
-        "vite": "8.0.16",
-        "vitest": "4.1.8"
+        "@storybook/react-vite": "catalog:",
+        "@testing-library/jest-dom": "catalog:",
+        "@types/node": "catalog:",
+        "@types/react": "catalog:",
+        "@types/react-dom": "catalog:",
+        "eslint": "catalog:",
+        "jsdom": "catalog:",
+        "mockdate": "catalog:",
+        "storybook": "catalog:",
+        "vite": "catalog:",
+        "vitest": "catalog:"
     },
     "packageManager": "pnpm@10.33.1"
 }

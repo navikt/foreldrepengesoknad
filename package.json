@@ -22,12 +22,12 @@
     },
     "devDependencies": {
         "@trivago/prettier-plugin-sort-imports": "6.0.2",
-        "@types/node": "25.9.3",
+        "@types/node": "catalog:",
         "knip": "6.16.1",
         "msw": "2.14.6",
         "msw-storybook-addon": "2.0.7",
         "prettier": "3.8.4",
-        "typescript": "6.0.3"
+        "typescript": "catalog:"
     },
     "lint-staged": {
         "apps/**/*.{ts,tsx,js,jsx, css}": "prettier --write",

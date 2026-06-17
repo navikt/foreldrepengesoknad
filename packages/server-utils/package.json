@@ -12,20 +12,20 @@
         "tsc:watch": "tsc --noEmit --watch"
     },
     "dependencies": {
-        "@navikt/nav-dekoratoren-moduler": "4.2.2",
+        "@navikt/nav-dekoratoren-moduler": "catalog:",
         "@navikt/vite-mode": "0.13.7",
-        "express": "5.2.1",
-        "morgan": "1.11.0",
+        "express": "catalog:",
+        "morgan": "catalog:",
         "winston": "3.19.0"
     },
     "devDependencies": {
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
-        "@types/express": "5.0.6",
-        "@types/morgan": "1.9.10",
-        "@types/node": "25.9.3",
-        "eslint": "10.5.0",
-        "typescript": "6.0.3"
+        "@types/express": "catalog:",
+        "@types/morgan": "catalog:",
+        "@types/node": "catalog:",
+        "eslint": "catalog:",
+        "typescript": "catalog:"
     },
     "packageManager": "pnpm@10.33.1"
 }

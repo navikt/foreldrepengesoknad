@@ -13,18 +13,18 @@
     "dependencies": {
         "@navikt/fp-server-utils": "workspace:*",
         "@navikt/oasis": "4.1.4",
-        "express": "5.2.1",
-        "http-proxy-middleware": "4.1.0"
+        "express": "catalog:",
+        "http-proxy-middleware": "catalog:"
     },
     "devDependencies": {
         "@navikt/fp-config-typescript": "workspace:*",
-        "@types/express": "5.0.6",
-        "@types/node": "25.9.3",
+        "@types/express": "catalog:",
+        "@types/node": "catalog:",
         "@types/supertest": "7.2.0",
-        "esbuild": "0.28.1",
+        "esbuild": "catalog:",
         "supertest": "7.2.2",
-        "typescript": "6.0.3",
-        "vitest": "4.1.8"
+        "typescript": "catalog:",
+        "vitest": "catalog:"
     },
     "packageManager": "pnpm@10.33.1"
 }
