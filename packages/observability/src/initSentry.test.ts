@@ -690,6 +690,65 @@ const DOM_OVERSETTELSE_FEIL = {
     type: undefined,
 } satisfies Sentry.ErrorEvent;
 
+const HAS_FOCUS_FEIL = {
+    event_id: 'b2c3d4e5f6a74819b2c3d4e5f6a74819',
+    release: 'foreldrepengesoknad-2026.06.15.090911-13b7685',
+    platform: 'javascript',
+    exception: {
+        values: [
+            {
+                type: 'TypeError',
+                value: "window.hasFocus is not a function. (In 'window.hasFocus()', 'window.hasFocus' is undefined)",
+                stacktrace: {
+                    frames: [
+                        {
+                            filename: 'https://www.nav.no/foreldrepenger/soknad/assets/index-66kDgVTH.js',
+                            function: 'yt',
+                            in_app: true,
+                            lineno: 281,
+                            colno: 19,
+                        },
+                        {
+                            filename: 'https://www.nav.no/foreldrepenger/soknad/assets/index-66kDgVTH.js',
+                            function: 'Kr',
+                            in_app: true,
+                            lineno: 10325,
+                            colno: 26,
+                        },
+                    ],
+                },
+            },
+        ],
+    },
+    type: undefined,
+} satisfies Sentry.ErrorEvent;
+
+const LEGITIM_HAS_FOCUS_FEIL = {
+    event_id: 'c3d4e5f6a7b8491ac3d4e5f6a7b8491a',
+    release: 'foreldrepengesoknad-2026.06.15.090911-13b7685',
+    platform: 'javascript',
+    exception: {
+        values: [
+            {
+                type: 'TypeError',
+                value: 'fokusHaandterer.hasFocus is not a function',
+                stacktrace: {
+                    frames: [
+                        {
+                            filename: 'https://www.nav.no/foreldrepenger/soknad/assets/index-66kDgVTH.js',
+                            function: 'sjekkFokus',
+                            in_app: true,
+                            lineno: 42,
+                            colno: 7,
+                        },
+                    ],
+                },
+            },
+        ],
+    },
+    type: undefined,
+} satisfies Sentry.ErrorEvent;
+
 describe('initSentry', () => {
     afterEach(() => {
         const client = Sentry.getClient();
@@ -739,5 +798,35 @@ describe('initSentry', () => {
         const result = beforeSend!(DOM_OVERSETTELSE_FEIL, SENTRY_HINT);
 
         expect(result).toBeNull();
+    });
+
+    it('should filter out "hasFocus is not a function" errors injected by browsers/in-app browsers', () => {
+        vi.stubGlobal('location', { hostname: 'test.nav.no' });
+
+        initSentry({ dsn: 'https://lokal.test/1' });
+
+        const client = Sentry.getClient();
+        const beforeSend = client?.getOptions().beforeSend;
+
+        expect(beforeSend).toBeDefined();
+
+        const result = beforeSend!(HAS_FOCUS_FEIL, SENTRY_HINT);
+
+        expect(result).toBeNull();
+    });
+
+    it('should keep legitimate hasFocus errors not from window/globalThis/self', () => {
+        vi.stubGlobal('location', { hostname: 'test.nav.no' });
+
+        initSentry({ dsn: 'https://lokal.test/1' });
+
+        const client = Sentry.getClient();
+        const beforeSend = client?.getOptions().beforeSend;
+
+        expect(beforeSend).toBeDefined();
+
+        const result = beforeSend!(LEGITIM_HAS_FOCUS_FEIL, SENTRY_HINT);
+
+        expect(result).not.toBeNull();
     });
 });
