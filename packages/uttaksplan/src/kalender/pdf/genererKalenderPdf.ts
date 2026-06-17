@@ -208,7 +208,11 @@ const veljSkala = (breddePx: number, høgdePx: number): number => {
     return Math.max(MAKS_CANVAS_KANT_PX / maksKant, 0.1);
 };
 
-const lagOffscreenContainer = (forelder: HTMLElement): HTMLDivElement => {
+// Aksel set CSS-variablane på :root, så document.body arvar dei alltid.
+// Vi fester containarane til document.body slik at dei aldri blir fråkopla
+// dokumentet dersom dialogen blir avmontert medan generering pågår – noko som
+// elles får html2canvas til å kaste "Unable to find element in cloned iframe".
+const lagOffscreenContainer = (): HTMLDivElement => {
     const container = document.createElement('div');
     container.className = OFFSCREEN_KLASSE;
     container.style.position = 'fixed';
@@ -216,9 +220,10 @@ const lagOffscreenContainer = (forelder: HTMLElement): HTMLDivElement => {
     container.style.top = '0';
     container.style.backgroundColor = '#ffffff';
     container.style.width = 'max-content';
-    // Lagt under same forelder som originalen, slik at CSS-variablar (Aksel-tema)
-    // blir arva og fargane blir rett løyste.
-    forelder.appendChild(container);
+    container.style.pointerEvents = 'none';
+    container.setAttribute('aria-hidden', 'true');
+    container.setAttribute('inert', '');
+    document.body.appendChild(container);
     return container;
 };
 
@@ -332,7 +337,7 @@ export const genererKalenderPdf = async ({
     // (≈ to månadskolonnar) i staden for max-content, slik at etikettane brett seg
     // over fleire linjer og får same tekststorleik som månadane når biletet blir
     // skalert til sidebreidda.
-    const legendContainer = lagOffscreenContainer(legendElement.parentElement ?? document.body);
+    const legendContainer = lagOffscreenContainer();
     legendContainer.style.width = `${LEGEND_BREDDE_PX}px`;
     legendContainer.style.padding = `${LEGEND_PADDING_PX}px 0`;
     try {
@@ -364,7 +369,7 @@ export const genererKalenderPdf = async ({
     // container og bit-canvas sleppt før neste bit.
     for (let i = 0; i < månedElementer.length; i += månederPerBit) {
         const bitElementer = månedElementer.slice(i, i + månederPerBit);
-        const container = lagOffscreenContainer(kalenderElement.parentElement ?? document.body);
+        const container = lagOffscreenContainer();
         container.style.display = 'grid';
         container.style.gridTemplateColumns = `repeat(${antallKolonner}, ${MND_BREDDE_PX}px)`;
         container.style.columnGap = `${MND_GAP_PX}px`;
