@@ -80,10 +80,7 @@ const showFrilansOgEgenNæringOgAndreInntekter = (
         return erValgtOgEtterSteg || !!getData(ContextDataType.EGEN_NÆRING);
     }
     if (path === SøknadRoutes.ANDRE_INNTEKTER) {
-        const erValgtOgEtterSteg =
-            getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT)?.harHattAndreInntektskilder === true &&
-            isAfterStep(SøknadRoutes.ARBEID_OG_INNTEKT, currentPath);
-        return erValgtOgEtterSteg || !!getData(ContextDataType.ANDRE_INNTEKTSKILDER);
+        return currentPath === SøknadRoutes.ANDRE_INNTEKTER;
     }
     return false;
 };

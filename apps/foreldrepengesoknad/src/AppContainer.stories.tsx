@@ -41,6 +41,26 @@ const søkerinfoKvinne = {
     },
 } satisfies FpPersonopplysningerDto_fpoversikt;
 
+const mineSN = [
+    {
+        arbeidsgiverId: '991122334',
+        arbeidsgiverIdType: 'orgnr',
+        arbeidsgiverNavn: 'Mitt Konsulentfirma AS',
+        fom: '2024-01-01T00:00:00.000Z',
+        stillingsprosent: 100,
+    },
+];
+
+const mineFrilansoppdrag = [
+    {
+        arbeidsgiverId: '888777666',
+        arbeidsgiverIdType: 'orgnr',
+        arbeidsgiverNavn: 'Frilans Oppdrag AS',
+        fom: '2024-01-15T00:00:00.000Z',
+        stillingsprosent: 0,
+    },
+];
+
 const meta = {
     component: AppContainer,
     parameters: {
@@ -48,6 +68,8 @@ const meta = {
             handlers: [
                 http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
                 http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+                http.get(API_URLS.mineFrilansoppdrag, () => HttpResponse.json(mineFrilansoppdrag)),
+                http.get(API_URLS.mineSN, () => HttpResponse.json(mineSN)),
                 http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
                 http.post(API_URLS.konto, () => HttpResponse.json({ 80: stønadskvoter, 100: stønadskvoter })),
                 http.get(API_URLS.sendSøknad, () => HttpResponse.json(kvittering)),
@@ -79,6 +101,8 @@ export const SøkerErKvinne: Story = {
             handlers: [
                 http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfoKvinne)),
                 http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+                http.get(API_URLS.mineFrilansoppdrag, () => HttpResponse.json(mineFrilansoppdrag)),
+                http.get(API_URLS.mineSN, () => HttpResponse.json(mineSN)),
                 http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
                 http.post(API_URLS.konto, () => HttpResponse.json({ 80: stønadskvoter, 100: stønadskvoter })),
                 http.get(API_URLS.sendSøknad, () => HttpResponse.json(kvittering)),

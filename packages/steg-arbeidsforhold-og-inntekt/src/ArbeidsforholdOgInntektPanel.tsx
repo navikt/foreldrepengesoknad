@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
+import { BodyShort, Button, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { loggUmamiEvent } from '@navikt/fp-observability';
@@ -10,6 +10,7 @@ import { AppName, ArbeidsforholdOgInntekt, EksternArbeidsforholdDto_fpoversikt }
 import { ProgressStep, Step, StepButtons } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 
+import { AndreInntektskilderModal } from './components/andre-inntekter/AndreInntektskilderModal';
 import { ArbeidsforholdInformasjon } from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import { BrukerKanIkkeSøke } from './components/bruker-kan-ikke-søke/BrukerKanIkkeSøke';
 import { HvemKanDriveMedEgenNæring } from './components/hvem-kan-drive-egen-næring/HvemKanDriveMedEgenNæring';
@@ -17,12 +18,16 @@ import { HvemKanVæreFrilanser } from './components/hvem-kan-være-frilanser/Hve
 import { InfoOmArbeidIUtlandet } from './components/info-om-arbeid-i-utlandet/InfoOmArbeidIUtlandet';
 import { InfoOmFørstegangstjeneste } from './components/info-om-førstegangstjeneste/InfoOmFørstegangstjeneste';
 import { InfoTilFiskere } from './components/info-til-fiskere/InfoTilFiskere';
+import { AndreInntektskilder, AndreInntektskilderUtkast, erFerdigUtfylt } from './types/AndreInntektskilder';
 
 interface Props<TYPE> {
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntekt;
     aktiveArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     frilansoppdrag: EksternArbeidsforholdDto_fpoversikt[];
+    selvstendigNæring: EksternArbeidsforholdDto_fpoversikt[];
+    andreInntektskilder: AndreInntektskilderUtkast[];
     saveOnNext: (formValues: ArbeidsforholdOgInntekt) => void;
+    saveAndreInntektskilder: (values: AndreInntektskilder[]) => void;
     onAvsluttOgSlett: () => void;
     onFortsettSenere?: () => void;
     onStepChange?: (id: TYPE) => void;
@@ -35,7 +40,10 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
     arbeidsforholdOgInntekt,
     aktiveArbeidsforhold,
     frilansoppdrag,
+    selvstendigNæring,
+    andreInntektskilder,
     saveOnNext,
+    saveAndreInntektskilder,
     onAvsluttOgSlett,
     onFortsettSenere,
     onStepChange,
@@ -46,6 +54,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
     const intl = useIntl();
 
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [visAndreInntekterModal, setVisAndreInntekterModal] = useState(false);
 
     const formMethods = useForm<ArbeidsforholdOgInntekt>({
         defaultValues: {
@@ -55,10 +64,10 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
     });
 
     const harFrilansoppdrag = frilansoppdrag.length > 0;
+    const ferdigeAndreInntektskilder = andreInntektskilder.filter(erFerdigUtfylt);
 
     const hattInntektSomFrilans = formMethods.watch('harJobbetSomFrilans');
     const hattInntektSomNæringsdrivende = formMethods.watch('harJobbetSomSelvstendigNæringsdrivende');
-
     const kanIkkeSøke =
         aktiveArbeidsforhold.length === 0 && hattInntektSomFrilans === false && hattInntektSomNæringsdrivende === false;
 
@@ -83,6 +92,8 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                             appOrigin={appOrigin}
                             arbeidsforhold={aktiveArbeidsforhold}
                             frilansoppdrag={frilansoppdrag}
+                            selvstendigNæring={selvstendigNæring}
+                            andreInntektskilder={ferdigeAndreInntektskilder}
                         />
                     </VStack>
                     {!harFrilansoppdrag && (
@@ -170,23 +181,6 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                     )}
                     {!erSvp && (
                         <VStack gap="space-4">
-                            <RhfRadioGroup
-                                name="harHattAndreInntektskilder"
-                                control={formMethods.control}
-                                label={intl.formatMessage({ id: 'inntektsinformasjon.hattAndreInntektskilder' })}
-                                validate={[
-                                    isRequired(
-                                        intl.formatMessage({ id: 'valideringsfeil.hattAndreInntektskilder.påkrevd' }),
-                                    ),
-                                ]}
-                            >
-                                <Radio value={false}>
-                                    <FormattedMessage id="inntektsinformasjon.nei" />
-                                </Radio>
-                                <Radio value={true}>
-                                    <FormattedMessage id="inntektsinformasjon.ja" />
-                                </Radio>
-                            </RhfRadioGroup>
                             <ReadMore
                                 onOpenChange={(open) =>
                                     loggUmamiEvent({
@@ -205,6 +199,14 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                                     <FormattedMessage id="ArbeidsforholdOgInntektPanel.ReadMore.Body.AndreInntektskilder" />
                                 </BodyShort>
                             </ReadMore>
+                            <Button
+                                type="button"
+                                variant="secondary"
+                                size="small"
+                                onClick={() => setVisAndreInntekterModal(true)}
+                            >
+                                <FormattedMessage id="inntektsinformasjon.leggTilAndreInntekter" />
+                            </Button>
                         </VStack>
                     )}
                     <VStack gap="space-16">
@@ -220,6 +222,14 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                         goToPreviousStep={goToPreviousStep}
                     />
                 </VStack>
+                <AndreInntektskilderModal
+                    open={visAndreInntekterModal}
+                    onOpenChange={setVisAndreInntekterModal}
+                    initialValues={andreInntektskilder.filter(
+                        (entry): entry is AndreInntektskilder => entry.type !== undefined,
+                    )}
+                    onSave={saveAndreInntektskilder}
+                />
             </RhfForm>
         </Step>
     );

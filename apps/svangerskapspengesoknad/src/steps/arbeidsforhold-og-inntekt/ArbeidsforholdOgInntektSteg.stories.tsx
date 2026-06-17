@@ -1,6 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
+import { API_URLS } from 'appData/queries';
 import { SøknadRoute } from 'appData/routes';
+import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
@@ -57,6 +59,16 @@ const DEFAULT_ARBEIDSFORHOLD = [
     },
 ] satisfies EksternArbeidsforholdDto_fpoversikt[];
 
+const DEFAULT_SELVSTENDIG_NÆRING = [
+    {
+        arbeidsgiverId: '991122334',
+        arbeidsgiverIdType: 'orgnr',
+        arbeidsgiverNavn: 'Mitt Konsulentfirma AS',
+        fom: '2024-01-01T00:00:00.000Z',
+        stillingsprosent: 100,
+    },
+] satisfies EksternArbeidsforholdDto_fpoversikt[];
+
 const promiseAction = () => () => {
     action('button-click')();
     return Promise.resolve();
@@ -69,6 +81,11 @@ type StoryArgs = {
 const meta = {
     title: 'steps/ArbeidsforholdOgInntektSteg',
     component: ArbeidsforholdOgInntektSteg,
+    parameters: {
+        msw: {
+            handlers: [http.get(API_URLS.mineSN, () => HttpResponse.json(DEFAULT_SELVSTENDIG_NÆRING))],
+        },
+    },
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
         return (
             <MemoryRouter initialEntries={[SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT]}>

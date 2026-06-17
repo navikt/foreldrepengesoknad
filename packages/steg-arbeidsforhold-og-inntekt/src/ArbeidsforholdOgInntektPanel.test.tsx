@@ -4,7 +4,12 @@ import userEvent from '@testing-library/user-event';
 
 import * as stories from './ArbeidsforholdOgInntektPanel.stories';
 
-const { ForSvangerskapspenger } = composeStories(stories);
+const {
+    ForSvangerskapspenger,
+    ForForeldrepenger,
+    ForForeldrepengerMedAndreInntekter,
+    ForForeldrepengerMedSelvstendigNæring,
+} = composeStories(stories);
 
 describe('<ArbeidsforholdOgInntektPanel>', () => {
     it('skal vise feilmelding hvis spørsmål ikke er besvart', async () => {
@@ -26,6 +31,40 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
             screen.getAllByText('Du må oppgi om du har hatt inntekt som selvstendig næringsdrivende de siste 4 ukene.'),
         ).toHaveLength(2);
         expect(screen.getAllByText('Du må oppgi om du har arbeidet i utlandet de siste 4 ukene.')).toHaveLength(2);
+    });
+
+    it('skal vise knapp for andre inntekter og åpne modal', async () => {
+        render(<ForForeldrepenger />);
+
+        expect(await screen.findAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
+        expect(screen.getByText('Legg til andre inntekter')).toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Nei')[0]!);
+        await userEvent.click(screen.getAllByText('Nei')[1]!);
+
+        await userEvent.click(screen.getByText('Legg til andre inntekter'));
+
+        expect(screen.getByText('Andre inntekter')).toBeInTheDocument();
+    });
+
+    it('skal vise andre inntekter som en egen boks i sammendraget', async () => {
+        render(<ForForeldrepengerMedAndreInntekter />);
+
+        expect(await screen.findAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
+
+        expect(screen.getByText('Legg til andre inntekter')).toBeInTheDocument();
+
+        expect(screen.getByText('Dine andre inntekter')).toBeInTheDocument();
+        expect(screen.getByText('Jobb i utlandet')).toBeInTheDocument();
+        expect(screen.getByText('Københavns Kommune')).toBeInTheDocument();
+    });
+
+    it('skal vise selvstendig næring som en egen boks i sammendraget', async () => {
+        render(<ForForeldrepengerMedSelvstendigNæring />);
+
+        expect(await screen.findAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
+        expect(screen.getByText('Arbeid som selvstendig næringsdrivende')).toBeInTheDocument();
+        expect(screen.getByText('Kari Konsulent')).toBeInTheDocument();
     });
 
     it('skal ikke vise feilmelding', async () => {

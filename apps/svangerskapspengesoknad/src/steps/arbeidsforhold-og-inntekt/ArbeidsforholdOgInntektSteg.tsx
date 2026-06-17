@@ -1,4 +1,6 @@
+import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
+import { mineSNOptions } from 'appData/queries';
 import { SøknadRoute } from 'appData/routes';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
@@ -55,6 +57,9 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
     const oppdaterArbeidIUtlandet = useContextSaveData(ContextDataType.ARBEID_I_UTLANDET);
 
+    const selvstendigNæringQuery = useQuery(mineSNOptions());
+    const selvstendigNæring = selvstendigNæringQuery.data ?? [];
+
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
 
     const onSubmit = (values: ArbeidsforholdOgInntekt) => {
@@ -90,8 +95,11 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
             <ArbeidsforholdOgInntektPanel
                 aktiveArbeidsforhold={aktiveArbeidsforhold}
                 frilansoppdrag={[]}
+                selvstendigNæring={selvstendigNæring}
+                andreInntektskilder={[]}
                 arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                 saveOnNext={onSubmit}
+                saveAndreInntektskilder={() => undefined}
                 onAvsluttOgSlett={avbrytSøknad}
                 onFortsettSenere={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}

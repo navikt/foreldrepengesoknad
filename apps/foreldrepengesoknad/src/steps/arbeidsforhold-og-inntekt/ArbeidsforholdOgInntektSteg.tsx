@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { mineFrilansoppdragOptions } from 'api/queries';
+import { mineFrilansoppdragOptions, mineSNOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
@@ -11,6 +11,7 @@ import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { ArbeidsforholdOgInntektPanel } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import {
     ArbeidsforholdOgInntekt,
+    ArbeidsforholdOgInntektFp,
     EksternArbeidsforholdDto_fpoversikt,
     isArbeidsforholdOgInntektFp,
 } from '@navikt/fp-types';
@@ -31,6 +32,7 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const arbeidsforholdOgInntekt = useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
+    const andreInntektskilder = useContextGetData(ContextDataType.ANDRE_INNTEKTSKILDER) ?? [];
 
     const frilansoppdragQuery = useQuery({
         ...mineFrilansoppdragOptions(),
@@ -41,6 +43,9 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
         },
     });
     const frilansoppdrag = frilansoppdragQuery.data ?? [];
+
+    const selvstendigNæringQuery = useQuery(mineSNOptions());
+    const selvstendigNæring = selvstendigNæringQuery.data ?? [];
 
     const oppdaterArbeidsforholdOgInntekt = useContextSaveData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const oppdaterFrilans = useContextSaveData(ContextDataType.FRILANS);
@@ -56,30 +61,35 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
     );
 
     const onSubmit = (values: ArbeidsforholdOgInntekt) => {
-        if (!isArbeidsforholdOgInntektFp(values)) {
+        const valuesWithAndreInntekter: ArbeidsforholdOgInntektFp = {
+            harJobbetSomFrilans: values.harJobbetSomFrilans,
+            harJobbetSomSelvstendigNæringsdrivende: values.harJobbetSomSelvstendigNæringsdrivende,
+            harHattAndreInntektskilder: isArbeidsforholdOgInntektFp(values)
+                ? values.harHattAndreInntektskilder
+                : andreInntektskilder.length > 0,
+        };
+
+        if (!isArbeidsforholdOgInntektFp(valuesWithAndreInntekter)) {
             throw new Error('values er på feil format');
         }
 
-        oppdaterArbeidsforholdOgInntekt(values);
+        oppdaterArbeidsforholdOgInntekt(valuesWithAndreInntekter);
 
-        if (values.harHattAndreInntektskilder === false) {
+        if (valuesWithAndreInntekter.harHattAndreInntektskilder === false) {
             oppdaterAndreInntektskilder(undefined);
         }
-        if (values.harJobbetSomFrilans === false) {
+        if (valuesWithAndreInntekter.harJobbetSomFrilans === false) {
             oppdaterFrilans(undefined);
         }
-        if (values.harJobbetSomSelvstendigNæringsdrivende === false) {
+        if (valuesWithAndreInntekter.harJobbetSomSelvstendigNæringsdrivende === false) {
             oppdaterEgenNæring(undefined);
         }
 
-        if (values.harJobbetSomFrilans) {
+        if (valuesWithAndreInntekter.harJobbetSomFrilans) {
             return navigator.goToNextStep(SøknadRoutes.FRILANS);
         }
-        if (values.harJobbetSomSelvstendigNæringsdrivende) {
+        if (valuesWithAndreInntekter.harJobbetSomSelvstendigNæringsdrivende) {
             return navigator.goToNextStep(SøknadRoutes.EGEN_NÆRING);
-        }
-        if (values.harHattAndreInntektskilder) {
-            return navigator.goToNextStep(SøknadRoutes.ANDRE_INNTEKTER);
         }
 
         return navigator.goToNextDefaultStep();
@@ -90,8 +100,11 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
             <ArbeidsforholdOgInntektPanel
                 aktiveArbeidsforhold={aktiveArbeidsforhold}
                 frilansoppdrag={frilansoppdrag}
+                selvstendigNæring={selvstendigNæring}
+                andreInntektskilder={andreInntektskilder}
                 arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                 saveOnNext={onSubmit}
+                saveAndreInntektskilder={oppdaterAndreInntektskilder}
                 onAvsluttOgSlett={avbrytSøknad}
                 onFortsettSenere={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}

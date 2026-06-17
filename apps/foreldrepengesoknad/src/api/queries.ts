@@ -33,6 +33,7 @@ export const API_URLS = {
     konto: `${urlPrefiks}/fpgrunndata/api/konto`,
     trengerDokumentereMorsArbeid: `${urlPrefiks}/fpoversikt/api/arbeid/morDokumentasjon`,
     mineFrilansoppdrag: `${urlPrefiks}/fpoversikt/api/arbeid/mineFrilansoppdrag`,
+    mineSN: `${urlPrefiks}/fpoversikt/api/arbeid/mineSN`,
     erOppdatert: `${urlPrefiks}/fpoversikt/api/saker/erOppdatert`,
 
     mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/FORELDREPENGER`,
@@ -108,6 +109,13 @@ export const mineFrilansoppdragOptions = () =>
     queryOptions({
         queryKey: ['MINE_FRILANSOPPDRAG'],
         queryFn: () => ky.get(API_URLS.mineFrilansoppdrag).json<EksternArbeidsforholdDto_fpoversikt[]>(),
+        staleTime: Infinity,
+    });
+
+export const mineSNOptions = () =>
+    queryOptions({
+        queryKey: ['MINE_SN'],
+        queryFn: () => ky.get(API_URLS.mineSN).json<EksternArbeidsforholdDto_fpoversikt[]>(),
         staleTime: Infinity,
     });
 

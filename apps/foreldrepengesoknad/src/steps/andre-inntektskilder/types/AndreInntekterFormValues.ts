@@ -1,5 +1,1 @@
-import { AndreInntektskilderUtkast } from 'types/AndreInntektskilder';
-
-export type AndreInntekterFormValues = {
-    andreInntektskilder: AndreInntektskilderUtkast[];
-};
+export { type AndreInntekterFormValues } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
