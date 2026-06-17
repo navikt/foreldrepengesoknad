@@ -105,7 +105,7 @@ const feilFraDomOversettelse = (event: Sentry.ErrorEvent) => {
  * som ikke finnes (den standardiserte er `document.hasFocus()`). Dette skjer utenfor vår kode og gir mye støy i Sentry,
  * så vi luker det bort. Feilmeldingen varierer litt mellom nettlesere (f.eks. `window.hasFocus`/`globalThis.hasFocus`).
  */
-const HAS_FOCUS_FEIL = /hasFocus is not a function/i;
+const HAS_FOCUS_FEIL = /\b(window|globalThis|self)\.hasFocus is not a function/i;
 
 const feilFraHasFocus = (event: Sentry.ErrorEvent) => {
     return (event.exception?.values ?? []).some((ex) => ex.value && HAS_FOCUS_FEIL.test(ex.value));
