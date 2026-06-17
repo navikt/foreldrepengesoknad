@@ -10,6 +10,7 @@ import {
 } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
 import {
+    erPerioderEkslFomTomLike,
     harPeriodeDerMorsAktivitetIkkeErValgt,
     harPeriodeMedUkjentGraderingsaktivitet,
     useErAntallDagerOvertrukketIUttaksplan,
@@ -120,13 +121,19 @@ export const harBrukerKunSlettetPerioder = (
 
     if (erKunSaksperioder) {
         const harSlettetPeriode = perioder
-            ? perioder.length < opprinneligPlan.length && perioder.every((periode) => opprinneligPlan.includes(periode))
+            ? perioder.length < opprinneligPlan.length &&
+              perioder.every((periode) =>
+                  opprinneligPlan.some((opprinnelig) => erSammePeriodeInkludertDatoer(periode, opprinnelig)),
+              )
             : false;
         return harSlettetPeriode;
     }
 
     return false;
 };
+
+const erSammePeriodeInkludertDatoer = (a: UttaksplanPerioder[number], b: UttaksplanPerioder[number]) =>
+    a.fom === b.fom && a.tom === b.tom && erPerioderEkslFomTomLike(a, b);
 
 export const harKunPerioderForAnnenForelder = (
     erSøkerFarEllerMedmor: boolean,

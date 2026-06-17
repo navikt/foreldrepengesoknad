@@ -75,6 +75,12 @@ describe('harBrukerKunSlettetPerioder', () => {
             const perioder = [A, eøs];
             expect(harBrukerKunSlettetPerioder(perioder, opprinneligPlan)).toBe(true);
         });
+
+        it('returnerer true når gjenværende perioder er verdilike, men ikke referanselike (regresjon: TFP-6971)', () => {
+            const opprinneligPlan = [A, B, C];
+            const perioder = [{ ...A }, { ...B }];
+            expect(harBrukerKunSlettetPerioder(perioder, opprinneligPlan)).toBe(true);
+        });
     });
 
     describe('bruker har lagt til eller endret perioder', () => {
