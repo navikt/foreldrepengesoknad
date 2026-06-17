@@ -35,6 +35,10 @@ export const initSentry = ({ dsn }: InitSentryOptions) => {
                 return null;
             }
 
+            if (feilFraHasFocus(event)) {
+                return null;
+            }
+
             return event;
         },
     });
@@ -94,6 +98,17 @@ const DOM_OVERSETTELSE_FEIL = /(removeChild|insertBefore)[\s\S]*not a child of t
 
 const feilFraDomOversettelse = (event: Sentry.ErrorEvent) => {
     return (event.exception?.values ?? []).some((ex) => ex.value && DOM_OVERSETTELSE_FEIL.test(ex.value));
+};
+
+/**
+ * Enkelte nettlesere/innebygde nettlesere (typisk Mobile Safari / webview i apper) injiserer eller kaller `window.hasFocus()`,
+ * som ikke finnes (den standardiserte er `document.hasFocus()`). Dette skjer utenfor vår kode og gir mye støy i Sentry,
+ * så vi luker det bort. Feilmeldingen varierer litt mellom nettlesere (f.eks. `window.hasFocus`/`globalThis.hasFocus`).
+ */
+const HAS_FOCUS_FEIL = /hasFocus is not a function/i;
+
+const feilFraHasFocus = (event: Sentry.ErrorEvent) => {
+    return (event.exception?.values ?? []).some((ex) => ex.value && HAS_FOCUS_FEIL.test(ex.value));
 };
 
 /**
