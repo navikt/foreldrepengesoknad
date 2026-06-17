@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs';
-import ts from 'typescript';
+import * as ts from 'typescript';
 
 /**
  * Henter ut statiske i18n-nøkler (`id`) som koden refererer til, via TypeScript sin AST.
@@ -21,7 +21,7 @@ export const extractMessageIds = (files: string[]): string[] => {
         const sourceFile = ts.createSourceFile(file, content, ts.ScriptTarget.Latest, true, scriptKind);
         visit(sourceFile, ids);
     }
-    return ids;
+    return [...new Set(ids)];
 };
 
 const visit = (node: ts.Node, ids: string[]): void => {
