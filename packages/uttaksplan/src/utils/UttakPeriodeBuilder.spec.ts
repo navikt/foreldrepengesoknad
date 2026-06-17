@@ -435,6 +435,26 @@ describe('UttakPeriodeBuilder.getUttakPerioder - validering av ugyldig overlapp'
         expect(captureMessageMock).not.toHaveBeenCalled();
     });
 
+    it('loggar ikkje for samtidig uttak rundt fødsel (ulik forelder, utan samtidigUttak satt)', () => {
+        captureMessageMock.mockClear();
+        setExtraMock.mockClear();
+        // Mor sin mødrekvote og far/medmor sin fedrekvote går parallelt rundt fødsel. Desse periodane
+        // ber ikkje `samtidigUttak`-flagget, men er likevel ein gyldig overlappande tilstand.
+        const builder = new UttakPeriodeBuilder(
+            [
+                { ...lagPeriode('2026-05-04', '2026-05-15'), kontoType: 'MØDREKVOTE' },
+                { ...lagNyPeriode('2026-05-04', '2026-05-15'), kontoType: 'FEDREKVOTE' },
+            ],
+            'kalender',
+        );
+
+        builder.leggTilUttakPerioder([{ ...lagNyPeriode('2026-12-07', '2026-12-18'), kontoType: 'FEDREKVOTE' }], false);
+
+        builder.getUttakPerioder();
+
+        expect(captureMessageMock).not.toHaveBeenCalled();
+    });
+
     it('loggar når planen inneheld ein FERIE og ein FELLES på same dag, med full diagnostikk', () => {
         captureMessageMock.mockClear();
         setExtraMock.mockClear();
