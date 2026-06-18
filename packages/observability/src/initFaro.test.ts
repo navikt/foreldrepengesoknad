@@ -148,7 +148,7 @@ describe('initFaro', () => {
                 meta: TOM_META,
             };
 
-            const resultat = beforeSend(logItem as TransportItem<ExceptionEvent>);
+            const resultat = beforeSend(logItem as unknown as TransportItem<ExceptionEvent>);
             expect(resultat).toBe(logItem);
         });
     });
@@ -264,9 +264,9 @@ describe('initFaro', () => {
 });
 
 function hentBeforeSend() {
-    const config = vi.mocked(initializeFaro).mock.calls[0][0];
-    expect(config.beforeSend).toBeDefined();
-    return config.beforeSend!;
+    const config = vi.mocked(initializeFaro).mock.calls[0]?.[0];
+    expect(config?.beforeSend).toBeDefined();
+    return config!.beforeSend!;
 }
 
 function lagExceptionItem({

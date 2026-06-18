@@ -41,15 +41,17 @@ export const initFaro = ({ app }: InitFaroOptions) => {
                 return item;
             }
 
-            if (feilVarSomFølgeAvEn401Handling(item)) {
+            const exceptionItem = item as TransportItem<ExceptionEvent>;
+
+            if (feilVarSomFølgeAvEn401Handling(exceptionItem)) {
                 return null;
             }
 
-            if (feilUtenOpprinnelseIVårKode(item)) {
+            if (feilUtenOpprinnelseIVårKode(exceptionItem)) {
                 return null;
             }
 
-            if (feilFraBrowserExtensions(item)) {
+            if (feilFraBrowserExtensions(exceptionItem)) {
                 return null;
             }
 
