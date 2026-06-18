@@ -35,4 +35,10 @@ describe('urlEncodingUtils', () => {
         const gammelBase64 = encodeToBase64(json);
         expect(decompressFromUrl(gammelBase64)).toBe(decodeBase64(gammelBase64));
     });
+
+    it('returnerer undefined for ugyldig/korrupt input uten å kaste', () => {
+        // Verdi som hverken er lz-komprimert JSON eller gyldig base64 (kaster InvalidCharacterError i atob).
+        expect(() => decompressFromUrl('%%%ugyldig%%%')).not.toThrow();
+        expect(decompressFromUrl('%%%ugyldig%%%')).toBeUndefined();
+    });
 });
