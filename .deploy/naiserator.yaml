@@ -117,7 +117,8 @@ metadata:
   labels:
     team: teamforeldrepenger
   annotations:
-    haproxy.org/request-redirect: "code 301 location {{../ingress}}/$1"
+    haproxy.org/request-redirect: "{{../ingress}}"
+    haproxy.org/request-redirect-code: "301"
 spec:
   ingressClassName: {{ingressClassName}}
   rules:
