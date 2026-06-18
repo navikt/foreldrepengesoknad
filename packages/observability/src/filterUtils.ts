@@ -25,7 +25,7 @@ export interface StackFrame {
  * Logikk: Hvis en frame er fra et asset (FARO: `/assets/*.js`) og matcher
  * FEIL_VI_VIL_LUKE_BORT, er det en uønsket asset-frame → return true (filtrer).
  * Hvis framen er fra våre egne assets (ikke i FEIL_VI_VIL_LUKE_BORT) → return false (ikke filtrer).
- * Hvis framen ikke er et asset (vår kode) → return true (ikke filtrer — her har vi opprinnelse).
+ * Hvis framen ikke er et asset (altså ikke fra vår bundle) → return true (filtrer).
  *
  * Funksjonen returnerer true hvis minst én frame ikke har opprinnelse i vår kode,
  * eller hvis en frame kommer fra en uønsket asset.
