@@ -18,6 +18,7 @@ const {
     FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid,
     FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid,
     BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid,
+    KreverIngenDokumentasjonMenHarOpplastetVedlegg,
 } = composeStories(stories);
 
 describe('<ManglendeVedlegg>', () => {
@@ -417,6 +418,26 @@ describe('<ManglendeVedlegg>', () => {
                 key: ContextDataType.APP_ROUTE,
                 type: 'update',
             });
+        }),
+    );
+
+    it(
+        'skal vise dokumentasjonssteget når uttaksplanen ikke krever dokumentasjon men det finnes opplastet vedlegg',
+        mswWrapper(async ({ setHandlers }) => {
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreSøknadOgNaviger = vi.fn();
+
+            setHandlers(KreverIngenDokumentasjonMenHarOpplastetVedlegg.parameters.msw);
+            const screen = render(
+                <KreverIngenDokumentasjonMenHarOpplastetVedlegg
+                    gåTilNesteSide={gåTilNesteSide}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                />,
+            );
+
+            // Steget skal rendre uten å kaste «Ingen valgte steg funnet» fordi det finnes
+            // et opplastet vedlegg, selv om uttaksplanen ikke lenger krever dokumentasjon.
+            expect(await screen.findByText('Neste steg')).toBeInTheDocument();
         }),
     );
 });
