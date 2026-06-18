@@ -8,6 +8,29 @@ import {
 import { Uttaksperioden } from '@navikt/fp-utils';
 import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan';
 
+/**
+ * Finner periodene som faktisk inngår i denne søknaden, og som derfor kan kreve dokumentasjon.
+ *
+ * Filtrerer bort annen parts perioder, og – i en endringssøknad mot en eksisterende sak –
+ * perioder som allerede er innvilget (de har et `resultat`). Uten dette ville søknaden f.eks.
+ * be far om sykdomsdokumentasjon for fellesperiode mor syk som allerede er innvilget, selv om
+ * han kun endrer/legger til en ny periode.
+ */
+export const finnPerioderSomInngårISøknaden = (
+    uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    erFarEllerMedmor: boolean,
+    harEksisterendeSak: boolean,
+): UttakPeriode_fpoversikt[] => {
+    return uttaksplan.filter((periode): periode is UttakPeriode_fpoversikt => {
+        if (!Uttaksperioden.erIkkeEøsPeriode(periode)) {
+            return false;
+        }
+        const erSøkersPeriode = periode.forelder === (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR');
+        const erDelAvSøknaden = harEksisterendeSak ? periode.resultat === undefined : true;
+        return erSøkersPeriode && erDelAvSøknaden;
+    });
+};
+
 export const perioderSomKreverVedlegg = (
     uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     erFarEllerMedmor: boolean,

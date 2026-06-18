@@ -1,8 +1,8 @@
 import { AnnenForelder } from 'types/AnnenForelder';
 
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriode_fpoversikt, UttakPeriodeResultat_fpoversikt } from '@navikt/fp-types';
 
-import { perioderSomKreverVedlegg } from './manglendeVedleggUtils';
+import { finnPerioderSomInngårISøknaden, perioderSomKreverVedlegg } from './manglendeVedleggUtils';
 
 const annenForelder = {
     fornavn: 'Far',
@@ -25,6 +25,40 @@ const lagFellesperiodeMedMorsAktivitet = (forelder: 'MOR' | 'FAR_MEDMOR'): Uttak
     flerbarnsdager: false,
 });
 
+const innvilgetResultat: UttakPeriodeResultat_fpoversikt = {
+    innvilget: true,
+    trekkerDager: true,
+    trekkerMinsterett: false,
+    årsak: 'ANNET',
+};
+
+const innvilgetFellesperiodeMorSyk: UttakPeriode_fpoversikt = {
+    fom: '2024-01-01',
+    tom: '2024-01-31',
+    flerbarnsdager: false,
+    forelder: 'FAR_MEDMOR',
+    kontoType: 'FELLESPERIODE',
+    morsAktivitet: 'TRENGER_HJELP',
+    resultat: innvilgetResultat,
+};
+
+const nyFellesperiodeMorJobber: UttakPeriode_fpoversikt = {
+    fom: '2024-02-01',
+    tom: '2024-02-28',
+    flerbarnsdager: false,
+    forelder: 'FAR_MEDMOR',
+    kontoType: 'FELLESPERIODE',
+    morsAktivitet: 'ARBEID',
+};
+
+const morsPeriode: UttakPeriode_fpoversikt = {
+    fom: '2023-12-01',
+    tom: '2023-12-31',
+    flerbarnsdager: false,
+    forelder: 'MOR',
+    kontoType: 'MØDREKVOTE',
+};
+
 describe('perioderSomKreverVedlegg - dokumentasjon av mors aktivitet', () => {
     it('skal ikke kreve dokumentasjon for mors aktivitet i mors egen søknad ved samtidig uttak av fellesperiode', () => {
         const perioder = perioderSomKreverVedlegg(
@@ -46,5 +80,38 @@ describe('perioderSomKreverVedlegg - dokumentasjon av mors aktivitet', () => {
         );
 
         expect(perioder).toHaveLength(1);
+    });
+});
+
+describe('finnPerioderSomInngårISøknaden', () => {
+    it('utelater allerede innvilgede perioder i en endringssøknad mot en eksisterende sak', () => {
+        const resultat = finnPerioderSomInngårISøknaden(
+            [innvilgetFellesperiodeMorSyk, nyFellesperiodeMorJobber],
+            true,
+            true,
+        );
+
+        expect(resultat).toEqual([nyFellesperiodeMorJobber]);
+    });
+
+    it('beholder alle søkerens perioder i en førstegangssøknad uten eksisterende sak', () => {
+        const periodeUtenResultat: UttakPeriode_fpoversikt = {
+            ...nyFellesperiodeMorJobber,
+            morsAktivitet: 'TRENGER_HJELP',
+        };
+
+        const resultat = finnPerioderSomInngårISøknaden(
+            [periodeUtenResultat, nyFellesperiodeMorJobber],
+            true,
+            false,
+        );
+
+        expect(resultat).toEqual([periodeUtenResultat, nyFellesperiodeMorJobber]);
+    });
+
+    it('filtrerer bort annen parts perioder', () => {
+        const resultat = finnPerioderSomInngårISøknaden([morsPeriode, nyFellesperiodeMorJobber], true, false);
+
+        expect(resultat).toEqual([nyFellesperiodeMorJobber]);
     });
 });
