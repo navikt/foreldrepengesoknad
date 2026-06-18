@@ -355,11 +355,18 @@ export const ikkeDeltUttak = ({
     );
     const aktivitetsfriKvote = tilgjengeligeStønadskvoter.find((konto) => konto.konto === 'AKTIVITETSFRI_KVOTE');
 
+    // Uten en FORELDREPENGER-konto finnes det ikke grunnlag for å lage et ikke-delt forslag.
+    // Dette skjer f.eks. når kvotesettet egentlig hører til delt uttak (MØDREKVOTE/FEDREKVOTE/FELLESPERIODE).
+    // Returner en tom plan i stedet for å krasje på konto.dager.
+    if (foreldrepengerKonto === undefined) {
+        return [];
+    }
+
     if (situasjon === 'adopsjon') {
         return ikkeDeltUttakAdopsjon({
             famDato,
             erFarEllerMedmor,
-            foreldrepengerKonto: foreldrepengerKonto!,
+            foreldrepengerKonto,
             erMorUfør,
             aktivitetsfriKvote,
             bareFarMedmorHarRett,
@@ -369,7 +376,7 @@ export const ikkeDeltUttak = ({
     return ikkeDeltUttakFødsel({
         famDato,
         erFarEllerMedmor,
-        foreldrepengerKonto: foreldrepengerKonto!,
+        foreldrepengerKonto,
         foreldrePengerFørFødselKonto,
         erMorUfør,
         aktivitetsfriKvote,

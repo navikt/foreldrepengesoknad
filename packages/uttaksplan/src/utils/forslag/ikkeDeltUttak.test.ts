@@ -214,3 +214,57 @@ describe('ikkeDeltUttak - Adopsjon', () => {
         expect(forslag[1]!.tom).toEqual('2023-01-13');
     });
 });
+
+describe('ikkeDeltUttak - mangler FORELDREPENGER-konto', () => {
+    const famDato = '2022-08-08';
+    // Kvotesett som hører til delt uttak (begge har rett) inneholder ikke FORELDREPENGER.
+    const deltUttakKvoter = [
+        { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
+        { konto: 'MØDREKVOTE', dager: 75 },
+        { konto: 'FEDREKVOTE', dager: 75 },
+        { konto: 'FELLESPERIODE', dager: 80 },
+    ] satisfies KontoDto[];
+
+    it('skal returnere tom plan i stedet for å krasje når FORELDREPENGER-konto mangler ved fødsel', () => {
+        expect(() =>
+            ikkeDeltUttak({
+                situasjon: 'fødsel',
+                famDato,
+                erFarEllerMedmor: false,
+                tilgjengeligeStønadskvoter: deltUttakKvoter,
+                erMorUfør: false,
+                bareFarMedmorHarRett: false,
+                erAleneOmOmsorg: false,
+                farOgFar: false,
+            }),
+        ).not.toThrow();
+
+        const forslag = ikkeDeltUttak({
+            situasjon: 'fødsel',
+            famDato,
+            erFarEllerMedmor: false,
+            tilgjengeligeStønadskvoter: deltUttakKvoter,
+            erMorUfør: false,
+            bareFarMedmorHarRett: false,
+            erAleneOmOmsorg: false,
+            farOgFar: false,
+        });
+
+        expect(forslag).toEqual([]);
+    });
+
+    it('skal returnere tom plan i stedet for å krasje når FORELDREPENGER-konto mangler ved adopsjon', () => {
+        const forslag = ikkeDeltUttak({
+            situasjon: 'adopsjon',
+            famDato,
+            erFarEllerMedmor: false,
+            tilgjengeligeStønadskvoter: deltUttakKvoter,
+            erMorUfør: false,
+            bareFarMedmorHarRett: false,
+            erAleneOmOmsorg: false,
+            farOgFar: false,
+        });
+
+        expect(forslag).toEqual([]);
+    });
+});
