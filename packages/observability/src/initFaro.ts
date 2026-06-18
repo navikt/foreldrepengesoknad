@@ -1,4 +1,7 @@
-import { getWebInstrumentations, initializeFaro } from '@grafana/faro-web-sdk';
+import { TransportItemType, getWebInstrumentations, initializeFaro } from '@grafana/faro-web-sdk';
+import type { ExceptionEvent, TransportItem } from '@grafana/faro-web-sdk';
+
+import { DISTRIBUTOR_PATTERN, harDistributorStacktrace, harUtenforstaendeKodeOpprinnelse } from './filterUtils';
 
 type InitFaroOptions = {
     app: {
@@ -33,5 +36,65 @@ export const initFaro = ({ app }: InitFaroOptions) => {
             version: import.meta.env.VITE_SENTRY_RELEASE,
         },
         instrumentations: [...getWebInstrumentations()],
+        beforeSend: (item) => {
+            if (item.type !== TransportItemType.EXCEPTION) {
+                return item;
+            }
+
+            if (feilVarSomFølgeAvEn401Handling(item)) {
+                return null;
+            }
+
+            if (feilUtenOpprinnelseIVårKode(item)) {
+                return null;
+            }
+
+            if (feilFraBrowserExtensions(item)) {
+                return null;
+            }
+
+            return item;
+        },
     });
+};
+
+/**
+ * 401 skaper mye støy da det er naturlig at folk sine sesjoner utløper.
+ * De blir da automatisk redirected til login, og ser ikke feilen engang.
+ *
+ * I Sentry filtrerer vi via breadcrumbs. Faro har ikke breadcrumbs på exception events,
+ * så vi sjekker feilmeldingstype og -verdi direkte.
+ */
+const feilVarSomFølgeAvEn401Handling = (item: TransportItem<ExceptionEvent>): boolean => {
+    const { type, value } = item.payload;
+
+    return (
+        (type?.includes('401') ?? false) ||
+        (value?.includes('401') ?? false) ||
+        (value?.includes('Unauthorized') ?? false) ||
+        (value?.includes('UNAUTHORIZED') ?? false)
+    );
+};
+
+/**
+ * Sjekker om exception har stacktrace uten opprinnelse i vår kode.
+ * Delegerer til felles harUtenforstaendeKodeOpprinnelse.
+ */
+const feilUtenOpprinnelseIVårKode = (item: TransportItem<ExceptionEvent>): boolean => {
+    const frames = item.payload.stacktrace?.frames;
+    return frames ? harUtenforstaendeKodeOpprinnelse(frames) : false;
+};
+
+/**
+ * Nettleserutvidelser som f.eks. taleassistenter (Speech Assist) genererer mange "Request timeout ...Distributor.getValue"-feil.
+ * Disse er ikke våre feil, og vi vil ikke ha dem i Faro.
+ */
+const feilFraBrowserExtensions = (item: TransportItem<ExceptionEvent>): boolean => {
+    const { type, value, stacktrace } = item.payload;
+
+    if ((type && DISTRIBUTOR_PATTERN.test(type)) || (value && DISTRIBUTOR_PATTERN.test(value))) {
+        return true;
+    }
+
+    return stacktrace?.frames ? harDistributorStacktrace(stacktrace.frames) : false;
 };
