@@ -1,14 +1,12 @@
 /**
  * Felles filtreringslogikk for Sentry og Faro.
  *
- * Begge observability-verktøyene bruker samme regler for å luke bort støy:
+ * Vi prøver å bruke samme regler for å luke bort støy der det er mulig:
  * - Dekoratør-feil (personbruker/decorator-next)
  * - Nettleserutvidelser (taleassistenter)
- * - Oversettelsesverktøy (removeChild/insertBefore)
  *
- * 401-filtrering holdes i hver init-fil siden mekanismen er ulik:
- * Sentry har breadcrumbs, Faro har ikke.
- */
+ * Sentry har i tillegg filter for oversettelsesverktøy (removeChild/insertBefore).
+ * 401-filtrering holdes i hver init-fil siden mekanismen er ulik (Sentry har breadcrumbs, Faro har ikke).
 
 const FEIL_VI_VIL_LUKE_BORT = ['personbruker/decorator-next'];
 
