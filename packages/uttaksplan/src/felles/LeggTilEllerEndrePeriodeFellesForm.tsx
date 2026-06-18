@@ -19,7 +19,7 @@ import type {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
-import { isRequired, notEmpty } from '@navikt/fp-validation';
+import { isRequired } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { getStønadskvoteNavnSimple } from '../liste/utils/uttaksplanListeUtils';
@@ -704,11 +704,12 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
 
     if (eksisterendePerioder.length === 2) {
         const erSamtidigUttak = eksisterendePerioder.every((p) => !!p.samtidigUttak);
-        if (!erSamtidigUttak) {
-            throw new Error('Forventer to perioder ved samtidig uttak.');
+        const morsPeriode = eksisterendePerioder.find((p) => p.forelder === 'MOR');
+        const farMedmorPeriode = eksisterendePerioder.find((p) => p.forelder === 'FAR_MEDMOR');
+
+        if (!erSamtidigUttak || !morsPeriode || !farMedmorPeriode) {
+            return undefined;
         }
-        const morsPeriode = notEmpty(eksisterendePerioder.find((p) => p.forelder === 'MOR'));
-        const farMedmorPeriode = notEmpty(eksisterendePerioder.find((p) => p.forelder === 'FAR_MEDMOR'));
 
         const søkersPeriode = søker === 'MOR' ? morsPeriode : farMedmorPeriode;
 
