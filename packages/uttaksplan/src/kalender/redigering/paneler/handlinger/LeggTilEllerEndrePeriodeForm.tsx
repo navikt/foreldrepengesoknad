@@ -119,6 +119,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
 
     const harNesteSteg =
         !kanKunErstatte &&
+        !morsAktivitetIkkeOppgittAlert &&
         erDetEksisterendePerioderEtterValgtePerioder(uttakPerioder, sammenslåtteValgtePerioder);
 
     const onSubmit = (values: LeggTilEllerEndrePeriodeFormFormValues) => {

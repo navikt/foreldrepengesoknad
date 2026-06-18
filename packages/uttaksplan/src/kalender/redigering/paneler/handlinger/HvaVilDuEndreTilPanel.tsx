@@ -336,7 +336,7 @@ const LeggTilOgEndreKnapp = ({
                 onClick={åpneRedigeringsmodus}
                 type="button"
                 className="flex-1"
-                icon={<PlusIcon aria-hidden className="md:hidden" />}
+                icon={skalViseLeggTilKnappetekst ? <PlusIcon aria-hidden className="md:hidden" /> : undefined}
                 iconPosition="left"
             >
                 {skalViseLeggTilKnappetekst ? (
