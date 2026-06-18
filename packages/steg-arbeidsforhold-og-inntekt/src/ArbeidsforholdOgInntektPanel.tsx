@@ -1,3 +1,4 @@
+import { PlusIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -203,6 +204,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                                 type="button"
                                 variant="secondary"
                                 size="small"
+                                icon={<PlusIcon aria-hidden />}
                                 onClick={() => setVisAndreInntekterModal(true)}
                             >
                                 <FormattedMessage id="inntektsinformasjon.leggTilAndreInntekter" />
