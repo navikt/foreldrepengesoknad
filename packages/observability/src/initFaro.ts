@@ -75,12 +75,9 @@ export const initFaro = ({ app }: InitFaroOptions) => {
 const feilVarSomFølgeAvEn401Handling = (item: TransportItem<ExceptionEvent>): boolean => {
     const { type, value } = item.payload;
 
-    return (
-        (type?.includes('401') ?? false) ||
-        (value?.includes('401') ?? false) ||
-        (value?.includes('Unauthorized') ?? false) ||
-        (value?.includes('UNAUTHORIZED') ?? false)
-    );
+    const unauthorizedPattern = /\b401\b|unauthorized/i;
+
+    return (type ? unauthorizedPattern.test(type) : false) || (value ? unauthorizedPattern.test(value) : false);
 };
 
 /**
