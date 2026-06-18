@@ -1,5 +1,10 @@
-import { TransportItemType, getWebInstrumentations, initializeFaro } from '@grafana/faro-web-sdk';
-import type { ExceptionEvent, TransportItem } from '@grafana/faro-web-sdk';
+import {
+    type ExceptionEvent,
+    type TransportItem,
+    TransportItemType,
+    getWebInstrumentations,
+    initializeFaro,
+} from '@grafana/faro-web-sdk';
 
 import { DISTRIBUTOR_PATTERN, harDistributorStacktrace, harUtenforstaendeKodeOpprinnelse } from './filterUtils';
 

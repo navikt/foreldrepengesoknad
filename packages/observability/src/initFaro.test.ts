@@ -1,5 +1,11 @@
-import { TransportItemType, getWebInstrumentations, initializeFaro } from '@grafana/faro-web-sdk';
-import type { ExceptionEvent, Meta, TransportItem } from '@grafana/faro-web-sdk';
+import {
+    type ExceptionEvent,
+    type Meta,
+    type TransportItem,
+    TransportItemType,
+    getWebInstrumentations,
+    initializeFaro,
+} from '@grafana/faro-web-sdk';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { initFaro } from './initFaro';
@@ -285,7 +291,7 @@ function lagExceptionItem({
             type,
             value,
             stacktrace,
-        } as ExceptionEvent,
+        },
         meta: TOM_META,
     };
 }
