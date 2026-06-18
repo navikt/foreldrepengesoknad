@@ -7,6 +7,7 @@
  *
  * Sentry har i tillegg filter for oversettelsesverktøy (removeChild/insertBefore).
  * 401-filtrering holdes i hver init-fil siden mekanismen er ulik (Sentry har breadcrumbs, Faro har ikke).
+ */
 
 const FEIL_VI_VIL_LUKE_BORT = ['personbruker/decorator-next'];
 
