@@ -10,7 +10,7 @@
  * Sentry har breadcrumbs, Faro har ikke.
  */
 
-export const FEIL_VI_VIL_LUKE_BORT = ['personbruker/decorator-next'];
+const FEIL_VI_VIL_LUKE_BORT = ['personbruker/decorator-next'];
 
 export const DISTRIBUTOR_PATTERN = /Request timeout \S*Distributor\.\S+/;
 
