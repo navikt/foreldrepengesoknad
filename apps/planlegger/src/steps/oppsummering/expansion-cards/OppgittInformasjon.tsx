@@ -82,7 +82,7 @@ export const OppgittInformasjon = ({
 
     const erFarOgFarFødsel = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && !erAdoptert;
 
-    const minsteInntekt = formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2);
+    const minsteInntekt = formatCurrencyWithKr(Math.round(finnSisteGrunnbeløp(satser) / 2));
 
     return (
         <VStack gap="space-40">
