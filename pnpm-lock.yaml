@@ -51,9 +51,6 @@ catalogs:
     '@types/express':
       specifier: 5.0.6
       version: 5.0.6
-    '@types/lodash':
-      specifier: 4.17.24
-      version: 4.17.24
     '@types/morgan':
       specifier: 1.9.10
       version: 1.9.10
@@ -75,6 +72,9 @@ catalogs:
     dotenv:
       specifier: 17.4.2
       version: 17.4.2
+    es-toolkit:
+      specifier: 1.46.0
+      version: 1.46.0
     esbuild:
       specifier: 0.28.1
       version: 0.28.1
@@ -96,9 +96,6 @@ catalogs:
     ky:
       specifier: 2.0.2
       version: 2.0.2
-    lodash:
-      specifier: 4.18.1
-      version: 4.18.1
     mockdate:
       specifier: 3.0.5
       version: 3.0.5
@@ -240,12 +237,12 @@ importers:
       dayjs:
         specifier: 'catalog:'
         version: 1.11.21
+      es-toolkit:
+        specifier: 'catalog:'
+        version: 1.46.0
       ky:
         specifier: 'catalog:'
         version: 2.0.2
-      lodash:
-        specifier: 'catalog:'
-        version: 4.18.1
       react:
         specifier: 'catalog:'
         version: 19.2.7
@@ -292,9 +289,6 @@ importers:
       '@types/express':
         specifier: 'catalog:'
         version: 5.0.6
-      '@types/lodash':
-        specifier: 'catalog:'
-        version: 4.17.24
       '@types/react':
         specifier: 'catalog:'
         version: 19.2.17
@@ -397,15 +391,15 @@ importers:
       dayjs:
         specifier: 'catalog:'
         version: 1.11.21
+      es-toolkit:
+        specifier: 'catalog:'
+        version: 1.46.0
       jotai:
         specifier: 2.20.1
         version: 2.20.1(@babel/core@7.29.7)(@babel/template@7.29.7)(@types/react@19.2.17)(react@19.2.7)
       ky:
         specifier: 'catalog:'
         version: 2.0.2
-      lodash:
-        specifier: 'catalog:'
-        version: 4.18.1
       react:
         specifier: 'catalog:'
         version: 19.2.7
@@ -452,9 +446,6 @@ importers:
       '@types/jsdom':
         specifier: 28.0.3
         version: 28.0.3
-      '@types/lodash':
-        specifier: 'catalog:'
-        version: 4.17.24
       '@types/morgan':
         specifier: 'catalog:'
         version: 1.9.10
@@ -587,12 +578,12 @@ importers:
       dayjs:
         specifier: 'catalog:'
         version: 1.11.21
+      es-toolkit:
+        specifier: 'catalog:'
+        version: 1.46.0
       ky:
         specifier: 'catalog:'
         version: 2.0.2
-      lodash:
-        specifier: 'catalog:'
-        version: 4.18.1
       react:
         specifier: 'catalog:'
         version: 19.2.7
@@ -639,9 +630,6 @@ importers:
       '@types/express':
         specifier: 'catalog:'
         version: 5.0.6
-      '@types/lodash':
-        specifier: 'catalog:'
-        version: 4.17.24
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.3
@@ -744,12 +732,12 @@ importers:
       dayjs:
         specifier: 'catalog:'
         version: 1.11.21
+      es-toolkit:
+        specifier: 'catalog:'
+        version: 1.46.0
       ky:
         specifier: 'catalog:'
         version: 2.0.2
-      lodash:
-        specifier: 'catalog:'
-        version: 4.18.1
       morgan:
         specifier: 'catalog:'
         version: 1.11.0
@@ -799,9 +787,6 @@ importers:
       '@types/express':
         specifier: 'catalog:'
         version: 5.0.6
-      '@types/lodash':
-        specifier: 'catalog:'
-        version: 4.17.24
       '@types/morgan':
         specifier: 'catalog:'
         version: 1.9.10
@@ -919,12 +904,12 @@ importers:
       dayjs:
         specifier: 'catalog:'
         version: 1.11.21
+      es-toolkit:
+        specifier: 'catalog:'
+        version: 1.46.0
       ky:
         specifier: 'catalog:'
         version: 2.0.2
-      lodash:
-        specifier: 'catalog:'
-        version: 4.18.1
       react:
         specifier: 'catalog:'
         version: 19.2.7
@@ -971,9 +956,6 @@ importers:
       '@types/express':
         specifier: 'catalog:'
         version: 5.0.6
-      '@types/lodash':
-        specifier: 'catalog:'
-        version: 4.17.24
       '@types/react':
         specifier: 'catalog:'
         version: 19.2.17
@@ -2591,15 +2573,15 @@ importers:
       dayjs:
         specifier: 'catalog:'
         version: 1.11.21
+      es-toolkit:
+        specifier: 'catalog:'
+        version: 1.46.0
       html2canvas:
         specifier: 1.4.1
         version: 1.4.1
       jspdf:
         specifier: 4.2.1
         version: 4.2.1
-      lodash:
-        specifier: 'catalog:'
-        version: 4.18.1
       react:
         specifier: 'catalog:'
         version: 19.2.7
@@ -2640,9 +2622,6 @@ importers:
       '@testing-library/user-event':
         specifier: 'catalog:'
         version: 14.6.1(@testing-library/dom@10.4.1)
-      '@types/lodash':
-        specifier: 'catalog:'
-        version: 4.17.24
       '@types/react':
         specifier: 'catalog:'
         version: 19.2.17
@@ -3589,6 +3568,9 @@ packages:
       '@types/react': ^17.0.30 || ^18 || ^19
       react: ^17 || ^18 || ^19
       react-dom: ^17 || ^18 || ^19
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   '@navikt/ds-tailwind@8.12.1':
     resolution: {integrity: sha512-inhRlTK126xBoZDFPHODz/y+2z2yJk9Q9Qifxq90YkmHMTIwALIqDokuRW4aZThhScJ7x2WZ3JD7bWqEqT0DYg==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/8.12.1/e31f9936b996bfd8acab8c15ae7ba5011affbdca}
@@ -3605,6 +3587,9 @@ packages:
     peerDependencies:
       html-react-parser: '>=5.x'
       react: '>=17.x'
+    peerDependenciesMeta:
+      react:
+        optional: true
 
   '@navikt/oasis@4.1.4':
     resolution: {integrity: sha512-v+LW8V5CTiHkfIXhceQ8RXRtrBktCK8wSFYmiR6hmzl9CJRYRLUpFC7YbLiC7jwHIuLHKUyl+Zawf8zQm6fDeQ==, tarball: https://npm.pkg.github.com/download/@navikt/oasis/4.1.4/0d9c93820b9b6d93b1bd9da134feb95461ad8a47}
@@ -4746,9 +4731,6 @@ packages:
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
-  '@types/lodash@4.17.24':
-    resolution: {integrity: sha512-gIW7lQLZbue7lRSWEFql49QJJWThrTFFeIMJdp3eH4tKoxm1OvEPg02rm4wCCSHS0cL3/Fizimb35b7k8atwsQ==}
-
   '@types/methods@1.1.4':
     resolution: {integrity: sha512-ymXWVrDiCxTBE3+RIrrP533E70eA+9qu7zdWoHuOmGujkYtzf4HQF96b8nwHLqhuf4ykX61IGRIB38CC6/sImQ==}
 
@@ -5637,6 +5619,9 @@ packages:
     resolution: {integrity: sha512-w+5mJ3GuFL+NjVtJlvydShqE1eN3h3PbI7/5LAsYJP/2qtuMXjfL2LpHSRqo4b4eSF5K/DH1JXKUAHSB2UW50g==}
     engines: {node: '>= 0.4'}
 
+  es-toolkit@1.46.0:
+    resolution: {integrity: sha512-IToJ6ct9OLl5zz6WsC/1vZEwfSZ7Myil+ygl5Tf30Xjn9AEkzNB4kqp2G7VUJKF1DtTx/ra5M5KLlXvzOg51BA==}
+
   esbuild@0.27.7:
     resolution: {integrity: sha512-IxpibTjyVnmrIQo5aqNpCgoACA/dTKLTlhMHihVHhdkxKyPO1uBBthumT0rdHmcsk9uMonIWS0m4FljWzILh3w==}
     engines: {node: '>=18'}
@@ -6447,9 +6432,6 @@ packages:
 
   lodash-es@4.18.1:
     resolution: {integrity: sha512-J8xewKD/Gk22OZbhpOVSwcs60zhd95ESDwezOFuA3/099925PdHJ7OFHNTGtajL3AlZkykD32HykiMo+BIBI8A==}
-
-  lodash@4.18.1:
-    resolution: {integrity: sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==}
 
   log-update@6.1.0:
     resolution: {integrity: sha512-9ie8ItPR6tjY5uYJh8K/Zrv/RMZ5VOlOWvtZdEHYSTFKZfIBPQa9tOAEeAWhd+AnIneLJ22w5fjOYtoutpWq5w==}
@@ -8464,11 +8446,12 @@ snapshots:
       '@floating-ui/react-dom': 2.1.8(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@navikt/aksel-icons': 8.12.1
       '@navikt/ds-tokens': 8.12.1
-      '@types/react': 19.2.17
       date-fns: 4.4.0
       react: 19.2.7
       react-day-picker: 9.14.0(react@19.2.7)
       react-dom: 19.2.7(react@19.2.7)
+    optionalDependencies:
+      '@types/react': 19.2.17
 
   '@navikt/ds-tailwind@8.12.1': {}
 
@@ -8482,6 +8465,7 @@ snapshots:
       csp-header: 6.3.1
       html-react-parser: 6.1.1(@types/react@19.2.17)(react@19.2.7)
       js-cookie: 3.0.7
+    optionalDependencies:
       react: 19.2.7
 
   '@navikt/oasis@4.1.4':
@@ -9356,8 +9340,6 @@ snapshots:
       undici-types: 7.25.0
 
   '@types/json-schema@7.0.15': {}
-
-  '@types/lodash@4.17.24': {}
 
   '@types/methods@1.1.4': {}
 
@@ -10281,6 +10263,8 @@ snapshots:
       is-callable: 1.2.7
       is-date-object: 1.1.0
       is-symbol: 1.1.1
+
+  es-toolkit@1.46.0: {}
 
   esbuild@0.27.7:
     optionalDependencies:
@@ -11239,8 +11223,6 @@ snapshots:
       p-locate: 5.0.0
 
   lodash-es@4.18.1: {}
-
-  lodash@4.18.1: {}
 
   log-update@6.1.0:
     dependencies:

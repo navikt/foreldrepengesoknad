@@ -3,7 +3,7 @@ import { EsDataContext } from 'appData/EsDataContext';
 import { API_URLS, mellomlagretInfoOptions, personOptions } from 'appData/queries';
 import { VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
 import ky from 'ky';
-import isEqual from 'lodash/isEqual';
+import { isEqual } from 'es-toolkit';
 import { useIntl } from 'react-intl';
 
 import { RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';

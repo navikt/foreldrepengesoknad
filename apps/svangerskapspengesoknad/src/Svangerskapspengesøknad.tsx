@@ -3,7 +3,7 @@ import { SvpDataContext } from 'appData/SvpDataContext';
 import { API_URLS, mellomlagretInfoOptions, søkerinfoOptions } from 'appData/queries';
 import { VERSJON_MELLOMLAGRING } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
-import isEqual from 'lodash/isEqual';
+import { isEqual } from 'es-toolkit';
 import { useIntl } from 'react-intl';
 
 import { RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';

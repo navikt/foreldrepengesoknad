@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import orderBy from 'lodash/orderBy';
+import { orderBy } from 'es-toolkit';
 import { IntlShape } from 'react-intl';
 
 import { BarnType } from '@navikt/fp-constants';
@@ -112,8 +112,8 @@ export const grupperSakerPåBarn = (registrerteBarn: OversiktBarnDto_fpoversikt[
 
     const sorterteSaker = orderBy(
         alleSaker,
-        (sak) => (sak.familiehendelse ? getFamiliehendelseDato(sak.familiehendelse) : ''),
-        'desc',
+        [(sak) => (sak.familiehendelse ? getFamiliehendelseDato(sak.familiehendelse) : '')],
+        ['desc'],
     );
 
     return sorterteSaker.reduce((result, sak) => {
