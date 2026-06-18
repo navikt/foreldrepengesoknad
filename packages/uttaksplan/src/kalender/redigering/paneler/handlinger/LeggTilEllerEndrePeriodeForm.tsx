@@ -117,6 +117,11 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         erGradert: erGradertMor,
     });
 
+    const harNesteSteg =
+        !kanKunErstatte &&
+        !morsAktivitetIkkeOppgittAlert &&
+        erDetEksisterendePerioderEtterValgtePerioder(uttakPerioder, sammenslåtteValgtePerioder);
+
     const onSubmit = (values: LeggTilEllerEndrePeriodeFormFormValues) => {
         const submitFeilmelding = formSubmitValidator(sammenslåtteValgtePerioder, values);
 
@@ -126,11 +131,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         }
         setFeilmelding(undefined);
 
-        if (
-            !morsAktivitetIkkeOppgittAlert &&
-            !kanKunErstatte &&
-            erDetEksisterendePerioderEtterValgtePerioder(uttakPerioder, sammenslåtteValgtePerioder)
-        ) {
+        if (harNesteSteg) {
             setVisEndreEllerForskyvPanel(true);
         } else {
             leggIKalender(false);
@@ -174,12 +175,28 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
 
                     {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
 
-                    <HStack justify="space-between">
-                        <Button type="submit" variant="primary" size="small" disabled={!formMethods.formState.isDirty}>
-                            <FormattedMessage id="LeggTilPeriodePanel.LeggTil" />
+                    <HStack gap="space-12" className="w-full">
+                        <Button
+                            type="submit"
+                            variant="primary"
+                            size="small"
+                            className="flex-1"
+                            disabled={!formMethods.formState.isDirty}
+                        >
+                            {harNesteSteg ? (
+                                <FormattedMessage id="RedigeringPanel.LeggTilPeriode.Fortsett" />
+                            ) : (
+                                <FormattedMessage id="RedigeringPanel.LeggTilPeriode" />
+                            )}
                         </Button>
-                        <Button type="button" variant="secondary" size="small" onClick={lukkRedigeringsmodus}>
-                            <FormattedMessage id="LeggTilPeriodePanel.Avbryt" />
+                        <Button
+                            type="button"
+                            variant="secondary"
+                            size="small"
+                            className="flex-1"
+                            onClick={lukkRedigeringsmodus}
+                        >
+                            <FormattedMessage id="RedigeringPanel.LeggTilPeriode.Tilbake" />
                         </Button>
                     </HStack>
                 </VStack>
