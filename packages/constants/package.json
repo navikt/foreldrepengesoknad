@@ -11,13 +11,13 @@
         "tsc:watch": "tsc --noEmit --watch"
     },
     "dependencies": {
-        "dayjs": "1.11.20"
+        "dayjs": "catalog:"
     },
     "devDependencies": {
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
-        "eslint": "10.3.0",
-        "typescript": "6.0.3"
+        "eslint": "catalog:",
+        "typescript": "catalog:"
     },
     "packageManager": "pnpm@10.33.1"
 }

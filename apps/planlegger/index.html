@@ -11,6 +11,19 @@
         <script type="text/json" id="nav:appSettings">
             {{{APP_SETTINGS}}}
         </script>
+        <style>
+            /* Kritisk CSS: reserver full viewport-høyde for app-roten allerede ved
+               første paint. Uten dette er #app tom og lav inntil JS-bundlen (med
+               global.css) og SPA-innholdet lastes ~340 ms senere. Da blir den
+               server-injiserte dekoratør-footeren først tegnet inne i viewporten og
+               deretter dyttet under folden når innholdet fyller #app, noe som gir en
+               stor layout shift (CLS ~0.42). Ved å reservere høyden her havner
+               footeren under folden fra start, slik at forskyvningen skjer utenfor
+               skjermen og ikke teller mot CLS. */
+            #app {
+                min-height: 100vh;
+            }
+        </style>
     </head>
     <body>
         <div id="app"></div>

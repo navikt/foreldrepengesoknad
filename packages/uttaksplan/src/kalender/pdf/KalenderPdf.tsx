@@ -45,6 +45,9 @@ export const KalenderPdf = ({
                 antallKolonner,
                 filename: 'Min foreldrepengeplan.pdf',
             });
+        } catch {
+            // Generering feila (t.d. fordi dialogen blei lukka undervegs).
+            // Brukaren ser berre at lastestatus forsvinn – ingen krasj.
         } finally {
             setIsCreatingPdf(false);
         }

@@ -132,6 +132,14 @@ const inlineIkonFargar = (original: HTMLElement, klone: HTMLElement): void => {
 const høgdeForBredde = (bildeBredde: number, bildeHøgde: number, bredde: number): number =>
     (bredde * bildeHøgde) / bildeBredde;
 
+// Eit canvas med 0 i breidde eller høgde gir NaN/Infinity når vi reknar ut
+// høgda (vi deler på breidda), og toDataURL() på det gir ein ugyldig data-URL.
+// Begge delar får jsPDF.addImage til å kaste «Invalid argument passed to
+// jsPDF.scale». Slike canvas kan oppstå om eit månadselement er tomt/kollapsa,
+// eller om html2canvas treff nettlesaren si canvas-grense på svært lange planar
+// og returnerer eit blankt canvas. Vi hoppar difor over dei i staden for å krasje.
+const erGyldigCanvas = (canvas: HTMLCanvasElement): boolean => canvas.width > 0 && canvas.height > 0;
+
 // html2canvas (1.4.1) sentrerer ikkje tekst loddrett slik flexbox/grid gjer –
 // det plasserer teksten etter line-boksen, og teiknar han difor litt for langt
 // ned. Resultatet er at dagtala sig ned i cellene og legend-teksten hamnar lågt
@@ -200,7 +208,11 @@ const veljSkala = (breddePx: number, høgdePx: number): number => {
     return Math.max(MAKS_CANVAS_KANT_PX / maksKant, 0.1);
 };
 
-const lagOffscreenContainer = (forelder: HTMLElement): HTMLDivElement => {
+// Aksel set CSS-variablane på :root, så document.body arvar dei alltid.
+// Vi fester containarane til document.body slik at dei aldri blir fråkopla
+// dokumentet dersom dialogen blir avmontert medan generering pågår – noko som
+// elles får html2canvas til å kaste "Unable to find element in cloned iframe".
+const lagOffscreenContainer = (): HTMLDivElement => {
     const container = document.createElement('div');
     container.className = OFFSCREEN_KLASSE;
     container.style.position = 'fixed';
@@ -208,9 +220,10 @@ const lagOffscreenContainer = (forelder: HTMLElement): HTMLDivElement => {
     container.style.top = '0';
     container.style.backgroundColor = '#ffffff';
     container.style.width = 'max-content';
-    // Lagt under same forelder som originalen, slik at CSS-variablar (Aksel-tema)
-    // blir arva og fargane blir rett løyste.
-    forelder.appendChild(container);
+    container.style.pointerEvents = 'none';
+    container.setAttribute('aria-hidden', 'true');
+    container.setAttribute('inert', '');
+    document.body.appendChild(container);
     return container;
 };
 
@@ -275,6 +288,12 @@ export const genererKalenderPdf = async ({
     let y = MARGIN_MM;
 
     const leggTilBilete = (canvas: HTMLCanvasElement, x: number, øvst: number, bredde: number, høgde: number): void => {
+        // Siste vern mot ugyldige argument til jsPDF: utan dette kastar addImage
+        // «Invalid argument passed to jsPDF.scale» dersom ein dimensjon er NaN,
+        // Infinity eller ≤ 0 (t.d. frå eit blankt/tomt canvas).
+        if (!erGyldigCanvas(canvas) || !Number.isFinite(bredde) || !Number.isFinite(høgde) || bredde <= 0 || høgde <= 0) {
+            return;
+        }
         pdf.addImage(canvas.toDataURL('image/jpeg', JPEG_KVALITET), 'JPEG', x, øvst, bredde, høgde);
     };
 
@@ -284,14 +303,21 @@ export const genererKalenderPdf = async ({
     // Canvasa blir brukte og sleppte med ein gong, slik at vi ikkje held alle
     // månadscanvasa i minnet samtidig.
     const tegnRad = (radCanvaser: HTMLCanvasElement[]): void => {
+        // Hopp over canvas utan gyldige dimensjonar, så vi ikkje får NaN-høgder
+        // (og dermed ein jsPDF-krasj) frå tomme/blanke fangingar.
+        const gyldigeCanvaser = radCanvaser.filter(erGyldigCanvas);
+        if (gyldigeCanvaser.length === 0) {
+            return;
+        }
+
         // Skaler ned heile raden dersom den høgaste månaden er høgare enn ei side.
         const naturligRadHøgde = Math.max(
-            ...radCanvaser.map((canvas) => høgdeForBredde(canvas.width, canvas.height, kolonneBredde)),
+            ...gyldigeCanvaser.map((canvas) => høgdeForBredde(canvas.width, canvas.height, kolonneBredde)),
         );
         const radBredde =
             naturligRadHøgde > maksInnhaldsHøgd ? (kolonneBredde * maksInnhaldsHøgd) / naturligRadHøgde : kolonneBredde;
         const radHøgde = Math.max(
-            ...radCanvaser.map((canvas) => høgdeForBredde(canvas.width, canvas.height, radBredde)),
+            ...gyldigeCanvaser.map((canvas) => høgdeForBredde(canvas.width, canvas.height, radBredde)),
         );
 
         if (y + radHøgde > sideBunn) {
@@ -299,7 +325,7 @@ export const genererKalenderPdf = async ({
             y = MARGIN_MM;
         }
 
-        radCanvaser.forEach((canvas, kolonne) => {
+        gyldigeCanvaser.forEach((canvas, kolonne) => {
             const x = MARGIN_MM + kolonne * (kolonneBredde + KOLONNE_GAP_MM);
             leggTilBilete(canvas, x, y, radBredde, høgdeForBredde(canvas.width, canvas.height, radBredde));
         });
@@ -311,7 +337,7 @@ export const genererKalenderPdf = async ({
     // (≈ to månadskolonnar) i staden for max-content, slik at etikettane brett seg
     // over fleire linjer og får same tekststorleik som månadane når biletet blir
     // skalert til sidebreidda.
-    const legendContainer = lagOffscreenContainer(legendElement.parentElement ?? document.body);
+    const legendContainer = lagOffscreenContainer();
     legendContainer.style.width = `${LEGEND_BREDDE_PX}px`;
     legendContainer.style.padding = `${LEGEND_PADDING_PX}px 0`;
     try {
@@ -321,14 +347,16 @@ export const genererKalenderPdf = async ({
         sentrerTekstForFanging(legendKlone);
 
         const legendCanvas = await fangContainer(legendContainer);
-        const legendNaturligHøgd = høgdeForBredde(legendCanvas.width, legendCanvas.height, tilgjengeligBredde);
-        const legendBredde =
-            legendNaturligHøgd > maksInnhaldsHøgd
-                ? (tilgjengeligBredde * maksInnhaldsHøgd) / legendNaturligHøgd
-                : tilgjengeligBredde;
-        const legendHøgd = høgdeForBredde(legendCanvas.width, legendCanvas.height, legendBredde);
-        leggTilBilete(legendCanvas, MARGIN_MM, y, legendBredde, legendHøgd);
-        y += legendHøgd + RAD_GAP_MM;
+        if (erGyldigCanvas(legendCanvas)) {
+            const legendNaturligHøgd = høgdeForBredde(legendCanvas.width, legendCanvas.height, tilgjengeligBredde);
+            const legendBredde =
+                legendNaturligHøgd > maksInnhaldsHøgd
+                    ? (tilgjengeligBredde * maksInnhaldsHøgd) / legendNaturligHøgd
+                    : tilgjengeligBredde;
+            const legendHøgd = høgdeForBredde(legendCanvas.width, legendCanvas.height, legendBredde);
+            leggTilBilete(legendCanvas, MARGIN_MM, y, legendBredde, legendHøgd);
+            y += legendHøgd + RAD_GAP_MM;
+        }
     } finally {
         legendContainer.remove();
     }
@@ -341,7 +369,7 @@ export const genererKalenderPdf = async ({
     // container og bit-canvas sleppt før neste bit.
     for (let i = 0; i < månedElementer.length; i += månederPerBit) {
         const bitElementer = månedElementer.slice(i, i + månederPerBit);
-        const container = lagOffscreenContainer(kalenderElement.parentElement ?? document.body);
+        const container = lagOffscreenContainer();
         container.style.display = 'grid';
         container.style.gridTemplateColumns = `repeat(${antallKolonner}, ${MND_BREDDE_PX}px)`;
         container.style.columnGap = `${MND_GAP_PX}px`;

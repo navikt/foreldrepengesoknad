@@ -36,8 +36,7 @@ import {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { BluePanel, Infobox, StepButtons } from '@navikt/fp-ui';
-import { Uttaksperioden, compressToUrl, useMedia } from '@navikt/fp-utils';
-import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
+import { Uttaksperioden, compressToUrl, useMedia, useScrollBehaviour } from '@navikt/fp-utils';
 import {
     FjernAltIUttaksplanModal,
     KvoteOppsummering,

@@ -35,18 +35,18 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreOgNaviger }: Props) =
                 onAvsluttOgSlett={navigator.avbrytSøknad}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 onFortsettSenere={navigator.fortsettSøknadSenere}
-                onStepChange={navigator.goToNextStep}
+                onStepChange={navigator.goToStep}
             >
                 <OmBarnetOppsummering
                     omBarnet={omBarnet}
-                    onVilEndreSvar={() => navigator.goToNextStep(Path.OM_BARNET)}
+                    onVilEndreSvar={() => navigator.goToStep(Path.OM_BARNET)}
                 />
                 <BoIUtlandetOppsummering
-                    onVilEndreSvar={() => navigator.goToNextStep(Path.UTENLANDSOPPHOLD)}
+                    onVilEndreSvar={() => navigator.goToStep(Path.UTENLANDSOPPHOLD)}
                     tidligereUtenlandsopphold={tidligereUtenlandsopphold ?? []}
                     senereUtenlandsopphold={senereUtenlandsopphold ?? []}
                 />
-                <DokumentasjonOppsummering dokumentasjon={dokumentasjon} onVilEndreSvar={navigator.goToNextStep} />
+                <DokumentasjonOppsummering dokumentasjon={dokumentasjon} onVilEndreSvar={navigator.goToStep} />
             </OppsummeringPanel>
         </SkjemaRotLayout>
     );

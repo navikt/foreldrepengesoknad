@@ -9,7 +9,12 @@ import {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
-import { harPeriodeDerMorsAktivitetIkkeErValgt, harPeriodeMedUkjentGraderingsaktivitet, useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan';
+import {
+    erPerioderEkslFomTomLike,
+    harPeriodeDerMorsAktivitetIkkeErValgt,
+    harPeriodeMedUkjentGraderingsaktivitet,
+    useErAntallDagerOvertrukketIUttaksplan,
+} from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 export type UttaksplanPerioder = Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
@@ -21,15 +26,17 @@ type SubmitValideringsregel = {
 
 interface UseFinnFørsteSubmitFeilmeldingProps {
     opprinneligPlan: UttaksplanPerioder | undefined;
+    erEndringssøknad: boolean;
 }
 
-export const useFinnFørsteSubmitFeilmelding = ({ opprinneligPlan }: UseFinnFørsteSubmitFeilmeldingProps) => {
+export const useFinnFørsteSubmitFeilmelding = ({
+    opprinneligPlan,
+    erEndringssøknad,
+}: UseFinnFørsteSubmitFeilmeldingProps) => {
     const intl = useIntl();
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
-    const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
-    const erEndringssøknad = !!valgtEksisterendeSaksnr;
     const erAntallDagerOvertrukket = useErAntallDagerOvertrukketIUttaksplan();
 
     const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
@@ -55,7 +62,7 @@ export const useFinnFørsteSubmitFeilmelding = ({ opprinneligPlan }: UseFinnFør
         const søkersPerioder = perioder.filter(
             (periode) => Uttaksperioden.erIkkeEøsPeriode(periode) && periode.forelder === søkersForelder,
         );
-        return harPeriodeMedUkjentGraderingsaktivitet(søkersPerioder);
+        return harPeriodeMedUkjentGraderingsaktivitet(søkersPerioder, søkersForelder);
     };
 
     const harKunPerioderForDenAndreForelderen = (perioder: UttaksplanPerioder) =>
@@ -100,7 +107,7 @@ export const useFinnFørsteSubmitFeilmelding = ({ opprinneligPlan }: UseFinnFør
     };
 };
 
-const harBrukerKunSlettetPerioder = (
+export const harBrukerKunSlettetPerioder = (
     perioder: UttaksplanPerioder | undefined,
     opprinneligPlan: UttaksplanPerioder | undefined,
 ) => {
@@ -114,13 +121,19 @@ const harBrukerKunSlettetPerioder = (
 
     if (erKunSaksperioder) {
         const harSlettetPeriode = perioder
-            ? !perioder.every((periode, index) => periode === opprinneligPlan[index])
+            ? perioder.length < opprinneligPlan.length &&
+              perioder.every((periode) =>
+                  opprinneligPlan.some((opprinnelig) => erSammePeriodeInkludertDatoer(periode, opprinnelig)),
+              )
             : false;
         return harSlettetPeriode;
     }
 
     return false;
 };
+
+export const erSammePeriodeInkludertDatoer = (a: UttaksplanPerioder[number], b: UttaksplanPerioder[number]) =>
+    a.fom === b.fom && a.tom === b.tom && erPerioderEkslFomTomLike(a, b);
 
 export const harKunPerioderForAnnenForelder = (
     erSøkerFarEllerMedmor: boolean,

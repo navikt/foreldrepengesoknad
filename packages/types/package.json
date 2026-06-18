@@ -17,10 +17,10 @@
         "@navikt/fp-constants": "workspace:*"
     },
     "devDependencies": {
-        "@hey-api/openapi-ts": "0.97.1",
+        "@hey-api/openapi-ts": "0.98.2",
         "@navikt/fp-config-eslint": "workspace:*",
-        "eslint": "10.3.0",
-        "typescript": "6.0.3"
+        "eslint": "catalog:",
+        "typescript": "catalog:"
     },
     "packageManager": "pnpm@10.33.1"
 }

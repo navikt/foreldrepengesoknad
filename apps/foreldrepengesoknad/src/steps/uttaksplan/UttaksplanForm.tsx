@@ -18,14 +18,14 @@ import {
     UttakPeriode_fpoversikt,
     isAdoptertBarn,
     isFødtBarn,
+    isIkkeUtfyltTypeBarn,
     isUfødtBarn,
 } from '@navikt/fp-types';
-import { isIkkeUtfyltTypeBarn } from '@navikt/fp-types/src/Barn';
 import { Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { GåTilbakeModal } from './GåTilbakeModal';
-import { useFinnFørsteSubmitFeilmelding } from './submitValidering';
+import { erSammePeriodeInkludertDatoer, useFinnFørsteSubmitFeilmelding } from './submitValidering';
 
 type FormValues = {
     ønskerJustertUttakVedFødsel?: boolean;
@@ -40,6 +40,7 @@ interface UttaksplanFormProps {
     scrollToKvoteOppsummering: () => void;
     eksisterendeSak: FpSak_fpoversikt | undefined;
     opprinneligPlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined;
+    erEndringssøknad: boolean;
 }
 
 export const UttaksplanForm = ({
@@ -51,6 +52,7 @@ export const UttaksplanForm = ({
     scrollToKvoteOppsummering,
     eksisterendeSak,
     opprinneligPlan,
+    erEndringssøknad,
 }: UttaksplanFormProps) => {
     const intl = useIntl();
 
@@ -59,14 +61,16 @@ export const UttaksplanForm = ({
     const harJustertUttakVedFødsel = useContextGetData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
 
-    const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
-
     const oppdaterHarJustertUttakVedFødsel = useContextSaveData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
-    const erEndringssøknad = !!valgtEksisterendeSaksnr;
     const uttaksplanMedKunNyePerioder =
-        uttaksplan?.filter((p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.resultat === undefined) ?? [];
+        uttaksplan?.filter(
+            (p) =>
+                Uttaksperioden.erIkkeEøsPeriode(p) &&
+                (p.resultat === undefined ||
+                    (opprinneligPlan !== undefined && !opprinneligPlan.some((o) => erSammePeriodeInkludertDatoer(p, o)))),
+        ) ?? [];
     const gjeldendeUttaksplan = erEndringssøknad ? uttaksplanMedKunNyePerioder : uttaksplan;
 
     const navigator = useFpNavigator(
@@ -89,11 +93,14 @@ export const UttaksplanForm = ({
     const termindato = getTermindato(barn);
     const uttaksdagPåEllerEtterTermin = termindato ? Uttaksdagen.denneEllerNeste(termindato).getDato() : undefined;
 
-    const perioderRundtFødselForFarMedmor = gjeldendeUttaksplan
-        ? finnPerioderRundtFødsel(gjeldendeUttaksplan, barn).filter(
-              (p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.forelder === 'FAR_MEDMOR',
-          )
-        : [];
+    // Når far/medmor kommer rett fra planleggeren ligg uttaket i defaultUttaksperioder fram til
+    // planen blir redigert (då blir uttaksplan-context fylt). Bruk same fallback som onSubmit slik
+    // at spørsmålet om automatisk justering står fast med ein gong, utan at brukaren må tukle med planen.
+    const planForVisning = gjeldendeUttaksplan ?? defaultUttaksperioder;
+
+    const perioderRundtFødselForFarMedmor = finnPerioderRundtFødsel(planForVisning, barn).filter(
+        (p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.forelder === 'FAR_MEDMOR',
+    );
 
     const periodeRundtFødsel = perioderRundtFødselForFarMedmor[0];
 
@@ -116,7 +123,7 @@ export const UttaksplanForm = ({
         isUfødtBarn(barn) &&
         barn.termindato !== undefined;
 
-    const finnFørsteSubmitFeilmelding = useFinnFørsteSubmitFeilmelding({ opprinneligPlan });
+    const finnFørsteSubmitFeilmelding = useFinnFørsteSubmitFeilmelding({ opprinneligPlan, erEndringssøknad });
 
     const onSubmit = (formValues: FormValues) => {
         const planForValidering = gjeldendeUttaksplan ?? defaultUttaksperioder;
@@ -152,7 +159,7 @@ export const UttaksplanForm = ({
                     <VStack gap="space-16">
                         <AutomatiskJusteringInfotekst
                             harSvartJaPåAutoJustering={harSvartJaPåAutoJustering}
-                            uttaksplan={gjeldendeUttaksplan!}
+                            uttaksplan={planForVisning}
                         />
                         <RhfRadioGroup
                             name="ønskerJustertUttakVedFødsel"

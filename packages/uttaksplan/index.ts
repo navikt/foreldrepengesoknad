@@ -28,6 +28,8 @@ export {
     harPeriodeDerMorsAktivitetIkkeErValgt,
     harPeriodeMedUkjentGraderingsaktivitet,
     getAntallUttaksdagerIVinduRundtFødsel,
+    finnAntallTidelerÅTrekke,
+    erPerioderEkslFomTomLike,
 } from './src/utils/periodeUtils';
 export { prosesserPerioderForVisning } from './src/utils/prosesserPerioderForVisning';
 export { deltUttak } from './src/utils/forslag/deltUttak';

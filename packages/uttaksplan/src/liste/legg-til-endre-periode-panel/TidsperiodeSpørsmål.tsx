@@ -43,7 +43,7 @@ export const TidsperiodeSpørsmål = () => {
             if (dayjs(nyTom).isAfter(dayjs(maxDate))) {
                 return;
             }
-            setValue('tom', nyTom);
+            setValue('tom', nyTom, { shouldDirty: true });
             void trigger('tom');
             void trigger('fom');
         },

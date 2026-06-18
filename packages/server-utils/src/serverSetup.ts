@@ -7,7 +7,13 @@ const appDirectives = {
     'default-src': ["'self'"], // Restricts all resource loading to same-origin by default
     'script-src-elem': ["'self'"], // Allow loading scripts from same origin (needed for local Docker)
     'style-src-elem': ["'self'"], // Allow loading styles from same origin (needed for local Docker)
-    'connect-src': ["'self'", 'https://sentry.gc.nav.no'], // Sentry error reporting sends events to a non-nav.no domain
+    // Sentry error reporting + Grafana Faro telemetri sender events til non-nav.no/eksterne domener
+    'connect-src': [
+        "'self'",
+        'https://sentry.gc.nav.no',
+        'https://telemetry.nav.no',
+        'https://telemetry.ekstern.dev.nav.no',
+    ],
     'object-src': ["'none'"], // Blocks legacy plugin content (Flash/Java) regardless of default-src
 };
 

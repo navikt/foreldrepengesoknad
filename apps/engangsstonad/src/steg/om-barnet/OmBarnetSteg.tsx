@@ -1,5 +1,4 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
-import { Path } from 'appData/paths';
 import { useEsNavigator } from 'appData/useEsNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useForm } from 'react-hook-form';
@@ -42,7 +41,7 @@ export const OmBarnetSteg = ({ kjønn, mellomlagreOgNaviger }: Props) => {
         if (formValues.erBarnetFødt === true) {
             oppdaterDokumentasjon(undefined);
         }
-        return navigator.goToNextStep(utledNesteSteg(formValues, søkersituasjon));
+        return navigator.goToNextDefaultStep();
     };
 
     const formMethods = useForm<FormValues>({
@@ -51,7 +50,7 @@ export const OmBarnetSteg = ({ kjønn, mellomlagreOgNaviger }: Props) => {
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}>
-            <Step onStepChange={navigator.goToNextStep} steps={stepConfig}>
+            <Step onStepChange={navigator.goToStep} steps={stepConfig}>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                     <VStack gap="space-40">
                         <ErrorSummaryHookForm />
@@ -68,16 +67,6 @@ export const OmBarnetSteg = ({ kjønn, mellomlagreOgNaviger }: Props) => {
             </Step>
         </SkjemaRotLayout>
     );
-};
-
-const utledNesteSteg = (formValues: FormValues, søkersituasjon: Søkersituasjon) => {
-    if (søkersituasjon.situasjon === 'adopsjon') {
-        return Path.ADOPSJONSBEKREFTELSE;
-    }
-    if (!formValues.erBarnetFødt && formValues.termindato !== undefined) {
-        return Path.TERMINBEKREFTELSE;
-    }
-    return Path.UTENLANDSOPPHOLD;
 };
 
 const resolveAntallBarn = (formValues: FormValues) =>

@@ -9,11 +9,10 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { Uttaksperioden } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
-import { getAntallUttaksdagerIVinduRundtFødsel } from './periodeUtils';
+import { finnAntallTidelerÅTrekke } from './periodeUtils';
 
 export const useErAntallDagerOvertrukketIUttaksplan = () => {
     const {
@@ -298,7 +297,11 @@ export const summerDagerIPerioder = (
         return 0;
     }
 
-    let dagerTotalt = 0;
+    const erFødsel = familiesituasjon === 'fødsel';
+
+    // Trekkdagar summerast i tideler (heiltal) for å unngå flyttalsfeil; sjå
+    // finnAntallTidelerÅTrekke. Resultatet golvast til heile dagar heilt til slutt.
+    let tidelerTotalt = 0;
 
     for (const aktuellKontoType of aktuelleKontotyper) {
         const gjeldendeKonto = konto.find((k) => k.konto === aktuellKontoType);
@@ -307,27 +310,27 @@ export const summerDagerIPerioder = (
             continue;
         }
 
-        const dagerEøs = Math.min(
+        const tidelerEøs = Math.min(
             sum(
                 perioder
                     .filter((p) => 'trekkdager' in p && getUttaksKontoType(p) === aktuellKontoType)
-                    .map((p) => finnAntallDagerÅTrekke(p, familiesituasjon, familiehendelsedato)),
+                    .map((p) => finnAntallTidelerÅTrekke(p, erFødsel, familiehendelsedato)),
             ),
-            gjeldendeKonto.dager,
+            gjeldendeKonto.dager * 10,
         );
-        const dagerNorge = sum(
+        const tidelerNorge = sum(
             perioder
                 .filter(
                     (p) =>
                         (!('trekkdager' in p) && getUttaksKontoType(p) === aktuellKontoType) ||
                         harOppholdÅrsakLikKontoType(aktuellKontoType, p),
                 )
-                .map((p) => finnAntallDagerÅTrekke(p, familiesituasjon, familiehendelsedato)),
+                .map((p) => finnAntallTidelerÅTrekke(p, erFødsel, familiehendelsedato)),
         );
-        dagerTotalt += dagerEøs + dagerNorge;
+        tidelerTotalt += tidelerEøs + tidelerNorge;
     }
 
-    return Math.floor(dagerTotalt);
+    return Math.floor(tidelerTotalt / 10);
 };
 
 export const getUttaksKontoType = (
@@ -365,34 +368,4 @@ const getStønadskvoteTypeFromOppholdÅrsakType = (årsak: UttakOppholdÅrsak_fp
         default:
             return undefined;
     }
-};
-
-const finnAntallDagerÅTrekke = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-    familiesituasjon: Familiesituasjon,
-    familiehendelsedato: string,
-) => {
-    if (erEøsUttakPeriode(periode)) {
-        return periode.trekkdager;
-    }
-
-    const arbeidstidprosent = periode.gradering?.arbeidstidprosent;
-    const samtidigUttak = periode.samtidigUttak;
-    const dager = Uttaksperioden.getAntallUttaksdager(periode);
-
-    if (arbeidstidprosent) {
-        const graderingsProsent = (100 - arbeidstidprosent) / 100;
-        // Mor sin gradering i tidsrommet 3 uker før / 6 uker etter familiehendelsesdato
-        // gir ikkje forlenging av stønadsperioden – dagane skal trekkjast som heile.
-        if (familiesituasjon === 'fødsel' && periode.forelder === 'MOR') {
-            const dagerIVindu = getAntallUttaksdagerIVinduRundtFødsel(periode.fom, periode.tom, familiehendelsedato);
-            const dagerUtenforVindu = dager - dagerIVindu;
-            return dagerIVindu + dagerUtenforVindu * graderingsProsent;
-        }
-        return dager * graderingsProsent;
-    }
-    if (samtidigUttak) {
-        return dager * (samtidigUttak / 100);
-    }
-    return dager;
 };

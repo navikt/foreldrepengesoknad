@@ -13,12 +13,11 @@ import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 
 import { BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
 
-import { links } from '@navikt/fp-constants';
-import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
+import { DATE_3_YEARS_AGO, links } from '@navikt/fp-constants';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
-import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
+import { useScrollBehaviour } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { BlueRadioGroup } from '../../components/form-wrappers/BlueRadioGroup';

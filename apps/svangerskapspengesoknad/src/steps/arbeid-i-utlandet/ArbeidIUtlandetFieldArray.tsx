@@ -11,8 +11,7 @@ import { DATE_5_MONTHS_AGO, DATE_20_YEARS_AGO } from '@navikt/fp-constants';
 import { RhfDatepicker, RhfRadioGroup, RhfSelect, RhfTextField } from '@navikt/fp-form-hooks';
 import { CountryCode } from '@navikt/fp-types';
 import { HorizontalLine } from '@navikt/fp-ui';
-import { createCountryOptions } from '@navikt/fp-utils';
-import { femMånederSiden } from '@navikt/fp-utils/src/dateUtils';
+import { createCountryOptions, femMånederSiden } from '@navikt/fp-utils';
 import {
     hasLegalChars,
     hasMaxLength,

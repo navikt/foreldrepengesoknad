@@ -10,10 +10,10 @@ import {
     erI22SvangerskapsukeEllerSenere,
     isAfterOrSameAsSixMonthsAgo,
     isBeforeTodayOrToday,
+    isLessThanThreeWeeksBeforeFødsel,
     isRequired,
     isValidDate,
 } from '@navikt/fp-validation';
-import { isLessThanThreeWeeksBeforeFødsel } from '@navikt/fp-validation/src/form/dateFormValidation';
 
 export type FormValues = {
     antallBarnDropDown?: string;

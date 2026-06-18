@@ -1,6 +1,7 @@
-import { extract } from '@formatjs/cli-lib';
 import { globSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
+
+import { extractMessageIds } from './extractMessageIds';
 
 type Messages = Record<string, string>;
 
@@ -60,18 +61,16 @@ const loggManglendeNøkler = (fra: Locale, til: Locale): string[] => {
     return mangler;
 };
 
-const hentKodeNøkler = async (
+const hentKodeNøkler = (
     sourceGlob: string,
     extractAdditionalCodeKeys?: (fileContent: string) => string[],
-): Promise<string[]> => {
+): string[] => {
     const files = globSync(sourceGlob);
-    const foundTranslations = await extract(files, {
-        idInterpolationPattern: '[sha512:contenthash:base64:6]',
-    });
+    const nøkler = extractMessageIds(files);
     const ekstraNøkler = extractAdditionalCodeKeys
         ? files.flatMap((fileLoc) => extractAdditionalCodeKeys(readFileSync(fileLoc).toString()))
         : [];
-    return [...Object.keys(JSON.parse(foundTranslations) as Messages), ...ekstraNøkler];
+    return [...nøkler, ...ekstraNøkler];
 };
 
 /**
@@ -109,8 +108,8 @@ export const createIntlMessagesTest = ({
             });
         }
 
-        it(`i18n-strenger i koden skal finnes i ${referanseNavn}`, async () => {
-            const kodeNøkler = await hentKodeNøkler(sourceGlob, extractAdditionalCodeKeys);
+        it(`i18n-strenger i koden skal finnes i ${referanseNavn}`, () => {
+            const kodeNøkler = hentKodeNøkler(sourceGlob, extractAdditionalCodeKeys);
             const referanseNøkler = new Set(Object.keys(referanse));
             const mangler = kodeNøkler.filter((key) => !referanseNøkler.has(key));
             for (const key of mangler) {
@@ -120,8 +119,8 @@ export const createIntlMessagesTest = ({
             expect(mangler.length).toBe(0);
         });
 
-        it(`alle i18n-strenger i ${referanseNavn} skal finnes i koden`, async () => {
-            const kodeNøkler = new Set(await hentKodeNøkler(sourceGlob, extractAdditionalCodeKeys));
+        it(`alle i18n-strenger i ${referanseNavn} skal finnes i koden`, () => {
+            const kodeNøkler = new Set(hentKodeNøkler(sourceGlob, extractAdditionalCodeKeys));
             const mangler = Object.keys(referanse).filter(
                 (key) => !(ignoreReferenceKey?.(key) ?? false) && !kodeNøkler.has(key),
             );

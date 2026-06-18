@@ -7,7 +7,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, Button, ErrorMessage, HStack, Heading, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
-import { BrukerRolleSak_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, UttakPeriode_fpoversikt, UttakPeriodeAnnenpartEøs_fpoversikt } from '@navikt/fp-types';
 import { Tidsperioden, omitMany } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
@@ -72,6 +72,53 @@ const erGradertMorsUttak = (
     (forelder === 'MOR' || forelder === 'BEGGE') &&
     skalDuKombinereArbeidOgUttakMor === true;
 
+const byggEnkelHandlingPerioder = (
+    hvaVilDuGjøre: HvaVilDuGjøre | undefined,
+    fom: string,
+    tom: string,
+    søker: BrukerRolleSak_fpoversikt,
+    values: FormValues,
+): UttakPeriode_fpoversikt[] | undefined => {
+    switch (hvaVilDuGjøre) {
+        case 'LEGG_TIL_FERIE':
+            // forelder settes til MOR fordi feltet er påkrevd, men ferie behandles likt for alle foreldre
+            return [{ fom, tom, forelder: 'MOR', utsettelseÅrsak: 'LOVBESTEMT_FERIE', flerbarnsdager: false }];
+        case 'LEGG_TIL_UTSETTELSE':
+            return [{ fom, tom, forelder: søker, utsettelseÅrsak: values.utsettelseÅrsak, flerbarnsdager: false }];
+        case 'LEGG_TIL_PAUSE':
+            return [
+                {
+                    fom,
+                    tom,
+                    forelder: søker,
+                    utsettelseÅrsak: 'FRI',
+                    morsAktivitet: values.morsAktivitet || undefined,
+                    flerbarnsdager: false,
+                },
+            ];
+        default:
+            return undefined;
+    }
+};
+
+type UttakPeriodeEllerEøs = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
+
+const erOverlappendeMedEøsPerioder = (perioder: UttakPeriodeEllerEøs[], fom: string, tom: string): boolean =>
+    perioder.some(
+        (periode) => erEøsUttakPeriode(periode) && Tidsperioden.forPeriode(periode).overlapper({ fom, tom }),
+    );
+
+const skalViseEndreEllerForskyvPanel = (
+    harPeriodeDerMorsAktivitetIkkeErValgt: boolean,
+    kanKunErstatte: boolean,
+    uttakPerioder: UttakPeriodeEllerEøs[],
+    fom: string,
+    tom: string,
+): boolean =>
+    !harPeriodeDerMorsAktivitetIkkeErValgt &&
+    !kanKunErstatte &&
+    erDetEksisterendePerioderEtterValgtePerioder(uttakPerioder, [{ fom, tom }]);
+
 export const LeggTilEllerEndrePeriodeListPanel = ({
     erNyPeriodeModus,
     uttaksplanperiode,
@@ -85,6 +132,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         foreldreInfo: { søker, rettighetType },
         familiehendelsedato,
         erPeriodeneTilAnnenPartLåst,
+        kanVelgeArbeidsgiver,
     } = useUttaksplanData();
 
     const [feilmelding, setFeilmelding] = useState<string | undefined>();
@@ -140,22 +188,15 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const onSubmit = (values: FormValues) => {
         setFeilmelding(undefined);
 
-        const erOverlappendeMedEøsPerioder = uttakPerioder.some(
-            (periode) =>
-                erEøsUttakPeriode(periode) &&
-                Tidsperioden.forPeriode(periode).overlapper({
-                    fom: notEmpty(values.fom),
-                    tom: notEmpty(values.tom),
-                }),
-        );
-        if (erOverlappendeMedEøsPerioder) {
+        const fom = notEmpty(values.fom);
+        const tom = notEmpty(values.tom);
+
+        if (erOverlappendeMedEøsPerioder(uttakPerioder, fom, tom)) {
             setFeilmelding(intl.formatMessage({ id: 'uttaksplan.overskriderEøs' }));
             return;
         }
 
         if (hvaVilDuGjøre === 'LEGG_TIL_PERIODE') {
-            const fom = notEmpty(values.fom);
-            const tom = notEmpty(values.tom);
             const submitFeilmelding = formSubmitValidator([{ fom, tom }], values);
 
             if (submitFeilmelding) {
@@ -171,16 +212,14 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
             return;
         }
 
-        if (
-            !harPeriodeDerMorsAktivitetIkkeErValgt &&
-            !kanKunErstatte &&
-            erDetEksisterendePerioderEtterValgtePerioder(uttakPerioder, [
-                {
-                    fom: uttaksplanperiode?.fom ?? notEmpty(fomValue),
-                    tom: uttaksplanperiode?.tom ?? notEmpty(tomValue),
-                },
-            ])
-        ) {
+        const visForskyvPanel = skalViseEndreEllerForskyvPanel(
+            harPeriodeDerMorsAktivitetIkkeErValgt,
+            kanKunErstatte,
+            uttakPerioder,
+            uttaksplanperiode?.fom ?? notEmpty(fomValue),
+            uttaksplanperiode?.tom ?? notEmpty(tomValue),
+        );
+        if (visForskyvPanel) {
             setVisEndreEllerForskyvPanel(true);
         } else {
             leggIListe(false);
@@ -192,57 +231,12 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         const fom = notEmpty(values.fom);
         const tom = notEmpty(values.tom);
 
-        if (hvaVilDuGjøre === 'LEGG_TIL_FERIE') {
-            handleAddPeriode(
-                [
-                    {
-                        fom,
-                        tom,
-                        forelder: 'MOR',
-                        utsettelseÅrsak: 'LOVBESTEMT_FERIE',
-                        flerbarnsdager: false,
-                    },
-                ],
-                skalForskyve,
-            );
-        } else if (hvaVilDuGjøre === 'LEGG_TIL_UTSETTELSE') {
-            handleAddPeriode(
-                [
-                    {
-                        fom,
-                        tom,
-                        forelder: søker,
-                        utsettelseÅrsak: values.utsettelseÅrsak,
-                        flerbarnsdager: false,
-                    },
-                ],
-                skalForskyve,
-            );
-        } else if (hvaVilDuGjøre === 'LEGG_TIL_PAUSE') {
-            handleAddPeriode(
-                [
-                    {
-                        fom,
-                        tom,
-                        forelder: søker,
-                        utsettelseÅrsak: 'FRI',
-                        morsAktivitet: values.morsAktivitet || undefined,
-                        flerbarnsdager: false,
-                    },
-                ],
-                skalForskyve,
-            );
+        const enkelHandlingPerioder = byggEnkelHandlingPerioder(hvaVilDuGjøre, fom, tom, søker, values);
+        if (enkelHandlingPerioder) {
+            handleAddPeriode(enkelHandlingPerioder, skalForskyve);
         } else if (hvaVilDuGjøre === 'LEGG_TIL_OPPHOLD') {
             const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder, 'liste')
-                .fjernUttakPerioder(
-                    [
-                        {
-                            fom,
-                            tom,
-                        },
-                    ],
-                    false,
-                )
+                .fjernUttakPerioder([{ fom, tom }], false)
                 .getUttakPerioder();
 
             uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
@@ -254,7 +248,10 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                 return;
             }
             const mapped = omitMany(values, ['fom', 'tom', 'hvaVilDuGjøre']);
-            handleAddPeriode(mapFraFormValuesTilUttakPeriode(mapped, { fom, tom }, søker), skalForskyve);
+            handleAddPeriode(
+                mapFraFormValuesTilUttakPeriode(mapped, { fom, tom }, søker, kanVelgeArbeidsgiver),
+                skalForskyve,
+            );
         }
 
         setIsLeggTilPeriodePanelOpen(false);
