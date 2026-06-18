@@ -158,6 +158,57 @@ describe('ikkeDeltUttak - Fødsel - Far aleneOmOmsorg', () => {
     });
 });
 
+describe('ikkeDeltUttak - Far/Far uten aktivitetsfri kvote', () => {
+    beforeAll(() => {
+        MockDate.set('2022-08-02');
+    });
+
+    afterAll(() => {
+        MockDate.reset();
+    });
+
+    const famDato = '2022-08-08';
+    const foreldrepenger = { konto: 'FORELDREPENGER', dager: 75 } satisfies KontoDto;
+
+    it('skal gi én sammenhengende foreldrepengeperiode ved fødsel når aktivitetsfri kvote mangler', () => {
+        const forslag = ikkeDeltUttak({
+            situasjon: 'fødsel',
+            famDato,
+            erFarEllerMedmor: true,
+            tilgjengeligeStønadskvoter: [foreldrepenger],
+            erMorUfør: false,
+            bareFarMedmorHarRett: false,
+            erAleneOmOmsorg: false,
+            farOgFar: true,
+        });
+
+        expect(forslag.length).toEqual(1);
+        expect(forslag[0]!.kontoType).toEqual('FORELDREPENGER');
+        expect(forslag[0]!.forelder).toEqual('FAR_MEDMOR');
+        expect(forslag[0]!.fom).toEqual('2022-08-08');
+        expect(forslag[0]!.tom).toEqual('2022-11-18');
+    });
+
+    it('skal gi én sammenhengende foreldrepengeperiode ved adopsjon når aktivitetsfri kvote mangler', () => {
+        const forslag = ikkeDeltUttak({
+            situasjon: 'adopsjon',
+            famDato,
+            erFarEllerMedmor: true,
+            tilgjengeligeStønadskvoter: [foreldrepenger],
+            erMorUfør: false,
+            bareFarMedmorHarRett: false,
+            erAleneOmOmsorg: false,
+            farOgFar: true,
+        });
+
+        expect(forslag.length).toEqual(1);
+        expect(forslag[0]!.kontoType).toEqual('FORELDREPENGER');
+        expect(forslag[0]!.forelder).toEqual('FAR_MEDMOR');
+        expect(forslag[0]!.fom).toEqual('2022-08-08');
+        expect(forslag[0]!.tom).toEqual('2022-11-18');
+    });
+});
+
 describe('ikkeDeltUttak - Adopsjon', () => {
     beforeAll(() => {
         MockDate.set('2022-08-02');

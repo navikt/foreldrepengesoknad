@@ -42,13 +42,13 @@ const ikkeDeltUttakAdopsjonFarMedmor = ({
             flerbarnsdager: false,
         };
         perioder.push(aktivitetskravPeriode);
-    } else if (farOgFar) {
+    } else if (farOgFar && aktivitetsfriKvote) {
         const periode: UttakPeriode_fpoversikt = {
             forelder: 'FAR_MEDMOR',
             kontoType: 'FORELDREPENGER',
             morsAktivitet: 'IKKE_OPPGITT',
-            fom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).fom,
-            tom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).tom,
+            fom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote.dager).fom,
+            tom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote.dager).tom,
             flerbarnsdager: false,
         };
         perioder.push(periode);
@@ -240,13 +240,13 @@ const ikkeDeltUttakFødselFarMedmor = ({
             perioder.push(aktivitetskravPeriode);
         }
     } else {
-        if (farOgFar && !erAleneOmOmsorg) {
+        if (farOgFar && !erAleneOmOmsorg && aktivitetsfriKvote) {
             const periode: UttakPeriode_fpoversikt = {
                 forelder: 'FAR_MEDMOR',
                 kontoType: 'FORELDREPENGER',
                 morsAktivitet: 'IKKE_OPPGITT',
-                fom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).fom,
-                tom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).tom,
+                fom: getTidsperiodeString(startDato, aktivitetsfriKvote.dager).fom,
+                tom: getTidsperiodeString(startDato, aktivitetsfriKvote.dager).tom,
                 flerbarnsdager: false,
             };
             perioder.push(periode);
