@@ -267,6 +267,53 @@ describe('initFaro', () => {
             expect(resultat).toBe(exceptionItem);
         });
     });
+
+    describe('beforeSend – støyfilter (dom-oversettelse og hasFocus)', () => {
+        it('filtrerer bort removeChild/insertBefore-feil fra oversettelsesverktøy', () => {
+            vi.stubGlobal('location', { hostname: 'www.nav.no' });
+            initFaro({ app: APP });
+
+            const beforeSend = hentBeforeSend();
+
+            const exceptionItem = lagExceptionItem({
+                type: 'NotFoundError',
+                value: "Failed to execute 'removeChild' on 'Node': The node to be removed is not a child of this node.",
+            });
+
+            const resultat = beforeSend(exceptionItem);
+            expect(resultat).toBeNull();
+        });
+
+        it('filtrerer bort hasFocus-feil injisert av browser/webview', () => {
+            vi.stubGlobal('location', { hostname: 'www.nav.no' });
+            initFaro({ app: APP });
+
+            const beforeSend = hentBeforeSend();
+
+            const exceptionItem = lagExceptionItem({
+                type: 'TypeError',
+                value: "window.hasFocus is not a function. (In 'window.hasFocus()', 'window.hasFocus' is undefined)",
+            });
+
+            const resultat = beforeSend(exceptionItem);
+            expect(resultat).toBeNull();
+        });
+
+        it('beholder legitime hasFocus-feil fra vår egen kode', () => {
+            vi.stubGlobal('location', { hostname: 'www.nav.no' });
+            initFaro({ app: APP });
+
+            const beforeSend = hentBeforeSend();
+
+            const exceptionItem = lagExceptionItem({
+                type: 'TypeError',
+                value: 'fokusHaandterer.hasFocus is not a function',
+            });
+
+            const resultat = beforeSend(exceptionItem);
+            expect(resultat).toBe(exceptionItem);
+        });
+    });
 });
 
 function hentBeforeSend() {

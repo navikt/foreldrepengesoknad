@@ -6,7 +6,12 @@ import {
     initializeFaro,
 } from '@grafana/faro-web-sdk';
 
-import { DISTRIBUTOR_PATTERN, harDistributorStacktrace, harUtenforstaendeKodeOpprinnelse } from './filterUtils';
+import {
+    DISTRIBUTOR_PATTERN,
+    DOM_OVERSETTELSE_FEIL,
+    harDistributorStacktrace,
+    harUtenforstaendeKodeOpprinnelse,
+} from './filterUtils';
 
 type InitFaroOptions = {
     app: {
@@ -60,6 +65,14 @@ export const initFaro = ({ app }: InitFaroOptions) => {
                 return null;
             }
 
+            if (feilFraDomOversettelse(exceptionItem)) {
+                return null;
+            }
+
+            if (feilFraHasFocus(exceptionItem)) {
+                return null;
+            }
+
             return item;
         },
     });
@@ -101,4 +114,14 @@ const feilFraBrowserExtensions = (item: TransportItem<ExceptionEvent>): boolean 
     }
 
     return stacktrace?.frames ? harDistributorStacktrace(stacktrace.frames) : false;
+};
+
+const feilFraDomOversettelse = (item: TransportItem<ExceptionEvent>): boolean => {
+    return item.payload.value ? DOM_OVERSETTELSE_FEIL.test(item.payload.value) : false;
+};
+
+const HAS_FOCUS_FEIL = /\b(window|globalThis|self)\.hasFocus is not a function/i;
+
+const feilFraHasFocus = (item: TransportItem<ExceptionEvent>): boolean => {
+    return item.payload.value ? HAS_FOCUS_FEIL.test(item.payload.value) : false;
 };
