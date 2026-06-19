@@ -1,7 +1,13 @@
 import { composeStories, composeStory } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
+import { PlanleggerRoutes } from 'appData/routes';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
+import { DEFAULT_SATSER } from '@navikt/fp-constants';
+
+import { OppsummeringSteg } from './OppsummeringSteg';
 import * as stories from './OppsummeringSteg.stories';
 
 const {
@@ -276,5 +282,36 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();
         expect(screen.queryByText('Frivillig spørjeundersøking')).not.toBeInTheDocument();
         expect(screen.queryByText('Optional survey')).not.toBeInTheDocument();
+    });
+
+    it.each([
+        {
+            beskrivelse: 'hvem planlegger mangler',
+            initialState: { [ContextDataType.OM_BARNET]: FlereForsørgereHundreProsentTermin.args.omBarnet },
+        },
+        {
+            beskrivelse: 'om barnet mangler',
+            initialState: { [ContextDataType.HVEM_PLANLEGGER]: FlereForsørgereHundreProsentTermin.args.hvemPlanlegger },
+        },
+    ])('skal sende bruker til start når $beskrivelse', async ({ initialState }) => {
+        render(
+            <MemoryRouter initialEntries={[PlanleggerRoutes.OPPSUMMERING]}>
+                <PlanleggerDataContext initialState={initialState}>
+                    <Routes>
+                        <Route
+                            path={PlanleggerRoutes.OPPSUMMERING}
+                            element={<OppsummeringSteg satser={DEFAULT_SATSER} />}
+                        />
+                        <Route
+                            path={PlanleggerRoutes.OM_PLANLEGGEREN}
+                            element={<h1>Om planleggeren</h1>}
+                        />
+                    </Routes>
+                </PlanleggerDataContext>
+            </MemoryRouter>,
+        );
+
+        expect(await screen.findByRole('heading', { name: 'Om planleggeren' })).toBeInTheDocument();
+        expect(screen.queryByText('Oppsummering')).not.toBeInTheDocument();
     });
 });
