@@ -116,7 +116,8 @@ export const PlanleggerDataInit = () => {
     const intl = useIntl();
 
     const dataParam = new URLSearchParams(locations.search).get('data');
-    const data = dataParam ? (JSON.parse(decompressFromUrl(dataParam)) as ContextDataMap) : undefined;
+    const decompressedData = dataParam ? decompressFromUrl(dataParam) : undefined;
+    const data = decompressedData ? (JSON.parse(decompressedData) as ContextDataMap) : undefined;
 
     // Denne useEffecten kjøres for at skyra-undersøkelsen skal trigges inline på oppsummering-siden
     useEffect(() => {

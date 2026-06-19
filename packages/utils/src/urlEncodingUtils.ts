@@ -69,12 +69,20 @@ const isParsableJson = (value: string | null): value is string => {
  *
  * Faller tilbake til {@link decodeBase64} dersom verdien ikke er lz-komprimert. Det gjør at gamle
  * delte lenker (base64-format) fortsatt fungerer i en overgangsperiode. Returnerer en JSON-streng
- * som kaller-koden selv må `JSON.parse`-e.
+ * som kaller-koden selv må `JSON.parse`-e, eller `undefined` dersom verdien er ugyldig/korrupt.
  */
-export const decompressFromUrl = (valueFromUrl: string) => {
+export const decompressFromUrl = (valueFromUrl: string): string | undefined => {
     const decompressed = decompressFromEncodedURIComponent(valueFromUrl);
     if (isParsableJson(decompressed)) {
         return decompressed;
     }
-    return decodeBase64(valueFromUrl);
+    try {
+        const decoded = decodeBase64(valueFromUrl);
+        if (isParsableJson(decoded)) {
+            return decoded;
+        }
+    } catch {
+        // Verdien er hverken lz-komprimert JSON eller gyldig base64 (atob kaster InvalidCharacterError).
+    }
+    return undefined;
 };
