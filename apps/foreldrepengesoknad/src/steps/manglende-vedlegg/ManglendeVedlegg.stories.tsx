@@ -9,8 +9,9 @@ import { MemoryRouter } from 'react-router-dom';
 import { action } from 'storybook/actions';
 import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
 import { AnnenForelder } from 'types/AnnenForelder';
+import { VedleggDataType } from 'types/VedleggDataType';
 
-import { BarnType } from '@navikt/fp-constants';
+import { AttachmentType, BarnType, Skjemanummer } from '@navikt/fp-constants';
 import {
     ArbeidsforholdOgInntektFp,
     Barn,
@@ -125,6 +126,7 @@ type StoryArgs = {
     uttaksplan?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektFp;
     annenInntekt?: AndreInntektskilder[];
+    vedlegg?: VedleggDataType;
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof ManglendeVedlegg>;
 
@@ -153,6 +155,7 @@ const meta = {
         barn = defaultBarn,
         arbeidsforholdOgInntekt = defaultArbeidsforholdOgInntekt,
         annenInntekt,
+        vedlegg,
         gåTilNesteSide = action('button-click'),
         ...rest
     }) => {
@@ -166,6 +169,7 @@ const meta = {
                         [ContextDataType.OM_BARNET]: barn,
                         [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
                         [ContextDataType.ANDRE_INNTEKTSKILDER]: annenInntekt,
+                        [ContextDataType.VEDLEGG]: vedlegg,
                         [ContextDataType.SØKERSITUASJON]: {
                             rolle,
                             situasjon,
@@ -500,6 +504,35 @@ export const FarTarUtFedrekvoteFørsteSeksUkerUtenSamtidigMåDokumenterMorsSykdo
                     API_URLS.trengerDokumentereMorsArbeid,
                     () => new HttpResponse(JSON.stringify(false), { status: 200 }),
                 ),
+            ],
+        },
+    },
+};
+
+// Regresjonstest: uttaksplanen krev ikkje dokumentasjon, men det ligg framleis eit manuelt
+// opplasta vedlegg i context (t.d. etter at brukaren endra planen). Steget skal då framleis
+// vere synleg slik at «Endre svar» frå oppsummeringa ikkje navigerer til eit steg utanfor
+// steglista og kastar «Ingen valgte steg funnet».
+export const KreverIngenDokumentasjonMenHarOpplastetVedlegg: Story = {
+    args: {
+        søkerInfo: defaultSøkerinfo,
+        erEndringssøknad: false,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
+        uttaksplan: [],
+        vedlegg: {
+            [Skjemanummer.DOK_INNLEGGELSE_MOR]: [
+                {
+                    id: '1',
+                    filename: 'innleggelse.pdf',
+                    filesize: 1234,
+                    file: new File([], 'innleggelse.pdf'),
+                    pending: false,
+                    uploaded: true,
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_INNLEGGELSE_MOR,
+                    innsendingsType: 'LASTET_OPP',
+                },
             ],
         },
     },

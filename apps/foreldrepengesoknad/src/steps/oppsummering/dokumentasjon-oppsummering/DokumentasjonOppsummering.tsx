@@ -2,7 +2,7 @@ import { API_URLS } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FormattedMessage } from 'react-intl';
 import { VedleggDataType } from 'types/VedleggDataType';
-import { perioderSomKreverVedlegg } from 'utils/manglendeVedleggUtils';
+import { finnPerioderSomInngårISøknaden, perioderSomKreverVedlegg } from 'utils/manglendeVedleggUtils';
 import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 
 import { Alert, BodyLong, BodyShort, FormSummary, Heading, Link, VStack } from '@navikt/ds-react';
@@ -27,11 +27,12 @@ export const DokumentasjonOppsummering = ({ onVilEndreSvar, navnPåForeldre }: P
     const alleVedlegg = useContextGetData(ContextDataType.VEDLEGG);
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const eksisterendeSaksnummer = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
 
     const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsedato = getFamiliehendelsedato(barn);
     const uttaksperioderSomManglerVedlegg = perioderSomKreverVedlegg(
-        uttaksplan || [],
+        finnPerioderSomInngårISøknaden(uttaksplan || [], erSøkerFarEllerMedmor, !!eksisterendeSaksnummer),
         erSøkerFarEllerMedmor,
         annenForelder,
         familiehendelsedato,
