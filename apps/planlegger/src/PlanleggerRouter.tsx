@@ -51,7 +51,7 @@ const STEG_DATAKRAV: Partial<Record<PlanleggerRoutes, ContextDataType[]>> = {
     [PlanleggerRoutes.OPPSUMMERING]: [ContextDataType.HVEM_PLANLEGGER, ContextDataType.OM_BARNET],
 };
 
-const MedDatakrav = ({ steg, children }: { steg: PlanleggerRoutes; children: ReactElement }) => {
+export const MedDatakrav = ({ steg, children }: { steg: PlanleggerRoutes; children: ReactElement }) => {
     const getData = useContextGetAnyData();
     const manglerPåkrevdData = (STEG_DATAKRAV[steg] ?? []).some((key) => getData(key) === undefined);
 

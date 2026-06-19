@@ -1,23 +1,54 @@
 import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
+import { ContextDataMap, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
+import { PlanleggerRoutes } from 'appData/routes';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
-import { mswWrapper } from '@navikt/fp-utils-test';
+import * as oppsummeringStories from './steps/oppsummering/OppsummeringSteg.stories';
+import { MedDatakrav } from './PlanleggerRouter';
 
-import * as stories from './Planlegger.stories';
+const { FlereForsørgereHundreProsentTermin } = composeStories(oppsummeringStories);
 
-const { OppsummeringUtenData } = composeStories(stories);
+const { hvemPlanlegger, omBarnet } = FlereForsørgereHundreProsentTermin.args;
 
-describe('<PlanleggerRouter> datakrav-guard', () => {
-    it(
-        'skal redirecte til start i stedet for å krasje når oppsummering åpnes uten data',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(OppsummeringUtenData.parameters.msw);
-
-            render(<OppsummeringUtenData />);
-
-            // Mangler HVEM_PLANLEGGER/OM_BARNET -> guard sender bruker til startsiden,
-            // i stedet for at notEmpty kaster «Data er ikke oppgitt» og siden krasjer.
-            expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
-        }),
+const renderGuard = (initialState: ContextDataMap) =>
+    render(
+        <MemoryRouter initialEntries={[PlanleggerRoutes.OPPSUMMERING]}>
+            <PlanleggerDataContext initialState={initialState}>
+                <Routes>
+                    <Route
+                        path={PlanleggerRoutes.OPPSUMMERING}
+                        element={
+                            <MedDatakrav steg={PlanleggerRoutes.OPPSUMMERING}>
+                                <h1>Oppsummering</h1>
+                            </MedDatakrav>
+                        }
+                    />
+                    <Route path="/" element={<h1>Om planleggeren</h1>} />
+                </Routes>
+            </PlanleggerDataContext>
+        </MemoryRouter>,
     );
+
+describe('<MedDatakrav> datakrav-guard', () => {
+    it.each([
+        { beskrivelse: 'all påkrevd data mangler', initialState: {} },
+        { beskrivelse: 'hvem planlegger mangler', initialState: { [ContextDataType.OM_BARNET]: omBarnet } },
+        { beskrivelse: 'om barnet mangler', initialState: { [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger } },
+    ])('skal sende bruker til start når $beskrivelse', async ({ initialState }) => {
+        renderGuard(initialState);
+
+        expect(await screen.findByRole('heading', { name: 'Om planleggeren' })).toBeInTheDocument();
+        expect(screen.queryByText('Oppsummering')).not.toBeInTheDocument();
+    });
+
+    it('skal rendre steget når all påkrevd data finnes', async () => {
+        renderGuard({
+            [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
+            [ContextDataType.OM_BARNET]: omBarnet,
+        });
+
+        expect(await screen.findByRole('heading', { name: 'Oppsummering' })).toBeInTheDocument();
+        expect(screen.queryByText('Om planleggeren')).not.toBeInTheDocument();
+    });
 });

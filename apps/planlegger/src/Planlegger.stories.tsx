@@ -4,6 +4,7 @@ import { API_URLS } from 'appData/queries';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps, StrictMode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
+
 import { KontoBeregningResultatDto } from '@navikt/fp-types';
 import { ErrorBoundary } from '@navikt/fp-ui';
 import { withQueryClient } from '@navikt/fp-utils-test';
@@ -155,23 +156,4 @@ export const FarFarMockaStønadskvoterOgSatser: Story = {
             ],
         },
     },
-};
-
-export const OppsummeringUtenData: Story = {
-    parameters: {
-        msw: {
-            handlers: [http.post(API_URLS.konto, () => HttpResponse.json(STØNADSKVOTER))],
-        },
-    },
-    render: () => (
-        <StrictMode>
-            <MemoryRouter initialEntries={['/oppsummering']}>
-                <ErrorBoundary appName="planlegger" retryCallback={() => undefined}>
-                    <PlanleggerDataContext initialState={{}}>
-                        <PlanleggerDataFetcher />
-                    </PlanleggerDataContext>
-                </ErrorBoundary>
-            </MemoryRouter>
-        </StrictMode>
-    ),
 };
