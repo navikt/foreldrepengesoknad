@@ -169,13 +169,14 @@ const erGyldigSamtidigUttak = (a: AlleUttakPerioder, b: AlleUttakPerioder): bool
         // EØS-periodar er annen-part og kan eksistere parallelt med søkers periodar
         return true;
     }
+    // Periodar på ulik forelder kan gå parallelt (samtidig uttak). Dette gjeld òg samtidig uttak
+    // rundt fødsel, der far/medmor og mor har overlappande periodar utan at `samtidigUttak` er sett.
+    // Utsetjing og opphald kan derimot aldri skje samtidig med ein annan periode.
     return (
         a.utsettelseÅrsak === undefined &&
         b.utsettelseÅrsak === undefined &&
         a.oppholdÅrsak === undefined &&
         b.oppholdÅrsak === undefined &&
-        a.samtidigUttak !== undefined &&
-        b.samtidigUttak !== undefined &&
         a.forelder !== b.forelder
     );
 };

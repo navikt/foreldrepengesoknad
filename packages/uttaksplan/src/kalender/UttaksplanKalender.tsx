@@ -68,8 +68,13 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
     const setRedigeringAktivOgValgtePerioder = useCallback<React.Dispatch<React.SetStateAction<CalendarPeriod[]>>>(
         (perioder) => {
             setErRedigeringAktiv(true);
-            setValgtePerioder(perioder);
-            setEndredePerioder([]);
+            // Behold same referanse når valet allereie er tomt, slik at gjentekne kall med ein tom
+            // liste ikkje planlegg unødvendige re-renders. Det hindrar «Maximum update depth exceeded».
+            setValgtePerioder((forrige) => {
+                const neste = typeof perioder === 'function' ? perioder(forrige) : perioder;
+                return forrige.length === 0 && neste.length === 0 ? forrige : neste;
+            });
+            setEndredePerioder((forrige) => (forrige.length === 0 ? forrige : []));
         },
         [],
     );
@@ -162,9 +167,9 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                 {!readOnly && !erRedigeringInaktiv && (
                     <RadioGroup
                         legend={<FormattedMessage id="UttaksplanKalender.VelgDagEllerPeriode" />}
-                        onChange={() => {
+                        onChange={(erValgtPeriode: boolean) => {
                             setRedigeringAktivOgValgtePerioder([]);
-                            setIsRangeSelection(!isRangeSelection);
+                            setIsRangeSelection(erValgtPeriode);
                         }}
                         value={isRangeSelection}
                     >
