@@ -76,7 +76,7 @@ const showFrilansOgEgenNæringOgAndreInntekter = (
 
 const harManuelleVedlegg = (vedlegg: VedleggDataType | undefined): boolean =>
     Object.values(vedlegg ?? {})
-        .flat()
+        .flatMap((attachments) => attachments ?? [])
         .some((attachment) => attachment.innsendingsType !== 'AUTOMATISK');
 
 const showManglendeDokumentasjonSteg = (
