@@ -180,11 +180,9 @@ describe('<ArbeidssituasjonSide>', () => {
         expect(screen.getByText('Gjennomsnittlig årslønn')).toBeInTheDocument();
         expect(screen.getByText('12 000 kr')).toBeInTheDocument();
 
-        expect(
-            screen.getByText('Med årslønn under 68 274,50 kr har du ikke rett til foreldrepenger'),
-        ).toBeInTheDocument();
+        expect(screen.getByText('Med årslønn under 68 275 kr har du ikke rett til foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText(/12 000 kr i året/)).toBeInTheDocument();
-        expect(screen.getByText(/68 274,50 kr i året/)).toBeInTheDocument();
+        expect(screen.getByText(/68 275 kr i året/)).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Se resultatet'));
 
