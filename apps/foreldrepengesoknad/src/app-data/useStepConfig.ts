@@ -6,6 +6,7 @@ import { skalViseOmsorgsovertakelseDokumentasjon } from 'steps/manglende-vedlegg
 import { skalViseTerminbekreftelseDokumentasjon } from 'steps/manglende-vedlegg/dokumentasjon/TerminbekreftelseDokumentasjon.tsx';
 import { AnnenInntektType } from 'types/AndreInntektskilder';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
+import { VedleggDataType } from 'types/VedleggDataType';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { kreverUttaksplanVedleggNy } from 'utils/uttaksplanInfoUtils';
 
@@ -73,6 +74,11 @@ const showFrilansOgEgenNæringOgAndreInntekter = (
     return false;
 };
 
+const harManuelleVedlegg = (vedlegg: VedleggDataType | undefined): boolean =>
+    Object.values(vedlegg ?? {})
+        .flatMap((attachments) => attachments ?? [])
+        .some((attachment) => attachment.innsendingsType !== 'AUTOMATISK');
+
 const showManglendeDokumentasjonSteg = (
     path: SøknadRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
@@ -80,6 +86,15 @@ const showManglendeDokumentasjonSteg = (
     eksisterendeSak: FpSak_fpoversikt | undefined,
 ) => {
     if (path === SøknadRoutes.DOKUMENTASJON) {
+        // Steget skal alltid vere synleg så lenge det finst manuelt opplasta eller
+        // send-seinare vedlegg. Dokumentasjonsoppsummeringa viser «Endre svar» →
+        // DOKUMENTASJON så lenge slike vedlegg finst, og utan dette kunne ein endra
+        // uttaksplan gjere steget usynleg medan vedlegga framleis låg lagra. «Endre svar»
+        // navigerte då til eit steg utanfor steglista → Step-krasj «Ingen valgte steg funnet».
+        if (harManuelleVedlegg(getData(ContextDataType.VEDLEGG))) {
+            return true;
+        }
+
         const annenForelder = getData(ContextDataType.ANNEN_FORELDER);
         const søkersituasjon = getData(ContextDataType.SØKERSITUASJON);
         const barn = getData(ContextDataType.OM_BARNET);

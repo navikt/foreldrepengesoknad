@@ -76,7 +76,6 @@ export const ManglendeVedlegg = ({
     foreldrepengerSaker,
 }: Props) => {
     const intl = useIntl();
-    const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger, erEndringssøknad);
 
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
@@ -90,6 +89,13 @@ export const ManglendeVedlegg = ({
     const familiehendelsedato = getFamiliehendelsedato(barn);
 
     const eksisterendeSak = foreldrepengerSaker?.find((sak) => sak.saksnummer === eksisterendeSaksnummer);
+
+    const navigator = useFpNavigator(
+        søkerInfo.arbeidsforhold,
+        mellomlagreSøknadOgNaviger,
+        erEndringssøknad,
+        eksisterendeSak,
+    );
 
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad, eksisterendeSak);
 
