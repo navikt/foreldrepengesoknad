@@ -18,6 +18,7 @@ import {
     LeggTilEllerEndrePeriodeFormFormValues,
     lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm,
     mapFraFormValuesTilUttakPeriode,
+    useLoggUgyldigSamtidigUttakVedRedigering,
 } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
@@ -138,6 +139,8 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const [feilmelding, setFeilmelding] = useState<string | undefined>();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
+
+    useLoggUgyldigSamtidigUttakVedRedigering(uttaksplanperiode);
 
     const defaultValues = uttaksplanperiode
         ? leggTilDatoOgHvaVilDuGjøre(
