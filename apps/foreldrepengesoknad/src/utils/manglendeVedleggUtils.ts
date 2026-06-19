@@ -46,7 +46,7 @@ const shouldPeriodeHaveAttachment = (
     }
 
     if (Uttaksperioden.erIkkeEøsPeriode(periode) && Uttaksperioden.erUttaksperiode(periode)) {
-        return dokumentasjonBehøvesForUttaksperiode(periode, familiehendelsedato);
+        return dokumentasjonBehøvesForUttaksperiode(periode, søkerErFarEllerMedmor, familiehendelsedato);
     }
 
     return false;
@@ -65,6 +65,7 @@ const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UttakUtsettelseÅrsak_fp
 
 const dokumentasjonBehøvesForUttaksperiode = (
     periode: UttakPeriode_fpoversikt,
+    søkerErFarEllerMedmor: boolean,
     familiehendelsedato: string,
 ): boolean => {
     const harIkkeAktivitetskrav = periode.kontoType === 'FORELDREPENGER' && periode.morsAktivitet === 'IKKE_OPPGITT';
@@ -81,8 +82,11 @@ const dokumentasjonBehøvesForUttaksperiode = (
         return false;
     }
 
-    return (
-        (periode.morsAktivitet !== undefined && periode.morsAktivitet !== 'UFØRE') ||
-        erPeriodeMedFedrekvoteIFødselspermTidsrommet
-    );
+    // Dokumentasjon av mors aktivitet ("hva skal mor gjøre i denne perioden") skal kun kreves i
+    // far/medmor sin søknad. I mors egen søknad skal det aldri kreves dokumentasjon for mors
+    // aktivitet, uansett hvilken aktivitet hun velger.
+    const krevesDokumentasjonAvMorsAktivitet =
+        søkerErFarEllerMedmor && periode.morsAktivitet !== undefined && periode.morsAktivitet !== 'UFØRE';
+
+    return krevesDokumentasjonAvMorsAktivitet || erPeriodeMedFedrekvoteIFødselspermTidsrommet;
 };
