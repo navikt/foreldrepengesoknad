@@ -4,7 +4,7 @@ import { useStepConfig } from 'appData/useStepConfig';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
-import { perioderSomKreverVedlegg } from 'utils/manglendeVedleggUtils';
+import { finnPerioderSomInngårISøknaden, perioderSomKreverVedlegg } from 'utils/manglendeVedleggUtils';
 import { getErSøkerFarEllerMedmor, getNavnPåForeldre } from 'utils/personUtils';
 
 import { Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
@@ -13,7 +13,7 @@ import { Skjemanummer } from '@navikt/fp-constants';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Attachment, FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
-import { Uttaksperioden, getFamiliehendelsedato } from '@navikt/fp-utils';
+import { getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ManglendeVedleggFormData } from './ManglendeVedleggFormData';
@@ -100,12 +100,8 @@ export const ManglendeVedlegg = ({
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad, eksisterendeSak);
 
     const erFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
-    const uttaksplanUtenAnnenPartsPerioder = uttaksplan?.filter(
-        (periode) =>
-            Uttaksperioden.erIkkeEøsPeriode(periode) && periode.forelder === (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'),
-    );
     const perioderSomManglerVedlegg = perioderSomKreverVedlegg(
-        uttaksplanUtenAnnenPartsPerioder || [],
+        finnPerioderSomInngårISøknaden(uttaksplan, erFarEllerMedmor, !!eksisterendeSak),
         erFarEllerMedmor,
         annenForelder,
         familiehendelsedato,
