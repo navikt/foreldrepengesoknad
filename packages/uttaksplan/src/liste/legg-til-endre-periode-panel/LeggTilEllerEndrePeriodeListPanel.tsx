@@ -437,14 +437,12 @@ const leggTilDatoOgHvaVilDuGjøre = (
         };
     }
 
-    return periode
-        ? {
-              ...periode,
-              fom: uttaksplanperiode.fom,
-              tom: uttaksplanperiode.tom,
-              hvaVilDuGjøre: 'LEGG_TIL_PERIODE',
-          }
-        : undefined;
+    return {
+        ...periode,
+        fom: uttaksplanperiode.fom,
+        tom: uttaksplanperiode.tom,
+        hvaVilDuGjøre: 'LEGG_TIL_PERIODE',
+    };
 };
 
 const lagHvaVilDuGjøreAlternativer = (

@@ -748,7 +748,7 @@ export const useLoggUgyldigSamtidigUttakVedRedigering = (
         foreldreInfo: { søker },
         erPeriodeneTilAnnenPartLåst,
     } = useUttaksplanData();
-    const sistLoggetFingerprintRef = useRef<string | null>(null);
+    const loggedeFingerprintsRef = useRef<Set<string>>(new Set());
 
     useEffect(() => {
         if (!valgtPeriode) {
@@ -766,10 +766,10 @@ export const useLoggUgyldigSamtidigUttakVedRedigering = (
         }
 
         const fingerprint = `${valgtPeriode.fom}:${valgtPeriode.tom}`;
-        if (sistLoggetFingerprintRef.current === fingerprint) {
+        if (loggedeFingerprintsRef.current.has(fingerprint)) {
             return;
         }
-        sistLoggetFingerprintRef.current = fingerprint;
+        loggedeFingerprintsRef.current.add(fingerprint);
 
         withScope((scope) => {
             scope.setLevel('warning');
