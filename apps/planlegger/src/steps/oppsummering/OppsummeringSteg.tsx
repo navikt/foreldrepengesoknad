@@ -1,10 +1,8 @@
 import { ArrowLeftIcon, TasklistStartIcon, WalletIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
-import { PlanleggerRoutes } from 'appData/routes';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import dayjs from 'dayjs';
 import { FormattedMessage } from 'react-intl';
-import { Navigate } from 'react-router-dom';
 import { erAlenesøker } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
@@ -16,6 +14,7 @@ import { SkyraSurvey } from '@navikt/fp-observability';
 import { KontoBeregningResultatDto, Satser } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
 
 import { ShareDataInfobox } from '../../components/boxes/ShareDataInfobox';
 import { OppsummeringHeader } from './OppsummeringHeader';
@@ -35,19 +34,12 @@ export const OppsummeringSteg = ({ stønadskvoter, satser }: Props) => {
 
     useScrollBehaviour();
 
-    const hvemPlanlegger = useContextGetData(ContextDataType.HVEM_PLANLEGGER);
-    const barnet = useContextGetData(ContextDataType.OM_BARNET);
+    const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
+    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const hvorLangPeriode = useContextGetData(ContextDataType.HVOR_LANG_PERIODE);
     const arbeidssituasjon = useContextGetData(ContextDataType.ARBEIDSSITUASJON);
     const fordeling = useContextGetData(ContextDataType.FORDELING);
     const hvorMye = useContextGetData(ContextDataType.HVOR_MYE);
-
-    // Oppsummering krever at brukeren har fylt ut de innledende stegene. Mangler dataen
-    // (f.eks. ved direkte navigasjon eller en delt/utdatert URL uten state), sender vi
-    // brukeren tilbake til start i stedet for å krasje med «Data er ikke oppgitt».
-    if (!hvemPlanlegger || !barnet) {
-        return <Navigate to={PlanleggerRoutes.OM_PLANLEGGEREN} replace />;
-    }
 
     const erAleneforsørger = erAlenesøker(hvemPlanlegger);
 
