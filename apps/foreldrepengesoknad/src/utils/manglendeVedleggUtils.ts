@@ -22,7 +22,7 @@ export const finnPerioderSomInngårISøknaden = (
     harEksisterendeSak: boolean,
 ): UttakPeriode_fpoversikt[] => {
     return uttaksplan.filter((periode): periode is UttakPeriode_fpoversikt => {
-        if (!Uttaksperioden.erIkkeEøsPeriode(periode)) {
+        if (Uttaksperioden.erEøsPeriode(periode)) {
             return false;
         }
         const erSøkersPeriode = periode.forelder === (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR');
