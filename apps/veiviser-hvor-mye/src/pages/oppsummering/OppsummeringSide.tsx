@@ -57,7 +57,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskvoter, satser }: P
 
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
     const grunnbeløpetGanger6 = grunnbeløpet * 6;
-    const minÅrslønn = grunnbeløpet / 2;
+    const minÅrslønn = Math.round(grunnbeløpet / 2);
 
     const engangsstønad = finnSisteEngangsstønad(satser);
 

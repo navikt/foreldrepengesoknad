@@ -18,7 +18,7 @@ interface Props {
 export const HvorforHarJegRettPanel = ({ fpEllerEsSituasjon, grunnbeløpet }: Props) => {
     const { borDuINorge, jobberDuINorge, lønnPerMåned } = fpEllerEsSituasjon;
 
-    const minstelønn = grunnbeløpet / 2;
+    const minstelønn = Math.round(grunnbeløpet / 2);
     const årslønn = isValidNumber(lønnPerMåned) ? Number(lønnPerMåned) * 12 : 0;
 
     return (
