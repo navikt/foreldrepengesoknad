@@ -447,6 +447,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                         name="samtidigUttaksprosentMor"
                         validate={[valideringSamtidigUttak(intl, stillingsprosentMor)]}
                         maxLength={5}
+                        inputMode="decimal"
                     />
                     <RhfNumericField
                         control={formMethods.control}
@@ -460,6 +461,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                         name="samtidigUttaksprosentFarMedmor"
                         validate={[valideringSamtidigUttak(intl, stillingsprosentFarMedmor)]}
                         maxLength={5}
+                        inputMode="decimal"
                     />
                 </>
             )}
@@ -503,6 +505,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                                     })}
                                     validate={[prosentValideringGradering(intl, samtidigUttaksprosentMor)]}
                                     maxLength={5}
+                                    inputMode="decimal"
                                 />
                                 {aktiveArbeidsforhold !== undefined && søker === 'MOR' && (
                                     <RhfRadioGroup
@@ -583,6 +586,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                                     )}
                                     validate={[prosentValideringGradering(intl, samtidigUttaksprosentFarMedmor)]}
                                     maxLength={5}
+                                    inputMode="decimal"
                                 />
 
                                 {aktiveArbeidsforhold !== undefined && søker === 'FAR_MEDMOR' && (
