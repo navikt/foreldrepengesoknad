@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 
 import * as stories from './Calendar.stories';
 
@@ -40,5 +40,16 @@ describe('<Calendar>', () => {
         expect(screen.getByText('Mai 2024')).toBeInTheDocument();
         expect(screen.getByText('Juni 2024')).toBeInTheDocument();
         expect(screen.getByText('Juli 2024')).toBeInTheDocument();
+    });
+
+    it('skal vise korrekte ukenummer i januar (skal ikke telle videre fra forrige år)', async () => {
+        render(<PeriodsThatSpanOverAYear />);
+
+        const januar2025 = await screen.findByTestId('year:2025;month:0');
+        const ukenummer = within(januar2025)
+            .getAllByTestId('ukenummer')
+            .map((el) => el.textContent);
+
+        expect(ukenummer).toEqual(['1', '2', '3', '4', '5']);
     });
 });

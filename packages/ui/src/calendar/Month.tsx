@@ -77,7 +77,6 @@ export const Month = React.memo(
         const daysInMonth = firstDayOfMonth.daysInMonth();
         const startWeekDay = firstDayOfMonth.isoWeekday();
         const endWeekDay = firstDayOfMonth.endOf('month').isoWeekday();
-        const firstWeekNrOfMonth = firstDayOfMonth.isoWeek();
 
         const nrOfWeeks = Math.ceil((daysInMonth + (startWeekDay - 1) + (7 - endWeekDay)) / 7);
 
@@ -111,13 +110,18 @@ export const Month = React.memo(
                         </HGrid>
 
                         {Array.from({ length: nrOfWeeks }).map((_, week) => {
+                            const weekNr = firstDayOfMonth
+                                .add(week * 7 - (startWeekDay - 1), 'day')
+                                .isoWeek();
                             return (
-                                // eslint-disable-next-line @eslint-react/no-array-index-key
-                                <HGrid key={`week-${week}`} columns={nrOfColumns}>
+                                <HGrid key={`week-${weekNr}`} columns={nrOfColumns}>
                                     {showWeekNumbers && (
-                                        // eslint-disable-next-line @eslint-react/no-array-index-key
-                                        <div key={`weeknr-${week}`} className={styles.weeknr}>
-                                            {firstWeekNrOfMonth + week}
+                                        <div
+                                            key={`weeknr-${weekNr}`}
+                                            className={styles.weeknr}
+                                            data-testid="ukenummer"
+                                        >
+                                            {weekNr}
                                         </div>
                                     )}
                                     {Array.from({ length: 7 }).map((__, day) => {
