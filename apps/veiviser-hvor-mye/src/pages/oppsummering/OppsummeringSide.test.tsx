@@ -72,11 +72,9 @@ describe('<OppsummeringSide>', () => {
 
         expect(await screen.findByText('Oppsummering')).toBeInTheDocument();
 
-        expect(
-            screen.getByText('Med årslønn under 68 274,50 kr har du ikke rett til foreldrepenger'),
-        ).toBeInTheDocument();
+        expect(screen.getByText('Med årslønn under 68 275 kr har du ikke rett til foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText(/12 000 kr i året/)).toBeInTheDocument();
-        expect(screen.getByText(/68 274,50 kr i året/)).toBeInTheDocument();
+        expect(screen.getByText(/68 275 kr i året/)).toBeInTheDocument();
         expect(screen.getByText('Hva er engangsstønad?')).toBeInTheDocument();
     });
 

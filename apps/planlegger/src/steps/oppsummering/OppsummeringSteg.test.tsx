@@ -40,7 +40,7 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Både Klara og Espen har jobbet minst 6 av de siste 10 månedene, og har tjent 68 274,50 kr eller mer det siste året.',
+                'Både Klara og Espen har jobbet minst 6 av de siste 10 månedene, og har tjent 68 275 kr eller mer det siste året.',
             ),
         ).toBeInTheDocument();
 
@@ -66,7 +66,7 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Både Klara og Esther har jobbet minst 6 av de siste 10 månedene, og har tjent 68 274,50 kr eller mer det siste året.',
+                'Både Klara og Esther har jobbet minst 6 av de siste 10 månedene, og har tjent 68 275 kr eller mer det siste året.',
             ),
         ).toBeInTheDocument();
 
@@ -108,12 +108,12 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Klara har jobbet minst 6 av de siste 10 månedene og tjent 68 274,50 kr eller mer det siste året.',
+                'Klara har jobbet minst 6 av de siste 10 månedene og tjent 68 275 kr eller mer det siste året.',
             ),
         ).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Espen har ikke jobbet minst 6 av de siste 10 månedene og tjent 68 274,50 kr eller mer det siste året.',
+                'Espen har ikke jobbet minst 6 av de siste 10 månedene og tjent 68 275 kr eller mer det siste året.',
             ),
         ).toBeInTheDocument();
 
@@ -140,12 +140,12 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Espen har ikke jobbet minst 6 av de siste 10 månedene og tjent 68 274,50 kr eller mer det siste året.',
+                'Espen har ikke jobbet minst 6 av de siste 10 månedene og tjent 68 275 kr eller mer det siste året.',
             ),
         ).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Hugo har jobbet minst 6 av de siste 10 månedene og tjent 68 274,50 kr eller mer det siste året.',
+                'Hugo har jobbet minst 6 av de siste 10 månedene og tjent 68 275 kr eller mer det siste året.',
             ),
         ).toBeInTheDocument();
 

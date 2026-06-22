@@ -38,7 +38,7 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         await userEvent.click(
             screen.getByText(
-                `Har jobbet minst 6 av de siste 10 månedene og har tjent 68 274,50 kr eller mer det siste året`,
+                `Har jobbet minst 6 av de siste 10 månedene og har tjent 68 275 kr eller mer det siste året`,
             ),
         );
 
@@ -71,7 +71,7 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         await userEvent.click(
             screen.getByText(
-                'Har jobbet minst 6 av de siste 10 månedene og har tjent 68 274,50 kr eller mer det siste året',
+                'Har jobbet minst 6 av de siste 10 månedene og har tjent 68 275 kr eller mer det siste året',
             ),
         );
 

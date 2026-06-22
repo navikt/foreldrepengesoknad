@@ -78,7 +78,7 @@ export const ArbeidssituasjonSteg = ({ satser }: Props) => {
 
     const { ref, scrollToBottom } = useScrollBehaviour();
 
-    const minsteInntekt = formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2);
+    const minsteInntekt = formatCurrencyWithKr(Math.round(finnSisteGrunnbeløp(satser) / 2));
 
     return (
         <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
