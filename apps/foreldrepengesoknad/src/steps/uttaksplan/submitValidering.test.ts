@@ -1,6 +1,6 @@
 import { UttakPeriode_fpoversikt, UttakPeriodeAnnenpartEøs_fpoversikt } from '@navikt/fp-types';
 
-import { erSammePeriodeInkludertDatoer, harBrukerKunSlettetPerioder } from './submitValidering';
+import { erSammePeriodeInkludertDatoer, harBrukerKunSlettetPerioder, harMinstEnUttaksEllerOverføringsperiode } from './submitValidering';
 
 const innvilget: UttakPeriode_fpoversikt['resultat'] = {
     innvilget: true,
@@ -127,6 +127,49 @@ describe('harBrukerKunSlettetPerioder', () => {
         it('returnerer false når perioder er undefined', () => {
             expect(harBrukerKunSlettetPerioder(undefined, [A, B])).toBe(false);
         });
+    });
+});
+
+/**
+ * harMinstEnUttaksEllerOverføringsperiode brukes i submitvalideringa for å avgjere om
+ * ein ny søknad har minst eitt reelt uttak. Far som overtek mødrekvote (overføring fordi
+ * mor er for sjuk) skal kunne søkje utan å måtte leggje inn ei ekstra uttaksperiode
+ * (regresjon: TFP-7048).
+ */
+describe('harMinstEnUttaksEllerOverføringsperiode', () => {
+    it('returnerer true for en vanlig uttaksperiode', () => {
+        expect(harMinstEnUttaksEllerOverføringsperiode([lagPeriode()])).toBe(true);
+    });
+
+    it('returnerer true når far kun har lagt inn overtakelse av mødrekvote (SYKDOM_ANNEN_FORELDER)', () => {
+        const overføring = lagPeriode({
+            forelder: 'FAR_MEDMOR',
+            kontoType: 'MØDREKVOTE',
+            overføringÅrsak: 'SYKDOM_ANNEN_FORELDER',
+        });
+        expect(harMinstEnUttaksEllerOverføringsperiode([overføring])).toBe(true);
+    });
+
+    it('returnerer true når far kun har lagt inn overtakelse (INSTITUSJONSOPPHOLD_ANNEN_FORELDER)', () => {
+        const overføring = lagPeriode({
+            forelder: 'FAR_MEDMOR',
+            kontoType: 'MØDREKVOTE',
+            overføringÅrsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
+        });
+        expect(harMinstEnUttaksEllerOverføringsperiode([overføring])).toBe(true);
+    });
+
+    it('returnerer false når planen kun inneholder utsettelser', () => {
+        const utsettelse = lagPeriode({ utsettelseÅrsak: 'ARBEID', resultat: undefined });
+        expect(harMinstEnUttaksEllerOverføringsperiode([utsettelse])).toBe(false);
+    });
+
+    it('returnerer false for tom plan', () => {
+        expect(harMinstEnUttaksEllerOverføringsperiode([])).toBe(false);
+    });
+
+    it('returnerer false når planen kun inneholder EØS-perioder', () => {
+        expect(harMinstEnUttaksEllerOverføringsperiode([lagEøsPeriode()])).toBe(false);
     });
 });
 
