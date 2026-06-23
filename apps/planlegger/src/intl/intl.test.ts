@@ -1,4 +1,4 @@
-import { createIntlMessagesTest } from '@navikt/fp-utils-test/intl';
+import { createIntlMessagesTest } from '@navikt/fp-utils-test';
 
 import en from './messages/en_US.json';
 import nb from './messages/nb_NO.json';
