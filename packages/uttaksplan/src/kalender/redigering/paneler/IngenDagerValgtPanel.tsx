@@ -124,8 +124,13 @@ const PlanStatus = () => {
 };
 
 const AlleDagerLagtTilBoks = () => (
-    <Box padding="space-12" borderRadius="8" className="bg-ax-bg-success-soft">
-        <HStack gap="space-8" align="center" wrap={false}>
+    <Box
+        padding="space-12"
+        borderRadius="8"
+        borderWidth="1"
+        className="bg-ax-bg-success-soft border-ax-border-success"
+    >
+        <HStack gap="space-8" align="start" wrap={false}>
             <CheckmarkCircleIcon className="text-ax-text-success shrink-0" fontSize="1.5rem" aria-hidden />
             <BodyShort size="small">
                 <FormattedMessage id="IngenDagerValgtPanel.AlleDagerLagtTil" />
