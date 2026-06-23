@@ -102,9 +102,9 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
 
 const PlanStatus = () => {
     const harPerioderSomKanLeggesTil = useHarPerioderSomKanLeggesTil();
-    const harOvertrukketDager = useHarOvertrukketDager();
+    const { antallOvertrukketDager } = useTellDagerIUttaksPeriodene();
 
-    if (!harPerioderSomKanLeggesTil && !harOvertrukketDager) {
+    if (!harPerioderSomKanLeggesTil && antallOvertrukketDager <= 0) {
         return <AlleDagerLagtTilBoks />;
     }
 
@@ -118,7 +118,7 @@ const PlanStatus = () => {
                     <PerioderSomKanLeggesTilTags />
                 </VStack>
             )}
-            {harOvertrukketDager && <LagtTilForMyeTag />}
+            {antallOvertrukketDager > 0 && <LagtTilForMyeTag antallOvertrukketDager={antallOvertrukketDager} />}
         </VStack>
     );
 };
@@ -139,13 +139,8 @@ const AlleDagerLagtTilBoks = () => (
     </Box>
 );
 
-const LagtTilForMyeTag = () => {
+const LagtTilForMyeTag = ({ antallOvertrukketDager }: { antallOvertrukketDager: number }) => {
     const intl = useIntl();
-    const antallOvertrukketDager = useAntallOvertrukketDager();
-
-    if (antallOvertrukketDager <= 0) {
-        return null;
-    }
 
     return (
         <VStack gap="space-4">
@@ -163,13 +158,6 @@ const LagtTilForMyeTag = () => {
         </VStack>
     );
 };
-
-const useAntallOvertrukketDager = () => {
-    const { antallOvertrukketDager } = useTellDagerIUttaksPeriodene();
-    return antallOvertrukketDager;
-};
-
-const useHarOvertrukketDager = () => useAntallOvertrukketDager() > 0;
 
 const useHarPerioderSomKanLeggesTil = () => {
     const {
