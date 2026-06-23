@@ -24,7 +24,6 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       runs-on: 'ubuntu-latest-4-cores' # default: ubuntu-latest
-      build-image: ${{ github.ref_name == 'master' }} # default: true
       push-image: ${{ github.ref_name == 'master' }} # default: false
       app: svangerskapspengesoknad
       image_suffix: '/svangerskapspengesoknad'

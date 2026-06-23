@@ -18,7 +18,7 @@ on:
         required: false
         type: boolean
         description: Skal docker image bygges?
-        default: true
+        default: false
       push-image:
         required: false
         type: boolean
@@ -120,7 +120,7 @@ jobs:
         run: echo "Generated build-version is ${{ steps.generate-build-version.outputs.build-version }}"
 
       - name: Bygg og push docker image
-        if: inputs.build-image
+        if: inputs.build-image || inputs.push-image
         uses: navikt/fp-gha-workflows/.github/actions/build-push-docker-image@main
         with:
           build-version: ${{ steps.generate-build-version.outputs.build-version }}
