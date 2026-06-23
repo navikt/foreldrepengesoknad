@@ -50,7 +50,7 @@ export const useFinnFørsteSubmitFeilmelding = ({
         perioder.length === 0 && !harBrukerKunSlettetPerioder(uttaksplan, opprinneligPlan);
 
     const manglerUttaksperioderForNySøknad = (perioder: UttaksplanPerioder) =>
-        !erEndringssøknad && !perioder.some((periode) => Uttaksperioden.erUttaksperiode(periode));
+        !erEndringssøknad && !harMinstEnUttaksEllerOverføringsperiode(perioder);
 
     const harOvertrukketDager = () => erAntallDagerOvertrukket;
 
@@ -148,6 +148,13 @@ export const harKunPerioderForAnnenForelder = (
 
     return perioder.every((periode) => Uttaksperioden.erEøsPeriode(periode) || periode.forelder !== søkersForelder);
 };
+
+// Ein overføringsperiode (t.d. far som overtek mødrekvote fordi mor er for sjuk) er eit
+// reelt uttak av foreldrepengar, og er ein gyldig søknad åleine på lik linje med ein uttaksperiode.
+export const harMinstEnUttaksEllerOverføringsperiode = (perioder: UttaksplanPerioder) =>
+    perioder.some(
+        (periode) => Uttaksperioden.erUttaksperiode(periode) || Uttaksperioden.erOverføringsperiode(periode),
+    );
 
 export const erKunUtsettelser = (perioder: UttaksplanPerioder) => {
     if (perioder.length === 0) {
