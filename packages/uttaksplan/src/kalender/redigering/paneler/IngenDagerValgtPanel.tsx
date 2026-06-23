@@ -1,4 +1,4 @@
-import { ChevronDownIcon, ChevronUpIcon, NotePencilIcon } from '@navikt/aksel-icons';
+import { CheckmarkCircleIcon, ChevronDownIcon, ChevronUpIcon, NotePencilIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -76,7 +76,7 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
                 <VStack gap="space-16" className="px-4 pb-4">
                     {labels}
                     <VStack gap="space-8">
-                        <PerioderSomKanLeggesTil />
+                        <PlanStatus />
                         <Link as="button" onClick={scrollToKvoteOppsummering}>
                             <FormattedMessage id="RedigeringKalenderIndex.SeDetaljer" />
                         </Link>
@@ -100,20 +100,71 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
     );
 };
 
-const PerioderSomKanLeggesTil = () => {
-    const harTags = useHarPerioderSomKanLeggesTil();
-    if (!harTags) {
-        return null;
+const PlanStatus = () => {
+    const harPerioderSomKanLeggesTil = useHarPerioderSomKanLeggesTil();
+    const harOvertrukketDager = useHarOvertrukketDager();
+
+    if (!harPerioderSomKanLeggesTil && !harOvertrukketDager) {
+        return <AlleDagerLagtTilBoks />;
     }
+
     return (
-        <VStack gap="space-4">
-            <Detail uppercase style={{ letterSpacing: '1.05px' }}>
-                <FormattedMessage id="IngenDagerValgtPanel.PerioderSomKanLeggesTil" />
-            </Detail>
-            <PerioderSomKanLeggesTilTags />
+        <VStack gap="space-12">
+            {harPerioderSomKanLeggesTil && (
+                <VStack gap="space-4">
+                    <Detail uppercase style={{ letterSpacing: '1.05px' }}>
+                        <FormattedMessage id="IngenDagerValgtPanel.PerioderSomKanLeggesTil" />
+                    </Detail>
+                    <PerioderSomKanLeggesTilTags />
+                </VStack>
+            )}
+            {harOvertrukketDager && <LagtTilForMyeTag />}
         </VStack>
     );
 };
+
+const AlleDagerLagtTilBoks = () => (
+    <Box padding="space-12" borderRadius="8" className="bg-ax-bg-success-soft">
+        <HStack gap="space-8" align="center" wrap={false}>
+            <CheckmarkCircleIcon className="text-ax-text-success shrink-0" fontSize="1.5rem" aria-hidden />
+            <BodyShort size="small">
+                <FormattedMessage id="IngenDagerValgtPanel.AlleDagerLagtTil" />
+            </BodyShort>
+        </HStack>
+    </Box>
+);
+
+const LagtTilForMyeTag = () => {
+    const intl = useIntl();
+    const antallOvertrukketDager = useAntallOvertrukketDager();
+
+    if (antallOvertrukketDager <= 0) {
+        return null;
+    }
+
+    return (
+        <VStack gap="space-4">
+            <Detail uppercase style={{ letterSpacing: '1.05px' }}>
+                <FormattedMessage id="IngenDagerValgtPanel.LagtTilForMyeTittel" />
+            </Detail>
+            <HStack gap="space-4">
+                <Tag variant="error" size="small">
+                    <FormattedMessage
+                        id="IngenDagerValgtPanel.LagtTilForMye"
+                        values={{ varighet: getVarighetString(antallOvertrukketDager, intl) }}
+                    />
+                </Tag>
+            </HStack>
+        </VStack>
+    );
+};
+
+const useAntallOvertrukketDager = () => {
+    const { antallOvertrukketDager } = useTellDagerIUttaksPeriodene();
+    return antallOvertrukketDager;
+};
+
+const useHarOvertrukketDager = () => useAntallOvertrukketDager() > 0;
 
 const useHarPerioderSomKanLeggesTil = () => {
     const {
