@@ -7,7 +7,7 @@ import { createSharedAppConfig } from '@navikt/fp-config-vite';
 
 const setupFileDirName = path.resolve(__dirname, './vitest/setupTests.ts');
 
-// Settes i Docker-bygget (docker-bake.hcl). Når den er satt serveres de bygde
+// Settes i build-workflowen (build-planlegger.yml -> build.yml). Når den er satt serveres de bygde
 // assetene fra CDN, mens `base` fortsatt styrer routing (BrowserRouter) og API-prefiks.
 const cdnUrl = process.env.VITE_CDN_URL;
 

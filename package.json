@@ -6,6 +6,7 @@
         "build:storybook": "turbo run build:storybook && pnpm run storybook-create-deploy-folder",
         "test": "turbo test",
         "test:browser": "turbo run test:browser",
+        "ci": "turbo run build test",
         "eslint": "turbo run eslint",
         "eslint:fix": "turbo run eslint:fix",
         "prettier:fix": "turbo run prettier:fix",
