@@ -101,8 +101,9 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
 };
 
 const PlanStatus = () => {
-    const harPerioderSomKanLeggesTil = useHarPerioderSomKanLeggesTil();
-    const { antallOvertrukketDager } = useTellDagerIUttaksPeriodene();
+    const tellingData = useTellDagerIUttaksPeriodene();
+    const harPerioderSomKanLeggesTil = useHarPerioderSomKanLeggesTil(tellingData);
+    const { antallOvertrukketDager } = tellingData;
 
     if (!harPerioderSomKanLeggesTil && antallOvertrukketDager <= 0) {
         return <AlleDagerLagtTilBoks />;
@@ -159,11 +160,15 @@ const LagtTilForMyeTag = ({ antallOvertrukketDager }: { antallOvertrukketDager: 
     );
 };
 
-const useHarPerioderSomKanLeggesTil = () => {
+const useHarPerioderSomKanLeggesTil = ({
+    ubrukteDagerMor,
+    ubrukteDagerFar,
+    ubrukteDagerFelles,
+    antallUbrukteDager,
+}: ReturnType<typeof useTellDagerIUttaksPeriodene>) => {
     const {
         foreldreInfo: { rettighetType, søker },
     } = useUttaksplanData();
-    const { ubrukteDagerMor, ubrukteDagerFar, ubrukteDagerFelles, antallUbrukteDager } = useTellDagerIUttaksPeriodene();
     const { ubrukteDagerAktivitetsfri, ubrukteDagerMedAktivitetskrav } = useUbrukteDagerPerKontoKunEnHarRett();
 
     if (rettighetType === 'BEGGE_RETT') {
