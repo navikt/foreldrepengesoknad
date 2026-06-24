@@ -717,17 +717,16 @@ export const finnUgyldigSamtidigUttakOverlapp = (
     erPeriodeneTilAnnenPartLåst: boolean,
 ): [UttakPeriode_fpoversikt, UttakPeriode_fpoversikt] | undefined => {
     const eksisterendePerioder = finnPerioderSomOmslutterValgtPeriode(uttaksplanperioder, valgtPeriode);
+    const harToOmsluttendePerioder = eksisterendePerioder.length === 2;
 
-    if (
-        eksisterendePerioder.length !== 2 ||
-        !eksisterendePerioder.every(erVanligUttakPeriode) ||
-        eksisterendePerioder.some((p) => p.utsettelseÅrsak === 'LOVBESTEMT_FERIE') ||
-        eksisterendePerioder.some((p) => erPeriodeneTilAnnenPartLåst && p.forelder !== søker)
-    ) {
+    if (!harToOmsluttendePerioder || !eksisterendePerioder.every(erVanligUttakPeriode)) {
         return undefined;
     }
 
-    if (finnGyldigSamtidigUttakPar(eksisterendePerioder)) {
+    const harLovbestemtFerie = eksisterendePerioder.some((p) => p.utsettelseÅrsak === 'LOVBESTEMT_FERIE');
+    const harLåstPeriodeFraAnnenPart = eksisterendePerioder.some((p) => erPeriodeneTilAnnenPartLåst && p.forelder !== søker);
+
+    if (harLovbestemtFerie || harLåstPeriodeFraAnnenPart || finnGyldigSamtidigUttakPar(eksisterendePerioder)) {
         return undefined;
     }
 
