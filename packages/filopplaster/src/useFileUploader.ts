@@ -26,19 +26,22 @@ const addOrReplaceAttachments = (
     currentAttachments: FileUploaderAttachment[],
     attachmentsToAdd: FileUploaderAttachment[],
 ): FileUploaderAttachment[] => {
-    const filenamesToReplace = new Set(attachmentsToAdd.map((a) => a.attachmentData.filename));
+    const attachmentKeysToReplace = new Set(attachmentsToAdd.map(getAttachmentKey));
     return [
-        ...currentAttachments.filter((a) => !filenamesToReplace.has(a.attachmentData.filename)),
+        ...currentAttachments.filter((a) => !attachmentKeysToReplace.has(getAttachmentKey(a))),
         ...attachmentsToAdd,
     ];
 };
 
-const replaceAttachmentByFilename = (
+const getAttachmentKey = (attachment: FileUploaderAttachment): string =>
+    `${attachment.attachmentData.skjemanummer}:${attachment.attachmentData.filename}`;
+
+const replaceAttachment = (
     currentAttachments: FileUploaderAttachment[],
     updatedAttachment: FileUploaderAttachment,
 ): FileUploaderAttachment[] =>
     currentAttachments.map((a) =>
-        a.attachmentData.filename === updatedAttachment.attachmentData.filename ? updatedAttachment : a,
+        getAttachmentKey(a) === getAttachmentKey(updatedAttachment) ? updatedAttachment : a,
     );
 
 const uploadPendingAttachments = async ({
@@ -58,7 +61,7 @@ const uploadPendingAttachments = async ({
         }
 
         await uploadAttachment(pendingAttachment.attachmentData, uploadPath, timeout);
-        setAttachments((current) => replaceAttachmentByFilename(current, pendingAttachment));
+        setAttachments((current) => replaceAttachment(current, pendingAttachment));
     }
 };
 
