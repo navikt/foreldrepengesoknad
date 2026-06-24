@@ -1,4 +1,4 @@
-import { sum, sumBy } from 'lodash';
+import { sum, sumBy } from 'es-toolkit';
 
 import {
     Familiesituasjon,

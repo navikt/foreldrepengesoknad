@@ -7,7 +7,7 @@ import {
     StrollerFillIcon,
 } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { groupBy, sortBy } from 'lodash';
+import { groupBy, sortBy } from 'es-toolkit';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -43,7 +43,7 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
                 {erSøknad ? 'Dette har du søkt om' : 'Dette har du fått vedtatt'}
             </Heading>
             <VStack gap="space-16" className="bg-ax-bg-default p-4">
-                {Object.values(groupBy(perioder, 'fom')).map((gruppertePerioder) => (
+                {Object.values(groupBy(perioder, (periode) => periode.fom)).map((gruppertePerioder) => (
                     <React.Fragment key={gruppertePerioder[0]!.fom}>
                         <GruppertePerioder perioder={gruppertePerioder} />
                         <hr className="text-ax-border-neutral-subtle" />
@@ -70,7 +70,7 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
 const GruppertePerioder = ({ perioder }: { perioder: ReturnType<typeof lagKronologiskeSvpPerioder> }) => {
     return (
         <HGrid gap="space-8" columns={{ xs: '1fr 40px', md: '1fr 1fr 300px' }} align="center">
-            {sortBy(perioder, (p) => p.aktivitet.arbeidsgiverNavn).map((p, index) => {
+            {sortBy(perioder, [(p) => p.aktivitet.arbeidsgiverNavn]).map((p, index) => {
                 const arbeidsgiverNavn =
                     capitalizeFirstLetterInEveryWordOnly(p.aktivitet.arbeidsgiverNavn) ??
                     p.aktivitet.arbeidsgiver?.id ??

@@ -5,7 +5,7 @@ import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import dayjs from 'dayjs';
-import isEqual from 'lodash/isEqual';
+import { isEqual } from 'es-toolkit';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { erAlenesøker as erAlene, erFarOgFar, erMedmorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';

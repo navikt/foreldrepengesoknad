@@ -10,7 +10,7 @@ import { ContextDataMap, ContextDataType, FpDataContext } from 'appData/FpDataCo
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import { usePlanleggerDataFromUrl } from 'appData/usePlanleggerDataFromUrl';
 import ky from 'ky';
-import isEqual from 'lodash/isEqual';
+import { isEqual } from 'es-toolkit';
 import { ReactNode, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { shouldApplyStorage } from 'utils/mellomlagringUtils';

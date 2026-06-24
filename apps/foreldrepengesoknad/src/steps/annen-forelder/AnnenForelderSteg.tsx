@@ -4,7 +4,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useStepConfig } from 'appData/useStepConfig';
-import isEqual from 'lodash/isEqual';
+import { isEqual } from 'es-toolkit';
 import { RegistrertePersonalia } from 'pages/registrerte-personalia/RegistrertePersonalia';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';

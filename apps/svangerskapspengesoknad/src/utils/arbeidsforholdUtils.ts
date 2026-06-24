@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import minMax from 'dayjs/plugin/minMax';
-import uniqBy from 'lodash/uniqBy';
+import { uniqBy } from 'es-toolkit';
 import { UnikArbeidsforhold } from 'types/Arbeidsforhold';
 import { Stilling } from 'types/Tilrettelegging';
 
