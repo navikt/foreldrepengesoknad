@@ -1,10 +1,11 @@
-import { useCallback, useMemo, useState } from 'react';
+import { type Dispatch, type SetStateAction, useCallback, useMemo, useState } from 'react';
 
 import { FileObject } from '@navikt/ds-react';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
+import type { FileUploaderAttachment } from './FileUploaderAttachment';
 import {
     convertToInternalFormat,
     getPendingAttachmentFromFile,
@@ -21,6 +22,46 @@ interface Args {
     timeout?: number;
 }
 
+const addOrReplaceAttachments = (
+    currentAttachments: FileUploaderAttachment[],
+    attachmentsToAdd: FileUploaderAttachment[],
+): FileUploaderAttachment[] => {
+    const filenamesToReplace = new Set(attachmentsToAdd.map((a) => a.attachmentData.filename));
+    return [
+        ...currentAttachments.filter((a) => !filenamesToReplace.has(a.attachmentData.filename)),
+        ...attachmentsToAdd,
+    ];
+};
+
+const replaceAttachmentByFilename = (
+    currentAttachments: FileUploaderAttachment[],
+    updatedAttachment: FileUploaderAttachment,
+): FileUploaderAttachment[] =>
+    currentAttachments.map((a) =>
+        a.attachmentData.filename === updatedAttachment.attachmentData.filename ? updatedAttachment : a,
+    );
+
+const uploadPendingAttachments = async ({
+    pendingAttachments,
+    uploadPath,
+    timeout,
+    setAttachments,
+}: {
+    pendingAttachments: FileUploaderAttachment[];
+    uploadPath: string;
+    timeout?: number;
+    setAttachments: Dispatch<SetStateAction<FileUploaderAttachment[]>>;
+}): Promise<void> => {
+    for (const pendingAttachment of pendingAttachments) {
+        if (pendingAttachment.fileObject.error) {
+            continue;
+        }
+
+        await uploadAttachment(pendingAttachment.attachmentData, uploadPath, timeout);
+        setAttachments((current) => replaceAttachmentByFilename(current, pendingAttachment));
+    }
+};
+
 export const useFileUploader = ({ existingAttachments, attachmentType, skjemanummer, uploadPath, timeout }: Args) => {
     const [attachments, setAttachments] = useState(() => convertToInternalFormat(existingAttachments));
 
@@ -30,23 +71,9 @@ export const useFileUploader = ({ existingAttachments, attachmentType, skjemanum
                 getPendingAttachmentFromFile(file, attachmentType, skjemanummer),
             );
 
-            setAttachments((current) => {
-                const untouched = current.filter(
-                    (c) => !pendingAttachments.some((p) => p.attachmentData.filename === c.attachmentData.filename),
-                );
-                return [...untouched, ...pendingAttachments];
-            });
+            setAttachments((current) => addOrReplaceAttachments(current, pendingAttachments));
 
-            void (async () => {
-                for (const pending of pendingAttachments.filter((p) => !p.fileObject.error)) {
-                    await uploadAttachment(pending.attachmentData, uploadPath, timeout);
-                    setAttachments((current) =>
-                        current.map((c) =>
-                            c.attachmentData.filename === pending.attachmentData.filename ? pending : c,
-                        ),
-                    );
-                }
-            })();
+            void uploadPendingAttachments({ pendingAttachments, uploadPath, timeout, setAttachments });
         },
         [attachmentType, skjemanummer, uploadPath, timeout],
     );
