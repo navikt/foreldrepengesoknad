@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { mswWrapper } from '@navikt/fp-utils-test';
@@ -25,6 +25,37 @@ describe('FileUploader', () => {
 
             expect(await screen.findByText('test-document.pdf')).toBeInTheDocument();
             expect(screen.queryByText('Laster opp...')).not.toBeInTheDocument();
+        }),
+    );
+
+    it(
+        'skal varsle parent om pending og ferdig opplastet vedlegg',
+        mswWrapper(async ({ setHandlers }) => {
+            setHandlers(Default.parameters.msw);
+
+            const updateAttachments = vi.fn();
+
+            render(<Default updateAttachments={updateAttachments} />);
+
+            const file = new File(['hello'], 'test-document.pdf', { type: 'application/pdf' });
+
+            const fileInput = screen.getByLabelText('Last opp fil');
+            await userEvent.upload(fileInput, file);
+
+            await waitFor(() => expect(updateAttachments).toHaveBeenCalledWith([], true));
+            await waitFor(() =>
+                expect(updateAttachments).toHaveBeenLastCalledWith(
+                    [
+                        expect.objectContaining({
+                            filename: 'test-document.pdf',
+                            pending: false,
+                            uploaded: true,
+                            uuid: 'uuid-test',
+                        }),
+                    ],
+                    false,
+                ),
+            );
         }),
     );
 
