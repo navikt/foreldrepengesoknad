@@ -22,7 +22,7 @@ export const Forside = ({ mellomlagreSøknadOgNaviger, setHarGodkjentVilkår, ha
 
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
-    const minimumOpptjening = DEFAULT_SATSER.grunnbeløp[0]!.verdi * 0.5;
+    const minimumOpptjening = Math.round(DEFAULT_SATSER.grunnbeløp[0]!.verdi * 0.5);
 
     const [isError, setIsError] = useState(false);
     const [isChecked, setIsChecked] = useState(harGodkjentVilkår);
