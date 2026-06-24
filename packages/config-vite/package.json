@@ -7,6 +7,7 @@
         "@tailwindcss/vite": "4.3.1",
         "@vitejs/plugin-react": "6.0.2",
         "@vitest/browser-playwright": "4.1.8",
+        "playwright": "1.60.0",
         "typescript": "catalog:",
         "vite": "catalog:",
         "vite-plugin-compression2": "2.5.3",
