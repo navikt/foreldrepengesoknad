@@ -68,7 +68,9 @@ jobs:
           PACKAGES_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: Installer Playwright (chromium)
-        run: pnpm dlx playwright install --with-deps chromium
+        run: pnpm --filter @navikt/fp-config-vite exec playwright install --with-deps chromium
+        env:
+          PACKAGES_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: Kjør browser tests
         run: pnpm exec turbo run test:browser --filter=./apps/* --only --continue
