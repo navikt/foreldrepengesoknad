@@ -1,8 +1,6 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen, within } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-
-import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './Tidslinje.stories.tsx';
 
@@ -22,345 +20,294 @@ const {
 } = composeStories(stories);
 
 describe('<Tidslinje>', () => {
-    it(
-        'FP - Adopsjon',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FPAdopsjon.parameters.msw);
-            const { container } = render(<FPAdopsjon />);
+    it('FP - Adopsjon', async () => {
+        await FPAdopsjon.run();
+        const container = document.body;
 
-            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
-            await userEvent.click(button);
-            expect(screen.getByRole('button', { name: 'Kompakt visning' })).toBeInTheDocument();
-            verifiserHendelseStatus({ container, antall: 4, completed: 2 });
+        const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+        await userEvent.click(button);
+        expect(screen.getByRole('button', { name: 'Kompakt visning' })).toBeInTheDocument();
+        verifiserHendelseStatus({ container, antall: 4, completed: 2 });
 
-            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
-            expect(within(timelineEvents[0]!).getByText(/barnet ble adoptert/i)).toBeInTheDocument();
-            expect(within(timelineEvents[1]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
-            expect(within(timelineEvents[2]!).getByText(/du vil få et svar på søknaden din/i)).toBeInTheDocument();
-            expect(within(timelineEvents[3]!).getByText(/3 år siden adopsjonsdato/i)).toBeInTheDocument();
+        const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+        expect(within(timelineEvents[0]!).getByText(/barnet ble adoptert/i)).toBeInTheDocument();
+        expect(within(timelineEvents[1]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
+        expect(within(timelineEvents[2]!).getByText(/du vil få et svar på søknaden din/i)).toBeInTheDocument();
+        expect(within(timelineEvents[3]!).getByText(/3 år siden adopsjonsdato/i)).toBeInTheDocument();
 
-            const timelineDatoer = container.querySelectorAll<HTMLElement>('.aksel-process__timestamp');
-            expect(within(timelineDatoer[0]!).getByText(/25. november 2025/i)).toBeInTheDocument();
-            expect(within(timelineDatoer[1]!).getByText(/27. november 2025 kl 01:00/i)).toBeInTheDocument();
-            expect(within(timelineDatoer[2]!).getByText(/senere/i)).toBeInTheDocument();
-            expect(within(timelineDatoer[3]!).getByText(/25. nov. 2028/i)).toBeInTheDocument();
+        const timelineDatoer = container.querySelectorAll<HTMLElement>('.aksel-process__timestamp');
+        expect(within(timelineDatoer[0]!).getByText(/25. november 2025/i)).toBeInTheDocument();
+        expect(within(timelineDatoer[1]!).getByText(/27. november 2025 kl 01:00/i)).toBeInTheDocument();
+        expect(within(timelineDatoer[2]!).getByText(/senere/i)).toBeInTheDocument();
+        expect(within(timelineDatoer[3]!).getByText(/25. nov. 2028/i)).toBeInTheDocument();
 
-            await userEvent.click(screen.getByRole('button', { name: 'Kompakt visning' }));
-            expect(screen.getByRole('button', { name: 'Vis hele prosessen' })).toBeInTheDocument();
-            verifiserHendelseStatus({ container, antall: 3, completed: 2 });
-        }),
-    );
+        await userEvent.click(screen.getByRole('button', { name: 'Kompakt visning' }));
+        expect(screen.getByRole('button', { name: 'Vis hele prosessen' })).toBeInTheDocument();
+        verifiserHendelseStatus({ container, antall: 3, completed: 2 });
+    });
 
-    it(
-        'FP - Adopsjon - visHeleTidslinjen=false',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FPAdopsjon.parameters.msw);
-            const { container } = render(<FPAdopsjon />);
+    it('FP - Adopsjon - visHeleTidslinjen=false', async () => {
+        await FPAdopsjon.run();
+        const container = document.body;
 
-            expect(await screen.findByRole('button', { name: 'Vis hele prosessen' })).toBeInTheDocument();
-            verifiserHendelseStatus({ container, antall: 3, completed: 2 });
+        expect(await screen.findByRole('button', { name: 'Vis hele prosessen' })).toBeInTheDocument();
+        verifiserHendelseStatus({ container, antall: 3, completed: 2 });
 
-            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
-            expect(within(timelineEvents[0]!).getByText(/barnet ble adoptert/i)).toBeInTheDocument();
-            expect(within(timelineEvents[1]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
-            expect(within(timelineEvents[2]!).getByText(/du vil få et svar på søknaden din/i)).toBeInTheDocument();
-        }),
-    );
+        const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+        expect(within(timelineEvents[0]!).getByText(/barnet ble adoptert/i)).toBeInTheDocument();
+        expect(within(timelineEvents[1]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
+        expect(within(timelineEvents[2]!).getByText(/du vil få et svar på søknaden din/i)).toBeInTheDocument();
+    });
 
-    it(
-        'FP- Termin innvilget',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FPTerminInnvilget.parameters.msw);
-            const { container } = render(<FPTerminInnvilget />);
+    it('FP- Termin innvilget', async () => {
+        await FPTerminInnvilget.run();
+        const container = document.body;
 
-            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
-            await userEvent.click(button);
-            verifiserHendelseStatus({ container, antall: 5, completed: 5 });
+        const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+        await userEvent.click(button);
+        verifiserHendelseStatus({ container, antall: 5, completed: 5 });
 
-            const items = screen.getAllByRole('listitem');
-            expect(within(items[0]!).getByText(/termindato/i)).toBeInTheDocument();
-            expect(within(items[1]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
-            expect(
-                within(items[2]!).getByText(/nav har sendt deg brev fordi vi mangler inntektsmelding/i),
-            ).toBeInTheDocument();
-            expect(within(items[3]!).getByText(/nav mottok inntektsmelding/i)).toBeInTheDocument();
-            expect(within(items[4]!).getByText(/søknaden din ble innvilget/i)).toBeInTheDocument();
-        }),
-    );
+        const items = screen.getAllByRole('listitem');
+        expect(within(items[0]!).getByText(/termindato/i)).toBeInTheDocument();
+        expect(within(items[1]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
+        expect(
+            within(items[2]!).getByText(/nav har sendt deg brev fordi vi mangler inntektsmelding/i),
+        ).toBeInTheDocument();
+        expect(within(items[3]!).getByText(/nav mottok inntektsmelding/i)).toBeInTheDocument();
+        expect(within(items[4]!).getByText(/søknaden din ble innvilget/i)).toBeInTheDocument();
+    });
 
-    it(
-        'FP - Med tilbakekreving',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FPMedTilbakekreving.parameters.msw);
-            const { container } = render(<FPMedTilbakekreving />);
+    it('FP - Med tilbakekreving', async () => {
+        await FPMedTilbakekreving.run();
+        const container = document.body;
 
-            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
-            await userEvent.click(button);
-            verifiserHendelseStatus({ container, antall: 6, completed: 6 });
+        const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+        await userEvent.click(button);
+        verifiserHendelseStatus({ container, antall: 6, completed: 6 });
 
-            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
-            expect(within(timelineEvents[0]!).getByText(/barnet ble født/i)).toBeInTheDocument();
-            expect(within(timelineEvents[1]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
-            expect(within(timelineEvents[2]!).getByText(/nav mottok inntektsmelding/i)).toBeInTheDocument();
-            expect(within(timelineEvents[3]!).getByText(/søknaden din ble innvilget/i)).toBeInTheDocument();
-            expect(within(timelineEvents[4]!).getByText(/du har fått et svar på søknaden din/i)).toBeInTheDocument();
-            expect(
-                within(timelineEvents[5]!).getByText(/nav har sendt deg varsel om tilbakebetaling/i),
-            ).toBeInTheDocument();
-        }),
-    );
+        const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+        expect(within(timelineEvents[0]!).getByText(/barnet ble født/i)).toBeInTheDocument();
+        expect(within(timelineEvents[1]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
+        expect(within(timelineEvents[2]!).getByText(/nav mottok inntektsmelding/i)).toBeInTheDocument();
+        expect(within(timelineEvents[3]!).getByText(/søknaden din ble innvilget/i)).toBeInTheDocument();
+        expect(within(timelineEvents[4]!).getByText(/du har fått et svar på søknaden din/i)).toBeInTheDocument();
+        expect(
+            within(timelineEvents[5]!).getByText(/nav har sendt deg varsel om tilbakebetaling/i),
+        ).toBeInTheDocument();
+    });
 
-    it(
-        'FP - Med tilbakekreving - visHeleTidslinjen=false',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FPMedTilbakekreving.parameters.msw);
-            const { container } = render(<FPMedTilbakekreving />);
+    it('FP - Med tilbakekreving - visHeleTidslinjen=false', async () => {
+        await FPMedTilbakekreving.run();
+        const container = document.body;
 
-            expect(await screen.findByRole('button', { name: 'Vis hele prosessen' })).toBeInTheDocument();
+        expect(await screen.findByRole('button', { name: 'Vis hele prosessen' })).toBeInTheDocument();
 
-            verifiserHendelseStatus({ container, antall: 3, completed: 3 });
+        verifiserHendelseStatus({ container, antall: 3, completed: 3 });
 
-            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
-            expect(within(timelineEvents[0]!).getByText(/søknaden din ble innvilget/i)).toBeInTheDocument();
-            expect(within(timelineEvents[1]!).getByText(/du har fått et svar på søknaden din/i)).toBeInTheDocument();
-            expect(
-                within(timelineEvents[2]!).getByText(/nav har sendt deg varsel om tilbakebetaling/i),
-            ).toBeInTheDocument();
-        }),
-    );
+        const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+        expect(within(timelineEvents[0]!).getByText(/søknaden din ble innvilget/i)).toBeInTheDocument();
+        expect(within(timelineEvents[1]!).getByText(/du har fått et svar på søknaden din/i)).toBeInTheDocument();
+        expect(
+            within(timelineEvents[2]!).getByText(/nav har sendt deg varsel om tilbakebetaling/i),
+        ).toBeInTheDocument();
+    });
 
-    it(
-        'FP - Etterlys IM',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FPEtterlysIM.parameters.msw);
-            const { container } = render(<FPEtterlysIM />);
+    it('FP - Etterlys IM', async () => {
+        await FPEtterlysIM.run();
+        const container = document.body;
 
-            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
-            await userEvent.click(button);
-            verifiserHendelseStatus({ container, antall: 5, completed: 2 });
+        const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+        await userEvent.click(button);
+        verifiserHendelseStatus({ container, antall: 5, completed: 2 });
 
-            const items = screen.getAllByRole('listitem');
-            expect(within(items[0]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
-            expect(
-                within(items[1]!).getByText(/nav har sendt deg brev fordi vi mangler inntektsmelding/i),
-            ).toBeInTheDocument();
-            expect(within(items[2]!).getByText(/arbeidsgiver skal sende inntektsmelding til nav/i)).toBeInTheDocument();
-            expect(within(items[3]!).getByText(/Du vil få et svar på søknaden din/i)).toBeInTheDocument();
-            expect(within(items[4]!).getByText(/termindato/i)).toBeInTheDocument();
-        }),
-    );
+        const items = screen.getAllByRole('listitem');
+        expect(within(items[0]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
+        expect(
+            within(items[1]!).getByText(/nav har sendt deg brev fordi vi mangler inntektsmelding/i),
+        ).toBeInTheDocument();
+        expect(within(items[2]!).getByText(/arbeidsgiver skal sende inntektsmelding til nav/i)).toBeInTheDocument();
+        expect(within(items[3]!).getByText(/Du vil få et svar på søknaden din/i)).toBeInTheDocument();
+        expect(within(items[4]!).getByText(/termindato/i)).toBeInTheDocument();
+    });
 
-    it(
-        'FP - For tidlig søknad',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FPForTidligSøknad.parameters.msw);
-            const { container } = render(<FPForTidligSøknad />);
+    it('FP - For tidlig søknad', async () => {
+        await FPForTidligSøknad.run();
+        const container = document.body;
 
-            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
-            await userEvent.click(button);
-            verifiserHendelseStatus({ container, antall: 4, completed: 1 });
+        const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+        await userEvent.click(button);
+        verifiserHendelseStatus({ container, antall: 4, completed: 1 });
 
-            const items = screen.getAllByRole('listitem');
-            expect(within(items[0]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
-            expect(
-                within(items[1]!).getByText(/vi kan tidligst behandle søknaden din 05.01.2026/i),
-            ).toBeInTheDocument();
-            expect(within(items[2]!).getByText(/Du vil få et svar på søknaden din/i)).toBeInTheDocument();
-            expect(within(items[3]!).getByText(/termindato/i)).toBeInTheDocument();
-        }),
-    );
+        const items = screen.getAllByRole('listitem');
+        expect(within(items[0]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
+        expect(within(items[1]!).getByText(/vi kan tidligst behandle søknaden din 05.01.2026/i)).toBeInTheDocument();
+        expect(within(items[2]!).getByText(/Du vil få et svar på søknaden din/i)).toBeInTheDocument();
+        expect(within(items[3]!).getByText(/termindato/i)).toBeInTheDocument();
+    });
 
-    it(
-        'FP - Mangler dokumentasjon',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FPManglerDokumentasjon.parameters.msw);
-            const { container } = render(<FPManglerDokumentasjon />);
+    it('FP - Mangler dokumentasjon', async () => {
+        await FPManglerDokumentasjon.run();
+        const container = document.body;
 
-            const visHeleProsessenButton = await screen.findByRole('button', { name: 'Vis hele prosessen' });
-            await userEvent.click(visHeleProsessenButton);
-            verifiserHendelseStatus({ container, antall: 4, completed: 1 });
+        const visHeleProsessenButton = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+        await userEvent.click(visHeleProsessenButton);
+        verifiserHendelseStatus({ container, antall: 4, completed: 1 });
 
-            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
-            expect(within(timelineEvents[0]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
-            expect(within(timelineEvents[1]!).getByText(/du må sende inn dokumentasjon/i)).toBeInTheDocument();
-            expect(within(timelineEvents[2]!).getByText(/Du vil få et svar på søknaden din/i)).toBeInTheDocument();
-            expect(within(timelineEvents[3]!).getByText(/termindato/i)).toBeInTheDocument();
+        const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+        expect(within(timelineEvents[0]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
+        expect(within(timelineEvents[1]!).getByText(/du må sende inn dokumentasjon/i)).toBeInTheDocument();
+        expect(within(timelineEvents[2]!).getByText(/Du vil få et svar på søknaden din/i)).toBeInTheDocument();
+        expect(within(timelineEvents[3]!).getByText(/termindato/i)).toBeInTheDocument();
 
-            // Verify manglende vedlegg list items
-            const terminbekreftelse = screen.getByText(/Terminbekreftelse/i);
-            expect(terminbekreftelse).toBeInTheDocument();
-            expect(terminbekreftelse.closest('.aksel-list__item')).toBeInTheDocument();
+        // Verify manglende vedlegg list items
+        const terminbekreftelse = screen.getByText(/Terminbekreftelse/i);
+        expect(terminbekreftelse).toBeInTheDocument();
+        expect(terminbekreftelse.closest('.aksel-list__item')).toBeInTheDocument();
 
-            const dokumentasjonStudier = screen.getByText(/Dokumentasjon på at mor studerer på heltid/i);
-            expect(dokumentasjonStudier).toBeInTheDocument();
-            expect(dokumentasjonStudier.closest('.aksel-list__item')).toBeInTheDocument();
+        const dokumentasjonStudier = screen.getByText(/Dokumentasjon på at mor studerer på heltid/i);
+        expect(dokumentasjonStudier).toBeInTheDocument();
+        expect(dokumentasjonStudier.closest('.aksel-list__item')).toBeInTheDocument();
 
-            // Verify button with link
-            const button = screen.getByRole('button', { name: /Last opp dokumentasjon/i });
-            expect(button).toBeInTheDocument();
-            expect(button).toHaveAttribute('href', expect.stringContaining('/ettersend'));
-        }),
-    );
+        // Verify button with link
+        const button = screen.getByRole('button', { name: /Last opp dokumentasjon/i });
+        expect(button).toBeInTheDocument();
+        expect(button).toHaveAttribute('href', expect.stringContaining('/ettersend'));
+    });
 
-    it(
-        'FP - Mangler dokumentasjon - visHeleTidslinjen=false',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FPManglerDokumentasjon.parameters.msw);
-            const { container } = render(<FPManglerDokumentasjon />);
+    it('FP - Mangler dokumentasjon - visHeleTidslinjen=false', async () => {
+        await FPManglerDokumentasjon.run();
+        const container = document.body;
 
-            expect(await screen.findByRole('button', { name: 'Vis hele prosessen' })).toBeInTheDocument();
-            verifiserHendelseStatus({ container, antall: 3, completed: 1 });
+        expect(await screen.findByRole('button', { name: 'Vis hele prosessen' })).toBeInTheDocument();
+        verifiserHendelseStatus({ container, antall: 3, completed: 1 });
 
-            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
-            expect(within(timelineEvents[0]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
-            expect(within(timelineEvents[1]!).getByText(/du må sende inn dokumentasjon/i)).toBeInTheDocument();
-            expect(within(timelineEvents[2]!).getByText(/Du vil få et svar på søknaden din/i)).toBeInTheDocument();
-        }),
-    );
+        const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+        expect(within(timelineEvents[0]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
+        expect(within(timelineEvents[1]!).getByText(/du må sende inn dokumentasjon/i)).toBeInTheDocument();
+        expect(within(timelineEvents[2]!).getByText(/Du vil få et svar på søknaden din/i)).toBeInTheDocument();
+    });
 
-    it(
-        'FP - Ny søknad',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FPNySøknad.parameters.msw);
-            const { container } = render(<FPNySøknad />);
+    it('FP - Ny søknad', async () => {
+        await FPNySøknad.run();
+        const container = document.body;
 
-            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
-            await userEvent.click(button);
+        const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+        await userEvent.click(button);
 
-            verifiserHendelseStatus({ container, antall: 5, completed: 2 });
+        verifiserHendelseStatus({ container, antall: 5, completed: 2 });
 
-            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
-            expect(within(timelineEvents[0]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
-            expect(within(timelineEvents[1]!).getByText(/du sendte en ny søknad/i)).toBeInTheDocument();
-            expect(within(timelineEvents[2]!).getByText(/du må sende inn dokumentasjon/i)).toBeInTheDocument();
-            expect(within(timelineEvents[3]!).getByText(/Du vil få et svar på søknaden din/i)).toBeInTheDocument();
-            expect(within(timelineEvents[4]!).getByText(/termindato/i)).toBeInTheDocument();
-        }),
-    );
+        const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+        expect(within(timelineEvents[0]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
+        expect(within(timelineEvents[1]!).getByText(/du sendte en ny søknad/i)).toBeInTheDocument();
+        expect(within(timelineEvents[2]!).getByText(/du må sende inn dokumentasjon/i)).toBeInTheDocument();
+        expect(within(timelineEvents[3]!).getByText(/Du vil få et svar på søknaden din/i)).toBeInTheDocument();
+        expect(within(timelineEvents[4]!).getByText(/termindato/i)).toBeInTheDocument();
+    });
 
-    it(
-        'SVP - Innvilget',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(SVPInnvilget.parameters.msw);
-            const { container } = render(<SVPInnvilget />);
+    it('SVP - Innvilget', async () => {
+        await SVPInnvilget.run();
+        const container = document.body;
 
-            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
-            await userEvent.click(button);
-            verifiserHendelseStatus({ container, antall: 5, completed: 4 });
+        const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+        await userEvent.click(button);
+        verifiserHendelseStatus({ container, antall: 5, completed: 4 });
 
-            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
-            expect(within(timelineEvents[0]!).getByText(/du søkte om svangerskapspenger/i)).toBeInTheDocument();
-            expect(within(timelineEvents[1]!).getByText(/nav mottok inntektsmelding/i)).toBeInTheDocument();
-            expect(within(timelineEvents[2]!).getByText(/nav mottok inntektsmelding/i)).toBeInTheDocument();
-            expect(within(timelineEvents[3]!).getByText(/søknaden din ble innvilget/i)).toBeInTheDocument();
-            expect(within(timelineEvents[4]!).getByText(/termindato/i)).toBeInTheDocument();
-        }),
-    );
+        const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+        expect(within(timelineEvents[0]!).getByText(/du søkte om svangerskapspenger/i)).toBeInTheDocument();
+        expect(within(timelineEvents[1]!).getByText(/nav mottok inntektsmelding/i)).toBeInTheDocument();
+        expect(within(timelineEvents[2]!).getByText(/nav mottok inntektsmelding/i)).toBeInTheDocument();
+        expect(within(timelineEvents[3]!).getByText(/søknaden din ble innvilget/i)).toBeInTheDocument();
+        expect(within(timelineEvents[4]!).getByText(/termindato/i)).toBeInTheDocument();
+    });
 
-    it(
-        'SVP - Under behandling',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(SVPUnderBehandling.parameters.msw);
-            const { container } = render(<SVPUnderBehandling />);
+    it('SVP - Under behandling', async () => {
+        await SVPUnderBehandling.run();
+        const container = document.body;
 
-            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
-            await userEvent.click(button);
-            verifiserHendelseStatus({ container, antall: 3, completed: 1 });
+        const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+        await userEvent.click(button);
+        verifiserHendelseStatus({ container, antall: 3, completed: 1 });
 
-            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
-            expect(within(timelineEvents[0]!).getByText(/du søkte om svangerskapspenger/i)).toBeInTheDocument();
-            expect(within(timelineEvents[1]!).getByText(/du vil få et svar på søknaden din/i)).toBeInTheDocument();
-            expect(within(timelineEvents[2]!).getByText(/termindato/i)).toBeInTheDocument();
+        const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+        expect(within(timelineEvents[0]!).getByText(/du søkte om svangerskapspenger/i)).toBeInTheDocument();
+        expect(within(timelineEvents[1]!).getByText(/du vil få et svar på søknaden din/i)).toBeInTheDocument();
+        expect(within(timelineEvents[2]!).getByText(/termindato/i)).toBeInTheDocument();
 
-            screen.getByText('Du sendte 4 dokumenter').click();
-            expect(screen.getByText('Søknad om svangerskapspenger')).toBeInTheDocument();
-            expect(screen.getAllByText(/skjema for tilrettelegging og omplassering ved graviditet/i)).toHaveLength(3);
-        }),
-    );
+        screen.getByText('Du sendte 4 dokumenter').click();
+        expect(screen.getByText('Søknad om svangerskapspenger')).toBeInTheDocument();
+        expect(screen.getAllByText(/skjema for tilrettelegging og omplassering ved graviditet/i)).toHaveLength(3);
+    });
 
-    it(
-        'ES - adopsjon innvilget',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(ESAdopsjonInnvilget.parameters.msw);
-            const { container } = render(<ESAdopsjonInnvilget />);
+    it('ES - adopsjon innvilget', async () => {
+        await ESAdopsjonInnvilget.run();
+        const container = document.body;
 
-            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
-            await userEvent.click(button);
-            verifiserHendelseStatus({ container, antall: 3, completed: 2 });
+        const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+        await userEvent.click(button);
+        verifiserHendelseStatus({ container, antall: 3, completed: 2 });
 
-            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
-            expect(within(timelineEvents[0]!).getByText(/du søkte om engangsstønad/i)).toBeInTheDocument();
-            expect(within(timelineEvents[1]!).getByText(/søknaden din ble innvilget/i)).toBeInTheDocument();
-            expect(within(timelineEvents[2]!).getByText(/barnet blir adoptert/i)).toBeInTheDocument();
-        }),
-    );
+        const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+        expect(within(timelineEvents[0]!).getByText(/du søkte om engangsstønad/i)).toBeInTheDocument();
+        expect(within(timelineEvents[1]!).getByText(/søknaden din ble innvilget/i)).toBeInTheDocument();
+        expect(within(timelineEvents[2]!).getByText(/barnet blir adoptert/i)).toBeInTheDocument();
+    });
 
-    it(
-        'ES - adopsjon innvilget - senere dato',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(ESAdopsjonInnvilget.parameters.msw);
-            const { container } = render(<ESAdopsjonInnvilget mockDate={new Date('2025-12-31').getTime()} />);
+    it('ES - adopsjon innvilget - senere dato', async () => {
+        await ESAdopsjonInnvilget.run({
+            args: { ...ESAdopsjonInnvilget.args, mockDate: new Date('2025-12-31').getTime() },
+        });
+        const container = document.body;
 
-            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
-            await userEvent.click(button);
-            verifiserHendelseStatus({ container, antall: 3, completed: 3 });
+        const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+        await userEvent.click(button);
+        verifiserHendelseStatus({ container, antall: 3, completed: 3 });
 
-            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
-            expect(within(timelineEvents[0]!).getByText(/du søkte om engangsstønad/i)).toBeInTheDocument();
-            expect(within(timelineEvents[1]!).getByText(/søknaden din ble innvilget/i)).toBeInTheDocument();
-            expect(within(timelineEvents[2]!).getByText(/barnet ble adoptert/i)).toBeInTheDocument();
-        }),
-    );
+        const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+        expect(within(timelineEvents[0]!).getByText(/du søkte om engangsstønad/i)).toBeInTheDocument();
+        expect(within(timelineEvents[1]!).getByText(/søknaden din ble innvilget/i)).toBeInTheDocument();
+        expect(within(timelineEvents[2]!).getByText(/barnet ble adoptert/i)).toBeInTheDocument();
+    });
 
-    it(
-        'ES - adopsjon avslag',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(ESAdopsjonAvslag.parameters.msw);
-            const { container } = render(<ESAdopsjonAvslag />);
+    it('ES - adopsjon avslag', async () => {
+        await ESAdopsjonAvslag.run();
+        const container = document.body;
 
-            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
-            await userEvent.click(button);
-            verifiserHendelseStatus({ container, antall: 3, completed: 2 });
+        const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+        await userEvent.click(button);
+        verifiserHendelseStatus({ container, antall: 3, completed: 2 });
 
-            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
-            expect(within(timelineEvents[0]!).getByText(/du søkte om engangsstønad/i)).toBeInTheDocument();
-            expect(within(timelineEvents[1]!).getByText(/søknaden din ble avslått/i)).toBeInTheDocument();
-            expect(within(timelineEvents[2]!).getByText(/barnet blir adoptert/i)).toBeInTheDocument();
-        }),
-    );
+        const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+        expect(within(timelineEvents[0]!).getByText(/du søkte om engangsstønad/i)).toBeInTheDocument();
+        expect(within(timelineEvents[1]!).getByText(/søknaden din ble avslått/i)).toBeInTheDocument();
+        expect(within(timelineEvents[2]!).getByText(/barnet blir adoptert/i)).toBeInTheDocument();
+    });
 
-    it(
-        'ES - under behandling',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(ESUnderBehandling.parameters.msw);
-            const { container } = render(<ESUnderBehandling />);
+    it('ES - under behandling', async () => {
+        await ESUnderBehandling.run();
+        const container = document.body;
 
-            const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
-            await userEvent.click(button);
-            verifiserHendelseStatus({ container, antall: 3, completed: 2 });
+        const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
+        await userEvent.click(button);
+        verifiserHendelseStatus({ container, antall: 3, completed: 2 });
 
-            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
-            expect(within(timelineEvents[0]!).getByText(/barnet ble født/i)).toBeInTheDocument();
-            expect(within(timelineEvents[1]!).getByText(/du søkte om engangsstønad/i)).toBeInTheDocument();
-            expect(within(timelineEvents[2]!).getByText(/du vil få et svar på søknaden din/i)).toBeInTheDocument();
-        }),
-    );
+        const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+        expect(within(timelineEvents[0]!).getByText(/barnet ble født/i)).toBeInTheDocument();
+        expect(within(timelineEvents[1]!).getByText(/du søkte om engangsstønad/i)).toBeInTheDocument();
+        expect(within(timelineEvents[2]!).getByText(/du vil få et svar på søknaden din/i)).toBeInTheDocument();
+    });
 
-    it(
-        'ES - under behandling - visHeleTidslinjen=false',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(ESUnderBehandling.parameters.msw);
-            const { container } = render(<ESUnderBehandling />);
+    it('ES - under behandling - visHeleTidslinjen=false', async () => {
+        await ESUnderBehandling.run();
+        const container = document.body;
 
-            expect(await screen.findByRole('button', { name: 'Vis hele prosessen' })).toBeInTheDocument();
-            verifiserHendelseStatus({ container, antall: 3, completed: 2 });
+        expect(await screen.findByRole('button', { name: 'Vis hele prosessen' })).toBeInTheDocument();
+        verifiserHendelseStatus({ container, antall: 3, completed: 2 });
 
-            const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
-            expect(within(timelineEvents[0]!).getByText(/barnet ble født/i)).toBeInTheDocument();
-            expect(within(timelineEvents[1]!).getByText(/du søkte om engangsstønad/i)).toBeInTheDocument();
-            expect(within(timelineEvents[2]!).getByText(/du vil få et svar på søknaden din/i)).toBeInTheDocument();
-        }),
-    );
+        const timelineEvents = container.querySelectorAll<HTMLElement>('.aksel-process__event');
+        expect(within(timelineEvents[0]!).getByText(/barnet ble født/i)).toBeInTheDocument();
+        expect(within(timelineEvents[1]!).getByText(/du søkte om engangsstønad/i)).toBeInTheDocument();
+        expect(within(timelineEvents[2]!).getByText(/du vil få et svar på søknaden din/i)).toBeInTheDocument();
+    });
 });
 
 const verifiserHendelseStatus = ({
