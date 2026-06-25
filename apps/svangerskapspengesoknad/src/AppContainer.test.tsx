@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 
@@ -58,6 +58,10 @@ describe('<AppContainer>', () => {
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
         const fileInput = screen.getByLabelText('Last opp skjema for risiko og tilrettelegging i svangerskapet');
         await userEvent.upload(fileInput, file);
+
+        // Vent til opplastinga er ferdig (pending = false) før vi går vidare.
+        await waitFor(() => expect(screen.queryByText('Laster opp...')).not.toBeInTheDocument());
+
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(await screen.findByText('Steg 6 av 8')).toBeInTheDocument();
