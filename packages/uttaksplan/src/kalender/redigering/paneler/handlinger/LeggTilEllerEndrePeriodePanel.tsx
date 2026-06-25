@@ -1,11 +1,10 @@
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 
-import { Box, HStack, Heading, Show, VStack } from '@navikt/ds-react';
+import { Box, Chips, HStack, Show, VStack } from '@navikt/ds-react';
 
 import { getVarighetString } from '../../../../utils/dateUtils';
-import { BlåRamme } from '../../../redigering/utils/BlåRamme';
 import { useKalenderRedigeringContext } from '../../context/KalenderRedigeringContext';
 import { finnAntallDager } from '../../utils/kalenderPeriodeUtils';
 import { useMediaRemoveScrollingOnMobile, useMediaResetMinimering } from '../../utils/useMediaActions';
@@ -62,7 +61,7 @@ const HeaderDesktop = ({
 }) => {
     const intl = useIntl();
 
-    const { sammenslåtteValgtePerioder } = useKalenderRedigeringContext();
+    const { sammenslåtteValgtePerioder, setValgtePerioder } = useKalenderRedigeringContext();
 
     const [visPeriodeDetaljer, setVisPeriodeDetaljer] = useState(false);
 
@@ -70,16 +69,16 @@ const HeaderDesktop = ({
         <Box background="accent-soft" padding="space-16">
             <VStack gap="space-16">
                 <HStack justify="space-between" align="center" wrap={false}>
-                    <BlåRamme>
-                        <Heading size="xsmall">
-                            <FormattedMessage
-                                id="RedigeringPanel.ValgteDager"
-                                values={{
+                    <Chips size="small">
+                        <Chips.Removable onDelete={() => setValgtePerioder([])}>
+                            {intl.formatMessage(
+                                { id: 'RedigeringPanel.ValgteDager' },
+                                {
                                     varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
-                                }}
-                            />
-                        </Heading>
-                    </BlåRamme>
+                                },
+                            )}
+                        </Chips.Removable>
+                    </Chips>
                     {visPeriodeDetaljer ? (
                         <ChevronUpIcon
                             title={intl.formatMessage({ id: 'RedigeringPanel.SkjulDetaljer' })}
@@ -114,7 +113,7 @@ const HeaderMobil = ({
 }) => {
     const intl = useIntl();
 
-    const { sammenslåtteValgtePerioder } = useKalenderRedigeringContext();
+    const { sammenslåtteValgtePerioder, setValgtePerioder } = useKalenderRedigeringContext();
 
     return (
         <VStack>
@@ -138,24 +137,19 @@ const HeaderMobil = ({
                         />
                     )}
 
-                    <HStack>
-                        <Box
-                            background="brand-blue-strong"
-                            padding="space-2"
-                            borderRadius="8"
-                            width="fit-content"
-                            className={'text-ax-bg-default px-2'}
+                    <Chips size="small">
+                        <Chips.Removable
+                            onDelete={() => setValgtePerioder([])}
+                            onClick={(e) => e.stopPropagation()}
                         >
-                            <Heading size="xsmall">
-                                <FormattedMessage
-                                    id="RedigeringPanel.ValgteDager"
-                                    values={{
-                                        varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
-                                    }}
-                                />
-                            </Heading>
-                        </Box>
-                    </HStack>
+                            {intl.formatMessage(
+                                { id: 'RedigeringPanel.ValgteDager' },
+                                {
+                                    varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
+                                },
+                            )}
+                        </Chips.Removable>
+                    </Chips>
                 </VStack>
             </Box>
             <Box className="bg-ax-bg-accent-soft">

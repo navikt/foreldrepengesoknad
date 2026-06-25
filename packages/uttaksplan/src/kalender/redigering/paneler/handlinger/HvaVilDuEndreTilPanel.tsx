@@ -278,15 +278,22 @@ const HeaderForMobil = ({
                             <FormattedMessage id="RedigeringPanel.EndreTil" />
                         </Heading>
                         {erMinimert && (
-                            <Box
-                                background="brand-blue-strong"
-                                padding="space-2"
-                                borderRadius="8"
-                                width="fit-content"
-                                className={'text-ax-bg-default px-2'}
-                            >
-                                {finnAntallDager(sammenslåtteValgtePerioder)}
-                            </Box>
+                            <Chips size="small">
+                                <Chips.Removable
+                                    onDelete={() => setValgtePerioder([])}
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    {intl.formatMessage(
+                                        { id: 'RedigeringPanel.ValgteDager' },
+                                        {
+                                            varighet: getVarighetString(
+                                                finnAntallDager(sammenslåtteValgtePerioder),
+                                                intl,
+                                            ),
+                                        },
+                                    )}
+                                </Chips.Removable>
+                            </Chips>
                         )}
                     </HStack>
                 </HStack>
