@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 
 import { Skjemanummer } from '@navikt/fp-constants';
 import { EttersendelseDto } from '@navikt/fp-types';
+
 import * as stories from './MinidialogSkjema.stories';
 
 const { SkalIkkeFeileOpplasting } = composeStories(stories);
@@ -62,9 +63,7 @@ describe('<MinidialogSkjema>', () => {
 
         await userEvent.click(screen.getByText('Send'));
 
-        expect(screen.getAllByText('Feltet "Svar på tilbakebetalingen " må inneholde minst 25 tegn.')).toHaveLength(
-            2,
-        );
+        expect(screen.getAllByText('Feltet "Svar på tilbakebetalingen " må inneholde minst 25 tegn.')).toHaveLength(2);
 
         expect(screen.getByText('Last opp dokumenter')).toBeInTheDocument();
 

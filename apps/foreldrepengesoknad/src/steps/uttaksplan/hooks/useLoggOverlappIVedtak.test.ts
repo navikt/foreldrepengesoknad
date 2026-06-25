@@ -1,6 +1,16 @@
+import { renderHook } from '@testing-library/react';
+
 import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
-import { finnUgyldigeOverlappIUttaksplan } from './useLoggOverlappIVedtak';
+import { finnUgyldigeOverlappIUttaksplan, useLoggOverlappIVedtak } from './useLoggOverlappIVedtak';
+
+const captureMessage = vi.hoisted(() => vi.fn());
+
+vi.mock('@navikt/fp-observability', () => ({
+    captureMessage: (...args: unknown[]) => captureMessage(...args),
+    withScope: (callback: (scope: unknown) => void) =>
+        callback({ setLevel: vi.fn(), setTag: vi.fn(), setExtra: vi.fn() }),
+}));
 
 const innvilget: UttakPeriode_fpoversikt['resultat'] = {
     innvilget: true,
@@ -116,5 +126,59 @@ describe('finnUgyldigeOverlappIUttaksplan', () => {
         const { ugyldigeOverlapp } = finnUgyldigeOverlappIUttaksplan([farAvslått, morMødrekvote, morFellesperiode]);
 
         expect(ugyldigeOverlapp).toHaveLength(0);
+    });
+});
+
+// vi.mock av barrel-pakka @navikt/fp-observability gjeld ikkje i Vitest browser-mode
+// (pre-bundla). Denne bolken dekker sideeffekten (logging via captureMessage) og køyrer
+// difor berre i jsdom; sjølve overlapp-logikken er dekka av testane over som køyrer i begge modus.
+describe.skipIf(import.meta.env['TEST_MODE'] === 'browser-mode')('useLoggOverlappIVedtak (logging)', () => {
+    beforeEach(() => {
+        captureMessage.mockClear();
+    });
+
+    it('loggar ikkje når ein avslått periode utan trekkdagar overlappar annen part sin reelle periode', () => {
+        const morAvslått = periode({
+            fom: '2026-07-27',
+            tom: '2026-07-31',
+            forelder: 'MOR',
+            kontoType: 'FELLESPERIODE',
+            resultat: avslåttUtenTrekkdager,
+        });
+        const farReell = periode({
+            fom: '2026-07-06',
+            tom: '2026-07-31',
+            forelder: 'FAR_MEDMOR',
+            kontoType: 'FEDREKVOTE',
+            resultat: innvilget,
+        });
+
+        renderHook(() => useLoggOverlappIVedtak([morAvslått, farReell], [morAvslått], [farReell]));
+
+        expect(captureMessage).not.toHaveBeenCalled();
+    });
+
+    it('loggar når to reelle periodar overlappar utan samtidig uttak', () => {
+        const mor = periode({
+            fom: '2026-07-27',
+            tom: '2026-07-31',
+            forelder: 'MOR',
+            kontoType: 'FELLESPERIODE',
+            resultat: innvilget,
+        });
+        const far = periode({
+            fom: '2026-07-06',
+            tom: '2026-07-31',
+            forelder: 'FAR_MEDMOR',
+            kontoType: 'FEDREKVOTE',
+            resultat: innvilget,
+        });
+
+        renderHook(() => useLoggOverlappIVedtak([mor, far], [mor], [far]));
+
+        expect(captureMessage).toHaveBeenCalledWith(
+            'Uttaksplan har ugyldig overlappande periodar etter transformasjon',
+            'warning',
+        );
     });
 });

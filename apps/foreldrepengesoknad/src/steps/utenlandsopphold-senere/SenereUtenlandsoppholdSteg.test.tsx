@@ -13,110 +13,101 @@ import * as stories from './SenereUtenlandsoppholdSteg.stories';
 const { Default } = composeStories(stories);
 
 describe('<SenereUtenlandsoppholdSteg>', () => {
-    it(
-        'skal fylle ut fremtidig utenlandsopphold og gå videre til inntektsinformasjon',
-        async () => {
-            const gåTilNesteSide = vi.fn();
-            const mellomlagreSøknadOgNaviger = vi.fn();
-            await Default.run({
-                args: {
-                    ...Default.args,
-                    gåTilNesteSide,
-                    mellomlagreSøknadOgNaviger,
+    it('skal fylle ut fremtidig utenlandsopphold og gå videre til inntektsinformasjon', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+        await Default.run({
+            args: {
+                ...Default.args,
+                gåTilNesteSide,
+                mellomlagreSøknadOgNaviger,
+            },
+        });
+
+        expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
+
+        await userEvent.selectOptions(screen.getByLabelText('Hvilket land skal du bo i?'), 'CA');
+
+        const fraOgMed = screen.getByLabelText('Fra og med');
+        await userEvent.type(fraOgMed, dayjs().add(1, 'day').format(DDMMYYYY_DATE_FORMAT));
+        fireEvent.blur(fraOgMed);
+
+        const tilOgMed = screen.getByLabelText('Til og med');
+        await userEvent.type(tilOgMed, dayjs().add(20, 'day').format(DDMMYYYY_DATE_FORMAT));
+        fireEvent.blur(tilOgMed);
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: [
+                {
+                    landkode: 'CA',
+                    fom: dayjs().add(1, 'day').format(ISO_DATE_FORMAT),
+                    tom: dayjs().add(20, 'day').format(ISO_DATE_FORMAT),
                 },
-            });
+            ] satisfies UtenlandsoppholdPeriode[],
+            key: ContextDataType.UTENLANDSOPPHOLD_SENERE,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: SøknadRoutes.ARBEID_OG_INNTEKT,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
+    });
 
-            expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
+    it('skal gå til utenlandsforhold-oversikt når en ikke har tidligere opphold i utlandet og går til forrige steg', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+        await Default.run({
+            args: {
+                ...Default.args,
+                gåTilNesteSide,
+                mellomlagreSøknadOgNaviger,
+            },
+        });
 
-            await userEvent.selectOptions(screen.getByLabelText('Hvilket land skal du bo i?'), 'CA');
+        expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
+        await userEvent.click(screen.getByText('Forrige steg'));
 
-            const fraOgMed = screen.getByLabelText('Fra og med');
-            await userEvent.type(fraOgMed, dayjs().add(1, 'day').format(DDMMYYYY_DATE_FORMAT));
-            fireEvent.blur(fraOgMed);
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
-            const tilOgMed = screen.getByLabelText('Til og med');
-            await userEvent.type(tilOgMed, dayjs().add(20, 'day').format(DDMMYYYY_DATE_FORMAT));
-            fireEvent.blur(tilOgMed);
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: SøknadRoutes.UTENLANDSOPPHOLD,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
+    });
 
-            await userEvent.click(screen.getByText('Neste steg'));
-
-            expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
-
-            expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
-            expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-                data: [
-                    {
-                        landkode: 'CA',
-                        fom: dayjs().add(1, 'day').format(ISO_DATE_FORMAT),
-                        tom: dayjs().add(20, 'day').format(ISO_DATE_FORMAT),
-                    },
-                ] satisfies UtenlandsoppholdPeriode[],
-                key: ContextDataType.UTENLANDSOPPHOLD_SENERE,
-                type: 'update',
-            });
-            expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-                data: SøknadRoutes.ARBEID_OG_INNTEKT,
-                key: ContextDataType.APP_ROUTE,
-                type: 'update',
-            });
-        },
-    );
-
-    it(
-        'skal gå til utenlandsforhold-oversikt når en ikke har tidligere opphold i utlandet og går til forrige steg',
-        async () => {
-            const gåTilNesteSide = vi.fn();
-            const mellomlagreSøknadOgNaviger = vi.fn();
-            await Default.run({
-                args: {
-                    ...Default.args,
-                    gåTilNesteSide,
-                    mellomlagreSøknadOgNaviger,
+    it('skal gå til tidligere utenlandsforhold når en har tidligere opphold i utlandet og går til forrige steg', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+        await Default.run({
+            args: {
+                ...Default.args,
+                gåTilNesteSide,
+                mellomlagreSøknadOgNaviger,
+                utenlandsopphold: {
+                    skalBoUtenforNorgeNeste12Mnd: true,
+                    harBoddUtenforNorgeSiste12Mnd: true,
                 },
-            });
+            },
+        });
 
-            expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
-            await userEvent.click(screen.getByText('Forrige steg'));
+        expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
+        await userEvent.click(screen.getByText('Forrige steg'));
 
-            expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
-            expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
-            expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-                data: SøknadRoutes.UTENLANDSOPPHOLD,
-                key: ContextDataType.APP_ROUTE,
-                type: 'update',
-            });
-        },
-    );
-
-    it(
-        'skal gå til tidligere utenlandsforhold når en har tidligere opphold i utlandet og går til forrige steg',
-        async () => {
-            const gåTilNesteSide = vi.fn();
-            const mellomlagreSøknadOgNaviger = vi.fn();
-            await Default.run({
-                args: {
-                    ...Default.args,
-                    gåTilNesteSide,
-                    mellomlagreSøknadOgNaviger,
-                    utenlandsopphold: {
-                        skalBoUtenforNorgeNeste12Mnd: true,
-                        harBoddUtenforNorgeSiste12Mnd: true,
-                    },
-                },
-            });
-
-            expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
-            await userEvent.click(screen.getByText('Forrige steg'));
-
-            expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
-
-            expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
-            expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-                data: SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD,
-                key: ContextDataType.APP_ROUTE,
-                type: 'update',
-            });
-        },
-    );
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
+    });
 });

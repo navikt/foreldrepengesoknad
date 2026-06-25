@@ -140,9 +140,7 @@ describe('<Tidslinje>', () => {
 
         const items = screen.getAllByRole('listitem');
         expect(within(items[0]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
-        expect(
-            within(items[1]!).getByText(/vi kan tidligst behandle søknaden din 05.01.2026/i),
-        ).toBeInTheDocument();
+        expect(within(items[1]!).getByText(/vi kan tidligst behandle søknaden din 05.01.2026/i)).toBeInTheDocument();
         expect(within(items[2]!).getByText(/Du vil få et svar på søknaden din/i)).toBeInTheDocument();
         expect(within(items[3]!).getByText(/termindato/i)).toBeInTheDocument();
     });
@@ -255,7 +253,9 @@ describe('<Tidslinje>', () => {
     });
 
     it('ES - adopsjon innvilget - senere dato', async () => {
-        await ESAdopsjonInnvilget.run({ args: { ...ESAdopsjonInnvilget.args, mockDate: new Date('2025-12-31').getTime() } });
+        await ESAdopsjonInnvilget.run({
+            args: { ...ESAdopsjonInnvilget.args, mockDate: new Date('2025-12-31').getTime() },
+        });
         const container = document.body;
 
         const button = await screen.findByRole('button', { name: 'Vis hele prosessen' });
