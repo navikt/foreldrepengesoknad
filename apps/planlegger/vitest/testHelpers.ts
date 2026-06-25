@@ -10,7 +10,10 @@ import userEvent from '@testing-library/user-event';
  * Slider til venstre = søker 1 får mange uker
  * Slider til høyre = søker 2 får mange uker
  */
-export const endreFordelingMedSlider = async (utils: ReturnType<typeof render>, ønsketAntallDager: number) => {
+export const endreFordelingMedSlider = async (
+    utils: Pick<ReturnType<typeof render>, 'getByRole'>,
+    ønsketAntallDager: number,
+) => {
     const slider = utils.getByRole('slider');
     await userEvent.click(slider);
     const max = Number(slider.getAttribute('aria-valuemax') ?? 80);
