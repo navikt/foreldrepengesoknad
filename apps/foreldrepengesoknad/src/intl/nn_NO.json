@@ -316,6 +316,7 @@
     "valideringsfeil.omBarnet.antallFått.duMåOppgi": "Du må oppgi kor mange barn du har fått",
     "valideringsfeil.omBarnet.antallVenter.duMåOppgi": "Du må oppgi kor mange barn dykk ventar",
     "valideringsfeil.omBarnet.antallVenterDu.duMåOppgi": "Du må oppgi kor mange barn du ventar?",
+    "valideringsfeil.omBarnet.antallBarnSelect.duMåOppgi": "Du må oppgi kor mange barn",
     "valideringsfeil.omBarnet.termindato.duMåVæreIUke22": "Du kan tidlegast søkje når du er i 22. svangerskapsveke",
     "valideringsfeil.omBarnet.termindato.forTidlig": "Termindatoen kan ikkje vere tidlegare enn 3 veker frå i dag",
     "valideringsfeil.omBarnet.termindato.forLangtFremITid": "Termindatoen kan ikkje vere seinare enn 6 månader etter fødselsdatoen",

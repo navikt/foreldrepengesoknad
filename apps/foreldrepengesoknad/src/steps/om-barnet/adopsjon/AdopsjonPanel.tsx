@@ -97,7 +97,16 @@ export const AdopsjonPanel = ({ søknadGjelderEtNyttBarn }: Props) => {
                         </Radio>
                     </RhfRadioGroup>
                     {antallBarn === 3 && (
-                        <RhfSelect name="antallBarnSelect" control={formMethods.control} label="Antall barn">
+                        <RhfSelect
+                            name="antallBarnSelect"
+                            control={formMethods.control}
+                            label="Antall barn"
+                            validate={[
+                                isRequired(
+                                    intl.formatMessage({ id: 'valideringsfeil.omBarnet.antallBarnSelect.duMåOppgi' }),
+                                ),
+                            ]}
+                        >
                             <option value="3">3</option>
                             <option value="4">4</option>
                             <option value="5">5</option>
