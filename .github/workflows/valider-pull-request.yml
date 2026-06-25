@@ -73,7 +73,10 @@ jobs:
           PACKAGES_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: Kjør browser tests
-        run: pnpm exec turbo run test:browser --filter=./apps/* --only --continue
+        # --concurrency=1: kjør én app av gangen. Headless chromium i CI (2 vCPU) blir
+        # CPU-svelta når alle appane sine browser-suiter køyrer samtidig, noko som gjev
+        # timeouts (også på screenshots) og userEvent-flytar som ikkje fullfører.
+        run: pnpm exec turbo run test:browser --filter=./apps/* --only --continue --concurrency=1
 
   knip-it:
     name: Kjør Knip
