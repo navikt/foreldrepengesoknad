@@ -125,6 +125,16 @@ describe('kanJustereFarsUttakRundtFødsel', () => {
         expect(kanJustereFarsUttakRundtFødsel([periode], termindato)).toBe(false);
     });
 
+    it('returnerer false når første periode er en utsettelse selv om kontoType er satt', () => {
+        const periode = lagFarPeriode({
+            fom: '2026-07-06',
+            tom: '2026-07-17',
+            kontoType: 'FORELDREPENGER',
+            utsettelseÅrsak: 'ARBEID',
+        });
+        expect(kanJustereFarsUttakRundtFødsel([periode], termindato)).toBe(false);
+    });
+
     it('returnerer false når det er flere enn én periode innenfor intervallet rundt fødsel', () => {
         const førstePeriode = lagFarPeriode({ fom: '2026-07-06', tom: '2026-07-10' });
         const andrePeriode = lagFarPeriode({ fom: '2026-08-03', tom: '2026-08-07', kontoType: 'FEDREKVOTE' });

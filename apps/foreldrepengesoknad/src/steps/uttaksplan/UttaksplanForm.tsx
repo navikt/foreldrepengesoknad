@@ -311,7 +311,8 @@ const erJusterbartUttakRundtTermin = (
  * Speilar backend-regelen `FarsJustering.skalJustere` i fpsak. Far/medmor sitt uttak rundt fødsel kan
  * berre justerast automatisk når:
  *  1. den første perioden i fars plan startar på termin,
- *  2. den er ein justerbar type (FORELDREPENGER, eller FEDREKVOTE med samtidig uttak),
+ *  2. den er ei ekte uttaksperiode (ikkje utsettelse/opphald/overføring) av justerbar type
+ *     (FORELDREPENGER, eller FEDREKVOTE med samtidig uttak),
  *  3. den ligg HEILT innanfor intervallet far rundt fødsel: [termin - 2 veker, termin + 6 veker - 1 dag], og
  *  4. det er nøyaktig éin periode inne i det intervallet.
  *
@@ -329,7 +330,7 @@ export const kanJustereFarsUttakRundtFødsel = (
         return false;
     }
 
-    const sortertePerioder = [...farMedmorPerioder].sort((p1, p2) => (dayjs(p1.fom).isBefore(p2.fom, 'day') ? -1 : 1));
+    const sortertePerioder = [...farMedmorPerioder].sort((p1, p2) => dayjs(p1.fom).diff(dayjs(p2.fom)));
 
     const termindatoUttaksdag = Uttaksdagen.denneEllerNeste(termindato).getDato();
     const intervallFom = dayjs(termindatoUttaksdag).subtract(2, 'week');
@@ -346,6 +347,7 @@ export const kanJustereFarsUttakRundtFødsel = (
     );
 
     const førstePeriodeErJusterbar =
+        Uttaksperioden.erUttaksperiode(førstePeriode) &&
         erJusterbartUttakRundtTermin(førstePeriode) &&
         liggerHeiltInnanforIntervallet(førstePeriode) &&
         førstePeriodeStarterPåTermin;
