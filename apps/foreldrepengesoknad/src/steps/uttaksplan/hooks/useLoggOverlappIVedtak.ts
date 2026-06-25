@@ -25,10 +25,7 @@ export const useLoggOverlappIVedtak = (
         }
         lastCheckedFingerprint.current = fingerprint;
 
-        const perioderUttaksplan = uttaksplan
-            .filter((p): p is UttakPeriode_fpoversikt => 'forelder' in p)
-            .filter(okkupererTid);
-        const ugyldigeOverlapp = finnUgyldigeOverlapp(perioderUttaksplan);
+        const { perioderUttaksplan, ugyldigeOverlapp } = finnUgyldigeOverlappIUttaksplan(uttaksplan);
         if (ugyldigeOverlapp.length > 0) {
             withScope((scope) => {
                 scope.setLevel('warning');
@@ -48,6 +45,18 @@ export const useLoggOverlappIVedtak = (
             });
         }
     }, [uttaksplan, perioderFraBackend, perioderAnnenPartFraBackend]);
+};
+
+export const finnUgyldigeOverlappIUttaksplan = (
+    uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
+): {
+    perioderUttaksplan: UttakPeriode_fpoversikt[];
+    ugyldigeOverlapp: Array<[UttakPeriode_fpoversikt, UttakPeriode_fpoversikt]>;
+} => {
+    const perioderUttaksplan = (uttaksplan ?? [])
+        .filter((p): p is UttakPeriode_fpoversikt => 'forelder' in p)
+        .filter(okkupererTid);
+    return { perioderUttaksplan, ugyldigeOverlapp: finnUgyldigeOverlapp(perioderUttaksplan) };
 };
 
 const erOverlappande = (a: UttakPeriode_fpoversikt, b: UttakPeriode_fpoversikt): boolean =>
