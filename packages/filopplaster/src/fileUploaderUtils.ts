@@ -13,6 +13,8 @@ export const VALID_EXTENSIONS = ['.pdf', '.jpeg', '.jpg', '.png'];
 export const MAX_FIL_STØRRELSE_MB = 16;
 export const MAX_FIL_STØRRELSE_BYTES = MAX_FIL_STØRRELSE_MB * 1024 * 1024;
 
+type FileUploaderError = FileRejectionReason | AttachmentError;
+
 const isAccepted = (a: FileUploaderAttachment): boolean => !a.attachmentData.error && !a.fileObject.error;
 
 export const isAcceptedAttachment = isAccepted;
@@ -81,7 +83,7 @@ export const convertToInternalFormat = (attachments: Attachment[]): FileUploader
         };
     });
 
-export const getErrorMessageMap = (intl: IntlShape): Record<FileRejectionReason | AttachmentError, string> => {
+export const getErrorMessageMap = (intl: IntlShape): Record<FileUploaderError, string> => {
     const serverError = intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.SERVER_ERROR' });
     const timeout = intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.TIMEOUT' });
 
@@ -117,11 +119,11 @@ export const getErrorMessageMap = (intl: IntlShape): Record<FileRejectionReason 
 
 export const getAttachmentErrorMessage = (
     attachment: FileUploaderAttachment,
-    errorMessageMap: Record<FileRejectionReason | AttachmentError, string>,
+    errorMessageMap: Record<FileUploaderError, string>,
 ): string => {
     if (attachment.attachmentData.error) {
         return errorMessageMap[attachment.attachmentData.error];
     }
-    const reason = (attachment.fileObject as FileRejected).reasons[0] as FileRejectionReason;
+    const reason = (attachment.fileObject as FileRejected).reasons[0] as FileUploaderError;
     return errorMessageMap[reason];
 };

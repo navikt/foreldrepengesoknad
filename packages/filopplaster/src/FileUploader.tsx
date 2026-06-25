@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useMemo } from 'react';
+import { type ReactNode, useEffect, useMemo, useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, FileUpload, VStack } from '@navikt/ds-react';
@@ -50,6 +50,7 @@ export const FileUploader = ({
     timeout,
 }: Props) => {
     const intl = useIntl();
+    const updateAttachmentsRef = useRef(updateAttachments);
     const errorMessageMap = useMemo(() => getErrorMessageMap(intl), [intl]);
 
     const {
@@ -68,7 +69,11 @@ export const FileUploader = ({
     });
 
     useEffect(() => {
-        updateAttachments(successfulAttachments, hasPendingUploads);
+        updateAttachmentsRef.current = updateAttachments;
+    }, [updateAttachments]);
+
+    useEffect(() => {
+        updateAttachmentsRef.current(successfulAttachments, hasPendingUploads);
     }, [successfulAttachments, hasPendingUploads]);
 
     const acceptedGroups = useMemo<AttachmentGroup[]>(() => {
