@@ -1,11 +1,9 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import MockDate from 'mockdate';
-
-import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './PeriodeMedForeldrepengerSteg.stories';
 
@@ -28,16 +26,16 @@ const {
 describe('<PeriodeMedForeldrepengerSteg>', () => {
     it(
         'skal søke som far eller medmor og ha aleneomsorg',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-            setHandlers(FarEllerMedmorAleneomsorgFødsel.parameters.msw);
-            render(
-                <FarEllerMedmorAleneomsorgFødsel
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await FarEllerMedmorAleneomsorgFødsel.run({
+                args: {
+                    ...FarEllerMedmorAleneomsorgFødsel.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
 
             expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('Hvor lang periode med foreldrepenger vil du ha?')).toBeInTheDocument();
@@ -64,22 +62,21 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 key: ContextDataType.APP_ROUTE,
                 type: 'update',
             });
-        }),
+        },
     );
 
     it(
         'skal søke som far eller medmor der begge har rett',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-
-            setHandlers(FarEllerMedmorFødselBeggeHarRett.parameters.msw);
-            render(
-                <FarEllerMedmorFødselBeggeHarRett
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await FarEllerMedmorFødselBeggeHarRett.run({
+                args: {
+                    ...FarEllerMedmorFødselBeggeHarRett.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
 
             expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('Hvor lang periode med foreldrepenger vil dere ha?')).toBeInTheDocument();
@@ -106,22 +103,21 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 key: ContextDataType.APP_ROUTE,
                 type: 'update',
             });
-        }),
+        },
     );
 
     it(
         'skal søke adopsjon som mor med aleneomsorg',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-
-            setHandlers(MorSøkerAdopsjonMedAleneomsorg.parameters.msw);
-            render(
-                <MorSøkerAdopsjonMedAleneomsorg
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await MorSøkerAdopsjonMedAleneomsorg.run({
+                args: {
+                    ...MorSøkerAdopsjonMedAleneomsorg.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
 
             expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('Hvor lang periode med foreldrepenger vil du ha?')).toBeInTheDocument();
@@ -154,22 +150,21 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 key: ContextDataType.APP_ROUTE,
                 type: 'update',
             });
-        }),
+        },
     );
 
     it(
         'skal søke adopsjon som mor med delt uttak',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-
-            setHandlers(MorSøkerAdopsjonMedDeltUttak.parameters.msw);
-            render(
-                <MorSøkerAdopsjonMedDeltUttak
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await MorSøkerAdopsjonMedDeltUttak.run({
+                args: {
+                    ...MorSøkerAdopsjonMedDeltUttak.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
 
             expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('Hvor lang periode med foreldrepenger vil dere ha?')).toBeInTheDocument();
@@ -202,22 +197,21 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 key: ContextDataType.APP_ROUTE,
                 type: 'update',
             });
-        }),
+        },
     );
 
     it(
         'skal søke som mor delt uttak for prematur fødsel',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-
-            setHandlers(MorFødselDeltUttakPrematurFødsel.parameters.msw);
-            render(
-                <MorFødselDeltUttakPrematurFødsel
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await MorFødselDeltUttakPrematurFødsel.run({
+                args: {
+                    ...MorFødselDeltUttakPrematurFødsel.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
 
             expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('Hvor lang periode med foreldrepenger vil dere ha?')).toBeInTheDocument();
@@ -248,22 +242,21 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 key: ContextDataType.APP_ROUTE,
                 type: 'update',
             });
-        }),
+        },
     );
 
     it(
         'skal søke som mor ved fødsel av tvillinger',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-
-            setHandlers(MorFødselMedTvillingFlerbarnsuker.parameters.msw);
-            render(
-                <MorFødselMedTvillingFlerbarnsuker
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await MorFødselMedTvillingFlerbarnsuker.run({
+                args: {
+                    ...MorFødselMedTvillingFlerbarnsuker.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
 
             expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('Hvor lang periode med foreldrepenger vil dere ha?')).toBeInTheDocument();
@@ -294,22 +287,21 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 key: ContextDataType.APP_ROUTE,
                 type: 'update',
             });
-        }),
+        },
     );
 
     it(
         'skal søke som mor ved fødsel av trillinger',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-
-            setHandlers(MorFødselAleneomsorgMedTrillingFlerbarnsuker.parameters.msw);
-            render(
-                <MorFødselAleneomsorgMedTrillingFlerbarnsuker
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await MorFødselAleneomsorgMedTrillingFlerbarnsuker.run({
+                args: {
+                    ...MorFødselAleneomsorgMedTrillingFlerbarnsuker.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
 
             expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('Hvor lang periode med foreldrepenger vil du ha?')).toBeInTheDocument();
@@ -340,22 +332,21 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 key: ContextDataType.APP_ROUTE,
                 type: 'update',
             });
-        }),
+        },
     );
 
     it(
         'skal søke som far der mor allerede har laget uttaksplan',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-
-            setHandlers(FarEllerMedmorSøkerOgMorHarLagetUttaksplan.parameters.msw);
-            render(
-                <FarEllerMedmorSøkerOgMorHarLagetUttaksplan
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await FarEllerMedmorSøkerOgMorHarLagetUttaksplan.run({
+                args: {
+                    ...FarEllerMedmorSøkerOgMorHarLagetUttaksplan.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
 
             expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
 
@@ -381,23 +372,22 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 key: ContextDataType.APP_ROUTE,
                 type: 'update',
             });
-        }),
+        },
     );
     it(
         'skal vise informasjon om utvidet 80% dekningsgrad for far som søker første gang med barn med termin' +
             ' etter 1 juli 2024 og søkedato før 1 juli 2024',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             MockDate.set(new Date('2024-06-30'));
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-
-            setHandlers(FarMedMorMedTermin1Juli2024.parameters.msw);
-            render(
-                <FarMedMorMedTermin1Juli2024
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await FarMedMorMedTermin1Juli2024.run({
+                args: {
+                    ...FarMedMorMedTermin1Juli2024.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
 
             expect(
                 await screen.findByText(
@@ -405,21 +395,21 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 ),
             ).toBeInTheDocument();
             MockDate.reset();
-        }),
+        },
     );
     it(
         'skal ikke vise informasjon om utvidet 80% dekningsgrad for far som søker første gang hvis søkedato er etter 1 juli 2024',
-        mswWrapper(({ setHandlers }) => {
+        async () => {
             MockDate.set(new Date('2024-07-01'));
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-            setHandlers(FarMedMorMedTermin1Juli2024.parameters.msw);
-            render(
-                <FarMedMorMedTermin1Juli2024
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await FarMedMorMedTermin1Juli2024.run({
+                args: {
+                    ...FarMedMorMedTermin1Juli2024.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
 
             expect(
                 screen.queryByText(
@@ -427,22 +417,22 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 ),
             ).not.toBeInTheDocument();
             MockDate.reset();
-        }),
+        },
     );
     it(
         'skal vise informasjon om utvidet 80% dekningsgrad for mor som søker etter far der far valgte 80% dekning for' +
             ' et barn med termin etter 1 juli 2024 og søkedato før 1 juli 2024',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             MockDate.set(new Date('2024-06-30'));
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-            setHandlers(MorMedTermin1Juli2024OgFarsSøknad.parameters.msw);
-            render(
-                <MorMedTermin1Juli2024OgFarsSøknad
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await MorMedTermin1Juli2024OgFarsSøknad.run({
+                args: {
+                    ...MorMedTermin1Juli2024OgFarsSøknad.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
 
             expect(
                 await screen.findByText(
@@ -450,22 +440,22 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 ),
             ).toBeInTheDocument();
             MockDate.reset();
-        }),
+        },
     );
     it(
         'skal ikke vise informasjon om utvidet 80% dekningsgrad for mor som søker etter far der far valgte 80% dekning' +
             ' hvis søkedato er etter 1 juli 2024',
-        mswWrapper(({ setHandlers }) => {
+        async () => {
             MockDate.set(new Date('2024-07-01'));
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-            setHandlers(MorMedTermin1Juli2024OgFarsSøknad.parameters.msw);
-            render(
-                <MorMedTermin1Juli2024OgFarsSøknad
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await MorMedTermin1Juli2024OgFarsSøknad.run({
+                args: {
+                    ...MorMedTermin1Juli2024OgFarsSøknad.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
 
             expect(
                 screen.queryByText(
@@ -473,22 +463,22 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 ),
             ).not.toBeInTheDocument();
             MockDate.reset();
-        }),
+        },
     );
 
     it(
         'Skal vise info om forskjell på 80% og 100% dekningsgrad for barn født før 1.juli 2024, hvis dato er før 1. juli 2024',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
             MockDate.set(new Date('2024-06-30'));
-            setHandlers(MorFødselBeggeHarRettFødselFør1Juli2024.parameters.msw);
-            render(
-                <MorFødselBeggeHarRettFødselFør1Juli2024
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await MorFødselBeggeHarRettFødselFør1Juli2024.run({
+                args: {
+                    ...MorFødselBeggeHarRettFødselFør1Juli2024.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
             expect(
                 screen.getByText(
@@ -499,22 +489,22 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             expect(screen.getByText('Hva lønner seg for oss?')).toBeInTheDocument();
 
             MockDate.reset();
-        }),
+        },
     );
 
     it(
         'Skal vise info om forskjell på 80% og 100% dekningsgrad for barn født før 1.juli 2024, hvis dato er etter 1. juli 2024',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
             MockDate.set(new Date('2024-07-01'));
-            setHandlers(MorFødselBeggeHarRettFødselFør1Juli2024.parameters.msw);
-            render(
-                <MorFødselBeggeHarRettFødselFør1Juli2024
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await MorFødselBeggeHarRettFødselFør1Juli2024.run({
+                args: {
+                    ...MorFødselBeggeHarRettFødselFør1Juli2024.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
             expect(
                 screen.getByText(
@@ -525,23 +515,23 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             expect(screen.getByText('Hva lønner seg for oss?')).toBeInTheDocument();
 
             MockDate.reset();
-        }),
+        },
     );
 
     it(
         'Skal vise info om at det er lite forskjell på 80% og 100% dekningsgrad for barn med termin før 1.juli 2024,' +
             ' hvis dato er etter 1. juli 2024',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
             MockDate.set(new Date('2024-07-01'));
-            setHandlers(FarEllerMedmorFødselBeggeHarRettTerminFør1Juli2024.parameters.msw);
-            render(
-                <FarEllerMedmorFødselBeggeHarRettTerminFør1Juli2024
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await FarEllerMedmorFødselBeggeHarRettTerminFør1Juli2024.run({
+                args: {
+                    ...FarEllerMedmorFødselBeggeHarRettTerminFør1Juli2024.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
             expect(
                 screen.getByText(
@@ -552,22 +542,22 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             expect(screen.getByText('Hva lønner seg for oss?')).toBeInTheDocument();
 
             MockDate.reset();
-        }),
+        },
     );
 
     it(
         'Skal vise info om forskjell på 80% og 100% dekningsgrad for barn med adopsjonsdato etter 1.juli 2024, hvis dato er før 1. juli 2024',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
             MockDate.set(new Date('2024-06-30'));
-            setHandlers(MorBeggeHarRettAdopsjonEtter1Juli2024.parameters.msw);
-            render(
-                <MorBeggeHarRettAdopsjonEtter1Juli2024
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await MorBeggeHarRettAdopsjonEtter1Juli2024.run({
+                args: {
+                    ...MorBeggeHarRettAdopsjonEtter1Juli2024.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
             expect(
                 screen.getByText(
@@ -578,23 +568,23 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             expect(screen.getByText('Hva lønner seg for oss?')).toBeInTheDocument();
 
             MockDate.reset();
-        }),
+        },
     );
 
     it(
         'Skal vise info om at det er lite forskjell på 80% og 100% dekningsgrad for barn med adopsjonsdato' +
             ' etter 1.juli 2024, hvis dato er etter 1. juli 2024.',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
             MockDate.set(new Date('2024-07-01'));
-            setHandlers(MorBeggeHarRettAdopsjonEtter1Juli2024.parameters.msw);
-            render(
-                <MorBeggeHarRettAdopsjonEtter1Juli2024
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await MorBeggeHarRettAdopsjonEtter1Juli2024.run({
+                args: {
+                    ...MorBeggeHarRettAdopsjonEtter1Juli2024.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
             expect(
                 screen.getByText(
@@ -608,6 +598,6 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             expect(screen.getByText('Hva lønner seg for oss?')).toBeInTheDocument();
 
             MockDate.reset();
-        }),
+        },
     );
 });

@@ -1,12 +1,11 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
 import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
-import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './SkjemaSteg.stories';
 
@@ -16,17 +15,12 @@ const { SkalIkkeFeileOpplasting, MedVedlegg, MedToTilrettelegginger, ErTypeFrila
 describe('<SkjemaSteg>', () => {
     it(
         'skal vise feilmelding når en ikke har lastet opp minst ett vedlegg',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-
-            setHandlers(SkalIkkeFeileOpplasting.parameters.msw);
-            render(
-                <SkalIkkeFeileOpplasting
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await SkalIkkeFeileOpplasting.run({
+                args: { ...SkalIkkeFeileOpplasting.args, gåTilNesteSide, mellomlagreSøknadOgNaviger },
+            });
 
             expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
             expect(screen.getAllByText('Last opp skjema')).toHaveLength(2);
@@ -75,38 +69,35 @@ describe('<SkjemaSteg>', () => {
             });
 
             expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce();
-        }),
+        },
     );
 
     it(
         'skal vise opplaster vedlegg',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MedVedlegg.parameters.msw);
-            render(<MedVedlegg />);
+        async () => {
+            await MedVedlegg.run();
 
             expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
             expect(screen.getByText('Filnavn1.jpg')).toBeInTheDocument();
-        }),
+        },
     );
 
     it(
         'skal vise skjema når en har minst to tilrettelegginger',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MedToTilrettelegginger.parameters.msw);
-            render(<MedToTilrettelegginger />);
+        async () => {
+            await MedToTilrettelegginger.run();
 
             expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
             expect(screen.getAllByText('Last opp skjema for Omsorgspartner Vestfold AS')).toHaveLength(2);
             expect(screen.getByText('Om ditt arbeidsforhold i')).toBeInTheDocument();
             expect(screen.getByText('Omsorgspartner Vestfold AS')).toBeInTheDocument();
-        }),
+        },
     );
 
     it(
         'skal vise skjema for type frilans',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(ErTypeFrilans.parameters.msw);
-            render(<ErTypeFrilans />);
+        async () => {
+            await ErTypeFrilans.run();
 
             expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
             expect(
@@ -115,14 +106,13 @@ describe('<SkjemaSteg>', () => {
             expect(
                 screen.getByText(/Her skal du laste opp bekreftelsen som er skrevet av din lege eller jordmor./),
             ).toBeInTheDocument();
-        }),
+        },
     );
 
     it(
         'skal vise kunne laste opp maks 2 (40 i prod) vedlegg',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(KanMaxHaToVedlegg.parameters.msw);
-            render(<KanMaxHaToVedlegg />);
+        async () => {
+            await KanMaxHaToVedlegg.run();
 
             expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
 
@@ -137,6 +127,6 @@ describe('<SkjemaSteg>', () => {
                     'Du kan laste opp maksimalt 40 vedlegg i din søknad. Slett 1 vedlegg for å gå videre.',
                 ),
             ).toBeInTheDocument();
-        }),
+        },
     );
 });

@@ -1,10 +1,9 @@
 import { composeStories } from '@storybook/react-vite';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
-import { mswWrapper } from '@navikt/fp-utils-test';
 
 import { endreFordelingMedSlider } from '../vitest/testHelpers';
 import * as stories from './AppContainer.stories';
@@ -23,10 +22,8 @@ describe('<AppContainer>', () => {
 
     it(
         'skal gå gjennom applikasjonen og så tilbake',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(DefaultMockaStønadskvoterOgSatser.parameters.msw);
-
-            const utils = render(<DefaultMockaStønadskvoterOgSatser />);
+        async () => {
+            await DefaultMockaStønadskvoterOgSatser.run();
 
             expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
             await userEvent.click(screen.getByText('Start'));
@@ -34,9 +31,9 @@ describe('<AppContainer>', () => {
             await waitFor(() => expect(screen.getAllByText('Hvem planlegger?')).toHaveLength(2));
             expect(screen.getByText('Steg 1 av 9')).toBeInTheDocument();
             await userEvent.click(screen.getByText('Mor og far'));
-            const morNavn = utils.getByLabelText('Hva heter mor? (valgfritt)');
+            const morNavn = screen.getByLabelText('Hva heter mor? (valgfritt)');
             await userEvent.type(morNavn, 'Helga');
-            const farNavn = utils.getByLabelText('Hva heter far? (valgfritt)');
+            const farNavn = screen.getByLabelText('Hva heter far? (valgfritt)');
             await userEvent.type(farNavn, 'Espen');
             await userEvent.click(screen.getByText('Neste'));
 
@@ -45,10 +42,10 @@ describe('<AppContainer>', () => {
             await userEvent.click(screen.getByText('Fødsel'));
             await userEvent.click(screen.getByText('Ett'));
             await userEvent.click(screen.getByText('Ja'));
-            const fødselsdato = utils.getByLabelText('Når ble barnet født?');
+            const fødselsdato = screen.getByLabelText('Når ble barnet født?');
             await userEvent.type(fødselsdato, dayjs().subtract(20, 'day').format(DDMMYYYY_DATE_FORMAT));
             fireEvent.blur(fødselsdato);
-            const termindato = utils.getByLabelText('Når var termindato?');
+            const termindato = screen.getByLabelText('Når var termindato?');
             await userEvent.type(termindato, dayjs().subtract(20, 'day').format(DDMMYYYY_DATE_FORMAT));
             fireEvent.blur(termindato);
             await userEvent.click(screen.getByText('Neste'));
@@ -69,9 +66,9 @@ describe('<AppContainer>', () => {
 
             await waitFor(() => expect(screen.getAllByText('Hvor mye')).toHaveLength(2));
             expect(screen.getByText('Steg 5 av 9')).toBeInTheDocument();
-            const lønnMor = utils.getByLabelText('Hva tjener Helga ca. i måneden? (valgfritt)');
+            const lønnMor = screen.getByLabelText('Hva tjener Helga ca. i måneden? (valgfritt)');
             await userEvent.type(lønnMor, '50000');
-            const lønnFar = utils.getByLabelText('Hva tjener Espen ca. i måneden? (valgfritt)');
+            const lønnFar = screen.getByLabelText('Hva tjener Espen ca. i måneden? (valgfritt)');
             await userEvent.type(lønnFar, '50000');
             await userEvent.click(screen.getByText('Neste'));
 
@@ -83,7 +80,7 @@ describe('<AppContainer>', () => {
             await waitFor(() => expect(screen.getAllByText('Fordeling')).toHaveLength(2));
             expect(screen.getByText('Steg 7 av 9')).toBeInTheDocument();
 
-            await endreFordelingMedSlider(utils, 5);
+            await endreFordelingMedSlider(screen, 5);
 
             await userEvent.click(screen.getByText('Neste'));
 
@@ -127,6 +124,6 @@ describe('<AppContainer>', () => {
             await userEvent.click(screen.getByText('Forrige'));
 
             expect(screen.getByText('Planleggeren består av to deler:')).toBeInTheDocument();
-        }),
+        },
     );
 });

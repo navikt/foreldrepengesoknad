@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
@@ -7,7 +7,6 @@ import dayjs from 'dayjs';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
-import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './SenereUtenlandsoppholdSteg.stories';
 
@@ -16,12 +15,16 @@ const { Default } = composeStories(stories);
 describe('<SenereUtenlandsoppholdSteg>', () => {
     it(
         'skal fylle ut fremtidig utenlandsopphold og gå videre til inntektsinformasjon',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-
-            setHandlers(Default.parameters.msw);
-            render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+            await Default.run({
+                args: {
+                    ...Default.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
 
             expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
 
@@ -56,17 +59,21 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
                 key: ContextDataType.APP_ROUTE,
                 type: 'update',
             });
-        }),
+        },
     );
 
     it(
         'skal gå til utenlandsforhold-oversikt når en ikke har tidligere opphold i utlandet og går til forrige steg',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-
-            setHandlers(Default.parameters.msw);
-            render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+            await Default.run({
+                args: {
+                    ...Default.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
 
             expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
             await userEvent.click(screen.getByText('Forrige steg'));
@@ -79,26 +86,25 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
                 key: ContextDataType.APP_ROUTE,
                 type: 'update',
             });
-        }),
+        },
     );
 
     it(
         'skal gå til tidligere utenlandsforhold når en har tidligere opphold i utlandet og går til forrige steg',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-
-            setHandlers(Default.parameters.msw);
-            render(
-                <Default
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    utenlandsopphold={{
+            await Default.run({
+                args: {
+                    ...Default.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                    utenlandsopphold: {
                         skalBoUtenforNorgeNeste12Mnd: true,
                         harBoddUtenforNorgeSiste12Mnd: true,
-                    }}
-                />,
-            );
+                    },
+                },
+            });
 
             expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
             await userEvent.click(screen.getByText('Forrige steg'));
@@ -111,6 +117,6 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
                 key: ContextDataType.APP_ROUTE,
                 type: 'update',
             });
-        }),
+        },
     );
 });

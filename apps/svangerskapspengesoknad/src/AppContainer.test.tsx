@@ -1,10 +1,9 @@
 import { composeStories } from '@storybook/react-vite';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
-import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './AppContainer.stories';
 
@@ -20,9 +19,8 @@ describe('<AppContainer>', () => {
 
     it(
         'skal gå raskeste vei gjennom applikasjonen og så tilbake',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(VisAppKvinneMedArbeid.parameters.msw);
-            const utils = render(<VisAppKvinneMedArbeid />);
+        async () => {
+            await VisAppKvinneMedArbeid.run();
 
             expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
             await userEvent.click(screen.getByText('Ja, jeg har forstått mine plikter.'));
@@ -31,10 +29,10 @@ describe('<AppContainer>', () => {
             expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
             expect(screen.getByText('Steg 1 av 7')).toBeInTheDocument();
             await userEvent.click(screen.getByText('Ja'));
-            const fødselsdato = utils.getByLabelText('Fødselsdato');
+            const fødselsdato = screen.getByLabelText('Fødselsdato');
             await userEvent.type(fødselsdato, dayjs().subtract(20, 'day').format(DDMMYYYY_DATE_FORMAT));
             fireEvent.blur(fødselsdato);
-            const termindato = utils.getByLabelText('Termindato');
+            const termindato = screen.getByLabelText('Termindato');
             await userEvent.type(termindato, dayjs().format(DDMMYYYY_DATE_FORMAT));
             fireEvent.blur(termindato);
             await userEvent.click(screen.getByText('Neste steg'));
@@ -66,7 +64,7 @@ describe('<AppContainer>', () => {
 
             expect(await screen.findByText('Steg 6 av 8')).toBeInTheDocument();
             expect(await screen.findAllByText('Behov for tilrettelegging')).toHaveLength(2);
-            const behovDato = utils.getByLabelText(
+            const behovDato = screen.getByLabelText(
                 'Fra hvilken dato har du behov for tilrettelegging eller omplassering?',
             );
             await userEvent.type(behovDato, dayjs().subtract(1, 'month').format(DDMMYYYY_DATE_FORMAT));
@@ -77,11 +75,11 @@ describe('<AppContainer>', () => {
 
             expect(await screen.findByText('Steg 7 av 9')).toBeInTheDocument();
             expect(await screen.findAllByText('Perioder med tilrettelegging')).toHaveLength(2);
-            const jobbeFra = utils.getByLabelText('Du skal jobbe fra:');
+            const jobbeFra = screen.getByLabelText('Du skal jobbe fra:');
             await userEvent.type(jobbeFra, dayjs().subtract(1, 'month').format(DDMMYYYY_DATE_FORMAT));
             fireEvent.blur(jobbeFra);
             await userEvent.click(screen.getByText('Frem til tre uker før termin'));
-            const stillingsprosent = utils.getByLabelText('Hvilken stillingsprosent skal du jobbe i denne perioden?');
+            const stillingsprosent = screen.getByLabelText('Hvilken stillingsprosent skal du jobbe i denne perioden?');
             await userEvent.type(stillingsprosent, '50');
             await userEvent.click(screen.getByText('Neste steg'));
 
@@ -117,6 +115,6 @@ describe('<AppContainer>', () => {
 
             await userEvent.click(screen.getByText('Forrige steg'));
             expect(screen.getAllByText('Barnet')).toHaveLength(2);
-        }),
+        },
     );
 });

@@ -1,16 +1,6 @@
-import { renderHook } from '@testing-library/react';
-
 import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
-import { useLoggOverlappIVedtak } from './useLoggOverlappIVedtak';
-
-const captureMessage = vi.hoisted(() => vi.fn());
-
-vi.mock('@navikt/fp-observability', () => ({
-    captureMessage: (...args: unknown[]) => captureMessage(...args),
-    withScope: (callback: (scope: unknown) => void) =>
-        callback({ setLevel: vi.fn(), setTag: vi.fn(), setExtra: vi.fn() }),
-}));
+import { finnUgyldigeOverlappIUttaksplan } from './useLoggOverlappIVedtak';
 
 const innvilget: UttakPeriode_fpoversikt['resultat'] = {
     innvilget: true,
@@ -34,12 +24,8 @@ const periode = (overrides: Partial<UttakPeriode_fpoversikt>): UttakPeriode_fpov
     ...overrides,
 });
 
-describe('useLoggOverlappIVedtak', () => {
-    beforeEach(() => {
-        captureMessage.mockClear();
-    });
-
-    it('loggar ikkje når ein avslått periode utan trekkdagar overlappar annen part sin reelle periode', () => {
+describe('finnUgyldigeOverlappIUttaksplan', () => {
+    it('finn ikkje ugyldig overlapp når ein avslått periode utan trekkdagar overlappar annen part sin reelle periode', () => {
         const morAvslått = periode({
             fom: '2026-07-27',
             tom: '2026-07-31',
@@ -55,12 +41,12 @@ describe('useLoggOverlappIVedtak', () => {
             resultat: innvilget,
         });
 
-        renderHook(() => useLoggOverlappIVedtak([morAvslått, farReell], [morAvslått], [farReell]));
+        const { ugyldigeOverlapp } = finnUgyldigeOverlappIUttaksplan([morAvslått, farReell]);
 
-        expect(captureMessage).not.toHaveBeenCalled();
+        expect(ugyldigeOverlapp).toHaveLength(0);
     });
 
-    it('loggar når to reelle periodar overlappar utan samtidig uttak', () => {
+    it('finn ugyldig overlapp når to reelle periodar overlappar utan samtidig uttak', () => {
         const mor = periode({
             fom: '2026-07-27',
             tom: '2026-07-31',
@@ -76,15 +62,12 @@ describe('useLoggOverlappIVedtak', () => {
             resultat: innvilget,
         });
 
-        renderHook(() => useLoggOverlappIVedtak([mor, far], [mor], [far]));
+        const { ugyldigeOverlapp } = finnUgyldigeOverlappIUttaksplan([mor, far]);
 
-        expect(captureMessage).toHaveBeenCalledWith(
-            'Uttaksplan har ugyldig overlappande periodar etter transformasjon',
-            'warning',
-        );
+        expect(ugyldigeOverlapp).toHaveLength(1);
     });
 
-    it('loggar ikkje når overlappande periodar har samtidig uttak på begge partar', () => {
+    it('finn ikkje ugyldig overlapp når overlappande periodar har samtidig uttak på begge partar', () => {
         const mor = periode({
             fom: '2025-10-14',
             tom: '2025-10-27',
@@ -102,12 +85,12 @@ describe('useLoggOverlappIVedtak', () => {
             resultat: innvilget,
         });
 
-        renderHook(() => useLoggOverlappIVedtak([mor, far], [mor], [far]));
+        const { ugyldigeOverlapp } = finnUgyldigeOverlappIUttaksplan([mor, far]);
 
-        expect(captureMessage).not.toHaveBeenCalled();
+        expect(ugyldigeOverlapp).toHaveLength(0);
     });
 
-    it('loggar ikkje når søkjaren sin eigen avslåtte periode overlappar annen part', () => {
+    it('finn ikkje ugyldig overlapp når søkjaren sin eigen avslåtte periode overlappar annen part', () => {
         const farAvslått = periode({
             fom: '2025-11-10',
             tom: '2025-12-29',
@@ -130,14 +113,8 @@ describe('useLoggOverlappIVedtak', () => {
             resultat: innvilget,
         });
 
-        renderHook(() =>
-            useLoggOverlappIVedtak(
-                [farAvslått, morMødrekvote, morFellesperiode],
-                [farAvslått],
-                [morMødrekvote, morFellesperiode],
-            ),
-        );
+        const { ugyldigeOverlapp } = finnUgyldigeOverlappIUttaksplan([farAvslått, morMødrekvote, morFellesperiode]);
 
-        expect(captureMessage).not.toHaveBeenCalled();
+        expect(ugyldigeOverlapp).toHaveLength(0);
     });
 });

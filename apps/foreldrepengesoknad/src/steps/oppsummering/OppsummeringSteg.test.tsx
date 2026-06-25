@@ -7,7 +7,6 @@ import dayjs from 'dayjs';
 import { vi } from 'vitest';
 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
-import { mswWrapper } from '@navikt/fp-utils-test';
 import { notEmpty } from '@navikt/fp-validation';
 
 import * as stories from './OppsummeringSteg.stories';
@@ -32,6 +31,10 @@ const {
 } = composeStories(stories);
 
 describe('<Oppsummering>', () => {
+    afterEach(() => {
+        document.body.innerHTML = '';
+    });
+
     const getCardDiv = (element: HTMLElement) =>
         within(notEmpty(element.closest('div')?.parentElement?.closest('div')));
     const checkAndGetParentDiv = (element: HTMLElement) => {
@@ -234,9 +237,8 @@ describe('<Oppsummering>', () => {
 
     it(
         'Skal vise informasjon om uttaksplan',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FarMedUførMorUgift.parameters.msw);
-            render(<FarMedUførMorUgift />);
+        async () => {
+            await FarMedUførMorUgift.run();
 
             const dinPlanDiv = getCardDiv(screen.getByText('Din plan'));
             await dinPlanDiv.findByText('49 uker med 100 prosent foreldrepenger');
@@ -263,7 +265,7 @@ describe('<Oppsummering>', () => {
                     ),
                 ).getByText('Nei'),
             ).toBeInTheDocument();
-        }),
+        },
     );
 
     it('Skal vise "Foreldrepenger uten aktivitetskrav" når mor er ufør', async () => {
@@ -323,9 +325,8 @@ describe('<Oppsummering>', () => {
 
     it(
         'Skal ikke vise spørsmål om annen forelder har rett hvis de har innvilget perioder fra vedtak',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FarMedMorSomHarVedtak.parameters.msw);
-            render(<FarMedMorSomHarVedtak />);
+        async () => {
+            await FarMedMorSomHarVedtak.run();
 
             expect(screen.getAllByText('Den andre forelderen')).toHaveLength(2);
             await waitFor(() => {
@@ -333,7 +334,7 @@ describe('<Oppsummering>', () => {
                     screen.queryByText('Har den andre forelderen rett til foreldrepenger i Norge?', { exact: false }),
                 ).not.toBeInTheDocument();
             });
-        }),
+        },
     );
 
     it('Skal vise informasjon om at mor har hatt opphold men ikke rett til foreldrepenger i EØS', async () => {
@@ -449,9 +450,8 @@ describe('<Oppsummering>', () => {
 
     it(
         'Far er hovedsøker - Skal vise krav om dokumentasjon for mors arbeid når hun jobber mindre enn 75%',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FarSøkerMorMåDokumentereArbeid.parameters.msw);
-            render(<FarSøkerMorMåDokumentereArbeid />);
+        async () => {
+            await FarSøkerMorMåDokumentereArbeid.run();
 
             expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
 
@@ -469,14 +469,13 @@ describe('<Oppsummering>', () => {
                         ' Dersom Kari er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.',
                 ),
             ).toBeInTheDocument();
-        }),
+        },
     );
 
     it(
         'Far er hovedsøker - Skal vise krav om dokumentasjon for mors arbeid når far ønsker samtidig uttak i fellesperioden',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon.parameters.msw);
-            render(<FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon />);
+        async () => {
+            await FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon.run();
 
             expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
 
@@ -497,15 +496,13 @@ describe('<Oppsummering>', () => {
             expect(screen.getByText('Fellesperiode', { selector: 'dd' })).toBeInTheDocument();
             expect(screen.getByText('Vi skal ha samtidig uttak:')).toBeInTheDocument();
             expect(screen.getByText('Vi skal ha samtidig uttak:').nextSibling).toHaveTextContent('Ja');
-        }),
+        },
     );
 
     it(
         'Far er hovedsøker - Skal ikke vise krav om dokumentasjon når mor jobber 75% eller mer',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FarSøkerMorMåIkkeDokumentereArbeid.parameters.msw);
-
-            render(<FarSøkerMorMåIkkeDokumentereArbeid />);
+        async () => {
+            await FarSøkerMorMåIkkeDokumentereArbeid.run();
 
             expect(await screen.findAllByText('Den andre forelderen')).toHaveLength(2);
 
@@ -523,14 +520,13 @@ describe('<Oppsummering>', () => {
                         ' Dersom Kari er selvstendig næringsdrivende, frilanser eller er ansatt i eget AS skriver hun denne bekreftelsen selv.',
                 ),
             ).not.toBeInTheDocument();
-        }),
+        },
     );
 
     it(
         'Far er hovedsøker - Skal vise krav om dokumentasjon for utdanning men ikke for arbeid',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning.parameters.msw);
-            render(<FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning />);
+        async () => {
+            await FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning.run();
 
             expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
 
@@ -564,6 +560,6 @@ describe('<Oppsummering>', () => {
                     'har mor søkt om permisjon fra studiet en periode må dette komme frem i dokumentasjonen',
                 ),
             ).toBeInTheDocument();
-        }),
+        },
     );
 });

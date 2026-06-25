@@ -1,8 +1,6 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-
-import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './FileUploader.stories';
 
@@ -11,10 +9,8 @@ const { Default, OpplastningTimeout } = composeStories(stories);
 describe('FileUploader', () => {
     it(
         'skal laste opp en fil',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(Default.parameters.msw);
-
-            render(<Default />);
+        async () => {
+            await Default.run();
 
             expect(await screen.findByText('Last opp fil')).toBeInTheDocument();
 
@@ -25,15 +21,13 @@ describe('FileUploader', () => {
 
             expect(await screen.findByText('test-document.pdf')).toBeInTheDocument();
             expect(screen.queryByText('Laster opp...')).not.toBeInTheDocument();
-        }),
+        },
     );
 
     it(
         'skal få timeout ved opplasting',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(OpplastningTimeout.parameters.msw);
-
-            render(<OpplastningTimeout />);
+        async () => {
+            await OpplastningTimeout.run();
 
             expect(await screen.findByText('Last opp fil')).toBeInTheDocument();
 
@@ -46,6 +40,6 @@ describe('FileUploader', () => {
             expect(
                 await screen.findByText('Det tok for lang tid å laste opp dokumentet ditt.', { exact: false }),
             ).toBeInTheDocument();
-        }),
+        },
     );
 });

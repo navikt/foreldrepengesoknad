@@ -1,9 +1,7 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen, within } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
-
-import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './UttaksplanSteg.stories';
 
@@ -25,17 +23,17 @@ const {
 describe('<UttaksplanSteg>', () => {
     it(
         'skal vise feilmelding når en sletter alle perioder og prøver å gå videre',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-            setHandlers(FødselMorOgFarBeggeHarRett.parameters.msw);
 
-            render(
-                <FødselMorOgFarBeggeHarRett
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await FødselMorOgFarBeggeHarRett.run({
+                args: {
+                    ...FødselMorOgFarBeggeHarRett.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
 
             expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
 
@@ -58,22 +56,22 @@ describe('<UttaksplanSteg>', () => {
             await userEvent.click(screen.getByText('Neste steg'));
 
             expect(await screen.findByText('Du har ikke lagt til noen perioder i planen')).toBeInTheDocument();
-        }),
+        },
     );
 
     it(
         'skal generere uttaksplan og gå videre når annen part har et vedtak med tomme perioder',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-            setHandlers(FødselMorOgFarBeggeHarRettAnnenPartTomtVedtak.parameters.msw);
 
-            render(
-                <FødselMorOgFarBeggeHarRettAnnenPartTomtVedtak
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await FødselMorOgFarBeggeHarRettAnnenPartTomtVedtak.run({
+                args: {
+                    ...FødselMorOgFarBeggeHarRettAnnenPartTomtVedtak.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
 
             // Planen er lastet med perioder (ikke tom)
             expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
@@ -90,22 +88,22 @@ describe('<UttaksplanSteg>', () => {
             );
             expect(uttaksplanAction).toBeDefined();
             expect((uttaksplanAction![0].data as unknown[]).length).toBeGreaterThan(0);
-        }),
+        },
     );
 
     it(
         'skal kunne gå videre uten å endre planen når standardforslaget er gyldig',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-            setHandlers(FødselMorOgFarBeggeHarRett.parameters.msw);
 
-            render(
-                <FødselMorOgFarBeggeHarRett
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await FødselMorOgFarBeggeHarRett.run({
+                args: {
+                    ...FødselMorOgFarBeggeHarRett.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
 
             expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
 
@@ -120,34 +118,32 @@ describe('<UttaksplanSteg>', () => {
             );
             expect(uttaksplanAction).toBeDefined();
             expect((uttaksplanAction![0].data as unknown[]).length).toBeGreaterThan(0);
-        }),
+        },
     );
 
     it(
         'skal skjule info-teksten når annen forelder ikke har rett',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FødselMorOgFarKunMorHarRett.parameters.msw);
-
-            render(<FødselMorOgFarKunMorHarRett />);
+        async () => {
+            await FødselMorOgFarKunMorHarRett.run();
 
             expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
             expect(screen.queryByText(infoTekst)).not.toBeInTheDocument();
-        }),
+        },
     );
 
     it(
         'skal vise TilbakestillPlanModal og lukke uten endring ved avbryt',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-            setHandlers(FødselMorOgFarBeggeHarRett.parameters.msw);
 
-            render(
-                <FødselMorOgFarBeggeHarRett
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await FødselMorOgFarBeggeHarRett.run({
+                args: {
+                    ...FødselMorOgFarBeggeHarRett.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
 
             expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
 
@@ -170,22 +166,22 @@ describe('<UttaksplanSteg>', () => {
 
             // Tilbakestill-knappen er fortsatt aktiv (planen er ikke tilbakestilt)
             expect(screen.getByRole('button', { name: 'Tilbakestill plan' })).not.toBeDisabled();
-        }),
+        },
     );
 
     it(
         'skal tilbakestille planen ved bekreftelse i TilbakestillPlanModal',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-            setHandlers(FødselMorOgFarBeggeHarRett.parameters.msw);
 
-            render(
-                <FødselMorOgFarBeggeHarRett
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await FødselMorOgFarBeggeHarRett.run({
+                args: {
+                    ...FødselMorOgFarBeggeHarRett.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
 
             expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
 
@@ -208,22 +204,22 @@ describe('<UttaksplanSteg>', () => {
 
             // Tilbakestill-knappen er nå deaktivert (planen er tilbakestilt til standardforslaget)
             expect(screen.getByRole('button', { name: 'Tilbakestill plan' })).toBeDisabled();
-        }),
+        },
     );
 
     it(
         'TFP-6962: skal kunne gå videre med forhåndsutfylt plan fra eksisterende sak når det er en ny søknad (ikke endringssøknad)',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-            setHandlers(NySøknadFørVedtakMedEksisterendeSak.parameters.msw);
 
-            render(
-                <NySøknadFørVedtakMedEksisterendeSak
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await NySøknadFørVedtakMedEksisterendeSak.run({
+                args: {
+                    ...NySøknadFørVedtakMedEksisterendeSak.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
 
             expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
 
@@ -239,23 +235,23 @@ describe('<UttaksplanSteg>', () => {
                 ([action]) => action.key === ContextDataType.APP_ROUTE,
             );
             expect(navigasjonsAction).toBeDefined();
-        }),
+        },
     );
 
     it(
         'TFP-6962: skal fortsatt vise endringssøknad-feilmelding når det faktisk er en endringssøknad uten nye perioder',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-            setHandlers(NySøknadFørVedtakMedEksisterendeSak.parameters.msw);
 
-            render(
-                <NySøknadFørVedtakMedEksisterendeSak
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    erEndringssøknad
-                />,
-            );
+            await NySøknadFørVedtakMedEksisterendeSak.run({
+                args: {
+                    ...NySøknadFørVedtakMedEksisterendeSak.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                    erEndringssøknad: true,
+                },
+            });
 
             expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
 
@@ -264,22 +260,22 @@ describe('<UttaksplanSteg>', () => {
             expect(
                 await screen.findByText('Du må gjøre en endring for å kunne søke om endring'),
             ).toBeInTheDocument();
-        }),
+        },
     );
 
     it(
         'skal hente opp den overførte planen frå planleggeren igjen med "Tilbakestill plan" etter "Fjern alt"',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-            setHandlers(FødselMorOgFarBeggeHarRettOverførtFraPlanlegger.parameters.msw);
 
-            render(
-                <FødselMorOgFarBeggeHarRettOverførtFraPlanlegger
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await FødselMorOgFarBeggeHarRettOverførtFraPlanlegger.run({
+                args: {
+                    ...FødselMorOgFarBeggeHarRettOverførtFraPlanlegger.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
 
             // Den overførte planen er vist (ikkje tom)
             expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
@@ -306,23 +302,23 @@ describe('<UttaksplanSteg>', () => {
 
             // Planen er tilbake til utgangspunktet, så "Tilbakestill plan" er deaktivert igjen
             expect(screen.getByRole('button', { name: 'Tilbakestill plan' })).toBeDisabled();
-        }),
+        },
     );
 
     // TODO (TOR) Denne skal slåast på igjen etter ein sluttar å filtrera vekk perioden til annen part fra forslaget til plan
     it.todo(
         'skal vise feilmelding når en prøver å gå videre med stjernemerkede perioder',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-            setHandlers(FødselMorOgFarBeggeHarRett.parameters.msw);
 
-            render(
-                <FødselMorOgFarBeggeHarRett
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await FødselMorOgFarBeggeHarRett.run({
+                args: {
+                    ...FødselMorOgFarBeggeHarRett.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
 
             expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
 
@@ -331,22 +327,22 @@ describe('<UttaksplanSteg>', () => {
             expect(
                 await screen.findAllByText('Du må fylle ut informasjon om mors aktivitet i de markerte periodene'),
             ).toHaveLength(2);
-        }),
+        },
     );
 
     it(
         'skal kun vise to uker for far i forslaget når far med begge rett starter på termin',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-            setHandlers(FødselFarBeggeHarRettStarterPåTermin.parameters.msw);
 
-            render(
-                <FødselFarBeggeHarRettStarterPåTermin
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await FødselFarBeggeHarRettStarterPåTermin.run({
+                args: {
+                    ...FødselFarBeggeHarRettStarterPåTermin.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
 
             expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
 
@@ -381,6 +377,6 @@ describe('<UttaksplanSteg>', () => {
             // Perioden skal starte på termindato (2024-07-01) og vare nøyaktig 10 uttaksdager (tom: 2024-07-12)
             expect(farPerioder[0]!.fom).toBe('2024-07-01');
             expect(farPerioder[0]!.tom).toBe('2024-07-12');
-        }),
+        },
     );
 });

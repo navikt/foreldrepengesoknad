@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
@@ -7,7 +7,6 @@ import dayjs from 'dayjs';
 
 import { AttachmentType, DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
-import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './DokumentasjonSteg.stories';
 
@@ -16,14 +15,12 @@ const { Terminbekreftelse, Adopsjonsbekreftelse } = composeStories(stories);
 describe('<DokumentasjonSteg>', () => {
     it(
         'skal laste opp terminbekreftelse',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreOgNaviger = vi.fn();
-
-            setHandlers(Adopsjonsbekreftelse.parameters.msw);
-            const utils = render(
-                <Terminbekreftelse gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />,
-            );
+            await Terminbekreftelse.run({
+                args: { ...Terminbekreftelse.args, gåTilNesteSide, mellomlagreOgNaviger },
+            });
             expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
             expect(screen.getAllByText('Bekreft termin')).toHaveLength(2);
@@ -34,7 +31,7 @@ describe('<DokumentasjonSteg>', () => {
             expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
             expect(screen.getAllByText('Du må oppgi terminbekreftelse dato')).toHaveLength(2);
 
-            const terminbekreftelse = utils.getByLabelText('Når fikk du terminbekreftelsen?');
+            const terminbekreftelse = screen.getByLabelText('Når fikk du terminbekreftelsen?');
             await userEvent.type(terminbekreftelse, dayjs().format(DDMMYYYY_DATE_FORMAT));
             fireEvent.blur(terminbekreftelse);
 
@@ -78,19 +75,17 @@ describe('<DokumentasjonSteg>', () => {
             });
 
             expect(mellomlagreOgNaviger).toHaveBeenCalledOnce();
-        }),
+        },
     );
 
     it(
         'skal laste opp adopsjonsbekreftelse',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreOgNaviger = vi.fn();
-
-            setHandlers(Adopsjonsbekreftelse.parameters.msw);
-            render(
-                <Adopsjonsbekreftelse gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />,
-            );
+            await Adopsjonsbekreftelse.run({
+                args: { ...Adopsjonsbekreftelse.args, gåTilNesteSide, mellomlagreOgNaviger },
+            });
             expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
             expect(screen.getAllByText('Bekreft adopsjon')).toHaveLength(2);
@@ -136,6 +131,6 @@ describe('<DokumentasjonSteg>', () => {
             });
 
             expect(mellomlagreOgNaviger).toHaveBeenCalledOnce();
-        }),
+        },
     );
 });

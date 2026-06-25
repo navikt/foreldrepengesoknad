@@ -1,9 +1,7 @@
 import { composeStories } from '@storybook/react-vite';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import MockDate from 'mockdate';
-
-import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './FordelingSteg.stories';
 
@@ -44,14 +42,14 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
 
     it(
         'skal vise riktig informasjon til mor med aleneomsorg der barnet er født før 1 oktober 2021',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorAleneomsorgDekning80EttBarnFør1Okt2021.parameters.msw);
-            const utils = render(
-                <MorAleneomsorgDekning80EttBarnFør1Okt2021
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorAleneomsorgDekning80EttBarnFør1Okt2021.run({
+                args: {
+                    ...MorAleneomsorgDekning80EttBarnFør1Okt2021.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('56 + 3 uker til deg')).toBeInTheDocument();
             expect(screen.getAllByText('3 uker', { exact: false })).toHaveLength(2);
@@ -86,7 +84,7 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
             expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
             expect(screen.getAllByText('Du må oppgi dato når du vil starte dine foreldrepenger.')).toHaveLength(2);
 
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
             await userEvent.type(oppstart, '31.08.2021');
             fireEvent.blur(oppstart);
             expect(screen.getByText('3 uker før fødsel.')).toBeInTheDocument();
@@ -96,22 +94,22 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
             await userEvent.click(screen.getByText('Neste steg'));
             expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
             expect(gåTilNesteSide).toHaveBeenCalled();
-        }),
+        },
     );
 
     it(
         'skal vise riktig informasjon når mor starter på fødselsdato og mister all periode før fødsel',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorAleneomsorgDekning80EttBarnFør1Okt2021.parameters.msw);
-            const utils = render(
-                <MorAleneomsorgDekning80EttBarnFør1Okt2021
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorAleneomsorgDekning80EttBarnFør1Okt2021.run({
+                args: {
+                    ...MorAleneomsorgDekning80EttBarnFør1Okt2021.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             await userEvent.click(await screen.findByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
             await userEvent.type(oppstart, '21.09.2021');
             fireEvent.blur(oppstart);
             expect(screen.getByText('På fødselsdato')).toBeInTheDocument();
@@ -119,22 +117,22 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
             expect(
                 screen.getByText('Du kan endre datoer senere, også etter du har sendt søknaden.'),
             ).toBeInTheDocument();
-        }),
+        },
     );
 
     it(
         'skal vise riktig informasjon om mor skal trekkes noen uker og dager av fellesperioden',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorAleneomsorgDekning80EttBarnFør1Okt2021.parameters.msw);
-            const utils = render(
-                <MorAleneomsorgDekning80EttBarnFør1Okt2021
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorAleneomsorgDekning80EttBarnFør1Okt2021.run({
+                args: {
+                    ...MorAleneomsorgDekning80EttBarnFør1Okt2021.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             await userEvent.click(await screen.findByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
             await userEvent.type(oppstart, '15.07.2021');
             fireEvent.blur(oppstart);
             expect(screen.getByText('9 uker og 3 dager før fødsel.')).toBeInTheDocument();
@@ -142,82 +140,82 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
             expect(
                 screen.getByText('Du kan endre datoer senere, også etter du har sendt søknaden.'),
             ).toBeInTheDocument();
-        }),
+        },
     );
 
     it(
         'skal vise riktig informasjon om mor skal trekkes en dag av fellesperioden',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorAleneomsorgDekning80EttBarnFør1Okt2021.parameters.msw);
-            const utils = render(
-                <MorAleneomsorgDekning80EttBarnFør1Okt2021
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorAleneomsorgDekning80EttBarnFør1Okt2021.run({
+                args: {
+                    ...MorAleneomsorgDekning80EttBarnFør1Okt2021.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             await userEvent.click(await screen.findByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
             await userEvent.type(oppstart, '30.08.2021');
             fireEvent.blur(oppstart);
             expect(screen.getByText('3 uker og 1 dag før fødsel.')).toBeInTheDocument();
             expect(screen.getByText('1 dag tas fra fellesperioden.')).toBeInTheDocument();
-        }),
+        },
     );
 
     it(
         'skal vise riktig informasjon om mor skal mister en dag av foreldrepenger før fødsel',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorAleneomsorgDekning80EttBarnFør1Okt2021.parameters.msw);
-            const utils = render(
-                <MorAleneomsorgDekning80EttBarnFør1Okt2021
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorAleneomsorgDekning80EttBarnFør1Okt2021.run({
+                args: {
+                    ...MorAleneomsorgDekning80EttBarnFør1Okt2021.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             await userEvent.click(await screen.findByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
             await userEvent.type(oppstart, '01.09.2021');
             fireEvent.blur(oppstart);
             expect(screen.getByText('2 uker og 4 dager før fødsel.')).toBeInTheDocument();
             expect(screen.getByText('Du mister 1 dag.')).toBeInTheDocument();
-        }),
+        },
     );
 
     it(
         'skal vise riktig informasjon om mor mister 2 uker og 4 dager av foreldrepenger før fødsel',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorAleneomsorgDekning80EttBarnFør1Okt2021.parameters.msw);
-            const utils = render(
-                <MorAleneomsorgDekning80EttBarnFør1Okt2021
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorAleneomsorgDekning80EttBarnFør1Okt2021.run({
+                args: {
+                    ...MorAleneomsorgDekning80EttBarnFør1Okt2021.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             await userEvent.click(await screen.findByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
             await userEvent.type(oppstart, '20.09.2021');
             fireEvent.blur(oppstart);
             expect(screen.getByText('1 dag før fødsel.')).toBeInTheDocument();
             expect(screen.getByText('Du mister 2 uker og 4 dager.')).toBeInTheDocument();
-        }),
+        },
     );
 
     it(
         'kan ikke angi feil format for oppstartdato',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorAleneomsorgDekning80EttBarnFør1Okt2021.parameters.msw);
-            const utils = render(
-                <MorAleneomsorgDekning80EttBarnFør1Okt2021
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorAleneomsorgDekning80EttBarnFør1Okt2021.run({
+                args: {
+                    ...MorAleneomsorgDekning80EttBarnFør1Okt2021.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
             await userEvent.type(oppstart, 'x');
             fireEvent.blur(oppstart);
             await userEvent.click(screen.getByText('Neste steg'));
@@ -227,44 +225,44 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
                     'Dato du vil starte dine foreldrepenger må være en gyldig dato på formatet dd.mm.åååå.',
                 ),
             ).toHaveLength(2);
-        }),
+        },
     );
 
     it(
         'kan ikke angi for sen oppstartsdato',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorAleneomsorgDekning80EttBarnFør1Okt2021.parameters.msw);
-            const utils = render(
-                <MorAleneomsorgDekning80EttBarnFør1Okt2021
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorAleneomsorgDekning80EttBarnFør1Okt2021.run({
+                args: {
+                    ...MorAleneomsorgDekning80EttBarnFør1Okt2021.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
             await userEvent.type(oppstart, '22.09.2021');
             fireEvent.blur(oppstart);
 
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
             expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være senest 21.09.2021.')).toHaveLength(2);
-        }),
+        },
     );
 
     it(
         'kan ikke angi for tidlig oppstartsdato',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorAleneomsorgDekning80EttBarnFør1Okt2021.parameters.msw);
-            const utils = render(
-                <MorAleneomsorgDekning80EttBarnFør1Okt2021
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorAleneomsorgDekning80EttBarnFør1Okt2021.run({
+                args: {
+                    ...MorAleneomsorgDekning80EttBarnFør1Okt2021.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
             await userEvent.type(oppstart, '28.06.2021');
             fireEvent.blur(oppstart);
 
@@ -273,29 +271,29 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
             expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 02.07.2021.')).toHaveLength(
                 2,
             );
-        }),
+        },
     );
 
     it(
         'kan ikke angi for oppstartsdato på en helgedag',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorAleneomsorgDekning80EttBarnFør1Okt2021.parameters.msw);
-            const utils = render(
-                <MorAleneomsorgDekning80EttBarnFør1Okt2021
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorAleneomsorgDekning80EttBarnFør1Okt2021.run({
+                args: {
+                    ...MorAleneomsorgDekning80EttBarnFør1Okt2021.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
             await userEvent.type(oppstart, '03.07.2021');
             fireEvent.blur(oppstart);
 
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
             expect(screen.getAllByText('Oppstartsdato for foreldrepenger må være en ukedag.')).toHaveLength(2);
-        }),
+        },
     );
 });
 
@@ -305,14 +303,14 @@ describe('Fordeling - MorAleneomsorgEttBarnPrematurFødsel', () => {
 
     it(
         'skal vise riktig informasjon til mor med aleneomsorg der barnet er født prematurt etter 1 okt 2021',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorAleneomsorgEttBarnPrematurFødsel.parameters.msw);
-            const utils = render(
-                <MorAleneomsorgEttBarnPrematurFødsel
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorAleneomsorgEttBarnPrematurFødsel.run({
+                args: {
+                    ...MorAleneomsorgEttBarnPrematurFødsel.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('58 uker og 4 dager + 3 uker til deg')).toBeInTheDocument();
             expect(screen.getByText('kan kun brukes før fødsel.', { exact: false })).toBeInTheDocument();
@@ -337,7 +335,7 @@ describe('Fordeling - MorAleneomsorgEttBarnPrematurFødsel', () => {
             expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
             expect(screen.queryByText(/Tre uker før fødsel fra/)).not.toBeInTheDocument();
             expect(screen.queryByText('På fødselsdato')).not.toBeInTheDocument();
-            const oppstart = utils.getByLabelText('Når vil du starte permisjonen din med foreldrepenger?');
+            const oppstart = screen.getByLabelText('Når vil du starte permisjonen din med foreldrepenger?');
 
             await userEvent.type(oppstart, '21.09.2023');
             fireEvent.blur(oppstart);
@@ -347,42 +345,42 @@ describe('Fordeling - MorAleneomsorgEttBarnPrematurFødsel', () => {
             await userEvent.click(screen.getByText('Neste steg'));
             expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
             expect(gåTilNesteSide).toHaveBeenCalled();
-        }),
+        },
     );
 
     it(
         'kan ikke angi for sen oppstartsdato',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorAleneomsorgEttBarnPrematurFødsel.parameters.msw);
-            const utils = render(
-                <MorAleneomsorgEttBarnPrematurFødsel
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorAleneomsorgEttBarnPrematurFødsel.run({
+                args: {
+                    ...MorAleneomsorgEttBarnPrematurFødsel.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            const oppstart = utils.getByLabelText('Når vil du starte permisjonen din med foreldrepenger?');
+            const oppstart = screen.getByLabelText('Når vil du starte permisjonen din med foreldrepenger?');
             await userEvent.type(oppstart, '22.09.2023');
             fireEvent.blur(oppstart);
 
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
             expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være senest 21.09.2023.')).toHaveLength(2);
-        }),
+        },
     );
 
     it(
         'kan ikke angi for tidlig oppstartsdato',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorAleneomsorgEttBarnPrematurFødsel.parameters.msw);
-            const utils = render(
-                <MorAleneomsorgEttBarnPrematurFødsel
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorAleneomsorgEttBarnPrematurFødsel.run({
+                args: {
+                    ...MorAleneomsorgEttBarnPrematurFødsel.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            const oppstart = utils.getByLabelText('Når vil du starte permisjonen din med foreldrepenger?');
+            const oppstart = screen.getByLabelText('Når vil du starte permisjonen din med foreldrepenger?');
             await userEvent.type(oppstart, '20.09.2023');
             fireEvent.blur(oppstart);
 
@@ -391,7 +389,7 @@ describe('Fordeling - MorAleneomsorgEttBarnPrematurFødsel', () => {
             expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 21.09.2023.')).toHaveLength(
                 2,
             );
-        }),
+        },
     );
 });
 
@@ -401,14 +399,14 @@ describe('Fordeling - MorAleneomsorgAdopsjonTrillinger', () => {
 
     it(
         'skal vise riktig informasjon til mor med aleneomsorg der tre barn er adoptert',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorAleneomsorgAdopsjonTrillinger.parameters.msw);
-            render(
-                <MorAleneomsorgAdopsjonTrillinger
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorAleneomsorgAdopsjonTrillinger.run({
+                args: {
+                    ...MorAleneomsorgAdopsjonTrillinger.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('92 uker til deg')).toBeInTheDocument();
             expect(
@@ -431,22 +429,22 @@ describe('Fordeling - MorAleneomsorgAdopsjonTrillinger', () => {
             await userEvent.click(screen.getByText('Neste steg'));
             expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
             expect(gåTilNesteSide).toHaveBeenCalled();
-        }),
+        },
     );
 
     it(
         'skal ikke kunne starte før adopsjonsdatoen',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorAleneomsorgAdopsjonTrillinger.parameters.msw);
-            const utils = render(
-                <MorAleneomsorgAdopsjonTrillinger
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorAleneomsorgAdopsjonTrillinger.run({
+                args: {
+                    ...MorAleneomsorgAdopsjonTrillinger.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
             await userEvent.type(oppstart, '20.02.2024');
             fireEvent.blur(oppstart);
 
@@ -455,7 +453,7 @@ describe('Fordeling - MorAleneomsorgAdopsjonTrillinger', () => {
             expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 21.02.2024.')).toHaveLength(
                 2,
             );
-        }),
+        },
     );
 });
 
@@ -465,14 +463,14 @@ describe('Fordeling - FarMedmorAleneomsorgFødtTvillinger', () => {
 
     it(
         'skal vise riktig informasjon til far med aleneomsorg med fødte tvillinger',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FarMedmorAleneomsorgFødtTvillinger.parameters.msw);
-            render(
-                <FarMedmorAleneomsorgFødtTvillinger
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await FarMedmorAleneomsorgFødtTvillinger.run({
+                args: {
+                    ...FarMedmorAleneomsorgFødtTvillinger.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('77 uker til deg')).toBeInTheDocument();
             expect(screen.getByText('Disse ukene kan brukes når som helst før barna fyller 3 år.')).toBeInTheDocument();
@@ -491,22 +489,22 @@ describe('Fordeling - FarMedmorAleneomsorgFødtTvillinger', () => {
             await userEvent.click(screen.getByText('Neste steg'));
             expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
             expect(gåTilNesteSide).toHaveBeenCalled();
-        }),
+        },
     );
 
     it(
         'skal ikke kunne starte før datoen for alenomsorg',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FarMedmorAleneomsorgFødtTvillinger.parameters.msw);
-            const utils = render(
-                <FarMedmorAleneomsorgFødtTvillinger
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await FarMedmorAleneomsorgFødtTvillinger.run({
+                args: {
+                    ...FarMedmorAleneomsorgFødtTvillinger.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
             await userEvent.type(oppstart, '22.09.2023');
             fireEvent.blur(oppstart);
 
@@ -515,7 +513,7 @@ describe('Fordeling - FarMedmorAleneomsorgFødtTvillinger', () => {
             expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 25.09.2023.')).toHaveLength(
                 2,
             );
-        }),
+        },
     );
 });
 
@@ -525,14 +523,14 @@ describe('Fordeling - FarMedmorAleneomsorgFødtFireBarnFør1Okt2021', () => {
 
     it(
         'skal vise riktig informasjon til far med aleneomsorg med fire barn født før 1 okt 2021',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FarMedmorAleneomsorgFødtFireBarnFør1Okt2021.parameters.msw);
-            render(
-                <FarMedmorAleneomsorgFødtFireBarnFør1Okt2021
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await FarMedmorAleneomsorgFødtFireBarnFør1Okt2021.run({
+                args: {
+                    ...FarMedmorAleneomsorgFødtFireBarnFør1Okt2021.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('92 uker til deg')).toBeInTheDocument();
             expect(
@@ -556,7 +554,7 @@ describe('Fordeling - FarMedmorAleneomsorgFødtFireBarnFør1Okt2021', () => {
             await userEvent.click(screen.getByText('Neste steg'));
             expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
             expect(gåTilNesteSide).toHaveBeenCalled();
-        }),
+        },
     );
 });
 
@@ -566,14 +564,14 @@ describe('Fordeling - FarMedmorAleneomsorgFødtTreBarnFørWLB', () => {
 
     it(
         'skal vise riktig informasjon til far med aleneomsorg med tre barn født før 2 august 2022',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FarMedmorAleneomsorgFødtTreBarnFørWLB.parameters.msw);
-            render(
-                <FarMedmorAleneomsorgFødtTreBarnFørWLB
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await FarMedmorAleneomsorgFødtTreBarnFørWLB.run({
+                args: {
+                    ...FarMedmorAleneomsorgFødtTreBarnFørWLB.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('92 uker til deg')).toBeInTheDocument();
             expect(screen.getByText('Disse ukene kan brukes når som helst før barna fyller 3 år.')).toBeInTheDocument();
@@ -585,7 +583,7 @@ describe('Fordeling - FarMedmorAleneomsorgFødtTreBarnFørWLB', () => {
             expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
             expect(screen.getByText('På datoen jeg ble alene om omsorgen, 21. september 2022')).toBeInTheDocument();
             expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
-        }),
+        },
     );
 });
 describe('Fordeling - FarMedmorAleneomsorgEttBarnTerminEtterWLB', () => {
@@ -594,14 +592,14 @@ describe('Fordeling - FarMedmorAleneomsorgEttBarnTerminEtterWLB', () => {
 
     it(
         'skal vise riktig informasjon til far med aleneomsorg med fødte tvillinger',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FarMedmorAleneomsorgEttBarnTerminEtterWLB.parameters.msw);
-            render(
-                <FarMedmorAleneomsorgEttBarnTerminEtterWLB
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await FarMedmorAleneomsorgEttBarnTerminEtterWLB.run({
+                args: {
+                    ...FarMedmorAleneomsorgEttBarnTerminEtterWLB.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
 
             MockDate.set(new Date('2024-09-12'));
 
@@ -620,7 +618,7 @@ describe('Fordeling - FarMedmorAleneomsorgEttBarnTerminEtterWLB', () => {
             expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
 
             MockDate.reset();
-        }),
+        },
     );
 });
 
@@ -630,14 +628,14 @@ describe('Fordeling - FarMedmorAleneomsorgPrematurtFødtBarn', () => {
 
     it(
         'skal vise riktig informasjon til far med aleneomsorg der barnet er født prematurt',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FarMedmorAleneomsorgPrematurtFødtBarn.parameters.msw);
-            render(
-                <FarMedmorAleneomsorgPrematurtFødtBarn
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await FarMedmorAleneomsorgPrematurtFødtBarn.run({
+                args: {
+                    ...FarMedmorAleneomsorgPrematurtFødtBarn.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('54 uker og 3 dager til deg')).toBeInTheDocument();
             expect(
@@ -653,7 +651,7 @@ describe('Fordeling - FarMedmorAleneomsorgPrematurtFødtBarn', () => {
                     'Siden du har fått barn før 1. oktober 2021, må du bruke foreldrepengeperioden din sammenhengende eller søke om utsettelse.',
                 ),
             ).not.toBeInTheDocument();
-        }),
+        },
     );
 });
 describe('Fordeling - FarMedmorAleneomsorgAdopsjonFireBarn', () => {
@@ -662,14 +660,14 @@ describe('Fordeling - FarMedmorAleneomsorgAdopsjonFireBarn', () => {
 
     it(
         'skal vise riktig informasjon til far med aleneomsorg der barna er adopterte',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FarMedmorAleneomsorgAdopsjonFireBarn.parameters.msw);
-            render(
-                <FarMedmorAleneomsorgAdopsjonFireBarn
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await FarMedmorAleneomsorgAdopsjonFireBarn.run({
+                args: {
+                    ...FarMedmorAleneomsorgAdopsjonFireBarn.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('92 uker til deg')).toBeInTheDocument();
             expect(screen.getAllByText('92 uker', { exact: false })).toHaveLength(2);
@@ -679,22 +677,22 @@ describe('Fordeling - FarMedmorAleneomsorgAdopsjonFireBarn', () => {
                     'Siden du har fått barn før 1. oktober 2021, må du bruke foreldrepengeperioden din sammenhengende eller søke om utsettelse.',
                 ),
             ).toBeInTheDocument();
-        }),
+        },
     );
 
     it(
         'skal ikke kunne starte foreldrepengene før adopsjonsdatoen',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FarMedmorAleneomsorgAdopsjonFireBarn.parameters.msw);
-            const utils = render(
-                <FarMedmorAleneomsorgAdopsjonFireBarn
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await FarMedmorAleneomsorgAdopsjonFireBarn.run({
+                args: {
+                    ...FarMedmorAleneomsorgAdopsjonFireBarn.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
             await userEvent.type(oppstart, '20.08.2021');
             fireEvent.blur(oppstart);
 
@@ -703,7 +701,7 @@ describe('Fordeling - FarMedmorAleneomsorgAdopsjonFireBarn', () => {
             expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 23.08.2021.')).toHaveLength(
                 2,
             );
-        }),
+        },
     );
 });
 
@@ -713,14 +711,14 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
 
     it(
         'skal vise riktig informasjon til mor med delt uttak der barnet er født prematurt',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorDeltUttakEttBarnPrematurFødsel.parameters.msw);
-            const utils = render(
-                <MorDeltUttakEttBarnPrematurFødsel
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorDeltUttakEttBarnPrematurFødsel.run({
+                args: {
+                    ...MorDeltUttakEttBarnPrematurFødsel.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('Fødsel')).toBeInTheDocument();
             expect(screen.getByText('Din del')).toBeInTheDocument();
@@ -762,7 +760,7 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
             expect(screen.queryByText(/Tre uker før fødsel fra/)).not.toBeInTheDocument();
 
             await userEvent.click(screen.getByText('Jeg vil ha hele fellesperioden'));
-            const oppstart = utils.getByLabelText('Når vil du starte permisjonen din med foreldrepenger?');
+            const oppstart = screen.getByLabelText('Når vil du starte permisjonen din med foreldrepenger?');
             await userEvent.type(oppstart, '21.09.2023');
             expect(screen.getByText('På fødselsdato')).toBeInTheDocument();
             expect(screen.getByText('Du mister 3 uker.')).toBeInTheDocument();
@@ -771,19 +769,19 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
             await userEvent.click(screen.getByText('Neste steg'));
             expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
             expect(gåTilNesteSide).toHaveBeenCalled();
-        }),
+        },
     );
 
     it(
         'skal ikke kunne gå videre med ikke utfylt informasjon',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorDeltUttakEttBarnPrematurFødsel.parameters.msw);
-            render(
-                <MorDeltUttakEttBarnPrematurFødsel
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorDeltUttakEttBarnPrematurFødsel.run({
+                args: {
+                    ...MorDeltUttakEttBarnPrematurFødsel.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
@@ -792,131 +790,131 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
             await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getAllByText('Du må oppgi en lengde på fellesperioden din.')).toHaveLength(2);
-        }),
+        },
     );
 
     it(
         'skal ikke kunne skrive inn tekst for antall uker hun ønsker av fellesperioden',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorDeltUttakEttBarnPrematurFødsel.parameters.msw);
-            const utils = render(
-                <MorDeltUttakEttBarnPrematurFødsel
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorDeltUttakEttBarnPrematurFødsel.run({
+                args: {
+                    ...MorDeltUttakEttBarnPrematurFødsel.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha')).toBeInTheDocument();
             await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
-            const ukerInput = utils.getByLabelText('Uker');
+            const ukerInput = screen.getByLabelText('Uker');
             await userEvent.type(ukerInput, 'test');
             fireEvent.blur(ukerInput);
             await userEvent.click(screen.getByText('Neste steg'));
             expect(
                 screen.getAllByText('Antall uker du ønsker å ha av fellesperioden må være et heltall større enn 0.'),
             ).toHaveLength(2);
-        }),
+        },
     );
 
     it(
         'skal ikke kunne skrive inn desimaltall for antall uker hun ønsker av fellesperioden',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorDeltUttakEttBarnPrematurFødsel.parameters.msw);
-            const utils = render(
-                <MorDeltUttakEttBarnPrematurFødsel
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorDeltUttakEttBarnPrematurFødsel.run({
+                args: {
+                    ...MorDeltUttakEttBarnPrematurFødsel.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha')).toBeInTheDocument();
             await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
-            const ukerInput = utils.getByLabelText('Uker');
+            const ukerInput = screen.getByLabelText('Uker');
             await userEvent.type(ukerInput, '1,5');
             fireEvent.blur(ukerInput);
             await userEvent.click(screen.getByText('Neste steg'));
             expect(
                 screen.getAllByText('Antall uker du ønsker å ha av fellesperioden må være et heltall større enn 0.'),
             ).toHaveLength(2);
-        }),
+        },
     );
 
     it(
         'skal ikke kunne skrive inn for mange uker for antall uker hun ønsker av fellesperioden',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorDeltUttakEttBarnPrematurFødsel.parameters.msw);
-            const utils = render(
-                <MorDeltUttakEttBarnPrematurFødsel
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorDeltUttakEttBarnPrematurFødsel.run({
+                args: {
+                    ...MorDeltUttakEttBarnPrematurFødsel.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha')).toBeInTheDocument();
             await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
-            const ukerInput = utils.getByLabelText('Uker');
+            const ukerInput = screen.getByLabelText('Uker');
             await userEvent.type(ukerInput, '21');
             fireEvent.blur(ukerInput);
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getAllByText('Fellesperioden kan være maksimalt 20 uker lang.')).toHaveLength(2);
-        }),
+        },
     );
 
     it(
         'skal ikke kunne skrive inn et negativt tall for antall uker hun ønsker av fellesperioden',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorDeltUttakEttBarnPrematurFødsel.parameters.msw);
-            const utils = render(
-                <MorDeltUttakEttBarnPrematurFødsel
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorDeltUttakEttBarnPrematurFødsel.run({
+                args: {
+                    ...MorDeltUttakEttBarnPrematurFødsel.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha')).toBeInTheDocument();
             await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
-            const ukerInput = utils.getByLabelText('Uker');
+            const ukerInput = screen.getByLabelText('Uker');
             await userEvent.type(ukerInput, '-1');
             fireEvent.blur(ukerInput);
             await userEvent.click(screen.getByText('Neste steg'));
             expect(
                 screen.getAllByText('Antall uker du ønsker å ha av fellesperioden må være et heltall større enn 0.'),
             ).toHaveLength(2);
-        }),
+        },
     );
 
     it(
         'skal få figur over fordeling når hun velger gyldig antall uker hun ønsker av fellesperioden',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorDeltUttakEttBarnPrematurFødsel.parameters.msw);
-            const utils = render(
-                <MorDeltUttakEttBarnPrematurFødsel
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorDeltUttakEttBarnPrematurFødsel.run({
+                args: {
+                    ...MorDeltUttakEttBarnPrematurFødsel.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha')).toBeInTheDocument();
             await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
             expect(screen.getByText('Hvor mye av fellesperioden skal du ha?')).toBeInTheDocument();
-            const ukerInput = utils.getByLabelText('Uker');
+            const ukerInput = screen.getByLabelText('Uker');
             await userEvent.type(ukerInput, '3');
             fireEvent.blur(ukerInput);
             expect(screen.getByText('3 uker til deg')).toBeInTheDocument();
             expect(screen.getByText('17 uker igjen')).toBeInTheDocument();
-        }),
+        },
     );
 
     it(
         'skal få informasjon når hun ønsker å hoppe over fordeling av fellesperioden',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorDeltUttakEttBarnPrematurFødsel.parameters.msw);
-            render(
-                <MorDeltUttakEttBarnPrematurFødsel
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorDeltUttakEttBarnPrematurFødsel.run({
+                args: {
+                    ...MorDeltUttakEttBarnPrematurFødsel.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha')).toBeInTheDocument();
             await userEvent.click(screen.getByText('Jeg ønsker ikke å legge til fellesperiode nå'));
@@ -926,7 +924,7 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
                     { exact: false },
                 ),
             ).toBeInTheDocument();
-        }),
+        },
     );
 });
 
@@ -936,32 +934,32 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
 
     it(
         'skal vise input for dager med fellesperiode når bruker svarer at de vil velge fordeling av fellesperioden',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.parameters.msw);
-            render(
-                <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.run({
+                args: {
+                    ...MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
             await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
             expect(screen.getByText('Hvor mye av fellesperioden skal du ha?')).toBeInTheDocument();
             expect(screen.getByText('Uker')).toBeInTheDocument();
             expect(screen.getByText('Dager')).toBeInTheDocument();
-        }),
+        },
     );
     it(
         'skal ikke kunne gå videre uten å oppgi antall uker eller dager av fellesperioden',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.parameters.msw);
-            const utils = render(
-                <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.run({
+                args: {
+                    ...MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
             await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
@@ -969,162 +967,162 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
             expect(screen.getAllByText('Du må oppgi en lengde på fellesperioden din.')).toHaveLength(3);
-            const dagerInput = utils.getByLabelText('Dager');
+            const dagerInput = screen.getByLabelText('Dager');
             await userEvent.type(dagerInput, '1');
-        }),
+        },
     );
     it(
         'skal kunne gå videre uten å oppgi antall uker hvis man oppgir dager i fordelingen av fellesperioden',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.parameters.msw);
-            const utils = render(
-                <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.run({
+                args: {
+                    ...MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
             await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
             expect(screen.getByText('Hvor mye av fellesperioden skal du ha?')).toBeInTheDocument();
-            const dagerInput = utils.getByLabelText('Dager');
+            const dagerInput = screen.getByLabelText('Dager');
             await userEvent.type(dagerInput, '1');
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.queryByText('Du må oppgi en lengde på fellesperioden din.')).not.toBeInTheDocument();
-        }),
+        },
     );
     it(
         'skal kunne gå videre uten å oppgi antall dager hvis man oppgir uker i fordelingen av fellesperioden',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.parameters.msw);
-            const utils = render(
-                <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.run({
+                args: {
+                    ...MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
             await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
             expect(screen.getByText('Hvor mye av fellesperioden skal du ha?')).toBeInTheDocument();
-            const ukerInput = utils.getByLabelText('Uker');
+            const ukerInput = screen.getByLabelText('Uker');
             await userEvent.type(ukerInput, '2');
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.queryByText('Du må oppgi en lengde på fellesperioden din.')).not.toBeInTheDocument();
-        }),
+        },
     );
     it(
         'skal ikke kunne oppgi desimaltall som antall dager',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.parameters.msw);
-            const utils = render(
-                <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.run({
+                args: {
+                    ...MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
             await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
             expect(screen.getByText('Hvor mye av fellesperioden skal du ha?')).toBeInTheDocument();
-            const dagerInput = utils.getByLabelText('Dager');
+            const dagerInput = screen.getByLabelText('Dager');
             await userEvent.type(dagerInput, '1,4');
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
             expect(
                 screen.getAllByText('Antall dager du ønsker å ha av fellesperioden må være et heltall større enn 0.'),
             ).toHaveLength(2);
-        }),
+        },
     );
     it(
         'skal ikke kunne oppgi tekst som antall dager',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.parameters.msw);
-            const utils = render(
-                <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.run({
+                args: {
+                    ...MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
             await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
             expect(screen.getByText('Hvor mye av fellesperioden skal du ha?')).toBeInTheDocument();
-            const dagerInput = utils.getByLabelText('Dager');
+            const dagerInput = screen.getByLabelText('Dager');
             await userEvent.type(dagerInput, 'to');
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
             expect(
                 screen.getAllByText('Antall dager du ønsker å ha av fellesperioden må være et heltall større enn 0.'),
             ).toHaveLength(2);
-        }),
+        },
     );
     it(
         'skal ikke kunne oppgi negativt tall som antall dager',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.parameters.msw);
-            const utils = render(
-                <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.run({
+                args: {
+                    ...MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
             await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
             expect(screen.getByText('Hvor mye av fellesperioden skal du ha?')).toBeInTheDocument();
-            const dagerInput = utils.getByLabelText('Dager');
+            const dagerInput = screen.getByLabelText('Dager');
             await userEvent.type(dagerInput, '-2');
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
             expect(
                 screen.getAllByText('Antall dager du ønsker å ha av fellesperioden må være et heltall større enn 0.'),
             ).toHaveLength(2);
-        }),
+        },
     );
     it(
         'skal ikke kunne overskride antall dager  tilgjengelig',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.parameters.msw);
-            const utils = render(
-                <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.run({
+                args: {
+                    ...MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
             await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
             expect(screen.getByText('Hvor mye av fellesperioden skal du ha?')).toBeInTheDocument();
-            const dagerInput = utils.getByLabelText('Dager');
+            const dagerInput = screen.getByLabelText('Dager');
             await userEvent.type(dagerInput, '102');
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
             expect(screen.getAllByText('Fellesperioden kan være maksimalt 20 uker og 1 dag lang.')).toHaveLength(2);
-        }),
+        },
     );
     it(
         'skal ikke kunne overskride antall uker og dager tilgjengelig',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.parameters.msw);
-            const utils = render(
-                <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.run({
+                args: {
+                    ...MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
             await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
             expect(screen.getByText('Hvor mye av fellesperioden skal du ha?')).toBeInTheDocument();
-            const dagerInput = utils.getByLabelText('Dager');
+            const dagerInput = screen.getByLabelText('Dager');
             await userEvent.type(dagerInput, '92');
-            const ukerInput = utils.getByLabelText('Uker');
+            const ukerInput = screen.getByLabelText('Uker');
             await userEvent.type(ukerInput, '2');
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
             expect(screen.getAllByText('Fellesperioden kan være maksimalt 20 uker og 1 dag lang.')).toHaveLength(3);
-        }),
+        },
     );
 });
 
@@ -1134,14 +1132,14 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
 
     it(
         'skal vise riktig informasjon til mor med delt uttak som søker på termin',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorDeltUttakEttBarnTermin.parameters.msw);
-            const utils = render(
-                <MorDeltUttakEttBarnTermin
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorDeltUttakEttBarnTermin.run({
+                args: {
+                    ...MorDeltUttakEttBarnTermin.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.queryByText('Fødsel')).not.toBeInTheDocument();
             expect(screen.getByText('Termin')).toBeInTheDocument();
@@ -1182,7 +1180,7 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
 
             expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
             await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
             await userEvent.type(oppstart, '21.06.2024');
             fireEvent.blur(oppstart);
             expect(screen.getByText('På termindato')).toBeInTheDocument();
@@ -1193,42 +1191,42 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
             await userEvent.click(screen.getByText('Neste steg'));
             expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
             expect(gåTilNesteSide).toHaveBeenCalled();
-        }),
+        },
     );
     it(
         'skal vise riktig informasjon til mor ønsker å starte dagen før termin',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorDeltUttakEttBarnTermin.parameters.msw);
-            const utils = render(
-                <MorDeltUttakEttBarnTermin
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorDeltUttakEttBarnTermin.run({
+                args: {
+                    ...MorDeltUttakEttBarnTermin.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
             expect(screen.getAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             await userEvent.type(oppstart, '20.06.2024');
             fireEvent.blur(oppstart);
             expect(screen.getByText('1 dag før termin.')).toBeInTheDocument();
             expect(screen.getByText('Du mister 2 uker og 4 dager.')).toBeInTheDocument();
-        }),
+        },
     );
 
     it(
         'skal vise riktig informasjon til mor skal bruke 1 dag av fellesperioden',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorDeltUttakEttBarnTermin.parameters.msw);
-            const utils = render(
-                <MorDeltUttakEttBarnTermin
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorDeltUttakEttBarnTermin.run({
+                args: {
+                    ...MorDeltUttakEttBarnTermin.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
             await userEvent.type(oppstart, '30.05.2024');
             fireEvent.blur(oppstart);
             expect(screen.getByText('3 uker og 1 dag før termin.')).toBeInTheDocument();
@@ -1236,42 +1234,42 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
             await userEvent.click(screen.getByText('Neste steg'));
             expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
             expect(gåTilNesteSide).toHaveBeenCalled();
-        }),
+        },
     );
     it(
         'kan ikke angi for sen oppstartsdato',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorDeltUttakEttBarnTermin.parameters.msw);
-            const utils = render(
-                <MorDeltUttakEttBarnTermin
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorDeltUttakEttBarnTermin.run({
+                args: {
+                    ...MorDeltUttakEttBarnTermin.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
             await userEvent.type(oppstart, '22.06.2024');
             fireEvent.blur(oppstart);
 
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
             expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være senest 21.06.2024.')).toHaveLength(2);
-        }),
+        },
     );
     it(
         'kan ikke angi for tidlig oppstartsdato',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorDeltUttakEttBarnTermin.parameters.msw);
-            const utils = render(
-                <MorDeltUttakEttBarnTermin
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorDeltUttakEttBarnTermin.run({
+                args: {
+                    ...MorDeltUttakEttBarnTermin.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
             await userEvent.type(oppstart, '28.03.2024');
             fireEvent.blur(oppstart);
 
@@ -1280,7 +1278,7 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
             expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 29.03.2024.')).toHaveLength(
                 2,
             );
-        }),
+        },
     );
 });
 
@@ -1290,14 +1288,14 @@ describe('Fordeling - MorDeltUttakTvillingerFødt', () => {
 
     it(
         'skal vise riktig informasjon til mor med delt uttak som søker på fødsel av tvillinger',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorDeltUttakTvillingerFødt.parameters.msw);
-            render(
-                <MorDeltUttakTvillingerFødt
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorDeltUttakTvillingerFødt.run({
+                args: {
+                    ...MorDeltUttakTvillingerFødt.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.queryByText('Termin')).not.toBeInTheDocument();
             expect(screen.getByText('Fødsel')).toBeInTheDocument();
@@ -1326,7 +1324,7 @@ describe('Fordeling - MorDeltUttakTvillingerFødt', () => {
 
             expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
             expect(screen.getByText(/Tre uker før fødsel fra/)).toBeInTheDocument();
-        }),
+        },
     );
 });
 
@@ -1336,14 +1334,14 @@ describe('Fordeling - MorDeltUttakFarSøkteMorsKvoteOgFellesperiode', () => {
 
     it(
         'skal vise riktig informasjon til mor med delt uttak som søker på termin etter far',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorDeltUttakFarSøkteMorsKvoteOgFellesperiode.parameters.msw);
-            render(
-                <MorDeltUttakFarSøkteMorsKvoteOgFellesperiode
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorDeltUttakFarSøkteMorsKvoteOgFellesperiode.run({
+                args: {
+                    ...MorDeltUttakFarSøkteMorsKvoteOgFellesperiode.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.queryByText('Fødsel')).not.toBeInTheDocument();
             expect(screen.getByText('Termin')).toBeInTheDocument();
@@ -1366,7 +1364,7 @@ describe('Fordeling - MorDeltUttakFarSøkteMorsKvoteOgFellesperiode', () => {
 
             await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
             expect(screen.getByText('Hvis barnet blir født før svangerskapsuke 33')).toBeInTheDocument();
-        }),
+        },
     );
 });
 
@@ -1376,14 +1374,14 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021', () => {
 
     it(
         'skal vise riktig informasjon til far med delt uttak som søker på et barn født før 1 okt 2021',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021.parameters.msw);
-            render(
-                <FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021.run({
+                args: {
+                    ...FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('Fødsel')).toBeInTheDocument();
             expect(screen.getByText('Hannes del')).toBeInTheDocument();
@@ -1416,28 +1414,28 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021', () => {
             expect(
                 screen.getByText('Hvis du blir syk, eller hvis du eller barnet blir innlagt på helseinstitusjon'),
             ).toBeInTheDocument();
-        }),
+        },
     );
 
     it(
         'skal ikke kunne begynne uttaket før fødsel',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021.parameters.msw);
-            const utils = render(
-                <FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021.run({
+                args: {
+                    ...FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            const oppstart = utils.getByLabelText('Når vil du starte permisjonen din med foreldrepenger?');
+            const oppstart = screen.getByLabelText('Når vil du starte permisjonen din med foreldrepenger?');
             await userEvent.type(oppstart, '20.07.2021');
             fireEvent.blur(oppstart);
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 21.07.2021.')).toHaveLength(
                 2,
             );
-        }),
+        },
     );
 });
 
@@ -1447,14 +1445,14 @@ describe('Fordeling - FarMedmorSøkerDeltUttakTrillingerFødtFørWLB', () => {
 
     it(
         'skal vise riktig informasjon til far med delt uttak som søker på trillinger født før 2 aug. 2022',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FarMedmorSøkerDeltUttakTrillingerFødtFørWLB.parameters.msw);
-            render(
-                <FarMedmorSøkerDeltUttakTrillingerFødtFørWLB
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await FarMedmorSøkerDeltUttakTrillingerFødtFørWLB.run({
+                args: {
+                    ...FarMedmorSøkerDeltUttakTrillingerFødtFørWLB.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('Fødsel')).toBeInTheDocument();
             expect(screen.getByText('Hannes del')).toBeInTheDocument();
@@ -1475,28 +1473,28 @@ describe('Fordeling - FarMedmorSøkerDeltUttakTrillingerFødtFørWLB', () => {
 
             expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
             expect(screen.queryByText('På fødselsdato')).not.toBeInTheDocument();
-        }),
+        },
     );
 
     it(
         'skal ikke kunne begynne uttaket før fødsel',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FarMedmorSøkerDeltUttakTrillingerFødtFørWLB.parameters.msw);
-            const utils = render(
-                <FarMedmorSøkerDeltUttakTrillingerFødtFørWLB
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await FarMedmorSøkerDeltUttakTrillingerFødtFørWLB.run({
+                args: {
+                    ...FarMedmorSøkerDeltUttakTrillingerFødtFørWLB.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-            const oppstart = utils.getByLabelText('Når vil du starte permisjonen din med foreldrepenger?');
+            const oppstart = screen.getByLabelText('Når vil du starte permisjonen din med foreldrepenger?');
             await userEvent.type(oppstart, '20.07.2022');
             fireEvent.blur(oppstart);
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 21.07.2022.')).toHaveLength(
                 2,
             );
-        }),
+        },
     );
 });
 
@@ -1506,14 +1504,14 @@ describe('Fordeling - FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB', () => {
 
     it(
         'skal vise riktig informasjon til far med delt uttak som søker på trillinger født før 2 aug. 2022',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB.parameters.msw);
-            render(
-                <FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB.run({
+                args: {
+                    ...FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('15 uker til deg')).toBeInTheDocument();
             expect(screen.getByText('2 av disse ukene')).toBeInTheDocument();
@@ -1531,27 +1529,27 @@ describe('Fordeling - FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB', () => {
                 screen.getByText('Jeg vil ha to uker med foreldrepenger som starter på termindato.', { exact: false }),
             ).toBeInTheDocument();
             expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
-        }),
+        },
     );
 
     it(
         'skal ikke kunne begynne uttaket før 2 uker før termin',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB.parameters.msw);
-            const utils = render(
-                <FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB.run({
+                args: {
+                    ...FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
             await userEvent.type(oppstart, '05.07.2024');
             fireEvent.blur(oppstart);
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getAllByText(/Oppstartsdato for foreldrepenger kan være tidligst/)).toHaveLength(2);
-        }),
+        },
     );
 });
 
@@ -1565,15 +1563,15 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
 
     it(
         'skal vise riktig informasjon til far med delt uttak der barnet er født prematurt',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             MockDate.set(new Date('2024-02-25'));
-            setHandlers(FarMedmorSøkerDeltUttakEttBarnFødtPrematurt.parameters.msw);
-            render(
-                <FarMedmorSøkerDeltUttakEttBarnFødtPrematurt
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await FarMedmorSøkerDeltUttakEttBarnFødtPrematurt.run({
+                args: {
+                    ...FarMedmorSøkerDeltUttakEttBarnFødtPrematurt.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('20 uker kan deles, fellesperiode')).toBeInTheDocument();
             expect(screen.getByText('12 uker og 4 dager av disse', { exact: false })).toBeInTheDocument();
@@ -1601,30 +1599,30 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
                 }),
             ).toBeInTheDocument();
             expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
-        }),
+        },
     );
 
     it(
         'skal ikke kunne begynne uttaket før fødselsdato',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             MockDate.set(new Date('2024-02-25'));
-            setHandlers(FarMedmorSøkerDeltUttakEttBarnFødtPrematurt.parameters.msw);
-            const utils = render(
-                <FarMedmorSøkerDeltUttakEttBarnFødtPrematurt
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await FarMedmorSøkerDeltUttakEttBarnFødtPrematurt.run({
+                args: {
+                    ...FarMedmorSøkerDeltUttakEttBarnFødtPrematurt.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
             await userEvent.type(oppstart, '20.02.2024');
             fireEvent.blur(oppstart);
             await userEvent.click(screen.getByText('Neste steg'));
             expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 21.02.2024.')).toHaveLength(
                 2,
             );
-        }),
+        },
     );
 });
 
@@ -1638,15 +1636,15 @@ describe('Fordeling - FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode', () => 
 
     it(
         'skal vise riktig informasjon til far søker etter mor og mor har tatt ut deler av fellesperiode og hans kvote',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             MockDate.set(new Date('2024-02-25'));
-            setHandlers(FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode.parameters.msw);
-            render(
-                <FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode.run({
+                args: {
+                    ...FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('15 + 3 uker til Hanne')).toBeInTheDocument();
             expect(screen.getByText('16 uker kan deles, fellesperiode')).toBeInTheDocument();
@@ -1673,7 +1671,7 @@ describe('Fordeling - FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode', () => 
             expect(screen.getByText('Da barnet ble født')).toBeInTheDocument();
             expect(screen.getByText('Første dag etter Hanne, 13. august 2024')).toBeInTheDocument();
             expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
-        }),
+        },
     );
 });
 describe('Fordeling - MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80', () => {
@@ -1682,20 +1680,20 @@ describe('Fordeling - MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgra
 
     it(
         'skal vise riktige oppstartsvalg til mor som søker adopsjon for tre barn adoptert fra utlandet før 1 okt 2021',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80.parameters.msw);
-            render(
-                <MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80.run({
+                args: {
+                    ...MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
             expect(screen.getByText('På omsorgsovertakelsen, 21. februar 2021')).toBeInTheDocument();
             expect(screen.getByText('På ankomstdagen til Norge, 21. mai 2021')).toBeInTheDocument();
             expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
-        }),
+        },
     );
 });
 
@@ -1705,14 +1703,14 @@ describe('Fordeling - MorSøkerFarHarRettIEØSTerminDekningsgrad80', () => {
 
     it(
         'skal vise riktig EØS informasjon til mor som søker med far som har rett i EØS, dekningsgrad 80',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(MorSøkerFarHarRettIEØSTerminDekningsgrad80.parameters.msw);
-            render(
-                <MorSøkerFarHarRettIEØSTerminDekningsgrad80
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await MorSøkerFarHarRettIEØSTerminDekningsgrad80.run({
+                args: {
+                    ...MorSøkerFarHarRettIEØSTerminDekningsgrad80.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('19 + 3 uker til deg')).toBeInTheDocument();
             expect(screen.getByText("18 uker som påvirkes av Hans' foreldrepenger")).toBeInTheDocument();
@@ -1726,7 +1724,7 @@ describe('Fordeling - MorSøkerFarHarRettIEØSTerminDekningsgrad80', () => {
                     exact: false,
                 }),
             ).toBeInTheDocument();
-        }),
+        },
     );
 });
 
@@ -1736,14 +1734,14 @@ describe('Fordeling - FarMedmorSøkerMorHarRettIEØSAdopsjon', () => {
 
     it(
         'skal vise riktig EØS informasjon til far som søker på adopsjon og med mor som har rett i EØS',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FarMedmorSøkerMorHarRettIEØSAdopsjon.parameters.msw);
-            render(
-                <FarMedmorSøkerMorHarRettIEØSAdopsjon
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await FarMedmorSøkerMorHarRettIEØSAdopsjon.run({
+                args: {
+                    ...FarMedmorSøkerMorHarRettIEØSAdopsjon.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('19 uker til deg')).toBeInTheDocument();
             expect(
@@ -1760,7 +1758,7 @@ describe('Fordeling - FarMedmorSøkerMorHarRettIEØSAdopsjon', () => {
                     exact: false,
                 }),
             ).toBeInTheDocument();
-        }),
+        },
     );
 });
 describe('Fordeling - BareMorHarRettTermin', () => {
@@ -1769,14 +1767,14 @@ describe('Fordeling - BareMorHarRettTermin', () => {
 
     it(
         'skal vise riktig informasjon til mor søker på termin, kun mor har rett',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(BareMorHarRettTermin.parameters.msw);
-            render(
-                <BareMorHarRettTermin
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await BareMorHarRettTermin.run({
+                args: {
+                    ...BareMorHarRettTermin.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('43 + 3 uker til deg')).toBeInTheDocument();
             expect(screen.getByText('6 uker')).toBeInTheDocument();
@@ -1786,7 +1784,7 @@ describe('Fordeling - BareMorHarRettTermin', () => {
             expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
             expect(screen.getByText(/Tre uker før fødsel fra/)).toBeInTheDocument();
             expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
-        }),
+        },
     );
 });
 describe('Fordeling - BareMorHarRettAdopsjon', () => {
@@ -1795,14 +1793,14 @@ describe('Fordeling - BareMorHarRettAdopsjon', () => {
 
     it(
         'skal vise riktig informasjon til mor søker på adopsjon, kun mor har rett',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(BareMorHarRettAdopsjon.parameters.msw);
-            render(
-                <BareMorHarRettAdopsjon
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await BareMorHarRettAdopsjon.run({
+                args: {
+                    ...BareMorHarRettAdopsjon.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('46 uker til deg')).toBeInTheDocument();
             expect(
@@ -1825,7 +1823,7 @@ describe('Fordeling - BareMorHarRettAdopsjon', () => {
             expect(
                 screen.queryByText('Hvis du blir syk, eller hvis du eller barnet blir innlagt på helseinstitusjon'),
             ).not.toBeInTheDocument();
-        }),
+        },
     );
 });
 describe('Fordeling - BareFarHarRettOgMorErUførTermin4Barn', () => {
@@ -1834,14 +1832,14 @@ describe('Fordeling - BareFarHarRettOgMorErUførTermin4Barn', () => {
 
     it(
         'skal vise riktig informasjon til far søker på termin, kun far har rett, mor er ufør, fire barn',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(BareFarHarRettOgMorErUførTermin4Barn.parameters.msw);
-            render(
-                <BareFarHarRettOgMorErUførTermin4Barn
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await BareFarHarRettOgMorErUførTermin4Barn.run({
+                args: {
+                    ...BareFarHarRettOgMorErUførTermin4Barn.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('106 uker til deg')).toBeInTheDocument();
             expect(screen.getByText('75 uker', { exact: false })).toBeInTheDocument();
@@ -1876,7 +1874,7 @@ describe('Fordeling - BareFarHarRettOgMorErUførTermin4Barn', () => {
             expect(
                 screen.queryByText('Hvis du blir syk, eller hvis du eller barnet blir innlagt på helseinstitusjon'),
             ).not.toBeInTheDocument();
-        }),
+        },
     );
 });
 
@@ -1890,15 +1888,15 @@ describe('Fordeling - BareFarHarRettOgMorErIkkeUførFødtBarn', () => {
 
     it(
         'skal vise riktig informasjon til far søker på fødsel, kun far har rett, mor er ikke ufør, ett barn',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             MockDate.set(new Date('2024-02-21'));
-            setHandlers(BareFarHarRettOgMorErIkkeUførFødtBarn.parameters.msw);
-            render(
-                <BareFarHarRettOgMorErIkkeUførFødtBarn
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await BareFarHarRettOgMorErIkkeUførFødtBarn.run({
+                args: {
+                    ...BareFarHarRettOgMorErIkkeUførFødtBarn.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('50 uker til deg')).toBeInTheDocument();
             expect(screen.getByText('8 uker')).toBeInTheDocument();
@@ -1918,22 +1916,22 @@ describe('Fordeling - BareFarHarRettOgMorErIkkeUførFødtBarn', () => {
             expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
             expect(screen.getByText('Da barnet ble født')).toBeInTheDocument();
             expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
-        }),
+        },
     );
     it(
         'kan ikke starte tidligere enn 2 uker før fødsel',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             MockDate.set(new Date('2024-02-21'));
-            setHandlers(BareFarHarRettOgMorErIkkeUførFødtBarn.parameters.msw);
-            const utils = render(
-                <BareFarHarRettOgMorErIkkeUførFødtBarn
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await BareFarHarRettOgMorErIkkeUførFødtBarn.run({
+                args: {
+                    ...BareFarHarRettOgMorErIkkeUførFødtBarn.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
             await userEvent.type(oppstart, '05.01.2024');
             fireEvent.blur(oppstart);
 
@@ -1942,7 +1940,7 @@ describe('Fordeling - BareFarHarRettOgMorErIkkeUførFødtBarn', () => {
             expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 08.01.2024.')).toHaveLength(
                 2,
             );
-        }),
+        },
     );
 });
 
@@ -1956,14 +1954,14 @@ describe('Fordeling - BareFarHarRettTvillingerFødtFør1Okt2021', () => {
 
     it(
         'skal vise riktig informasjon til far, kun far har rett, tvillinger født før 1 okt 2021',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(BareFarHarRettTvillingerFødtFør1Okt2021.parameters.msw);
-            render(
-                <BareFarHarRettTvillingerFødtFør1Okt2021
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await BareFarHarRettTvillingerFødtFør1Okt2021.run({
+                args: {
+                    ...BareFarHarRettTvillingerFødtFør1Okt2021.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('57 uker til deg')).toBeInTheDocument();
             expect(
@@ -1978,22 +1976,22 @@ describe('Fordeling - BareFarHarRettTvillingerFødtFør1Okt2021', () => {
                 ),
             ).toBeInTheDocument();
             expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
-        }),
+        },
     );
     it(
         'kan ikke starte tidligere enn to uker før fødsel',
-        mswWrapper(async ({ setHandlers }) => {
+        async () => {
             MockDate.set(new Date('2024-02-20'));
-            setHandlers(BareFarHarRettOgMorErIkkeUførFødtBarn.parameters.msw);
-            const utils = render(
-                <BareFarHarRettOgMorErIkkeUførFødtBarn
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await BareFarHarRettOgMorErIkkeUførFødtBarn.run({
+                args: {
+                    ...BareFarHarRettOgMorErIkkeUførFødtBarn.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
             await userEvent.type(oppstart, '05.01.2024');
             fireEvent.blur(oppstart);
             await userEvent.click(screen.getByText('Neste steg'));
@@ -2001,7 +1999,7 @@ describe('Fordeling - BareFarHarRettTvillingerFødtFør1Okt2021', () => {
             expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 08.01.2024.')).toHaveLength(
                 2,
             );
-        }),
+        },
     );
 });
 describe('Fordeling - BareFarHarRettAdopsjonMorErUfør', () => {
@@ -2010,35 +2008,35 @@ describe('Fordeling - BareFarHarRettAdopsjonMorErUfør', () => {
 
     it(
         'skal vise riktig informasjon til far, kun far har rett, tvillinger født før 1 okt 2021',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(BareFarHarRettAdopsjonMorErUfør.parameters.msw);
-            render(
-                <BareFarHarRettAdopsjonMorErUfør
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await BareFarHarRettAdopsjonMorErUfør.run({
+                args: {
+                    ...BareFarHarRettAdopsjonMorErUfør.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             expect(screen.getByText('40 uker til deg')).toBeInTheDocument();
             expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
             expect(screen.getByText('På omsorgsovertakelsen, 21. februar 2024')).toBeInTheDocument();
             expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
-        }),
+        },
     );
 
     it(
         'kan ikke starte tidligere enn adopsjonsdatoen',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(BareFarHarRettAdopsjonMorErUfør.parameters.msw);
-            const utils = render(
-                <BareFarHarRettAdopsjonMorErUfør
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+        async () => {
+            await BareFarHarRettAdopsjonMorErUfør.run({
+                args: {
+                    ...BareFarHarRettAdopsjonMorErUfør.args,
+                    gåTilNesteSide,
+                    mellomlagreSøknadOgNaviger,
+                },
+            });
             expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
             await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-            const oppstart = utils.getByLabelText('Hvilken dato vil du starte?');
+            const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
             await userEvent.type(oppstart, '20.02.2024');
             fireEvent.blur(oppstart);
 
@@ -2047,6 +2045,6 @@ describe('Fordeling - BareFarHarRettAdopsjonMorErUfør', () => {
             expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 21.02.2024.')).toHaveLength(
                 2,
             );
-        }),
+        },
     );
 });

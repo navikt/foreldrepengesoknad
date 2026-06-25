@@ -7,7 +7,6 @@ import dayjs from 'dayjs';
 import { AnnenForelder } from 'types/AnnenForelder';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './AnnenForelderSteg.stories';
 
@@ -496,30 +495,22 @@ describe('<AnnenForelderSteg>', () => {
         expect(screen.queryByText('Her kan far erklære farskap digitalt', { exact: false })).not.toBeInTheDocument();
     });
 
-    it(
-        'skal ikke spørre om annenpart har rett hvis annenpart har vedtak',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FarFødtBarnMorHarVedtak.parameters.msw);
-            render(<FarFødtBarnMorHarVedtak />);
+    it('skal ikke spørre om annenpart har rett hvis annenpart har vedtak', async () => {
+        await FarFødtBarnMorHarVedtak.run();
 
-            expect(await screen.findAllByText('Den andre forelderen')).toHaveLength(2);
-            await waitFor(() => {
-                expect(
-                    screen.queryByText('Har den andre forelderen rett til foreldrepenger i Norge?', { exact: false }),
-                ).not.toBeInTheDocument();
-            });
-        }),
-    );
-    it(
-        'skal spørre om annenpart har rett hvis annenpart har avslått vedtak',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FarFødtBarnMorHarAvslåttVedtak.parameters.msw);
-            render(<FarFødtBarnMorHarAvslåttVedtak />);
-
-            expect(await screen.findAllByText('Den andre forelderen')).toHaveLength(2);
+        expect(await screen.findAllByText('Den andre forelderen')).toHaveLength(2);
+        await waitFor(() => {
             expect(
-                await screen.findByText('Har den andre forelderen rett til foreldrepenger i Norge?', { exact: false }),
-            ).toBeInTheDocument();
-        }),
-    );
+                screen.queryByText('Har den andre forelderen rett til foreldrepenger i Norge?', { exact: false }),
+            ).not.toBeInTheDocument();
+        });
+    });
+    it('skal spørre om annenpart har rett hvis annenpart har avslått vedtak', async () => {
+        await FarFødtBarnMorHarAvslåttVedtak.run();
+
+        expect(await screen.findAllByText('Den andre forelderen')).toHaveLength(2);
+        expect(
+            await screen.findByText('Har den andre forelderen rett til foreldrepenger i Norge?', { exact: false }),
+        ).toBeInTheDocument();
+    });
 });
