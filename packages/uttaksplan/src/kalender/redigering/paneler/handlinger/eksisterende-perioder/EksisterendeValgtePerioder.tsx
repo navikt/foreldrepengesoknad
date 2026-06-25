@@ -411,12 +411,18 @@ const PeriodeKvoteType = ({
     periode: UttakPeriodeMedAntallDager;
     erMedmorDelAvSøknaden: boolean;
 }) => {
+    const {
+        foreldreInfo: { søker, rettighetType },
+    } = useUttaksplanData();
+
     const erIkkeEøsUttakPeriode = erVanligUttakPeriode(periode);
 
     const erAktivitetsfri =
         erIkkeEøsUttakPeriode &&
         (periode.kontoType === 'FORELDREPENGER' || periode.oppholdÅrsak === 'FORELDREPENGER_ANNEN_FORELDER') &&
         periode.morsAktivitet === 'IKKE_OPPGITT';
+
+    const bareFarMedmorHarRett = søker === 'FAR_MEDMOR' && rettighetType === 'BARE_SØKER_RETT';
 
     if (periode.kontoType === 'FORELDREPENGER_FØR_FØDSEL') {
         return (
@@ -454,6 +460,18 @@ const PeriodeKvoteType = ({
         return (
             <BodyShort>
                 <FormattedMessage id="RedigeringPanel.MedmorKvote" />
+            </BodyShort>
+        );
+    }
+    if (
+        (periode.kontoType === 'FORELDREPENGER' ||
+            (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'FORELDREPENGER_ANNEN_FORELDER')) &&
+        !erAktivitetsfri &&
+        bareFarMedmorHarRett
+    ) {
+        return (
+            <BodyShort>
+                <FormattedMessage id="RedigeringPanel.MedAktivitetskrav" />
             </BodyShort>
         );
     }

@@ -84,6 +84,7 @@ export const finnValgtePerioder = (
                     erVanligUttakPeriode(p) &&
                     erVanligUttakPeriode(curr) &&
                     p.forelder === curr.forelder &&
+                    p.morsAktivitet === curr.morsAktivitet &&
                     p.samtidigUttak === curr.samtidigUttak &&
                     p.gradering?.arbeidstidprosent === curr.gradering?.arbeidstidprosent &&
                     p.gradering?.aktivitet === curr.gradering?.aktivitet &&

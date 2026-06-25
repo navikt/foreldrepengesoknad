@@ -238,6 +238,7 @@
     "RedigeringPanel.EksisterendePerioder": "Valgte datoar inneheld {antall, select, 1 {ein eksisterande periode} other {eksisterande periodar}}:",
     "RedigeringPanel.MorHarForeldrepengerFørFødsel": "Foreldrepengar før fødsel",
     "RedigeringPanel.UtenAktivitetskrav": "Foreldrepengar uten aktivitetskrav",
+    "RedigeringPanel.MedAktivitetskrav": "Foreldrepengar med aktivitetskrav",
     "RedigeringPanel.Foreldrepenger": "Foreldrepengar",
     "RedigeringPanel.Fellesperiode": "Fellesperiode",
     "RedigeringPanel.MorKvote": "Mors kvote",
