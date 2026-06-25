@@ -119,6 +119,7 @@
     "omBarnet.antallBarn.adopsjon.født": "Hvor mange barn skal du adoptere?",
     "omBarnet.antallBarn.termin": "Hvor mange barn venter du?",
     "omBarnet.antallBarn.termin.far": "Hvor mange barn venter dere?",
+    "omBarnet.antallBarnSelect.label": "Antall barn",
     "omBarnet.fødselsdato": "Når ble barnet født?",
     "omBarnet.fødselsdato.flereBarn": "Når ble det eldste barnet født?",
     "omBarnet.fødselsdato.adopsjon.1": "Når er det første barnet født?",
