@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
 import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
@@ -31,6 +31,9 @@ describe('<SkjemaSteg>', () => {
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
         const fileInput = screen.getByLabelText('Last opp skjema for risiko og tilrettelegging i svangerskapet');
         await userEvent.upload(fileInput, file);
+
+        // Vent til opplastinga er ferdig (pending = false) før vi går vidare.
+        await waitFor(() => expect(screen.queryByText('Laster opp...')).not.toBeInTheDocument());
 
         await userEvent.click(screen.getByText('Neste steg'));
         expect(screen.queryByText('Du må laste opp minst ett dokument')).not.toBeInTheDocument();
@@ -103,6 +106,9 @@ describe('<SkjemaSteg>', () => {
         const file1 = new File(['hello'], 'hello.png', { type: 'image/png' });
         const fileInput = screen.getByLabelText('Last opp skjema for risiko og tilrettelegging i svangerskapet');
         await userEvent.upload(fileInput, file1);
+
+        // Vent til opplastinga er ferdig (pending = false) før vi går vidare.
+        await waitFor(() => expect(screen.queryByText('Laster opp...')).not.toBeInTheDocument());
 
         await userEvent.click(screen.getByText('Neste steg'));
 

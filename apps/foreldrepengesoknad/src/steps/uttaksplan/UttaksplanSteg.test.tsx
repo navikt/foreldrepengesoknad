@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { screen, within } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
 
@@ -50,6 +50,10 @@ describe('<UttaksplanSteg>', () => {
         expect(await screen.findByText('Ønsker du å fjerne alt som er lagt til?')).toBeInTheDocument();
         const modal = screen.getByRole('dialog');
         await userEvent.click(within(modal).getByText('Fjern alt'));
+
+        // Vent til modalen er heilt lukka. Medan ho animerer ut er bakgrunnen
+        // aria-hidden, så knappar/element bak modalen finst ikkje i tilgjengelegheitstreet.
+        await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -143,12 +147,18 @@ describe('<UttaksplanSteg>', () => {
         const fjernAltModal = screen.getByRole('dialog');
         await userEvent.click(within(fjernAltModal).getByText('Fjern alt'));
 
+        // Vent til 'Fjern alt'-modalen er heilt lukka før vi klikkar bakgrunnsknappen.
+        await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+
         // Klikk på 'Tilbakestill plan'
         await userEvent.click(screen.getByRole('button', { name: 'Tilbakestill plan' }));
         expect(await screen.findByText('Ønsker du å tilbakestille planen?')).toBeInTheDocument();
 
         // Avbryt lukker modalen uten å tilbakestille
         await userEvent.click(screen.getByText('Avbryt'));
+
+        // Vent til modalen er heilt lukka før vi sjekkar bakgrunnsknappen.
+        await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
 
         // Tilbakestill-knappen er fortsatt aktiv (planen er ikke tilbakestilt)
         expect(screen.getByRole('button', { name: 'Tilbakestill plan' })).not.toBeDisabled();
@@ -178,12 +188,18 @@ describe('<UttaksplanSteg>', () => {
         const fjernAltModal2 = screen.getByRole('dialog');
         await userEvent.click(within(fjernAltModal2).getByText('Fjern alt'));
 
+        // Vent til 'Fjern alt'-modalen er heilt lukka før vi klikkar bakgrunnsknappen.
+        await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+
         // Klikk på 'Tilbakestill plan'
         await userEvent.click(screen.getByRole('button', { name: 'Tilbakestill plan' }));
         expect(await screen.findByText('Ønsker du å tilbakestille planen?')).toBeInTheDocument();
 
         // Bekreft tilbakestilling
         await userEvent.click(screen.getByRole('button', { name: 'Tilbakestill' }));
+
+        // Vent til modalen er heilt lukka før vi sjekkar bakgrunnsknappen.
+        await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
 
         // Tilbakestill-knappen er nå deaktivert (planen er tilbakestilt til standardforslaget)
         expect(screen.getByRole('button', { name: 'Tilbakestill plan' })).toBeDisabled();
@@ -263,12 +279,18 @@ describe('<UttaksplanSteg>', () => {
         const fjernAltModal = screen.getByRole('dialog');
         await userEvent.click(within(fjernAltModal).getByText('Fjern alt'));
 
+        // Vent til 'Fjern alt'-modalen er heilt lukka før vi sjekkar bakgrunnsknappen.
+        await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+
         expect(screen.getByRole('button', { name: 'Tilbakestill plan' })).not.toBeDisabled();
 
         // Tilbakestill plan skal hente opp den overførte planen igjen
         await userEvent.click(screen.getByRole('button', { name: 'Tilbakestill plan' }));
         expect(await screen.findByText('Ønsker du å tilbakestille planen?')).toBeInTheDocument();
         await userEvent.click(screen.getByRole('button', { name: 'Tilbakestill' }));
+
+        // Vent til modalen er heilt lukka før vi sjekkar bakgrunnsknappen.
+        await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
 
         // Planen er tilbake til utgangspunktet, så "Tilbakestill plan" er deaktivert igjen
         expect(screen.getByRole('button', { name: 'Tilbakestill plan' })).toBeDisabled();

@@ -78,6 +78,10 @@ const createConfig = (setupFileDirName) => {
                     extends: true,
                     test: {
                         name: 'browser',
+                        // Headless chromium i CI er tregare enn jsdom. Gje litt høgare
+                        // timeout slik at userEvent-flytar (opplasting, skriving av
+                        // datoar, fleirstegs-flytar) rekk å fullføre.
+                        testTimeout: 30000,
                         exclude: [
                             '**/intl.test.ts',
                             '**/node_modules/**',
