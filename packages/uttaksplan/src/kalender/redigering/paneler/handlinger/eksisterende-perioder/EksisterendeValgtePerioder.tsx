@@ -423,6 +423,11 @@ const PeriodeKvoteType = ({
         periode.morsAktivitet === 'IKKE_OPPGITT';
 
     const bareFarMedmorHarRett = søker === 'FAR_MEDMOR' && rettighetType === 'BARE_SØKER_RETT';
+    const erSøkersForeldrepengerMedAktivitetskrav =
+        erIkkeEøsUttakPeriode &&
+        periode.forelder === søker &&
+        periode.kontoType === 'FORELDREPENGER' &&
+        !erAktivitetsfri;
 
     if (periode.kontoType === 'FORELDREPENGER_FØR_FØDSEL') {
         return (
@@ -464,9 +469,7 @@ const PeriodeKvoteType = ({
         );
     }
     if (
-        (periode.kontoType === 'FORELDREPENGER' ||
-            (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'FORELDREPENGER_ANNEN_FORELDER')) &&
-        !erAktivitetsfri &&
+        erSøkersForeldrepengerMedAktivitetskrav &&
         bareFarMedmorHarRett
     ) {
         return (
