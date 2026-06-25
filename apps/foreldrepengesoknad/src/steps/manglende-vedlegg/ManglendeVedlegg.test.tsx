@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
@@ -85,6 +85,9 @@ describe('<ManglendeVedlegg>', () => {
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
         const fileInput = screen.getByLabelText('Dokumentasjon av termindato');
         await userEvent.upload(fileInput, file);
+
+        // Vent til opplastinga er ferdig (pending = false) før vi går vidare.
+        await waitFor(() => expect(screen.queryByText('Laster opp...')).not.toBeInTheDocument());
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -179,6 +182,9 @@ describe('<ManglendeVedlegg>', () => {
         const fileInput = screen.getByLabelText('Dokumentasjon om omsorgsovertakelse');
         await userEvent.upload(fileInput, file);
 
+        // Vent til opplastinga er ferdig (pending = false) før vi går vidare.
+        await waitFor(() => expect(screen.queryByText('Laster opp...')).not.toBeInTheDocument());
+
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
@@ -271,6 +277,9 @@ describe('<ManglendeVedlegg>', () => {
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
         const fileInput = screen.getByLabelText('Dokumentasjon av aleneomsorg');
         await userEvent.upload(fileInput, file);
+
+        // Vent til opplastinga er ferdig (pending = false) før vi går vidare.
+        await waitFor(() => expect(screen.queryByText('Laster opp...')).not.toBeInTheDocument());
 
         await userEvent.click(screen.getByText('Neste steg'));
 

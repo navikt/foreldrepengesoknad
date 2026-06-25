@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
@@ -41,6 +41,10 @@ describe('<DokumentasjonSteg>', () => {
         const fileInput = screen.getByLabelText('Last opp bekreftelse på termindato');
 
         await userEvent.upload(fileInput, file);
+
+        // Vent til opplastinga er ferdig (pending = false) før vi går vidare, elles
+        // sender vi steget med eit uferdig vedlegg. Opplastinga er ekte async i browser-modus.
+        await waitFor(() => expect(screen.queryByText('Laster opp...')).not.toBeInTheDocument());
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -95,6 +99,9 @@ describe('<DokumentasjonSteg>', () => {
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
         const fileInput = screen.getByLabelText('Bekreftelse på adopsjon');
         await userEvent.upload(fileInput, file);
+
+        // Vent til opplastinga er ferdig (pending = false) før vi går vidare.
+        await waitFor(() => expect(screen.queryByText('Laster opp...')).not.toBeInTheDocument());
 
         await userEvent.click(screen.getByText('Neste steg'));
 
