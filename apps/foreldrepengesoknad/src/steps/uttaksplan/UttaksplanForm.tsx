@@ -90,38 +90,22 @@ export const UttaksplanForm = ({
 
     const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
 
-    const termindato = getTermindato(barn);
-    const uttaksdagPåEllerEtterTermin = termindato ? Uttaksdagen.denneEllerNeste(termindato).getDato() : undefined;
+    const erFødselssituasjonForFar = erSøkerFarEllerMedmor && søkersituasjon.situasjon === 'fødsel';
 
     // Når far/medmor kommer rett fra planleggeren ligg uttaket i defaultUttaksperioder fram til
     // planen blir redigert (då blir uttaksplan-context fylt). Bruk same fallback som onSubmit slik
     // at spørsmålet om automatisk justering står fast med ein gong, utan at brukaren må tukle med planen.
     const planForVisning = gjeldendeUttaksplan ?? defaultUttaksperioder;
 
-    const perioderRundtFødselForFarMedmor = finnPerioderRundtFødsel(planForVisning, barn).filter(
-        (p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.forelder === 'FAR_MEDMOR',
-    );
-
-    const periodeRundtFødsel = perioderRundtFødselForFarMedmor[0];
-
-    const erFødselssituasjonForFar = erSøkerFarEllerMedmor && søkersituasjon.situasjon === 'fødsel';
-
-    const harNøyaktigEnPeriodePåTermindato =
-        perioderRundtFødselForFarMedmor.length === 1 &&
-        periodeRundtFødsel !== undefined &&
-        dayjs(periodeRundtFødsel.fom).isSame(uttaksdagPåEllerEtterTermin, 'day');
-
-    const erJusterbarPeriodetype =
-        periodeRundtFødsel !== undefined &&
-        Uttaksperioden.erUttaksperiode(periodeRundtFødsel) &&
-        erJusterbartUttakRundtTermin(periodeRundtFødsel);
+    const farMedmorPerioder = planForVisning
+        .filter((p): p is UttakPeriode_fpoversikt => Uttaksperioden.erIkkeEøsPeriode(p))
+        .filter((p) => p.forelder === 'FAR_MEDMOR');
 
     const visAutomatiskJustering =
         erFødselssituasjonForFar &&
-        harNøyaktigEnPeriodePåTermindato &&
-        erJusterbarPeriodetype &&
         isUfødtBarn(barn) &&
-        barn.termindato !== undefined;
+        barn.termindato !== undefined &&
+        kanJustereFarsUttakRundtFødsel(farMedmorPerioder, barn.termindato);
 
     const finnFørsteSubmitFeilmelding = useFinnFørsteSubmitFeilmelding({ opprinneligPlan, erEndringssøknad });
 
@@ -322,3 +306,53 @@ const erJusterbartUttakRundtTermin = (
 ): boolean =>
     periode.kontoType === 'FORELDREPENGER' ||
     (periode.kontoType === 'FEDREKVOTE' && 'samtidigUttak' in periode && periode.samtidigUttak !== undefined);
+
+/**
+ * Speilar backend-regelen `FarsJustering.skalJustere` i fpsak. Far/medmor sitt uttak rundt fødsel kan
+ * berre justerast automatisk når:
+ *  1. den første perioden i fars plan startar på termin,
+ *  2. den er ein justerbar type (FORELDREPENGER, eller FEDREKVOTE med samtidig uttak),
+ *  3. den ligg HEILT innanfor intervallet far rundt fødsel: [termin - 2 veker, termin + 6 veker - 1 dag], og
+ *  4. det er nøyaktig éin periode inne i det intervallet.
+ *
+ * Den gamle frontend-logikken kravde berre at perioden *starta* på termin og hadde rett type, men sjekka
+ * verken at perioden var omslutta av intervallet eller at det var den første perioden i planen. Då kunne
+ * søknaden sende `ønskerJustertUttakVedFødsel = true` for plan backend ikkje kan justere (t.d. ein lang
+ * foreldrepengeperiode som strekk seg forbi 6 veker), og backend logga "Kan ikke justere fars uttak rundt
+ * fødsel. Selv om bruker har søkt om justering!".
+ */
+export const kanJustereFarsUttakRundtFødsel = (
+    farMedmorPerioder: UttakPeriode_fpoversikt[],
+    termindato: string,
+): boolean => {
+    if (farMedmorPerioder.length === 0) {
+        return false;
+    }
+
+    const sortertePerioder = [...farMedmorPerioder].sort((p1, p2) => (dayjs(p1.fom).isBefore(p2.fom, 'day') ? -1 : 1));
+
+    const termindatoUttaksdag = Uttaksdagen.denneEllerNeste(termindato).getDato();
+    const intervallFom = dayjs(termindatoUttaksdag).subtract(2, 'week');
+    const intervallTom = dayjs(termindatoUttaksdag).add(6, 'week').subtract(1, 'day');
+
+    const liggerHeiltInnanforIntervallet = (periode: UttakPeriode_fpoversikt) =>
+        dayjs(periode.fom).isSameOrAfter(intervallFom, 'day') && dayjs(periode.tom).isSameOrBefore(intervallTom, 'day');
+
+    const førstePeriode = sortertePerioder[0]!;
+
+    const førstePeriodeStarterPåTermin = dayjs(Uttaksdagen.denneEllerNeste(førstePeriode.fom).getDato()).isSame(
+        termindatoUttaksdag,
+        'day',
+    );
+
+    const førstePeriodeErJusterbar =
+        erJusterbartUttakRundtTermin(førstePeriode) &&
+        liggerHeiltInnanforIntervallet(førstePeriode) &&
+        førstePeriodeStarterPåTermin;
+
+    if (!førstePeriodeErJusterbar) {
+        return false;
+    }
+
+    return sortertePerioder.filter(liggerHeiltInnanforIntervallet).length === 1;
+};
