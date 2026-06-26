@@ -4,10 +4,11 @@ import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { Radio, ReadMore, VStack } from '@navikt/ds-react';
 
-import { RhfRadioGroup, RhfSelect } from '@navikt/fp-form-hooks';
+import { RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { EksternArbeidsforholdDto_fpoversikt, SøkersituasjonFp } from '@navikt/fp-types';
 import { isRequired } from '@navikt/fp-validation';
 
+import { AntallBarnSelect } from '../AntallBarnSelect';
 import { BarnetFormValues } from '../OmBarnetFormValues';
 import { ErFødtPanel } from './ErFødtPanel';
 import { TerminPanel } from './TerminPanel';
@@ -93,17 +94,7 @@ export const FødselPanel = ({ søkersituasjon, erFarEllerMedmor, søknadGjelder
                             <FormattedMessage id="omBarnet.radiobutton.flere" />
                         </Radio>
                     </RhfRadioGroup>
-                    {antallBarn !== undefined && antallBarn === 3 && (
-                        <RhfSelect name="antallBarnSelect" control={formMethods.control} label="Antall barn">
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                        </RhfSelect>
-                    )}
+                    {antallBarn !== undefined && antallBarn === 3 && <AntallBarnSelect />}
                 </>
             )}
             {erBarnetFødt !== true && (

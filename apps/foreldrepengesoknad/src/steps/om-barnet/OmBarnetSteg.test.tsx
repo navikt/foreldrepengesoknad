@@ -115,6 +115,58 @@ describe('<OmBarnetSteg>', () => {
         });
     });
 
+    it('skal kreve at antall barn velges i nedtrekksliste når en har valgt flere enn to barn', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        render(<MorFødsel gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+
+        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Ja'));
+
+        expect(screen.getByText('Hvor mange barn har du fått?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Flere barn'));
+
+        const barnFødtInput = screen.getByLabelText('Når ble det eldste barnet født?');
+        await userEvent.type(barnFødtInput, dayjs().format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
+
+        const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
+        await userEvent.type(termindatoInput, dayjs().subtract(10, 'days').format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
+
+        // Sender uten å velge eksakt antall i nedtrekkslista
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(await screen.findAllByText('Du må oppgi antall barn')).not.toHaveLength(0);
+        // Søknaden skal ikke lagre om-barnet-data eller navigere videre
+        expect(gåTilNesteSide).not.toHaveBeenCalled();
+    });
+
+    it('skal kreve at antall barn velges i nedtrekksliste ved flere enn to barn for adopsjon', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        render(<ForAdopsjon gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+
+        expect(await screen.findByText('Gjelder søknaden din stebarnsadopsjon?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Ja'));
+
+        const stebarnsadopsjonInput = screen.getByLabelText('Oppgi datoen for stebarnsadopsjon');
+        await userEvent.type(stebarnsadopsjonInput, dayjs().format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
+
+        expect(screen.getByText('Hvor mange barn skal du adoptere?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Flere barn'));
+
+        // Sender uten å velge eksakt antall i nedtrekkslista
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(await screen.findAllByText('Du må oppgi antall barn')).not.toHaveLength(0);
+        // Søknaden skal ikke navigere videre
+        expect(gåTilNesteSide).not.toHaveBeenCalled();
+    });
+
     it('skal lagre route når en går til forrige steg som er søkersituasjon', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
