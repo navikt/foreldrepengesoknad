@@ -6,9 +6,10 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyLong, Box, HStack, Radio, VStack } from '@navikt/ds-react';
 
-import { RhfDatepicker, RhfRadioGroup, RhfSelect } from '@navikt/fp-form-hooks';
+import { RhfDatepicker, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired, isValidDate } from '@navikt/fp-validation';
 
+import { AntallBarnSelect } from '../AntallBarnSelect';
 import { BarnetFormValues } from '../OmBarnetFormValues';
 import { FødselsdatoerFieldArray } from './FødselsdatoerFieldArray';
 
@@ -96,17 +97,7 @@ export const AdopsjonPanel = ({ søknadGjelderEtNyttBarn }: Props) => {
                             <FormattedMessage id="omBarnet.radiobutton.flere" />
                         </Radio>
                     </RhfRadioGroup>
-                    {antallBarn === 3 && (
-                        <RhfSelect name="antallBarnSelect" control={formMethods.control} label="Antall barn">
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                        </RhfSelect>
-                    )}
+                    {antallBarn === 3 && <AntallBarnSelect />}
                     <FødselsdatoerFieldArray
                         adopsjonsdato={adopsjonsdato}
                         antallBarn={antallBarn}
