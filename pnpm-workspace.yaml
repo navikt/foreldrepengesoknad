@@ -51,17 +51,21 @@ catalog:
   vite: 8.0.16
   vitest: 4.1.9
 
-ignoredBuiltDependencies:
-  - '@parcel/watcher'
-  - esbuild
-
-minimumReleaseAge: 2880
+minimumReleaseAge: 4320 # minutter
 
 minimumReleaseAgeExclude:
   - '@navikt/*'
+  - '@napi-rs/wasm-runtime@1.1.6'
+  - playwright@1.61.1
+  - playwright-core@1.61.1
 
-onlyBuiltDependencies:
-  - msw
+allowBuilds:
+  msw: true
+  '@parcel/watcher': false
+  '@sentry/cli': false
+  esbuild: false
+  core-js: false
+  unrs-resolver: false
 
 overrides:
-  js-cookie: 3.0.7
+  '@opentelemetry/core@<2.8.0': ^2.8.0
