@@ -55,6 +55,9 @@ minimumReleaseAge: 4320 # minutter
 
 minimumReleaseAgeExclude:
   - '@navikt/*'
+  - '@napi-rs/wasm-runtime@1.1.6'
+  - playwright@1.61.1
+  - playwright-core@1.61.1
 
 allowBuilds:
   msw: true
