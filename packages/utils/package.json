@@ -10,7 +10,8 @@
         "eslint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
         "prettier:fix": "prettier --write src",
         "tsc": "tsc --noEmit",
-        "tsc:watch": "tsc --noEmit --watch"
+        "tsc:watch": "tsc --noEmit --watch",
+        "clean": "rm -rf ./dist ./node_modules ./.turbo"
     },
     "dependencies": {
         "@navikt/fp-constants": "workspace:*",

@@ -16,7 +16,8 @@
         "dev:vite": "vite",
         "dev:mock": "node --loader ts-node/esm ./mock-api/mock-api-server.ts",
         "dev:lokal": "node ./dev-server.cjs",
-        "storybook": "storybook dev --quiet -p 7003"
+        "storybook": "storybook dev --quiet -p 7003",
+        "clean": "rm -rf ./dist ./node_modules ./.turbo ./.storybook-static-build"
     },
     "keywords": [],
     "author": "NAV",
