@@ -15,7 +15,7 @@
         "@navikt/aksel-icons": "catalog:",
         "@navikt/ds-react": "catalog:",
         "@navikt/fp-types": "workspace:*",
-        "@sentry/browser": "10.57.0",
+        "@sentry/browser": "10.60.0",
         "react": "catalog:",
         "react-intl": "catalog:"
     },
