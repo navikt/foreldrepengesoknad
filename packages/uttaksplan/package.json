@@ -14,7 +14,8 @@
         "prettier:fix": "prettier --write src",
         "tsc": "tsc --noEmit",
         "tsc:watch": "tsc --noEmit --watch",
-        "storybook": "storybook dev --quiet -p 7003"
+        "storybook": "storybook dev --quiet -p 7003",
+        "clean": "rm -rf ./dist ./node_modules ./.turbo ./.storybook-static-build"
     },
     "dependencies": {
         "@navikt/aksel-icons": "catalog:",

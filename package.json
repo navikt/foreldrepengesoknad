@@ -15,7 +15,8 @@
         "knip": "knip",
         "storybook-create-deploy-folder": "node scripts/create-storybook-index.mjs",
         "generate:local": "pnpm --filter @navikt/fp-types run generate:local",
-        "generate": "pnpm --filter @navikt/fp-types run generate"
+        "generate": "pnpm --filter @navikt/fp-types run generate",
+        "clean": "pnpm -r run clean && rm -rf ./node_modules ./.turbo"
     },
     "dependencies": {
         "lint-staged": "17.0.7",

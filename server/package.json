@@ -8,7 +8,8 @@
         "build": "esbuild ./src/index.ts --bundle --platform=node --format=cjs --outfile=dist/index.js",
         "test": "vitest run",
         "tsc:watch": "tsc --noEmit --watch",
-        "start": "node ./server.js"
+        "start": "node ./server.js",
+        "clean": "rm -rf ./dist ./node_modules ./.turbo"
     },
     "dependencies": {
         "@navikt/fp-server-utils": "workspace:*",

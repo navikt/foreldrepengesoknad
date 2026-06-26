@@ -11,7 +11,8 @@
         "update-swagger": "node scripts/hent-openapi-spec.js",
         "generate:local": "pnpm run update-swagger lokal && openapi-ts",
         "generate": "pnpm run update-swagger && openapi-ts",
-        "openapi-ts": "openapi-ts"
+        "openapi-ts": "openapi-ts",
+        "clean": "rm -rf ./dist ./node_modules ./.turbo"
     },
     "dependencies": {
         "@navikt/fp-constants": "workspace:*"
