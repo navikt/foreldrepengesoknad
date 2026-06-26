@@ -6,7 +6,7 @@
 
 Dette monorepoet bruker følgende verktøy:
 
-- node (v24)
+- node (v26)
 - pnpm - som npm, men mer plasseffektiv.
 - turbo - for å kjøre tasks parrallelt i et monorepo.
 - et personal access token for å installere alle dependencies
@@ -18,7 +18,11 @@ Dette monorepoet bruker følgende verktøy:
 3. Velg en utløpsdato og trykk på "Generate token".
 4. Kopier tokenet ditt og lagre et trygt sted.
 5. På https://github.com/settings/tokens siden, velg "Configure SSO" for tokenet ditt og autoriser for navikt.
-6. Bruk tokenet ditt lokalt som `export PACKAGES_AUTH_TOKEN=<token her>`. Dette må du gjøre hver gang du åpner terminalen på nytt eller lagre det mer permanent på lokal maskin
+6. Opprett en `.npmrc`-fil i hjemmekatalogen din og legg til følgende linje, hvor NODE_AUTH_TOKEN er tokenet du
+   genererte i steg 4:
+   ```
+   //npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+   ```
 
 ### Installere dependencies og teste at alt bygger
 

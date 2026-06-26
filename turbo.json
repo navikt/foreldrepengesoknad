@@ -1,6 +1,11 @@
 {
     "$schema": "https://turbo.build/schema.json",
-    "globalPassThroughEnv": ["PACKAGES_AUTH_TOKEN", "SENTRY_AUTH_TOKEN", "VITE_SENTRY_RELEASE"],
+    "globalPassThroughEnv": [
+        "NODE_AUTH_TOKEN",
+        "PACKAGES_AUTH_TOKEN",
+        "SENTRY_AUTH_TOKEN",
+        "VITE_SENTRY_RELEASE"
+    ],
     "globalDependencies": [
         "turbo.json",
         "pnpm-lock.yaml",

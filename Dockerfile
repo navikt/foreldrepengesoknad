@@ -2,7 +2,7 @@
 
 # Build and test run on the CI runner (turbo + cache), not in this image.
 # This image only packages prebuilt artifacts: bundled server + app dist.
-ARG NODE_DEPLOY_IMG=europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:26.1.0-slim
+ARG NODE_DEPLOY_IMG=europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:26-slim
 
 FROM ${NODE_DEPLOY_IMG}
 ENV TZ="Europe/Oslo"
