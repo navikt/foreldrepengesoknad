@@ -3,7 +3,7 @@
     "private": true,
     "scripts": {
         "build": "turbo build",
-        "build:storybook": "turbo run build:storybook --force && pnpm run storybook-create-deploy-folder",
+        "build:storybook": "turbo run build:storybook && pnpm run storybook-create-deploy-folder",
         "test": "turbo test",
         "test:browser": "turbo run test:browser",
         "ci": "turbo run build test",
