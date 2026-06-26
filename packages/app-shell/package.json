@@ -37,6 +37,5 @@
         "eslint": "catalog:",
         "typescript": "catalog:",
         "vite": "catalog:"
-    },
-    "packageManager": "pnpm@10.33.1"
+    }
 }
