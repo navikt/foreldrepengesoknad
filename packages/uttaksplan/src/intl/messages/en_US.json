@@ -255,6 +255,7 @@
     "RedigeringPanel.SamtidigUttakForelder": "{forelder, select, MOR {Mother} other {{erMedmor, select, true {Co-mother} other {Father}}}}",
     "RedigeringPanel.SamtidigUttak": " has {prosent} % {kvote, select, FELLESPERIODE {shared period} MØDREKVOTE {mother's quota} other {{erMedmor, select, true {co-mother's quota} other {father's quota}}}}",
     "RedigeringPanel.Foreldrepenger": "Parental benefits",
+    "RedigeringPanel.MedAktivitetskrav": "Parental benefits with activity requirements",
     "RedigeringPanel.UtenAktivitetskrav": "Parental benefits without activity requirements",
     "RedigeringPanel.Pleiepenger": "This period is rejected due to care benefits",
     "RedigeringPanel.KanMisteDager": "You lose days if you do not have parental benefits before the due date or in the first six weeks after birth.",
