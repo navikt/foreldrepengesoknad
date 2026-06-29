@@ -210,7 +210,7 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
         return false;
     }
 
-    const morHar100ProsentUttakOgGradering = (farPeriode: UttakPeriode_fpoversikt) =>
+    const morTarSamtidigUttak = (farPeriode: UttakPeriode_fpoversikt) =>
         perioder.some((morPeriode) => {
             if (!erVanligUttakPeriode(morPeriode) || morPeriode.forelder !== 'MOR') {
                 return false;
@@ -223,7 +223,7 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
 
             const morsTotalprosent = (morPeriode.samtidigUttak ?? 0) + (morPeriode.gradering?.arbeidstidprosent ?? 0);
 
-            return overlapper && morsTotalprosent === 100;
+            return overlapper && morsTotalprosent > 0;
         });
 
     return perioder.some((periode) => {
@@ -240,7 +240,7 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
             periode.morsAktivitet === undefined &&
             periode.flerbarnsdager === false;
 
-        return erFarMedmorsKvote && erInnvilgetUtenMorsAktivitet && !morHar100ProsentUttakOgGradering(periode);
+        return erFarMedmorsKvote && erInnvilgetUtenMorsAktivitet && !morTarSamtidigUttak(periode);
     });
 };
 

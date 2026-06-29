@@ -64,7 +64,7 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
         expect(result).toBe(false);
     });
 
-    it('skal returnere true når overlappende mor-periode ikke summerer til 100% (samtidigUttak + gradering < 100)', () => {
+    it('skal returnere false når mor tar samtidig uttak selv om det ikke summerer til 100% (samlet uttak 80%)', () => {
         const perioder = [
             lagFarPeriode({ samtidigUttak: 40 }),
             lagMorPeriode({
@@ -75,7 +75,7 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
 
         const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', perioder);
 
-        expect(result).toBe(true);
+        expect(result).toBe(false);
     });
 
     it('skal returnere true når mor-perioden ikke overlapper med far-perioden', () => {
