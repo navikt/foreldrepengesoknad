@@ -65,17 +65,22 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
     });
 
     it('skal returnere false når mor tar samtidig uttak selv om det ikke summerer til 100% (samlet uttak 80%)', () => {
-        const perioder = [
-            lagFarPeriode({ samtidigUttak: 40 }),
-            lagMorPeriode({
-                samtidigUttak: 40,
-                gradering: { arbeidstidprosent: 40, aktivitet: { type: 'ANNET' } },
-            }),
-        ];
+        const perioder = [lagFarPeriode({ samtidigUttak: 40 }), lagMorPeriode({ samtidigUttak: 40 })];
 
         const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', perioder);
 
         expect(result).toBe(false);
+    });
+
+    it('skal returnere true når overlappende mor-periode kun har gradering uten samtidig uttak', () => {
+        const perioder = [
+            lagFarPeriode(),
+            lagMorPeriode({ gradering: { arbeidstidprosent: 50, aktivitet: { type: 'ANNET' } } }),
+        ];
+
+        const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', perioder);
+
+        expect(result).toBe(true);
     });
 
     it('skal returnere true når mor-perioden ikke overlapper med far-perioden', () => {

@@ -221,9 +221,9 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
                 tom: morPeriode.tom,
             });
 
-            const morsTotalprosent = (morPeriode.samtidigUttak ?? 0) + (morPeriode.gradering?.arbeidstidprosent ?? 0);
+            const morTarSamtidigUttakProsent = morPeriode.samtidigUttak ?? 0;
 
-            return overlapper && morsTotalprosent > 0;
+            return overlapper && morTarSamtidigUttakProsent > 0;
         });
 
     return perioder.some((periode) => {
