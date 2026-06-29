@@ -21,6 +21,7 @@ updates:
           - 'react'
           - 'react-dom'
           - '@types/react'
+          - '@types/react-dom'
       designsystem:
         patterns:
           - '@navikt/aksel-*'
