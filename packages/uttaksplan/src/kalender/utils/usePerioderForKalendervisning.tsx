@@ -403,7 +403,7 @@ const leggTilVarselikonVedManglendeObligatoriskeValg = (
         (p): p is UttakPeriode_fpoversikt => erVanligUttakPeriode(p) && p.forelder === 'MOR',
     );
     if (
-        harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [periode, ...morsPerioder]) ||
+        harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, søker, [periode, ...morsPerioder]) ||
         (kanVelgeArbeidsgiver && harPeriodeMedUkjentGraderingsaktivitet([periode], søker))
     ) {
         return {

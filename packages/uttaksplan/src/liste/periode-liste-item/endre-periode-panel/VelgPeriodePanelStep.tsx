@@ -68,7 +68,7 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
                         return (
                             <Radio key={genererPeriodeKey(p)} value={index} autoFocus={index === 0}>
                                 <HStack gap="space-4">
-                                    {harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [p, ...morsPerioder]) && (
+                                    {harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, søker, [p, ...morsPerioder]) && (
                                         <ExclamationmarkTriangleFillIcon
                                             title={intl.formatMessage({
                                                 id: 'PeriodeListeHeader.MorsAktivitetIkkeValgt',

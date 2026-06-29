@@ -88,6 +88,7 @@ export const useEksisterendeValgtePeriodeAlerts = (): ((
     return (periode) => ({
         morsAktivitetIkkeValgt: tilAktiv(MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE, {
             rettighetType,
+            søker,
             periode,
             morsUttakPerioder,
         }),
@@ -107,7 +108,7 @@ export const useUttaksplanListeAlerts = (
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
     return {
-        manglerMorsAktivitetAlert: tilAktiv(MANGLER_MORS_AKTIVITET_LISTE, { rettighetType, perioder }),
+        manglerMorsAktivitetAlert: tilAktiv(MANGLER_MORS_AKTIVITET_LISTE, { rettighetType, søker, perioder }),
         manglerGraderingsaktivitetAlert: kanVelgeArbeidsgiver
             ? tilAktiv(MANGLER_GRADERINGSAKTIVITET_LISTE, {
                   perioder: filtrerSøkersIkkeEøsPerioder(perioder, søker),
@@ -126,7 +127,7 @@ export const useUttaksplanKalenderAlerts = (
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
     return {
-        manglerMorsAktivitetAlert: tilAktiv(MANGLER_MORS_AKTIVITET_KALENDER, { rettighetType, perioder }),
+        manglerMorsAktivitetAlert: tilAktiv(MANGLER_MORS_AKTIVITET_KALENDER, { rettighetType, søker, perioder }),
         manglerGraderingsaktivitetAlert: kanVelgeArbeidsgiver
             ? tilAktiv(MANGLER_GRADERINGSAKTIVITET_KALENDER, {
                   perioder: filtrerSøkersIkkeEøsPerioder(perioder, søker),
@@ -141,10 +142,14 @@ export const useLeggTilEndreSkjemaInfoAlerts = (
     perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
 ): LeggTilEndreSkjemaInfoAlerts => {
     const {
-        foreldreInfo: { rettighetType },
+        foreldreInfo: { rettighetType, søker },
     } = useUttaksplanData();
     return {
-        morsAktivitetIkkeOppgittAlert: tilAktiv(MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING, { rettighetType, perioder }),
+        morsAktivitetIkkeOppgittAlert: tilAktiv(MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING, {
+            rettighetType,
+            søker,
+            perioder,
+        }),
     };
 };
 
