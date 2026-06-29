@@ -80,7 +80,6 @@
         "vite": "catalog:",
         "vitest": "catalog:"
     },
-    "packageManager": "pnpm@10.33.1",
     "msw": {
         "workerDirectory": [
             "mock-service-worker"

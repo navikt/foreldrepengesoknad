@@ -6,7 +6,6 @@
     "peerDependencies": {
         "typescript": "catalog:"
     },
-    "packageManager": "pnpm@10.33.1",
     "scripts": {
         "tsc:watch": "tsc --noEmit --watch",
         "clean": "rm -rf ./dist ./node_modules ./.turbo"

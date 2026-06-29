@@ -27,6 +27,5 @@
         "@types/node": "catalog:",
         "eslint": "catalog:",
         "typescript": "catalog:"
-    },
-    "packageManager": "pnpm@10.33.1"
+    }
 }

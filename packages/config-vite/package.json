@@ -13,7 +13,6 @@
         "vite-plugin-compression2": "2.5.3",
         "vitest": "catalog:"
     },
-    "packageManager": "pnpm@10.33.1",
     "scripts": {
         "tsc:watch": "tsc --noEmit --watch",
         "clean": "rm -rf ./dist ./node_modules ./.turbo"

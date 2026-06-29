@@ -19,6 +19,5 @@
         "@navikt/fp-config-typescript": "workspace:*",
         "eslint": "catalog:",
         "typescript": "catalog:"
-    },
-    "packageManager": "pnpm@10.33.1"
+    }
 }
