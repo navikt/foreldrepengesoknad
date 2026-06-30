@@ -1,5 +1,5 @@
 import { buildCspHeader } from '@navikt/nav-dekoratoren-moduler/ssr/index.js';
-import express, { Express } from 'express';
+import { Express } from 'express';
 
 import config from './config.js';
 
@@ -27,9 +27,6 @@ export const setupServerDefaults = async (server: Express) => {
         res.removeHeader('X-Powered-By');
         next();
     });
-
-    // Restricts the server to only accept UTF-8 encoding of bodies
-    server.use(express.urlencoded({ extended: true }));
 
     server.set('trust proxy', 1);
 };
