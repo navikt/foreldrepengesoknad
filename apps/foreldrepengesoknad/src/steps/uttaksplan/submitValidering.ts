@@ -55,7 +55,11 @@ export const useFinnFørsteSubmitFeilmelding = ({
     const harOvertrukketDager = () => erAntallDagerOvertrukket;
 
     const manglerMorsAktivitetDerPåkrevd = (perioder: UttaksplanPerioder) =>
-        harPeriodeDerMorsAktivitetIkkeErValgt(utledRettighet(erAleneOmOmsorg, erDeltUttak), perioder);
+        harPeriodeDerMorsAktivitetIkkeErValgt(
+            utledRettighet(erAleneOmOmsorg, erDeltUttak),
+            erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
+            perioder,
+        );
 
     const manglerGraderingsaktivitet = (perioder: UttaksplanPerioder) => {
         const søkersForelder = erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
