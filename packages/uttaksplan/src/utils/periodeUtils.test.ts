@@ -29,7 +29,7 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
     it('skal returnere true når far har periode uten morsAktivitet og ingen overlappende mor-periode', () => {
         const perioder = [lagFarPeriode()];
 
-        const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', 'FAR_MEDMOR', perioder);
+        const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', 'FAR_MEDMOR', false, perioder);
 
         expect(result).toBe(true);
     });
@@ -37,15 +37,23 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
     it('skal returnere false når søker er MOR uavhengig av far-perioder uten morsAktivitet', () => {
         const perioder = [lagFarPeriode()];
 
-        const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', 'MOR', perioder);
+        const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', 'MOR', false, perioder);
 
         expect(result).toBe(false);
+    });
+
+    it('skal returnere true når søker er MOR men søker ikke er spesifisert (planlegger felles plan)', () => {
+        const perioder = [lagFarPeriode()];
+
+        const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', 'MOR', true, perioder);
+
+        expect(result).toBe(true);
     });
 
     it('skal returnere false ved ALENEOMSORG uavhengig av perioder', () => {
         const perioder = [lagFarPeriode()];
 
-        const result = harPeriodeDerMorsAktivitetIkkeErValgt('ALENEOMSORG', 'FAR_MEDMOR', perioder);
+        const result = harPeriodeDerMorsAktivitetIkkeErValgt('ALENEOMSORG', 'FAR_MEDMOR', false, perioder);
 
         expect(result).toBe(false);
     });
@@ -59,7 +67,7 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
             }),
         ];
 
-        const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', 'FAR_MEDMOR', perioder);
+        const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', 'FAR_MEDMOR', false, perioder);
 
         expect(result).toBe(false);
     });
@@ -67,7 +75,7 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
     it('skal returnere false når mor tar 100% samtidigUttak uten gradering', () => {
         const perioder = [lagFarPeriode({ samtidigUttak: 100 }), lagMorPeriode({ samtidigUttak: 100 })];
 
-        const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', 'FAR_MEDMOR', perioder);
+        const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', 'FAR_MEDMOR', false, perioder);
 
         expect(result).toBe(false);
     });
@@ -81,7 +89,7 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
             }),
         ];
 
-        const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', 'FAR_MEDMOR', perioder);
+        const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', 'FAR_MEDMOR', false, perioder);
 
         expect(result).toBe(true);
     });
@@ -97,7 +105,7 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
             }),
         ];
 
-        const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', 'FAR_MEDMOR', perioder);
+        const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', 'FAR_MEDMOR', false, perioder);
 
         expect(result).toBe(true);
     });
@@ -105,7 +113,7 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
     it('skal returnere false når far-periode med morsAktivitet satt ikke trigges', () => {
         const perioder = [lagFarPeriode({ morsAktivitet: 'ARBEID' })];
 
-        const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', 'FAR_MEDMOR', perioder);
+        const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', 'FAR_MEDMOR', false, perioder);
 
         expect(result).toBe(false);
     });

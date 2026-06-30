@@ -41,7 +41,7 @@ export const usePerioderForKalendervisning = (
 
     const {
         barn,
-        foreldreInfo: { søker, navnPåForeldre, rettighetType },
+        foreldreInfo: { søker, navnPåForeldre, rettighetType, erIkkeSøkerSpesifisert },
         familiehendelsedato,
         uttakPerioder,
         kanVelgeArbeidsgiver,
@@ -81,6 +81,7 @@ export const usePerioderForKalendervisning = (
                     uttakPerioder,
                     kanVelgeArbeidsgiver,
                     søker,
+                    erIkkeSøkerSpesifisert ?? false,
                 ),
             ];
         }
@@ -103,6 +104,7 @@ export const usePerioderForKalendervisning = (
                     uttakPerioder,
                     kanVelgeArbeidsgiver,
                     søker,
+                    erIkkeSøkerSpesifisert ?? false,
                 ),
             ];
         }
@@ -122,6 +124,7 @@ export const usePerioderForKalendervisning = (
                     uttakPerioder,
                     kanVelgeArbeidsgiver,
                     søker,
+                    erIkkeSøkerSpesifisert ?? false,
                 ),
             } satisfies CalendarPeriod,
         ];
@@ -361,6 +364,7 @@ const splittPeriodeITo = (
     allePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     kanVelgeArbeidsgiver: boolean,
     søker: BrukerRolleSak_fpoversikt,
+    erIkkeSøkerSpesifisert: boolean,
 ): CalendarPeriod[] => {
     const forrige = Uttaksdagen.forrige(dato).getDato();
     const neste = Uttaksdagen.neste(dato).getDato();
@@ -370,6 +374,7 @@ const splittPeriodeITo = (
         allePerioder,
         kanVelgeArbeidsgiver,
         søker,
+        erIkkeSøkerSpesifisert,
     );
 
     const lagPeriode = (fom: string, tom: string): CalendarPeriod => ({
@@ -398,12 +403,16 @@ const leggTilVarselikonVedManglendeObligatoriskeValg = (
     allePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     kanVelgeArbeidsgiver: boolean,
     søker: BrukerRolleSak_fpoversikt,
+    erIkkeSøkerSpesifisert: boolean,
 ) => {
     const morsPerioder = allePerioder.filter(
         (p): p is UttakPeriode_fpoversikt => erVanligUttakPeriode(p) && p.forelder === 'MOR',
     );
     if (
-        harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, søker, [periode, ...morsPerioder]) ||
+        harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, søker, erIkkeSøkerSpesifisert, [
+            periode,
+            ...morsPerioder,
+        ]) ||
         (kanVelgeArbeidsgiver && harPeriodeMedUkjentGraderingsaktivitet([periode], søker))
     ) {
         return {

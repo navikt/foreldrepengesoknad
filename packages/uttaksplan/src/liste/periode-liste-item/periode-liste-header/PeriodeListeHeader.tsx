@@ -31,7 +31,7 @@ export const PeriodeListeHeader = ({ uttaksplanperioder, isOpen }: Props) => {
 
     const {
         familiehendelsedato,
-        foreldreInfo: { rettighetType, søker, navnPåForeldre },
+        foreldreInfo: { rettighetType, søker, navnPåForeldre, erIkkeSøkerSpesifisert },
         familiesituasjon,
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
@@ -56,7 +56,12 @@ export const PeriodeListeHeader = ({ uttaksplanperioder, isOpen }: Props) => {
         rettighetType === 'BEGGE_RETT',
     );
 
-    const harMorsAktivitetIkkeErValgt = harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, søker, uttaksplanperioder);
+    const harMorsAktivitetIkkeErValgt = harPeriodeDerMorsAktivitetIkkeErValgt(
+        rettighetType,
+        søker,
+        erIkkeSøkerSpesifisert ?? false,
+        uttaksplanperioder,
+    );
     const harUkjentGraderingsaktivitet =
         kanVelgeArbeidsgiver && harPeriodeMedUkjentGraderingsaktivitet(uttaksplanperioder, søker);
     const harValideringsfeil = harMorsAktivitetIkkeErValgt || harUkjentGraderingsaktivitet;

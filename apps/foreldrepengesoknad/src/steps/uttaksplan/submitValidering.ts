@@ -58,6 +58,7 @@ export const useFinnFørsteSubmitFeilmelding = ({
         harPeriodeDerMorsAktivitetIkkeErValgt(
             utledRettighet(erAleneOmOmsorg, erDeltUttak),
             erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
+            false,
             perioder,
         );
 
