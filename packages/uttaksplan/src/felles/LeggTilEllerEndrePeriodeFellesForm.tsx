@@ -156,6 +156,14 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                 formMethods.resetField('hvorSkalDuJobbe', { defaultValue: undefined });
             }
         }
+
+        // Nullstill aktivitetskravsvaret (morsAktivitet) når kontotypen endres. Uten dette
+        // henger et svar gitt for en tidligere kontotype (typisk fellesperiode eller
+        // foreldrepenger der bare far har rett) igjen i form-state og blir lagret på den nye
+        // kontotypen — f.eks. fedrekvote, som aldri skal ha aktivitetskrav. Feltet vises og
+        // kreves på nytt dersom den nye kontotypen faktisk har aktivitetskrav (f.eks.
+        // fedrekvote i de første seks ukene etter fødsel).
+        formMethods.resetField('morsAktivitet', { defaultValue: undefined });
     };
 
     return (

@@ -209,6 +209,58 @@ describe('UttaksplanListe', () => {
         ]);
     });
 
+    it('Fedrekvote skal ikke arve aktivitetskrav (morsAktivitet) når far bytter kontotype fra fellesperiode', async () => {
+        const oppdaterUttaksplan = vi.fn();
+
+        render(<Default oppdaterUttaksplan={oppdaterUttaksplan} />);
+
+        expect(await screen.findByText('18. april 25 - 08. mai 25')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Legg til periode'));
+        expect(await screen.findByText('Hvilke datoer skal perioden være?')).toBeInTheDocument();
+        const fraOgMedDato = screen.getByLabelText('Fra og med dato');
+        await userEvent.type(fraOgMedDato, dayjs('2025-06-30').format('DD.MM.YYYY'));
+        await userEvent.tab();
+        const tilOgMedDato = screen.getByLabelText('Til og med dato');
+        await userEvent.type(tilOgMedDato, dayjs('2025-08-28').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        expect(await screen.findByText('Hva vil du gjøre?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Legge til periode med foreldrepenger'));
+
+        expect(await screen.findByText('Hvem skal ha foreldrepenger?')).toBeInTheDocument();
+        await userEvent.click(screen.getByRole('radio', { name: 'Far' }));
+
+        // Far velger først fellesperiode og svarer på aktivitetskravet (mor i arbeid).
+        expect(await screen.findByText('Far skal ha?')).toBeInTheDocument();
+        await userEvent.click(screen.getByRole('radio', { name: 'Fellesperiode' }));
+
+        expect(await screen.findByText('Hva skal mor gjøre i denne perioden?')).toBeInTheDocument();
+        await userEvent.selectOptions(screen.getByLabelText('Hva skal mor gjøre i denne perioden?'), 'ARBEID');
+
+        expect(screen.getByText('Skal far kombinere foreldrepenger med arbeid?')).toBeInTheDocument();
+        await userEvent.click(screen.getByRole('radio', { name: 'Nei' }));
+
+        // Far ombestemmer seg og bytter til fars kvote – aktivitetskravet skal da nullstilles.
+        await userEvent.click(screen.getByRole('radio', { name: 'Fars kvote' }));
+        expect(screen.queryByText('Hva skal mor gjøre i denne perioden?')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
+
+        expect(screen.getByText('Hva skal skje med resten av planen?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Endre uten å flytte resten av planen'));
+        await userEvent.click(screen.getByText('Legg til'));
+
+        expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
+        const lagredePerioder = oppdaterUttaksplan.mock.calls[0]![0];
+        const fedrekvotePeriode = lagredePerioder.find(
+            (p: { forelder: string; kontoType?: string; fom: string }) =>
+                p.forelder === 'FAR_MEDMOR' && p.kontoType === 'FEDREKVOTE' && p.fom === '2025-06-30',
+        );
+        expect(fedrekvotePeriode).toBeDefined();
+        expect(fedrekvotePeriode.morsAktivitet).toBeUndefined();
+    });
+
     it('Skal endre periode til ferie', async () => {
         const oppdaterUttaksplan = vi.fn();
 
