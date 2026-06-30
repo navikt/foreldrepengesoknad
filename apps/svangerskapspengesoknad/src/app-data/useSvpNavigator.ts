@@ -2,11 +2,12 @@ import { loggUmamiEvent } from '@navikt/fp-observability';
 import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataType, useContextSaveData } from './SvpDataContext';
+import { MellomlagreSøknadFn } from './useMellomlagreSøknad';
 import { SøknadRoute } from './routes';
 import { useStepConfig } from './useStepConfig';
 
 export const useSvpNavigator = (
-    mellomlagreOgNaviger: () => Promise<void>,
+    mellomlagreOgNaviger: MellomlagreSøknadFn,
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
 ) => {
     const stepConfig = useStepConfig(arbeidsforhold);
@@ -31,10 +32,14 @@ export const useSvpNavigator = (
         void mellomlagreOgNaviger();
     };
 
-    const fortsettSøknadSenere = async () => {
+    const fortsettSøknadSenere = () => {
         loggUmamiEvent({ origin: 'svangerskapspengesoknad', eventName: 'skjema fortsett senere' });
-        await mellomlagreOgNaviger();
-        globalThis.location.href = 'https://nav.no';
+        // Berre lagre (ingen navigering – vi forlet appen rett etterpå), med retry
+        // sidan brukaren ikkje får eit nytt forsøk på å lagre endringane sine.
+        void (async () => {
+            await mellomlagreOgNaviger({ naviger: false, medRetry: true });
+            globalThis.location.href = 'https://nav.no';
+        })();
     };
 
     return {
