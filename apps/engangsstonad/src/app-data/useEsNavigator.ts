@@ -3,10 +3,11 @@ import { useEffect, useRef, useState } from 'react';
 import { loggUmamiEvent } from '@navikt/fp-observability';
 
 import { ContextDataType, useContextGetAnyData, useContextSaveData } from './EsDataContext';
+import { MellomlagreSøknadFn } from './useEsMellomlagring';
 import { Path } from './paths';
 import { lagAppStegliste, useCurrentPath } from './useStepConfig';
 
-export const useEsNavigator = (mellomlagreOgNaviger: () => Promise<void>) => {
+export const useEsNavigator = (mellomlagreOgNaviger: MellomlagreSøknadFn) => {
     const getStateData = useContextGetAnyData();
     const currentPath = useCurrentPath();
     const oppdaterPath = useContextSaveData(ContextDataType.CURRENT_PATH);
@@ -59,7 +60,11 @@ export const useEsNavigator = (mellomlagreOgNaviger: () => Promise<void>) => {
 
     const fortsettSøknadSenere = () => {
         loggUmamiEvent({ origin: 'engangsstonad', eventName: 'skjema fortsett senere' });
-        globalThis.location.href = 'https://nav.no';
+        // Berre lagre (ingen navigering – vi forlet appen rett etterpå), med retry
+        // sidan brukaren ikkje får eit nytt forsøk på å lagre endringane sine.
+        void mellomlagreOgNaviger({ naviger: false, medRetry: true }).finally(() => {
+            globalThis.location.href = 'https://nav.no';
+        });
     };
 
     return {

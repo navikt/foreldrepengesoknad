@@ -25,6 +25,16 @@ export type FpMellomlagretData = {
     annenPartVedtak?: AnnenPartSak_fpoversikt;
 } & ContextDataMap;
 
+export type MellomlagreSøknadOptions = {
+    // Naviger (react-router) til gjeldande steg før lagring. Default true.
+    // Settast false når kallaren skal forlate appen (t.d. fortsett-seinare).
+    naviger?: boolean;
+    // Prøv kallet på nytt ved transiente feil. Default false.
+    medRetry?: boolean;
+};
+
+export type MellomlagreSøknadFn = (options?: MellomlagreSøknadOptions) => Promise<void>;
+
 export const useMellomlagreSøknad = (
     foreldrepengerSaker: FpSak_fpoversikt[],
     søkerInfo: FpPersonopplysningerDto_fpoversikt,
@@ -36,18 +46,21 @@ export const useMellomlagreSøknad = (
 
     const annenPartVedtakQuery = useQuery(useAnnenPartVedtakOptions());
 
-    const [skalMellomlagre, setSkalMellomlagre] = useState(false);
+    const [forespørsel, setForespørsel] = useState<{ naviger: boolean; medRetry: boolean } | null>(null);
 
     const promiseRef = useRef<() => void>(null);
 
     useEffect(() => {
-        if (skalMellomlagre) {
+        if (forespørsel) {
+            const { naviger, medRetry } = forespørsel;
             const currentRoute = notEmpty(state[ContextDataType.APP_ROUTE]);
 
             const lagre = async () => {
-                setSkalMellomlagre(false);
+                setForespørsel(null);
 
-                void navigate(currentRoute);
+                if (naviger) {
+                    void navigate(currentRoute);
+                }
 
                 const data = {
                     version: VERSJON_MELLOMLAGRING,
@@ -68,6 +81,15 @@ export const useMellomlagreSøknad = (
                         headers: {
                             fnr: søkerInfo.fnr,
                         },
+                        ...(medRetry
+                            ? {
+                                  retry: {
+                                      limit: 2,
+                                      methods: ['post'],
+                                      statusCodes: [408, 429, 500, 502, 503, 504],
+                                  },
+                              }
+                            : {}),
                     });
                 } catch (error: unknown) {
                     if (error instanceof HTTPError) {
@@ -102,11 +124,11 @@ export const useMellomlagreSøknad = (
                 }
             });
         }
-    }, [skalMellomlagre]);
+    }, [forespørsel]);
 
-    const mellomlagreSøknadOgNaviger = useCallback(() => {
+    const mellomlagreSøknad = useCallback<MellomlagreSøknadFn>((options) => {
         //Må gå via state change sidan ein må få oppdatert context før ein mellomlagrar
-        setSkalMellomlagre(true);
+        setForespørsel({ naviger: options?.naviger ?? true, medRetry: options?.medRetry ?? false });
 
         const promise = new Promise<void>((resolve) => {
             promiseRef.current = resolve;
@@ -115,5 +137,5 @@ export const useMellomlagreSøknad = (
         return promise;
     }, []);
 
-    return mellomlagreSøknadOgNaviger;
+    return mellomlagreSøknad;
 };

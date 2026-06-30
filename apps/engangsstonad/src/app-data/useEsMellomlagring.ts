@@ -13,6 +13,16 @@ export const VERSJON_MELLOMLAGRING = 6;
 
 export type EsMellomlagretData = { version: number; personinfo: EsPersonopplysningerDto_fpoversikt } & ContextDataMap;
 
+export type MellomlagreSøknadOptions = {
+    // Naviger (react-router) til gjeldande steg før lagring. Default true.
+    // Settast false når kallaren skal forlate appen (t.d. fortsett-seinare).
+    naviger?: boolean;
+    // Prøv kallet på nytt ved transiente feil. Default false.
+    medRetry?: boolean;
+};
+
+export type MellomlagreSøknadFn = (options?: MellomlagreSøknadOptions) => Promise<void>;
+
 export const useEsMellomlagring = (
     personinfo: EsPersonopplysningerDto_fpoversikt,
     setVelkommen: (erVelkommen: boolean) => void,
@@ -21,7 +31,7 @@ export const useEsMellomlagring = (
     const state = useContextComplete();
     const resetState = useContextReset();
 
-    const [skalMellomlagre, setSkalMellomlagre] = useState(false);
+    const [forespørsel, setForespørsel] = useState<{ naviger: boolean; medRetry: boolean } | null>(null);
 
     const promiseRef = useRef<() => void>(null);
 
@@ -30,13 +40,17 @@ export const useEsMellomlagring = (
     });
 
     useEffect(() => {
-        if (skalMellomlagre) {
+        if (forespørsel) {
+            const { naviger, medRetry } = forespørsel;
+
             const lagreEllerSlett = async () => {
-                setSkalMellomlagre(false);
+                setForespørsel(null);
 
                 const currentPath = state[ContextDataType.CURRENT_PATH];
                 if (currentPath) {
-                    void navigate(currentPath);
+                    if (naviger) {
+                        void navigate(currentPath);
+                    }
 
                     try {
                         const data = {
@@ -44,7 +58,18 @@ export const useEsMellomlagring = (
                             personinfo,
                             ...state,
                         } satisfies EsMellomlagretData;
-                        await ky.post(API_URLS.mellomlagring, { json: data });
+                        await ky.post(API_URLS.mellomlagring, {
+                            json: data,
+                            ...(medRetry
+                                ? {
+                                      retry: {
+                                          limit: 2,
+                                          methods: ['post'],
+                                          statusCodes: [408, 429, 500, 502, 503, 504],
+                                      },
+                                  }
+                                : {}),
+                        });
                     } catch (error: unknown) {
                         if (error instanceof HTTPError) {
                             if (error.response.status === 401 || error.response.status === 403) {
@@ -85,11 +110,11 @@ export const useEsMellomlagring = (
                 }
             });
         }
-    }, [skalMellomlagre]);
+    }, [forespørsel]);
 
-    const mellomlagreOgNaviger = useCallback(() => {
+    const mellomlagreOgNaviger = useCallback<MellomlagreSøknadFn>((options) => {
         //Må gå via state change sidan ein må få oppdatert context før ein mellomlagrar
-        setSkalMellomlagre(true);
+        setForespørsel({ naviger: options?.naviger ?? true, medRetry: options?.medRetry ?? false });
 
         return new Promise<void>((resolve) => {
             promiseRef.current = resolve;
