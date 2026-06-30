@@ -31,8 +31,9 @@ export const useSvpNavigator = (
         void mellomlagreOgNaviger();
     };
 
-    const fortsettSøknadSenere = () => {
+    const fortsettSøknadSenere = async () => {
         loggUmamiEvent({ origin: 'svangerskapspengesoknad', eventName: 'skjema fortsett senere' });
+        await mellomlagreOgNaviger();
         globalThis.location.href = 'https://nav.no';
     };
 

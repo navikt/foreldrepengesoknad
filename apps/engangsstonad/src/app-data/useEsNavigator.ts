@@ -57,8 +57,9 @@ export const useEsNavigator = (mellomlagreOgNaviger: () => Promise<void>) => {
         void mellomlagreOgNaviger();
     };
 
-    const fortsettSøknadSenere = () => {
+    const fortsettSøknadSenere = async () => {
         loggUmamiEvent({ origin: 'engangsstonad', eventName: 'skjema fortsett senere' });
+        await mellomlagreOgNaviger();
         globalThis.location.href = 'https://nav.no';
     };
 

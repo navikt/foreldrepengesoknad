@@ -68,8 +68,9 @@ export const useFpNavigator = (
         navigerTilDefaultSteg('next');
     };
 
-    const fortsettSøknadSenere = () => {
+    const fortsettSøknadSenere = async () => {
         loggUmamiEvent({ origin: 'foreldrepengesoknad', eventName: 'skjema fortsett senere' });
+        await mellomlagreOgNaviger();
         globalThis.location.href = 'https://nav.no';
     };
 
