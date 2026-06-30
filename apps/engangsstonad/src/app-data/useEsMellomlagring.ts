@@ -44,7 +44,14 @@ export const useEsMellomlagring = (
                             personinfo,
                             ...state,
                         } satisfies EsMellomlagretData;
-                        await ky.post(API_URLS.mellomlagring, { json: data });
+                        await ky.post(API_URLS.mellomlagring, {
+                            json: data,
+                            retry: {
+                                limit: 2,
+                                methods: ['post'],
+                                statusCodes: [408, 429, 500, 502, 503, 504],
+                            },
+                        });
                     } catch (error: unknown) {
                         if (error instanceof HTTPError) {
                             if (error.response.status === 401 || error.response.status === 403) {

@@ -68,6 +68,11 @@ export const useMellomlagreSøknad = (
                         headers: {
                             fnr: søkerInfo.fnr,
                         },
+                        retry: {
+                            limit: 2,
+                            methods: ['post'],
+                            statusCodes: [408, 429, 500, 502, 503, 504],
+                        },
                     });
                 } catch (error: unknown) {
                     if (error instanceof HTTPError) {
