@@ -252,13 +252,17 @@ describe('UttaksplanListe', () => {
         await userEvent.click(screen.getByText('Legg til'));
 
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
-        const lagredePerioder = oppdaterUttaksplan.mock.calls[0]![0];
+        const lagredePerioder = oppdaterUttaksplan.mock.calls[0]![0] as Array<{
+            forelder: string;
+            kontoType?: string;
+            fom: string;
+            morsAktivitet?: string;
+        }>;
         const fedrekvotePeriode = lagredePerioder.find(
-            (p: { forelder: string; kontoType?: string; fom: string }) =>
-                p.forelder === 'FAR_MEDMOR' && p.kontoType === 'FEDREKVOTE' && p.fom === '2025-06-30',
+            (p) => p.forelder === 'FAR_MEDMOR' && p.kontoType === 'FEDREKVOTE' && p.fom === '2025-06-30',
         );
         expect(fedrekvotePeriode).toBeDefined();
-        expect(fedrekvotePeriode.morsAktivitet).toBeUndefined();
+        expect(fedrekvotePeriode?.morsAktivitet).toBeUndefined();
     });
 
     it('Skal endre periode til ferie', async () => {
