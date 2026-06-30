@@ -76,7 +76,7 @@ export const useEksisterendeValgtePeriodeAlerts = (): ((
     periode: Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager,
 ) => { morsAktivitetIkkeValgt?: AktivAlertMetadata; graderingsaktivitetIkkeValgt?: AktivAlertMetadata }) => {
     const {
-        foreldreInfo: { rettighetType, søker },
+        foreldreInfo: { rettighetType, søker, erIkkeSøkerSpesifisert },
         uttakPerioder,
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
@@ -88,6 +88,8 @@ export const useEksisterendeValgtePeriodeAlerts = (): ((
     return (periode) => ({
         morsAktivitetIkkeValgt: tilAktiv(MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE, {
             rettighetType,
+            søker,
+            erIkkeSøkerSpesifisert: erIkkeSøkerSpesifisert ?? false,
             periode,
             morsUttakPerioder,
         }),
@@ -103,11 +105,16 @@ export const useUttaksplanListeAlerts = (
     perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
 ): UttaksplanListeAlerts => {
     const {
-        foreldreInfo: { rettighetType, søker },
+        foreldreInfo: { rettighetType, søker, erIkkeSøkerSpesifisert },
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
     return {
-        manglerMorsAktivitetAlert: tilAktiv(MANGLER_MORS_AKTIVITET_LISTE, { rettighetType, perioder }),
+        manglerMorsAktivitetAlert: tilAktiv(MANGLER_MORS_AKTIVITET_LISTE, {
+            rettighetType,
+            søker,
+            erIkkeSøkerSpesifisert: erIkkeSøkerSpesifisert ?? false,
+            perioder,
+        }),
         manglerGraderingsaktivitetAlert: kanVelgeArbeidsgiver
             ? tilAktiv(MANGLER_GRADERINGSAKTIVITET_LISTE, {
                   perioder: filtrerSøkersIkkeEøsPerioder(perioder, søker),
@@ -122,11 +129,16 @@ export const useUttaksplanKalenderAlerts = (
     perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
 ): UttaksplanKalenderAlerts => {
     const {
-        foreldreInfo: { rettighetType, søker },
+        foreldreInfo: { rettighetType, søker, erIkkeSøkerSpesifisert },
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
     return {
-        manglerMorsAktivitetAlert: tilAktiv(MANGLER_MORS_AKTIVITET_KALENDER, { rettighetType, perioder }),
+        manglerMorsAktivitetAlert: tilAktiv(MANGLER_MORS_AKTIVITET_KALENDER, {
+            rettighetType,
+            søker,
+            erIkkeSøkerSpesifisert: erIkkeSøkerSpesifisert ?? false,
+            perioder,
+        }),
         manglerGraderingsaktivitetAlert: kanVelgeArbeidsgiver
             ? tilAktiv(MANGLER_GRADERINGSAKTIVITET_KALENDER, {
                   perioder: filtrerSøkersIkkeEøsPerioder(perioder, søker),
@@ -141,10 +153,15 @@ export const useLeggTilEndreSkjemaInfoAlerts = (
     perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
 ): LeggTilEndreSkjemaInfoAlerts => {
     const {
-        foreldreInfo: { rettighetType },
+        foreldreInfo: { rettighetType, søker, erIkkeSøkerSpesifisert },
     } = useUttaksplanData();
     return {
-        morsAktivitetIkkeOppgittAlert: tilAktiv(MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING, { rettighetType, perioder }),
+        morsAktivitetIkkeOppgittAlert: tilAktiv(MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING, {
+            rettighetType,
+            søker,
+            erIkkeSøkerSpesifisert: erIkkeSøkerSpesifisert ?? false,
+            perioder,
+        }),
     };
 };
 

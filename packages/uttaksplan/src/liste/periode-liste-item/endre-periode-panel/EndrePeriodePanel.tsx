@@ -26,7 +26,7 @@ export const EndrePeriodePanel = ({ closePanel, uttaksplanperioder }: Props) => 
     const erKunEnPeriodeEllerSamtidigUttak = uttaksplanperioder.length === 1 || erSamtidigUttak;
 
     const {
-        foreldreInfo: { rettighetType },
+        foreldreInfo: { rettighetType, søker, erIkkeSøkerSpesifisert },
         uttakPerioder,
     } = useUttaksplanData();
 
@@ -60,7 +60,7 @@ export const EndrePeriodePanel = ({ closePanel, uttaksplanperioder }: Props) => 
                             !erSamtidigUttak && uttaksplanperioder.length !== 1 ? setValgtPeriodeIndex : undefined
                         }
                         erNyPeriodeModus={false}
-                        harPeriodeDerMorsAktivitetIkkeErValgt={harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [
+                        harPeriodeDerMorsAktivitetIkkeErValgt={harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, søker, erIkkeSøkerSpesifisert ?? false, [
                             finnUttakplanperiode(erSamtidigUttak, uttaksplanperioder, valgtPeriodeIndex),
                             ...uttakPerioder.filter(
                                 (mp): mp is UttakPeriode_fpoversikt => !erEøsUttakPeriode(mp) && mp.forelder === 'MOR',

@@ -1184,7 +1184,7 @@ export const MarkerPeriodeNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt: Sto
         },
         foreldreInfo: {
             rettighetType: 'BEGGE_RETT',
-            søker: 'MOR',
+            søker: 'FAR_MEDMOR',
             navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hans' },
             erMedmorDelAvSøknaden: false,
         },
