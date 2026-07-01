@@ -17,13 +17,15 @@ export const omitMany = <T, K extends keyof T>(object: T, keysToOmit: K[]): Omit
 // rekkefølgje.
 const kanoniser = (value: unknown): unknown => {
     if (Array.isArray(value)) {
-        return value.map(kanoniser).sort((a, b) => (JSON.stringify(a) < JSON.stringify(b) ? -1 : 1));
+        return value
+            .map(kanoniser)
+            .sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
     }
     if (value !== null && typeof value === 'object') {
         const record = value as Record<string, unknown>;
         return Object.fromEntries(
             Object.keys(record)
-                .sort()
+                .sort((a, b) => a.localeCompare(b))
                 .map((key) => [key, kanoniser(record[key])]),
         );
     }
