@@ -56,6 +56,7 @@ export const Svangerskapspengesøknad = () => {
             <RegisterdataUtdatert
                 slettMellomlagringOgLastSidePåNytt={slettMellomlagringOgLastSidePåNytt}
                 appName="svangerskapspengesoknad"
+                avvik="søkerInfo"
             />
         );
     }

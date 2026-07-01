@@ -50,6 +50,7 @@ export const Engangsstønad = () => {
             <RegisterdataUtdatert
                 slettMellomlagringOgLastSidePåNytt={slettMellomlagringOgLastSidePåNytt}
                 appName="engangsstonad"
+                avvik="personinfo"
             />
         );
     }

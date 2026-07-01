@@ -116,19 +116,39 @@ const RegisterdataSjekk = ({
         annenPartVedtakQuery.isSuccess &&
         !isEqual(annenPartVedtakQuery.data, mellomlagretData.annenPartVedtak);
 
-    const registerdataErEndret =
-        !isEqual(mellomlagretData.søkerInfo, søkerInfo) ||
-        !isEqual(mellomlagretData.foreldrepengerSaker, foreldrepengerSaker) ||
-        annenPartVedtakErEndret;
+    const søkerInfoErEndret = !isEqual(mellomlagretData.søkerInfo, søkerInfo);
+
+    // Ignorer oppdatertTidspunkt: backend kan endra dette tidsstemplet utan at
+    // sjølve søknadsgrunnlaget er endra, noko som gir falske positive avvik.
+    const sakerErEndret = !isEqual(
+        utenOppdatertTidspunkt(mellomlagretData.foreldrepengerSaker),
+        utenOppdatertTidspunkt(foreldrepengerSaker),
+    );
+
+    const registerdataErEndret = søkerInfoErEndret || sakerErEndret || annenPartVedtakErEndret;
 
     if (registerdataErEndret) {
+        const avvik = [
+            søkerInfoErEndret ? 'søkerInfo' : undefined,
+            sakerErEndret ? 'saker' : undefined,
+            annenPartVedtakErEndret ? 'annenPartVedtak' : undefined,
+        ]
+            .filter(Boolean)
+            .join(',');
+
         return (
             <RegisterdataUtdatert
                 slettMellomlagringOgLastSidePåNytt={slettMellomlagringOgLastSidePåNytt}
                 appName="foreldrepengesoknad"
+                avvik={avvik}
             />
         );
     }
 
     return <>{children}</>;
 };
+
+// Fjernar det volatile feltet oppdatertTidspunkt før samanlikning slik at reine
+// tidsstempel-endringar ikkje blir tolka som utdaterte registerdata.
+const utenOppdatertTidspunkt = (saker: FpSak_fpoversikt[]) =>
+    saker.map(({ oppdatertTidspunkt: _oppdatertTidspunkt, ...rest }) => rest);
