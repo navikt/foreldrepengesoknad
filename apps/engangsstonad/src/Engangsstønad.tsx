@@ -3,11 +3,10 @@ import { EsDataContext } from 'appData/EsDataContext';
 import { API_URLS, mellomlagretInfoOptions, personOptions } from 'appData/queries';
 import { VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
 import ky from 'ky';
-import { isEqual } from 'es-toolkit';
 import { useIntl } from 'react-intl';
 
 import { RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
-import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
+import { erMyndig, erLikUansettRekkefølge, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ApiErrorHandler, EngangsstønadRoutes } from './EngangsstønadRoutes';
@@ -45,7 +44,7 @@ export const Engangsstønad = () => {
     const mellomlagretState =
         mellomlagretInfo.data?.version === VERSJON_MELLOMLAGRING ? mellomlagretInfo.data : undefined;
 
-    if (mellomlagretState && !isEqual(mellomlagretState.personinfo, personinfo.data)) {
+    if (mellomlagretState && !erLikUansettRekkefølge(mellomlagretState.personinfo, personinfo.data)) {
         return (
             <RegisterdataUtdatert
                 slettMellomlagringOgLastSidePåNytt={slettMellomlagringOgLastSidePåNytt}

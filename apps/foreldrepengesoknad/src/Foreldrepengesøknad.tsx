@@ -10,14 +10,13 @@ import { ContextDataMap, ContextDataType, FpDataContext } from 'appData/FpDataCo
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import { usePlanleggerDataFromUrl } from 'appData/usePlanleggerDataFromUrl';
 import ky from 'ky';
-import { isEqual } from 'es-toolkit';
 import { ReactNode, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { shouldApplyStorage } from 'utils/mellomlagringUtils';
 
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { ErrorBoundary, RegisterdataUtdatert, Spinner } from '@navikt/fp-ui';
-import { useDocumentTitle } from '@navikt/fp-utils';
+import { erLikUansettRekkefølge, useDocumentTitle } from '@navikt/fp-utils';
 
 import { ForeldrepengesøknadRoutes } from './ForeldrepengesøknadRoutes';
 
@@ -114,13 +113,13 @@ const RegisterdataSjekk = ({
     const annenPartVedtakErEndret =
         harLagretAnnenPartVedtak &&
         annenPartVedtakQuery.isSuccess &&
-        !isEqual(annenPartVedtakQuery.data, mellomlagretData.annenPartVedtak);
+        !erLikUansettRekkefølge(annenPartVedtakQuery.data, mellomlagretData.annenPartVedtak);
 
-    const søkerInfoErEndret = !isEqual(mellomlagretData.søkerInfo, søkerInfo);
+    const søkerInfoErEndret = !erLikUansettRekkefølge(mellomlagretData.søkerInfo, søkerInfo);
 
     // Ignorer oppdatertTidspunkt: backend kan endra dette tidsstemplet utan at
     // sjølve søknadsgrunnlaget er endra, noko som gir falske positive avvik.
-    const sakerErEndret = !isEqual(
+    const sakerErEndret = !erLikUansettRekkefølge(
         utenOppdatertTidspunkt(mellomlagretData.foreldrepengerSaker),
         utenOppdatertTidspunkt(foreldrepengerSaker),
     );
