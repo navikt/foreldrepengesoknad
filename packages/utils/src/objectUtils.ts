@@ -17,9 +17,15 @@ export const omitMany = <T, K extends keyof T>(object: T, keysToOmit: K[]): Omit
 // rekkefølgje.
 const kanoniser = (value: unknown): unknown => {
     if (Array.isArray(value)) {
+        // Pre-kalkuler ein sorteringsnøkkel per element slik at JSON.stringify
+        // berre køyrer éin gong per element (ikkje på kvar samanlikning).
         return value
-            .map(kanoniser)
-            .sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
+            .map((element) => {
+                const kanonisert = kanoniser(element);
+                return { kanonisert, nøkkel: JSON.stringify(kanonisert) };
+            })
+            .sort((a, b) => a.nøkkel.localeCompare(b.nøkkel))
+            .map(({ kanonisert }) => kanonisert);
     }
     if (value !== null && typeof value === 'object') {
         const record = value as Record<string, unknown>;
