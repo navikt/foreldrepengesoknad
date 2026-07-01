@@ -16,7 +16,7 @@ export type SvpMellomlagretData = {
     søkerInfo: SvpPersonopplysningerDto_fpoversikt;
 } & ContextDataMap;
 
-export type MellomlagreSøknadOptions = {
+type MellomlagreSøknadOptions = {
     // Naviger (react-router) til gjeldande steg før lagring. Default true.
     // Settast false når kallaren skal forlate appen (t.d. fortsett-seinare).
     naviger?: boolean;
