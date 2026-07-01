@@ -149,6 +149,16 @@ const RegisterdataSjekk = ({
 // Volatile felt frå backend som ikkje seier noko om søknadsgrunnlaget er endra,
 // blir fjerna: oppdatertTidspunkt er eit reint tidsstempel, og åpenBehandling er
 // behandlingsstatus (berre brukt til statustekst på forsida, ikkje i sjølve
-// søknadsflyten). Slik unngår vi falske positive utdatert-varsel.
+// søknadsflyten). I gjeldendeVedtak er det berre periodane som blir brukte i
+// søknadsflyten; beregningsgrunnlag og tilkjentYtelse høyrer til oversikta og
+// skal ikkje gjera ei mellomlagring utdatert. Slik unngår vi falske positive
+// utdatert-varsel.
 const relevanteSaker = (saker: FpSak_fpoversikt[]) =>
-    saker.map((sak) => omitMany(sak, ['oppdatertTidspunkt', 'åpenBehandling']));
+    saker.map((sak) => ({
+        ...omitMany(sak, ['oppdatertTidspunkt', 'åpenBehandling', 'gjeldendeVedtak']),
+        ...(sak.gjeldendeVedtak
+            ? {
+                  gjeldendeVedtak: omitMany(sak.gjeldendeVedtak, ['beregningsgrunnlag', 'tilkjentYtelse']),
+              }
+            : {}),
+    }));
