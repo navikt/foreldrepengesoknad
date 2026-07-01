@@ -57,17 +57,23 @@ export const lagTapteDagerPerioder = (
     foreldreInfo: ForeldreInfo,
 ): TapteDagerHull[] => {
     if (foreldreInfo.søker === 'FAR_MEDMOR' && foreldreInfo.rettighetType === 'BARE_SØKER_RETT') {
-        const sistePeriodeSomStarterEtterFamiliehendelsedato = sortertePerioder.findLast((p) =>
-            dayjs(p.fom).isSameOrAfter(familiehendelsedato),
+        const fom =
+            familiesituasjon === 'adopsjon'
+                ? Uttaksdagen.denneEllerNeste(familiehendelsedato).getDato()
+                : Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30);
+
+        // Perioder som ligger i sin helhet før seksukersperioden er ferdig (f.eks. mors
+        // periode rett etter fødsel) skal ikke regnes med her, siden far/medmor uansett
+        // ikke kan ta ut dager i denne perioden. Uten dette blir intervallet som sjekkes
+        // for hull snudd (tom før fom), og det vises feilaktig tapte dager i seksukersperioden.
+        const sistePeriodeSomStarterEtterSeksukersperioden = sortertePerioder.findLast((p) =>
+            dayjs(p.fom).isSameOrAfter(fom),
         );
 
-        if (sistePeriodeSomStarterEtterFamiliehendelsedato?.fom) {
+        if (sistePeriodeSomStarterEtterSeksukersperioden?.fom) {
             const periodeSomSkalSjekkesForHull = {
-                fom:
-                    familiesituasjon === 'adopsjon'
-                        ? Uttaksdagen.denneEllerNeste(familiehendelsedato).getDato()
-                        : Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30),
-                tom: sistePeriodeSomStarterEtterFamiliehendelsedato.fom,
+                fom,
+                tom: sistePeriodeSomStarterEtterSeksukersperioden.fom,
             };
 
             return lagTapteDagerHull(sortertePerioder, foreldreInfo.søker, periodeSomSkalSjekkesForHull);
