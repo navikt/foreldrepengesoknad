@@ -16,7 +16,7 @@ import { shouldApplyStorage } from 'utils/mellomlagringUtils';
 
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { ErrorBoundary, RegisterdataUtdatert, Spinner } from '@navikt/fp-ui';
-import { erLikUansettRekkefølge, omitMany, omitOne, useDocumentTitle } from '@navikt/fp-utils';
+import { erLikUansettRekkefølge, omitMany, useDocumentTitle } from '@navikt/fp-utils';
 
 import { ForeldrepengesøknadRoutes } from './ForeldrepengesøknadRoutes';
 
@@ -115,10 +115,7 @@ const RegisterdataSjekk = ({
         annenPartVedtakQuery.isSuccess &&
         !erLikUansettRekkefølge(annenPartVedtakQuery.data, mellomlagretData.annenPartVedtak);
 
-    const søkerInfoErEndret = !erLikUansettRekkefølge(
-        relevantSøkerInfo(mellomlagretData.søkerInfo),
-        relevantSøkerInfo(søkerInfo),
-    );
+    const søkerInfoErEndret = !erLikUansettRekkefølge(mellomlagretData.søkerInfo, søkerInfo);
 
     const sakerErEndret = !erLikUansettRekkefølge(
         relevanteSaker(mellomlagretData.foreldrepengerSaker),
@@ -155,7 +152,3 @@ const RegisterdataSjekk = ({
 // søknadsflyten). Slik unngår vi falske positive utdatert-varsel.
 const relevanteSaker = (saker: FpSak_fpoversikt[]) =>
     saker.map((sak) => omitMany(sak, ['oppdatertTidspunkt', 'åpenBehandling']));
-
-// erGift er ikkje brukt i søknaden, og skal difor ikkje gjera ei mellomlagra
-// søknad utdatert.
-const relevantSøkerInfo = (søkerInfo: FpPersonopplysningerDto_fpoversikt) => omitOne(søkerInfo, 'erGift');
