@@ -16,7 +16,7 @@ import { shouldApplyStorage } from 'utils/mellomlagringUtils';
 
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { ErrorBoundary, RegisterdataUtdatert, Spinner } from '@navikt/fp-ui';
-import { erLikUansettRekkefølge, useDocumentTitle } from '@navikt/fp-utils';
+import { erLikUansettRekkefølge, omitMany, omitOne, useDocumentTitle } from '@navikt/fp-utils';
 
 import { ForeldrepengesøknadRoutes } from './ForeldrepengesøknadRoutes';
 
@@ -115,13 +115,14 @@ const RegisterdataSjekk = ({
         annenPartVedtakQuery.isSuccess &&
         !erLikUansettRekkefølge(annenPartVedtakQuery.data, mellomlagretData.annenPartVedtak);
 
-    const søkerInfoErEndret = !erLikUansettRekkefølge(mellomlagretData.søkerInfo, søkerInfo);
+    const søkerInfoErEndret = !erLikUansettRekkefølge(
+        relevantSøkerInfo(mellomlagretData.søkerInfo),
+        relevantSøkerInfo(søkerInfo),
+    );
 
-    // Ignorer oppdatertTidspunkt: backend kan endra dette tidsstemplet utan at
-    // sjølve søknadsgrunnlaget er endra, noko som gir falske positive avvik.
     const sakerErEndret = !erLikUansettRekkefølge(
-        utenOppdatertTidspunkt(mellomlagretData.foreldrepengerSaker),
-        utenOppdatertTidspunkt(foreldrepengerSaker),
+        relevanteSaker(mellomlagretData.foreldrepengerSaker),
+        relevanteSaker(foreldrepengerSaker),
     );
 
     const registerdataErEndret = søkerInfoErEndret || sakerErEndret || annenPartVedtakErEndret;
@@ -147,7 +148,14 @@ const RegisterdataSjekk = ({
     return <>{children}</>;
 };
 
-// Fjernar det volatile feltet oppdatertTidspunkt før samanlikning slik at reine
-// tidsstempel-endringar ikkje blir tolka som utdaterte registerdata.
-const utenOppdatertTidspunkt = (saker: FpSak_fpoversikt[]) =>
-    saker.map(({ oppdatertTidspunkt: _oppdatertTidspunkt, ...rest }) => rest);
+// Samanliknar berre felt som faktisk gjer ei mellomlagra søknad ugyldig.
+// Volatile felt frå backend som ikkje seier noko om søknadsgrunnlaget er endra,
+// blir fjerna: oppdatertTidspunkt er eit reint tidsstempel, og åpenBehandling er
+// behandlingsstatus (berre brukt til statustekst på forsida, ikkje i sjølve
+// søknadsflyten). Slik unngår vi falske positive utdatert-varsel.
+const relevanteSaker = (saker: FpSak_fpoversikt[]) =>
+    saker.map((sak) => omitMany(sak, ['oppdatertTidspunkt', 'åpenBehandling']));
+
+// erGift er ikkje brukt i søknaden, og skal difor ikkje gjera ei mellomlagra
+// søknad utdatert.
+const relevantSøkerInfo = (søkerInfo: FpPersonopplysningerDto_fpoversikt) => omitOne(søkerInfo, 'erGift');
