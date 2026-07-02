@@ -61,7 +61,7 @@
     "FordelingSteg.HvemStarterPermisjon.Label": "Kven skal starte permisjonen med foreldrepengar?",
     "FordelingSteg.HvemStarterPermisjon.Mor1": "Mor 1",
     "FordelingSteg.HvemStarterPermisjon.Mor2": "Mor 2",
-    "FordelingSteg.HvemStarterPermisjon.ReadMore.Tekst": "De kan sjølv velje kven som startar permisjonen. Om den andre forelderen skal bruke fellesperioden, må den som starta permisjonen vere i godkjend aktivitet i denne tida.",
+    "FordelingSteg.HvemStarterPermisjon.ReadMore.Tekst": "Dykk kan sjølv velje kven som startar permisjonen. Om den andre forelderen skal bruke fellesperioden, må den som starta permisjonen vere i godkjend aktivitet i denne tida.",
     "FordelingSteg.HvemStarterPermisjon.ReadMore.Tittel": "Kva betyding har det kven som startar permisjonen?",
     "FordelingSteg.HvemStarterPermisjon.Required": "Du må velje kven som skal starte permisjonen.",
     "FordelingSteg.Infoboks.HvordanFordeleTekst": "Foreldrepengane er delt inn i tre delar; ein til kvar av foreldra og ein fellesperiode. Med {prosent} % foreldrepengar er denne perioden på {uker} veker{dager, select, 1 { og ein dag} 2 { og to dagar} 3 { og tre dagar} 4 { og fire dagar} other{}}. De kan sjølv velja korleis perioden skal fordelast mellom dykk.",

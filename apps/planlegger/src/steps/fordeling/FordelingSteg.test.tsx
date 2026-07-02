@@ -251,7 +251,7 @@ describe('<FordelingSteg>', () => {
 
         expect(screen.getByText('Hvem skal starte permisjonen med foreldrepenger?')).toBeInTheDocument();
         expect(
-            screen.getByText('Permisjonen kan tidligst starte ved omsorgsovertakelse.'),
+            screen.getByText('Permisjonen kan tidligst starte ved omsorgsovertakelsen.'),
         ).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: 'Petter Pjokk' })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: 'Espen Utvikler' })).toBeInTheDocument();

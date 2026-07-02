@@ -55,7 +55,7 @@
     "FordelingSteg.EkstraDagInfo.EnDag": "Den ene ekstra dagen med fellesperiode vil legge seg inn i planen automatisk. Hvis du ønsker en annen fordeling, kan du endre dette i planen senere.",
     "FordelingSteg.EkstraDagInfo.FlereDager": "De ekstra dagene med fellesperiode vil legge seg inn i planen automatisk. Hvis du ønsker en annen fordeling, kan du endre dette i planen senere.",
     "FordelingSteg.FordelingTittel": "Hvordan vil dere fordele {uker} uker {dager, select, 1 {og én dag} 2 {og to dager} 3 {og tre dager} 4 {og fire dager} other{}} med fellesperiode?",
-    "FordelingSteg.HvemStarterPermisjon.Description": "Permisjonen kan tidligst starte ved omsorgsovertakelse.",
+    "FordelingSteg.HvemStarterPermisjon.Description": "Permisjonen kan tidligst starte ved omsorgsovertakelsen.",
     "FordelingSteg.HvemStarterPermisjon.Far1": "Far 1",
     "FordelingSteg.HvemStarterPermisjon.Far2": "Far 2",
     "FordelingSteg.HvemStarterPermisjon.Label": "Hvem skal starte permisjonen med foreldrepenger?",
