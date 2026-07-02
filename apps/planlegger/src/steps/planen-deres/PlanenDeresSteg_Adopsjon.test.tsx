@@ -36,8 +36,8 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(sliderHeadings.some((heading) => heading.textContent === '0 uker')).toBe(true);
         expect(sliderHeadings.some((heading) => heading.textContent === '16 uker')).toBe(true);
 
-        expect(screen.getByText('Mors periode')).toBeInTheDocument();
-        expect(screen.getByText('Fars periode')).toBeInTheDocument();
+        expect(screen.getByText('Olga Utviklers periode')).toBeInTheDocument();
+        expect(screen.getByText('Espen Utviklers periode')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
@@ -154,8 +154,8 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(sliderHeadings.some((heading) => heading.textContent === '0 uker')).toBe(true);
         expect(sliderHeadings.some((heading) => heading.textContent === '16 uker')).toBe(true);
 
-        expect(screen.getByText('Mors periode')).toBeInTheDocument();
-        expect(screen.getByText('Medmors periode')).toBeInTheDocument();
+        expect(screen.getByText('Olga Utviklers periode')).toBeInTheDocument();
+        expect(screen.getByText('Helga Utviklers periode')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
@@ -326,7 +326,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(sliderHeadings.some((heading) => heading.textContent === '0 uker')).toBe(true);
         expect(sliderHeadings.some((heading) => heading.textContent === '16 uker')).toBe(true);
 
-        expect(screen.getByText('Fars periode')).toBeInTheDocument();
+        expect(screen.getByText('Espen Utviklers periode')).toBeInTheDocument();
         expect(screen.getByText('Adopsjon')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');

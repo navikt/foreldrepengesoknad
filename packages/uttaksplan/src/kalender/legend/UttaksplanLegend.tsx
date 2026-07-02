@@ -212,6 +212,7 @@ const LabelButtonMedEllerUtenToolip = ({
         erMedmorDelAvSøknaden,
         harAktivitetsfriKvote,
         rettighetType,
+        navnPåForeldre,
     });
 
     if (visTekst) {

@@ -48,8 +48,8 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(sliderHeadings.some((heading) => heading.textContent === '0 uker')).toBe(true);
         expect(sliderHeadings.some((heading) => heading.textContent === '16 uker')).toBe(true);
 
-        expect(screen.getByText('Mors periode')).toBeInTheDocument();
-        expect(screen.getByText('Fars periode')).toBeInTheDocument();
+        expect(screen.getByText('Olga Utviklers periode')).toBeInTheDocument();
+        expect(screen.getByText('Espen Utviklers periode')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const juni = screen.getByTestId('year:2024;month:5');
@@ -189,8 +189,8 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(sliderHeadings.some((heading) => heading.textContent === '0 uker')).toBe(true);
         expect(sliderHeadings.some((heading) => heading.textContent === '16 uker')).toBe(true);
 
-        expect(screen.getByText('Mors periode')).toBeInTheDocument();
-        expect(screen.getByText('Medmors periode')).toBeInTheDocument();
+        expect(screen.getByText('Olga Utviklers periode')).toBeInTheDocument();
+        expect(screen.getByText('Helga Utviklers periode')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const juni = screen.getByTestId('year:2024;month:5');
@@ -456,8 +456,8 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(sliderHeadings.some((heading) => heading.textContent === '0 uker')).toBe(true);
         expect(sliderHeadings.some((heading) => heading.textContent === '16 uker')).toBe(true);
 
-        expect(screen.getByText('Mors periode')).toBeInTheDocument();
-        expect(screen.getByText('Fars periode')).toBeInTheDocument();
+        expect(screen.getByText('Olga Utviklers periode')).toBeInTheDocument();
+        expect(screen.getByText('Espen Utviklers periode')).toBeInTheDocument();
         expect(screen.getByText('Fødsel')).toBeInTheDocument();
         expect(screen.getAllByText('Barnehageplass')[0]).toBeInTheDocument();
 
@@ -497,8 +497,8 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(sliderHeadings.some((heading) => heading.textContent === '0 uker')).toBe(true);
         expect(sliderHeadings.some((heading) => heading.textContent === '20 uker')).toBe(true);
 
-        expect(screen.getByText('Mors periode')).toBeInTheDocument();
-        expect(screen.getByText('Fars periode')).toBeInTheDocument();
+        expect(screen.getByText('Olga Utviklers periode')).toBeInTheDocument();
+        expect(screen.getByText('Espen Utviklers periode')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
         expect(screen.getAllByText('Barnehageplass')[0]).toBeInTheDocument();
 
@@ -530,8 +530,8 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(sliderHeadings.some((heading) => heading.textContent === '8 uker')).toBe(true);
         expect(sliderHeadings.filter((heading) => heading.textContent === '8 uker')).toHaveLength(2);
 
-        expect(screen.getByText('Mors periode')).toBeInTheDocument();
-        expect(screen.getByText('Fars periode')).toBeInTheDocument();
+        expect(screen.getByText('Olga Utviklers periode')).toBeInTheDocument();
+        expect(screen.getByText('Espen Utviklers periode')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
         expect(screen.getAllByText('Barnehageplass')[0]).toBeInTheDocument();
 

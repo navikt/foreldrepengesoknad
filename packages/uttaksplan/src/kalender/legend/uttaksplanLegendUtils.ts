@@ -1,6 +1,6 @@
 import { IntlShape } from 'react-intl';
 
-import { BrukerRolleSak_fpoversikt, RettighetType_fpoversikt } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, NavnPåForeldre, RettighetType_fpoversikt } from '@navikt/fp-types';
 import { CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 import { getLocaleFromSessionStorage, getNavnGenitivEierform } from '@navikt/fp-utils';
 import { assertUnreachable } from '@navikt/fp-validation';
@@ -34,6 +34,7 @@ export type LegendTekstKontekst = {
     erMedmorDelAvSøknaden: boolean;
     harAktivitetsfriKvote: boolean;
     rettighetType: RettighetType_fpoversikt;
+    navnPåForeldre?: NavnPåForeldre;
 };
 
 type LegendTekstArgs = LegendTekstKontekst & {
@@ -60,14 +61,14 @@ const LEGEND_LABELS: Record<LegendLabel, LegendLabelKonfig> = {
     MORS_DEL: {
         rekkefølge: 0,
         klikkbar: true,
-        tekst: ({ navnAnnenPart, erIkkeSøkerSpesifisert, erSøkersPeriode, intl }) =>
-            getMorsDelLabel(navnAnnenPart, erIkkeSøkerSpesifisert, erSøkersPeriode, intl),
+        tekst: ({ navnAnnenPart, erIkkeSøkerSpesifisert, erSøkersPeriode, navnPåForeldre, intl }) =>
+            getMorsDelLabel(navnAnnenPart, erIkkeSøkerSpesifisert, erSøkersPeriode, navnPåForeldre, intl),
     },
     MORS_DEL_GRADERT: {
         rekkefølge: 1,
         klikkbar: true,
-        tekst: ({ navnAnnenPart, erIkkeSøkerSpesifisert, erSøkersPeriode, intl }) =>
-            getMorsDelGradertLabel(navnAnnenPart, erIkkeSøkerSpesifisert, erSøkersPeriode, intl),
+        tekst: ({ navnAnnenPart, erIkkeSøkerSpesifisert, erSøkersPeriode, navnPåForeldre, intl }) =>
+            getMorsDelGradertLabel(navnAnnenPart, erIkkeSøkerSpesifisert, erSøkersPeriode, navnPåForeldre, intl),
     },
     FARS_DEL: {
         rekkefølge: 2,
@@ -78,6 +79,7 @@ const LEGEND_LABELS: Record<LegendLabel, LegendLabelKonfig> = {
             erSøkersPeriode,
             erMedmorDelAvSøknaden,
             harAktivitetsfriKvote,
+            navnPåForeldre,
             intl,
         }) =>
             getFarsDelLabel(
@@ -86,6 +88,7 @@ const LEGEND_LABELS: Record<LegendLabel, LegendLabelKonfig> = {
                 erSøkersPeriode,
                 erMedmorDelAvSøknaden,
                 harAktivitetsfriKvote,
+                navnPåForeldre,
                 intl,
             ),
     },
@@ -98,6 +101,7 @@ const LEGEND_LABELS: Record<LegendLabel, LegendLabelKonfig> = {
             erSøkersPeriode,
             erMedmorDelAvSøknaden,
             harAktivitetsfriKvote,
+            navnPåForeldre,
             intl,
         }) =>
             getFarsDelGradertLabel(
@@ -106,6 +110,7 @@ const LEGEND_LABELS: Record<LegendLabel, LegendLabelKonfig> = {
                 erSøkersPeriode,
                 erMedmorDelAvSøknaden,
                 harAktivitetsfriKvote,
+                navnPåForeldre,
                 intl,
             ),
     },
@@ -150,13 +155,22 @@ const LEGEND_LABELS: Record<LegendLabel, LegendLabelKonfig> = {
     TAPTE_DAGER: {
         rekkefølge: 8,
         klikkbar: true,
-        tekst: ({ erIkkeSøkerSpesifisert, erSøkersPeriode, navnAnnenPart, forelder, erMedmorDelAvSøknaden, intl }) =>
+        tekst: ({
+            erIkkeSøkerSpesifisert,
+            erSøkersPeriode,
+            navnAnnenPart,
+            forelder,
+            erMedmorDelAvSøknaden,
+            navnPåForeldre,
+            intl,
+        }) =>
             getTapteDagerLabel(
                 erIkkeSøkerSpesifisert,
                 erSøkersPeriode,
                 navnAnnenPart,
                 forelder,
                 erMedmorDelAvSøknaden,
+                navnPåForeldre,
                 intl,
             ),
     },
@@ -198,14 +212,14 @@ const LEGEND_LABELS: Record<LegendLabel, LegendLabelKonfig> = {
     MORS_DEL_EØS: {
         rekkefølge: -1,
         klikkbar: true,
-        tekst: ({ navnAnnenPart, erIkkeSøkerSpesifisert, intl }) =>
-            getMorsDelEøsLabel(navnAnnenPart, erIkkeSøkerSpesifisert, intl),
+        tekst: ({ navnAnnenPart, erIkkeSøkerSpesifisert, navnPåForeldre, intl }) =>
+            getMorsDelEøsLabel(navnAnnenPart, erIkkeSøkerSpesifisert, navnPåForeldre, intl),
     },
     FARS_DEL_EØS: {
         rekkefølge: -1,
         klikkbar: true,
-        tekst: ({ navnAnnenPart, erIkkeSøkerSpesifisert, erMedmorDelAvSøknaden, intl }) =>
-            getFarsDelEøsLabel(navnAnnenPart, erIkkeSøkerSpesifisert, erMedmorDelAvSøknaden, intl),
+        tekst: ({ navnAnnenPart, erIkkeSøkerSpesifisert, erMedmorDelAvSøknaden, navnPåForeldre, intl }) =>
+            getFarsDelEøsLabel(navnAnnenPart, erIkkeSøkerSpesifisert, erMedmorDelAvSøknaden, navnPåForeldre, intl),
     },
     PLEIEPENGER: {
         rekkefølge: -1,
@@ -295,11 +309,24 @@ const getTapteDagerLabel = (
     navnAnnenPart: string,
     forelder: 'MOR' | 'FAR_MEDMOR' | undefined,
     erMedmorDelAvSøknaden: boolean,
+    navnPåForeldre: NavnPåForeldre | undefined,
     intl: IntlShape,
 ): string => {
     if (erIkkeSøkerSpesifisert && !!forelder) {
         if (forelder === 'MOR') {
+            if (navnPåForeldre) {
+                return intl.formatMessage(
+                    { id: 'kalender.tapteDager.forNavn' },
+                    { navn: getNavnGenitivEierform(navnPåForeldre.mor, getLocaleFromSessionStorage()) },
+                );
+            }
             return intl.formatMessage({ id: 'kalender.tapteDager.mor' });
+        }
+        if (navnPåForeldre) {
+            return intl.formatMessage(
+                { id: 'kalender.tapteDager.forNavn' },
+                { navn: getNavnGenitivEierform(navnPåForeldre.farMedmor, getLocaleFromSessionStorage()) },
+            );
         }
         if (forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden) {
             return intl.formatMessage({ id: 'kalender.tapteDager.medmor' });
@@ -321,9 +348,16 @@ const getMorsDelLabel = (
     navnAnnenPart: string,
     erIkkeSøkerSpesifisert: boolean,
     erSøkersPeriode: boolean,
+    navnPåForeldre: NavnPåForeldre | undefined,
     intl: IntlShape,
 ): string => {
     if (erIkkeSøkerSpesifisert) {
+        if (navnPåForeldre) {
+            return intl.formatMessage(
+                { id: 'kalender.periodeForNavn' },
+                { navn: getNavnGenitivEierform(navnPåForeldre.mor, getLocaleFromSessionStorage()) },
+            );
+        }
         return intl.formatMessage({ id: 'kalender.morsPeriode' });
     }
 
@@ -337,8 +371,19 @@ const getMorsDelLabel = (
     );
 };
 
-const getMorsDelEøsLabel = (navnAnnenPart: string, erIkkeSøkerSpesifisert: boolean, intl: IntlShape): string => {
+const getMorsDelEøsLabel = (
+    navnAnnenPart: string,
+    erIkkeSøkerSpesifisert: boolean,
+    navnPåForeldre: NavnPåForeldre | undefined,
+    intl: IntlShape,
+): string => {
     if (erIkkeSøkerSpesifisert) {
+        if (navnPåForeldre) {
+            return intl.formatMessage(
+                { id: 'kalender.eøsPeriodeForNavn' },
+                { navn: getNavnGenitivEierform(navnPåForeldre.mor, getLocaleFromSessionStorage()) },
+            );
+        }
         return intl.formatMessage({ id: 'kalender.morsEøsPeriode' });
     }
 
@@ -352,9 +397,13 @@ const getMorsDelGradertLabel = (
     navnAnnenPart: string,
     erIkkeSøkerSpesifisert: boolean,
     erSøkersPeriode: boolean,
+    navnPåForeldre: NavnPåForeldre | undefined,
     intl: IntlShape,
 ): string => {
     if (erIkkeSøkerSpesifisert) {
+        if (navnPåForeldre) {
+            return intl.formatMessage({ id: 'kalender.periodeForNavn.gradert' }, { navn: navnPåForeldre.mor });
+        }
         return intl.formatMessage({ id: 'kalender.morsPeriode.gradert' });
     }
 
@@ -371,9 +420,16 @@ const getFarsDelLabel = (
     erSøkersPeriode: boolean,
     erMedmorDelAvSøknaden: boolean,
     harAktivitetsfriKvote: boolean,
+    navnPåForeldre: NavnPåForeldre | undefined,
     intl: IntlShape,
 ): string => {
     if (erIkkeSøkerSpesifisert) {
+        if (navnPåForeldre) {
+            return intl.formatMessage(
+                { id: 'kalender.periodeForNavn' },
+                { navn: getNavnGenitivEierform(navnPåForeldre.farMedmor, getLocaleFromSessionStorage()) },
+            );
+        }
         if (erMedmorDelAvSøknaden) {
             return intl.formatMessage({ id: 'kalender.medmorsPeriode' });
         }
@@ -399,9 +455,16 @@ const getFarsDelEøsLabel = (
     navnAnnenPart: string,
     erIkkeSøkerSpesifisert: boolean,
     erMedmorDelAvSøknaden: boolean,
+    navnPåForeldre: NavnPåForeldre | undefined,
     intl: IntlShape,
 ): string => {
     if (erIkkeSøkerSpesifisert) {
+        if (navnPåForeldre) {
+            return intl.formatMessage(
+                { id: 'kalender.eøsPeriodeForNavn' },
+                { navn: getNavnGenitivEierform(navnPåForeldre.farMedmor, getLocaleFromSessionStorage()) },
+            );
+        }
         if (erMedmorDelAvSøknaden) {
             return intl.formatMessage({ id: 'kalender.medmorsEøsPeriode' });
         }
@@ -420,9 +483,13 @@ const getFarsDelGradertLabel = (
     erSøkersPeriode: boolean,
     erMedmorDelAvSøknaden: boolean,
     harAktivitetsfriKvote: boolean,
+    navnPåForeldre: NavnPåForeldre | undefined,
     intl: IntlShape,
 ): string => {
     if (erIkkeSøkerSpesifisert) {
+        if (navnPåForeldre) {
+            return intl.formatMessage({ id: 'kalender.periodeForNavn.gradert' }, { navn: navnPåForeldre.farMedmor });
+        }
         if (erMedmorDelAvSøknaden) {
             return intl.formatMessage({ id: 'kalender.medmorsPeriode.gradert' });
         }
