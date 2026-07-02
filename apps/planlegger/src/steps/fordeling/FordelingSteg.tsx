@@ -7,11 +7,11 @@ import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
-    erLikekjønnetPar,
     getEffektivHvemPlanlegger,
     getFornavnPåSøker1,
     getFornavnPåSøker2,
     getNavnForHvemStarterPermisjon,
+    kanVelgeHvemSomStarterPermisjonen,
 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
@@ -67,8 +67,8 @@ export const FordelingSteg = ({ stønadskvoter }: Props) => {
 
     const hvemStarterPermisjon = formMethods.watch('hvemStarterPermisjon');
 
-    const skalSpørreOmHvemSomStarterPermisjonen = erLikekjønnetPar(hvemPlanlegger) && erBarnetAdoptert(barnet);
-    const navnForHvemStarterPermisjon = erLikekjønnetPar(hvemPlanlegger)
+    const skalSpørreOmHvemSomStarterPermisjonen = kanVelgeHvemSomStarterPermisjonen(hvemPlanlegger) && erBarnetAdoptert(barnet);
+    const navnForHvemStarterPermisjon = kanVelgeHvemSomStarterPermisjonen(hvemPlanlegger)
         ? getNavnForHvemStarterPermisjon(hvemPlanlegger, intl)
         : undefined;
 

@@ -12,6 +12,7 @@ import {
     getFornavnPåSøker2,
     getNavnForHvemStarterPermisjon,
     getNavnPåForeldre,
+    kanVelgeHvemSomStarterPermisjonen,
 } from './HvemPlanleggerUtils';
 
 const mockIntl: IntlShape = {
@@ -195,6 +196,24 @@ describe('erLikekjønnetPar', () => {
     });
 });
 
+describe('kanVelgeHvemSomStarterPermisjonen', () => {
+    it('skal returnere true for FAR_OG_FAR', () => {
+        expect(kanVelgeHvemSomStarterPermisjonen({ type: HvemPlanleggerType.FAR_OG_FAR })).toBe(true);
+    });
+
+    it('skal returnere true for MOR_OG_MEDMOR', () => {
+        expect(kanVelgeHvemSomStarterPermisjonen({ type: HvemPlanleggerType.MOR_OG_MEDMOR })).toBe(true);
+    });
+
+    it('skal returnere true for MOR_OG_FAR', () => {
+        expect(kanVelgeHvemSomStarterPermisjonen({ type: HvemPlanleggerType.MOR_OG_FAR })).toBe(true);
+    });
+
+    it('skal returnere false for MOR alene', () => {
+        expect(kanVelgeHvemSomStarterPermisjonen({ type: HvemPlanleggerType.MOR })).toBe(false);
+    });
+});
+
 describe('getNavnForHvemStarterPermisjon', () => {
     it('skal returnere oppgitte navn for FAR_OG_FAR', () => {
         const hvemPlanlegger: HvemPlanlegger = {
@@ -228,6 +247,30 @@ describe('getNavnForHvemStarterPermisjon', () => {
         expect(getNavnForHvemStarterPermisjon(hvemPlanlegger, mockIntl)).toEqual({
             navnSøker1: 'Mor',
             navnSøker2: 'Medmor',
+        });
+    });
+
+    it('skal returnere oppgitte navn for MOR_OG_FAR', () => {
+        const hvemPlanlegger: HvemPlanlegger = {
+            type: HvemPlanleggerType.MOR_OG_FAR,
+            navnPåMor: 'Kari Nordmann',
+            navnPåFar: 'Ola Hansen',
+        };
+
+        expect(getNavnForHvemStarterPermisjon(hvemPlanlegger, mockIntl)).toEqual({
+            navnSøker1: 'Kari Nordmann',
+            navnSøker2: 'Ola Hansen',
+        });
+    });
+
+    it('skal falle tilbake til Mor/Far når navn mangler for MOR_OG_FAR', () => {
+        const hvemPlanlegger: HvemPlanlegger = {
+            type: HvemPlanleggerType.MOR_OG_FAR,
+        };
+
+        expect(getNavnForHvemStarterPermisjon(hvemPlanlegger, mockIntl)).toEqual({
+            navnSøker1: 'Mor',
+            navnSøker2: 'Far',
         });
     });
 });
@@ -340,7 +383,7 @@ describe('getEffektivHvemPlanlegger', () => {
         });
     });
 
-    it('skal ikke bytte om navn for ulikekjønnet par selv ved adopsjon', () => {
+    it('skal bytte om navnPåMor/navnPåFar når hvemStarterPermisjon er søker2 for MOR_OG_FAR ved adopsjon', () => {
         const hvemPlanlegger: HvemPlanlegger = {
             type: HvemPlanleggerType.MOR_OG_FAR,
             navnPåMor: 'Kari Nordmann',
@@ -351,6 +394,27 @@ describe('getEffektivHvemPlanlegger', () => {
             hvemPlanlegger,
             { antallDagerSøker1: 75, hvemStarterPermisjon: 'søker2' },
             adoptertBarnet,
+            mockIntl,
+        );
+
+        expect(resultat).toEqual({
+            type: HvemPlanleggerType.MOR_OG_FAR,
+            navnPåMor: 'Ola Hansen',
+            navnPåFar: 'Kari Nordmann',
+        });
+    });
+
+    it('skal ikke bytte om navn for MOR_OG_FAR ved fødsel', () => {
+        const hvemPlanlegger: HvemPlanlegger = {
+            type: HvemPlanleggerType.MOR_OG_FAR,
+            navnPåMor: 'Kari Nordmann',
+            navnPåFar: 'Ola Hansen',
+        };
+
+        const resultat = getEffektivHvemPlanlegger(
+            hvemPlanlegger,
+            { antallDagerSøker1: 75, hvemStarterPermisjon: 'søker2' },
+            fødtBarnet,
             mockIntl,
         );
 

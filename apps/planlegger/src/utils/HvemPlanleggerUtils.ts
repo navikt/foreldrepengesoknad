@@ -38,9 +38,18 @@ export const erFarOgFar = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is Fa
 export const erLikekjønnetPar = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is FarOgFar | MorOgMedmor =>
     hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR || hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR;
 
+/**
+ * Par der brukeren (ved adopsjon, se {@link FordelingSteg}) kan velge hvem som skal starte permisjonen,
+ * fremfor at det alltid er den først oppgitte forelderen (eller mor, for mor/far) som blir søker1.
+ */
+export const kanVelgeHvemSomStarterPermisjonen = (
+    hvemPlanlegger: HvemPlanlegger,
+): hvemPlanlegger is FarOgFar | MorOgMedmor | MorOgFar =>
+    erLikekjønnetPar(hvemPlanlegger) || hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR;
+
 /** Navn (uten capitalize) til bruk internt ved bytte av søker1/søker2, konsistent med getNavnPåSøker1/2 */
 const getRawNavnForHvemStarterPermisjon = (
-    hvemPlanlegger: FarOgFar | MorOgMedmor,
+    hvemPlanlegger: FarOgFar | MorOgMedmor | MorOgFar,
     intl: IntlShape,
 ): { navnSøker1: string; navnSøker2: string } => {
     if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) {
@@ -53,19 +62,29 @@ const getRawNavnForHvemStarterPermisjon = (
                 : intl.formatMessage({ id: 'HvemPlanlegger.DefaultFar2Navn' }),
         };
     }
+    if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR) {
+        return {
+            navnSøker1: erGyldigNavn(hvemPlanlegger.navnPåMor)
+                ? hvemPlanlegger.navnPåMor
+                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
+            navnSøker2: erGyldigNavn(hvemPlanlegger.navnPåMedmor)
+                ? hvemPlanlegger.navnPåMedmor
+                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' }),
+        };
+    }
     return {
         navnSøker1: erGyldigNavn(hvemPlanlegger.navnPåMor)
             ? hvemPlanlegger.navnPåMor
             : intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
-        navnSøker2: erGyldigNavn(hvemPlanlegger.navnPåMedmor)
-            ? hvemPlanlegger.navnPåMedmor
-            : intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' }),
+        navnSøker2: erGyldigNavn(hvemPlanlegger.navnPåFar)
+            ? hvemPlanlegger.navnPåFar
+            : intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' }),
     };
 };
 
-/** Navn (eller fallback "Far 1"/"Far 2"/"Mor"/"Medmor") til bruk i spørsmålet om hvem som starter permisjonen */
+/** Navn (eller fallback "Far 1"/"Far 2"/"Mor"/"Medmor"/"Far") til bruk i spørsmålet om hvem som starter permisjonen */
 export const getNavnForHvemStarterPermisjon = (
-    hvemPlanlegger: FarOgFar | MorOgMedmor,
+    hvemPlanlegger: FarOgFar | MorOgMedmor | MorOgFar,
     intl: IntlShape,
 ): { navnSøker1: string; navnSøker2: string } => {
     const { navnSøker1, navnSøker2 } = getRawNavnForHvemStarterPermisjon(hvemPlanlegger, intl);
@@ -76,9 +95,10 @@ export const getNavnForHvemStarterPermisjon = (
 };
 
 /**
- * For likekjønnede par ved adopsjon kan brukeren velge hvem som starter permisjonen (se {@link FordelingSteg}).
- * Denne funksjonen bytter om på navnefeltene slik at "søker1" alltid samsvarer med den som faktisk starter,
- * uavhengig av hvilken rekkefølge navnene ble oppgitt i på steget "Hvem planlegger". Alle andre steder i appen
+ * For likekjønnede par, samt mor/far, ved adopsjon kan brukeren velge hvem som starter permisjonen
+ * (se {@link FordelingSteg}). Denne funksjonen bytter om på navnefeltene slik at "søker1" alltid samsvarer
+ * med den som faktisk starter, uavhengig av hvilken rekkefølge navnene ble oppgitt i på steget
+ * "Hvem planlegger" (eller, for mor/far, uavhengig av at mor normalt er søker1). Alle andre steder i appen
  * som viser eller beregner søker1/søker2 (uttaksdata, fordelingsslider, uttaksplanforslag) skal bruke denne
  * "effektive" versjonen av hvemPlanlegger fremfor rådataen fra HVEM_PLANLEGGER-konteksten.
  *
@@ -93,7 +113,7 @@ export const getEffektivHvemPlanlegger = (
     barnet: OmBarnetPlanlegger | undefined,
     intl: IntlShape,
 ): HvemPlanlegger => {
-    if (!barnet || !erLikekjønnetPar(hvemPlanlegger) || !erBarnetAdoptert(barnet)) {
+    if (!barnet || !kanVelgeHvemSomStarterPermisjonen(hvemPlanlegger) || !erBarnetAdoptert(barnet)) {
         return hvemPlanlegger;
     }
     if (fordeling?.hvemStarterPermisjon !== 'søker2') {
@@ -107,10 +127,17 @@ export const getEffektivHvemPlanlegger = (
             navnPåMedfar: navnSøker1,
         };
     }
+    if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR) {
+        return {
+            type: HvemPlanleggerType.MOR_OG_MEDMOR,
+            navnPåMor: navnSøker2,
+            navnPåMedmor: navnSøker1,
+        };
+    }
     return {
-        type: HvemPlanleggerType.MOR_OG_MEDMOR,
+        type: HvemPlanleggerType.MOR_OG_FAR,
         navnPåMor: navnSøker2,
-        navnPåMedmor: navnSøker1,
+        navnPåFar: navnSøker1,
     };
 };
 

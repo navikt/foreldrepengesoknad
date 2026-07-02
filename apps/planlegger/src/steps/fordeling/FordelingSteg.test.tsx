@@ -171,11 +171,13 @@ describe('<FordelingSteg>', () => {
 
         expect(screen.getByText('Klara: 8. juli 2025 – 2. mars 2026')).toBeInTheDocument();
         expect(screen.getByText('Espen: 3. mars 2026 – 15. juni 2026')).toBeInTheDocument();
+        await userEvent.click(screen.getByRole('radio', { name: 'Klara Utvikler' }));
         await userEvent.click(screen.getByText('Neste'));
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 antallDagerSøker1: 80,
+                hvemStarterPermisjon: 'søker1',
             },
             key: ContextDataType.FORDELING,
             type: 'update',
@@ -308,7 +310,7 @@ describe('<FordelingSteg>', () => {
         ).not.toBeInTheDocument();
     });
 
-    it('Skal ikke vise spørsmål om hvem som starter permisjonen for ulikekjønnet par ved adopsjon', async () => {
+    it('Skal vise spørsmål om hvem som starter permisjonen for mor og far ved adopsjon', async () => {
         const gåTilNesteSide = vi.fn();
 
         const originalArgs = FlereForsørgereEttBarn.args;
@@ -327,8 +329,8 @@ describe('<FordelingSteg>', () => {
 
         expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
 
-        expect(
-            screen.queryByText('Hvem skal starte permisjonen med foreldrepenger?'),
-        ).not.toBeInTheDocument();
+        expect(screen.getByText('Hvem skal starte permisjonen med foreldrepenger?')).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: 'Klara Utvikler' })).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: 'Espen Utvikler' })).toBeInTheDocument();
     });
 });
