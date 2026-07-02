@@ -145,7 +145,7 @@ describe('getNavnPåForeldre', () => {
 
             expect(resultat).toEqual({
                 mor: 'Kari Nordmann',
-                farMedmor: 'mor 2',
+                farMedmor: 'medmor',
             });
         });
     });
@@ -220,14 +220,14 @@ describe('getNavnForHvemStarterPermisjon', () => {
         });
     });
 
-    it('skal falle tilbake til Mor 1/Mor 2 når navn mangler for MOR_OG_MEDMOR', () => {
+    it('skal falle tilbake til Mor/Medmor når navn mangler for MOR_OG_MEDMOR', () => {
         const hvemPlanlegger: HvemPlanlegger = {
             type: HvemPlanleggerType.MOR_OG_MEDMOR,
         };
 
         expect(getNavnForHvemStarterPermisjon(hvemPlanlegger, mockIntl)).toEqual({
-            navnSøker1: 'Mor 1',
-            navnSøker2: 'Mor 2',
+            navnSøker1: 'Mor',
+            navnSøker2: 'Medmor',
         });
     });
 });
@@ -344,11 +344,11 @@ describe('getFornavnPåSøker1 og getFornavnPåSøker2 for likekjønnede par ute
         expect(getFornavnPåSøker2(hvemPlanlegger, mockIntl)).toBe('far 2');
     });
 
-    it('skal bruke «mor 1»/«mor 2» (ikke bare «mor»/«medmor») som fornavn for MOR_OG_MEDMOR uten navn', () => {
+    it('skal fortsatt bruke «mor»/«medmor» for MOR_OG_MEDMOR uten navn (allerede distinkte roller, ingen nummerering nødvendig)', () => {
         const hvemPlanlegger: HvemPlanlegger = { type: HvemPlanleggerType.MOR_OG_MEDMOR };
 
-        expect(getFornavnPåSøker1(hvemPlanlegger, mockIntl)).toBe('mor 1');
-        expect(getFornavnPåSøker2(hvemPlanlegger, mockIntl)).toBe('mor 2');
+        expect(getFornavnPåSøker1(hvemPlanlegger, mockIntl)).toBe('mor');
+        expect(getFornavnPåSøker2(hvemPlanlegger, mockIntl)).toBe('medmor');
     });
 
     it('skal fortsatt bruke «far»/«mor» for MOR_OG_FAR uten navn (ikke likekjønnet, ingen nummerering nødvendig)', () => {

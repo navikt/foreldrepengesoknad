@@ -70,7 +70,7 @@ export const getEffektivHvemPlanlegger = (
     };
 };
 
-/** Navn (eller fallback "Far 1"/"Far 2"/"Mor 1"/"Mor 2") til bruk i spørsmålet om hvem som starter permisjonen */
+/** Navn (eller fallback "Far 1"/"Far 2"/"Mor"/"Medmor") til bruk i spørsmålet om hvem som starter permisjonen */
 export const getNavnForHvemStarterPermisjon = (
     hvemPlanlegger: FarOgFar | MorOgMedmor,
     intl: IntlShape,
@@ -88,10 +88,10 @@ export const getNavnForHvemStarterPermisjon = (
     return {
         navnSøker1: erGyldigNavn(hvemPlanlegger.navnPåMor)
             ? hvemPlanlegger.navnPåMor
-            : capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultMor1Navn' })),
+            : capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' })),
         navnSøker2: erGyldigNavn(hvemPlanlegger.navnPåMedmor)
             ? hvemPlanlegger.navnPåMedmor
-            : capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultMor2Navn' })),
+            : capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' })),
     };
 };
 
@@ -106,7 +106,7 @@ const getNavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): str
         return intl.formatMessage({ id: 'Du' });
     }
     if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR) {
-        return hvemPlanlegger.navnPåMor || intl.formatMessage({ id: 'HvemPlanlegger.DefaultMor1Navn' });
+        return hvemPlanlegger.navnPåMor || intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' });
     }
     if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) {
         return hvemPlanlegger.navnPåFar || intl.formatMessage({ id: 'HvemPlanlegger.DefaultFar1Navn' });
@@ -149,10 +149,10 @@ export const getNavnPåForeldre = (
         return {
             farMedmor: erGyldigNavn(hvemPlanlegger.navnPåMedmor)
                 ? hvemPlanlegger.navnPåMedmor
-                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultMor2Navn' }),
+                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' }),
             mor: erGyldigNavn(hvemPlanlegger.navnPåMor)
                 ? hvemPlanlegger.navnPåMor
-                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultMor1Navn' }),
+                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
         };
     }
 
@@ -168,7 +168,7 @@ export const getNavnPåForeldre = (
 
 const getNavnPåSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
     if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR) {
-        return hvemPlanlegger.navnPåMedmor || intl.formatMessage({ id: 'HvemPlanlegger.DefaultMor2Navn' });
+        return hvemPlanlegger.navnPåMedmor || intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' });
     }
     if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR) {
         return hvemPlanlegger.navnPåFar || intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
@@ -185,8 +185,6 @@ const erIkkeSplittbartNavn = (navn: string, intl: IntlShape): boolean =>
         intl.formatMessage({ id: 'HvemPlanlegger.DefaultAnnenForelderNavn' }),
         intl.formatMessage({ id: 'HvemPlanlegger.DefaultFar1Navn' }),
         intl.formatMessage({ id: 'HvemPlanlegger.DefaultFar2Navn' }),
-        intl.formatMessage({ id: 'HvemPlanlegger.DefaultMor1Navn' }),
-        intl.formatMessage({ id: 'HvemPlanlegger.DefaultMor2Navn' }),
     ].includes(navn);
 
 export const getFornavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
