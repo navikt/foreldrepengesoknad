@@ -62,10 +62,6 @@ export const getStarterForelder = (
         return undefined;
     }
 
-    if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) {
-        return fordeling?.hvemStarterPermisjon === 'søker2' ? 'MOR' : 'FAR_MEDMOR';
-    }
-
     return fordeling?.hvemStarterPermisjon === 'søker2' ? 'FAR_MEDMOR' : 'MOR';
 };
 

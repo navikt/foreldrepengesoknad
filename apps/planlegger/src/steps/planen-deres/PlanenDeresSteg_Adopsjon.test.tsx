@@ -77,6 +77,24 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(eksisterendePeriode.getByText('Fars kvote')).toBeInTheDocument();
     });
 
+    it('skal beholde uendret rekkefølge (mor/blå først) for far og far når søker1 starter', async () => {
+        render(<FarOgFarBeggeHarRett fordeling={{ antallDagerSøker1: 0, hvemStarterPermisjon: 'søker1' }} />);
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        const juli = screen.getByTestId('year:2024;month:6');
+        expect(within(juli).getByTestId('day:8;dayColor:BLUE;with-icon')).toBeInTheDocument();
+    });
+
+    it('skal legge fars kvote (grønn) først for far og far når søker2 starter', async () => {
+        render(<FarOgFarBeggeHarRett fordeling={{ antallDagerSøker1: 0, hvemStarterPermisjon: 'søker2' }} />);
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        const juli = screen.getByTestId('year:2024;month:6');
+        expect(within(juli).getByTestId('day:8;dayColor:GREEN;with-icon')).toBeInTheDocument();
+    });
+
     it('skal vise korrekt data for adopsjon - mor og far - kun mor har rett', async () => {
         render(<MorOgFarKunMorHarRett />);
 

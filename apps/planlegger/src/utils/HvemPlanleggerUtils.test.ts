@@ -233,11 +233,28 @@ describe('getStarterForelder', () => {
         ).toBe('FAR_MEDMOR');
     });
 
-    it('skal bruke mor-rollen når søker2 starter for FAR_OG_FAR', () => {
+    it('skal bruke far/medmor-rollen når søker2 starter også for FAR_OG_FAR', () => {
         expect(
             getStarterForelder(
                 { type: HvemPlanleggerType.FAR_OG_FAR },
                 { antallDagerSøker1: 0, hvemStarterPermisjon: 'søker2' },
+                adoptertBarnet,
+            ),
+        ).toBe('FAR_MEDMOR');
+    });
+
+    it('skal bruke mor-rollen (uendret rekkefølge) når søker1 starter', () => {
+        expect(
+            getStarterForelder(
+                { type: HvemPlanleggerType.FAR_OG_FAR },
+                { antallDagerSøker1: 0, hvemStarterPermisjon: 'søker1' },
+                adoptertBarnet,
+            ),
+        ).toBe('MOR');
+        expect(
+            getStarterForelder(
+                { type: HvemPlanleggerType.MOR_OG_FAR },
+                { antallDagerSøker1: 0, hvemStarterPermisjon: 'søker1' },
                 adoptertBarnet,
             ),
         ).toBe('MOR');
