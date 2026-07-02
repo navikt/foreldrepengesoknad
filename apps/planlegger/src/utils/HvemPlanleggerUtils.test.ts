@@ -335,8 +335,8 @@ describe('getEffektivHvemPlanlegger', () => {
 
         expect(resultat).toEqual({
             type: HvemPlanleggerType.FAR_OG_FAR,
-            navnPåFar: 'Far 2',
-            navnPåMedfar: 'Far 1',
+            navnPåFar: 'far 2',
+            navnPåMedfar: 'far 1',
         });
     });
 

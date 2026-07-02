@@ -38,8 +38,8 @@ export const erFarOgFar = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is Fa
 export const erLikekjønnetPar = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is FarOgFar | MorOgMedmor =>
     hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR || hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR;
 
-/** Navn (eller fallback "Far 1"/"Far 2"/"Mor"/"Medmor") til bruk i spørsmålet om hvem som starter permisjonen */
-export const getNavnForHvemStarterPermisjon = (
+/** Navn (uten capitalize) til bruk internt ved bytte av søker1/søker2, konsistent med getNavnPåSøker1/2 */
+const getRawNavnForHvemStarterPermisjon = (
     hvemPlanlegger: FarOgFar | MorOgMedmor,
     intl: IntlShape,
 ): { navnSøker1: string; navnSøker2: string } => {
@@ -47,19 +47,31 @@ export const getNavnForHvemStarterPermisjon = (
         return {
             navnSøker1: erGyldigNavn(hvemPlanlegger.navnPåFar)
                 ? hvemPlanlegger.navnPåFar
-                : capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultFar1Navn' })),
+                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultFar1Navn' }),
             navnSøker2: erGyldigNavn(hvemPlanlegger.navnPåMedfar)
                 ? hvemPlanlegger.navnPåMedfar
-                : capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultFar2Navn' })),
+                : intl.formatMessage({ id: 'HvemPlanlegger.DefaultFar2Navn' }),
         };
     }
     return {
         navnSøker1: erGyldigNavn(hvemPlanlegger.navnPåMor)
             ? hvemPlanlegger.navnPåMor
-            : capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' })),
+            : intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' }),
         navnSøker2: erGyldigNavn(hvemPlanlegger.navnPåMedmor)
             ? hvemPlanlegger.navnPåMedmor
-            : capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' })),
+            : intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' }),
+    };
+};
+
+/** Navn (eller fallback "Far 1"/"Far 2"/"Mor"/"Medmor") til bruk i spørsmålet om hvem som starter permisjonen */
+export const getNavnForHvemStarterPermisjon = (
+    hvemPlanlegger: FarOgFar | MorOgMedmor,
+    intl: IntlShape,
+): { navnSøker1: string; navnSøker2: string } => {
+    const { navnSøker1, navnSøker2 } = getRawNavnForHvemStarterPermisjon(hvemPlanlegger, intl);
+    return {
+        navnSøker1: capitalizeFirstLetter(navnSøker1),
+        navnSøker2: capitalizeFirstLetter(navnSøker2),
     };
 };
 
@@ -72,7 +84,8 @@ export const getNavnForHvemStarterPermisjon = (
  *
  * Fallback-navn ("Far 1"/"Far 2") blir "bakt inn" som faktiske navn ved bytte, slik at identiteten følger
  * personen selv om navn ikke er oppgitt (ellers ville f.eks. "Far 1" alltid vist seg som søker1 uansett hvem
- * som faktisk starter permisjonen, siden begge de opprinnelige navnefeltene da er tomme).
+ * som faktisk starter permisjonen, siden begge de opprinnelige navnefeltene da er tomme). Navnet lagres uten
+ * capitalize, slik at det er konsistent med de rå fallback-navnene ellers i appen (bl.a. erIkkeSplittbartNavn).
  */
 export const getEffektivHvemPlanlegger = (
     hvemPlanlegger: HvemPlanlegger,
@@ -86,7 +99,7 @@ export const getEffektivHvemPlanlegger = (
     if (fordeling?.hvemStarterPermisjon !== 'søker2') {
         return hvemPlanlegger;
     }
-    const { navnSøker1, navnSøker2 } = getNavnForHvemStarterPermisjon(hvemPlanlegger, intl);
+    const { navnSøker1, navnSøker2 } = getRawNavnForHvemStarterPermisjon(hvemPlanlegger, intl);
     if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) {
         return {
             type: HvemPlanleggerType.FAR_OG_FAR,
@@ -100,6 +113,7 @@ export const getEffektivHvemPlanlegger = (
         navnPåMedmor: navnSøker1,
     };
 };
+
 
 export const erFarSøker2 = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is FarOgFar | MorOgFar =>
     hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR || hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR;
