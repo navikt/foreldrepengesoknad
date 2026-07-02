@@ -38,38 +38,6 @@ export const erFarOgFar = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is Fa
 export const erLikekjønnetPar = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is FarOgFar | MorOgMedmor =>
     hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR || hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR;
 
-/**
- * For likekjønnede par ved adopsjon kan brukeren velge hvem som starter permisjonen (se {@link FordelingSteg}).
- * Denne funksjonen bytter om på navnefeltene slik at "søker1" alltid samsvarer med den som faktisk starter,
- * uavhengig av hvilken rekkefølge navnene ble oppgitt i på steget "Hvem planlegger". Alle andre steder i appen
- * som viser eller beregner søker1/søker2 (uttaksdata, fordelingsslider, uttaksplanforslag) skal bruke denne
- * "effektive" versjonen av hvemPlanlegger fremfor rådataen fra HVEM_PLANLEGGER-konteksten.
- */
-export const getEffektivHvemPlanlegger = (
-    hvemPlanlegger: HvemPlanlegger,
-    fordeling: FordelingPlanlegger | undefined,
-    barnet: OmBarnetPlanlegger | undefined,
-): HvemPlanlegger => {
-    if (!barnet || !erLikekjønnetPar(hvemPlanlegger) || !erBarnetAdoptert(barnet)) {
-        return hvemPlanlegger;
-    }
-    if (fordeling?.hvemStarterPermisjon !== 'søker2') {
-        return hvemPlanlegger;
-    }
-    if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) {
-        return {
-            type: HvemPlanleggerType.FAR_OG_FAR,
-            navnPåFar: hvemPlanlegger.navnPåMedfar,
-            navnPåMedfar: hvemPlanlegger.navnPåFar,
-        };
-    }
-    return {
-        type: HvemPlanleggerType.MOR_OG_MEDMOR,
-        navnPåMor: hvemPlanlegger.navnPåMedmor,
-        navnPåMedmor: hvemPlanlegger.navnPåMor,
-    };
-};
-
 /** Navn (eller fallback "Far 1"/"Far 2"/"Mor"/"Medmor") til bruk i spørsmålet om hvem som starter permisjonen */
 export const getNavnForHvemStarterPermisjon = (
     hvemPlanlegger: FarOgFar | MorOgMedmor,
@@ -92,6 +60,44 @@ export const getNavnForHvemStarterPermisjon = (
         navnSøker2: erGyldigNavn(hvemPlanlegger.navnPåMedmor)
             ? hvemPlanlegger.navnPåMedmor
             : capitalizeFirstLetter(intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' })),
+    };
+};
+
+/**
+ * For likekjønnede par ved adopsjon kan brukeren velge hvem som starter permisjonen (se {@link FordelingSteg}).
+ * Denne funksjonen bytter om på navnefeltene slik at "søker1" alltid samsvarer med den som faktisk starter,
+ * uavhengig av hvilken rekkefølge navnene ble oppgitt i på steget "Hvem planlegger". Alle andre steder i appen
+ * som viser eller beregner søker1/søker2 (uttaksdata, fordelingsslider, uttaksplanforslag) skal bruke denne
+ * "effektive" versjonen av hvemPlanlegger fremfor rådataen fra HVEM_PLANLEGGER-konteksten.
+ *
+ * Fallback-navn ("Far 1"/"Far 2") blir "bakt inn" som faktiske navn ved bytte, slik at identiteten følger
+ * personen selv om navn ikke er oppgitt (ellers ville f.eks. "Far 1" alltid vist seg som søker1 uansett hvem
+ * som faktisk starter permisjonen, siden begge de opprinnelige navnefeltene da er tomme).
+ */
+export const getEffektivHvemPlanlegger = (
+    hvemPlanlegger: HvemPlanlegger,
+    fordeling: FordelingPlanlegger | undefined,
+    barnet: OmBarnetPlanlegger | undefined,
+    intl: IntlShape,
+): HvemPlanlegger => {
+    if (!barnet || !erLikekjønnetPar(hvemPlanlegger) || !erBarnetAdoptert(barnet)) {
+        return hvemPlanlegger;
+    }
+    if (fordeling?.hvemStarterPermisjon !== 'søker2') {
+        return hvemPlanlegger;
+    }
+    const { navnSøker1, navnSøker2 } = getNavnForHvemStarterPermisjon(hvemPlanlegger, intl);
+    if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) {
+        return {
+            type: HvemPlanleggerType.FAR_OG_FAR,
+            navnPåFar: navnSøker2,
+            navnPåMedfar: navnSøker1,
+        };
+    }
+    return {
+        type: HvemPlanleggerType.MOR_OG_MEDMOR,
+        navnPåMor: navnSøker2,
+        navnPåMedmor: navnSøker1,
     };
 };
 

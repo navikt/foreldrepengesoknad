@@ -258,6 +258,7 @@ describe('getEffektivHvemPlanlegger', () => {
             hvemPlanlegger,
             { antallDagerSøker1: 75, hvemStarterPermisjon: 'søker1' },
             adoptertBarnet,
+            mockIntl,
         );
 
         expect(resultat).toEqual(hvemPlanlegger);
@@ -274,6 +275,7 @@ describe('getEffektivHvemPlanlegger', () => {
             hvemPlanlegger,
             { antallDagerSøker1: 75, hvemStarterPermisjon: 'søker2' },
             adoptertBarnet,
+            mockIntl,
         );
 
         expect(resultat).toEqual({
@@ -294,6 +296,7 @@ describe('getEffektivHvemPlanlegger', () => {
             hvemPlanlegger,
             { antallDagerSøker1: 75, hvemStarterPermisjon: 'søker2' },
             adoptertBarnet,
+            mockIntl,
         );
 
         expect(resultat).toEqual({
@@ -314,9 +317,27 @@ describe('getEffektivHvemPlanlegger', () => {
             hvemPlanlegger,
             { antallDagerSøker1: 75, hvemStarterPermisjon: 'søker2' },
             fødtBarnet,
+            mockIntl,
         );
 
         expect(resultat).toEqual(hvemPlanlegger);
+    });
+
+    it('skal bytte om Far 1/Far 2 fallback-navn når hvemStarterPermisjon er søker2 og navn ikke er oppgitt', () => {
+        const hvemPlanlegger: HvemPlanlegger = { type: HvemPlanleggerType.FAR_OG_FAR };
+
+        const resultat = getEffektivHvemPlanlegger(
+            hvemPlanlegger,
+            { antallDagerSøker1: 75, hvemStarterPermisjon: 'søker2' },
+            adoptertBarnet,
+            mockIntl,
+        );
+
+        expect(resultat).toEqual({
+            type: HvemPlanleggerType.FAR_OG_FAR,
+            navnPåFar: 'Far 2',
+            navnPåMedfar: 'Far 1',
+        });
     });
 
     it('skal ikke bytte om navn for ulikekjønnet par selv ved adopsjon', () => {
@@ -330,6 +351,7 @@ describe('getEffektivHvemPlanlegger', () => {
             hvemPlanlegger,
             { antallDagerSøker1: 75, hvemStarterPermisjon: 'søker2' },
             adoptertBarnet,
+            mockIntl,
         );
 
         expect(resultat).toEqual(hvemPlanlegger);

@@ -77,6 +77,7 @@ export const FordelingSteg = ({ stønadskvoter }: Props) => {
         hvemPlanlegger,
         { ...fordeling, antallDagerSøker1: halvpart, hvemStarterPermisjon },
         barnet,
+        intl,
     );
 
     const lagre = (formValues: FordelingPlanlegger) => {

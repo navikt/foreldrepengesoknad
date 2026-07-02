@@ -1,3 +1,4 @@
+import { useIntl } from 'react-intl';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { getEffektivHvemPlanlegger } from 'utils/HvemPlanleggerUtils';
 
@@ -11,9 +12,10 @@ import { ContextDataType, useContextGetData } from './PlanleggerDataContext';
  * fremfor å lese HVEM_PLANLEGGER direkte fra konteksten i alle steg etter "Fordeling".
  */
 export const useEffektivHvemPlanlegger = (): HvemPlanlegger => {
+    const intl = useIntl();
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
     const barnet = useContextGetData(ContextDataType.OM_BARNET);
 
-    return getEffektivHvemPlanlegger(hvemPlanlegger, fordeling, barnet);
+    return getEffektivHvemPlanlegger(hvemPlanlegger, fordeling, barnet, intl);
 };
