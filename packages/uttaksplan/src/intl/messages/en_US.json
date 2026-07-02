@@ -259,6 +259,7 @@
     "RedigeringPanel.UtenAktivitetskrav": "Parental benefits without activity requirements",
     "RedigeringPanel.Pleiepenger": "This period is rejected due to care benefits",
     "RedigeringPanel.KanMisteDager": "You lose days if you do not have parental benefits before the due date or in the first six weeks after birth.",
+    "RedigeringPanel.FerieUke7EtterTermin": "In the first six weeks after birth, you must use the mother's quota. If the baby is born after the due date, you may lose days if you have scheduled vacation instead of the mother's quota.",
     "RedigeringPanel.NyeDagerForklaring": "You have marked days that are not yet included in the plan. Select 'New period' to create a new period.",
     "RedigeringPanel.Maksimer": "Expand panel",
     "RedigeringPanel.Minimer": "Minimize panel",

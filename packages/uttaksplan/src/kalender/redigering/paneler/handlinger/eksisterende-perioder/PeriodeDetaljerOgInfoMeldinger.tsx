@@ -20,7 +20,7 @@ export const PeriodeDetaljerOgInfoMeldinger = () => {
         uttakPerioderInkludertTapteDager,
     );
 
-    const { adopsjonFørFamhend, eøs, pleiepenger, kanMisteDager } = usePeriodeDetaljerAlerts({
+    const { adopsjonFørFamhend, eøs, pleiepenger, kanMisteDager, ferieUke7EtterTermin } = usePeriodeDetaljerAlerts({
         sammenslåtteValgtePerioder,
         eksisterendePerioderSomErValgt,
     });
@@ -73,6 +73,12 @@ export const PeriodeDetaljerOgInfoMeldinger = () => {
             {kanMisteDager && (
                 <Alert variant={kanMisteDager.variant} size="small">
                     {kanMisteDager.melding}
+                </Alert>
+            )}
+
+            {ferieUke7EtterTermin && (
+                <Alert variant={ferieUke7EtterTermin.variant} size="small">
+                    {ferieUke7EtterTermin.melding}
                 </Alert>
             )}
         </VStack>

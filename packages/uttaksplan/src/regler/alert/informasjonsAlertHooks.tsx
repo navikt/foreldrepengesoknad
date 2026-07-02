@@ -21,6 +21,7 @@ import {
     IKKE_REDIGERBAR_EØS,
     IKKE_REDIGERBAR_PLEIEPENGER,
     KAN_MISTE_DAGER,
+    FERIE_UKE_7_ETTER_TERMIN,
     MANGLER_GRADERINGSAKTIVITET_KALENDER,
     MANGLER_GRADERINGSAKTIVITET_LISTE,
     MANGLER_MORS_AKTIVITET_KALENDER,
@@ -201,6 +202,7 @@ export const usePeriodeDetaljerAlerts = (input: {
         eøs: tilAktiv(IKKE_REDIGERBAR_EØS, ctx),
         pleiepenger: tilAktiv(IKKE_REDIGERBAR_PLEIEPENGER, ctx),
         kanMisteDager: tilAktiv(KAN_MISTE_DAGER, ctx),
+        ferieUke7EtterTermin: tilAktiv(FERIE_UKE_7_ETTER_TERMIN, ctx),
     };
 };
 
@@ -313,6 +315,7 @@ type PeriodeDetaljerAlerts = {
     eøs?: AktivAlertMetadata;
     pleiepenger?: AktivAlertMetadata;
     kanMisteDager?: AktivAlertMetadata;
+    ferieUke7EtterTermin?: AktivAlertMetadata;
 };
 type ForskyvEllerErstattAlerts = {
     senerePerioderReadonly?: AktivAlertMetadata;
