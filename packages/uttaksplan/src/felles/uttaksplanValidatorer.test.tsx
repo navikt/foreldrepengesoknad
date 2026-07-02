@@ -129,8 +129,8 @@ describe('kanMisteDagerVedFerieIUke7EtterTermin', () => {
     it('skal returnere true dersom familiesituasjon er termin og perioden er i uke 7 etter familiehendelsedato', () => {
         const perioder = [
             {
-                fom: Uttaksdagen.denne(familiehendelsedato).getDatoAntallUttaksdagerSenere(32),
-                tom: Uttaksdagen.denne(familiehendelsedato).getDatoAntallUttaksdagerSenere(34),
+                fom: Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(32),
+                tom: Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(34),
             },
         ];
 
@@ -140,8 +140,8 @@ describe('kanMisteDagerVedFerieIUke7EtterTermin', () => {
     it('skal returnere false dersom familiesituasjon er fødsel, selv om perioden er i uke 7 etter familiehendelsedato', () => {
         const perioder = [
             {
-                fom: Uttaksdagen.denne(familiehendelsedato).getDatoAntallUttaksdagerSenere(32),
-                tom: Uttaksdagen.denne(familiehendelsedato).getDatoAntallUttaksdagerSenere(34),
+                fom: Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(32),
+                tom: Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(34),
             },
         ];
 
@@ -159,8 +159,8 @@ describe('kanMisteDagerVedFerieIUke7EtterTermin', () => {
     it('skal returnere false dersom perioden ligger etter uke 7', () => {
         const perioder = [
             {
-                fom: Uttaksdagen.denne(familiehendelsedato).getDatoAntallUttaksdagerSenere(40),
-                tom: Uttaksdagen.denne(familiehendelsedato).getDatoAntallUttaksdagerSenere(45),
+                fom: Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(40),
+                tom: Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(45),
             },
         ];
 
