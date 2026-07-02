@@ -204,16 +204,16 @@ describe('<ArbeidssituasjonSteg>', () => {
         });
     });
 
-    it('skal omtale medmor som medmor hvis navn ikke er oppgit', async () => {
+    it('skal omtale medmor som «mor 2» hvis navn ikke er oppgitt', async () => {
         render(<ArbeidssituasjonMorOgMedmorUtenNavn />);
 
         expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);
         await userEvent.click(screen.getByText('Ingen av disse'));
 
         expect(
-            screen.getByText('Har medmor jobbet minst 6 av de siste 10 månedene', { exact: false }),
+            screen.getByText('Har mor 2 jobbet minst 6 av de siste 10 månedene', { exact: false }),
         ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
-        expect(screen.getByText('Medmor vil ha rett til foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Mor 2 vil ha rett til foreldrepenger')).toBeInTheDocument();
     });
 });

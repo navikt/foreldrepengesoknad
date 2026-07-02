@@ -5,7 +5,14 @@ import { OmBarnetPlanlegger } from '@navikt/fp-types';
 
 import messages from '../intl/messages/nb_NO.json';
 import { HvemPlanlegger, HvemPlanleggerType } from '../types/HvemPlanlegger';
-import { erLikekjønnetPar, getEffektivHvemPlanlegger, getNavnForHvemStarterPermisjon, getNavnPåForeldre } from './HvemPlanleggerUtils';
+import {
+    erLikekjønnetPar,
+    getEffektivHvemPlanlegger,
+    getFornavnPåSøker1,
+    getFornavnPåSøker2,
+    getNavnForHvemStarterPermisjon,
+    getNavnPåForeldre,
+} from './HvemPlanleggerUtils';
 
 const mockIntl: IntlShape = {
     formatMessage: vi.fn(({ id }) => {
@@ -123,7 +130,7 @@ describe('getNavnPåForeldre', () => {
 
             expect(resultat).toEqual({
                 farMedmor: 'Ola Nordmann',
-                mor: 'far',
+                mor: 'far 2',
             });
         });
 
@@ -138,7 +145,7 @@ describe('getNavnPåForeldre', () => {
 
             expect(resultat).toEqual({
                 mor: 'Kari Nordmann',
-                farMedmor: 'mor',
+                farMedmor: 'mor 2',
             });
         });
     });
@@ -326,5 +333,39 @@ describe('getEffektivHvemPlanlegger', () => {
         );
 
         expect(resultat).toEqual(hvemPlanlegger);
+    });
+});
+
+describe('getFornavnPåSøker1 og getFornavnPåSøker2 for likekjønnede par uten navn', () => {
+    it('skal bruke «far 1»/«far 2» (ikke bare «far») som fornavn for FAR_OG_FAR uten navn', () => {
+        const hvemPlanlegger: HvemPlanlegger = { type: HvemPlanleggerType.FAR_OG_FAR };
+
+        expect(getFornavnPåSøker1(hvemPlanlegger, mockIntl)).toBe('far 1');
+        expect(getFornavnPåSøker2(hvemPlanlegger, mockIntl)).toBe('far 2');
+    });
+
+    it('skal bruke «mor 1»/«mor 2» (ikke bare «mor»/«medmor») som fornavn for MOR_OG_MEDMOR uten navn', () => {
+        const hvemPlanlegger: HvemPlanlegger = { type: HvemPlanleggerType.MOR_OG_MEDMOR };
+
+        expect(getFornavnPåSøker1(hvemPlanlegger, mockIntl)).toBe('mor 1');
+        expect(getFornavnPåSøker2(hvemPlanlegger, mockIntl)).toBe('mor 2');
+    });
+
+    it('skal fortsatt bruke «far»/«mor» for MOR_OG_FAR uten navn (ikke likekjønnet, ingen nummerering nødvendig)', () => {
+        const hvemPlanlegger: HvemPlanlegger = { type: HvemPlanleggerType.MOR_OG_FAR };
+
+        expect(getFornavnPåSøker1(hvemPlanlegger, mockIntl)).toBe('mor');
+        expect(getFornavnPåSøker2(hvemPlanlegger, mockIntl)).toBe('far');
+    });
+
+    it('skal bruke oppgitt fornavn når navn er satt for FAR_OG_FAR', () => {
+        const hvemPlanlegger: HvemPlanlegger = {
+            type: HvemPlanleggerType.FAR_OG_FAR,
+            navnPåFar: 'Ola Nordmann',
+            navnPåMedfar: 'Per Hansen',
+        };
+
+        expect(getFornavnPåSøker1(hvemPlanlegger, mockIntl)).toBe('Ola');
+        expect(getFornavnPåSøker2(hvemPlanlegger, mockIntl)).toBe('Per');
     });
 });
