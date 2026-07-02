@@ -9,6 +9,7 @@ import {
     getFornavnPåSøker1,
     getFornavnPåSøker2,
     getNavnGenitivEierform,
+    getStarterForelder,
 } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett, utledRettighet } from 'utils/hvemHarRettUtils';
 import {
@@ -82,12 +83,15 @@ export const OppsummeringHarRett = ({
     const barnehagestartdato = barnehagestartDato(barnet);
 
     const erDeltUttak = fordeling !== undefined;
+    const starterForelder = getStarterForelder(hvemPlanlegger, fordeling, barnet);
 
     const planforslag = useLagUttaksplanForslag(valgtStønadskvote);
 
-    const søker1Plan = uttaksplan ? getSøkersPerioder(erDeltUttak, uttaksplan, erFarEllerMedmor) : planforslag.søker1;
+    const søker1Plan = uttaksplan
+        ? getSøkersPerioder(erDeltUttak, uttaksplan, erFarEllerMedmor, starterForelder)
+        : planforslag.søker1;
     const søker2Plan = uttaksplan
-        ? getAnnenpartsPerioder(erDeltUttak, uttaksplan, erFarEllerMedmor)
+        ? getAnnenpartsPerioder(erDeltUttak, uttaksplan, erFarEllerMedmor, starterForelder)
         : planforslag.søker2;
 
     return (

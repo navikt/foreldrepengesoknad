@@ -12,6 +12,7 @@ import {
     getFornavnPåSøker2,
     getNavnForHvemStarterPermisjon,
     getNavnPåForeldre,
+    getStarterForelder,
     kanVelgeHvemSomStarterPermisjonen,
 } from './HvemPlanleggerUtils';
 
@@ -211,6 +212,35 @@ describe('kanVelgeHvemSomStarterPermisjonen', () => {
 
     it('skal returnere false for MOR alene', () => {
         expect(kanVelgeHvemSomStarterPermisjonen({ type: HvemPlanleggerType.MOR })).toBe(false);
+    });
+});
+
+describe('getStarterForelder', () => {
+    const adoptertBarnet = {
+        erFødsel: false,
+        fødselsdato: '2024-01-01',
+        overtakelsesdato: '2024-01-01',
+        antallBarn: '1',
+    } as OmBarnetPlanlegger;
+
+    it('skal bruke far/medmor-rollen når søker2 starter for MOR_OG_FAR', () => {
+        expect(
+            getStarterForelder(
+                { type: HvemPlanleggerType.MOR_OG_FAR },
+                { antallDagerSøker1: 0, hvemStarterPermisjon: 'søker2' },
+                adoptertBarnet,
+            ),
+        ).toBe('FAR_MEDMOR');
+    });
+
+    it('skal bruke mor-rollen når søker2 starter for FAR_OG_FAR', () => {
+        expect(
+            getStarterForelder(
+                { type: HvemPlanleggerType.FAR_OG_FAR },
+                { antallDagerSøker1: 0, hvemStarterPermisjon: 'søker2' },
+                adoptertBarnet,
+            ),
+        ).toBe('MOR');
     });
 });
 

@@ -65,7 +65,7 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
 
     useScrollBehaviour();
 
-    const hvemPlanlegger = useEffektivHvemPlanlegger();
+    const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const hvorLangPeriode = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));

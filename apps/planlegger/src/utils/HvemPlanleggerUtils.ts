@@ -47,6 +47,28 @@ export const kanVelgeHvemSomStarterPermisjonen = (
 ): hvemPlanlegger is FarOgFar | MorOgMedmor | MorOgFar =>
     erLikekjønnetPar(hvemPlanlegger) || hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR;
 
+export type StarterForelder = 'MOR' | 'FAR_MEDMOR';
+
+export const getStarterForelder = (
+    hvemPlanlegger: HvemPlanlegger,
+    fordeling: FordelingPlanlegger | undefined,
+    barnet: OmBarnetPlanlegger | undefined,
+): StarterForelder | undefined => {
+    if (!barnet || !kanVelgeHvemSomStarterPermisjonen(hvemPlanlegger) || !erBarnetAdoptert(barnet)) {
+        return undefined;
+    }
+
+    if (!fordeling?.hvemStarterPermisjon) {
+        return undefined;
+    }
+
+    if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) {
+        return fordeling?.hvemStarterPermisjon === 'søker2' ? 'MOR' : 'FAR_MEDMOR';
+    }
+
+    return fordeling?.hvemStarterPermisjon === 'søker2' ? 'FAR_MEDMOR' : 'MOR';
+};
+
 /** Navn (uten capitalize) til bruk internt ved bytte av søker1/søker2, konsistent med getNavnPåSøker1/2 */
 const getRawNavnForHvemStarterPermisjon = (
     hvemPlanlegger: FarOgFar | MorOgMedmor | MorOgFar,

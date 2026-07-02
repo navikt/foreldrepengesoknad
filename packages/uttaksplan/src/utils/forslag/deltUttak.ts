@@ -14,6 +14,7 @@ interface DeltUttakParams {
     famDato: string;
     tilgjengeligeStønadskvoter: KontoDto[];
     fellesperiodeDagerMor: number | undefined;
+    starterForelder?: 'MOR' | 'FAR_MEDMOR';
     startdato?: string;
 }
 
@@ -31,6 +32,7 @@ export const deltUttak = ({
     famDato,
     tilgjengeligeStønadskvoter,
     fellesperiodeDagerMor,
+    starterForelder = 'MOR',
     startdato,
 }: DeltUttakParams): UttakPeriode_fpoversikt[] => {
     if (fellesperiodeDagerMor === undefined) {
@@ -57,7 +59,7 @@ export const deltUttak = ({
         Uttaksdagen.denne(effectiveStartdato).getUttaksdagerFremTilDato(helgejustertFamDato);
     const dagerMedFellesperiodeFørFødsel = dagerMellomFamDatoOgStartdato > 15 ? dagerMellomFamDatoOgStartdato - 15 : 0;
 
-    const fellesperiodeDagerFarMedmor = Math.max(
+    const fellesperiodeDagerAndreForelder = Math.max(
         0,
         (fellesperiode?.dager ?? 0) - dagerMedFellesperiodeFørFødsel - fellesperiodeDagerMor,
     );
@@ -114,11 +116,20 @@ export const deltUttak = ({
         currentFomDate = Uttaksdagen.denne(helgejustertFamDato).getDato();
     }
 
-    tidsperiode = getTidsperiodeString(currentFomDate, mødrekvote ? mødrekvote.dager : 0);
+    const førsteForelder = starterForelder;
+    const andreForelder = starterForelder === 'MOR' ? 'FAR_MEDMOR' : 'MOR';
+    const førsteForelderKvote = starterForelder === 'MOR' ? mødrekvote : fedrekvote;
+    const andreForelderKvote = starterForelder === 'MOR' ? fedrekvote : mødrekvote;
+    const førsteForelderKontoType = starterForelder === 'MOR' ? 'MØDREKVOTE' : 'FEDREKVOTE';
+    const andreForelderKontoType = starterForelder === 'MOR' ? 'FEDREKVOTE' : 'MØDREKVOTE';
+    const førsteForelderPerioder = starterForelder === 'MOR' ? morsPerioder : farsPerioder;
+    const andreForelderPerioder = starterForelder === 'MOR' ? farsPerioder : morsPerioder;
 
-    morsPerioder.push({
-        forelder: 'MOR',
-        kontoType: 'MØDREKVOTE',
+    tidsperiode = getTidsperiodeString(currentFomDate, førsteForelderKvote ? førsteForelderKvote.dager : 0);
+
+    førsteForelderPerioder.push({
+        forelder: førsteForelder,
+        kontoType: førsteForelderKontoType,
         fom: tidsperiode.fom,
         tom: tidsperiode.tom,
         flerbarnsdager: false,
@@ -129,8 +140,8 @@ export const deltUttak = ({
     if (fellesperiodeDagerMor !== 0) {
         tidsperiode = getTidsperiodeString(currentFomDate, fellesperiodeDagerMor);
 
-        morsPerioder.push({
-            forelder: 'MOR',
+        førsteForelderPerioder.push({
+            forelder: førsteForelder,
             kontoType: 'FELLESPERIODE',
             fom: tidsperiode.fom,
             tom: tidsperiode.tom,
@@ -140,11 +151,11 @@ export const deltUttak = ({
         currentFomDate = Uttaksdagen.neste(tidsperiode.tom).getDato();
     }
 
-    tidsperiode = getTidsperiodeString(currentFomDate, fedrekvote ? fedrekvote.dager : 0);
+    tidsperiode = getTidsperiodeString(currentFomDate, andreForelderKvote ? andreForelderKvote.dager : 0);
 
-    farsPerioder.push({
-        forelder: 'FAR_MEDMOR',
-        kontoType: 'FEDREKVOTE',
+    andreForelderPerioder.push({
+        forelder: andreForelder,
+        kontoType: andreForelderKontoType,
         fom: tidsperiode.fom,
         tom: tidsperiode.tom,
         flerbarnsdager: false,
@@ -152,11 +163,11 @@ export const deltUttak = ({
 
     currentFomDate = Uttaksdagen.neste(tidsperiode.tom).getDato();
 
-    if (fellesperiodeDagerFarMedmor !== 0) {
-        tidsperiode = getTidsperiodeString(currentFomDate, fellesperiodeDagerFarMedmor);
+    if (fellesperiodeDagerAndreForelder !== 0) {
+        tidsperiode = getTidsperiodeString(currentFomDate, fellesperiodeDagerAndreForelder);
 
-        farsPerioder.push({
-            forelder: 'FAR_MEDMOR',
+        andreForelderPerioder.push({
+            forelder: andreForelder,
             kontoType: 'FELLESPERIODE',
             fom: tidsperiode.fom,
             tom: tidsperiode.tom,

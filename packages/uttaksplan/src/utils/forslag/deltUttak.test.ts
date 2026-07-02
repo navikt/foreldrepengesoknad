@@ -169,4 +169,31 @@ describe('deltUttak - Adopsjon', () => {
         expect(forslag[3]!.fom).toEqual('2022-12-12');
         expect(forslag[3]!.tom).toEqual('2023-02-03');
     });
+
+    it('skal legge fars kvote først når far eller medmor er valgt som starter ved adopsjon', () => {
+        const forslag = deltUttak({
+            famDato: '2022-08-08',
+            tilgjengeligeStønadskvoter: [fedrekvote, fellesperiode, mødrekvote],
+            fellesperiodeDagerMor: 40,
+            starterForelder: 'FAR_MEDMOR',
+        });
+
+        expect(forslag.length).toEqual(4);
+        expect(forslag[0]!.kontoType).toEqual('FEDREKVOTE');
+        expect(forslag[0]!.forelder).toEqual('FAR_MEDMOR');
+        expect(forslag[0]!.fom).toEqual('2022-08-08');
+        expect(forslag[0]!.tom).toEqual('2022-09-09');
+        expect(forslag[1]!.kontoType).toEqual('FELLESPERIODE');
+        expect(forslag[1]!.forelder).toEqual('FAR_MEDMOR');
+        expect(forslag[1]!.fom).toEqual('2022-09-12');
+        expect(forslag[1]!.tom).toEqual('2022-11-04');
+        expect(forslag[2]!.kontoType).toEqual('MØDREKVOTE');
+        expect(forslag[2]!.forelder).toEqual('MOR');
+        expect(forslag[2]!.fom).toEqual('2022-11-07');
+        expect(forslag[2]!.tom).toEqual('2022-12-09');
+        expect(forslag[3]!.kontoType).toEqual('FELLESPERIODE');
+        expect(forslag[3]!.forelder).toEqual('MOR');
+        expect(forslag[3]!.fom).toEqual('2022-12-12');
+        expect(forslag[3]!.tom).toEqual('2023-02-03');
+    });
 });

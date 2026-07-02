@@ -1,6 +1,5 @@
 import { ArrowLeftIcon, TasklistStartIcon, WalletIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
-import { useEffektivHvemPlanlegger } from 'appData/useEffektivHvemPlanlegger';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import dayjs from 'dayjs';
 import { FormattedMessage } from 'react-intl';
@@ -35,10 +34,7 @@ export const OppsummeringSteg = ({ stønadskvoter, satser }: Props) => {
 
     useScrollBehaviour();
 
-    // hvemPlanlegger her er "effektiv" (kan ha byttet søker1/søker2) for likekjønnede par ved adopsjon som har
-    // svart på hvem som starter permisjonen. Dette gjelder kun når fordeling.antallDagerSøker1 finnes (dvs. begge
-    // har rett), så det påvirker ikke visning knyttet til lønn (som er oppgitt uavhengig av rettighetsvurderingen).
-    const hvemPlanlegger = useEffektivHvemPlanlegger();
+    const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const hvorLangPeriode = useContextGetData(ContextDataType.HVOR_LANG_PERIODE);
     const arbeidssituasjon = useContextGetData(ContextDataType.ARBEIDSSITUASJON);
