@@ -5,6 +5,7 @@ import {
     useContextGetData,
     useContextSaveData,
 } from 'appData/PlanleggerDataContext';
+import { useEffektivHvemPlanlegger } from 'appData/useEffektivHvemPlanlegger';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
 import { FordelingSlider } from 'components/FordelingSlider';
@@ -64,7 +65,7 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
 
     useScrollBehaviour();
 
-    const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
+    const hvemPlanlegger = useEffektivHvemPlanlegger();
     const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const hvorLangPeriode = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
@@ -294,7 +295,7 @@ const AntallUkerVelger = ({
     const intl = useIntl();
 
     const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
+    const hvemPlanlegger = useEffektivHvemPlanlegger();
     const hvorLangPeriode = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
 

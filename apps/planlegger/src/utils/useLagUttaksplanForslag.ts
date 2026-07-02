@@ -1,4 +1,5 @@
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
+import { useEffektivHvemPlanlegger } from 'appData/useEffektivHvemPlanlegger';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanleggerType } from 'types/HvemPlanlegger';
 
@@ -12,7 +13,7 @@ import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarR
 import { getFamiliehendelsedato, lagForslagTilPlan } from './uttakUtils';
 
 export const useLagUttaksplanForslag = (valgtStønadskvote: KontoBeregningDto) => {
-    const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
+    const hvemPlanlegger = useEffektivHvemPlanlegger();
     const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
     const fordeling = useContextGetData(ContextDataType.FORDELING);

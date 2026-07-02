@@ -14,6 +14,8 @@ const {
     FlereForsørgereEttBarn,
     FlereForsørgereEttBarn80ProsentDekningsgrad,
     FlereForsørgereToBarn80ProsentDekningsgrad,
+    FlereForsørgereToBarn,
+    FarOgFar,
 } = composeStories(stories);
 
 vi.mock('react-router-dom', async () => {
@@ -235,5 +237,98 @@ describe('<FordelingSteg>', () => {
                     'Hvis du ønsker en annen fordeling, kan du endre dette i planen senere.',
             ),
         ).toBeInTheDocument();
+    });
+
+    it('Skal vise spørsmål om hvem som starter permisjonen for likekjønnet par ved adopsjon, og kreve svar', async () => {
+        const navigateMock = vi.fn();
+        useNavigateMock.mockReturnValue(navigateMock);
+
+        const gåTilNesteSide = vi.fn();
+
+        render(<FarOgFar gåTilNesteSide={gåTilNesteSide} />);
+
+        expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
+
+        expect(screen.getByText('Hvem skal starte permisjonen med foreldrepenger?')).toBeInTheDocument();
+        expect(
+            screen.getByText('Permisjonen kan tidligst starte ved omsorgsovertakelse.'),
+        ).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: 'Petter Pjokk' })).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: 'Espen Utvikler' })).toBeInTheDocument();
+        expect(
+            screen.getByText('Hvilken betydning har hvem som starter permisjonen?'),
+        ).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Neste'));
+
+        expect(
+            await screen.findByText('Du må velge hvem som skal starte permisjonen.'),
+        ).toBeInTheDocument();
+        expect(navigateMock).not.toHaveBeenCalled();
+    });
+
+    it('Skal bytte om på rekkefølgen når søker 2 velges til å starte permisjonen', async () => {
+        const navigateMock = vi.fn();
+        useNavigateMock.mockReturnValue(navigateMock);
+
+        const gåTilNesteSide = vi.fn();
+
+        const utils = render(<FarOgFar gåTilNesteSide={gåTilNesteSide} />);
+
+        expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
+
+        await userEvent.click(screen.getByRole('radio', { name: 'Espen Utvikler' }));
+
+        await endreFordelingMedSlider(utils, 45);
+
+        await userEvent.click(screen.getByText('Neste'));
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                antallDagerSøker1: 45,
+                hvemStarterPermisjon: 'søker2',
+            },
+            key: ContextDataType.FORDELING,
+            type: 'update',
+        });
+
+        expect(navigateMock).toHaveBeenCalledTimes(1);
+        expect(navigateMock).toHaveBeenCalledWith(expect.stringMatching(PlanleggerRoutes.PLANEN_DERES));
+    });
+
+    it('Skal ikke vise spørsmål om hvem som starter permisjonen for likekjønnet par ved fødsel', async () => {
+        const gåTilNesteSide = vi.fn();
+
+        render(<FlereForsørgereToBarn gåTilNesteSide={gåTilNesteSide} />);
+
+        expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
+
+        expect(
+            screen.queryByText('Hvem skal starte permisjonen med foreldrepenger?'),
+        ).not.toBeInTheDocument();
+    });
+
+    it('Skal ikke vise spørsmål om hvem som starter permisjonen for ulikekjønnet par ved adopsjon', async () => {
+        const gåTilNesteSide = vi.fn();
+
+        const originalArgs = FlereForsørgereEttBarn.args;
+        render(
+            <FlereForsørgereEttBarn
+                {...originalArgs}
+                omBarnet={{
+                    ...(originalArgs.omBarnet as BarnetErAdoptertPlanlegger),
+                    fødselsdato: '2025-07-08',
+                    overtakelsesdato: '2025-07-08',
+                    erFødsel: false,
+                }}
+                gåTilNesteSide={gåTilNesteSide}
+            />,
+        );
+
+        expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
+
+        expect(
+            screen.queryByText('Hvem skal starte permisjonen med foreldrepenger?'),
+        ).not.toBeInTheDocument();
     });
 });
