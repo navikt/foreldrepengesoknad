@@ -24,7 +24,7 @@ describe('deltUttak - Fødsel', () => {
         const forslag = deltUttak({
             famDato: '2022-08-08',
             tilgjengeligeStønadskvoter: alleKontoer,
-            fellesperiodeDagerMor: 40,
+            fellesperiodeDagerFørsteForelder: 40,
         });
 
         expect(forslag.length).toEqual(5);
@@ -55,7 +55,7 @@ describe('deltUttak - Fødsel', () => {
         const forslag = deltUttak({
             famDato: '2022-08-08',
             tilgjengeligeStønadskvoter: alleKontoer,
-            fellesperiodeDagerMor: 80,
+            fellesperiodeDagerFørsteForelder: 80,
         });
 
         expect(forslag.length).toEqual(4);
@@ -77,7 +77,7 @@ describe('deltUttak - Fødsel', () => {
         const forslag = deltUttak({
             famDato: '2022-08-08',
             tilgjengeligeStønadskvoter: alleKontoer,
-            fellesperiodeDagerMor: 0,
+            fellesperiodeDagerFørsteForelder: 0,
         });
 
         expect(forslag.length).toEqual(4);
@@ -100,7 +100,7 @@ describe('deltUttak - Fødsel', () => {
         const forslag = deltUttak({
             famDato: '2022-08-08',
             tilgjengeligeStønadskvoter: alleKontoer,
-            fellesperiodeDagerMor: 35,
+            fellesperiodeDagerFørsteForelder: 35,
             startdato: '2022-07-11',
         });
 
@@ -147,7 +147,7 @@ describe('deltUttak - Adopsjon', () => {
         const forslag = deltUttak({
             famDato: '2022-08-08',
             tilgjengeligeStønadskvoter: [fedrekvote, fellesperiode, mødrekvote],
-            fellesperiodeDagerMor: 40,
+            fellesperiodeDagerFørsteForelder: 40,
         });
 
         expect(forslag.length).toEqual(4);
@@ -174,7 +174,7 @@ describe('deltUttak - Adopsjon', () => {
         const forslag = deltUttak({
             famDato: '2022-08-08',
             tilgjengeligeStønadskvoter: [fedrekvote, fellesperiode, mødrekvote],
-            fellesperiodeDagerMor: 40,
+            fellesperiodeDagerFørsteForelder: 40,
             starterForelder: 'FAR_MEDMOR',
         });
 

@@ -13,7 +13,7 @@ const getTidsperiodeString = (fom: string, uttaksdager: number): Tidsperiode => 
 interface DeltUttakParams {
     famDato: string;
     tilgjengeligeStønadskvoter: KontoDto[];
-    fellesperiodeDagerMor: number | undefined;
+    fellesperiodeDagerFørsteForelder: number | undefined;
     starterForelder?: 'MOR' | 'FAR_MEDMOR';
     startdato?: string;
 }
@@ -31,11 +31,11 @@ interface DeltUttakParams {
 export const deltUttak = ({
     famDato,
     tilgjengeligeStønadskvoter,
-    fellesperiodeDagerMor,
+    fellesperiodeDagerFørsteForelder,
     starterForelder = 'MOR',
     startdato,
 }: DeltUttakParams): UttakPeriode_fpoversikt[] => {
-    if (fellesperiodeDagerMor === undefined) {
+    if (fellesperiodeDagerFørsteForelder === undefined) {
         return [];
     }
 
@@ -61,7 +61,7 @@ export const deltUttak = ({
 
     const fellesperiodeDagerAndreForelder = Math.max(
         0,
-        (fellesperiode?.dager ?? 0) - dagerMedFellesperiodeFørFødsel - fellesperiodeDagerMor,
+        (fellesperiode?.dager ?? 0) - dagerMedFellesperiodeFørFødsel - fellesperiodeDagerFørsteForelder,
     );
 
     const morsPerioder: UttakPeriode_fpoversikt[] = [];
@@ -137,8 +137,8 @@ export const deltUttak = ({
 
     currentFomDate = Uttaksdagen.neste(tidsperiode.tom).getDato();
 
-    if (fellesperiodeDagerMor !== 0) {
-        tidsperiode = getTidsperiodeString(currentFomDate, fellesperiodeDagerMor);
+    if (fellesperiodeDagerFørsteForelder !== 0) {
+        tidsperiode = getTidsperiodeString(currentFomDate, fellesperiodeDagerFørsteForelder);
 
         førsteForelderPerioder.push({
             forelder: førsteForelder,

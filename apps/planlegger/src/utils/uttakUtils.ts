@@ -331,7 +331,7 @@ interface LagForslagProps {
     erDeltUttak: boolean;
     famDato: string;
     tilgjengeligeStønadskvoter: KontoDto[];
-    fellesperiodeDagerMor: number | undefined;
+    fellesperiodeDagerFørsteForelder: number | undefined;
     starterForelder?: 'MOR' | 'FAR_MEDMOR';
     erAdopsjon: boolean;
     erFarEllerMedmor: boolean;
@@ -346,7 +346,7 @@ export const lagForslagTilPlan = ({
     erDeltUttak,
     famDato,
     tilgjengeligeStønadskvoter,
-    fellesperiodeDagerMor,
+    fellesperiodeDagerFørsteForelder,
     starterForelder,
     erAdopsjon,
     erFarEllerMedmor,
@@ -360,10 +360,12 @@ export const lagForslagTilPlan = ({
         const perioder = deltUttak({
             famDato,
             tilgjengeligeStønadskvoter,
-            fellesperiodeDagerMor,
+            fellesperiodeDagerFørsteForelder,
             starterForelder,
             startdato,
         });
+        // søker1 = den valgte starteren (effektiv søker1), slik at splitten matcher effektiv-baserte navn og
+        // fellesperiodedager i oppsummeringen. starterForelder styrer også genereringsrekkefølgen i deltUttak.
         const søker1Forelder = starterForelder ?? 'MOR';
         const søker2Forelder = søker1Forelder === 'MOR' ? 'FAR_MEDMOR' : 'MOR';
         return {

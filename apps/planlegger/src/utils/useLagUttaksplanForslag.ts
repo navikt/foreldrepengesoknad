@@ -38,7 +38,7 @@ export const useLagUttaksplanForslag = (valgtStønadskvote: KontoBeregningDto) =
         famDato: familiehendelsedato,
         startdato,
         tilgjengeligeStønadskvoter: valgtStønadskvote.kontoer,
-        fellesperiodeDagerMor: fordeling?.antallDagerSøker1,
+        fellesperiodeDagerFørsteForelder: fordeling?.antallDagerSøker1,
         starterForelder: getStarterForelder(hvemPlanlegger, fordeling, omBarnet),
         bareFarMedmorHarRett,
         erAdopsjon: erBarnetAdoptert(omBarnet),
