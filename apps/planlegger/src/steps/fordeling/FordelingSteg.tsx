@@ -163,14 +163,7 @@ export const FordelingSteg = ({ stønadskvoter }: Props) => {
                             color="gray"
                         >
                             <BodyShort>
-                                <FormattedMessage
-                                    id="FordelingSteg.Infoboks.HvordanFordeleTekst"
-                                    values={{
-                                        uker: antallUkerOgDagerFellesperiode.uker,
-                                        dager: antallUkerOgDagerFellesperiode.dager,
-                                        prosent: dekningsgrad,
-                                    }}
-                                />
+                                <FormattedMessage id="FordelingSteg.Infoboks.HvordanFordeleTekst" />
                             </BodyShort>
                         </Infobox>
                         <BluePanel isDarkBlue={fordeling === undefined}>

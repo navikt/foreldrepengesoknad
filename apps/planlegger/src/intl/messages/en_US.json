@@ -64,7 +64,7 @@
     "FordelingSteg.HvemStarterPermisjon.ReadMore.Tekst": "You can choose who starts the leave. If the other parent is going to use the shared period, the one who started the leave must be in approved activity during that time.",
     "FordelingSteg.HvemStarterPermisjon.ReadMore.Tittel": "Why does it matter who starts the leave?",
     "FordelingSteg.HvemStarterPermisjon.Required": "You must choose who will start the leave.",
-    "FordelingSteg.Infoboks.HvordanFordeleTekst": "The parental allowance is divided into three parts; one for each of the parents and a joint period. With {prosent}% parental allowance, this period is {uker} weeks{dager, select, 1 { and one day} 2 { and two days} 3 { and three days} 4 { and four days} other{}}. You can choose how the period is to be distributed between you.",
+    "FordelingSteg.Infoboks.HvordanFordeleTekst": "Parental benefit is divided into three periods. Each of you gets a part, and in addition you have the joint period which you can choose how to divide between you.",
     "FordelingSteg.Infoboks.HvordanFordeleTittel": "The joint period",
     "FordelingSteg.Slider.AriaValueText": "{uker1, plural, one {# week} other {# weeks}}{dager1, plural, =0 {} one { and # day} other { and # days}} to {fornavn1}, {uker2, plural, one {# week} other {# weeks}}{dager2, plural, =0 {} one { and # day} other { and # days}} to {fornavn2}",
     "FordelingSteg.Tittel": "Distribution",

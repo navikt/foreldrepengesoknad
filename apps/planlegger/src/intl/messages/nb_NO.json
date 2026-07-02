@@ -64,7 +64,7 @@
     "FordelingSteg.HvemStarterPermisjon.ReadMore.Tekst": "Dere kan selv velge hvem som starter permisjonen. Hvis den andre forelderen skal bruke fellesperioden, må den som startet permisjonen være i godkjent aktivitet i denne tiden.",
     "FordelingSteg.HvemStarterPermisjon.ReadMore.Tittel": "Hvilken betydning har hvem som starter permisjonen?",
     "FordelingSteg.HvemStarterPermisjon.Required": "Du må velge hvem som skal starte permisjonen.",
-    "FordelingSteg.Infoboks.HvordanFordeleTekst": "Foreldrepengene er delt inn i tre deler; en til hver av foreldrene og en fellesperiode. Med {prosent} % foreldrepenger er denne perioden på {uker} uker{dager, select, 1 { og én dag} 2 { og to dager} 3 { og tre dager} 4 { og fire dager} other{}}. Dere kan selv velge hvordan perioden skal fordeles mellom dere.",
+    "FordelingSteg.Infoboks.HvordanFordeleTekst": "Foreldrepengene deles inn i tre perioder. Hver av dere får en del hver, og i tillegg har dere fellesperioden som dere selv kan velge hvordan dere vil fordele mellom dere.",
     "FordelingSteg.Infoboks.HvordanFordeleTittel": "Fellesperioden",
     "FordelingSteg.Slider.AriaValueText": "{uker1, plural, one {# uke} other {# uker}}{dager1, plural, =0 {} one { og # dag} other { og # dager}} til {fornavn1}, {uker2, plural, one {# uke} other {# uker}}{dager2, plural, =0 {} one { og # dag} other { og # dager}} til {fornavn2}",
     "FordelingSteg.Tittel": "Fordeling",
