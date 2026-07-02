@@ -16,7 +16,7 @@ export {
     getCountryName,
     getLocaleKey,
 } from './src/countryUtils';
-export { omitOne, omitMany } from './src/objectUtils';
+export { omitOne, omitMany, erLikUansettRekkefølge } from './src/objectUtils';
 export { redirect } from './src/loginUtils';
 
 export { useAbortSignal } from './src/hooks/useAbortSignal';

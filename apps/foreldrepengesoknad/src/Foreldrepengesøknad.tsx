@@ -10,14 +10,13 @@ import { ContextDataMap, ContextDataType, FpDataContext } from 'appData/FpDataCo
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import { usePlanleggerDataFromUrl } from 'appData/usePlanleggerDataFromUrl';
 import ky from 'ky';
-import { isEqual } from 'es-toolkit';
 import { ReactNode, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { shouldApplyStorage } from 'utils/mellomlagringUtils';
 
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { ErrorBoundary, RegisterdataUtdatert, Spinner } from '@navikt/fp-ui';
-import { useDocumentTitle } from '@navikt/fp-utils';
+import { erLikUansettRekkefølge, omitMany, useDocumentTitle } from '@navikt/fp-utils';
 
 import { ForeldrepengesøknadRoutes } from './ForeldrepengesøknadRoutes';
 
@@ -114,21 +113,52 @@ const RegisterdataSjekk = ({
     const annenPartVedtakErEndret =
         harLagretAnnenPartVedtak &&
         annenPartVedtakQuery.isSuccess &&
-        !isEqual(annenPartVedtakQuery.data, mellomlagretData.annenPartVedtak);
+        !erLikUansettRekkefølge(annenPartVedtakQuery.data, mellomlagretData.annenPartVedtak);
 
-    const registerdataErEndret =
-        !isEqual(mellomlagretData.søkerInfo, søkerInfo) ||
-        !isEqual(mellomlagretData.foreldrepengerSaker, foreldrepengerSaker) ||
-        annenPartVedtakErEndret;
+    const søkerInfoErEndret = !erLikUansettRekkefølge(mellomlagretData.søkerInfo, søkerInfo);
+
+    const sakerErEndret = !erLikUansettRekkefølge(
+        relevanteSaker(mellomlagretData.foreldrepengerSaker),
+        relevanteSaker(foreldrepengerSaker),
+    );
+
+    const registerdataErEndret = søkerInfoErEndret || sakerErEndret || annenPartVedtakErEndret;
 
     if (registerdataErEndret) {
+        const avvik = [
+            søkerInfoErEndret ? 'søkerInfo' : undefined,
+            sakerErEndret ? 'saker' : undefined,
+            annenPartVedtakErEndret ? 'annenPartVedtak' : undefined,
+        ]
+            .filter(Boolean)
+            .join(',');
+
         return (
             <RegisterdataUtdatert
                 slettMellomlagringOgLastSidePåNytt={slettMellomlagringOgLastSidePåNytt}
                 appName="foreldrepengesoknad"
+                avvik={avvik}
             />
         );
     }
 
     return <>{children}</>;
 };
+
+// Samanliknar berre felt som faktisk gjer ei mellomlagra søknad ugyldig.
+// Volatile felt frå backend som ikkje seier noko om søknadsgrunnlaget er endra,
+// blir fjerna: oppdatertTidspunkt er eit reint tidsstempel, og åpenBehandling er
+// behandlingsstatus (berre brukt til statustekst på forsida, ikkje i sjølve
+// søknadsflyten). I gjeldendeVedtak er det berre periodane som blir brukte i
+// søknadsflyten; beregningsgrunnlag og tilkjentYtelse høyrer til oversikta og
+// skal ikkje gjera ei mellomlagring utdatert. Slik unngår vi falske positive
+// utdatert-varsel.
+const relevanteSaker = (saker: FpSak_fpoversikt[]) =>
+    saker.map((sak) => ({
+        ...omitMany(sak, ['oppdatertTidspunkt', 'åpenBehandling', 'gjeldendeVedtak']),
+        ...(sak.gjeldendeVedtak
+            ? {
+                  gjeldendeVedtak: omitMany(sak.gjeldendeVedtak, ['beregningsgrunnlag', 'tilkjentYtelse']),
+              }
+            : {}),
+    }));

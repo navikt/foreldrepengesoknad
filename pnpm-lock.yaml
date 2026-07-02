@@ -237,9 +237,6 @@ importers:
       dayjs:
         specifier: 'catalog:'
         version: 1.11.21
-      es-toolkit:
-        specifier: 'catalog:'
-        version: 1.48.1
       ky:
         specifier: 'catalog:'
         version: 2.0.2
