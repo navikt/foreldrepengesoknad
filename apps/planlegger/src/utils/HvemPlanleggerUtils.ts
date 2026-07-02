@@ -42,9 +42,12 @@ export const erLikekjønnetPar = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegge
  * Par der brukeren (ved adopsjon, se {@link FordelingSteg}) kan velge hvem som skal starte permisjonen,
  * fremfor at det alltid er den først oppgitte forelderen (eller mor, for mor/far) som blir søker1.
  */
+export type ParSomKanVelgeStarter = FarOgFar | MorOgMedmor | MorOgFar;
+
+/** Sjekker om paret kan velge hvem som starter permisjonen, se {@link ParSomKanVelgeStarter}. */
 export const kanVelgeHvemSomStarterPermisjonen = (
     hvemPlanlegger: HvemPlanlegger,
-): hvemPlanlegger is FarOgFar | MorOgMedmor | MorOgFar =>
+): hvemPlanlegger is ParSomKanVelgeStarter =>
     erLikekjønnetPar(hvemPlanlegger) || hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR;
 
 export type StarterForelder = 'MOR' | 'FAR_MEDMOR';
@@ -67,7 +70,7 @@ export const getStarterForelder = (
 
 /** Navn (uten capitalize) til bruk internt ved bytte av søker1/søker2, konsistent med getNavnPåSøker1/2 */
 const getRawNavnForHvemStarterPermisjon = (
-    hvemPlanlegger: FarOgFar | MorOgMedmor | MorOgFar,
+    hvemPlanlegger: ParSomKanVelgeStarter,
     intl: IntlShape,
 ): { navnSøker1: string; navnSøker2: string } => {
     if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) {
@@ -102,7 +105,7 @@ const getRawNavnForHvemStarterPermisjon = (
 
 /** Navn (eller fallback "Far 1"/"Far 2"/"Mor"/"Medmor"/"Far") til bruk i spørsmålet om hvem som starter permisjonen */
 export const getNavnForHvemStarterPermisjon = (
-    hvemPlanlegger: FarOgFar | MorOgMedmor | MorOgFar,
+    hvemPlanlegger: ParSomKanVelgeStarter,
     intl: IntlShape,
 ): { navnSøker1: string; navnSøker2: string } => {
     const { navnSøker1, navnSøker2 } = getRawNavnForHvemStarterPermisjon(hvemPlanlegger, intl);

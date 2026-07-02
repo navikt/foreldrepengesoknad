@@ -14,9 +14,42 @@ interface DeltUttakParams {
     famDato: string;
     tilgjengeligeStønadskvoter: KontoDto[];
     fellesperiodeDagerFørsteForelder: number | undefined;
-    starterForelder?: 'MOR' | 'FAR_MEDMOR';
+    starterForelder?: Forelder;
     startdato?: string;
 }
+
+type Forelder = 'MOR' | 'FAR_MEDMOR';
+
+interface ForelderKonfig {
+    førsteForelder: Forelder;
+    andreForelder: Forelder;
+    førsteForelderKvote: KontoDto | undefined;
+    andreForelderKvote: KontoDto | undefined;
+    førsteForelderKontoType: 'MØDREKVOTE' | 'FEDREKVOTE';
+    andreForelderKontoType: 'MØDREKVOTE' | 'FEDREKVOTE';
+    førsteForelderPerioder: UttakPeriode_fpoversikt[];
+    andreForelderPerioder: UttakPeriode_fpoversikt[];
+}
+
+const getForelderKonfig = (
+    starterForelder: Forelder,
+    mødrekvote: KontoDto | undefined,
+    fedrekvote: KontoDto | undefined,
+    morsPerioder: UttakPeriode_fpoversikt[],
+    farsPerioder: UttakPeriode_fpoversikt[],
+): ForelderKonfig => {
+    const starterMor = starterForelder === 'MOR';
+    return {
+        førsteForelder: starterForelder,
+        andreForelder: starterMor ? 'FAR_MEDMOR' : 'MOR',
+        førsteForelderKvote: starterMor ? mødrekvote : fedrekvote,
+        andreForelderKvote: starterMor ? fedrekvote : mødrekvote,
+        førsteForelderKontoType: starterMor ? 'MØDREKVOTE' : 'FEDREKVOTE',
+        andreForelderKontoType: starterMor ? 'FEDREKVOTE' : 'MØDREKVOTE',
+        førsteForelderPerioder: starterMor ? morsPerioder : farsPerioder,
+        andreForelderPerioder: starterMor ? farsPerioder : morsPerioder,
+    };
+};
 
 /**
  * Generates a suggested parental leave plan for delt uttak (shared parental leave).
@@ -116,14 +149,16 @@ export const deltUttak = ({
         currentFomDate = Uttaksdagen.denne(helgejustertFamDato).getDato();
     }
 
-    const førsteForelder = starterForelder;
-    const andreForelder = starterForelder === 'MOR' ? 'FAR_MEDMOR' : 'MOR';
-    const førsteForelderKvote = starterForelder === 'MOR' ? mødrekvote : fedrekvote;
-    const andreForelderKvote = starterForelder === 'MOR' ? fedrekvote : mødrekvote;
-    const førsteForelderKontoType = starterForelder === 'MOR' ? 'MØDREKVOTE' : 'FEDREKVOTE';
-    const andreForelderKontoType = starterForelder === 'MOR' ? 'FEDREKVOTE' : 'MØDREKVOTE';
-    const førsteForelderPerioder = starterForelder === 'MOR' ? morsPerioder : farsPerioder;
-    const andreForelderPerioder = starterForelder === 'MOR' ? farsPerioder : morsPerioder;
+    const {
+        førsteForelder,
+        andreForelder,
+        førsteForelderKvote,
+        andreForelderKvote,
+        førsteForelderKontoType,
+        andreForelderKontoType,
+        førsteForelderPerioder,
+        andreForelderPerioder,
+    } = getForelderKonfig(starterForelder, mødrekvote, fedrekvote, morsPerioder, farsPerioder);
 
     tidsperiode = getTidsperiodeString(currentFomDate, førsteForelderKvote ? førsteForelderKvote.dager : 0);
 
