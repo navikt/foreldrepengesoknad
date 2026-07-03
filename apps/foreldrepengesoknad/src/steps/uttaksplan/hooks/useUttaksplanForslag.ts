@@ -214,7 +214,7 @@ export const useUttaksplanForslag = (
         return deltUttak({
             famDato: familiehendelsedato,
             tilgjengeligeStønadskvoter: valgtStønadskvote.kontoer,
-            fellesperiodeDagerMor,
+            fellesperiodeDagerFørsteForelder: fellesperiodeDagerMor,
             startdato: oppstartsdato,
         });
     }

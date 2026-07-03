@@ -2,21 +2,29 @@ import { SectorChartIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
+import { BlueRadioGroup } from 'components/form-wrappers/BlueRadioGroup';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
+import {
+    getEffektivHvemPlanlegger,
+    getFornavnPåSøker1,
+    getFornavnPåSøker2,
+    getNavnForHvemStarterPermisjon,
+    kanVelgeHvemSomStarterPermisjonen,
+} from 'utils/HvemPlanleggerUtils';
+import { erBarnetAdoptert } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskvoterUtils';
 import { finnUttaksdata } from 'utils/uttakUtils';
 
-import { BodyShort, Box, Heading, InlineMessage, Spacer, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, Heading, InlineMessage, Radio, ReadMore, Spacer, VStack } from '@navikt/ds-react';
 
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { FordelingPlanlegger, KontoBeregningDto } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils';
-import { notEmpty } from '@navikt/fp-validation';
+import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { FordelingSlider } from '../../components/FordelingSlider';
 import { FordelingsdetaljerPanel } from './FordelingsdetaljerPanel';
@@ -57,10 +65,29 @@ export const FordelingSteg = ({ stønadskvoter }: Props) => {
             ? undefined
             : Number(antallDagerSøker1Temp);
 
+    const hvemStarterPermisjon = formMethods.watch('hvemStarterPermisjon');
+
+    const skalSpørreOmHvemSomStarterPermisjonen = kanVelgeHvemSomStarterPermisjonen(hvemPlanlegger) && erBarnetAdoptert(barnet);
+    const navnForHvemStarterPermisjon = kanVelgeHvemSomStarterPermisjonen(hvemPlanlegger)
+        ? getNavnForHvemStarterPermisjon(hvemPlanlegger, intl)
+        : undefined;
+
+    // Brukes til å oppdatere fornavn/rekkefølge i sanntid mens brukeren svarer, før verdien er lagret i konteksten
+    const effektivHvemPlanlegger = getEffektivHvemPlanlegger(
+        hvemPlanlegger,
+        { ...fordeling, antallDagerSøker1: halvpart, hvemStarterPermisjon },
+        barnet,
+        intl,
+    );
+
     const lagre = (formValues: FordelingPlanlegger) => {
         oppdaterFordeling(formValues);
 
-        if (fordeling && fordeling.antallDagerSøker1 !== formValues.antallDagerSøker1) {
+        if (
+            fordeling &&
+            (fordeling.antallDagerSøker1 !== formValues.antallDagerSøker1 ||
+                fordeling.hvemStarterPermisjon !== formValues.hvemStarterPermisjon)
+        ) {
             oppdaterUttaksplan(undefined);
         }
 
@@ -68,11 +95,23 @@ export const FordelingSteg = ({ stønadskvoter }: Props) => {
     };
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
-    const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskvote, barnet, antallDagerSøker1);
-    const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskvote, barnet, antallDagerSøker1);
+    const uttaksdata100 = finnUttaksdata(
+        hvemHarRett,
+        effektivHvemPlanlegger,
+        valgtStønadskvote,
+        barnet,
+        antallDagerSøker1,
+    );
+    const uttaksdata80 = finnUttaksdata(
+        hvemHarRett,
+        effektivHvemPlanlegger,
+        valgtStønadskvote,
+        barnet,
+        antallDagerSøker1,
+    );
 
-    const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
-    const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
+    const fornavnSøker1 = getFornavnPåSøker1(effektivHvemPlanlegger, intl);
+    const fornavnSøker2 = getFornavnPåSøker2(effektivHvemPlanlegger, intl);
 
     const { ref } = useScrollBehaviour();
 
@@ -84,6 +123,33 @@ export const FordelingSteg = ({ stønadskvoter }: Props) => {
                         <Heading size="medium" spacing level="2">
                             <FormattedMessage id="FordelingSteg.Tittel" />
                         </Heading>
+                        {skalSpørreOmHvemSomStarterPermisjonen && navnForHvemStarterPermisjon && (
+                            <>
+                                <BlueRadioGroup
+                                    name="hvemStarterPermisjon"
+                                    control={formMethods.control}
+                                    label={intl.formatMessage({ id: 'FordelingSteg.HvemStarterPermisjon.Label' })}
+                                    description={intl.formatMessage({
+                                        id: 'FordelingSteg.HvemStarterPermisjon.Description',
+                                    })}
+                                    validate={[
+                                        isRequired(
+                                            intl.formatMessage({
+                                                id: 'FordelingSteg.HvemStarterPermisjon.Required',
+                                            }),
+                                        ),
+                                    ]}
+                                >
+                                    <Radio value="søker1" autoFocus>
+                                        {navnForHvemStarterPermisjon.navnSøker1}
+                                    </Radio>
+                                    <Radio value="søker2">{navnForHvemStarterPermisjon.navnSøker2}</Radio>
+                                </BlueRadioGroup>
+                                <ReadMore header={<FormattedMessage id="FordelingSteg.HvemStarterPermisjon.ReadMore.Tittel" />}>
+                                    <FormattedMessage id="FordelingSteg.HvemStarterPermisjon.ReadMore.Tekst" />
+                                </ReadMore>
+                            </>
+                        )}
                         <Infobox
                             header={<FormattedMessage id="FordelingSteg.Infoboks.HvordanFordeleTittel" />}
                             icon={
@@ -98,14 +164,7 @@ export const FordelingSteg = ({ stønadskvoter }: Props) => {
                             color="gray"
                         >
                             <BodyShort>
-                                <FormattedMessage
-                                    id="FordelingSteg.Infoboks.HvordanFordeleTekst"
-                                    values={{
-                                        uker: antallUkerOgDagerFellesperiode.uker,
-                                        dager: antallUkerOgDagerFellesperiode.dager,
-                                        prosent: dekningsgrad,
-                                    }}
-                                />
+                                <FormattedMessage id="FordelingSteg.Infoboks.HvordanFordeleTekst" />
                             </BodyShort>
                         </Infobox>
                         <BluePanel isDarkBlue={fordeling === undefined}>
@@ -144,7 +203,7 @@ export const FordelingSteg = ({ stønadskvoter }: Props) => {
                         {antallDagerSøker1 !== undefined && (
                             <FordelingsdetaljerPanel
                                 barnet={barnet}
-                                hvemPlanlegger={hvemPlanlegger}
+                                hvemPlanlegger={effektivHvemPlanlegger}
                                 fornavnSøker1={fornavnSøker1}
                                 fornavnSøker2={fornavnSøker2}
                                 uttaksdata={dekningsgrad === '100' ? uttaksdata100 : uttaksdata80}
@@ -162,3 +221,4 @@ export const FordelingSteg = ({ stønadskvoter }: Props) => {
         </PlanleggerStepPage>
     );
 };
+

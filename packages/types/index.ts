@@ -20,7 +20,7 @@ export type {
     BarnetErAdoptertPlanlegger,
 } from './src/OmBarnet';
 export type { HvorLangPeriodePlanlegger } from './src/HvorLangPeriode';
-export type { FordelingPlanlegger } from './src/FordelingPlanlegger';
+export type { FordelingPlanlegger, HvemStarterPermisjon } from './src/FordelingPlanlegger';
 export type { NavnPåForeldre } from './src/NavnPåForeldre';
 export type { AppName } from './src/AppName';
 export type { DatepickerDateRange } from './src/DatepickerDateRange';

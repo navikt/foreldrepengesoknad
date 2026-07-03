@@ -255,6 +255,7 @@ describe('<Planlegger>', () => {
         await waitFor(() => expect(screen.getAllByText('Fordeling')).toHaveLength(2));
         expect(screen.getByText('Steg 6 av 8')).toBeInTheDocument();
         await endreFordelingMedSlider(screen, 45);
+        await userEvent.click(screen.getByRole('radio', { name: 'Klara' }));
         await userEvent.click(screen.getByText('Neste'));
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
