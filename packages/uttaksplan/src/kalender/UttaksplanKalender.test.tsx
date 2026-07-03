@@ -155,7 +155,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(januar).getByText('10', { exact: false }));
         await userEvent.click(within(januar).getByText('26', { exact: false }));
 
-        expect(await screen.findByText('2 dager valgt')).toBeInTheDocument();
+        expect(await screen.findAllByText('2 dager valgt')).toHaveLength(2);
 
         expect(within(januar).getByTestId('day:9;dayColor:NONE')).toBeInTheDocument();
         expect(within(januar).getByTestId('day:10;dayColor:DARKBLUE')).toBeInTheDocument();
@@ -175,11 +175,9 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(mars).getByTestId('day:14;dayColor:BLUE'));
         await userEvent.click(within(mai).getByTestId('day:31;dayColor:BLUE'));
 
-        expect(screen.getByText('57')).toBeInTheDocument();
+        expect(screen.getAllByText('11 uker og 2 dager valgt')).toHaveLength(2);
 
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
-
-        expect(await screen.findAllByText('11 uker og 2 dager valgt')).toHaveLength(2);
 
         expect(screen.getByText('Valgte datoer inneholder eksisterende perioder:')).toBeInTheDocument();
         expect(
