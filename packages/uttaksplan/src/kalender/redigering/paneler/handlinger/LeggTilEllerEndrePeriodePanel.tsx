@@ -59,7 +59,7 @@ const HeaderDesktop = ({ labels }: { labels: React.ReactNode }) => {
         <Box background="accent-soft" padding="space-16">
             <VStack gap="space-16">
                 <HStack justify="space-between" align="center" wrap={false}>
-                    <div onClick={(e) => e.stopPropagation()}>
+                    <div onClickCapture={(e) => e.stopPropagation()}>
                         <Chips size="small">
                             <Chips.Removable onDelete={() => setValgtePerioder([])}>
                                 {intl.formatMessage(
@@ -130,7 +130,7 @@ const HeaderMobil = ({
                         />
                     )}
 
-                    <div onClick={(e) => e.stopPropagation()}>
+                    <div onClickCapture={(e) => e.stopPropagation()}>
                         <Chips size="small">
                             <Chips.Removable onDelete={() => setValgtePerioder([])}>
                                 {intl.formatMessage(
