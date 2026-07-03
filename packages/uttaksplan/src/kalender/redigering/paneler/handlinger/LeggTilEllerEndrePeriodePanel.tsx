@@ -32,16 +32,10 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
             }
         >
             <Show above="md">
-                <HeaderDesktop
-                    labels={labels}
-                />
+                <HeaderDesktop labels={labels} />
             </Show>
             <Show below="md">
-                <HeaderMobil
-                    labels={labels}
-                    erMinimert={erMinimert}
-                    setErMinimert={setErMinimert}
-                />
+                <HeaderMobil labels={labels} erMinimert={erMinimert} setErMinimert={setErMinimert} />
             </Show>
             <div className={erMinimert ? 'hidden' : 'block px-4 pb-4'}>
                 <div className={erMinimert ? 'hidden' : 'block'}>
@@ -54,11 +48,7 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
     );
 };
 
-const HeaderDesktop = ({
-    labels,
-}: {
-    labels: React.ReactNode;
-}) => {
+const HeaderDesktop = ({ labels }: { labels: React.ReactNode }) => {
     const intl = useIntl();
 
     const { sammenslåtteValgtePerioder, setValgtePerioder } = useKalenderRedigeringContext();
@@ -69,16 +59,21 @@ const HeaderDesktop = ({
         <Box background="accent-soft" padding="space-16">
             <VStack gap="space-16">
                 <HStack justify="space-between" align="center" wrap={false}>
-                    <Chips size="small">
-                        <Chips.Removable onDelete={() => setValgtePerioder([])}>
-                            {intl.formatMessage(
-                                { id: 'RedigeringPanel.ValgteDager' },
-                                {
-                                    varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
-                                },
-                            )}
-                        </Chips.Removable>
-                    </Chips>
+                    <div onClickCapture={(e) => e.stopPropagation()}>
+                        <Chips size="small">
+                            <Chips.Removable onDelete={() => setValgtePerioder([])}>
+                                {intl.formatMessage(
+                                    { id: 'RedigeringPanel.ValgteDager' },
+                                    {
+                                        varighet: getVarighetString(
+                                            finnAntallDager(sammenslåtteValgtePerioder),
+                                            intl,
+                                        ),
+                                    },
+                                )}
+                            </Chips.Removable>
+                        </Chips>
+                    </div>
                     {visPeriodeDetaljer ? (
                         <ChevronUpIcon
                             title={intl.formatMessage({ id: 'RedigeringPanel.SkjulDetaljer' })}
@@ -94,9 +89,7 @@ const HeaderDesktop = ({
                     )}
                 </HStack>
                 {labels}
-                {visPeriodeDetaljer && (
-                    <PeriodeDetaljerOgInfoMeldinger />
-                )}
+                {visPeriodeDetaljer && <PeriodeDetaljerOgInfoMeldinger />}
             </VStack>
         </Box>
     );
@@ -137,19 +130,21 @@ const HeaderMobil = ({
                         />
                     )}
 
-                    <Chips size="small">
-                        <Chips.Removable
-                            onDelete={() => setValgtePerioder([])}
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            {intl.formatMessage(
-                                { id: 'RedigeringPanel.ValgteDager' },
-                                {
-                                    varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
-                                },
-                            )}
-                        </Chips.Removable>
-                    </Chips>
+                    <div onClickCapture={(e) => e.stopPropagation()}>
+                        <Chips size="small">
+                            <Chips.Removable onDelete={() => setValgtePerioder([])}>
+                                {intl.formatMessage(
+                                    { id: 'RedigeringPanel.ValgteDager' },
+                                    {
+                                        varighet: getVarighetString(
+                                            finnAntallDager(sammenslåtteValgtePerioder),
+                                            intl,
+                                        ),
+                                    },
+                                )}
+                            </Chips.Removable>
+                        </Chips>
+                    </div>
                 </VStack>
             </Box>
             <Box className="bg-ax-bg-accent-soft">
