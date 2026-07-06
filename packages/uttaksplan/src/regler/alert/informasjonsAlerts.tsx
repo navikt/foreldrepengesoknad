@@ -10,7 +10,7 @@ import {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 
-import { kanMisteDagerVedEndringTilFerie } from '../../felles/uttaksplanValidatorer';
+import { kanMisteDagerVedEndringTilFerie, kanMisteDagerVedFerieIUke7EtterTermin } from '../../felles/uttaksplanValidatorer';
 import { Uttaksplanperiode, UttaksplanperiodeMedKunTapteDager, erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
 import { harPeriodeDerMorsAktivitetIkkeErValgt, harPeriodeMedUkjentGraderingsaktivitet } from '../../utils/periodeUtils';
 import { Periode } from '../types';
@@ -147,6 +147,26 @@ export const KAN_MISTE_DAGER = lagAlertregel<PeriodeDetaljerKontekst>({
         erIkkeAdopsjon(ctx.familiesituasjon) &&
         !ctx.harPeriodeMedPleiepenger &&
         kanMisteDagerVedEndringTilFerie([...ctx.sammenslåtteValgtePerioder], ctx.familiehendelsedato),
+});
+
+export const FERIE_UKE_7_ETTER_TERMIN = lagAlertregel<PeriodeDetaljerKontekst>({
+    id: 'informasjonsAlerts.ferieUke7EtterTermin',
+    beskrivelse:
+        'Mor søker før fødsel (familiesituasjon er «termin») og har valgt å endre én ' +
+        'eller flere perioder i uke 7 etter termin til ferie. Dersom barnet blir født ' +
+        'etter termin, forskyves de seks lovpålagte ukene med mødrekvote, og ferien kan ' +
+        'da bli avslått med tapte dager som resultat.',
+    visningssteder: ['periode-detaljer-redigering'],
+    meldinger: [<FormattedMessage key="RedigeringPanel.FerieUke7EtterTermin" id="RedigeringPanel.FerieUke7EtterTermin" />],
+    variant: 'info',
+    type: 'kontekstuell',
+    skalVises: (ctx) =>
+        ctx.søker === 'MOR' &&
+        kanMisteDagerVedFerieIUke7EtterTermin(
+            [...ctx.sammenslåtteValgtePerioder],
+            ctx.familiehendelsedato,
+            ctx.familiesituasjon,
+        ),
 });
 
 export const ADOPSJON_PERIODE_FØR_FAMHEND = lagAlertregel<PeriodeDetaljerKontekst>({
@@ -326,6 +346,7 @@ export const INFORMASJONS_ALERTS: readonly AlertregelDoc[] = [
     MANGLER_GRADERINGSAKTIVITET_KALENDER,
     GRADERINGSAKTIVITET_IKKE_VALGT_EKSISTERENDE,
     KAN_MISTE_DAGER,
+    FERIE_UKE_7_ETTER_TERMIN,
     ADOPSJON_PERIODE_FØR_FAMHEND,
     IKKE_REDIGERBAR_EØS,
     IKKE_REDIGERBAR_PLEIEPENGER,

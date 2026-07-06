@@ -257,6 +257,7 @@
     "RedigeringPanel.Begge": "Begge",
     "RedigeringPanel.Pleiepenger": "Denne perioden er avslått grunna pleiepenger",
     "RedigeringPanel.KanMisteDager": "Du mistar dagar hvis du ikkje har foreldrepengar før termin eller i dei seks første vekene etter fødsel.",
+    "RedigeringPanel.FerieUke7EtterTermin": "I dei første seks vekene etter fødsel må du ha mødrekvote. Viss barnet blir fødd etter termin, kan du mista dagar om du har ferie i staden for mødrekvote.",
     "RedigeringPanel.NyeDagerForklaring": "Du har markert dagar som ikkje er lagt til i planen enno. Velg 'Ny periode' for å opprette ein ny periode.",
     "RedigeringPanel.Maksimer": "Utvid panel",
     "RedigeringPanel.Minimer": "Minimer panel",
