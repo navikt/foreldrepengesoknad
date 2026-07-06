@@ -103,9 +103,9 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
 const PlanStatus = () => {
     const tellingData = useTellDagerIUttaksPeriodene();
     const harPerioderSomKanLeggesTil = useHarPerioderSomKanLeggesTil(tellingData);
-    const { antallOvertrukketDager } = tellingData;
+    const harLagtTilForMye = useHarLagtTilForMye(tellingData);
 
-    if (!harPerioderSomKanLeggesTil && antallOvertrukketDager <= 0) {
+    if (!harPerioderSomKanLeggesTil && !harLagtTilForMye) {
         return <AlleDagerLagtTilBoks />;
     }
 
@@ -119,7 +119,7 @@ const PlanStatus = () => {
                     <PerioderSomKanLeggesTilTags />
                 </VStack>
             )}
-            {antallOvertrukketDager > 0 && <LagtTilForMyeTag antallOvertrukketDager={antallOvertrukketDager} />}
+            {harLagtTilForMye && <LagtTilForMyeTags />}
         </VStack>
     );
 };
@@ -140,23 +140,135 @@ const AlleDagerLagtTilBoks = () => (
     </Box>
 );
 
-const LagtTilForMyeTag = ({ antallOvertrukketDager }: { antallOvertrukketDager: number }) => {
+const LagtTilForMyeTags = () => {
     const intl = useIntl();
+    const {
+        foreldreInfo: { rettighetType, søker, erMedmorDelAvSøknaden },
+    } = useUttaksplanData();
 
     return (
         <VStack gap="space-4">
             <Detail uppercase style={{ letterSpacing: '1.05px' }}>
                 <FormattedMessage id="IngenDagerValgtPanel.LagtTilForMyeTittel" />
             </Detail>
-            <HStack gap="space-4">
-                <Tag variant="error" size="small">
-                    <FormattedMessage
-                        id="IngenDagerValgtPanel.LagtTilForMye"
-                        values={{ varighet: getVarighetString(antallOvertrukketDager, intl) }}
-                    />
-                </Tag>
-            </HStack>
+            {rettighetType === 'BEGGE_RETT' ? (
+                <ForMyeTagsBeggeRett erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} intl={intl} />
+            ) : søker === 'FAR_MEDMOR' ? (
+                <ForMyeTagsKunFar intl={intl} />
+            ) : (
+                <ForMyeTagsKunMor intl={intl} />
+            )}
         </VStack>
+    );
+};
+
+const ForMyeTagsBeggeRett = ({
+    erMedmorDelAvSøknaden,
+    intl,
+}: {
+    erMedmorDelAvSøknaden: boolean;
+    intl: ReturnType<typeof useIntl>;
+}) => {
+    const { ubrukteDagerMor, ubrukteDagerFar, ubrukteDagerFelles } = useTellDagerIUttaksPeriodene();
+
+    const tags = [
+        ubrukteDagerMor < 0 && (
+            <Tag key="mor" variant="error" size="small">
+                <FormattedMessage
+                    id="IngenDagerValgtPanel.LagtTilForMyeMor"
+                    values={{ varighet: getVarighetString(ubrukteDagerMor * -1, intl) }}
+                />
+            </Tag>
+        ),
+        ubrukteDagerFar < 0 && (
+            <Tag key="far" variant="error" size="small">
+                {erMedmorDelAvSøknaden ? (
+                    <FormattedMessage
+                        id="IngenDagerValgtPanel.LagtTilForMyeMedmor"
+                        values={{ varighet: getVarighetString(ubrukteDagerFar * -1, intl) }}
+                    />
+                ) : (
+                    <FormattedMessage
+                        id="IngenDagerValgtPanel.LagtTilForMyeFar"
+                        values={{ varighet: getVarighetString(ubrukteDagerFar * -1, intl) }}
+                    />
+                )}
+            </Tag>
+        ),
+        ubrukteDagerFelles < 0 && (
+            <Tag key="felles" variant="error" size="small">
+                <FormattedMessage
+                    id="IngenDagerValgtPanel.LagtTilForMyeFellesperiode"
+                    values={{ varighet: getVarighetString(ubrukteDagerFelles * -1, intl) }}
+                />
+            </Tag>
+        ),
+    ].filter(Boolean);
+
+    if (tags.length === 0) {
+        return null;
+    }
+    return (
+        <HStack gap="space-4" wrap>
+            {tags}
+        </HStack>
+    );
+};
+
+const ForMyeTagsKunFar = ({ intl }: { intl: ReturnType<typeof useIntl> }) => {
+    const { overtrukketDagerAktivitetsfri, overtrukketDagerMedAktivitetskrav } = useUbrukteDagerPerKontoKunEnHarRett();
+
+    const tags = [
+        overtrukketDagerAktivitetsfri > 0 && (
+            <Tag key="aktivitetsfri" variant="error" size="small">
+                <FormattedMessage
+                    id="IngenDagerValgtPanel.LagtTilForMyeUtenAktivitetskrav"
+                    values={{ varighet: getVarighetString(overtrukketDagerAktivitetsfri, intl) }}
+                />
+            </Tag>
+        ),
+        overtrukketDagerMedAktivitetskrav > 0 && (
+            <Tag key="medAktivitetskrav" variant="error" size="small">
+                <FormattedMessage
+                    id="IngenDagerValgtPanel.LagtTilForMyeMedAktivitetskrav"
+                    values={{ varighet: getVarighetString(overtrukketDagerMedAktivitetskrav, intl) }}
+                />
+            </Tag>
+        ),
+    ].filter(Boolean);
+
+    if (tags.length === 0) {
+        return null;
+    }
+    return (
+        <HStack gap="space-4" wrap>
+            {tags}
+        </HStack>
+    );
+};
+
+const ForMyeTagsKunMor = ({ intl }: { intl: ReturnType<typeof useIntl> }) => {
+    const { antallOvertrukketDager } = useTellDagerIUttaksPeriodene();
+    const { overtrukketDagerAktivitetsfri, overtrukketDagerMedAktivitetskrav } = useUbrukteDagerPerKontoKunEnHarRett();
+
+    const totalOvertrukket =
+        antallOvertrukketDager > 0
+            ? antallOvertrukketDager
+            : overtrukketDagerAktivitetsfri + overtrukketDagerMedAktivitetskrav;
+
+    if (totalOvertrukket <= 0) {
+        return null;
+    }
+
+    return (
+        <HStack gap="space-4">
+            <Tag variant="error" size="small">
+                <FormattedMessage
+                    id="IngenDagerValgtPanel.LagtTilForMye"
+                    values={{ varighet: getVarighetString(totalOvertrukket, intl) }}
+                />
+            </Tag>
+        </HStack>
     );
 };
 
@@ -178,6 +290,26 @@ const useHarPerioderSomKanLeggesTil = ({
         return ubrukteDagerAktivitetsfri > 0 || ubrukteDagerMedAktivitetskrav > 0;
     }
     return antallUbrukteDager > 0 || ubrukteDagerAktivitetsfri + ubrukteDagerMedAktivitetskrav > 0;
+};
+
+const useHarLagtTilForMye = ({
+    ubrukteDagerMor,
+    ubrukteDagerFar,
+    ubrukteDagerFelles,
+    antallOvertrukketDager,
+}: ReturnType<typeof useTellDagerIUttaksPeriodene>) => {
+    const {
+        foreldreInfo: { rettighetType, søker },
+    } = useUttaksplanData();
+    const { overtrukketDagerAktivitetsfri, overtrukketDagerMedAktivitetskrav } = useUbrukteDagerPerKontoKunEnHarRett();
+
+    if (rettighetType === 'BEGGE_RETT') {
+        return ubrukteDagerMor < 0 || ubrukteDagerFar < 0 || ubrukteDagerFelles < 0;
+    }
+    if (søker === 'FAR_MEDMOR') {
+        return overtrukketDagerAktivitetsfri > 0 || overtrukketDagerMedAktivitetskrav > 0;
+    }
+    return antallOvertrukketDager > 0 || overtrukketDagerAktivitetsfri + overtrukketDagerMedAktivitetskrav > 0;
 };
 
 const PerioderSomKanLeggesTilTags = () => {

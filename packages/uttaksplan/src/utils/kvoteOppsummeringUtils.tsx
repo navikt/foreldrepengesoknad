@@ -190,15 +190,16 @@ export const useUbrukteDagerPerKontoKunEnHarRett = () => {
             ? Math.max(0, førFødselKonto.dager - bruktFørFødsel)
             : 0;
 
-    const ubrukteMedAktivitetskravDager = foreldrepengerKonto
-        ? Math.max(0, foreldrepengerKonto.dager - bruktMedAktivitetskrav + ubrukteFørFødselDager)
+    const aktivitetsfriDiff = aktivitetsfriKonto ? aktivitetsfriKonto.dager - bruktAktivitetsfri : 0;
+    const medAktivitetskravDiff = foreldrepengerKonto
+        ? foreldrepengerKonto.dager - bruktMedAktivitetskrav + ubrukteFørFødselDager
         : 0;
 
     return {
-        ubrukteDagerAktivitetsfri: aktivitetsfriKonto
-            ? Math.max(0, aktivitetsfriKonto.dager - bruktAktivitetsfri)
-            : 0,
-        ubrukteDagerMedAktivitetskrav: ubrukteMedAktivitetskravDager,
+        ubrukteDagerAktivitetsfri: Math.max(0, aktivitetsfriDiff),
+        ubrukteDagerMedAktivitetskrav: Math.max(0, medAktivitetskravDiff),
+        overtrukketDagerAktivitetsfri: aktivitetsfriDiff < 0 ? aktivitetsfriDiff * -1 : 0,
+        overtrukketDagerMedAktivitetskrav: medAktivitetskravDiff < 0 ? medAktivitetskravDiff * -1 : 0,
     };
 };
 
