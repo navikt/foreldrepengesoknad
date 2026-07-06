@@ -295,7 +295,7 @@ const ForMyeTagsKunMor = ({
         <HStack gap="space-4">
             <Tag variant="error" size="small">
                 <FormattedMessage
-                    id="IngenDagerValgtPanel.LagtTilForMye"
+                    id="IngenDagerValgtPanel.LagtTilForMyeMor"
                     values={{ varighet: getVarighetString(totalOvertrukket, intl) }}
                 />
             </Tag>

@@ -306,7 +306,6 @@
     "IngenDagerValgtPanel.PerioderSomKanLeggesTil": "Periods that can be added",
     "IngenDagerValgtPanel.AlleDagerLagtTil": "All days have been added to the plan. You can change the plan by selecting a date in the calendar.",
     "IngenDagerValgtPanel.LagtTilForMyeTittel": "Added too much",
-    "IngenDagerValgtPanel.LagtTilForMye": "{varighet} too much",
     "IngenDagerValgtPanel.LagtTilForMyeMor": "{varighet} too much for mother",
     "IngenDagerValgtPanel.LagtTilForMyeFar": "{varighet} too much for father",
     "IngenDagerValgtPanel.LagtTilForMyeMedmor": "{varighet} too much for co-mother",

@@ -303,7 +303,6 @@
     "IngenDagerValgtPanel.PerioderSomKanLeggesTil": "Perioder som kan legges til",
     "IngenDagerValgtPanel.AlleDagerLagtTil": "Alle dager er lagt til i planen. Du kan endre planen ved å velge en dato i kalenderen.",
     "IngenDagerValgtPanel.LagtTilForMyeTittel": "Lagt til for mye",
-    "IngenDagerValgtPanel.LagtTilForMye": "{varighet} for mye",
     "IngenDagerValgtPanel.LagtTilForMyeMor": "{varighet} for mye til mor",
     "IngenDagerValgtPanel.LagtTilForMyeFar": "{varighet} for mye til far",
     "IngenDagerValgtPanel.LagtTilForMyeMedmor": "{varighet} for mye til medmor",

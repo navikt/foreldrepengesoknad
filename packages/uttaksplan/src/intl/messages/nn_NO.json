@@ -303,7 +303,6 @@
     "IngenDagerValgtPanel.PerioderSomKanLeggesTil": "Periodar som kan leggjast til",
     "IngenDagerValgtPanel.AlleDagerLagtTil": "Alle dagane er lagt til i planen. Du kan endre planen ved å velje ein dato i kalenderen.",
     "IngenDagerValgtPanel.LagtTilForMyeTittel": "Lagt til for mykje",
-    "IngenDagerValgtPanel.LagtTilForMye": "{varighet} for mykje",
     "IngenDagerValgtPanel.LagtTilForMyeMor": "{varighet} for mykje til mor",
     "IngenDagerValgtPanel.LagtTilForMyeFar": "{varighet} for mykje til far",
     "IngenDagerValgtPanel.LagtTilForMyeMedmor": "{varighet} for mykje til medmor",
