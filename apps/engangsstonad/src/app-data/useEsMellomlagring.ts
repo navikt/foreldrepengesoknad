@@ -23,6 +23,20 @@ type MellomlagreSøknadOptions = {
 
 export type MellomlagreSøknadFn = (options?: MellomlagreSøknadOptions) => Promise<void>;
 
+const tilMellomlagringsFeil = (error: unknown): Error => {
+    if (error instanceof HTTPError) {
+        if (error.response.status === 401 || error.response.status === 403) {
+            return error;
+        }
+        const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
+        return new ApiError('', 'Feil ved mellomlagring av engangsstønad', jsonResponse);
+    }
+    if (error instanceof Error) {
+        return error;
+    }
+    return new Error(String(error), { cause: error });
+};
+
 export const useEsMellomlagring = (
     personinfo: EsPersonopplysningerDto_fpoversikt,
     setVelkommen: (erVelkommen: boolean) => void,
@@ -71,18 +85,7 @@ export const useEsMellomlagring = (
                                 : {}),
                         });
                     } catch (error: unknown) {
-                        if (error instanceof HTTPError) {
-                            if (error.response.status === 401 || error.response.status === 403) {
-                                throw error;
-                            }
-
-                            const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
-                            throw new ApiError('', 'Feil ved mellomlagring av engangsstønad', jsonResponse);
-                        }
-                        if (error instanceof Error) {
-                            throw error;
-                        }
-                        throw new Error(String(error), { cause: error });
+                        throw tilMellomlagringsFeil(error);
                     }
                 } else {
                     // Ved avbryt så set ein Path = undefined og må så rydda opp i data her

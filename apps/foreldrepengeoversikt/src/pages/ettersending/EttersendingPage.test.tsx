@@ -114,7 +114,7 @@ describe('<EttersendingPage>', () => {
 
         expect(optionsTextContent).toContain('Terminbekreftelse');
         expect(optionsTextContent).toContain('Fødselsattest');
-        expect(optionsTextContent.length).toBe(2);
+        expect(optionsTextContent).toHaveLength(2);
     });
 
     it('skal preselektere dokumenttype dersom kun én manglende dokumenttype i queryparam', () => {
