@@ -102,8 +102,9 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
 
 const PlanStatus = () => {
     const tellingData = useTellDagerIUttaksPeriodene();
-    const harPerioderSomKanLeggesTil = useHarPerioderSomKanLeggesTil(tellingData);
-    const harLagtTilForMye = useHarLagtTilForMye(tellingData);
+    const kunEnHarRettData = useUbrukteDagerPerKontoKunEnHarRett();
+    const harPerioderSomKanLeggesTil = useHarPerioderSomKanLeggesTil(tellingData, kunEnHarRettData);
+    const harLagtTilForMye = useHarLagtTilForMye(tellingData, kunEnHarRettData);
 
     if (!harPerioderSomKanLeggesTil && !harLagtTilForMye) {
         return <AlleDagerLagtTilBoks />;
@@ -116,10 +117,10 @@ const PlanStatus = () => {
                     <Detail uppercase style={{ letterSpacing: '1.05px' }}>
                         <FormattedMessage id="IngenDagerValgtPanel.PerioderSomKanLeggesTil" />
                     </Detail>
-                    <PerioderSomKanLeggesTilTags />
+                    <PerioderSomKanLeggesTilTags tellingData={tellingData} kunEnHarRettData={kunEnHarRettData} />
                 </VStack>
             )}
-            {harLagtTilForMye && <LagtTilForMyeTags />}
+            {harLagtTilForMye && <LagtTilForMyeTags tellingData={tellingData} kunEnHarRettData={kunEnHarRettData} />}
         </VStack>
     );
 };
@@ -140,24 +141,38 @@ const AlleDagerLagtTilBoks = () => (
     </Box>
 );
 
-const LagtTilForMyeTags = () => {
+interface TellingData {
+    tellingData: ReturnType<typeof useTellDagerIUttaksPeriodene>;
+    kunEnHarRettData: ReturnType<typeof useUbrukteDagerPerKontoKunEnHarRett>;
+}
+
+const LagtTilForMyeTags = ({ tellingData, kunEnHarRettData }: TellingData) => {
     const intl = useIntl();
     const {
         foreldreInfo: { rettighetType, søker, erMedmorDelAvSøknaden },
     } = useUttaksplanData();
+
+    let tags: React.ReactNode;
+    if (rettighetType === 'BEGGE_RETT') {
+        tags = (
+            <ForMyeTagsBeggeRett
+                erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
+                intl={intl}
+                tellingData={tellingData}
+            />
+        );
+    } else if (søker === 'FAR_MEDMOR') {
+        tags = <ForMyeTagsKunFar intl={intl} kunEnHarRettData={kunEnHarRettData} />;
+    } else {
+        tags = <ForMyeTagsKunMor intl={intl} tellingData={tellingData} kunEnHarRettData={kunEnHarRettData} />;
+    }
 
     return (
         <VStack gap="space-4">
             <Detail uppercase style={{ letterSpacing: '1.05px' }}>
                 <FormattedMessage id="IngenDagerValgtPanel.LagtTilForMyeTittel" />
             </Detail>
-            {rettighetType === 'BEGGE_RETT' ? (
-                <ForMyeTagsBeggeRett erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} intl={intl} />
-            ) : søker === 'FAR_MEDMOR' ? (
-                <ForMyeTagsKunFar intl={intl} />
-            ) : (
-                <ForMyeTagsKunMor intl={intl} />
-            )}
+            {tags}
         </VStack>
     );
 };
@@ -165,11 +180,13 @@ const LagtTilForMyeTags = () => {
 const ForMyeTagsBeggeRett = ({
     erMedmorDelAvSøknaden,
     intl,
+    tellingData,
 }: {
     erMedmorDelAvSøknaden: boolean;
     intl: ReturnType<typeof useIntl>;
+    tellingData: ReturnType<typeof useTellDagerIUttaksPeriodene>;
 }) => {
-    const { ubrukteDagerMor, ubrukteDagerFar, ubrukteDagerFelles } = useTellDagerIUttaksPeriodene();
+    const { ubrukteDagerMor, ubrukteDagerFar, ubrukteDagerFelles } = tellingData;
 
     const tags = [
         ubrukteDagerMor < 0 && (
@@ -215,8 +232,14 @@ const ForMyeTagsBeggeRett = ({
     );
 };
 
-const ForMyeTagsKunFar = ({ intl }: { intl: ReturnType<typeof useIntl> }) => {
-    const { overtrukketDagerAktivitetsfri, overtrukketDagerMedAktivitetskrav } = useUbrukteDagerPerKontoKunEnHarRett();
+const ForMyeTagsKunFar = ({
+    intl,
+    kunEnHarRettData,
+}: {
+    intl: ReturnType<typeof useIntl>;
+    kunEnHarRettData: ReturnType<typeof useUbrukteDagerPerKontoKunEnHarRett>;
+}) => {
+    const { overtrukketDagerAktivitetsfri, overtrukketDagerMedAktivitetskrav } = kunEnHarRettData;
 
     const tags = [
         overtrukketDagerAktivitetsfri > 0 && (
@@ -247,9 +270,17 @@ const ForMyeTagsKunFar = ({ intl }: { intl: ReturnType<typeof useIntl> }) => {
     );
 };
 
-const ForMyeTagsKunMor = ({ intl }: { intl: ReturnType<typeof useIntl> }) => {
-    const { antallOvertrukketDager } = useTellDagerIUttaksPeriodene();
-    const { overtrukketDagerAktivitetsfri, overtrukketDagerMedAktivitetskrav } = useUbrukteDagerPerKontoKunEnHarRett();
+const ForMyeTagsKunMor = ({
+    intl,
+    tellingData,
+    kunEnHarRettData,
+}: {
+    intl: ReturnType<typeof useIntl>;
+    tellingData: ReturnType<typeof useTellDagerIUttaksPeriodene>;
+    kunEnHarRettData: ReturnType<typeof useUbrukteDagerPerKontoKunEnHarRett>;
+}) => {
+    const { antallOvertrukketDager } = tellingData;
+    const { overtrukketDagerAktivitetsfri, overtrukketDagerMedAktivitetskrav } = kunEnHarRettData;
 
     const totalOvertrukket =
         antallOvertrukketDager > 0
@@ -272,16 +303,17 @@ const ForMyeTagsKunMor = ({ intl }: { intl: ReturnType<typeof useIntl> }) => {
     );
 };
 
-const useHarPerioderSomKanLeggesTil = ({
-    ubrukteDagerMor,
-    ubrukteDagerFar,
-    ubrukteDagerFelles,
-    antallUbrukteDager,
-}: ReturnType<typeof useTellDagerIUttaksPeriodene>) => {
+const useHarPerioderSomKanLeggesTil = (
+    { ubrukteDagerMor, ubrukteDagerFar, ubrukteDagerFelles, antallUbrukteDager }: ReturnType<
+        typeof useTellDagerIUttaksPeriodene
+    >,
+    { ubrukteDagerAktivitetsfri, ubrukteDagerMedAktivitetskrav }: ReturnType<
+        typeof useUbrukteDagerPerKontoKunEnHarRett
+    >,
+) => {
     const {
         foreldreInfo: { rettighetType, søker },
     } = useUttaksplanData();
-    const { ubrukteDagerAktivitetsfri, ubrukteDagerMedAktivitetskrav } = useUbrukteDagerPerKontoKunEnHarRett();
 
     if (rettighetType === 'BEGGE_RETT') {
         return ubrukteDagerMor > 0 || ubrukteDagerFar > 0 || ubrukteDagerFelles > 0;
@@ -292,16 +324,17 @@ const useHarPerioderSomKanLeggesTil = ({
     return antallUbrukteDager > 0 || ubrukteDagerAktivitetsfri + ubrukteDagerMedAktivitetskrav > 0;
 };
 
-const useHarLagtTilForMye = ({
-    ubrukteDagerMor,
-    ubrukteDagerFar,
-    ubrukteDagerFelles,
-    antallOvertrukketDager,
-}: ReturnType<typeof useTellDagerIUttaksPeriodene>) => {
+const useHarLagtTilForMye = (
+    { ubrukteDagerMor, ubrukteDagerFar, ubrukteDagerFelles, antallOvertrukketDager }: ReturnType<
+        typeof useTellDagerIUttaksPeriodene
+    >,
+    { overtrukketDagerAktivitetsfri, overtrukketDagerMedAktivitetskrav }: ReturnType<
+        typeof useUbrukteDagerPerKontoKunEnHarRett
+    >,
+) => {
     const {
         foreldreInfo: { rettighetType, søker },
     } = useUttaksplanData();
-    const { overtrukketDagerAktivitetsfri, overtrukketDagerMedAktivitetskrav } = useUbrukteDagerPerKontoKunEnHarRett();
 
     if (rettighetType === 'BEGGE_RETT') {
         return ubrukteDagerMor < 0 || ubrukteDagerFar < 0 || ubrukteDagerFelles < 0;
@@ -312,31 +345,35 @@ const useHarLagtTilForMye = ({
     return antallOvertrukketDager > 0 || overtrukketDagerAktivitetsfri + overtrukketDagerMedAktivitetskrav > 0;
 };
 
-const PerioderSomKanLeggesTilTags = () => {
+const PerioderSomKanLeggesTilTags = ({ tellingData, kunEnHarRettData }: TellingData) => {
     const intl = useIntl();
     const {
         foreldreInfo: { rettighetType, søker, erMedmorDelAvSøknaden },
     } = useUttaksplanData();
 
     if (rettighetType === 'BEGGE_RETT') {
-        return <TagsBeggeRett erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} intl={intl} />;
+        return (
+            <TagsBeggeRett erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} intl={intl} tellingData={tellingData} />
+        );
     }
 
     if (søker === 'FAR_MEDMOR') {
-        return <TagsKunFar intl={intl} />;
+        return <TagsKunFar intl={intl} kunEnHarRettData={kunEnHarRettData} />;
     }
 
-    return <TagsKunMor intl={intl} />;
+    return <TagsKunMor intl={intl} tellingData={tellingData} kunEnHarRettData={kunEnHarRettData} />;
 };
 
 const TagsBeggeRett = ({
     erMedmorDelAvSøknaden,
     intl,
+    tellingData,
 }: {
     erMedmorDelAvSøknaden: boolean;
     intl: ReturnType<typeof useIntl>;
+    tellingData: ReturnType<typeof useTellDagerIUttaksPeriodene>;
 }) => {
-    const { ubrukteDagerMor, ubrukteDagerFar, ubrukteDagerFelles } = useTellDagerIUttaksPeriodene();
+    const { ubrukteDagerMor, ubrukteDagerFar, ubrukteDagerFelles } = tellingData;
 
     const tags = [
         ubrukteDagerMor > 0 && (
@@ -382,8 +419,14 @@ const TagsBeggeRett = ({
     );
 };
 
-const TagsKunFar = ({ intl }: { intl: ReturnType<typeof useIntl> }) => {
-    const { ubrukteDagerAktivitetsfri, ubrukteDagerMedAktivitetskrav } = useUbrukteDagerPerKontoKunEnHarRett();
+const TagsKunFar = ({
+    intl,
+    kunEnHarRettData,
+}: {
+    intl: ReturnType<typeof useIntl>;
+    kunEnHarRettData: ReturnType<typeof useUbrukteDagerPerKontoKunEnHarRett>;
+}) => {
+    const { ubrukteDagerAktivitetsfri, ubrukteDagerMedAktivitetskrav } = kunEnHarRettData;
 
     const tags = [
         ubrukteDagerAktivitetsfri > 0 && (
@@ -414,9 +457,17 @@ const TagsKunFar = ({ intl }: { intl: ReturnType<typeof useIntl> }) => {
     );
 };
 
-const TagsKunMor = ({ intl }: { intl: ReturnType<typeof useIntl> }) => {
-    const { antallUbrukteDager } = useTellDagerIUttaksPeriodene();
-    const { ubrukteDagerAktivitetsfri, ubrukteDagerMedAktivitetskrav } = useUbrukteDagerPerKontoKunEnHarRett();
+const TagsKunMor = ({
+    intl,
+    tellingData,
+    kunEnHarRettData,
+}: {
+    intl: ReturnType<typeof useIntl>;
+    tellingData: ReturnType<typeof useTellDagerIUttaksPeriodene>;
+    kunEnHarRettData: ReturnType<typeof useUbrukteDagerPerKontoKunEnHarRett>;
+}) => {
+    const { antallUbrukteDager } = tellingData;
+    const { ubrukteDagerAktivitetsfri, ubrukteDagerMedAktivitetskrav } = kunEnHarRettData;
 
     const totalUbrukte =
         antallUbrukteDager > 0 ? antallUbrukteDager : ubrukteDagerAktivitetsfri + ubrukteDagerMedAktivitetskrav;
