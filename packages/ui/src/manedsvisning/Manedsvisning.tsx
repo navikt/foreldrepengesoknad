@@ -341,7 +341,7 @@ const Dagcelle = ({
         <div className={cellKlasser} data-testid={`dag:${dagNr}${periode ? `;type:${periode.type}` : ''}`}>
             <span
                 className={cx(
-                    'pointer-events-none relative z-[2] text-[13px] font-medium',
+                    'pointer-events-none relative z-20 text-[13px] font-medium',
                     periode ? TEKSTFARGE[periode.type] : 'text-ax-text-default',
                 )}
             >
