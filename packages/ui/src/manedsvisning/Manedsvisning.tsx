@@ -361,10 +361,9 @@ const Dagcelle = ({
         >
             <span
                 className={cx(
-                    // Eige, ugjennomsiktig bakgrunn (lik cella sin eigen bakgrunn) hindrar at periodekortet eller
-                    // fokusringen bak nokon gong kan overlappe/skjule datotalet, uansett fokustilstand eller mergeForm.
-                    'pointer-events-none relative z-20 rounded px-1 py-0.5 text-[13px] font-medium leading-none',
-                    cellBakgrunnKlasse,
+                    // Litt margin flyttar datotalet vekk frå kortkanten/fokusringen, slik at dei aldri overlappar
+                    // visuelt – utan å leggje ein synleg (ugjennomsiktig) boks bak sjølve talet.
+                    'pointer-events-none relative z-20 m-1 text-[13px] font-medium leading-none',
                     periode ? TEKSTFARGE[periode.type] : 'text-ax-text-default',
                 )}
             >
