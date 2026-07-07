@@ -4,16 +4,10 @@ import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
-import { createIntl, createIntlCache } from 'react-intl';
-import { getAntallVirkedagerFraFødselTilTermin, getVarighetString } from 'utils/dateUtils';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
-import messages from '../../intl/nb_NO.json';
 import * as stories from './OmBarnetSteg.stories';
-
-const intlCache = createIntlCache();
-const intl = createIntl({ locale: 'nb', defaultLocale: 'nb', messages: messages as Record<string, string> }, intlCache);
 
 vi.mock('utils/hooks/useSaveLoadedRoute', () => {
     return { default: vi.fn() };
@@ -81,6 +75,8 @@ describe('<OmBarnetSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
+        vi.setSystemTime(new Date('2024-01-01'));
+
         render(<MorFødsel gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
         await userEvent.click(await screen.findByText('Ja'));
@@ -105,20 +101,14 @@ describe('<OmBarnetSteg>', () => {
             screen.getByText('Perioden med foreldrepenger forlenges siden barnet er født før uke 33'),
         ).toBeInTheDocument();
 
-        const forventetVarighet = getVarighetString(
-            getAntallVirkedagerFraFødselTilTermin(
-                fødselsdato.format(ISO_DATE_FORMAT),
-                termindato.format(ISO_DATE_FORMAT),
-            ),
-            intl,
-        );
-        const forventetTekst = intl.formatMessage(
-            { id: 'omBarnet.erFødtFørUke33.tekst' },
-            { varighet: forventetVarighet },
-        );
+        const forventetTekst =
+            'Perioden utvides med antall dager barnet er født før termindato, slik at permisjonen varer like ' +
+            'lenge som om barnet var født til termin. For deg blir det lagt til 8 uker og 4 dager.';
         expect(screen.getByText(forventetTekst)).toBeInTheDocument();
 
         expect(screen.getByText('Du må ha opptjent rett til foreldrepenger dagen før fødsel')).toBeInTheDocument();
+
+        vi.useRealTimers();
     });
 
     it('skal ha født flere barn', async () => {

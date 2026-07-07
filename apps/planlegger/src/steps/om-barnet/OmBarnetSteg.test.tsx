@@ -3,19 +3,12 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/PlanleggerDataContext';
 import dayjs from 'dayjs';
-import { createIntl, createIntlCache } from 'react-intl';
-import { getAntallVirkedagerFraFødselTilTermin } from 'utils/dateUtils';
-import { getUkerOgDager } from 'utils/stønadskvoterUtils';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
-import messages from '../../intl/messages/nb_NO.json';
 import * as stories from './OmBarnetSteg.stories';
 
 const { AleneforsørgerFar, FlereForsørgereMorOgMor } = composeStories(stories);
-
-const cache = createIntlCache();
-const intl = createIntl({ locale: 'nb', defaultLocale: 'nb', messages: messages as Record<string, string> }, cache);
 
 describe('<OmBarnetPlanleggerSteg>', () => {
     it('skal velge at barnet ikke er født for far som aleneforsørger', async () => {
@@ -130,6 +123,8 @@ describe('<OmBarnetPlanleggerSteg>', () => {
     it('skal vise informasjon om forlenget periode når barnet er født for aleneforsørger far før uke 33', async () => {
         const gåTilNesteSide = vi.fn();
 
+        vi.setSystemTime(new Date('2024-01-01'));
+
         const utils = render(<AleneforsørgerFar gåTilNesteSide={gåTilNesteSide} />);
 
         expect(await screen.findAllByText('Barnet')).toHaveLength(2);
@@ -159,14 +154,12 @@ describe('<OmBarnetPlanleggerSteg>', () => {
             screen.getByText('Perioden med foreldrepenger forlenges siden barnet er født før uke 33'),
         ).toBeInTheDocument();
 
-        const { uker, dager } = getUkerOgDager(
-            getAntallVirkedagerFraFødselTilTermin(
-                fødselsdato.format(ISO_DATE_FORMAT),
-                termindato.format(ISO_DATE_FORMAT),
-            ),
-        );
-        const forventetTekst = intl.formatMessage({ id: 'ErFødtPanel.ErFødtFørUke33.Tekst' }, { uker, dager });
+        const forventetTekst =
+            'Perioden utvides med antall dager barnet er født før termindato, slik at permisjonen varer like ' +
+            'lenge som om barnet var født til termin. For deg blir det lagt til 8 uker og 2 dager.';
         expect(screen.getByText(forventetTekst)).toBeInTheDocument();
+
+        vi.useRealTimers();
     });
 
     it('skal velge adopsjon for far som aleneforsørger', async () => {
