@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
-import { useMemo } from 'react';
+import { KeyboardEvent, MutableRefObject, useMemo, useRef } from 'react';
 
 import { BodyShort } from '@navikt/ds-react';
 
@@ -60,10 +60,18 @@ const GRID_HEAD_KLASSE = [
     'text-center text-[11px] font-semibold uppercase tracking-[0.06em] text-ax-text-neutral-subtle',
 ].join(' ');
 
+/**
+ * Fokusringen teiknast innover (negativ outline-offset) og cella løftast i z-index ved fokus,
+ * slik at ringen alltid ligg heilt innanfor dagcella si eiga flate og aldri vert dekt av
+ * nabodagen til høgre (som elles teiknast over, sidan dei ligg etter i DOM-rekkefølgja).
+ */
+const FOKUSRING_KLASSE =
+    'focus-visible:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ax-border-focus focus-visible:-outline-offset-2';
+
 const HENDELSEKNAPP_KLASSE = cx(
     'absolute inset-1 z-[2] box-border flex cursor-pointer flex-col items-center justify-center gap-0.5',
     'rounded-md border-0 bg-ax-bg-brand-magenta-soft p-0 text-ax-text-brand-magenta-subtle',
-    'focus-visible:outline focus-visible:outline-2 focus-visible:outline-ax-border-focus focus-visible:outline-offset-2',
+    FOKUSRING_KLASSE,
 );
 
 function cx(...klasser: Array<string | false | undefined>) {
@@ -116,6 +124,66 @@ export const Manedsvisning = ({
         ? `48px repeat(${antallDagkolonner}, 1fr)`
         : `repeat(${antallDagkolonner}, 1fr)`;
 
+    // Alle dagar som har ein fokuserbar knapp (periode eller hendelse), i kronologisk rekkefølgje.
+    // Brukast til piltastnavigering mellom dagane.
+    const fokuserbareDatoer = useMemo(
+        () =>
+            uker
+                .flatMap((uke) => uke.dager)
+                .filter(
+                    (dag) =>
+                        dag.erIDenneMåneden &&
+                        (!hideWeekend || !dag.erHelg) &&
+                        (dag.hendelse || (dag.periode && !dag.erHelg)),
+                )
+                .map((dag) => dag.iso),
+        [uker, hideWeekend],
+    );
+
+    const dagKnappRef = useRef<Map<string, HTMLButtonElement>>(new Map());
+
+    const håndterTastetrykk = (event: KeyboardEvent<HTMLDivElement>) => {
+        const target = event.target;
+        if (!(target instanceof HTMLButtonElement) || !target.dataset.iso) {
+            return;
+        }
+        const gjeldendeIndeks = fokuserbareDatoer.indexOf(target.dataset.iso);
+        if (gjeldendeIndeks === -1) {
+            return;
+        }
+
+        let nyIndeks: number | undefined;
+        switch (event.key) {
+            case 'ArrowRight':
+                nyIndeks = gjeldendeIndeks + 1;
+                break;
+            case 'ArrowLeft':
+                nyIndeks = gjeldendeIndeks - 1;
+                break;
+            case 'ArrowDown':
+                nyIndeks = finnNærmastDatoIndeks(
+                    fokuserbareDatoer,
+                    dayjs(target.dataset.iso).add(7, 'day').format(ISO_DATE_FORMAT),
+                );
+                break;
+            case 'ArrowUp':
+                nyIndeks = finnNærmastDatoIndeks(
+                    fokuserbareDatoer,
+                    dayjs(target.dataset.iso).subtract(7, 'day').format(ISO_DATE_FORMAT),
+                );
+                break;
+            default:
+                return;
+        }
+
+        if (nyIndeks === undefined || nyIndeks < 0 || nyIndeks >= fokuserbareDatoer.length) {
+            return;
+        }
+
+        event.preventDefault();
+        dagKnappRef.current.get(fokuserbareDatoer[nyIndeks]!)?.focus();
+    };
+
     return (
         <div>
             <BodyShort weight="semibold" className="mb-3 capitalize">
@@ -127,6 +195,8 @@ export const Manedsvisning = ({
                 style={{ gridTemplateColumns }}
                 role="grid"
                 aria-label={månedstittel}
+                onKeyDown={håndterTastetrykk}
+                tabIndex={-1}
             >
                 {showWeekNumbers && <div className={cx(GRID_HEAD_KLASSE, 'bg-ax-bg-neutral-soft')} aria-hidden />}
                 {ukedagNavn.map((navn, i) => {
@@ -149,6 +219,7 @@ export const Manedsvisning = ({
                         showWeekNumbers={showWeekNumbers}
                         hideWeekend={hideWeekend}
                         dateClickCallback={dateClickCallback}
+                        dagKnappRef={dagKnappRef}
                     />
                 ))}
             </div>
@@ -162,12 +233,14 @@ const UkeRad = ({
     showWeekNumbers,
     hideWeekend,
     dateClickCallback,
+    dagKnappRef,
 }: {
     uke: { ukenummer: number; dager: DagInfo[] };
     erSisteRad: boolean;
     showWeekNumbers: boolean;
     hideWeekend: boolean;
     dateClickCallback?: (date: string) => void;
+    dagKnappRef: MutableRefObject<Map<string, HTMLButtonElement>>;
 }) => {
     const mergeFormer = useMemo(() => finnMergeFormerForUke(uke.dager), [uke.dager]);
 
@@ -196,6 +269,7 @@ const UkeRad = ({
                         erSisteRad={erSisteRad}
                         mergeForm={mergeFormer[dagIndex]!}
                         dateClickCallback={dateClickCallback}
+                        dagKnappRef={dagKnappRef}
                     />
                 );
             })}
@@ -208,11 +282,13 @@ const Dagcelle = ({
     erSisteRad,
     mergeForm,
     dateClickCallback,
+    dagKnappRef,
 }: {
     dag: DagInfo;
     erSisteRad: boolean;
     mergeForm: MergeForm;
     dateClickCallback?: (date: string) => void;
+    dagKnappRef: MutableRefObject<Map<string, HTMLButtonElement>>;
 }) => {
     const dagNr = dag.dato.date();
 
@@ -232,6 +308,8 @@ const Dagcelle = ({
                 {dateClickCallback ? (
                     <button
                         type="button"
+                        ref={(el) => registrerKnappRef(dagKnappRef, dag.iso, el)}
+                        data-iso={dag.iso}
                         className={HENDELSEKNAPP_KLASSE}
                         onClick={() => dateClickCallback(dag.iso)}
                         aria-label={`${dag.dato.format('D. MMMM')}, ${dag.hendelse.label}`}
@@ -276,6 +354,7 @@ const Dagcelle = ({
                     iso={dag.iso}
                     dagNr={dagNr}
                     dateClickCallback={dateClickCallback}
+                    dagKnappRef={dagKnappRef}
                 />
             )}
         </div>
@@ -288,17 +367,19 @@ const MicroCard = ({
     iso,
     dagNr,
     dateClickCallback,
+    dagKnappRef,
 }: {
     periode: ManedsvisningPeriode;
     mergeForm: MergeForm;
     iso: string;
     dagNr: number;
     dateClickCallback?: (date: string) => void;
+    dagKnappRef: MutableRefObject<Map<string, HTMLButtonElement>>;
 }) => {
     const klasser = cx(
         'absolute inset-1 z-[1] box-border cursor-pointer rounded-md border-0 p-0',
-        'hover:brightness-[0.97] focus-visible:outline focus-visible:outline-2',
-        'focus-visible:outline-ax-border-focus focus-visible:outline-offset-2 focus-visible:brightness-[0.97]',
+        'hover:brightness-[0.97] focus-visible:brightness-[0.97]',
+        FOKUSRING_KLASSE,
         KORTFARGE[periode.type],
         MERGEKLASSE[mergeForm],
         periode.harAdvarsel &&
@@ -313,11 +394,46 @@ const MicroCard = ({
     return (
         <button
             type="button"
+            ref={(el) => registrerKnappRef(dagKnappRef, iso, el)}
+            data-iso={iso}
             className={klasser}
             onClick={() => dateClickCallback(iso)}
             aria-label={`${dagNr}., ${periode.srText}`}
         />
     );
+};
+
+const registrerKnappRef = (
+    dagKnappRef: MutableRefObject<Map<string, HTMLButtonElement>>,
+    iso: string,
+    el: HTMLButtonElement | null,
+) => {
+    if (el) {
+        dagKnappRef.current.set(iso, el);
+    } else {
+        dagKnappRef.current.delete(iso);
+    }
+};
+
+/**
+ * Finn indeksen i ei kronologisk sortert liste av datoar som ligg nærast eit gjeve mål-dato.
+ * Brukast til å flytte fokus opp/ned éi «veke» blant dei fokuserbare dagane, som ikkje
+ * nødvendigvis ligg akkurat 7 dagar frå kvarandre i lista (fordi mange dagar manglar knapp).
+ */
+const finnNærmastDatoIndeks = (datoer: string[], måldato: string): number | undefined => {
+    if (datoer.length === 0) {
+        return undefined;
+    }
+    let besteIndeks = 0;
+    let besteAvstand = Math.abs(dayjs(datoer[0]).diff(dayjs(måldato), 'day'));
+    for (let i = 1; i < datoer.length; i++) {
+        const avstand = Math.abs(dayjs(datoer[i]).diff(dayjs(måldato), 'day'));
+        if (avstand < besteAvstand) {
+            besteAvstand = avstand;
+            besteIndeks = i;
+        }
+    }
+    return besteIndeks;
 };
 
 const finnUkerIMåned = (
