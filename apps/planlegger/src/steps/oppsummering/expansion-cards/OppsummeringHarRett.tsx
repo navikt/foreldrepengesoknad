@@ -258,6 +258,7 @@ export const OppsummeringHarRett = ({
                                 rettighetType: utledRettighet(erAleneOmOmsorg, erDeltUttak),
                                 erMedmorDelAvSøknaden: hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR,
                                 erIkkeSøkerSpesifisert: erDeltUttak,
+                                erFarOgFar,
                             }}
                             valgtStønadskvote={valgtStønadskvote}
                             harAktivitetskravIPeriodeUtenUttak={false}

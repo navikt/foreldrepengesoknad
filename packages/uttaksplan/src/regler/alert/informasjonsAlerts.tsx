@@ -25,6 +25,7 @@ type MorsAktivitetListeKontekst = {
     rettighetType: RettighetType_fpoversikt;
     søker: BrukerRolleSak_fpoversikt;
     erIkkeSøkerSpesifisert: boolean;
+    erFarOgFar?: boolean;
     perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>;
 };
 
@@ -32,6 +33,7 @@ type EksisterendeValgtePeriodeKontekst = {
     rettighetType: RettighetType_fpoversikt;
     søker: BrukerRolleSak_fpoversikt;
     erIkkeSøkerSpesifisert: boolean;
+    erFarOgFar?: boolean;
     periode: Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager;
     morsUttakPerioder: readonly UttakPeriode_fpoversikt[];
 };
@@ -80,7 +82,8 @@ export const MANGLER_MORS_AKTIVITET_LISTE = lagAlertregel<MorsAktivitetListeKont
     ],
     variant: 'warning',
     type: 'kontekstuell',
-    skalVises: (ctx) => harPeriodeDerMorsAktivitetIkkeErValgt(ctx.rettighetType, ctx.søker, ctx.erIkkeSøkerSpesifisert, [...ctx.perioder]),
+    skalVises: (ctx) =>
+        harPeriodeDerMorsAktivitetIkkeErValgt(ctx.rettighetType, ctx.søker, ctx.erIkkeSøkerSpesifisert, [...ctx.perioder], ctx.erFarOgFar),
 });
 
 export const MANGLER_MORS_AKTIVITET_KALENDER = lagAlertregel<MorsAktivitetListeKontekst>({
@@ -95,7 +98,8 @@ export const MANGLER_MORS_AKTIVITET_KALENDER = lagAlertregel<MorsAktivitetListeK
     ],
     variant: 'warning',
     type: 'kontekstuell',
-    skalVises: (ctx) => harPeriodeDerMorsAktivitetIkkeErValgt(ctx.rettighetType, ctx.søker, ctx.erIkkeSøkerSpesifisert, [...ctx.perioder]),
+    skalVises: (ctx) =>
+        harPeriodeDerMorsAktivitetIkkeErValgt(ctx.rettighetType, ctx.søker, ctx.erIkkeSøkerSpesifisert, [...ctx.perioder], ctx.erFarOgFar),
 });
 
 export const MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING = lagAlertregel<MorsAktivitetListeKontekst>({
@@ -113,7 +117,8 @@ export const MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING = lagAlertregel<MorsAktivite
     ],
     variant: 'warning',
     type: 'kontekstuell',
-    skalVises: (ctx) => harPeriodeDerMorsAktivitetIkkeErValgt(ctx.rettighetType, ctx.søker, ctx.erIkkeSøkerSpesifisert, [...ctx.perioder]),
+    skalVises: (ctx) =>
+        harPeriodeDerMorsAktivitetIkkeErValgt(ctx.rettighetType, ctx.søker, ctx.erIkkeSøkerSpesifisert, [...ctx.perioder], ctx.erFarOgFar),
 });
 
 export const MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE = lagAlertregel<EksisterendeValgtePeriodeKontekst>({
@@ -129,7 +134,13 @@ export const MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE = lagAlertregel<Eksisterende
     variant: 'warning',
     type: 'kontekstuell',
     skalVises: (ctx) =>
-        harPeriodeDerMorsAktivitetIkkeErValgt(ctx.rettighetType, ctx.søker, ctx.erIkkeSøkerSpesifisert, [ctx.periode, ...ctx.morsUttakPerioder]),
+        harPeriodeDerMorsAktivitetIkkeErValgt(
+            ctx.rettighetType,
+            ctx.søker,
+            ctx.erIkkeSøkerSpesifisert,
+            [ctx.periode, ...ctx.morsUttakPerioder],
+            ctx.erFarOgFar,
+        ),
 });
 
 export const KAN_MISTE_DAGER = lagAlertregel<PeriodeDetaljerKontekst>({

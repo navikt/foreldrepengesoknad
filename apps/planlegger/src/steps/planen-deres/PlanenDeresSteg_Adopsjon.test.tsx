@@ -381,7 +381,9 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(within(oktober).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(9);
 
         const mai2025 = screen.getByTestId('year:2025;month:4');
-        expect(within(mai2025).getByTestId('day:23;dayColor:GREEN;with-icon')).toBeInTheDocument();
+        // Ingen varselikon her lenger: "Mors aktivitet er ikke oppgitt" er ikke relevant når begge foreldrene er fedre.
+        expect(within(mai2025).getByTestId('day:23;dayColor:GREEN')).toBeInTheDocument();
+        expect(within(mai2025).queryByTestId('day:23;dayColor:GREEN;with-icon')).not.toBeInTheDocument();
         expect(within(mai2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(17);
     });
 

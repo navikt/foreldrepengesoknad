@@ -207,8 +207,14 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
     søker: BrukerRolleSak_fpoversikt,
     erIkkeSøkerSpesifisert: boolean,
     perioder?: UttaksplanperiodeMedKunTapteDager[] | Uttaksplanperiode[],
+    erFarOgFar?: boolean,
 ) => {
-    if (rettighetType === 'ALENEOMSORG' || (søker === 'MOR' && !erIkkeSøkerSpesifisert) || !perioder) {
+    if (
+        erFarOgFar ||
+        rettighetType === 'ALENEOMSORG' ||
+        (søker === 'MOR' && !erIkkeSøkerSpesifisert) ||
+        !perioder
+    ) {
         return false;
     }
 

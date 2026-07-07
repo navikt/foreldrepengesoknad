@@ -13,9 +13,14 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, BodyShort, Button, HStack, Heading, Spacer, Tooltip, VStack } from '@navikt/ds-react';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { BrukerRolleSak_fpoversikt, UttakPeriode_fpoversikt, UttakUtsettelseÅrsak_fpoversikt } from '@navikt/fp-types';
+import {
+    BrukerRolleSak_fpoversikt,
+    NavnPåForeldre,
+    UttakPeriode_fpoversikt,
+    UttakUtsettelseÅrsak_fpoversikt,
+} from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
-import { Uttaksdagen } from '@navikt/fp-utils';
+import { Uttaksdagen, capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../../../context/UttaksplanDataContext';
 import { UttakPeriodeMedAntallDager } from '../../../../../kalender/redigering/utils/kalenderPeriodeUtils';
@@ -34,7 +39,7 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
     const slettPeriode = useSlettPeriodeFn();
 
     const {
-        foreldreInfo: { erMedmorDelAvSøknaden, søker },
+        foreldreInfo: { erMedmorDelAvSøknaden, søker, navnPåForeldre, erFarOgFar },
         erPeriodeneTilAnnenPartLåst,
     } = useUttaksplanData();
 
@@ -73,7 +78,13 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                         wrap={false}
                         data-testid={`eksisterende-periode-${p.fom}-${p.tom}`}
                     >
-                        <PeriodeIkon periode={p} søker={søker} erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
+                        <PeriodeIkon
+                            periode={p}
+                            søker={søker}
+                            erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
+                            erFarOgFar={erFarOgFar}
+                            navnPåForeldre={navnPåForeldre}
+                        />
 
                         <VStack gap="space-0">
                             {(erEøsUttakPeriode(p) || p.utsettelseÅrsak !== 'LOVBESTEMT_FERIE') && (
@@ -82,12 +93,19 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                                         periode={p}
                                         erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
                                         søker={søker}
+                                        erFarOgFar={erFarOgFar}
+                                        navnPåForeldre={navnPåForeldre}
                                     />
                                 </Heading>
                             )}
 
                             {!erSamtidigUttak && (
-                                <PeriodeKvoteType periode={p} erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} />
+                                <PeriodeKvoteType
+                                    periode={p}
+                                    erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
+                                    erFarOgFar={erFarOgFar}
+                                    navnPåForeldre={navnPåForeldre}
+                                />
                             )}
 
                             {erEøsUttakPeriode(p) && (
@@ -258,14 +276,29 @@ const SamtidigUttak = ({
     );
 };
 
+/**
+ * Visningsnavn for en gitt domenerolle (MOR/FAR_MEDMOR) når begge foreldrene er fedre
+ * (f.eks. adopsjon). Da representerer ikke MOR/FAR_MEDMOR en mor og en far, men to fedre –
+ * så vi viser forelderens faktiske navn (eller "Far 1"/"Far 2") i stedet for generisk
+ * "Mor"/"Far"-tekst.
+ */
+const getForelderVisningsnavnForFarOgFar = (
+    forelder: BrukerRolleSak_fpoversikt,
+    navnPåForeldre: NavnPåForeldre,
+): string => capitalizeFirstLetter(forelder === 'MOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor);
+
 const PeriodeIkon = ({
     periode,
     erMedmorDelAvSøknaden,
     søker,
+    erFarOgFar,
+    navnPåForeldre,
 }: {
     periode: UttakPeriodeMedAntallDager;
     erMedmorDelAvSøknaden: boolean;
     søker: BrukerRolleSak_fpoversikt;
+    erFarOgFar?: boolean;
+    navnPåForeldre: NavnPåForeldre;
 }) => {
     const intl = useIntl();
 
@@ -306,6 +339,17 @@ const PeriodeIkon = ({
     }
 
     if (erEøsUttakPeriode(periode)) {
+        if (erFarOgFar) {
+            return (
+                <PersonSuitFillIcon
+                    title={getForelderVisningsnavnForFarOgFar(søker === 'MOR' ? 'FAR_MEDMOR' : 'MOR', navnPåForeldre)}
+                    fontSize="1.5rem"
+                    height="35px"
+                    width="35px"
+                    color="var(--ax-bg-success-strong)"
+                />
+            );
+        }
         if (søker === 'MOR') {
             if (erMedmorDelAvSøknaden) {
                 return (
@@ -335,6 +379,18 @@ const PeriodeIkon = ({
                 height="35px"
                 width="35px"
                 color="var(--ax-bg-meta-purple-strong)"
+            />
+        );
+    }
+
+    if (erFarOgFar && (periode.forelder === 'MOR' || periode.forelder === 'FAR_MEDMOR')) {
+        return (
+            <PersonSuitFillIcon
+                title={getForelderVisningsnavnForFarOgFar(periode.forelder, navnPåForeldre)}
+                fontSize="1.5rem"
+                height="35px"
+                width="35px"
+                color="var(--ax-bg-success-strong)"
             />
         );
     }
@@ -370,12 +426,19 @@ const PeriodeHeaderText = ({
     periode,
     erMedmorDelAvSøknaden,
     søker,
+    erFarOgFar,
+    navnPåForeldre,
 }: {
     periode: UttakPeriodeMedAntallDager;
     erMedmorDelAvSøknaden: boolean;
     søker: BrukerRolleSak_fpoversikt;
+    erFarOgFar?: boolean;
+    navnPåForeldre: NavnPåForeldre;
 }) => {
     if (erEøsUttakPeriode(periode)) {
+        if (erFarOgFar) {
+            return <>{getForelderVisningsnavnForFarOgFar(søker === 'MOR' ? 'FAR_MEDMOR' : 'MOR', navnPåForeldre)}</>;
+        }
         if (søker === 'FAR_MEDMOR') {
             return <FormattedMessage id="RedigeringPanel.Mor" />;
         }
@@ -388,6 +451,14 @@ const PeriodeHeaderText = ({
 
     if (erVanligUttakPeriode(periode) && periode.samtidigUttak !== undefined) {
         return <FormattedMessage id="RedigeringPanel.Begge" />;
+    }
+
+    if (
+        erFarOgFar &&
+        erVanligUttakPeriode(periode) &&
+        (periode.forelder === 'MOR' || periode.forelder === 'FAR_MEDMOR')
+    ) {
+        return <>{getForelderVisningsnavnForFarOgFar(periode.forelder, navnPåForeldre)}</>;
     }
 
     if (erVanligUttakPeriode(periode) && periode.forelder === 'MOR') {
@@ -407,10 +478,15 @@ const PeriodeHeaderText = ({
 const PeriodeKvoteType = ({
     periode,
     erMedmorDelAvSøknaden,
+    erFarOgFar,
+    navnPåForeldre,
 }: {
     periode: UttakPeriodeMedAntallDager;
     erMedmorDelAvSøknaden: boolean;
+    erFarOgFar?: boolean;
+    navnPåForeldre: NavnPåForeldre;
 }) => {
+    const intl = useIntl();
     const {
         foreldreInfo: { søker, rettighetType },
     } = useUttaksplanData();
@@ -442,7 +518,16 @@ const PeriodeKvoteType = ({
     ) {
         return (
             <BodyShort>
-                <FormattedMessage id="RedigeringPanel.MorKvote" />
+                {erFarOgFar ? (
+                    <FormattedMessage
+                        id="uttaksplan.stønadskvotetype.foreldernavn.kvote"
+                        values={{
+                            navn: getNavnGenitivEierform(capitalizeFirstLetter(navnPåForeldre.mor), intl.locale),
+                        }}
+                    />
+                ) : (
+                    <FormattedMessage id="RedigeringPanel.MorKvote" />
+                )}
             </BodyShort>
         );
     }
@@ -453,7 +538,16 @@ const PeriodeKvoteType = ({
     ) {
         return (
             <BodyShort>
-                <FormattedMessage id="RedigeringPanel.FarKvote" />
+                {erFarOgFar ? (
+                    <FormattedMessage
+                        id="uttaksplan.stønadskvotetype.foreldernavn.kvote"
+                        values={{
+                            navn: getNavnGenitivEierform(capitalizeFirstLetter(navnPåForeldre.farMedmor), intl.locale),
+                        }}
+                    />
+                ) : (
+                    <FormattedMessage id="RedigeringPanel.FarKvote" />
+                )}
             </BodyShort>
         );
     }
@@ -468,10 +562,7 @@ const PeriodeKvoteType = ({
             </BodyShort>
         );
     }
-    if (
-        erSøkersForeldrepengerMedAktivitetskrav &&
-        bareFarMedmorHarRett
-    ) {
+    if (erSøkersForeldrepengerMedAktivitetskrav && bareFarMedmorHarRett) {
         return (
             <BodyShort>
                 <FormattedMessage id="RedigeringPanel.MedAktivitetskrav" />

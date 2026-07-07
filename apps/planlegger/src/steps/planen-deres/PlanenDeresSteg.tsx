@@ -152,6 +152,7 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
                         rettighetType: utledRettighet(erAleneOmOmsorg, erDeltUttak),
                         erMedmorDelAvSøknaden: isMedmorDelAvSøknaden,
                         erIkkeSøkerSpesifisert: erDeltUttak,
+                        erFarOgFar: hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR,
                     }}
                     valgtStønadskvote={valgtStønadskvote}
                     harAktivitetskravIPeriodeUtenUttak={false}
