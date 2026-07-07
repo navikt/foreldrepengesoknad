@@ -8,6 +8,7 @@ import {
     TrashIcon,
 } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
+import { ReactNode } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Button, HStack, Heading, Spacer, Tooltip, VStack } from '@navikt/ds-react';
@@ -287,6 +288,32 @@ const getForelderVisningsnavnForFarOgFar = (
     navnPåForeldre: NavnPåForeldre,
 ): string => capitalizeFirstLetter(forelder === 'MOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor);
 
+/**
+ * Viser kvotenavn for en periode. Når begge foreldrene er fedre (erFarOgFar) finnes det ingen
+ * "mor"/"far"-rolle å referere til, så vi bruker forelderens faktiske navn i genitivsform i
+ * stedet for den faste "fallback"-teksten (RedigeringPanel.MorKvote/FarKvote).
+ */
+const KvoteNavnEllerFallback = ({
+    erFarOgFar,
+    navn,
+    fallback,
+}: {
+    erFarOgFar?: boolean;
+    navn: string;
+    fallback: ReactNode;
+}) => {
+    const intl = useIntl();
+    if (!erFarOgFar) {
+        return fallback;
+    }
+    return (
+        <FormattedMessage
+            id="uttaksplan.stønadskvotetype.foreldernavn.kvote"
+            values={{ navn: getNavnGenitivEierform(capitalizeFirstLetter(navn), intl.locale) }}
+        />
+    );
+};
+
 const PeriodeIkon = ({
     periode,
     erMedmorDelAvSøknaden,
@@ -486,12 +513,12 @@ const PeriodeKvoteType = ({
     erFarOgFar?: boolean;
     navnPåForeldre: NavnPåForeldre;
 }) => {
-    const intl = useIntl();
     const {
         foreldreInfo: { søker, rettighetType },
     } = useUttaksplanData();
 
     const erIkkeEøsUttakPeriode = erVanligUttakPeriode(periode);
+    const utsettelseÅrsak = erIkkeEøsUttakPeriode ? periode.utsettelseÅrsak : undefined;
 
     const erAktivitetsfri =
         erIkkeEøsUttakPeriode &&
@@ -505,126 +532,97 @@ const PeriodeKvoteType = ({
         periode.kontoType === 'FORELDREPENGER' &&
         !erAktivitetsfri;
 
-    if (periode.kontoType === 'FORELDREPENGER_FØR_FØDSEL') {
-        return (
-            <BodyShort>
-                <FormattedMessage id="RedigeringPanel.MorHarForeldrepengerFørFødsel" />
-            </BodyShort>
-        );
-    }
-    if (
+    const erMødrekvote =
         periode.kontoType === 'MØDREKVOTE' ||
-        (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'MØDREKVOTE_ANNEN_FORELDER')
-    ) {
-        return (
-            <BodyShort>
-                {erFarOgFar ? (
-                    <FormattedMessage
-                        id="uttaksplan.stønadskvotetype.foreldernavn.kvote"
-                        values={{
-                            navn: getNavnGenitivEierform(capitalizeFirstLetter(navnPåForeldre.mor), intl.locale),
-                        }}
-                    />
-                ) : (
-                    <FormattedMessage id="RedigeringPanel.MorKvote" />
-                )}
-            </BodyShort>
-        );
-    }
-    if (
-        !erMedmorDelAvSøknaden &&
-        (periode.kontoType === 'FEDREKVOTE' ||
-            (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER'))
-    ) {
-        return (
-            <BodyShort>
-                {erFarOgFar ? (
-                    <FormattedMessage
-                        id="uttaksplan.stønadskvotetype.foreldernavn.kvote"
-                        values={{
-                            navn: getNavnGenitivEierform(capitalizeFirstLetter(navnPåForeldre.farMedmor), intl.locale),
-                        }}
-                    />
-                ) : (
-                    <FormattedMessage id="RedigeringPanel.FarKvote" />
-                )}
-            </BodyShort>
-        );
-    }
-    if (
-        erMedmorDelAvSøknaden &&
-        (periode.kontoType === 'FEDREKVOTE' ||
-            (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER'))
-    ) {
-        return (
-            <BodyShort>
-                <FormattedMessage id="RedigeringPanel.MedmorKvote" />
-            </BodyShort>
-        );
-    }
-    if (erSøkersForeldrepengerMedAktivitetskrav && bareFarMedmorHarRett) {
-        return (
-            <BodyShort>
-                <FormattedMessage id="RedigeringPanel.MedAktivitetskrav" />
-            </BodyShort>
-        );
-    }
-    if (
-        (periode.kontoType === 'FORELDREPENGER' ||
-            (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'FORELDREPENGER_ANNEN_FORELDER')) &&
-        !erAktivitetsfri
-    ) {
-        return (
-            <BodyShort>
-                <FormattedMessage id="RedigeringPanel.Foreldrepenger" />
-            </BodyShort>
-        );
-    }
-    if (
-        (periode.kontoType === 'FORELDREPENGER' ||
-            (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'FORELDREPENGER_ANNEN_FORELDER')) &&
-        erAktivitetsfri
-    ) {
-        return (
-            <BodyShort>
-                <FormattedMessage id="RedigeringPanel.UtenAktivitetskrav" />
-            </BodyShort>
-        );
-    }
-    if (
+        (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'MØDREKVOTE_ANNEN_FORELDER');
+    const erFedrekvote =
+        periode.kontoType === 'FEDREKVOTE' ||
+        (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER');
+    const erForeldrepenger =
+        periode.kontoType === 'FORELDREPENGER' ||
+        (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'FORELDREPENGER_ANNEN_FORELDER');
+    const erFellesperiode =
         periode.kontoType === 'FELLESPERIODE' ||
-        (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER')
-    ) {
-        return (
-            <BodyShort>
-                <FormattedMessage id="RedigeringPanel.Fellesperiode" />
-            </BodyShort>
-        );
-    }
-    if (erIkkeEøsUttakPeriode && periode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
-        return (
-            <BodyShort>
-                <FormattedMessage id="RedigeringPanel.Ferie" />
-            </BodyShort>
-        );
-    }
-    if (erIkkeEøsUttakPeriode && periode.utsettelseÅrsak && periode.utsettelseÅrsak !== 'LOVBESTEMT_FERIE') {
-        if (periode.utsettelseÅrsak === 'FRI' && periode.morsAktivitet) {
-            return (
-                <HStack gap="space-4">
-                    <FormattedMessage id="RedigeringPanel.Pause" />
-                </HStack>
-            );
-        }
+        (erIkkeEøsUttakPeriode && periode.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER');
+    const erAnnenUtsettelseEnnFerie = utsettelseÅrsak !== undefined && utsettelseÅrsak !== 'LOVBESTEMT_FERIE';
 
-        return (
-            <HStack gap="space-4">
-                <FormattedMessage id="RedigeringPanel.Utsettelse" />:
-                <BodyShort>{getUtsettelseÅrsakTekst(periode.utsettelseÅrsak)}</BodyShort>
-            </HStack>
-        );
+    // Regler i prioritert rekkefølge – første regel som slår til (gjelder === true) avgjør teksten.
+    const regler: Array<{ gjelder: boolean; render: () => ReactNode }> = [
+        {
+            gjelder: periode.kontoType === 'FORELDREPENGER_FØR_FØDSEL',
+            render: () => <FormattedMessage id="RedigeringPanel.MorHarForeldrepengerFørFødsel" />,
+        },
+        {
+            gjelder: erMødrekvote,
+            render: () => (
+                <KvoteNavnEllerFallback
+                    erFarOgFar={erFarOgFar}
+                    navn={navnPåForeldre.mor}
+                    fallback={<FormattedMessage id="RedigeringPanel.MorKvote" />}
+                />
+            ),
+        },
+        {
+            gjelder: !erMedmorDelAvSøknaden && erFedrekvote,
+            render: () => (
+                <KvoteNavnEllerFallback
+                    erFarOgFar={erFarOgFar}
+                    navn={navnPåForeldre.farMedmor}
+                    fallback={<FormattedMessage id="RedigeringPanel.FarKvote" />}
+                />
+            ),
+        },
+        {
+            gjelder: erMedmorDelAvSøknaden && erFedrekvote,
+            render: () => <FormattedMessage id="RedigeringPanel.MedmorKvote" />,
+        },
+        {
+            gjelder: erSøkersForeldrepengerMedAktivitetskrav && bareFarMedmorHarRett,
+            render: () => <FormattedMessage id="RedigeringPanel.MedAktivitetskrav" />,
+        },
+        {
+            gjelder: erForeldrepenger && !erAktivitetsfri,
+            render: () => <FormattedMessage id="RedigeringPanel.Foreldrepenger" />,
+        },
+        {
+            gjelder: erForeldrepenger && erAktivitetsfri,
+            render: () => <FormattedMessage id="RedigeringPanel.UtenAktivitetskrav" />,
+        },
+        {
+            gjelder: erFellesperiode,
+            render: () => <FormattedMessage id="RedigeringPanel.Fellesperiode" />,
+        },
+        {
+            gjelder: utsettelseÅrsak === 'LOVBESTEMT_FERIE',
+            render: () => <FormattedMessage id="RedigeringPanel.Ferie" />,
+        },
+        {
+            gjelder:
+                erAnnenUtsettelseEnnFerie &&
+                utsettelseÅrsak === 'FRI' &&
+                !!(erVanligUttakPeriode(periode) && periode.morsAktivitet),
+            render: () => <FormattedMessage id="RedigeringPanel.Pause" />,
+        },
+        {
+            gjelder: erAnnenUtsettelseEnnFerie,
+            render: () => (
+                <>
+                    <FormattedMessage id="RedigeringPanel.Utsettelse" />:
+                    <BodyShort>{utsettelseÅrsak && getUtsettelseÅrsakTekst(utsettelseÅrsak)}</BodyShort>
+                </>
+            ),
+        },
+    ];
+
+    const treff = regler.find((regel) => regel.gjelder);
+    if (!treff) {
+        return null;
     }
-    return null;
+
+    if (erAnnenUtsettelseEnnFerie) {
+        return <HStack gap="space-4">{treff.render()}</HStack>;
+    }
+    return <BodyShort>{treff.render()}</BodyShort>;
 };
 
 const getUtsettelseÅrsakTekst = (utsettelseÅrsak: UttakUtsettelseÅrsak_fpoversikt) => {
