@@ -28,9 +28,10 @@ export const ErFødtPanel = () => {
 
     const visInfoOmForlengetPeriode = erFødtFørUke33(fødselsdato, termindato);
 
-    const varighet = visInfoOmForlengetPeriode
-        ? getVarighetString(getAntallVirkedagerFraFødselTilTermin(fødselsdato!, termindato!), intl)
-        : undefined;
+    const varighet =
+        visInfoOmForlengetPeriode && fødselsdato && termindato
+            ? getVarighetString(getAntallVirkedagerFraFødselTilTermin(fødselsdato, termindato), intl)
+            : undefined;
 
     return (
         <>

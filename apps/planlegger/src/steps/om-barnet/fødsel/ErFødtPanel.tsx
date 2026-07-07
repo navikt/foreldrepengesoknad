@@ -60,9 +60,10 @@ export const ErFødtPanel = ({
     })();
 
     const visInfoOmForlengetPeriode = erFødtFørUke33(fødselsdato, termindato);
-    const { uker, dager } = visInfoOmForlengetPeriode
-        ? getUkerOgDager(getAntallVirkedagerFraFødselTilTermin(fødselsdato, termindato!))
-        : { uker: 0, dager: 0 };
+    const { uker, dager } =
+        visInfoOmForlengetPeriode && fødselsdato && termindato
+            ? getUkerOgDager(getAntallVirkedagerFraFødselTilTermin(fødselsdato, termindato))
+            : { uker: 0, dager: 0 };
 
     return (
         <VStack gap="space-20">
