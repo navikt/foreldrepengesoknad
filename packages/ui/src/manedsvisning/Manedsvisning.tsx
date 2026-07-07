@@ -306,10 +306,12 @@ const Dagcelle = ({
 }) => {
     const dagNr = dag.dato.date();
 
+    const cellBakgrunnKlasse = dag.erHelg || !dag.erIDenneMåneden ? 'bg-ax-bg-neutral-soft' : 'bg-ax-bg-default';
+
     const cellKlasser = cx(
         'relative min-h-16 border-r border-ax-border-subtle p-1',
         !erSisteRad && 'border-b',
-        dag.erHelg || !dag.erIDenneMåneden ? 'bg-ax-bg-neutral-soft' : 'bg-ax-bg-default',
+        cellBakgrunnKlasse,
     );
 
     if (!dag.erIDenneMåneden) {
@@ -359,7 +361,10 @@ const Dagcelle = ({
         >
             <span
                 className={cx(
-                    'pointer-events-none relative z-20 text-[13px] font-medium',
+                    // Eige, ugjennomsiktig bakgrunn (lik cella sin eigen bakgrunn) hindrar at periodekortet eller
+                    // fokusringen bak nokon gong kan overlappe/skjule datotalet, uansett fokustilstand eller mergeForm.
+                    'pointer-events-none relative z-20 rounded px-1 py-0.5 text-[13px] font-medium leading-none',
+                    cellBakgrunnKlasse,
                     periode ? TEKSTFARGE[periode.type] : 'text-ax-text-default',
                 )}
             >
