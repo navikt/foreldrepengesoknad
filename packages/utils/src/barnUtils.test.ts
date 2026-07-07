@@ -19,9 +19,10 @@ describe('barnUtils', () => {
     it('skal kutte bort UTC-tidskomponent fra fødselsdato slik at datosammenligninger ikke bommer med én dag', () => {
         const barn = {
             type: BarnType.FØDT,
+            antallBarn: 1,
             fødselsdatoer: ['2026-06-18T00:00:00.000Z'],
             termindato: '2026-06-30',
-        } as Barn;
+        } satisfies Barn;
 
         const dato = getFamiliehendelsedato(barn);
 
