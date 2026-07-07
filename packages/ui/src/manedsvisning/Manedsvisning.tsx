@@ -7,7 +7,6 @@ import { BodyShort } from '@navikt/ds-react';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
-import styles from './manedsvisning.module.css';
 import { ManedsvisningHendelse } from './types/ManedsvisningHendelse';
 import { ManedsvisningPeriode, ManedsvisningPeriodeType } from './types/ManedsvisningPeriode';
 
@@ -36,18 +35,40 @@ type DagInfo = {
 type MergeForm = 'single' | 'start' | 'middle' | 'end';
 
 const TEKSTFARGE: Record<ManedsvisningPeriodeType, string> = {
-    MOR: styles.tekstMor!,
-    FAR: styles.tekstFar!,
-    FELLES: styles.tekstFelles!,
-    FERIE: styles.tekstFerie!,
+    MOR: 'text-ax-text-accent-subtle',
+    FAR: 'text-ax-text-success-subtle',
+    FELLES: 'text-ax-text-brand-beige-subtle',
+    FERIE: 'text-ax-text-warning-subtle',
 };
 
 const KORTFARGE: Record<ManedsvisningPeriodeType, string> = {
-    MOR: styles.mor!,
-    FAR: styles.far!,
-    FELLES: styles.felles!,
-    FERIE: styles.ferie!,
+    MOR: 'bg-ax-bg-accent-soft',
+    FAR: 'bg-ax-bg-success-soft',
+    FELLES: 'bg-ax-bg-brand-beige-soft',
+    FERIE: 'bg-ax-bg-warning-soft',
 };
+
+const MERGEKLASSE: Record<MergeForm, string> = {
+    single: '',
+    start: 'right-0 rounded-r-none',
+    middle: 'inset-x-0 rounded-none',
+    end: 'left-0 rounded-l-none',
+};
+
+const GRID_HEAD_KLASSE = [
+    'border-b border-r border-ax-border-subtle bg-ax-bg-default px-1 py-2',
+    'text-center text-[11px] font-semibold uppercase tracking-[0.06em] text-ax-text-neutral-subtle',
+].join(' ');
+
+const HENDELSEKNAPP_KLASSE = cx(
+    'absolute inset-1 z-[2] box-border flex cursor-pointer flex-col items-center justify-center gap-0.5',
+    'rounded-md border-0 bg-ax-bg-brand-magenta-soft p-0 text-ax-text-brand-magenta-subtle',
+    'focus-visible:outline focus-visible:outline-2 focus-visible:outline-ax-border-focus focus-visible:outline-offset-2',
+);
+
+function cx(...klasser: Array<string | false | undefined>) {
+    return klasser.filter(Boolean).join(' ');
+}
 
 /**
  * Månadsvisning – eit alternativ til `Calendar` som viser éin månad om gongen med små,
@@ -97,22 +118,28 @@ export const Manedsvisning = ({
 
     return (
         <div>
-            <BodyShort weight="semibold" className={styles.månedstittel}>
+            <BodyShort weight="semibold" className="mb-3 capitalize">
                 {månedstittel}
             </BodyShort>
 
             <div
-                className={`${styles.grid} ${hideWeekend ? styles.utenHelg : ''}`}
+                className="grid overflow-hidden rounded-lg border border-ax-border-subtle"
                 style={{ gridTemplateColumns }}
                 role="grid"
                 aria-label={månedstittel}
             >
-                {showWeekNumbers && <div className={`${styles.gridHead} ${styles.hjørne}`} aria-hidden />}
-                {ukedagNavn.map((navn, i) => (
-                    <div key={navn} className={`${styles.gridHead} ${i >= 5 ? styles.helgKolonne : ''}`}>
-                        {navn}
-                    </div>
-                ))}
+                {showWeekNumbers && <div className={cx(GRID_HEAD_KLASSE, 'bg-ax-bg-neutral-soft')} aria-hidden />}
+                {ukedagNavn.map((navn, i) => {
+                    const erHelg = i >= 5;
+                    if (hideWeekend && erHelg) {
+                        return null;
+                    }
+                    return (
+                        <div key={navn} className={cx(GRID_HEAD_KLASSE, erHelg && 'bg-ax-bg-neutral-soft')}>
+                            {navn}
+                        </div>
+                    );
+                })}
 
                 {uker.map((uke, ukeIndex) => (
                     <UkeRad
@@ -120,6 +147,7 @@ export const Manedsvisning = ({
                         uke={uke}
                         erSisteRad={ukeIndex === uker.length - 1}
                         showWeekNumbers={showWeekNumbers}
+                        hideWeekend={hideWeekend}
                         dateClickCallback={dateClickCallback}
                     />
                 ))}
@@ -132,11 +160,13 @@ const UkeRad = ({
     uke,
     erSisteRad,
     showWeekNumbers,
+    hideWeekend,
     dateClickCallback,
 }: {
     uke: { ukenummer: number; dager: DagInfo[] };
     erSisteRad: boolean;
     showWeekNumbers: boolean;
+    hideWeekend: boolean;
     dateClickCallback?: (date: string) => void;
 }) => {
     const mergeFormer = useMemo(() => finnMergeFormerForUke(uke.dager), [uke.dager]);
@@ -144,19 +174,31 @@ const UkeRad = ({
     return (
         <>
             {showWeekNumbers && (
-                <div className={`${styles.ukenummer} ${erSisteRad ? styles.sisteRad : ''}`} data-testid="ukenummer">
+                <div
+                    className={cx(
+                        'flex items-center justify-center border-r border-ax-border-subtle bg-ax-bg-neutral-soft',
+                        'text-xs font-medium text-ax-text-neutral-subtle',
+                        !erSisteRad && 'border-b',
+                    )}
+                    data-testid="ukenummer"
+                >
                     {uke.ukenummer}
                 </div>
             )}
-            {uke.dager.map((dag, dagIndex) => (
-                <Dagcelle
-                    key={dag.iso}
-                    dag={dag}
-                    erSisteRad={erSisteRad}
-                    mergeForm={mergeFormer[dagIndex]!}
-                    dateClickCallback={dateClickCallback}
-                />
-            ))}
+            {uke.dager.map((dag, dagIndex) => {
+                if (hideWeekend && dag.erHelg) {
+                    return null;
+                }
+                return (
+                    <Dagcelle
+                        key={dag.iso}
+                        dag={dag}
+                        erSisteRad={erSisteRad}
+                        mergeForm={mergeFormer[dagIndex]!}
+                        dateClickCallback={dateClickCallback}
+                    />
+                );
+            })}
         </>
     );
 };
@@ -174,14 +216,11 @@ const Dagcelle = ({
 }) => {
     const dagNr = dag.dato.date();
 
-    const cellKlasser = [
-        styles.dagcelle,
-        dag.erHelg ? styles.helgKolonne : '',
-        !dag.erIDenneMåneden ? styles.utanforMåneden : '',
-        erSisteRad ? styles.sisteRad : '',
-    ]
-        .filter(Boolean)
-        .join(' ');
+    const cellKlasser = cx(
+        'relative min-h-16 border-r border-ax-border-subtle p-1',
+        !erSisteRad && 'border-b',
+        dag.erHelg || !dag.erIDenneMåneden ? 'bg-ax-bg-neutral-soft' : 'bg-ax-bg-default',
+    );
 
     if (!dag.erIDenneMåneden) {
         return <div className={cellKlasser} data-testid={`dag:utanfor;${dag.iso}`} />;
@@ -193,21 +232,25 @@ const Dagcelle = ({
                 {dateClickCallback ? (
                     <button
                         type="button"
-                        className={styles.hendelseknapp}
+                        className={HENDELSEKNAPP_KLASSE}
                         onClick={() => dateClickCallback(dag.iso)}
                         aria-label={`${dag.dato.format('D. MMMM')}, ${dag.hendelse.label}`}
                     >
-                        <span className={styles.hendelseikon} aria-hidden>
+                        <span className="h-5 w-5" aria-hidden>
                             {dag.hendelse.ikon}
                         </span>
-                        <span className={styles.hendelselabel}>{dag.hendelse.label}</span>
+                        <span className="text-[9px] font-semibold uppercase tracking-[0.05em]">
+                            {dag.hendelse.label}
+                        </span>
                     </button>
                 ) : (
-                    <div className={styles.hendelseknapp}>
-                        <span className={styles.hendelseikon} aria-hidden>
+                    <div className={HENDELSEKNAPP_KLASSE}>
+                        <span className="h-5 w-5" aria-hidden>
                             {dag.hendelse.ikon}
                         </span>
-                        <span className={styles.hendelselabel}>{dag.hendelse.label}</span>
+                        <span className="text-[9px] font-semibold uppercase tracking-[0.05em]">
+                            {dag.hendelse.label}
+                        </span>
                     </div>
                 )}
             </div>
@@ -218,7 +261,14 @@ const Dagcelle = ({
 
     return (
         <div className={cellKlasser} data-testid={`dag:${dagNr}${periode ? `;type:${periode.type}` : ''}`}>
-            <span className={`${styles.dagnummer} ${periode ? TEKSTFARGE[periode.type] : ''}`}>{dagNr}</span>
+            <span
+                className={cx(
+                    'pointer-events-none relative z-[2] text-[13px] font-medium',
+                    periode ? TEKSTFARGE[periode.type] : 'text-ax-text-default',
+                )}
+            >
+                {dagNr}
+            </span>
             {periode && (
                 <MicroCard
                     periode={periode}
@@ -245,18 +295,16 @@ const MicroCard = ({
     dagNr: number;
     dateClickCallback?: (date: string) => void;
 }) => {
-    const mergeKlasse =
-        mergeForm === 'start'
-            ? styles.mergeStart
-            : mergeForm === 'middle'
-              ? styles.mergeMiddle
-              : mergeForm === 'end'
-                ? styles.mergeEnd
-                : '';
-
-    const klasser = [styles.microCard, KORTFARGE[periode.type], mergeKlasse, periode.harAdvarsel ? styles.varsel : '']
-        .filter(Boolean)
-        .join(' ');
+    const klasser = cx(
+        'absolute inset-1 z-[1] box-border cursor-pointer rounded-md border-0 p-0',
+        'hover:brightness-[0.97] focus-visible:outline focus-visible:outline-2',
+        'focus-visible:outline-ax-border-focus focus-visible:outline-offset-2 focus-visible:brightness-[0.97]',
+        KORTFARGE[periode.type],
+        MERGEKLASSE[mergeForm],
+        periode.harAdvarsel &&
+            "after:absolute after:top-1.5 after:right-1.5 after:h-2 after:w-2 after:rounded-full after:content-['']",
+        periode.harAdvarsel && 'after:bg-ax-bg-warning-strong after:shadow-[0_0_0_2px_var(--ax-bg-default)]',
+    );
 
     if (!dateClickCallback) {
         return <div className={klasser} aria-hidden />;

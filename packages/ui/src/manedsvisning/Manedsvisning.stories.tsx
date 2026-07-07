@@ -26,7 +26,6 @@ import {
 } from '@navikt/ds-react';
 
 import { Manedsvisning } from './Manedsvisning';
-import styles from './manedsvisning.module.css';
 import { ManedsvisningHendelse } from './types/ManedsvisningHendelse';
 import { ManedsvisningPeriode, ManedsvisningPeriodeType } from './types/ManedsvisningPeriode';
 
@@ -178,10 +177,10 @@ const byggDagDetaljer = (): Record<string, DagDetalj> => {
 const DAG_DETALJER = byggDagDetaljer();
 
 const LEGEND: Array<{ type: ManedsvisningPeriodeType; farge: string; tekst: string }> = [
-    { type: 'MOR', farge: styles.mor!, tekst: 'Mors periode' },
-    { type: 'FAR', farge: styles.far!, tekst: 'Fars periode' },
-    { type: 'FELLES', farge: styles.felles!, tekst: 'Fellesperiode' },
-    { type: 'FERIE', farge: styles.ferie!, tekst: 'Ferie' },
+    { type: 'MOR', farge: 'bg-ax-bg-accent-soft', tekst: 'Mors periode' },
+    { type: 'FAR', farge: 'bg-ax-bg-success-soft', tekst: 'Fars periode' },
+    { type: 'FELLES', farge: 'bg-ax-bg-brand-beige-soft', tekst: 'Fellesperiode' },
+    { type: 'FERIE', farge: 'bg-ax-bg-warning-soft', tekst: 'Ferie' },
 ];
 
 const InteraktivDemo = () => {
@@ -283,11 +282,7 @@ const InteraktivDemo = () => {
             <HStack gap="space-20" wrap>
                 {LEGEND.map((l) => (
                     <HStack key={l.type} gap="space-8" align="center">
-                        <span
-                            aria-hidden
-                            className={l.farge}
-                            style={{ display: 'inline-block', width: 16, height: 16, borderRadius: 4 }}
-                        />
+                        <span aria-hidden className={`inline-block h-4 w-4 rounded ${l.farge}`} />
                         <BodyShort size="small">{l.tekst}</BodyShort>
                     </HStack>
                 ))}
@@ -327,7 +322,7 @@ const InteraktivDemo = () => {
                                 </VStack>
                             </Dialog.Body>
                             <Dialog.Footer>
-                                <HStack gap="space-8" align="center" justify="space-between" style={{ width: '100%' }}>
+                                <HStack gap="space-8" align="center" justify="space-between" className="w-full">
                                     <HStack gap="space-4">
                                         <Button
                                             type="button"
