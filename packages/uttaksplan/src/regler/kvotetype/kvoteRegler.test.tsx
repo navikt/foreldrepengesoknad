@@ -206,43 +206,15 @@ describe('useGyldigeKvotetyper - mors kvoter', () => {
         expect(result.current.gyldigeStønadskontoerForMor).toEqual(['FORELDREPENGER_FØR_FØDSEL']);
     });
 
-    it('skal ikke ha foreldrepenger før fødsel når familiehendelsesdato er valgt', () => {
+    it.each([
+        { beskrivelse: 'foreldrepenger før fødsel når familiehendelsesdato er valgt', fom: '2024-05-27' },
+        { beskrivelse: 'foreldrepenger når en har valgt dag før tre uker før fødsel', fom: '2024-05-24' },
+        { beskrivelse: 'noen gyldige kontotyper for mor når en har valgt dag mer enn 60 dager før fødsel', fom: '2024-03-24' },
+    ])('skal ikke ha $beskrivelse', ({ fom }) => {
         const { result } = renderHook(
             () =>
                 useGyldigeKvotetyper({
-                    valgtePerioder: [{ fom: '2024-05-27', tom: FAMILIEHENDELSESDATO }],
-                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
-                    ønskerFlerbarnsdager: false,
-                }),
-            {
-                wrapper: getWrapper(),
-            },
-        );
-
-        expect(result.current.gyldigeStønadskontoerForMor).toEqual([]);
-    });
-
-    it('skal ikke ha foreldrepenger når en har valgt dag før tre uker før fødsel', () => {
-        const { result } = renderHook(
-            () =>
-                useGyldigeKvotetyper({
-                    valgtePerioder: [{ fom: '2024-05-24', tom: FAMILIEHENDELSESDATO }],
-                    harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
-                    ønskerFlerbarnsdager: false,
-                }),
-            {
-                wrapper: getWrapper(),
-            },
-        );
-
-        expect(result.current.gyldigeStønadskontoerForMor).toEqual([]);
-    });
-
-    it('skal ikke ha noen gyldige kontotyper for mor når en har valgt dag mer enn 60 dager før fødsel', () => {
-        const { result } = renderHook(
-            () =>
-                useGyldigeKvotetyper({
-                    valgtePerioder: [{ fom: '2024-03-24', tom: FAMILIEHENDELSESDATO }],
+                    valgtePerioder: [{ fom, tom: FAMILIEHENDELSESDATO }],
                     harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
                     ønskerFlerbarnsdager: false,
                 }),
