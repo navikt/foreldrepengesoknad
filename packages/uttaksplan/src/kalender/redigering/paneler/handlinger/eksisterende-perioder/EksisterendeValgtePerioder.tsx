@@ -462,44 +462,54 @@ const PeriodeHeaderText = ({
     erFarOgFar?: boolean;
     navnPåForeldre: NavnPåForeldre;
 }) => {
-    if (erEøsUttakPeriode(periode)) {
-        if (erFarOgFar) {
-            return <>{getForelderVisningsnavnForFarOgFar(søker === 'MOR' ? 'FAR_MEDMOR' : 'MOR', navnPåForeldre)}</>;
-        }
-        if (søker === 'FAR_MEDMOR') {
-            return <FormattedMessage id="RedigeringPanel.Mor" />;
-        }
-        return erMedmorDelAvSøknaden ? (
-            <FormattedMessage id="RedigeringPanel.Medmor" />
-        ) : (
-            <FormattedMessage id="RedigeringPanel.Far" />
-        );
-    }
+    const erEøs = erEøsUttakPeriode(periode);
+    const erVanlig = erVanligUttakPeriode(periode);
+    const forelderVanligPeriode = erVanlig ? periode.forelder : undefined;
 
-    if (erVanligUttakPeriode(periode) && periode.samtidigUttak !== undefined) {
-        return <FormattedMessage id="RedigeringPanel.Begge" />;
-    }
+    // Regler i prioritert rekkefølge – første regel som slår til (gjelder === true) avgjør teksten.
+    const regler: Array<{ gjelder: boolean; render: () => ReactNode }> = [
+        {
+            gjelder: erEøs && !!erFarOgFar,
+            render: () => (
+                <>{getForelderVisningsnavnForFarOgFar(søker === 'MOR' ? 'FAR_MEDMOR' : 'MOR', navnPåForeldre)}</>
+            ),
+        },
+        {
+            gjelder: erEøs && søker === 'FAR_MEDMOR',
+            render: () => <FormattedMessage id="RedigeringPanel.Mor" />,
+        },
+        {
+            gjelder: erEøs && erMedmorDelAvSøknaden,
+            render: () => <FormattedMessage id="RedigeringPanel.Medmor" />,
+        },
+        {
+            gjelder: erEøs,
+            render: () => <FormattedMessage id="RedigeringPanel.Far" />,
+        },
+        {
+            gjelder: erVanlig && periode.samtidigUttak !== undefined,
+            render: () => <FormattedMessage id="RedigeringPanel.Begge" />,
+        },
+        {
+            gjelder: !!erFarOgFar && (forelderVanligPeriode === 'MOR' || forelderVanligPeriode === 'FAR_MEDMOR'),
+            render: () => <>{getForelderVisningsnavnForFarOgFar(forelderVanligPeriode!, navnPåForeldre)}</>,
+        },
+        {
+            gjelder: forelderVanligPeriode === 'MOR',
+            render: () => <FormattedMessage id="RedigeringPanel.Mor" />,
+        },
+        {
+            gjelder: !erMedmorDelAvSøknaden && forelderVanligPeriode === 'FAR_MEDMOR',
+            render: () => <FormattedMessage id="RedigeringPanel.Far" />,
+        },
+        {
+            gjelder: erMedmorDelAvSøknaden && forelderVanligPeriode === 'FAR_MEDMOR',
+            render: () => <FormattedMessage id="RedigeringPanel.Medmor" />,
+        },
+    ];
 
-    if (
-        erFarOgFar &&
-        erVanligUttakPeriode(periode) &&
-        (periode.forelder === 'MOR' || periode.forelder === 'FAR_MEDMOR')
-    ) {
-        return <>{getForelderVisningsnavnForFarOgFar(periode.forelder, navnPåForeldre)}</>;
-    }
-
-    if (erVanligUttakPeriode(periode) && periode.forelder === 'MOR') {
-        return <FormattedMessage id="RedigeringPanel.Mor" />;
-    }
-
-    if (!erMedmorDelAvSøknaden && periode.forelder === 'FAR_MEDMOR') {
-        return <FormattedMessage id="RedigeringPanel.Far" />;
-    }
-    if (erMedmorDelAvSøknaden && periode.forelder === 'FAR_MEDMOR') {
-        return <FormattedMessage id="RedigeringPanel.Medmor" />;
-    }
-
-    return null;
+    const treff = regler.find((regel) => regel.gjelder);
+    return treff ? treff.render() : null;
 };
 
 const PeriodeKvoteType = ({
