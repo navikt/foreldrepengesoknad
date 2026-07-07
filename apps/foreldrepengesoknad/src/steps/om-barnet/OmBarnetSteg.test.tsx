@@ -4,10 +4,16 @@ import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
+import { createIntl, createIntlCache } from 'react-intl';
+import { getAntallVirkedagerFraFødselTilTermin, getVarighetString } from 'utils/dateUtils';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
+import messages from '../../intl/nb_NO.json';
 import * as stories from './OmBarnetSteg.stories';
+
+const intlCache = createIntlCache();
+const intl = createIntl({ locale: 'nb', defaultLocale: 'nb', messages: messages as Record<string, string> }, intlCache);
 
 vi.mock('utils/hooks/useSaveLoadedRoute', () => {
     return { default: vi.fn() };
@@ -69,6 +75,50 @@ describe('<OmBarnetSteg>', () => {
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
+    });
+
+    it('skal vise informasjon om forlenget periode når barnet er født før uke 33', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        render(<MorFødsel gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+
+        await userEvent.click(await screen.findByText('Ja'));
+        await userEvent.click(screen.getByText('Ett barn'));
+
+        const fødselsdato = dayjs();
+        const termindato = fødselsdato.add(60, 'days');
+
+        const barnFødtInput = screen.getByLabelText('Når ble barnet født?');
+        await userEvent.type(barnFødtInput, fødselsdato.format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
+
+        expect(
+            screen.queryByText('Perioden med foreldrepenger forlenges siden barnet er født før uke 33'),
+        ).not.toBeInTheDocument();
+
+        const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
+        await userEvent.type(termindatoInput, termindato.format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
+
+        expect(
+            screen.getByText('Perioden med foreldrepenger forlenges siden barnet er født før uke 33'),
+        ).toBeInTheDocument();
+
+        const forventetVarighet = getVarighetString(
+            getAntallVirkedagerFraFødselTilTermin(
+                fødselsdato.format(ISO_DATE_FORMAT),
+                termindato.format(ISO_DATE_FORMAT),
+            ),
+            intl,
+        );
+        const forventetTekst = intl.formatMessage(
+            { id: 'omBarnet.erFødtFørUke33.tekst' },
+            { varighet: forventetVarighet },
+        );
+        expect(screen.getByText(forventetTekst)).toBeInTheDocument();
+
+        expect(screen.getByText('Du må ha opptjent rett til foreldrepenger dagen før fødsel')).toBeInTheDocument();
     });
 
     it('skal ha født flere barn', async () => {

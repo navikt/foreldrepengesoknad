@@ -2,9 +2,13 @@ import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { useFormContext } from 'react-hook-form';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { erFødtFørUke33, getAntallVirkedagerFraFødselTilTermin, getVarighetString } from 'utils/dateUtils';
+
+import { BodyShort, ReadMore, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
+import { Infobox } from '@navikt/fp-ui';
 import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { FødtBarn } from '../OmBarnetFormValues';
@@ -16,11 +20,17 @@ export const ErFødtPanel = () => {
     const intl = useIntl();
 
     const formMethods = useFormContext<FødtBarn>();
-    const { antallBarn, erBarnetFødt, fødselsdatoer } = formMethods.watch();
+    const { antallBarn, erBarnetFødt, fødselsdatoer, termindato } = formMethods.watch();
 
     const intlIdFødsel = antallBarn > 1 ? 'omBarnet.fødselsdato.flereBarn' : 'omBarnet.fødselsdato';
 
     const fødselsdato = fødselsdatoer ? fødselsdatoer[0]!.dato : undefined;
+
+    const visInfoOmForlengetPeriode = erFødtFørUke33(fødselsdato, termindato);
+
+    const varighet = visInfoOmForlengetPeriode
+        ? getVarighetString(getAntallVirkedagerFraFødselTilTermin(fødselsdato!, termindato!), intl)
+        : undefined;
 
     return (
         <>
@@ -34,14 +44,14 @@ export const ErFødtPanel = () => {
                 validate={[
                     isRequired(intl.formatMessage({ id: 'valideringsfeil.omBarnet.termindato.duMåOppgi' })),
                     isValidDate(intl.formatMessage({ id: 'valideringsfeil.omBarnet.termindato.ugyldigDatoFormat' })),
-                    (termindato) => {
+                    (termindatoVerdi) => {
                         if (!fødselsdato) {
                             return null;
                         }
-                        if (!dayjs(termindato).subtract(6, 'months').isSameOrBefore(dayjs(fødselsdato), 'day')) {
+                        if (!dayjs(termindatoVerdi).subtract(6, 'months').isSameOrBefore(dayjs(fødselsdato), 'day')) {
                             return intl.formatMessage({ id: 'valideringsfeil.omBarnet.termindato.forLangtFremITid' });
                         }
-                        if (!dayjs(termindato).add(1, 'months').isSameOrAfter(dayjs(fødselsdato), 'day')) {
+                        if (!dayjs(termindatoVerdi).add(1, 'months').isSameOrAfter(dayjs(fødselsdato), 'day')) {
                             return intl.formatMessage({
                                 id: 'valideringsfeil.omBarnet.termindato.forLangtTilbakeITid',
                             });
@@ -74,6 +84,18 @@ export const ErFødtPanel = () => {
                                 : null,
                     ]}
                 />
+            )}
+            {visInfoOmForlengetPeriode && (
+                <Infobox color="blue" header={<FormattedMessage id="omBarnet.erFødtFørUke33.tittel" />}>
+                    <VStack gap="space-16">
+                        <BodyShort>
+                            <FormattedMessage id="omBarnet.erFødtFørUke33.tekst" values={{ varighet }} />
+                        </BodyShort>
+                        <ReadMore header={intl.formatMessage({ id: 'omBarnet.erFødtFørUke33.readMore.header' })}>
+                            <FormattedMessage id="omBarnet.erFødtFørUke33.readMore.tekst" />
+                        </ReadMore>
+                    </VStack>
+                </Infobox>
             )}
         </>
     );
