@@ -58,6 +58,14 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
         expect(result).toBe(false);
     });
 
+    it('skal returnere false ved erFarOgFar uavhengig av perioder', () => {
+        const perioder = [lagFarPeriode()];
+
+        const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', 'FAR_MEDMOR', false, perioder, true);
+
+        expect(result).toBe(false);
+    });
+
     it('skal returnere false når far har periode uten morsAktivitet og overlappende mor-periode med samtidigUttak + gradering = 100', () => {
         const perioder = [
             lagFarPeriode({ samtidigUttak: 50 }),
