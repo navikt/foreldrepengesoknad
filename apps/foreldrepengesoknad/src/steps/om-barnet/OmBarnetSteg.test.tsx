@@ -71,6 +71,46 @@ describe('<OmBarnetSteg>', () => {
         });
     });
 
+    it('skal vise informasjon om forlenget periode når barnet er født før uke 33', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        vi.setSystemTime(new Date('2024-01-01'));
+
+        render(<MorFødsel gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+
+        await userEvent.click(await screen.findByText('Ja'));
+        await userEvent.click(screen.getByText('Ett barn'));
+
+        const fødselsdato = dayjs();
+        const termindato = fødselsdato.add(60, 'days');
+
+        const barnFødtInput = screen.getByLabelText('Når ble barnet født?');
+        await userEvent.type(barnFødtInput, fødselsdato.format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
+
+        expect(
+            screen.queryByText('Perioden med foreldrepenger forlenges siden barnet er født før uke 33'),
+        ).not.toBeInTheDocument();
+
+        const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
+        await userEvent.type(termindatoInput, termindato.format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
+
+        expect(
+            screen.getByText('Perioden med foreldrepenger forlenges siden barnet er født før uke 33'),
+        ).toBeInTheDocument();
+
+        const forventetTekst =
+            'Perioden utvides med antall dager barnet er født før termindato, slik at permisjonen varer like ' +
+            'lenge som om barnet var født til termin. For deg blir det lagt til 8 uker og 4 dager.';
+        expect(screen.getByText(forventetTekst)).toBeInTheDocument();
+
+        expect(screen.getByText('Du må ha opptjent rett til foreldrepenger dagen før fødsel')).toBeInTheDocument();
+
+        vi.useRealTimers();
+    });
+
     it('skal ha født flere barn', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
