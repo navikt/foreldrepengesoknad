@@ -9,15 +9,26 @@ import {
     isUfødtBarn,
 } from '@navikt/fp-types';
 
+/**
+ * Familiehendelsedatoen er en kalenderdato. Enkelte kilder (f.eks.
+ * `barn.fødselsdatoer`) serialiserer den som UTC-midnatt, altså
+ * `"2026-06-18T00:00:00.000Z"`. Uten normalisering vil dayjs tolke rene
+ * datoperioder som `"2026-06-18"` som *lokal* midnatt, som i norsk tid ligger
+ * før UTC-midnatt. Datosammenligninger mot familiehendelsedatoen (f.eks. om en
+ * uttaksperiode er før/etter fødsel) blir da feil med én dag. Vi kutter derfor
+ * bort en eventuell tidskomponent og beholder bare `YYYY-MM-DD`.
+ */
+const tilKalenderdato = (dato: string): string => dato?.slice(0, 10);
+
 export const getFamiliehendelsedato = (barn: Barn): string => {
     if (isFødtBarn(barn) || isIkkeUtfyltTypeBarn(barn)) {
-        return barn.fødselsdatoer[0]!;
+        return tilKalenderdato(barn.fødselsdatoer[0]!);
     }
     if (isUfødtBarn(barn)) {
-        return barn.termindato;
+        return tilKalenderdato(barn.termindato);
     }
 
-    return barn.adopsjonsdato;
+    return tilKalenderdato(barn.adopsjonsdato);
 };
 
 type PersonMedFødselsdato = { fødselsdato: string; navn?: { fornavn?: string } };
