@@ -50,16 +50,20 @@ const KORTFARGE: Record<ManedsvisningPeriodeType, string> = {
 };
 
 /**
- * Månadsvisning av uttaksplanen. Viser éin månad om gongen med små, fargelagde kort per dag
- * («micro cards»). Samanhengande periodar innanfor same veke smeltar visuelt saman.
+ * Månadsvisning – eit alternativ til `Calendar` som viser éin månad om gongen med små,
+ * fargelagde kort per dag («micro cards»). Samanhengande periodar innanfor same veke smeltar
+ * visuelt saman.
  *
- * Komponenten tek inn same type informasjon som `Calendar` (periodar med fom/tom/srText), men
- * brukar ein snevrare, semantisk periodetype i staden for den opne `CalendarPeriodColor`-typen,
- * sidan plassen i micro-visninga berre gjev rom for éin av fire faste kategoriar.
+ * Komponenten tek inn mykje av same type informasjon som `Calendar` (periodar med fom/tom/
+ * srText), men brukar ein snevrare, semantisk periodetype i staden for den opne
+ * `CalendarPeriodColor`-typen, sidan plassen i micro-visninga berre gjev rom for éin av fire
+ * faste kategoriar.
  *
  * Komponenten har ingen eiga månadsnavigering, filtrering eller detaljvising ved klikk på ein dag
- * – det er opp til den som brukar komponenten å byggje det rundt, slik det og er gjort for
- * `Calendar` i `UttaksplanKalender`.
+ * – det er opp til den som brukar komponenten å byggje det rundt, slik `UttaksplanKalender`
+ * byggjer dette rundt `Calendar`.
+ *
+ * Ikkje i produksjonsbruk enno – sjå `Manedsvisning.stories.tsx` for demo.
  */
 export const Manedsvisning = ({
     year,
