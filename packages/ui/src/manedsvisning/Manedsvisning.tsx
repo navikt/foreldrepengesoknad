@@ -69,10 +69,11 @@ const FOKUSRING_KLASSE =
     'focus-visible:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ax-border-focus focus-visible:-outline-offset-2';
 
 const HENDELSEKNAPP_KLASSE = cx(
-    'absolute inset-1 z-[2] box-border flex cursor-pointer flex-col items-center justify-center gap-0.5',
+    'absolute inset-1 z-[2] box-border flex flex-col items-center justify-center gap-0.5',
     'rounded-md border-0 bg-ax-bg-brand-magenta-soft p-0 text-ax-text-brand-magenta-subtle',
-    FOKUSRING_KLASSE,
 );
+
+const HENDELSEKNAPP_INTERAKTIV_KLASSE = cx(HENDELSEKNAPP_KLASSE, 'cursor-pointer', FOKUSRING_KLASSE);
 
 function cx(...klasser: Array<string | false | undefined>) {
     return klasser.filter(Boolean).join(' ');
@@ -198,18 +199,30 @@ export const Manedsvisning = ({
                 onKeyDown={håndterTastetrykk}
                 tabIndex={-1}
             >
-                {showWeekNumbers && <div className={cx(GRID_HEAD_KLASSE, 'bg-ax-bg-neutral-soft')} aria-hidden />}
-                {ukedagNavn.map((navn, i) => {
-                    const erHelg = i >= 5;
-                    if (hideWeekend && erHelg) {
-                        return null;
-                    }
-                    return (
-                        <div key={navn} className={cx(GRID_HEAD_KLASSE, erHelg && 'bg-ax-bg-neutral-soft')}>
-                            {navn}
-                        </div>
-                    );
-                })}
+                <div className="contents" role="row">
+                    {showWeekNumbers && (
+                        <div
+                            className={cx(GRID_HEAD_KLASSE, 'bg-ax-bg-neutral-soft')}
+                            role="columnheader"
+                            aria-hidden
+                        />
+                    )}
+                    {ukedagNavn.map((navn, i) => {
+                        const erHelg = i >= 5;
+                        if (hideWeekend && erHelg) {
+                            return null;
+                        }
+                        return (
+                            <div
+                                key={navn}
+                                className={cx(GRID_HEAD_KLASSE, erHelg && 'bg-ax-bg-neutral-soft')}
+                                role="columnheader"
+                            >
+                                {navn}
+                            </div>
+                        );
+                    })}
+                </div>
 
                 {uker.map((uke, ukeIndex) => (
                     <UkeRad
@@ -245,7 +258,7 @@ const UkeRad = ({
     const mergeFormer = useMemo(() => finnMergeFormerForUke(uke.dager), [uke.dager]);
 
     return (
-        <>
+        <div className="contents" role="row">
             {showWeekNumbers && (
                 <div
                     className={cx(
@@ -253,6 +266,7 @@ const UkeRad = ({
                         'text-xs font-medium text-ax-text-neutral-subtle',
                         !erSisteRad && 'border-b',
                     )}
+                    role="rowheader"
                     data-testid="ukenummer"
                 >
                     {uke.ukenummer}
@@ -273,7 +287,7 @@ const UkeRad = ({
                     />
                 );
             })}
-        </>
+        </div>
     );
 };
 
@@ -299,20 +313,20 @@ const Dagcelle = ({
     );
 
     if (!dag.erIDenneMåneden) {
-        return <div className={cellKlasser} data-testid={`dag:utanfor;${dag.iso}`} />;
+        return <div className={cellKlasser} role="gridcell" data-testid={`dag:utanfor;${dag.iso}`} />;
     }
 
     if (dag.hendelse) {
         return (
-            <div className={cellKlasser} data-testid={`dag:${dagNr};hendelse`}>
+            <div className={cellKlasser} role="gridcell" data-testid={`dag:${dagNr};hendelse`}>
                 {dateClickCallback ? (
                     <button
                         type="button"
                         ref={(el) => registrerKnappRef(dagKnappRef, dag.iso, el)}
                         data-iso={dag.iso}
-                        className={HENDELSEKNAPP_KLASSE}
+                        className={HENDELSEKNAPP_INTERAKTIV_KLASSE}
                         onClick={() => dateClickCallback(dag.iso)}
-                        aria-label={`${dag.dato.format('D. MMMM')}, ${dag.hendelse.label}`}
+                        aria-label={`${dag.dato.format('D. MMMM YYYY')}, ${dag.hendelse.label}`}
                     >
                         <span className="h-5 w-5" aria-hidden>
                             {dag.hendelse.ikon}
@@ -338,7 +352,11 @@ const Dagcelle = ({
     const periode = dag.erHelg ? undefined : dag.periode;
 
     return (
-        <div className={cellKlasser} data-testid={`dag:${dagNr}${periode ? `;type:${periode.type}` : ''}`}>
+        <div
+            className={cellKlasser}
+            role="gridcell"
+            data-testid={`dag:${dagNr}${periode ? `;type:${periode.type}` : ''}`}
+        >
             <span
                 className={cx(
                     'pointer-events-none relative z-20 text-[13px] font-medium',
@@ -352,7 +370,6 @@ const Dagcelle = ({
                     periode={periode}
                     mergeForm={mergeForm}
                     iso={dag.iso}
-                    dagNr={dagNr}
                     dateClickCallback={dateClickCallback}
                     dagKnappRef={dagKnappRef}
                 />
@@ -365,21 +382,17 @@ const MicroCard = ({
     periode,
     mergeForm,
     iso,
-    dagNr,
     dateClickCallback,
     dagKnappRef,
 }: {
     periode: ManedsvisningPeriode;
     mergeForm: MergeForm;
     iso: string;
-    dagNr: number;
     dateClickCallback?: (date: string) => void;
     dagKnappRef: MutableRefObject<Map<string, HTMLButtonElement>>;
 }) => {
     const klasser = cx(
-        'absolute inset-1 z-[1] box-border cursor-pointer rounded-md border-0 p-0',
-        'hover:brightness-[0.97] focus-visible:brightness-[0.97]',
-        FOKUSRING_KLASSE,
+        'absolute inset-1 z-[1] rounded-md border-0 p-0',
         KORTFARGE[periode.type],
         MERGEKLASSE[mergeForm],
         periode.harAdvarsel &&
@@ -388,7 +401,7 @@ const MicroCard = ({
     );
 
     if (!dateClickCallback) {
-        return <div className={klasser} aria-hidden />;
+        return <div className={cx(klasser, 'box-border')} aria-hidden />;
     }
 
     return (
@@ -396,9 +409,13 @@ const MicroCard = ({
             type="button"
             ref={(el) => registrerKnappRef(dagKnappRef, iso, el)}
             data-iso={iso}
-            className={klasser}
+            className={cx(
+                klasser,
+                'box-border cursor-pointer hover:brightness-[0.97] focus-visible:brightness-[0.97]',
+                FOKUSRING_KLASSE,
+            )}
             onClick={() => dateClickCallback(iso)}
-            aria-label={`${dagNr}., ${periode.srText}`}
+            aria-label={`${dayjs(iso).format('D. MMMM YYYY')}, ${periode.srText}`}
         />
     );
 };
@@ -450,6 +467,9 @@ const finnUkerIMåned = (
 
     const antallDager = sisteIRuta.diff(førsteIRuta, 'day') + 1;
 
+    const hendelseForIso = new Map(hendelser.map((h) => [h.dato, h]));
+    const periodeForIso = byggPeriodeOppslag(periods);
+
     const alleDager: DagInfo[] = Array.from({ length: antallDager }, (_, i) => {
         const dato = førsteIRuta.add(i, 'day');
         const iso = dato.format(ISO_DATE_FORMAT);
@@ -458,8 +478,8 @@ const finnUkerIMåned = (
             iso,
             erIDenneMåneden: dato.month() === month && dato.year() === year,
             erHelg: dato.isoWeekday() === 6 || dato.isoWeekday() === 7,
-            hendelse: hendelser.find((h) => h.dato === iso),
-            periode: periods.find((p) => !dato.isBefore(dayjs(p.fom), 'day') && !dato.isAfter(dayjs(p.tom), 'day')),
+            hendelse: hendelseForIso.get(iso),
+            periode: periodeForIso.get(iso),
         };
     });
 
@@ -470,6 +490,24 @@ const finnUkerIMåned = (
     }
 
     return uker;
+};
+
+/**
+ * Byggjer eit oppslag frå ISO-dato til periode ved å ekspandere kvar periode sitt fom/tom-
+ * intervall éin gong. Dette gjer oppslaget under rendring av kvar dag O(1) i staden for at
+ * kvar dag må søkje gjennom heile periodelista (O(dagar × periodar)).
+ */
+const byggPeriodeOppslag = (periods: ManedsvisningPeriode[]): Map<string, ManedsvisningPeriode> => {
+    const oppslag = new Map<string, ManedsvisningPeriode>();
+    periods.forEach((periode) => {
+        let dato = dayjs(periode.fom);
+        const tom = dayjs(periode.tom);
+        while (!dato.isAfter(tom, 'day')) {
+            oppslag.set(dato.format(ISO_DATE_FORMAT), periode);
+            dato = dato.add(1, 'day');
+        }
+    });
+    return oppslag;
 };
 
 /**
