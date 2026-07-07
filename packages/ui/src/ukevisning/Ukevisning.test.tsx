@@ -1,6 +1,7 @@
 import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 
+import { Ukevisning } from './Ukevisning';
 import * as stories from './Ukevisning.stories';
 
 const { Standard, HelgSkjult, TomUke, PeriodeInnIHelgen, PeriodeInnIHelgenMedHelgSkjult } = composeStories(stories);
@@ -61,6 +62,36 @@ describe('<Ukevisning>', () => {
         render(<PeriodeInnIHelgenMedHelgSkjult />);
         expect(await screen.findByTestId('dag:15;type:FAR')).toBeInTheDocument();
         expect(screen.queryByTestId('dag:helg')).not.toBeInTheDocument();
+    });
+
+    it('skal vise korrekt dag sjølv om ein periode strekker seg langt utanfor den viste veka', async () => {
+        // Regresjonstest for at periodeoppslaget vert avgrensa til den viste veka (7 dagar) og
+        // ikkje ekspanderer heile fom/tom-intervallet, sjølv for periodar som strekker seg over
+        // fleire månader/år.
+        render(
+            <Ukevisning
+                year={2026}
+                week={20}
+                periods={[
+                    {
+                        fom: '2026-01-01',
+                        tom: '2026-12-31',
+                        type: 'MOR',
+                        ikon: <span aria-hidden />,
+                        label: 'Lang periode',
+                        meta: 'Heile året',
+                        srText: 'Lang periode',
+                    },
+                ]}
+            />,
+        );
+
+        expect(await screen.findByTestId('dag:11;type:MOR')).toBeInTheDocument();
+        expect(screen.getByTestId('dag:15;type:MOR')).toBeInTheDocument();
+        // Alle fem kvardagane skal høyre til same (langvarige) periode og dermed vera
+        // samanhengande (start … middle … middle … middle … end).
+        const mandagKort = screen.getByTestId('dag:11;type:MOR').querySelector('[class*="rounded-lg"]');
+        expect(mandagKort?.className).toContain('right-0');
     });
 
     it('skal vise mandag 11. og tysdag 12. som eit samanhengande (merga) mikrokort', async () => {

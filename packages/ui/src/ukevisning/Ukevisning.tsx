@@ -287,7 +287,7 @@ const MicroKort = ({
 
     if (!dateClickCallback) {
         return (
-            <div className={klasser} aria-hidden>
+            <div className={klasser} aria-label={`${dayjs(iso).format('D. MMMM YYYY')}, ${periode.srText}`}>
                 {innhald}
             </div>
         );
@@ -339,7 +339,8 @@ const formaterDatoIIntervall = (fom: Dayjs, tom: Dayjs): string => {
 
 const finnDagerIUke = (year: number, week: number, periods: UkevisningPeriode[]): DagInfo[] => {
     const førsteIUka = finnFørsteDagIIsoUke(year, week);
-    const periodeForIso = byggPeriodeOppslag(periods);
+    const sisteIUka = førsteIUka.add(6, 'day');
+    const periodeForIso = byggPeriodeOppslag(periods, førsteIUka, sisteIUka);
 
     const dagerUtenMergeForm = Array.from({ length: 7 }, (_, i) => {
         const dato = førsteIUka.add(i, 'day');
@@ -360,14 +361,26 @@ const finnDagerIUke = (year: number, week: number, periods: UkevisningPeriode[])
 
 /**
  * Byggjer eit oppslag frå ISO-dato til periode ved å ekspandere kvar periode sitt fom/tom-
- * intervall éin gong, slik at oppslaget under rendring av kvar dag er O(1).
+ * intervall éin gong, avgrensa til dei sju dagane som faktisk visast i veka. Sidan `Ukevisning`
+ * berre nokosinne treng oppslag for éi veke om gongen, unngår denne avgrensinga at lange periodar
+ * (månader/år) gjev O(periode-lengde) arbeid og ein unødvendig stor Map per render – kostnaden er
+ * i staden avgrensa til maks 7 dagar per periode.
  */
-const byggPeriodeOppslag = (periods: UkevisningPeriode[]): Map<string, UkevisningPeriode> => {
+const byggPeriodeOppslag = (
+    periods: UkevisningPeriode[],
+    førsteIUka: Dayjs,
+    sisteIUka: Dayjs,
+): Map<string, UkevisningPeriode> => {
     const oppslag = new Map<string, UkevisningPeriode>();
     periods.forEach((periode) => {
-        let dato = dayjs(periode.fom);
+        const fom = dayjs(periode.fom);
         const tom = dayjs(periode.tom);
-        while (!dato.isAfter(tom, 'day')) {
+        // Berre ekspander overlappet mellom perioden og den viste veka.
+        const start = fom.isAfter(førsteIUka, 'day') ? fom : førsteIUka;
+        const slutt = tom.isBefore(sisteIUka, 'day') ? tom : sisteIUka;
+
+        let dato = start;
+        while (!dato.isAfter(slutt, 'day')) {
             oppslag.set(dato.format(ISO_DATE_FORMAT), periode);
             dato = dato.add(1, 'day');
         }
