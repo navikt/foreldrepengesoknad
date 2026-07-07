@@ -5,8 +5,10 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { erAlenesøker as erAlene, erFarDelAvSøknaden, erFarOgFar, erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
+import { erFødtFørUke33, getAntallVirkedagerFraFødselTilTermin } from 'utils/dateUtils';
+import { getUkerOgDager } from 'utils/stønadskvoterUtils';
 
-import { BodyShort, VStack } from '@navikt/ds-react';
+import { BodyShort, ReadMore, VStack } from '@navikt/ds-react';
 
 import { DATE_3_YEARS_AGO, ISO_DATE_REGEX } from '@navikt/fp-constants';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
@@ -41,6 +43,7 @@ export const ErFødtPanel = ({
 
     const formMethods = useFormContext<OmBarnetPlanlegger>();
     const fødselsdato = formMethods.watch('fødselsdato');
+    const termindato = formMethods.watch('termindato');
 
     const erAlenesøker = erAlene(hvemPlanlegger);
     const erFedre = erFarOgFar(hvemPlanlegger);
@@ -55,6 +58,11 @@ export const ErFødtPanel = ({
                 return true;
         }
     })();
+
+    const visInfoOmForlengetPeriode = erFødtFørUke33(fødselsdato, termindato);
+    const { uker, dager } = visInfoOmForlengetPeriode
+        ? getUkerOgDager(getAntallVirkedagerFraFødselTilTermin(fødselsdato, termindato!))
+        : { uker: 0, dager: 0 };
 
     return (
         <VStack gap="space-20">
@@ -102,6 +110,22 @@ export const ErFødtPanel = ({
                     />
                 </VStack>
             </BluePanel>
+            {visInfoOmForlengetPeriode && (
+                <Infobox
+                    color="blue"
+                    header={<FormattedMessage id="ErFødtPanel.ErFødtFørUke33.Tittel" />}
+                    shouldFadeIn
+                >
+                    <VStack gap="space-16">
+                        <BodyShort>
+                            <FormattedMessage id="ErFødtPanel.ErFødtFørUke33.Tekst" values={{ uker, dager }} />
+                        </BodyShort>
+                        <ReadMore header={intl.formatMessage({ id: 'ErFødtPanel.ErFødtFørUke33.ReadMore.Header' })}>
+                            <FormattedMessage id="ErFødtPanel.ErFødtFørUke33.ReadMore.Tekst" />
+                        </ReadMore>
+                    </VStack>
+                </Infobox>
+            )}
             {fødselsdato !== undefined && erDatoGyldig(fødselsdato) && dayjs(fødselsdato).isAfter(DATE_3_YEARS_AGO) && (
                 <Infobox
                     header={<FormattedMessage id="ErFødtPanel.Født.InfoboksTittel" values={{ erAlenesøker }} />}

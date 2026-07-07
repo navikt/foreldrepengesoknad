@@ -3,12 +3,19 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/PlanleggerDataContext';
 import dayjs from 'dayjs';
+import { createIntl, createIntlCache } from 'react-intl';
+import { getAntallVirkedagerFraFødselTilTermin } from 'utils/dateUtils';
+import { getUkerOgDager } from 'utils/stønadskvoterUtils';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
+import messages from '../../intl/messages/nb_NO.json';
 import * as stories from './OmBarnetSteg.stories';
 
 const { AleneforsørgerFar, FlereForsørgereMorOgMor } = composeStories(stories);
+
+const cache = createIntlCache();
+const intl = createIntl({ locale: 'nb', defaultLocale: 'nb', messages: messages as Record<string, string> }, cache);
 
 describe('<OmBarnetPlanleggerSteg>', () => {
     it('skal velge at barnet ikke er født for far som aleneforsørger', async () => {
@@ -118,6 +125,48 @@ describe('<OmBarnetPlanleggerSteg>', () => {
             key: ContextDataType.OM_BARNET,
             type: 'update',
         });
+    });
+
+    it('skal vise informasjon om forlenget periode når barnet er født for aleneforsørger far før uke 33', async () => {
+        const gåTilNesteSide = vi.fn();
+
+        const utils = render(<AleneforsørgerFar gåTilNesteSide={gåTilNesteSide} />);
+
+        expect(await screen.findAllByText('Barnet')).toHaveLength(2);
+
+        await userEvent.click(screen.getByText('Fødsel'));
+
+        await userEvent.click(screen.getByText('Ett'));
+
+        await userEvent.click(screen.getByText('Ja'));
+
+        const fødselsdato = dayjs().subtract(60, 'days');
+        const termindato = dayjs();
+
+        const fødselsdatoInput = utils.getByLabelText('Når ble barnet født?');
+        await userEvent.type(fødselsdatoInput, fødselsdato.format(DDMMYYYY_DATE_FORMAT));
+        fireEvent.blur(fødselsdatoInput);
+
+        expect(
+            screen.queryByText('Perioden med foreldrepenger forlenges siden barnet er født før uke 33'),
+        ).not.toBeInTheDocument();
+
+        const termindatoInput = utils.getByLabelText('Når var termindato?');
+        await userEvent.type(termindatoInput, termindato.format(DDMMYYYY_DATE_FORMAT));
+        fireEvent.blur(termindatoInput);
+
+        expect(
+            screen.getByText('Perioden med foreldrepenger forlenges siden barnet er født før uke 33'),
+        ).toBeInTheDocument();
+
+        const { uker, dager } = getUkerOgDager(
+            getAntallVirkedagerFraFødselTilTermin(
+                fødselsdato.format(ISO_DATE_FORMAT),
+                termindato.format(ISO_DATE_FORMAT),
+            ),
+        );
+        const forventetTekst = intl.formatMessage({ id: 'ErFødtPanel.ErFødtFørUke33.Tekst' }, { uker, dager });
+        expect(screen.getByText(forventetTekst)).toBeInTheDocument();
     });
 
     it('skal velge adopsjon for far som aleneforsørger', async () => {
