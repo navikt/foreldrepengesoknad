@@ -5,10 +5,9 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { erFødtFørUke33, getAntallVirkedagerFraFødselTilTermin, getVarighetString } from 'utils/dateUtils';
 
-import { BodyShort, ReadMore, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Heading, ReadMore, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
-import { Infobox } from '@navikt/fp-ui';
 import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { FødtBarn } from '../OmBarnetFormValues';
@@ -87,8 +86,11 @@ export const ErFødtPanel = () => {
                 />
             )}
             {visInfoOmForlengetPeriode && (
-                <Infobox color="blue" header={<FormattedMessage id="omBarnet.erFødtFørUke33.tittel" />}>
+                <Alert variant="info">
                     <VStack gap="space-16">
+                        <Heading level="3" size="small">
+                            <FormattedMessage id="omBarnet.erFødtFørUke33.tittel" />
+                        </Heading>
                         <BodyShort>
                             <FormattedMessage id="omBarnet.erFødtFørUke33.tekst" values={{ varighet }} />
                         </BodyShort>
@@ -96,7 +98,7 @@ export const ErFødtPanel = () => {
                             <FormattedMessage id="omBarnet.erFødtFørUke33.readMore.tekst" />
                         </ReadMore>
                     </VStack>
-                </Infobox>
+                </Alert>
             )}
         </>
     );
