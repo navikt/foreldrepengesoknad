@@ -143,7 +143,7 @@ export const Manedsvisning = ({
 
     const dagKnappRef = useRef<Map<string, HTMLButtonElement>>(new Map());
 
-    const håndterTastetrykk = (event: KeyboardEvent<HTMLDivElement>) => {
+    const håndterTastetrykk = (event: KeyboardEvent<HTMLButtonElement>) => {
         const target = event.target;
         if (!(target instanceof HTMLButtonElement) || !target.dataset.iso) {
             return;
@@ -194,30 +194,17 @@ export const Manedsvisning = ({
             <div
                 className="grid overflow-hidden rounded-lg border border-ax-border-subtle"
                 style={{ gridTemplateColumns }}
-                role="grid"
                 aria-label={månedstittel}
-                onKeyDown={håndterTastetrykk}
-                tabIndex={-1}
             >
-                <div className="contents" role="row">
-                    {showWeekNumbers && (
-                        <div
-                            className={cx(GRID_HEAD_KLASSE, 'bg-ax-bg-neutral-soft')}
-                            role="columnheader"
-                            aria-hidden
-                        />
-                    )}
+                <div className="contents">
+                    {showWeekNumbers && <div className={cx(GRID_HEAD_KLASSE, 'bg-ax-bg-neutral-soft')} aria-hidden />}
                     {ukedagNavn.map((navn, i) => {
                         const erHelg = i >= 5;
                         if (hideWeekend && erHelg) {
                             return null;
                         }
                         return (
-                            <div
-                                key={navn}
-                                className={cx(GRID_HEAD_KLASSE, erHelg && 'bg-ax-bg-neutral-soft')}
-                                role="columnheader"
-                            >
+                            <div key={navn} className={cx(GRID_HEAD_KLASSE, erHelg && 'bg-ax-bg-neutral-soft')}>
                                 {navn}
                             </div>
                         );
@@ -233,6 +220,7 @@ export const Manedsvisning = ({
                         hideWeekend={hideWeekend}
                         dateClickCallback={dateClickCallback}
                         dagKnappRef={dagKnappRef}
+                        onTastetrykk={håndterTastetrykk}
                     />
                 ))}
             </div>
@@ -247,6 +235,7 @@ const UkeRad = ({
     hideWeekend,
     dateClickCallback,
     dagKnappRef,
+    onTastetrykk,
 }: {
     uke: { ukenummer: number; dager: DagInfo[] };
     erSisteRad: boolean;
@@ -254,11 +243,12 @@ const UkeRad = ({
     hideWeekend: boolean;
     dateClickCallback?: (date: string) => void;
     dagKnappRef: MutableRefObject<Map<string, HTMLButtonElement>>;
+    onTastetrykk: (event: KeyboardEvent<HTMLButtonElement>) => void;
 }) => {
     const mergeFormer = useMemo(() => finnMergeFormerForUke(uke.dager), [uke.dager]);
 
     return (
-        <div className="contents" role="row">
+        <div className="contents">
             {showWeekNumbers && (
                 <div
                     className={cx(
@@ -266,7 +256,6 @@ const UkeRad = ({
                         'text-xs font-medium text-ax-text-neutral-subtle',
                         !erSisteRad && 'border-b',
                     )}
-                    role="rowheader"
                     data-testid="ukenummer"
                 >
                     {uke.ukenummer}
@@ -284,6 +273,7 @@ const UkeRad = ({
                         mergeForm={mergeFormer[dagIndex]!}
                         dateClickCallback={dateClickCallback}
                         dagKnappRef={dagKnappRef}
+                        onTastetrykk={onTastetrykk}
                     />
                 );
             })}
@@ -297,12 +287,14 @@ const Dagcelle = ({
     mergeForm,
     dateClickCallback,
     dagKnappRef,
+    onTastetrykk,
 }: {
     dag: DagInfo;
     erSisteRad: boolean;
     mergeForm: MergeForm;
     dateClickCallback?: (date: string) => void;
     dagKnappRef: MutableRefObject<Map<string, HTMLButtonElement>>;
+    onTastetrykk: (event: KeyboardEvent<HTMLButtonElement>) => void;
 }) => {
     const dagNr = dag.dato.date();
 
@@ -315,12 +307,12 @@ const Dagcelle = ({
     );
 
     if (!dag.erIDenneMåneden) {
-        return <div className={cellKlasser} role="gridcell" data-testid={`dag:utanfor;${dag.iso}`} />;
+        return <div className={cellKlasser} data-testid={`dag:utanfor;${dag.iso}`} />;
     }
 
     if (dag.hendelse) {
         return (
-            <div className={cellKlasser} role="gridcell" data-testid={`dag:${dagNr};hendelse`}>
+            <div className={cellKlasser} data-testid={`dag:${dagNr};hendelse`}>
                 {dateClickCallback ? (
                     <button
                         type="button"
@@ -328,6 +320,7 @@ const Dagcelle = ({
                         data-iso={dag.iso}
                         className={HENDELSEKNAPP_INTERAKTIV_KLASSE}
                         onClick={() => dateClickCallback(dag.iso)}
+                        onKeyDown={onTastetrykk}
                         aria-label={`${dag.dato.format('D. MMMM YYYY')}, ${dag.hendelse.label}`}
                     >
                         <span className="h-5 w-5" aria-hidden>
@@ -353,12 +346,10 @@ const Dagcelle = ({
 
     const periode = dag.erHelg ? undefined : dag.periode;
 
+    const dagcelleTestId = periode ? `dag:${dagNr};type:${periode.type}` : `dag:${dagNr}`;
+
     return (
-        <div
-            className={cellKlasser}
-            role="gridcell"
-            data-testid={`dag:${dagNr}${periode ? `;type:${periode.type}` : ''}`}
-        >
+        <div className={cellKlasser} data-testid={dagcelleTestId}>
             <span
                 className={cx(
                     // Litt margin flyttar datotalet vekk frå kortkanten/fokusringen, slik at dei aldri overlappar
@@ -376,6 +367,7 @@ const Dagcelle = ({
                     iso={dag.iso}
                     dateClickCallback={dateClickCallback}
                     dagKnappRef={dagKnappRef}
+                    onTastetrykk={onTastetrykk}
                 />
             )}
         </div>
@@ -388,12 +380,14 @@ const MicroCard = ({
     iso,
     dateClickCallback,
     dagKnappRef,
+    onTastetrykk,
 }: {
     periode: ManedsvisningPeriode;
     mergeForm: MergeForm;
     iso: string;
     dateClickCallback?: (date: string) => void;
     dagKnappRef: MutableRefObject<Map<string, HTMLButtonElement>>;
+    onTastetrykk: (event: KeyboardEvent<HTMLButtonElement>) => void;
 }) => {
     const klasser = cx(
         'absolute inset-1 z-[1] rounded-md border-0 p-0',
@@ -419,6 +413,7 @@ const MicroCard = ({
                 FOKUSRING_KLASSE,
             )}
             onClick={() => dateClickCallback(iso)}
+            onKeyDown={onTastetrykk}
             aria-label={`${dayjs(iso).format('D. MMMM YYYY')}, ${periode.srText}`}
         />
     );

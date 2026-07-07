@@ -195,7 +195,7 @@ const InteraktivDemo = () => {
         [filter],
     );
 
-    const tilgjengeligeDager = useMemo(() => Object.keys(DAG_DETALJER).sort(), []);
+    const tilgjengeligeDager = useMemo(() => Object.keys(DAG_DETALJER).sort((a, b) => a.localeCompare(b)), []);
 
     const gåTilForrigeMåned = () => {
         const forrige = dayjs().year(year).month(month).subtract(1, 'month');
