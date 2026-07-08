@@ -31,8 +31,26 @@ type Story = StoryObj<typeof meta>;
  */
 const TONAR: CardTone[] = ['accent', 'success', 'brand-beige', 'warning', 'danger'];
 
+/**
+ * Demo-container for `small`/`medium`/`xl`-kort. Kortet sjølv er responsivt (fyller
+ * kontaineren sin, jf. `w-full`-klassane i `Card.tsx`) – `breidde` set berre ei startbreidde
+ * og maks-breidde for demoen. `resize: horizontal` gjer at du kan dra i nedre høgre hjørne i
+ * Storybook for å verifisere at kortet faktisk krympar/veks med kontaineren, i staden for å
+ * ha ei fast, hardkoda breidde.
+ */
 const Ramme = ({ children, breidde = 260 }: { children: ReactNode; breidde?: number }) => (
-    <div style={{ width: breidde }}>{children}</div>
+    <div
+        style={{
+            width: breidde,
+            minWidth: 100,
+            maxWidth: '100%',
+            resize: 'horizontal',
+            overflow: 'auto',
+            padding: 2,
+        }}
+    >
+        {children}
+    </div>
 );
 
 // ---------------------------------------------------------------------------

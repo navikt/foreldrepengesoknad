@@ -14,7 +14,10 @@ const STORLEIK_KLASSE: Record<CardSize, string> = {
     // Storleik (breidde/høgde) blir ikkje sett her – micro-kortet er meint å fylle ei
     // kalender-celle (t.d. via `absolute inset-1` frå forbrukaren), så Card eig berre forma.
     micro: 'flex h-full w-full items-center justify-center rounded-md text-sm font-medium',
-    small: 'flex flex-col rounded-lg p-2.5 text-left',
+    // small/medium/xl skal alle fylle breidda til kontaineren sin (responsive) – det er
+    // forbrukaren (t.d. ei ukesvisning-kolonne, eit listeelement eller eit detaljpanel) som
+    // avgjer den faktiske breidda, ikkje kortet sjølv.
+    small: 'flex w-full flex-col rounded-lg p-2.5 text-left',
     medium: 'flex w-full max-w-[260px] flex-col gap-1.5 rounded-lg px-4 py-3.5 text-left',
     xl: 'flex w-full flex-col gap-4 rounded-xl px-7 py-6 text-left shadow-md',
 };
