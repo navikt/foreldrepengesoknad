@@ -52,9 +52,11 @@ export const Storleikar: Story = {
             <VStack gap="space-8">
                 <Heading size="small">Micro – kalender-celle (44×44)</Heading>
                 <div style={{ display: 'flex', gap: 8 }}>
-                    {TONAR.map((tone) => (
+                    {TONAR.map((tone, i) => (
                         <div key={tone} style={{ width: 44, height: 44 }}>
-                            <Card size="micro" tone={tone} />
+                            <Card size="micro" tone={tone}>
+                                {15 + i}
+                            </Card>
                         </div>
                     ))}
                 </div>
