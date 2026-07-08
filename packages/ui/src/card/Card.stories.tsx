@@ -33,24 +33,13 @@ const TONAR: CardTone[] = ['accent', 'success', 'brand-beige', 'warning', 'dange
 
 /**
  * Demo-container for `small`/`medium`/`xl`-kort. Kortet sjølv er responsivt (fyller
- * kontaineren sin, jf. `w-full`-klassane i `Card.tsx`) – `breidde` set berre ei startbreidde
- * og maks-breidde for demoen. `resize: horizontal` gjer at du kan dra i nedre høgre hjørne i
- * Storybook for å verifisere at kortet faktisk krympar/veks med kontaineren, i staden for å
- * ha ei fast, hardkoda breidde.
+ * kontaineren sin, jf. `w-full`-klassane i `Card.tsx`) – denne wrapperen set difor berre ei
+ * maks-breidde (`breidde`), ikkje ei fast breidde. Prosentbreidda gjer at kortet automatisk
+ * krympar/veks når du endrar breidda på Storybook-panelet/nettlesarvindauget, i staden for å
+ * ha ei hardkoda piksel-breidde som ser fastbreidde ut uansett vindaugsstorleik.
  */
 const Ramme = ({ children, breidde = 260 }: { children: ReactNode; breidde?: number }) => (
-    <div
-        style={{
-            width: breidde,
-            minWidth: 100,
-            maxWidth: '100%',
-            resize: 'horizontal',
-            overflow: 'auto',
-            padding: 2,
-        }}
-    >
-        {children}
-    </div>
+    <div style={{ width: '100%', maxWidth: breidde, minWidth: 100 }}>{children}</div>
 );
 
 // ---------------------------------------------------------------------------
@@ -320,6 +309,91 @@ export const TyperOgStorleikar: Story = {
                     </div>
                 </VStack>
             ))}
+        </VStack>
+    ),
+};
+
+// ---------------------------------------------------------------------------
+// Responsivitet – same kort ved fleire faste kontainer-breidder, side om side, for å
+// vise (utan at du treng endre nettlesarvindauget) at small/medium/xl fyller kontaineren
+// sin og krympar/veks med han. Micro er ikkje med her – han er meint å ha ei fast
+// 44×44-storleik (kalender-cella).
+
+const BREIDDER = [140, 220, 340] as const;
+
+export const Responsivitet: Story = {
+    args: { size: 'medium' },
+    render: () => (
+        <VStack gap="space-32">
+            <VStack gap="space-8">
+                <Heading size="small">Small – same kort ved 140px, 220px og 340px kontainer-breidde</Heading>
+                <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                    {BREIDDER.map((breidde) => (
+                        <div key={breidde} style={{ width: breidde, border: '1px dashed #ccc', padding: 4 }}>
+                            <Card size="small" tone="accent">
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                                    <CardIconCircle size="small" tone="accent">
+                                        <PersonIkon />
+                                    </CardIconCircle>
+                                    <CardDate size="small">15. mai</CardDate>
+                                </div>
+                                <CardLabel size="small">Mødrekvote</CardLabel>
+                            </Card>
+                        </div>
+                    ))}
+                </div>
+            </VStack>
+
+            <VStack gap="space-8">
+                <Heading size="small">Medium – same kort ved 140px, 220px og 340px kontainer-breidde</Heading>
+                <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                    {BREIDDER.map((breidde) => (
+                        <div key={breidde} style={{ width: breidde, border: '1px dashed #ccc', padding: 4 }}>
+                            <Card size="medium" tone="success">
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                    <CardIconCircle size="medium" tone="success">
+                                        <PersonEnkelIkon />
+                                    </CardIconCircle>
+                                    <CardLabel size="medium">Fars periode</CardLabel>
+                                </div>
+                                <CardDate size="medium">15.–29. mai 2026</CardDate>
+                                <CardChip size="medium" tone="success">
+                                    100 % · Fedrekvote
+                                </CardChip>
+                            </Card>
+                        </div>
+                    ))}
+                </div>
+                <p style={{ fontSize: 12, color: '#666' }}>
+                    Kortet er kappa på maks 260px (jf. anatomien), så ved 340px-kontaineren ser du at det stoggar der i
+                    staden for å halde fram å vekse.
+                </p>
+            </VStack>
+
+            <VStack gap="space-8">
+                <Heading size="small">XL – same kort ved 340px, 420px og 520px kontainer-breidde</Heading>
+                <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                    {[340, 420, 520].map((breidde) => (
+                        <div key={breidde} style={{ width: breidde, border: '1px dashed #ccc', padding: 4 }}>
+                            <XlKort
+                                tone="accent"
+                                ikon={<PersonIkon />}
+                                tittel="Mors periode"
+                                dato="15. mai 2026"
+                                kvotetype="Mødrekvote"
+                                body={
+                                    <>
+                                        Mor er hjemme i foreldrepenger denne dagen. <strong>100 % uttak.</strong>
+                                    </>
+                                }
+                                chips={['Mødrekvote', 'Dag 12 av 75']}
+                                primærKnapp="Endre"
+                                sekundærKnapp="Slett"
+                            />
+                        </div>
+                    ))}
+                </div>
+            </VStack>
         </VStack>
     ),
 };
