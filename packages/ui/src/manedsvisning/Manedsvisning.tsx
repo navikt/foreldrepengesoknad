@@ -7,6 +7,8 @@ import { BodyShort } from '@navikt/ds-react';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
+import { Card } from '../card/Card';
+import type { CardTone } from '../card/types';
 import { ManedsvisningHendelse } from './types/ManedsvisningHendelse';
 import { ManedsvisningPeriode, ManedsvisningPeriodeType } from './types/ManedsvisningPeriode';
 
@@ -41,11 +43,12 @@ const TEKSTFARGE: Record<ManedsvisningPeriodeType, string> = {
     FERIE: 'text-ax-text-warning-subtle',
 };
 
-const KORTFARGE: Record<ManedsvisningPeriodeType, string> = {
-    MOR: 'bg-ax-bg-accent-soft',
-    FAR: 'bg-ax-bg-success-soft',
-    FELLES: 'bg-ax-bg-brand-beige-soft',
-    FERIE: 'bg-ax-bg-warning-soft',
+/** Omset den uttaksplan-spesifikke periodetypen til den generiske `tone`-kanalen `Card` forstår. */
+const PERIODE_TONE: Record<ManedsvisningPeriodeType, CardTone> = {
+    MOR: 'accent',
+    FAR: 'success',
+    FELLES: 'brand-beige',
+    FERIE: 'warning',
 };
 
 const MERGEKLASSE: Record<MergeForm, string> = {
@@ -389,9 +392,8 @@ const MicroCard = ({
     dagKnappRef: MutableRefObject<Map<string, HTMLButtonElement>>;
     onTastetrykk: (event: KeyboardEvent<HTMLButtonElement>) => void;
 }) => {
-    const klasser = cx(
-        'absolute inset-1 z-[1] rounded-md border-0 p-0',
-        KORTFARGE[periode.type],
+    const klasse = cx(
+        'absolute inset-1 z-[1] box-border border-0 p-0',
         MERGEKLASSE[mergeForm],
         periode.harAdvarsel &&
             "after:absolute after:top-1.5 after:right-1.5 after:h-2 after:w-2 after:rounded-full after:content-['']",
@@ -399,19 +401,16 @@ const MicroCard = ({
     );
 
     if (!dateClickCallback) {
-        return <div className={cx(klasser, 'box-border')} aria-hidden />;
+        return <Card size="micro" tone={PERIODE_TONE[periode.type]} className={klasse} aria-hidden />;
     }
 
     return (
-        <button
-            type="button"
-            ref={(el) => registrerKnappRef(dagKnappRef, iso, el)}
+        <Card
+            size="micro"
+            tone={PERIODE_TONE[periode.type]}
+            ref={(el: HTMLButtonElement | null) => registrerKnappRef(dagKnappRef, iso, el)}
             data-iso={iso}
-            className={cx(
-                klasser,
-                'box-border cursor-pointer hover:brightness-[0.97] focus-visible:brightness-[0.97]',
-                FOKUSRING_KLASSE,
-            )}
+            className={klasse}
             onClick={() => dateClickCallback(iso)}
             onKeyDown={onTastetrykk}
             aria-label={`${dayjs(iso).format('D. MMMM YYYY')}, ${periode.srText}`}
