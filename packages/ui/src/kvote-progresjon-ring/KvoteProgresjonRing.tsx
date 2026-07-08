@@ -138,7 +138,10 @@ export const KvoteProgresjonRing = ({
     const t = TONE[tone];
 
     const morOffset = animated ? dashOffset(c, progress) : c;
-    const farOffset = progressFar !== undefined ? (animated ? dashOffset(c, progressFar) : c) : undefined;
+    const farOffset = (() => {
+        if (progressFar === undefined) return undefined;
+        return animated ? dashOffset(c, progressFar) : c;
+    })();
 
     const viewBox = size === 'normal' ? '0 0 80 80' : '0 0 32 32';
     const sizeClass = size === 'normal' ? 'w-20 h-20' : 'w-8 h-8';
@@ -229,9 +232,9 @@ export const KvoteProgresjonRing = ({
                     )}
                     {splitInfo && splitInfo.length > 0 && (
                         <div className="flex gap-1 mt-1 items-center justify-center text-[11px] text-[var(--ax-text-subtle)] flex-wrap">
-                            {splitInfo.map((item, i) => (
-                                <span key={i} className="inline-flex items-center gap-[3px]">
-                                    {i > 0 && <span className="mx-0.5 text-[var(--ax-text-muted)]">·</span>}
+                            {splitInfo.map((item) => (
+                                <span key={`${item.color}-${item.text}`} className="inline-flex items-center gap-[3px]">
+                                    {splitInfo.indexOf(item) > 0 && <span className="mx-0.5 text-[var(--ax-text-muted)]">·</span>}
                                     <span className={`w-1.5 h-1.5 rounded-full inline-block shrink-0 ${item.color === 'mor' ? TONE.mor.dotClass : TONE.far.dotClass}`} />
                                     {item.text}
                                 </span>
