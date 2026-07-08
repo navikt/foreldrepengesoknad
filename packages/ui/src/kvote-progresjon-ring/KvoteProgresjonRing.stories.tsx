@@ -203,17 +203,7 @@ export const Mini_Far_Ferdig: Story = {
 export const AlleFireRingar: Story = {
     name: 'Alle fire – hovudvariant (scenario frå designdokumentet)',
     render: () => (
-        <div
-            style={{
-                background: '#F7F5F2',
-                borderRadius: 12,
-                padding: '24px 28px',
-                display: 'grid',
-                gridTemplateColumns: 'repeat(4, 1fr)',
-                gap: 16,
-                width: 480,
-            }}
-        >
+        <div className="bg-[var(--ax-bg-sunken)] rounded-xl p-7 grid grid-cols-4 gap-4 w-[480px]">
             <KvoteProgresjonRing
                 tone="mor"
                 progress={0}
@@ -272,27 +262,15 @@ export const AlleFireRingar: Story = {
 export const MiniStickyRad: Story = {
     name: 'Mini – sticky-rad (alle fire)',
     render: () => (
-        <div
-            style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 16,
-                padding: '12px 20px',
-                background: 'white',
-                border: '1px solid #E8E5E0',
-                borderRadius: 999,
-                boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
-                width: 'fit-content',
-            }}
-        >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <div className="flex items-center gap-4 px-5 py-3 bg-[var(--ax-bg-default)] border border-[var(--ax-border-subtle)] rounded-full shadow-sm w-fit">
+            <div className="flex items-center gap-1.5">
                 <KvoteProgresjonRing tone="mor" progress={0} size="mini" aria-label="Før fødsel: 0 %" />
                 <KvoteProgresjonRing tone="mor" progress={0.958} size="mini" aria-label="Mødrekvote: 96 %" />
                 <KvoteProgresjonRing tone="far" progress={1} complete size="mini" aria-label="Fedrekvote: ferdig" />
                 <KvoteProgresjonRing tone="felles" progress={1} complete size="mini" aria-label="Fellesperiode: ferdig" />
             </div>
-            <span style={{ fontSize: 13, fontWeight: 500, color: '#1F2024' }}>
-                <strong style={{ color: '#8A4800' }}>3u 4d igjen</strong> i planen
+            <span className="text-[13px] font-medium text-[var(--ax-text-default)]">
+                <strong className="text-[var(--ax-warning-600)]">3u 4d igjen</strong> i planen
             </span>
         </div>
     ),
