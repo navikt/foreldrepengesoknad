@@ -202,6 +202,10 @@ export const Mini_Far_Ferdig: Story = {
  */
 export const AlleFireRingar: Story = {
     name: 'Alle fire – hovudvariant (scenario frå designdokumentet)',
+    args: {
+        tone: 'mor',
+        progress: 0,
+    },
     render: () => (
         <div className="bg-[var(--ax-bg-sunken)] rounded-xl p-7 grid grid-cols-4 gap-4 w-[480px]">
             <KvoteProgresjonRing
@@ -261,6 +265,10 @@ export const AlleFireRingar: Story = {
  */
 export const MiniStickyRad: Story = {
     name: 'Mini – sticky-rad (alle fire)',
+    args: {
+        tone: 'mor',
+        progress: 0,
+    },
     render: () => (
         <div className="flex items-center gap-4 px-5 py-3 bg-[var(--ax-bg-default)] border border-[var(--ax-border-subtle)] rounded-full shadow-sm w-fit">
             <div className="flex items-center gap-1.5">
