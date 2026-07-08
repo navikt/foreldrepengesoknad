@@ -8,7 +8,7 @@ const { Storleikar, Toner, Statar, Valgt, TomDagOgManglandeDekning, KlikkbartVsS
 describe('<Card>', () => {
     it('skal vise innhald for kvar storleik (micro/small/medium/xl)', async () => {
         render(<Storleikar />);
-        expect(await screen.findByText('Mor')).toBeInTheDocument();
+        expect(await screen.findByText('Mødrekvote')).toBeInTheDocument();
         expect(screen.getByText('Fars periode')).toBeInTheDocument();
         expect(screen.getByText('Fellesperiode')).toBeInTheDocument();
         expect(screen.getByText('Foreldrepengar')).toBeInTheDocument();

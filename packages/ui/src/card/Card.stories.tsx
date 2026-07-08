@@ -66,7 +66,7 @@ export const Storleikar: Story = {
                                 </CardIconCircle>
                                 <CardDate size="small">15. mai</CardDate>
                             </div>
-                            <CardLabel size="small">Mor</CardLabel>
+                            <CardLabel size="small">Mødrekvote</CardLabel>
                         </Card>
                     </Ramme>
                 </div>
@@ -126,6 +126,182 @@ export const Storleikar: Story = {
                     </Card>
                 </Ramme>
             </VStack>
+        </VStack>
+    ),
+};
+
+// ---------------------------------------------------------------------------
+// Type × storleik – heile «Størrelser»-matrisa frå card-anatomi.html: éin rad per
+// type (Mor/Far/Felles/Ferie), éin kolonne per storleik (micro/small/medium/xl).
+// Farge-tonen er konstant på tvers av storleikane for same type, slik at kortet er
+// att kjennbart same om det ligg i ei månedscelle eller i dagsvisninga.
+
+interface TypeRadData {
+    namn: string;
+    tone: CardTone;
+    ikon: ReactNode;
+    microDag: number;
+    smallDato: string;
+    smallLbl: string;
+    mediumLbl: string;
+    mediumDato: string;
+    mediumChip: string;
+    xl: Omit<XlKortProps, 'tone' | 'ikon'>;
+}
+
+const TYPE_DATA: TypeRadData[] = [
+    {
+        namn: 'Mors periode',
+        tone: 'accent',
+        ikon: <PersonIkon />,
+        microDag: 15,
+        smallDato: '15. mai',
+        smallLbl: 'Foreldrepenger',
+        mediumLbl: 'Mors periode',
+        mediumDato: '15. mai 2026',
+        mediumChip: '100 % · Mødrekvote',
+        xl: {
+            tittel: 'Mors periode',
+            dato: '15. mai 2026',
+            kvotetype: 'Mødrekvote',
+            body: (
+                <>
+                    Mor er hjemme i foreldrepenger denne dagen. <strong>100 % uttak.</strong>
+                </>
+            ),
+            chips: ['Mødrekvote', 'Dag 12 av 75'],
+            primærKnapp: 'Endre',
+            sekundærKnapp: 'Slett',
+        },
+    },
+    {
+        namn: 'Fars periode',
+        tone: 'success',
+        ikon: <PersonEnkelIkon />,
+        microDag: 22,
+        smallDato: '22. mai',
+        smallLbl: 'Foreldrepenger',
+        mediumLbl: 'Fars periode',
+        mediumDato: '22. mai 2026',
+        mediumChip: '50 % · Fedrekvote',
+        xl: {
+            tittel: 'Fars periode',
+            dato: '22. mai 2026',
+            kvotetype: 'Fedrekvote',
+            body: (
+                <>
+                    Far er hjemme i foreldrepenger denne dagen. <strong>50 % uttak, 50 % jobb.</strong>
+                </>
+            ),
+            chips: ['Fedrekvote', 'Gradert uttak'],
+            primærKnapp: 'Endre',
+            sekundærKnapp: 'Slett',
+        },
+    },
+    {
+        namn: 'Fellesperiode',
+        tone: 'brand-beige',
+        ikon: <PersonGruppeIkon />,
+        microDag: 3,
+        smallDato: '3. jun',
+        smallLbl: 'Fellesperiode',
+        mediumLbl: 'Fellesperiode',
+        mediumDato: '3. juni 2026',
+        mediumChip: 'Mor tar uttak',
+        xl: {
+            tittel: 'Fellesperiode',
+            dato: '3. juni 2026',
+            kvotetype: 'Mor på uttak',
+            body: (
+                <>
+                    Dette er en fellesperiode dere deler. <strong>Mor tar 100 % uttak</strong> denne dagen.
+                </>
+            ),
+            chips: ['Fellesperiode', '75 dager igjen'],
+            primærKnapp: 'Endre',
+            sekundærKnapp: 'Bytt til far',
+        },
+    },
+    {
+        namn: 'Ferie',
+        tone: 'warning',
+        ikon: <SolIkon />,
+        microDag: 10,
+        smallDato: '10. jul',
+        smallLbl: 'Ferie',
+        mediumLbl: 'Ferie',
+        mediumDato: '10. juli 2026',
+        mediumChip: 'Mor',
+        xl: {
+            tittel: 'Ferie',
+            dato: '10. juli 2026',
+            kvotetype: 'Mor',
+            body: (
+                <>
+                    Mor har lagt inn ferie denne dagen. <strong>Ferie påvirker ikke kvoten din.</strong>
+                </>
+            ),
+            chips: ['Mors ferie', '2 av 25 feriedager'],
+            primærKnapp: 'Endre',
+            sekundærKnapp: 'Slett',
+        },
+    },
+];
+
+const MatrixCelle = ({ children, breidde }: { children: ReactNode; breidde: number }) => (
+    <div style={{ width: breidde, flexShrink: 0 }}>{children}</div>
+);
+
+export const TyperOgStorleikar: Story = {
+    name: 'Størrelser (type × storleik)',
+    args: { size: 'medium' },
+    render: () => (
+        <VStack gap="space-40">
+            {TYPE_DATA.map((data) => (
+                <VStack gap="space-8" key={data.namn}>
+                    <Heading size="small">{data.namn}</Heading>
+                    <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                        <MatrixCelle breidde={44}>
+                            <div style={{ width: 44, height: 44 }}>
+                                <Card size="micro" tone={data.tone}>
+                                    {data.microDag}
+                                </Card>
+                            </div>
+                        </MatrixCelle>
+
+                        <MatrixCelle breidde={132}>
+                            <Card size="small" tone={data.tone}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                                    <CardIconCircle size="small" tone={data.tone}>
+                                        {data.ikon}
+                                    </CardIconCircle>
+                                    <CardDate size="small">{data.smallDato}</CardDate>
+                                </div>
+                                <CardLabel size="small">{data.smallLbl}</CardLabel>
+                            </Card>
+                        </MatrixCelle>
+
+                        <MatrixCelle breidde={260}>
+                            <Card size="medium" tone={data.tone}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                    <CardIconCircle size="medium" tone={data.tone}>
+                                        {data.ikon}
+                                    </CardIconCircle>
+                                    <CardLabel size="medium">{data.mediumLbl}</CardLabel>
+                                </div>
+                                <CardDate size="medium">{data.mediumDato}</CardDate>
+                                <CardChip size="medium" tone={data.tone}>
+                                    {data.mediumChip}
+                                </CardChip>
+                            </Card>
+                        </MatrixCelle>
+
+                        <MatrixCelle breidde={420}>
+                            <XlKort tone={data.tone} ikon={data.ikon} {...data.xl} />
+                        </MatrixCelle>
+                    </div>
+                </VStack>
+            ))}
         </VStack>
     ),
 };
