@@ -137,19 +137,24 @@ export const KvoteProgresjonRing = ({
     const c = ringCircumference(dims.r);
     const t = TONE[tone];
 
-    const morOffset = animated ? dashOffset(c, progress) : c;
+    // Klamp verdiane: progress alltid [0,1]; progressFar aldri lågare enn progress
+    const clampedProgress = Math.min(1, Math.max(0, progress));
+    const clampedFar =
+        progressFar !== undefined ? Math.min(1, Math.max(clampedProgress, progressFar)) : undefined;
+
+    const morOffset = animated ? dashOffset(c, clampedProgress) : c;
     const farOffset = (() => {
-        if (progressFar === undefined) {
+        if (clampedFar === undefined) {
             return undefined;
         }
-        return animated ? dashOffset(c, progressFar) : c;
+        return animated ? dashOffset(c, clampedFar) : c;
     })();
 
     const viewBox = size === 'normal' ? '0 0 80 80' : '0 0 32 32';
     const sizeClass = size === 'normal' ? 'w-20 h-20' : 'w-8 h-8';
 
-    // SVG transition – beheld som style-prop sidan arbitrary Tailwind-transition
-    // for stroke-dashoffset er klønete og lettare å lesa slik
+    // SVG transition – beheld som Tailwind arbitrary class sidan stroke-dashoffset
+    // ikkje har eit innebygd utility i dette Tailwind/Aksel-oppsettet
     const dashTransition = '[transition:stroke-dashoffset_1.2s_cubic-bezier(0.4,0,0.2,1)]';
 
     const ringContent = (
@@ -267,7 +272,7 @@ export const KvoteProgresjonRing = ({
     }
 
     return (
-        <div aria-label={ariaLabel} className={baseClass}>
+        <div role={size === 'mini' ? 'img' : undefined} aria-label={ariaLabel} className={baseClass}>
             {ringContent}
         </div>
     );
