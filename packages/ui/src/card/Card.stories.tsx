@@ -1,17 +1,10 @@
-import {
-    CalendarIcon,
-    ExclamationmarkTriangleFillIcon,
-    ParasolBeachFillIcon,
-    PersonFillIcon,
-    PersonGroupFillIcon,
-    PlusIcon,
-    TrashIcon,
-} from '@navikt/aksel-icons';
+import { CalendarIcon, ExclamationmarkTriangleFillIcon, PlusIcon, TrashIcon } from '@navikt/aksel-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { ReactNode } from 'react';
 
 import { Button, Heading, VStack } from '@navikt/ds-react';
 
+import { PersonEnkelIkon, PersonGruppeIkon, PersonIkon, SolIkon } from '../icons/PeriodeIkoner';
 import { Card } from './Card';
 import { CardActions } from './CardActions';
 import { CardBadge } from './CardBadge';
@@ -69,7 +62,7 @@ export const Storleikar: Story = {
                         <Card size="small" tone="accent">
                             <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
                                 <CardIconCircle size="small" tone="accent">
-                                    <PersonFillIcon aria-hidden />
+                                    <PersonIkon />
                                 </CardIconCircle>
                                 <CardDate size="small">15. mai</CardDate>
                             </div>
@@ -85,7 +78,7 @@ export const Storleikar: Story = {
                     <Card size="medium" tone="success">
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                             <CardIconCircle size="medium" tone="success">
-                                <PersonFillIcon aria-hidden />
+                                <PersonEnkelIkon />
                             </CardIconCircle>
                             <CardLabel size="medium">Fars periode</CardLabel>
                         </div>
@@ -103,7 +96,7 @@ export const Storleikar: Story = {
                     <Card size="xl" tone="brand-beige">
                         <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
                             <CardIconCircle size="xl" tone="brand-beige">
-                                <PersonGroupFillIcon aria-hidden />
+                                <PersonGruppeIkon />
                             </CardIconCircle>
                             <div style={{ flex: 1 }}>
                                 <CardLabel size="xl">Fellesperiode</CardLabel>
@@ -287,7 +280,7 @@ export const Ferie: Story = {
             <Card size="small" tone="warning">
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
                     <CardIconCircle size="small" tone="warning">
-                        <ParasolBeachFillIcon aria-hidden />
+                        <SolIkon />
                     </CardIconCircle>
                     <CardDate size="small">
                         <CalendarIcon aria-hidden style={{ display: 'inline', verticalAlign: 'middle' }} /> 14. mai
