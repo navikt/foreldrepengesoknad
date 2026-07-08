@@ -34,49 +34,38 @@ const DIMS: Record<NonNullable<KvoteProgresjonRingProps['size']>, RingDims> = {
     mini: { cx: 16, cy: 16, r: 14, sw: 4 },
 };
 
-function ringCircumference(r: number) {
-    return 2 * Math.PI * r;
-}
+const ringCircumference = (r: number) => 2 * Math.PI * r;
 
-function dashOffset(circumference: number, progress: number) {
-    return circumference * (1 - Math.min(1, Math.max(0, progress)));
-}
+const dashOffset = (circumference: number, progress: number) =>
+    circumference * (1 - Math.min(1, Math.max(0, progress)));
 
-function MorIcon({ className }: { className: string }) {
-    return (
-        <svg viewBox="0 0 24 24" fill="none" strokeWidth={2.2} width={22} height={22} aria-hidden className={`stroke-current ${className}`}>
-            <circle cx="12" cy="7" r="3" />
-            <path d="M12 10v8M9 14h6" />
-        </svg>
-    );
-}
+const MorIcon = ({ className }: { className: string }) => (
+    <svg viewBox="0 0 24 24" fill="none" strokeWidth={2.2} width={22} height={22} aria-hidden className={`stroke-current ${className}`}>
+        <circle cx="12" cy="7" r="3" />
+        <path d="M12 10v8M9 14h6" />
+    </svg>
+);
 
-function FarIcon({ className }: { className: string }) {
-    return (
-        <svg viewBox="0 0 24 24" fill="none" strokeWidth={2.2} width={22} height={22} aria-hidden className={`stroke-current ${className}`}>
-            <circle cx="12" cy="7" r="3" />
-            <path d="M12 10v10" />
-        </svg>
-    );
-}
+const FarIcon = ({ className }: { className: string }) => (
+    <svg viewBox="0 0 24 24" fill="none" strokeWidth={2.2} width={22} height={22} aria-hidden className={`stroke-current ${className}`}>
+        <circle cx="12" cy="7" r="3" />
+        <path d="M12 10v10" />
+    </svg>
+);
 
-function FellesIcon({ className }: { className: string }) {
-    return (
-        <svg viewBox="0 0 24 24" fill="none" strokeWidth={2.2} width={22} height={22} aria-hidden className={`stroke-current ${className}`}>
-            <circle cx="9" cy="8" r="3" />
-            <circle cx="15" cy="8" r="3" />
-            <path d="M5 20c0-3 2-5 4-5M19 20c0-3-2-5-4-5" />
-        </svg>
-    );
-}
+const FellesIcon = ({ className }: { className: string }) => (
+    <svg viewBox="0 0 24 24" fill="none" strokeWidth={2.2} width={22} height={22} aria-hidden className={`stroke-current ${className}`}>
+        <circle cx="9" cy="8" r="3" />
+        <circle cx="15" cy="8" r="3" />
+        <path d="M5 20c0-3 2-5 4-5M19 20c0-3-2-5-4-5" />
+    </svg>
+);
 
-function CheckmarkIcon({ className }: { className: string }) {
-    return (
-        <svg viewBox="0 0 24 24" fill="none" strokeWidth={3} width={14} height={14} aria-hidden className={`stroke-current ${className}`}>
-            <path d="M5 12l5 5L20 7" />
-        </svg>
-    );
-}
+const CheckmarkIcon = ({ className }: { className: string }) => (
+    <svg viewBox="0 0 24 24" fill="none" strokeWidth={3} width={14} height={14} aria-hidden className={`stroke-current ${className}`}>
+        <path d="M5 12l5 5L20 7" />
+    </svg>
+);
 
 export type KvoteTone = 'mor' | 'far' | 'felles';
 export type KvoteRingSize = 'normal' | 'mini';
@@ -117,7 +106,7 @@ export interface KvoteProgresjonRingProps {
     'aria-label'?: string;
 }
 
-export function KvoteProgresjonRing({
+export const KvoteProgresjonRing = ({
     tone,
     progress,
     progressFar,
@@ -128,7 +117,7 @@ export function KvoteProgresjonRing({
     splitInfo,
     onClick,
     'aria-label': ariaLabel,
-}: KvoteProgresjonRingProps) {
+}: KvoteProgresjonRingProps) => {
     const [animated, setAnimated] = useState(false);
 
     useEffect(() => {
@@ -274,4 +263,4 @@ export function KvoteProgresjonRing({
             {ringContent}
         </div>
     );
-}
+};
