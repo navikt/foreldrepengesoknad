@@ -139,7 +139,9 @@ export const KvoteProgresjonRing = ({
 
     const morOffset = animated ? dashOffset(c, progress) : c;
     const farOffset = (() => {
-        if (progressFar === undefined) return undefined;
+        if (progressFar === undefined) {
+            return undefined;
+        }
         return animated ? dashOffset(c, progressFar) : c;
     })();
 
@@ -232,13 +234,16 @@ export const KvoteProgresjonRing = ({
                     )}
                     {splitInfo && splitInfo.length > 0 && (
                         <div className="flex gap-1 mt-1 items-center justify-center text-[11px] text-[var(--ax-text-subtle)] flex-wrap">
-                            {splitInfo.map((item) => (
-                                <span key={`${item.color}-${item.text}`} className="inline-flex items-center gap-[3px]">
-                                    {splitInfo.indexOf(item) > 0 && <span className="mx-0.5 text-[var(--ax-text-muted)]">·</span>}
-                                    <span className={`w-1.5 h-1.5 rounded-full inline-block shrink-0 ${item.color === 'mor' ? TONE.mor.dotClass : TONE.far.dotClass}`} />
-                                    {item.text}
-                                </span>
-                            ))}
+                            {splitInfo.map((item, idx) => {
+                                const dotClass = item.color === 'mor' ? TONE.mor.dotClass : TONE.far.dotClass;
+                                return (
+                                    <span key={`${item.color}-${item.text}`} className="inline-flex items-center gap-[3px]">
+                                        {idx > 0 && <span className="mx-0.5 text-[var(--ax-text-muted)]">·</span>}
+                                        <span className={`w-1.5 h-1.5 rounded-full inline-block shrink-0 ${dotClass}`} />
+                                        {item.text}
+                                    </span>
+                                );
+                            })}
                         </div>
                     )}
                 </div>
