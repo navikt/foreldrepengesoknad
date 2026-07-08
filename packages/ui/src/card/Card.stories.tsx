@@ -69,9 +69,9 @@ export const Storleikar: Story = {
                                 <CardIconCircle size="small" tone="accent">
                                     <PersonFillIcon aria-hidden />
                                 </CardIconCircle>
-                                <CardLabel size="small">Mor</CardLabel>
+                                <CardDate size="small">15. mai</CardDate>
                             </div>
-                            <CardDate size="small">15. mai</CardDate>
+                            <CardLabel size="small">Mor</CardLabel>
                         </Card>
                     </Ramme>
                 </div>
@@ -88,7 +88,9 @@ export const Storleikar: Story = {
                             <CardLabel size="medium">Fars periode</CardLabel>
                         </div>
                         <CardDate size="medium">15.–29. mai 2026</CardDate>
-                        <CardChip size="medium">Fedrekvote · 100 %</CardChip>
+                        <CardChip size="medium" tone="success">
+                            100 % · Fedrekvote
+                        </CardChip>
                     </Card>
                 </Ramme>
             </VStack>
@@ -110,7 +112,9 @@ export const Storleikar: Story = {
                             <strong>16 dagar</strong> er sett av til fellesperiode. Begge foreldre kan bruke desse
                             dagane.
                         </CardBody>
-                        <CardChip size="xl">100 % foreldrepengar</CardChip>
+                        <CardChip size="xl" tone="brand-beige">
+                            100 % · Foreldrepengar
+                        </CardChip>
                         <CardActions>
                             <Button size="small" variant="secondary" icon={<TrashIcon aria-hidden />}>
                                 Slett
@@ -283,11 +287,11 @@ export const Ferie: Story = {
                     <CardIconCircle size="small" tone="warning">
                         <ParasolBeachFillIcon aria-hidden />
                     </CardIconCircle>
-                    <CardLabel size="small">Ferie</CardLabel>
+                    <CardDate size="small">
+                        <CalendarIcon aria-hidden style={{ display: 'inline', verticalAlign: 'middle' }} /> 14. mai
+                    </CardDate>
                 </div>
-                <CardDate size="small">
-                    <CalendarIcon aria-hidden style={{ display: 'inline', verticalAlign: 'middle' }} /> 14. mai
-                </CardDate>
+                <CardLabel size="small">Ferie</CardLabel>
             </Card>
         </Ramme>
     ),

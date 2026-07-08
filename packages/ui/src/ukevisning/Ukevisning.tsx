@@ -260,9 +260,9 @@ const MicroKort = ({
                 <CardIconCircle size="small" tone={PERIODE_TONE[periode.type]}>
                     {periode.ikon}
                 </CardIconCircle>
-                <CardLabel size="small">{periode.label}</CardLabel>
+                <CardDate size="small">{periode.meta}</CardDate>
             </HStack>
-            <CardDate size="small">{periode.meta}</CardDate>
+            <CardLabel size="small">{periode.label}</CardLabel>
             {periode.advarsel && (
                 <CardBadge
                     tone="warning"

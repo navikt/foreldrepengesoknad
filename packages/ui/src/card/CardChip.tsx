@@ -1,26 +1,36 @@
 import { ReactNode } from 'react';
 
+import { Tag } from '@navikt/ds-react';
+
 import { cx } from './cardTone';
+import { CardTone } from './types';
+
+const STORLEIK_KLASSE = {
+    medium: 'text-[11px]',
+    xl: 'text-[12px]',
+} as const;
 
 interface Props {
     /** Berre medium og xl har romm til ein eigen metadata-chip, jf. innhaldsprioriteringa. */
     size: 'medium' | 'xl';
+    /** Same tone som sjølve kortet, viss chippen skal fargast etter kva kortet «er». Utelate gjev ein nøytral chip. */
+    tone?: CardTone;
     children: ReactNode;
     className?: string;
 }
 
 /**
- * Generisk metadata-chip (kvote, gradering, dag-teljar o.l.), lagt oppå kortets tone som ei
- * halvgjennomsiktig flate – fungerer difor uavhengig av kva tone kortet har.
+ * Generisk metadata-chip (kvote, gradering, dag-teljar o.l.). Bruker Aksel sin `Tag` med
+ * `variant="outline"` for å få ei tynn ramme rundt – i staden for ei eiga, handlaga
+ * halvgjennomsiktig flate – slik at chippen ser konsistent ut med resten av designsystemet.
  */
-export const CardChip = ({ size, children, className }: Props) => (
-    <span
-        className={cx(
-            'inline-flex w-fit items-center gap-1 self-start rounded px-2 py-0.5 font-medium',
-            size === 'xl' ? 'bg-white/60 text-[12px]' : 'bg-black/[0.06] text-[11px]',
-            className,
-        )}
+export const CardChip = ({ size, tone, children, className }: Props) => (
+    <Tag
+        variant="outline"
+        size={size === 'xl' ? 'small' : 'xsmall'}
+        data-color={tone}
+        className={cx('w-fit self-start font-medium', STORLEIK_KLASSE[size], className)}
     >
         {children}
-    </span>
+    </Tag>
 );

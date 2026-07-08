@@ -11,7 +11,7 @@ describe('<Card>', () => {
         expect(await screen.findByText('Mor')).toBeInTheDocument();
         expect(screen.getByText('Fars periode')).toBeInTheDocument();
         expect(screen.getByText('Fellesperiode')).toBeInTheDocument();
-        expect(screen.getByText('100 % foreldrepengar')).toBeInTheDocument();
+        expect(screen.getByText('100 % · Foreldrepengar')).toBeInTheDocument();
     });
 
     it('skal gje kvar tone si eiga soft bakgrunnsfarge', async () => {
