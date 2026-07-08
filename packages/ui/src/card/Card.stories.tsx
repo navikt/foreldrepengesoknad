@@ -98,24 +98,29 @@ export const Storleikar: Story = {
                             <CardIconCircle size="xl" tone="brand-beige">
                                 <PersonGruppeIkon />
                             </CardIconCircle>
-                            <div style={{ flex: 1 }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
                                 <CardLabel size="xl">Fellesperiode</CardLabel>
-                                <CardDate size="xl">15. mai 2026</CardDate>
+                                <CardDate size="xl">15. mai 2026 · Foreldrepengar</CardDate>
                             </div>
                         </div>
                         <CardBody>
                             <strong>16 dagar</strong> er sett av til fellesperiode. Begge foreldre kan bruke desse
                             dagane.
                         </CardBody>
-                        <CardChip size="xl" tone="brand-beige">
-                            100 % · Foreldrepengar
-                        </CardChip>
+                        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                            <CardChip size="xl" tone="brand-beige">
+                                Foreldrepengar
+                            </CardChip>
+                            <CardChip size="xl" tone="brand-beige">
+                                75 dagar igjen
+                            </CardChip>
+                        </div>
                         <CardActions>
+                            <Button size="small" variant="primary">
+                                Endre
+                            </Button>
                             <Button size="small" variant="secondary" icon={<TrashIcon aria-hidden />}>
                                 Slett
-                            </Button>
-                            <Button size="small" variant="secondary">
-                                Endre
                             </Button>
                         </CardActions>
                     </Card>
@@ -289,5 +294,131 @@ export const Ferie: Story = {
                 <CardLabel size="small">Ferie</CardLabel>
             </Card>
         </Ramme>
+    ),
+};
+
+// ---------------------------------------------------------------------------
+// XL – dei fire eksakte eksempla frå card-anatomi.html (dagsvisning/detalj-kolonne).
+// Rekkefølgja i xl-titles er: <lbl> på eiga linje, så <date> «dato · kvotetype» på
+// linja under. Deretter fritekst i body, to chips i xl-meta, og cta-row med knappar.
+
+interface XlKortProps {
+    tone: CardTone;
+    ikon: ReactNode;
+    tittel: string;
+    dato: string;
+    kvotetype: string;
+    body: ReactNode;
+    chips: [string, string];
+    primærKnapp: string;
+    sekundærKnapp: string;
+}
+
+const XlKort = ({ tone, ikon, tittel, dato, kvotetype, body, chips, primærKnapp, sekundærKnapp }: XlKortProps) => (
+    <Card size="xl" tone={tone}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
+            <CardIconCircle size="xl" tone={tone}>
+                {ikon}
+            </CardIconCircle>
+            <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+                <CardLabel size="xl">{tittel}</CardLabel>
+                <CardDate size="xl">
+                    {dato} · {kvotetype}
+                </CardDate>
+            </div>
+        </div>
+        <CardBody>{body}</CardBody>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            {chips.map((chip) => (
+                <CardChip key={chip} size="xl" tone={tone}>
+                    {chip}
+                </CardChip>
+            ))}
+        </div>
+        <CardActions>
+            <Button size="small" variant="primary">
+                {primærKnapp}
+            </Button>
+            <Button size="small" variant="secondary">
+                {sekundærKnapp}
+            </Button>
+        </CardActions>
+    </Card>
+);
+
+export const XlDagsvisning: Story = {
+    name: 'XL – dagsvisning (eksakte skisser)',
+    args: { size: 'xl' },
+    render: () => (
+        <VStack gap="space-24">
+            <Ramme breidde={420}>
+                <XlKort
+                    tone="accent"
+                    ikon={<PersonIkon />}
+                    tittel="Mors periode"
+                    dato="15. mai 2026"
+                    kvotetype="Mødrekvote"
+                    body={
+                        <>
+                            Mor er hjemme i foreldrepenger denne dagen. <strong>100 % uttak.</strong>
+                        </>
+                    }
+                    chips={['Mødrekvote', 'Dag 12 av 75']}
+                    primærKnapp="Endre"
+                    sekundærKnapp="Slett"
+                />
+            </Ramme>
+            <Ramme breidde={420}>
+                <XlKort
+                    tone="success"
+                    ikon={<PersonEnkelIkon />}
+                    tittel="Fars periode"
+                    dato="22. mai 2026"
+                    kvotetype="Fedrekvote"
+                    body={
+                        <>
+                            Far er hjemme i foreldrepenger denne dagen. <strong>50 % uttak, 50 % jobb.</strong>
+                        </>
+                    }
+                    chips={['Fedrekvote', 'Gradert uttak']}
+                    primærKnapp="Endre"
+                    sekundærKnapp="Slett"
+                />
+            </Ramme>
+            <Ramme breidde={420}>
+                <XlKort
+                    tone="brand-beige"
+                    ikon={<PersonGruppeIkon />}
+                    tittel="Fellesperiode"
+                    dato="3. juni 2026"
+                    kvotetype="Mor på uttak"
+                    body={
+                        <>
+                            Dette er en fellesperiode dere deler. <strong>Mor tar 100 % uttak</strong> denne dagen.
+                        </>
+                    }
+                    chips={['Fellesperiode', '75 dager igjen']}
+                    primærKnapp="Endre"
+                    sekundærKnapp="Bytt til far"
+                />
+            </Ramme>
+            <Ramme breidde={420}>
+                <XlKort
+                    tone="warning"
+                    ikon={<SolIkon />}
+                    tittel="Ferie"
+                    dato="10. juli 2026"
+                    kvotetype="Mor"
+                    body={
+                        <>
+                            Mor har lagt inn ferie denne dagen. <strong>Ferie påvirker ikke kvoten din.</strong>
+                        </>
+                    }
+                    chips={['Mors ferie', '2 av 25 feriedager']}
+                    primærKnapp="Endre"
+                    sekundærKnapp="Slett"
+                />
+            </Ramme>
+        </VStack>
     ),
 };
