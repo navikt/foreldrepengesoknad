@@ -1,4 +1,4 @@
-import { CalendarIcon, ExclamationmarkTriangleFillIcon, PlusIcon, TrashIcon } from '@navikt/aksel-icons';
+import { CalendarIcon, ExclamationmarkTriangleFillIcon, PlusIcon } from '@navikt/aksel-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { ReactNode } from 'react';
 
@@ -41,101 +41,6 @@ const TONAR: CardTone[] = ['accent', 'success', 'brand-beige', 'warning', 'dange
 const Ramme = ({ children, breidde = 260 }: { children: ReactNode; breidde?: number }) => (
     <div style={{ width: '100%', maxWidth: breidde, minWidth: 100 }}>{children}</div>
 );
-
-// ---------------------------------------------------------------------------
-// Storleikar
-
-export const Storleikar: Story = {
-    args: { size: 'medium' },
-    render: () => (
-        <VStack gap="space-32">
-            <VStack gap="space-8">
-                <Heading size="small">Micro – kalender-celle (44×44)</Heading>
-                <div style={{ display: 'flex', gap: 8 }}>
-                    {TONAR.map((tone, i) => (
-                        <div key={tone} style={{ width: 44, height: 44 }}>
-                            <Card size="micro" tone={tone}>
-                                {15 + i}
-                            </Card>
-                        </div>
-                    ))}
-                </div>
-            </VStack>
-
-            <VStack gap="space-8">
-                <Heading size="small">Small – ukesvisning</Heading>
-                <div style={{ display: 'flex', gap: 8 }}>
-                    <Ramme breidde={132}>
-                        <Card size="small" tone="accent">
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-                                <CardIconCircle size="small" tone="accent">
-                                    <PersonIkon />
-                                </CardIconCircle>
-                                <CardDate size="small">15. mai</CardDate>
-                            </div>
-                            <CardLabel size="small">Mødrekvote</CardLabel>
-                        </Card>
-                    </Ramme>
-                </div>
-            </VStack>
-
-            <VStack gap="space-8">
-                <Heading size="small">Medium – listevisning</Heading>
-                <Ramme>
-                    <Card size="medium" tone="success">
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                            <CardIconCircle size="medium" tone="success">
-                                <PersonEnkelIkon />
-                            </CardIconCircle>
-                            <CardLabel size="medium">Fars periode</CardLabel>
-                        </div>
-                        <CardDate size="medium">15.–29. mai 2026</CardDate>
-                        <CardChip size="medium" tone="success">
-                            100 % · Fedrekvote
-                        </CardChip>
-                    </Card>
-                </Ramme>
-            </VStack>
-
-            <VStack gap="space-8">
-                <Heading size="small">XL – dagsvisning/detalj</Heading>
-                <Ramme breidde={420}>
-                    <Card size="xl" tone="brand-beige">
-                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
-                            <CardIconCircle size="xl" tone="brand-beige">
-                                <PersonGruppeIkon />
-                            </CardIconCircle>
-                            <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-                                <CardLabel size="xl">Fellesperiode</CardLabel>
-                                <CardDate size="xl">15. mai 2026 · Foreldrepengar</CardDate>
-                            </div>
-                        </div>
-                        <CardBody>
-                            <strong>16 dagar</strong> er sett av til fellesperiode. Begge foreldre kan bruke desse
-                            dagane.
-                        </CardBody>
-                        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                            <CardChip size="xl" tone="brand-beige">
-                                Foreldrepengar
-                            </CardChip>
-                            <CardChip size="xl" tone="brand-beige">
-                                75 dagar igjen
-                            </CardChip>
-                        </div>
-                        <CardActions>
-                            <Button size="small" variant="primary">
-                                Endre
-                            </Button>
-                            <Button size="small" variant="secondary" icon={<TrashIcon aria-hidden />}>
-                                Slett
-                            </Button>
-                        </CardActions>
-                    </Card>
-                </Ramme>
-            </VStack>
-        </VStack>
-    ),
-};
 
 // ---------------------------------------------------------------------------
 // Type × storleik – heile «Størrelser»-matrisa frå card-anatomi.html: éin rad per

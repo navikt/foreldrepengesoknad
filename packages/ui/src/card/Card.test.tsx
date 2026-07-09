@@ -3,15 +3,16 @@ import { render, screen } from '@testing-library/react';
 
 import * as stories from './Card.stories';
 
-const { Storleikar, Toner, Statar, Valgt, TomDagOgManglandeDekning, KlikkbartVsStatisk } = composeStories(stories);
+const { TyperOgStorleikar, Toner, Statar, Valgt, TomDagOgManglandeDekning, KlikkbartVsStatisk } =
+    composeStories(stories);
 
 describe('<Card>', () => {
     it('skal vise innhald for kvar storleik (micro/small/medium/xl)', async () => {
-        render(<Storleikar />);
-        expect(await screen.findByText('Mødrekvote')).toBeInTheDocument();
-        expect(screen.getByText('Fars periode')).toBeInTheDocument();
-        expect(screen.getByText('Fellesperiode')).toBeInTheDocument();
-        expect(screen.getByText('Foreldrepengar')).toBeInTheDocument();
+        render(<TyperOgStorleikar />);
+        expect(await screen.findAllByText('Mors periode')).not.toHaveLength(0);
+        expect(screen.getAllByText('Fars periode').length).not.toBe(0);
+        expect(screen.getAllByText('Fellesperiode').length).not.toBe(0);
+        expect(screen.getAllByText('Ferie').length).not.toBe(0);
     });
 
     it('skal gje kvar tone si eiga soft bakgrunnsfarge', async () => {
