@@ -79,6 +79,27 @@ type CardAsDivProps = CardBaseProps &
 export type CardProps = CardAsButtonProps | CardAsDivProps;
 
 /**
+ * Reknar ut bakgrunns-/tekstklassane for tone-kanalen. Skild ut frå sjølve `Card`-komponenten
+ * for å halde components kognitive kompleksitet nede og unngå nøsta ternary-uttrykk
+ * (jf. Sonar-reglane S3776/S3358).
+ */
+function beregnToneKlasse(tone: CardTone | undefined, selected: boolean | undefined, hatched: boolean | undefined) {
+    if (hatched) {
+        const bakgrunn = selected ? TONE_BG_STRONG.danger : undefined;
+        const tekst = selected ? TONE_TEXT_CONTRAST.danger : 'text-ax-text-danger';
+        return cx(bakgrunn, tekst);
+    }
+
+    if (tone) {
+        const bakgrunn = selected ? TONE_BG_STRONG[tone] : TONE_BG_SOFT[tone];
+        const tekst = selected ? TONE_TEXT_CONTRAST[tone] : TONE_TEXT_SUBTLE[tone];
+        return cx(bakgrunn, tekst);
+    }
+
+    return selected ? NØYTRAL_VALGT_KLASSE : NØYTRAL_KLASSE;
+}
+
+/**
  * Generisk kort etter card-anatomien: fire storleikar og tre uavhengige visuelle kanalar
  * (tone = kva kortet er, state = tilstand, selected = valgt). `Card` eig berre desse kanalane
  * og storleiks-skalet (padding/gap/radius) – alt domenespesifikt innhald (ikon, tekst,
@@ -89,15 +110,7 @@ export type CardProps = CardAsButtonProps | CardAsDivProps;
  * standard knapp-oppførsel), elles ein rein `<div>`.
  */
 export const Card = ({ size, tone, state, selected, hatched, className, children, ...rest }: CardProps) => {
-    const toneKlasse = hatched
-        ? cx(selected ? TONE_BG_STRONG.danger : undefined, selected ? TONE_TEXT_CONTRAST.danger : 'text-ax-text-danger')
-        : tone
-          ? cx(
-                selected ? TONE_BG_STRONG[tone] : TONE_BG_SOFT[tone],
-                selected ? TONE_TEXT_CONTRAST[tone] : TONE_TEXT_SUBTLE[tone],
-            )
-          : cx(selected ? NØYTRAL_VALGT_KLASSE : NØYTRAL_KLASSE);
-
+    const toneKlasse = beregnToneKlasse(tone, selected, hatched);
     const classes = cx(STORLEIK_KLASSE[size], toneKlasse, state && STATE_BORDER_KLASSE[state], className);
     const style = hatched ? HATCHED_STYLE : undefined;
 
