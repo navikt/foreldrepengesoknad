@@ -8,7 +8,7 @@ import {
     TrashIcon,
 } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Button, HStack, Heading, Spacer, Tooltip, VStack } from '@navikt/ds-react';
