@@ -1,4 +1,4 @@
-import { CalendarIcon, ExclamationmarkTriangleFillIcon, PlusIcon } from '@navikt/aksel-icons';
+import { ExclamationmarkTriangleFillIcon, PlusIcon } from '@navikt/aksel-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { ReactNode } from 'react';
 
@@ -451,25 +451,6 @@ export const KlikkbartVsStatisk: Story = {
     ),
 };
 
-export const Ferie: Story = {
-    args: { size: 'small' },
-    render: () => (
-        <Ramme breidde={160}>
-            <Card size="small" tone="warning">
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-                    <CardIconCircle size="small" tone="warning">
-                        <SolIkon />
-                    </CardIconCircle>
-                    <CardDate size="small">
-                        <CalendarIcon aria-hidden style={{ display: 'inline', verticalAlign: 'middle' }} /> 14. mai
-                    </CardDate>
-                </div>
-                <CardLabel size="small">Ferie</CardLabel>
-            </Card>
-        </Ramme>
-    ),
-};
-
 // ---------------------------------------------------------------------------
 // XL – dei fire eksakte eksempla frå card-anatomi.html (dagsvisning/detalj-kolonne).
 // Rekkefølgja i xl-titles er: <lbl> på eiga linje, så <date> «dato · kvotetype» på
@@ -518,80 +499,3 @@ const XlKort = ({ tone, ikon, tittel, dato, kvotetype, body, chips, primærKnapp
         </CardActions>
     </Card>
 );
-
-export const XlDagsvisning: Story = {
-    name: 'XL – dagsvisning (eksakte skisser)',
-    args: { size: 'xl' },
-    render: () => (
-        <VStack gap="space-24">
-            <Ramme breidde={420}>
-                <XlKort
-                    tone="accent"
-                    ikon={<PersonIkon />}
-                    tittel="Mors periode"
-                    dato="15. mai 2026"
-                    kvotetype="Mødrekvote"
-                    body={
-                        <>
-                            Mor er hjemme i foreldrepenger denne dagen. <strong>100 % uttak.</strong>
-                        </>
-                    }
-                    chips={['Mødrekvote', 'Dag 12 av 75']}
-                    primærKnapp="Endre"
-                    sekundærKnapp="Slett"
-                />
-            </Ramme>
-            <Ramme breidde={420}>
-                <XlKort
-                    tone="success"
-                    ikon={<PersonEnkelIkon />}
-                    tittel="Fars periode"
-                    dato="22. mai 2026"
-                    kvotetype="Fedrekvote"
-                    body={
-                        <>
-                            Far er hjemme i foreldrepenger denne dagen. <strong>50 % uttak, 50 % jobb.</strong>
-                        </>
-                    }
-                    chips={['Fedrekvote', 'Gradert uttak']}
-                    primærKnapp="Endre"
-                    sekundærKnapp="Slett"
-                />
-            </Ramme>
-            <Ramme breidde={420}>
-                <XlKort
-                    tone="brand-beige"
-                    ikon={<PersonGruppeIkon />}
-                    tittel="Fellesperiode"
-                    dato="3. juni 2026"
-                    kvotetype="Mor på uttak"
-                    body={
-                        <>
-                            Dette er en fellesperiode dere deler. <strong>Mor tar 100 % uttak</strong> denne dagen.
-                        </>
-                    }
-                    chips={['Fellesperiode', '75 dager igjen']}
-                    primærKnapp="Endre"
-                    sekundærKnapp="Bytt til far"
-                />
-            </Ramme>
-            <Ramme breidde={420}>
-                <XlKort
-                    tone="warning"
-                    ikon={<SolIkon />}
-                    tittel="Ferie"
-                    dato="10. juli 2026"
-                    kvotetype="Mor"
-                    body={
-                        <>
-                            Mor har lagt inn ferie denne dagen. <strong>Ferie påvirker ikke kvoten din.</strong>
-                        </>
-                    }
-                    chips={['Mors ferie', '2 av 25 feriedager']}
-                    primærKnapp="Endre"
-                    sekundærKnapp="Slett"
-                />
-            </Ramme>
-        </VStack>
-    ),
-};
