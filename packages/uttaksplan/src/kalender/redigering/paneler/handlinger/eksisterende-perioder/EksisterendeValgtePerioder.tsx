@@ -617,7 +617,9 @@ const PeriodeKvoteType = ({
             gjelder: erAnnenUtsettelseEnnFerie,
             render: () => (
                 <>
-                    <FormattedMessage id="RedigeringPanel.Utsettelse" />:
+                    <span>
+                        <FormattedMessage id="RedigeringPanel.Utsettelse" />:
+                    </span>
                     <BodyShort>{utsettelseÅrsak && getUtsettelseÅrsakTekst(utsettelseÅrsak)}</BodyShort>
                 </>
             ),
