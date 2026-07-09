@@ -103,7 +103,7 @@ describe('<OmBarnetSteg>', () => {
 
         const forventetTekst =
             'Perioden utvides med antall dager barnet er født før termindato, slik at permisjonen varer like ' +
-            'lenge som om barnet var født til termin. For deg blir det lagt til 8 uker og 4 dager.';
+            'lenge som om barnet var født på termin. For deg blir det lagt til 8 uker og 4 dager.';
         expect(screen.getByText(forventetTekst)).toBeInTheDocument();
 
         expect(screen.getByText('Du må ha opptjent rett til foreldrepenger dagen før fødsel')).toBeInTheDocument();
@@ -707,6 +707,38 @@ describe('<OmBarnetSteg>', () => {
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
+
+        vi.useRealTimers();
+    });
+
+    it('skal vise informasjon om forlenget periode når registrert barn er født før uke 33', async () => {
+        const mockTodayDate = new Date('2022-08-05');
+        vi.setSystemTime(mockTodayDate);
+
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+        render(
+            <RegistrertBarnFødselMor
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+
+        expect(await screen.findByText('Barna du søker foreldrepenger for:')).toBeInTheDocument();
+
+        const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
+
+        expect(
+            screen.queryByText('Perioden med foreldrepenger forlenges siden barnet er født før uke 33'),
+        ).not.toBeInTheDocument();
+
+        await userEvent.type(termindatoInput, dayjs('2022-10-15').format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
+
+        expect(
+            screen.getByText('Perioden med foreldrepenger forlenges siden barnet er født før uke 33'),
+        ).toBeInTheDocument();
+        expect(screen.getByText('Du må ha opptjent rett til foreldrepenger dagen før fødsel')).toBeInTheDocument();
 
         vi.useRealTimers();
     });

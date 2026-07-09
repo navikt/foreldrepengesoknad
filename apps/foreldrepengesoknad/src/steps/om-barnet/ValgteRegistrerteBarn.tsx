@@ -7,8 +7,9 @@ import { RegistrertePersonalia } from 'pages/registrerte-personalia/RegistrerteP
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { formaterFødselsdatoerPåBarn, getTittelBarnNårNavnSkalIkkeVises } from 'utils/barnUtils';
+import { erFødtFørUke33, getAntallVirkedagerFraFødselTilTermin, getVarighetString } from 'utils/dateUtils';
 
-import { Label, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Heading, Label, ReadMore, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { FpBarnDto_fpoversikt } from '@navikt/fp-types';
@@ -28,7 +29,9 @@ interface Props {
 export const ValgteRegistrerteBarn = ({ valgteRegistrerteBarn, skalInkludereTermindato }: Props) => {
     const intl = useIntl();
 
-    const { control } = useFormContext<BarnetFormValues>();
+    const formMethods = useFormContext<BarnetFormValues>();
+    const { control } = formMethods;
+    const termindato = formMethods.watch('termindato');
 
     const alleBarnaLever = valgteRegistrerteBarn.every((barn) => !barn.dødsdato);
     const sorterteBarn = [...valgteRegistrerteBarn].sort(sorterPersonEtterEldstOgNavn);
@@ -41,6 +44,13 @@ export const ValgteRegistrerteBarn = ({ valgteRegistrerteBarn, skalInkludereTerm
             ...annenPartVedtakOptions,
             select: (vedtak) => !!vedtak?.termindato,
         }).data ?? false;
+
+    const visInfoOmForlengetPeriode = skalInkludereTermindato && erFødtFørUke33(fødselsdato, termindato);
+
+    const varighet =
+        visInfoOmForlengetPeriode && fødselsdato && termindato
+            ? getVarighetString(getAntallVirkedagerFraFødselTilTermin(fødselsdato, termindato), intl)
+            : undefined;
 
     return (
         <>
@@ -87,13 +97,15 @@ export const ValgteRegistrerteBarn = ({ valgteRegistrerteBarn, skalInkludereTerm
                         isValidDate(
                             intl.formatMessage({ id: 'valideringsfeil.omBarnet.termindato.ugyldigDatoFormat' }),
                         ),
-                        (termindato) => {
-                            if (!dayjs(termindato).subtract(6, 'months').isSameOrBefore(dayjs(fødselsdato), 'day')) {
+                        (termindatoVerdi) => {
+                            if (
+                                !dayjs(termindatoVerdi).subtract(6, 'months').isSameOrBefore(dayjs(fødselsdato), 'day')
+                            ) {
                                 return intl.formatMessage({
                                     id: 'valideringsfeil.omBarnet.termindato.forLangtFremITid',
                                 });
                             }
-                            if (!dayjs(termindato).add(1, 'months').isSameOrAfter(dayjs(fødselsdato), 'day')) {
+                            if (!dayjs(termindatoVerdi).add(1, 'months').isSameOrAfter(dayjs(fødselsdato), 'day')) {
                                 return intl.formatMessage({
                                     id: 'valideringsfeil.omBarnet.termindato.forLangtTilbakeITid',
                                 });
@@ -103,6 +115,21 @@ export const ValgteRegistrerteBarn = ({ valgteRegistrerteBarn, skalInkludereTerm
                         },
                     ]}
                 />
+            )}
+            {visInfoOmForlengetPeriode && (
+                <Alert variant="info">
+                    <VStack gap="space-16">
+                        <Heading level="3" size="small">
+                            <FormattedMessage id="omBarnet.erFødtFørUke33.tittel" />
+                        </Heading>
+                        <BodyShort>
+                            <FormattedMessage id="omBarnet.erFødtFørUke33.tekst" values={{ varighet }} />
+                        </BodyShort>
+                        <ReadMore header={intl.formatMessage({ id: 'omBarnet.erFødtFørUke33.readMore.header' })}>
+                            <FormattedMessage id="omBarnet.erFødtFørUke33.readMore.tekst" />
+                        </ReadMore>
+                    </VStack>
+                </Alert>
             )}
         </>
     );

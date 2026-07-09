@@ -156,7 +156,7 @@ describe('<OmBarnetPlanleggerSteg>', () => {
 
         const forventetTekst =
             'Perioden utvides med antall dager barnet er født før termindato, slik at permisjonen varer like ' +
-            'lenge som om barnet var født til termin. For deg blir det lagt til 8 uker og 2 dager.';
+            'lenge som om barnet var født på termin. For deg blir det lagt til 8 uker og 2 dager.';
         expect(screen.getByText(forventetTekst)).toBeInTheDocument();
 
         vi.useRealTimers();
