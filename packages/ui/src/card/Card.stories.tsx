@@ -304,6 +304,90 @@ export const Responsivitet: Story = {
 };
 
 // ---------------------------------------------------------------------------
+// Dei tre visuelle kanalane samla – jf. «Tre visuelle kanaler» i card-anatomi.html:
+// tone (bakgrunn), state (border + badge) og selected (invertering). Kanalane er
+// uavhengige av kvarandre og kan derfor kombinerast fritt utan å kollidere.
+
+export const TreVisuelleKanaler: Story = {
+    args: { size: 'medium' },
+    render: () => (
+        <VStack gap="space-8">
+            <Heading size="small">Tre uavhengige kanalar</Heading>
+            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+                <VStack gap="space-4">
+                    <Ramme breidde={200}>
+                        <Card size="medium" tone="accent">
+                            <CardLabel size="medium">Mors periode</CardLabel>
+                            <CardDate size="medium">15. mai 2026</CardDate>
+                        </Card>
+                    </Ramme>
+                    <Heading size="xsmall">Type → bakgrunn</Heading>
+                    <p style={{ fontSize: 12, color: '#666', maxWidth: 200 }}>
+                        Kven kortet tilhøyrer. Soft type-farge fyller flata, konstant på tvers av storleikar.
+                    </p>
+                </VStack>
+                <VStack gap="space-4">
+                    <Ramme breidde={200}>
+                        <Card size="medium" tone="accent" state="warning">
+                            <CardLabel size="medium">Mors periode</CardLabel>
+                            <CardDate size="medium">15. mai 2026</CardDate>
+                            <CardBadge tone="warning" icon={<ExclamationmarkTriangleFillIcon aria-hidden />}>
+                                Ufullstendig
+                            </CardBadge>
+                        </Card>
+                    </Ramme>
+                    <Heading size="xsmall">State → border + badge</Heading>
+                    <p style={{ fontSize: 12, color: '#666', maxWidth: 200 }}>
+                        Status (ufullstendig, mangler dekning, overlapp). Legg seg oppå utan å bytte bakgrunnen.
+                    </p>
+                </VStack>
+                <VStack gap="space-4">
+                    <Ramme breidde={200}>
+                        <Card size="medium" tone="accent" selected>
+                            <CardLabel size="medium">Mors periode</CardLabel>
+                            <CardDate size="medium">15. mai 2026</CardDate>
+                        </Card>
+                    </Ramme>
+                    <Heading size="xsmall">Valgt → invertering</Heading>
+                    <p style={{ fontSize: 12, color: '#666', maxWidth: 200 }}>
+                        Markert i kalenderen. Flippar til sterk type-farge med kvit tekst i staden for enno ein farge
+                        eller border.
+                    </p>
+                </VStack>
+            </div>
+
+            <Heading size="small">Kanalane kolliderer aldri – dei kan kombinerast fritt</Heading>
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                <Ramme breidde={200}>
+                    <Card size="medium" tone="accent">
+                        <CardLabel size="medium">Berre tone</CardLabel>
+                        <CardDate size="medium">15. mai 2026</CardDate>
+                    </Card>
+                </Ramme>
+                <Ramme breidde={200}>
+                    <Card size="medium" tone="accent" state="warning">
+                        <CardLabel size="medium">Tone + state</CardLabel>
+                        <CardDate size="medium">15. mai 2026</CardDate>
+                        <CardBadge tone="warning" icon={<ExclamationmarkTriangleFillIcon aria-hidden />}>
+                            Ufullstendig
+                        </CardBadge>
+                    </Card>
+                </Ramme>
+                <Ramme breidde={200}>
+                    <Card size="medium" tone="accent" state="warning" selected>
+                        <CardLabel size="medium">Tone + state + valgt</CardLabel>
+                        <CardDate size="medium">15. mai 2026</CardDate>
+                        <CardBadge tone="warning" icon={<ExclamationmarkTriangleFillIcon aria-hidden />}>
+                            Ufullstendig
+                        </CardBadge>
+                    </Card>
+                </Ramme>
+            </div>
+        </VStack>
+    ),
+};
+
+// ---------------------------------------------------------------------------
 // Tone-kanalen
 
 export const Toner: Story = {
