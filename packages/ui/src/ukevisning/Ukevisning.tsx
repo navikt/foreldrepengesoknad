@@ -46,11 +46,18 @@ const PERIODE_TONE: Record<UkevisningPeriodeType, CardTone> = {
     FERIE: 'warning',
 };
 
-const MERGEKLASSE: Record<MergeForm, string> = {
+const MERGE_POSISJON_KLASSE: Record<MergeForm, string> = {
     single: '',
-    start: 'right-0 rounded-r-none',
-    middle: 'inset-x-0 rounded-none',
-    end: 'left-0 rounded-l-none',
+    start: 'right-0',
+    middle: 'inset-x-0',
+    end: 'left-0',
+};
+
+const MERGE_RADIUS_KLASSE: Record<MergeForm, string> = {
+    single: '',
+    start: 'rounded-r-none',
+    middle: 'rounded-none',
+    end: 'rounded-l-none',
 };
 
 function cx(...klasser: Array<string | false | undefined>) {
@@ -252,7 +259,13 @@ const MicroKort = ({
 }) => {
     const visInnhald = mergeForm === 'single' || mergeForm === 'start';
 
-    const klasse = cx('absolute inset-1 z-[1]', MERGEKLASSE[mergeForm]);
+    // Posisjonering (`absolute` + insets) ligg på ein eigen wrapper-`div`, ikkje på sjølve
+    // `Card`-elementet: `Card` sin `small`-storleiksklasse set `w-full`, og kombinert med
+    // `absolute` + alle fire insets på same element vert boksmodellen over-constrained (jf. CSS
+    // 2.1 §10.3.7) – nettlesaren ignorerer då `right`, som gjev synleg overflow ut over kantlinja
+    // når `left` framleis har ein ikkje-null verdi (single/start-formene).
+    const wrapperKlasse = cx('absolute inset-1 z-[1]', MERGE_POSISJON_KLASSE[mergeForm]);
+    const kortKlasse = cx('h-full w-full', MERGE_RADIUS_KLASSE[mergeForm]);
 
     const innhald = visInnhald && (
         <>
@@ -279,24 +292,30 @@ const MicroKort = ({
     const felles = {
         size: 'small' as const,
         tone: PERIODE_TONE[periode.type],
-        className: klasse,
+        className: kortKlasse,
         'aria-label': `${dayjs(iso).format('D. MMMM YYYY')}, ${periode.srText}`,
     };
 
     if (!dateClickCallback) {
-        return <Card {...felles}>{innhald}</Card>;
+        return (
+            <div className={wrapperKlasse}>
+                <Card {...felles}>{innhald}</Card>
+            </div>
+        );
     }
 
     return (
-        <Card
-            {...felles}
-            ref={(el: HTMLButtonElement | null) => registrerKnappRef(dagKnappRef, iso, el)}
-            data-iso={iso}
-            onClick={() => dateClickCallback(iso)}
-            onKeyDown={onTastetrykk}
-        >
-            {innhald}
-        </Card>
+        <div className={wrapperKlasse}>
+            <Card
+                {...felles}
+                ref={(el: HTMLButtonElement | null) => registrerKnappRef(dagKnappRef, iso, el)}
+                data-iso={iso}
+                onClick={() => dateClickCallback(iso)}
+                onKeyDown={onTastetrykk}
+            >
+                {innhald}
+            </Card>
+        </div>
     );
 };
 

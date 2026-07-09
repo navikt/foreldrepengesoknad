@@ -51,11 +51,18 @@ const PERIODE_TONE: Record<ManedsvisningPeriodeType, CardTone> = {
     FERIE: 'warning',
 };
 
-const MERGEKLASSE: Record<MergeForm, string> = {
+const MERGE_POSISJON_KLASSE: Record<MergeForm, string> = {
     single: '',
-    start: 'right-0 rounded-r-none',
-    middle: 'inset-x-0 rounded-none',
-    end: 'left-0 rounded-l-none',
+    start: 'right-0',
+    middle: 'inset-x-0',
+    end: 'left-0',
+};
+
+const MERGE_RADIUS_KLASSE: Record<MergeForm, string> = {
+    single: '',
+    start: 'rounded-r-none',
+    middle: 'rounded-none',
+    end: 'rounded-l-none',
 };
 
 const GRID_HEAD_KLASSE = [
@@ -392,29 +399,41 @@ const MicroCard = ({
     dagKnappRef: MutableRefObject<Map<string, HTMLButtonElement>>;
     onTastetrykk: (event: KeyboardEvent<HTMLButtonElement>) => void;
 }) => {
-    const klasse = cx(
-        'absolute inset-1 z-[1] box-border border-0 p-0',
-        MERGEKLASSE[mergeForm],
+    // Posisjonering (`absolute` + insets) ligg på ein eigen wrapper-`div`, ikkje på sjølve
+    // `Card`-elementet: `Card` sine eigne storleiksklassar set `h-full`/`w-full`, og kombinert med
+    // `absolute` + alle fire insets på same element vert boksmodellen over-constrained (jf. CSS
+    // 2.1 §10.3.7) – nettlesaren ignorerer då `right`/`bottom`, som gjev synleg overflow ut over
+    // kantlinja når `left`/`top` framleis har ein ikkje-null verdi (single/start-formene).
+    const wrapperKlasse = cx(
+        'absolute inset-1 z-[1]',
+        MERGE_POSISJON_KLASSE[mergeForm],
         periode.harAdvarsel &&
             "after:absolute after:top-1.5 after:right-1.5 after:h-2 after:w-2 after:rounded-full after:content-['']",
         periode.harAdvarsel && 'after:bg-ax-bg-warning-strong after:shadow-[0_0_0_2px_var(--ax-bg-default)]',
     );
+    const kortKlasse = cx('h-full w-full border-0 box-border p-0', MERGE_RADIUS_KLASSE[mergeForm]);
 
     if (!dateClickCallback) {
-        return <Card size="micro" tone={PERIODE_TONE[periode.type]} className={klasse} aria-hidden />;
+        return (
+            <div className={wrapperKlasse}>
+                <Card size="micro" tone={PERIODE_TONE[periode.type]} className={kortKlasse} aria-hidden />
+            </div>
+        );
     }
 
     return (
-        <Card
-            size="micro"
-            tone={PERIODE_TONE[periode.type]}
-            ref={(el: HTMLButtonElement | null) => registrerKnappRef(dagKnappRef, iso, el)}
-            data-iso={iso}
-            className={klasse}
-            onClick={() => dateClickCallback(iso)}
-            onKeyDown={onTastetrykk}
-            aria-label={`${dayjs(iso).format('D. MMMM YYYY')}, ${periode.srText}`}
-        />
+        <div className={wrapperKlasse}>
+            <Card
+                size="micro"
+                tone={PERIODE_TONE[periode.type]}
+                ref={(el: HTMLButtonElement | null) => registrerKnappRef(dagKnappRef, iso, el)}
+                data-iso={iso}
+                className={kortKlasse}
+                onClick={() => dateClickCallback(iso)}
+                onKeyDown={onTastetrykk}
+                aria-label={`${dayjs(iso).format('D. MMMM YYYY')}, ${periode.srText}`}
+            />
+        </div>
     );
 };
 

@@ -89,9 +89,10 @@ describe('<Ukevisning>', () => {
         expect(await screen.findByTestId('dag:11;type:MOR')).toBeInTheDocument();
         expect(screen.getByTestId('dag:15;type:MOR')).toBeInTheDocument();
         // Alle fem kvardagane skal høyre til same (langvarige) periode og dermed vera
-        // samanhengande (start … middle … middle … middle … end).
+        // samanhengande (start … middle … middle … middle … end). Posisjoneringa (right-0) ligg
+        // på wrapper-diven rundt kortet, ikkje på sjølve kortet (jf. Manedsvisning/Ukevisning).
         const mandagKort = screen.getByTestId('dag:11;type:MOR').querySelector('[class*="rounded-lg"]');
-        expect(mandagKort?.className).toContain('right-0');
+        expect(mandagKort?.parentElement?.className).toContain('right-0');
     });
 
     it('skal vise mandag 11. og tysdag 12. som eit samanhengande (merga) mikrokort', async () => {
@@ -99,11 +100,12 @@ describe('<Ukevisning>', () => {
         const mandagKort = (await screen.findByTestId('dag:11;type:MOR')).querySelector('[class*="rounded-lg"]');
         const tysdagKort = screen.getByTestId('dag:12;type:MOR').querySelector('[class*="rounded-lg"]');
 
-        // Kortet skal strekka seg heilt til cellekanten (right-0 / left-0) slik at det ikkje er
-        // noko synleg mellomrom mellom dei to dagane som utgjer same periode.
-        expect(mandagKort?.className).toContain('right-0');
+        // Wrapper-diven skal strekka seg heilt til cellekanten (right-0 / left-0) slik at det
+        // ikkje er noko synleg mellomrom mellom dei to dagane som utgjer same periode, mens
+        // sjølve kortet mistar avrundinga på den delte kanten (rounded-r-none / rounded-l-none).
+        expect(mandagKort?.parentElement?.className).toContain('right-0');
         expect(mandagKort?.className).toContain('rounded-r-none');
-        expect(tysdagKort?.className).toContain('left-0');
+        expect(tysdagKort?.parentElement?.className).toContain('left-0');
         expect(tysdagKort?.className).toContain('rounded-l-none');
     });
 
