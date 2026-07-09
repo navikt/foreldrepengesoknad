@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 
 import * as stories from './Card.stories';
 
-const { TyperOgStorleikar, Toner, States, Valgt, KlikkbartVsStatisk } = composeStories(stories);
+const { TyperOgStorleikar, TreVisuelleKanaler, States, KlikkbartVsStatisk } = composeStories(stories);
 
 describe('<Card>', () => {
     it('skal vise innhald for kvar storleik (micro/small/medium/xl)', async () => {
@@ -14,19 +14,16 @@ describe('<Card>', () => {
         expect(screen.getAllByText('Ferie').length).not.toBe(0);
     });
 
-    it('skal gje kvar tone si eiga soft bakgrunnsfarge', async () => {
-        render(<Toner />);
-        const accentKort = (await screen.findByText('accent')).closest('div');
-        expect(accentKort?.className).toContain('bg-ax-bg-accent-soft');
-
-        const dangerKort = screen.getByText('danger').closest('div');
-        expect(dangerKort?.className).toContain('bg-ax-bg-danger-soft');
+    it('skal gje tone-kanalen si eiga soft bakgrunnsfarge', async () => {
+        render(<TreVisuelleKanaler />);
+        const berreToneKort = (await screen.findByText('Berre tone')).closest('div');
+        expect(berreToneKort?.className).toContain('bg-ax-bg-accent-soft');
     });
 
     it('skal falle tilbake til nøytral styling når ingen tone er sett', async () => {
-        render(<Toner />);
-        const utenToneKort = (await screen.findByText('Ingen tone')).closest('div');
-        expect(utenToneKort?.className).toContain('bg-ax-bg-default');
+        render(<States />);
+        const ingenPlanKort = (await screen.findByText('Ingen plan')).closest('div');
+        expect(ingenPlanKort?.className).toContain('bg-ax-bg-default');
     });
 
     it('skal vise state-badge uavhengig av tone, og aldri bytte ut bakgrunnen', async () => {
@@ -45,11 +42,11 @@ describe('<Card>', () => {
     });
 
     it('skal invertere til sterk bakgrunn og kontrastfarga tekst når selected er sett', async () => {
-        render(<Valgt />);
-        const valgtKort = (await screen.findAllByText('Valgt'))[0]!.closest('div');
+        render(<TreVisuelleKanaler />);
+        const valgtKort = (await screen.findByText('Tone + state + valgt')).closest('div');
         expect(valgtKort?.className).toContain('bg-ax-bg-accent-strong');
 
-        const ikkjeValgtKort = screen.getAllByText('Ikkje valgt')[0]!.closest('div');
+        const ikkjeValgtKort = screen.getByText('Tone + state').closest('div');
         expect(ikkjeValgtKort?.className).toContain('bg-ax-bg-accent-soft');
     });
 

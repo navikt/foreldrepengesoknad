@@ -25,13 +25,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
- * Nokre eksempeltonar for demoen. Sjølve `Card`-familien kjenner berre den generiske
- * `CardTone`-typen (accent/success/brand-beige/warning/danger) – kva desse *tyder* i
- * uttaksplan-samanheng (MOR/FAR/FELLES/FERIE) er opp til forbrukaren å avgjere.
- */
-const TONAR: CardTone[] = ['accent', 'success', 'brand-beige', 'warning', 'danger'];
-
-/**
  * Demo-container for `small`/`medium`/`xl`-kort. Kortet sjølv er responsivt (fyller
  * kontaineren sin, jf. `w-full`-klassane i `Card.tsx`) – denne wrapperen set difor berre ei
  * maks-breidde (`breidde`), ikkje ei fast breidde. Prosentbreidda gjer at kortet automatisk
@@ -388,36 +381,6 @@ export const TreVisuelleKanaler: Story = {
 };
 
 // ---------------------------------------------------------------------------
-// Tone-kanalen
-
-export const Toner: Story = {
-    args: { size: 'medium' },
-    render: () => (
-        <VStack gap="space-8">
-            <Heading size="small">Tone – kva kortet «er» (eig bakgrunnen)</Heading>
-            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                {TONAR.map((tone) => (
-                    <Ramme key={tone} breidde={160}>
-                        <Card size="medium" tone={tone}>
-                            <CardLabel size="medium">{tone}</CardLabel>
-                            <CardDate size="medium">Soft bakgrunn</CardDate>
-                        </Card>
-                    </Ramme>
-                ))}
-            </div>
-            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                <Ramme breidde={160}>
-                    <Card size="medium">
-                        <CardLabel size="medium">Ingen tone</CardLabel>
-                        <CardDate size="medium">Nøytral, tom dag</CardDate>
-                    </Card>
-                </Ramme>
-            </div>
-        </VStack>
-    ),
-};
-
-// ---------------------------------------------------------------------------
 // State-kanalen (border + badge, uavhengig av tone) – dei fire variantane frå
 // «States»-seksjonen i card-anatomi.html: Ingen plan, Ufullstendig, Mangler dekning, Overlapp.
 // State legg seg oppå bakgrunnen som ein border + badge og bytter aldri ut typen sin farge.
@@ -467,36 +430,6 @@ export const States: Story = {
                         </CardBadge>
                     </Card>
                 </Ramme>
-            </div>
-        </VStack>
-    ),
-};
-
-// ---------------------------------------------------------------------------
-// Selected-kanalen (invertering: soft/nøytral -> sterk fylling)
-
-export const Valgt: Story = {
-    args: { size: 'medium' },
-    render: () => (
-        <VStack gap="space-8">
-            <Heading size="small">Selected – invertering, aldri ein ny farge/border</Heading>
-            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                {(['accent', 'success'] as const).map((tone) => (
-                    <div key={tone} style={{ display: 'flex', gap: 8 }}>
-                        <Ramme breidde={160}>
-                            <Card size="medium" tone={tone}>
-                                <CardLabel size="medium">{tone}</CardLabel>
-                                <CardDate size="medium">Ikkje valgt</CardDate>
-                            </Card>
-                        </Ramme>
-                        <Ramme breidde={160}>
-                            <Card size="medium" tone={tone} selected>
-                                <CardLabel size="medium">{tone}</CardLabel>
-                                <CardDate size="medium">Valgt</CardDate>
-                            </Card>
-                        </Ramme>
-                    </div>
-                ))}
             </div>
         </VStack>
     ),
