@@ -1,5 +1,7 @@
 import { ReactNode, useEffect, useState } from 'react';
 
+import { CheckmarkIkon, PersonEnkelIkon, PersonGruppeIkon, PersonIkon } from '../icons/PeriodeIkoner';
+
 // Farge-konfigurasjon per kvote-tone, basert på Aksel-token:
 // – MOR  → ax-accent-*  (blå, same som BLUE i uttaksplan-kalenderen)
 // – FAR  → ax-success-* (grønn, same som GREEN i uttaksplan-kalenderen)
@@ -38,34 +40,6 @@ const ringCircumference = (r: number) => 2 * Math.PI * r;
 
 const dashOffset = (circumference: number, progress: number) =>
     circumference * (1 - Math.min(1, Math.max(0, progress)));
-
-const MorIcon = ({ className }: { className: string }) => (
-    <svg viewBox="0 0 24 24" fill="none" strokeWidth={2.2} width={22} height={22} aria-hidden className={`stroke-current ${className}`}>
-        <circle cx="12" cy="7" r="3" />
-        <path d="M12 10v8M9 14h6" />
-    </svg>
-);
-
-const FarIcon = ({ className }: { className: string }) => (
-    <svg viewBox="0 0 24 24" fill="none" strokeWidth={2.2} width={22} height={22} aria-hidden className={`stroke-current ${className}`}>
-        <circle cx="12" cy="7" r="3" />
-        <path d="M12 10v10" />
-    </svg>
-);
-
-const FellesIcon = ({ className }: { className: string }) => (
-    <svg viewBox="0 0 24 24" fill="none" strokeWidth={2.2} width={22} height={22} aria-hidden className={`stroke-current ${className}`}>
-        <circle cx="9" cy="8" r="3" />
-        <circle cx="15" cy="8" r="3" />
-        <path d="M5 20c0-3 2-5 4-5M19 20c0-3-2-5-4-5" />
-    </svg>
-);
-
-const CheckmarkIcon = ({ className }: { className: string }) => (
-    <svg viewBox="0 0 24 24" fill="none" strokeWidth={3} width={14} height={14} aria-hidden className={`stroke-current ${className}`}>
-        <path d="M5 12l5 5L20 7" />
-    </svg>
-);
 
 export type KvoteTone = 'mor' | 'far' | 'felles';
 export type KvoteRingSize = 'normal' | 'mini';
@@ -139,8 +113,7 @@ export const KvoteProgresjonRing = ({
 
     // Klamp verdiane: progress alltid [0,1]; progressFar aldri lågare enn progress
     const clampedProgress = Math.min(1, Math.max(0, progress));
-    const clampedFar =
-        progressFar !== undefined ? Math.min(1, Math.max(clampedProgress, progressFar)) : undefined;
+    const clampedFar = progressFar !== undefined ? Math.min(1, Math.max(clampedProgress, progressFar)) : undefined;
 
     const morOffset = animated ? dashOffset(c, clampedProgress) : c;
     const farOffset = (() => {
@@ -160,11 +133,7 @@ export const KvoteProgresjonRing = ({
     const ringContent = (
         <>
             <div className={`relative shrink-0 ${sizeClass}`}>
-                <svg
-                    viewBox={viewBox}
-                    aria-hidden
-                    className="-rotate-90 block w-full h-full"
-                >
+                <svg viewBox={viewBox} aria-hidden className="-rotate-90 block w-full h-full">
                     {/* Bakgrunnsring (tom spor) */}
                     <circle
                         cx={dims.cx}
@@ -211,14 +180,14 @@ export const KvoteProgresjonRing = ({
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                         {!complete && (
                             <>
-                                {tone === 'mor' && <MorIcon className={t.iconClass} />}
-                                {tone === 'far' && <FarIcon className={t.iconClass} />}
-                                {tone === 'felles' && <FellesIcon className={t.iconClass} />}
+                                {tone === 'mor' && <PersonIkon className={t.iconClass} />}
+                                {tone === 'far' && <PersonEnkelIkon className={t.iconClass} />}
+                                {tone === 'felles' && <PersonGruppeIkon className={t.iconClass} />}
                             </>
                         )}
                         {complete && (
                             <div className="w-[26px] h-[26px] rounded-full bg-[var(--ax-bg-default)] flex items-center justify-center shadow-sm">
-                                <CheckmarkIcon className={t.iconClass} />
+                                <CheckmarkIkon className={t.iconClass} />
                             </div>
                         )}
                     </div>
@@ -234,17 +203,20 @@ export const KvoteProgresjonRing = ({
             {size === 'normal' && label && (
                 <div className="flex flex-col gap-0.5 min-h-[38px] items-center text-center">
                     <span className="text-[13px] font-semibold text-[var(--ax-text-default)]">{label}</span>
-                    {progressLabel && (
-                        <span className="text-[12px] text-[var(--ax-text-subtle)]">{progressLabel}</span>
-                    )}
+                    {progressLabel && <span className="text-[12px] text-[var(--ax-text-subtle)]">{progressLabel}</span>}
                     {splitInfo && splitInfo.length > 0 && (
                         <div className="flex gap-1 mt-1 items-center justify-center text-[11px] text-[var(--ax-text-subtle)] flex-wrap">
                             {splitInfo.map((item, idx) => {
                                 const dotClass = item.color === 'mor' ? TONE.mor.dotClass : TONE.far.dotClass;
                                 return (
-                                    <span key={`${item.color}-${item.text}`} className="inline-flex items-center gap-[3px]">
+                                    <span
+                                        key={`${item.color}-${item.text}`}
+                                        className="inline-flex items-center gap-[3px]"
+                                    >
                                         {idx > 0 && <span className="mx-0.5 text-[var(--ax-text-muted)]">·</span>}
-                                        <span className={`w-1.5 h-1.5 rounded-full inline-block shrink-0 ${dotClass}`} />
+                                        <span
+                                            className={`w-1.5 h-1.5 rounded-full inline-block shrink-0 ${dotClass}`}
+                                        />
                                         {item.text}
                                     </span>
                                 );
@@ -260,12 +232,7 @@ export const KvoteProgresjonRing = ({
 
     if (onClick) {
         return (
-            <button
-                type="button"
-                onClick={onClick}
-                aria-label={ariaLabel}
-                className={`${baseClass} cursor-pointer`}
-            >
+            <button type="button" onClick={onClick} aria-label={ariaLabel} className={`${baseClass} cursor-pointer`}>
                 {ringContent}
             </button>
         );

@@ -1,13 +1,19 @@
+import { ExclamationmarkTriangleFillIcon } from '@navikt/aksel-icons';
 import dayjs, { Dayjs } from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import { KeyboardEvent, MutableRefObject, useMemo, useRef } from 'react';
 
-import { ExclamationmarkTriangleFillIcon } from '@navikt/aksel-icons';
 import { BodyShort, HStack } from '@navikt/ds-react';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
+import { Card } from '../card/Card';
+import { CardBadge } from '../card/CardBadge';
+import { CardDate } from '../card/CardDate';
+import { CardIconCircle } from '../card/CardIconCircle';
+import { CardLabel } from '../card/CardLabel';
+import type { CardTone } from '../card/types';
 import { UkevisningPeriode, UkevisningPeriodeType } from './types/UkevisningPeriode';
 
 dayjs.extend(isoWeek);
@@ -32,29 +38,27 @@ type DagInfo = {
 
 type MergeForm = 'single' | 'start' | 'middle' | 'end';
 
-const KORTFARGE: Record<UkevisningPeriodeType, string> = {
-    MOR: 'bg-ax-bg-accent-soft text-ax-text-accent-subtle',
-    FAR: 'bg-ax-bg-success-soft text-ax-text-success-subtle',
-    FELLES: 'bg-ax-bg-brand-beige-soft text-ax-text-brand-beige-subtle',
-    FERIE: 'bg-ax-bg-warning-soft text-ax-text-warning-subtle',
+/** Omset den uttaksplan-spesifikke periodetypen til den generiske `tone`-kanalen `Card` forstår. */
+const PERIODE_TONE: Record<UkevisningPeriodeType, CardTone> = {
+    MOR: 'accent',
+    FAR: 'success',
+    FELLES: 'brand-beige',
+    FERIE: 'warning',
 };
 
-const IKONSIRKEL_FARGE: Record<UkevisningPeriodeType, string> = {
-    MOR: 'bg-ax-bg-accent-moderate text-ax-text-accent-contrast',
-    FAR: 'bg-ax-bg-success-moderate text-ax-text-success-contrast',
-    FELLES: 'bg-ax-bg-brand-beige-moderate text-ax-text-brand-beige-contrast',
-    FERIE: 'bg-ax-bg-warning-moderate text-ax-text-warning-contrast',
-};
-
-const MERGEKLASSE: Record<MergeForm, string> = {
+const MERGE_POSISJON_KLASSE: Record<MergeForm, string> = {
     single: '',
-    start: 'right-0 rounded-r-none',
-    middle: 'inset-x-0 rounded-none',
-    end: 'left-0 rounded-l-none',
+    start: 'right-0',
+    middle: 'inset-x-0',
+    end: 'left-0',
 };
 
-const FOKUSRING_KLASSE =
-    'focus-visible:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ax-border-focus focus-visible:-outline-offset-2';
+const MERGE_RADIUS_KLASSE: Record<MergeForm, string> = {
+    single: '',
+    start: 'rounded-r-none',
+    middle: 'rounded-none',
+    end: 'rounded-l-none',
+};
 
 function cx(...klasser: Array<string | false | undefined>) {
     return klasser.filter(Boolean).join(' ');
@@ -175,11 +179,17 @@ export const Ukevisning = ({ year, week, periods, hideWeekend = false, dateClick
 
 const DagHeader = ({ dag }: { dag: DagInfo }) => (
     <div className="border-r border-b border-ax-border-subtle bg-ax-bg-default px-2 py-2.5 text-center last:border-r-0">
-        <BodyShort size="small" className="text-[11px] font-semibold tracking-[0.06em] text-ax-text-neutral-subtle uppercase">
+        <BodyShort
+            size="small"
+            className="text-[11px] font-semibold tracking-[0.06em] text-ax-text-neutral-subtle uppercase"
+        >
             {capitalizeFirstLetter(dag.dato.format('dddd'))}
         </BodyShort>
         <BodyShort
-            className={cx('text-[22px] font-semibold', dag.erHelg ? 'text-ax-text-neutral-subtle' : 'text-ax-text-default')}
+            className={cx(
+                'text-[22px] font-semibold',
+                dag.erHelg ? 'text-ax-text-neutral-subtle' : 'text-ax-text-default',
+            )}
         >
             {dag.dato.date()}
         </BodyShort>
@@ -249,62 +259,63 @@ const MicroKort = ({
 }) => {
     const visInnhald = mergeForm === 'single' || mergeForm === 'start';
 
-    const klasser = cx('absolute inset-1 z-[1] rounded-lg border-0 p-2.5 text-left', KORTFARGE[periode.type], MERGEKLASSE[mergeForm]);
+    // Posisjonering (`absolute` + insets) ligg på ein eigen wrapper-`div`, ikkje på sjølve
+    // `Card`-elementet: `Card` sin `small`-storleiksklasse set `w-full`, og kombinert med
+    // `absolute` + alle fire insets på same element vert boksmodellen over-constrained (jf. CSS
+    // 2.1 §10.3.7) – nettlesaren ignorerer då `right`, som gjev synleg overflow ut over kantlinja
+    // når `left` framleis har ein ikkje-null verdi (single/start-formene).
+    const wrapperKlasse = cx('absolute inset-1 z-[1]', MERGE_POSISJON_KLASSE[mergeForm]);
+    const kortKlasse = cx('h-full w-full', MERGE_RADIUS_KLASSE[mergeForm]);
 
     const innhald = visInnhald && (
         <>
             <HStack gap="space-8" align="center" className="mb-2">
-                <span
-                    className={cx(
-                        'flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full [&>svg]:h-3 [&>svg]:w-3',
-                        IKONSIRKEL_FARGE[periode.type],
-                    )}
-                    aria-hidden
-                >
+                <CardIconCircle size="small" tone={PERIODE_TONE[periode.type]}>
                     {periode.ikon}
-                </span>
-                <BodyShort size="small" weight="semibold" className="truncate">
-                    {periode.label}
-                </BodyShort>
+                </CardIconCircle>
+                <CardDate size="small">{periode.meta}</CardDate>
             </HStack>
-            <BodyShort size="small" className="opacity-85">
-                {periode.meta}
-            </BodyShort>
+            <CardLabel size="small">{periode.label}</CardLabel>
             {periode.advarsel && (
-                <span
-                    className={cx(
-                        'mt-1.5 inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[11px] font-semibold',
-                        'bg-ax-bg-warning-strong text-ax-text-warning-contrast',
-                    )}
+                <CardBadge
+                    tone="warning"
+                    icon={<ExclamationmarkTriangleFillIcon aria-hidden width={11} height={11} />}
+                    className="mt-1.5"
                     data-testid="dag-advarsel"
                 >
-                    <ExclamationmarkTriangleFillIcon aria-hidden width={11} height={11} />
                     {periode.advarsel}
-                </span>
+                </CardBadge>
             )}
         </>
     );
 
+    const felles = {
+        size: 'small' as const,
+        tone: PERIODE_TONE[periode.type],
+        className: kortKlasse,
+        'aria-label': `${dayjs(iso).format('D. MMMM YYYY')}, ${periode.srText}`,
+    };
+
     if (!dateClickCallback) {
         return (
-            <div className={klasser} aria-label={`${dayjs(iso).format('D. MMMM YYYY')}, ${periode.srText}`}>
-                {innhald}
+            <div className={wrapperKlasse}>
+                <Card {...felles}>{innhald}</Card>
             </div>
         );
     }
 
     return (
-        <button
-            type="button"
-            ref={(el) => registrerKnappRef(dagKnappRef, iso, el)}
-            data-iso={iso}
-            className={cx(klasser, 'box-border cursor-pointer hover:brightness-[0.97] focus-visible:brightness-[0.97]', FOKUSRING_KLASSE)}
-            onClick={() => dateClickCallback(iso)}
-            onKeyDown={onTastetrykk}
-            aria-label={`${dayjs(iso).format('D. MMMM YYYY')}, ${periode.srText}`}
-        >
-            {innhald}
-        </button>
+        <div className={wrapperKlasse}>
+            <Card
+                {...felles}
+                ref={(el: HTMLButtonElement | null) => registrerKnappRef(dagKnappRef, iso, el)}
+                data-iso={iso}
+                onClick={() => dateClickCallback(iso)}
+                onKeyDown={onTastetrykk}
+            >
+                {innhald}
+            </Card>
+        </div>
     );
 };
 

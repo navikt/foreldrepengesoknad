@@ -2,10 +2,7 @@ import {
     ChevronLeftIcon,
     ChevronRightIcon,
     ExclamationmarkTriangleFillIcon,
-    ParasolBeachFillIcon,
     PencilIcon,
-    PersonFillIcon,
-    PersonGroupFillIcon,
     TrashIcon,
 } from '@navikt/aksel-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
@@ -28,6 +25,7 @@ import {
     VStack,
 } from '@navikt/ds-react';
 
+import { PersonEnkelIkon, PersonGruppeIkon, PersonIkon, SolIkon } from '../icons/PeriodeIkoner';
 import { Ukevisning, finnFørsteDagIIsoUke } from './Ukevisning';
 import { UkevisningPeriode, UkevisningPeriodeType } from './types/UkevisningPeriode';
 
@@ -45,9 +43,10 @@ type Story = StoryObj<typeof meta>;
 // Mock-data — same scenario som i konseptskissa (uke 20, 2026 – 11.–17. mai)
 // ---------------------------------------------------------------------------
 
-const PERSONIKON = <PersonFillIcon aria-hidden />;
-const GRUPPEIKON = <PersonGroupFillIcon aria-hidden />;
-const FERIEIKON = <ParasolBeachFillIcon aria-hidden />;
+const PERSONIKON = <PersonIkon />;
+const FARIKON = <PersonEnkelIkon />;
+const GRUPPEIKON = <PersonGruppeIkon />;
+const FERIEIKON = <SolIkon />;
 
 const PERIODER_UKE_20_2026: UkevisningPeriode[] = [
     {
@@ -81,7 +80,7 @@ const PERIODER_UKE_20_2026: UkevisningPeriode[] = [
         fom: '2026-05-15',
         tom: '2026-05-15',
         type: 'FAR',
-        ikon: PERSONIKON,
+        ikon: FARIKON,
         label: 'Fars periode',
         meta: 'Fedrekvote · 100 %',
         srText: 'Fars periode, 15. mai. Mor mangler aktivitet.',
@@ -123,7 +122,7 @@ export const PeriodeInnIHelgen: Story = {
                 fom: '2026-05-15',
                 tom: '2026-05-17',
                 type: 'FAR',
-                ikon: PERSONIKON,
+                ikon: FARIKON,
                 label: 'Fars periode',
                 meta: 'Fedrekvote · 100 %',
                 srText: 'Fars periode, 15.–17. mai',
@@ -411,8 +410,8 @@ export const OmDesignet: Story = {
             </Heading>
             <List>
                 <List.Item title="Renere arbeidsuke">
-                    Når brukeren planlegger periodene sine, er det de 5 arbeidsdagene som har betydning. Helgen er
-                    bare kalenderkontekst, ikke et planleggingsobjekt.
+                    Når brukeren planlegger periodene sine, er det de 5 arbeidsdagene som har betydning. Helgen er bare
+                    kalenderkontekst, ikke et planleggingsobjekt.
                 </List.Item>
                 <List.Item title="Mer plass per dag">
                     Med 5 kolonner istedenfor 7 får hvert kort 40 % mer horisontal plass. Type-label og metadata blir
