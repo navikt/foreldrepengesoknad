@@ -1,4 +1,4 @@
-import { ExclamationmarkTriangleFillIcon, PlusIcon } from '@navikt/aksel-icons';
+import { ExclamationmarkTriangleFillIcon, PlusIcon, XMarkOctagonFillIcon } from '@navikt/aksel-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { ReactNode } from 'react';
 
@@ -334,29 +334,52 @@ export const Toner: Story = {
 };
 
 // ---------------------------------------------------------------------------
-// State-kanalen (border + badge, uavhengig av tone)
+// State-kanalen (border + badge, uavhengig av tone) – dei fire variantane frå
+// «States»-seksjonen i card-anatomi.html: Ingen plan, Ufullstendig, Mangler dekning, Overlapp.
+// State legg seg oppå bakgrunnen som ein border + badge og bytter aldri ut typen sin farge.
+// To av dei fire (Ingen plan, Mangler dekning) har ingen type enno, så dei brukar nøytral/
+// skravert bakgrunn i staden for ein type-farge.
 
-export const Statar: Story = {
+export const States: Story = {
     args: { size: 'medium' },
     render: () => (
         <VStack gap="space-8">
             <Heading size="small">State – tilstand lagt oppå bakgrunnen, bytter aldri han</Heading>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                 <Ramme breidde={200}>
+                    <Card size="medium">
+                        <CardEmptyIndicator />
+                        <CardLabel size="medium">Ingen plan</CardLabel>
+                        <CardDate size="medium">
+                            <PlusIcon aria-hidden style={{ display: 'inline', verticalAlign: 'middle' }} /> Legg til
+                        </CardDate>
+                    </Card>
+                </Ramme>
+                <Ramme breidde={200}>
                     <Card size="medium" tone="accent" state="warning">
-                        <CardLabel size="medium">Ufullstendig</CardLabel>
-                        <CardDate size="medium">15. mai</CardDate>
+                        <CardLabel size="medium">Mors periode</CardLabel>
+                        <CardDate size="medium">15. mai 2026</CardDate>
                         <CardBadge tone="warning" icon={<ExclamationmarkTriangleFillIcon aria-hidden />}>
-                            Mangler aktivitet
+                            Ufullstendig
+                        </CardBadge>
+                    </Card>
+                </Ramme>
+                <Ramme breidde={200}>
+                    <Card size="medium" hatched>
+                        <CardEmptyIndicator tone="danger" />
+                        <CardLabel size="medium">Udekket dag</CardLabel>
+                        <CardDate size="medium">15. mai 2026</CardDate>
+                        <CardBadge tone="danger" icon={<ExclamationmarkTriangleFillIcon aria-hidden />}>
+                            Taper dager
                         </CardBadge>
                     </Card>
                 </Ramme>
                 <Ramme breidde={200}>
                     <Card size="medium" tone="accent" state="danger">
-                        <CardLabel size="medium">Kollisjon</CardLabel>
-                        <CardDate size="medium">15. mai</CardDate>
-                        <CardBadge tone="danger" icon={<ExclamationmarkTriangleFillIcon aria-hidden />}>
-                            Overlappar med søknad
+                        <CardLabel size="medium">Mors periode</CardLabel>
+                        <CardDate size="medium">15. mai 2026</CardDate>
+                        <CardBadge tone="danger" icon={<XMarkOctagonFillIcon aria-hidden />}>
+                            Overlapp
                         </CardBadge>
                     </Card>
                 </Ramme>
@@ -390,36 +413,6 @@ export const Valgt: Story = {
                         </Ramme>
                     </div>
                 ))}
-            </div>
-        </VStack>
-    ),
-};
-
-// ---------------------------------------------------------------------------
-// Spesialtilfelle: tom dag og manglande dekning
-
-export const TomDagOgManglandeDekning: Story = {
-    args: { size: 'medium' },
-    render: () => (
-        <VStack gap="space-8">
-            <Heading size="small">Ingen tone enno – nøytral, roleg framtoning</Heading>
-            <div style={{ display: 'flex', gap: 8 }}>
-                <Ramme breidde={160}>
-                    <Card size="medium">
-                        <CardEmptyIndicator />
-                        <CardLabel size="medium">Ingen periode enno</CardLabel>
-                        <CardDate size="medium">
-                            <PlusIcon aria-hidden style={{ display: 'inline', verticalAlign: 'middle' }} /> Legg til
-                        </CardDate>
-                    </Card>
-                </Ramme>
-                <Ramme breidde={160}>
-                    <Card size="medium" hatched>
-                        <CardEmptyIndicator tone="danger" />
-                        <CardLabel size="medium">Mangler dekning</CardLabel>
-                        <CardDate size="medium">15. mai</CardDate>
-                    </Card>
-                </Ramme>
             </div>
         </VStack>
     ),
