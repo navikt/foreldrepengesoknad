@@ -57,7 +57,8 @@ interface CardBaseProps {
     selected?: boolean;
     /**
      * Skravert bakgrunn for eit kort utan tone der noko likevel manglar (t.d. ein udekt dag i
-     * ein uttaksplan). Nyttast uavhengig av `tone`/`state`.
+     * ein uttaksplan). `hatched` overstyrer tone-bakgrunnen med eit skravert danger-mønster, så
+     * bør primært brukast utan `tone` sett (`state` kan framleis kombinerast).
      */
     hatched?: boolean;
     className?: string;
@@ -109,23 +110,48 @@ function beregnToneKlasse(tone: CardTone | undefined, selected: boolean | undefi
  * Rendrar ein `<button>` når `onClick` er sett (med fokusring og tastaturstøtte via
  * standard knapp-oppførsel), elles ein rein `<div>`.
  */
-export const Card = ({ size, tone, state, selected, hatched, className, children, ...rest }: CardProps) => {
+/**
+ * Generisk kort etter card-anatomien: fire storleikar og tre uavhengige visuelle kanalar
+ * (tone = kva kortet er, state = tilstand, selected = valgt). `Card` eig berre desse kanalane
+ * og storleiks-skalet (padding/gap/radius) – alt domenespesifikt innhald (ikon, tekst,
+ * handlingar) sendast inn som `children`, gjerne bygd med `CardIconCircle`, `CardBadge`,
+ * `CardChip`, `CardLabel`, `CardDate`, `CardBody` og `CardActions`.
+ *
+ * Rendrar ein `<button>` når `onClick` er sett (med fokusring og tastaturstøtte via
+ * standard knapp-oppførsel), elles ein rein `<div>`. `ref` sendast eksplisitt vidare til rett
+ * DOM-element (React 19 støttar `ref` som ein vanleg prop på funksjonskomponentar, så det
+ * trengst ingen `forwardRef`).
+ */
+export const Card = ({
+    size,
+    tone,
+    state,
+    selected,
+    hatched,
+    className,
+    children,
+    style: forbrukarStyle,
+    ref,
+    ...rest
+}: CardProps) => {
     const toneKlasse = beregnToneKlasse(tone, selected, hatched);
     const classes = cx(STORLEIK_KLASSE[size], toneKlasse, state && STATE_BORDER_KLASSE[state], className);
-    const style = hatched ? HATCHED_STYLE : undefined;
+    // `hatched` skal alltid vinne over ein forbrukar-sendt `style` (t.d. breidde/høgde), men
+    // utan å miste dei andre style-felta forbrukaren har sett.
+    const style = hatched ? { ...forbrukarStyle, ...HATCHED_STYLE } : forbrukarStyle;
 
     if (rest.onClick) {
-        const { onClick, ...buttonRest } = rest as ButtonHTMLAttributes<HTMLButtonElement> & {
-            ref?: Ref<HTMLButtonElement>;
-        };
+        const { onClick, ...buttonRest } = rest as ButtonHTMLAttributes<HTMLButtonElement>;
         return (
             <button
                 type="button"
+                ref={ref as Ref<HTMLButtonElement>}
                 onClick={onClick}
                 className={cx(
                     classes,
-                    'cursor-pointer hover:brightness-[0.97] focus-visible:brightness-[0.97]',
-                    'focus-visible:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ax-border-focus focus-visible:-outline-offset-2',
+                    'border-0 cursor-pointer hover:brightness-[0.97] focus-visible:brightness-[0.97]',
+                    'focus-visible:z-10 focus-visible:outline focus-visible:outline-2',
+                    'focus-visible:outline-ax-border-focus focus-visible:-outline-offset-2',
                 )}
                 style={style}
                 {...buttonRest}
@@ -136,7 +162,7 @@ export const Card = ({ size, tone, state, selected, hatched, className, children
     }
 
     return (
-        <div className={classes} style={style} {...rest}>
+        <div ref={ref as Ref<HTMLDivElement>} className={classes} style={style} {...rest}>
             {children}
         </div>
     );

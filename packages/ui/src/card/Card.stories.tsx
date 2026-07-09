@@ -1,6 +1,7 @@
 import { ExclamationmarkTriangleFillIcon, PlusIcon, XMarkOctagonFillIcon } from '@navikt/aksel-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { ReactNode } from 'react';
+import { action } from 'storybook/actions';
 
 import { Button, Heading, VStack } from '@navikt/ds-react';
 
@@ -445,7 +446,7 @@ export const KlikkbartVsStatisk: Story = {
             <Heading size="small">Rendrar knapp når `onClick` er sett, elles ein div</Heading>
             <div style={{ display: 'flex', gap: 8 }}>
                 <Ramme breidde={160}>
-                    <Card size="medium" tone="accent" onClick={() => alert('Klikka!')}>
+                    <Card size="medium" tone="accent" onClick={action('card-click')}>
                         <CardLabel size="medium">Klikkbar</CardLabel>
                         <CardDate size="medium">Tab + Enter/Space verkar</CardDate>
                     </Card>
