@@ -77,7 +77,7 @@ export const useEksisterendeValgtePeriodeAlerts = (): ((
     periode: Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager,
 ) => { morsAktivitetIkkeValgt?: AktivAlertMetadata; graderingsaktivitetIkkeValgt?: AktivAlertMetadata }) => {
     const {
-        foreldreInfo: { rettighetType, søker, erIkkeSøkerSpesifisert },
+        foreldreInfo: { rettighetType, søker, erIkkeSøkerSpesifisert, erFarOgFar },
         uttakPerioder,
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
@@ -91,6 +91,7 @@ export const useEksisterendeValgtePeriodeAlerts = (): ((
             rettighetType,
             søker,
             erIkkeSøkerSpesifisert: erIkkeSøkerSpesifisert ?? false,
+            erFarOgFar,
             periode,
             morsUttakPerioder,
         }),
@@ -106,7 +107,7 @@ export const useUttaksplanListeAlerts = (
     perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
 ): UttaksplanListeAlerts => {
     const {
-        foreldreInfo: { rettighetType, søker, erIkkeSøkerSpesifisert },
+        foreldreInfo: { rettighetType, søker, erIkkeSøkerSpesifisert, erFarOgFar },
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
     return {
@@ -114,6 +115,7 @@ export const useUttaksplanListeAlerts = (
             rettighetType,
             søker,
             erIkkeSøkerSpesifisert: erIkkeSøkerSpesifisert ?? false,
+            erFarOgFar,
             perioder,
         }),
         manglerGraderingsaktivitetAlert: kanVelgeArbeidsgiver
@@ -130,7 +132,7 @@ export const useUttaksplanKalenderAlerts = (
     perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
 ): UttaksplanKalenderAlerts => {
     const {
-        foreldreInfo: { rettighetType, søker, erIkkeSøkerSpesifisert },
+        foreldreInfo: { rettighetType, søker, erIkkeSøkerSpesifisert, erFarOgFar },
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
     return {
@@ -138,6 +140,7 @@ export const useUttaksplanKalenderAlerts = (
             rettighetType,
             søker,
             erIkkeSøkerSpesifisert: erIkkeSøkerSpesifisert ?? false,
+            erFarOgFar,
             perioder,
         }),
         manglerGraderingsaktivitetAlert: kanVelgeArbeidsgiver
@@ -154,13 +157,14 @@ export const useLeggTilEndreSkjemaInfoAlerts = (
     perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
 ): LeggTilEndreSkjemaInfoAlerts => {
     const {
-        foreldreInfo: { rettighetType, søker, erIkkeSøkerSpesifisert },
+        foreldreInfo: { rettighetType, søker, erIkkeSøkerSpesifisert, erFarOgFar },
     } = useUttaksplanData();
     return {
         morsAktivitetIkkeOppgittAlert: tilAktiv(MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING, {
             rettighetType,
             søker,
             erIkkeSøkerSpesifisert: erIkkeSøkerSpesifisert ?? false,
+            erFarOgFar,
             perioder,
         }),
     };

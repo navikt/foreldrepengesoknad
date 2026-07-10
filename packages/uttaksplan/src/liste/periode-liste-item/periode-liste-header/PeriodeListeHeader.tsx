@@ -31,7 +31,7 @@ export const PeriodeListeHeader = ({ uttaksplanperioder, isOpen }: Props) => {
 
     const {
         familiehendelsedato,
-        foreldreInfo: { rettighetType, søker, navnPåForeldre, erIkkeSøkerSpesifisert },
+        foreldreInfo: { rettighetType, søker, navnPåForeldre, erIkkeSøkerSpesifisert, erFarOgFar },
         familiesituasjon,
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
@@ -61,6 +61,7 @@ export const PeriodeListeHeader = ({ uttaksplanperioder, isOpen }: Props) => {
         søker,
         erIkkeSøkerSpesifisert ?? false,
         uttaksplanperioder,
+        erFarOgFar,
     );
     const harUkjentGraderingsaktivitet =
         kanVelgeArbeidsgiver && harPeriodeMedUkjentGraderingsaktivitet(uttaksplanperioder, søker);

@@ -31,7 +31,7 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
     const intl = useIntl();
 
     const {
-        foreldreInfo: { søker, navnPåForeldre, rettighetType, erIkkeSøkerSpesifisert },
+        foreldreInfo: { søker, navnPåForeldre, rettighetType, erIkkeSøkerSpesifisert, erFarOgFar },
         uttakPerioder,
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
@@ -68,10 +68,13 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
                         return (
                             <Radio key={genererPeriodeKey(p)} value={index} autoFocus={index === 0}>
                                 <HStack gap="space-4">
-                                    {harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, søker, erIkkeSøkerSpesifisert ?? false, [
-                                        p,
-                                        ...morsPerioder,
-                                    ]) && (
+                                    {harPeriodeDerMorsAktivitetIkkeErValgt(
+                                        rettighetType,
+                                        søker,
+                                        erIkkeSøkerSpesifisert ?? false,
+                                        [p, ...morsPerioder],
+                                        erFarOgFar,
+                                    ) && (
                                         <ExclamationmarkTriangleFillIcon
                                             title={intl.formatMessage({
                                                 id: 'PeriodeListeHeader.MorsAktivitetIkkeValgt',

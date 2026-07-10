@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import { useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, InlineMessage, Radio, VStack } from '@navikt/ds-react';
 
@@ -14,15 +14,16 @@ import type {
     Gradering_fpoversikt,
     KontoTypeUttak,
     MorsAktivitet,
+    NavnPåForeldre,
     UttakOverføringÅrsak_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { getFloatFromString } from '@navikt/fp-utils';
+import { getFloatFromString, getNavnGenitivEierform } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
-import { getStønadskvoteNavnSimple } from '../liste/utils/uttaksplanListeUtils';
+import { getForelderVisningsnavnForFarOgFar, getStønadskvoteNavnSimple } from '../liste/utils/uttaksplanListeUtils';
 import { useBlokkerendeAlert, useSkjemaKontekstuelleAlerts } from '../regler/alert/skjemaAlerts';
 import { useFeltSynlighet } from '../regler/synlighet/feltSynlighet';
 import { useForelderValgSynlighet } from '../regler/synlighet/forelderValg';
@@ -36,6 +37,237 @@ dayjs.extend(isSameOrAfter);
 
 const SELVSTENDIG_NÆRINGSDRIVENDE = 'SELVSTENDIG_NÆRINGSDRIVENDE' satisfies AktivitetType_fpoversikt;
 const FRILANS = 'FRILANS' satisfies AktivitetType_fpoversikt;
+
+/**
+ * Innhold i radioknappen for MOR/FAR_MEDMOR i «Hvem skal ha foreldrepenger»-gruppen.
+ * Når begge foreldrene er fedre (erFarOgFar) er det ingen mor/far/medmor å referere til,
+ * så vi viser forelderens faktiske navn i stedet.
+ */
+const getForelderRadioLabel = (
+    forelder: 'MOR' | 'FAR_MEDMOR',
+    erFarOgFar: boolean | undefined,
+    erMedmorDelAvSøknaden: boolean | undefined,
+    navnPåForeldre: NavnPåForeldre,
+): ReactNode => {
+    if (erFarOgFar) {
+        return getForelderVisningsnavnForFarOgFar(forelder, navnPåForeldre);
+    }
+    if (forelder === 'MOR') {
+        return <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Mor" />;
+    }
+    if (erMedmorDelAvSøknaden) {
+        return <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Medmor" />;
+    }
+    return <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Far" />;
+};
+
+const getKvoteTypeLabel = (
+    intl: IntlShape,
+    forelder: 'MOR' | 'FAR_MEDMOR',
+    erFarOgFar: boolean | undefined,
+    navnPåForeldre: NavnPåForeldre,
+    erMedmorDelAvSøknaden: boolean | undefined,
+): string => {
+    if (erFarOgFar) {
+        return intl.formatMessage(
+            { id: 'LeggTilEllerEndrePeriodeForm.KvoteType.ForeldreNavn' },
+            { navn: getForelderVisningsnavnForFarOgFar(forelder, navnPåForeldre) },
+        );
+    }
+    if (forelder === 'MOR') {
+        return intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.KvoteTypeMor' });
+    }
+    return intl.formatMessage(
+        { id: 'LeggTilEllerEndrePeriodeForm.KvoteTypeFarMedmor' },
+        { erMedmor: erMedmorDelAvSøknaden },
+    );
+};
+
+const getKvoteTypePåkrevdMelding = (
+    intl: IntlShape,
+    forelder: 'MOR' | 'FAR_MEDMOR',
+    erFarOgFar: boolean | undefined,
+    navnPåForeldre: NavnPåForeldre,
+    erMedmorDelAvSøknaden: boolean | undefined,
+): string => {
+    if (erFarOgFar) {
+        return intl.formatMessage(
+            { id: 'LeggTilEllerEndrePeriodeForm.KvoteType.ForeldreNavn.Påkrevd' },
+            { navn: getForelderVisningsnavnForFarOgFar(forelder, navnPåForeldre) },
+        );
+    }
+    if (forelder === 'MOR') {
+        return intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.KvoteTypeMor.Påkrevd' });
+    }
+    return intl.formatMessage(
+        { id: 'LeggTilEllerEndrePeriodeForm.KvoteTypeFarMedmor.Påkrevd' },
+        { erMedmor: erMedmorDelAvSøknaden },
+    );
+};
+
+const getSkalKombinereLabel = (
+    intl: IntlShape,
+    forelder: 'MOR' | 'FAR_MEDMOR',
+    erFarOgFar: boolean | undefined,
+    navnPåForeldre: NavnPåForeldre,
+    erMedmorDelAvSøknaden: boolean | undefined,
+): string => {
+    if (erFarOgFar) {
+        return intl.formatMessage(
+            { id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.ForeldreNavn' },
+            { navn: getForelderVisningsnavnForFarOgFar(forelder, navnPåForeldre) },
+        );
+    }
+    if (forelder === 'MOR') {
+        return intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.Mor' });
+    }
+    return intl.formatMessage(
+        { id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.FarMedmor' },
+        { erMedmor: erMedmorDelAvSøknaden },
+    );
+};
+
+const getSkalKombinerePåkrevdMelding = (
+    intl: IntlShape,
+    forelder: 'MOR' | 'FAR_MEDMOR',
+    erFarOgFar: boolean | undefined,
+    navnPåForeldre: NavnPåForeldre,
+    erMedmorDelAvSøknaden: boolean | undefined,
+): string => {
+    if (erFarOgFar) {
+        return intl.formatMessage(
+            { id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.ForeldreNavn.Påkrevd' },
+            { navn: getForelderVisningsnavnForFarOgFar(forelder, navnPåForeldre) },
+        );
+    }
+    if (forelder === 'MOR') {
+        return intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.Mor.Påkrevd' });
+    }
+    return intl.formatMessage(
+        { id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.FarMedmor.Påkrevd' },
+        { erMedmor: erMedmorDelAvSøknaden },
+    );
+};
+
+/**
+ * Navnet på forelderen hvis kvote overtas (den «andre» forelderen enn den som overtar).
+ * Når MOR (Far 2) overtar, er det FAR_MEDMOR (Far 1) sin kvote (fedrekvote) som overtas –
+ * så andreForelder er FAR_MEDMOR, og omvendt når FAR_MEDMOR overtar mors kvote (mødrekvote).
+ */
+const getAndreForelderNavnForFarOgFar = (forelder: 'MOR' | 'FAR_MEDMOR', navnPåForeldre: NavnPåForeldre): string =>
+    getForelderVisningsnavnForFarOgFar(forelder === 'MOR' ? 'FAR_MEDMOR' : 'MOR', navnPåForeldre);
+
+const getOverføringInfo1 = (
+    intl: IntlShape,
+    forelder: 'MOR' | 'FAR_MEDMOR',
+    erFarOgFar: boolean | undefined,
+    navnPåForeldre: NavnPåForeldre,
+    erMedmorDelAvSøknaden: boolean | undefined,
+): ReactNode => {
+    if (erFarOgFar) {
+        const navn = getAndreForelderNavnForFarOgFar(forelder, navnPåForeldre);
+        return intl.formatMessage(
+            { id: 'LeggTilEllerEndrePeriodeForm.Overføring.Info1.ForeldreNavn' },
+            { navn, navnGenitiv: getNavnGenitivEierform(navn, intl.locale) },
+        );
+    }
+    if (forelder === 'MOR') {
+        return intl.formatMessage(
+            { id: 'LeggTilEllerEndrePeriodeForm.Overføring.Info1.Mor' },
+            { erMedmor: erMedmorDelAvSøknaden },
+        );
+    }
+    return intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.Overføring.Info1.FarMedmor' });
+};
+
+const getOverføringsårsakLabel = (
+    intl: IntlShape,
+    forelder: 'MOR' | 'FAR_MEDMOR',
+    erFarOgFar: boolean | undefined,
+    navnPåForeldre: NavnPåForeldre,
+    erMedmorDelAvSøknaden: boolean | undefined,
+): ReactNode => {
+    if (erFarOgFar) {
+        const navn = getAndreForelderNavnForFarOgFar(forelder, navnPåForeldre);
+        return intl.formatMessage(
+            { id: 'LeggTilEllerEndrePeriodeForm.Overføringsårsak.ForeldreNavn' },
+            { navnGenitiv: getNavnGenitivEierform(navn, intl.locale) },
+        );
+    }
+    if (forelder === 'MOR') {
+        return intl.formatMessage(
+            { id: 'LeggTilEllerEndrePeriodeForm.Overføringsårsak.Mor' },
+            { erMedmor: erMedmorDelAvSøknaden },
+        );
+    }
+    return intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.Overføringsårsak.FarMedmor' });
+};
+
+const getOverføringsårsakInnlagt = (
+    intl: IntlShape,
+    forelder: 'MOR' | 'FAR_MEDMOR',
+    erFarOgFar: boolean | undefined,
+    navnPåForeldre: NavnPåForeldre,
+    erMedmorDelAvSøknaden: boolean | undefined,
+): ReactNode => {
+    if (erFarOgFar) {
+        return intl.formatMessage(
+            { id: 'LeggTilEllerEndrePeriodeForm.Overføringsårsak.Innlagt.ForeldreNavn' },
+            { navn: getAndreForelderNavnForFarOgFar(forelder, navnPåForeldre) },
+        );
+    }
+    if (forelder === 'MOR') {
+        return intl.formatMessage(
+            { id: 'LeggTilEllerEndrePeriodeForm.Overføringsårsak.Innlagt.Mor' },
+            { erMedmor: erMedmorDelAvSøknaden },
+        );
+    }
+    return intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.Overføringsårsak.Innlagt.FarMedmor' });
+};
+
+const getOverføringsårsakForSyk = (
+    intl: IntlShape,
+    forelder: 'MOR' | 'FAR_MEDMOR',
+    erFarOgFar: boolean | undefined,
+    navnPåForeldre: NavnPåForeldre,
+    erMedmorDelAvSøknaden: boolean | undefined,
+): ReactNode => {
+    if (erFarOgFar) {
+        return intl.formatMessage(
+            { id: 'LeggTilEllerEndrePeriodeForm.Overføringsårsak.ForSyk.ForeldreNavn' },
+            { navn: getAndreForelderNavnForFarOgFar(forelder, navnPåForeldre) },
+        );
+    }
+    if (forelder === 'MOR') {
+        return intl.formatMessage(
+            { id: 'LeggTilEllerEndrePeriodeForm.Overføringsårsak.ForSyk.Mor' },
+            { erMedmor: erMedmorDelAvSøknaden },
+        );
+    }
+    return intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.Overføringsårsak.ForSyk.FarMedmor' });
+};
+
+const getOverføringsårsakIkkeRett = (
+    intl: IntlShape,
+    forelder: 'MOR' | 'FAR_MEDMOR',
+    erFarOgFar: boolean | undefined,
+    navnPåForeldre: NavnPåForeldre,
+    erMedmorDelAvSøknaden: boolean | undefined,
+): ReactNode => {
+    if (erFarOgFar) {
+        return intl.formatMessage(
+            { id: 'LeggTilEllerEndrePeriodeForm.Overføringsårsak.IkkeRett.ForeldreNavn' },
+            { navn: getAndreForelderNavnForFarOgFar(forelder, navnPåForeldre) },
+        );
+    }
+    if (forelder === 'MOR') {
+        return intl.formatMessage(
+            { id: 'LeggTilEllerEndrePeriodeForm.Overføringsårsak.IkkeRett.Mor' },
+            { erMedmor: erMedmorDelAvSøknaden },
+        );
+    }
+    return intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.Overføringsårsak.IkkeRett.FarMedmor' });
+};
 
 export type LeggTilEllerEndrePeriodeFormFormValues = {
     forelder?: BrukerRolleSak_fpoversikt | 'BEGGE';
@@ -62,7 +294,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
     const intl = useIntl();
 
     const {
-        foreldreInfo: { rettighetType, erMedmorDelAvSøknaden, søker },
+        foreldreInfo: { rettighetType, erMedmorDelAvSøknaden, søker, erFarOgFar, navnPåForeldre },
         aktiveArbeidsforhold,
     } = useUttaksplanData();
 
@@ -172,9 +404,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                 <RhfRadioGroup
                     name="forelder"
                     control={formMethods.control}
-                    validate={[
-                        isRequired(intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.Forelder.Påkrevd' })),
-                    ]}
+                    validate={[isRequired(intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.Forelder.Påkrevd' }))]}
                     label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.Forelder.HvemGjelder' })}
                     onChange={resetFormValuesVedEndringAvForelder}
                 >
@@ -182,15 +412,16 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                         [
                             forelderValgSynlighet.visMorRadio && (
                                 <Radio key="mor" value="MOR">
-                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Mor" />
+                                    {getForelderRadioLabel('MOR', erFarOgFar, erMedmorDelAvSøknaden, navnPåForeldre)}
                                 </Radio>
                             ),
                             forelderValgSynlighet.visFarMedmorRadio && (
                                 <Radio key="far" value="FAR_MEDMOR">
-                                    {erMedmorDelAvSøknaden ? (
-                                        <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Medmor" />
-                                    ) : (
-                                        <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Far" />
+                                    {getForelderRadioLabel(
+                                        'FAR_MEDMOR',
+                                        erFarOgFar,
+                                        erMedmorDelAvSøknaden,
+                                        navnPåForeldre,
                                     )}
                                 </Radio>
                             ),
@@ -234,9 +465,11 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     name="kontoTypeMor"
                     control={formMethods.control}
                     validate={[
-                        isRequired(intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.KvoteTypeMor.Påkrevd' })),
+                        isRequired(
+                            getKvoteTypePåkrevdMelding(intl, 'MOR', erFarOgFar, navnPåForeldre, erMedmorDelAvSøknaden),
+                        ),
                     ]}
-                    label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.KvoteTypeMor' })}
+                    label={getKvoteTypeLabel(intl, 'MOR', erFarOgFar, navnPåForeldre, erMedmorDelAvSøknaden)}
                     onChange={resetGraderingFelterForMor}
                 >
                     {forelderValgSynlighet.gyldigeStønadskontoerForMor.map((konto) => {
@@ -246,7 +479,13 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                                 value={konto}
                                 disabled={!!kontoTypeMor && forelderValgSynlighet.erMorLåst}
                             >
-                                {getStønadskvoteNavnSimple(intl, konto, erMedmorDelAvSøknaden)}
+                                {getStønadskvoteNavnSimple(
+                                    intl,
+                                    konto,
+                                    erMedmorDelAvSøknaden,
+                                    undefined,
+                                    erFarOgFar ? navnPåForeldre : undefined,
+                                )}
                             </Radio>
                         );
                     })}
@@ -258,22 +497,16 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     control={formMethods.control}
                     validate={[
                         isRequired(
-                            intl.formatMessage(
-                                {
-                                    id: 'LeggTilEllerEndrePeriodeForm.KvoteTypeFarMedmor.Påkrevd',
-                                },
-                                {
-                                    erMedmor: erMedmorDelAvSøknaden,
-                                },
+                            getKvoteTypePåkrevdMelding(
+                                intl,
+                                'FAR_MEDMOR',
+                                erFarOgFar,
+                                navnPåForeldre,
+                                erMedmorDelAvSøknaden,
                             ),
                         ),
                     ]}
-                    label={
-                        <FormattedMessage
-                            id="LeggTilEllerEndrePeriodeForm.KvoteTypeFarMedmor"
-                            values={{ erMedmor: erMedmorDelAvSøknaden }}
-                        />
-                    }
+                    label={getKvoteTypeLabel(intl, 'FAR_MEDMOR', erFarOgFar, navnPåForeldre, erMedmorDelAvSøknaden)}
                     onChange={resetGraderingFelterForFarMedmor}
                 >
                     {forelderValgSynlighet.gyldigeStønadskontoerForFarMedmor.map((konto) => {
@@ -283,7 +516,13 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                                 value={konto}
                                 disabled={!!kontoTypeFarMedmor && forelderValgSynlighet.erFarMedmorLåst}
                             >
-                                {getStønadskvoteNavnSimple(intl, konto, erMedmorDelAvSøknaden, erBareFarHarRett)}
+                                {getStønadskvoteNavnSimple(
+                                    intl,
+                                    konto,
+                                    erMedmorDelAvSøknaden,
+                                    erBareFarHarRett,
+                                    erFarOgFar ? navnPåForeldre : undefined,
+                                )}
                             </Radio>
                         );
                     })}
@@ -304,10 +543,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     <InlineMessage status="info">
                         <VStack gap="space-8">
                             <BodyShort>
-                                <FormattedMessage
-                                    id="LeggTilEllerEndrePeriodeForm.Overføring.Info1.Mor"
-                                    values={{ erMedmor: erMedmorDelAvSøknaden }}
-                                />
+                                {getOverføringInfo1(intl, 'MOR', erFarOgFar, navnPåForeldre, erMedmorDelAvSøknaden)}
                             </BodyShort>
                             <BodyShort>
                                 <FormattedMessage
@@ -327,24 +563,13 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                                 }),
                             ),
                         ]}
-                        label={
-                            <FormattedMessage
-                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.Mor"
-                                values={{ erMedmor: erMedmorDelAvSøknaden }}
-                            />
-                        }
+                        label={getOverføringsårsakLabel(intl, 'MOR', erFarOgFar, navnPåForeldre, erMedmorDelAvSøknaden)}
                     >
                         <Radio value="INSTITUSJONSOPPHOLD_ANNEN_FORELDER">
-                            <FormattedMessage
-                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.Innlagt.Mor"
-                                values={{ erMedmor: erMedmorDelAvSøknaden }}
-                            />
+                            {getOverføringsårsakInnlagt(intl, 'MOR', erFarOgFar, navnPåForeldre, erMedmorDelAvSøknaden)}
                         </Radio>
                         <Radio value="SYKDOM_ANNEN_FORELDER">
-                            <FormattedMessage
-                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.ForSyk.Mor"
-                                values={{ erMedmor: erMedmorDelAvSøknaden }}
-                            />
+                            {getOverføringsårsakForSyk(intl, 'MOR', erFarOgFar, navnPåForeldre, erMedmorDelAvSøknaden)}
                         </Radio>
                         <Radio value="ALENEOMSORG">
                             <FormattedMessage
@@ -353,10 +578,13 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                             />
                         </Radio>
                         <Radio value="IKKE_RETT_ANNEN_FORELDER">
-                            <FormattedMessage
-                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.IkkeRett.Mor"
-                                values={{ erMedmor: erMedmorDelAvSøknaden }}
-                            />
+                            {getOverføringsårsakIkkeRett(
+                                intl,
+                                'MOR',
+                                erFarOgFar,
+                                navnPåForeldre,
+                                erMedmorDelAvSøknaden,
+                            )}
                         </Radio>
                     </RhfRadioGroup>
                 </VStack>
@@ -369,7 +597,13 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                         <VStack gap="space-8">
                             <VStack gap="space-8">
                                 <BodyShort>
-                                    <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Overføring.Info1.FarMedmor" />
+                                    {getOverføringInfo1(
+                                        intl,
+                                        'FAR_MEDMOR',
+                                        erFarOgFar,
+                                        navnPåForeldre,
+                                        erMedmorDelAvSøknaden,
+                                    )}
                                 </BodyShort>
                                 <BodyShort>
                                     <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Overføring.Info2.FarMedmor" />
@@ -387,24 +621,31 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                                 }),
                             ),
                         ]}
-                        label={
-                            <FormattedMessage
-                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.FarMedmor"
-                                values={{ erMedmor: erMedmorDelAvSøknaden }}
-                            />
-                        }
+                        label={getOverføringsårsakLabel(
+                            intl,
+                            'FAR_MEDMOR',
+                            erFarOgFar,
+                            navnPåForeldre,
+                            erMedmorDelAvSøknaden,
+                        )}
                     >
                         <Radio value="INSTITUSJONSOPPHOLD_ANNEN_FORELDER">
-                            <FormattedMessage
-                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.Innlagt.FarMedmor"
-                                values={{ erMedmor: erMedmorDelAvSøknaden }}
-                            />
+                            {getOverføringsårsakInnlagt(
+                                intl,
+                                'FAR_MEDMOR',
+                                erFarOgFar,
+                                navnPåForeldre,
+                                erMedmorDelAvSøknaden,
+                            )}
                         </Radio>
                         <Radio value="SYKDOM_ANNEN_FORELDER">
-                            <FormattedMessage
-                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.ForSyk.FarMedmor"
-                                values={{ erMedmor: erMedmorDelAvSøknaden }}
-                            />
+                            {getOverføringsårsakForSyk(
+                                intl,
+                                'FAR_MEDMOR',
+                                erFarOgFar,
+                                navnPåForeldre,
+                                erMedmorDelAvSøknaden,
+                            )}
                         </Radio>
                         <Radio value="ALENEOMSORG">
                             <FormattedMessage
@@ -413,10 +654,13 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                             />
                         </Radio>
                         <Radio value="IKKE_RETT_ANNEN_FORELDER">
-                            <FormattedMessage
-                                id="LeggTilEllerEndrePeriodeForm.Overføringsårsak.IkkeRett.FarMedmor"
-                                values={{ erMedmor: erMedmorDelAvSøknaden }}
-                            />
+                            {getOverføringsårsakIkkeRett(
+                                intl,
+                                'FAR_MEDMOR',
+                                erFarOgFar,
+                                navnPåForeldre,
+                                erMedmorDelAvSøknaden,
+                            )}
                         </Radio>
                     </RhfRadioGroup>
                 </VStack>
@@ -480,12 +724,22 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                         <RhfRadioGroup
                             name="skalDuKombinereArbeidOgUttakMor"
                             control={formMethods.control}
-                            label={intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.Mor' })}
+                            label={getSkalKombinereLabel(
+                                intl,
+                                'MOR',
+                                erFarOgFar,
+                                navnPåForeldre,
+                                erMedmorDelAvSøknaden,
+                            )}
                             validate={[
                                 isRequired(
-                                    intl.formatMessage({
-                                        id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.Mor.Påkrevd',
-                                    }),
+                                    getSkalKombinerePåkrevdMelding(
+                                        intl,
+                                        'MOR',
+                                        erFarOgFar,
+                                        navnPåForeldre,
+                                        erMedmorDelAvSøknaden,
+                                    ),
                                 ),
                             ]}
                             onChange={resetStillingsprosentMor}
@@ -557,17 +811,21 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                         <RhfRadioGroup
                             name="skalDuKombinereArbeidOgUttakFarMedmor"
                             control={formMethods.control}
-                            label={intl.formatMessage(
-                                { id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.FarMedmor' },
-                                { erMedmor: erMedmorDelAvSøknaden },
+                            label={getSkalKombinereLabel(
+                                intl,
+                                'FAR_MEDMOR',
+                                erFarOgFar,
+                                navnPåForeldre,
+                                erMedmorDelAvSøknaden,
                             )}
                             validate={[
                                 isRequired(
-                                    intl.formatMessage(
-                                        {
-                                            id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.FarMedmor.Påkrevd',
-                                        },
-                                        { erMedmor: erMedmorDelAvSøknaden },
+                                    getSkalKombinerePåkrevdMelding(
+                                        intl,
+                                        'FAR_MEDMOR',
+                                        erFarOgFar,
+                                        navnPåForeldre,
+                                        erMedmorDelAvSøknaden,
                                     ),
                                 ),
                             ]}
@@ -654,7 +912,12 @@ export const mapFraFormValuesTilUttakPeriode = (
             forelder: 'MOR',
             gradering:
                 !erOverføringMor && values.skalDuKombinereArbeidOgUttakMor
-                    ? getGradering(søker === 'MOR', values.stillingsprosentMor, values.hvorSkalDuJobbe, kanVelgeArbeidsgiver)
+                    ? getGradering(
+                          søker === 'MOR',
+                          values.stillingsprosentMor,
+                          values.hvorSkalDuJobbe,
+                          kanVelgeArbeidsgiver,
+                      )
                     : undefined,
             samtidigUttak:
                 values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentMor) : undefined,
