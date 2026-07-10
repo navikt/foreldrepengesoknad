@@ -1,13 +1,14 @@
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, InlineMessage, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfNumericField, RhfRadioGroup, RhfSelect } from '@navikt/fp-form-hooks';
+import { captureMessage, withScope } from '@navikt/fp-observability';
 import type {
     AktivitetType_fpoversikt,
     BrukerRolleSak_fpoversikt,
@@ -19,7 +20,7 @@ import type {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
-import { isRequired, notEmpty } from '@navikt/fp-validation';
+import { isRequired } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { getStønadskvoteNavnSimple } from '../liste/utils/uttaksplanListeUtils';
@@ -29,6 +30,7 @@ import { useForelderValgSynlighet } from '../regler/synlighet/forelderValg';
 import { ForelderValg } from '../regler/synlighet/types';
 import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
 import { getAktivitetskravOptions, getAktivitetskravTekst } from '../utils/periodeUtils';
+import { periodeTilLoggObjekt } from '../utils/UttakPeriodeBuilder';
 import { prosentValideringGradering, valideringSamtidigUttak } from './uttaksplanValidatorer';
 
 dayjs.extend(isSameOrBefore);
@@ -692,17 +694,119 @@ export const mapFraFormValuesTilUttakPeriode = (
     return nye;
 };
 
+const finnPerioderSomOmslutterValgtPeriode = (
+    uttaksplanperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    valgtPeriode: { fom: string; tom: string },
+): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> =>
+    uttaksplanperioder.filter(
+        (periode) =>
+            dayjs(valgtPeriode.fom).isSameOrAfter(dayjs(periode.fom), 'day') &&
+            dayjs(valgtPeriode.tom).isSameOrBefore(dayjs(periode.tom), 'day'),
+    );
+
+const finnGyldigSamtidigUttakPar = (
+    eksisterendePerioder: UttakPeriode_fpoversikt[],
+): { morsPeriode: UttakPeriode_fpoversikt; farMedmorPeriode: UttakPeriode_fpoversikt } | undefined => {
+    const erSamtidigUttak = eksisterendePerioder.every((p) => !!p.samtidigUttak);
+    const morsPeriode = eksisterendePerioder.find((p) => p.forelder === 'MOR');
+    const farMedmorPeriode = eksisterendePerioder.find((p) => p.forelder === 'FAR_MEDMOR');
+
+    if (!erSamtidigUttak || !morsPeriode || !farMedmorPeriode) {
+        return undefined;
+    }
+
+    return { morsPeriode, farMedmorPeriode };
+};
+
+// Returnerer dei to overlappande periodane når dei omsluttar valgtPeriode, men ikkje utgjer
+// eit gyldig samtidig-uttak-par. Datakilda (prosesserPerioderForVisning av backend-vedtak) er
+// midlertidig stillas som ikkje garanterer rein uttaksplan, så slike ugyldige overlapp kan
+// førekomme – jf. useLoggOverlappIVedtak som loggar dei på plannivå.
+export const finnUgyldigSamtidigUttakOverlapp = (
+    uttaksplanperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    valgtPeriode: { fom: string; tom: string },
+    søker: BrukerRolleSak_fpoversikt,
+    erPeriodeneTilAnnenPartLåst: boolean,
+): [UttakPeriode_fpoversikt, UttakPeriode_fpoversikt] | undefined => {
+    const eksisterendePerioder = finnPerioderSomOmslutterValgtPeriode(uttaksplanperioder, valgtPeriode);
+    const harToOmsluttendePerioder = eksisterendePerioder.length === 2;
+
+    if (!harToOmsluttendePerioder || !eksisterendePerioder.every(erVanligUttakPeriode)) {
+        return undefined;
+    }
+
+    const harLovbestemtFerie = eksisterendePerioder.some((p) => p.utsettelseÅrsak === 'LOVBESTEMT_FERIE');
+    const harLåstPeriodeFraAnnenPart = eksisterendePerioder.some((p) => erPeriodeneTilAnnenPartLåst && p.forelder !== søker);
+
+    if (harLovbestemtFerie || harLåstPeriodeFraAnnenPart || finnGyldigSamtidigUttakPar(eksisterendePerioder)) {
+        return undefined;
+    }
+
+    return [eksisterendePerioder[0]!, eksisterendePerioder[1]!];
+};
+
+/**
+ * Loggar til Sentry når brukaren redigerer ein valgtPeriode som omsluttast av to overlappande
+ * periodar som ikkje utgjer eit gyldig samtidig-uttak-par. Dette er rotårsaka bak at skjemaet
+ * ikkje kan forhåndsutfyllast (og som tidlegare kasta «Forventer to perioder ved samtidig uttak.»).
+ * Loggar éin gong per distinkt valgtPeriode for å unngå støy ved re-rendering.
+ */
+export const useLoggUgyldigSamtidigUttakVedRedigering = (
+    valgtPeriode: { fom: string; tom: string } | undefined,
+): void => {
+    const {
+        uttakPerioder,
+        foreldreInfo: { søker },
+        erPeriodeneTilAnnenPartLåst,
+    } = useUttaksplanData();
+    const loggedeFingerprintsRef = useRef<Set<string>>(new Set());
+
+    useEffect(() => {
+        if (!valgtPeriode) {
+            return;
+        }
+
+        const ugyldigOverlapp = finnUgyldigSamtidigUttakOverlapp(
+            uttakPerioder,
+            valgtPeriode,
+            søker,
+            erPeriodeneTilAnnenPartLåst,
+        );
+        if (!ugyldigOverlapp) {
+            return;
+        }
+
+        const fingerprint = `${valgtPeriode.fom}:${valgtPeriode.tom}`;
+        if (loggedeFingerprintsRef.current.has(fingerprint)) {
+            return;
+        }
+        loggedeFingerprintsRef.current.add(fingerprint);
+
+        withScope((scope) => {
+            scope.setLevel('warning');
+            scope.setTag('feiltype', 'uttaksplan-ugyldig-samtidig-ved-redigering');
+            scope.setExtra('valgtPeriode', valgtPeriode);
+            scope.setExtra('erPeriodeneTilAnnenPartLåst', erPeriodeneTilAnnenPartLåst);
+            scope.setExtra('ugyldigOverlappPar', {
+                a: periodeTilLoggObjekt(ugyldigOverlapp[0]),
+                b: periodeTilLoggObjekt(ugyldigOverlapp[1]),
+            });
+            scope.setExtra('uttakPerioder', uttakPerioder.map(periodeTilLoggObjekt));
+            captureMessage(
+                'Forventet samtidig uttak ved redigering, men de to overlappende periodene utgjør ikke et gyldig samtidig-uttak-par',
+                'warning',
+            );
+        });
+    }, [valgtPeriode, uttakPerioder, søker, erPeriodeneTilAnnenPartLåst]);
+};
+
 export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
     uttaksplanperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     valgtPeriode: { fom: string; tom: string },
     søker: BrukerRolleSak_fpoversikt,
     erPeriodeneTilAnnenPartLåst: boolean,
 ): LeggTilEllerEndrePeriodeFormFormValues | undefined => {
-    const eksisterendePerioder = uttaksplanperioder.filter(
-        (periode) =>
-            dayjs(valgtPeriode.fom).isSameOrAfter(dayjs(periode.fom), 'day') &&
-            dayjs(valgtPeriode.tom).isSameOrBefore(dayjs(periode.tom), 'day'),
-    );
+    const eksisterendePerioder = finnPerioderSomOmslutterValgtPeriode(uttaksplanperioder, valgtPeriode);
 
     if (
         eksisterendePerioder.length === 0 ||
@@ -715,13 +819,17 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
     }
 
     if (eksisterendePerioder.length === 2) {
-        const erSamtidigUttak = eksisterendePerioder.every((p) => !!p.samtidigUttak);
-        if (!erSamtidigUttak) {
-            throw new Error('Forventer to perioder ved samtidig uttak.');
-        }
-        const morsPeriode = notEmpty(eksisterendePerioder.find((p) => p.forelder === 'MOR'));
-        const farMedmorPeriode = notEmpty(eksisterendePerioder.find((p) => p.forelder === 'FAR_MEDMOR'));
+        const samtidigUttakPar = finnGyldigSamtidigUttakPar(eksisterendePerioder);
 
+        // Datakilden (prosesserPerioderForVisning av backend-vedtak) garanterer ikke at to
+        // overlappande periodar utgjer eit gyldig samtidig-uttak-par. Når dei ikkje gjer det,
+        // kan vi ikkje forhåndsutfylle skjemaet – sjå useLoggUgyldigSamtidigUttakVedRedigering
+        // som loggar tilfellet til Sentry.
+        if (!samtidigUttakPar) {
+            return undefined;
+        }
+
+        const { morsPeriode, farMedmorPeriode } = samtidigUttakPar;
         const søkersPeriode = søker === 'MOR' ? morsPeriode : farMedmorPeriode;
 
         return {
