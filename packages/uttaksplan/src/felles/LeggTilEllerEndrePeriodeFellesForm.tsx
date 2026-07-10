@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import { useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, InlineMessage, Radio, VStack } from '@navikt/ds-react';
 
@@ -14,6 +14,7 @@ import type {
     Gradering_fpoversikt,
     KontoTypeUttak,
     MorsAktivitet,
+    NavnPåForeldre,
     UttakOverføringÅrsak_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
@@ -36,6 +37,117 @@ dayjs.extend(isSameOrAfter);
 
 const SELVSTENDIG_NÆRINGSDRIVENDE = 'SELVSTENDIG_NÆRINGSDRIVENDE' satisfies AktivitetType_fpoversikt;
 const FRILANS = 'FRILANS' satisfies AktivitetType_fpoversikt;
+
+/**
+ * Innhold i radioknappen for MOR/FAR_MEDMOR i «Hvem skal ha foreldrepenger»-gruppen.
+ * Når begge foreldrene er fedre (erFarOgFar) er det ingen mor/far/medmor å referere til,
+ * så vi viser forelderens faktiske navn i stedet.
+ */
+const getForelderRadioLabel = (
+    forelder: 'MOR' | 'FAR_MEDMOR',
+    erFarOgFar: boolean | undefined,
+    erMedmorDelAvSøknaden: boolean | undefined,
+    navnPåForeldre: NavnPåForeldre,
+): ReactNode => {
+    if (erFarOgFar) {
+        return getForelderVisningsnavnForFarOgFar(forelder, navnPåForeldre);
+    }
+    if (forelder === 'MOR') {
+        return <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Mor" />;
+    }
+    if (erMedmorDelAvSøknaden) {
+        return <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Medmor" />;
+    }
+    return <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Far" />;
+};
+
+const getKvoteTypeLabel = (
+    intl: IntlShape,
+    forelder: 'MOR' | 'FAR_MEDMOR',
+    erFarOgFar: boolean | undefined,
+    navnPåForeldre: NavnPåForeldre,
+    erMedmorDelAvSøknaden: boolean | undefined,
+): string => {
+    if (erFarOgFar) {
+        return intl.formatMessage(
+            { id: 'LeggTilEllerEndrePeriodeForm.KvoteType.ForeldreNavn' },
+            { navn: getForelderVisningsnavnForFarOgFar(forelder, navnPåForeldre) },
+        );
+    }
+    if (forelder === 'MOR') {
+        return intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.KvoteTypeMor' });
+    }
+    return intl.formatMessage(
+        { id: 'LeggTilEllerEndrePeriodeForm.KvoteTypeFarMedmor' },
+        { erMedmor: erMedmorDelAvSøknaden },
+    );
+};
+
+const getKvoteTypePåkrevdMelding = (
+    intl: IntlShape,
+    forelder: 'MOR' | 'FAR_MEDMOR',
+    erFarOgFar: boolean | undefined,
+    navnPåForeldre: NavnPåForeldre,
+    erMedmorDelAvSøknaden: boolean | undefined,
+): string => {
+    if (erFarOgFar) {
+        return intl.formatMessage(
+            { id: 'LeggTilEllerEndrePeriodeForm.KvoteType.ForeldreNavn.Påkrevd' },
+            { navn: getForelderVisningsnavnForFarOgFar(forelder, navnPåForeldre) },
+        );
+    }
+    if (forelder === 'MOR') {
+        return intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.KvoteTypeMor.Påkrevd' });
+    }
+    return intl.formatMessage(
+        { id: 'LeggTilEllerEndrePeriodeForm.KvoteTypeFarMedmor.Påkrevd' },
+        { erMedmor: erMedmorDelAvSøknaden },
+    );
+};
+
+const getSkalKombinereLabel = (
+    intl: IntlShape,
+    forelder: 'MOR' | 'FAR_MEDMOR',
+    erFarOgFar: boolean | undefined,
+    navnPåForeldre: NavnPåForeldre,
+    erMedmorDelAvSøknaden: boolean | undefined,
+): string => {
+    if (erFarOgFar) {
+        return intl.formatMessage(
+            { id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.ForeldreNavn' },
+            { navn: getForelderVisningsnavnForFarOgFar(forelder, navnPåForeldre) },
+        );
+    }
+    if (forelder === 'MOR') {
+        return intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.Mor' });
+    }
+    return intl.formatMessage(
+        { id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.FarMedmor' },
+        { erMedmor: erMedmorDelAvSøknaden },
+    );
+};
+
+const getSkalKombinerePåkrevdMelding = (
+    intl: IntlShape,
+    forelder: 'MOR' | 'FAR_MEDMOR',
+    erFarOgFar: boolean | undefined,
+    navnPåForeldre: NavnPåForeldre,
+    erMedmorDelAvSøknaden: boolean | undefined,
+): string => {
+    if (erFarOgFar) {
+        return intl.formatMessage(
+            { id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.ForeldreNavn.Påkrevd' },
+            { navn: getForelderVisningsnavnForFarOgFar(forelder, navnPåForeldre) },
+        );
+    }
+    if (forelder === 'MOR') {
+        return intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.Mor.Påkrevd' });
+    }
+    return intl.formatMessage(
+        { id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.FarMedmor.Påkrevd' },
+        { erMedmor: erMedmorDelAvSøknaden },
+    );
+};
 
 export type LeggTilEllerEndrePeriodeFormFormValues = {
     forelder?: BrukerRolleSak_fpoversikt | 'BEGGE';
@@ -180,21 +292,16 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                         [
                             forelderValgSynlighet.visMorRadio && (
                                 <Radio key="mor" value="MOR">
-                                    {erFarOgFar ? (
-                                        getForelderVisningsnavnForFarOgFar('MOR', navnPåForeldre)
-                                    ) : (
-                                        <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Mor" />
-                                    )}
+                                    {getForelderRadioLabel('MOR', erFarOgFar, erMedmorDelAvSøknaden, navnPåForeldre)}
                                 </Radio>
                             ),
                             forelderValgSynlighet.visFarMedmorRadio && (
                                 <Radio key="far" value="FAR_MEDMOR">
-                                    {erFarOgFar ? (
-                                        getForelderVisningsnavnForFarOgFar('FAR_MEDMOR', navnPåForeldre)
-                                    ) : erMedmorDelAvSøknaden ? (
-                                        <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Medmor" />
-                                    ) : (
-                                        <FormattedMessage id="LeggTilEllerEndrePeriodeForm.Far" />
+                                    {getForelderRadioLabel(
+                                        'FAR_MEDMOR',
+                                        erFarOgFar,
+                                        erMedmorDelAvSøknaden,
+                                        navnPåForeldre,
                                     )}
                                 </Radio>
                             ),
@@ -239,22 +346,10 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     control={formMethods.control}
                     validate={[
                         isRequired(
-                            erFarOgFar
-                                ? intl.formatMessage(
-                                      { id: 'LeggTilEllerEndrePeriodeForm.KvoteType.ForeldreNavn.Påkrevd' },
-                                      { navn: getForelderVisningsnavnForFarOgFar('MOR', navnPåForeldre) },
-                                  )
-                                : intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.KvoteTypeMor.Påkrevd' }),
+                            getKvoteTypePåkrevdMelding(intl, 'MOR', erFarOgFar, navnPåForeldre, erMedmorDelAvSøknaden),
                         ),
                     ]}
-                    label={
-                        erFarOgFar
-                            ? intl.formatMessage(
-                                  { id: 'LeggTilEllerEndrePeriodeForm.KvoteType.ForeldreNavn' },
-                                  { navn: getForelderVisningsnavnForFarOgFar('MOR', navnPåForeldre) },
-                              )
-                            : intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.KvoteTypeMor' })
-                    }
+                    label={getKvoteTypeLabel(intl, 'MOR', erFarOgFar, navnPåForeldre, erMedmorDelAvSøknaden)}
                     onChange={resetGraderingFelterForMor}
                 >
                     {forelderValgSynlighet.gyldigeStønadskontoerForMor.map((konto) => {
@@ -282,34 +377,16 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                     control={formMethods.control}
                     validate={[
                         isRequired(
-                            erFarOgFar
-                                ? intl.formatMessage(
-                                      { id: 'LeggTilEllerEndrePeriodeForm.KvoteType.ForeldreNavn.Påkrevd' },
-                                      { navn: getForelderVisningsnavnForFarOgFar('FAR_MEDMOR', navnPåForeldre) },
-                                  )
-                                : intl.formatMessage(
-                                      {
-                                          id: 'LeggTilEllerEndrePeriodeForm.KvoteTypeFarMedmor.Påkrevd',
-                                      },
-                                      {
-                                          erMedmor: erMedmorDelAvSøknaden,
-                                      },
-                                  ),
+                            getKvoteTypePåkrevdMelding(
+                                intl,
+                                'FAR_MEDMOR',
+                                erFarOgFar,
+                                navnPåForeldre,
+                                erMedmorDelAvSøknaden,
+                            ),
                         ),
                     ]}
-                    label={
-                        erFarOgFar ? (
-                            intl.formatMessage(
-                                { id: 'LeggTilEllerEndrePeriodeForm.KvoteType.ForeldreNavn' },
-                                { navn: getForelderVisningsnavnForFarOgFar('FAR_MEDMOR', navnPåForeldre) },
-                            )
-                        ) : (
-                            <FormattedMessage
-                                id="LeggTilEllerEndrePeriodeForm.KvoteTypeFarMedmor"
-                                values={{ erMedmor: erMedmorDelAvSøknaden }}
-                            />
-                        )
-                    }
+                    label={getKvoteTypeLabel(intl, 'FAR_MEDMOR', erFarOgFar, navnPåForeldre, erMedmorDelAvSøknaden)}
                     onChange={resetGraderingFelterForFarMedmor}
                 >
                     {forelderValgSynlighet.gyldigeStønadskontoerForFarMedmor.map((konto) => {
@@ -522,26 +599,22 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                         <RhfRadioGroup
                             name="skalDuKombinereArbeidOgUttakMor"
                             control={formMethods.control}
-                            label={
-                                erFarOgFar
-                                    ? intl.formatMessage(
-                                          { id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.ForeldreNavn' },
-                                          { navn: getForelderVisningsnavnForFarOgFar('MOR', navnPåForeldre) },
-                                      )
-                                    : intl.formatMessage({ id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.Mor' })
-                            }
+                            label={getSkalKombinereLabel(
+                                intl,
+                                'MOR',
+                                erFarOgFar,
+                                navnPåForeldre,
+                                erMedmorDelAvSøknaden,
+                            )}
                             validate={[
                                 isRequired(
-                                    erFarOgFar
-                                        ? intl.formatMessage(
-                                              {
-                                                  id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.ForeldreNavn.Påkrevd',
-                                              },
-                                              { navn: getForelderVisningsnavnForFarOgFar('MOR', navnPåForeldre) },
-                                          )
-                                        : intl.formatMessage({
-                                              id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.Mor.Påkrevd',
-                                          }),
+                                    getSkalKombinerePåkrevdMelding(
+                                        intl,
+                                        'MOR',
+                                        erFarOgFar,
+                                        navnPåForeldre,
+                                        erMedmorDelAvSøknaden,
+                                    ),
                                 ),
                             ]}
                             onChange={resetStillingsprosentMor}
@@ -613,37 +686,22 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                         <RhfRadioGroup
                             name="skalDuKombinereArbeidOgUttakFarMedmor"
                             control={formMethods.control}
-                            label={
-                                erFarOgFar
-                                    ? intl.formatMessage(
-                                          { id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.ForeldreNavn' },
-                                          { navn: getForelderVisningsnavnForFarOgFar('FAR_MEDMOR', navnPåForeldre) },
-                                      )
-                                    : intl.formatMessage(
-                                          { id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.FarMedmor' },
-                                          { erMedmor: erMedmorDelAvSøknaden },
-                                      )
-                            }
+                            label={getSkalKombinereLabel(
+                                intl,
+                                'FAR_MEDMOR',
+                                erFarOgFar,
+                                navnPåForeldre,
+                                erMedmorDelAvSøknaden,
+                            )}
                             validate={[
                                 isRequired(
-                                    erFarOgFar
-                                        ? intl.formatMessage(
-                                              {
-                                                  id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.ForeldreNavn.Påkrevd',
-                                              },
-                                              {
-                                                  navn: getForelderVisningsnavnForFarOgFar(
-                                                      'FAR_MEDMOR',
-                                                      navnPåForeldre,
-                                                  ),
-                                              },
-                                          )
-                                        : intl.formatMessage(
-                                              {
-                                                  id: 'LeggTilEllerEndrePeriodeForm.SkalKombinere.FarMedmor.Påkrevd',
-                                              },
-                                              { erMedmor: erMedmorDelAvSøknaden },
-                                          ),
+                                    getSkalKombinerePåkrevdMelding(
+                                        intl,
+                                        'FAR_MEDMOR',
+                                        erFarOgFar,
+                                        navnPåForeldre,
+                                        erMedmorDelAvSøknaden,
+                                    ),
                                 ),
                             ]}
                             onChange={resetStillingsprosentFarMedmor}
