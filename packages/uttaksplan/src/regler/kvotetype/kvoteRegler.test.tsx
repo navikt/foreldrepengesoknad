@@ -808,4 +808,92 @@ describe('useGyldigeKvotetyper - fars kvoter', () => {
             expect(result.current.gyldigeStønadskontoerForFarMedmor).toEqual([]);
         });
     });
+
+    // Regresjonstest for far med aleneomsorg (eller bare søker rett): FORELDREPENGER
+    // må følge samme to-ukers-grense som fedrekvote/mødrekvote/aktivitetsfri kvote,
+    // siden det ikke finnes noen annen forelder som kan dekke dagene før fødsel/termin.
+    describe('far med aleneomsorg — foreldrepenger før termin/fødsel', () => {
+        const TERMINDATO = '2024-06-10'; // Termin mandag 10. juni
+        // familiehendelsedato = 2024-06-17 (1 uke etter termin, barnet født etter termin)
+        // termindato - 2 uker (10 uttaksdager) = mandag 27. mai = tidligst tillatt startdato
+
+        const barnMedTermindato = {
+            type: BarnType.FØDT,
+            antallBarn: 1,
+            fødselsdatoer: [FAMILIEHENDELSESDATO],
+            termindato: TERMINDATO,
+        } satisfies ComponentProps<typeof UttaksplanDataProvider>['barn'];
+
+        it('skal ha foreldrepenger som gyldig kontotype for far med aleneomsorg når perioden starter nøyaktig 2 uker før termin', () => {
+            const { result } = renderHook(
+                () =>
+                    useGyldigeKvotetyper({
+                        valgtePerioder: [{ fom: '2024-05-27', tom: '2024-06-21' }],
+                        harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                        ønskerFlerbarnsdager: false,
+                    }),
+                {
+                    wrapper: getWrapper({
+                        barn: barnMedTermindato,
+                        foreldreInfo: {
+                            søker: 'FAR_MEDMOR',
+                            rettighetType: 'ALENEOMSORG',
+                            navnPåForeldre: NAVN_PÅ_FORELDRE,
+                            erMedmorDelAvSøknaden: false,
+                        },
+                    }),
+                },
+            );
+
+            expect(result.current.gyldigeStønadskontoerForFarMedmor).toContain('FORELDREPENGER');
+        });
+
+        it('skal ikke ha foreldrepenger som gyldig kontotype for far med aleneomsorg når perioden starter før 2 uker før termin', () => {
+            const { result } = renderHook(
+                () =>
+                    useGyldigeKvotetyper({
+                        valgtePerioder: [{ fom: '2024-05-24', tom: '2024-06-21' }],
+                        harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                        ønskerFlerbarnsdager: false,
+                    }),
+                {
+                    wrapper: getWrapper({
+                        barn: barnMedTermindato,
+                        foreldreInfo: {
+                            søker: 'FAR_MEDMOR',
+                            rettighetType: 'ALENEOMSORG',
+                            navnPåForeldre: NAVN_PÅ_FORELDRE,
+                            erMedmorDelAvSøknaden: false,
+                        },
+                    }),
+                },
+            );
+
+            expect(result.current.gyldigeStønadskontoerForFarMedmor).not.toContain('FORELDREPENGER');
+        });
+
+        it('skal fortsatt ikke ha foreldrepenger som gyldig kontotype for far med begge rett før familiehendelsesdato', () => {
+            const { result } = renderHook(
+                () =>
+                    useGyldigeKvotetyper({
+                        valgtePerioder: [{ fom: '2024-05-27', tom: '2024-06-21' }],
+                        harValgtSamtidigUttak: !HAR_VALGT_SAMTIDIG_UTTAK,
+                        ønskerFlerbarnsdager: false,
+                    }),
+                {
+                    wrapper: getWrapper({
+                        barn: barnMedTermindato,
+                        foreldreInfo: {
+                            søker: 'FAR_MEDMOR',
+                            rettighetType: 'BEGGE_RETT',
+                            navnPåForeldre: NAVN_PÅ_FORELDRE,
+                            erMedmorDelAvSøknaden: false,
+                        },
+                    }),
+                },
+            );
+
+            expect(result.current.gyldigeStønadskontoerForFarMedmor).not.toContain('FORELDREPENGER');
+        });
+    });
 });

@@ -261,8 +261,15 @@ const FAR_MEDMOR_FORELDREPENGER: Kvoteregel<KvoteKontekst> = {
     forelder: 'FAR_MEDMOR',
     kontotype: 'FORELDREPENGER',
     beskrivelse:
-        'Foreldrepenger kan velges av far/medmor når perioden ikke ligger før familiehendelsesdatoen.',
-    erGyldig: (k) => farMedmorErAktuell(k) && !harPeriodeFørFamiliehendelsesdato(k),
+        'Foreldrepenger kan velges av far/medmor når perioden ikke ligger før familiehendelsesdatoen. ' +
+        'Når kun far/medmor har rett (aleneomsorg eller bare søker rett), kan perioden i stedet ligge ' +
+        'inntil to uker før familiehendelsesdatoen — samme grense som for de andre kvotetypene til ' +
+        'far/medmor — siden det da ikke finnes noen annen forelder som kan dekke dagene før fødsel.',
+    erGyldig: (k) => {
+        if (!farMedmorErAktuell(k)) {return false;}
+        if (kunFarHarRett(k)) {return !harPeriodeFørToUkerFørFamiliehendelsesdato(k);}
+        return !harPeriodeFørFamiliehendelsesdato(k);
+    },
 };
 
 const FAR_MEDMOR_FELLESPERIODE: Kvoteregel<KvoteKontekst> = {
