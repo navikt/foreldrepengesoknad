@@ -111,17 +111,29 @@ const harPeriodeFørTreUkerFørFamDatoEllerEtterLikFamDato = (k: KvoteKontekst) 
 
 /** Felles forhåndsbetingelser som gjelder før vi sjekker den enkelte kvoten for mor. */
 const morErAktuell = (k: KvoteKontekst): boolean => {
-    if (kunFarHarRett(k)) {return false;}
-    if (erAdopsjon(k) && harPeriodeFørFamiliehendelsesdato(k)) {return false;}
-    if (krysserFamiliehendelse(k)) {return false;}
+    if (kunFarHarRett(k)) {
+        return false;
+    }
+    if (erAdopsjon(k) && harPeriodeFørFamiliehendelsesdato(k)) {
+        return false;
+    }
+    if (krysserFamiliehendelse(k)) {
+        return false;
+    }
     return true;
 };
 
 /** Felles forhåndsbetingelser som gjelder før vi sjekker den enkelte kvoten for far/medmor. */
 const farMedmorErAktuell = (k: KvoteKontekst): boolean => {
-    if (kunMorHarRett(k)) {return false;}
-    if (erAdopsjon(k) && harPeriodeFørFamiliehendelsesdato(k)) {return false;}
-    if (!kunFarHarRett(k) && krysserFamiliehendelse(k)) {return false;}
+    if (kunMorHarRett(k)) {
+        return false;
+    }
+    if (erAdopsjon(k) && harPeriodeFørFamiliehendelsesdato(k)) {
+        return false;
+    }
+    if (!kunFarHarRett(k) && krysserFamiliehendelse(k)) {
+        return false;
+    }
     return true;
 };
 
@@ -153,9 +165,15 @@ const MOR_FEDREKVOTE: Kvoteregel<KvoteKontekst> = {
         'Mor kan velge fedrekvote (overføring fra far) når perioden ikke er samtidig uttak, og — utenom ' +
         'adopsjon — ikke ligger innenfor de første seks ukene etter familiehendelsesdatoen.',
     erGyldig: (k) => {
-        if (!morErAktuell(k)) {return false;}
-        if (k.harValgtSamtidigUttak) {return false;}
-        if (!erAdopsjon(k) && harPeriodeFørSeksUkerEtterFamiliehendelsesdato(k)) {return false;}
+        if (!morErAktuell(k)) {
+            return false;
+        }
+        if (k.harValgtSamtidigUttak) {
+            return false;
+        }
+        if (!erAdopsjon(k) && harPeriodeFørSeksUkerEtterFamiliehendelsesdato(k)) {
+            return false;
+        }
         return true;
     },
 };
@@ -170,11 +188,21 @@ const MOR_FORELDREPENGER: Kvoteregel<KvoteKontekst> = {
         '60 dager før familiehendelsesdato og utenfor intervallet 3 uker før til familiehendelsesdato; ellers ' +
         'kan perioden ikke ligge innenfor de første seks ukene etter familiehendelsesdato.',
     erGyldig: (k) => {
-        if (!morErAktuell(k)) {return false;}
-        if (erAdopsjon(k)) {return true;}
-        if (!harKunEnPartRett(k) && harPeriodeFørSeksUkerEtterFamiliehendelsesdato(k)) {return false;}
-        if (harKunEnPartRett(k) && harPeriodeMerEnn60DagerFørFamiliehendelsesdato(k)) {return false;}
-        if (harKunEnPartRett(k) && harPeriodeInnenforTreUkerFørFamDatoOgFamDato(k)) {return false;}
+        if (!morErAktuell(k)) {
+            return false;
+        }
+        if (erAdopsjon(k)) {
+            return true;
+        }
+        if (!harKunEnPartRett(k) && harPeriodeFørSeksUkerEtterFamiliehendelsesdato(k)) {
+            return false;
+        }
+        if (harKunEnPartRett(k) && harPeriodeMerEnn60DagerFørFamiliehendelsesdato(k)) {
+            return false;
+        }
+        if (harKunEnPartRett(k) && harPeriodeInnenforTreUkerFørFamDatoOgFamDato(k)) {
+            return false;
+        }
         return true;
     },
 };
@@ -199,11 +227,21 @@ const MOR_FELLESPERIODE: Kvoteregel<KvoteKontekst> = {
         'første ukene etter familiehendelsesdato, ikke i intervallet 3 uker før familiehendelsesdato til ' +
         'familiehendelsesdatoen, og ikke mer enn 60 dager før familiehendelsesdatoen.',
     erGyldig: (k) => {
-        if (!morErAktuell(k)) {return false;}
-        if (erAdopsjon(k)) {return true;}
-        if (harPeriodeInnenforFamDatoOgSeksUkerEtterFamDato(k)) {return false;}
-        if (harPeriodeInnenforTreUkerFørFamDatoOgFamDato(k)) {return false;}
-        if (harPeriodeMerEnn60DagerFørFamiliehendelsesdato(k)) {return false;}
+        if (!morErAktuell(k)) {
+            return false;
+        }
+        if (erAdopsjon(k)) {
+            return true;
+        }
+        if (harPeriodeInnenforFamDatoOgSeksUkerEtterFamDato(k)) {
+            return false;
+        }
+        if (harPeriodeInnenforTreUkerFørFamDatoOgFamDato(k)) {
+            return false;
+        }
+        if (harPeriodeMerEnn60DagerFørFamiliehendelsesdato(k)) {
+            return false;
+        }
         return true;
     },
 };
@@ -228,10 +266,18 @@ const FAR_MEDMOR_MØDREKVOTE: Kvoteregel<KvoteKontekst> = {
         'ligger i intervallet 3 uker før familiehendelsesdato til familiehendelsesdatoen, og ikke ligger ' +
         'mer enn 2 uker før familiehendelsesdatoen.',
     erGyldig: (k) => {
-        if (!farMedmorErAktuell(k)) {return false;}
-        if (k.harValgtSamtidigUttak) {return false;}
-        if (harPeriodeInnenforTreUkerFørFamDatoOgFamDato(k)) {return false;}
-        if (harPeriodeFørToUkerFørFamiliehendelsesdato(k)) {return false;}
+        if (!farMedmorErAktuell(k)) {
+            return false;
+        }
+        if (k.harValgtSamtidigUttak) {
+            return false;
+        }
+        if (harPeriodeInnenforTreUkerFørFamDatoOgFamDato(k)) {
+            return false;
+        }
+        if (harPeriodeFørToUkerFørFamiliehendelsesdato(k)) {
+            return false;
+        }
         return true;
     },
 };
@@ -261,8 +307,25 @@ const FAR_MEDMOR_FORELDREPENGER: Kvoteregel<KvoteKontekst> = {
     forelder: 'FAR_MEDMOR',
     kontotype: 'FORELDREPENGER',
     beskrivelse:
-        'Foreldrepenger kan velges av far/medmor når perioden ikke ligger før familiehendelsesdatoen.',
-    erGyldig: (k) => farMedmorErAktuell(k) && !harPeriodeFørFamiliehendelsesdato(k),
+        'Foreldrepenger kan velges av far/medmor når perioden ikke ligger før familiehendelsesdatoen. ' +
+        'Når kun far/medmor har rett (aleneomsorg eller bare søker rett), kan perioden i stedet ligge ' +
+        'inntil to uker før familiehendelsesdatoen — samme grense som for de andre kvotetypene til ' +
+        'far/medmor — siden det da ikke finnes noen annen forelder som kan dekke dagene før fødsel.',
+    erGyldig: (k) => {
+        if (!farMedmorErAktuell(k)) {
+            return false;
+        }
+        if (kunFarHarRett(k)) {
+            if (harPeriodeFørToUkerFørFamiliehendelsesdato(k)) {
+                return false;
+            }
+            return true;
+        }
+        if (harPeriodeFørFamiliehendelsesdato(k)) {
+            return false;
+        }
+        return true;
+    },
 };
 
 const FAR_MEDMOR_FELLESPERIODE: Kvoteregel<KvoteKontekst> = {
@@ -276,12 +339,24 @@ const FAR_MEDMOR_FELLESPERIODE: Kvoteregel<KvoteKontekst> = {
         'familiehendelsesdatoen, eller i de første seks ukene etter familiehendelsesdato samtidig som ' +
         'samtidig uttak er valgt.',
     erGyldig: (k) => {
-        if (!farMedmorErAktuell(k)) {return false;}
-        if (k.ønskerFlerbarnsdager) {return true;}
-        if (harPeriodeInnenforTreUkerFørFamDatoOgFamDato(k)) {return false;}
-        if (harPeriodeMerEnn60DagerFørFamiliehendelsesdato(k)) {return false;}
-        if (harPeriodeInnenforFamDatoOgSeksUkerEtterFamDato(k) && k.harValgtSamtidigUttak) {return false;}
-        if (harPeriodeFørToUkerFørFamiliehendelsesdato(k)) {return false;}
+        if (!farMedmorErAktuell(k)) {
+            return false;
+        }
+        if (k.ønskerFlerbarnsdager) {
+            return true;
+        }
+        if (harPeriodeInnenforTreUkerFørFamDatoOgFamDato(k)) {
+            return false;
+        }
+        if (harPeriodeMerEnn60DagerFørFamiliehendelsesdato(k)) {
+            return false;
+        }
+        if (harPeriodeInnenforFamDatoOgSeksUkerEtterFamDato(k) && k.harValgtSamtidigUttak) {
+            return false;
+        }
+        if (harPeriodeFørToUkerFørFamiliehendelsesdato(k)) {
+            return false;
+        }
         return true;
     },
 };
