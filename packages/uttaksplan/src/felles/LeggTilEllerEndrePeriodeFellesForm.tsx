@@ -151,8 +151,8 @@ const getSkalKombinerePåkrevdMelding = (
 
 /**
  * Navnet på forelderen hvis kvote overtas (den «andre» forelderen enn den som overtar).
- * Ved overtakelse av MOR sin kvote (fedrekvote) er det FAR_MEDMOR (Far 1) som overtar –
- * så andreForelder er MOR (Far 2), og omvendt.
+ * Når MOR (Far 2) overtar, er det FAR_MEDMOR (Far 1) sin kvote (fedrekvote) som overtas –
+ * så andreForelder er FAR_MEDMOR, og omvendt når FAR_MEDMOR overtar mors kvote (mødrekvote).
  */
 const getAndreForelderNavnForFarOgFar = (forelder: 'MOR' | 'FAR_MEDMOR', navnPåForeldre: NavnPåForeldre): string =>
     getForelderVisningsnavnForFarOgFar(forelder === 'MOR' ? 'FAR_MEDMOR' : 'MOR', navnPåForeldre);
