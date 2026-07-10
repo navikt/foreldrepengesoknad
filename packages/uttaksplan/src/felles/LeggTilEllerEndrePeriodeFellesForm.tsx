@@ -269,7 +269,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                                     konto,
                                     erMedmorDelAvSøknaden,
                                     undefined,
-                                    erFarOgFar ? navnPåForeldre.mor : undefined,
+                                    erFarOgFar ? navnPåForeldre : undefined,
                                 )}
                             </Radio>
                         );
@@ -324,7 +324,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                                     konto,
                                     erMedmorDelAvSøknaden,
                                     erBareFarHarRett,
-                                    erFarOgFar ? navnPåForeldre.farMedmor : undefined,
+                                    erFarOgFar ? navnPåForeldre : undefined,
                                 )}
                             </Radio>
                         );

@@ -35,12 +35,16 @@ export const getStønadskvoteNavnSimple = (
     konto: KontoTypeUttak,
     erMedmorDelAvSøknaden?: boolean,
     erBareFarHarRett?: boolean,
-    farOgFarNavn?: string,
+    navnPåForeldreForFarOgFar?: NavnPåForeldre,
 ) => {
-    if (farOgFarNavn && (konto === 'MØDREKVOTE' || konto === 'FEDREKVOTE')) {
+    if (navnPåForeldreForFarOgFar && (konto === 'MØDREKVOTE' || konto === 'FEDREKVOTE')) {
+        // MØDREKVOTE tilhører alltid domenerollen MOR (Far 2), FEDREKVOTE domenerollen
+        // FAR_MEDMOR (Far 1) – uavhengig av hvilken forelder som viser valget (f.eks. ved
+        // overføring av kvote fra den andre faren).
+        const navn = konto === 'MØDREKVOTE' ? navnPåForeldreForFarOgFar.mor : navnPåForeldreForFarOgFar.farMedmor;
         return intl.formatMessage(
             { id: 'uttaksplan.stønadskvotetype.foreldernavn.kvote' },
-            { navn: getNavnGenitivEierform(capitalizeFirstLetter(farOgFarNavn), intl.locale) },
+            { navn: getNavnGenitivEierform(capitalizeFirstLetter(navn), intl.locale) },
         );
     }
     if (konto === 'FEDREKVOTE' && erMedmorDelAvSøknaden) {

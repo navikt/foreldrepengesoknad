@@ -176,8 +176,10 @@ export const VIS_INFO_FEDREKVOTE_RUNDT_FØDSEL: Synlighetsregel<FeltSynlighetKon
     beskrivelse:
         'Infotekst om at far/medmor må bruke fedrekvotedager i perioden rundt fødsel vises når far/medmor ' +
         'er valgt forelder, kvotetypen er fedrekvote og minst én av de valgte dagene ligger i intervallet ' +
-        'to uker før fødsel til seks uker etter fødsel.',
+        'to uker før fødsel til seks uker etter fødsel. Vises aldri når begge foreldrene er fedre ' +
+        '(erFarOgFar), siden teksten referer til «mor».',
     skalVises: (k) =>
+        !k.erFarOgFar &&
         k.forelder === 'FAR_MEDMOR' &&
         k.kontoTypeFarMedmor === 'FEDREKVOTE' &&
         erValgtPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(k),
