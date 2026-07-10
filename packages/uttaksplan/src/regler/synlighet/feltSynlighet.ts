@@ -13,7 +13,7 @@ import { ForelderValg, Synlighetsregel } from './types';
 
 export const useFeltSynlighet = (valgtePerioder: Periode[], formVerdier: FormVerdier) => {
     const {
-        foreldreInfo: { rettighetType, søker },
+        foreldreInfo: { rettighetType, søker, erFarOgFar },
         familiehendelsedato,
         familiesituasjon,
         barn,
@@ -27,6 +27,7 @@ export const useFeltSynlighet = (valgtePerioder: Periode[], formVerdier: FormVer
         familiesituasjon,
         valgtePerioder,
         familiehendelsedato,
+        erFarOgFar,
     });
 };
 
@@ -43,10 +44,10 @@ type FeltSynlighetKontekst = {
     familiesituasjon: Familiesituasjon;
     valgtePerioder: Periode[];
     familiehendelsedato: string;
+    erFarOgFar?: boolean;
 };
 
-const morSøkerOmOverføring = (k: FeltSynlighetKontekst) =>
-    k.kontoTypeMor === 'FEDREKVOTE' && k.forelder === 'MOR';
+const morSøkerOmOverføring = (k: FeltSynlighetKontekst) => k.kontoTypeMor === 'FEDREKVOTE' && k.forelder === 'MOR';
 
 const farMedmorSøkerOmOverføring = (k: FeltSynlighetKontekst) =>
     k.kontoTypeFarMedmor === 'MØDREKVOTE' && k.forelder === 'FAR_MEDMOR';
@@ -128,11 +129,13 @@ export const VIS_AKTIVITETSKRAV_FELT: Synlighetsregel<FeltSynlighetKontekst> = {
     beskrivelse:
         'Spørsmålet om mors aktivitet vises når far/medmor tar ut foreldrepenger eller fellesperiode uten ' +
         'aleneomsorg (og uten flerbarnsdager), eller når aktivitetskravet trigges av samtidig uttak, eller ' +
-        'når fedrekvote tas i de første seks ukene etter fødsel.',
+        'når fedrekvote tas i de første seks ukene etter fødsel. Vises aldri når begge foreldrene er fedre ' +
+        '(erFarOgFar) – da finnes det ingen «mor» hvis aktivitet kan dokumenteres.',
     skalVises: (k) =>
-        erFarMedmorUtenAleneomsorg(k) ||
-        VIS_MORS_AKTIVITETSKRAV_VED_SAMTIDIG_UTTAK.skalVises(k) ||
-        VIS_AKTIVITETSKRAV_FORDI_FEDREKVOTE_FØRSTE_SEKS_UKER.skalVises(k),
+        !k.erFarOgFar &&
+        (erFarMedmorUtenAleneomsorg(k) ||
+            VIS_MORS_AKTIVITETSKRAV_VED_SAMTIDIG_UTTAK.skalVises(k) ||
+            VIS_AKTIVITETSKRAV_FORDI_FEDREKVOTE_FØRSTE_SEKS_UKER.skalVises(k)),
 };
 
 export const VIS_SAMTIDIG_UTTAK_FELTER: Synlighetsregel<FeltSynlighetKontekst> = {
@@ -148,8 +151,7 @@ export const VIS_KOMBINERE_ARBEID_OG_UTTAK_MOR: Synlighetsregel<FeltSynlighetKon
     beskrivelse:
         'Spørsmålet om mor skal kombinere arbeid og uttak vises når mor er valgt forelder (Mor eller Begge), ' +
         'kvotetype er valgt, og mor ikke søker om overføring av fedrekvote.',
-    skalVises: (k) =>
-        k.kontoTypeMor !== undefined && k.forelder !== 'FAR_MEDMOR' && !morSøkerOmOverføring(k),
+    skalVises: (k) => k.kontoTypeMor !== undefined && k.forelder !== 'FAR_MEDMOR' && !morSøkerOmOverføring(k),
 };
 
 export const VIS_KOMBINERE_ARBEID_OG_UTTAK_FAR_MEDMOR: Synlighetsregel<FeltSynlighetKontekst> = {

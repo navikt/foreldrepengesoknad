@@ -25,6 +25,7 @@ import { Uttaksdagen, capitalizeFirstLetter, getNavnGenitivEierform } from '@nav
 
 import { useUttaksplanData } from '../../../../../context/UttaksplanDataContext';
 import { UttakPeriodeMedAntallDager } from '../../../../../kalender/redigering/utils/kalenderPeriodeUtils';
+import { getForelderVisningsnavnForFarOgFar } from '../../../../../liste/utils/uttaksplanListeUtils';
 import { useEksisterendeValgtePeriodeAlerts } from '../../../../../regler/alert/informasjonsAlertHooks';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../../utils/dateUtils';
@@ -276,17 +277,6 @@ const SamtidigUttak = ({
         </VStack>
     );
 };
-
-/**
- * Visningsnavn for en gitt domenerolle (MOR/FAR_MEDMOR) når begge foreldrene er fedre
- * (f.eks. adopsjon). Da representerer ikke MOR/FAR_MEDMOR en mor og en far, men to fedre –
- * så vi viser forelderens faktiske navn (eller "Far 1"/"Far 2") i stedet for generisk
- * "Mor"/"Far"-tekst.
- */
-const getForelderVisningsnavnForFarOgFar = (
-    forelder: BrukerRolleSak_fpoversikt,
-    navnPåForeldre: NavnPåForeldre,
-): string => capitalizeFirstLetter(forelder === 'MOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor);
 
 /**
  * Viser kvotenavn for en periode. Når begge foreldrene er fedre (erFarOgFar) finnes det ingen

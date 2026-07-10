@@ -1,6 +1,7 @@
 import { IntlShape } from 'react-intl';
 
 import {
+    BrukerRolleSak_fpoversikt,
     KontoType,
     KontoTypeUttak,
     MorsAktivitet,
@@ -18,12 +19,30 @@ import {
     erTapteDagerHull,
 } from '../../types/UttaksplanPeriode';
 
+/**
+ * Visningsnavn for en gitt domenerolle (MOR/FAR_MEDMOR) når begge foreldrene er fedre
+ * (f.eks. adopsjon). Da representerer ikke MOR/FAR_MEDMOR en mor og en far, men to fedre –
+ * så vi viser forelderens faktiske navn (eller "Far 1"/"Far 2") i stedet for generisk
+ * "Mor"/"Far"-tekst.
+ */
+export const getForelderVisningsnavnForFarOgFar = (
+    forelder: BrukerRolleSak_fpoversikt,
+    navnPåForeldre: NavnPåForeldre,
+): string => capitalizeFirstLetter(forelder === 'MOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor);
+
 export const getStønadskvoteNavnSimple = (
     intl: IntlShape,
     konto: KontoTypeUttak,
     erMedmorDelAvSøknaden?: boolean,
     erBareFarHarRett?: boolean,
+    farOgFarNavn?: string,
 ) => {
+    if (farOgFarNavn && (konto === 'MØDREKVOTE' || konto === 'FEDREKVOTE')) {
+        return intl.formatMessage(
+            { id: 'uttaksplan.stønadskvotetype.foreldernavn.kvote' },
+            { navn: getNavnGenitivEierform(capitalizeFirstLetter(farOgFarNavn), intl.locale) },
+        );
+    }
     if (konto === 'FEDREKVOTE' && erMedmorDelAvSøknaden) {
         return intl.formatMessage({ id: 'uttaksplan.stønadskvotetype.MEDMORSKVOTE' });
     }
