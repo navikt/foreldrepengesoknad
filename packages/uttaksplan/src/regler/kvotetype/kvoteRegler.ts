@@ -316,9 +316,15 @@ const FAR_MEDMOR_FORELDREPENGER: Kvoteregel<KvoteKontekst> = {
             return false;
         }
         if (kunFarHarRett(k)) {
-            return !harPeriodeFørToUkerFørFamiliehendelsesdato(k);
+            if (harPeriodeFørToUkerFørFamiliehendelsesdato(k)) {
+                return false;
+            }
+            return true;
         }
-        return !harPeriodeFørFamiliehendelsesdato(k);
+        if (harPeriodeFørFamiliehendelsesdato(k)) {
+            return false;
+        }
+        return true;
     },
 };
 
