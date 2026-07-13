@@ -64,7 +64,9 @@ const fjernAvsluttendeNullerFraDesimal = (tekst: string): string => {
 };
 
 const getDesimalSomSkalertHeltall = (verdi: number): { verdi: bigint; skala: bigint } => {
-    const tekst = verdi.toString().includes('e') ? fjernAvsluttendeNullerFraDesimal(verdi.toFixed(10)) : verdi.toString();
+    const tekst = verdi.toString().includes('e')
+        ? fjernAvsluttendeNullerFraDesimal(verdi.toFixed(10))
+        : verdi.toString();
     const [heltall, desimaler = ''] = tekst.split('.');
 
     return {
@@ -204,9 +206,12 @@ export const sorterUttakPerioder = (
 
 export const harPeriodeDerMorsAktivitetIkkeErValgt = (
     rettighetType: RettighetType_fpoversikt,
-    perioder?: UttaksplanperiodeMedKunTapteDager[] | Uttaksplanperiode[],
+    søker: BrukerRolleSak_fpoversikt,
+    erIkkeSøkerSpesifisert: boolean,
+    perioder?: ReadonlyArray<UttaksplanperiodeMedKunTapteDager | Uttaksplanperiode>,
+    erFarOgFar?: boolean,
 ) => {
-    if (rettighetType === 'ALENEOMSORG' || !perioder) {
+    if (erFarOgFar || rettighetType === 'ALENEOMSORG' || (søker === 'MOR' && !erIkkeSøkerSpesifisert) || !perioder) {
         return false;
     }
 
@@ -254,7 +259,7 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
  * oppgi aktivitet for i skjema, og dei skal difor ikkje blokkere innsending.
  */
 export const harPeriodeMedUkjentGraderingsaktivitet = (
-    perioder: UttaksplanperiodeMedKunTapteDager[] | Uttaksplanperiode[],
+    perioder: ReadonlyArray<UttaksplanperiodeMedKunTapteDager | Uttaksplanperiode>,
     søker: BrukerRolleSak_fpoversikt,
 ) => {
     return perioder.some((periode) => {

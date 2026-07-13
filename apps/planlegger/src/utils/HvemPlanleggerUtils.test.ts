@@ -1,9 +1,20 @@
 import { IntlShape } from 'react-intl';
 import { describe, expect, it, vi } from 'vitest';
 
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
+
 import messages from '../intl/messages/nb_NO.json';
 import { HvemPlanlegger, HvemPlanleggerType } from '../types/HvemPlanlegger';
-import { getNavnPåForeldre } from './HvemPlanleggerUtils';
+import {
+    erLikekjønnetPar,
+    getEffektivHvemPlanlegger,
+    getFornavnPåSøker1,
+    getFornavnPåSøker2,
+    getNavnForHvemStarterPermisjon,
+    getNavnPåForeldre,
+    getStarterForelder,
+    kanVelgeHvemSomStarterPermisjonen,
+} from './HvemPlanleggerUtils';
 
 const mockIntl: IntlShape = {
     formatMessage: vi.fn(({ id }) => {
@@ -121,7 +132,7 @@ describe('getNavnPåForeldre', () => {
 
             expect(resultat).toEqual({
                 farMedmor: 'Ola Nordmann',
-                mor: 'far',
+                mor: 'far 2',
             });
         });
 
@@ -136,7 +147,7 @@ describe('getNavnPåForeldre', () => {
 
             expect(resultat).toEqual({
                 mor: 'Kari Nordmann',
-                farMedmor: 'mor',
+                farMedmor: 'medmor',
             });
         });
     });
@@ -169,5 +180,325 @@ describe('getNavnPåForeldre', () => {
                 farMedmor: 'far',
             });
         });
+    });
+});
+
+describe('erLikekjønnetPar', () => {
+    it('skal returnere true for FAR_OG_FAR', () => {
+        expect(erLikekjønnetPar({ type: HvemPlanleggerType.FAR_OG_FAR })).toBe(true);
+    });
+
+    it('skal returnere true for MOR_OG_MEDMOR', () => {
+        expect(erLikekjønnetPar({ type: HvemPlanleggerType.MOR_OG_MEDMOR })).toBe(true);
+    });
+
+    it('skal returnere false for MOR_OG_FAR', () => {
+        expect(erLikekjønnetPar({ type: HvemPlanleggerType.MOR_OG_FAR })).toBe(false);
+    });
+});
+
+describe('kanVelgeHvemSomStarterPermisjonen', () => {
+    it('skal returnere true for FAR_OG_FAR', () => {
+        expect(kanVelgeHvemSomStarterPermisjonen({ type: HvemPlanleggerType.FAR_OG_FAR })).toBe(true);
+    });
+
+    it('skal returnere true for MOR_OG_MEDMOR', () => {
+        expect(kanVelgeHvemSomStarterPermisjonen({ type: HvemPlanleggerType.MOR_OG_MEDMOR })).toBe(true);
+    });
+
+    it('skal returnere true for MOR_OG_FAR', () => {
+        expect(kanVelgeHvemSomStarterPermisjonen({ type: HvemPlanleggerType.MOR_OG_FAR })).toBe(true);
+    });
+
+    it('skal returnere false for MOR alene', () => {
+        expect(kanVelgeHvemSomStarterPermisjonen({ type: HvemPlanleggerType.MOR })).toBe(false);
+    });
+});
+
+describe('getStarterForelder', () => {
+    const adoptertBarnet = {
+        erFødsel: false,
+        fødselsdato: '2024-01-01',
+        overtakelsesdato: '2024-01-01',
+        antallBarn: '1',
+    } as OmBarnetPlanlegger;
+
+    it('skal bruke far/medmor-rollen når søker2 starter for MOR_OG_FAR', () => {
+        expect(
+            getStarterForelder(
+                { type: HvemPlanleggerType.MOR_OG_FAR },
+                { antallDagerSøker1: 0, hvemStarterPermisjon: 'søker2' },
+                adoptertBarnet,
+            ),
+        ).toBe('FAR_MEDMOR');
+    });
+
+    it('skal bruke far/medmor-rollen når søker2 starter også for FAR_OG_FAR', () => {
+        expect(
+            getStarterForelder(
+                { type: HvemPlanleggerType.FAR_OG_FAR },
+                { antallDagerSøker1: 0, hvemStarterPermisjon: 'søker2' },
+                adoptertBarnet,
+            ),
+        ).toBe('FAR_MEDMOR');
+    });
+
+    it('skal bruke mor-rollen (uendret rekkefølge) når søker1 starter', () => {
+        expect(
+            getStarterForelder(
+                { type: HvemPlanleggerType.FAR_OG_FAR },
+                { antallDagerSøker1: 0, hvemStarterPermisjon: 'søker1' },
+                adoptertBarnet,
+            ),
+        ).toBe('MOR');
+        expect(
+            getStarterForelder(
+                { type: HvemPlanleggerType.MOR_OG_FAR },
+                { antallDagerSøker1: 0, hvemStarterPermisjon: 'søker1' },
+                adoptertBarnet,
+            ),
+        ).toBe('MOR');
+    });
+});
+
+describe('getNavnForHvemStarterPermisjon', () => {
+    it('skal returnere oppgitte navn for FAR_OG_FAR', () => {
+        const hvemPlanlegger: HvemPlanlegger = {
+            type: HvemPlanleggerType.FAR_OG_FAR,
+            navnPåFar: 'Ola Nordmann',
+            navnPåMedfar: 'Per Hansen',
+        };
+
+        expect(getNavnForHvemStarterPermisjon(hvemPlanlegger, mockIntl)).toEqual({
+            navnSøker1: 'Ola Nordmann',
+            navnSøker2: 'Per Hansen',
+        });
+    });
+
+    it('skal falle tilbake til Far 1/Far 2 når navn mangler for FAR_OG_FAR', () => {
+        const hvemPlanlegger: HvemPlanlegger = {
+            type: HvemPlanleggerType.FAR_OG_FAR,
+        };
+
+        expect(getNavnForHvemStarterPermisjon(hvemPlanlegger, mockIntl)).toEqual({
+            navnSøker1: 'Far 1',
+            navnSøker2: 'Far 2',
+        });
+    });
+
+    it('skal falle tilbake til Mor/Medmor når navn mangler for MOR_OG_MEDMOR', () => {
+        const hvemPlanlegger: HvemPlanlegger = {
+            type: HvemPlanleggerType.MOR_OG_MEDMOR,
+        };
+
+        expect(getNavnForHvemStarterPermisjon(hvemPlanlegger, mockIntl)).toEqual({
+            navnSøker1: 'Mor',
+            navnSøker2: 'Medmor',
+        });
+    });
+
+    it('skal returnere oppgitte navn for MOR_OG_FAR', () => {
+        const hvemPlanlegger: HvemPlanlegger = {
+            type: HvemPlanleggerType.MOR_OG_FAR,
+            navnPåMor: 'Kari Nordmann',
+            navnPåFar: 'Ola Hansen',
+        };
+
+        expect(getNavnForHvemStarterPermisjon(hvemPlanlegger, mockIntl)).toEqual({
+            navnSøker1: 'Kari Nordmann',
+            navnSøker2: 'Ola Hansen',
+        });
+    });
+
+    it('skal falle tilbake til Mor/Far når navn mangler for MOR_OG_FAR', () => {
+        const hvemPlanlegger: HvemPlanlegger = {
+            type: HvemPlanleggerType.MOR_OG_FAR,
+        };
+
+        expect(getNavnForHvemStarterPermisjon(hvemPlanlegger, mockIntl)).toEqual({
+            navnSøker1: 'Mor',
+            navnSøker2: 'Far',
+        });
+    });
+});
+
+describe('getEffektivHvemPlanlegger', () => {
+    const adoptertBarnet = {
+        erFødsel: false,
+        fødselsdato: '2024-01-01',
+        overtakelsesdato: '2024-01-01',
+        antallBarn: '1',
+    } as OmBarnetPlanlegger;
+
+    const fødtBarnet = {
+        erFødsel: true,
+        erBarnetFødt: true,
+        fødselsdato: '2024-01-01',
+        antallBarn: '1',
+    } as OmBarnetPlanlegger;
+
+    it('skal ikke bytte om navn når hvemStarterPermisjon er søker1', () => {
+        const hvemPlanlegger: HvemPlanlegger = {
+            type: HvemPlanleggerType.FAR_OG_FAR,
+            navnPåFar: 'Ola Nordmann',
+            navnPåMedfar: 'Per Hansen',
+        };
+
+        const resultat = getEffektivHvemPlanlegger(
+            hvemPlanlegger,
+            { antallDagerSøker1: 75, hvemStarterPermisjon: 'søker1' },
+            adoptertBarnet,
+            mockIntl,
+        );
+
+        expect(resultat).toEqual(hvemPlanlegger);
+    });
+
+    it('skal bytte om navnPåFar/navnPåMedfar når hvemStarterPermisjon er søker2 for FAR_OG_FAR', () => {
+        const hvemPlanlegger: HvemPlanlegger = {
+            type: HvemPlanleggerType.FAR_OG_FAR,
+            navnPåFar: 'Ola Nordmann',
+            navnPåMedfar: 'Per Hansen',
+        };
+
+        const resultat = getEffektivHvemPlanlegger(
+            hvemPlanlegger,
+            { antallDagerSøker1: 75, hvemStarterPermisjon: 'søker2' },
+            adoptertBarnet,
+            mockIntl,
+        );
+
+        expect(resultat).toEqual({
+            type: HvemPlanleggerType.FAR_OG_FAR,
+            navnPåFar: 'Per Hansen',
+            navnPåMedfar: 'Ola Nordmann',
+        });
+    });
+
+    it('skal bytte om navnPåMor/navnPåMedmor når hvemStarterPermisjon er søker2 for MOR_OG_MEDMOR', () => {
+        const hvemPlanlegger: HvemPlanlegger = {
+            type: HvemPlanleggerType.MOR_OG_MEDMOR,
+            navnPåMor: 'Kari Nordmann',
+            navnPåMedmor: 'Anne Hansen',
+        };
+
+        const resultat = getEffektivHvemPlanlegger(
+            hvemPlanlegger,
+            { antallDagerSøker1: 75, hvemStarterPermisjon: 'søker2' },
+            adoptertBarnet,
+            mockIntl,
+        );
+
+        expect(resultat).toEqual({
+            type: HvemPlanleggerType.MOR_OG_MEDMOR,
+            navnPåMor: 'Anne Hansen',
+            navnPåMedmor: 'Kari Nordmann',
+        });
+    });
+
+    it('skal ikke bytte om navn ved fødsel selv om par er likekjønnet', () => {
+        const hvemPlanlegger: HvemPlanlegger = {
+            type: HvemPlanleggerType.FAR_OG_FAR,
+            navnPåFar: 'Ola Nordmann',
+            navnPåMedfar: 'Per Hansen',
+        };
+
+        const resultat = getEffektivHvemPlanlegger(
+            hvemPlanlegger,
+            { antallDagerSøker1: 75, hvemStarterPermisjon: 'søker2' },
+            fødtBarnet,
+            mockIntl,
+        );
+
+        expect(resultat).toEqual(hvemPlanlegger);
+    });
+
+    it('skal bytte om Far 1/Far 2 fallback-navn når hvemStarterPermisjon er søker2 og navn ikke er oppgitt', () => {
+        const hvemPlanlegger: HvemPlanlegger = { type: HvemPlanleggerType.FAR_OG_FAR };
+
+        const resultat = getEffektivHvemPlanlegger(
+            hvemPlanlegger,
+            { antallDagerSøker1: 75, hvemStarterPermisjon: 'søker2' },
+            adoptertBarnet,
+            mockIntl,
+        );
+
+        expect(resultat).toEqual({
+            type: HvemPlanleggerType.FAR_OG_FAR,
+            navnPåFar: 'far 2',
+            navnPåMedfar: 'far 1',
+        });
+    });
+
+    it('skal bytte om navnPåMor/navnPåFar når hvemStarterPermisjon er søker2 for MOR_OG_FAR ved adopsjon', () => {
+        const hvemPlanlegger: HvemPlanlegger = {
+            type: HvemPlanleggerType.MOR_OG_FAR,
+            navnPåMor: 'Kari Nordmann',
+            navnPåFar: 'Ola Hansen',
+        };
+
+        const resultat = getEffektivHvemPlanlegger(
+            hvemPlanlegger,
+            { antallDagerSøker1: 75, hvemStarterPermisjon: 'søker2' },
+            adoptertBarnet,
+            mockIntl,
+        );
+
+        expect(resultat).toEqual({
+            type: HvemPlanleggerType.MOR_OG_FAR,
+            navnPåMor: 'Ola Hansen',
+            navnPåFar: 'Kari Nordmann',
+        });
+    });
+
+    it('skal ikke bytte om navn for MOR_OG_FAR ved fødsel', () => {
+        const hvemPlanlegger: HvemPlanlegger = {
+            type: HvemPlanleggerType.MOR_OG_FAR,
+            navnPåMor: 'Kari Nordmann',
+            navnPåFar: 'Ola Hansen',
+        };
+
+        const resultat = getEffektivHvemPlanlegger(
+            hvemPlanlegger,
+            { antallDagerSøker1: 75, hvemStarterPermisjon: 'søker2' },
+            fødtBarnet,
+            mockIntl,
+        );
+
+        expect(resultat).toEqual(hvemPlanlegger);
+    });
+});
+
+describe('getFornavnPåSøker1 og getFornavnPåSøker2 for likekjønnede par uten navn', () => {
+    it('skal bruke «far 1»/«far 2» (ikke bare «far») som fornavn for FAR_OG_FAR uten navn', () => {
+        const hvemPlanlegger: HvemPlanlegger = { type: HvemPlanleggerType.FAR_OG_FAR };
+
+        expect(getFornavnPåSøker1(hvemPlanlegger, mockIntl)).toBe('far 1');
+        expect(getFornavnPåSøker2(hvemPlanlegger, mockIntl)).toBe('far 2');
+    });
+
+    it('skal fortsatt bruke «mor»/«medmor» for MOR_OG_MEDMOR uten navn (allerede distinkte roller, ingen nummerering nødvendig)', () => {
+        const hvemPlanlegger: HvemPlanlegger = { type: HvemPlanleggerType.MOR_OG_MEDMOR };
+
+        expect(getFornavnPåSøker1(hvemPlanlegger, mockIntl)).toBe('mor');
+        expect(getFornavnPåSøker2(hvemPlanlegger, mockIntl)).toBe('medmor');
+    });
+
+    it('skal fortsatt bruke «far»/«mor» for MOR_OG_FAR uten navn (ikke likekjønnet, ingen nummerering nødvendig)', () => {
+        const hvemPlanlegger: HvemPlanlegger = { type: HvemPlanleggerType.MOR_OG_FAR };
+
+        expect(getFornavnPåSøker1(hvemPlanlegger, mockIntl)).toBe('mor');
+        expect(getFornavnPåSøker2(hvemPlanlegger, mockIntl)).toBe('far');
+    });
+
+    it('skal bruke oppgitt fornavn når navn er satt for FAR_OG_FAR', () => {
+        const hvemPlanlegger: HvemPlanlegger = {
+            type: HvemPlanleggerType.FAR_OG_FAR,
+            navnPåFar: 'Ola Nordmann',
+            navnPåMedfar: 'Per Hansen',
+        };
+
+        expect(getFornavnPåSøker1(hvemPlanlegger, mockIntl)).toBe('Ola');
+        expect(getFornavnPåSøker2(hvemPlanlegger, mockIntl)).toBe('Per');
     });
 });

@@ -49,7 +49,7 @@ describe('finnUttaksdata - delt uttak, fødsel', () => {
         const uttaksplan = deltUttak({
             famDato: fødselsdato,
             tilgjengeligeStønadskvoter: KONTOER,
-            fellesperiodeDagerMor: FELLESPERIODE_DAGER_MOR,
+            fellesperiodeDagerFørsteForelder: FELLESPERIODE_DAGER_MOR,
         });
 
         const morsPerioder = uttaksplan.filter((p) => p.forelder === 'MOR');
@@ -109,7 +109,7 @@ describe('finnUttaksdata - delt uttak, fødsel', () => {
         const uttaksplan = deltUttak({
             famDato: fødselsdato,
             tilgjengeligeStønadskvoter: KONTOER,
-            fellesperiodeDagerMor: FELLESPERIODE_DAGER_MOR,
+            fellesperiodeDagerFørsteForelder: FELLESPERIODE_DAGER_MOR,
         });
 
         const morsPerioder = uttaksplan.filter((p) => p.forelder === 'MOR');

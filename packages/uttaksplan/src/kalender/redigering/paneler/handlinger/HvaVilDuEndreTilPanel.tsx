@@ -224,16 +224,19 @@ const HeaderForDesktop = () => {
                         <FormattedMessage id="RedigeringPanel.EndreTil" />
                     </Heading>
                 </HStack>
-                <Chips size="small">
-                    <Chips.Removable onDelete={() => setValgtePerioder([])}>
-                        {intl.formatMessage(
-                            { id: 'RedigeringPanel.ValgteDager' },
-                            {
-                                varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
-                            },
-                        )}
-                    </Chips.Removable>
-                </Chips>
+                {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
+                <div onClick={(e) => e.stopPropagation()}>
+                    <Chips size="small">
+                        <Chips.Removable onDelete={() => setValgtePerioder([])}>
+                            {intl.formatMessage(
+                                { id: 'RedigeringPanel.ValgteDager' },
+                                {
+                                    varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
+                                },
+                            )}
+                        </Chips.Removable>
+                    </Chips>
+                </div>
             </VStack>
         </Box>
     );
@@ -278,35 +281,40 @@ const HeaderForMobil = ({
                             <FormattedMessage id="RedigeringPanel.EndreTil" />
                         </Heading>
                         {erMinimert && (
-                            <Box
-                                background="brand-blue-strong"
-                                padding="space-2"
-                                borderRadius="8"
-                                width="fit-content"
-                                className={'text-ax-bg-default px-2'}
-                            >
-                                {finnAntallDager(sammenslåtteValgtePerioder)}
-                            </Box>
+                            // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
+                            <div onClick={(e) => e.stopPropagation()}>
+                                <Chips size="small">
+                                    <Chips.Removable onDelete={() => setValgtePerioder([])}>
+                                        {intl.formatMessage(
+                                            { id: 'RedigeringPanel.ValgteDager' },
+                                            {
+                                                varighet: getVarighetString(
+                                                    finnAntallDager(sammenslåtteValgtePerioder),
+                                                    intl,
+                                                ),
+                                            },
+                                        )}
+                                    </Chips.Removable>
+                                </Chips>
+                            </div>
                         )}
                     </HStack>
                 </HStack>
 
                 {!erMinimert && (
-                    <Chips size="small">
-                        <Chips.Removable
-                            onDelete={() => {
-                                setValgtePerioder([]);
-                            }}
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            {intl.formatMessage(
-                                { id: 'RedigeringPanel.ValgteDager' },
-                                {
-                                    varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
-                                },
-                            )}
-                        </Chips.Removable>
-                    </Chips>
+                    // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
+                    <div onClick={(e) => e.stopPropagation()}>
+                        <Chips size="small">
+                            <Chips.Removable onDelete={() => setValgtePerioder([])}>
+                                {intl.formatMessage(
+                                    { id: 'RedigeringPanel.ValgteDager' },
+                                    {
+                                        varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
+                                    },
+                                )}
+                            </Chips.Removable>
+                        </Chips>
+                    </div>
                 )}
             </VStack>
         </Box>

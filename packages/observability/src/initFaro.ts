@@ -1,5 +1,6 @@
 import {
     type ExceptionEvent,
+    type Meta,
     type TransportItem,
     TransportItemType,
     getWebInstrumentations,
@@ -19,6 +20,18 @@ type InitFaroOptions = {
         name: string;
         /** Må matche `metadata.namespace` i naiserator.yaml. */
         namespace: string;
+    };
+};
+
+const customPageMeta: () => Pick<Meta, 'page'> = () => {
+    const regex = /(planleggerData=)[^&\s]+/;
+
+    const result: string = regex.test(location.href) ? location.href.replace(regex, '$1*******') : location.href;
+
+    return {
+        page: {
+            url: result,
+        },
     };
 };
 
@@ -46,6 +59,7 @@ export const initFaro = ({ app }: InitFaroOptions) => {
             version: import.meta.env.VITE_SENTRY_RELEASE,
         },
         instrumentations: [...getWebInstrumentations()],
+        metas: [customPageMeta],
         beforeSend: (item) => {
             if (item.type !== TransportItemType.EXCEPTION) {
                 return item;

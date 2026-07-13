@@ -331,7 +331,8 @@ interface LagForslagProps {
     erDeltUttak: boolean;
     famDato: string;
     tilgjengeligeStønadskvoter: KontoDto[];
-    fellesperiodeDagerMor: number | undefined;
+    fellesperiodeDagerFørsteForelder: number | undefined;
+    starterForelder?: 'MOR' | 'FAR_MEDMOR';
     erAdopsjon: boolean;
     erFarEllerMedmor: boolean;
     erMorUfør: boolean;
@@ -345,7 +346,8 @@ export const lagForslagTilPlan = ({
     erDeltUttak,
     famDato,
     tilgjengeligeStønadskvoter,
-    fellesperiodeDagerMor,
+    fellesperiodeDagerFørsteForelder,
+    starterForelder,
     erAdopsjon,
     erFarEllerMedmor,
     erMorUfør,
@@ -355,10 +357,20 @@ export const lagForslagTilPlan = ({
     farOgFar,
 }: LagForslagProps): PlanForslag => {
     if (erDeltUttak) {
-        const perioder = deltUttak({ famDato, tilgjengeligeStønadskvoter, fellesperiodeDagerMor, startdato });
+        const perioder = deltUttak({
+            famDato,
+            tilgjengeligeStønadskvoter,
+            fellesperiodeDagerFørsteForelder,
+            starterForelder,
+            startdato,
+        });
+        // søker1 = den valgte starteren (effektiv søker1), slik at splitten matcher effektiv-baserte navn og
+        // fellesperiodedager i oppsummeringen. starterForelder styrer også genereringsrekkefølgen i deltUttak.
+        const søker1Forelder = starterForelder ?? 'MOR';
+        const søker2Forelder = søker1Forelder === 'MOR' ? 'FAR_MEDMOR' : 'MOR';
         return {
-            søker1: perioder.filter((p) => p.forelder === 'MOR'),
-            søker2: perioder.filter((p) => p.forelder === 'FAR_MEDMOR'),
+            søker1: perioder.filter((p) => p.forelder === søker1Forelder),
+            søker2: perioder.filter((p) => p.forelder === søker2Forelder),
         };
     }
 
@@ -380,9 +392,11 @@ export const getSøkersPerioder = (
     erDeltUttak: boolean,
     gjeldendeUttaksplan: UttakPeriode_fpoversikt[],
     erFarEllerMedmor: boolean,
+    starterForelder?: 'MOR' | 'FAR_MEDMOR',
 ) => {
+    const søkersForelder = starterForelder ?? (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR');
     return erDeltUttak
-        ? gjeldendeUttaksplan.filter((p) => (erFarEllerMedmor ? p.forelder === 'FAR_MEDMOR' : p.forelder === 'MOR'))
+        ? gjeldendeUttaksplan.filter((p) => p.forelder === søkersForelder)
         : gjeldendeUttaksplan;
 };
 
@@ -390,8 +404,11 @@ export const getAnnenpartsPerioder = (
     erDeltUttak: boolean,
     gjeldendeUttaksplan: UttakPeriode_fpoversikt[],
     erFarEllerMedmor: boolean,
+    starterForelder?: 'MOR' | 'FAR_MEDMOR',
 ) => {
+    const søkersForelder = starterForelder ?? (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR');
+    const annenpartsForelder = søkersForelder === 'MOR' ? 'FAR_MEDMOR' : 'MOR';
     return erDeltUttak
-        ? gjeldendeUttaksplan.filter((p) => (erFarEllerMedmor ? p.forelder === 'MOR' : p.forelder === 'FAR_MEDMOR'))
+        ? gjeldendeUttaksplan.filter((p) => p.forelder === annenpartsForelder)
         : [];
 };

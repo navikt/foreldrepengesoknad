@@ -25,7 +25,7 @@
     "devDependencies": {
         "@trivago/prettier-plugin-sort-imports": "6.0.2",
         "@types/node": "catalog:",
-        "knip": "6.18.0",
+        "knip": "6.17.0",
         "msw": "2.14.6",
         "msw-storybook-addon": "2.0.7",
         "prettier": "3.8.4",
@@ -35,7 +35,7 @@
         "apps/**/*.{ts,tsx,js,jsx, css}": "prettier --write",
         "packages/**/*.{ts,tsx,js,jsx, css}": "prettier --write"
     },
-    "packageManager": "pnpm@10.33.1",
+    "packageManager": "pnpm@11.9.0",
     "msw": {
         "workerDirectory": [
             "./scripts/mock-service-worker"

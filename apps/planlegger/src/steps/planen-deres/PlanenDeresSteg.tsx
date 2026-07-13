@@ -5,6 +5,7 @@ import {
     useContextGetData,
     useContextSaveData,
 } from 'appData/PlanleggerDataContext';
+import { useEffektivHvemPlanlegger } from 'appData/useEffektivHvemPlanlegger';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
 import { FordelingSlider } from 'components/FordelingSlider';
@@ -14,6 +15,7 @@ import { HvemPlanleggerType } from 'types/HvemPlanlegger';
 import {
     erAlenesøker,
     erMedmorDelAvSøknaden,
+    getEffektivHvemPlanlegger,
     getErFarEllerMedmor,
     getFornavnPåSøker1,
     getFornavnPåSøker2,
@@ -87,7 +89,15 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
     const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
     const erDeltUttak = fordeling !== undefined;
 
-    const navnPåForeldre = getNavnPåForeldre(hvemPlanlegger, intl);
+    // For likekjønnede fedre er begge "far", så den valgte starterens identitet (søker1/søker2) må følge med i
+    // navnefeltene (via effektiv hvemPlanlegger). For mor/far og mor/medmor er rollene faste, så vi bruker rådata og
+    // lar rekkefølgen styres av starterForelder-taggen alene.
+    const navnPåForeldre = getNavnPåForeldre(
+        hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR
+            ? getEffektivHvemPlanlegger(hvemPlanlegger, fordeling, omBarnet, intl)
+            : hvemPlanlegger,
+        intl,
+    );
 
     const lagreUttaksplanOgOppdaterUrl = (
         oppdatertUttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
@@ -142,6 +152,7 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
                         rettighetType: utledRettighet(erAleneOmOmsorg, erDeltUttak),
                         erMedmorDelAvSøknaden: isMedmorDelAvSøknaden,
                         erIkkeSøkerSpesifisert: erDeltUttak,
+                        erFarOgFar: hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR,
                     }}
                     valgtStønadskvote={valgtStønadskvote}
                     harAktivitetskravIPeriodeUtenUttak={false}
@@ -294,7 +305,7 @@ const AntallUkerVelger = ({
     const intl = useIntl();
 
     const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
+    const hvemPlanlegger = useEffektivHvemPlanlegger();
     const hvorLangPeriode = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
 

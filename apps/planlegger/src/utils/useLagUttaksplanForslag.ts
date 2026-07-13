@@ -6,7 +6,7 @@ import { KontoBeregningDto } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { getErFarEllerMedmor } from './HvemPlanleggerUtils';
+import { getErFarEllerMedmor, getStarterForelder } from './HvemPlanleggerUtils';
 import { erBarnetAdoptert } from './barnetUtils';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from './hvemHarRettUtils';
 import { getFamiliehendelsedato, lagForslagTilPlan } from './uttakUtils';
@@ -38,7 +38,8 @@ export const useLagUttaksplanForslag = (valgtStønadskvote: KontoBeregningDto) =
         famDato: familiehendelsedato,
         startdato,
         tilgjengeligeStønadskvoter: valgtStønadskvote.kontoer,
-        fellesperiodeDagerMor: fordeling?.antallDagerSøker1,
+        fellesperiodeDagerFørsteForelder: fordeling?.antallDagerSøker1,
+        starterForelder: getStarterForelder(hvemPlanlegger, fordeling, omBarnet),
         bareFarMedmorHarRett,
         erAdopsjon: erBarnetAdoptert(omBarnet),
         erFarEllerMedmor: erFarEllerMedmor,

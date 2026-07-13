@@ -11,6 +11,7 @@ dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
 const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
+const ANTALL_UTTAKSDAGER_SYV_UKER = 35;
 
 type Periode = { fom: string; tom: string };
 
@@ -33,6 +34,27 @@ export const UttaksperiodeValidatorer = {
             Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(
                 ANTALL_UTTAKSDAGER_SEKS_UKER,
             );
+
+        return perioder.some((periode) => {
+            const fom = dayjs(periode.fom);
+            const tom = dayjs(periode.tom);
+            return tom.isSameOrAfter(førsteDag, 'day') && fom.isBefore(sisteDag, 'day');
+        });
+    },
+
+    /**
+     * Uke 7 etter familiehendelsedato — uken rett etter den lovpålagte
+     * seksukersperioden. Brukt til å varsle om at ferie/opphold lagt inn
+     * her kan bli avslått dersom fødselen skjer etter termin, siden de
+     * seks lovpålagte ukene da forskyves og kan overlappe med perioden.
+     */
+    erNoenPerioderIUke7EtterFamiliehendelsesdato(perioder: Periode[], familiehendelsedato: string) {
+        const førsteDag = Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(
+            ANTALL_UTTAKSDAGER_SEKS_UKER,
+        );
+        const sisteDag = Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(
+            ANTALL_UTTAKSDAGER_SYV_UKER,
+        );
 
         return perioder.some((periode) => {
             const fom = dayjs(periode.fom);

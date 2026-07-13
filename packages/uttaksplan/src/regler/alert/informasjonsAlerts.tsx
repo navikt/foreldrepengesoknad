@@ -10,9 +10,15 @@ import {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 
-import { kanMisteDagerVedEndringTilFerie } from '../../felles/uttaksplanValidatorer';
+import {
+    kanMisteDagerVedEndringTilFerie,
+    kanMisteDagerVedFerieIUke7EtterTermin,
+} from '../../felles/uttaksplanValidatorer';
 import { Uttaksplanperiode, UttaksplanperiodeMedKunTapteDager, erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
-import { harPeriodeDerMorsAktivitetIkkeErValgt, harPeriodeMedUkjentGraderingsaktivitet } from '../../utils/periodeUtils';
+import {
+    harPeriodeDerMorsAktivitetIkkeErValgt,
+    harPeriodeMedUkjentGraderingsaktivitet,
+} from '../../utils/periodeUtils';
 import { Periode } from '../types';
 import { AlertregelDoc, lagAlertregel } from './types';
 
@@ -23,11 +29,17 @@ dayjs.extend(isSameOrAfter);
 
 type MorsAktivitetListeKontekst = {
     rettighetType: RettighetType_fpoversikt;
+    søker: BrukerRolleSak_fpoversikt;
+    erIkkeSøkerSpesifisert: boolean;
+    erFarOgFar?: boolean;
     perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>;
 };
 
 type EksisterendeValgtePeriodeKontekst = {
     rettighetType: RettighetType_fpoversikt;
+    søker: BrukerRolleSak_fpoversikt;
+    erIkkeSøkerSpesifisert: boolean;
+    erFarOgFar?: boolean;
     periode: Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager;
     morsUttakPerioder: readonly UttakPeriode_fpoversikt[];
 };
@@ -76,7 +88,14 @@ export const MANGLER_MORS_AKTIVITET_LISTE = lagAlertregel<MorsAktivitetListeKont
     ],
     variant: 'warning',
     type: 'kontekstuell',
-    skalVises: (ctx) => harPeriodeDerMorsAktivitetIkkeErValgt(ctx.rettighetType, [...ctx.perioder]),
+    skalVises: (ctx) =>
+        harPeriodeDerMorsAktivitetIkkeErValgt(
+            ctx.rettighetType,
+            ctx.søker,
+            ctx.erIkkeSøkerSpesifisert,
+            ctx.perioder,
+            ctx.erFarOgFar,
+        ),
 });
 
 export const MANGLER_MORS_AKTIVITET_KALENDER = lagAlertregel<MorsAktivitetListeKontekst>({
@@ -91,7 +110,14 @@ export const MANGLER_MORS_AKTIVITET_KALENDER = lagAlertregel<MorsAktivitetListeK
     ],
     variant: 'warning',
     type: 'kontekstuell',
-    skalVises: (ctx) => harPeriodeDerMorsAktivitetIkkeErValgt(ctx.rettighetType, [...ctx.perioder]),
+    skalVises: (ctx) =>
+        harPeriodeDerMorsAktivitetIkkeErValgt(
+            ctx.rettighetType,
+            ctx.søker,
+            ctx.erIkkeSøkerSpesifisert,
+            ctx.perioder,
+            ctx.erFarOgFar,
+        ),
 });
 
 export const MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING = lagAlertregel<MorsAktivitetListeKontekst>({
@@ -109,7 +135,14 @@ export const MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING = lagAlertregel<MorsAktivite
     ],
     variant: 'warning',
     type: 'kontekstuell',
-    skalVises: (ctx) => harPeriodeDerMorsAktivitetIkkeErValgt(ctx.rettighetType, [...ctx.perioder]),
+    skalVises: (ctx) =>
+        harPeriodeDerMorsAktivitetIkkeErValgt(
+            ctx.rettighetType,
+            ctx.søker,
+            ctx.erIkkeSøkerSpesifisert,
+            ctx.perioder,
+            ctx.erFarOgFar,
+        ),
 });
 
 export const MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE = lagAlertregel<EksisterendeValgtePeriodeKontekst>({
@@ -125,7 +158,13 @@ export const MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE = lagAlertregel<Eksisterende
     variant: 'warning',
     type: 'kontekstuell',
     skalVises: (ctx) =>
-        harPeriodeDerMorsAktivitetIkkeErValgt(ctx.rettighetType, [ctx.periode, ...ctx.morsUttakPerioder]),
+        harPeriodeDerMorsAktivitetIkkeErValgt(
+            ctx.rettighetType,
+            ctx.søker,
+            ctx.erIkkeSøkerSpesifisert,
+            [ctx.periode, ...ctx.morsUttakPerioder],
+            ctx.erFarOgFar,
+        ),
 });
 
 export const KAN_MISTE_DAGER = lagAlertregel<PeriodeDetaljerKontekst>({
@@ -143,6 +182,28 @@ export const KAN_MISTE_DAGER = lagAlertregel<PeriodeDetaljerKontekst>({
         erIkkeAdopsjon(ctx.familiesituasjon) &&
         !ctx.harPeriodeMedPleiepenger &&
         kanMisteDagerVedEndringTilFerie([...ctx.sammenslåtteValgtePerioder], ctx.familiehendelsedato),
+});
+
+export const FERIE_UKE_7_ETTER_TERMIN = lagAlertregel<PeriodeDetaljerKontekst>({
+    id: 'informasjonsAlerts.ferieUke7EtterTermin',
+    beskrivelse:
+        'Mor søker før fødsel (familiesituasjon er «termin») og har valgt å endre én ' +
+        'eller flere perioder i uke 7 etter termin til ferie. Dersom barnet blir født ' +
+        'etter termin, forskyves de seks lovpålagte ukene med mødrekvote, og ferien kan ' +
+        'da bli avslått med tapte dager som resultat.',
+    visningssteder: ['periode-detaljer-redigering'],
+    meldinger: [
+        <FormattedMessage key="RedigeringPanel.FerieUke7EtterTermin" id="RedigeringPanel.FerieUke7EtterTermin" />,
+    ],
+    variant: 'info',
+    type: 'kontekstuell',
+    skalVises: (ctx) =>
+        ctx.søker === 'MOR' &&
+        kanMisteDagerVedFerieIUke7EtterTermin(
+            [...ctx.sammenslåtteValgtePerioder],
+            ctx.familiehendelsedato,
+            ctx.familiesituasjon,
+        ),
 });
 
 export const ADOPSJON_PERIODE_FØR_FAMHEND = lagAlertregel<PeriodeDetaljerKontekst>({
@@ -269,7 +330,7 @@ export const MANGLER_GRADERINGSAKTIVITET_LISTE = lagAlertregel<Graderingsaktivit
     ],
     variant: 'warning',
     type: 'kontekstuell',
-    skalVises: (ctx) => harPeriodeMedUkjentGraderingsaktivitet([...ctx.perioder], ctx.søker),
+    skalVises: (ctx) => harPeriodeMedUkjentGraderingsaktivitet(ctx.perioder, ctx.søker),
 });
 
 export const MANGLER_GRADERINGSAKTIVITET_KALENDER = lagAlertregel<GraderingsaktivitetListeKontekst>({
@@ -287,7 +348,7 @@ export const MANGLER_GRADERINGSAKTIVITET_KALENDER = lagAlertregel<Graderingsakti
     ],
     variant: 'warning',
     type: 'kontekstuell',
-    skalVises: (ctx) => harPeriodeMedUkjentGraderingsaktivitet([...ctx.perioder], ctx.søker),
+    skalVises: (ctx) => harPeriodeMedUkjentGraderingsaktivitet(ctx.perioder, ctx.søker),
 });
 
 export const GRADERINGSAKTIVITET_IKKE_VALGT_EKSISTERENDE = lagAlertregel<GraderingsaktivitetPeriodeKontekst>({
@@ -322,6 +383,7 @@ export const INFORMASJONS_ALERTS: readonly AlertregelDoc[] = [
     MANGLER_GRADERINGSAKTIVITET_KALENDER,
     GRADERINGSAKTIVITET_IKKE_VALGT_EKSISTERENDE,
     KAN_MISTE_DAGER,
+    FERIE_UKE_7_ETTER_TERMIN,
     ADOPSJON_PERIODE_FØR_FAMHEND,
     IKKE_REDIGERBAR_EØS,
     IKKE_REDIGERBAR_PLEIEPENGER,

@@ -16,6 +16,30 @@ export type SvpMellomlagretData = {
     søkerInfo: SvpPersonopplysningerDto_fpoversikt;
 } & ContextDataMap;
 
+type MellomlagreSøknadOptions = {
+    // Naviger (react-router) til gjeldande steg før lagring. Default true.
+    // Settast false når kallaren skal forlate appen (t.d. fortsett-seinare).
+    naviger?: boolean;
+    // Prøv kallet på nytt ved transiente feil. Default false.
+    medRetry?: boolean;
+};
+
+export type MellomlagreSøknadFn = (options?: MellomlagreSøknadOptions) => Promise<void>;
+
+const tilMellomlagringsFeil = (error: unknown): Error => {
+    if (error instanceof HTTPError) {
+        if (error.response.status === 401 || error.response.status === 403) {
+            return error;
+        }
+        const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
+        return new ApiError('', 'Feil ved mellomlagring av svangerskapspengesøknad', jsonResponse);
+    }
+    if (error instanceof Error) {
+        return error;
+    }
+    return new Error(String(error), { cause: error });
+};
+
 export const useMellomlagreSøknad = (
     søkerInfo: SvpPersonopplysningerDto_fpoversikt,
     setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void,
@@ -24,7 +48,7 @@ export const useMellomlagreSøknad = (
     const state = useContextComplete();
     const resetState = useContextReset();
 
-    const [skalMellomlagre, setSkalMellomlagre] = useState(false);
+    const [forespørsel, setForespørsel] = useState<{ naviger: boolean; medRetry: boolean } | null>(null);
 
     const promiseRef = useRef<() => void>(null);
 
@@ -33,13 +57,17 @@ export const useMellomlagreSøknad = (
     });
 
     useEffect(() => {
-        if (skalMellomlagre) {
+        if (forespørsel) {
+            const { naviger, medRetry } = forespørsel;
+
             const lagreEllerSlett = async () => {
-                setSkalMellomlagre(false);
+                setForespørsel(null);
 
                 const currentPath = state[ContextDataType.APP_ROUTE];
                 if (currentPath) {
-                    void navigate(currentPath);
+                    if (naviger) {
+                        void navigate(currentPath);
+                    }
 
                     try {
                         const data = {
@@ -47,20 +75,20 @@ export const useMellomlagreSøknad = (
                             søkerInfo,
                             ...state,
                         } satisfies SvpMellomlagretData;
-                        await ky.post(API_URLS.mellomlagring, { json: data });
+                        await ky.post(API_URLS.mellomlagring, {
+                            json: data,
+                            ...(medRetry
+                                ? {
+                                      retry: {
+                                          limit: 2,
+                                          methods: ['post'],
+                                          statusCodes: [408, 429, 500, 502, 503, 504],
+                                      },
+                                  }
+                                : {}),
+                        });
                     } catch (error: unknown) {
-                        if (error instanceof HTTPError) {
-                            if (error.response.status === 401 || error.response.status === 403) {
-                                throw error;
-                            }
-
-                            const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
-                            throw new ApiError('', 'Feil ved mellomlagring av svangerskapspengesøknad', jsonResponse);
-                        }
-                        if (error instanceof Error) {
-                            throw error;
-                        }
-                        throw new Error(String(error), { cause: error });
+                        throw tilMellomlagringsFeil(error);
                     }
                 } else {
                     setHarGodkjentVilkår(false);
@@ -88,11 +116,11 @@ export const useMellomlagreSøknad = (
                 }
             });
         }
-    }, [skalMellomlagre]);
+    }, [forespørsel]);
 
-    const mellomlagreOgNaviger = useCallback(() => {
+    const mellomlagreOgNaviger = useCallback<MellomlagreSøknadFn>((options) => {
         //Må gå via state change sidan ein må få oppdatert context før ein mellomlagrar
-        setSkalMellomlagre(true);
+        setForespørsel({ naviger: options?.naviger ?? true, medRetry: options?.medRetry ?? false });
 
         const promise = new Promise<void>((resolve) => {
             promiseRef.current = resolve;

@@ -97,46 +97,17 @@ describe('initFaro', () => {
             expect(resultat).toBe(exceptionItem);
         });
 
-        it('filtrerer bort exception med "401" i value', () => {
+        it.each([
+            { beskrivelse: '"401" i value', type: 'HTTPError', value: 'HTTP 401 Unauthorized' },
+            { beskrivelse: '"401" i type', type: 'Error 401', value: 'Noe gikk galt' },
+            { beskrivelse: '"Unauthorized" i value', type: 'Error', value: 'Unauthorized' },
+        ])('filtrerer bort exception med $beskrivelse', ({ type, value }) => {
             vi.stubGlobal('location', { hostname: 'www.nav.no' });
             initFaro({ app: APP });
 
             const beforeSend = hentBeforeSend();
 
-            const exceptionItem = lagExceptionItem({
-                type: 'HTTPError',
-                value: 'HTTP 401 Unauthorized',
-            });
-
-            const resultat = beforeSend(exceptionItem);
-            expect(resultat).toBeNull();
-        });
-
-        it('filtrerer bort exception med "401" i type', () => {
-            vi.stubGlobal('location', { hostname: 'www.nav.no' });
-            initFaro({ app: APP });
-
-            const beforeSend = hentBeforeSend();
-
-            const exceptionItem = lagExceptionItem({
-                type: 'Error 401',
-                value: 'Noe gikk galt',
-            });
-
-            const resultat = beforeSend(exceptionItem);
-            expect(resultat).toBeNull();
-        });
-
-        it('filtrerer bort exception med "Unauthorized" i value', () => {
-            vi.stubGlobal('location', { hostname: 'www.nav.no' });
-            initFaro({ app: APP });
-
-            const beforeSend = hentBeforeSend();
-
-            const exceptionItem = lagExceptionItem({
-                type: 'Error',
-                value: 'Unauthorized',
-            });
+            const exceptionItem = lagExceptionItem({ type, value });
 
             const resultat = beforeSend(exceptionItem);
             expect(resultat).toBeNull();

@@ -19,6 +19,8 @@ interface Props {
 }
 
 export const HvorMyePanel = ({ satser, lønnSøker, fornavn }: Props) => {
+    // NB: Bruker rå hvemPlanlegger (ikke effektiv/byttet versjon). lønnSøker1/lønnSøker2 ble oppgitt på
+    // "Hvor mye"-steget, som kommer før "Fordeling" i flyten og er derfor ikke påvirket av hvem som starter permisjonen.
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const erAlenesøker = erAlene(hvemPlanlegger);
     const grunnbeløpet = finnSisteGrunnbeløp(satser);

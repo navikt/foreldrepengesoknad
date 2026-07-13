@@ -85,7 +85,7 @@ export const PlanleggerDataFetcher = () => {
                 return data;
             }
             // Lag en dyp kopi for å unngå å modifisere original data
-            const modifiserteData = JSON.parse(JSON.stringify(data)) as KontoBeregningResultatDto;
+            const modifiserteData = structuredClone(data);
             // Liste over dekningsgrader vi skal prosessere
             const dekningsgrader = ['80', '100'] as const;
             // Bearbeide hver dekningsgrad

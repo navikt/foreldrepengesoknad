@@ -204,7 +204,7 @@ describe('<ArbeidssituasjonSteg>', () => {
         });
     });
 
-    it('skal omtale medmor som medmor hvis navn ikke er oppgit', async () => {
+    it('skal omtale medmor som medmor hvis navn ikke er oppgitt', async () => {
         render(<ArbeidssituasjonMorOgMedmorUtenNavn />);
 
         expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);

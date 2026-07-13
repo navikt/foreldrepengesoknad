@@ -6,9 +6,11 @@ import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import {
     erAlenesøker,
     getErFarEllerMedmor,
+    getEffektivHvemPlanlegger,
     getFornavnPåSøker1,
     getFornavnPåSøker2,
     getNavnGenitivEierform,
+    getStarterForelder,
 } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett, utledRettighet } from 'utils/hvemHarRettUtils';
 import {
@@ -74,20 +76,27 @@ export const OppsummeringHarRett = ({
     const ukerOgDagerMedForeldrepenger = finnAntallUkerOgDagerMedForeldrepenger(valgtStønadskvote);
 
     const erFarOgFar = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR;
-    const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
+    // For visning av navn sammen med perioder/fellesperiodedager i oppsummeringen brukes effektiv rekkefølge, slik at
+    // «søker1» er den valgte starteren (samsvarer med fordeling.antallDagerSøker1 og søker1Plan). Til rollebaserte
+    // kvotenavn i KvoteOppsummering (mor/farMedmor) brukes derimot rådata lenger ned, siden rollen er fast.
+    const effektivHvemPlanlegger = getEffektivHvemPlanlegger(hvemPlanlegger, fordeling, barnet, intl);
+    const fornavnSøker1 = getFornavnPåSøker1(effektivHvemPlanlegger, intl);
     const fornavnSøker1Genitiv = getNavnGenitivEierform(fornavnSøker1, intl.locale);
-    const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
+    const fornavnSøker2 = getFornavnPåSøker2(effektivHvemPlanlegger, intl);
     const fornavnSøker2Genitiv = fornavnSøker2 ? getNavnGenitivEierform(fornavnSøker2, intl.locale) : undefined;
 
     const barnehagestartdato = barnehagestartDato(barnet);
 
     const erDeltUttak = fordeling !== undefined;
+    const starterForelder = getStarterForelder(hvemPlanlegger, fordeling, barnet);
 
     const planforslag = useLagUttaksplanForslag(valgtStønadskvote);
 
-    const søker1Plan = uttaksplan ? getSøkersPerioder(erDeltUttak, uttaksplan, erFarEllerMedmor) : planforslag.søker1;
+    const søker1Plan = uttaksplan
+        ? getSøkersPerioder(erDeltUttak, uttaksplan, erFarEllerMedmor, starterForelder)
+        : planforslag.søker1;
     const søker2Plan = uttaksplan
-        ? getAnnenpartsPerioder(erDeltUttak, uttaksplan, erFarEllerMedmor)
+        ? getAnnenpartsPerioder(erDeltUttak, uttaksplan, erFarEllerMedmor, starterForelder)
         : planforslag.søker2;
 
     return (
@@ -118,8 +127,8 @@ export const OppsummeringHarRett = ({
                                                 prosent: hvorLangPeriode.dekningsgrad,
                                                 antallUker: ukerOgDagerMedForeldrepenger.uker,
                                                 antallDager: ukerOgDagerMedForeldrepenger.dager,
-                                                hvem: getFornavnPåSøker1(hvemPlanlegger, intl),
-                                                hvem2: getFornavnPåSøker2(hvemPlanlegger, intl),
+                                                hvem: fornavnSøker1,
+                                                hvem2: fornavnSøker2,
                                                 uker: antallUkerOgDagerFellesperiodeSøker1?.uker || 0,
                                                 dager: antallUkerOgDagerFellesperiodeSøker1?.dager || 0,
                                                 uker2: antallUkerOgDagerFellesperiodeSøker2?.uker || 0,
@@ -242,10 +251,14 @@ export const OppsummeringHarRett = ({
                             barn={mapOmBarnetPlanleggerTilBarn(barnet)}
                             foreldreInfo={{
                                 søker: erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
-                                navnPåForeldre: { mor: fornavnSøker1, farMedmor: fornavnSøker2 || '' },
+                                navnPåForeldre: {
+                                    mor: getFornavnPåSøker1(hvemPlanlegger, intl),
+                                    farMedmor: getFornavnPåSøker2(hvemPlanlegger, intl) || '',
+                                },
                                 rettighetType: utledRettighet(erAleneOmOmsorg, erDeltUttak),
                                 erMedmorDelAvSøknaden: hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR,
                                 erIkkeSøkerSpesifisert: erDeltUttak,
+                                erFarOgFar,
                             }}
                             valgtStønadskvote={valgtStønadskvote}
                             harAktivitetskravIPeriodeUtenUttak={false}

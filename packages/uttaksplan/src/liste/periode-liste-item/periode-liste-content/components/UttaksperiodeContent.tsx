@@ -29,7 +29,7 @@ interface Props {
 export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
     const {
-        foreldreInfo: { rettighetType, søker },
+        foreldreInfo: { rettighetType, søker, erIkkeSøkerSpesifisert, erFarOgFar },
         uttakPerioder,
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
@@ -52,7 +52,13 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
 
     return (
         <HStack gap="space-8">
-            {harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [periode, ...morsPerioder]) && (
+            {harPeriodeDerMorsAktivitetIkkeErValgt(
+                rettighetType,
+                søker,
+                erIkkeSøkerSpesifisert ?? false,
+                [periode, ...morsPerioder],
+                erFarOgFar,
+            ) && (
                 <ExclamationmarkTriangleFillIcon
                     title={intl.formatMessage({ id: 'PeriodeListeHeader.MorsAktivitetIkkeValgt' })}
                     fontSize="1.5rem"

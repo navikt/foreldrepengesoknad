@@ -19,6 +19,8 @@ interface Props {
 export const HvorMyeOppsummering = ({ satser }: Props) => {
     const intl = useIntl();
 
+    // NB: Bruker rå hvemPlanlegger (ikke effektiv/byttet versjon). lønnSøker1/lønnSøker2 ble oppgitt på
+    // "Hvor mye"-steget, som kommer før "Fordeling" i flyten og er derfor ikke påvirket av hvem som starter permisjonen.
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const hvorMye = notEmpty(useContextGetData(ContextDataType.HVOR_MYE));
 

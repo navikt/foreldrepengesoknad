@@ -31,31 +31,28 @@ describe('validationUtil', () => {
         expect(resultat).toBeNull();
     });
 
-    it('skal gi feilmelding når søker oppgir sitt eget fnr som andre parts fnr', () => {
+    it.each([
+        {
+            beskrivelse: 'søker oppgir sitt eget fnr som andre parts fnr',
+            andrePartFnr: '05510552883',
+            forventetFeilmelding: 'Du kan ikke oppgi ditt eget fødselsnummer',
+        },
+        {
+            beskrivelse: 'andre parts fnr er tom string',
+            andrePartFnr: '',
+            forventetFeilmelding: 'Du må skrive et gyldig fødselsnummer',
+        },
+        {
+            beskrivelse: 'annen part er under seksten',
+            andrePartFnr: '21091981146',
+            forventetFeilmelding: 'Feil i fødselsnummer. Den andre forelderen må være over seksten år gammel',
+        },
+    ])('skal gi feilmelding når $beskrivelse', ({ andrePartFnr, forventetFeilmelding }) => {
         const søkerFnr = '05510552883';
-        const andrePartFnr = '05510552883';
 
         const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer')(andrePartFnr);
 
-        expect(resultat).toBe('Du kan ikke oppgi ditt eget fødselsnummer');
-    });
-
-    it('skal gi feilmelding når andre parts fnr er tom string', () => {
-        const søkerFnr = '05510552883';
-        const andrePartFnr = '';
-
-        const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer')(andrePartFnr);
-
-        expect(resultat).toBe('Du må skrive et gyldig fødselsnummer');
-    });
-
-    it('skal gi feilmelding når annen part er under seksten', () => {
-        const søkerFnr = '05510552883';
-        const andrePartFnr = '21091981146';
-
-        const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer')(andrePartFnr);
-
-        expect(resultat).toBe('Feil i fødselsnummer. Den andre forelderen må være over seksten år gammel');
+        expect(resultat).toBe(forventetFeilmelding);
     });
 
     it('skal gi feilmelding når frn er utenlandsk og fnr er tom string', () => {

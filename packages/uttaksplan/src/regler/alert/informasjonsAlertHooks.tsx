@@ -21,6 +21,7 @@ import {
     IKKE_REDIGERBAR_EØS,
     IKKE_REDIGERBAR_PLEIEPENGER,
     KAN_MISTE_DAGER,
+    FERIE_UKE_7_ETTER_TERMIN,
     MANGLER_GRADERINGSAKTIVITET_KALENDER,
     MANGLER_GRADERINGSAKTIVITET_LISTE,
     MANGLER_MORS_AKTIVITET_KALENDER,
@@ -76,7 +77,7 @@ export const useEksisterendeValgtePeriodeAlerts = (): ((
     periode: Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager,
 ) => { morsAktivitetIkkeValgt?: AktivAlertMetadata; graderingsaktivitetIkkeValgt?: AktivAlertMetadata }) => {
     const {
-        foreldreInfo: { rettighetType, søker },
+        foreldreInfo: { rettighetType, søker, erIkkeSøkerSpesifisert, erFarOgFar },
         uttakPerioder,
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
@@ -88,6 +89,9 @@ export const useEksisterendeValgtePeriodeAlerts = (): ((
     return (periode) => ({
         morsAktivitetIkkeValgt: tilAktiv(MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE, {
             rettighetType,
+            søker,
+            erIkkeSøkerSpesifisert: erIkkeSøkerSpesifisert ?? false,
+            erFarOgFar,
             periode,
             morsUttakPerioder,
         }),
@@ -103,11 +107,17 @@ export const useUttaksplanListeAlerts = (
     perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
 ): UttaksplanListeAlerts => {
     const {
-        foreldreInfo: { rettighetType, søker },
+        foreldreInfo: { rettighetType, søker, erIkkeSøkerSpesifisert, erFarOgFar },
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
     return {
-        manglerMorsAktivitetAlert: tilAktiv(MANGLER_MORS_AKTIVITET_LISTE, { rettighetType, perioder }),
+        manglerMorsAktivitetAlert: tilAktiv(MANGLER_MORS_AKTIVITET_LISTE, {
+            rettighetType,
+            søker,
+            erIkkeSøkerSpesifisert: erIkkeSøkerSpesifisert ?? false,
+            erFarOgFar,
+            perioder,
+        }),
         manglerGraderingsaktivitetAlert: kanVelgeArbeidsgiver
             ? tilAktiv(MANGLER_GRADERINGSAKTIVITET_LISTE, {
                   perioder: filtrerSøkersIkkeEøsPerioder(perioder, søker),
@@ -122,11 +132,17 @@ export const useUttaksplanKalenderAlerts = (
     perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
 ): UttaksplanKalenderAlerts => {
     const {
-        foreldreInfo: { rettighetType, søker },
+        foreldreInfo: { rettighetType, søker, erIkkeSøkerSpesifisert, erFarOgFar },
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
     return {
-        manglerMorsAktivitetAlert: tilAktiv(MANGLER_MORS_AKTIVITET_KALENDER, { rettighetType, perioder }),
+        manglerMorsAktivitetAlert: tilAktiv(MANGLER_MORS_AKTIVITET_KALENDER, {
+            rettighetType,
+            søker,
+            erIkkeSøkerSpesifisert: erIkkeSøkerSpesifisert ?? false,
+            erFarOgFar,
+            perioder,
+        }),
         manglerGraderingsaktivitetAlert: kanVelgeArbeidsgiver
             ? tilAktiv(MANGLER_GRADERINGSAKTIVITET_KALENDER, {
                   perioder: filtrerSøkersIkkeEøsPerioder(perioder, søker),
@@ -141,10 +157,16 @@ export const useLeggTilEndreSkjemaInfoAlerts = (
     perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
 ): LeggTilEndreSkjemaInfoAlerts => {
     const {
-        foreldreInfo: { rettighetType },
+        foreldreInfo: { rettighetType, søker, erIkkeSøkerSpesifisert, erFarOgFar },
     } = useUttaksplanData();
     return {
-        morsAktivitetIkkeOppgittAlert: tilAktiv(MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING, { rettighetType, perioder }),
+        morsAktivitetIkkeOppgittAlert: tilAktiv(MORS_AKTIVITET_IKKE_OPPGITT_REDIGERING, {
+            rettighetType,
+            søker,
+            erIkkeSøkerSpesifisert: erIkkeSøkerSpesifisert ?? false,
+            erFarOgFar,
+            perioder,
+        }),
     };
 };
 
@@ -184,6 +206,7 @@ export const usePeriodeDetaljerAlerts = (input: {
         eøs: tilAktiv(IKKE_REDIGERBAR_EØS, ctx),
         pleiepenger: tilAktiv(IKKE_REDIGERBAR_PLEIEPENGER, ctx),
         kanMisteDager: tilAktiv(KAN_MISTE_DAGER, ctx),
+        ferieUke7EtterTermin: tilAktiv(FERIE_UKE_7_ETTER_TERMIN, ctx),
     };
 };
 
@@ -296,6 +319,7 @@ type PeriodeDetaljerAlerts = {
     eøs?: AktivAlertMetadata;
     pleiepenger?: AktivAlertMetadata;
     kanMisteDager?: AktivAlertMetadata;
+    ferieUke7EtterTermin?: AktivAlertMetadata;
 };
 type ForskyvEllerErstattAlerts = {
     senerePerioderReadonly?: AktivAlertMetadata;

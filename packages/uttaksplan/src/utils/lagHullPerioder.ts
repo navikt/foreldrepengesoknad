@@ -57,17 +57,25 @@ export const lagTapteDagerPerioder = (
     foreldreInfo: ForeldreInfo,
 ): TapteDagerHull[] => {
     if (foreldreInfo.søker === 'FAR_MEDMOR' && foreldreInfo.rettighetType === 'BARE_SØKER_RETT') {
-        const sistePeriodeSomStarterEtterFamiliehendelsedato = sortertePerioder.findLast((p) =>
-            dayjs(p.fom).isSameOrAfter(familiehendelsedato),
+        // Første dagen far/medmor kan ta ut dager: 6 uker etter fødsel (mors reserverte
+        // periode) ved fødsel, eller omsorgsovertakelsesdatoen ved adopsjon.
+        const førsteMuligeUttaksdag =
+            familiesituasjon === 'adopsjon'
+                ? Uttaksdagen.denneEllerNeste(familiehendelsedato).getDato()
+                : Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30);
+
+        // Perioder som starter før denne datoen skal ikke være med når vi finner slutten
+        // på intervallet vi sjekker for hull, siden far/medmor uansett ikke kan ta ut dager
+        // før den. Ellers kan sluttdatoen (tom) havne før startdatoen (fom), slik at
+        // intervallet blir snudd og det vises feilaktig tapte dager.
+        const sistePeriodeSomStarterEtterFørsteMuligeUttaksdag = sortertePerioder.findLast((p) =>
+            dayjs(p.fom).isSameOrAfter(førsteMuligeUttaksdag),
         );
 
-        if (sistePeriodeSomStarterEtterFamiliehendelsedato?.fom) {
+        if (sistePeriodeSomStarterEtterFørsteMuligeUttaksdag?.fom) {
             const periodeSomSkalSjekkesForHull = {
-                fom:
-                    familiesituasjon === 'adopsjon'
-                        ? Uttaksdagen.denneEllerNeste(familiehendelsedato).getDato()
-                        : Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30),
-                tom: sistePeriodeSomStarterEtterFamiliehendelsedato.fom,
+                fom: førsteMuligeUttaksdag,
+                tom: sistePeriodeSomStarterEtterFørsteMuligeUttaksdag.fom,
             };
 
             return lagTapteDagerHull(sortertePerioder, foreldreInfo.søker, periodeSomSkalSjekkesForHull);

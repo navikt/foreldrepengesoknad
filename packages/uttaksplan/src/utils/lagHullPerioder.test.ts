@@ -143,6 +143,28 @@ describe('lagHullPerioder', () => {
         ]);
     });
 
+    it('skal ikke vise tapte dager i seksukersperioden for kun far har rett når eneste periode ligger helt innenfor seksukersperioden', () => {
+        const familiehendelsedato = '2025-03-26';
+
+        const perioder = [
+            {
+                fom: '2025-03-26',
+                tom: '2025-04-08',
+                flerbarnsdager: false,
+                forelder: 'FAR_MEDMOR',
+            },
+        ] satisfies UttakPeriode_fpoversikt[];
+        const foreldreInfo = {
+            ...DEFAULT_FORELDRE_INFO,
+            søker: 'FAR_MEDMOR',
+            rettighetType: 'BARE_SØKER_RETT',
+        } satisfies ForeldreInfo;
+
+        const perioderMedHull = lagTapteDagerPerioder(perioder, familiehendelsedato, 'fødsel', foreldreInfo);
+
+        expect(perioderMedHull).toEqual([]);
+    });
+
     it('skal legge til hull fra omsorgsovertakelse og til første periode for kun far har rett ved adopsjon', () => {
         const familiehendelsedato = '2025-03-26';
 

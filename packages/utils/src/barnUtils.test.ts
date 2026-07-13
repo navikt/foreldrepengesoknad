@@ -16,6 +16,19 @@ describe('barnUtils', () => {
         expect(new Date(dato)).toEqual(new Date('2021-10-05'));
     });
 
+    it('skal kutte bort UTC-tidskomponent fra fødselsdato slik at datosammenligninger ikke bommer med én dag', () => {
+        const barn = {
+            type: BarnType.FØDT,
+            antallBarn: 1,
+            fødselsdatoer: ['2026-06-18T00:00:00.000Z'],
+            termindato: '2026-06-30',
+        } satisfies Barn;
+
+        const dato = getFamiliehendelsedato(barn);
+
+        expect(dato).toEqual('2026-06-18');
+    });
+
     it('skal returnere termindato når barn ikke er født', () => {
         const barn = {
             type: BarnType.UFØDT,
