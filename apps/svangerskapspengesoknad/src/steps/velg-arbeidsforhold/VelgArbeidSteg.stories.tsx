@@ -150,7 +150,6 @@ export const MedFrilansvalg: Story = {
             harJobbetSomSelvstendigNæringsdrivende: false,
         },
         frilans: {
-            jobberFremdelesSomFrilans: true,
             oppstart: '2024-01-01',
         },
     },

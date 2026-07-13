@@ -16,7 +16,7 @@ export {
     getCountryName,
     getLocaleKey,
 } from './src/countryUtils';
-export { omitOne, omitMany } from './src/objectUtils';
+export { omitOne, omitMany, erLikUansettRekkefølge } from './src/objectUtils';
 export { redirect } from './src/loginUtils';
 
 export { useAbortSignal } from './src/hooks/useAbortSignal';
@@ -34,7 +34,7 @@ export {
 } from './src/stringUtils';
 export { getFamiliehendelsedato, getFamiliesituasjon, sorterPersonEtterEldstOgNavn } from './src/barnUtils';
 export { formatCurrencyWithKr, formatCurrency } from './src/currencyUtils';
-export { encodeToBase64, decodeBase64 } from './src/urlEncodingUtils';
+export { encodeToBase64, decodeBase64, compressToUrl, decompressFromUrl } from './src/urlEncodingUtils';
 export { erLokaltEllerDev } from './src/miljoUtils';
 export {
     getBokmålLocale,
@@ -75,4 +75,5 @@ export { Uttaksperioden } from './src/uttak/Uttaksperioden';
 export { Tidsperioden } from './src/Tidsperioden';
 export * from './src/cookieUtils';
 export { periodFormat } from './src/periodUtils';
+export { vedleggNedlastingsnavn } from './src/vedleggUtils';
 export { barnehagestartDato, beregnBarnehagestartDato } from './src/barnehagestartUtils';

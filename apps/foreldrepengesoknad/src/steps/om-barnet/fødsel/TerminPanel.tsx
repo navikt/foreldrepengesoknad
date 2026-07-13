@@ -17,8 +17,13 @@ import { Alert, BodyShort, Heading, ReadMore, VStack } from '@navikt/ds-react';
 import { ISO_DATE_REGEX } from '@navikt/fp-constants';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { EksternArbeidsforholdDto_fpoversikt, Søkerrolle, SøkersituasjonFp } from '@navikt/fp-types';
-import { isBeforeToday, isRequired, isValidDate, isValidDateString as isValidDateBoolean } from '@navikt/fp-validation';
-import { terminbekreftelsedatoMåVæreUtstedetEtter22Svangerskapsuke } from '@navikt/fp-validation/src/form/dateFormValidation';
+import {
+    isBeforeTodayOrToday,
+    isRequired,
+    isValidDateString,
+    isValidDate as isValidDateValidator,
+    terminbekreftelsedatoIsValid,
+} from '@navikt/fp-validation';
 
 import { UfødtBarn } from '../OmBarnetFormValues';
 
@@ -41,7 +46,7 @@ export const TerminPanel = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtN
     const formMethods = useFormContext<UfødtBarn>();
     const termindato = formMethods.watch('termindato');
     const erForTidligTilÅSøkePåTermin =
-        termindato && isValidDateBoolean(termindato) ? !erIUke22Pluss3(termindato) : false;
+        termindato && isValidDateString(termindato) ? !erIUke22Pluss3(termindato) : false;
 
     const søkerErFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const farMedMorSøkerPåTermin = søkerErFarMedmor && termindato;
@@ -70,7 +75,7 @@ export const TerminPanel = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtN
                         useStrategyAbsolute
                         validate={[
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.omBarnet.termindato.duMåOppgi' })),
-                            isValidDate(
+                            isValidDateValidator(
                                 intl.formatMessage({ id: 'valideringsfeil.omBarnet.termindato.ugyldigDatoFormat' }),
                             ),
                             (termindatoVerdi) => {
@@ -116,17 +121,17 @@ export const TerminPanel = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtN
                         isRequired(
                             intl.formatMessage({ id: 'valideringsfeil.omBarnet.terminbekreftelseDato.duMåOppgi' }),
                         ),
-                        isValidDate(
+                        isValidDateValidator(
                             intl.formatMessage({
                                 id: 'valideringsfeil.omBarnet.terminbekreftelseDato.ugyldigDatoFormat',
                             }),
                         ),
-                        isBeforeToday(
+                        isBeforeTodayOrToday(
                             intl.formatMessage({
                                 id: 'valideringsfeil.omBarnet.terminbekreftelseDato.kanIkkeVæreFremITid',
                             }),
                         ),
-                        terminbekreftelsedatoMåVæreUtstedetEtter22Svangerskapsuke(
+                        terminbekreftelsedatoIsValid(
                             intl.formatMessage({
                                 id: 'valideringsfeil.omBarnet.terminbekreftelseDato.terminbekreftelsedatoMåVæreUtstedetEtter22Svangerskapsuke',
                             }),

@@ -3,11 +3,10 @@ import { SvpDataContext } from 'appData/SvpDataContext';
 import { API_URLS, mellomlagretInfoOptions, søkerinfoOptions } from 'appData/queries';
 import { VERSJON_MELLOMLAGRING } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
-import isEqual from 'lodash/isEqual';
 import { useIntl } from 'react-intl';
 
 import { RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
-import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
+import { erLikUansettRekkefølge, erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ApiErrorHandler, SvangerskapspengesøknadRoutes } from './SvangerskapspengesøknadRoutes';
@@ -51,11 +50,12 @@ export const Svangerskapspengesøknad = () => {
     const mellomlagretState =
         mellomlagretInfo.data?.version === VERSJON_MELLOMLAGRING ? mellomlagretInfo.data : undefined;
 
-    if (mellomlagretState && !isEqual(mellomlagretState.søkerInfo, søkerinfo.data)) {
+    if (mellomlagretState && !erLikUansettRekkefølge(mellomlagretState.søkerInfo, søkerinfo.data)) {
         return (
             <RegisterdataUtdatert
                 slettMellomlagringOgLastSidePåNytt={slettMellomlagringOgLastSidePåNytt}
                 appName="svangerskapspengesoknad"
+                avvik="søkerInfo"
             />
         );
     }

@@ -6,11 +6,12 @@ import { skalViseOmsorgsovertakelseDokumentasjon } from 'steps/manglende-vedlegg
 import { skalViseTerminbekreftelseDokumentasjon } from 'steps/manglende-vedlegg/dokumentasjon/TerminbekreftelseDokumentasjon.tsx';
 import { AnnenInntektType } from 'types/AndreInntektskilder';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
+import { VedleggDataType } from 'types/VedleggDataType';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
+import { finnPerioderSomInngårISøknaden } from 'utils/manglendeVedleggUtils';
 import { kreverUttaksplanVedleggNy } from 'utils/uttaksplanInfoUtils';
 
 import { EksternArbeidsforholdDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
-import { Uttaksperioden } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { getFamiliehendelsedato } from '../utils/barnUtils';
@@ -38,52 +39,45 @@ const getPathToLabelMap = (intl: IntlShape) =>
         [SøknadRoutes.IKKE_MYNDIG]: '',
     }) satisfies Record<SøknadRoutes, string>;
 
-const isAfterStep = (previousStepPath: SøknadRoutes, currentStepPath: SøknadRoutes): boolean => {
-    return ROUTES_ORDER.indexOf(currentStepPath) > ROUTES_ORDER.indexOf(previousStepPath);
-};
-
 const showUtenlandsoppholdStep = (
     path: SøknadRoutes,
-    currentPath: SøknadRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
 ) => {
     if (path === SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD) {
-        const erValgtOgEtterSteg =
-            getData(ContextDataType.UTENLANDSOPPHOLD)?.harBoddUtenforNorgeSiste12Mnd === true &&
-            isAfterStep(SøknadRoutes.UTENLANDSOPPHOLD, currentPath);
-        return erValgtOgEtterSteg || !!getData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+        const erValgt = getData(ContextDataType.UTENLANDSOPPHOLD)?.harBoddUtenforNorgeSiste12Mnd === true;
+        return erValgt || !!getData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     }
     if (path === SøknadRoutes.SENERE_UTENLANDSOPPHOLD) {
-        const erValgtOgEtterSteg =
-            getData(ContextDataType.UTENLANDSOPPHOLD)?.skalBoUtenforNorgeNeste12Mnd === true &&
-            isAfterStep(SøknadRoutes.UTENLANDSOPPHOLD, currentPath);
-        return erValgtOgEtterSteg || !!getData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
+        const erValgt = getData(ContextDataType.UTENLANDSOPPHOLD)?.skalBoUtenforNorgeNeste12Mnd === true;
+        return erValgt || !!getData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     }
     return false;
 };
 
 const showFrilansOgEgenNæringOgAndreInntekter = (
     path: SøknadRoutes,
-    currentPath: SøknadRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
 ) => {
     if (path === SøknadRoutes.FRILANS) {
-        const erValgtOgEtterSteg =
-            getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT)?.harJobbetSomFrilans === true &&
-            isAfterStep(SøknadRoutes.ARBEID_OG_INNTEKT, currentPath);
-        return erValgtOgEtterSteg || !!getData(ContextDataType.FRILANS);
+        const erValgt = getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT)?.harJobbetSomFrilans === true;
+        return erValgt || !!getData(ContextDataType.FRILANS);
     }
     if (path === SøknadRoutes.EGEN_NÆRING) {
-        const erValgtOgEtterSteg =
-            getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT)?.harJobbetSomSelvstendigNæringsdrivende === true &&
-            isAfterStep(SøknadRoutes.ARBEID_OG_INNTEKT, currentPath);
-        return erValgtOgEtterSteg || !!getData(ContextDataType.EGEN_NÆRING);
+        const erValgt =
+            getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT)?.harJobbetSomSelvstendigNæringsdrivende === true;
+        return erValgt || !!getData(ContextDataType.EGEN_NÆRING);
     }
     if (path === SøknadRoutes.ANDRE_INNTEKTER) {
-        return currentPath === SøknadRoutes.ANDRE_INNTEKTER;
+        const erValgt = getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT)?.harHattAndreInntektskilder === true;
+        return erValgt || !!getData(ContextDataType.ANDRE_INNTEKTSKILDER);
     }
     return false;
 };
+
+const harManuelleVedlegg = (vedlegg: VedleggDataType | undefined): boolean =>
+    Object.values(vedlegg ?? {})
+        .flatMap((attachments) => attachments ?? [])
+        .some((attachment) => attachment.innsendingsType !== 'AUTOMATISK');
 
 const showManglendeDokumentasjonSteg = (
     path: SøknadRoutes,
@@ -92,6 +86,15 @@ const showManglendeDokumentasjonSteg = (
     eksisterendeSak: FpSak_fpoversikt | undefined,
 ) => {
     if (path === SøknadRoutes.DOKUMENTASJON) {
+        // Steget skal alltid vere synleg så lenge det finst manuelt opplasta eller
+        // send-seinare vedlegg. Dokumentasjonsoppsummeringa viser «Endre svar» →
+        // DOKUMENTASJON så lenge slike vedlegg finst, og utan dette kunne ein endra
+        // uttaksplan gjere steget usynleg medan vedlegga framleis låg lagra. «Endre svar»
+        // navigerte då til eit steg utanfor steglista → Step-krasj «Ingen valgte steg funnet».
+        if (harManuelleVedlegg(getData(ContextDataType.VEDLEGG))) {
+            return true;
+        }
+
         const annenForelder = getData(ContextDataType.ANNEN_FORELDER);
         const søkersituasjon = getData(ContextDataType.SØKERSITUASJON);
         const barn = getData(ContextDataType.OM_BARNET);
@@ -112,26 +115,8 @@ const showManglendeDokumentasjonSteg = (
         });
         const skalHaAdopsjonDokumentasjon = skalViseOmsorgsovertakelseDokumentasjon(søkersituasjon);
 
-        const uttaksplanUtenAnnenPartsOgUendredePerioder = uttaksplan
-            ?.filter(
-                (periode) =>
-                    Uttaksperioden.erIkkeEøsPeriode(periode) &&
-                    periode.forelder === (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'),
-            )
-            .filter((periode) => {
-                return eksisterendeSak
-                    ? Uttaksperioden.erIkkeEøsPeriode(periode) && periode.resultat === undefined
-                    : true;
-            });
-
-        const perioderSomSkalSjekkes = uttaksplanUtenAnnenPartsOgUendredePerioder
-            ? uttaksplanUtenAnnenPartsOgUendredePerioder.filter((periode) => {
-                  if (Uttaksperioden.erEøsPeriode(periode)) {
-                      return false;
-                  }
-
-                  return eksisterendeSak ? periode.resultat === undefined : true;
-              })
+        const perioderSomSkalSjekkes = uttaksplan
+            ? finnPerioderSomInngårISøknaden(uttaksplan, erFarEllerMedmor, !!eksisterendeSak)
             : [];
 
         const skalHaUttakDok =
@@ -191,13 +176,13 @@ export const useStepConfig = (
         () =>
             ROUTES_ORDER.flatMap((path) =>
                 (requiredSteps.includes(path) && skalViseFordelingSteg(path, getStateData)) ||
-                showUtenlandsoppholdStep(path, currentPath, getStateData) ||
+                showUtenlandsoppholdStep(path, getStateData) ||
                 showManglendeDokumentasjonSteg(path, getStateData, arbeidsforhold, eksisterendeSak) ||
-                showFrilansOgEgenNæringOgAndreInntekter(path, currentPath, getStateData)
+                showFrilansOgEgenNæringOgAndreInntekter(path, getStateData)
                     ? [path]
                     : [],
             ),
-        [requiredSteps, currentPath, getStateData, arbeidsforhold, erEndringssøknad, eksisterendeSak],
+        [requiredSteps, getStateData, arbeidsforhold, erEndringssøknad, eksisterendeSak],
     );
 
     return useMemo(

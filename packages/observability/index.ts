@@ -7,6 +7,7 @@ export { ApiError } from './src/ApiError';
 export { captureApiError } from './src/captureApiError';
 export { SkyraSurvey } from './src/components/SkyraSurvey';
 export type { SkyraSurveyProps } from './src/components/SkyraSurvey';
+export { initFaro } from './src/initFaro';
 export { initSentry } from './src/initSentry';
 export { loggUmamiEvent } from './src/umami';
 

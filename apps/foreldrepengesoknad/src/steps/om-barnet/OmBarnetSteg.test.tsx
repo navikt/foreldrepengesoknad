@@ -6,7 +6,6 @@ import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './OmBarnetSteg.stories';
 
@@ -72,6 +71,46 @@ describe('<OmBarnetSteg>', () => {
         });
     });
 
+    it('skal vise informasjon om forlenget periode når barnet er født før uke 33', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        vi.setSystemTime(new Date('2024-01-01'));
+
+        render(<MorFødsel gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+
+        await userEvent.click(await screen.findByText('Ja'));
+        await userEvent.click(screen.getByText('Ett barn'));
+
+        const fødselsdato = dayjs();
+        const termindato = fødselsdato.add(60, 'days');
+
+        const barnFødtInput = screen.getByLabelText('Når ble barnet født?');
+        await userEvent.type(barnFødtInput, fødselsdato.format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
+
+        expect(
+            screen.queryByText('Perioden med foreldrepenger forlenges siden barnet er født før uke 33'),
+        ).not.toBeInTheDocument();
+
+        const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
+        await userEvent.type(termindatoInput, termindato.format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
+
+        expect(
+            screen.getByText('Perioden med foreldrepenger forlenges siden barnet er født før uke 33'),
+        ).toBeInTheDocument();
+
+        const forventetTekst =
+            'Perioden utvides med antall dager barnet er født før termindato, slik at permisjonen varer like ' +
+            'lenge som om barnet var født på termin. For deg blir det lagt til 8 uker og 4 dager.';
+        expect(screen.getByText(forventetTekst)).toBeInTheDocument();
+
+        expect(screen.getByText('Du må ha opptjent rett til foreldrepenger dagen før fødsel')).toBeInTheDocument();
+
+        vi.useRealTimers();
+    });
+
     it('skal ha født flere barn', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
@@ -114,6 +153,58 @@ describe('<OmBarnetSteg>', () => {
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
+    });
+
+    it('skal kreve at antall barn velges i nedtrekksliste når en har valgt flere enn to barn', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        render(<MorFødsel gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+
+        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Ja'));
+
+        expect(screen.getByText('Hvor mange barn har du fått?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Flere barn'));
+
+        const barnFødtInput = screen.getByLabelText('Når ble det eldste barnet født?');
+        await userEvent.type(barnFødtInput, dayjs().format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
+
+        const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
+        await userEvent.type(termindatoInput, dayjs().subtract(10, 'days').format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
+
+        // Sender uten å velge eksakt antall i nedtrekkslista
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(await screen.findAllByText('Du må oppgi antall barn')).not.toHaveLength(0);
+        // Søknaden skal ikke lagre om-barnet-data eller navigere videre
+        expect(gåTilNesteSide).not.toHaveBeenCalled();
+    });
+
+    it('skal kreve at antall barn velges i nedtrekksliste ved flere enn to barn for adopsjon', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        render(<ForAdopsjon gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+
+        expect(await screen.findByText('Gjelder søknaden din stebarnsadopsjon?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Ja'));
+
+        const stebarnsadopsjonInput = screen.getByLabelText('Oppgi datoen for stebarnsadopsjon');
+        await userEvent.type(stebarnsadopsjonInput, dayjs().format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
+
+        expect(screen.getByText('Hvor mange barn skal du adoptere?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Flere barn'));
+
+        // Sender uten å velge eksakt antall i nedtrekkslista
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(await screen.findAllByText('Du må oppgi antall barn')).not.toHaveLength(0);
+        // Søknaden skal ikke navigere videre
+        expect(gåTilNesteSide).not.toHaveBeenCalled();
     });
 
     it('skal lagre route når en går til forrige steg som er søkersituasjon', async () => {
@@ -175,6 +266,59 @@ describe('<OmBarnetSteg>', () => {
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
+    });
+
+    it('skal godta dagens dato som terminbekreftelsesdato', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+        render(<MorFødsel gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+
+        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Nei'));
+
+        await userEvent.click(screen.getByText('Ett barn'));
+
+        const today = dayjs();
+        const termindatoInput = screen.getByLabelText('Når er termindatoen?');
+        await userEvent.type(termindatoInput, today.format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
+
+        const termindatoDatertInput = screen.getByLabelText('Når er terminbekreftelsen datert?');
+        await userEvent.type(termindatoDatertInput, today.format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(screen.queryByText('Dato på terminbekreftelse kan ikke være frem i tid')).not.toBeInTheDocument();
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+        expect(gåTilNesteSide).toHaveBeenCalledWith(
+            expect.objectContaining({
+                data: expect.objectContaining({
+                    terminbekreftelsedato: today.format(ISO_DATE_FORMAT),
+                }),
+            }),
+        );
+    });
+
+    it('skal avvise morgondagens dato som terminbekreftelsesdato', async () => {
+        render(<MorFødsel />);
+
+        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Nei'));
+
+        await userEvent.click(screen.getByText('Ett barn'));
+
+        const termindatoInput = screen.getByLabelText('Når er termindatoen?');
+        await userEvent.type(termindatoInput, dayjs().format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
+
+        const termindatoDatertInput = screen.getByLabelText('Når er terminbekreftelsen datert?');
+        await userEvent.type(termindatoDatertInput, dayjs().add(1, 'day').format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(screen.getAllByText('Dato på terminbekreftelse kan ikke være frem i tid').length).toBeGreaterThan(0);
     });
 
     it('skal søke stebarnsadopsjon for ett barn', async () => {
@@ -567,38 +711,71 @@ describe('<OmBarnetSteg>', () => {
         vi.useRealTimers();
     });
 
+    it('skal vise informasjon om forlenget periode når registrert barn er født før uke 33', async () => {
+        const mockTodayDate = new Date('2022-08-05');
+        vi.setSystemTime(mockTodayDate);
+
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+        render(
+            <RegistrertBarnFødselMor
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+
+        expect(await screen.findByText('Barna du søker foreldrepenger for:')).toBeInTheDocument();
+
+        const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
+
+        expect(
+            screen.queryByText('Perioden med foreldrepenger forlenges siden barnet er født før uke 33'),
+        ).not.toBeInTheDocument();
+
+        await userEvent.type(termindatoInput, dayjs('2022-10-15').format(DDMMYYYY_DATE_FORMAT));
+        await userEvent.tab();
+
+        expect(
+            screen.getByText('Perioden med foreldrepenger forlenges siden barnet er født før uke 33'),
+        ).toBeInTheDocument();
+        expect(screen.getByText('Du må ha opptjent rett til foreldrepenger dagen før fødsel')).toBeInTheDocument();
+
+        vi.useRealTimers();
+    });
+
     it('Trillinger der en er død skal vises uten navn', async () => {
         render(<RegistrertBarnTrillingerDerEnErDød />);
         expect(await screen.findByText('Barna du søker foreldrepenger for:')).toBeInTheDocument();
         expect(screen.getByText('Trillinger født 01. mars 2023 og 02. mars 2023')).toBeInTheDocument();
     });
 
-    it(
-        'Termindato skal være preutfylt med dato fra mors vedtak',
-        mswWrapper(async ({ setHandlers }) => {
-            const mockTodayDate = new Date('2022-08-05');
-            vi.setSystemTime(mockTodayDate);
-            const gåTilNesteSide = vi.fn();
-            setHandlers(FarFødselMorHarVedtak.parameters.msw);
-            render(<FarFødselMorHarVedtak gåTilNesteSide={gåTilNesteSide} />);
+    it('Termindato skal være preutfylt med dato fra mors vedtak', async () => {
+        const mockTodayDate = new Date('2022-08-05');
+        vi.setSystemTime(mockTodayDate);
+        const gåTilNesteSide = vi.fn();
+        await FarFødselMorHarVedtak.run({
+            args: {
+                ...FarFødselMorHarVedtak.args,
+                gåTilNesteSide,
+            },
+        });
 
-            expect(await screen.findByText('Barnet du søker foreldrepenger for:')).toBeInTheDocument();
-            expect(
-                await screen.findByText('Termindato er hentet fra søknaden til den andre forelderen'),
-            ).toBeInTheDocument();
+        expect(await screen.findByText('Barnet du søker foreldrepenger for:')).toBeInTheDocument();
+        expect(
+            await screen.findByText('Termindato er hentet fra søknaden til den andre forelderen'),
+        ).toBeInTheDocument();
 
-            await userEvent.click(screen.getByText('Neste steg'));
-            expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-                data: {
-                    antallBarn: 1,
-                    fnr: ['19522278338'],
-                    fødselsdatoer: ['2022-08-17'],
-                    termindato: '2022-08-17',
-                    type: 'født',
-                },
-                key: ContextDataType.OM_BARNET,
-                type: 'update',
-            });
-        }),
-    );
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                antallBarn: 1,
+                fnr: ['19522278338'],
+                fødselsdatoer: ['2022-08-17'],
+                termindato: '2022-08-17',
+                type: 'født',
+            },
+            key: ContextDataType.OM_BARNET,
+            type: 'update',
+        });
+    });
 });

@@ -5,20 +5,19 @@ import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import dayjs from 'dayjs';
-import isEqual from 'lodash/isEqual';
+import { isEqual } from 'es-toolkit';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { OmBarnetPlanlegger } from '@navikt/fp-types';
-import { erAlenesøker as erAlene, erFarOgFar } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker as erAlene, erFarOgFar, erMedmorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 
 import { BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
 
-import { links } from '@navikt/fp-constants';
-import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
+import { DATE_3_YEARS_AGO, links } from '@navikt/fp-constants';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
-import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
+import { useScrollBehaviour } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { BlueRadioGroup } from '../../components/form-wrappers/BlueRadioGroup';
@@ -68,6 +67,7 @@ export const OmBarnetPlanleggerSteg = () => {
 
     const erAlenesøker = erAlene(hvemPlanlegger);
     const erFedre = erFarOgFar(hvemPlanlegger);
+    const erMorOgMedmor = erMedmorDelAvSøknaden(hvemPlanlegger);
 
     const { ref, scrollToBottom } = useScrollBehaviour();
 
@@ -101,7 +101,7 @@ export const OmBarnetPlanleggerSteg = () => {
                             <Radio value={true} autoFocus>
                                 <FormattedMessage id="OmBarnetSteg.Fødsel" />
                             </Radio>
-                            <Radio value={false}>
+                            <Radio value={false} disabled={erMorOgMedmor}>
                                 <FormattedMessage id="OmBarnetSteg.Adopsjon" />
                             </Radio>
                         </BlueRadioGroup>

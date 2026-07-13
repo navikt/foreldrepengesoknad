@@ -1,12 +1,17 @@
 import { PencilIcon } from '@navikt/aksel-icons';
-import { useState } from 'react';
+import dayjs from 'dayjs';
+import { ReactElement, ReactNode, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, Button, ErrorMessage, HStack, Heading, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
-import { BrukerRolleSak_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import {
+    BrukerRolleSak_fpoversikt,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
 import { Tidsperioden, omitMany } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
@@ -20,13 +25,16 @@ import {
 } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
-import { useHentGyldigeKvotetyper } from '../../felles/useHentGyldigeKvotetyper';
 import { LeggTilPauseForm } from '../../felles/utsettelse/LeggTilPauseForm';
 import {
     LeggTilUtsettelseForm,
     FormValues as UtsettelseFormValues,
 } from '../../felles/utsettelse/LeggTilUtsettelseForm';
-import { kanMisteDagerVedEndringTilFerie, useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
+import { useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
+import { useKanKunErstatte, useListePanelInfoAlerts } from '../../regler/alert/informasjonsAlertHooks';
+import { lagHvaVilDuGjøreValidatorer } from '../../regler/felt/hvaVilDuGjøre';
+import { useGyldigeKvotetyper } from '../../regler/kvotetype/kvoteRegler';
+import { HvaVilDuGjøreValgSynlighet, useHvaVilDuGjøreValgSynlighet } from '../../regler/synlighet/hvaVilDuGjøreValg';
 import {
     Uttaksplanperiode,
     erEøsUttakPeriode,
@@ -34,7 +42,6 @@ import {
     erVanligUttakPeriode,
 } from '../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../utils/UttakPeriodeBuilder';
-import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../utils/periodeUtils';
 import { TidsperiodeSpørsmål } from './/TidsperiodeSpørsmål';
 
@@ -60,6 +67,60 @@ interface Props {
     setValgtPeriodeIndex?: (valgtPeriodeIndex: number | undefined) => void;
 }
 
+const erGradertMorsUttak = (
+    hvaVilDuGjøre: HvaVilDuGjøre | undefined,
+    forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined,
+    skalDuKombinereArbeidOgUttakMor: boolean | undefined,
+): boolean =>
+    hvaVilDuGjøre === 'LEGG_TIL_PERIODE' &&
+    (forelder === 'MOR' || forelder === 'BEGGE') &&
+    skalDuKombinereArbeidOgUttakMor === true;
+
+const byggEnkelHandlingPerioder = (
+    hvaVilDuGjøre: HvaVilDuGjøre | undefined,
+    fom: string,
+    tom: string,
+    søker: BrukerRolleSak_fpoversikt,
+    values: FormValues,
+): UttakPeriode_fpoversikt[] | undefined => {
+    switch (hvaVilDuGjøre) {
+        case 'LEGG_TIL_FERIE':
+            // forelder settes til MOR fordi feltet er påkrevd, men ferie behandles likt for alle foreldre
+            return [{ fom, tom, forelder: 'MOR', utsettelseÅrsak: 'LOVBESTEMT_FERIE', flerbarnsdager: false }];
+        case 'LEGG_TIL_UTSETTELSE':
+            return [{ fom, tom, forelder: søker, utsettelseÅrsak: values.utsettelseÅrsak, flerbarnsdager: false }];
+        case 'LEGG_TIL_PAUSE':
+            return [
+                {
+                    fom,
+                    tom,
+                    forelder: søker,
+                    utsettelseÅrsak: 'FRI',
+                    morsAktivitet: values.morsAktivitet || undefined,
+                    flerbarnsdager: false,
+                },
+            ];
+        default:
+            return undefined;
+    }
+};
+
+type UttakPeriodeEllerEøs = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
+
+const erOverlappendeMedEøsPerioder = (perioder: UttakPeriodeEllerEøs[], fom: string, tom: string): boolean =>
+    perioder.some((periode) => erEøsUttakPeriode(periode) && Tidsperioden.forPeriode(periode).overlapper({ fom, tom }));
+
+const skalViseEndreEllerForskyvPanel = (
+    harPeriodeDerMorsAktivitetIkkeErValgt: boolean,
+    kanKunErstatte: boolean,
+    uttakPerioder: UttakPeriodeEllerEøs[],
+    fom: string,
+    tom: string,
+): boolean =>
+    !harPeriodeDerMorsAktivitetIkkeErValgt &&
+    !kanKunErstatte &&
+    erDetEksisterendePerioderEtterValgtePerioder(uttakPerioder, [{ fom, tom }]);
+
 export const LeggTilEllerEndrePeriodeListPanel = ({
     erNyPeriodeModus,
     uttaksplanperiode,
@@ -71,9 +132,9 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const {
         uttakPerioder,
         foreldreInfo: { søker, rettighetType },
-        familiesituasjon,
         familiehendelsedato,
         erPeriodeneTilAnnenPartLåst,
+        kanVelgeArbeidsgiver,
     } = useUttaksplanData();
 
     const [feilmelding, setFeilmelding] = useState<string | undefined>();
@@ -103,16 +164,15 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const ønskerFlerbarnsdager = formMethods.watch('ønskerFlerbarnsdager');
     const skalDuKombinereArbeidOgUttakMor = formMethods.watch('skalDuKombinereArbeidOgUttakMor');
 
-    const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } = useVisForskyvEllerErstattPanel(
-        fomValue && tomValue
-            ? [
-                  {
-                      fom: fomValue,
-                      tom: tomValue,
-                  },
-              ]
-            : [],
-    );
+    const valgtePerioder = fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [];
+
+    const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } = useVisForskyvEllerErstattPanel(valgtePerioder);
+
+    const kanKunErstatte = useKanKunErstatte({
+        valgtePerioder,
+        erFerie: hvaVilDuGjøre === 'LEGG_TIL_FERIE',
+        erGradert: erGradertMorsUttak(hvaVilDuGjøre, forelder, skalDuKombinereArbeidOgUttakMor),
+    });
 
     const handleAddPeriode = (nyPeriode: UttakPeriode_fpoversikt[], skalForskyve: boolean) => {
         const builder = new UttakPeriodeBuilder(uttakPerioder, 'liste');
@@ -129,22 +189,15 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const onSubmit = (values: FormValues) => {
         setFeilmelding(undefined);
 
-        const erOverlappendeMedEøsPerioder = uttakPerioder.some(
-            (periode) =>
-                erEøsUttakPeriode(periode) &&
-                Tidsperioden.forPeriode(periode).overlapper({
-                    fom: notEmpty(values.fom),
-                    tom: notEmpty(values.tom),
-                }),
-        );
-        if (erOverlappendeMedEøsPerioder) {
+        const fom = notEmpty(values.fom);
+        const tom = notEmpty(values.tom);
+
+        if (erOverlappendeMedEøsPerioder(uttakPerioder, fom, tom)) {
             setFeilmelding(intl.formatMessage({ id: 'uttaksplan.overskriderEøs' }));
             return;
         }
 
         if (hvaVilDuGjøre === 'LEGG_TIL_PERIODE') {
-            const fom = notEmpty(values.fom);
-            const tom = notEmpty(values.tom);
             const submitFeilmelding = formSubmitValidator([{ fom, tom }], values);
 
             if (submitFeilmelding) {
@@ -160,15 +213,14 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
             return;
         }
 
-        if (
-            !harPeriodeDerMorsAktivitetIkkeErValgt &&
-            erDetEksisterendePerioderEtterValgtePerioder(uttakPerioder, [
-                {
-                    fom: uttaksplanperiode?.fom ?? notEmpty(fomValue),
-                    tom: uttaksplanperiode?.tom ?? notEmpty(tomValue),
-                },
-            ])
-        ) {
+        const visForskyvPanel = skalViseEndreEllerForskyvPanel(
+            harPeriodeDerMorsAktivitetIkkeErValgt,
+            kanKunErstatte,
+            uttakPerioder,
+            uttaksplanperiode?.fom ?? notEmpty(fomValue),
+            uttaksplanperiode?.tom ?? notEmpty(tomValue),
+        );
+        if (visForskyvPanel) {
             setVisEndreEllerForskyvPanel(true);
         } else {
             leggIListe(false);
@@ -180,57 +232,12 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         const fom = notEmpty(values.fom);
         const tom = notEmpty(values.tom);
 
-        if (hvaVilDuGjøre === 'LEGG_TIL_FERIE') {
-            handleAddPeriode(
-                [
-                    {
-                        fom,
-                        tom,
-                        forelder: 'MOR',
-                        utsettelseÅrsak: 'LOVBESTEMT_FERIE',
-                        flerbarnsdager: false,
-                    },
-                ],
-                skalForskyve,
-            );
-        } else if (hvaVilDuGjøre === 'LEGG_TIL_UTSETTELSE') {
-            handleAddPeriode(
-                [
-                    {
-                        fom,
-                        tom,
-                        forelder: søker,
-                        utsettelseÅrsak: values.utsettelseÅrsak,
-                        flerbarnsdager: false,
-                    },
-                ],
-                skalForskyve,
-            );
-        } else if (hvaVilDuGjøre === 'LEGG_TIL_PAUSE') {
-            handleAddPeriode(
-                [
-                    {
-                        fom,
-                        tom,
-                        forelder: søker,
-                        utsettelseÅrsak: 'FRI',
-                        morsAktivitet: values.morsAktivitet || undefined,
-                        flerbarnsdager: false,
-                    },
-                ],
-                skalForskyve,
-            );
+        const enkelHandlingPerioder = byggEnkelHandlingPerioder(hvaVilDuGjøre, fom, tom, søker, values);
+        if (enkelHandlingPerioder) {
+            handleAddPeriode(enkelHandlingPerioder, skalForskyve);
         } else if (hvaVilDuGjøre === 'LEGG_TIL_OPPHOLD') {
             const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder, 'liste')
-                .fjernUttakPerioder(
-                    [
-                        {
-                            fom,
-                            tom,
-                        },
-                    ],
-                    false,
-                )
+                .fjernUttakPerioder([{ fom, tom }], false)
                 .getUttakPerioder();
 
             uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
@@ -242,7 +249,10 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                 return;
             }
             const mapped = omitMany(values, ['fom', 'tom', 'hvaVilDuGjøre']);
-            handleAddPeriode(mapFraFormValuesTilUttakPeriode(mapped, { fom, tom }, søker), skalForskyve);
+            handleAddPeriode(
+                mapFraFormValuesTilUttakPeriode(mapped, { fom, tom }, søker, kanVelgeArbeidsgiver),
+                skalForskyve,
+            );
         }
 
         setIsLeggTilPeriodePanelOpen(false);
@@ -264,53 +274,38 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         formMethods.setValue('hvaVilDuGjøre', value, { shouldDirty: true });
     };
 
-    const erAdopsjon = familiesituasjon === 'adopsjon';
-
     const perioder = fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [];
-    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useHentGyldigeKvotetyper(
-        perioder,
-        forelder === 'BEGGE',
-        ønskerFlerbarnsdager,
-    );
+
+    const harGyldigTidsperiode = !!fomValue && !!tomValue && dayjs(fomValue).isValid() && dayjs(tomValue).isValid();
+
+    const hvaVilDuGjøreSynlighet = useHvaVilDuGjøreValgSynlighet(perioder);
+
+    const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useGyldigeKvotetyper({
+        valgtePerioder: perioder,
+        harValgtSamtidigUttak: forelder === 'BEGGE',
+        ønskerFlerbarnsdager: ønskerFlerbarnsdager,
+    });
     const isSubmitDisabled =
         hvaVilDuGjøre === 'LEGG_TIL_PERIODE' &&
         gyldigeStønadskontoerForMor.length === 0 &&
         gyldigeStønadskontoerForFarMedmor.length === 0;
 
-    const erUtsettelseGyldig = (nyHvaVilDuGjøre?: HvaVilDuGjøre) => {
-        return nyHvaVilDuGjøre !== 'LEGG_TIL_UTSETTELSE' ||
-            UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(
-                fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [],
-                familiehendelsedato,
-            )
-            ? null
-            : intl.formatMessage({ id: 'uttaksplan.valgPanel.utsettelse' });
-    };
+    const hvaVilDuGjøreFeltvalidatorer = lagHvaVilDuGjøreValidatorer(intl, {
+        fomValue,
+        tomValue,
+        perioder,
+        familiehendelsedato,
+        søker,
+        rettighetType,
+    });
 
-    const erPauseGyldig = (nyHvaVilDuGjøre?: HvaVilDuGjøre) => {
-        if (nyHvaVilDuGjøre !== 'LEGG_TIL_PAUSE') {
-            return null;
-        }
-        const erFørSeksUker = UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
-            perioder,
-            familiehendelsedato,
-        );
-        return erFørSeksUker ? intl.formatMessage({ id: 'uttaksplan.valgPanel.pause' }) : null;
-    };
+    const listePanelAlerts = useListePanelInfoAlerts({
+        valgtPeriode: fomValue && tomValue ? { fom: fomValue, tom: tomValue } : undefined,
+        harValgtFerieEllerOpphold: hvaVilDuGjøre === 'LEGG_TIL_FERIE' || hvaVilDuGjøre === 'LEGG_TIL_OPPHOLD',
+        harPeriodeDerMorsAktivitetIkkeErValgt,
+    });
 
-    const erFerieOgPeriodeUtenForeldrepengerGyldig = (nyHvaVilDuGjøre?: HvaVilDuGjøre) => {
-        return (nyHvaVilDuGjøre === 'LEGG_TIL_FERIE' || nyHvaVilDuGjøre === 'LEGG_TIL_OPPHOLD') &&
-            søker === 'FAR_MEDMOR' &&
-            rettighetType === 'BARE_SØKER_RETT' &&
-            fomValue &&
-            tomValue &&
-            !UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
-                [{ fom: fomValue, tom: tomValue }],
-                familiehendelsedato,
-            )
-            ? intl.formatMessage({ id: 'uttaksplan.valgPanel.ferie' })
-            : null;
-    };
+    const hvaVilDuGjøreAlternativer = lagHvaVilDuGjøreAlternativer(hvaVilDuGjøreSynlighet, erNyPeriodeModus);
 
     return (
         <VStack
@@ -327,87 +322,43 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                     </Heading>
                 </HStack>
             )}
-            {fomValue &&
-                tomValue &&
-                søker === 'MOR' &&
-                !erAdopsjon &&
-                (hvaVilDuGjøre === 'LEGG_TIL_FERIE' || hvaVilDuGjøre === 'LEGG_TIL_OPPHOLD') &&
-                kanMisteDagerVedEndringTilFerie([{ fom: fomValue, tom: tomValue }], familiehendelsedato) && (
-                    <Alert variant="info" size="small">
-                        <FormattedMessage id="RedigeringPanel.KanMisteDager" />
-                    </Alert>
-                )}
+            {listePanelAlerts.kanMisteDagerVedFerie && (
+                <Alert variant={listePanelAlerts.kanMisteDagerVedFerie.variant} size="small">
+                    {listePanelAlerts.kanMisteDagerVedFerie.melding}
+                </Alert>
+            )}
 
-            {harPeriodeDerMorsAktivitetIkkeErValgt && (
-                <Alert variant="warning" size="small">
-                    <FormattedMessage id="LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt" />
+            {listePanelAlerts.morsAktivitetIkkeOppgitt && (
+                <Alert variant={listePanelAlerts.morsAktivitetIkkeOppgitt.variant} size="small">
+                    {listePanelAlerts.morsAktivitetIkkeOppgitt.melding}
                 </Alert>
             )}
 
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 {visEndreEllerForskyvPanel && fomValue && tomValue && (
                     <LeggTilPeriodeForskyvEllerErstattPanel
-                        valgtePerioder={[{ fom: fomValue, tom: tomValue }]}
-                        erFerie={hvaVilDuGjøre === 'LEGG_TIL_FERIE'}
-                        erGradert={
-                            hvaVilDuGjøre === 'LEGG_TIL_PERIODE' &&
-                            (forelder === 'MOR' || forelder === 'BEGGE') &&
-                            skalDuKombinereArbeidOgUttakMor === true
-                        }
                         setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
                         leggTilEllerForskyvPeriode={leggIListe}
                     />
                 )}
                 {!visEndreEllerForskyvPanel && (
                     <VStack gap="space-32">
-                        <RhfRadioGroup
-                            name="hvaVilDuGjøre"
-                            label={intl.formatMessage({ id: 'uttaksplan.valgPanel.label' })}
-                            control={formMethods.control}
-                            validate={[
-                                isRequired(intl.formatMessage({ id: 'leggTilPeriodePanel.hvaVilDuGjøre.påkrevd' })),
-                                erUtsettelseGyldig,
-                                erPauseGyldig,
-                                erFerieOgPeriodeUtenForeldrepengerGyldig,
-                            ]}
-                            onChange={resetFormValuesVedEndringAvHvaVilDuGjøre}
-                        >
-                            <Radio value={'LEGG_TIL_FERIE' satisfies HvaVilDuGjøre} autoFocus>
-                                {erNyPeriodeModus ? (
-                                    <FormattedMessage id="uttaksplan.valgPanel.leggTilFerie" />
-                                ) : (
-                                    <FormattedMessage id="uttaksplan.valgPanel.leggTilFerie.endre" />
-                                )}
-                            </Radio>
-                            <>
-                                {søker === 'MOR' && familiesituasjon !== 'adopsjon' && (
-                                    <Radio value={'LEGG_TIL_UTSETTELSE' satisfies HvaVilDuGjøre}>
-                                        <FormattedMessage id="uttaksplan.valgPanel.leggTilUtsettelse" />
-                                    </Radio>
-                                )}
-                                {søker === 'FAR_MEDMOR' && rettighetType === 'BARE_SØKER_RETT' && (
-                                    <Radio value={'LEGG_TIL_PAUSE' satisfies HvaVilDuGjøre}>
-                                        <FormattedMessage id="uttaksplan.valgPanel.leggTilPause" />
-                                    </Radio>
-                                )}
-                            </>
-                            <Radio value={'LEGG_TIL_OPPHOLD' satisfies HvaVilDuGjøre}>
-                                {erNyPeriodeModus ? (
-                                    <FormattedMessage id="uttaksplan.valgPanel.leggTilOpphold" />
-                                ) : (
-                                    <FormattedMessage id="uttaksplan.valgPanel.leggTilOpphold.endre" />
-                                )}
-                            </Radio>
-                            <Radio value={'LEGG_TIL_PERIODE' satisfies HvaVilDuGjøre}>
-                                {erNyPeriodeModus ? (
-                                    <FormattedMessage id="uttaksplan.valgPanel.leggTilPeriode" />
-                                ) : (
-                                    <FormattedMessage id="uttaksplan.valgPanel.leggTilPeriode.endre" />
-                                )}
-                            </Radio>
-                        </RhfRadioGroup>
-
                         <TidsperiodeSpørsmål />
+
+                        {harGyldigTidsperiode && (
+                            <RhfRadioGroup
+                                name="hvaVilDuGjøre"
+                                label={intl.formatMessage({ id: 'uttaksplan.valgPanel.label' })}
+                                control={formMethods.control}
+                                validate={[
+                                    isRequired(intl.formatMessage({ id: 'leggTilPeriodePanel.hvaVilDuGjøre.påkrevd' })),
+                                    ...hvaVilDuGjøreFeltvalidatorer,
+                                ]}
+                                onChange={resetFormValuesVedEndringAvHvaVilDuGjøre}
+                            >
+                                {hvaVilDuGjøreAlternativer}
+                            </RhfRadioGroup>
+                        )}
 
                         {hvaVilDuGjøre === 'LEGG_TIL_PERIODE' && fomValue && tomValue && (
                             <LeggTilEllerEndrePeriodeFellesForm
@@ -489,4 +440,50 @@ const leggTilDatoOgHvaVilDuGjøre = (
               hvaVilDuGjøre: 'LEGG_TIL_PERIODE',
           }
         : undefined;
+};
+
+const lagHvaVilDuGjøreAlternativer = (
+    synlighet: HvaVilDuGjøreValgSynlighet,
+    erNyPeriodeModus: boolean,
+): ReactElement[] => {
+    const alternativer: Array<{ vis: boolean; value: HvaVilDuGjøre; nyTekst: ReactNode; endreTekst: ReactNode }> = [
+        {
+            vis: synlighet.visLeggTilFerie,
+            value: 'LEGG_TIL_FERIE',
+            nyTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilFerie" />,
+            endreTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilFerie.endre" />,
+        },
+        {
+            vis: synlighet.visLeggTilUtsettelse,
+            value: 'LEGG_TIL_UTSETTELSE',
+            nyTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilUtsettelse" />,
+            endreTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilUtsettelse" />,
+        },
+        {
+            vis: synlighet.visLeggTilPause,
+            value: 'LEGG_TIL_PAUSE',
+            nyTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilPause" />,
+            endreTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilPause" />,
+        },
+        {
+            vis: synlighet.visLeggTilOpphold,
+            value: 'LEGG_TIL_OPPHOLD',
+            nyTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilOpphold" />,
+            endreTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilOpphold.endre" />,
+        },
+        {
+            vis: synlighet.visLeggTilPeriode,
+            value: 'LEGG_TIL_PERIODE',
+            nyTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilPeriode" />,
+            endreTekst: <FormattedMessage id="uttaksplan.valgPanel.leggTilPeriode.endre" />,
+        },
+    ];
+
+    return alternativer
+        .filter((alternativ) => alternativ.vis)
+        .map((alternativ) => (
+            <Radio value={alternativ.value} key={alternativ.value}>
+                {erNyPeriodeModus ? alternativ.nyTekst : alternativ.endreTekst}
+            </Radio>
+        ));
 };

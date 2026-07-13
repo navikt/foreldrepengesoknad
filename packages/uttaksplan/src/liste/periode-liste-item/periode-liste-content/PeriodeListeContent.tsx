@@ -1,10 +1,11 @@
-import { CalendarIcon, PencilIcon, TrashIcon } from '@navikt/aksel-icons';
+import { CalendarIcon, InformationSquareFillIcon, PencilIcon, TrashIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-types';
+import { Uttaksdagen, formatDateExtended } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
@@ -16,8 +17,9 @@ import {
     erVanligUttakPeriode,
 } from '../../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../../utils/UttakPeriodeBuilder';
+import { getVarighetString } from '../../../utils/dateUtils';
 import {
-    erDetEksisterendePerioderEtterValgtePerioder,
+    erAvslåttPeriode,
     erOppholdsperiode,
     erOverføringsperiode,
     erPrematuruker,
@@ -26,6 +28,7 @@ import {
 } from '../../../utils/periodeUtils';
 import { genererPeriodeKey } from '../../utils/uttaksplanListeUtils';
 import {
+    erAlleUttaksplanperioderAvslått,
     erUttaksplanperiodeEøs,
     erUttaksplanperiodeFamiliehendelseDato,
     erUttaksplanperiodeSamtidigUttak,
@@ -72,17 +75,13 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
     const erRedigerbar =
         !erUttaksplanperiodeTapteDager(uttaksplanperioder) &&
         !erUttaksplanperiodeUtenUttak(uttaksplanperioder) &&
-        !harUttaksplanperiodePrematuruker(uttaksplanperioder);
+        !harUttaksplanperiodePrematuruker(uttaksplanperioder) &&
+        !erAlleUttaksplanperioderAvslått(uttaksplanperioder);
 
     const erFamiliehendelse = erUttaksplanperiodeFamiliehendelseDato(uttaksplanperioder);
 
     const handleSlettClick = () => {
-        const erEksisterendePerioderEtterValgteDager = erDetEksisterendePerioderEtterValgtePerioder(
-            uttakPerioder,
-            uttaksplanperioder,
-        );
-
-        if (!erEksisterendePerioderEtterValgteDager && uttaksplanperioder.length === 1) {
+        if (uttaksplanperioder.length === 1) {
             const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder, 'liste')
                 .fjernUttakPerioder(uttaksplanperioder, false)
                 .getUttakPerioder();
@@ -191,12 +190,16 @@ const Periode = ({
         );
     }
 
-    if (erVanligUttakPeriode(periode) && erUtsettelsesperiode(periode)) {
-        return <UtsettelsesPeriodeContent key={genererPeriodeKey(periode)} periode={periode} />;
-    }
-
     if (erPrematuruker(periode)) {
         return <PrematurukerContent key={genererPeriodeKey(periode)} />;
+    }
+
+    if (erVanligUttakPeriode(periode) && erAvslåttPeriode(periode)) {
+        return <AvslåttPeriodeContent key={genererPeriodeKey(periode)} periode={periode} />;
+    }
+
+    if (erVanligUttakPeriode(periode) && erUtsettelsesperiode(periode)) {
+        return <UtsettelsesPeriodeContent key={genererPeriodeKey(periode)} periode={periode} />;
     }
 
     if ((erVanligUttakPeriode(periode) && erUttaksperiode(periode)) || erEøsUttakPeriode(periode)) {
@@ -217,6 +220,33 @@ const Periode = ({
                 <CalendarIcon width={24} height={24} />
             </div>
             <BodyShort weight="semibold">Ikke implementert</BodyShort>
+        </HStack>
+    );
+};
+
+const AvslåttPeriodeContent = ({ periode }: { periode: Uttaksplanperiode }) => {
+    const intl = useIntl();
+    return (
+        <HStack gap="space-8">
+            <div>
+                <InformationSquareFillIcon width={24} height={24} className="text-ax-neutral-800" />
+            </div>
+            <VStack gap="space-4">
+                <HStack gap="space-8">
+                    <BodyShort weight="semibold">
+                        {`${formatDateExtended(periode.fom)} - ${formatDateExtended(periode.tom)}`}
+                    </BodyShort>
+                    <BodyShort>
+                        {getVarighetString(
+                            Uttaksdagen.denneEllerNeste(periode.fom).getUttaksdagerFremTilOgMedDato(periode.tom),
+                            intl,
+                        )}
+                    </BodyShort>
+                </HStack>
+                <BodyShort>
+                    <FormattedMessage id="uttaksplan.periodeListeHeader.avslåttAnnet" />
+                </BodyShort>
+            </VStack>
         </HStack>
     );
 };

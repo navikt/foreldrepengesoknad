@@ -109,10 +109,7 @@ export const ArbeidsforholdOgInntektOppsummering: Story = {
                     }}
                     onVilEndreSvar={() => {}}
                 />
-                <FrilansOppsummering
-                    frilans={{ jobberFremdelesSomFrilans: true, oppstart: '2019-01-01' }}
-                    onVilEndreSvar={() => {}}
-                />
+                <FrilansOppsummering frilans={{ oppstart: '2019-01-01' }} onVilEndreSvar={() => {}} />
             </>
         ),
     },

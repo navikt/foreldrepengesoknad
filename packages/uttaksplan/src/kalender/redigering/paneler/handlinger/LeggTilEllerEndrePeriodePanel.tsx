@@ -1,11 +1,10 @@
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 
-import { Box, HStack, Heading, Show, VStack } from '@navikt/ds-react';
+import { Box, Chips, HStack, Show, VStack } from '@navikt/ds-react';
 
 import { getVarighetString } from '../../../../utils/dateUtils';
-import { BlåRamme } from '../../../redigering/utils/BlåRamme';
 import { useKalenderRedigeringContext } from '../../context/KalenderRedigeringContext';
 import { finnAntallDager } from '../../utils/kalenderPeriodeUtils';
 import { useMediaRemoveScrollingOnMobile, useMediaResetMinimering } from '../../utils/useMediaActions';
@@ -18,8 +17,6 @@ interface Props {
 }
 
 export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: Props) => {
-    const [erForskyvEllerErstattPanelvisningPå, setErForskyvEllerErstattPanelvisningPå] = useState(false);
-
     const [erMinimert, setErMinimert] = useState(false);
 
     useMediaResetMinimering(setErMinimert);
@@ -35,46 +32,26 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
             }
         >
             <Show above="md">
-                <HeaderDesktop
-                    labels={labels}
-                    erForskyvEllerErstattPanelvisningPå={erForskyvEllerErstattPanelvisningPå}
-                    setErForskyvEllerErstattPanelvisningPå={setErForskyvEllerErstattPanelvisningPå}
-                />
+                <HeaderDesktop labels={labels} />
             </Show>
             <Show below="md">
-                <HeaderMobil
-                    labels={labels}
-                    erMinimert={erMinimert}
-                    setErMinimert={setErMinimert}
-                    erForskyvEllerErstattPanelvisningPå={erForskyvEllerErstattPanelvisningPå}
-                    setErForskyvEllerErstattPanelvisningPå={setErForskyvEllerErstattPanelvisningPå}
-                />
+                <HeaderMobil labels={labels} erMinimert={erMinimert} setErMinimert={setErMinimert} />
             </Show>
-            {!erForskyvEllerErstattPanelvisningPå && (
-                <div className={erMinimert ? 'hidden' : 'block px-4 pb-4'}>
-                    <div className={erMinimert ? 'hidden' : 'block'}>
-                        <div className="px-4 pt-4 pb-4">
-                            <LeggTilEllerEndrePeriodeForm lukkRedigeringsmodus={lukkRedigeringsmodus} />
-                        </div>
+            <div className={erMinimert ? 'hidden' : 'block px-4 pb-4'}>
+                <div className={erMinimert ? 'hidden' : 'block'}>
+                    <div className="px-4 pt-4 pb-4">
+                        <LeggTilEllerEndrePeriodeForm lukkRedigeringsmodus={lukkRedigeringsmodus} />
                     </div>
                 </div>
-            )}
+            </div>
         </VStack>
     );
 };
 
-const HeaderDesktop = ({
-    labels,
-    erForskyvEllerErstattPanelvisningPå,
-    setErForskyvEllerErstattPanelvisningPå,
-}: {
-    labels: React.ReactNode;
-    erForskyvEllerErstattPanelvisningPå: boolean;
-    setErForskyvEllerErstattPanelvisningPå: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+const HeaderDesktop = ({ labels }: { labels: React.ReactNode }) => {
     const intl = useIntl();
 
-    const { sammenslåtteValgtePerioder } = useKalenderRedigeringContext();
+    const { sammenslåtteValgtePerioder, setValgtePerioder } = useKalenderRedigeringContext();
 
     const [visPeriodeDetaljer, setVisPeriodeDetaljer] = useState(false);
 
@@ -82,16 +59,19 @@ const HeaderDesktop = ({
         <Box background="accent-soft" padding="space-16">
             <VStack gap="space-16">
                 <HStack justify="space-between" align="center" wrap={false}>
-                    <BlåRamme>
-                        <Heading size="xsmall">
-                            <FormattedMessage
-                                id="RedigeringPanel.ValgteDager"
-                                values={{
-                                    varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
-                                }}
-                            />
-                        </Heading>
-                    </BlåRamme>
+                    {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
+                    <div onClick={(e) => e.stopPropagation()}>
+                        <Chips size="small">
+                            <Chips.Removable onDelete={() => setValgtePerioder([])}>
+                                {intl.formatMessage(
+                                    { id: 'RedigeringPanel.ValgteDager' },
+                                    {
+                                        varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
+                                    },
+                                )}
+                            </Chips.Removable>
+                        </Chips>
+                    </div>
                     {visPeriodeDetaljer ? (
                         <ChevronUpIcon
                             title={intl.formatMessage({ id: 'RedigeringPanel.SkjulDetaljer' })}
@@ -107,12 +87,7 @@ const HeaderDesktop = ({
                     )}
                 </HStack>
                 {labels}
-                {visPeriodeDetaljer && (
-                    <PeriodeDetaljerOgInfoMeldinger
-                        erForskyvEllerErstattPanelvisningPå={erForskyvEllerErstattPanelvisningPå}
-                        setErForskyvEllerErstattPanelvisningPå={setErForskyvEllerErstattPanelvisningPå}
-                    />
-                )}
+                {visPeriodeDetaljer && <PeriodeDetaljerOgInfoMeldinger />}
             </VStack>
         </Box>
     );
@@ -121,19 +96,15 @@ const HeaderDesktop = ({
 const HeaderMobil = ({
     labels,
     erMinimert,
-    erForskyvEllerErstattPanelvisningPå,
     setErMinimert,
-    setErForskyvEllerErstattPanelvisningPå,
 }: {
     labels: React.ReactNode;
     erMinimert: boolean;
-    erForskyvEllerErstattPanelvisningPå: boolean;
     setErMinimert: React.Dispatch<React.SetStateAction<boolean>>;
-    setErForskyvEllerErstattPanelvisningPå: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
     const intl = useIntl();
 
-    const { sammenslåtteValgtePerioder } = useKalenderRedigeringContext();
+    const { sammenslåtteValgtePerioder, setValgtePerioder } = useKalenderRedigeringContext();
 
     return (
         <VStack>
@@ -157,34 +128,26 @@ const HeaderMobil = ({
                         />
                     )}
 
-                    <HStack>
-                        <Box
-                            background="brand-blue-strong"
-                            padding="space-2"
-                            borderRadius="8"
-                            width="fit-content"
-                            className={'text-ax-bg-default px-2'}
-                        >
-                            <Heading size="xsmall">
-                                <FormattedMessage
-                                    id="RedigeringPanel.ValgteDager"
-                                    values={{
+                    {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
+                    <div onClick={(e) => e.stopPropagation()}>
+                        <Chips size="small">
+                            <Chips.Removable onDelete={() => setValgtePerioder([])}>
+                                {intl.formatMessage(
+                                    { id: 'RedigeringPanel.ValgteDager' },
+                                    {
                                         varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
-                                    }}
-                                />
-                            </Heading>
-                        </Box>
-                    </HStack>
+                                    },
+                                )}
+                            </Chips.Removable>
+                        </Chips>
+                    </div>
                 </VStack>
             </Box>
             <Box className="bg-ax-bg-accent-soft">
                 {!erMinimert && (
                     <VStack gap="space-16" className="px-4 pb-4">
                         {labels}
-                        <PeriodeDetaljerOgInfoMeldinger
-                            erForskyvEllerErstattPanelvisningPå={erForskyvEllerErstattPanelvisningPå}
-                            setErForskyvEllerErstattPanelvisningPå={setErForskyvEllerErstattPanelvisningPå}
-                        />
+                        <PeriodeDetaljerOgInfoMeldinger />
                     </VStack>
                 )}
             </Box>

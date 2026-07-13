@@ -304,3 +304,76 @@ export const MorOgFarOgFarGraderer: Story = {
     },
 };
 
+export const MorMedFarSomHarTattOverMødrekvote: Story = {
+    name: 'Mor - far har tatt over mødrekvote de første seks ukene',
+    parameters: {
+        msw: {
+            handlers: [http.post(API_URLS.konto, () => HttpResponse.json(stønadskvoter2))],
+        },
+    },
+    args: {
+        sak: {
+            saksnummer: '1',
+            sakAvsluttet: false,
+            kanSøkeOmEndring: true,
+            sakTilhørerMor: true,
+            gjelderAdopsjon: false,
+            morUføretrygd: false,
+            harAnnenForelderTilsvarendeRettEØS: false,
+            ønskerJustertUttakVedFødsel: false,
+            rettighetType: 'BEGGE_RETT',
+            annenPart: { fnr: '29459848930' },
+            familiehendelse: { fødselsdato: '2025-03-25', termindato: '2025-03-25', antallBarn: 1 },
+            gjeldendeVedtak: {
+                perioder: [
+                    {
+                        fom: '2025-03-25',
+                        tom: '2025-05-06',
+                        kontoType: 'MØDREKVOTE',
+                        resultat: {
+                            innvilget: false,
+                            trekkerDager: false,
+                            trekkerMinsterett: false,
+                            årsak: 'ANNET',
+                        },
+                        flerbarnsdager: false,
+                        forelder: 'MOR',
+                    },
+                    {
+                        fom: '2025-05-07',
+                        tom: '2025-06-30',
+                        kontoType: 'FELLESPERIODE',
+                        flerbarnsdager: false,
+                        forelder: 'MOR',
+                    },
+                ],
+                perioderAnnenpartEøs: [],
+            },
+            barn: [{ fnr: '22442356029' }],
+            dekningsgrad: 'HUNDRE',
+            oppdatertTidspunkt: '2025-09-16T14:09:43.208',
+            forelder: 'MOR',
+            ytelse: 'FORELDREPENGER' as const,
+        },
+        annenPartsPerioder: [
+            {
+                fom: '2025-03-25',
+                tom: '2025-05-06',
+                kontoType: 'MØDREKVOTE',
+                overføringÅrsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
+                resultat: {
+                    innvilget: true,
+                    trekkerDager: true,
+                    trekkerMinsterett: false,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
+                forelder: 'FAR_MEDMOR',
+            },
+        ],
+        navnPåForeldre: {
+            mor: 'Helga',
+            farMedmor: 'Espen',
+        },
+    },
+};

@@ -31,12 +31,8 @@ export const SøkersituasjonSteg = ({ arbeidsforhold, kjønn, mellomlagreSøknad
     const kommerFraPlanlegger = useContextGetData(ContextDataType.KOMMER_FRA_PLANLEGGER);
     const resetUttaksplanData = useResetUttaksplanData();
 
-    const defaultSituasjon =
-        !søkersituasjon?.situasjon && kommerFraPlanlegger && barn
-            ? isAdoptertBarn(barn)
-                ? 'adopsjon'
-                : 'fødsel'
-            : undefined;
+    const situasjonFraBarn = barn && isAdoptertBarn(barn) ? 'adopsjon' : 'fødsel';
+    const defaultSituasjon = !søkersituasjon?.situasjon && kommerFraPlanlegger && barn ? situasjonFraBarn : undefined;
 
     const formMethods = useForm<SøkersituasjonFp>({
         defaultValues: søkersituasjon ?? (defaultSituasjon ? { situasjon: defaultSituasjon } : undefined),
@@ -57,12 +53,12 @@ export const SøkersituasjonSteg = ({ arbeidsforhold, kjønn, mellomlagreSøknad
 
         oppdaterSøkersituasjon(nySøkersituasjon);
 
-        return navigator.goToNextDefaultStep();
+        return navigator.goToNextStep();
     };
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
-            <Step steps={stepConfig}>
+            <Step steps={stepConfig} onStepChange={navigator.goToStep}>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                     <VStack gap="space-40">
                         <ErrorSummaryHookForm />

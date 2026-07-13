@@ -94,7 +94,6 @@ const SENERE_UTENLANDSOPPHOLD: UtenlandsoppholdPeriode[] = [
 ];
 
 const FRILANS = {
-    jobberFremdelesSomFrilans: true,
     oppstart: '2024-01-01',
 };
 
@@ -167,8 +166,6 @@ const getWrapper =
         </IntlProvider>
     );
 
-vi.mock('ky');
-
 describe('useSendSøknad', () => {
     afterEach(() => {
         vi.restoreAllMocks();
@@ -176,11 +173,10 @@ describe('useSendSøknad', () => {
     });
 
     it('skal sende inn tilrettelegging for to arbeidsforhold', async () => {
-        const postMock = vi.mocked(ky.post);
-        postMock.mockReturnValue({
+        const postMock = vi.spyOn(ky, 'post').mockReturnValue({
             json: () => Promise.resolve(),
         } as ResponsePromise<void>);
-        const deleteMock = vi.mocked(ky.delete);
+        const deleteMock = vi.spyOn(ky, 'delete').mockReturnValue(undefined as unknown as ResponsePromise<unknown>);
 
         const tilrettelegginger = {
             [ARBEIDSGIVER_ID]: {
@@ -323,11 +319,10 @@ describe('useSendSøknad', () => {
     });
 
     it('skal sende inn tilrettelegging for næring og frilans', async () => {
-        const postMock = vi.mocked(ky.post);
-        postMock.mockReturnValue({
+        const postMock = vi.spyOn(ky, 'post').mockReturnValue({
             json: () => Promise.resolve(),
         } as ResponsePromise<void>);
-        const deleteMock = vi.mocked(ky.delete);
+        const deleteMock = vi.spyOn(ky, 'delete').mockReturnValue(undefined as unknown as ResponsePromise<unknown>);
 
         const tilrettelegginger = {
             [EGEN_NÆRING_ID]: {
@@ -448,11 +443,10 @@ describe('useSendSøknad', () => {
     });
 
     it('skal sende inn tilrettelegging med mange perioder', async () => {
-        const postMock = vi.mocked(ky.post);
-        postMock.mockReturnValue({
+        const postMock = vi.spyOn(ky, 'post').mockReturnValue({
             json: () => Promise.resolve(),
         } as ResponsePromise<void>);
-        const deleteMock = vi.mocked(ky.delete);
+        const deleteMock = vi.spyOn(ky, 'delete').mockReturnValue(undefined as unknown as ResponsePromise<unknown>);
 
         const tilrettelegginger = {
             [ARBEIDSGIVER_ID]: {

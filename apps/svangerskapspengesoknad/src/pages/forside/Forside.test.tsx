@@ -46,6 +46,14 @@ describe('<Forside>', () => {
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce();
     });
 
+    it('skal vise avrundet minimumOpptjening uten desimaler', async () => {
+        render(<Default />);
+
+        const punkt = await screen.findByText(/Du må ha tjent minst/);
+        expect(punkt).toBeInTheDocument();
+        expect(punkt.textContent).not.toMatch(/,\d\d/);
+    });
+
     it('skal vise info om åpenbehandling', async () => {
         const setHarGodkjentVilkår = vi.fn();
         const gåTilNesteSide = vi.fn();

@@ -2,7 +2,7 @@ import { CalendarIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import { groupBy, min, partition, sortBy, sumBy } from 'lodash';
+import { groupBy, partition, sortBy, sumBy } from 'es-toolkit';
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link as RouterLink, useParams } from 'react-router-dom';
@@ -148,7 +148,7 @@ const BeregningOppsummering = ({ sak }: { sak: Foreldrepengesak | Svangerskapspe
     const grunnbeløp = beregning.grunnbeløp ?? DEFAULT_SATSER.grunnbeløp[0]!.verdi;
     const seksG = grunnbeløp * 6;
     const vis6GVarsel = samletÅrsinntekt > seksG;
-    const åttiProsentReduksjon = Math.round(min([samletÅrsinntekt, seksG]) * 0.8);
+    const åttiProsentReduksjon = Math.round(Math.min(samletÅrsinntekt, seksG) * 0.8);
 
     const visÅttiProsentReduksjon = sak.ytelse === 'FORELDREPENGER' && sak.dekningsgrad === 'ÅTTI';
 
@@ -176,7 +176,7 @@ const BeregningOppsummering = ({ sak }: { sak: Foreldrepengesak | Svangerskapspe
                         id="beregning.årsinntekt"
                         values={{
                             label: (chunks) => <Label>{chunks}</Label>,
-                            årsinntekt: formatCurrencyWithKr(samletÅrsinntekt),
+                            årsinntekt: formatCurrencyWithKr(Math.round(samletÅrsinntekt)),
                         }}
                     />
                 </List.Item>
@@ -469,10 +469,10 @@ const periodeTilDager = (perioder: TilkjentYtelsePeriode_fpoversikt[]): DagMedPe
 };
 
 const fjernLeadingOgTrailingMånederUtenUtbetaling = (andelerPerDag: DagMedPeriode[]) => {
-    const andelerPerDagGruppertPåMåned = groupBy(andelerPerDag, (d) => dayjs(d.dato).month());
-    const andelerSortertPåMåned = sortBy(Object.values(andelerPerDagGruppertPåMåned), (dager) =>
-        dayjs(dager[0]!.dato).unix(),
-    );
+    const andelerPerDagGruppertPåMåned = groupBy(andelerPerDag, (d) => dayjs(d.dato).format('YYYY-MM'));
+    const andelerSortertPåMåned = sortBy(Object.values(andelerPerDagGruppertPåMåned), [
+        (dager) => dayjs(dager[0]!.dato).unix(),
+    ]);
 
     const beregnSumForMåned = (dager: DagMedPeriode[]) => {
         const utbetalingsdager = dager.filter((d) => erUttaksdag(d.dato));
@@ -497,7 +497,6 @@ const fjernLeadingOgTrailingMånederUtenUtbetaling = (andelerPerDag: DagMedPerio
 const UtbetalingsVisning = ({ sak }: { sak: Foreldrepengesak | SvangerskapspengeSak }) => {
     const tilkjentYtelse = sak.gjeldendeVedtak?.tilkjentYtelse?.utbetalingsperioder ?? [];
     const andelerPerDag = periodeTilDager(tilkjentYtelse);
-
     const andelerPerMåned = fjernLeadingOgTrailingMånederUtenUtbetaling(andelerPerDag);
 
     return (
@@ -546,7 +545,8 @@ const UtbetalingsVisning = ({ sak }: { sak: Foreldrepengesak | Svangerskapspenge
 
                     const førsteDato = dager[0]!.dato;
                     const måned = capitalizeFirstLetter(formaterDato(førsteDato, 'MMMM'));
-                    const skalViseÅr = index === 0 || dayjs(førsteDato).month() === 0;
+                    const forrigeDato = index > 0 ? andelerPerMåned[index - 1]![0]!.dato : undefined;
+                    const skalViseÅr = index === 0 || dayjs(førsteDato).year() !== dayjs(forrigeDato).year();
                     return (
                         <React.Fragment key={førsteDato}>
                             {skalViseÅr && <Label className="mt-4">{dayjs(førsteDato).year()}</Label>}

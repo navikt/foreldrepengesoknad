@@ -1,7 +1,10 @@
-dist/
-node_modules/
-.turbo/
-.git/
-
-# Do not remove. It kills docker cache
-gha-creds-*
+*
+!./apps/engangsstonad/dist
+!./apps/foreldrepengeoversikt/dist
+!./apps/foreldrepengesoknad/dist
+!./apps/planlegger/dist
+!./apps/svangerskapspengesoknad/dist
+!./apps/veiviser-fp-eller-es/dist
+!./apps/veiviser-hvor-mye/dist
+!./server/dist
+!./server-uinnlogget/dist

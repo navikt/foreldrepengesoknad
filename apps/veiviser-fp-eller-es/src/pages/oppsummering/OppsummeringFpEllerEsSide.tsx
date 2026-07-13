@@ -6,7 +6,7 @@ import { VStack } from '@navikt/ds-react';
 import { Satser } from '@navikt/fp-types';
 import { VeiviserPage } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils';
-import { formatValue } from '@navikt/fp-validation/src/form/numberFormValidation';
+import { formatValue } from '@navikt/fp-validation';
 
 import { FpEllerEsSituasjon } from '../situasjon/SituasjonSide';
 import { HarIkkeRett } from './HarIkkeRett';
@@ -17,7 +17,7 @@ import { HvorMyeOgHvaSkjerNåLinkPanel } from './HvorMyeOgHvaSkjerNåLinkPanel';
 
 const finnHvemSomHarRett = (fpEllerEsSituasjon: FpEllerEsSituasjon, satser: Satser) => {
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
-    const minstelønn = grunnbeløpet / 2;
+    const minstelønn = Math.round(grunnbeløpet / 2);
 
     const { situasjon, lønnPerMåned, borDuINorge, jobberDuINorge } = fpEllerEsSituasjon;
     const lønnPerMånedNummer = formatValue(lønnPerMåned);

@@ -15,6 +15,7 @@ type Props<T extends FieldValues> = {
     maxLength?: number;
     className?: string;
     style?: CSSProperties;
+    inputMode?: 'numeric' | 'decimal';
     control: UseControllerProps<T>['control'];
 } & Omit<UseControllerProps<T>, 'control'>;
 
@@ -28,6 +29,7 @@ export const RhfNumericField = <T extends FieldValues>({
     maxLength,
     className,
     style,
+    inputMode = 'numeric',
     ...controllerProps
 }: Props<T>) => {
     const { name, control, disabled } = controllerProps;
@@ -61,7 +63,7 @@ export const RhfNumericField = <T extends FieldValues>({
             label={label}
             description={description}
             type="text"
-            inputMode="numeric"
+            inputMode={inputMode}
             error={getError(errors, name)}
             autoFocus={autoFocus}
             autoComplete="off"

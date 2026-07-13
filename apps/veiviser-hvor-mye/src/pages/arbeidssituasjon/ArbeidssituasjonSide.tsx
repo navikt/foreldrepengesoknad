@@ -77,7 +77,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
     const antattÅrslønn = gjennomsnittslønnPerMåned ? Number.parseFloat(gjennomsnittslønnPerMåned) * 12 : undefined;
 
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
-    const minÅrslønn = grunnbeløpet / 2;
+    const minÅrslønn = Math.round(grunnbeløpet / 2);
     const maxÅrslønn = grunnbeløpet * 6;
 
     const { ref } = useScrollBehaviour();

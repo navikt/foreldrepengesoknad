@@ -6,11 +6,7 @@ import { Foreldrepengesak } from 'types/Sak';
 
 import { Button, HStack, ToggleGroup, VStack } from '@navikt/ds-react';
 
-import {
-    BrukerRolleSak_fpoversikt,
-    NavnPåForeldre,
-    UttakPeriode_fpoversikt,
-} from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, NavnPåForeldre, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { useMedia } from '@navikt/fp-utils';
 import {
     KvoteOppsummering,
@@ -71,10 +67,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre, sak }: Props) => 
 
     const perioderAnnenPartEØS = sak.gjeldendeVedtak?.perioderAnnenpartEøs;
 
-    const søkerPerioderMedForelder = leggTilForelderOmMangler(
-        relevantePerioder,
-        sakTilhørerMor ? 'MOR' : 'FAR_MEDMOR',
-    );
+    const søkerPerioderMedForelder = leggTilForelderOmMangler(relevantePerioder, sakTilhørerMor ? 'MOR' : 'FAR_MEDMOR');
     const annenPartPerioderMedForelder = leggTilForelderOmMangler(
         annenPartsPerioder,
         sakTilhørerMor ? 'FAR_MEDMOR' : 'MOR',

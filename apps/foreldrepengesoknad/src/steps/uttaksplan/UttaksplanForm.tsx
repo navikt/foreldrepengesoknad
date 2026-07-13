@@ -4,8 +4,6 @@ import dayjs from 'dayjs';
 import { ReactNode, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
-import { getErMorUfør } from 'utils/annenForelderUtils';
 import { getTermindato } from 'utils/barnUtils';
 import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 
@@ -20,14 +18,14 @@ import {
     UttakPeriode_fpoversikt,
     isAdoptertBarn,
     isFødtBarn,
+    isIkkeUtfyltTypeBarn,
     isUfødtBarn,
 } from '@navikt/fp-types';
-import { isIkkeUtfyltTypeBarn } from '@navikt/fp-types/src/Barn';
 import { Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { GåTilbakeModal } from './GåTilbakeModal';
-import { useFinnFørsteSubmitFeilmelding } from './submitValidering';
+import { erSammePeriodeInkludertDatoer, useFinnFørsteSubmitFeilmelding } from './submitValidering';
 
 type FormValues = {
     ønskerJustertUttakVedFødsel?: boolean;
@@ -42,6 +40,7 @@ interface UttaksplanFormProps {
     scrollToKvoteOppsummering: () => void;
     eksisterendeSak: FpSak_fpoversikt | undefined;
     opprinneligPlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined;
+    erEndringssøknad: boolean;
 }
 
 export const UttaksplanForm = ({
@@ -53,23 +52,26 @@ export const UttaksplanForm = ({
     scrollToKvoteOppsummering,
     eksisterendeSak,
     opprinneligPlan,
+    erEndringssøknad,
 }: UttaksplanFormProps) => {
     const intl = useIntl();
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
-    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const harJustertUttakVedFødsel = useContextGetData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
 
-    const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
-
     const oppdaterHarJustertUttakVedFødsel = useContextSaveData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
-    const erEndringssøknad = !!valgtEksisterendeSaksnr;
     const uttaksplanMedKunNyePerioder =
-        uttaksplan?.filter((p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.resultat === undefined) ?? [];
+        uttaksplan?.filter(
+            (p) =>
+                Uttaksperioden.erIkkeEøsPeriode(p) &&
+                (p.resultat === undefined ||
+                    (opprinneligPlan !== undefined &&
+                        !opprinneligPlan.some((o) => erSammePeriodeInkludertDatoer(p, o)))),
+        ) ?? [];
     const gjeldendeUttaksplan = erEndringssøknad ? uttaksplanMedKunNyePerioder : uttaksplan;
 
     const navigator = useFpNavigator(
@@ -89,36 +91,24 @@ export const UttaksplanForm = ({
 
     const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
 
-    const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
-    const erDeltUttak =
-        oppgittAnnenForelder?.harRettPåForeldrepengerINorge === true ||
-        oppgittAnnenForelder?.harRettPåForeldrepengerIEØS === true;
+    const erFødselssituasjonForFar = erSøkerFarEllerMedmor && søkersituasjon.situasjon === 'fødsel';
 
-    const erMorUfør = getErMorUfør(annenForelder, erSøkerFarEllerMedmor);
-    const erAleneOmOmsorg = oppgittAnnenForelder ? oppgittAnnenForelder.erAleneOmOmsorg : true;
+    // Når far/medmor kommer rett fra planleggeren ligg uttaket i defaultUttaksperioder fram til
+    // planen blir redigert (då blir uttaksplan-context fylt). Bruk same fallback som onSubmit slik
+    // at spørsmålet om automatisk justering står fast med ein gong, utan at brukaren må tukle med planen.
+    const planForVisning = gjeldendeUttaksplan ?? defaultUttaksperioder;
 
-    const bareFarHarRett = erSøkerFarEllerMedmor && (!erDeltUttak || erMorUfør || erAleneOmOmsorg);
-
-    const termindato = getTermindato(barn);
-    const uttaksdagPåEllerEtterTermin = termindato ? Uttaksdagen.denneEllerNeste(termindato).getDato() : undefined;
-
-    const perioderRundtFødselForFarMedmor = gjeldendeUttaksplan
-        ? finnPerioderRundtFødsel(gjeldendeUttaksplan, barn).filter(
-              (p) => Uttaksperioden.erIkkeEøsPeriode(p) && p.forelder === 'FAR_MEDMOR',
-          )
-        : [];
+    const farMedmorPerioder = planForVisning
+        .filter((p): p is UttakPeriode_fpoversikt => Uttaksperioden.erIkkeEøsPeriode(p))
+        .filter((p) => p.forelder === 'FAR_MEDMOR');
 
     const visAutomatiskJustering =
-        erSøkerFarEllerMedmor &&
-        søkersituasjon.situasjon === 'fødsel' &&
-        perioderRundtFødselForFarMedmor.length === 1 &&
-        uttaksdagPåEllerEtterTermin !== undefined &&
-        dayjs(perioderRundtFødselForFarMedmor[0]!.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
+        erFødselssituasjonForFar &&
         isUfødtBarn(barn) &&
         barn.termindato !== undefined &&
-        !bareFarHarRett;
+        kanJustereFarsUttakRundtFødsel(farMedmorPerioder, barn.termindato);
 
-    const finnFørsteSubmitFeilmelding = useFinnFørsteSubmitFeilmelding({ opprinneligPlan });
+    const finnFørsteSubmitFeilmelding = useFinnFørsteSubmitFeilmelding({ opprinneligPlan, erEndringssøknad });
 
     const onSubmit = (formValues: FormValues) => {
         const planForValidering = gjeldendeUttaksplan ?? defaultUttaksperioder;
@@ -137,7 +127,7 @@ export const UttaksplanForm = ({
             oppdaterUttaksplan(defaultUttaksperioder);
         }
 
-        return navigator.goToNextDefaultStep();
+        return navigator.goToNextStep();
     };
 
     const [gåTilbakeIsOpen, setGåTilbakeIsOpen] = useState(false);
@@ -154,7 +144,7 @@ export const UttaksplanForm = ({
                     <VStack gap="space-16">
                         <AutomatiskJusteringInfotekst
                             harSvartJaPåAutoJustering={harSvartJaPåAutoJustering}
-                            uttaksplan={gjeldendeUttaksplan!}
+                            uttaksplan={planForVisning}
                         />
                         <RhfRadioGroup
                             name="ønskerJustertUttakVedFødsel"
@@ -240,8 +230,7 @@ const AutomatiskJusteringInfotekst = ({
         harSvartJaOgHarEnPeriodeRundtFødsel &&
         dayjs(perioderMedUttakRundtFødsel[0]!.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
         ((Uttaksperioden.erUttaksperiode(perioderMedUttakRundtFødsel[0]!) &&
-            (perioderMedUttakRundtFødsel[0]!.kontoType !== 'FEDREKVOTE' ||
-                !Uttaksperioden.erSamtidigUttak(perioderMedUttakRundtFødsel[0]!))) ||
+            !erJusterbartUttakRundtTermin(perioderMedUttakRundtFødsel[0]!)) ||
             Uttaksperioden.erOverføringsperiode(perioderMedUttakRundtFødsel[0]!));
 
     if (harSvartJaOgEndretPeriodenPåTermin) {
@@ -311,4 +300,62 @@ const finnPerioderInnenforIntervalletToUkerFørFamDatoOgFamDato = (
         const tom = dayjs(periode.tom);
         return tom.isSameOrAfter(førsteDag, 'day') && fom.isSameOrBefore(sisteDag, 'day');
     });
+};
+
+const erJusterbartUttakRundtTermin = (
+    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+): boolean =>
+    periode.kontoType === 'FORELDREPENGER' ||
+    (periode.kontoType === 'FEDREKVOTE' && 'samtidigUttak' in periode && periode.samtidigUttak !== undefined);
+
+/**
+ * Speilar backend-regelen `FarsJustering.skalJustere` i fpsak. Far/medmor sitt uttak rundt fødsel kan
+ * berre justerast automatisk når:
+ *  1. den første perioden i fars plan startar på termin,
+ *  2. den er ei ekte uttaksperiode (ikkje utsettelse/opphald/overføring) av justerbar type
+ *     (FORELDREPENGER, eller FEDREKVOTE med samtidig uttak),
+ *  3. den ligg HEILT innanfor intervallet far rundt fødsel: [termin - 2 veker, termin + 6 veker - 1 dag], og
+ *  4. det er nøyaktig éin periode inne i det intervallet.
+ *
+ * Den gamle frontend-logikken kravde berre at perioden *starta* på termin og hadde rett type, men sjekka
+ * verken at perioden var omslutta av intervallet eller at det var den første perioden i planen. Då kunne
+ * søknaden sende `ønskerJustertUttakVedFødsel = true` for plan backend ikkje kan justere (t.d. ein lang
+ * foreldrepengeperiode som strekk seg forbi 6 veker), og backend logga "Kan ikke justere fars uttak rundt
+ * fødsel. Selv om bruker har søkt om justering!".
+ */
+export const kanJustereFarsUttakRundtFødsel = (
+    farMedmorPerioder: UttakPeriode_fpoversikt[],
+    termindato: string,
+): boolean => {
+    if (farMedmorPerioder.length === 0) {
+        return false;
+    }
+
+    const sortertePerioder = [...farMedmorPerioder].sort((p1, p2) => dayjs(p1.fom).diff(dayjs(p2.fom)));
+
+    const termindatoUttaksdag = Uttaksdagen.denneEllerNeste(termindato).getDato();
+    const intervallFom = dayjs(termindatoUttaksdag).subtract(2, 'week');
+    const intervallTom = dayjs(termindatoUttaksdag).add(6, 'week').subtract(1, 'day');
+
+    const liggerHeiltInnanforIntervallet = (periode: UttakPeriode_fpoversikt) =>
+        dayjs(periode.fom).isSameOrAfter(intervallFom, 'day') && dayjs(periode.tom).isSameOrBefore(intervallTom, 'day');
+
+    const førstePeriode = sortertePerioder[0]!;
+
+    const førstePeriodeStarterPåTermin = dayjs(Uttaksdagen.denneEllerNeste(førstePeriode.fom).getDato()).isSame(
+        termindatoUttaksdag,
+        'day',
+    );
+
+    const førstePeriodeErJusterbar =
+        Uttaksperioden.erUttaksperiode(førstePeriode) &&
+        erJusterbartUttakRundtTermin(førstePeriode) &&
+        liggerHeiltInnanforIntervallet(førstePeriode) &&
+        førstePeriodeStarterPåTermin;
+
+    if (!førstePeriodeErJusterbar) {
+        return false;
+    }
+
+    return sortertePerioder.filter(liggerHeiltInnanforIntervallet).length === 1;
 };

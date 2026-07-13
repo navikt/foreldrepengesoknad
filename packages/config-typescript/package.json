@@ -5,9 +5,10 @@
     "license": "MIT",
     "type": "module",
     "scripts": {
-        "tsc:watch": "tsc --noEmit --watch"
+        "tsc:watch": "tsc --noEmit --watch",
+        "clean": "rm -rf ./dist ./node_modules ./.turbo"
     },
     "devDependencies": {
-        "typescript": "6.0.3"
+        "typescript": "catalog:"
     }
 }

@@ -2,7 +2,7 @@ import { PlanleggerRoutes } from 'appData/routes';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { encodeToBase64 } from '@navikt/fp-utils';
+import { compressToUrl } from '@navikt/fp-utils';
 
 import { useContextComplete } from './PlanleggerDataContext';
 import { useStepData } from './useStepData';
@@ -16,7 +16,7 @@ export const usePlanleggerNavigator = () => {
 
     useEffect(() => {
         if (path) {
-            void navigate(`${path}?data=${encodeToBase64(JSON.stringify(context))}`);
+            void navigate(`${path}?data=${compressToUrl(JSON.stringify(context))}`);
         }
     }, [path]);
 

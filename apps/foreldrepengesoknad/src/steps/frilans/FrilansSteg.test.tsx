@@ -31,7 +31,6 @@ describe('<FrilansSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                jobberFremdelesSomFrilans: true,
                 oppstart: '2023-12-30',
             },
             key: ContextDataType.FRILANS,

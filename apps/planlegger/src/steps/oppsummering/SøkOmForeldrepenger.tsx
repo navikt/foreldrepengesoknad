@@ -8,7 +8,7 @@ import { BodyShort, LinkCard, VStack } from '@navikt/ds-react';
 import { links } from '@navikt/fp-constants';
 import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
-import { encodeToBase64 } from '@navikt/fp-utils';
+import { compressToUrl } from '@navikt/fp-utils';
 
 interface Props {
     erAlenesøker: boolean;
@@ -17,9 +17,9 @@ interface Props {
 
 export const SøkOmForeldrepenger = ({ erAlenesøker, barnet }: Props) => {
     const planleggerState = useContextComplete();
-    const søknadHref = `${links.foreldrepengesoknad}/?planleggerData=${encodeURIComponent(
-              encodeToBase64(JSON.stringify(sanitizePlanleggerState(planleggerState))),
-          )}`;
+    const søknadHref = `${links.foreldrepengesoknad}/?planleggerData=${compressToUrl(
+        JSON.stringify(sanitizePlanleggerState(planleggerState)),
+    )}`;
 
     return (
         <Infobox
@@ -66,16 +66,16 @@ export const SøkOmForeldrepenger = ({ erAlenesøker, barnet }: Props) => {
 };
 
 // Felter som skal utelates fra payloaden som sendes til søknaden
-const EKSKLUDERTE_FELTER: readonly ContextDataType[] = [
+const EKSKLUDERTE_FELTER: ReadonlySet<ContextDataType> = new Set([
     ContextDataType.HVOR_MYE,
     ContextDataType.ARBEIDSSITUASJON,
     ContextDataType.HVEM_PLANLEGGER,
-];
+]);
 
 const sanitizePlanleggerState = (state: ReturnType<typeof useContextComplete>) => {
     const result: Record<string, unknown> = {};
     for (const key of Object.values(ContextDataType)) {
-        if (EKSKLUDERTE_FELTER.includes(key)) {
+        if (EKSKLUDERTE_FELTER.has(key)) {
             continue;
         }
         const value = state[key];

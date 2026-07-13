@@ -38,7 +38,7 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         await userEvent.click(
             screen.getByText(
-                `Har jobbet minst 6 av de siste 10 månedene og har tjent 65 080 kr eller mer det siste året`,
+                `Har jobbet minst 6 av de siste 10 månedene og har tjent 68 275 kr eller mer det siste året`,
             ),
         );
 
@@ -71,7 +71,7 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         await userEvent.click(
             screen.getByText(
-                'Har jobbet minst 6 av de siste 10 månedene og har tjent 65 080 kr eller mer det siste året',
+                'Har jobbet minst 6 av de siste 10 månedene og har tjent 68 275 kr eller mer det siste året',
             ),
         );
 
@@ -204,7 +204,7 @@ describe('<ArbeidssituasjonSteg>', () => {
         });
     });
 
-    it('skal omtale medmor som medmor hvis navn ikke er oppgit', async () => {
+    it('skal omtale medmor som medmor hvis navn ikke er oppgitt', async () => {
         render(<ArbeidssituasjonMorOgMedmorUtenNavn />);
 
         expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);

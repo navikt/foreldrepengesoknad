@@ -9,7 +9,12 @@ import {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
-import { harPeriodeDerMorsAktivitetIkkeErValgt, useErAntallDagerOvertrukketIUttaksplan } from '@navikt/fp-uttaksplan';
+import {
+    erPerioderEkslFomTomLike,
+    harPeriodeDerMorsAktivitetIkkeErValgt,
+    harPeriodeMedUkjentGraderingsaktivitet,
+    useErAntallDagerOvertrukketIUttaksplan,
+} from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 export type UttaksplanPerioder = Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
@@ -21,15 +26,17 @@ type SubmitValideringsregel = {
 
 interface UseFinnFørsteSubmitFeilmeldingProps {
     opprinneligPlan: UttaksplanPerioder | undefined;
+    erEndringssøknad: boolean;
 }
 
-export const useFinnFørsteSubmitFeilmelding = ({ opprinneligPlan }: UseFinnFørsteSubmitFeilmeldingProps) => {
+export const useFinnFørsteSubmitFeilmelding = ({
+    opprinneligPlan,
+    erEndringssøknad,
+}: UseFinnFørsteSubmitFeilmeldingProps) => {
     const intl = useIntl();
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
-    const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
-    const erEndringssøknad = !!valgtEksisterendeSaksnr;
     const erAntallDagerOvertrukket = useErAntallDagerOvertrukketIUttaksplan();
 
     const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
@@ -43,12 +50,25 @@ export const useFinnFørsteSubmitFeilmelding = ({ opprinneligPlan }: UseFinnFør
         perioder.length === 0 && !harBrukerKunSlettetPerioder(uttaksplan, opprinneligPlan);
 
     const manglerUttaksperioderForNySøknad = (perioder: UttaksplanPerioder) =>
-        !erEndringssøknad && !perioder.some((periode) => Uttaksperioden.erUttaksperiode(periode));
+        !erEndringssøknad && !harMinstEnUttaksEllerOverføringsperiode(perioder);
 
     const harOvertrukketDager = () => erAntallDagerOvertrukket;
 
     const manglerMorsAktivitetDerPåkrevd = (perioder: UttaksplanPerioder) =>
-        harPeriodeDerMorsAktivitetIkkeErValgt(utledRettighet(erAleneOmOmsorg, erDeltUttak), perioder);
+        harPeriodeDerMorsAktivitetIkkeErValgt(
+            utledRettighet(erAleneOmOmsorg, erDeltUttak),
+            erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
+            false,
+            perioder,
+        );
+
+    const manglerGraderingsaktivitet = (perioder: UttaksplanPerioder) => {
+        const søkersForelder = erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
+        const søkersPerioder = perioder.filter(
+            (periode) => Uttaksperioden.erIkkeEøsPeriode(periode) && periode.forelder === søkersForelder,
+        );
+        return harPeriodeMedUkjentGraderingsaktivitet(søkersPerioder, søkersForelder);
+    };
 
     const harKunPerioderForDenAndreForelderen = (perioder: UttaksplanPerioder) =>
         harKunPerioderForAnnenForelder(erSøkerFarEllerMedmor, erAleneOmOmsorg, perioder);
@@ -73,6 +93,10 @@ export const useFinnFørsteSubmitFeilmelding = ({ opprinneligPlan }: UseFinnFør
             message: intl.formatMessage({ id: 'UttaksplanSteg.MorsAktivitetIkkeValgt' }),
         },
         {
+            gjelder: manglerGraderingsaktivitet,
+            message: intl.formatMessage({ id: 'UttaksplanSteg.GraderingsaktivitetIkkeValgt' }),
+        },
+        {
             gjelder: harKunPerioderForDenAndreForelderen,
             message: intl.formatMessage({ id: 'UttaksplanSteg.KunPerioderForAnnenForelder' }),
         },
@@ -88,7 +112,7 @@ export const useFinnFørsteSubmitFeilmelding = ({ opprinneligPlan }: UseFinnFør
     };
 };
 
-const harBrukerKunSlettetPerioder = (
+export const harBrukerKunSlettetPerioder = (
     perioder: UttaksplanPerioder | undefined,
     opprinneligPlan: UttaksplanPerioder | undefined,
 ) => {
@@ -102,13 +126,19 @@ const harBrukerKunSlettetPerioder = (
 
     if (erKunSaksperioder) {
         const harSlettetPeriode = perioder
-            ? !perioder.every((periode, index) => periode === opprinneligPlan[index])
+            ? perioder.length < opprinneligPlan.length &&
+              perioder.every((periode) =>
+                  opprinneligPlan.some((opprinnelig) => erSammePeriodeInkludertDatoer(periode, opprinnelig)),
+              )
             : false;
         return harSlettetPeriode;
     }
 
     return false;
 };
+
+export const erSammePeriodeInkludertDatoer = (a: UttaksplanPerioder[number], b: UttaksplanPerioder[number]) =>
+    a.fom === b.fom && a.tom === b.tom && erPerioderEkslFomTomLike(a, b);
 
 export const harKunPerioderForAnnenForelder = (
     erSøkerFarEllerMedmor: boolean,
@@ -124,8 +154,21 @@ export const harKunPerioderForAnnenForelder = (
     return perioder.every((periode) => Uttaksperioden.erEøsPeriode(periode) || periode.forelder !== søkersForelder);
 };
 
-const erKunUtsettelser = (perioder: UttaksplanPerioder) => {
+// Ein overføringsperiode (t.d. far som overtek mødrekvote fordi mor er for sjuk) er eit
+// reelt uttak av foreldrepengar, og er ein gyldig søknad åleine på lik linje med ein uttaksperiode.
+export const harMinstEnUttaksEllerOverføringsperiode = (perioder: UttaksplanPerioder) =>
+    perioder.some((periode) => Uttaksperioden.erUttaksperiode(periode) || Uttaksperioden.erOverføringsperiode(periode));
+
+export const erKunUtsettelser = (perioder: UttaksplanPerioder) => {
     if (perioder.length === 0) {
+        return false;
+    }
+
+    // Ferie er ein utsettelse som legg dagar tilbake i beholdninga, og er ein gyldig søknad åleine.
+    const harFerie = perioder.some(
+        (periode) => Uttaksperioden.erIkkeEøsPeriode(periode) && periode.utsettelseÅrsak === 'LOVBESTEMT_FERIE',
+    );
+    if (harFerie) {
         return false;
     }
 

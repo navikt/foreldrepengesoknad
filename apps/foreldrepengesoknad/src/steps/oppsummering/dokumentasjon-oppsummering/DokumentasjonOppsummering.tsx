@@ -2,13 +2,14 @@ import { API_URLS } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FormattedMessage } from 'react-intl';
 import { VedleggDataType } from 'types/VedleggDataType';
-import { perioderSomKreverVedlegg } from 'utils/manglendeVedleggUtils';
+import { finnPerioderSomInngårISøknaden, perioderSomKreverVedlegg } from 'utils/manglendeVedleggUtils';
 import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 
 import { Alert, BodyLong, BodyShort, FormSummary, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { AttachmentType } from '@navikt/fp-constants';
 import { NavnPåForeldre } from '@navikt/fp-types';
+import { vedleggNedlastingsnavn } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { getFamiliehendelsedato } from '../../../utils/barnUtils';
@@ -26,11 +27,12 @@ export const DokumentasjonOppsummering = ({ onVilEndreSvar, navnPåForeldre }: P
     const alleVedlegg = useContextGetData(ContextDataType.VEDLEGG);
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const eksisterendeSaksnummer = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
 
     const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsedato = getFamiliehendelsedato(barn);
     const uttaksperioderSomManglerVedlegg = perioderSomKreverVedlegg(
-        uttaksplan || [],
+        finnPerioderSomInngårISøknaden(uttaksplan || [], erSøkerFarEllerMedmor, !!eksisterendeSaksnummer),
         erSøkerFarEllerMedmor,
         annenForelder,
         familiehendelsedato,
@@ -100,9 +102,10 @@ export const DokumentasjonOppsummering = ({ onVilEndreSvar, navnPåForeldre }: P
                                                     return vedlegg.uuid ? (
                                                         <Link
                                                             key={vedlegg.id}
-                                                            download={vedlegg.filename}
+                                                            download={vedleggNedlastingsnavn(vedlegg.filename)}
                                                             href={`${API_URLS.hentVedlegg(vedlegg.uuid)}`}
                                                             target="_blank"
+                                                            rel="noreferrer noopener"
                                                         >
                                                             {vedlegg.filename}
                                                         </Link>

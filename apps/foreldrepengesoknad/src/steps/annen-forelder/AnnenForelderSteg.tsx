@@ -1,16 +1,14 @@
-import isEqual from 'lodash/isEqual';
-
 import { useQuery } from '@tanstack/react-query';
 import { useAnnenPartVedtakOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useStepConfig } from 'appData/useStepConfig';
+import { isEqual } from 'es-toolkit';
 import { RegistrertePersonalia } from 'pages/registrerte-personalia/RegistrertePersonalia';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
-
 import { getRegistrerteBarnOmDeFinnes } from 'utils/barnUtils';
 
 import { VStack } from '@navikt/ds-react';
@@ -80,7 +78,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
                 resetUttaksplanData();
             }
             oppdaterAnnenForeldre({ kanIkkeOppgis: true });
-            return navigator.goToNextDefaultStep();
+            return navigator.goToNextStep();
         }
 
         const skalIkkeOppgiPersonaliaOgHarFraRegBarn = !skalOppgiPersonalia && annenForelderFraRegistrertBarn;
@@ -127,7 +125,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
             harRettPåForeldrepengerIEØS,
         });
 
-        return navigator.goToNextDefaultStep();
+        return navigator.goToNextStep();
     };
 
     const formMethods = useForm<AnnenForelder>({
@@ -147,7 +145,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
-            <Step steps={stepConfig}>
+            <Step steps={stepConfig} onStepChange={navigator.goToStep}>
                 <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                     <VStack gap="space-40">
                         <ErrorSummaryHookForm />

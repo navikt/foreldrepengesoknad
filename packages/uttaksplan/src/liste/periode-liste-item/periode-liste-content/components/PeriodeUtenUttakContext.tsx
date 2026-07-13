@@ -5,6 +5,7 @@ import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { Uttaksdagen } from '@navikt/fp-utils';
 
+import { TapteDagerForklaring } from '../../../../felles/TapteDagerForklaring';
 import { Uttaksplanperiode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
 
@@ -40,6 +41,7 @@ export const PeriodeUtenUttakContent = ({ periode, isHull }: Props) => {
                         <FormattedMessage id="uttaksplan.periodeListeContent.periodeUtenUttak" />
                     )}
                 </BodyShort>
+                {isHull && <TapteDagerForklaring fom={periode.fom} />}
             </VStack>
         </HStack>
     );

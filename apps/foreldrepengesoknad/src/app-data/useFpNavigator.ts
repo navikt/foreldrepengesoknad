@@ -5,11 +5,12 @@ import { captureMessage, loggUmamiEvent } from '@navikt/fp-observability';
 import { EksternArbeidsforholdDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataType, useContextSaveData } from './FpDataContext';
+import { MellomlagreSøknadFn } from './useMellomlagreSøknad';
 import { useStepConfig } from './useStepConfig';
 
 export const useFpNavigator = (
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
-    mellomlagreOgNaviger: () => Promise<void>,
+    mellomlagreOgNaviger: MellomlagreSøknadFn,
     erEndringssøknad = false,
     eksisterendeSak: FpSak_fpoversikt | undefined = undefined,
 ) => {
@@ -59,24 +60,28 @@ export const useFpNavigator = (
         navigerTilDefaultSteg('previous');
     };
 
-    const goToNextStep = (path: SøknadRoutes) => {
+    const goToStep = (path: SøknadRoutes) => {
         oppdaterPath(path);
         void mellomlagreOgNaviger();
     };
 
-    const goToNextDefaultStep = () => {
+    const goToNextStep = () => {
         navigerTilDefaultSteg('next');
     };
 
     const fortsettSøknadSenere = () => {
         loggUmamiEvent({ origin: 'foreldrepengesoknad', eventName: 'skjema fortsett senere' });
-        globalThis.location.href = 'https://nav.no';
+        // Berre lagre (ingen navigering – vi forlet appen rett etterpå), med retry
+        // sidan brukaren ikkje får eit nytt forsøk på å lagre endringane sine.
+        void mellomlagreOgNaviger({ naviger: false, medRetry: true }).finally(() => {
+            globalThis.location.href = 'https://nav.no';
+        });
     };
 
     return {
         goToPreviousDefaultStep,
+        goToStep,
         goToNextStep,
-        goToNextDefaultStep,
         fortsettSøknadSenere,
     };
 };

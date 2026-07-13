@@ -1,117 +1,126 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen, within } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-
-import { mswWrapper } from '@navikt/fp-utils-test';
 
 import * as stories from './DinPlan.stories';
 
-const { Default, FarSøker } = composeStories(stories);
+const { Default, FarSøker, MorMedFarSomHarTattOverMødrekvote } = composeStories(stories);
 
 describe('<Default>', () => {
-    it(
-        'Skal vise liste med fire perioder',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(Default.parameters.msw);
-            render(<Default />);
+    it('Skal vise liste med fire perioder', async () => {
+        await Default.run();
 
-            expect(await screen.findByText('Liste')).toBeInTheDocument();
-            expect(screen.getByText('Endre planen')).toBeInTheDocument();
-            expect(screen.getByText('Kalender')).toBeInTheDocument();
+        expect(await screen.findByText('Liste')).toBeInTheDocument();
+        expect(screen.getByText('Endre planen')).toBeInTheDocument();
+        expect(screen.getByText('Kalender')).toBeInTheDocument();
 
-            const allButtons = screen.getAllByRole('button');
+        const allButtons = screen.getAllByRole('button');
 
-            expect(within(allButtons[1]!).getByText('10. juni 22 - 30. juni 22')).toBeInTheDocument();
-            expect(within(allButtons[1]!).getByText('3 uker')).toBeInTheDocument();
-            expect(within(allButtons[1]!).getAllByText('Helga har foreldrepenger')).toHaveLength(2);
+        expect(within(allButtons[1]!).getByText('10. juni 22 - 30. juni 22')).toBeInTheDocument();
+        expect(within(allButtons[1]!).getByText('3 uker')).toBeInTheDocument();
+        expect(within(allButtons[1]!).getAllByText('Helga har foreldrepenger')).toHaveLength(2);
 
-            expect(within(allButtons[2]!).getByText('01. juli 22')).toBeInTheDocument();
-            expect(within(allButtons[2]!).getAllByText('Fødsel')).toHaveLength(2);
+        expect(within(allButtons[2]!).getByText('01. juli 22')).toBeInTheDocument();
+        expect(within(allButtons[2]!).getAllByText('Fødsel')).toHaveLength(2);
 
-            expect(within(allButtons[3]!).getByText('01. juli 22 - 13. okt. 22')).toBeInTheDocument();
-            expect(within(allButtons[3]!).getByText('15 uker')).toBeInTheDocument();
-            expect(within(allButtons[3]!).getAllByText('Helga har foreldrepenger')).toHaveLength(2);
+        expect(within(allButtons[3]!).getByText('01. juli 22 - 13. okt. 22')).toBeInTheDocument();
+        expect(within(allButtons[3]!).getByText('15 uker')).toBeInTheDocument();
+        expect(within(allButtons[3]!).getAllByText('Helga har foreldrepenger')).toHaveLength(2);
 
-            expect(within(allButtons[4]!).getByText('14. okt. 22 - 21. des. 22')).toBeInTheDocument();
-            expect(within(allButtons[4]!).getByText('9 uker og 4 dager')).toBeInTheDocument();
-            expect(within(allButtons[4]!).getAllByText('Dere har foreldrepenger')).toHaveLength(2);
-        }),
-    );
+        expect(within(allButtons[4]!).getByText('14. okt. 22 - 21. des. 22')).toBeInTheDocument();
+        expect(within(allButtons[4]!).getByText('9 uker og 4 dager')).toBeInTheDocument();
+        expect(within(allButtons[4]!).getAllByText('Dere har foreldrepenger')).toHaveLength(2);
+    });
 
-    it(
-        'Skal bytte til kalender',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(Default.parameters.msw);
-            render(<Default />);
+    it('Skal bytte til kalender', async () => {
+        await Default.run();
 
-            expect(await screen.findByText('Liste')).toBeInTheDocument();
+        expect(await screen.findByText('Liste')).toBeInTheDocument();
 
-            await userEvent.click(screen.getByText('Kalender'));
+        await userEvent.click(screen.getByText('Kalender'));
 
-            expect(screen.getByText('Din periode')).toBeInTheDocument();
-            expect(screen.getByText('Fødsel')).toBeInTheDocument();
-            expect(screen.getByText('Du og Espen har permisjon samtidig')).toBeInTheDocument();
-            expect(screen.getByText('Helg')).toBeInTheDocument();
-        }),
-    );
+        expect(screen.getByText('Din periode')).toBeInTheDocument();
+        expect(screen.getByText('Fødsel')).toBeInTheDocument();
+        expect(screen.getByText('Du og Espen har permisjon samtidig')).toBeInTheDocument();
+        expect(screen.getByText('Helg')).toBeInTheDocument();
+    });
 
-    it(
-        'Skal sjekke at fars kalender er korrekt',
-        mswWrapper(async ({ setHandlers }) => {
-            setHandlers(FarSøker.parameters.msw);
-            render(<FarSøker />);
+    it('Skal sjekke at fars kalender er korrekt', async () => {
+        await FarSøker.run();
 
-            expect(await screen.findByText('Liste')).toBeInTheDocument();
+        expect(await screen.findByText('Liste')).toBeInTheDocument();
 
-            await userEvent.click(screen.getByText('Kalender'));
+        await userEvent.click(screen.getByText('Kalender'));
 
-            expect(screen.getByText('Helgas periode')).toBeInTheDocument();
-            expect(screen.getByText('Fødsel')).toBeInTheDocument();
-            expect(screen.getByText('Du og Helga har permisjon samtidig')).toBeInTheDocument();
-            expect(screen.getByText('Din periode')).toBeInTheDocument();
-            expect(screen.getByText('Helga kombinerer jobb og foreldrepenger')).toBeInTheDocument();
-            expect(screen.getByText('Helg')).toBeInTheDocument();
+        expect(screen.getByText('Helgas periode')).toBeInTheDocument();
+        expect(screen.getByText('Fødsel')).toBeInTheDocument();
+        expect(screen.getByText('Du og Helga har permisjon samtidig')).toBeInTheDocument();
+        expect(screen.getByText('Din periode')).toBeInTheDocument();
+        expect(screen.getByText('Helga kombinerer jobb og foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Helg')).toBeInTheDocument();
 
-            const september = screen.getByTestId('year:2024;month:8');
-            expect(within(september).getByTestId('day:10;dayColor:BLUE')).toBeInTheDocument();
-            expect(within(september).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(15);
+        const september = screen.getByTestId('year:2024;month:8');
+        expect(within(september).getByTestId('day:10;dayColor:BLUE')).toBeInTheDocument();
+        expect(within(september).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(15);
 
-            const oktober = screen.getByTestId('year:2024;month:9');
-            expect(within(oktober).getByTestId('day:1;dayColor:LIGHTBLUEGREEN;with-icon')).toBeInTheDocument();
-            expect(within(oktober).getByTestId('day:2;dayColor:LIGHTBLUEGREEN')).toBeInTheDocument();
-            expect(within(oktober).getByTestId('day:14;dayColor:LIGHTBLUEGREEN')).toBeInTheDocument();
-            expect(within(oktober).getByTestId('day:15;dayColor:BLUE')).toBeInTheDocument();
-            expect(within(oktober).getByTestId('day:31;dayColor:BLUE')).toBeInTheDocument();
-            expect(within(oktober).getAllByTestId('dayColor:LIGHTBLUEGREEN', { exact: false })).toHaveLength(10);
-            expect(within(oktober).getAllByTestId(/dayColor:BLUE$/)).toHaveLength(13);
+        const oktober = screen.getByTestId('year:2024;month:9');
+        expect(within(oktober).getByTestId('day:1;dayColor:LIGHTBLUEGREEN;with-icon')).toBeInTheDocument();
+        expect(within(oktober).getByTestId('day:2;dayColor:LIGHTBLUEGREEN')).toBeInTheDocument();
+        expect(within(oktober).getByTestId('day:14;dayColor:LIGHTBLUEGREEN')).toBeInTheDocument();
+        expect(within(oktober).getByTestId('day:15;dayColor:BLUE')).toBeInTheDocument();
+        expect(within(oktober).getByTestId('day:31;dayColor:BLUE')).toBeInTheDocument();
+        expect(within(oktober).getAllByTestId('dayColor:LIGHTBLUEGREEN', { exact: false })).toHaveLength(10);
+        expect(within(oktober).getAllByTestId(/dayColor:BLUE$/)).toHaveLength(13);
 
-            const november = screen.getByTestId('year:2024;month:10');
-            expect(within(november).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(21);
+        const november = screen.getByTestId('year:2024;month:10');
+        expect(within(november).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(21);
 
-            const desember = screen.getByTestId('year:2024;month:11');
-            expect(within(desember).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(22);
+        const desember = screen.getByTestId('year:2024;month:11');
+        expect(within(desember).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(22);
 
-            const januar2025 = screen.getByTestId('year:2025;month:0');
-            expect(within(januar2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(23);
+        const januar2025 = screen.getByTestId('year:2025;month:0');
+        expect(within(januar2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(23);
 
-            const februar2025 = screen.getByTestId('year:2025;month:1');
-            expect(within(februar2025).getByTestId('day:3;dayColor:GREEN')).toBeInTheDocument();
-            expect(within(februar2025).getByTestId('day:4;dayColor:GREEN')).toBeInTheDocument();
-            expect(within(februar2025).getByTestId('day:5;dayColor:BLUESTRIPED')).toBeInTheDocument();
-            expect(within(februar2025).getByTestId('day:28;dayColor:BLUESTRIPED')).toBeInTheDocument();
-            expect(within(februar2025).getAllByTestId('dayColor:BLUESTRIPED', { exact: false })).toHaveLength(18);
+        const februar2025 = screen.getByTestId('year:2025;month:1');
+        expect(within(februar2025).getByTestId('day:3;dayColor:GREEN')).toBeInTheDocument();
+        expect(within(februar2025).getByTestId('day:4;dayColor:GREEN')).toBeInTheDocument();
+        expect(within(februar2025).getByTestId('day:5;dayColor:BLUESTRIPED')).toBeInTheDocument();
+        expect(within(februar2025).getByTestId('day:28;dayColor:BLUESTRIPED')).toBeInTheDocument();
+        expect(within(februar2025).getAllByTestId('dayColor:BLUESTRIPED', { exact: false })).toHaveLength(18);
 
-            const mars2025 = screen.getByTestId('year:2025;month:2');
-            expect(within(mars2025).getByTestId('day:3;dayColor:BLUESTRIPED')).toBeInTheDocument();
-            expect(within(mars2025).getByTestId('day:11;dayColor:BLUESTRIPED')).toBeInTheDocument();
-            expect(within(mars2025).getByTestId('day:19;dayColor:BLUE')).toBeInTheDocument();
-            expect(within(mars2025).getByTestId('day:31;dayColor:BLUE')).toBeInTheDocument();
-            expect(within(mars2025).getAllByTestId('dayColor:BLUESTRIPED', { exact: false })).toHaveLength(7);
+        const mars2025 = screen.getByTestId('year:2025;month:2');
+        expect(within(mars2025).getByTestId('day:3;dayColor:BLUESTRIPED')).toBeInTheDocument();
+        expect(within(mars2025).getByTestId('day:11;dayColor:BLUESTRIPED')).toBeInTheDocument();
+        expect(within(mars2025).getByTestId('day:19;dayColor:BLUE')).toBeInTheDocument();
+        expect(within(mars2025).getByTestId('day:31;dayColor:BLUE')).toBeInTheDocument();
+        expect(within(mars2025).getAllByTestId('dayColor:BLUESTRIPED', { exact: false })).toHaveLength(7);
 
-            const april2025 = screen.getByTestId('year:2025;month:3');
-            expect(within(april2025).getByTestId('day:1;dayColor:BLUE')).toBeInTheDocument();
-            expect(within(april2025).getByTestId('day:22;dayColor:BLUE')).toBeInTheDocument();
-            expect(within(april2025).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(16);
-        }),
-    );
+        const april2025 = screen.getByTestId('year:2025;month:3');
+        expect(within(april2025).getByTestId('day:1;dayColor:BLUE')).toBeInTheDocument();
+        expect(within(april2025).getByTestId('day:22;dayColor:BLUE')).toBeInTheDocument();
+        expect(within(april2025).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(16);
+    });
+});
+
+describe('<MorMedFarSomHarTattOverMødrekvote>', () => {
+    it('Skal vise at far har tatt over mødrekvoten – ikke tapte dager – i mors plan', async () => {
+        await MorMedFarSomHarTattOverMødrekvote.run();
+
+        expect(await screen.findByText('Liste')).toBeInTheDocument();
+
+        // Overføringen til far skal vises som hans periode, ikke som tapte dager for mor
+        expect(screen.getAllByText('Espen har foreldrepenger').length).toBeGreaterThan(0);
+        expect(
+            screen.getByText('Overføring av Helgas kvote fordi Helga er innlagt på helseinstitusjon'),
+        ).toBeInTheDocument();
+        expect(screen.queryByText('Dager du kan tape')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Kalender'));
+
+        // Far sine overtatte dager i seksukersperioden skal være grønne, ikke svarte (tapte dager)
+        const april2025 = screen.getByTestId('year:2025;month:3');
+        expect(within(april2025).getByTestId('day:7;dayColor:GREEN')).toBeInTheDocument();
+        expect(within(april2025).queryByTestId('day:7;dayColor:BLACK')).not.toBeInTheDocument();
+        expect(within(april2025).queryAllByTestId('dayColor:BLACK', { exact: false })).toHaveLength(0);
+    });
 });

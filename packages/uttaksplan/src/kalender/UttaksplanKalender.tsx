@@ -1,6 +1,6 @@
 import { TrashIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Button, HStack, InlineMessage, Link, Radio, RadioGroup, VStack } from '@navikt/ds-react';
@@ -10,7 +10,7 @@ import { Calendar, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../context/UttaksplanRedigeringContext';
-import { harPeriodeDerMorsAktivitetIkkeErValgt } from '../utils/periodeUtils';
+import { useUttaksplanKalenderAlerts } from '../regler/alert/informasjonsAlertHooks';
 import { UttaksplanLegend } from './legend/UttaksplanLegend';
 import { KalenderPdf } from './pdf/KalenderPdf';
 import { RedigerKalenderIndex } from './redigering/RedigerKalenderIndex';
@@ -34,23 +34,53 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
     const [valgtePerioder, setValgtePerioder] = useState<CalendarPeriod[]>([]);
     const [endredePerioder, setEndredePerioder] = useState<Array<{ fom: string; tom: string }>>([]);
 
+    const scrollAbortRef = useRef<AbortController | null>(null);
+
+    useEffect(() => {
+        return () => scrollAbortRef.current?.abort();
+    }, []);
+
+    const setEndredePerioderMedScroll = useCallback((perioder: Array<{ fom: string; tom: string }>) => {
+        if (perioder.length === 0) {
+            setEndredePerioder([]);
+            return;
+        }
+
+        const førsteDato = dayjs(perioder[0]!.fom);
+        const element = document.querySelector(`[data-month-key="${førsteDato.year()}-${førsteDato.month()}"]`);
+
+        scrollAbortRef.current?.abort();
+        scrollAbortRef.current = new AbortController();
+        const signal = scrollAbortRef.current.signal;
+
+        void ventPåScrollFerdig(element, signal).then(() => {
+            if (!signal.aborted) {
+                setEndredePerioder(perioder);
+            }
+        });
+    }, []);
+
     const setRedigeringAktivOgValgtePerioder = useCallback<React.Dispatch<React.SetStateAction<CalendarPeriod[]>>>(
         (perioder) => {
             setErRedigeringAktiv(true);
-            setValgtePerioder(perioder);
-            setEndredePerioder([]);
+            // Behold same referanse når valet allereie er tomt, slik at gjentekne kall med ein tom
+            // liste ikkje planlegg unødvendige re-renders. Det hindrar «Maximum update depth exceeded».
+            setValgtePerioder((forrige) => {
+                const neste = typeof perioder === 'function' ? perioder(forrige) : perioder;
+                return forrige.length === 0 && neste.length === 0 ? forrige : neste;
+            });
+            setEndredePerioder((forrige) => (forrige.length === 0 ? forrige : []));
         },
         [],
     );
 
-    const {
-        uttakPerioder,
-        foreldreInfo: { rettighetType },
-    } = useUttaksplanData();
+    const { uttakPerioder } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
     const perioderForKalendervisning = usePerioderForKalendervisning(endredePerioder, barnehagestartdato);
+
+    const { manglerMorsAktivitetAlert, manglerGraderingsaktivitetAlert } = useUttaksplanKalenderAlerts(uttakPerioder);
 
     const {
         førsteDatoIKalender,
@@ -121,9 +151,7 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                                 aria-haspopup="dialog"
                                 aria-expanded={uttaksplanRedigering.visFjernAltModal}
                                 aria-controls={
-                                    uttaksplanRedigering.visFjernAltModal
-                                        ? 'FjernAltIUttaksplanModal'
-                                        : undefined
+                                    uttaksplanRedigering.visFjernAltModal ? 'FjernAltIUttaksplanModal' : undefined
                                 }
                             >
                                 <FormattedMessage id="UttaksplanHandlingKnapper.FjernAlt" />
@@ -134,9 +162,9 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                 {!readOnly && !erRedigeringInaktiv && (
                     <RadioGroup
                         legend={<FormattedMessage id="UttaksplanKalender.VelgDagEllerPeriode" />}
-                        onChange={() => {
+                        onChange={(erValgtPeriode: boolean) => {
                             setRedigeringAktivOgValgtePerioder([]);
-                            setIsRangeSelection(!isRangeSelection);
+                            setIsRangeSelection(erValgtPeriode);
                         }}
                         value={isRangeSelection}
                     >
@@ -151,16 +179,20 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                     </RadioGroup>
                 )}
 
-                {harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, uttakPerioder) && (
-                    <Alert variant="warning">
+                {manglerMorsAktivitetAlert && (
+                    <Alert variant={manglerMorsAktivitetAlert.variant}>
                         <VStack gap="space-2">
-                            <BodyShort>
-                                <FormattedMessage id="UttaksplanKalender.MarkertePerioder" />
-                            </BodyShort>
+                            <BodyShort>{manglerMorsAktivitetAlert.melding}</BodyShort>
                             <Link href={links.aktivitetskrav} target="_blank" rel="noopener noreferrer">
                                 <FormattedMessage id="UttaksplanKalender.HvaErAktivitetskrav" />
                             </Link>
                         </VStack>
+                    </Alert>
+                )}
+
+                {manglerGraderingsaktivitetAlert && (
+                    <Alert variant={manglerGraderingsaktivitetAlert.variant}>
+                        <BodyShort>{manglerGraderingsaktivitetAlert.melding}</BodyShort>
                     </Alert>
                 )}
 
@@ -218,14 +250,15 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                         <div
                             className={[
                                 'fixed right-0 bottom-0 left-0 z-40 w-full',
+                                'bg-ax-bg-default ax-md:bg-transparent',
                                 'ax-md:sticky ax-md:top-24 ax-md:ml-4 ax-md:max-w-82 ax-md:self-start',
-                                'pb-[env(safe-area-inset-bottom,1rem)]',
+                                'pb-[env(safe-area-inset-bottom,1rem)] ax-md:pb-0',
                             ].join(' ')}
                         >
                             <RedigerKalenderIndex
                                 valgtePerioder={valgtePerioder}
                                 setValgtePerioder={setRedigeringAktivOgValgtePerioder}
-                                setEndredePerioder={setEndredePerioder}
+                                setEndredePerioder={setEndredePerioderMedScroll}
                                 scrollToKvoteOppsummering={scrollToKvoteOppsummering}
                                 labels={
                                     <UttaksplanLegend
@@ -253,3 +286,42 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
 };
 
 const sortPeriods = (a: CalendarPeriod, b: CalendarPeriod) => dayjs(a.fom).diff(dayjs(b.fom));
+
+// Høgda på den faste app-headeren i px. Same offset som i UttaksplanSteg.tsx og
+// PlanenDeresSteg.tsx, og blir brukt for å unngå å rekne eit element som synleg
+// når det eigentleg ligg skjult bak headeren.
+const HEADER_HØGDE = 80;
+
+/** Sjekkar om ein del av elementet er synleg i viewporten (under headeren). */
+const erElementSynlegIViewport = (el: Element): boolean => {
+    const rect = el.getBoundingClientRect();
+    return rect.bottom > HEADER_HØGDE && rect.top < window.innerHeight;
+};
+
+/**
+ * Scrollar elementet inn i viewporten om naudsynt, og resolvar når scrollen er ferdig.
+ * Brukar `scrollend`-eventen med ein 1s fallback-timeout for nettlesarar/scroll-containerar
+ * der eventet ikkje fyrer.
+ */
+const ventPåScrollFerdig = (element: Element | null, signal: AbortSignal): Promise<void> => {
+    if (!element || erElementSynlegIViewport(element)) {
+        return Promise.resolve();
+    }
+
+    element.scrollIntoView?.({ behavior: 'smooth', block: 'center' });
+
+    return new Promise((resolve) => {
+        const scrollTarget = document.scrollingElement ?? document.documentElement;
+        const timeoutId = setTimeout(ferdig, 1000);
+
+        function ferdig() {
+            clearTimeout(timeoutId);
+            scrollTarget.removeEventListener('scrollend', ferdig);
+            signal.removeEventListener('abort', ferdig);
+            resolve();
+        }
+
+        scrollTarget.addEventListener('scrollend', ferdig, { once: true });
+        signal.addEventListener('abort', ferdig, { once: true });
+    });
+};

@@ -213,7 +213,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                     )}
                     <VStack gap="space-16">
                         {erSvp && <InfoOmFørstegangstjeneste />}
-                        <InfoTilFiskere />
+                        <InfoTilFiskere erSvp={erSvp} />
                     </VStack>
                     {erSvp && kanIkkeSøke && <BrukerKanIkkeSøke />}
                     <StepButtons

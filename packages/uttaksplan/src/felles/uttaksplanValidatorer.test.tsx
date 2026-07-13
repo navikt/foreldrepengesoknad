@@ -12,6 +12,7 @@ import messages from '../intl/messages/nb_NO.json';
 import { LeggTilEllerEndrePeriodeFormFormValues } from './LeggTilEllerEndrePeriodeFellesForm';
 import {
     kanMisteDagerVedEndringTilFerie,
+    kanMisteDagerVedFerieIUke7EtterTermin,
     prosentValideringGradering,
     useFormSubmitValidator,
     valideringSamtidigUttak,
@@ -119,6 +120,51 @@ describe('kanMisteDagerVedEndringTilFerie', () => {
             },
         ];
         expect(kanMisteDagerVedEndringTilFerie(perioder, familiehendelsedato)).toBe(false);
+    });
+});
+
+describe('kanMisteDagerVedFerieIUke7EtterTermin', () => {
+    const familiehendelsedato = dayjs().format(ISO_DATE_FORMAT);
+
+    it('skal returnere true dersom familiesituasjon er termin og perioden er i uke 7 etter familiehendelsedato', () => {
+        const perioder = [
+            {
+                fom: Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(32),
+                tom: Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(34),
+            },
+        ];
+
+        expect(kanMisteDagerVedFerieIUke7EtterTermin(perioder, familiehendelsedato, 'termin')).toBe(true);
+    });
+
+    it('skal returnere false dersom familiesituasjon er fødsel, selv om perioden er i uke 7 etter familiehendelsedato', () => {
+        const perioder = [
+            {
+                fom: Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(32),
+                tom: Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(34),
+            },
+        ];
+
+        expect(kanMisteDagerVedFerieIUke7EtterTermin(perioder, familiehendelsedato, 'fødsel')).toBe(false);
+    });
+
+    it('skal returnere false dersom perioden ligger innenfor de seks første ukene (dekket av annen regel)', () => {
+        const perioder = [
+            { fom: familiehendelsedato, tom: dayjs(familiehendelsedato).add(10, 'day').format(ISO_DATE_FORMAT) },
+        ];
+
+        expect(kanMisteDagerVedFerieIUke7EtterTermin(perioder, familiehendelsedato, 'termin')).toBe(false);
+    });
+
+    it('skal returnere false dersom perioden ligger etter uke 7', () => {
+        const perioder = [
+            {
+                fom: Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(40),
+                tom: Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(45),
+            },
+        ];
+
+        expect(kanMisteDagerVedFerieIUke7EtterTermin(perioder, familiehendelsedato, 'termin')).toBe(false);
     });
 });
 
@@ -466,5 +512,41 @@ describe('useFormSubmitValidator', () => {
         const feilmelding = valider(perioder, formValues);
 
         expect(feilmelding).toBeNull();
+    });
+
+    it('skal returnere feilmelding ved 200 % samtidig uttak ved adopsjon med kun ett barn', () => {
+        const { result } = renderHook(() => useFormSubmitValidator(), {
+            wrapper: getWrapper({
+                barn: {
+                    type: BarnType.ADOPTERT_STEBARN,
+                    antallBarn: 1,
+                    adopsjonsdato: FAMILIEHENDELSESDATO,
+                    fødselsdatoer: [FAMILIEHENDELSESDATO],
+                },
+            }),
+        });
+
+        const perioder = [
+            {
+                fom: FAMILIEHENDELSESDATO,
+                tom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(10),
+            },
+        ];
+
+        const formValues = {
+            forelder: 'BEGGE',
+            kontoTypeMor: 'FELLESPERIODE',
+            kontoTypeFarMedmor: 'FELLESPERIODE',
+            ønskerFlerbarnsdager: false,
+            samtidigUttaksprosentMor: '100',
+            samtidigUttaksprosentFarMedmor: '100',
+            skalDuKombinereArbeidOgUttakMor: false,
+            skalDuKombinereArbeidOgUttakFarMedmor: false,
+        } satisfies LeggTilEllerEndrePeriodeFormFormValues;
+
+        const valider = result.current;
+        const feilmelding = valider(perioder, formValues);
+
+        expect(feilmelding).toBe('Dere kan ikke ha mer enn 150 % foreldrepenger til sammen');
     });
 });

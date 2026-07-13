@@ -1,5 +1,6 @@
 import { composeStories } from '@storybook/react-vite';
 import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import * as stories from './PlanenDeresSteg_Adopsjon.stories';
 
@@ -54,6 +55,44 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
 
         const mai2025 = screen.getByTestId('year:2025;month:4');
         expect(within(mai2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(17);
+    });
+
+    it('skal legge fars kvote først når far er valgt til å starte permisjonen', async () => {
+        render(<MorOgFarBeggeHarRett fordeling={{ antallDagerSøker1: 0, hvemStarterPermisjon: 'søker2' }} />);
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        const juli = screen.getByTestId('year:2024;month:6');
+        const førsteUttaksdag = within(juli).getByTestId('day:8;dayColor:GREEN;with-icon');
+        expect(førsteUttaksdag).toBeInTheDocument();
+
+        await userEvent.click(førsteUttaksdag);
+        await userEvent.click(screen.getByText('Utvid panel'));
+
+        const eksisterendePeriode = within(
+            screen.getByText('Valgte datoer inneholder en eksisterende periode:').closest('div')!.parentElement!
+                .parentElement!,
+        );
+        expect(eksisterendePeriode.getByRole('heading', { name: 'Far' })).toBeInTheDocument();
+        expect(eksisterendePeriode.getByText('Fars kvote')).toBeInTheDocument();
+    });
+
+    it('skal beholde uendret rekkefølge (mor/blå først) for far og far når søker1 starter', async () => {
+        render(<FarOgFarBeggeHarRett fordeling={{ antallDagerSøker1: 0, hvemStarterPermisjon: 'søker1' }} />);
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        const juli = screen.getByTestId('year:2024;month:6');
+        expect(within(juli).getByTestId('day:8;dayColor:BLUE;with-icon')).toBeInTheDocument();
+    });
+
+    it('skal legge fars kvote (grønn) først for far og far når søker2 starter', async () => {
+        render(<FarOgFarBeggeHarRett fordeling={{ antallDagerSøker1: 0, hvemStarterPermisjon: 'søker2' }} />);
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        const juli = screen.getByTestId('year:2024;month:6');
+        expect(within(juli).getByTestId('day:8;dayColor:GREEN;with-icon')).toBeInTheDocument();
     });
 
     it('skal vise korrekt data for adopsjon - mor og far - kun mor har rett', async () => {
@@ -342,7 +381,9 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(within(oktober).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(9);
 
         const mai2025 = screen.getByTestId('year:2025;month:4');
-        expect(within(mai2025).getByTestId('day:23;dayColor:GREEN;with-icon')).toBeInTheDocument();
+        // Ingen varselikon her lenger: "Mors aktivitet er ikke oppgitt" er ikke relevant når begge foreldrene er fedre.
+        expect(within(mai2025).getByTestId('day:23;dayColor:GREEN')).toBeInTheDocument();
+        expect(within(mai2025).queryByTestId('day:23;dayColor:GREEN;with-icon')).not.toBeInTheDocument();
         expect(within(mai2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(17);
     });
 

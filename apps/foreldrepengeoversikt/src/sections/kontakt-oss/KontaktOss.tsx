@@ -3,7 +3,8 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, HGrid, Heading, Link, VStack } from '@navikt/ds-react';
 
-import { NavRoutes } from '../../routes/routes';
+import { links } from '@navikt/fp-constants';
+
 import { LayoutWrapper } from '../LayoutWrapper';
 
 export const KontaktOss = () => {
@@ -15,7 +16,7 @@ export const KontaktOss = () => {
                 </Heading>
                 <HGrid gap="space-16" columns={{ sm: 1, md: 3 }}>
                     <VStack gap="space-16">
-                        <Link href={NavRoutes.CHAT_MED_OSS}>
+                        <Link href={links.chatMedOss}>
                             <Chat2Icon aria-hidden={true} />
                             <BodyShort weight="semibold">
                                 <FormattedMessage id="KontaktOss.chatMedOss" />
@@ -26,7 +27,7 @@ export const KontaktOss = () => {
                         </BodyShort>
                     </VStack>
                     <VStack gap="space-16">
-                        <Link href={NavRoutes.SKRIV_TIL_OSS}>
+                        <Link href={links.skrivTilOss}>
                             <PaperplaneIcon aria-hidden={true} />
                             <BodyShort weight="semibold">
                                 <FormattedMessage id="KontaktOss.skrivTilOss" />
@@ -40,7 +41,7 @@ export const KontaktOss = () => {
                         </BodyShort>
                     </VStack>
                     <VStack gap="space-16">
-                        <Link href={NavRoutes.RING_OSS}>
+                        <Link href={links.ringOss}>
                             <PhoneIcon aria-hidden={true} />
                             <BodyShort weight="semibold">
                                 <FormattedMessage id="KontaktOss.ringOss" />
@@ -49,7 +50,7 @@ export const KontaktOss = () => {
                         <BodyShort size="medium">
                             <FormattedMessage id="KontaktOss.ringOss.åpningstider" />
                         </BodyShort>
-                        <Link href={NavRoutes.SE_FLERE_TLF_NR_OG_TASTEVALG}>
+                        <Link href={links.seFlereTlfNrOgTastevalg}>
                             <BodyShort size="medium">
                                 <FormattedMessage id="KontaktOss.ringOss.flereTelefonnummere" />
                             </BodyShort>

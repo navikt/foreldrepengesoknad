@@ -20,12 +20,10 @@ import {
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { useFormSubmitValidator } from '../../../../felles/uttaksplanValidatorer';
-import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
-import {
-    erDetEksisterendePerioderEtterValgtePerioder,
-    harPeriodeDerMorsAktivitetIkkeErValgt,
-} from '../../../../utils/periodeUtils';
+import { useKanKunErstatte, useLeggTilEndreSkjemaInfoAlerts } from '../../../../regler/alert/informasjonsAlertHooks';
 import { erEøsUttakPeriode } from '../../../../types/UttaksplanPeriode';
+import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
+import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from '../../context/KalenderRedigeringContext';
 import { finnValgtePerioder } from '../../utils/kalenderPeriodeUtils';
 
@@ -39,8 +37,9 @@ interface Props {
 export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) => {
     const {
         uttakPerioder,
-        foreldreInfo: { søker, rettighetType },
+        foreldreInfo: { søker },
         erPeriodeneTilAnnenPartLåst,
+        kanVelgeArbeidsgiver,
     } = useUttaksplanData();
 
     const { sammenslåtteValgtePerioder, leggTilUttaksplanPerioder, setValgtePerioder, setEndredePerioder } =
@@ -98,14 +97,29 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
                 dayjs(vp.tom).isAfter(eksisterendePerioderSomErValgt.at(0)!.tom),
         );
 
-    const erMorsAktivitetIkkeOppgitt =
-        harValgtDagerKunForEnEksisterendePeriode &&
-        harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [
-            ...eksisterendePerioderSomErValgt,
-            ...uttakPerioder.filter(
-                (mp): mp is UttakPeriode_fpoversikt => !erEøsUttakPeriode(mp) && mp.forelder === 'MOR',
-            ),
-        ]);
+    const { morsAktivitetIkkeOppgittAlert } = useLeggTilEndreSkjemaInfoAlerts(
+        harValgtDagerKunForEnEksisterendePeriode
+            ? [
+                  ...eksisterendePerioderSomErValgt,
+                  ...uttakPerioder.filter(
+                      (mp): mp is UttakPeriode_fpoversikt => !erEøsUttakPeriode(mp) && mp.forelder === 'MOR',
+                  ),
+              ]
+            : [],
+    );
+
+    const erGradertMor = skalDuKombinereArbeidOgUttakMor === true && (forelder === 'MOR' || forelder === 'BEGGE');
+
+    const kanKunErstatte = useKanKunErstatte({
+        valgtePerioder: sammenslåtteValgtePerioder,
+        erFerie: false,
+        erGradert: erGradertMor,
+    });
+
+    const harNesteSteg =
+        !kanKunErstatte &&
+        !morsAktivitetIkkeOppgittAlert &&
+        erDetEksisterendePerioderEtterValgtePerioder(uttakPerioder, sammenslåtteValgtePerioder);
 
     const onSubmit = (values: LeggTilEllerEndrePeriodeFormFormValues) => {
         const submitFeilmelding = formSubmitValidator(sammenslåtteValgtePerioder, values);
@@ -116,10 +130,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         }
         setFeilmelding(undefined);
 
-        if (
-            !erMorsAktivitetIkkeOppgitt &&
-            erDetEksisterendePerioderEtterValgtePerioder(uttakPerioder, sammenslåtteValgtePerioder)
-        ) {
+        if (harNesteSteg) {
             setVisEndreEllerForskyvPanel(true);
         } else {
             leggIKalender(false);
@@ -129,7 +140,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
     const leggIKalender = (skalForskyve: boolean) => {
         leggTilUttaksplanPerioder(
             sammenslåtteValgtePerioder.flatMap((periode) =>
-                mapFraFormValuesTilUttakPeriode(formMethods.getValues(), periode, søker),
+                mapFraFormValuesTilUttakPeriode(formMethods.getValues(), periode, søker, kanVelgeArbeidsgiver),
             ),
             skalForskyve,
         );
@@ -144,18 +155,15 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
             {visEndreEllerForskyvPanel && (
                 <LeggTilPeriodeForskyvEllerErstattPanel
-                    valgtePerioder={sammenslåtteValgtePerioder}
-                    erFerie={false}
-                    erGradert={skalDuKombinereArbeidOgUttakMor === true && (forelder === 'MOR' || forelder === 'BEGGE')}
                     setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
                     leggTilEllerForskyvPeriode={leggIKalender}
                 />
             )}
             {!visEndreEllerForskyvPanel && (
                 <VStack gap="space-16">
-                    {erMorsAktivitetIkkeOppgitt && (
-                        <Alert variant="warning" size="small">
-                            <FormattedMessage id="LeggTilEllerEndrePeriodeFellesForm.HarPeriodeDerMorsAktivitetIkkeErValgt" />
+                    {morsAktivitetIkkeOppgittAlert && (
+                        <Alert variant={morsAktivitetIkkeOppgittAlert.variant} size="small">
+                            {morsAktivitetIkkeOppgittAlert.melding}
                         </Alert>
                     )}
 
@@ -166,12 +174,28 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
 
                     {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
 
-                    <HStack justify="space-between">
-                        <Button type="submit" variant="primary" size="small" disabled={!formMethods.formState.isDirty}>
-                            <FormattedMessage id="LeggTilPeriodePanel.LeggTil" />
+                    <HStack gap="space-12" className="w-full">
+                        <Button
+                            type="submit"
+                            variant="primary"
+                            size="small"
+                            className="flex-1"
+                            disabled={!formMethods.formState.isDirty}
+                        >
+                            {harNesteSteg ? (
+                                <FormattedMessage id="RedigeringPanel.LeggTilPeriode.Fortsett" />
+                            ) : (
+                                <FormattedMessage id="RedigeringPanel.LeggTilPeriode" />
+                            )}
                         </Button>
-                        <Button type="button" variant="secondary" size="small" onClick={lukkRedigeringsmodus}>
-                            <FormattedMessage id="LeggTilPeriodePanel.Avbryt" />
+                        <Button
+                            type="button"
+                            variant="secondary"
+                            size="small"
+                            className="flex-1"
+                            onClick={lukkRedigeringsmodus}
+                        >
+                            <FormattedMessage id="RedigeringPanel.LeggTilPeriode.Tilbake" />
                         </Button>
                     </HStack>
                 </VStack>

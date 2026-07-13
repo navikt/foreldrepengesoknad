@@ -7,8 +7,8 @@ import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { getAntallUttaksdagerIVinduRundtFødsel } from '@navikt/fp-uttaksplan';
 import { Uttaksperioden } from '@navikt/fp-utils';
+import { finnAntallTidelerÅTrekke } from '@navikt/fp-uttaksplan';
 
 type Periode = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
 
@@ -59,30 +59,6 @@ const filtrerAvslåttePerioderMenBeholdPleiepenger = (periode: Periode): boolean
     return periode.resultat?.trekkerDager ?? true;
 };
 
-const finnAntallDagerÅTrekke = (periode: Periode, erFødsel: boolean, familiehendelsesdato: string): number => {
-    if (Uttaksperioden.erEøsPeriode(periode)) {
-        return periode.trekkdager;
-    }
-    const arbeidstidprosent = periode.gradering?.arbeidstidprosent;
-    const samtidigUttak = periode.samtidigUttak;
-    const dager = Uttaksperioden.getAntallUttaksdager(periode);
-    if (arbeidstidprosent) {
-        const graderingsProsent = (100 - arbeidstidprosent) / 100;
-        // Mor sin gradering i tidsrommet 3 uker før / 6 uker etter familiehendelsesdato
-        // gir ikkje forlenging av stønadsperioden – dagane skal trekkjast som heile.
-        if (erFødsel && periode.forelder === 'MOR') {
-            const dagerIVindu = getAntallUttaksdagerIVinduRundtFødsel(periode.fom, periode.tom, familiehendelsesdato);
-            const dagerUtenforVindu = dager - dagerIVindu;
-            return dagerIVindu + dagerUtenforVindu * graderingsProsent;
-        }
-        return dager * graderingsProsent;
-    }
-    if (samtidigUttak) {
-        return dager * (samtidigUttak / 100);
-    }
-    return dager;
-};
-
 const beregnBrukteUttaksdager = (
     tilgjengeligeStønadskvoter: KontoBeregningDto,
     perioder: Periode[],
@@ -92,13 +68,13 @@ const beregnBrukteUttaksdager = (
     return tilgjengeligeStønadskvoter.kontoer
         .map((konto) => {
             const perioderForKonto = perioder.filter((p) => p.kontoType === konto.konto);
-            const dager = Math.floor(
-                perioderForKonto.reduce(
-                    (sum, p) => sum + finnAntallDagerÅTrekke(p, erFødsel, familiehendelsesdato),
-                    0,
-                ),
+            // Trekkdagar summerast i tideler (heiltal) for å unngå flyttalsfeil, og
+            // golvast til heile dagar heilt til slutt – sjå finnAntallTidelerÅTrekke.
+            const tideler = perioderForKonto.reduce(
+                (sum, p) => sum + finnAntallTidelerÅTrekke(p, erFødsel, familiehendelsesdato),
+                0,
             );
-            return { konto: konto.konto, dager };
+            return { konto: konto.konto, dager: Math.floor(tideler / 10) };
         })
         .filter((k) => k.dager > 0);
 };

@@ -1,19 +1,22 @@
 import { useQuery } from '@tanstack/react-query';
-import { API_URLS, mellomlagretInfoOptions, sakerOptions, useAnnenPartVedtakOptions, søkerinfoOptions } from 'api/queries';
+import {
+    API_URLS,
+    mellomlagretInfoOptions,
+    sakerOptions,
+    søkerinfoOptions,
+    useAnnenPartVedtakOptions,
+} from 'api/queries';
 import { ContextDataMap, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import { usePlanleggerDataFromUrl } from 'appData/usePlanleggerDataFromUrl';
-import { SøknadRoutes } from 'appData/routes';
 import ky from 'ky';
-import isEqual from 'lodash/isEqual';
 import { ReactNode, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { shouldApplyStorage } from 'utils/mellomlagringUtils';
 
-import { ErrorBoundary, RegisterdataUtdatert, Spinner } from '@navikt/fp-ui';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
-import { useDocumentTitle } from '@navikt/fp-utils';
-import { notEmpty } from '@navikt/fp-validation';
+import { ErrorBoundary, RegisterdataUtdatert, Spinner } from '@navikt/fp-ui';
+import { erLikUansettRekkefølge, omitMany, useDocumentTitle } from '@navikt/fp-utils';
 
 import { ForeldrepengesøknadRoutes } from './ForeldrepengesøknadRoutes';
 
@@ -70,11 +73,6 @@ export const Foreldrepengesøknad = () => {
                     <ForeldrepengesøknadRoutes
                         søkerInfo={søkerinfoQuery.data}
                         foreldrepengerSaker={sakerQuery.data.foreldrepenger}
-                        currentRoute={
-                            skalBrukeMellomlagretData
-                                ? notEmpty(mellomlagretData?.[ContextDataType.APP_ROUTE])
-                                : SøknadRoutes.VELKOMMEN
-                        }
                         lagretErEndringssøknad={mellomlagretData?.erEndringssøknad ?? false}
                         lagretHarGodkjentVilkår={!!mellomlagretData?.[ContextDataType.APP_ROUTE]}
                         lagretSøknadGjelderNyttBarn={mellomlagretData?.søknadGjelderEtNyttBarn ?? false}
@@ -115,21 +113,52 @@ const RegisterdataSjekk = ({
     const annenPartVedtakErEndret =
         harLagretAnnenPartVedtak &&
         annenPartVedtakQuery.isSuccess &&
-        !isEqual(annenPartVedtakQuery.data, mellomlagretData.annenPartVedtak);
+        !erLikUansettRekkefølge(annenPartVedtakQuery.data, mellomlagretData.annenPartVedtak);
 
-    const registerdataErEndret =
-        !isEqual(mellomlagretData.søkerInfo, søkerInfo) ||
-        !isEqual(mellomlagretData.foreldrepengerSaker, foreldrepengerSaker) ||
-        annenPartVedtakErEndret;
+    const søkerInfoErEndret = !erLikUansettRekkefølge(mellomlagretData.søkerInfo, søkerInfo);
+
+    const sakerErEndret = !erLikUansettRekkefølge(
+        relevanteSaker(mellomlagretData.foreldrepengerSaker),
+        relevanteSaker(foreldrepengerSaker),
+    );
+
+    const registerdataErEndret = søkerInfoErEndret || sakerErEndret || annenPartVedtakErEndret;
 
     if (registerdataErEndret) {
+        const avvik = [
+            søkerInfoErEndret ? 'søkerInfo' : undefined,
+            sakerErEndret ? 'saker' : undefined,
+            annenPartVedtakErEndret ? 'annenPartVedtak' : undefined,
+        ]
+            .filter(Boolean)
+            .join(',');
+
         return (
             <RegisterdataUtdatert
                 slettMellomlagringOgLastSidePåNytt={slettMellomlagringOgLastSidePåNytt}
                 appName="foreldrepengesoknad"
+                avvik={avvik}
             />
         );
     }
 
     return <>{children}</>;
 };
+
+// Samanliknar berre felt som faktisk gjer ei mellomlagra søknad ugyldig.
+// Volatile felt frå backend som ikkje seier noko om søknadsgrunnlaget er endra,
+// blir fjerna: oppdatertTidspunkt er eit reint tidsstempel, og åpenBehandling er
+// behandlingsstatus (berre brukt til statustekst på forsida, ikkje i sjølve
+// søknadsflyten). I gjeldendeVedtak er det berre periodane som blir brukte i
+// søknadsflyten; beregningsgrunnlag og tilkjentYtelse høyrer til oversikta og
+// skal ikkje gjera ei mellomlagring utdatert. Slik unngår vi falske positive
+// utdatert-varsel.
+const relevanteSaker = (saker: FpSak_fpoversikt[]) =>
+    saker.map((sak) => ({
+        ...omitMany(sak, ['oppdatertTidspunkt', 'åpenBehandling', 'gjeldendeVedtak']),
+        ...(sak.gjeldendeVedtak
+            ? {
+                  gjeldendeVedtak: omitMany(sak.gjeldendeVedtak, ['beregningsgrunnlag', 'tilkjentYtelse']),
+              }
+            : {}),
+    }));

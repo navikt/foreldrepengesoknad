@@ -9,12 +9,11 @@ import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyShort, Box, Button, HStack, Heading, Link, LinkCard, VStack } from '@navikt/ds-react';
 
-import { links } from '@navikt/fp-constants';
-import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
+import { DATE_3_YEARS_AGO, links } from '@navikt/fp-constants';
 import { SkyraSurvey } from '@navikt/fp-observability';
 import { KontoBeregningResultatDto, Satser } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
-import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
+import { useScrollBehaviour } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ShareDataInfobox } from '../../components/boxes/ShareDataInfobox';

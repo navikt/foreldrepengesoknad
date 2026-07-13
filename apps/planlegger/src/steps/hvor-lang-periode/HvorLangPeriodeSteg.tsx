@@ -14,13 +14,13 @@ import { erBarnetAdoptert } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
-import { BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
+import { BodyShort, Heading, Link, Radio, ReadMore, Spacer, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { HvorLangPeriodePlanlegger, KontoBeregningDto } from '@navikt/fp-types';
-import { Infobox } from '@navikt/fp-ui';
-import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
+import { DekningsgradUtbetalingEksempel, Infobox } from '@navikt/fp-ui';
+import { useScrollBehaviour } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { NårBareEnPartHarRettInfoboks } from './infoboks/NårBareEnPartHarRettInfoboks';
@@ -172,6 +172,9 @@ export const HvorLangPeriodeSteg = ({ stønadskvoter }: Props) => {
                                     </VStack>
                                 </Infobox>
                             )}
+                        <ReadMore header={<FormattedMessage id="HvorLangPeriodeSteg.ReadMore.Kroner" />}>
+                            <DekningsgradUtbetalingEksempel />
+                        </ReadMore>
                         <BlueRadioGroup
                             name="dekningsgrad"
                             control={formMethods.control}

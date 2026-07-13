@@ -8,7 +8,7 @@ import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './OmBarnetSteg.stories';
 
-const { AleneforsørgerFar } = composeStories(stories);
+const { AleneforsørgerFar, FlereForsørgereMorOgMor } = composeStories(stories);
 
 describe('<OmBarnetPlanleggerSteg>', () => {
     it('skal velge at barnet ikke er født for far som aleneforsørger', async () => {
@@ -120,6 +120,48 @@ describe('<OmBarnetPlanleggerSteg>', () => {
         });
     });
 
+    it('skal vise informasjon om forlenget periode når barnet er født for aleneforsørger far før uke 33', async () => {
+        const gåTilNesteSide = vi.fn();
+
+        vi.setSystemTime(new Date('2024-01-01'));
+
+        const utils = render(<AleneforsørgerFar gåTilNesteSide={gåTilNesteSide} />);
+
+        expect(await screen.findAllByText('Barnet')).toHaveLength(2);
+
+        await userEvent.click(screen.getByText('Fødsel'));
+
+        await userEvent.click(screen.getByText('Ett'));
+
+        await userEvent.click(screen.getByText('Ja'));
+
+        const fødselsdato = dayjs().subtract(60, 'days');
+        const termindato = dayjs();
+
+        const fødselsdatoInput = utils.getByLabelText('Når ble barnet født?');
+        await userEvent.type(fødselsdatoInput, fødselsdato.format(DDMMYYYY_DATE_FORMAT));
+        fireEvent.blur(fødselsdatoInput);
+
+        expect(
+            screen.queryByText('Perioden med foreldrepenger forlenges siden barnet er født før uke 33'),
+        ).not.toBeInTheDocument();
+
+        const termindatoInput = utils.getByLabelText('Når var termindato?');
+        await userEvent.type(termindatoInput, termindato.format(DDMMYYYY_DATE_FORMAT));
+        fireEvent.blur(termindatoInput);
+
+        expect(
+            screen.getByText('Perioden med foreldrepenger forlenges siden barnet er født før uke 33'),
+        ).toBeInTheDocument();
+
+        const forventetTekst =
+            'Perioden utvides med antall dager barnet er født før termindato, slik at permisjonen varer like ' +
+            'lenge som om barnet var født på termin. For deg blir det lagt til 8 uker og 2 dager.';
+        expect(screen.getByText(forventetTekst)).toBeInTheDocument();
+
+        vi.useRealTimers();
+    });
+
     it('skal velge adopsjon for far som aleneforsørger', async () => {
         const gåTilNesteSide = vi.fn();
 
@@ -155,5 +197,13 @@ describe('<OmBarnetPlanleggerSteg>', () => {
             key: ContextDataType.OM_BARNET,
             type: 'update',
         });
+    });
+
+    it('skal ikke kunne velge adopsjon for mor og medmor', async () => {
+        render(<FlereForsørgereMorOgMor />);
+
+        expect(await screen.findAllByText('Barnet')).toHaveLength(2);
+
+        expect(screen.getByRole('radio', { name: 'Adopsjon' })).toBeDisabled();
     });
 });

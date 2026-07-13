@@ -18,7 +18,7 @@ import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettU
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { KontoBeregningResultatDto, OmBarnetPlanlegger } from '@navikt/fp-types';
 import { SimpleErrorPage } from '@navikt/fp-ui';
-import { decodeBase64 } from '@navikt/fp-utils';
+import { decompressFromUrl } from '@navikt/fp-utils';
 
 import { PlanleggerRouter } from './PlanleggerRouter';
 
@@ -31,7 +31,7 @@ const finnRettighetstype = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHar
         return 'ALENEOMSORG';
     }
 
-    if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && erBarnetAdoptert(omBarnet)) {
+    if (hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && !erBarnetAdoptert(omBarnet)) {
         return 'ALENEOMSORG';
     }
 
@@ -76,6 +76,32 @@ export const PlanleggerDataFetcher = () => {
         queryKey: ['KVOTER', omBarnet, arbeidssituasjon, hvemPlanlegger],
         queryFn: () => getStønadskvoter(omBarnet, arbeidssituasjon, hvemPlanlegger),
         enabled: hvemHarRett !== undefined && hvemHarRett !== 'ingenHarRett',
+        select: (data: KontoBeregningResultatDto): KontoBeregningResultatDto => {
+            // TODO (TOR) Dette bør ligga i backend. Verkar pussig å henta kontoar for far-og-far, og så modifisera det her
+
+            // Fix for å ikke vise "Foreldrepenger uten aktivitetskrav"
+            // Hvis ikke far-og-far, returner uendret
+            if (hvemPlanlegger?.type !== HvemPlanleggerType.FAR_OG_FAR) {
+                return data;
+            }
+            // Lag en dyp kopi for å unngå å modifisere original data
+            const modifiserteData = structuredClone(data);
+            // Liste over dekningsgrader vi skal prosessere
+            const dekningsgrader = ['80', '100'] as const;
+            // Bearbeide hver dekningsgrad
+            for (const dekningsgrad of dekningsgrader) {
+                const stønadskonto = modifiserteData[dekningsgrad];
+                if (stønadskonto?.kontoer.some((k) => k.konto === 'FORELDREPENGER')) {
+                    // Summer antall dager i alle kontoer
+                    const totalDager = stønadskonto.kontoer.reduce((sum, konto) => sum + konto.dager, 0);
+                    // Filtrer og lag 'AKTIVITETSFRI_KVOTE' -kontoen
+                    stønadskonto.kontoer = stønadskonto.kontoer
+                        .filter((konto) => konto.konto === 'FORELDREPENGER')
+                        .map(() => ({ konto: 'AKTIVITETSFRI_KVOTE', dager: totalDager }));
+                }
+            }
+            return modifiserteData;
+        },
     });
 
     if (stønadskvoterData.error) {
@@ -90,7 +116,8 @@ export const PlanleggerDataInit = () => {
     const intl = useIntl();
 
     const dataParam = new URLSearchParams(locations.search).get('data');
-    const data = dataParam ? (JSON.parse(decodeBase64(dataParam)) as ContextDataMap) : undefined;
+    const decompressedData = dataParam ? decompressFromUrl(dataParam) : undefined;
+    const data = decompressedData ? (JSON.parse(decompressedData) as ContextDataMap) : undefined;
 
     // Denne useEffecten kjøres for at skyra-undersøkelsen skal trigges inline på oppsummering-siden
     useEffect(() => {

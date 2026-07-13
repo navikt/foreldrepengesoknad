@@ -26,7 +26,7 @@ export const HøyInntektInfobox = ({ maxÅrslønnDekket, isGray = false, showKrI
             color={isGray ? 'gray' : 'green'}
             icon={
                 showKrIcon ? (
-                    <KronerIcon title="a11y-title" fontSize="1.5rem" aria-hidden />
+                    <KronerIcon fontSize="1.5rem" aria-hidden />
                 ) : (
                     <InformationIcon
                         height={24}

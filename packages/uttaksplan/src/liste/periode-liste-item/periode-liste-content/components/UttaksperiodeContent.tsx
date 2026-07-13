@@ -16,7 +16,11 @@ import { assertUnreachable } from '@navikt/fp-validation';
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { Uttaksplanperiode, erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
-import { erAvslåttPeriode, harPeriodeDerMorsAktivitetIkkeErValgt } from '../../../../utils/periodeUtils';
+import {
+    erAvslåttPeriode,
+    harPeriodeDerMorsAktivitetIkkeErValgt,
+    harPeriodeMedUkjentGraderingsaktivitet,
+} from '../../../../utils/periodeUtils';
 import { getStønadskvoteNavn } from '../../../utils/uttaksplanListeUtils';
 
 interface Props {
@@ -29,8 +33,9 @@ interface Props {
 export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
     const {
-        foreldreInfo: { rettighetType },
+        foreldreInfo: { rettighetType, søker, erIkkeSøkerSpesifisert, erFarOgFar },
         uttakPerioder,
+        kanVelgeArbeidsgiver,
     } = useUttaksplanData();
     const erAvslått = erAvslåttPeriode(periode);
     const morsAktivitet = erVanligUttakPeriode(periode) && periode.morsAktivitet ? periode.morsAktivitet : undefined;
@@ -51,9 +56,22 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
 
     return (
         <HStack gap="space-8">
-            {harPeriodeDerMorsAktivitetIkkeErValgt(rettighetType, [periode, ...morsPerioder]) && (
+            {harPeriodeDerMorsAktivitetIkkeErValgt(
+                rettighetType,
+                søker,
+                erIkkeSøkerSpesifisert ?? false,
+                [periode, ...morsPerioder],
+                erFarOgFar,
+            ) && (
                 <ExclamationmarkTriangleFillIcon
                     title={intl.formatMessage({ id: 'PeriodeListeHeader.MorsAktivitetIkkeValgt' })}
+                    fontSize="1.5rem"
+                    className="text-ax-danger-800"
+                />
+            )}
+            {kanVelgeArbeidsgiver && harPeriodeMedUkjentGraderingsaktivitet([periode], søker) && (
+                <ExclamationmarkTriangleFillIcon
+                    title={intl.formatMessage({ id: 'PeriodeListeHeader.GraderingsaktivitetIkkeValgt' })}
                     fontSize="1.5rem"
                     className="text-ax-danger-800"
                 />

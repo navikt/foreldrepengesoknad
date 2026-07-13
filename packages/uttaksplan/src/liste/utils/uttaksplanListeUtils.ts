@@ -1,6 +1,7 @@
 import { IntlShape } from 'react-intl';
 
 import {
+    BrukerRolleSak_fpoversikt,
     KontoType,
     KontoTypeUttak,
     MorsAktivitet,
@@ -18,12 +19,34 @@ import {
     erTapteDagerHull,
 } from '../../types/UttaksplanPeriode';
 
+/**
+ * Visningsnavn for en gitt domenerolle (MOR/FAR_MEDMOR) når begge foreldrene er fedre
+ * (f.eks. adopsjon). Da representerer ikke MOR/FAR_MEDMOR en mor og en far, men to fedre –
+ * så vi viser forelderens faktiske navn (eller "Far 1"/"Far 2") i stedet for generisk
+ * "Mor"/"Far"-tekst.
+ */
+export const getForelderVisningsnavnForFarOgFar = (
+    forelder: BrukerRolleSak_fpoversikt,
+    navnPåForeldre: NavnPåForeldre,
+): string => capitalizeFirstLetter(forelder === 'MOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor);
+
 export const getStønadskvoteNavnSimple = (
     intl: IntlShape,
     konto: KontoTypeUttak,
     erMedmorDelAvSøknaden?: boolean,
     erBareFarHarRett?: boolean,
+    navnPåForeldreForFarOgFar?: NavnPåForeldre,
 ) => {
+    if (navnPåForeldreForFarOgFar && (konto === 'MØDREKVOTE' || konto === 'FEDREKVOTE')) {
+        // MØDREKVOTE tilhører alltid domenerollen MOR (Far 2), FEDREKVOTE domenerollen
+        // FAR_MEDMOR (Far 1) – uavhengig av hvilken forelder som viser valget (f.eks. ved
+        // overføring av kvote fra den andre faren).
+        const navn = konto === 'MØDREKVOTE' ? navnPåForeldreForFarOgFar.mor : navnPåForeldreForFarOgFar.farMedmor;
+        return intl.formatMessage(
+            { id: 'uttaksplan.stønadskvotetype.foreldernavn.kvote' },
+            { navn: getNavnGenitivEierform(capitalizeFirstLetter(navn), intl.locale) },
+        );
+    }
     if (konto === 'FEDREKVOTE' && erMedmorDelAvSøknaden) {
         return intl.formatMessage({ id: 'uttaksplan.stønadskvotetype.MEDMORSKVOTE' });
     }
@@ -67,7 +90,18 @@ export const getStønadskvoteNavn = (intl: IntlShape, options: GetStønadskvoteN
         );
     }
 
-    if (!erAvslått && !erEøsPeriode && erFarEllerMedmor === true && erAleneOmOmsorg === false) {
+    // En bare-far-har-rett-periode bruker kontoType FORELDREPENGER og vises med
+    // aktivitetskrav-tekst basert på mors aktivitet. Gjelder kun fars egne perioder
+    // (ikke EØS, avslåtte eller aleneomsorg), slik at mors fellesperiode ikke
+    // feilmerkes når far ser oversikten sin.
+    const erBareFarHarRettForeldrepenger =
+        !erAvslått &&
+        !erEøsPeriode &&
+        konto === 'FORELDREPENGER' &&
+        erFarEllerMedmor === true &&
+        erAleneOmOmsorg === false;
+
+    if (erBareFarHarRettForeldrepenger) {
         if (morsAktivitet === 'IKKE_OPPGITT') {
             return intl.formatMessage({ id: 'uttaksplan.stønadskvotetype.AKTIVITETSFRI_KVOTE_BFHR' });
         }

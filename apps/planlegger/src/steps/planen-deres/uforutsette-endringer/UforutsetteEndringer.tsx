@@ -1,7 +1,6 @@
 import { ExclamationmarkIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
@@ -9,6 +8,7 @@ import { loggExpansionCardOpen } from 'utils/umamiUtils';
 
 import { ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import { FødtFørUke33 } from './FødtFørUke33';

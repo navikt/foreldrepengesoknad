@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 
@@ -14,6 +14,7 @@ const {
     VisPerioderMedOppholdsårsakKorrekt,
     MorSøkerOgFarHarEøsPeriode,
     MarkeringNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt,
+    MarkeringNårGraderingsaktivitetMangler,
     HarUtsettelse,
     KunFarHarRettOgHarPauseperiode,
     EøsPerioderForAnnenPart,
@@ -31,9 +32,6 @@ describe('UttaksplanListe', () => {
 
         await userEvent.click(screen.getByText('Legg til periode'));
 
-        expect(await screen.findByText('Hva vil du gjøre?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Legge til ferie'));
-
         expect(await screen.findByText('Hvilke datoer skal perioden være?')).toBeInTheDocument();
         const fraOgMedDato = screen.getByLabelText('Fra og med dato');
         await userEvent.type(fraOgMedDato, dayjs('2025-06-30').format('DD.MM.YYYY'));
@@ -42,13 +40,16 @@ describe('UttaksplanListe', () => {
         await userEvent.type(tilOgMedDato, dayjs('2025-08-28').format('DD.MM.YYYY'));
         await userEvent.tab();
 
+        expect(await screen.findByText('Hva vil du gjøre?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Legge til ferie'));
+
         await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
 
         expect(screen.getByText('Hva skal skje med resten av planen?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Endre uten å flytte resten av planen'));
 
-        await userEvent.click(screen.getByText('Fortsett'));
+        await userEvent.click(screen.getByText('Legg til'));
 
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
         expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
@@ -100,9 +101,6 @@ describe('UttaksplanListe', () => {
         expect(screen.getByText('09. mai 25 - 11. des. 25')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Legg til periode'));
-        expect(await screen.findByText('Hva vil du gjøre?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Legge til periode med foreldrepenger'));
-
         expect(await screen.findByText('Hvilke datoer skal perioden være?')).toBeInTheDocument();
         const fraOgMedDato = screen.getByLabelText('Fra og med dato');
         await userEvent.type(fraOgMedDato, dayjs('2025-06-30').format('DD.MM.YYYY'));
@@ -110,6 +108,9 @@ describe('UttaksplanListe', () => {
         const tilOgMedDato = screen.getByLabelText('Til og med dato');
         await userEvent.type(tilOgMedDato, dayjs('2025-08-28').format('DD.MM.YYYY'));
         await userEvent.tab();
+
+        expect(await screen.findByText('Hva vil du gjøre?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Legge til periode med foreldrepenger'));
 
         expect(await screen.findByText('Hvem skal ha foreldrepenger?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Begge'));
@@ -144,7 +145,7 @@ describe('UttaksplanListe', () => {
 
         await userEvent.click(screen.getByText('Endre uten å flytte resten av planen'));
 
-        await userEvent.click(screen.getByText('Fortsett'));
+        await userEvent.click(screen.getByText('Legg til'));
 
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
         expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
@@ -167,7 +168,7 @@ describe('UttaksplanListe', () => {
                 forelder: 'MOR',
                 gradering: {
                     aktivitet: {
-                        type: 'ORDINÆRT_ARBEID',
+                        type: 'ANNET',
                     },
                     arbeidstidprosent: 50,
                 },
@@ -206,6 +207,62 @@ describe('UttaksplanListe', () => {
                 flerbarnsdager: false,
             },
         ]);
+    });
+
+    it('Fedrekvote skal ikke arve aktivitetskrav (morsAktivitet) når far bytter kontotype fra fellesperiode', async () => {
+        const oppdaterUttaksplan = vi.fn();
+
+        render(<Default oppdaterUttaksplan={oppdaterUttaksplan} />);
+
+        expect(await screen.findByText('18. april 25 - 08. mai 25')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Legg til periode'));
+        expect(await screen.findByText('Hvilke datoer skal perioden være?')).toBeInTheDocument();
+        const fraOgMedDato = screen.getByLabelText('Fra og med dato');
+        await userEvent.type(fraOgMedDato, dayjs('2025-06-30').format('DD.MM.YYYY'));
+        await userEvent.tab();
+        const tilOgMedDato = screen.getByLabelText('Til og med dato');
+        await userEvent.type(tilOgMedDato, dayjs('2025-08-28').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        expect(await screen.findByText('Hva vil du gjøre?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Legge til periode med foreldrepenger'));
+
+        expect(await screen.findByText('Hvem skal ha foreldrepenger?')).toBeInTheDocument();
+        await userEvent.click(screen.getByRole('radio', { name: 'Far' }));
+
+        // Far velger først fellesperiode og svarer på aktivitetskravet (mor i arbeid).
+        expect(await screen.findByText('Far skal ha?')).toBeInTheDocument();
+        await userEvent.click(screen.getByRole('radio', { name: 'Fellesperiode' }));
+
+        expect(await screen.findByText('Hva skal mor gjøre i denne perioden?')).toBeInTheDocument();
+        await userEvent.selectOptions(screen.getByLabelText('Hva skal mor gjøre i denne perioden?'), 'ARBEID');
+
+        expect(screen.getByText('Skal far kombinere foreldrepenger med arbeid?')).toBeInTheDocument();
+        await userEvent.click(screen.getByRole('radio', { name: 'Nei' }));
+
+        // Far ombestemmer seg og bytter til fars kvote – aktivitetskravet skal da nullstilles.
+        await userEvent.click(screen.getByRole('radio', { name: 'Fars kvote' }));
+        expect(screen.queryByText('Hva skal mor gjøre i denne perioden?')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
+
+        expect(screen.getByText('Hva skal skje med resten av planen?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Endre uten å flytte resten av planen'));
+        await userEvent.click(screen.getByText('Legg til'));
+
+        expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
+        const lagredePerioder = oppdaterUttaksplan.mock.calls[0]![0] as Array<{
+            forelder: string;
+            kontoType?: string;
+            fom: string;
+            morsAktivitet?: string;
+        }>;
+        const fedrekvotePeriode = lagredePerioder.find(
+            (p) => p.forelder === 'FAR_MEDMOR' && p.kontoType === 'FEDREKVOTE' && p.fom === '2025-06-30',
+        );
+        expect(fedrekvotePeriode).toBeDefined();
+        expect(fedrekvotePeriode?.morsAktivitet).toBeUndefined();
     });
 
     it('Skal endre periode til ferie', async () => {
@@ -289,7 +346,7 @@ describe('UttaksplanListe', () => {
 
         await userEvent.click(screen.getByText('Endre uten å flytte resten av planen'));
 
-        await userEvent.click(screen.getByText('Fortsett'));
+        await userEvent.click(screen.getByText('Legg til'));
 
         expect(await screen.findByText('15. des. 25 - 17. des. 25')).toBeInTheDocument();
         expect(screen.queryByText('12. des. 25 - 15. des. 25')).not.toBeInTheDocument();
@@ -309,15 +366,6 @@ describe('UttaksplanListe', () => {
         await userEvent.click(screen.getByText('09.05.2025 - 21.08.2025 - Olga Utviklers kvote'));
 
         await userEvent.click(screen.getByText('Slett valgte perioder'));
-
-        expect(
-            await screen.findByText(
-                'Du kan ikke forskyve perioder når du har valgt dager før seks uker etter fødsel/termin',
-            ),
-        ).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('La resten av planen være som den er'));
-        await userEvent.click(screen.getByText('Fortsett'));
 
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
         expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
@@ -392,7 +440,7 @@ describe('UttaksplanListe', () => {
         const fjerdeRad = within(screen.getByTestId('2024-04-04 - 2024-05-02'));
         expect(fjerdeRad.getByText('04. april 24 - 02. mai 24')).toBeInTheDocument();
         expect(fjerdeRad.getByText('4 uker og 1 dag')).toBeInTheDocument();
-        expect(fjerdeRad.getAllByText('Dager du kan tape')).toHaveLength(2);
+        expect(fjerdeRad.getAllByText('Dager du kan miste')).toHaveLength(2);
 
         const femteRad = within(screen.getByTestId('2024-05-03 - 2024-05-15'));
         expect(femteRad.getByText('03. mai 24 - 15. mai 24')).toBeInTheDocument();
@@ -430,7 +478,7 @@ describe('UttaksplanListe', () => {
         expect(sjetteRad.getAllByText('Hanne har foreldrepenger')).toHaveLength(2);
 
         expect(screen.queryByText('Uten Foreldrepenger')).not.toBeInTheDocument();
-        expect(screen.queryByText('Dager du kan tape')).not.toBeInTheDocument();
+        expect(screen.queryByText('Dager du kan miste')).not.toBeInTheDocument();
     });
 
     it('Skal ikke kunne redigere en EØS-periode', async () => {
@@ -476,11 +524,35 @@ describe('UttaksplanListe', () => {
         expect(screen.queryByText('Du må velge mors aktivitet før du går videre')).not.toBeInTheDocument();
     });
 
+    it('Skal få advarsel om at gradering manglar arbeidsgiver når plan kjem frå planleggar', async () => {
+        render(<MarkeringNårGraderingsaktivitetMangler />);
+
+        expect(
+            await screen.findByText(
+                'Du må velge hvor du skal jobbe samtidig som du har foreldrepenger før du går videre',
+            ),
+        ).toBeInTheDocument();
+
+        expect(
+            screen.getAllByText('Mangler hvor du skal jobbe samtidig som du har foreldrepenger').length,
+        ).toBeGreaterThanOrEqual(1);
+    });
+
     it('Skal kunne slette og endre alle perioder bortsett fra periodene til annen part', async () => {
         render(<FarSøkerEtterAtMorHarSøkt />);
         expect(await screen.findAllByText('Hanne har foreldrepenger')).toHaveLength(6);
         expect(screen.getAllByText('Endre')).toHaveLength(2);
         expect(screen.queryByText('Slett')).not.toBeInTheDocument();
+    });
+
+    it('Mors fellesperiode skal vises som "Fellesperiode" i fars listevisning, ikke "med aktivitetskrav"', async () => {
+        render(<FarSøkerEtterAtMorHarSøkt />);
+
+        // Mor har tre fellesperioder. Når far ser oversikten sin skal disse vises
+        // som "Fellesperiode", ikke "Foreldrepenger med aktivitetskrav" (som er
+        // forbeholdt bare-far-har-rett-perioder med kontoType FORELDREPENGER).
+        expect(await screen.findAllByText('Fellesperiode')).toHaveLength(3);
+        expect(screen.queryByText('Foreldrepenger med aktivitetskrav')).not.toBeInTheDocument();
     });
 
     it('Skal ikke kunne legge til annen part som forelder når en legger til ny periode', async () => {
@@ -490,9 +562,6 @@ describe('UttaksplanListe', () => {
 
         await userEvent.click(screen.getByText('Legg til periode'));
 
-        expect(await screen.findByText('Hva vil du gjøre?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Legge til periode med foreldrepenger'));
-
         expect(await screen.findByText('Hvilke datoer skal perioden være?')).toBeInTheDocument();
         const fraOgMedDato = screen.getByLabelText('Fra og med dato');
         await userEvent.type(fraOgMedDato, dayjs('2025-06-30').format('DD.MM.YYYY'));
@@ -501,13 +570,16 @@ describe('UttaksplanListe', () => {
         await userEvent.type(tilOgMedDato, dayjs('2025-08-28').format('DD.MM.YYYY'));
         await userEvent.tab();
 
+        expect(await screen.findByText('Hva vil du gjøre?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Legge til periode med foreldrepenger'));
+
         expect(screen.getByText('Hvem skal ha foreldrepenger?')).toBeInTheDocument();
         expect(screen.queryByText('Mor')).not.toBeInTheDocument();
         expect(screen.getByText('Far')).toBeInTheDocument();
         expect(screen.getByText('Begge')).toBeInTheDocument();
     });
 
-    it('Skal slette periode og forskyve resten av planen bakover', async () => {
+    it('Skal slette periode direkte uten å spørre om forskyvning', async () => {
         const oppdaterUttaksplan = vi.fn();
 
         render(<Default oppdaterUttaksplan={oppdaterUttaksplan} />);
@@ -521,13 +593,6 @@ describe('UttaksplanListe', () => {
         await userEvent.click(screen.getByText('22.08.2025 - 11.12.2025 - Fellesperiode'));
 
         await userEvent.click(screen.getByText('Slett valgte perioder'));
-
-        expect(await screen.findByText('Hva vil du gjøre med dagene du sletter?')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Flytt resten av planen'));
-        await userEvent.click(screen.getByText('Fortsett'));
-
-        expect(await screen.findByText('22. aug. 25 - 04. des. 25')).toBeInTheDocument();
 
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
         expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
@@ -546,10 +611,10 @@ describe('UttaksplanListe', () => {
                 flerbarnsdager: false,
             },
             {
-                fom: '2025-08-22',
                 forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
-                tom: '2025-12-04',
+                fom: '2025-12-12',
+                tom: '2026-03-26',
                 flerbarnsdager: false,
             },
         ]);
@@ -592,7 +657,7 @@ describe('UttaksplanListe', () => {
         ]);
     });
 
-    it('Skal ha periode med utsettelse og legge til ny periode med utsettelse', async () => {
+    it('Skal kun vise utsettelse-valget når valgt tidsrom er innenfor 6-ukersperioden', async () => {
         const oppdaterUttaksplan = vi.fn();
 
         render(<HarUtsettelse oppdaterUttaksplan={oppdaterUttaksplan} />);
@@ -612,8 +677,6 @@ describe('UttaksplanListe', () => {
 
         await userEvent.click(screen.getByText('Legg til periode'));
 
-        await userEvent.click(screen.getByText('Utsettelse'));
-
         const fraOgMedDato = screen.getByLabelText('Fra og med dato');
         await userEvent.type(fraOgMedDato, dayjs('2025-10-26').format('DD.MM.YYYY'));
         await userEvent.tab();
@@ -621,16 +684,11 @@ describe('UttaksplanListe', () => {
         await userEvent.type(tilOgMedDato, dayjs('2025-10-28').format('DD.MM.YYYY'));
         await userEvent.tab();
 
-        await userEvent.selectOptions(screen.getByLabelText('Velg hvorfor du skal utsette'), 'SØKER_SYKDOM');
+        // Tidsrom utenfor 6-ukersperioden: «Utsettelse» skal ikke være et valg
+        expect(await screen.findByText('Hva vil du gjøre?')).toBeInTheDocument();
+        expect(screen.queryByRole('radio', { name: 'Utsettelse' })).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
-
-        expect(
-            await screen.findByText(
-                'Utsettelse kan kun legges til når en har valgt dager i 6-ukersperioden etter fødsel/termin',
-            ),
-        ).toBeInTheDocument();
-
+        // Endre til et tidsrom innenfor 6-ukersperioden → «Utsettelse» dukker opp
         await userEvent.clear(fraOgMedDato);
         await userEvent.type(fraOgMedDato, dayjs('2025-08-26').format('DD.MM.YYYY'));
         await userEvent.tab();
@@ -638,6 +696,10 @@ describe('UttaksplanListe', () => {
         await userEvent.clear(tilOgMedDato);
         await userEvent.type(tilOgMedDato, dayjs('2025-08-28').format('DD.MM.YYYY'));
         await userEvent.tab();
+
+        await userEvent.click(await screen.findByRole('radio', { name: 'Utsettelse' }));
+
+        await userEvent.selectOptions(screen.getByLabelText('Velg hvorfor du skal utsette'), 'SØKER_SYKDOM');
 
         await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
 
@@ -680,8 +742,6 @@ describe('UttaksplanListe', () => {
 
         await userEvent.click(screen.getByText('Legg til periode'));
 
-        await userEvent.click(screen.getByText('Pause'));
-
         const fraOgMedDato = screen.getByLabelText('Fra og med dato');
         await userEvent.type(fraOgMedDato, dayjs('2024-04-29').format('DD.MM.YYYY'));
         await userEvent.tab();
@@ -689,19 +749,18 @@ describe('UttaksplanListe', () => {
         await userEvent.type(tilOgMedDato, dayjs('2024-05-30').format('DD.MM.YYYY'));
         await userEvent.tab();
 
-        await userEvent.selectOptions(screen.getByLabelText('Hva gjør mor i denne perioden?'), 'ARBEID');
+        // Tidsrom før utløpet av 6-ukersperioden: «Pause» skal ikke være et valg
+        expect(await screen.findByText('Hva vil du gjøre?')).toBeInTheDocument();
+        expect(screen.queryByRole('radio', { name: 'Pause' })).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
-
-        expect(
-            await screen.findByText(
-                'Pause kan kun legges til når en har valgt dager etter 6-ukersperioden etter fødsel/termin',
-            ),
-        ).toBeInTheDocument();
-
+        // Endre fra-dato til etter 6-ukersperioden → «Pause» dukker opp
         await userEvent.clear(fraOgMedDato);
         await userEvent.type(fraOgMedDato, dayjs('2024-05-29').format('DD.MM.YYYY'));
         await userEvent.tab();
+
+        await userEvent.click(await screen.findByRole('radio', { name: 'Pause' }));
+
+        await userEvent.selectOptions(screen.getByLabelText('Hva gjør mor i denne perioden?'), 'ARBEID');
 
         await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
 
@@ -740,6 +799,33 @@ describe('UttaksplanListe', () => {
         ]);
     });
 
+    it('skal skjule forelder-spørsmålet og sette verdien bak panseret når kun far har rett', async () => {
+        const oppdaterUttaksplan = vi.fn();
+
+        render(<KunFarHarRettOgHarPauseperiode oppdaterUttaksplan={oppdaterUttaksplan} />);
+
+        expect(await screen.findByText('24. mai 24 - 28. mai 24')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Legg til periode'));
+
+        expect(await screen.findByText('Hvilke datoer skal perioden være?')).toBeInTheDocument();
+        const fraOgMedDato = screen.getByLabelText('Fra og med dato');
+        await userEvent.type(fraOgMedDato, dayjs('2024-06-14').format('DD.MM.YYYY'));
+        await userEvent.tab();
+        const tilOgMedDato = screen.getByLabelText('Til og med dato');
+        await userEvent.type(tilOgMedDato, dayjs('2024-06-20').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        expect(await screen.findByText('Hva vil du gjøre?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Legge til periode med foreldrepenger'));
+
+        // Når kun far har rett til foreldrepenger, skal spørsmålet om hvem som
+        // skal ha foreldrepenger ikke vises. Verdien settes bak panseret, og vi
+        // går rett til kvotetype-spørsmålet "Far skal ha?".
+        expect(await screen.findByText('Far skal ha?')).toBeInTheDocument();
+        expect(screen.queryByText('Hvem skal ha foreldrepenger?')).not.toBeInTheDocument();
+    });
+
     it('Skal ikke kunne legge til ferieperiode etter 6-ukerperioden for kun far har rett', async () => {
         const oppdaterUttaksplan = vi.fn();
 
@@ -751,15 +837,9 @@ describe('UttaksplanListe', () => {
 
         await userEvent.click(screen.getAllByText('Endre')[3]!);
 
-        await userEvent.click(screen.getByText('Ferie'));
-
-        await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
-
-        expect(
-            await screen.findByText(
-                'Ferie og perioder uten foreldrepenger kan kun legges til i 6-ukersperioden etter fødsel/termin eller før',
-            ),
-        ).toBeInTheDocument();
+        // Tidsrommet ligger etter 6-ukersperioden for kun-far-har-rett → «Ferie» er ikke et gyldig valg
+        expect(await screen.findByText('Hva vil du gjøre?')).toBeInTheDocument();
+        expect(screen.queryByRole('radio', { name: 'Ferie' })).not.toBeInTheDocument();
     });
 
     it('Skal ikke kunne endre EØS-perioder', async () => {
@@ -771,14 +851,15 @@ describe('UttaksplanListe', () => {
 
         await userEvent.click(screen.getByText('Legg til periode'));
 
-        await userEvent.click(screen.getByText('Legge til ferie'));
-
         const fraOgMedDato = screen.getByLabelText('Fra og med dato');
         await userEvent.type(fraOgMedDato, dayjs('2025-10-08').format('DD.MM.YYYY'));
         await userEvent.tab();
         const tilOgMedDato = screen.getByLabelText('Til og med dato');
         await userEvent.type(tilOgMedDato, dayjs('2025-10-15').format('DD.MM.YYYY'));
         await userEvent.tab();
+
+        expect(await screen.findByText('Hva vil du gjøre?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Legge til ferie'));
 
         await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
 
@@ -790,28 +871,33 @@ describe('UttaksplanListe', () => {
 
         await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
 
-        expect(screen.getByText('Hva skal skje med resten av planen?')).toBeInTheDocument();
+        // Annen parts EØS-perioder ligger låst senere i planen, så «Endre uten å
+        // flytte resten av planen» er eneste valg. Da skal spørsmålet ikke vises,
+        // og ferien legges til direkte uten å flytte resten av planen.
+        expect(screen.queryByText('Hva skal skje med resten av planen?')).not.toBeInTheDocument();
+
+        await waitFor(() => expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1));
     });
 
     it('Bare far har rett - avslåtte perioder skal ikke vise "med aktivitetskrav" i listevisningen', async () => {
         const { BareFarHarRettMedAvslåttePerioder } = composeStories(stories);
         render(<BareFarHarRettMedAvslåttePerioder />);
 
-        // Alle 3 perioder (fom 2026-03-09 til 2026-07-10) er gruppert i én rad.
-        // Klikk for å åpne:
-        // - Periode 1 (09. mars - 15. mai): innvilget, morsAktivitet=IKKE_OPPGITT → "Foreldrepenger uten aktivitetskrav"
-        // - Periode 2 (18. mai - 12. juni): avslått, morsAktivitet=ARBEID → skal vise "Foreldrepenger" (ikke "med aktivitetskrav")
-        // - Periode 3 (15. juni - 10. juli): innvilget, morsAktivitet=ARBEID → "Foreldrepenger med aktivitetskrav"
-        const periodeRad = screen.getByTestId('2026-03-09 - 2026-07-10');
-        await userEvent.click(periodeRad);
+        // Avslåtte perioder vert no skilde ut i eiga rad, så me får 3 rader:
+        // - Rad 1 (09. mars - 15. mai): innvilget, morsAktivitet=IKKE_OPPGITT → "Foreldrepenger uten aktivitetskrav"
+        // - Rad 2 (18. mai - 12. juni): avslått, morsAktivitet=ARBEID → skal vise "Trekte dager" (ikkje "med aktivitetskrav")
+        // - Rad 3 (15. juni - 10. juli): innvilget, morsAktivitet=ARBEID → "Foreldrepenger med aktivitetskrav"
+        await userEvent.click(screen.getByTestId('2026-03-09 - 2026-05-15'));
+        await userEvent.click(screen.getByTestId('2026-05-18 - 2026-06-12'));
+        await userEvent.click(screen.getByTestId('2026-06-15 - 2026-07-10'));
 
         // Innvilget med IKKE_OPPGITT skal vise "uten aktivitetskrav"
         expect(screen.getByText('Foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
 
-        // Innvilget med ARBEID skal vise "med aktivitetskrav" (bare 1 gang, ikke 2 – avslått periode skal ikke ha det)
+        // Innvilget med ARBEID skal vise "med aktivitetskrav" (bare 1 gang – avslått periode skal ikke ha det)
         expect(screen.getAllByText('Foreldrepenger med aktivitetskrav')).toHaveLength(1);
 
-        // Avslått periode skal vise bare "Foreldrepenger" uten aktivitetskrav-tekst
-        expect(screen.getAllByText(/^Foreldrepenger$/)).toHaveLength(1);
+        // Avslått periode skal ikke vise "Foreldrepenger" som tekst i innhaldet
+        expect(screen.queryByText(/^Foreldrepenger$/)).not.toBeInTheDocument();
     });
 });

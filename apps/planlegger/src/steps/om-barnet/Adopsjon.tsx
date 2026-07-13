@@ -2,11 +2,11 @@ import { TasklistStartIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { OmBarnetPlanlegger } from '@navikt/fp-types';
 
 import { BodyLong, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import {
     isAfterOrSame,

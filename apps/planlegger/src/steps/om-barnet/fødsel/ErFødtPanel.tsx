@@ -2,15 +2,17 @@ import { TasklistStartIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { erAlenesøker as erAlene, erFarDelAvSøknaden, erFarOgFar, erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
+import { erFødtFørUke33, getAntallVirkedagerFraFødselTilTermin } from 'utils/dateUtils';
+import { getUkerOgDager } from 'utils/stønadskvoterUtils';
 
-import { BodyShort, VStack } from '@navikt/ds-react';
+import { BodyShort, ReadMore, VStack } from '@navikt/ds-react';
 
-import { DATE_3_YEARS_AGO, ISO_DATE_REGEX } from '@navikt/fp-constants/src/dates';
+import { DATE_3_YEARS_AGO, ISO_DATE_REGEX } from '@navikt/fp-constants';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { erI22SvangerskapsukeEllerSenere, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
@@ -31,11 +33,17 @@ type Props = {
     scrollToBottom: () => void;
 };
 
-export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetPlanleggerIkkeOppgittFraFør, antallBarn, scrollToBottom }: Props) => {
+export const ErFødtPanel = ({
+    hvemPlanlegger,
+    erOmBarnetPlanleggerIkkeOppgittFraFør,
+    antallBarn,
+    scrollToBottom,
+}: Props) => {
     const intl = useIntl();
 
     const formMethods = useFormContext<OmBarnetPlanlegger>();
     const fødselsdato = formMethods.watch('fødselsdato');
+    const termindato = formMethods.watch('termindato');
 
     const erAlenesøker = erAlene(hvemPlanlegger);
     const erFedre = erFarOgFar(hvemPlanlegger);
@@ -50,6 +58,12 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetPlanleggerIkkeOppgittFr
                 return true;
         }
     })();
+
+    const visInfoOmForlengetPeriode = erFødtFørUke33(fødselsdato, termindato);
+    const { uker, dager } =
+        visInfoOmForlengetPeriode && fødselsdato && termindato
+            ? getUkerOgDager(getAntallVirkedagerFraFødselTilTermin(fødselsdato, termindato))
+            : { uker: 0, dager: 0 };
 
     return (
         <VStack gap="space-20">
@@ -97,6 +111,18 @@ export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetPlanleggerIkkeOppgittFr
                     />
                 </VStack>
             </BluePanel>
+            {visInfoOmForlengetPeriode && (
+                <Infobox color="blue" header={<FormattedMessage id="ErFødtPanel.ErFødtFørUke33.Tittel" />} shouldFadeIn>
+                    <VStack gap="space-16">
+                        <BodyShort>
+                            <FormattedMessage id="ErFødtPanel.ErFødtFørUke33.Tekst" values={{ uker, dager }} />
+                        </BodyShort>
+                        <ReadMore header={intl.formatMessage({ id: 'ErFødtPanel.ErFødtFørUke33.ReadMore.Header' })}>
+                            <FormattedMessage id="ErFødtPanel.ErFødtFørUke33.ReadMore.Tekst" />
+                        </ReadMore>
+                    </VStack>
+                </Infobox>
+            )}
             {fødselsdato !== undefined && erDatoGyldig(fødselsdato) && dayjs(fødselsdato).isAfter(DATE_3_YEARS_AGO) && (
                 <Infobox
                     header={<FormattedMessage id="ErFødtPanel.Født.InfoboksTittel" values={{ erAlenesøker }} />}

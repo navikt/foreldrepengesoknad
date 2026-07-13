@@ -12,7 +12,9 @@ export const validerInnkommendeIdportenToken = async (request: Request, response
 
     const validation = await validateIdportenToken(token);
     if (!validation.ok) {
-        logger.error('Ugyldig IDporten token', validation);
+        // Logg berre feiltype/-melding, ikkje heile valideringsobjektet — det kan
+        // innehalde dekoda claims (sub/pid m.m.) som er personopplysningar.
+        logger.error('Ugyldig IDporten token', validation.error?.message ?? 'ukjend feil');
         response.status(403).send();
         return;
     }

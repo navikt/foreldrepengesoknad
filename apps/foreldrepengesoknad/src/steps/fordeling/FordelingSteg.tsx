@@ -8,7 +8,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useStepConfig } from 'appData/useStepConfig';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { getIsDeltUttak } from 'utils/annenForelderUtils';
 import { getTermindato } from 'utils/barnUtils';
@@ -72,19 +72,32 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
 
     const minsterett = valgtStønadskvote?.minsteretter;
 
-    const fordelingScenario =
-        valgtStønadskvote && minsterett
-            ? getFordelingFraKontoer(
-                  valgtStønadskvote,
-                  minsterett,
-                  søkersituasjon,
-                  barn,
-                  navnPåForeldre,
-                  annenForelder,
-                  intl,
-                  uttaksplanAnnenPart,
-              )
-            : [];
+    const fordelingScenario = useMemo(
+        () =>
+            valgtStønadskvote && minsterett
+                ? getFordelingFraKontoer(
+                      valgtStønadskvote,
+                      minsterett,
+                      søkersituasjon,
+                      barn,
+                      { mor: navnMor, farMedmor: navnFarMedmor },
+                      annenForelder,
+                      intl,
+                      uttaksplanAnnenPart,
+                  )
+                : [],
+        [
+            valgtStønadskvote,
+            minsterett,
+            søkersituasjon,
+            barn,
+            navnMor,
+            navnFarMedmor,
+            annenForelder,
+            intl,
+            uttaksplanAnnenPart,
+        ],
+    );
     const ukerMedFellesperiode = valgtStønadskvote ? getAntallUkerFellesperiode(valgtStønadskvote) : 0;
     const dagerMedFellesperiode = ukerMedFellesperiode * 5;
     const sisteDagAnnenForelder = getSisteUttaksdagAnnenForelder(erFarEllerMedmor, deltUttak, uttaksplanAnnenPart);
@@ -133,7 +146,7 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
-            <Step steps={stepConfig}>
+            <Step steps={stepConfig} onStepChange={navigator.goToStep}>
                 <VStack gap="space-20">
                     <FordelingOversikt
                         kontoer={valgtStønadskvote}
@@ -148,7 +161,7 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
                         navnPåForeldre={navnPåForeldre}
                         dagerMedFellesperiode={dagerMedFellesperiode}
                         goToPreviousDefaultStep={navigator.goToPreviousDefaultStep}
-                        goToNextDefaultStep={navigator.goToNextDefaultStep}
+                        goToNextDefaultStep={navigator.goToNextStep}
                         onAvsluttOgSlett={avbrytSøknad}
                         onFortsettSenere={navigator.fortsettSøknadSenere}
                         førsteDagEtterAnnenForelder={førsteDagEtterAnnenForelder}

@@ -351,9 +351,17 @@ export const FrilansOppsummering = ({ onVilEndreSvar, frilans }: FrilansOppsumme
                         <FormattedMessage id="ArbeidsforholdOppsummering.JobberFremdelesSomFrilans" />
                     </FormSummary.Label>
                     <FormSummary.Value>
-                        <JaNeiTekst ja={frilans.jobberFremdelesSomFrilans} />
+                        <JaNeiTekst ja={!frilans.tom} />
                     </FormSummary.Value>
                 </FormSummary.Answer>
+                {frilans.tom && (
+                    <FormSummary.Answer>
+                        <FormSummary.Label>
+                            <FormattedMessage id="ArbeidsforholdOppsummering.SluttetDato" />
+                        </FormSummary.Label>
+                        <FormSummary.Value>{formatDate(frilans.tom)}</FormSummary.Value>
+                    </FormSummary.Answer>
+                )}
             </FormSummary.Answers>
             <FormSummary.Footer>
                 <FormSummary.EditLink onClick={onVilEndreSvar}>

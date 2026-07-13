@@ -163,3 +163,77 @@ export const PrematurUker: Story = {
         erPeriodeneTilAnnenPartLåst: false,
     },
 };
+
+export const AvslåttePerioder: Story = {
+    name: 'Mor har avslåtte perioder',
+    args: {
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'MOR',
+            navnPåForeldre: {
+                farMedmor: 'Far',
+                mor: 'Mor',
+            },
+            erMedmorDelAvSøknaden: true,
+        },
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2025-09-01'],
+            termindato: '2025-09-01',
+            antallBarn: 1,
+        },
+        harAktivitetskravIPeriodeUtenUttak: false,
+        uttakPerioder: [
+            {
+                fom: '2025-09-01',
+                tom: '2025-10-10',
+                kontoType: 'MØDREKVOTE',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+            {
+                fom: '2025-10-13',
+                tom: '2025-11-21',
+                kontoType: 'FELLESPERIODE',
+                resultat: {
+                    innvilget: false,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: 'AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER',
+                },
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+            {
+                fom: '2025-11-24',
+                tom: '2026-01-02',
+                kontoType: 'FELLESPERIODE',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+        ],
+        valgtStønadskvote: {
+            kontoer: [
+                { konto: 'MØDREKVOTE', dager: 75 },
+                { konto: 'FEDREKVOTE', dager: 75 },
+                { konto: 'FELLESPERIODE', dager: 80 },
+                { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
+            ],
+            minsteretter: MINSTERETTER,
+        },
+        erEndringssøknad: true,
+        erPeriodeneTilAnnenPartLåst: false,
+    },
+};

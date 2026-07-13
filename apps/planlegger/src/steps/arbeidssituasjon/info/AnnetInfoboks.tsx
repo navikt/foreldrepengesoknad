@@ -46,7 +46,7 @@ export const AnnetInfoboks = ({ erAlenesøker, fornavn, erSøker2 = false, erFar
                 <BodyShort>
                     <FormattedMessage
                         id="Arbeidssituasjon.Ingen.Infoboks.ManHarIkkeRett"
-                        values={{ minsteInntekt: formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2) }}
+                        values={{ minsteInntekt: formatCurrencyWithKr(Math.round(finnSisteGrunnbeløp(satser) / 2)) }}
                     />
                 </BodyShort>
                 {!erSøker2 && !erFarOgFar && (

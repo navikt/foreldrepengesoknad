@@ -3,36 +3,42 @@
     "main": "index.ts",
     "type": "module",
     "types": "index.ts",
+    "sideEffects": false,
+    "exports": {
+        ".": "./index.ts",
+        "./intl": "./src/intl/intlMessagesTest.ts"
+    },
     "scripts": {
         "eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
         "eslint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
         "prettier:fix": "prettier --write src",
         "tsc": "tsc --noEmit",
-        "tsc:watch": "tsc --noEmit --watch"
+        "tsc:watch": "tsc --noEmit --watch",
+        "clean": "rm -rf ./dist ./node_modules ./.turbo"
     },
     "dependencies": {
-        "@navikt/ds-react": "8.10.5",
+        "@navikt/ds-react": "catalog:",
         "@navikt/fp-types": "workspace:*",
-        "@tanstack/react-query": "5.100.10",
-        "@tanstack/react-query-devtools": "5.100.10",
-        "react": "19.2.6",
-        "react-dom": "19.2.6",
-        "react-intl": "10.1.6"
+        "@tanstack/react-query": "catalog:",
+        "@tanstack/react-query-devtools": "catalog:",
+        "react": "catalog:",
+        "react-dom": "catalog:",
+        "react-intl": "catalog:",
+        "typescript": "catalog:"
     },
     "devDependencies": {
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
-        "@storybook/react-vite": "10.3.6",
-        "@testing-library/jest-dom": "6.9.1",
-        "@types/react": "19.2.14",
-        "@types/react-dom": "19.2.3",
-        "eslint": "10.3.0",
-        "jsdom": "29.1.1",
-        "mockdate": "3.0.5",
-        "storybook": "10.3.6",
-        "typescript": "6.0.3",
-        "vite": "8.0.12",
-        "vitest": "4.1.6"
-    },
-    "packageManager": "pnpm@10.33.1"
+        "@storybook/react-vite": "catalog:",
+        "@testing-library/jest-dom": "catalog:",
+        "@types/node": "catalog:",
+        "@types/react": "catalog:",
+        "@types/react-dom": "catalog:",
+        "eslint": "catalog:",
+        "jsdom": "catalog:",
+        "mockdate": "catalog:",
+        "storybook": "catalog:",
+        "vite": "catalog:",
+        "vitest": "catalog:"
+    }
 }

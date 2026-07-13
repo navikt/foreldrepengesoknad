@@ -59,7 +59,7 @@ const getUttaksdagFraOgMedDato = (dato: string): string => {
  * Tar hensyn til stilling av klokken ved å gjøre om klokka til kl 12 før antall timer trekkes fra.
  * @param dato
  */
-export const getUttaksdagTilOgMedDato = (dato: string): string => {
+const getUttaksdagTilOgMedDato = (dato: string): string => {
     const d = dayjs(dato).toDate();
     const newDate = dato ? new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12) : dato;
     switch (getUkedag(dato)) {
@@ -125,6 +125,20 @@ const getFørsteUttaksdagForeldrepengerFørFødsel = (barnet: OmBarnetPlanlegger
     );
 };
 
+/**
+ * Første uttaksdag med foreldrepenger før fødsel, lagt 3 uker (15 uttaksdager) før
+ * familiehendelsedatoen. I motsetning til {@link getFørsteUttaksdagForeldrepengerFørFødsel} har
+ * denne ingen spesialhåndtering når barnet er født mer enn 3 uker før termin. Dette samsvarer med
+ * hvordan selve uttaksplanen (`deltUttak`) plasserer foreldrepenger-før-fødsel-perioden, slik at
+ * fordelingssliderens datoer blir like kalender- og listevisningen.
+ */
+const getStartdatoForeldrepengerFørFødsel = (familiehendelsedato: string): string => {
+    return trekkUttaksdagerFraDato(
+        getUttaksdagFraOgMedDato(familiehendelsedato),
+        ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5,
+    );
+};
+
 export type Uttaksdata = {
     familiehendelsedato: string;
     startdatoPeriode1: string;
@@ -154,7 +168,7 @@ const finnDeltUttaksdata = (
     const startdatoPeriode1 =
         erBarnetAdoptert(barnet) || hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR
             ? getUttaksdagFraOgMedDato(getUttaksdagFraOgMedDato(familiehendelsedato))
-            : getFørsteUttaksdagForeldrepengerFørFødsel(barnet);
+            : getStartdatoForeldrepengerFørFødsel(familiehendelsedato);
 
     const sluttdatoPeriode1 =
         hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR
@@ -317,7 +331,8 @@ interface LagForslagProps {
     erDeltUttak: boolean;
     famDato: string;
     tilgjengeligeStønadskvoter: KontoDto[];
-    fellesperiodeDagerMor: number | undefined;
+    fellesperiodeDagerFørsteForelder: number | undefined;
+    starterForelder?: 'MOR' | 'FAR_MEDMOR';
     erAdopsjon: boolean;
     erFarEllerMedmor: boolean;
     erMorUfør: boolean;
@@ -331,7 +346,8 @@ export const lagForslagTilPlan = ({
     erDeltUttak,
     famDato,
     tilgjengeligeStønadskvoter,
-    fellesperiodeDagerMor,
+    fellesperiodeDagerFørsteForelder,
+    starterForelder,
     erAdopsjon,
     erFarEllerMedmor,
     erMorUfør,
@@ -341,10 +357,20 @@ export const lagForslagTilPlan = ({
     farOgFar,
 }: LagForslagProps): PlanForslag => {
     if (erDeltUttak) {
-        const perioder = deltUttak({ famDato, tilgjengeligeStønadskvoter, fellesperiodeDagerMor, startdato });
+        const perioder = deltUttak({
+            famDato,
+            tilgjengeligeStønadskvoter,
+            fellesperiodeDagerFørsteForelder,
+            starterForelder,
+            startdato,
+        });
+        // søker1 = den valgte starteren (effektiv søker1), slik at splitten matcher effektiv-baserte navn og
+        // fellesperiodedager i oppsummeringen. starterForelder styrer også genereringsrekkefølgen i deltUttak.
+        const søker1Forelder = starterForelder ?? 'MOR';
+        const søker2Forelder = søker1Forelder === 'MOR' ? 'FAR_MEDMOR' : 'MOR';
         return {
-            søker1: perioder.filter((p) => p.forelder === 'MOR'),
-            søker2: perioder.filter((p) => p.forelder === 'FAR_MEDMOR'),
+            søker1: perioder.filter((p) => p.forelder === søker1Forelder),
+            søker2: perioder.filter((p) => p.forelder === søker2Forelder),
         };
     }
 
@@ -366,18 +392,19 @@ export const getSøkersPerioder = (
     erDeltUttak: boolean,
     gjeldendeUttaksplan: UttakPeriode_fpoversikt[],
     erFarEllerMedmor: boolean,
+    starterForelder?: 'MOR' | 'FAR_MEDMOR',
 ) => {
-    return erDeltUttak
-        ? gjeldendeUttaksplan.filter((p) => (erFarEllerMedmor ? p.forelder === 'FAR_MEDMOR' : p.forelder === 'MOR'))
-        : gjeldendeUttaksplan;
+    const søkersForelder = starterForelder ?? (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR');
+    return erDeltUttak ? gjeldendeUttaksplan.filter((p) => p.forelder === søkersForelder) : gjeldendeUttaksplan;
 };
 
 export const getAnnenpartsPerioder = (
     erDeltUttak: boolean,
     gjeldendeUttaksplan: UttakPeriode_fpoversikt[],
     erFarEllerMedmor: boolean,
+    starterForelder?: 'MOR' | 'FAR_MEDMOR',
 ) => {
-    return erDeltUttak
-        ? gjeldendeUttaksplan.filter((p) => (erFarEllerMedmor ? p.forelder === 'MOR' : p.forelder === 'FAR_MEDMOR'))
-        : [];
+    const søkersForelder = starterForelder ?? (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR');
+    const annenpartsForelder = søkersForelder === 'MOR' ? 'FAR_MEDMOR' : 'MOR';
+    return erDeltUttak ? gjeldendeUttaksplan.filter((p) => p.forelder === annenpartsForelder) : [];
 };

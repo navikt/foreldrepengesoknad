@@ -7,19 +7,19 @@
     "scripts": {
         "build": "esbuild ./src/index.ts --bundle --platform=node --format=cjs --outfile=dist/index.js",
         "tsc:watch": "tsc --noEmit --watch",
-        "start": "node ./server.js"
+        "start": "node ./server.js",
+        "clean": "rm -rf ./dist ./node_modules ./.turbo"
     },
     "dependencies": {
         "@navikt/fp-server-utils": "workspace:*",
-        "express": "5.2.1",
-        "http-proxy-middleware": "4.0.0"
+        "express": "catalog:",
+        "http-proxy-middleware": "catalog:"
     },
     "devDependencies": {
         "@navikt/fp-config-typescript": "workspace:*",
-        "@types/express": "5.0.6",
-        "@types/node": "24.10.1",
-        "esbuild": "0.28.0",
-        "typescript": "6.0.3"
-    },
-    "packageManager": "pnpm@10.33.1"
+        "@types/express": "catalog:",
+        "@types/node": "catalog:",
+        "esbuild": "catalog:",
+        "typescript": "catalog:"
+    }
 }

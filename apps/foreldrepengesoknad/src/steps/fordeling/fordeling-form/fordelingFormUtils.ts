@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import isString from 'lodash/isString';
 import { IntlShape } from 'react-intl';
 import { getVarighetString } from 'utils/dateUtils';
 
@@ -23,7 +22,7 @@ const validateMaxValueAntallUkerFellesperiode = (
 export const isValidAntallUkerFellesperiode =
     (intl: IntlShape, tilgjengeligeFellesperiodeDager: number, dagerInput: string | undefined) =>
     (value: string | number | undefined) => {
-        const ukerValue = isString(value) ? getNumberFromNumberInputValue(value) : value;
+        const ukerValue = typeof value === 'string' ? getNumberFromNumberInputValue(value) : value;
         const antallDager = getNumberFromNumberInputValue(dagerInput) ?? 0;
 
         if (ukerValue && ukerValue < 0) {
@@ -48,7 +47,7 @@ export const isValidAntallUkerFellesperiode =
 export const isValidAntallDagerFellesperiode =
     (intl: IntlShape, tilgjengeligeFellesperiodeDager: number, ukerInput: string | undefined) =>
     (value: string | number | undefined) => {
-        const dagerValue = isString(value) ? getNumberFromNumberInputValue(value) : value;
+        const dagerValue = typeof value === 'string' ? getNumberFromNumberInputValue(value) : value;
         const antallUker = getNumberFromNumberInputValue(ukerInput) ?? 0;
 
         if (dagerValue && dagerValue < 0) {

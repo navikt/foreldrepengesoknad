@@ -1,7 +1,17 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-type VarighetFormat = 'full' | 'normal';
+type VarighetFormat = 'full' | 'normal' | 'kompakt';
+
+const getSeparatorString = (intl: IntlShape, format: VarighetFormat): string => {
+    if (format === 'full') {
+        return intl.formatMessage({ id: 'varighet.separator--full' });
+    }
+    if (format === 'kompakt') {
+        return intl.formatMessage({ id: 'varighet.separator--kompakt' });
+    }
+    return intl.formatMessage({ id: 'varighet.separator--normal' });
+};
 
 export const getVarighetString = (antallDager: number, intl: IntlShape, format: VarighetFormat = 'full'): string => {
     const { uker, dager } = getUkerOgDagerFromDager(Math.abs(antallDager));
@@ -16,15 +26,7 @@ export const getVarighetString = (antallDager: number, intl: IntlShape, format: 
     }
     const ukerStr = intl.formatMessage({ id: 'varighet.uker' }, { uker });
     if (dager > 0) {
-        const text =
-            format === 'full'
-                ? intl.formatMessage({
-                      id: `varighet.separator--full`,
-                  })
-                : intl.formatMessage({
-                      id: `varighet.separator--normal`,
-                  });
-        return `${ukerStr}${text}${dagerStr}`;
+        return `${ukerStr}${getSeparatorString(intl, format)}${dagerStr}`;
     }
     return ukerStr;
 };

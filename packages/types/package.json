@@ -11,16 +11,16 @@
         "update-swagger": "node scripts/hent-openapi-spec.js",
         "generate:local": "pnpm run update-swagger lokal && openapi-ts",
         "generate": "pnpm run update-swagger && openapi-ts",
-        "openapi-ts": "openapi-ts"
+        "openapi-ts": "openapi-ts",
+        "clean": "rm -rf ./dist ./node_modules ./.turbo"
     },
     "dependencies": {
         "@navikt/fp-constants": "workspace:*"
     },
     "devDependencies": {
-        "@hey-api/openapi-ts": "0.97.1",
+        "@hey-api/openapi-ts": "0.99.0",
         "@navikt/fp-config-eslint": "workspace:*",
-        "eslint": "10.3.0",
-        "typescript": "6.0.3"
-    },
-    "packageManager": "pnpm@10.33.1"
+        "eslint": "catalog:",
+        "typescript": "catalog:"
+    }
 }

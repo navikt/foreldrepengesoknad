@@ -4,22 +4,30 @@
     "type": "module",
     "types": "index.ts",
     "scripts": {
+        "test": "vitest --project=jsdom --watch=false",
+        "test:browser": "vitest --project=browser",
         "eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
         "eslint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
         "prettier:fix": "prettier --write src",
         "tsc": "tsc --noEmit",
-        "tsc:watch": "tsc --noEmit --watch"
+        "tsc:watch": "tsc --noEmit --watch",
+        "clean": "rm -rf ./dist ./node_modules ./.turbo ./.storybook-static-build"
     },
     "dependencies": {
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
-        "dayjs": "1.11.20"
+        "dayjs": "catalog:"
     },
     "devDependencies": {
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
-        "eslint": "10.3.0",
-        "typescript": "6.0.3"
-    },
-    "packageManager": "pnpm@10.33.1"
+        "@navikt/fp-config-vite": "workspace:*",
+        "@testing-library/jest-dom": "catalog:",
+        "@types/node": "catalog:",
+        "eslint": "catalog:",
+        "jsdom": "catalog:",
+        "typescript": "catalog:",
+        "vite": "catalog:",
+        "vitest": "catalog:"
+    }
 }

@@ -31,10 +31,10 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
         });
 
         if (arbeidsforholdOgInntekt.harHattAndreInntektskilder) {
-            return navigator.goToNextStep(SøknadRoutes.ANDRE_INNTEKTER);
+            return navigator.goToStep(SøknadRoutes.ANDRE_INNTEKTER);
         }
 
-        return navigator.goToNextDefaultStep();
+        return navigator.goToNextStep();
     };
 
     return (
@@ -46,6 +46,7 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
                 onFortsettSenere={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
+                onStepChange={navigator.goToStep}
                 appOrigin="foreldrepengesoknad"
             />
         </SkjemaRotLayout>

@@ -1,12 +1,15 @@
 import * as Sentry from '@sentry/browser';
 
+import {
+    DISTRIBUTOR_PATTERN,
+    DOM_OVERSETTELSE_FEIL,
+    harDistributorStacktrace,
+    harUtenforstaendeKodeOpprinnelse,
+} from './filterUtils';
+
 type InitSentryOptions = {
     dsn: string;
 };
-/**
- * personbruker/decorator-next -> feil fra dekoratøren
- */
-const FEIL_VI_VIL_LUKE_BORT = ['personbruker/decorator-next'];
 
 export const initSentry = ({ dsn }: InitSentryOptions) => {
     if (import.meta.env.MODE === 'development') {
@@ -31,30 +34,34 @@ export const initSentry = ({ dsn }: InitSentryOptions) => {
                 return null;
             }
 
+            if (feilFraDomOversettelse(event)) {
+                return null;
+            }
+
+            if (feilFraHasFocus(event)) {
+                return null;
+            }
+
             return event;
         },
     });
 };
 
 /**
- * Sjekker først om stacktrace kommer fra en assets fil. Feks "/foreldrepenger/soknad/assets/index-66kDgVTH.js"
- * Disse kan også matche dekoratøren. Så gjør deretter en sjekk om dekoratøren er involvert
+ * 401 skaper mye støy da det er naturlig at folk sine sesjoner utløper. De blir da automatisk redirected til login, og ser ikke feilen engang
+ */
+const feilVarSomFølgeAvEn401Handling = (event: Sentry.ErrorEvent) => {
+    return (event.breadcrumbs ?? []).some((breadcrumb) => breadcrumb.data?.status_code === 401);
+};
+
+/**
+ * Sjekker om minst én exception har stacktrace uten opprinnelse i vår kode.
+ * Se harUtenforstaendeKodeOpprinnelse for detaljert logikk.
  */
 const feilUtenOpprinnelseIVårKode = (event: Sentry.ErrorEvent) => {
     return (event.exception?.values ?? []).some((ex) => {
-        return ex.stacktrace?.frames?.some((frame) => {
-            const assetFrame = frame.filename && /\/assets\/.*\.js$/.test(frame.filename);
-
-            if (assetFrame) {
-                const erUønsketAssetFrame = FEIL_VI_VIL_LUKE_BORT.some((feil) => frame.filename?.includes(feil));
-                if (erUønsketAssetFrame) {
-                    return true;
-                }
-
-                return false;
-            }
-            return true;
-        });
+        const frames = ex.stacktrace?.frames;
+        return frames ? harUtenforstaendeKodeOpprinnelse(frames) : false;
     });
 };
 
@@ -63,26 +70,35 @@ const feilUtenOpprinnelseIVårKode = (event: Sentry.ErrorEvent) => {
  * Disse er ikke våre feil, og vi vil ikke ha dem i Sentry.
  */
 const feilFraBrowserExtensions = (event: Sentry.ErrorEvent) => {
-    const distributorPattern = /Request timeout \S*Distributor\.\S+/;
-
     const harDistributorBreadcrumbs = (event.breadcrumbs ?? []).some(
-        (breadcrumb) => breadcrumb.message && distributorPattern.test(breadcrumb.message),
+        (breadcrumb) => breadcrumb.message && DISTRIBUTOR_PATTERN.test(breadcrumb.message),
     );
 
-    const harDistributorStacktrace = (event.exception?.values ?? []).some((ex) =>
-        ex.stacktrace?.frames?.some(
-            (frame) =>
-                (frame.filename && distributorPattern.test(frame.filename)) ||
-                (frame.function && distributorPattern.test(frame.function)),
-        ),
-    );
+    const harDistributorIStack = (event.exception?.values ?? []).some((ex) => {
+        const frames = ex.stacktrace?.frames;
+        return frames ? harDistributorStacktrace(frames) : false;
+    });
 
-    return harDistributorBreadcrumbs || harDistributorStacktrace;
+    return harDistributorBreadcrumbs || harDistributorIStack;
 };
 
 /**
- * 401 skaper mye støy da det er naturlig at folk sine sesjoner utløper. De blir da automatisk redirected til login, og ser ikke feilen engang
+ * Nettleseren sine oversettelsesverktøy (f.eks. Google Translate / Chrome "oversett siden") bytter ut tekstnoder
+ * og pakker dem i egne elementer. Når React seinare skal avmontere subtreet, er noden ikkje lenger eit direkte barn
+ * av forelderen, og commit-fasen kastar "Failed to execute 'removeChild'/'insertBefore' on 'Node': The node ...
+ * is not a child of this node". Dette er ikkje vår feil og kan ikkje fiksast i koden vår, så vi luker det bort.
  */
-const feilVarSomFølgeAvEn401Handling = (event: Sentry.ErrorEvent) => {
-    return (event.breadcrumbs ?? []).some((breadcrumb) => breadcrumb.data?.status_code === 401);
+const feilFraDomOversettelse = (event: Sentry.ErrorEvent) => {
+    return (event.exception?.values ?? []).some((ex) => ex.value && DOM_OVERSETTELSE_FEIL.test(ex.value));
+};
+
+/**
+ * Enkelte nettlesere/innebygde nettlesere (typisk Mobile Safari / webview i apper) injiserer eller kaller `window.hasFocus()`,
+ * som ikke finnes (den standardiserte er `document.hasFocus()`). Dette skjer utenfor vår kode og gir mye støy i Sentry,
+ * så vi luker det bort. Feilmeldingen varierer litt mellom nettlesere (f.eks. `window.hasFocus`/`globalThis.hasFocus`).
+ */
+const HAS_FOCUS_FEIL = /\b(window|globalThis|self)\.hasFocus is not a function/i;
+
+const feilFraHasFocus = (event: Sentry.ErrorEvent) => {
+    return (event.exception?.values ?? []).some((ex) => ex.value && HAS_FOCUS_FEIL.test(ex.value));
 };

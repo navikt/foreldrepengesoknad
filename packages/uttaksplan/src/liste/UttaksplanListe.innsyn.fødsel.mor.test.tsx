@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 
 import * as stories from './UttaksplanListe.innsyn.fødsel.mor.stories';
 
-const { MorAleneOmOmsorg, PrematurUker } = composeStories(stories);
+const { MorAleneOmOmsorg, PrematurUker, AvslåttePerioder } = composeStories(stories);
 
 describe('<UttaksplanListe - innsyn - fødsel mor >', () => {
     it('Mor er alene om omsorg', async () => {
@@ -39,6 +39,29 @@ describe('<UttaksplanListe - innsyn - fødsel mor >', () => {
         ).toBeInTheDocument();
         expect(screen.getByText('Denne perioden kan ikke endres eller slettes.')).toBeInTheDocument();
 
+        expect(screen.queryByText('Endre')).not.toBeInTheDocument();
+        expect(screen.queryByText('Slett')).not.toBeInTheDocument();
+    });
+
+    it('Avslåtte perioder vises med korrekt tekst og er ikkje redigerbare', async () => {
+        render(<AvslåttePerioder />);
+
+        // Innvilga periode
+        expect(screen.getByText('01. sep. 25 - 10. okt. 25')).toBeInTheDocument();
+
+        // Avslått periode
+        expect(screen.getByText('13. okt. 25 - 21. nov. 25')).toBeInTheDocument();
+
+        // Innvilga periode etter avslått
+        expect(screen.getByText('24. nov. 25 - 02. jan. 26')).toBeInTheDocument();
+
+        // Opna den avslåtte perioden
+        await userEvent.click(screen.getByText('13. okt. 25 - 21. nov. 25'));
+
+        // Sjekk at innhaldet viser "Trekte dager" (vises både i header og i innhald)
+        expect(screen.getAllByText('Trekte dager').length).toBeGreaterThanOrEqual(1);
+
+        // Skal ikkje ha endre/slett-knappar
         expect(screen.queryByText('Endre')).not.toBeInTheDocument();
         expect(screen.queryByText('Slett')).not.toBeInTheDocument();
     });

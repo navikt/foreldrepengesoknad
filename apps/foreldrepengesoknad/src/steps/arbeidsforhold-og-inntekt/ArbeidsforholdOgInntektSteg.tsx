@@ -86,13 +86,13 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
         }
 
         if (valuesWithAndreInntekter.harJobbetSomFrilans) {
-            return navigator.goToNextStep(SøknadRoutes.FRILANS);
+            return navigator.goToStep(SøknadRoutes.FRILANS);
         }
         if (valuesWithAndreInntekter.harJobbetSomSelvstendigNæringsdrivende) {
-            return navigator.goToNextStep(SøknadRoutes.EGEN_NÆRING);
+            return navigator.goToStep(SøknadRoutes.EGEN_NÆRING);
         }
 
-        return navigator.goToNextDefaultStep();
+        return navigator.goToNextStep();
     };
 
     return (
@@ -109,6 +109,7 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
                 onFortsettSenere={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
+                onStepChange={navigator.goToStep}
                 appOrigin="foreldrepengesoknad"
             />
         </SkjemaRotLayout>

@@ -29,7 +29,7 @@ export const TidligereUtenlandsoppholdSteg = ({ arbeidsforhold, mellomlagreSøkn
         const nesteSide = utenlandsopphold.skalBoUtenforNorgeNeste12Mnd
             ? SøknadRoutes.SENERE_UTENLANDSOPPHOLD
             : SøknadRoutes.ARBEID_OG_INNTEKT;
-        return navigator.goToNextStep(nesteSide);
+        return navigator.goToStep(nesteSide);
     };
 
     return (
@@ -41,6 +41,7 @@ export const TidligereUtenlandsoppholdSteg = ({ arbeidsforhold, mellomlagreSøkn
                 onFortsettSenere={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
+                onStepChange={navigator.goToStep}
             />
         </SkjemaRotLayout>
     );

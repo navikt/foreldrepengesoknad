@@ -117,7 +117,6 @@ export const Frilanser: Story = {
         arbeidsforhold: [],
         valgtTilretteleggingId: FRILANS_ID,
         frilans: {
-            jobberFremdelesSomFrilans: true,
             oppstart: '2024-01-01',
         },
     },

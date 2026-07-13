@@ -1,13 +1,13 @@
 import { DownloadIcon } from '@navikt/aksel-icons';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
 import { Button, Dialog, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
 import { Calendar, CalendarPeriod } from '@navikt/fp-ui';
 
 import { UttaksplanLegend } from '../legend/UttaksplanLegend';
+import { genererKalenderPdf } from './genererKalenderPdf';
 
 interface Props {
     perioderForKalendervisning: CalendarPeriod[];
@@ -27,25 +27,31 @@ export const KalenderPdf = ({
     const [isCreatingPdf, setIsCreatingPdf] = useState(false);
     const [antallKolonner, setAntallKolonner] = useState<1 | 2 | 3>(2);
 
-    const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+    const legendRef = useRef<HTMLDivElement>(null);
+    const kalenderRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        return () => clearTimeout(timeoutRef.current);
-    }, []);
+    const lastNedPdf = async () => {
+        const legendElement = legendRef.current;
+        const kalenderElement = kalenderRef.current;
+        if (!legendElement || !kalenderElement) {
+            return;
+        }
 
-    const pdfOptions = {
-        filename: 'Min foreldrepengeplan.pdf',
-        resolution: Resolution.NORMAL,
-        page: {
-            margin: Margin.MEDIUM,
-        },
-        overrides: {
-            canvas: {
-                windowWidth: 1200,
-            },
-        },
-    } satisfies Options;
-    const { toPDF, targetRef } = usePDF(pdfOptions);
+        setIsCreatingPdf(true);
+        try {
+            await genererKalenderPdf({
+                legendElement,
+                kalenderElement,
+                antallKolonner,
+                filename: 'Min foreldrepengeplan.pdf',
+            });
+        } catch {
+            // Generering feila (t.d. fordi dialogen blei lukka undervegs).
+            // Brukaren ser berre at lastestatus forsvinn – ingen krasj.
+        } finally {
+            setIsCreatingPdf(false);
+        }
+    };
 
     return (
         <Dialog>
@@ -80,16 +86,7 @@ export const KalenderPdf = ({
                                     variant="primary"
                                     icon={<DownloadIcon aria-hidden />}
                                     loading={isCreatingPdf}
-                                    onClick={() => {
-                                        setIsCreatingPdf(true);
-
-                                        toPDF();
-
-                                        // Kun for visuell feedback til bruker
-                                        timeoutRef.current = setTimeout(() => {
-                                            setIsCreatingPdf(false);
-                                        }, 500);
-                                    }}
+                                    onClick={() => void lastNedPdf()}
                                     type="button"
                                 >
                                     <FormattedMessage id="kalender.lastNed" />
@@ -101,18 +98,22 @@ export const KalenderPdf = ({
                                 </Dialog.CloseTrigger>
                             </HStack>
                         </VStack>
-                        <VStack gap="space-24" ref={targetRef}>
-                            <UttaksplanLegend
-                                perioderForKalendervisning={perioderForKalendervisning}
-                                readOnly
-                                barnehagestartdato={barnehagestartdato}
-                            />
-                            <Calendar
-                                periods={perioderForKalendervisning}
-                                nrOfColumns={antallKolonner}
-                                firstDateInCalendar={førsteDatoIKalender}
-                                lastDateInCalendar={sisteDatoIKalender}
-                            />
+                        <VStack gap="space-24">
+                            <div ref={legendRef}>
+                                <UttaksplanLegend
+                                    perioderForKalendervisning={perioderForKalendervisning}
+                                    readOnly
+                                    barnehagestartdato={barnehagestartdato}
+                                />
+                            </div>
+                            <div ref={kalenderRef}>
+                                <Calendar
+                                    periods={perioderForKalendervisning}
+                                    nrOfColumns={antallKolonner}
+                                    firstDateInCalendar={førsteDatoIKalender}
+                                    lastDateInCalendar={sisteDatoIKalender}
+                                />
+                            </div>
                         </VStack>
                     </VStack>
                 </Dialog.Body>

@@ -10,9 +10,9 @@ export const uiMessages = {
 
 export { SkjemaRotLayout } from './src/skjema-rotlayout/SkjemaRotLayout';
 export { ErrorBoundary } from './src/error/ErrorBoundary';
-export { ErrorSummaryFp } from './src/error/ErrorSummaryFp';
+export { ErrorSummaryFelles } from './src/error/ErrorSummaryFelles';
 export { SimpleErrorPage } from './src/error/SimpleErrorPage';
-export type { ErrorSummaryError } from './src/error/ErrorSummaryFp';
+export type { ErrorSummaryError } from './src/error/ErrorSummaryFelles';
 export { ErrorPage } from './src/error/ErrorPage';
 export { StepButtons } from './src/step/StepButtons';
 export { ScanDocumentInfo } from './src/scan-document-info/ScanDocumentInfo';
@@ -22,6 +22,17 @@ export { IntlProvider } from './src/intl/IntlProvider';
 export { Step } from './src/step/page-step/Step';
 export { StepFooter } from './src/step/page-step/step-footer/StepFooter';
 export { ProgressStepper } from './src/step/progress-stepper/ProgressStepper';
+export { Card } from './src/card/Card';
+export type { CardProps } from './src/card/Card';
+export { CardIconCircle } from './src/card/CardIconCircle';
+export { CardEmptyIndicator } from './src/card/CardEmptyIndicator';
+export { CardBadge } from './src/card/CardBadge';
+export { CardChip } from './src/card/CardChip';
+export { CardLabel } from './src/card/CardLabel';
+export { CardDate } from './src/card/CardDate';
+export { CardBody } from './src/card/CardBody';
+export { CardActions } from './src/card/CardActions';
+export type { CardSize, CardTone, CardStateTone } from './src/card/types';
 export { Calendar } from './src/calendar/Calendar';
 export { CalendarLabel } from './src/calendar/label/CalendarLabel';
 export type { CalendarPeriodColor } from './src/calendar/types/CalendarPeriodColor';
@@ -40,3 +51,11 @@ export { Spinner } from './src/loaders/Spinner';
 export { Slider } from './src/slider/Slider';
 export { PeriodLabel } from './src/period-label/PeriodLabel';
 export { SamtykkePanel } from './src/samtykke-panel/SamtykkePanel';
+export { DekningsgradUtbetalingEksempel } from './src/dekningsgrad-utbetaling-eksempel/DekningsgradUtbetalingEksempel';
+export { KvoteProgresjonRing } from './src/kvote-progresjon-ring/KvoteProgresjonRing';
+export type {
+    KvoteProgresjonRingProps,
+    KvoteTone,
+    KvoteRingSize,
+    KvoteProgresjonRingSplitInfo,
+} from './src/kvote-progresjon-ring/KvoteProgresjonRing';

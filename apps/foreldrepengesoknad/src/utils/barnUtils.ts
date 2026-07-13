@@ -3,8 +3,7 @@ import utc from 'dayjs/plugin/utc';
 import { IntlShape } from 'react-intl';
 
 import { DDMMMMYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { Barn, FpBarnDto_fpoversikt, isFødtBarn, isUfødtBarn } from '@navikt/fp-types';
-import { isIkkeUtfyltTypeBarn } from '@navikt/fp-types/src/Barn';
+import { Barn, FpBarnDto_fpoversikt, isFødtBarn, isIkkeUtfyltTypeBarn, isUfødtBarn } from '@navikt/fp-types';
 
 dayjs.extend(utc);
 

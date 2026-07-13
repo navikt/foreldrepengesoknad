@@ -102,7 +102,6 @@ const SENERE_UTENLANDSOPPHOLD = [
 ] satisfies UtenlandsoppholdPeriode[];
 
 const FRILANS = {
-    jobberFremdelesSomFrilans: true,
     oppstart: '2024-01-01',
 } satisfies Frilans;
 
@@ -240,8 +239,6 @@ const getWrapper =
         </IntlProvider>
     );
 
-vi.mock('ky');
-
 describe('useFpSendSøknad', () => {
     afterEach(() => {
         vi.restoreAllMocks();
@@ -249,11 +246,10 @@ describe('useFpSendSøknad', () => {
     });
 
     it('skal sende inn korrekt søknad', async () => {
-        const postMock = vi.mocked(ky.post);
-        postMock.mockReturnValue({
+        const postMock = vi.spyOn(ky, 'post').mockReturnValue({
             json: () => Promise.resolve(),
         } as ResponsePromise<void>);
-        const deleteMock = vi.mocked(ky.delete);
+        const deleteMock = vi.spyOn(ky, 'delete').mockReturnValue(undefined as unknown as ResponsePromise<unknown>);
 
         const erEndringssøknad = false;
         const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, erEndringssøknad, saker), {
@@ -279,7 +275,6 @@ describe('useFpSendSøknad', () => {
                         },
                     ],
                     frilans: {
-                        jobberFremdelesSomFrilans: true,
                         oppstart: '2024-01-01',
                     },
                     egenNæring: {
@@ -344,11 +339,10 @@ describe('useFpSendSøknad', () => {
     });
 
     it('skal sende inn korrekt endringssøknad', async () => {
-        const postMock = vi.mocked(ky.post);
-        postMock.mockReturnValue({
+        const postMock = vi.spyOn(ky, 'post').mockReturnValue({
             json: () => Promise.resolve(),
         } as ResponsePromise<void>);
-        const deleteMock = vi.mocked(ky.delete);
+        const deleteMock = vi.spyOn(ky, 'delete').mockReturnValue(undefined as unknown as ResponsePromise<unknown>);
 
         const erEndringssøknad = true;
         const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, erEndringssøknad, saker), {

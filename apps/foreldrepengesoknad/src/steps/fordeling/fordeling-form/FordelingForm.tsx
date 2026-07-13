@@ -1,6 +1,6 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
-import isEqual from 'lodash/isEqual';
+import { isEqual } from 'es-toolkit';
 import { useForm } from 'react-hook-form';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { Fordeling } from 'types/Fordeling';

@@ -5,7 +5,7 @@ import { ContextDataType } from 'appData/PlanleggerDataContext';
 
 import * as stories from './HvemPlanleggerSteg.stories';
 
-const { Default } = composeStories(stories);
+const { Default, MedEksisterendeData } = composeStories(stories);
 
 describe('<HvemPlanleggerSteg>', () => {
     it('skal planlegge for mor og far', async () => {
@@ -140,5 +140,34 @@ describe('<HvemPlanleggerSteg>', () => {
 
         expect(await screen.findByText('Aleneomsorg')).toBeInTheDocument();
         expect(screen.getByText(/Å ha aleneomsorg betyr/)).toBeInTheDocument();
+    });
+
+    it('skal slette all kontekstdata når hvem-type endres', async () => {
+        const gåTilNesteSide = vi.fn();
+
+        render(<MedEksisterendeData gåTilNesteSide={gåTilNesteSide} />);
+
+        expect(await screen.findAllByText('Hvem planlegger?')).toHaveLength(2);
+
+        await userEvent.click(screen.getByText('Mor og medmor'));
+
+        await userEvent.click(screen.getByText('Neste'));
+
+        const dispatchedActions = gåTilNesteSide.mock.calls.map((call) => call[0]);
+
+        expect(dispatchedActions).toContainEqual({ type: 'update', key: ContextDataType.OM_BARNET, data: undefined });
+        expect(dispatchedActions).toContainEqual({
+            type: 'update',
+            key: ContextDataType.ARBEIDSSITUASJON,
+            data: undefined,
+        });
+        expect(dispatchedActions).toContainEqual({
+            type: 'update',
+            key: ContextDataType.HVOR_LANG_PERIODE,
+            data: undefined,
+        });
+        expect(dispatchedActions).toContainEqual({ type: 'update', key: ContextDataType.FORDELING, data: undefined });
+        expect(dispatchedActions).toContainEqual({ type: 'update', key: ContextDataType.HVOR_MYE, data: undefined });
+        expect(dispatchedActions).toContainEqual({ type: 'update', key: ContextDataType.UTTAKSPLAN, data: undefined });
     });
 });

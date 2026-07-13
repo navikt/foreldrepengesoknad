@@ -1,57 +1,18 @@
-import dayjs from 'dayjs';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Alert, BodyShort, Button, Detail, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react';
-
-import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
-import { erDetReadonlyPerioderEtterValgtePerioder } from '../../utils/periodeUtils';
+import { BodyShort, Button, Detail, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
 interface Props {
-    valgtePerioder: Array<{ fom: string; tom: string }>;
-    erFerie: boolean;
-    erGradert: boolean;
     setVisEndreEllerForskyvPanel: (skalVisPanel: boolean) => void;
     leggTilEllerForskyvPeriode: (skalForskyve: boolean) => void;
 }
 
 export const LeggTilPeriodeForskyvEllerErstattPanel = ({
-    valgtePerioder,
-    erFerie,
-    erGradert,
     setVisEndreEllerForskyvPanel,
     leggTilEllerForskyvPeriode,
 }: Props) => {
-    const {
-        familiesituasjon,
-        familiehendelsedato,
-        uttakPerioder,
-        erPeriodeneTilAnnenPartLåst,
-        foreldreInfo: { søker },
-    } = useUttaksplanData();
-
     const [skalForskyvePeriode, setSkalForskyvePeriode] = useState<boolean | undefined>(undefined);
-
-    const harPeriodeFørFamiliehendelsedato = valgtePerioder.some((p) => dayjs(p.fom).isBefore(familiehendelsedato));
-    const harPeriodeFørSeksUkerEtterFamiliehendelsedato =
-        erFerie || erGradert
-            ? UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
-                  valgtePerioder,
-                  familiehendelsedato,
-              )
-            : false;
-
-    const forelderSomHarLåstePerioder = erPeriodeneTilAnnenPartLåst
-        ? søker === 'MOR'
-            ? 'FAR_MEDMOR'
-            : 'MOR'
-        : undefined;
-    const harSenerePerioderSomErReadonly = erDetReadonlyPerioderEtterValgtePerioder(
-        uttakPerioder,
-        valgtePerioder,
-        forelderSomHarLåstePerioder,
-    );
 
     return (
         <VStack gap="space-16">
@@ -60,14 +21,7 @@ export const LeggTilPeriodeForskyvEllerErstattPanel = ({
                 description={<FormattedMessage id="RedigeringPanel.HvaSkalSkjeBeskrivelse" />}
                 onChange={(value: boolean) => setSkalForskyvePeriode(value)}
             >
-                <Radio
-                    value={true}
-                    disabled={
-                        harSenerePerioderSomErReadonly ||
-                        (familiesituasjon !== 'adopsjon' &&
-                            (harPeriodeFørSeksUkerEtterFamiliehendelsedato || harPeriodeFørFamiliehendelsedato))
-                    }
-                >
+                <Radio value={true}>
                     <VStack gap="space-4">
                         <BodyShort>
                             <FormattedMessage id="RedigeringPanel.FlyttPlanen" />
@@ -92,40 +46,25 @@ export const LeggTilPeriodeForskyvEllerErstattPanel = ({
                     </VStack>
                 </Radio>
             </RadioGroup>
-            {harSenerePerioderSomErReadonly && (
-                <Alert variant="info">
-                    <FormattedMessage id="RedigeringPanel.SenerePerioderReadonly" />
-                </Alert>
-            )}
-            {familiesituasjon !== 'adopsjon' && harPeriodeFørSeksUkerEtterFamiliehendelsedato && (
-                <Alert variant="info">
-                    <FormattedMessage id="RedigeringPanel.ValgtDagerFørSeksUkerEtterFamDato" />
-                </Alert>
-            )}
-            {familiesituasjon !== 'adopsjon' &&
-                !harPeriodeFørSeksUkerEtterFamiliehendelsedato &&
-                harPeriodeFørFamiliehendelsedato && (
-                    <Alert variant="info">
-                        <FormattedMessage id="RedigeringPanel.ValgtDagerFørFamiliehendelsesdato" />
-                    </Alert>
-                )}
-            <HStack justify="space-between">
+            <HStack gap="space-12" className="w-full">
                 <Button
                     type="button"
                     variant="primary"
                     size="small"
+                    className="flex-1"
                     onClick={() => leggTilEllerForskyvPeriode(skalForskyvePeriode ?? false)}
                     disabled={skalForskyvePeriode === undefined}
                 >
-                    <FormattedMessage id="RedigeringPanel.Fortsett" />
+                    <FormattedMessage id="RedigeringPanel.LeggTilPeriode" />
                 </Button>
                 <Button
                     type="button"
                     variant="secondary"
                     size="small"
+                    className="flex-1"
                     onClick={() => setVisEndreEllerForskyvPanel(false)}
                 >
-                    <FormattedMessage id="RedigeringPanel.LukkRedigeringsmodus" />
+                    <FormattedMessage id="RedigeringPanel.LeggTilPeriode.Tilbake" />
                 </Button>
             </HStack>
         </VStack>

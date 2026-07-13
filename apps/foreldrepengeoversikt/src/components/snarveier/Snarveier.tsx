@@ -6,21 +6,20 @@ import { links } from '@navikt/fp-constants';
 import { Ytelse } from '@navikt/fp-types';
 
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
-import { NavRoutes } from '../../routes/routes';
 import { Sak } from '../../types/Sak';
 import { LenkePanel } from '../lenke-panel/LenkePanel';
 
 const getLesMerLink = (stønadstype: Ytelse | undefined) => {
     if (stønadstype === 'FORELDREPENGER') {
-        return NavRoutes.LES_MER_OM_FORELDREPENGER;
+        return links.foreldrepenger;
     }
     if (stønadstype === 'SVANGERSKAPSPENGER') {
-        return NavRoutes.LES_MER_OM_SVANGERSKAPSPENGER;
+        return links.svangerskapspenger;
     }
     if (stønadstype === 'ENGANGSSTØNAD') {
-        return NavRoutes.LES_MER_OM_ENGANGSTØNAD;
+        return links.engangsstonad;
     }
-    return NavRoutes.LES_MER_OM_VÅRE_PENGESTØTTER;
+    return links.barn;
 };
 
 const getKlageLinkMedSak = (ytelse: Ytelse | undefined, sak: Sak) => {
@@ -37,34 +36,34 @@ const getKlageLinkMedSak = (ytelse: Ytelse | undefined, sak: Sak) => {
 
 const getKlageLink = (ytelse: Ytelse | undefined) => {
     if (ytelse === 'ENGANGSSTØNAD') {
-        return NavRoutes.KLAGERETTIGHETER_ES;
+        return links.klagerettigheterEs;
     }
 
     if (ytelse === 'SVANGERSKAPSPENGER') {
-        return NavRoutes.KLAGERETTIGHETER_SVP;
+        return links.klagerettigheterSvp;
     }
 
     if (ytelse === 'FORELDREPENGER') {
-        return NavRoutes.KLAGERETTIGHETER_FP;
+        return links.klagerettigheterFp;
     }
 
-    return NavRoutes.KLAGERETTIGHETER;
+    return links.klagerettigheter;
 };
 
 const getSaksbehandlingstidLink = (ytelse: Ytelse | undefined) => {
     if (ytelse === 'ENGANGSSTØNAD') {
-        return NavRoutes.SAKSBEHANDLINGSTIDER_ES;
+        return links.saksbehandlingstiderEs;
     }
 
     if (ytelse === 'SVANGERSKAPSPENGER') {
-        return NavRoutes.SAKSBEHANDLINGSTIDER_SVP;
+        return links.saksbehandlingstiderSvp;
     }
 
     if (ytelse === 'FORELDREPENGER') {
-        return NavRoutes.SAKSBEHANDLINGSTIDER_FP;
+        return links.saksbehandlingstiderFp;
     }
 
-    return NavRoutes.SAKSBEHANDLINGSTIDER;
+    return links.saksbehandlingstider;
 };
 
 export const Snarveier = () => {
@@ -91,7 +90,7 @@ export const Snarveier = () => {
                         tittel={intl.formatMessage({ id: 'snarveier.saksbehandlingstider' })}
                     />
                     <LenkePanel
-                        to={NavRoutes.MELD_FRA_OM_ENDRINGER}
+                        to={links.meldFraOmEndringer}
                         tittel={intl.formatMessage({ id: 'snarveier.endringerIDinSituasjon' })}
                     />
                     {currentSak ? (

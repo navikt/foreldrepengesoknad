@@ -9,24 +9,40 @@ on:
       - '.deploy/engangsstonad/**'
       - '.deploy/naiserator.yaml'
       - '.github/workflows/build-engangsstonad.yml'
+      - '.github/workflows/build.yml'
+      - 'turbo.json'
       - 'Dockerfile'
-      - 'docker-bake.hcl'
       - 'pnpm-lock.yaml'
 
 jobs:
   build-app:
     name: Build
     permissions:
+      contents: read
       packages: write
       id-token: write
-    uses: navikt/fp-gha-workflows/.github/workflows/build-docker-bake.yml@main
+    uses: ./.github/workflows/build.yml
     with:
       runs-on: 'ubuntu-latest-4-cores' # default: ubuntu-latest
       push-image: ${{ github.ref_name == 'master' }} # default: false
-      bake-target: 'engangsstonad'
+      app: engangsstonad
+      image_suffix: '/engangsstonad'
     secrets:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+
+  upload-to-CDN:
+    name: Upload assets to CDN
+    if: github.ref_name == 'master'
+    needs: build-app
+    permissions:
+      contents: read
+      id-token: write
+    uses: navikt/fp-gha-workflows/.github/workflows/cdn-upload.yml@main
+    with:
+      image: ${{ needs.build-app.outputs.build-version }}
+      image_suffix: '/engangsstonad'
+      destination: '/engangsstonad/soknad'
 
   deploy-dev:
     name: Deploy dev

@@ -1,11 +1,11 @@
 import { BlueRadioGroup } from 'components/form-wrappers/BlueRadioGroup';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 
 import { Radio, VStack } from '@navikt/ds-react';
 
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { isRequired } from '@navikt/fp-validation';
 
 import { ErFødtPanel } from './ErFødtPanel';
@@ -18,7 +18,12 @@ type Props = {
     scrollToBottom: () => void;
 };
 
-export const Fødsel = ({ hvemPlanlegger, erOmBarnetPlanleggerIkkeOppgittFraFør, antallBarn, scrollToBottom }: Props) => {
+export const Fødsel = ({
+    hvemPlanlegger,
+    erOmBarnetPlanleggerIkkeOppgittFraFør,
+    antallBarn,
+    scrollToBottom,
+}: Props) => {
     const intl = useIntl();
 
     const formMethods = useFormContext<OmBarnetPlanlegger>();

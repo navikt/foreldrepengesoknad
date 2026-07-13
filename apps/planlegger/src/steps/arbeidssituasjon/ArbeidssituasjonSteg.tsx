@@ -15,8 +15,7 @@ import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Satser } from '@navikt/fp-types';
-import { formatCurrencyWithKr } from '@navikt/fp-utils';
-import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
+import { formatCurrencyWithKr, useScrollBehaviour } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { AnnetInfoboks } from './info/AnnetInfoboks';
@@ -79,7 +78,7 @@ export const ArbeidssituasjonSteg = ({ satser }: Props) => {
 
     const { ref, scrollToBottom } = useScrollBehaviour();
 
-    const minsteInntekt = formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2);
+    const minsteInntekt = formatCurrencyWithKr(Math.round(finnSisteGrunnbeløp(satser) / 2));
 
     return (
         <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>

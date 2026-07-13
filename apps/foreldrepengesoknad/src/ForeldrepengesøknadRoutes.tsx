@@ -1,13 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAnnenPartVedtakOptions } from 'api/queries';
-import { SøknadRoutes, isRouteAvailable } from 'appData/routes';
+import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
+import { SøknadRoutes } from 'appData/routes';
 import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
 import { useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
 import { useSendSøknad } from 'appData/useSendSøknad';
 import { Forside } from 'pages/forside/Forside';
+import { Søknadsmetadata } from 'pages/forside/utils/useStartSøknad';
 import { KvitteringPage } from 'pages/kvittering/KvitteringPage';
-import { useEffect, useRef, useState } from 'react';
-import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { useCallback, useState } from 'react';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { AndreInntektskilderSteg } from 'steps/andre-inntektskilder/AndreInntektskilderSteg';
 import { AnnenForelderSteg } from 'steps/annen-forelder/AnnenForelderSteg';
 import { ArbeidsforholdOgInntektSteg } from 'steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg';
@@ -68,6 +70,7 @@ const renderSøknadRoutes = ({
                             mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                             avbrytSøknad={avbrytSøknad}
                             foreldrepengerSaker={foreldrepengerSaker}
+                            erEndringssøknad={erEndringssøknad}
                         />
                     }
                 />
@@ -164,6 +167,7 @@ const renderSøknadRoutes = ({
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                         foreldrepengerSaker={foreldrepengerSaker}
+                        erEndringssøknad={erEndringssøknad}
                     />
                 }
             />
@@ -267,7 +271,6 @@ const renderSøknadRoutes = ({
 };
 
 interface Props {
-    currentRoute: SøknadRoutes;
     søkerInfo: FpPersonopplysningerDto_fpoversikt;
     foreldrepengerSaker: FpSak_fpoversikt[];
     lagretErEndringssøknad?: boolean;
@@ -276,16 +279,13 @@ interface Props {
 }
 
 export const ForeldrepengesøknadRoutes = ({
-    currentRoute,
     søkerInfo,
     foreldrepengerSaker,
     lagretErEndringssøknad,
     lagretHarGodkjentVilkår,
     lagretSøknadGjelderNyttBarn,
 }: Props) => {
-    const navigate = useNavigate();
     const routerLocation = useLocation();
-    const isFirstTimeLoadingAppRef = useRef(true);
 
     const [harGodkjentVilkår, setHarGodkjentVilkår] = useState(lagretHarGodkjentVilkår || false);
     const [erEndringssøknad, setErEndringssøknad] = useState(lagretErEndringssøknad || false);
@@ -302,26 +302,28 @@ export const ForeldrepengesøknadRoutes = ({
 
     const avbrytSøknad = useAvbrytSøknad(setErEndringssøknad, setHarGodkjentVilkår, setSøknadGjelderNyttBarn);
 
+    const oppdaterSøknadsmetadata = useCallback((metadata: Søknadsmetadata) => {
+        setHarGodkjentVilkår(metadata.harGodkjentVilkår);
+        setErEndringssøknad(metadata.erEndringssøknad);
+        setSøknadGjelderNyttBarn(metadata.søknadGjelderNyttBarn);
+    }, []);
+
     // Hvis valgt barn kan vi forsøke hente termindato fra annenpartsvedtak.
     // Dette trengs ikke før i OmBarnet. Men om vi legger et query på rot for å prefetche så tidlig som mulig.
     const annenPartVedtakOptions = useAnnenPartVedtakOptions();
     useQuery(annenPartVedtakOptions);
 
-    useEffect(() => {
-        if (
-            currentRoute &&
-            erMyndig(søkerInfo.fødselsdato) &&
-            lagretHarGodkjentVilkår &&
-            isFirstTimeLoadingAppRef.current
-        ) {
-            isFirstTimeLoadingAppRef.current = false;
-            if (isRouteAvailable(currentRoute, lagretHarGodkjentVilkår)) {
-                void navigate(currentRoute);
-            } else if (routerLocation.pathname === SøknadRoutes.OPPSUMMERING.toString()) {
-                void navigate(SøknadRoutes.UTTAKSPLAN);
-            }
-        }
-    }, [currentRoute, søkerInfo.fødselsdato, lagretHarGodkjentVilkår, navigate, routerLocation.pathname]);
+    // APP_ROUTE er einaste sanning for kva steg brukaren er på, og blir alltid
+    // halden gyldig av stegnavigasjonen (data for steget finst når APP_ROUTE peikar
+    // dit). React Router monterer derimot steget ut frå URL-en allereie under
+    // render. Endrar nettlesarens tilbake/fram-knapp URL-en til eit anna, forelda
+    // steg, må vi difor snappe tilbake til APP_ROUTE *under render* – ein
+    // navigasjon i ein useEffect skjer for seint, då har det forelda steget
+    // allereie rendra og krasja på notEmpty(...). Stegvelgar og «Tilbake»-knappar
+    // navigerer via APP_ROUTE og held URL-en i synk. KVITTERING og IKKE_MYNDIG er
+    // unntatt: kvittering blir navigert til utan å oppdatere APP_ROUTE etter
+    // innsending.
+    const appRoute = useContextGetData(ContextDataType.APP_ROUTE);
 
     if (errorSendSøknad) {
         return (
@@ -333,6 +335,17 @@ export const ForeldrepengesøknadRoutes = ({
         );
     }
 
+    if (
+        appRoute &&
+        harGodkjentVilkår &&
+        erMyndig(søkerInfo.fødselsdato) &&
+        routerLocation.pathname !== appRoute.toString() &&
+        routerLocation.pathname !== SøknadRoutes.KVITTERING.toString() &&
+        routerLocation.pathname !== `/${SøknadRoutes.IKKE_MYNDIG}`
+    ) {
+        return <Navigate to={appRoute} replace />;
+    }
+
     return (
         <Routes>
             <Route
@@ -342,9 +355,7 @@ export const ForeldrepengesøknadRoutes = ({
                         saker={foreldrepengerSaker}
                         harGodkjentVilkår={harGodkjentVilkår}
                         søkerInfo={søkerInfo}
-                        setHarGodkjentVilkår={setHarGodkjentVilkår}
-                        setErEndringssøknad={setErEndringssøknad}
-                        setSøknadGjelderNyttBarn={setSøknadGjelderNyttBarn}
+                        oppdaterSøknadsmetadata={oppdaterSøknadsmetadata}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                     />
                 }

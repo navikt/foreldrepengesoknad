@@ -10,29 +10,30 @@
         "eslint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
         "prettier:fix": "prettier --write src",
         "tsc": "tsc --noEmit",
-        "tsc:watch": "tsc --noEmit --watch"
+        "tsc:watch": "tsc --noEmit --watch",
+        "clean": "rm -rf ./dist ./node_modules ./.turbo"
     },
     "dependencies": {
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-types": "workspace:*",
-        "dayjs": "1.11.20",
-        "i18n-iso-countries": "7.14.0",
-        "react": "19.2.6",
-        "react-intl": "10.1.6"
+        "dayjs": "catalog:",
+        "i18n-iso-countries": "catalog:",
+        "lz-string": "1.5.0",
+        "react": "catalog:",
+        "react-intl": "catalog:"
     },
     "devDependencies": {
-        "@formatjs/cli-lib": "8.6.0",
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
-        "@testing-library/jest-dom": "6.9.1",
-        "@types/react": "19.2.14",
-        "eslint": "10.3.0",
-        "fast-glob": "3.3.3",
-        "jsdom": "29.1.1",
-        "typescript": "6.0.3",
-        "vite": "8.0.12",
-        "vitest": "4.1.6"
-    },
-    "packageManager": "pnpm@10.33.1"
+        "@navikt/fp-utils-test": "workspace:*",
+        "@testing-library/jest-dom": "catalog:",
+        "@types/node": "catalog:",
+        "@types/react": "catalog:",
+        "eslint": "catalog:",
+        "jsdom": "catalog:",
+        "typescript": "catalog:",
+        "vite": "catalog:",
+        "vitest": "catalog:"
+    }
 }

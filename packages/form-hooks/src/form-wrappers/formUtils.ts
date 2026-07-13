@@ -15,9 +15,17 @@ export const getError = <T extends FieldValues>(
     errors: FieldErrors<T>,
     name: (string | undefined) & Path<T>,
 ): string | undefined => {
-    // @ts-expect-error Denne må ein testa før ein fjernar
-    const error = name.split('.').reduce((o, i) => (o !== undefined ? o[i] : o), errors);
-    // @ts-expect-error fiks
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return error?.message;
+    const error = name
+        .split('.')
+        .reduce<unknown>(
+            (node, key) => (node && typeof node === 'object' ? (node as Record<string, unknown>)[key] : undefined),
+            errors,
+        );
+
+    if (error && typeof error === 'object' && 'message' in error) {
+        const { message } = error as { message?: unknown };
+        return typeof message === 'string' ? message : undefined;
+    }
+
+    return undefined;
 };

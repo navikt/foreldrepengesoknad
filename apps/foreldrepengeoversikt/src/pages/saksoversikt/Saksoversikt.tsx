@@ -31,6 +31,7 @@ import { OversiktRoutes } from '../../routes/routes';
 import { DinPlan } from '../../sections/din-plan/DinPlan.tsx';
 import { Oppgaver } from '../../sections/oppgaver/Oppgaver';
 import { Tidslinje } from '../../sections/tidslinje/Tidslinje.tsx';
+import { TidslinjeSkeleton } from '../../sections/tidslinje/TidslinjeSkeleton.tsx';
 import { getNavnPåForeldre } from '../../utils/personUtils';
 import { getNavnAnnenForelder } from '../../utils/sakerUtils';
 import { getRelevantNyTidslinjehendelse } from '../../utils/tidslinjeUtils.ts';
@@ -133,7 +134,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                 <ContentSection
                     heading={intl.formatMessage({ id: 'saksoversikt.tidslinje' })}
                     showSkeleton={tidslinjeHendelserQuery.isPending || manglendeVedleggQuery.isPending}
-                    skeletonProps={{ height: '250px', variant: 'rounded' }}
+                    skeleton={<TidslinjeSkeleton ytelse={gjeldendeSak.ytelse} />}
                     className="mb-2"
                 >
                     <Tidslinje

@@ -14,7 +14,7 @@ import {
     SøkersituasjonFp,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { decodeBase64 } from '@navikt/fp-utils';
+import { decompressFromUrl } from '@navikt/fp-utils';
 
 import { ContextDataMap, ContextDataType } from './FpDataContext';
 
@@ -108,7 +108,11 @@ export const usePlanleggerDataFromUrl = (kjønn: Kjønn_fpoversikt | undefined):
             return null;
         }
         try {
-            const data = JSON.parse(decodeBase64(encoded)) as PlanleggerDataFromUrl;
+            const decompressed = decompressFromUrl(encoded);
+            if (!decompressed) {
+                return null;
+            }
+            const data = JSON.parse(decompressed) as PlanleggerDataFromUrl;
             return mapPlanleggerDataToSøknadState(data, kjønn);
         } catch {
             return null;
