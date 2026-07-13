@@ -1,15 +1,9 @@
-import {
-    type ExceptionEvent,
-    type Meta,
-    type TransportItem,
-    TransportItemType,
-    getWebInstrumentations,
-    initializeFaro,
-} from '@grafana/faro-web-sdk';
+import { init } from '@nais/apm';
 
 import {
     DISTRIBUTOR_PATTERN,
     DOM_OVERSETTELSE_FEIL,
+    type StackFrame,
     harDistributorStacktrace,
     harUtenforstaendeKodeOpprinnelse,
 } from './filterUtils';
@@ -23,7 +17,25 @@ type InitFaroOptions = {
     };
 };
 
-const customPageMeta: () => Pick<Meta, 'page'> = () => {
+type ExceptionPayload = {
+    type?: string;
+    value?: string;
+    stacktrace?: {
+        frames?: StackFrame[];
+    };
+};
+
+type FaroItem = {
+    type?: string;
+    payload?: ExceptionPayload;
+};
+
+type ExceptionItem = FaroItem & {
+    type: 'exception';
+    payload: ExceptionPayload;
+};
+
+const customPageMeta = () => {
     const regex = /(planleggerData=)[^&\s]+/;
 
     const result: string = regex.test(location.href) ? location.href.replace(regex, '$1*******') : location.href;
@@ -36,54 +48,43 @@ const customPageMeta: () => Pick<Meta, 'page'> = () => {
 };
 
 /**
- * Initialiserer Grafana Faro for frontend-observability i NAIS.
- * Se https://docs.nais.io/observability/frontend/how-to/setup-faro/
+ * Initialiserer @nais/apm (NAIS-wrapper rundt Faro) for frontend-observability.
+ * Se https://docs.nais.io/observability/apm/tutorials/track-frontend-errors/
  */
 export const initFaro = ({ app }: InitFaroOptions) => {
     if (import.meta.env.MODE === 'development') {
         return;
     }
 
-    // Samme image promoteres til dev-gcp og prod-gcp, så collector-URL må velges i
-    // runtime. dev-gcp bruker det eksterne dev-endepunktet, prod-gcp det ordinære.
-    // Se https://docs.nais.io/observability/frontend/reference/auto-configuration/
-    const erDevMiljo = globalThis.location.hostname.endsWith('dev.nav.no');
-    const url = erDevMiljo ? 'https://telemetry.ekstern.dev.nav.no/collect' : 'https://telemetry.nav.no/collect';
-
-    initializeFaro({
-        url,
-        paused: globalThis.location.hostname === 'localhost',
-        app: {
-            ...app,
-            // Brukes til å sammenligne metrikker på tvers av deploys.
-            version: import.meta.env.VITE_SENTRY_RELEASE,
+    init({
+        app: app.name,
+        namespace: app.namespace,
+        version: import.meta.env.VITE_SENTRY_RELEASE,
+        faro: {
+            metas: [customPageMeta],
         },
-        instrumentations: [...getWebInstrumentations()],
-        metas: [customPageMeta],
         beforeSend: (item) => {
-            if (item.type !== TransportItemType.EXCEPTION) {
+            if (!erExceptionItem(item)) {
                 return item;
             }
 
-            const exceptionItem = item as TransportItem<ExceptionEvent>;
-
-            if (feilVarSomFølgeAvEn401Handling(exceptionItem)) {
+            if (feilVarSomFølgeAvEn401Handling(item)) {
                 return null;
             }
 
-            if (feilUtenOpprinnelseIVårKode(exceptionItem)) {
+            if (feilUtenOpprinnelseIVårKode(item)) {
                 return null;
             }
 
-            if (feilFraBrowserExtensions(exceptionItem)) {
+            if (feilFraBrowserExtensions(item)) {
                 return null;
             }
 
-            if (feilFraDomOversettelse(exceptionItem)) {
+            if (feilFraDomOversettelse(item)) {
                 return null;
             }
 
-            if (feilFraHasFocus(exceptionItem)) {
+            if (feilFraHasFocus(item)) {
                 return null;
             }
 
@@ -96,10 +97,9 @@ export const initFaro = ({ app }: InitFaroOptions) => {
  * 401 skaper mye støy da det er naturlig at folk sine sesjoner utløper.
  * De blir da automatisk redirected til login, og ser ikke feilen engang.
  *
- * I Sentry filtrerer vi via breadcrumbs. Faro har ikke breadcrumbs på exception events,
- * så vi sjekker feilmeldingstype og -verdi direkte.
+ * @nais/apm eksponerer ikke breadcrumbs i beforeSend, så vi sjekker feilmeldingstype og -verdi direkte.
  */
-const feilVarSomFølgeAvEn401Handling = (item: TransportItem<ExceptionEvent>): boolean => {
+const feilVarSomFølgeAvEn401Handling = (item: ExceptionItem): boolean => {
     const { type, value } = item.payload;
 
     const unauthorizedPattern = /\b401\b|unauthorized/i;
@@ -111,16 +111,16 @@ const feilVarSomFølgeAvEn401Handling = (item: TransportItem<ExceptionEvent>): b
  * Sjekker om exception har stacktrace uten opprinnelse i vår kode.
  * Delegerer til felles harUtenforstaendeKodeOpprinnelse.
  */
-const feilUtenOpprinnelseIVårKode = (item: TransportItem<ExceptionEvent>): boolean => {
+const feilUtenOpprinnelseIVårKode = (item: ExceptionItem): boolean => {
     const frames = item.payload.stacktrace?.frames;
     return frames ? harUtenforstaendeKodeOpprinnelse(frames) : false;
 };
 
 /**
  * Nettleserutvidelser som f.eks. taleassistenter (Speech Assist) genererer mange "Request timeout ...Distributor.getValue"-feil.
- * Disse er ikke våre feil, og vi vil ikke ha dem i Faro.
+ * Disse er ikke våre feil, og vi vil ikke ha dem i @nais/apm/Faro.
  */
-const feilFraBrowserExtensions = (item: TransportItem<ExceptionEvent>): boolean => {
+const feilFraBrowserExtensions = (item: ExceptionItem): boolean => {
     const { type, value, stacktrace } = item.payload;
 
     if ((type && DISTRIBUTOR_PATTERN.test(type)) || (value && DISTRIBUTOR_PATTERN.test(value))) {
@@ -130,12 +130,21 @@ const feilFraBrowserExtensions = (item: TransportItem<ExceptionEvent>): boolean 
     return stacktrace?.frames ? harDistributorStacktrace(stacktrace.frames) : false;
 };
 
-const feilFraDomOversettelse = (item: TransportItem<ExceptionEvent>): boolean => {
+const feilFraDomOversettelse = (item: ExceptionItem): boolean => {
     return item.payload.value ? DOM_OVERSETTELSE_FEIL.test(item.payload.value) : false;
 };
 
 const HAS_FOCUS_FEIL = /\b(window|globalThis|self)\.hasFocus is not a function/i;
 
-const feilFraHasFocus = (item: TransportItem<ExceptionEvent>): boolean => {
+const feilFraHasFocus = (item: ExceptionItem): boolean => {
     return item.payload.value ? HAS_FOCUS_FEIL.test(item.payload.value) : false;
+};
+
+const erExceptionItem = (item: unknown): item is ExceptionItem => {
+    if (!item || typeof item !== 'object') {
+        return false;
+    }
+
+    const faroItem = item as FaroItem;
+    return faroItem.type === 'exception';
 };

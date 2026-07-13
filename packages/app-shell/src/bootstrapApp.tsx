@@ -10,7 +10,7 @@ import type { LocaleAll } from '@navikt/fp-types';
 export interface BootstrapAppOptions {
     /** Sentry DSN for appen. */
     sentryDsn: string;
-    /** App-navn for Faro frontend-observability. Må matche `metadata.name` i naiserator.yaml. */
+    /** App-navn for NAIS APM frontend-observability. Må matche `metadata.name` i naiserator.yaml. */
     appName: string;
     /** ID på DOM-noden React skal monteres i. Default `'app'`. */
     containerId?: string;
