@@ -39,6 +39,7 @@ const replaceNaisMetaTags = (html: string) => {
         { name: 'nais-app', content: process.env.NAIS_APP_NAME },
         { name: 'nais-team', content: process.env.NAIS_TEAM ?? process.env.NAIS_NAMESPACE },
         { name: 'nais-cluster', content: process.env.NAIS_CLUSTER_NAME },
+        { name: 'nais-version', content: process.env.NAIS_APP_IMAGE?.split(':').at(-1) },
     ];
 
     const tags = metaTags

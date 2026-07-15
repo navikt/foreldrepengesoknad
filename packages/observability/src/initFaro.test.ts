@@ -7,7 +7,6 @@ vi.mock('@nais/apm', () => ({
     init: vi.fn(),
 }));
 
-const APP = { name: 'engangsstonad', namespace: 'teamforeldrepenger' };
 const TOM_META = {};
 
 type ExceptionItem = {
@@ -31,18 +30,14 @@ describe('initFaro', () => {
     });
 
     describe('init-kall', () => {
-        it('setter opp @nais/apm med app/navnrom/version og beforeSend', () => {
-            vi.stubEnv('VITE_SENTRY_RELEASE', '1.2.3');
+        it('setter opp @nais/apm med beforeSend', () => {
             vi.stubGlobal('location', { href: 'https://www.nav.no/foreldrepenger/soknad' });
 
-            initFaro({ app: APP });
+            initFaro();
 
             expect(init).toHaveBeenCalledTimes(1);
             expect(init).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    app: APP.name,
-                    namespace: APP.namespace,
-                    version: '1.2.3',
                     beforeSend: expect.any(Function),
                     faro: expect.objectContaining({
                         metas: expect.any(Array),
@@ -54,7 +49,7 @@ describe('initFaro', () => {
         it('hopper over initialisering i development-modus', () => {
             vi.stubEnv('MODE', 'development');
 
-            initFaro({ app: APP });
+            initFaro();
 
             expect(init).not.toHaveBeenCalled();
         });
@@ -63,7 +58,7 @@ describe('initFaro', () => {
     describe('beforeSend – 401-filter (feilVarSomFølgeAvEn401Handling)', () => {
         it('beholder exceptions uten 401-relatert innhold', () => {
             vi.stubGlobal('location', { href: 'https://www.nav.no/foreldrepenger/soknad' });
-            initFaro({ app: APP });
+            initFaro();
 
             const beforeSend = hentBeforeSend();
 
@@ -82,7 +77,7 @@ describe('initFaro', () => {
             { beskrivelse: '"Unauthorized" i value', type: 'Error', value: 'Unauthorized' },
         ])('filtrerer bort exception med $beskrivelse', ({ type, value }) => {
             vi.stubGlobal('location', { href: 'https://www.nav.no/foreldrepenger/soknad' });
-            initFaro({ app: APP });
+            initFaro();
 
             const beforeSend = hentBeforeSend();
 
@@ -94,7 +89,7 @@ describe('initFaro', () => {
 
         it('slipper gjennom andre event-typer (log, trace, etc)', () => {
             vi.stubGlobal('location', { href: 'https://www.nav.no/foreldrepenger/soknad' });
-            initFaro({ app: APP });
+            initFaro();
 
             const beforeSend = hentBeforeSend();
 
@@ -112,7 +107,7 @@ describe('initFaro', () => {
     describe('beforeSend – dekoratør-filter (feilUtenOpprinnelseIVårKode)', () => {
         it('filtrerer bort feil som bare har stackframes fra dekoratøren', () => {
             vi.stubGlobal('location', { href: 'https://www.nav.no/foreldrepenger/soknad' });
-            initFaro({ app: APP });
+            initFaro();
 
             const beforeSend = hentBeforeSend();
 
@@ -141,7 +136,7 @@ describe('initFaro', () => {
 
         it('beholder feil med stackframes fra vår kode', () => {
             vi.stubGlobal('location', { href: 'https://www.nav.no/foreldrepenger/soknad' });
-            initFaro({ app: APP });
+            initFaro();
 
             const beforeSend = hentBeforeSend();
 
@@ -166,7 +161,7 @@ describe('initFaro', () => {
     describe('beforeSend – nettleserutvidelse-filter (feilFraBrowserExtensions)', () => {
         it('filtrerer bort Request timeout *Distributor.getValue', () => {
             vi.stubGlobal('location', { href: 'https://www.nav.no/foreldrepenger/soknad' });
-            initFaro({ app: APP });
+            initFaro();
 
             const beforeSend = hentBeforeSend();
 
@@ -181,7 +176,7 @@ describe('initFaro', () => {
 
         it('filtrerer bort Distributor-feil via stacktrace', () => {
             vi.stubGlobal('location', { href: 'https://www.nav.no/foreldrepenger/soknad' });
-            initFaro({ app: APP });
+            initFaro();
 
             const beforeSend = hentBeforeSend();
 
@@ -204,7 +199,7 @@ describe('initFaro', () => {
 
         it('beholder vanlige feil', () => {
             vi.stubGlobal('location', { href: 'https://www.nav.no/foreldrepenger/soknad' });
-            initFaro({ app: APP });
+            initFaro();
 
             const beforeSend = hentBeforeSend();
 
@@ -221,7 +216,7 @@ describe('initFaro', () => {
     describe('beforeSend – støyfilter (dom-oversettelse og hasFocus)', () => {
         it('filtrerer bort removeChild/insertBefore-feil fra oversettelsesverktøy', () => {
             vi.stubGlobal('location', { href: 'https://www.nav.no/foreldrepenger/soknad' });
-            initFaro({ app: APP });
+            initFaro();
 
             const beforeSend = hentBeforeSend();
 
@@ -236,7 +231,7 @@ describe('initFaro', () => {
 
         it('filtrerer bort hasFocus-feil injisert av browser/webview', () => {
             vi.stubGlobal('location', { href: 'https://www.nav.no/foreldrepenger/soknad' });
-            initFaro({ app: APP });
+            initFaro();
 
             const beforeSend = hentBeforeSend();
 
@@ -251,7 +246,7 @@ describe('initFaro', () => {
 
         it('beholder legitime hasFocus-feil fra vår egen kode', () => {
             vi.stubGlobal('location', { href: 'https://www.nav.no/foreldrepenger/soknad' });
-            initFaro({ app: APP });
+            initFaro();
 
             const beforeSend = hentBeforeSend();
 
