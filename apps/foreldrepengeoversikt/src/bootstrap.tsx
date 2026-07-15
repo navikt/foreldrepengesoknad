@@ -7,7 +7,6 @@ import './index.css';
 
 void bootstrapApp({
     sentryDsn: 'https://b4fd4db97e7d4663852a5203961e3cee@sentry.gc.nav.no/6',
-    appName: 'foreldrepengeoversikt',
     basename: urlPrefiks,
     availableLocales: ['nb', 'nn', 'en'],
     registerCountryLocales: false,

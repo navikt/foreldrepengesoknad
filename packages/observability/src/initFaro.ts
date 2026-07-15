@@ -8,15 +8,6 @@ import {
     harUtenforstaendeKodeOpprinnelse,
 } from './filterUtils';
 
-type InitFaroOptions = {
-    app: {
-        /** Må matche `metadata.name` i naiserator.yaml. */
-        name: string;
-        /** Må matche `metadata.namespace` i naiserator.yaml. */
-        namespace: string;
-    };
-};
-
 type ExceptionPayload = {
     type?: string;
     value?: string;
@@ -47,19 +38,12 @@ const customPageMeta = () => {
     };
 };
 
-/**
- * Initialiserer @nais/apm (NAIS-wrapper rundt Faro) for frontend-observability.
- * Se https://docs.nais.io/observability/apm/tutorials/track-frontend-errors/
- */
-export const initFaro = ({ app }: InitFaroOptions) => {
+export const initFaro = () => {
     if (import.meta.env.MODE === 'development') {
         return;
     }
 
     init({
-        app: app.name,
-        namespace: app.namespace,
-        version: import.meta.env.VITE_SENTRY_RELEASE,
         faro: {
             metas: [customPageMeta],
         },

@@ -10,8 +10,6 @@ import type { LocaleAll } from '@navikt/fp-types';
 export interface BootstrapAppOptions {
     /** Sentry DSN for appen. */
     sentryDsn: string;
-    /** App-navn for NAIS APM frontend-observability. Må matche `metadata.name` i naiserator.yaml. */
-    appName: string;
     /** ID på DOM-noden React skal monteres i. Default `'app'`. */
     containerId?: string;
     /** basename til BrowserRouter. Default `import.meta.env.BASE_URL`. */
@@ -72,7 +70,6 @@ const loadPluralRulesPolyfill = async (locales: readonly LocaleAll[]) => {
 
 export const bootstrapApp = async ({
     sentryDsn,
-    appName,
     containerId = 'app',
     basename,
     availableLocales,
@@ -91,12 +88,7 @@ export const bootstrapApp = async ({
 
     dayjs.locale(defaultDayjsLocale);
     initSentry({ dsn: sentryDsn });
-    initFaro({
-        app: {
-            name: appName,
-            namespace: 'teamforeldrepenger',
-        },
-    });
+    initFaro();
 
     const container = document.getElementById(containerId);
     if (!container) {
