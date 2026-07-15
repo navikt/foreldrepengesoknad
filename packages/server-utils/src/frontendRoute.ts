@@ -26,11 +26,27 @@ export const setupAndServeHtml = async (router: Router) => {
         filePath: spaFilePath,
         ...dekoratørProps,
     });
-    const renderedHtml = replaceAppSettings(html);
+    const renderedHtml = replaceNaisMetaTags(replaceAppSettings(html));
 
     router.get('*splat', (_, response) => {
         response.send(renderedHtml);
     });
+};
+
+const replaceNaisMetaTags = (html: string) => {
+    const metaTags = [
+        { name: 'nais-telemetry-url', content: process.env.NAIS_FRONTEND_TELEMETRY_COLLECTOR_URL },
+        { name: 'nais-app', content: process.env.NAIS_APP_NAME },
+        { name: 'nais-team', content: process.env.NAIS_TEAM ?? process.env.NAIS_NAMESPACE },
+        { name: 'nais-cluster', content: process.env.NAIS_CLUSTER_NAME },
+    ];
+
+    const tags = metaTags
+        .filter((tag): tag is { name: string; content: string } => Boolean(tag.content))
+        .map((tag) => `<meta name="${tag.name}" content="${tag.content}" />`)
+        .join('\n        ');
+
+    return html.replaceAll('{{{NAIS_META_TAGS}}}', tags);
 };
 
 const replaceAppSettings = (html: string) => {

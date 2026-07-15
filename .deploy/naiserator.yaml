@@ -27,6 +27,13 @@ spec:
       destinations:
         - id: loki
         - id: elastic
+  frontend:
+    generatedConfig:
+      # Provisjonerer NAIS_FRONTEND_TELEMETRY_COLLECTOR_URL i poden (og genererer
+      # nais.js i web-roten) slik at @nais/apm kan resolve collector-URL per cluster.
+      # Web-roten er /app/public (se Dockerfile). Serveren injiserer verdien som
+      # <meta name="nais-telemetry-url"> i HTML-en (se frontendRoute.ts).
+      mountPath: /app/public/nais.js
   ingresses:
     - {{ingress}}
   {{#if eksternIngress}}
