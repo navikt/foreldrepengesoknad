@@ -46,7 +46,7 @@ const replaceNaisMetaTags = (html: string) => {
         .map((tag) => `<meta name="${tag.name}" content="${tag.content}" />`)
         .join('\n        ');
 
-    return html.replaceAll('<{{{NAIS_META_TAGS}}}', tags);
+    return html.replaceAll('{{{NAIS_META_TAGS}}}', tags);
 };
 
 const replaceAppSettings = (html: string) => {
