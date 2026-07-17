@@ -7,7 +7,7 @@ import { HStack, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfRadioGroup, RhfSelect, RhfTextField } from '@navikt/fp-form-hooks';
 import { createCountryOptions } from '@navikt/fp-utils';
-import { isBeforeOrSame, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
+import { hasMaxLength, isBeforeOrSame, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { AndreInntekterFormValues } from '../types/AndreInntekterFormValues';
 
@@ -49,7 +49,13 @@ export const JobbIUtlandetPanel = ({ index, inntektskilde }: Props) => {
                 name={`andreInntektskilder.${index}.arbeidsgiverNavn`}
                 control={control}
                 label={<FormattedMessage id="JobbIUtlandetPanel.NavnPåArbeidsgiver" />}
-                validate={[isRequired(intl.formatMessage({ id: 'JobbIUtlandetPanel.Validering.NavnPåArbeidsgiver' }))]}
+                validate={[
+                    isRequired(intl.formatMessage({ id: 'JobbIUtlandetPanel.Validering.NavnPåArbeidsgiver' })),
+                    hasMaxLength(
+                        intl.formatMessage({ id: 'JobbIUtlandetPanel.Validering.NavnPåArbeidsgiverMaksLengde' }),
+                        100,
+                    ),
+                ]}
             />
             <RhfRadioGroup
                 name={`andreInntektskilder.${index}.pågående`}
