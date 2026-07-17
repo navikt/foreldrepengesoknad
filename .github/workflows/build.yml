@@ -40,7 +40,7 @@ on:
       vite-cdn-url:
         required: false
         type: string
-        description: 'CDN-URL som bakes inn i appens asset-referanser ved bygg (kun planlegger i dag)'
+        description: 'CDN-URL som bakes inn i appens asset-referanser ved bygg'
         default: ''
     outputs:
       build-version:
