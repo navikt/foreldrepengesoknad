@@ -9,6 +9,17 @@ import * as stories from './AndreInntektskilderSteg.stories';
 
 const { Default } = composeStories(stories);
 
+const getAllByExactTextContent = (searchText: string) =>
+    screen.getAllByText((normalizedText, element) => {
+        if (!element || normalizedText !== searchText) {
+            return false;
+        }
+
+        return Array.from(element.children).every(
+            (child) => (child.textContent ?? '').replace(/\s+/g, ' ').trim() !== searchText,
+        );
+    });
+
 describe('<AndreInntektskilderSteg>', () => {
     it('skal velge Jobb i utlandet, at en jobber der nå, og så gå til neste steg', async () => {
         const gåTilNesteSide = vi.fn();
@@ -271,14 +282,14 @@ describe('<AndreInntektskilderSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(screen.getAllByText('Perioden den gjelder fra må være før eller lik dagens dato')).toHaveLength(2);
+        expect(getAllByExactTextContent('Perioden den gjelder fra må være før eller lik dagens dato')).toHaveLength(2);
 
         await userEvent.type(tilDato, dayjs('2013-09-30').format('DD.MM.YYYY'));
         await userEvent.tab();
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(screen.getAllByText('Perioden den gjelder fra må være før eller lik dagens dato')).toHaveLength(2);
+        expect(getAllByExactTextContent('Perioden den gjelder fra må være før eller lik dagens dato')).toHaveLength(2);
 
         await userEvent.type(fraDato, 'asdfas');
         await userEvent.tab();
