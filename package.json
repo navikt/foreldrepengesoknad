@@ -19,16 +19,16 @@
         "clean": "pnpm -r run clean && rm -rf ./node_modules ./.turbo"
     },
     "dependencies": {
-        "lint-staged": "17.0.8",
-        "turbo": "2.9.18"
+        "lint-staged": "17.1.0",
+        "turbo": "2.10.5"
     },
     "devDependencies": {
         "@trivago/prettier-plugin-sort-imports": "6.0.2",
         "@types/node": "catalog:",
-        "knip": "6.26.0",
-        "msw": "2.14.6",
+        "knip": "6.27.0",
+        "msw": "2.15.0",
         "msw-storybook-addon": "2.0.7",
-        "prettier": "3.8.4",
+        "prettier": "3.9.5",
         "typescript": "catalog:"
     },
     "lint-staged": {

@@ -21,7 +21,7 @@
         "@navikt/fp-config-typescript": "workspace:*",
         "@types/express": "catalog:",
         "@types/node": "catalog:",
-        "@types/supertest": "7.2.0",
+        "@types/supertest": "7.2.1",
         "esbuild": "catalog:",
         "supertest": "7.2.2",
         "typescript": "catalog:",
