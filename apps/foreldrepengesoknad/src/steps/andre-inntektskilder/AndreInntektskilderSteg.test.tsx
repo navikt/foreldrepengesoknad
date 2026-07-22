@@ -9,13 +9,15 @@ import * as stories from './AndreInntektskilderSteg.stories';
 
 const { Default } = composeStories(stories);
 
-const getAllByExactTextContent = (text: string) =>
-    screen.getAllByText((_, element) => {
-        if (!element || element.textContent !== text) {
+const getAllByExactTextContent = (searchText: string) =>
+    screen.getAllByText((normalizedText, element) => {
+        if (!element || normalizedText !== searchText) {
             return false;
         }
 
-        return Array.from(element.children).every((child) => child.textContent !== text);
+        return Array.from(element.children).every(
+            (child) => (child.textContent ?? '').replace(/\s+/g, ' ').trim() !== searchText,
+        );
     });
 
 describe('<AndreInntektskilderSteg>', () => {
