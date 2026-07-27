@@ -201,7 +201,7 @@ describe('<Oppsummering>', () => {
 
         expect(await screen.findAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
         expect(
-            screen.queryByText('blir kontaktet av Nav for å sende opplysninger om din inntekt', { exact: false }),
+            screen.getByText('blir kontaktet av Nav for å sende opplysninger om din inntekt', { exact: false }),
         ).toBeInTheDocument();
 
         const arbeidsforholdOgInntektDiv = getCardDiv(screen.getAllByText('Arbeidsforhold og inntekt')[1]!);

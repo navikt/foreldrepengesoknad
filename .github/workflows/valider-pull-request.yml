@@ -24,7 +24,7 @@ jobs:
           restore-keys: turbo-${{ runner.os }}-master-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Installere dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
@@ -65,12 +65,12 @@ jobs:
           restore-keys: turbo-browser-${{ runner.os }}-master-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Installere dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: Installer Playwright (chromium)
-        run: pnpm --filter @navikt/fp-config-vite exec playwright install --with-deps chromium
+        run: pnpm --ignore-scripts --filter @navikt/fp-config-vite exec playwright install --with-deps chromium
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
