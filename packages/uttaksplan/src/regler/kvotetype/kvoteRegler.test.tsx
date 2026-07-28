@@ -209,7 +209,7 @@ describe('useGyldigeKvotetyper - mors kvoter', () => {
     it.each([
         { beskrivelse: 'foreldrepenger før fødsel når familiehendelsesdato er valgt', fom: '2024-05-27' },
         { beskrivelse: 'foreldrepenger når en har valgt dag før tre uker før fødsel', fom: '2024-05-24' },
-        { beskrivelse: 'noen gyldige kontotyper for mor når en har valgt dag mer enn 60 dager før fødsel', fom: '2024-03-24' },
+        { beskrivelse: 'noen gyldige kontotyper for mor når en har valgt dag mer enn 12 uker før fødsel', fom: '2024-03-24' },
     ])('skal ikke ha $beskrivelse', ({ fom }) => {
         const { result } = renderHook(
             () =>
@@ -357,7 +357,7 @@ describe('useGyldigeKvotetyper - mors kvoter', () => {
         expect(result.current.gyldigeStønadskontoerForMor).toEqual(['FORELDREPENGER_FØR_FØDSEL']);
     });
 
-    it('skal ikke ha foreldrepenger som gyldig kontotype for mor når kun mor har rett og perioden er mer enn 60 dager før fødsel', () => {
+    it('skal ikke ha foreldrepenger som gyldig kontotype for mor når kun mor har rett og perioden er mer enn 12 uker før fødsel', () => {
         const { result } = renderHook(
             () =>
                 useGyldigeKvotetyper({
@@ -643,7 +643,7 @@ describe('useGyldigeKvotetyper - fars kvoter', () => {
         expect(result.current.gyldigeStønadskontoerForFarMedmor).toEqual([]);
     });
 
-    it('skal ikke ha noen gyldige kontotyper for far når en har valgt dag mer enn 60 dager før fødsel', () => {
+    it('skal ikke ha noen gyldige kontotyper for far når en har valgt dag mer enn 12 uker før fødsel', () => {
         const { result } = renderHook(
             () =>
                 useGyldigeKvotetyper({

@@ -8,14 +8,12 @@ import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../utils/UttakPeriodeBuilder';
+import { ANTALL_UTTAKSDAGER_SEKS_UKER, ANTALL_UTTAKSDAGER_TO_UKER } from '../../utils/uttaksdagerKonstanter';
 import { Periode, ValideringInput, Valideringsområde, Valideringsregel } from './types';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(minMax);
-
-const TO_UKER_UTTAKSDAGER = 10;
-const SEKS_UKER_UTTAKSDAGER = 30;
 
 export const lagFarMedmorMaksToUkerRundtFødselOmråde = (
     intl: IntlShape,
@@ -61,7 +59,7 @@ const lagRegler = (intl: IntlShape): ReadonlyArray<Valideringsregel<FarMedmorMak
             'Når begge foreldre har rett og far/medmor tar uttak i intervallet 2 uker før til 6 uker etter ' +
             'fødsel/termin, kan far/medmor maks ha 2 uker (10 uttaksdager) totalt i dette intervallet. ' +
             'Også gradert uttak teller med (skalert med stillingsprosent).',
-        erBrutt: (k) => k.totaltAntallDagerInnenforIntervallet > TO_UKER_UTTAKSDAGER,
+        erBrutt: (k) => k.totaltAntallDagerInnenforIntervallet > ANTALL_UTTAKSDAGER_TO_UKER,
         feilmelding: intl.formatMessage({
             id: 'LeggTilEllerEndrePeriodeForm.FarMedmor.MerEnnToUkerRundtFamiliehendelse',
         }),
@@ -96,10 +94,10 @@ const byggKontekst = (input: ValideringInput): FarMedmorMaks2UkerKontekst | null
 
     const førsteDag = Uttaksdagen.denneEllerNeste(
         erEndringssøknad ? tidligsteDato : familiehendelsedato,
-    ).getDatoAntallUttaksdagerTidligere(TO_UKER_UTTAKSDAGER);
+    ).getDatoAntallUttaksdagerTidligere(ANTALL_UTTAKSDAGER_TO_UKER);
     const sisteDag = Uttaksdagen.denneEllerNeste(
         erEndringssøknad ? senesteDato : familiehendelsedato,
-    ).getDatoAntallUttaksdagerSenere(SEKS_UKER_UTTAKSDAGER);
+    ).getDatoAntallUttaksdagerSenere(ANTALL_UTTAKSDAGER_SEKS_UKER);
 
     const skalRegelHoppesOverForNyePerioder =
         formValues.kontoTypeFarMedmor === 'MØDREKVOTE' || formValues.ønskerFlerbarnsdager === true;

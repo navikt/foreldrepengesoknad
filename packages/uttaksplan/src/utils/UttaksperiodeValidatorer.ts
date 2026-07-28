@@ -6,12 +6,17 @@ import minMax from 'dayjs/plugin/minMax';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { Tidsperioden, Uttaksdagen } from '@navikt/fp-utils';
 
+import {
+    ANTALL_UTTAKSDAGER_SEKS_UKER,
+    ANTALL_UTTAKSDAGER_SYV_UKER,
+    ANTALL_UTTAKSDAGER_TOLV_UKER,
+    ANTALL_UTTAKSDAGER_TO_UKER,
+    ANTALL_UTTAKSDAGER_TRE_UKER,
+} from './uttaksdagerKonstanter';
+
 dayjs.extend(minMax);
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
-
-const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
-const ANTALL_UTTAKSDAGER_SYV_UKER = 35;
 
 type Periode = { fom: string; tom: string };
 
@@ -64,7 +69,9 @@ export const UttaksperiodeValidatorer = {
     },
 
     erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato(perioder: Periode[], familiehendelsedato: string) {
-        const førsteDag = Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(15);
+        const førsteDag = Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(
+            ANTALL_UTTAKSDAGER_TRE_UKER,
+        );
         const sisteDag = Uttaksdagen.forrige(familiehendelsedato).getDato();
 
         return perioder.some((periode) => {
@@ -132,7 +139,9 @@ export const UttaksperiodeValidatorer = {
     },
 
     erNoenPerioderFørTreUkerFørFamDatoEllerEtterLikFamDato(perioder: Periode[], familiehendelsedato: string) {
-        const førsteDag = Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(15);
+        const førsteDag = Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(
+            ANTALL_UTTAKSDAGER_TRE_UKER,
+        );
         const sisteDag = Uttaksdagen.forrige(familiehendelsedato).getDato();
 
         return perioder.some((p) => dayjs(p.tom).isAfter(sisteDag) || dayjs(p.fom).isBefore(førsteDag));
@@ -147,10 +156,12 @@ export const UttaksperiodeValidatorer = {
         return perioder.some((periode) => dayjs(periode.fom).isBefore(førsteUttaksdagToUkerFørFødsel, 'day'));
     },
 
-    erNoenPerioderMerEnn60DagerFørFamiliehendelsesdato(perioder: Periode[], familiehendelsedato: string) {
+    erNoenPerioderMerEnnTolvUkerFørFamiliehendelsesdato(perioder: Periode[], familiehendelsedato: string) {
         return perioder.some((periode) =>
             dayjs(periode.fom).isBefore(
-                Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(60),
+                Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(
+                    ANTALL_UTTAKSDAGER_TOLV_UKER,
+                ),
             ),
         );
     },
@@ -186,5 +197,5 @@ const getFørsteUttaksdag2UkerFørFødsel = (familiehendelsesdato: string, termi
         termindato === undefined
             ? familiehendelsesdato
             : dayjs.min(dayjs(familiehendelsesdato), dayjs(termindato)).format(ISO_DATE_FORMAT);
-    return Uttaksdagen.denneEllerNeste(tidligsteDato).getDatoAntallUttaksdagerTidligere(10);
+    return Uttaksdagen.denneEllerNeste(tidligsteDato).getDatoAntallUttaksdagerTidligere(ANTALL_UTTAKSDAGER_TO_UKER);
 };
