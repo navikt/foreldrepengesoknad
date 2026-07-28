@@ -59,9 +59,9 @@ const createConfig = (setupFileDirName) => {
         },
         test: {
             globals: true,
-            // Tunge fleirstegs-flytar (t.d. AppContainer sine heile søknads-gjennomgangar med
-            // mange userEvent-interaksjonar) er trege på CPU-svelta CI-runnarar (2 vCPU) og
-            // rakk ikkje 15s. Gje same rausare timeout som browser-prosjektet under.
+            // Tunge flertrinnsflyter (f.eks. AppContainer sine hele søknadsgjennomganger med
+            // mange userEvent-interaksjoner) er trege på CPU-sultne CI-runnere (2 vCPU) og
+            // rakk ikke 15s. Gi samme romsligere timeout som browser-prosjektet under.
             testTimeout: 30000,
             projects: [
                 {
