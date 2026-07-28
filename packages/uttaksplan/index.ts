@@ -24,10 +24,8 @@ export { useErAntallDagerOvertrukketIUttaksplan } from './src/utils/kvoteOppsumm
 export { UttaksperiodeValidatorer } from './src/utils/UttaksperiodeValidatorer';
 export { skalBesvareFlerbarnsdager } from './src/utils/flerbarnsdager';
 export {
-    sorterUttakPerioder,
     harPeriodeDerMorsAktivitetIkkeErValgt,
     harPeriodeMedUkjentGraderingsaktivitet,
-    getAntallUttaksdagerIVinduRundtFødsel,
     finnAntallTidelerÅTrekke,
     erPerioderEkslFomTomLike,
 } from './src/utils/periodeUtils';
