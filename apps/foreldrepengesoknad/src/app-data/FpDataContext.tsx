@@ -1,5 +1,5 @@
 import { SøknadRoutes } from 'appData/routes';
-import { JSX, ReactNode, createContext, use, useReducer } from 'react';
+import { JSX, ReactNode, createContext, use, useCallback, useEffect, useReducer, useRef } from 'react';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { AnnenForelder } from 'types/AnnenForelder';
 import { Fordeling } from 'types/Fordeling';
@@ -91,12 +91,18 @@ export const FpDataContext = ({ children, initialState, onDispatch }: Props): JS
         }
     }, initialState || defaultInitialState);
 
-    const dispatchWrapper = (a: Action) => {
-        if (onDispatch) {
-            onDispatch(a);
-        }
+    // onDispatch kjem frå stories/testar og er ofte ein ny closure per render. Held den i ein
+    // ref slik at dispatch-funksjonen under er referansestabil – elles ville kvar render av
+    // FpDataContext gitt ny context-verdi og rendra alle konsumentar på nytt.
+    const onDispatchRef = useRef(onDispatch);
+    useEffect(() => {
+        onDispatchRef.current = onDispatch;
+    }, [onDispatch]);
+
+    const dispatchWrapper = useCallback((a: Action) => {
+        onDispatchRef.current?.(a);
         dispatch(a);
-    };
+    }, []);
 
     return (
         <FpStateContext value={state}>
@@ -115,39 +121,39 @@ export const useContextGetData = <TYPE extends ContextDataType>(key: TYPE): Cont
 export const useContextGetAnyData = () => {
     const state = use(FpStateContext);
 
-    return <TYPE extends ContextDataType>(key: TYPE) => {
-        return state[key];
-    };
+    // Må vere referansestabil så lenge state er uendra, elles blir useMemo/useEffect
+    // hos konsumentar (t.d. useStepConfig) invalidert på kvar einaste render.
+    return useCallback(<TYPE extends ContextDataType>(key: TYPE) => state[key], [state]);
 };
 
 /** Hook returns save function for one specific data type */
 export const useContextSaveData = <TYPE extends ContextDataType>(key: TYPE): ((data: ContextDataMap[TYPE]) => void) => {
     const dispatch = use(FpDispatchContext);
-    return (data: ContextDataMap[TYPE]) => {
-        if (dispatch) {
-            dispatch({ type: 'update', key, data });
-        }
-    };
+    return useCallback(
+        (data: ContextDataMap[TYPE]) => {
+            dispatch?.({ type: 'update', key, data });
+        },
+        [dispatch, key],
+    );
 };
 
 /** Hook returns save function usable with all data types  */
 export const useContextSaveAnyData = () => {
     const dispatch = use(FpDispatchContext);
-    return <TYPE extends ContextDataType>(key: TYPE, data: ContextDataMap[TYPE]) => {
-        if (dispatch) {
-            dispatch({ type: 'update', key, data });
-        }
-    };
+    return useCallback(
+        <TYPE extends ContextDataType>(key: TYPE, data: ContextDataMap[TYPE]) => {
+            dispatch?.({ type: 'update', key, data });
+        },
+        [dispatch],
+    );
 };
 
 /** Hook returns state reset function  */
 export const useContextReset = () => {
     const dispatch = use(FpDispatchContext);
-    return () => {
-        if (dispatch) {
-            dispatch({ type: 'reset' });
-        }
-    };
+    return useCallback(() => {
+        dispatch?.({ type: 'reset' });
+    }, [dispatch]);
 };
 
 export const useContextComplete = (): ContextDataMap => {
