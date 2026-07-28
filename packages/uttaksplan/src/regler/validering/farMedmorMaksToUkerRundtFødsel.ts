@@ -58,7 +58,7 @@ const lagRegler = (intl: IntlShape): ReadonlyArray<Valideringsregel<FarMedmorMak
         beskrivelse:
             'Når begge foreldre har rett og far/medmor tar uttak i intervallet 2 uker før til 6 uker etter ' +
             'fødsel/termin, kan far/medmor maks ha 2 uker (10 uttaksdager) totalt i dette intervallet. ' +
-            'Også gradert uttak teller med (skalert med stillingsprosent).',
+            'Også gradert uttak teller med, skalert med uttaksprosenten (100 % − stillingsprosent).',
         erBrutt: (k) => k.totaltAntallDagerInnenforIntervallet > ANTALL_UTTAKSDAGER_TO_UKER,
         feilmelding: intl.formatMessage({
             id: 'LeggTilEllerEndrePeriodeForm.FarMedmor.MerEnnToUkerRundtFamiliehendelse',
@@ -114,16 +114,19 @@ const byggKontekst = (input: ValideringInput): FarMedmorMaks2UkerKontekst | null
         return null;
     }
 
-    const stillingsprosentFaktor =
+    // Stillingsprosenten er kor mykje forelderen skal jobba. Det som trekkjast frå kvoten er
+    // uttaksprosenten, altså den delen forelderen IKKJE jobbar (jf. finnAntallTidelerÅTrekke
+    // i utils/periodeUtils.ts). Utan gradering blir heile dagen trekt.
+    const uttaksfaktor =
         formValues.stillingsprosentFarMedmor === undefined
             ? 1
-            : Number.parseFloat(formValues.stillingsprosentFarMedmor) / 100;
+            : (100 - Number.parseFloat(formValues.stillingsprosentFarMedmor)) / 100;
 
     const dagerNyePerioder =
         nyePerioderInnenforIntervallet.reduce(
             (sum, p) => sum + tellArbeidsdagerInnenfor(p.fom, p.tom, førsteDag, sisteDag),
             0,
-        ) * stillingsprosentFaktor;
+        ) * uttaksfaktor;
 
     const uttakPerioderUtenOverførtMødrekvote = uttakPerioder.filter(
         (p) => !(erVanligUttakPeriode(p) && p.forelder === 'FAR_MEDMOR' && p.kontoType === 'MØDREKVOTE'),
@@ -136,14 +139,15 @@ const byggKontekst = (input: ValideringInput): FarMedmorMaks2UkerKontekst | null
 
     const dagerEksisterendePerioder = eksisterendeFarMedmorPerioder.reduce((sum, p) => {
         const dager = tellArbeidsdagerInnenfor(p.fom, p.tom, førsteDag, sisteDag);
-        const stillingsprosent =
-            erVanligUttakPeriode(p) && p.gradering?.arbeidstidprosent !== undefined
-                ? p.gradering.arbeidstidprosent
-                : 100;
-        return sum + dager * (stillingsprosent / 100);
+        // Ingen gradering => arbeidstid 0 % => heile dagen blir trekt frå kvoten.
+        const arbeidstidprosent =
+            erVanligUttakPeriode(p) && p.gradering?.arbeidstidprosent !== undefined ? p.gradering.arbeidstidprosent : 0;
+        return sum + dager * ((100 - arbeidstidprosent) / 100);
     }, 0);
 
     return {
-        totaltAntallDagerInnenforIntervallet: Math.floor(dagerNyePerioder + dagerEksisterendePerioder),
+        // Rundar til tidelar for å unngå flyttalsstøy. Vi rundar med vilje ikkje ned til heile
+        // dagar: 10,4 trekkdagar er meir enn dei 10 dagane far/medmor kan bruka i intervallet.
+        totaltAntallDagerInnenforIntervallet: Math.round((dagerNyePerioder + dagerEksisterendePerioder) * 10) / 10,
     };
 };

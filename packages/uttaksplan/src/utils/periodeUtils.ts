@@ -27,7 +27,7 @@ dayjs.extend(isoWeekday);
 
 // Vinduet er [familiehendelsesdato - 15 uttaksdager, familiehendelsesdato + 30 uttaksdager] –
 // dvs. 3 veker før og 6 veker etter (matchar UI-validatoren).
-export const getAntallUttaksdagerIVinduRundtFødsel = (
+const getAntallUttaksdagerIVinduRundtFødsel = (
     periodeFom: string,
     periodeTom: string,
     familiehendelsedato: string,
