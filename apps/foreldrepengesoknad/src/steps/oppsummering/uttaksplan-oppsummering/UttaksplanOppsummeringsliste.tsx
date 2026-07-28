@@ -59,14 +59,7 @@ export const UttaksplanOppsummeringsliste = ({ navnPåForeldre, registrerteArbei
     const søkerHarLagtTilPerioderForAnnenPart = annenPartsPerioder.some((periode) => periode.resultat === undefined);
 
     return (
-        <VStack gap="space-16">
-            {annenPartsPerioder.length > 0 && søkerHarLagtTilPerioderForAnnenPart && (
-                <Alert variant="warning">
-                    <BodyLong>
-                        <FormattedMessage id="oppsummering.AnnenPartPerioderInfomelding" />
-                    </BodyLong>
-                </Alert>
-            )}
+        <>
             {søkersPerioder.length > 0 && (
                 <UttaksplanListe
                     erSøker
@@ -81,9 +74,10 @@ export const UttaksplanOppsummeringsliste = ({ navnPåForeldre, registrerteArbei
                     uttaksplan={annenPartsPerioder}
                     registrerteArbeidsforhold={registrerteArbeidsforhold}
                     navnPåForeldre={navnPåForeldre}
+                    visAdvarselOmEgendefinertePerioder={søkerHarLagtTilPerioderForAnnenPart}
                 />
             )}
-        </VStack>
+        </>
     );
 };
 
@@ -92,11 +86,13 @@ const UttaksplanListe = ({
     uttaksplan,
     registrerteArbeidsforhold,
     navnPåForeldre,
+    visAdvarselOmEgendefinertePerioder,
 }: {
     erSøker: boolean;
     uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     navnPåForeldre: NavnPåForeldre;
+    visAdvarselOmEgendefinertePerioder?: boolean;
 }) => {
     const intl = useIntl();
 
@@ -147,7 +143,9 @@ const UttaksplanListe = ({
     };
 
     return (
-        <div>
+        // Må vere ein FormSummary.Answer (ikkje ein vanleg div): denne blir rendra rett inni
+        // <dl>-en til FormSummary.Answers, og der er berre dt/dd-grupper gyldige.
+        <FormSummary.Answer>
             {erSøker && (
                 <FormSummary.Label>
                     <FormattedMessage id="oppsummering.uttak.dine.perioder" />
@@ -159,7 +157,15 @@ const UttaksplanListe = ({
                 </FormSummary.Label>
             )}
             <FormSummary.Value>
-                <FormSummary.Answers>
+                <VStack gap="space-16">
+                    {visAdvarselOmEgendefinertePerioder && (
+                        <Alert variant="warning">
+                            <BodyLong>
+                                <FormattedMessage id="oppsummering.AnnenPartPerioderInfomelding" />
+                            </BodyLong>
+                        </Alert>
+                    )}
+                    <FormSummary.Answers>
                     {uttaksplan.map((periode) => {
                         if (Uttaksperioden.erIkkeEøsPeriode(periode) && Uttaksperioden.erUttaksperiode(periode)) {
                             const tidsperiode = formatTidsperiode(periode.fom, periode.tom);
@@ -224,9 +230,10 @@ const UttaksplanListe = ({
                         }
                         return null;
                     })}
-                </FormSummary.Answers>
+                    </FormSummary.Answers>
+                </VStack>
             </FormSummary.Value>
-        </div>
+        </FormSummary.Answer>
     );
 };
 
