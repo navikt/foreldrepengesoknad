@@ -28,9 +28,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    parameters: {
-        msw: {
-            handlers: [http.get(API_URLS.saker, () => HttpResponse.json(saker))],
-        },
+    beforeEach({ msw }) {
+        msw.use(http.get(API_URLS.saker, () => HttpResponse.json(saker)));
     },
 };

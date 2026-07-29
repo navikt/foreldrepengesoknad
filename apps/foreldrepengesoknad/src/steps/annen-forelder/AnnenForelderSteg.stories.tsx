@@ -291,10 +291,9 @@ export const FarFødtBarnMorHarVedtak: Story = {
             fnr: defaultSøker.fnr,
         },
     },
-    parameters: {
-        msw: {
-            handlers: [http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak))],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)));
     },
 };
 
@@ -308,9 +307,8 @@ export const FarFødtBarnMorHarAvslåttVedtak: Story = {
             fnr: defaultSøker.fnr,
         },
     },
-    parameters: {
-        msw: {
-            handlers: [http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(avslåttAnnenPartVedtak))],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(avslåttAnnenPartVedtak)));
     },
 };

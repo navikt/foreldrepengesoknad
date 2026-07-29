@@ -12,20 +12,18 @@ import { API_URLS } from '../../api/queries.ts';
 import { OversiktRoutes } from '../../routes/routes.ts';
 import { BekreftelseSendtSøknad } from './BekreftelseSendtSøknad';
 
-const defaultHandlers = {
-    msw: {
-        handlers: [
-            http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
-            http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-        ],
-    },
-};
+const defaultHandlers = [
+    http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
+    http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+];
 
 const meta = {
     title: 'BekreftelseSendtSøknad',
     component: BekreftelseSendtSøknad,
     decorators: [withQueryClient],
-    parameters: defaultHandlers,
+    beforeEach({ msw }) {
+        msw.use(...defaultHandlers);
+    },
     render: ({ saksnummer, ...props }) => (
         <MemoryRouter initialEntries={[`/${OversiktRoutes.DIN_PLAN}/${saksnummer}`]}>
             <Routes>
@@ -65,37 +63,34 @@ export const ForForeldrepenger: Story = {
 
 export const ForForeldrepengerForTidligSøknad: Story = {
     args: ForForeldrepenger.args,
-    parameters: {
-        msw: {
-            handlers: [
-                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
-                http.get(API_URLS.saker, () => HttpResponse.json(sakerTidligFPSøknad)),
-            ],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(
+            http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
+            http.get(API_URLS.saker, () => HttpResponse.json(sakerTidligFPSøknad)),
+        );
     },
 };
 
 export const ForForeldrepengerVenterPåInntektsmelding: Story = {
     args: ForForeldrepenger.args,
-    parameters: {
-        msw: {
-            handlers: [
-                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
-                http.get(API_URLS.saker, () => HttpResponse.json(sakerVenterPåFpInntektsmelding)),
-            ],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(
+            http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
+            http.get(API_URLS.saker, () => HttpResponse.json(sakerVenterPåFpInntektsmelding)),
+        );
     },
 };
 
 export const ForForeldrepengerEndringsøknad: Story = {
     args: ForForeldrepenger.args,
-    parameters: {
-        msw: {
-            handlers: [
-                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
-                http.get(API_URLS.saker, () => HttpResponse.json(endringFPSøknad)),
-            ],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(
+            http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
+            http.get(API_URLS.saker, () => HttpResponse.json(endringFPSøknad)),
+        );
     },
 };
 
@@ -104,13 +99,12 @@ export const ForForeldrepengerNårEnIkkeHarArbeidsforhold: Story = {
         ...ForForeldrepenger.args,
         harMinstEttArbeidsforhold: false,
     },
-    parameters: {
-        msw: {
-            handlers: [
-                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfoUtenArbeidsforhold)),
-                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-            ],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(
+            http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfoUtenArbeidsforhold)),
+            http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+        );
     },
 };
 
@@ -197,13 +191,12 @@ export const ForSvangerskapspengerUtenArbeidsforhold: Story = {
         ...ForSvangerskapspenger.args,
         harMinstEttArbeidsforhold: false,
     },
-    parameters: {
-        msw: {
-            handlers: [
-                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfoUtenArbeidsforhold)),
-                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-            ],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(
+            http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfoUtenArbeidsforhold)),
+            http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+        );
     },
 };
 

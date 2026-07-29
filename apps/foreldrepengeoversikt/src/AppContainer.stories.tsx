@@ -15,6 +15,7 @@ import { API_URLS } from './api/queries.ts';
 const meta = {
     title: 'AppContainer',
     component: AppContainer,
+
     render: () => {
         return (
             <MemoryRouter>
@@ -22,19 +23,18 @@ const meta = {
             </MemoryRouter>
         );
     },
-    parameters: {
-        msw: {
-            handlers: [
-                http.get(API_URLS.minidialog, () => HttpResponse.json(miniDialog)),
-                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
-                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
-                http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
-                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelserFP)),
-                http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
-                http.post(API_URLS.lastOppFPVedlegg, () => HttpResponse.json({})),
-            ],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(
+            http.get(API_URLS.minidialog, () => HttpResponse.json(miniDialog)),
+            http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
+            http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+            http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
+            http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
+            http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelserFP)),
+            http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
+            http.post(API_URLS.lastOppFPVedlegg, () => HttpResponse.json({})),
+        );
     },
 } satisfies Meta<typeof AppContainer>;
 export default meta;

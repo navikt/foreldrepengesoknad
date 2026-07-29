@@ -62,26 +62,26 @@ const STØNADSKVOTER = {
 const meta = {
     title: 'AppContainer',
     component: AppContainer,
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(API_URLS.konto, async ({ request }) => {
-                    const body = await request.json();
-                    const response = await fetch('https://fpgrunnlag.ekstern.dev.nav.no/fpgrunndata/api/konto', {
-                        body: JSON.stringify(body),
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    });
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                    const json = await response.json();
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                    return HttpResponse.json(json);
-                }),
-            ],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.konto, async ({ request }) => {
+                const body = await request.json();
+                const response = await fetch('https://fpgrunnlag.ekstern.dev.nav.no/fpgrunndata/api/konto', {
+                    body: JSON.stringify(body),
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                const json = await response.json();
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                return HttpResponse.json(json);
+            }),
+        );
     },
+
     render: () => {
         return (
             <StrictMode>
@@ -100,9 +100,8 @@ export const Default: Story = {};
 
 export const DefaultMockaStønadskvoterOgSatser: Story = {
     ...Default,
-    parameters: {
-        msw: {
-            handlers: [http.post(API_URLS.konto, () => HttpResponse.json(STØNADSKVOTER))],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(http.post(API_URLS.konto, () => HttpResponse.json(STØNADSKVOTER)));
     },
 };
