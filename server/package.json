@@ -5,10 +5,10 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "esbuild ./src/index.ts --bundle --platform=node --format=cjs --outfile=dist/index.js",
+        "build": "esbuild ./src/index.ts --bundle --platform=node --format=esm --outfile=dist/index.mjs --banner:js=\"import{createRequire as __createRequire}from'node:module';const require=__createRequire(import.meta.url);\"",
         "test": "vitest run",
         "tsc:watch": "tsc --noEmit --watch",
-        "start": "node ./server.js",
+        "start": "node ./dist/index.mjs",
         "clean": "rm -rf ./dist ./node_modules ./.turbo"
     },
     "dependencies": {

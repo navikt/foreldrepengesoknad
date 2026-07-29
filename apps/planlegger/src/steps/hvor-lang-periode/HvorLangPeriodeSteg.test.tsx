@@ -245,10 +245,10 @@ describe('<HvorLangPeriodePlanleggerSteg>', () => {
 
         await userEvent.click(screen.getByText('100 % utbetaling over 49 uker'));
 
-        expect(screen.queryByText('Siste dag med foreldrepenger kan bli mandag 15. juni 2026')).toBeInTheDocument();
+        expect(screen.getByText('Siste dag med foreldrepenger kan bli mandag 15. juni 2026')).toBeInTheDocument();
 
         expect(
-            screen.queryByText(
+            screen.getByText(
                 'Dette er hvis dere har foreldrepenger sammenhengende fra omsorgsovertagelsen den 08. juli 2025.',
             ),
         ).toBeInTheDocument();

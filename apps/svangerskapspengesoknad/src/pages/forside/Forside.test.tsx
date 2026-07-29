@@ -1,9 +1,8 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
 import { SøknadRoute } from 'appData/routes';
-import { applyRequestHandlers } from 'msw-storybook-addon';
 
 import * as stories from './Forside.stories';
 
@@ -15,13 +14,9 @@ describe('<Forside>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(
-            <Default
-                setHarGodkjentVilkår={setHarGodkjentVilkår}
-                gåTilNesteSide={gåTilNesteSide}
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-            />,
-        );
+        await Default.run({
+            args: { ...Default.args, setHarGodkjentVilkår, gåTilNesteSide, mellomlagreSøknadOgNaviger },
+        });
 
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
 
@@ -47,7 +42,7 @@ describe('<Forside>', () => {
     });
 
     it('skal vise avrundet minimumOpptjening uten desimaler', async () => {
-        render(<Default />);
+        await Default.run();
 
         const punkt = await screen.findByText(/Du må ha tjent minst/);
         expect(punkt).toBeInTheDocument();
@@ -58,15 +53,9 @@ describe('<Forside>', () => {
         const setHarGodkjentVilkår = vi.fn();
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
-        applyRequestHandlers(MedEksisterendeSøknad.parameters.msw);
-
-        render(
-            <MedEksisterendeSøknad
-                setHarGodkjentVilkår={setHarGodkjentVilkår}
-                gåTilNesteSide={gåTilNesteSide}
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-            />,
-        );
+        await MedEksisterendeSøknad.run({
+            args: { ...MedEksisterendeSøknad.args, setHarGodkjentVilkår, gåTilNesteSide, mellomlagreSøknadOgNaviger },
+        });
 
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
         expect(await screen.findByText(/Du har en søknad til behandling/)).toBeInTheDocument();

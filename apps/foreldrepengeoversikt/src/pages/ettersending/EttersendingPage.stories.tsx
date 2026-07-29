@@ -36,15 +36,14 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const SkalIkkeFeileOpplasting: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(API_URLS.lastOppESVedlegg, () => {
-                    return new HttpResponse(JSON.stringify('test-uuid'), { status: 200 });
-                }),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.lastOppESVedlegg, () => {
+                return new HttpResponse(JSON.stringify('test-uuid'), { status: 200 });
+            }),
+        );
     },
+
     args: {
         saker: {
             engangsstønad: [
@@ -67,14 +66,13 @@ export const SkalIkkeFeileOpplasting: Story = {
 };
 
 export const SkalFeileOpplasting: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(API_URLS.lastOppESVedlegg, () => {
-                    return new HttpResponse(null, { status: 400 });
-                }),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.lastOppESVedlegg, () => {
+                return new HttpResponse(null, { status: 400 });
+            }),
+        );
     },
+
     args: SkalIkkeFeileOpplasting.args,
 };
