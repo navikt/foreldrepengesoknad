@@ -38,6 +38,14 @@ const lagNyPeriode = (fom: string, tom: string) => ({
     flerbarnsdager: false,
 });
 
+// EØS-periodar for annen part har ikkje `forelder`, men kan identifiserast på `trekkdager`.
+const lagEøsPeriode = (fom: string, tom: string) => ({
+    fom,
+    tom,
+    kontoType: 'FORELDREPENGER' as const,
+    trekkdager: 5,
+});
+
 const SKAL_FORSKYVE = true;
 
 describe('UttakPeriodeBuilder.leggTilUttakPerioder (Ikke forskyv)', () => {
@@ -156,6 +164,22 @@ describe('UttakPeriodeBuilder.leggTilUttakPerioder (Ikke forskyv)', () => {
             lagPeriode('2024-01-15', '2024-01-31'),
         ]);
     });
+
+    it('skal forkorte/splitte annen parts EØS-periode når søker legger til eget uttak i samme tidsrom', () => {
+        // EØS-periodar for annen part skal handterast likt som andre overlappande periodar her,
+        // sidan kalenderen berre kan vise éin periode per dag. Sjølve overlappet er greitt
+        // (jf. erGyldigSamtidigUttak), men brukaren si nye periode skal framleis "vinne" for
+        // dei dagane den dekker.
+        const builder = new UttakPeriodeBuilder([lagEøsPeriode('2024-01-01', '2024-01-10')]);
+
+        builder.leggTilUttakPerioder([lagNyPeriode('2024-01-04', '2024-01-05')], false);
+
+        expect(builder.getUttakPerioder()).toEqual([
+            lagEøsPeriode('2024-01-01', '2024-01-03'),
+            lagNyPeriode('2024-01-04', '2024-01-05'),
+            lagEøsPeriode('2024-01-08', '2024-01-10'),
+        ]);
+    });
 });
 
 describe('UttakPeriodeBuilder.leggTilUttakPerioder (Forskyv)', () => {
@@ -167,6 +191,17 @@ describe('UttakPeriodeBuilder.leggTilUttakPerioder (Forskyv)', () => {
         expect(builder.getUttakPerioder()).toEqual([
             lagNyPeriode('2024-01-01', '2024-01-05'),
             lagPeriode('2024-01-17', '2024-01-22'),
+        ]);
+    });
+
+    it('skal dytte annen parts EØS-periode frem når søker legger til eget uttak i samme tidsrom', () => {
+        const builder = new UttakPeriodeBuilder([lagEøsPeriode('2024-01-10', '2024-01-15')]);
+
+        builder.leggTilUttakPerioder([lagNyPeriode('2024-01-01', '2024-01-05')], SKAL_FORSKYVE);
+
+        expect(builder.getUttakPerioder()).toEqual([
+            lagNyPeriode('2024-01-01', '2024-01-05'),
+            lagEøsPeriode('2024-01-17', '2024-01-22'),
         ]);
     });
 

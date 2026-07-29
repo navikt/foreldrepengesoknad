@@ -12,7 +12,7 @@ import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forsk
 import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { useKanKunErstatte } from '../../../../regler/alert/informasjonsAlertHooks';
 import { useKnapperIRedigeringspanelSynlighet } from '../../../../regler/synlighet/knapperIRedigeringspanel';
-import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
+import { erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
@@ -57,8 +57,6 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
         sammenslåtteValgtePerioder,
         uttakPerioderInkludertTapteDager,
     );
-
-    const harValgtEøsPeriode = eksisterendePerioderSomErValgt.some((p) => erEøsUttakPeriode(p));
 
     const harPeriodeMedPleiepenger = eksisterendePerioderSomErValgt.some(
         (p) =>
@@ -142,7 +140,7 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
 
                         <PeriodeDetaljerOgInfoMeldinger />
 
-                        {(harPeriodeMedPleiepenger || harValgtEøsPeriode) && (
+                        {harPeriodeMedPleiepenger && (
                             <HStack justify="end">
                                 <Button
                                     type="button"
@@ -154,7 +152,7 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
                                 </Button>
                             </HStack>
                         )}
-                        {!harPeriodeMedPleiepenger && !harValgtEøsPeriode && (
+                        {!harPeriodeMedPleiepenger && (
                             <HStack gap="space-12" wrap={false} className="w-full">
                                 <LeggTilOgEndreKnapp
                                     åpneRedigeringsmodus={åpneRedigeringsmodus}

@@ -12,7 +12,6 @@
     "uttaksplan.hvilkeperiode": "Kva for periode vil du endre?",
     "uttaksplan.valgPanel.label": "Kva vil du gjere?",
     "uttaksplan.valgPanel.utsettelse": "Utsettelse kan kun leggast til når ein har valgt dagar i 6-vekersperioden etter fødsel/termin",
-    "uttaksplan.overskriderEøs": "Periode kan ikkje overlappe med ein eksisterande EU/EØS-periode",
     "uttaksplan.valgPanel.pause": "Pause kan kun leggast til når ein har valgt dagar etter 6-vekersperioden etter fødsel/termin",
     "uttaksplan.valgPanel.ferie": "Ferie og periodar utan foreldrepengar kan kun leggast til i 6-vekersperioden etter fødsel/termin eller før",
     "uttaksplan.valgPanel.leggTilPeriode": "Legg til periode med foreldrepengar",
@@ -280,7 +279,7 @@
 
     "RedigeringPanel.Gradering": "Gradering: {prosent} %",
     "RedigeringPanel.GraderingForelder": "{forelder, select, MOR {Mor} other {{erMedmor, select, true {Medmor} other {Far}}}} er i {prosent} % arbeid",
-    "RedigeringPanel.IkkeRedigerbarEøsUttakPeriode": "Perioder der den andre forelderen mottek pengestøtte i eit anna EU/EØS-land kan ikkje slettast eller endrast",
+    "RedigeringPanel.EøsUttakKanGiAvslag": "Den andre forelderen mottek pengestøtte i eit anna EU/EØS-land. Dersom de ønskjer å motta foreldrepengar samtidig, kan dette føre til avslag. Årsaka er at saka må vurderast i samsvar med norsk regelverk for foreldrepengar.",
     "RedigeringPanel.IkkeRedigerbarGrunnetPleiepenger": "Perioder som er avslått grunna pleiepengar kan ikkje slettast eller endrast",
     "UttaksplanKalender.VelgEnkeltDager": "Enkeltdager",
     "UttaksplanKalender.VelgPeriode": "Periode (fra - til)",

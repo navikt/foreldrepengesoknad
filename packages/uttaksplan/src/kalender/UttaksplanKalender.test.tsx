@@ -607,7 +607,7 @@ describe('UttaksplanKalender', () => {
         ).not.toBeInTheDocument();
     });
 
-    it('skal ikke kunne endre eller slette en EØS-periode', async () => {
+    it('skal kunne legge inn eget uttak i en periode der annen part har EØS-uttak, med advarsel om avslag', async () => {
         render(<MorSøkerOgFarHarEøsPeriode />);
 
         const juli = screen.getByTestId('year:2024;month:6');
@@ -620,12 +620,13 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('EU/EØS-periode')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Perioder der den andre forelderen mottar pengestøtte i et annet EU/EØS-land kan ikke slettes eller endres',
+                'Den andre forelderen mottar pengestøtte i et annet EU/EØS-land. Hvis dere ønsker å motta ' +
+                    'foreldrepenger samtidig, kan dette medføre avslag. Årsaken er at saken må vurderes i ' +
+                    'samsvar med norske regelverk for foreldrepenger.',
             ),
         ).toBeInTheDocument();
-        expect(screen.getByText('Avbryt')).toBeInTheDocument();
-        expect(screen.queryByText('Endre')).not.toBeInTheDocument();
-        expect(screen.queryByText('Endre til ferie')).not.toBeInTheDocument();
+        expect(screen.getByText('Endre')).toBeInTheDocument();
+        expect(screen.getByText('Endre til ferie')).toBeInTheDocument();
     });
 
     it('mor og far tar samtidig uttak - far fellesperiode med 100% samtidig uttak skal trigge aktivitetskrav', async () => {
