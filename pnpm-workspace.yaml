@@ -21,7 +21,7 @@ catalog:
   '@testing-library/user-event': 14.6.1
   '@types/express': 5.0.6
   '@types/morgan': 1.9.10
-  '@types/node': 26.0.0
+  '@types/node': 26.1.1
   '@types/react': 19.2.17
   '@types/react-dom': 19.2.3
   classnames: 2.5.1
@@ -29,9 +29,9 @@ catalog:
   dotenv: 17.4.2
   es-toolkit: 1.48.1
   esbuild: 0.28.1
-  eslint: 10.5.0
+  eslint: 10.8.0
   express: 5.2.1
-  http-proxy-middleware: 4.1.1
+  http-proxy-middleware: 4.2.0
   i18n-iso-countries: 7.14.0
   jsdom: 29.1.1
   ky: 2.0.2
