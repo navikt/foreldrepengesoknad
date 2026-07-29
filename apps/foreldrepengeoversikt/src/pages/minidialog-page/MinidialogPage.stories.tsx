@@ -33,21 +33,19 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.get(API_URLS.minidialog, () =>
-                    HttpResponse.json([
-                        {
-                            saksnummer: '1',
-                            opprettet: '2023-02-09',
-                        },
-                    ] satisfies TilbakekrevingUttalelseOppgave_fpoversikt[]),
-                ),
-                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
-                http.post(API_URLS.ettersend, () => new HttpResponse(null, { status: 200 })),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.get(API_URLS.minidialog, () =>
+                HttpResponse.json([
+                    {
+                        saksnummer: '1',
+                        opprettet: '2023-02-09',
+                    },
+                ] satisfies TilbakekrevingUttalelseOppgave_fpoversikt[]),
+            ),
+            http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+            http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
+            http.post(API_URLS.ettersend, () => new HttpResponse(null, { status: 200 })),
+        );
     },
 };

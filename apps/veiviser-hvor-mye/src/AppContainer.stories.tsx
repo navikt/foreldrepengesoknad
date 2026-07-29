@@ -69,11 +69,11 @@ const createKontoHandler = () =>
 const meta = {
     title: 'AppContainer',
     component: AppContainer,
-    parameters: {
-        msw: {
-            handlers: [createKontoHandler()],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(createKontoHandler());
     },
+
     render: () => {
         return (
             <StrictMode>
@@ -91,9 +91,7 @@ type Story = StoryObj<typeof meta>;
 export const HvorMyeVeiviser: Story = {};
 
 export const HvorMyeVeiviserMockaStønadskvoterOgSatser: Story = {
-    parameters: {
-        msw: {
-            handlers: [createKontoHandler()],
-        },
+    beforeEach({ msw }) {
+        msw.use(createKontoHandler());
     },
 };

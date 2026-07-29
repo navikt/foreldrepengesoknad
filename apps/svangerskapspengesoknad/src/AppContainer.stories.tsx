@@ -94,17 +94,15 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const VisAppKvinneMedArbeid: Story = {
-    parameters: {
-        msw: {
-            handlers: HANDLERS.concat([http.get(API_URLS.søkerInfo, () => HttpResponse.json(defaultSøkerinfo))]),
-        },
+    beforeEach({ msw }) {
+        msw.use(...HANDLERS.concat([http.get(API_URLS.søkerInfo, () => HttpResponse.json(defaultSøkerinfo))]));
     },
 };
 
 export const VisAppKvinneUtenArbeid: Story = {
-    parameters: {
-        msw: {
-            handlers: HANDLERS.concat([
+    beforeEach({ msw }) {
+        msw.use(
+            ...HANDLERS.concat([
                 http.get(API_URLS.søkerInfo, () =>
                     HttpResponse.json({
                         ...defaultSøkerinfo,
@@ -112,14 +110,14 @@ export const VisAppKvinneUtenArbeid: Story = {
                     }),
                 ),
             ]),
-        },
+        );
     },
 };
 
 export const VisAppMann: Story = {
-    parameters: {
-        msw: {
-            handlers: HANDLERS.concat([
+    beforeEach({ msw }) {
+        msw.use(
+            ...HANDLERS.concat([
                 http.get(API_URLS.søkerInfo, () =>
                     HttpResponse.json({
                         ...defaultSøkerinfo,
@@ -127,14 +125,14 @@ export const VisAppMann: Story = {
                     }),
                 ),
             ]),
-        },
+        );
     },
 };
 
 export const VisAppUmyndig: Story = {
-    parameters: {
-        msw: {
-            handlers: HANDLERS.concat([
+    beforeEach({ msw }) {
+        msw.use(
+            ...HANDLERS.concat([
                 http.get(API_URLS.søkerInfo, () =>
                     HttpResponse.json({
                         ...defaultSøkerinfo,
@@ -143,6 +141,6 @@ export const VisAppUmyndig: Story = {
                     }),
                 ),
             ]),
-        },
+        );
     },
 };

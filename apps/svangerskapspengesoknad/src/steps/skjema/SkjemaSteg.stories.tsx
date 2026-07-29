@@ -97,19 +97,18 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const SkalIkkeFeileOpplasting: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(
-                    API_URLS.sendVedlegg,
-                    () =>
-                        new HttpResponse(JSON.stringify('uuid-test'), {
-                            status: 200,
-                        }),
-                ),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(
+                API_URLS.sendVedlegg,
+                () =>
+                    new HttpResponse(JSON.stringify('uuid-test'), {
+                        status: 200,
+                    }),
+            ),
+        );
     },
+
     args: {
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: () => action('button-click'),
@@ -125,16 +124,15 @@ export const SkalIkkeFeileOpplasting: Story = {
 };
 
 export const SkalFeileOpplasting: Story = {
-    parameters: {
-        msw: {
-            handlers: [http.post(API_URLS.sendVedlegg, () => new HttpResponse(null, { status: 400 }))],
-        },
+    beforeEach({ msw }) {
+        msw.use(http.post(API_URLS.sendVedlegg, () => new HttpResponse(null, { status: 400 })));
     },
+
     args: SkalIkkeFeileOpplasting.args,
 };
 
 export const MedVedlegg: Story = {
-    parameters: SkalIkkeFeileOpplasting.parameters,
+    beforeEach: SkalIkkeFeileOpplasting.beforeEach,
     args: {
         ...SkalIkkeFeileOpplasting.args,
         vedlegg: {
@@ -157,7 +155,7 @@ export const MedVedlegg: Story = {
 };
 
 export const MedToTilrettelegginger: Story = {
-    parameters: SkalIkkeFeileOpplasting.parameters,
+    beforeEach: SkalIkkeFeileOpplasting.beforeEach,
     args: {
         ...SkalIkkeFeileOpplasting.args,
         valgteArbeidsforhold: [ARBEIDSGIVER_ID, ANNEN_ARBEIDSGIVER_ID],
@@ -165,7 +163,7 @@ export const MedToTilrettelegginger: Story = {
 };
 
 export const ErTypeFrilans: Story = {
-    parameters: SkalIkkeFeileOpplasting.parameters,
+    beforeEach: SkalIkkeFeileOpplasting.beforeEach,
     args: {
         ...SkalIkkeFeileOpplasting.args,
         valgtTilretteleggingId: FRILANS_ID,
@@ -179,7 +177,7 @@ export const ErTypeFrilans: Story = {
 };
 
 export const ErTypeEgenNæring: Story = {
-    parameters: SkalIkkeFeileOpplasting.parameters,
+    beforeEach: SkalIkkeFeileOpplasting.beforeEach,
     args: {
         ...SkalIkkeFeileOpplasting.args,
         valgtTilretteleggingId: EGEN_NÆRING_ID,
@@ -193,7 +191,7 @@ export const ErTypeEgenNæring: Story = {
 };
 
 export const KanMaxHaToVedlegg: Story = {
-    parameters: SkalIkkeFeileOpplasting.parameters,
+    beforeEach: SkalIkkeFeileOpplasting.beforeEach,
     args: {
         ...SkalIkkeFeileOpplasting.args,
         valgtTilretteleggingId: ARBEIDSGIVER_ID,

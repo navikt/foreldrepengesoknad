@@ -37,15 +37,14 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelserFP)),
-                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+            http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelserFP)),
+            http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
+        );
     },
+
     args: {
         saker: mapSakerDTOToSaker(saker),
         søkerinfo: søkerinfo,

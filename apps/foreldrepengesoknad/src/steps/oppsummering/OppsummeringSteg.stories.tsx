@@ -245,20 +245,20 @@ type StoryArgs = {
 const meta = {
     title: 'steps/Oppsummering',
     component: OppsummeringSteg,
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
-                http.post(API_URLS.konto, () =>
-                    HttpResponse.json({
-                        '80': STØNADSKONTO_80,
-                        '100': STØNADSKONTO_100,
-                    }),
-                ),
-            ],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
+            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.konto, () =>
+                HttpResponse.json({
+                    '80': STØNADSKONTO_80,
+                    '100': STØNADSKONTO_100,
+                }),
+            ),
+        );
     },
+
     render: ({
         søkersituasjon = defaultSøkersituasjon,
         annenForelder = defaultAnnenForelder,
@@ -493,13 +493,12 @@ export const FarMedMorSomHarRettINorge: Story = {
 
 export const FarMedMorSomHarVedtak: Story = {
     args: FarMedMorSomHarRettINorge.args,
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
-                http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
-            ],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
+            http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
+        );
     },
 };
 
@@ -911,15 +910,14 @@ export const FarSøkerMorMåIkkeDokumentereArbeid: Story = {
             harJobbetSomSelvstendigNæringsdrivende: false,
         },
     },
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(
-                    API_URLS.trengerDokumentereMorsArbeid,
-                    () => new HttpResponse(JSON.stringify(false), { status: 200 }),
-                ),
-            ],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(
+                API_URLS.trengerDokumentereMorsArbeid,
+                () => new HttpResponse(JSON.stringify(false), { status: 200 }),
+            ),
+        );
     },
 };
 
@@ -962,15 +960,14 @@ export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story =
             harJobbetSomSelvstendigNæringsdrivende: false,
         },
     },
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(
-                    API_URLS.trengerDokumentereMorsArbeid,
-                    () => new HttpResponse(JSON.stringify(false), { status: 200 }),
-                ),
-            ],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(
+                API_URLS.trengerDokumentereMorsArbeid,
+                () => new HttpResponse(JSON.stringify(false), { status: 200 }),
+            ),
+        );
     },
 };
 
@@ -1009,15 +1006,14 @@ export const FarSøkerMorMåDokumentereArbeid: Story = {
             harJobbetSomSelvstendigNæringsdrivende: false,
         },
     },
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(
-                    API_URLS.trengerDokumentereMorsArbeid,
-                    () => new HttpResponse(JSON.stringify(true), { status: 200 }),
-                ),
-            ],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(
+                API_URLS.trengerDokumentereMorsArbeid,
+                () => new HttpResponse(JSON.stringify(true), { status: 200 }),
+            ),
+        );
     },
 };
 
