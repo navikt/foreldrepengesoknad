@@ -10,11 +10,11 @@ catalog:
   '@navikt/ds-react': 8.15.0
   '@navikt/ds-tailwind': 8.15.0
   '@navikt/nav-dekoratoren-moduler': 4.2.2
-  '@sentry/vite-plugin': 5.3.0
-  '@storybook/addon-links': 10.4.6
-  '@storybook/react-vite': 10.4.6
-  '@tanstack/react-query': 5.101.1
-  '@tanstack/react-query-devtools': 5.101.1
+  '@sentry/vite-plugin': 5.4.0
+  '@storybook/addon-links': 10.5.4
+  '@storybook/react-vite': 10.5.4
+  '@tanstack/react-query': 5.101.4
+  '@tanstack/react-query-devtools': 5.101.4
   '@testing-library/dom': 10.4.1
   '@testing-library/jest-dom': 6.9.1
   '@testing-library/react': 16.3.2
@@ -27,7 +27,7 @@ catalog:
   classnames: 2.5.1
   dayjs: 1.11.21
   dotenv: 17.4.2
-  es-toolkit: 1.48.1
+  es-toolkit: 1.50.0
   esbuild: 0.28.1
   eslint: 10.8.0
   express: 5.2.1
@@ -41,11 +41,11 @@ catalog:
   react: 19.2.8
   react-dom: 19.2.8
   react-hook-form: 7.78.0
-  react-intl: 10.1.13
-  react-router-dom: 7.18.0
-  storybook: 10.4.6
+  react-intl: 10.1.18
+  react-router-dom: 7.18.1
+  storybook: 10.5.4
   storybook-react-intl: 10.2.1
-  tailwindcss: 4.3.1
+  tailwindcss: 4.3.3
   ts-node: 10.9.2
   typescript: 6.0.3
   vite: 8.1.5
