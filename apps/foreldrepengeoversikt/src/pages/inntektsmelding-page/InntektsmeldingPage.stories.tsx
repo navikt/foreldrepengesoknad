@@ -42,12 +42,10 @@ type Story = StoryObj<typeof meta>;
 const HANDLERS = [http.get(API_URLS.saker, () => HttpResponse.json(saker))];
 
 export const EnBortfaltNaturalytelse: Story = {
-    parameters: {
-        msw: {
-            handlers: HANDLERS.concat([
-                http.get(API_URLS.inntektsmelding, () => HttpResponse.json(enBortfaltNaturalytelse)),
-            ]),
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            ...HANDLERS.concat([http.get(API_URLS.inntektsmelding, () => HttpResponse.json(enBortfaltNaturalytelse))]),
+        );
     },
     args: {
         saksnummer: '352011079',
@@ -56,12 +54,12 @@ export const EnBortfaltNaturalytelse: Story = {
 };
 
 export const FlereBortfalteNaturalytelser: Story = {
-    parameters: {
-        msw: {
-            handlers: HANDLERS.concat([
+    beforeEach({ msw }) {
+        msw.use(
+            ...HANDLERS.concat([
                 http.get(API_URLS.inntektsmelding, () => HttpResponse.json(flereBortfalteNaturalytelser)),
             ]),
-        },
+        );
     },
     args: {
         saksnummer: '352011079',
@@ -70,10 +68,8 @@ export const FlereBortfalteNaturalytelser: Story = {
 };
 
 export const UtenRefusjon: Story = {
-    parameters: {
-        msw: {
-            handlers: HANDLERS.concat([http.get(API_URLS.inntektsmelding, () => HttpResponse.json(utenRefusjon))]),
-        },
+    beforeEach({ msw }) {
+        msw.use(...HANDLERS.concat([http.get(API_URLS.inntektsmelding, () => HttpResponse.json(utenRefusjon))]));
     },
     args: {
         saksnummer: '352011079',
@@ -82,10 +78,8 @@ export const UtenRefusjon: Story = {
 };
 
 export const DelvisRefusjon: Story = {
-    parameters: {
-        msw: {
-            handlers: HANDLERS.concat([http.get(API_URLS.inntektsmelding, () => HttpResponse.json(medDelvisRefusjon))]),
-        },
+    beforeEach({ msw }) {
+        msw.use(...HANDLERS.concat([http.get(API_URLS.inntektsmelding, () => HttpResponse.json(medDelvisRefusjon))]));
     },
     args: {
         saksnummer: '308',
@@ -94,10 +88,8 @@ export const DelvisRefusjon: Story = {
 };
 
 export const MedRefusjon: Story = {
-    parameters: {
-        msw: {
-            handlers: HANDLERS.concat([http.get(API_URLS.inntektsmelding, () => HttpResponse.json(medRefusjon))]),
-        },
+    beforeEach({ msw }) {
+        msw.use(...HANDLERS.concat([http.get(API_URLS.inntektsmelding, () => HttpResponse.json(medRefusjon))]));
     },
     args: {
         saksnummer: '352011079',
@@ -106,12 +98,10 @@ export const MedRefusjon: Story = {
 };
 
 export const Refusjonsperioder: Story = {
-    parameters: {
-        msw: {
-            handlers: HANDLERS.concat([
-                http.get(API_URLS.inntektsmelding, () => HttpResponse.json(medRefusjonsPerioder)),
-            ]),
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            ...HANDLERS.concat([http.get(API_URLS.inntektsmelding, () => HttpResponse.json(medRefusjonsPerioder))]),
+        );
     },
     args: {
         saksnummer: '352011079',

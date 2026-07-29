@@ -24,6 +24,14 @@ export const getKjønnFromFnr = (annenForelder: AnnenForelder): Kjønn_fpoversik
     return undefined;
 };
 
+/**
+ * Sann når søker er far og den andre forelderen også er mann (f.eks. to fedre ved adopsjon).
+ * Da representerer ikke domenerollene MOR/FAR_MEDMOR en faktisk mor, så generiske
+ * Mor/Far-tekster skal erstattes med foreldrenes faktiske navn.
+ */
+export const getErFarOgFar = (søkersituasjonRolle: Søkerrolle, annenForelder: AnnenForelder): boolean =>
+    søkersituasjonRolle === 'far' && getKjønnFromFnr(annenForelder) === 'M';
+
 export const getKjønnFromFnrString = (fnr: string): Kjønn_fpoversikt | undefined => {
     if (fnr.length !== 11) {
         return undefined;

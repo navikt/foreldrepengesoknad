@@ -29,17 +29,17 @@ type StoryArgs = {
 const meta = {
     title: 'steps/SenereUtenlandsoppholdSteg',
     component: SenereUtenlandsoppholdSteg,
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(
-                    API_URLS.mellomlagring,
 
-                    () => new HttpResponse(null, { status: 200 }),
-                ),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(
+                API_URLS.mellomlagring,
+
+                () => new HttpResponse(null, { status: 200 }),
+            ),
+        );
     },
+
     render: ({ gåTilNesteSide = action('button-click'), utenlandsopphold = defaultUtenlandsopphold, ...rest }) => {
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.SENERE_UTENLANDSOPPHOLD]}>

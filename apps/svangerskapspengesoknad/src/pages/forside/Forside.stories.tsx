@@ -41,10 +41,9 @@ export const Default: Story = {
         mellomlagreSøknadOgNaviger: promiseAction(),
         harGodkjentVilkår: false,
     },
-    parameters: {
-        msw: {
-            handlers: [http.get(API_URLS.saker, () => HttpResponse.json(ingenSaker))],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(http.get(API_URLS.saker, () => HttpResponse.json(ingenSaker)));
     },
 };
 
@@ -54,9 +53,8 @@ export const MedEksisterendeSøknad: Story = {
         mellomlagreSøknadOgNaviger: promiseAction(),
         harGodkjentVilkår: false,
     },
-    parameters: {
-        msw: {
-            handlers: [http.get(API_URLS.saker, () => HttpResponse.json(saker))],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(http.get(API_URLS.saker, () => HttpResponse.json(saker)));
     },
 };

@@ -7,6 +7,7 @@ import { getNavnGenitivEierform } from '@navikt/fp-utils';
 import messages from '../intl/nb_NO.json';
 import {
     formaterNavn,
+    getErFarOgFar,
     getErSøkerFarEllerMedmor,
     getKjønnFromFnr,
     getMorErAleneOmOmsorg,
@@ -78,6 +79,34 @@ describe('personUtils', () => {
         } as AnnenForelder;
         const kjønn = getKjønnFromFnr(annenForelder);
         expect(kjønn).toBeUndefined();
+    });
+
+    it('skal returnere true for erFarOgFar når søker er far og annen forelder er mann', () => {
+        const annenForelder = {
+            kanIkkeOppgis: false,
+            fnr: '08088611111',
+        } as AnnenForelder;
+
+        expect(getErFarOgFar('far', annenForelder)).toBe(true);
+    });
+
+    it('skal returnere false for erFarOgFar når søker er far og annen forelder er kvinne', () => {
+        const annenForelder = {
+            kanIkkeOppgis: false,
+            fnr: '05510552883',
+        } as AnnenForelder;
+
+        expect(getErFarOgFar('far', annenForelder)).toBe(false);
+    });
+
+    it('skal returnere false for erFarOgFar når søker ikke er far', () => {
+        const annenForelder = {
+            kanIkkeOppgis: false,
+            fnr: '08088611111',
+        } as AnnenForelder;
+
+        expect(getErFarOgFar('mor', annenForelder)).toBe(false);
+        expect(getErFarOgFar('medmor', annenForelder)).toBe(false);
     });
 
     it('skal returnere true når mor har aleneomsorg', () => {

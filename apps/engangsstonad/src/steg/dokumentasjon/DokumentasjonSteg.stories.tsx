@@ -45,19 +45,18 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Terminbekreftelse: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(
-                    API_URLS.sendVedlegg,
-                    () =>
-                        new HttpResponse(JSON.stringify('uuid-test'), {
-                            status: 200,
-                        }),
-                ),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(
+                API_URLS.sendVedlegg,
+                () =>
+                    new HttpResponse(JSON.stringify('uuid-test'), {
+                        status: 200,
+                    }),
+            ),
+        );
     },
+
     args: {
         path: Path.TERMINBEKREFTELSE,
         omBarnet: {
@@ -70,19 +69,18 @@ export const Terminbekreftelse: Story = {
 };
 
 export const Adopsjonsbekreftelse: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(
-                    API_URLS.sendVedlegg,
-                    () =>
-                        new HttpResponse(JSON.stringify('uuid-test'), {
-                            status: 200,
-                        }),
-                ),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(
+                API_URLS.sendVedlegg,
+                () =>
+                    new HttpResponse(JSON.stringify('uuid-test'), {
+                        status: 200,
+                    }),
+            ),
+        );
     },
+
     args: {
         path: Path.ADOPSJONSBEKREFTELSE,
         omBarnet: {
@@ -97,11 +95,10 @@ export const Adopsjonsbekreftelse: Story = {
 };
 
 export const FeilerOpplastinger: Story = {
-    parameters: {
-        msw: {
-            handlers: [http.post(API_URLS.sendVedlegg, () => new HttpResponse(null, { status: 400 }))],
-        },
+    beforeEach({ msw }) {
+        msw.use(http.post(API_URLS.sendVedlegg, () => new HttpResponse(null, { status: 400 })));
     },
+
     args: {
         path: Path.ADOPSJONSBEKREFTELSE,
         omBarnet: {

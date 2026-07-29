@@ -224,19 +224,17 @@ export const ADOPSJON_PERIODE_FØR_FAMHEND = lagAlertregel<PeriodeDetaljerKontek
     skalVises: (ctx) => ctx.familiesituasjon === 'adopsjon' && ctx.harPeriodeFørFamiliehendelsedato,
 });
 
-export const IKKE_REDIGERBAR_EØS = lagAlertregel<PeriodeDetaljerKontekst>({
-    id: 'informasjonsAlerts.ikkeRedigerbarEøsUttak',
+export const EØS_UTTAK_KAN_GI_AVSLAG = lagAlertregel<PeriodeDetaljerKontekst>({
+    id: 'informasjonsAlerts.eøsUttakKanGiAvslag',
     beskrivelse:
-        'EØS-uttaksperioder kan ikke redigeres i denne flyten. Alerten forklarer ' +
-        'hvorfor periodene som er valgt, er låst.',
+        'Brukeren har valgt et tidsrom der den andre forelderen har et EØS-uttak. ' +
+        'Brukeren kan likevel legge inn eget uttak i tidsrommet, men alerten varsler ' +
+        'om at dette kan føre til avslag fordi saken må vurderes etter norsk regelverk.',
     visningssteder: ['periode-detaljer-redigering'],
     meldinger: [
-        <FormattedMessage
-            key="RedigeringPanel.IkkeRedigerbarEøsUttakPeriode"
-            id="RedigeringPanel.IkkeRedigerbarEøsUttakPeriode"
-        />,
+        <FormattedMessage key="RedigeringPanel.EøsUttakKanGiAvslag" id="RedigeringPanel.EøsUttakKanGiAvslag" />,
     ],
-    variant: 'info',
+    variant: 'warning',
     type: 'kontekstuell',
     skalVises: (ctx) => ctx.eksisterendePerioderSomErValgt.some((p) => erEøsUttakPeriode(p)),
 });
@@ -385,7 +383,7 @@ export const INFORMASJONS_ALERTS: readonly AlertregelDoc[] = [
     KAN_MISTE_DAGER,
     FERIE_UKE_7_ETTER_TERMIN,
     ADOPSJON_PERIODE_FØR_FAMHEND,
-    IKKE_REDIGERBAR_EØS,
+    EØS_UTTAK_KAN_GI_AVSLAG,
     IKKE_REDIGERBAR_PLEIEPENGER,
     SENERE_PERIODER_READONLY,
     VALGTE_DAGER_FØR_SEKS_UKER,

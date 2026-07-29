@@ -164,6 +164,9 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
 
     const valgtePerioder = fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [];
 
+    const overlapperMedEøsPerioder =
+        !!fomValue && !!tomValue && erOverlappendeMedEøsPerioder(uttakPerioder, fomValue, tomValue);
+
     const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } =
         useVisForskyvEllerErstattPanel(valgtePerioder);
 
@@ -190,11 +193,6 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
 
         const fom = notEmpty(values.fom);
         const tom = notEmpty(values.tom);
-
-        if (erOverlappendeMedEøsPerioder(uttakPerioder, fom, tom)) {
-            setFeilmelding(intl.formatMessage({ id: 'uttaksplan.overskriderEøs' }));
-            return;
-        }
 
         if (hvaVilDuGjøre === 'LEGG_TIL_PERIODE') {
             const submitFeilmelding = formSubmitValidator([{ fom, tom }], values);
@@ -331,6 +329,12 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
             {listePanelAlerts.morsAktivitetIkkeOppgitt && (
                 <Alert variant={listePanelAlerts.morsAktivitetIkkeOppgitt.variant} size="small">
                     {listePanelAlerts.morsAktivitetIkkeOppgitt.melding}
+                </Alert>
+            )}
+
+            {overlapperMedEøsPerioder && (
+                <Alert variant="warning" size="small">
+                    <FormattedMessage id="RedigeringPanel.EøsUttakKanGiAvslag" />
                 </Alert>
             )}
 
