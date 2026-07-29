@@ -13,10 +13,9 @@ dayjs.extend(isSameOrAfter);
 
 expect.extend(matchers);
 
-// Browser-modus er tregare enn jsdom; auk Testing Library sin standard findBy*/waitFor-timeout.
-if (import.meta.env['TEST_MODE'] === 'browser-mode') {
-    configure({ asyncUtilTimeout: 10000 });
-}
+// Både jsdom og browser kan være trege på CPU-sultne CI-runnere (2 vCPU); øk
+// Testing Library sin standard findBy*/waitFor-timeout så steg-overganger rekker å fullføre.
+configure({ asyncUtilTimeout: 10000 });
 
 if (import.meta.env['TEST_MODE'] === 'jsdom-mode') {
     globalThis.scrollTo = () => undefined;

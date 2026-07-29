@@ -19,8 +19,8 @@
         "clean": "pnpm -r run clean && rm -rf ./node_modules ./.turbo"
     },
     "dependencies": {
-        "lint-staged": "17.0.8",
-        "turbo": "2.9.18"
+        "lint-staged": "17.2.0",
+        "turbo": "2.10.7"
     },
     "devDependencies": {
         "@trivago/prettier-plugin-sort-imports": "6.0.2",
