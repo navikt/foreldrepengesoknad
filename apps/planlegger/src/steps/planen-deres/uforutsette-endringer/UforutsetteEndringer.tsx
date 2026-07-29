@@ -12,7 +12,8 @@ import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import { FødtFørUke33 } from './FødtFørUke33';
-import { HvisBarnetErInnlagt } from './HvisBarnetErInnlagt';
+import { HvisBarnetErInnlagtEtterTermin } from './HvisBarnetErInnlagtEtterTermin';
+import { HvisBarnetErInnlagtFørTermin } from './HvisBarnetErInnlagtFørTermin';
 import { HvisBarnetErSykt } from './HvisBarnetErSykt';
 import { HvisBarnetErSyktEllerInnlagt } from './HvisBarnetErSyktEllerInnlagt';
 import { HvisDuBlirSyk } from './HvisDuBlirSyk';
@@ -76,7 +77,10 @@ export const UforutsetteEndringer = ({ hvemPlanlegger, arbeidssituasjon, barnet 
                                 {((beggeHarRett && !erFarOgFar) ||
                                     kunMorHarRett ||
                                     (erAleneforsørger && erMorDelAvSøknaden(hvemPlanlegger))) && (
-                                    <HvisBarnetErInnlagt arbeidssituasjon={arbeidssituasjon} />
+                                    <>
+                                        <HvisBarnetErInnlagtFørTermin />
+                                        <HvisBarnetErInnlagtEtterTermin />
+                                    </>
                                 )}
 
                                 {((erAleneforsørger && erMorDelAvSøknaden(hvemPlanlegger)) ||

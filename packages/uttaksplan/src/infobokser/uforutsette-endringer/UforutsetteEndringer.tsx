@@ -7,7 +7,8 @@ import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { FødtFørUke33 } from './tekster/FødtFørUke33';
-import { HvisBarnetErInnlagt } from './tekster/HvisBarnetErInnlagt';
+import { HvisBarnetErInnlagtEtterTermin } from './tekster/HvisBarnetErInnlagtEtterTermin';
+import { HvisBarnetErInnlagtFørTermin } from './tekster/HvisBarnetErInnlagtFørTermin';
 import { HvisBarnetErSykt } from './tekster/HvisBarnetErSykt';
 import { HvisBarnetErSyktEllerInnlagt } from './tekster/HvisBarnetErSyktEllerInnlagt';
 import { HvisDuBlirSyk } from './tekster/HvisDuBlirSyk';
@@ -72,7 +73,12 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
                                     kunFarEllerMedmorHarRett) && <HvisBarnetErSyktEllerInnlagt />}
                                 {((beggeHarRett && !erFarOgFar) ||
                                     kunMorHarRett ||
-                                    (erAleneforsørger && erMorDelAvSøknaden)) && <HvisBarnetErInnlagt />}
+                                    (erAleneforsørger && erMorDelAvSøknaden)) && (
+                                    <>
+                                        <HvisBarnetErInnlagtFørTermin />
+                                        <HvisBarnetErInnlagtEtterTermin />
+                                    </>
+                                )}
 
                                 {((erAleneforsørger && erMorDelAvSøknaden) ||
                                     kunMorHarRett ||
