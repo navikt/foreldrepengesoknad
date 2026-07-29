@@ -24,7 +24,7 @@ jobs:
           restore-keys: turbo-${{ runner.os }}-master-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Installere dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
@@ -65,7 +65,7 @@ jobs:
           restore-keys: turbo-browser-${{ runner.os }}-master-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Installere dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 

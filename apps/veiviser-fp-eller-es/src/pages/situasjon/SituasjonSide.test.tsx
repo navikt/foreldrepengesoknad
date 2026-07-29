@@ -471,7 +471,7 @@ describe('<SituasjonSide>', () => {
 
         const alertErSynlig = () =>
             expect(
-                screen.queryByText('For å kunne ha rett til foreldrepenger må man tjene minst', { exact: false }),
+                screen.getByText('For å kunne ha rett til foreldrepenger må man tjene minst', { exact: false }),
             ).toBeInTheDocument();
 
         const alertErIkkeSynlig = () =>
