@@ -112,8 +112,8 @@ catalogs:
       specifier: 19.2.8
       version: 19.2.8
     react-hook-form:
-      specifier: 7.83.0
-      version: 7.83.0
+      specifier: 7.78.0
+      version: 7.78.0
     react-intl:
       specifier: 10.1.18
       version: 10.1.18
@@ -248,7 +248,7 @@ importers:
         version: 19.2.8(react@19.2.8)
       react-hook-form:
         specifier: 'catalog:'
-        version: 7.83.0(react@19.2.8)
+        version: 7.78.0(react@19.2.8)
       react-intl:
         specifier: 'catalog:'
         version: 10.1.18(@types/react@19.2.17)(react@19.2.8)
@@ -589,7 +589,7 @@ importers:
         version: 19.2.8(react@19.2.8)
       react-hook-form:
         specifier: 'catalog:'
-        version: 7.83.0(react@19.2.8)
+        version: 7.78.0(react@19.2.8)
       react-intl:
         specifier: 'catalog:'
         version: 10.1.18(@types/react@19.2.17)(react@19.2.8)
@@ -746,7 +746,7 @@ importers:
         version: 19.2.8(react@19.2.8)
       react-hook-form:
         specifier: 'catalog:'
-        version: 7.83.0(react@19.2.8)
+        version: 7.78.0(react@19.2.8)
       react-intl:
         specifier: 'catalog:'
         version: 10.1.18(@types/react@19.2.17)(react@19.2.8)
@@ -915,7 +915,7 @@ importers:
         version: 19.2.8(react@19.2.8)
       react-hook-form:
         specifier: 'catalog:'
-        version: 7.83.0(react@19.2.8)
+        version: 7.78.0(react@19.2.8)
       react-intl:
         specifier: 'catalog:'
         version: 10.1.18(@types/react@19.2.17)(react@19.2.8)
@@ -1054,7 +1054,7 @@ importers:
         version: 19.2.8(react@19.2.8)
       react-hook-form:
         specifier: 'catalog:'
-        version: 7.83.0(react@19.2.8)
+        version: 7.78.0(react@19.2.8)
       react-intl:
         specifier: 'catalog:'
         version: 10.1.18(@types/react@19.2.17)(react@19.2.8)
@@ -1196,7 +1196,7 @@ importers:
         version: 19.2.8(react@19.2.8)
       react-hook-form:
         specifier: 'catalog:'
-        version: 7.83.0(react@19.2.8)
+        version: 7.78.0(react@19.2.8)
       react-intl:
         specifier: 'catalog:'
         version: 10.1.18(@types/react@19.2.17)(react@19.2.8)
@@ -1524,7 +1524,7 @@ importers:
     dependencies:
       '@hookform/error-message':
         specifier: 2.0.1
-        version: 2.0.1(react-dom@19.2.8(react@19.2.8))(react-hook-form@7.83.0(react@19.2.8))(react@19.2.8)
+        version: 2.0.1(react-dom@19.2.8(react@19.2.8))(react-hook-form@7.78.0(react@19.2.8))(react@19.2.8)
       '@navikt/ds-css':
         specifier: 'catalog:'
         version: 8.16.1
@@ -1551,7 +1551,7 @@ importers:
         version: 19.2.8(react@19.2.8)
       react-hook-form:
         specifier: 'catalog:'
-        version: 7.83.0(react@19.2.8)
+        version: 7.78.0(react@19.2.8)
       react-intl:
         specifier: 'catalog:'
         version: 10.1.18(@types/react@19.2.17)(react@19.2.8)
@@ -1749,7 +1749,7 @@ importers:
         version: 19.2.8(react@19.2.8)
       react-hook-form:
         specifier: 'catalog:'
-        version: 7.83.0(react@19.2.8)
+        version: 7.78.0(react@19.2.8)
       react-intl:
         specifier: 'catalog:'
         version: 10.1.18(@types/react@19.2.17)(react@19.2.8)
@@ -1852,7 +1852,7 @@ importers:
         version: 19.2.8(react@19.2.8)
       react-hook-form:
         specifier: 'catalog:'
-        version: 7.83.0(react@19.2.8)
+        version: 7.78.0(react@19.2.8)
       react-intl:
         specifier: 'catalog:'
         version: 10.1.18(@types/react@19.2.17)(react@19.2.8)
@@ -1949,7 +1949,7 @@ importers:
         version: 19.2.8(react@19.2.8)
       react-hook-form:
         specifier: 'catalog:'
-        version: 7.83.0(react@19.2.8)
+        version: 7.78.0(react@19.2.8)
       react-intl:
         specifier: 'catalog:'
         version: 10.1.18(@types/react@19.2.17)(react@19.2.8)
@@ -2228,7 +2228,7 @@ importers:
         version: 19.2.8(react@19.2.8)
       react-hook-form:
         specifier: 'catalog:'
-        version: 7.83.0(react@19.2.8)
+        version: 7.78.0(react@19.2.8)
       react-intl:
         specifier: 'catalog:'
         version: 10.1.18(@types/react@19.2.17)(react@19.2.8)
@@ -2587,7 +2587,7 @@ importers:
         version: 19.2.8
       react-hook-form:
         specifier: 'catalog:'
-        version: 7.83.0(react@19.2.8)
+        version: 7.78.0(react@19.2.8)
       react-intl:
         specifier: 'catalog:'
         version: 10.1.18(@types/react@19.2.17)(react@19.2.8)
@@ -6938,8 +6938,8 @@ packages:
     peerDependencies:
       react: ^19.2.8
 
-  react-hook-form@7.83.0:
-    resolution: {integrity: sha512-AXt8cMCmx5a7u4uvpb2uRFVrWQhllI4pV+LSykxIac/hjt44TnQkmX9BKuQi2i+LDC62esmiLpilkav+kjVf/A==}
+  react-hook-form@7.78.0:
+    resolution: {integrity: sha512-EEZqc+N23moyzTlz61Pj+JvcXo76ICkpfOZo8JZw+sM4+wLQGh6nI2Ms+PdMOYNluFu0ghlM7B8mCzhRYtJCnA==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
@@ -8364,11 +8364,11 @@ snapshots:
 
   '@hey-api/types@0.1.4': {}
 
-  '@hookform/error-message@2.0.1(react-dom@19.2.8(react@19.2.8))(react-hook-form@7.83.0(react@19.2.8))(react@19.2.8)':
+  '@hookform/error-message@2.0.1(react-dom@19.2.8(react@19.2.8))(react-hook-form@7.78.0(react@19.2.8))(react@19.2.8)':
     dependencies:
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
-      react-hook-form: 7.83.0(react@19.2.8)
+      react-hook-form: 7.78.0(react@19.2.8)
 
   '@humanfs/core@0.19.2':
     dependencies:
@@ -11920,7 +11920,7 @@ snapshots:
       react: 19.2.8
       scheduler: 0.27.0
 
-  react-hook-form@7.83.0(react@19.2.8):
+  react-hook-form@7.78.0(react@19.2.8):
     dependencies:
       react: 19.2.8
 
