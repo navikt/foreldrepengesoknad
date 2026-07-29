@@ -5,10 +5,10 @@ packages:
   - server-uinnlogget
 
 catalog:
-  '@navikt/aksel-icons': 8.15.0
-  '@navikt/ds-css': 8.15.0
-  '@navikt/ds-react': 8.15.0
-  '@navikt/ds-tailwind': 8.15.0
+  '@navikt/aksel-icons': 8.16.1
+  '@navikt/ds-css': 8.16.1
+  '@navikt/ds-react': 8.16.1
+  '@navikt/ds-tailwind': 8.16.1
   '@navikt/nav-dekoratoren-moduler': 4.2.2
   '@sentry/vite-plugin': 5.4.0
   '@storybook/addon-links': 10.4.6
