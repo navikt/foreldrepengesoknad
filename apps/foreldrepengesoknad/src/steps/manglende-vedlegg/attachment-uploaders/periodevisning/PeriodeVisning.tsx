@@ -19,7 +19,7 @@ import {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { Uttaksdagen, Uttaksperioden, capitalizeFirstLetter } from '@navikt/fp-utils';
-import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan';
+import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan/validators';
 
 import { StønadskvoteIkon } from './StønadskvoteIkon';
 import { UtsettelseIkon } from './UtsettelseIkon';

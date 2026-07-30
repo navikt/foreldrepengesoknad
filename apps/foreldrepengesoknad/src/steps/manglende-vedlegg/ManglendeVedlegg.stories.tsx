@@ -134,19 +134,19 @@ const meta = {
     title: 'steps/ManglendeVedlegg',
     component: ManglendeVedlegg,
     decorators: [withQueryClient],
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(
-                    API_URLS.sendVedlegg,
-                    () =>
-                        new HttpResponse(JSON.stringify('uuid-test'), {
-                            status: 200,
-                        }),
-                ),
-            ],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(
+                API_URLS.sendVedlegg,
+                () =>
+                    new HttpResponse(JSON.stringify('uuid-test'), {
+                        status: 200,
+                    }),
+            ),
+        );
     },
+
     render: ({
         rolle = 'mor',
         situasjon = 'fødsel',
@@ -326,15 +326,14 @@ export const FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid: Story = 
             },
         ],
     },
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(
-                    API_URLS.trengerDokumentereMorsArbeid,
-                    () => new HttpResponse(JSON.stringify(false), { status: 200 }),
-                ),
-            ],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(
+                API_URLS.trengerDokumentereMorsArbeid,
+                () => new HttpResponse(JSON.stringify(false), { status: 200 }),
+            ),
+        );
     },
 };
 
@@ -378,15 +377,14 @@ export const FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid: Story = {
             },
         ],
     },
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(
-                    API_URLS.trengerDokumentereMorsArbeid,
-                    () => new HttpResponse(JSON.stringify(true), { status: 200 }),
-                ),
-            ],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(
+                API_URLS.trengerDokumentereMorsArbeid,
+                () => new HttpResponse(JSON.stringify(true), { status: 200 }),
+            ),
+        );
     },
 };
 
@@ -415,14 +413,12 @@ export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story =
         ],
     },
 
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(API_URLS.trengerDokumentereMorsArbeid, () => {
-                    return HttpResponse.json(true);
-                }),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.trengerDokumentereMorsArbeid, () => {
+                return HttpResponse.json(true);
+            }),
+        );
     },
 };
 
@@ -460,15 +456,14 @@ export const BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbei
             },
         ],
     },
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(
-                    API_URLS.trengerDokumentereMorsArbeid,
-                    () => new HttpResponse(JSON.stringify(false), { status: 200 }),
-                ),
-            ],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(
+                API_URLS.trengerDokumentereMorsArbeid,
+                () => new HttpResponse(JSON.stringify(false), { status: 200 }),
+            ),
+        );
     },
 };
 
@@ -497,15 +492,14 @@ export const FarTarUtFedrekvoteFørsteSeksUkerUtenSamtidigMåDokumenterMorsSykdo
             },
         ],
     },
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(
-                    API_URLS.trengerDokumentereMorsArbeid,
-                    () => new HttpResponse(JSON.stringify(false), { status: 200 }),
-                ),
-            ],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(
+                API_URLS.trengerDokumentereMorsArbeid,
+                () => new HttpResponse(JSON.stringify(false), { status: 200 }),
+            ),
+        );
     },
 };
 

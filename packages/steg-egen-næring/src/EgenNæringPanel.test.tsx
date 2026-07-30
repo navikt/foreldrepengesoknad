@@ -195,7 +195,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(
-            screen.queryAllByText('Inntekten din etter endring må være et tall i hele kroner.')[0],
+            screen.getAllByText('Inntekten din etter endring må være et tall i hele kroner.')[0],
         ).toBeInTheDocument();
     });
 

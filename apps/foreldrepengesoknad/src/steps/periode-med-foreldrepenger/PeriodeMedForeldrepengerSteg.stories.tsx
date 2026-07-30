@@ -142,19 +142,18 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const FarEllerMedmorAleneomsorgFødsel: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
-                http.post(STØNADSKONTO_URL, () =>
-                    HttpResponse.json({
-                        '80': STØNADSKONTO_80,
-                        '100': STØNADSKONTO_100,
-                    }),
-                ),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
+            http.post(STØNADSKONTO_URL, () =>
+                HttpResponse.json({
+                    '80': STØNADSKONTO_80,
+                    '100': STØNADSKONTO_100,
+                }),
+            ),
+        );
     },
+
     args: {
         ...fellesProps,
         søkersituasjon: {
@@ -174,35 +173,34 @@ export const FarEllerMedmorAleneomsorgFødsel: Story = {
 };
 
 export const FarEllerMedmorFødselOgMorHarIkkeRett: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
-                http.post(STØNADSKONTO_URL, () =>
-                    HttpResponse.json({
-                        '80': {
-                            ...STØNADSKONTO_80,
-                            kontoer: [
-                                {
-                                    konto: 'FORELDREPENGER',
-                                    dager: 250,
-                                },
-                            ],
-                        } satisfies KontoBeregningDto,
-                        '100': {
-                            ...STØNADSKONTO_100,
-                            kontoer: [
-                                {
-                                    konto: 'FORELDREPENGER',
-                                    dager: 200,
-                                },
-                            ],
-                        } satisfies KontoBeregningDto,
-                    }),
-                ),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
+            http.post(STØNADSKONTO_URL, () =>
+                HttpResponse.json({
+                    '80': {
+                        ...STØNADSKONTO_80,
+                        kontoer: [
+                            {
+                                konto: 'FORELDREPENGER',
+                                dager: 250,
+                            },
+                        ],
+                    } satisfies KontoBeregningDto,
+                    '100': {
+                        ...STØNADSKONTO_100,
+                        kontoer: [
+                            {
+                                konto: 'FORELDREPENGER',
+                                dager: 200,
+                            },
+                        ],
+                    } satisfies KontoBeregningDto,
+                }),
+            ),
+        );
     },
+
     args: {
         ...FarEllerMedmorAleneomsorgFødsel.args,
         annenForelder: {
@@ -219,7 +217,7 @@ export const FarEllerMedmorFødselOgMorHarIkkeRett: Story = {
 };
 
 export const FarEllerMedmorFødselBeggeHarRett: Story = {
-    parameters: FarEllerMedmorAleneomsorgFødsel.parameters,
+    beforeEach: FarEllerMedmorAleneomsorgFødsel.beforeEach,
     args: {
         ...FarEllerMedmorAleneomsorgFødsel.args,
         barnet: {
@@ -241,7 +239,7 @@ export const FarEllerMedmorFødselBeggeHarRett: Story = {
 };
 
 export const FarEllerMedmorFødselBeggeHarRettTerminFør1Juli2024: Story = {
-    parameters: FarEllerMedmorFødselBeggeHarRett.parameters,
+    beforeEach: FarEllerMedmorFødselBeggeHarRett.beforeEach,
     args: {
         ...FarEllerMedmorFødselBeggeHarRett.args,
         barnet: {
@@ -253,7 +251,7 @@ export const FarEllerMedmorFødselBeggeHarRettTerminFør1Juli2024: Story = {
 };
 
 export const MorFødselBeggeHarRettFødselFør1Juli2024: Story = {
-    parameters: FarEllerMedmorAleneomsorgFødsel.parameters,
+    beforeEach: FarEllerMedmorAleneomsorgFødsel.beforeEach,
     args: {
         ...fellesProps,
         søkersituasjon: {
@@ -280,7 +278,7 @@ export const MorFødselBeggeHarRettFødselFør1Juli2024: Story = {
 };
 
 export const MorBeggeHarRettAdopsjonEtter1Juli2024: Story = {
-    parameters: MorFødselBeggeHarRettFødselFør1Juli2024.parameters,
+    beforeEach: MorFødselBeggeHarRettFødselFør1Juli2024.beforeEach,
     args: {
         ...MorFødselBeggeHarRettFødselFør1Juli2024.args,
         søkersituasjon: {
@@ -297,43 +295,42 @@ export const MorBeggeHarRettAdopsjonEtter1Juli2024: Story = {
 };
 
 export const MorSøkerAdopsjonMedAleneomsorg: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
-                http.post(STØNADSKONTO_URL, () =>
-                    HttpResponse.json({
-                        '100': {
-                            ...STØNADSKONTO_100,
-                            kontoer: [
-                                {
-                                    konto: 'FORELDREPENGER',
-                                    dager: 230,
-                                },
-                                {
-                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
-                                    dager: 15,
-                                },
-                            ],
-                        },
-                        '80': {
-                            ...STØNADSKONTO_80,
-                            kontoer: [
-                                {
-                                    konto: 'FORELDREPENGER',
-                                    dager: 280,
-                                },
-                                {
-                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
-                                    dager: 15,
-                                },
-                            ],
-                        },
-                    }),
-                ),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
+            http.post(STØNADSKONTO_URL, () =>
+                HttpResponse.json({
+                    '100': {
+                        ...STØNADSKONTO_100,
+                        kontoer: [
+                            {
+                                konto: 'FORELDREPENGER',
+                                dager: 230,
+                            },
+                            {
+                                konto: 'FORELDREPENGER_FØR_FØDSEL',
+                                dager: 15,
+                            },
+                        ],
+                    },
+                    '80': {
+                        ...STØNADSKONTO_80,
+                        kontoer: [
+                            {
+                                konto: 'FORELDREPENGER',
+                                dager: 280,
+                            },
+                            {
+                                konto: 'FORELDREPENGER_FØR_FØDSEL',
+                                dager: 15,
+                            },
+                        ],
+                    },
+                }),
+            ),
+        );
     },
+
     args: {
         ...fellesProps,
         søkersituasjon: {
@@ -354,7 +351,7 @@ export const MorSøkerAdopsjonMedAleneomsorg: Story = {
 };
 
 export const MorSøkerAdopsjonMedDeltUttak: Story = {
-    parameters: MorSøkerAdopsjonMedAleneomsorg.parameters,
+    beforeEach: MorSøkerAdopsjonMedAleneomsorg.beforeEach,
     args: {
         ...MorSøkerAdopsjonMedAleneomsorg.args,
         annenForelder: {
@@ -369,7 +366,7 @@ export const MorSøkerAdopsjonMedDeltUttak: Story = {
 };
 
 export const FarSøkerAdopsjonMedDeltUttak: Story = {
-    parameters: MorSøkerAdopsjonMedDeltUttak.parameters,
+    beforeEach: MorSøkerAdopsjonMedDeltUttak.beforeEach,
     args: {
         ...MorSøkerAdopsjonMedDeltUttak.args,
         søkersituasjon: {
@@ -380,7 +377,7 @@ export const FarSøkerAdopsjonMedDeltUttak: Story = {
 };
 
 export const MorSøkerAdopsjonDerFarHarRettIEOS: Story = {
-    parameters: MorSøkerAdopsjonMedAleneomsorg.parameters,
+    beforeEach: MorSøkerAdopsjonMedAleneomsorg.beforeEach,
     args: {
         ...MorSøkerAdopsjonMedAleneomsorg.args,
         annenForelder: {
@@ -396,7 +393,7 @@ export const MorSøkerAdopsjonDerFarHarRettIEOS: Story = {
 };
 
 export const MorSøkerFodselDerFarHarRettIEOS: Story = {
-    parameters: MorSøkerAdopsjonMedAleneomsorg.parameters,
+    beforeEach: MorSøkerAdopsjonMedAleneomsorg.beforeEach,
     args: {
         ...MorSøkerAdopsjonMedAleneomsorg.args,
         søkersituasjon: {
@@ -422,7 +419,7 @@ export const MorSøkerFodselDerFarHarRettIEOS: Story = {
 };
 
 export const MorAleneomsorgFødsel: Story = {
-    parameters: MorSøkerAdopsjonMedAleneomsorg.parameters,
+    beforeEach: MorSøkerAdopsjonMedAleneomsorg.beforeEach,
     args: {
         ...MorSøkerAdopsjonMedAleneomsorg.args,
         søkersituasjon: {
@@ -438,25 +435,24 @@ export const MorAleneomsorgFødsel: Story = {
 };
 
 export const MorFødselDeltUttakPrematurFødsel: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
-                http.post(STØNADSKONTO_URL, () =>
-                    HttpResponse.json({
-                        '100': {
-                            ...STØNADSKONTO_100,
-                            tillegg: { prematur: 43, flerbarn: 0 },
-                        } satisfies KontoBeregningDto,
-                        '80': {
-                            ...STØNADSKONTO_80,
-                            tillegg: { prematur: 43, flerbarn: 0 },
-                        } satisfies KontoBeregningDto,
-                    }),
-                ),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
+            http.post(STØNADSKONTO_URL, () =>
+                HttpResponse.json({
+                    '100': {
+                        ...STØNADSKONTO_100,
+                        tillegg: { prematur: 43, flerbarn: 0 },
+                    } satisfies KontoBeregningDto,
+                    '80': {
+                        ...STØNADSKONTO_80,
+                        tillegg: { prematur: 43, flerbarn: 0 },
+                    } satisfies KontoBeregningDto,
+                }),
+            ),
+        );
     },
+
     args: {
         ...fellesProps,
         søkersituasjon: {
@@ -481,45 +477,44 @@ export const MorFødselDeltUttakPrematurFødsel: Story = {
 };
 
 export const MorAleneomsorgPrematurFødsel: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
-                http.post(STØNADSKONTO_URL, () =>
-                    HttpResponse.json({
-                        '100': {
-                            ...STØNADSKONTO_100,
-                            kontoer: [
-                                {
-                                    konto: 'FORELDREPENGER',
-                                    dager: 273,
-                                },
-                                {
-                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
-                                    dager: 15,
-                                },
-                            ],
-                            tillegg: { prematur: 43, flerbarn: 0 },
-                        } satisfies KontoBeregningDto,
-                        '80': {
-                            ...STØNADSKONTO_80,
-                            kontoer: [
-                                {
-                                    konto: 'FORELDREPENGER',
-                                    dager: 323,
-                                },
-                                {
-                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
-                                    dager: 15,
-                                },
-                            ],
-                            tillegg: { prematur: 43, flerbarn: 0 },
-                        } satisfies KontoBeregningDto,
-                    }),
-                ),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
+            http.post(STØNADSKONTO_URL, () =>
+                HttpResponse.json({
+                    '100': {
+                        ...STØNADSKONTO_100,
+                        kontoer: [
+                            {
+                                konto: 'FORELDREPENGER',
+                                dager: 273,
+                            },
+                            {
+                                konto: 'FORELDREPENGER_FØR_FØDSEL',
+                                dager: 15,
+                            },
+                        ],
+                        tillegg: { prematur: 43, flerbarn: 0 },
+                    } satisfies KontoBeregningDto,
+                    '80': {
+                        ...STØNADSKONTO_80,
+                        kontoer: [
+                            {
+                                konto: 'FORELDREPENGER',
+                                dager: 323,
+                            },
+                            {
+                                konto: 'FORELDREPENGER_FØR_FØDSEL',
+                                dager: 15,
+                            },
+                        ],
+                        tillegg: { prematur: 43, flerbarn: 0 },
+                    } satisfies KontoBeregningDto,
+                }),
+            ),
+        );
     },
+
     args: {
         ...fellesProps,
         søkersituasjon: {
@@ -539,7 +534,7 @@ export const MorAleneomsorgPrematurFødsel: Story = {
 };
 
 export const MorFødselDeltUttak: Story = {
-    parameters: FarEllerMedmorAleneomsorgFødsel.parameters,
+    beforeEach: FarEllerMedmorAleneomsorgFødsel.beforeEach,
     args: {
         ...fellesProps,
         søkersituasjon: {
@@ -563,61 +558,60 @@ export const MorFødselDeltUttak: Story = {
 };
 
 export const MorFødselMedTvillingFlerbarnsuker: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
-                http.post(STØNADSKONTO_URL, () =>
-                    HttpResponse.json({
-                        '100': {
-                            ...STØNADSKONTO_100,
-                            kontoer: [
-                                {
-                                    konto: 'MØDREKVOTE',
-                                    dager: 75,
-                                },
-                                {
-                                    konto: 'FEDREKVOTE',
-                                    dager: 75,
-                                },
-                                {
-                                    konto: 'FELLESPERIODE',
-                                    dager: 165,
-                                },
-                                {
-                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
-                                    dager: 15,
-                                },
-                            ],
-                            tillegg: { prematur: 0, flerbarn: 85 },
-                        } satisfies KontoBeregningDto,
-                        '80': {
-                            ...STØNADSKONTO_80,
-                            kontoer: [
-                                {
-                                    konto: 'MØDREKVOTE',
-                                    dager: 95,
-                                },
-                                {
-                                    konto: 'FEDREKVOTE',
-                                    dager: 95,
-                                },
-                                {
-                                    konto: 'FORELDREPENGER',
-                                    dager: 195,
-                                },
-                                {
-                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
-                                    dager: 15,
-                                },
-                            ],
-                            tillegg: { prematur: 0, flerbarn: 105 },
-                        } satisfies KontoBeregningDto,
-                    }),
-                ),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
+            http.post(STØNADSKONTO_URL, () =>
+                HttpResponse.json({
+                    '100': {
+                        ...STØNADSKONTO_100,
+                        kontoer: [
+                            {
+                                konto: 'MØDREKVOTE',
+                                dager: 75,
+                            },
+                            {
+                                konto: 'FEDREKVOTE',
+                                dager: 75,
+                            },
+                            {
+                                konto: 'FELLESPERIODE',
+                                dager: 165,
+                            },
+                            {
+                                konto: 'FORELDREPENGER_FØR_FØDSEL',
+                                dager: 15,
+                            },
+                        ],
+                        tillegg: { prematur: 0, flerbarn: 85 },
+                    } satisfies KontoBeregningDto,
+                    '80': {
+                        ...STØNADSKONTO_80,
+                        kontoer: [
+                            {
+                                konto: 'MØDREKVOTE',
+                                dager: 95,
+                            },
+                            {
+                                konto: 'FEDREKVOTE',
+                                dager: 95,
+                            },
+                            {
+                                konto: 'FORELDREPENGER',
+                                dager: 195,
+                            },
+                            {
+                                konto: 'FORELDREPENGER_FØR_FØDSEL',
+                                dager: 15,
+                            },
+                        ],
+                        tillegg: { prematur: 0, flerbarn: 105 },
+                    } satisfies KontoBeregningDto,
+                }),
+            ),
+        );
     },
+
     args: {
         ...fellesProps,
         søkersituasjon: {
@@ -641,61 +635,60 @@ export const MorFødselMedTvillingFlerbarnsuker: Story = {
 };
 
 export const MorFødselAleneomsorgMedTrillingFlerbarnsuker: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
-                http.post(STØNADSKONTO_URL, () =>
-                    HttpResponse.json({
-                        '100': {
-                            ...STØNADSKONTO_100,
-                            kontoer: [
-                                {
-                                    konto: 'MØDREKVOTE',
-                                    dager: 75,
-                                },
-                                {
-                                    konto: 'FEDREKVOTE',
-                                    dager: 75,
-                                },
-                                {
-                                    konto: 'FELLESPERIODE',
-                                    dager: 165,
-                                },
-                                {
-                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
-                                    dager: 15,
-                                },
-                            ],
-                            tillegg: { prematur: 0, flerbarn: 230 },
-                        } satisfies KontoBeregningDto,
-                        '80': {
-                            ...STØNADSKONTO_80,
-                            kontoer: [
-                                {
-                                    konto: 'MØDREKVOTE',
-                                    dager: 95,
-                                },
-                                {
-                                    konto: 'FEDREKVOTE',
-                                    dager: 95,
-                                },
-                                {
-                                    konto: 'FELLESPERIODE',
-                                    dager: 195,
-                                },
-                                {
-                                    konto: 'FORELDREPENGER_FØR_FØDSEL',
-                                    dager: 15,
-                                },
-                            ],
-                            tillegg: { prematur: 0, flerbarn: 280 },
-                        } satisfies KontoBeregningDto,
-                    }),
-                ),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
+            http.post(STØNADSKONTO_URL, () =>
+                HttpResponse.json({
+                    '100': {
+                        ...STØNADSKONTO_100,
+                        kontoer: [
+                            {
+                                konto: 'MØDREKVOTE',
+                                dager: 75,
+                            },
+                            {
+                                konto: 'FEDREKVOTE',
+                                dager: 75,
+                            },
+                            {
+                                konto: 'FELLESPERIODE',
+                                dager: 165,
+                            },
+                            {
+                                konto: 'FORELDREPENGER_FØR_FØDSEL',
+                                dager: 15,
+                            },
+                        ],
+                        tillegg: { prematur: 0, flerbarn: 230 },
+                    } satisfies KontoBeregningDto,
+                    '80': {
+                        ...STØNADSKONTO_80,
+                        kontoer: [
+                            {
+                                konto: 'MØDREKVOTE',
+                                dager: 95,
+                            },
+                            {
+                                konto: 'FEDREKVOTE',
+                                dager: 95,
+                            },
+                            {
+                                konto: 'FELLESPERIODE',
+                                dager: 195,
+                            },
+                            {
+                                konto: 'FORELDREPENGER_FØR_FØDSEL',
+                                dager: 15,
+                            },
+                        ],
+                        tillegg: { prematur: 0, flerbarn: 280 },
+                    } satisfies KontoBeregningDto,
+                }),
+            ),
+        );
     },
+
     args: {
         ...fellesProps,
         søkersituasjon: {
@@ -714,24 +707,23 @@ export const MorFødselAleneomsorgMedTrillingFlerbarnsuker: Story = {
 };
 
 export const FarEllerMedmorSøkerOgMorHarLagetUttaksplan: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () =>
-                    HttpResponse.json({
-                        perioder: [uttaksperiode],
-                        dekningsgrad: 'HUNDRE',
-                    }),
-                ),
-                http.post(STØNADSKONTO_URL, () =>
-                    HttpResponse.json({
-                        '80': STØNADSKONTO_80,
-                        '100': STØNADSKONTO_100,
-                    }),
-                ),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(UTTAKSPLAN_ANNEN_URL, () =>
+                HttpResponse.json({
+                    perioder: [uttaksperiode],
+                    dekningsgrad: 'HUNDRE',
+                }),
+            ),
+            http.post(STØNADSKONTO_URL, () =>
+                HttpResponse.json({
+                    '80': STØNADSKONTO_80,
+                    '100': STØNADSKONTO_100,
+                }),
+            ),
+        );
     },
+
     args: {
         ...fellesProps,
         søkersituasjon: {
@@ -755,7 +747,7 @@ export const FarEllerMedmorSøkerOgMorHarLagetUttaksplan: Story = {
 };
 
 export const FarMedMorMedTermin1Juli2024: Story = {
-    parameters: FarEllerMedmorAleneomsorgFødsel.parameters,
+    beforeEach: FarEllerMedmorAleneomsorgFødsel.beforeEach,
     args: {
         ...fellesProps,
         søkersituasjon: {
@@ -779,24 +771,23 @@ export const FarMedMorMedTermin1Juli2024: Story = {
 };
 
 export const MorMedTermin1Juli2024OgFarsSøknad: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(UTTAKSPLAN_ANNEN_URL, () =>
-                    HttpResponse.json({
-                        perioder: [uttaksperiode],
-                        dekningsgrad: 'ÅTTI',
-                    }),
-                ),
-                http.post(STØNADSKONTO_URL, () =>
-                    HttpResponse.json({
-                        '80': STØNADSKONTO_80,
-                        '100': STØNADSKONTO_100,
-                    }),
-                ),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(UTTAKSPLAN_ANNEN_URL, () =>
+                HttpResponse.json({
+                    perioder: [uttaksperiode],
+                    dekningsgrad: 'ÅTTI',
+                }),
+            ),
+            http.post(STØNADSKONTO_URL, () =>
+                HttpResponse.json({
+                    '80': STØNADSKONTO_80,
+                    '100': STØNADSKONTO_100,
+                }),
+            ),
+        );
     },
+
     args: {
         ...fellesProps,
         søkersituasjon: {

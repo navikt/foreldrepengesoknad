@@ -32,7 +32,7 @@ import {
     isUfødtBarn,
 } from '@navikt/fp-types';
 import { Uttaksdagen, Uttaksperioden, getDecoratorLanguageCookie, omitOne } from '@navikt/fp-utils';
-import { skalBesvareFlerbarnsdager } from '@navikt/fp-uttaksplan';
+import { skalBesvareFlerbarnsdager } from '@navikt/fp-uttaksplan/flerbarnsdager';
 import { notEmpty } from '@navikt/fp-validation';
 
 const hentValgtSpråk = (): Målform => {

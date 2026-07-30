@@ -6,7 +6,7 @@ import {
     UttakUtsettelseÅrsak_fpoversikt,
 } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
-import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan';
+import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan/validators';
 
 /**
  * Finner periodene som faktisk inngår i denne søknaden, og som derfor kan kreve dokumentasjon.

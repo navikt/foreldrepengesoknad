@@ -15,19 +15,19 @@ const MOCK_API_PATH = `${import.meta.env.BASE_URL}/mock`;
 const meta = {
     title: 'FileUploader',
     component: FileUploader,
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(
-                    MOCK_API_PATH,
-                    () =>
-                        new HttpResponse(JSON.stringify('uuid-test'), {
-                            status: 200,
-                        }),
-                ),
-            ],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(
+                MOCK_API_PATH,
+                () =>
+                    new HttpResponse(JSON.stringify('uuid-test'), {
+                        status: 200,
+                    }),
+            ),
+        );
     },
+
     render: (props) => {
         return (
             <SkjemaRotLayout pageTitle="FileUploader">
@@ -90,18 +90,17 @@ export const OpplastningServerFeil: Story = {
         ...Default.args,
         existingAttachments: [],
     },
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(
-                    MOCK_API_PATH,
-                    () =>
-                        new HttpResponse(null, {
-                            status: 500,
-                        }),
-                ),
-            ],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(
+                MOCK_API_PATH,
+                () =>
+                    new HttpResponse(null, {
+                        status: 500,
+                    }),
+            ),
+        );
     },
 };
 
@@ -111,17 +110,16 @@ export const OpplastningTimeout: Story = {
         existingAttachments: [],
         timeout: 50,
     },
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(MOCK_API_PATH, async () => {
-                    await delay(500); // 500ms delay - godt over 50ms-timeouten, gir stabil margin i CI
-                    return new HttpResponse(JSON.stringify('uuid-test'), {
-                        status: 200,
-                    });
-                }),
-            ],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(MOCK_API_PATH, async () => {
+                await delay(500); // 500ms delay - godt over 50ms-timeouten, gir stabil margin i CI
+                return new HttpResponse(JSON.stringify('uuid-test'), {
+                    status: 200,
+                });
+            }),
+        );
     },
 };
 

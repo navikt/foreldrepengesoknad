@@ -10,7 +10,7 @@ import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
 import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
 import { uiMessages } from '@navikt/fp-ui';
 import { utilsMessages } from '@navikt/fp-utils';
-import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan';
+import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan/intl';
 
 import { Foreldrepengesøknad, slettMellomlagringOgLastSidePåNytt } from './Foreldrepengesøknad';
 import nbMessages from './intl/nb_NO.json';

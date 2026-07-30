@@ -50,20 +50,20 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const SøkerErKvinne: Story = {
-    parameters: {
-        msw: {
-            handlers: HANDLERS.concat([
+    beforeEach({ msw }) {
+        msw.use(
+            ...HANDLERS.concat([
                 http.get(API_URLS.personInfo, () => HttpResponse.json(DEFAULT_PERSONINFO)),
                 http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 204 })),
             ]),
-        },
+        );
     },
 };
 
 export const SøkerErKvinneMedMellomlagretData: Story = {
-    parameters: {
-        msw: {
-            handlers: HANDLERS.concat([
+    beforeEach({ msw }) {
+        msw.use(
+            ...HANDLERS.concat([
                 http.get(API_URLS.personInfo, () => HttpResponse.json(DEFAULT_PERSONINFO)),
                 http.get(API_URLS.mellomlagring, () =>
                     HttpResponse.json({
@@ -76,14 +76,14 @@ export const SøkerErKvinneMedMellomlagretData: Story = {
                     }),
                 ),
             ]),
-        },
+        );
     },
 };
 
 export const SøkerErMann: Story = {
-    parameters: {
-        msw: {
-            handlers: HANDLERS.concat([
+    beforeEach({ msw }) {
+        msw.use(
+            ...HANDLERS.concat([
                 http.get(API_URLS.personInfo, () =>
                     HttpResponse.json({
                         fnr: '1231111111',
@@ -97,6 +97,6 @@ export const SøkerErMann: Story = {
                 ),
                 http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 204 })),
             ]),
-        },
+        );
     },
 };
