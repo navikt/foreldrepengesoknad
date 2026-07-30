@@ -74,8 +74,13 @@ describe('<UforutsetteEndringer>', () => {
         expect(screen.getByText('Hvis mor blir syk i de første seks ukene med foreldrepenger')).toBeInTheDocument();
         expect(screen.queryByText('Hvis barnet er sykt eller innlagt på sykehuset')).not.toBeInTheDocument();
         expect(screen.getByText('Hvis et barn er sykt etter de første seks ukene')).toBeInTheDocument();
-        expect(screen.getByText('Hvis barnet blir innlagt på sykehus før termindato')).toBeInTheDocument();
-        expect(screen.getByText('Hvis barnet blir innlagt på sykehus etter termindato')).toBeInTheDocument();
+        expect(screen.getByText('Hvis barnet er innlagt på sykehuset i de første seks ukene')).toBeInTheDocument();
+        expect(
+            screen.queryByText('Hvis barnet blir innlagt på sykehus før termindato'),
+        ).not.toBeInTheDocument();
+        expect(
+            screen.queryByText('Hvis barnet blir innlagt på sykehus etter termindato'),
+        ).not.toBeInTheDocument();
         expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
@@ -89,8 +94,13 @@ describe('<UforutsetteEndringer>', () => {
         expect(screen.getByText('Hvis du blir syk i de første seks ukene med foreldrepenger')).toBeInTheDocument();
         expect(screen.queryByText('Hvis barnet er sykt eller innlagt på sykehuset')).not.toBeInTheDocument();
         expect(screen.getByText('Hvis et barn er sykt etter de første seks ukene')).toBeInTheDocument();
-        expect(screen.getByText('Hvis barnet blir innlagt på sykehus før termindato')).toBeInTheDocument();
-        expect(screen.getByText('Hvis barnet blir innlagt på sykehus etter termindato')).toBeInTheDocument();
+        expect(screen.getByText('Hvis barnet er innlagt på sykehuset i de første seks ukene')).toBeInTheDocument();
+        expect(
+            screen.queryByText('Hvis barnet blir innlagt på sykehus før termindato'),
+        ).not.toBeInTheDocument();
+        expect(
+            screen.queryByText('Hvis barnet blir innlagt på sykehus etter termindato'),
+        ).not.toBeInTheDocument();
         expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
@@ -124,8 +134,13 @@ describe('<UforutsetteEndringer>', () => {
         expect(screen.getByText('Hvis mor blir syk i de første seks ukene med foreldrepenger')).toBeInTheDocument();
         expect(screen.queryByText('Hvis barnet er sykt eller innlagt på sykehuset')).not.toBeInTheDocument();
         expect(screen.getByText('Hvis et barn er sykt etter de første seks ukene')).toBeInTheDocument();
-        expect(screen.getByText('Hvis barnet blir innlagt på sykehus før termindato')).toBeInTheDocument();
-        expect(screen.getByText('Hvis barnet blir innlagt på sykehus etter termindato')).toBeInTheDocument();
+        expect(screen.getByText('Hvis barnet er innlagt på sykehuset i de første seks ukene')).toBeInTheDocument();
+        expect(
+            screen.queryByText('Hvis barnet blir innlagt på sykehus før termindato'),
+        ).not.toBeInTheDocument();
+        expect(
+            screen.queryByText('Hvis barnet blir innlagt på sykehus etter termindato'),
+        ).not.toBeInTheDocument();
         expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
@@ -139,8 +154,13 @@ describe('<UforutsetteEndringer>', () => {
         expect(screen.getByText('Hvis du blir syk i de første seks ukene med foreldrepenger')).toBeInTheDocument();
         expect(screen.queryByText('Hvis barnet er sykt eller innlagt på sykehuset')).not.toBeInTheDocument();
         expect(screen.getByText('Hvis et barn er sykt etter de første seks ukene')).toBeInTheDocument();
-        expect(screen.getByText('Hvis barnet blir innlagt på sykehus før termindato')).toBeInTheDocument();
-        expect(screen.getByText('Hvis barnet blir innlagt på sykehus etter termindato')).toBeInTheDocument();
+        expect(screen.getByText('Hvis barnet er innlagt på sykehuset i de første seks ukene')).toBeInTheDocument();
+        expect(
+            screen.queryByText('Hvis barnet blir innlagt på sykehus før termindato'),
+        ).not.toBeInTheDocument();
+        expect(
+            screen.queryByText('Hvis barnet blir innlagt på sykehus etter termindato'),
+        ).not.toBeInTheDocument();
         expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
@@ -238,8 +258,13 @@ describe('<UforutsetteEndringer>', () => {
         expect(screen.getByText('Hvis du blir syk i de første seks ukene med foreldrepenger')).toBeInTheDocument();
         expect(screen.queryByText('Hvis barnet er sykt eller innlagt på sykehuset')).not.toBeInTheDocument();
         expect(screen.getByText('Hvis et barn er sykt etter de første seks ukene')).toBeInTheDocument();
-        expect(screen.getByText('Hvis barnet blir innlagt på sykehus før termindato')).toBeInTheDocument();
-        expect(screen.getByText('Hvis barnet blir innlagt på sykehus etter termindato')).toBeInTheDocument();
+        expect(screen.getByText('Hvis barnet er innlagt på sykehuset i de første seks ukene')).toBeInTheDocument();
+        expect(
+            screen.queryByText('Hvis barnet blir innlagt på sykehus før termindato'),
+        ).not.toBeInTheDocument();
+        expect(
+            screen.queryByText('Hvis barnet blir innlagt på sykehus etter termindato'),
+        ).not.toBeInTheDocument();
         expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis du får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });

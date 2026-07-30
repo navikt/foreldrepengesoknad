@@ -273,6 +273,8 @@
     "UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErSykt.Tekst": "Hvis et barn er innlagt eller sykt med oppfølging fra spesialisthelsetjenesten, kan du ha rett på pleiepenger i stedet for foreldrepenger. Foreldrepengene kan du bruke senere.",
     "UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErSyktEllerInnlagt": "Hvis barnet er sykt eller innlagt på sykehuset",
     "UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErSyktEllerInnlagt.Tekst": "Hvis et barn er sykt eller innlagt, kan {erAleneforsørger, select, true {du} other {dere}} ha rett på pleiepenger for pleie av sykt barn.",
+    "UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErInnlagt": "Hvis barnet er innlagt på sykehuset i de første seks ukene",
+    "UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErInnlagt.Tekst": "Er barnet sykt eller innlagt i de første seks ukene etter fødsel, kan {erAleneforsørger, select, true {du} other {dere}} ha rett på pleiepenger for pleie av sykt barn i stedet for foreldrepenger. For å få utsatt foreldrepengene må barnet være innlagt på sykehus.",
     "UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErInnlagtFørTermin": "Hvis barnet blir innlagt på sykehus før termindato",
     "UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErInnlagtFørTermin.Tekst": "Hvis barnet blir innlagt på sykehus før termindato kan du ha rett på pleiepenger i stedet for foreldrepenger. Hver dag du har pleiepenger mellom fødsel og termin, vil trekke tilsvarende dager med foreldrepenger, og du kan ikke bruke de senere.",
     "UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErInnlagtEtterTermin": "Hvis barnet blir innlagt på sykehus etter termindato",
