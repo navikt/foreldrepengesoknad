@@ -1,6 +1,6 @@
 import { IntlShape } from 'react-intl';
 
-import { BrukerRolleSak_fpoversikt, RettighetType_fpoversikt } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, Familiesituasjon, RettighetType_fpoversikt } from '@navikt/fp-types';
 
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { Feltregel, Periode } from '../types';
@@ -26,6 +26,7 @@ type HvaVilDuGjøreInput = {
     tomValue: string | undefined;
     perioder: Periode[];
     familiehendelsedato: string;
+    familiesituasjon: Familiesituasjon;
     søker: BrukerRolleSak_fpoversikt;
     rettighetType: RettighetType_fpoversikt;
 };
@@ -59,6 +60,22 @@ export const lagHvaVilDuGjøreRegler = (intl: IntlShape): ReadonlyArray<Feltrege
                 input.familiehendelsedato,
             ),
         feilmelding: intl.formatMessage({ id: 'uttaksplan.valgPanel.pause' }),
+    },
+    {
+        id: 'hvaVilDuGjøre.ferieEllerOppholdKanIkkeLeggesIFørsteSeksUkerEtterFødselForMor',
+        beskrivelse:
+            'For mor (ikke ved adopsjon) kan «Legg til ferie» eller «Legg til opphold» ikke plasseres innenfor ' +
+            'de første seks ukene etter familiehendelsesdato — der er mødrekvoten forbeholdt mor, og «Legg til ' +
+            'utsettelse» (barn/bruker innlagt eller bruker sykdom/skade) er det eneste gyldige alternativet.',
+        erBrutt: (input) =>
+            (input.nyHvaVilDuGjøre === 'LEGG_TIL_FERIE' || input.nyHvaVilDuGjøre === 'LEGG_TIL_OPPHOLD') &&
+            input.søker === 'MOR' &&
+            input.familiesituasjon !== 'adopsjon' &&
+            UttaksperiodeValidatorer.erNoenPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(
+                valgtPeriode(input),
+                input.familiehendelsedato,
+            ),
+        feilmelding: intl.formatMessage({ id: 'uttaksplan.valgPanel.ferieMor' }),
     },
     {
         id: 'hvaVilDuGjøre.ferieEllerOppholdMåLiggeFørSeksUkerEtterFødselForFarMedmorBareSøkerRett',
