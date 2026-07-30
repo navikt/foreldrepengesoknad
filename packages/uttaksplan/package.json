@@ -6,6 +6,13 @@
     "type": "module",
     "main": "index.ts",
     "types": "index.ts",
+    "exports": {
+        ".": "./index.ts",
+        "./validators": "./src/utils/UttaksperiodeValidatorer.ts",
+        "./flerbarnsdager": "./src/utils/flerbarnsdager.ts",
+        "./periode-utils": "./src/utils/periodeUtils.ts",
+        "./intl": "./src/intl/nyUttaksplanMessages.ts"
+    },
     "scripts": {
         "build:storybook": "storybook build -o .storybook-static-build",
         "test": "vitest --project=jsdom --watch=false",
