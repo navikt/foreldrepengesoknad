@@ -86,7 +86,8 @@ describe('<AppContainer>', () => {
         expect(screen.getByText('Steg 8 av 9')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Oppsummering')[1]!);
 
-        expect(screen.getAllByText('Oppsummering')).toHaveLength(2);
+        // OppsummeringSteg er lazy-lasta, så innhaldet kan dukke opp asynkront.
+        await waitFor(() => expect(screen.getAllByText('Oppsummering')).toHaveLength(2));
         await userEvent.click(screen.getByText('Tilbake til spørsmålene'));
 
         expect(screen.getByText('Planen deres')).toBeInTheDocument();

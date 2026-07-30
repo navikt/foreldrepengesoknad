@@ -167,7 +167,8 @@ describe('<Planlegger>', () => {
         expect(screen.getByText('Steg 7 av 8')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Oppsummering')[1]!);
 
-        expect(screen.getAllByText('Oppsummering')).toHaveLength(2);
+        // OppsummeringSteg er lazy-lasta, så innhaldet kan dukke opp asynkront.
+        await waitFor(() => expect(screen.getAllByText('Oppsummering')).toHaveLength(2));
         expect(screen.getByText('Planen deres')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Tilbake til spørsmålene'));
 
@@ -262,7 +263,8 @@ describe('<Planlegger>', () => {
         expect(screen.getByText('Steg 7 av 8')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Oppsummering')[1]!);
 
-        expect(screen.getAllByText('Oppsummering')).toHaveLength(2);
+        // OppsummeringSteg er lazy-lasta, så innhaldet kan dukke opp asynkront.
+        await waitFor(() => expect(screen.getAllByText('Oppsummering')).toHaveLength(2));
         await userEvent.click(screen.getByText('Tilbake til spørsmålene'));
 
         expect(screen.getByText('Planen deres')).toBeInTheDocument();
