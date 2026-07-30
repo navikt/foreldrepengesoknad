@@ -3,7 +3,7 @@ import { formHookMessages } from '@navikt/fp-form-hooks';
 import { observabilityMessages } from '@navikt/fp-observability';
 import { SimpleErrorPage, uiMessages } from '@navikt/fp-ui';
 import { utilsMessages } from '@navikt/fp-utils';
-import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan';
+import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan/intl';
 
 import { PlanleggerDataInit } from './Planlegger';
 import enMessages from './intl/messages/en_US.json';
