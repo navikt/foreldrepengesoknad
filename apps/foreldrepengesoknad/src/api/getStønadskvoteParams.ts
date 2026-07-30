@@ -12,6 +12,7 @@ import {
     SøkersituasjonFp,
     isAdoptertBarn,
     isFødtBarn,
+    isIkkeUtfyltTypeBarn,
     isUfødtBarn,
 } from '@navikt/fp-types';
 
@@ -140,7 +141,7 @@ export const getStønadskvoteParams = (
         ),
         brukerrolle: søkerErFarEllerMedmor ? 'FAR' : 'MOR',
         antallBarn: saksgrunnlagsAntallBarn,
-        fødselsdato: isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined,
+        fødselsdato: isFødtBarn(barn) || isIkkeUtfyltTypeBarn(barn) ? barn.fødselsdatoer[0] : undefined,
         termindato: getTermindatoSomSkalBrukes(barn, saksgrunnlagsTermindato),
         omsorgsovertakelseDato: isAdoptertBarn(barn) ? barn.adopsjonsdato : undefined,
         morHarUføretrygd: getErMorUfør(annenForelder, søkerErFarEllerMedmor),

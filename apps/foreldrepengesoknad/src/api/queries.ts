@@ -14,6 +14,7 @@ import {
     KontoBeregningResultatDto,
     MorArbeidRequest_fpoversikt,
     Saker_fpoversikt,
+    isIkkeUtfyltTypeBarn,
 } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -124,7 +125,7 @@ export const useStønadsKontoerOptions = () => {
         valgtSak?.familiehendelse.termindato,
     );
 
-    return tilgjengeligeStønadskvoterOptions(stønadskvoteParams);
+    return { ...tilgjengeligeStønadskvoterOptions(stønadskvoteParams), enabled: !isIkkeUtfyltTypeBarn(barn) };
 };
 
 export const useAnnenPartVedtakOptions = () => {
