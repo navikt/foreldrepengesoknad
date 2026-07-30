@@ -7,6 +7,7 @@ import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { FødtFørUke33 } from './tekster/FødtFørUke33';
+import { HvisBarnetErInnlagt } from './tekster/HvisBarnetErInnlagt';
 import { HvisBarnetErInnlagtEtterTermin } from './tekster/HvisBarnetErInnlagtEtterTermin';
 import { HvisBarnetErInnlagtFørTermin } from './tekster/HvisBarnetErInnlagtFørTermin';
 import { HvisBarnetErSykt } from './tekster/HvisBarnetErSykt';
@@ -24,6 +25,7 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
     const {
         familiesituasjon,
         foreldreInfo: { rettighetType, søker },
+        valgtStønadskvote,
     } = useUttaksplanData();
 
     const erFødsel = familiesituasjon === 'fødsel';
@@ -41,6 +43,11 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
         søker === 'FAR_MEDMOR' && (erAleneforsørger || rettighetType === 'BARE_SØKER_RETT');
 
     const erFarOgFarKunMedfarHarRett = erFarOgFar && rettighetType === 'BARE_SØKER_RETT';
+
+    const erPrematurFødsel = (valgtStønadskvote.tillegg?.prematur ?? 0) > 0;
+
+    const visInnlagtForMorRettigheter =
+        (beggeHarRett && !erFarOgFar) || kunMorHarRett || (erAleneforsørger && erMorDelAvSøknaden);
 
     return (
         <ExpansionCard aria-label="." onToggle={loggExpansionCardOpen('toggle-uforutsette-endringer')} size="small">
@@ -63,31 +70,44 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
                 <VStack gap="space-20">
                     <>
                         {erFødsel ? (
-                            <>
-                                <HvisDuBlirSyk />
+                            erPrematurFødsel ? (
+                                <>
+                                    {!erFarOgFarKunMedfarHarRett && <FødtFørUke33 />}
 
-                                {erMorDelAvSøknaden && <HvisMorBlirSyk />}
+                                    {visInnlagtForMorRettigheter && (
+                                        <>
+                                            <HvisBarnetErInnlagtFørTermin />
+                                            <HvisBarnetErInnlagtEtterTermin />
+                                        </>
+                                    )}
 
-                                {((erAleneforsørger && !erMorDelAvSøknaden) ||
-                                    erFarOgFar ||
-                                    kunFarEllerMedmorHarRett) && <HvisBarnetErSyktEllerInnlagt />}
-                                {((beggeHarRett && !erFarOgFar) ||
-                                    kunMorHarRett ||
-                                    (erAleneforsørger && erMorDelAvSøknaden)) && (
-                                    <>
-                                        <HvisBarnetErInnlagtFørTermin />
-                                        <HvisBarnetErInnlagtEtterTermin />
-                                    </>
-                                )}
+                                    <HvisDuBlirSyk />
 
-                                {((erAleneforsørger && erMorDelAvSøknaden) ||
-                                    kunMorHarRett ||
-                                    (beggeHarRett && !erFarOgFar)) && <HvisBarnetErSykt />}
+                                    {erMorDelAvSøknaden && <HvisMorBlirSyk />}
 
-                                {!erFarOgFarKunMedfarHarRett && <FødtFørUke33 />}
+                                    <NyttBarnFørTreÅr />
+                                </>
+                            ) : (
+                                <>
+                                    <HvisDuBlirSyk />
 
-                                <NyttBarnFørTreÅr />
-                            </>
+                                    {erMorDelAvSøknaden && <HvisMorBlirSyk />}
+
+                                    {((erAleneforsørger && !erMorDelAvSøknaden) ||
+                                        erFarOgFar ||
+                                        kunFarEllerMedmorHarRett) && <HvisBarnetErSyktEllerInnlagt />}
+
+                                    {visInnlagtForMorRettigheter && <HvisBarnetErInnlagt />}
+
+                                    {((erAleneforsørger && erMorDelAvSøknaden) ||
+                                        kunMorHarRett ||
+                                        (beggeHarRett && !erFarOgFar)) && <HvisBarnetErSykt />}
+
+                                    {!erFarOgFarKunMedfarHarRett && <FødtFørUke33 />}
+
+                                    <NyttBarnFørTreÅr />
+                                </>
+                            )
                         ) : (
                             <>
                                 <HvisDuBlirSyk />
