@@ -46,6 +46,59 @@ export const UforutsetteEndringer = ({ hvemPlanlegger, arbeidssituasjon, barnet 
     const visInnlagtForMorRettigheter =
         (beggeHarRett && !erFarOgFar) || kunMorHarRett || (erAleneforsørger && erMorDelAvSøknaden(hvemPlanlegger));
 
+    const fødselInnhold = erPrematurFødsel ? (
+        <>
+            {!erFarOgFarKunMedfarHarRett && (
+                <FødtFørUke33 arbeidssituasjon={arbeidssituasjon} hvemPlanlegger={hvemPlanlegger} />
+            )}
+
+            {visInnlagtForMorRettigheter && (
+                <>
+                    <HvisBarnetErInnlagtFørTermin />
+                    <HvisBarnetErInnlagtEtterTermin />
+                </>
+            )}
+
+            <HvisDuBlirSyk arbeidssituasjon={arbeidssituasjon} />
+
+            {erMorDelAvSøknaden(hvemPlanlegger) && (
+                <HvisMorBlirSyk hvemPlanlegger={hvemPlanlegger} arbeidssituasjon={arbeidssituasjon} />
+            )}
+
+            <NyttBarnFørTreÅr arbeidssituasjon={arbeidssituasjon} hvemPlanlegger={hvemPlanlegger} />
+        </>
+    ) : (
+        <>
+            <HvisDuBlirSyk arbeidssituasjon={arbeidssituasjon} />
+
+            {erMorDelAvSøknaden(hvemPlanlegger) && (
+                <HvisMorBlirSyk hvemPlanlegger={hvemPlanlegger} arbeidssituasjon={arbeidssituasjon} />
+            )}
+
+            {((erAleneforsørger && !erMorDelAvSøknaden(hvemPlanlegger)) ||
+                erFarOgFar ||
+                kunFarEllerMedmorHarRett) && (
+                <HvisBarnetErSyktEllerInnlagt arbeidssituasjon={arbeidssituasjon} />
+            )}
+
+            {visInnlagtForMorRettigheter && (
+                <HvisBarnetErInnlagt arbeidssituasjon={arbeidssituasjon} />
+            )}
+
+            {((erAleneforsørger && erMorDelAvSøknaden(hvemPlanlegger)) ||
+                kunMorHarRett ||
+                (beggeHarRett && !erFarOgFar)) && (
+                <HvisBarnetErSykt arbeidssituasjon={arbeidssituasjon} />
+            )}
+
+            {!erFarOgFarKunMedfarHarRett && (
+                <FødtFørUke33 arbeidssituasjon={arbeidssituasjon} hvemPlanlegger={hvemPlanlegger} />
+            )}
+
+            <NyttBarnFørTreÅr arbeidssituasjon={arbeidssituasjon} hvemPlanlegger={hvemPlanlegger} />
+        </>
+    );
+
     return (
         <ExpansionCard aria-label="." onToggle={loggExpansionCardOpen('toggle-uforutsette-endringer')} size="small">
             <ExpansionCard.Header>
@@ -67,76 +120,7 @@ export const UforutsetteEndringer = ({ hvemPlanlegger, arbeidssituasjon, barnet 
                 <VStack gap="space-20">
                     <>
                         {erFødsel ? (
-                            erPrematurFødsel ? (
-                                <>
-                                    {!erFarOgFarKunMedfarHarRett && (
-                                        <FødtFørUke33
-                                            arbeidssituasjon={arbeidssituasjon}
-                                            hvemPlanlegger={hvemPlanlegger}
-                                        />
-                                    )}
-
-                                    {visInnlagtForMorRettigheter && (
-                                        <>
-                                            <HvisBarnetErInnlagtFørTermin />
-                                            <HvisBarnetErInnlagtEtterTermin />
-                                        </>
-                                    )}
-
-                                    <HvisDuBlirSyk arbeidssituasjon={arbeidssituasjon} />
-
-                                    {erMorDelAvSøknaden(hvemPlanlegger) && (
-                                        <HvisMorBlirSyk
-                                            hvemPlanlegger={hvemPlanlegger}
-                                            arbeidssituasjon={arbeidssituasjon}
-                                        />
-                                    )}
-
-                                    <NyttBarnFørTreÅr
-                                        arbeidssituasjon={arbeidssituasjon}
-                                        hvemPlanlegger={hvemPlanlegger}
-                                    />
-                                </>
-                            ) : (
-                                <>
-                                    <HvisDuBlirSyk arbeidssituasjon={arbeidssituasjon} />
-
-                                    {erMorDelAvSøknaden(hvemPlanlegger) && (
-                                        <HvisMorBlirSyk
-                                            hvemPlanlegger={hvemPlanlegger}
-                                            arbeidssituasjon={arbeidssituasjon}
-                                        />
-                                    )}
-
-                                    {((erAleneforsørger && !erMorDelAvSøknaden(hvemPlanlegger)) ||
-                                        erFarOgFar ||
-                                        kunFarEllerMedmorHarRett) && (
-                                        <HvisBarnetErSyktEllerInnlagt arbeidssituasjon={arbeidssituasjon} />
-                                    )}
-
-                                    {visInnlagtForMorRettigheter && (
-                                        <HvisBarnetErInnlagt arbeidssituasjon={arbeidssituasjon} />
-                                    )}
-
-                                    {((erAleneforsørger && erMorDelAvSøknaden(hvemPlanlegger)) ||
-                                        kunMorHarRett ||
-                                        (beggeHarRett && !erFarOgFar)) && (
-                                        <HvisBarnetErSykt arbeidssituasjon={arbeidssituasjon} />
-                                    )}
-
-                                    {!erFarOgFarKunMedfarHarRett && (
-                                        <FødtFørUke33
-                                            arbeidssituasjon={arbeidssituasjon}
-                                            hvemPlanlegger={hvemPlanlegger}
-                                        />
-                                    )}
-
-                                    <NyttBarnFørTreÅr
-                                        arbeidssituasjon={arbeidssituasjon}
-                                        hvemPlanlegger={hvemPlanlegger}
-                                    />
-                                </>
-                            )
+                            fødselInnhold
                         ) : (
                             <>
                                 <HvisDuBlirSyk arbeidssituasjon={arbeidssituasjon} />
