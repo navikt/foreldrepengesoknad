@@ -6,8 +6,9 @@
  *
  * Trenger kode utenfor steps/uttaksplan/** en util herfra: legg til en egen
  * subpath i package.json sitt "exports"-kart (se ./validators, ./intl,
- * ./delt-uttak osv.) i stedet for å importere fra denne barrelen eller fra
- * /src/-stier direkte.
+ * ./delt-uttak osv. – alle peker på den samla, lette barrelen
+ * src/utils/index-utils.ts) i stedet for å importere fra denne barrelen
+ * eller fra /src/-stier direkte.
  */
 export { nyUttaksplanMessages } from './src/intl/nyUttaksplanMessages';
 
