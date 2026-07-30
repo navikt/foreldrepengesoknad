@@ -8,7 +8,7 @@ import {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
-import { finnAntallTidelerÅTrekke } from '@navikt/fp-uttaksplan';
+import { finnAntallTidelerÅTrekke } from '@navikt/fp-uttaksplan/periode-utils';
 
 type Periode = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
 

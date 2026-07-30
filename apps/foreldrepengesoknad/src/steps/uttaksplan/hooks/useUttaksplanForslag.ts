@@ -1,7 +1,7 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getDatoForAleneomsorg, getErMorUfør } from 'utils/annenForelderUtils';
-import { getErSøkerFarEllerMedmor, getKjønnFromFnr } from 'utils/personUtils';
+import { getErFarOgFar, getErSøkerFarEllerMedmor } from 'utils/personUtils';
 
 import {
     Barn,
@@ -219,7 +219,7 @@ export const useUttaksplanForslag = (
         });
     }
 
-    const erFarOgFar = getKjønnFromFnr(annenForelder) === 'M' && søkersituasjon.rolle === 'far';
+    const erFarOgFar = getErFarOgFar(søkersituasjon.rolle, annenForelder);
 
     const bareFarMedmorHarRett =
         søkersituasjon.rolle !== 'mor' &&

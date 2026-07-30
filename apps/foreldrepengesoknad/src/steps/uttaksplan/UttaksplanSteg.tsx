@@ -10,7 +10,7 @@ import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { erPeriodeIOpprinneligPlan } from 'utils/eksisterendeSakUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
-import { getErSøkerFarEllerMedmor, getKjønnFromFnr, getNavnPåForeldre } from 'utils/personUtils';
+import { getErFarOgFar, getErSøkerFarEllerMedmor, getKjønnFromFnr, getNavnPåForeldre } from 'utils/personUtils';
 
 import { Alert, BodyLong, Tabs } from '@navikt/ds-react';
 
@@ -94,6 +94,7 @@ export const UttaksplanSteg = ({
         : false;
 
     const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
+    const erFarOgFar = getErFarOgFar(søkersituasjon.rolle, annenForelder);
 
     const kvoteOppsummeringRef = useRef<HTMLDivElement>(null);
     const scrollToKvoteOppsummering = () => {
@@ -174,6 +175,7 @@ export const UttaksplanSteg = ({
                             søkersituasjon.rolle === 'medmor' ||
                             (søkersituasjon.rolle === 'mor' && getKjønnFromFnr(annenForelder) === 'K'),
                         erIkkeSøkerSpesifisert: false,
+                        erFarOgFar,
                     }}
                     valgtStønadskvote={valgteStønadskvoter}
                     harAktivitetskravIPeriodeUtenUttak={false}
@@ -182,9 +184,9 @@ export const UttaksplanSteg = ({
                     aktiveArbeidsforhold={aktiveArbeidsforhold}
                     erEndringssøknad={erEndringssøknad}
                 >
-                    <HvaErMulig erFarOgFar={false} loggExpansionCardOpen={loggExpansionCardOpen} />
+                    <HvaErMulig erFarOgFar={erFarOgFar} loggExpansionCardOpen={loggExpansionCardOpen} />
 
-                    <UforutsetteEndringer erFarOgFar={false} loggExpansionCardOpen={loggExpansionCardOpen} />
+                    <UforutsetteEndringer erFarOgFar={erFarOgFar} loggExpansionCardOpen={loggExpansionCardOpen} />
 
                     <div ref={kvoteOppsummeringRef}>
                         <KvoteOppsummering erInnsyn={false} visStatusIkoner />

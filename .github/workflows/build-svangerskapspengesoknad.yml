@@ -27,6 +27,9 @@ jobs:
       push-image: ${{ github.ref_name == 'master' }} # default: false
       app: svangerskapspengesoknad
       image_suffix: '/svangerskapspengesoknad'
+      # Bakes inn i asset-referansene (renderBuiltUrl) slik at svangerskapspengesoknad laster assets fra CDN.
+      # Må matche upload-to-CDN destination (teamforeldrepenger + /svangerskapspenger/soknad).
+      vite-cdn-url: 'https://cdn.nav.no/teamforeldrepenger/svangerskapspenger/soknad/'
     secrets:
       READER_TOKEN: ${{ secrets.READER_TOKEN }}
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
@@ -49,7 +52,7 @@ jobs:
     permissions:
       id-token: write
     if: github.ref_name == 'master'
-    needs: build-app
+    needs: [build-app, upload-to-CDN]
     uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main
     with:
       gar: true

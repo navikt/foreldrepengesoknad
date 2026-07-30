@@ -68,8 +68,6 @@ export const Day = React.memo(
         const date = dayjs(isoDate);
         const day = date.date();
 
-        logOnLocalhost(`Rendering Day: ${day}, Color: ${periodeColor}`);
-
         const [isTooltipOpen, setIsTooltipOpen] = useState(false);
 
         const buttonRef = useRef<HTMLButtonElement>(null);
@@ -97,7 +95,7 @@ export const Day = React.memo(
                 type="button"
                 data-testid={`day:${day};dayColor:${periodeColor}${Icon ? `;with-icon` : ''}`}
                 tabIndex={isFocused ? 0 : -1}
-                className={`${styles.days} ${colorClass} ${isClickable && styles.cursorAndHoover} ${isUpdated && styles.fadeIn} 
+                className={`${styles.days} ${colorClass} ${isClickable && styles.cursorAndHoover} ${isUpdated && styles.fadeIn}
                 ${shape === 'rounded-left' && styles.roundedLeft} ${shape === 'rounded-right' && styles.roundedRight}`}
                 onFocus={isClickable ? () => setFocusedDate(date) : undefined}
                 onMouseEnter={onDateHover && isClickable ? () => onDateHover(isoDate) : undefined}

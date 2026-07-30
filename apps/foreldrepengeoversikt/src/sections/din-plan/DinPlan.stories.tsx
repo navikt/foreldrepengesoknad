@@ -19,11 +19,10 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    parameters: {
-        msw: {
-            handlers: [http.post(API_URLS.konto, () => HttpResponse.json(stønadskvoter1))],
-        },
+    beforeEach({ msw }) {
+        msw.use(http.post(API_URLS.konto, () => HttpResponse.json(stønadskvoter1)));
     },
+
     args: {
         sak: { ...saker.foreldrepenger[0]!, ytelse: 'FORELDREPENGER' as const },
         annenPartsPerioder: [
@@ -44,11 +43,10 @@ export const Default: Story = {
 };
 
 export const FarSøker: Story = {
-    parameters: {
-        msw: {
-            handlers: [http.post(API_URLS.konto, () => HttpResponse.json(stønadskvoter2))],
-        },
+    beforeEach({ msw }) {
+        msw.use(http.post(API_URLS.konto, () => HttpResponse.json(stønadskvoter2)));
     },
+
     args: {
         sak: {
             oppdatertTidspunkt: '2024-02-28T21:19:08.911',
@@ -158,11 +156,11 @@ export const FarSøker: Story = {
 
 export const MorOgFarOgFarGraderer: Story = {
     name: 'Mor og far søker - far graderer',
-    parameters: {
-        msw: {
-            handlers: [http.post(API_URLS.konto, () => HttpResponse.json(stønadskvoter2))],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(http.post(API_URLS.konto, () => HttpResponse.json(stønadskvoter2)));
     },
+
     args: {
         sak: {
             saksnummer: '1',
@@ -306,11 +304,11 @@ export const MorOgFarOgFarGraderer: Story = {
 
 export const MorMedFarSomHarTattOverMødrekvote: Story = {
     name: 'Mor - far har tatt over mødrekvote de første seks ukene',
-    parameters: {
-        msw: {
-            handlers: [http.post(API_URLS.konto, () => HttpResponse.json(stønadskvoter2))],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(http.post(API_URLS.konto, () => HttpResponse.json(stønadskvoter2)));
     },
+
     args: {
         sak: {
             saksnummer: '1',

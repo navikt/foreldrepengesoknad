@@ -46,11 +46,7 @@ import { erDetEksisterendePerioderEtterValgtePerioder } from '../../utils/period
 import { TidsperiodeSpørsmål } from './/TidsperiodeSpørsmål';
 
 export type HvaVilDuGjøre =
-    | 'LEGG_TIL_FERIE'
-    | 'LEGG_TIL_UTSETTELSE'
-    | 'LEGG_TIL_PAUSE'
-    | 'LEGG_TIL_OPPHOLD'
-    | 'LEGG_TIL_PERIODE';
+    'LEGG_TIL_FERIE' | 'LEGG_TIL_UTSETTELSE' | 'LEGG_TIL_PAUSE' | 'LEGG_TIL_OPPHOLD' | 'LEGG_TIL_PERIODE';
 
 export type FormValues = {
     fom?: string;
@@ -166,6 +162,9 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
 
     const valgtePerioder = fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [];
 
+    const overlapperMedEøsPerioder =
+        !!fomValue && !!tomValue && erOverlappendeMedEøsPerioder(uttakPerioder, fomValue, tomValue);
+
     const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } = useVisForskyvEllerErstattPanel(valgtePerioder);
 
     const kanKunErstatte = useKanKunErstatte({
@@ -191,11 +190,6 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
 
         const fom = notEmpty(values.fom);
         const tom = notEmpty(values.tom);
-
-        if (erOverlappendeMedEøsPerioder(uttakPerioder, fom, tom)) {
-            setFeilmelding(intl.formatMessage({ id: 'uttaksplan.overskriderEøs' }));
-            return;
-        }
 
         if (hvaVilDuGjøre === 'LEGG_TIL_PERIODE') {
             const submitFeilmelding = formSubmitValidator([{ fom, tom }], values);
@@ -331,6 +325,12 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
             {listePanelAlerts.morsAktivitetIkkeOppgitt && (
                 <Alert variant={listePanelAlerts.morsAktivitetIkkeOppgitt.variant} size="small">
                     {listePanelAlerts.morsAktivitetIkkeOppgitt.melding}
+                </Alert>
+            )}
+
+            {overlapperMedEøsPerioder && (
+                <Alert variant="warning" size="small">
+                    <FormattedMessage id="RedigeringPanel.EøsUttakKanGiAvslag" />
                 </Alert>
             )}
 

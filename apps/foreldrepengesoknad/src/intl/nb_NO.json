@@ -464,6 +464,7 @@
     "JobbIUtlandetPanel.Validering.LandDuHarJobber": "Du må oppgi hvilket land du har jobbet i",
     "JobbIUtlandetPanel.NavnPåArbeidsgiver": "Hva er navnet på arbeidsgiveren?",
     "JobbIUtlandetPanel.Validering.NavnPåArbeidsgiver": "Du må oppgi navnet til arbeidsgiveren",
+    "JobbIUtlandetPanel.Validering.NavnPåArbeidsgiverMaksLengde": "Navnet på arbeidsgiveren kan ikke være lengre enn 100 tegn",
     "JobbIUtlandetPanel.JobberDuDerNå": "Jobber du der nå?",
     "JobbIUtlandetPanel.Validering.JobberDuDerNå": "Du må oppgi om du jobber der nå",
     "JobbIUtlandetPanel.RadioButton.Nei": "Nei",

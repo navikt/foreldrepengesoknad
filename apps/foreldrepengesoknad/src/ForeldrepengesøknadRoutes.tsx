@@ -8,7 +8,7 @@ import { useSendSøknad } from 'appData/useSendSøknad';
 import { Forside } from 'pages/forside/Forside';
 import { Søknadsmetadata } from 'pages/forside/utils/useStartSøknad';
 import { KvitteringPage } from 'pages/kvittering/KvitteringPage';
-import { useCallback, useState } from 'react';
+import { Suspense, lazy, useCallback, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { AndreInntektskilderSteg } from 'steps/andre-inntektskilder/AndreInntektskilderSteg';
 import { AnnenForelderSteg } from 'steps/annen-forelder/AnnenForelderSteg';
@@ -24,11 +24,18 @@ import { SøkersituasjonSteg } from 'steps/søkersituasjon/SøkersituasjonSteg';
 import { SenereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-senere/SenereUtenlandsoppholdSteg';
 import { TidligereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-tidligere/TidligereUtenlandsoppholdSteg';
 import { UtenlandsoppholdSteg } from 'steps/utenlandsopphold/UtenlandsoppholdSteg';
-import { UttaksplanSteg } from 'steps/uttaksplan/UttaksplanSteg';
 
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
-import { ErrorPage, Umyndig } from '@navikt/fp-ui';
+import { ErrorPage, Spinner, Umyndig } from '@navikt/fp-ui';
 import { erMyndig } from '@navikt/fp-utils';
+
+// Uttaksplan-steget (inkl. kalender og regelmotor i @navikt/fp-uttaksplan) er den klart største
+// enkeltavhengigheten i søknaden. Den lastes derfor lazy, med prefetch fra FordelingSteg
+// (steget rett før i den vanlege søknadsflyten, sjå ROUTES_ORDER) slik at chunken ligg i
+// nettlesarcache før brukaren faktisk navigerer dit.
+const UttaksplanSteg = lazy(() =>
+    import('steps/uttaksplan/UttaksplanSteg').then((module) => ({ default: module.UttaksplanSteg })),
+);
 
 interface SøknadRoutesOptions {
     harGodkjentVilkår: boolean;
@@ -65,13 +72,15 @@ const renderSøknadRoutes = ({
                 <Route
                     path={SøknadRoutes.UTTAKSPLAN}
                     element={
-                        <UttaksplanSteg
-                            søkerInfo={søkerInfo}
-                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                            avbrytSøknad={avbrytSøknad}
-                            foreldrepengerSaker={foreldrepengerSaker}
-                            erEndringssøknad={erEndringssøknad}
-                        />
+                        <Suspense fallback={<Spinner />}>
+                            <UttaksplanSteg
+                                søkerInfo={søkerInfo}
+                                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                                avbrytSøknad={avbrytSøknad}
+                                foreldrepengerSaker={foreldrepengerSaker}
+                                erEndringssøknad={erEndringssøknad}
+                            />
+                        </Suspense>
                     }
                 />
                 <Route
@@ -162,13 +171,15 @@ const renderSøknadRoutes = ({
             <Route
                 path={SøknadRoutes.UTTAKSPLAN}
                 element={
-                    <UttaksplanSteg
-                        søkerInfo={søkerInfo}
-                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                        avbrytSøknad={avbrytSøknad}
-                        foreldrepengerSaker={foreldrepengerSaker}
-                        erEndringssøknad={erEndringssøknad}
-                    />
+                    <Suspense fallback={<Spinner />}>
+                        <UttaksplanSteg
+                            søkerInfo={søkerInfo}
+                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                            avbrytSøknad={avbrytSøknad}
+                            foreldrepengerSaker={foreldrepengerSaker}
+                            erEndringssøknad={erEndringssøknad}
+                        />
+                    </Suspense>
                 }
             />
             <Route

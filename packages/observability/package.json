@@ -12,11 +12,11 @@
         "clean": "rm -rf ./dist ./node_modules ./.turbo"
     },
     "dependencies": {
-        "@grafana/faro-web-sdk": "2.7.1",
+        "@nais/apm": "0.5.0",
         "@navikt/aksel-icons": "catalog:",
         "@navikt/ds-react": "catalog:",
         "@navikt/fp-types": "workspace:*",
-        "@sentry/browser": "10.60.0",
+        "@sentry/browser": "10.68.0",
         "react": "catalog:",
         "react-intl": "catalog:"
     },

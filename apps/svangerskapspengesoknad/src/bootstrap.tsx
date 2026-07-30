@@ -5,7 +5,6 @@ import './index.css';
 
 void bootstrapApp({
     sentryDsn: 'https://b28b752e32e846dd9818f2eb7a9fc013@sentry.gc.nav.no/7',
-    appName: 'svangerskapspengesoknad',
     availableLocales: ['nb', 'nn'],
     app: <AppContainer />,
 });

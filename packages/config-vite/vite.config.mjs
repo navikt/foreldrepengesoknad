@@ -59,7 +59,10 @@ const createConfig = (setupFileDirName) => {
         },
         test: {
             globals: true,
-            testTimeout: 15000,
+            // Tunge flertrinnsflyter (f.eks. AppContainer sine hele søknadsgjennomganger med
+            // mange userEvent-interaksjoner) er trege på CPU-sultne CI-runnere (2 vCPU) og
+            // rakk ikke 15s. Gi samme romsligere timeout som browser-prosjektet under.
+            testTimeout: 30000,
             projects: [
                 {
                     extends: true,

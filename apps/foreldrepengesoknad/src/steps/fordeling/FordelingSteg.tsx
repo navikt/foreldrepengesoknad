@@ -38,6 +38,16 @@ type Props = {
 export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
     const intl = useIntl();
 
+    // Fordeling er steget rett før Uttaksplan i søknadsflyten (sjå ROUTES_ORDER), som gjer
+    // det til det mest sannsynlege neste steget herfrå. Uttaksplansteget er lazy-lasta (sjå
+    // ForeldrepengesøknadRoutes) fordi det trekker inn @navikt/fp-uttaksplan, den klart
+    // største enkeltavhengigheten i søknaden. Ved å prefetche chunken her, mens brukaren
+    // fyller ut fordelinga, rekk han/ho gjerne å bli lasta ned før brukaren faktisk navigerer
+    // til Uttaksplan.
+    useEffect(() => {
+        void import('steps/uttaksplan/UttaksplanSteg');
+    }, []);
+
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useFpNavigator(arbeidsforhold, mellomlagreSøknadOgNaviger);
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));

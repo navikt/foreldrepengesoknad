@@ -167,6 +167,37 @@ describe('<AndreInntektskilderSteg>', () => {
         expect(screen.getAllByText('Du må oppgi en gyldig til dato')).toHaveLength(2);
     });
 
+    it('skal vise feil når navn på utenlandsk arbeidsgiver er over 100 tegn', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+
+        expect(
+            await screen.findByText('Hvilken type annen inntektskilde har du hatt de siste 10 månedene?'),
+        ).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Jobb i utlandet'));
+
+        await userEvent.selectOptions(screen.getByLabelText('Hvilket land har du jobbet i?'), 'UA');
+        await userEvent.tab();
+
+        const navnFelt = screen.getByLabelText('Hva er navnet på arbeidsgiveren?');
+        await userEvent.type(navnFelt, 'A'.repeat(101));
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(screen.getAllByText('Navnet på arbeidsgiveren kan ikke være lengre enn 100 tegn')).toHaveLength(2);
+
+        await userEvent.clear(navnFelt);
+        await userEvent.type(navnFelt, 'A'.repeat(100));
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(
+            screen.queryByText('Navnet på arbeidsgiveren kan ikke være lengre enn 100 tegn'),
+        ).not.toBeInTheDocument();
+    });
+
     it('skal velge Etterlønn eller sluttvederlag og så gå til neste steg', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
