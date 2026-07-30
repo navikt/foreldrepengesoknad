@@ -16,7 +16,7 @@ type Input = {
     nyHvaVilDuGjøre: 'LEGG_TIL_FERIE' | 'LEGG_TIL_UTSETTELSE' | 'LEGG_TIL_PAUSE' | 'LEGG_TIL_OPPHOLD' | 'LEGG_TIL_PERIODE' | undefined;
     fomValue: string | undefined;
     tomValue: string | undefined;
-    perioder: { fom: string; tom: string }[];
+    perioder: Array<{ fom: string; tom: string }>;
     familiehendelsedato: string;
     familiesituasjon: Familiesituasjon;
     søker: BrukerRolleSak_fpoversikt;
