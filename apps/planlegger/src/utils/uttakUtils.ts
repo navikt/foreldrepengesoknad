@@ -5,8 +5,7 @@ import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { KontoBeregningDto, KontoDto, OmBarnetPlanlegger, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen, treUkerSiden } from '@navikt/fp-utils';
-import { deltUttak } from '@navikt/fp-uttaksplan/delt-uttak';
-import { ikkeDeltUttak } from '@navikt/fp-uttaksplan/ikke-delt-uttak';
+import { deltUttak, ikkeDeltUttak } from '@navikt/fp-uttaksplan/delt-uttak';
 
 import { erFarSøker2, erMedmorDelAvSøknaden } from './HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from './barnetUtils';
