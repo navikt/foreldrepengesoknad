@@ -8,10 +8,12 @@
     "types": "index.ts",
     "exports": {
         ".": "./index.ts",
-        "./validators": "./src/utils/UttaksperiodeValidatorer.ts",
-        "./flerbarnsdager": "./src/utils/flerbarnsdager.ts",
-        "./periode-utils": "./src/utils/periodeUtils.ts",
-        "./intl": "./src/intl/nyUttaksplanMessages.ts"
+        "./validators": "./src/utils/index-utils.ts",
+        "./flerbarnsdager": "./src/utils/index-utils.ts",
+        "./periode-utils": "./src/utils/index-utils.ts",
+        "./intl": "./src/utils/index-utils.ts",
+        "./delt-uttak": "./src/utils/index-utils.ts",
+        "./ikke-delt-uttak": "./src/utils/index-utils.ts"
     },
     "scripts": {
         "build:storybook": "storybook build -o .storybook-static-build",
