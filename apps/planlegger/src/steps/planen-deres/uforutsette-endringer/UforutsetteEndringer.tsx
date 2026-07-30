@@ -9,7 +9,7 @@ import { erFødtFørUke33 } from 'utils/dateUtils';
 
 import { ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
-import { OmBarnetPlanlegger, BarnetErFødtPlanlegger } from '@navikt/fp-types';
+import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import { FødtFørUke33 } from './FødtFørUke33';
@@ -40,7 +40,7 @@ export const UforutsetteEndringer = ({ hvemPlanlegger, arbeidssituasjon, barnet 
     const erFarOgFarKunMedfarHarRett =
         hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && kunFarEllerMedmorHarRett;
 
-    const fødtBarn = 'fødselsdato' in barnet && 'termindato' in barnet ? (barnet as BarnetErFødtPlanlegger) : undefined;
+    const fødtBarn = 'fødselsdato' in barnet && 'termindato' in barnet ? barnet : undefined;
     const erPrematurFødsel = erFødtFørUke33(fødtBarn?.fødselsdato, fødtBarn?.termindato);
 
     const visInnlagtForMorRettigheter =
