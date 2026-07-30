@@ -273,6 +273,8 @@
     "UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErSykt.Tekst": "Om eit barn er innlagt eller sjukt med oppfølging frå spesialisthelsetenesta, kan du ha rett på pleiepengar i staden for foreldrepengar. Foreldrepengane kan du bruke seinare.",
     "UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErSyktEllerInnlagt": "Viss barnet er sjukt eller innlagt på sjukehuset",
     "UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErSyktEllerInnlagt.Tekst": "Viss eit barn er sjukt eller innlagt, kan {erAleneforsørger, select, true {du} other {dykk}} ha rett på pleiepengar for pleie av sjukt barn.",
+    "UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErInnlagt": "Om barnet er innlagt på sjukehus i dei første seks vekene",
+    "UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErInnlagt.Tekst": "Er barnet sjukt eller innlagt på sjukehus i dei første seks vekene etter fødsel, kan {erAleneforsørger, select, true {du} other {dykk}} ha rett på pleiepengar for pleie av sjukt barn i staden for foreldrepengar. For å utsetja foreldrepengane må barnet vere innlagt på sjukehus.",
     "UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErInnlagtFørTermin": "Om barnet blir innlagt på sjukehus før termindatoen",
     "UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErInnlagtFørTermin.Tekst": "Om barnet blir innlagt på sjukehus før termindatoen, kan du ha rett på pleiepengar i staden for foreldrepengar. For kvar dag med pleiepengar vil tilsvarande mange dagar med foreldrepengar bli trekte frå, og kan ikkje brukast seinare.",
     "UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErInnlagtEtterTermin": "Om barnet blir innlagt på sjukehus etter termindatoen",
