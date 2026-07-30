@@ -1,4 +1,4 @@
-import { StethoscopeIcon } from '@navikt/aksel-icons';
+import { HospitalIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
@@ -10,7 +10,7 @@ export const HvisBarnetErInnlagtFørTermin = () => {
         <HStack gap="space-20" wrap={false}>
             <div>
                 <IconCircleWrapper color="lightBlue" size="medium">
-                    <StethoscopeIcon
+                    <HospitalIcon
                         height={22}
                         width={22}
                         fontSize="1.5rem"
