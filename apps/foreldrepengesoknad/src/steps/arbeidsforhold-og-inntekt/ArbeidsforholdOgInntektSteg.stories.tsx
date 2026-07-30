@@ -60,7 +60,7 @@ const DEFAULT_ARBEIDSFORHOLD = [
 
 const promiseAction = () => () => {
     action('button-click')();
-    return Promise.resolve();
+    return Promise.resolve('ok' as const);
 };
 
 type StoryArgs = {

@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
+import { MellomlagreSøknadFn } from 'appData/useMellomlagreSøknad';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useIntl } from 'react-intl';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
@@ -21,7 +22,7 @@ import { InfoOmUtvidet80ProsentPeriode } from './InfoOmUtvidet80ProsentPeriode';
 
 type Props = {
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
-    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    mellomlagreSøknadOgNaviger: MellomlagreSøknadFn;
     avbrytSøknad: () => void;
 };
 

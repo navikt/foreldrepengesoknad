@@ -1,5 +1,6 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
+import { MellomlagreSøknadFn } from 'appData/useMellomlagreSøknad';
 import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useForm } from 'react-hook-form';
@@ -15,7 +16,7 @@ import { isRequired } from '@navikt/fp-validation';
 type Props = {
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     kjønn: 'M' | 'K' | 'U';
-    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    mellomlagreSøknadOgNaviger: MellomlagreSøknadFn;
     avbrytSøknad: () => void;
 };
 
@@ -32,8 +33,7 @@ export const SøkersituasjonSteg = ({ arbeidsforhold, kjønn, mellomlagreSøknad
     const resetUttaksplanData = useResetUttaksplanData();
 
     const situasjonFraBarn = barn && isAdoptertBarn(barn) ? 'adopsjon' : 'fødsel';
-    const defaultSituasjon =
-        !søkersituasjon?.situasjon && kommerFraPlanlegger && barn ? situasjonFraBarn : undefined;
+    const defaultSituasjon = !søkersituasjon?.situasjon && kommerFraPlanlegger && barn ? situasjonFraBarn : undefined;
 
     const formMethods = useForm<SøkersituasjonFp>({
         defaultValues: søkersituasjon ?? (defaultSituasjon ? { situasjon: defaultSituasjon } : undefined),

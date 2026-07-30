@@ -1,5 +1,6 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
+import { MellomlagreSøknadFn } from 'appData/useMellomlagreSøknad';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
@@ -15,7 +16,7 @@ import { AndreInntektskilderFieldArray } from './components/AndreInntektskilderF
 import { AndreInntekterFormValues } from './types/AndreInntekterFormValues';
 
 type Props = {
-    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    mellomlagreSøknadOgNaviger: MellomlagreSøknadFn;
     avbrytSøknad: () => void;
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 };

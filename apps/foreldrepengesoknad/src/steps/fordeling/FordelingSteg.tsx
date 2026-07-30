@@ -6,6 +6,7 @@ import {
 import { useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
+import { MellomlagreSøknadFn } from 'appData/useMellomlagreSøknad';
 import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useEffect, useMemo } from 'react';
@@ -31,7 +32,7 @@ import { MorsSisteDag } from './mors-siste-dag/MorsSisteDag';
 type Props = {
     person: FpPersonopplysningerDto_fpoversikt;
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
-    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    mellomlagreSøknadOgNaviger: MellomlagreSøknadFn;
     avbrytSøknad: () => void;
 };
 
@@ -86,7 +87,17 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
                       uttaksplanAnnenPart,
                   )
                 : [],
-        [valgtStønadskvote, minsterett, søkersituasjon, barn, navnMor, navnFarMedmor, annenForelder, intl, uttaksplanAnnenPart],
+        [
+            valgtStønadskvote,
+            minsterett,
+            søkersituasjon,
+            barn,
+            navnMor,
+            navnFarMedmor,
+            annenForelder,
+            intl,
+            uttaksplanAnnenPart,
+        ],
     );
     const ukerMedFellesperiode = valgtStønadskvote ? getAntallUkerFellesperiode(valgtStønadskvote) : 0;
     const dagerMedFellesperiode = ukerMedFellesperiode * 5;

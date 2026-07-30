@@ -1,6 +1,7 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
+import { MellomlagreSøknadFn } from 'appData/useMellomlagreSøknad';
 import { useStepConfig } from 'appData/useStepConfig';
 import { FormattedMessage } from 'react-intl';
 
@@ -10,7 +11,7 @@ import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 type Props = {
-    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    mellomlagreSøknadOgNaviger: MellomlagreSøknadFn;
     avbrytSøknad: () => void;
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
 };

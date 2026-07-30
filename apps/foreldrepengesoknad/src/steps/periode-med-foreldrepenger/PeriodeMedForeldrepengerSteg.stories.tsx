@@ -19,7 +19,7 @@ const STØNADSKONTO_URL = API_URLS.konto;
 
 const promiseAction = () => () => {
     action('button-click')();
-    return Promise.resolve();
+    return Promise.resolve('ok' as const);
 };
 
 const STØNADSKONTO_100 = {

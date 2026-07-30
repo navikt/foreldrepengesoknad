@@ -1,6 +1,7 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
+import { MellomlagreSøknadFn } from 'appData/useMellomlagreSøknad';
 import { useStepConfig } from 'appData/useStepConfig';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
@@ -33,7 +34,7 @@ interface Props {
     søkerInfo: FpPersonopplysningerDto_fpoversikt;
     erEndringssøknad: boolean;
     sendSøknad: () => Promise<void>;
-    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    mellomlagreSøknadOgNaviger: MellomlagreSøknadFn;
     avbrytSøknad: () => void;
     foreldrepengerSaker?: FpSak_fpoversikt[];
 }

@@ -1,5 +1,6 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
+import { MellomlagreSøknadFn } from 'appData/useMellomlagreSøknad';
 import dayjs from 'dayjs';
 import { ReactNode, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -34,7 +35,7 @@ type FormValues = {
 interface UttaksplanFormProps {
     søkerInfo: FpPersonopplysningerDto_fpoversikt;
     defaultUttaksperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
-    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    mellomlagreSøknadOgNaviger: MellomlagreSøknadFn;
     avbrytSøknad: () => void;
     setFeilmelding: (melding: ReactNode) => void;
     scrollToKvoteOppsummering: () => void;
@@ -69,7 +70,8 @@ export const UttaksplanForm = ({
             (p) =>
                 Uttaksperioden.erIkkeEøsPeriode(p) &&
                 (p.resultat === undefined ||
-                    (opprinneligPlan !== undefined && !opprinneligPlan.some((o) => erSammePeriodeInkludertDatoer(p, o)))),
+                    (opprinneligPlan !== undefined &&
+                        !opprinneligPlan.some((o) => erSammePeriodeInkludertDatoer(p, o)))),
         ) ?? [];
     const gjeldendeUttaksplan = erEndringssøknad ? uttaksplanMedKunNyePerioder : uttaksplan;
 

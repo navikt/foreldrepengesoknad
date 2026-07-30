@@ -32,7 +32,7 @@ import { OppsummeringSteg } from './OppsummeringSteg';
 
 const promiseAction = () => () => {
     action('button-click')();
-    return Promise.resolve();
+    return Promise.resolve('ok' as const);
 };
 
 const defaultSøkerinfoMor = {

@@ -75,15 +75,10 @@ export const useFpNavigator = (
         // sidan brukaren ikkje får eit nytt forsøk på å lagre endringane sine. Vi sender
         // brukaren først ut av appen når lagringa faktisk gjekk bra; feilar den, blir
         // brukaren verande med søknaden sin og får ei feilmelding.
-        void mellomlagreOgNaviger({
-            naviger: false,
-            medRetry: true,
-            visFeilTilBruker: true,
-            onFerdig: (resultat) => {
-                if (resultat === 'ok') {
-                    globalThis.location.href = 'https://nav.no';
-                }
-            },
+        void mellomlagreOgNaviger({ naviger: false, medRetry: true, visFeilTilBruker: true }).then((resultat) => {
+            if (resultat === 'ok') {
+                globalThis.location.href = 'https://nav.no';
+            }
         });
     };
 

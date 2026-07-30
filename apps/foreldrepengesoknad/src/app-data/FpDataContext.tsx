@@ -67,8 +67,25 @@ export type Action =
     | { type: 'reset' };
 type Dispatch = (action: Action) => void;
 
+const reduser = (oldState: ContextDataMap, action: Action): ContextDataMap => {
+    switch (action.type) {
+        case 'update':
+            return {
+                ...oldState,
+                [action.key]: action.data,
+            };
+        case 'reset':
+            return {};
+        default:
+            throw new Error();
+    }
+};
+
 const FpStateContext = createContext<ContextDataMap>(defaultInitialState);
 const FpDispatchContext = createContext<Dispatch | undefined>(undefined);
+
+// Held ein synkron spegel av state. Sjå kommentaren i dispatchWrapper.
+const FpLatestStateContext = createContext<{ current: ContextDataMap }>({ current: defaultInitialState });
 
 interface Props {
     children: ReactNode;
@@ -77,19 +94,8 @@ interface Props {
 }
 
 export const FpDataContext = ({ children, initialState, onDispatch }: Props): JSX.Element => {
-    const [state, dispatch] = useReducer((oldState: ContextDataMap, action: Action) => {
-        switch (action.type) {
-            case 'update':
-                return {
-                    ...oldState,
-                    [action.key]: action.data,
-                };
-            case 'reset':
-                return {};
-            default:
-                throw new Error();
-        }
-    }, initialState || defaultInitialState);
+    const startState = initialState || defaultInitialState;
+    const [state, dispatch] = useReducer(reduser, startState);
 
     // onDispatch kjem frå stories/testar og er ofte ein ny closure per render. Held den i ein
     // ref slik at dispatch-funksjonen under er referansestabil – elles ville kvar render av
@@ -99,14 +105,22 @@ export const FpDataContext = ({ children, initialState, onDispatch }: Props): JS
         onDispatchRef.current = onDispatch;
     }, [onDispatch]);
 
+    // Kode som lagrar rett etter ein dispatch (t.d. mellomlagring frå ein submit-handler)
+    // må sjå den ferske verdien med ein gong. React-state er først oppdatert i neste render,
+    // så vi speglar reduseraren synkront her.
+    const stateRef = useRef(startState);
+
     const dispatchWrapper = useCallback((a: Action) => {
+        stateRef.current = reduser(stateRef.current, a);
         onDispatchRef.current?.(a);
         dispatch(a);
     }, []);
 
     return (
         <FpStateContext value={state}>
-            <FpDispatchContext value={dispatchWrapper}>{children}</FpDispatchContext>
+            <FpLatestStateContext value={stateRef}>
+                <FpDispatchContext value={dispatchWrapper}>{children}</FpDispatchContext>
+            </FpLatestStateContext>
         </FpStateContext>
     );
 };
@@ -158,4 +172,15 @@ export const useContextReset = () => {
 
 export const useContextComplete = (): ContextDataMap => {
     return use(FpStateContext);
+};
+
+/**
+ * Returnerer ein funksjon som gir all context-data slik den er *no* – også når kallaren
+ * nettopp har dispatcha ei oppdatering i same hendingshandtering. Bruk denne når data
+ * skal sendast til backend rett etter ein dispatch (mellomlagring). Til rendering skal
+ * du bruke useContextGetData/useContextComplete, som gir React-state.
+ */
+export const useContextGetLatestComplete = (): (() => ContextDataMap) => {
+    const stateRef = use(FpLatestStateContext);
+    return useCallback(() => stateRef.current, [stateRef]);
 };

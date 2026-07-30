@@ -3,7 +3,7 @@ import { useAnnenPartVedtakOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
-import { useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
+import { MellomlagreSøknadFn, useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
 import { useSendSøknad } from 'appData/useSendSøknad';
 import { Forside } from 'pages/forside/Forside';
 import { Søknadsmetadata } from 'pages/forside/utils/useStartSøknad';
@@ -37,7 +37,7 @@ interface SøknadRoutesOptions {
     harGodkjentVilkår: boolean;
     erEndringssøknad: boolean;
     søkerInfo: FpPersonopplysningerDto_fpoversikt;
-    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    mellomlagreSøknadOgNaviger: MellomlagreSøknadFn;
     sendSøknad: () => Promise<void>;
     avbrytSøknad: () => void;
     søknadGjelderNyttBarn?: boolean;

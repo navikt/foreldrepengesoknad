@@ -1,4 +1,5 @@
 import { ContextDataType, useContextGetAnyData } from 'appData/FpDataContext';
+import { MellomlagreSøknadFn } from 'appData/useMellomlagreSøknad';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -12,9 +13,9 @@ import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 import { BarnVelger } from './BarnVelger';
 import { DinePlikter } from './dine-plikter/DinePlikter';
-import { getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './utils/forsideUtils';
 import { DinePersonopplysningerModal } from './modaler/DinePersonopplysningerModal';
 import { ForsideFormValues } from './types/ForsideFormValues';
+import { getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './utils/forsideUtils';
 import { useFjernPlanleggerDataFraUrl } from './utils/useFjernPlanleggerDataFraUrl';
 import { Søknadsmetadata, useStartSøknad } from './utils/useStartSøknad';
 
@@ -23,7 +24,7 @@ interface Props {
     harGodkjentVilkår: boolean;
     søkerInfo: FpPersonopplysningerDto_fpoversikt;
     oppdaterSøknadsmetadata: (metadata: Søknadsmetadata) => void;
-    mellomlagreSøknadOgNaviger: () => Promise<void>;
+    mellomlagreSøknadOgNaviger: MellomlagreSøknadFn;
 }
 
 export const Forside = ({

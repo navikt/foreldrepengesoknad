@@ -1,7 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { API_URLS, useAnnenPartVedtakOptions } from 'api/queries';
 import ky, { HTTPError } from 'ky';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { VERSJON_MELLOMLAGRING } from 'utils/mellomlagringUtils';
 
@@ -14,7 +14,7 @@ import {
 } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { ContextDataMap, ContextDataType, useContextComplete } from './FpDataContext';
+import { ContextDataMap, ContextDataType, useContextGetLatestComplete } from './FpDataContext';
 
 export type FpMellomlagretData = {
     version: number;
@@ -31,9 +31,6 @@ type MellomlagreSøknadOptions = {
     naviger?: boolean;
     // Prøv kallet på nytt ved transiente feil. Default false.
     medRetry?: boolean;
-    // Blir kalla når lagringa er ferdig, med utfallet. Bruk denne når kallaren må
-    // vite om lagringa gjekk bra (t.d. før ein sender brukaren ut av appen).
-    onFerdig?: (resultat: MellomlagringResultat) => void;
     // Vis feilmelding til brukaren dersom lagringa feilar. Default false – for vanleg
     // stegnavigasjon held det å logge, sidan neste lagring rettar opp i det.
     visFeilTilBruker?: boolean;
@@ -41,14 +38,39 @@ type MellomlagreSøknadOptions = {
 
 export type MellomlagringResultat = 'ok' | 'feilet';
 
-export type MellomlagreSøknadFn = (options?: MellomlagreSøknadOptions) => Promise<void>;
+/**
+ * Lagrar søknaden og resolvar med utfallet. Kastar aldri, så kallarar som ikkje bryr seg
+ * om resultatet kan trygt gjere `void mellomlagreSøknad()`.
+ */
+export type MellomlagreSøknadFn = (options?: MellomlagreSøknadOptions) => Promise<MellomlagringResultat>;
 
-type Forespørsel = {
-    naviger: boolean;
-    medRetry: boolean;
-    visFeilTilBruker: boolean;
-    onFerdig?: (resultat: MellomlagringResultat) => void;
-    ferdig: () => void;
+const RETRY_OPTIONS = {
+    limit: 2,
+    methods: ['post'],
+    statusCodes: [408, 429, 500, 502, 503, 504],
+};
+
+const postMellomlagring = async (data: FpMellomlagretData, fnr: string, medRetry: boolean) => {
+    try {
+        await ky.post(API_URLS.mellomlagring, {
+            json: data,
+            headers: { fnr },
+            ...(medRetry ? { retry: RETRY_OPTIONS } : {}),
+        });
+    } catch (error: unknown) {
+        if (error instanceof HTTPError) {
+            if (error.response.status === 401 || error.response.status === 403) {
+                throw error;
+            }
+
+            const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
+            throw new ApiError('', 'Feil ved mellomlagring av foreldrepengesøknad', jsonResponse);
+        }
+        if (error instanceof Error) {
+            throw error;
+        }
+        throw new Error(String(error), { cause: error });
+    }
 };
 
 export const useMellomlagreSøknad = (
@@ -58,33 +80,22 @@ export const useMellomlagreSøknad = (
     søknadGjelderEtNyttBarn?: boolean,
 ) => {
     const navigate = useNavigate();
-    const state = useContextComplete();
+    // Kallarar dispatchar typisk context-oppdateringar rett før dei mellomlagrar, så vi må
+    // lese ferske data – ikkje React-state frå denne renderen.
+    const hentAlleData = useContextGetLatestComplete();
 
-    const annenPartVedtakQuery = useQuery(useAnnenPartVedtakOptions());
+    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
+    const annenPartVedtakQuery = useQuery(annenPartVedtakOptions);
 
-    const [lagringFeilet, setLagringFeilet] = useState(false);
+    const mutation = useMutation({
+        // Felles scope gjer at TanStack køyrer overlappande lagringar serielt i den
+        // rekkjefølgja dei blei starta, i staden for at dei kappast om siste ord.
+        scope: { id: 'mellomlagring' },
+        mutationFn: async ({ naviger, medRetry }: Required<MellomlagreSøknadOptions>) => {
+            const state = hentAlleData();
 
-    // Forespurte lagringar ligg i ein ref-kø, ikkje i state: fleire kall kan kome før
-    // effekten rekk å køyre (t.d. «neste steg» og «fortsett seinare» rett etter kvarandre),
-    // og då må alle promisa bli resolva. Sekvensnummeret finst berre for å trigge effekten,
-    // som er naudsynt for at vi skal lese ferskt context-state etter kallaren sine dispatchar.
-    const køRef = useRef<Forespørsel[]>([]);
-    const [seq, setSeq] = useState(0);
-
-    useEffect(() => {
-        const forespørsler = køRef.current;
-        if (forespørsler.length === 0) {
-            return;
-        }
-        køRef.current = [];
-
-        const naviger = forespørsler.some((f) => f.naviger);
-        const medRetry = forespørsler.some((f) => f.medRetry);
-        const currentRoute = notEmpty(state[ContextDataType.APP_ROUTE]);
-
-        const lagre = async () => {
             if (naviger) {
-                void navigate(currentRoute);
+                void navigate(notEmpty(state[ContextDataType.APP_ROUTE]));
             }
 
             const data = {
@@ -100,80 +111,40 @@ export const useMellomlagreSøknad = (
                 ...state,
             } satisfies FpMellomlagretData;
 
-            try {
-                await ky.post(API_URLS.mellomlagring, {
-                    json: data,
-                    headers: {
-                        fnr: søkerInfo.fnr,
-                    },
-                    ...(medRetry
-                        ? {
-                              retry: {
-                                  limit: 2,
-                                  methods: ['post'],
-                                  statusCodes: [408, 429, 500, 502, 503, 504],
-                              },
-                          }
-                        : {}),
-                });
-            } catch (error: unknown) {
-                if (error instanceof HTTPError) {
-                    if (error.response.status === 401 || error.response.status === 403) {
-                        throw error;
-                    }
-
-                    const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
-                    throw new ApiError('', 'Feil ved mellomlagring av foreldrepengesøknad', jsonResponse);
-                }
-                if (error instanceof Error) {
-                    throw error;
-                }
-                throw new Error(String(error), { cause: error });
+            await postMellomlagring(data, søkerInfo.fnr, medRetry);
+        },
+        onError: (error: unknown) => {
+            if (error instanceof ApiError) {
+                captureApiError(error.sentryMessage, error.problemDetails);
+            } else if (error instanceof Error) {
+                captureMessage(error.message);
             }
-        };
+        },
+    });
 
-        const fullfør = (resultat: MellomlagringResultat) => {
-            if (resultat === 'feilet' && forespørsler.some((f) => f.visFeilTilBruker)) {
-                setLagringFeilet(true);
-            }
-            for (const forespørsel of forespørsler) {
-                forespørsel.onFerdig?.(resultat);
-                forespørsel.ferdig();
-            }
-        };
-
-        lagre().then(
-            () => fullfør('ok'),
-            (error: unknown) => {
-                //Logg feil. Om kallaren har bedt om det, blir brukaren også varsla.
-                if (error instanceof ApiError) {
-                    captureApiError(error.sentryMessage, error.problemDetails);
-                } else if (error instanceof Error) {
-                    captureMessage(error.message);
-                }
-
-                fullfør('feilet');
-            },
-        );
-    }, [seq]);
+    const { mutateAsync } = mutation;
 
     const mellomlagreSøknad = useCallback<MellomlagreSøknadFn>(
-        (options) =>
-            //Må gå via state change sidan ein må få oppdatert context før ein mellomlagrar
-            new Promise<void>((resolve) => {
-                køRef.current.push({
+        async (options) => {
+            try {
+                await mutateAsync({
                     naviger: options?.naviger ?? true,
                     medRetry: options?.medRetry ?? false,
                     visFeilTilBruker: options?.visFeilTilBruker ?? false,
-                    onFerdig: options?.onFerdig,
-                    ferdig: resolve,
                 });
-                setSeq((s) => s + 1);
-            }),
-        [],
+                return 'ok';
+            } catch {
+                // Feilen er allereie logga i onError, og blir vist til brukaren via
+                // lagringFeilet dersom kallaren bad om det.
+                return 'feilet';
+            }
+        },
+        [mutateAsync],
     );
 
-    const nullstillLagringFeilet = useCallback(() => setLagringFeilet(false), []);
+    // Vanleg stegnavigasjon skal ikkje uroe brukaren – neste lagring rettar opp i det.
+    // Ei ny, vellukka lagring nullstiller mutasjonen og skjuler feilmeldinga automatisk.
+    const lagringFeilet = mutation.isError && (mutation.variables?.visFeilTilBruker ?? false);
 
-    return { mellomlagreSøknad, lagringFeilet, nullstillLagringFeilet };
+    return { mellomlagreSøknad, lagringFeilet, nullstillLagringFeilet: mutation.reset };
 };

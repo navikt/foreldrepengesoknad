@@ -2,6 +2,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { API_URLS } from 'api/queries';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
+import { MellomlagreSøknadFn } from 'appData/useMellomlagreSøknad';
 import dayjs from 'dayjs';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
@@ -117,11 +118,11 @@ const søkerInfoMann = {
 
 const promiseAction = () => () => {
     action('button-click')();
-    return Promise.resolve();
+    return Promise.resolve('ok' as const);
 };
 
 type StoryArgs = {
-    mellomlagreSøknadOgNaviger?: () => Promise<void>;
+    mellomlagreSøknadOgNaviger?: MellomlagreSøknadFn;
     avbrytSøknad: () => void;
     gåTilNesteSide?: (action: Action) => void;
     søkersituasjon: SøkersituasjonFp;
