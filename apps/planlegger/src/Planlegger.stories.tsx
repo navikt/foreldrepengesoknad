@@ -119,6 +119,26 @@ export const DefaultMockaStønadskvoterOgSatser: Story = {
     },
 };
 
+export const MedValidertKontoKall: Story = {
+    ...Default,
+
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.konto, async ({ request }) => {
+                const body = (await request.json()) as {
+                    fødselsdato?: string;
+                    termindato?: string;
+                    omsorgsovertakelseDato?: string;
+                };
+                if (!body.fødselsdato && !body.termindato && !body.omsorgsovertakelseDato) {
+                    return new HttpResponse(null, { status: 500 });
+                }
+                return HttpResponse.json(STØNADSKVOTER);
+            }),
+        );
+    },
+};
+
 export const FarFarMockaStønadskvoterOgSatser: Story = {
     ...Default,
 
