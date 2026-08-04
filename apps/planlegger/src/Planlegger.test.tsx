@@ -8,7 +8,8 @@ import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { endreFordelingMedSlider } from '../vitest/testHelpers';
 import * as stories from './Planlegger.stories';
 
-const { DefaultMockaStønadskvoterOgSatser, FarFarMockaStønadskvoterOgSatser } = composeStories(stories);
+const { DefaultMockaStønadskvoterOgSatser, FarFarMockaStønadskvoterOgSatser, MedValidertKontoKall } =
+    composeStories(stories);
 
 describe('<Planlegger>', () => {
     it('skal gå rett til oppsummering når ingen av foreldrene har rett', async () => {
@@ -298,5 +299,47 @@ describe('<Planlegger>', () => {
         await userEvent.click(screen.getByText('Forrige'));
 
         expect(screen.getByText('Planleggeren består av to deler:')).toBeInTheDocument();
+    });
+
+    it('skal ikke vise feilside når bruker går tilbake fra om-barnet etter å ha endret til født uten å fylle inn fødselsdato', async () => {
+        await MedValidertKontoKall.run();
+
+        expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Start'));
+
+        await waitFor(() => expect(screen.getAllByText('Hvem planlegger?')).toHaveLength(2));
+        await userEvent.click(screen.getByText('Mor og far'));
+        await userEvent.click(screen.getByText('Neste'));
+
+        await waitFor(() => expect(screen.getAllByText('Barnet')).toHaveLength(2));
+        await userEvent.click(screen.getByText('Fødsel'));
+        await userEvent.click(screen.getByText('Ett'));
+        await userEvent.click(screen.getByText('Nei'));
+        const termindato = screen.getByLabelText('Når er termindato?');
+        await userEvent.type(termindato, dayjs().add(20, 'week').format(DDMMYYYY_DATE_FORMAT));
+        fireEvent.blur(termindato);
+        await userEvent.click(screen.getByText('Neste'));
+
+        await waitFor(() => expect(screen.getAllByText('Barnehageplass')).toHaveLength(2));
+        await userEvent.click(screen.getByText('Neste'));
+
+        await waitFor(() => expect(screen.getAllByText('Arbeidssituasjon')).toHaveLength(2));
+        await userEvent.click(
+            screen.getByText('Har jobbet minst 6 av de siste 10 månedene og har tjent 68 275 kr eller mer det siste året'),
+        );
+        await userEvent.click(screen.getByText('Ja'));
+        await userEvent.click(screen.getByText('Forrige'));
+
+        await waitFor(() => expect(screen.getAllByText('Barnehageplass')).toHaveLength(2));
+        await userEvent.click(screen.getByText('Forrige'));
+
+        await waitFor(() => expect(screen.getAllByText('Barnet')).toHaveLength(2));
+        await userEvent.click(screen.getByText('Ja'));
+
+        await userEvent.click(screen.getByText('Forrige'));
+
+        expect(
+            screen.queryByText('Beklager, det ser ut som at noe har gått galt på grunn av en teknisk feil hos Nav'),
+        ).not.toBeInTheDocument();
     });
 });
