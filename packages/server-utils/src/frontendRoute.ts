@@ -69,7 +69,6 @@ const setupViteMode = (router: Router) => {
         indexFilePath: 'src/bootstrap.tsx',
         subpath: config.app.publicPath,
         mountId: 'app',
-        setCSPHeaders: true,
     });
     router.get('*splat', async (request, response, next) => {
         const viteModeHtml = response.viteModeHtml;

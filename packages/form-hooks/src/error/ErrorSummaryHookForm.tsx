@@ -50,15 +50,19 @@ export const ErrorSummaryHookForm = () => {
     const errorRef = useRef<HTMLDivElement>(null);
 
     const {
-        formState: { errors },
+        formState: { errors, submitCount },
         setFocus,
     } = useFormContext();
 
+    // `errors` gets a new object reference on every keystroke once the form has been submitted once
+    // (React Hook Form's default reValidateMode is 'onChange'). Focusing on every such change would steal
+    // focus away from whatever field the user is actively typing into. We only want to move focus to the
+    // error summary right after a submit attempt, so we key off `submitCount` instead of `errors`.
     useEffect(() => {
-        if (errorRef?.current) {
+        if (submitCount > 0 && errorRef?.current) {
             errorRef.current.focus();
         }
-    }, [errors]);
+    }, [submitCount]);
 
     const flattenAndUniqueErrors = dedupErrorsByMessage(findAllErrors(errors));
 

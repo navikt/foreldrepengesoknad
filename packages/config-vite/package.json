@@ -5,9 +5,9 @@
     "version": "1.0.0",
     "devDependencies": {
         "@tailwindcss/vite": "4.3.3",
-        "@vitejs/plugin-react": "6.0.4",
+        "@vitejs/plugin-react": "6.0.5",
         "@vitest/browser-playwright": "4.1.10",
-        "playwright": "1.62.0",
+        "playwright": "1.62.1",
         "typescript": "catalog:",
         "vite": "catalog:",
         "vite-plugin-compression2": "2.5.3",

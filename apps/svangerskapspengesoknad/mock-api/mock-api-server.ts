@@ -131,7 +131,7 @@ router.delete('/fpsoknad/api/storage/SVANGERSKAPSPENGER/vedlegg/:id', (_req, res
 
 router.post('/fpsoknad/api/storage/SVANGERSKAPSPENGER/vedlegg', (_req, res) => {
     res.setHeader('Location', 'http://localhost:8888/vedlegg/123');
-    res.sendStatus(201);
+    res.status(201).json('123');
 });
 
 router.get('/fpoversikt/api/saker', (_req, res) => {
