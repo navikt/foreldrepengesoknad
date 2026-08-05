@@ -7,34 +7,67 @@ import { useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
 import { useSendSøknad } from 'appData/useSendSøknad';
 import { Forside } from 'pages/forside/Forside';
 import { Søknadsmetadata } from 'pages/forside/utils/useStartSøknad';
-import { KvitteringPage } from 'pages/kvittering/KvitteringPage';
-import { lazy, Suspense, useCallback, useState } from 'react';
+import { Suspense, lazy, useCallback, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import { AndreInntektskilderSteg } from 'steps/andre-inntektskilder/AndreInntektskilderSteg';
-import { AnnenForelderSteg } from 'steps/annen-forelder/AnnenForelderSteg';
-import { ArbeidsforholdOgInntektSteg } from 'steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg';
-import { EgenNæringSteg } from 'steps/egen-næring/EgenNæringSteg';
-import { FordelingSteg } from 'steps/fordeling/FordelingSteg';
-import { FrilansSteg } from 'steps/frilans/FrilansSteg';
-import { ManglendeVedlegg } from 'steps/manglende-vedlegg/ManglendeVedlegg';
-import { OmBarnetSteg } from 'steps/om-barnet/OmBarnetSteg';
-import { OppsummeringSteg } from 'steps/oppsummering/OppsummeringSteg';
-import { PeriodeMedForeldrepengerSteg } from 'steps/periode-med-foreldrepenger/PeriodeMedForeldrepengerSteg';
-import { SøkersituasjonSteg } from 'steps/søkersituasjon/SøkersituasjonSteg';
-import { SenereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-senere/SenereUtenlandsoppholdSteg';
-import { TidligereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-tidligere/TidligereUtenlandsoppholdSteg';
-import { UtenlandsoppholdSteg } from 'steps/utenlandsopphold/UtenlandsoppholdSteg';
+
+import { Alert, Button, VStack } from '@navikt/ds-react';
 
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { ErrorPage, Spinner, Umyndig } from '@navikt/fp-ui';
 import { erMyndig } from '@navikt/fp-utils';
 
-// Uttaksplan-steget (inkl. kalender og regelmotor i @navikt/fp-uttaksplan) er den klart største
-// enkeltavhengigheten i søknaden. Den lastes derfor lazy, med prefetch fra FordelingSteg
-// (steget rett før i den vanlege søknadsflyten, sjå ROUTES_ORDER) slik at chunken ligg i
-// nettlesarcache før brukaren faktisk navigerer dit.
+// Stega er lazy-lasta slik at forsida ikkje må vente på uttaksplan, filopplastar og alle
+// steg-pakkene. Kvart steg blir henta først når brukaren faktisk kjem dit.
+const AndreInntektskilderSteg = lazy(() =>
+    import('steps/andre-inntektskilder/AndreInntektskilderSteg').then((m) => ({ default: m.AndreInntektskilderSteg })),
+);
+const AnnenForelderSteg = lazy(() =>
+    import('steps/annen-forelder/AnnenForelderSteg').then((m) => ({ default: m.AnnenForelderSteg })),
+);
+const ArbeidsforholdOgInntektSteg = lazy(() =>
+    import('steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg').then((m) => ({
+        default: m.ArbeidsforholdOgInntektSteg,
+    })),
+);
+const EgenNæringSteg = lazy(() =>
+    import('steps/egen-næring/EgenNæringSteg').then((m) => ({ default: m.EgenNæringSteg })),
+);
+const FordelingSteg = lazy(() => import('steps/fordeling/FordelingSteg').then((m) => ({ default: m.FordelingSteg })));
+const FrilansSteg = lazy(() => import('steps/frilans/FrilansSteg').then((m) => ({ default: m.FrilansSteg })));
+const KvitteringPage = lazy(() =>
+    import('pages/kvittering/KvitteringPage').then((m) => ({ default: m.KvitteringPage })),
+);
+const ManglendeVedlegg = lazy(() =>
+    import('steps/manglende-vedlegg/ManglendeVedlegg').then((m) => ({ default: m.ManglendeVedlegg })),
+);
+const OmBarnetSteg = lazy(() => import('steps/om-barnet/OmBarnetSteg').then((m) => ({ default: m.OmBarnetSteg })));
+const OppsummeringSteg = lazy(() =>
+    import('steps/oppsummering/OppsummeringSteg').then((m) => ({ default: m.OppsummeringSteg })),
+);
+const PeriodeMedForeldrepengerSteg = lazy(() =>
+    import('steps/periode-med-foreldrepenger/PeriodeMedForeldrepengerSteg').then((m) => ({
+        default: m.PeriodeMedForeldrepengerSteg,
+    })),
+);
+const SenereUtenlandsoppholdSteg = lazy(() =>
+    import('steps/utenlandsopphold-senere/SenereUtenlandsoppholdSteg').then((m) => ({
+        default: m.SenereUtenlandsoppholdSteg,
+    })),
+);
+const SøkersituasjonSteg = lazy(() =>
+    import('steps/søkersituasjon/SøkersituasjonSteg').then((m) => ({ default: m.SøkersituasjonSteg })),
+);
+const TidligereUtenlandsoppholdSteg = lazy(() =>
+    import('steps/utenlandsopphold-tidligere/TidligereUtenlandsoppholdSteg').then((m) => ({
+        default: m.TidligereUtenlandsoppholdSteg,
+    })),
+);
+const UtenlandsoppholdSteg = lazy(() =>
+    import('steps/utenlandsopphold/UtenlandsoppholdSteg').then((m) => ({ default: m.UtenlandsoppholdSteg })),
+);
 const UttaksplanSteg = lazy(() =>
-    import('steps/uttaksplan/UttaksplanSteg').then((module) => ({ default: module.UttaksplanSteg })),
+    import('steps/uttaksplan/UttaksplanSteg').then((m) => ({ default: m.UttaksplanSteg })),
 );
 
 interface SøknadRoutesOptions {
@@ -304,12 +337,11 @@ export const ForeldrepengesøknadRoutes = ({
 
     const { sendSøknad, errorSendSøknad } = useSendSøknad(søkerInfo, erEndringssøknad, foreldrepengerSaker);
 
-    const mellomlagreSøknadOgNaviger = useMellomlagreSøknad(
-        foreldrepengerSaker,
-        søkerInfo,
-        erEndringssøknad,
-        søknadGjelderNyttBarn,
-    );
+    const {
+        mellomlagreSøknad: mellomlagreSøknadOgNaviger,
+        lagringFeilet,
+        nullstillLagringFeilet,
+    } = useMellomlagreSøknad(foreldrepengerSaker, søkerInfo, erEndringssøknad, søknadGjelderNyttBarn);
 
     const avbrytSøknad = useAvbrytSøknad(setErEndringssøknad, setHarGodkjentVilkår, setSøknadGjelderNyttBarn);
 
@@ -358,31 +390,49 @@ export const ForeldrepengesøknadRoutes = ({
     }
 
     return (
-        <Routes>
-            <Route
-                path={SøknadRoutes.VELKOMMEN}
-                element={
-                    <Forside
-                        saker={foreldrepengerSaker}
-                        harGodkjentVilkår={harGodkjentVilkår}
-                        søkerInfo={søkerInfo}
-                        oppdaterSøknadsmetadata={oppdaterSøknadsmetadata}
-                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+        <VStack gap="space-16">
+            {lagringFeilet && (
+                <VStack align="center" paddingBlock="space-16" paddingInline="space-16">
+                    <VStack maxWidth="600px" width="100%">
+                        <Alert variant="error">
+                            <VStack align="start" gap="space-8">
+                                <FormattedMessage id="Mellomlagring.FeiletVedFortsettSenere" />
+                                <Button type="button" variant="secondary" size="small" onClick={nullstillLagringFeilet}>
+                                    <FormattedMessage id="Mellomlagring.FeiletVedFortsettSenere.Lukk" />
+                                </Button>
+                            </VStack>
+                        </Alert>
+                    </VStack>
+                </VStack>
+            )}
+            <Suspense fallback={<Spinner />}>
+                <Routes>
+                    <Route
+                        path={SøknadRoutes.VELKOMMEN}
+                        element={
+                            <Forside
+                                saker={foreldrepengerSaker}
+                                harGodkjentVilkår={harGodkjentVilkår}
+                                søkerInfo={søkerInfo}
+                                oppdaterSøknadsmetadata={oppdaterSøknadsmetadata}
+                                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                            />
+                        }
                     />
-                }
-            />
-            <Route path={SøknadRoutes.IKKE_MYNDIG} element={<Umyndig appName="foreldrepengesoknad" />} />
+                    <Route path={SøknadRoutes.IKKE_MYNDIG} element={<Umyndig appName="foreldrepengesoknad" />} />
 
-            {renderSøknadRoutes({
-                harGodkjentVilkår,
-                erEndringssøknad,
-                søkerInfo,
-                mellomlagreSøknadOgNaviger,
-                sendSøknad,
-                avbrytSøknad,
-                søknadGjelderNyttBarn,
-                foreldrepengerSaker,
-            })}
-        </Routes>
+                    {renderSøknadRoutes({
+                        harGodkjentVilkår,
+                        erEndringssøknad,
+                        søkerInfo,
+                        mellomlagreSøknadOgNaviger,
+                        sendSøknad,
+                        avbrytSøknad,
+                        søknadGjelderNyttBarn,
+                        foreldrepengerSaker,
+                    })}
+                </Routes>
+            </Suspense>
+        </VStack>
     );
 };
