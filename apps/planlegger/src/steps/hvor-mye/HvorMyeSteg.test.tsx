@@ -34,4 +34,28 @@ describe('<HvorMyeSteg>', () => {
         expect(screen.getByText('Hva tjener du ca. i måneden? (valgfritt)')).toBeInTheDocument();
         expect(screen.queryByText('Hva tjener Espen ca. i måneden? (valgfritt)')).not.toBeInTheDocument();
     });
+
+    it('skal vise infoboks om at man ikke har rett til foreldrepenger når årslønn er under 1/2 G', async () => {
+        render(<AleneforsørgerMor />);
+
+        const morLønn = await screen.findByLabelText('Hva tjener du ca. i måneden? (valgfritt)');
+        await userEvent.type(morLønn, '4000');
+
+        expect(
+            await screen.findByText('Med årslønn under 68 275 kr har du ikke rett til foreldrepenger'),
+        ).toBeInTheDocument();
+        expect(screen.getByText(/48 000 kr i året/)).toBeInTheDocument();
+        expect(screen.getByText(/68 275 kr i året/)).toBeInTheDocument();
+    });
+
+    it('skal ikke vise infoboks om manglende rett når årslønn er over 1/2 G', async () => {
+        render(<AleneforsørgerMor />);
+
+        const morLønn = await screen.findByLabelText('Hva tjener du ca. i måneden? (valgfritt)');
+        await userEvent.type(morLønn, '30000');
+
+        expect(
+            screen.queryByText('Med årslønn under 68 275 kr har du ikke rett til foreldrepenger'),
+        ).not.toBeInTheDocument();
+    });
 });
