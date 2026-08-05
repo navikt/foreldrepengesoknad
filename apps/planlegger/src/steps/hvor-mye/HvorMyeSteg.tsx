@@ -64,9 +64,10 @@ export const HvorMyeSteg = ({ satser }: Props) => {
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
     const minÅrslønn = Math.round(grunnbeløpet / 2);
 
-    const harIkkeRettTilFp = (lønnSøker: number): boolean => {
-        return lønnSøker * 12 < minÅrslønn;
-    };
+    const årslønnSøker1 = Number(lønnSøker1) * 12;
+    const årslønnSøker2 = Number(lønnSøker2) * 12;
+    const harSøker1IkkeRettTilFp = årslønnSøker1 < minÅrslønn;
+    const harSøker2IkkeRettTilFp = årslønnSøker2 < minÅrslønn;
 
     const onSubmit = (formValues: HvorMye) => {
         oppdaterHvorMye(formValues);
@@ -101,13 +102,13 @@ export const HvorMyeSteg = ({ satser }: Props) => {
                                     description={intl.formatMessage({ id: 'HvorMyeSteg.LønnBeskrivelse' })}
                                 />
                             </BluePanel>
-                            {lønnSøker1Valid && harIkkeRettTilFp(Number(lønnSøker1)) && (
+                            {lønnSøker1Valid && harSøker1IkkeRettTilFp && (
                                 <HarIkkeRettTilFpInfobox
-                                    antattÅrslønn={Number(lønnSøker1) * 12}
+                                    antattÅrslønn={årslønnSøker1}
                                     minÅrslønn={minÅrslønn}
                                 />
                             )}
-                            {lønnSøker1Valid && !harIkkeRettTilFp(Number(lønnSøker1)) && (
+                            {lønnSøker1Valid && !harSøker1IkkeRettTilFp && (
                                 <Utbetaling
                                     lønnSøker={Number(lønnSøker1)}
                                     satser={satser}
@@ -137,13 +138,13 @@ export const HvorMyeSteg = ({ satser }: Props) => {
                                         description={intl.formatMessage({ id: 'HvorMyeSteg.LønnBeskrivelse' })}
                                     />
                                 </BluePanel>
-                                {lønnSøker2Valid && harIkkeRettTilFp(Number(lønnSøker2)) && (
+                                {lønnSøker2Valid && harSøker2IkkeRettTilFp && (
                                     <HarIkkeRettTilFpInfobox
-                                        antattÅrslønn={Number(lønnSøker2) * 12}
+                                        antattÅrslønn={årslønnSøker2}
                                         minÅrslønn={minÅrslønn}
                                     />
                                 )}
-                                {lønnSøker2Valid && !harIkkeRettTilFp(Number(lønnSøker2)) && (
+                                {lønnSøker2Valid && !harSøker2IkkeRettTilFp && (
                                     <Utbetaling
                                         satser={satser}
                                         lønnSøker={Number(lønnSøker2)}
