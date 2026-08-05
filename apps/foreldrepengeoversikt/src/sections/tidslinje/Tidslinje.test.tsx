@@ -233,7 +233,7 @@ describe('<Tidslinje>', () => {
         expect(within(timelineEvents[1]!).getByText(/du vil få et svar på søknaden din/i)).toBeInTheDocument();
         expect(within(timelineEvents[2]!).getByText(/termindato/i)).toBeInTheDocument();
 
-        screen.getByText('Du sendte 4 dokumenter').click();
+        await userEvent.click(screen.getByText('Du sendte 4 dokumenter'));
         expect(screen.getByText('Søknad om svangerskapspenger')).toBeInTheDocument();
         expect(screen.getAllByText(/skjema for tilrettelegging og omplassering ved graviditet/i)).toHaveLength(3);
     });
