@@ -1,0 +1,42 @@
+diff --git a/dist/csf/index.js b/dist/csf/index.js
+index 2871585363338d578b9ace1acb146c8eadacf9f0..5c512be60d97e03e97904828171d3b36f0af4261 100644
+--- a/dist/csf/index.js
++++ b/dist/csf/index.js
+@@ -1926,7 +1926,15 @@ var resetAllMocksLoader = ({ parameters: parameters2 }) => {
+             currentFocus = newFocus;
+           },
+           get() {
+-            return this.ownerDocument?.defaultView ? focusingElements.has(this) ? originalFocus : (focusingElements.add(this), setTimeout(() => focusingElements.delete(this), 0), currentFocus) : noopFocus;
++            if (this === HTMLElement.prototype)
++              return currentFocus;
++            let browsingContext;
++            try {
++              browsingContext = this.ownerDocument?.defaultView;
++            } catch {
++              return currentFocus;
++            }
++            return browsingContext ? focusingElements.has(this) ? originalFocus : (focusingElements.add(this), setTimeout(() => focusingElements.delete(this), 0), currentFocus) : noopFocus;
+           }
+         }
+       }), patchedFocus = !0;
+diff --git a/dist/preview/runtime.js b/dist/preview/runtime.js
+index fde2620a09de4547affa5b5cf27b99fe50c008f2..ae872bfb6b043e560cd4eb97807a2cd994047887 100644
+--- a/dist/preview/runtime.js
++++ b/dist/preview/runtime.js
+@@ -34250,7 +34250,15 @@ var resetAllMocksLoader = ({ parameters: parameters2 }) => {
+             currentFocus = newFocus;
+           },
+           get() {
+-            return this.ownerDocument?.defaultView ? focusingElements.has(this) ? originalFocus : (focusingElements.add(this), setTimeout(() => focusingElements.delete(this), 0), currentFocus) : noopFocus;
++            if (this === HTMLElement.prototype)
++              return currentFocus;
++            let browsingContext;
++            try {
++              browsingContext = this.ownerDocument?.defaultView;
++            } catch {
++              return currentFocus;
++            }
++            return browsingContext ? focusingElements.has(this) ? originalFocus : (focusingElements.add(this), setTimeout(() => focusingElements.delete(this), 0), currentFocus) : noopFocus;
+           }
+         }
+       }), patchedFocus = !0;
