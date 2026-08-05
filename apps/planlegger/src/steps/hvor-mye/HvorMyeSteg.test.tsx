@@ -41,11 +41,24 @@ describe('<HvorMyeSteg>', () => {
         const morLønn = await screen.findByLabelText('Hva tjener du ca. i måneden? (valgfritt)');
         await userEvent.type(morLønn, '4000');
 
+        const satser = stories.AleneforsørgerMor.args!.satser;
+        const minÅrslønn = Math.round(satser.grunnbeløp[0]!.verdi / 2);
+        const minÅrslønnFormatted = new Intl.NumberFormat('nb-NO', {
+            style: 'currency',
+            currency: 'NOK',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+        }).format(minÅrslønn);
+
         expect(
-            await screen.findByText('Med årslønn under 68 275 kr har du ikke rett til foreldrepenger'),
+            await screen.findByText(
+                (content) =>
+                    content.includes(`Med årslønn under ${minÅrslønnFormatted}`) &&
+                    content.includes('har du ikke rett til foreldrepenger'),
+            ),
         ).toBeInTheDocument();
-        expect(screen.getByText(/48 000 kr i året/)).toBeInTheDocument();
-        expect(screen.getByText(/68 275 kr i året/)).toBeInTheDocument();
+        expect(screen.getByText(/48\s?000\s?kr i året/)).toBeInTheDocument();
+        expect(screen.getByText((content) => content.includes(`${minÅrslønnFormatted} i året`))).toBeInTheDocument();
     });
 
     it('skal ikke vise infoboks om manglende rett når årslønn er over 1/2 G', async () => {
