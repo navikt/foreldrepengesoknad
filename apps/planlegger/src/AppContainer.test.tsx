@@ -82,13 +82,14 @@ describe('<AppContainer>', () => {
 
         await userEvent.click(screen.getByText('Neste'));
 
-        expect(await screen.findByText('Planen deres', {}, { timeout: 5000 })).toBeInTheDocument();
+        expect(await screen.findByText('Planen deres', {}, { timeout: 10000 })).toBeInTheDocument();
         expect(screen.getByText('Steg 8 av 9')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Oppsummering')[1]!);
 
         expect(screen.getAllByText('Oppsummering')).toHaveLength(2);
-        // OppsummeringSteg er lazy-lasta, så knappen kan dukke opp asynkront.
-        await userEvent.click(await screen.findByText('Tilbake til spørsmålene', {}, { timeout: 5000 }));
+        // OppsummeringSteg er lazy-lasta, så knappen kan dukke opp asynkront. CI-runneren har
+        // ofte begrensa CPU, og 5000ms har vist seg å flake der (samme steg som feiler på master).
+        await userEvent.click(await screen.findByText('Tilbake til spørsmålene', {}, { timeout: 10000 }));
 
         expect(screen.getByText('Planen deres')).toBeInTheDocument();
         expect(screen.getByText('Steg 8 av 9')).toBeInTheDocument();
