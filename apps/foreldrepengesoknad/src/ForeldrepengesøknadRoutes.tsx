@@ -68,15 +68,13 @@ const renderSøknadRoutes = ({
                 <Route
                     path={SøknadRoutes.UTTAKSPLAN}
                     element={
-                        <Suspense fallback={<Spinner />}>
-                            <UttaksplanSteg
-                                søkerInfo={søkerInfo}
-                                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                avbrytSøknad={avbrytSøknad}
-                                foreldrepengerSaker={foreldrepengerSaker}
-                                erEndringssøknad={erEndringssøknad}
-                            />
-                        </Suspense>
+                        <UttaksplanSteg
+                            søkerInfo={søkerInfo}
+                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                            avbrytSøknad={avbrytSøknad}
+                            foreldrepengerSaker={foreldrepengerSaker}
+                            erEndringssøknad={erEndringssøknad}
+                        />
                     }
                 />
                 <Route
@@ -167,15 +165,13 @@ const renderSøknadRoutes = ({
             <Route
                 path={SøknadRoutes.UTTAKSPLAN}
                 element={
-                    <Suspense fallback={<Spinner />}>
-                        <UttaksplanSteg
-                            søkerInfo={søkerInfo}
-                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                            avbrytSøknad={avbrytSøknad}
-                            foreldrepengerSaker={foreldrepengerSaker}
-                            erEndringssøknad={erEndringssøknad}
-                        />
-                    </Suspense>
+                    <UttaksplanSteg
+                        søkerInfo={søkerInfo}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                        foreldrepengerSaker={foreldrepengerSaker}
+                        erEndringssøknad={erEndringssøknad}
+                    />
                 }
             />
             <Route
