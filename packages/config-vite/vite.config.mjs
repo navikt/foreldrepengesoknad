@@ -2,8 +2,12 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { playwright } from '@vitest/browser-playwright';
+import { fileURLToPath } from 'node:url';
 import { defineConfig, mergeConfig } from 'vite';
 import compression from 'vite-plugin-compression2';
+
+// Må køyre før pakka si eiga setup-fil og før første Story.run(). Sjå fila for detaljar.
+const browserSetupFile = fileURLToPath(new URL('./vitest-setup-browser.mjs', import.meta.url));
 
 export const createSharedConfigWithCrossorgin = (setupFileDirName) =>
     mergeConfig(createSharedAppConfig(setupFileDirName), {
@@ -92,7 +96,7 @@ const createConfig = (setupFileDirName) => {
                             '**/.{idea,git,cache,output,temp}/**',
                             '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*',
                         ],
-                        setupFiles: setupFileDirName,
+                        setupFiles: [browserSetupFile, setupFileDirName],
                         browser: {
                             // Headless i CI (GitHub Actions setter CI=true), headed lokalt for enklere debugging.
                             //eslint-disable-next-line no-undef
