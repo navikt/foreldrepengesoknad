@@ -15,6 +15,7 @@ const {
     BeggeRettMorForMangeDagerBrukt,
     BeggeRettMorOgMedmorMorIngenDagerBrukt,
     BeggeRettMorIngenDagerBrukt,
+    BeggeRettFarOgFarIngenDagerBrukt,
     MorHarPrematuruker,
     BeggeRettMangeOvertrukneDagerMedOverføringsÅrsak,
     BeggeRettMedFriUtsettelseAnnenPart,
@@ -121,6 +122,19 @@ describe('<KvoteOppsummering >', () => {
         await userEvent.click(expandButton);
         expect(screen.getAllByText('Fedrekvote - 15 uker')).toHaveLength(1);
         expect(screen.queryByText('Medmorkvote')).not.toBeInTheDocument();
+    });
+
+    it('<BeggeRettFarOgFarIngenDagerBrukt - skal vise genitivnavn for begge kvoter >', async () => {
+        render(<BeggeRettFarOgFarIngenDagerBrukt />);
+        expect(screen.getByText('Det er 49 uker igjen som kan legges til i planen')).toBeInTheDocument();
+
+        const expandButton = screen.getByRole('button', { expanded: false });
+        await userEvent.click(expandButton);
+
+        expect(screen.getAllByText('Helgas kvote - 15 uker')).toHaveLength(1);
+        expect(screen.getAllByText('Espens kvote - 15 uker')).toHaveLength(1);
+        expect(screen.queryByText('Mødrekvote')).not.toBeInTheDocument();
+        expect(screen.queryByText('Fedrekvote')).not.toBeInTheDocument();
     });
 
     it('<MorHarPrematuruker - 8 uker og 3 dager av fellesperioden skal være brukt opp av pleiepenger >', async () => {
