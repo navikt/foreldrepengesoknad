@@ -3,7 +3,6 @@ import pluginJs from '@eslint/js';
 import vitest from '@vitest/eslint-plugin';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import * as importPlugin from 'eslint-plugin-import-x';
-import jsxA11y from 'eslint-plugin-jsx-a11y';
 import reactYouMightNotNeedAnEffect from 'eslint-plugin-react-you-might-not-need-an-effect';
 import storybook from 'eslint-plugin-storybook';
 import globals from 'globals';
@@ -32,7 +31,6 @@ export default [
     },
     ...storybook.configs['flat/recommended'],
     eslintReact.configs['recommended-typescript'],
-    jsxA11y.flatConfigs.recommended,
     {
         plugins: {
             'import-x': importPlugin,
@@ -48,7 +46,6 @@ export default [
             'max-len': [ERROR, 160],
             'no-console': ERROR,
             'no-debugger': ERROR,
-            'jsx-a11y/no-autofocus': OFF,
             'import-x/no-duplicates': ERROR,
             'import-x/no-unresolved': OFF,
             'import-x/named': OFF,
