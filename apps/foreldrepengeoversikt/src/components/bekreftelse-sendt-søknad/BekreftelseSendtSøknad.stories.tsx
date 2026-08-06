@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router';
 import { endringFPSøknad, saker, sakerTidligFPSøknad, sakerVenterPåFpInntektsmelding } from 'storybookData/saker/saker';
 import { søkerinfo, søkerinfoUtenArbeidsforhold } from 'storybookData/sokerinfo/sokerinfo';
 

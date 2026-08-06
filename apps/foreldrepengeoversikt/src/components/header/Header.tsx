@@ -2,7 +2,7 @@ import { BabyWrappedIcon, PersonPregnantIcon, StrollerIcon } from '@navikt/aksel
 import { useQuery } from '@tanstack/react-query';
 import { ReactNode, createElement } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { Sak } from 'types/Sak.ts';
 
 import { Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';

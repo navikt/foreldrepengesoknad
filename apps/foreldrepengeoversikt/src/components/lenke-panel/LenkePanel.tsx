@@ -1,7 +1,7 @@
 import { ArrowRightIcon } from '@navikt/aksel-icons';
 import classNames from 'classnames';
 import { ComponentType, ReactNode, SVGProps } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 

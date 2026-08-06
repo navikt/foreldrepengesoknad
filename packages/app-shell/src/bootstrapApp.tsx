@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import * as countries from 'i18n-iso-countries';
 import { type ReactElement, StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router';
 
 import { initFaro, initSentry } from '@navikt/fp-observability';
 import type { LocaleAll } from '@navikt/fp-types';

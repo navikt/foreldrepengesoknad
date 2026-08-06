@@ -42,10 +42,6 @@ jobs:
     name: Browser tests
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    # Rådgivende, ikke-blokkerende: browser-testene er ennå ikke stabile i headless CI
-    # (timeouts, filopplasting/submit som ikke fullfører). Jobben kjører og rapporterer
-    # alle feil i loggen (--continue), men blokkerer ikke merge før de er stabilisert.
-    continue-on-error: true
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # ratchet:actions/checkout@v7.0.1
 

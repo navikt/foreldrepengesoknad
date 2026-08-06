@@ -3,7 +3,7 @@ import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext'
 import { SøknadRoute } from 'appData/routes';
 import dayjs from 'dayjs';
 import { ComponentProps } from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 import { ArbeidIUtlandetType } from 'types/ArbeidIUtlandet';
 import { DelivisTilretteleggingPeriodeType, TilOgMedDatoType } from 'types/Tilrettelegging';

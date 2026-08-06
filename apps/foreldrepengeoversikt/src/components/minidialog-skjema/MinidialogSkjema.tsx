@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import ky from 'ky';
 import { FormEvent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 
 import {
     Alert,

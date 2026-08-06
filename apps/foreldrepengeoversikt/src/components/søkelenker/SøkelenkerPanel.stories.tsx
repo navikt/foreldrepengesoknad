@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 
 import { LayoutWrapper } from '../../sections/LayoutWrapper';
 import { SøkelenkerPanel } from './SøkelenkerPanel';

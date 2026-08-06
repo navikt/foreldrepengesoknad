@@ -117,7 +117,7 @@ catalogs:
     react-intl:
       specifier: 10.1.19
       version: 10.1.19
-    react-router-dom:
+    react-router:
       specifier: 7.18.2
       version: 7.18.2
     storybook-react-intl:
@@ -250,7 +250,7 @@ importers:
       react-intl:
         specifier: 'catalog:'
         version: 10.1.19(@types/react@19.2.18)(react@19.2.8)
-      react-router-dom:
+      react-router:
         specifier: 'catalog:'
         version: 7.18.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
     devDependencies:
@@ -404,7 +404,7 @@ importers:
       react-intl:
         specifier: 'catalog:'
         version: 10.1.19(@types/react@19.2.18)(react@19.2.8)
-      react-router-dom:
+      react-router:
         specifier: 'catalog:'
         version: 7.18.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
     devDependencies:
@@ -591,7 +591,7 @@ importers:
       react-intl:
         specifier: 'catalog:'
         version: 10.1.19(@types/react@19.2.18)(react@19.2.8)
-      react-router-dom:
+      react-router:
         specifier: 'catalog:'
         version: 7.18.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
     devDependencies:
@@ -748,7 +748,7 @@ importers:
       react-intl:
         specifier: 'catalog:'
         version: 10.1.19(@types/react@19.2.18)(react@19.2.8)
-      react-router-dom:
+      react-router:
         specifier: 'catalog:'
         version: 7.18.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
     devDependencies:
@@ -917,7 +917,7 @@ importers:
       react-intl:
         specifier: 'catalog:'
         version: 10.1.19(@types/react@19.2.18)(react@19.2.8)
-      react-router-dom:
+      react-router:
         specifier: 'catalog:'
         version: 7.18.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
     devDependencies:
@@ -1056,7 +1056,7 @@ importers:
       react-intl:
         specifier: 'catalog:'
         version: 10.1.19(@types/react@19.2.18)(react@19.2.8)
-      react-router-dom:
+      react-router:
         specifier: 'catalog:'
         version: 7.18.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
     devDependencies:
@@ -1198,7 +1198,7 @@ importers:
       react-intl:
         specifier: 'catalog:'
         version: 10.1.19(@types/react@19.2.18)(react@19.2.8)
-      react-router-dom:
+      react-router:
         specifier: 'catalog:'
         version: 7.18.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
     devDependencies:
@@ -1322,7 +1322,7 @@ importers:
       react-dom:
         specifier: 'catalog:'
         version: 19.2.8(react@19.2.8)
-      react-router-dom:
+      react-router:
         specifier: 'catalog:'
         version: 7.18.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
     devDependencies:

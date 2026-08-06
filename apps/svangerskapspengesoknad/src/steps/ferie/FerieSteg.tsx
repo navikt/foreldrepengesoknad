@@ -6,7 +6,7 @@ import { useSvpNavigator } from 'appData/useSvpNavigator';
 import dayjs from 'dayjs';
 import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 import { getNesteTilretteleggingId, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
 

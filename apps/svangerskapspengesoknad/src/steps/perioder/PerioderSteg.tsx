@@ -4,7 +4,7 @@ import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { PeriodeMedVariasjon } from 'types/Tilrettelegging';
 import { getKanHaSvpFremTilTreUkerFørTermin } from 'utils/dateUtils';
 import {

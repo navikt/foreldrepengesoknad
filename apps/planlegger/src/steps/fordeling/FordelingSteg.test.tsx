@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 import { BarnetErAdoptertPlanlegger } from '@navikt/fp-types';
 
@@ -18,8 +18,8 @@ const {
     FarOgFar,
 } = composeStories(stories);
 
-vi.mock('react-router-dom', async () => {
-    const actual = await vi.importActual('react-router-dom');
+vi.mock('react-router', async () => {
+    const actual = await vi.importActual('react-router');
     return {
         ...actual,
         useNavigate: vi.fn(),
@@ -252,20 +252,14 @@ describe('<FordelingSteg>', () => {
         expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
 
         expect(screen.getByText('Hvem skal starte permisjonen med foreldrepenger?')).toBeInTheDocument();
-        expect(
-            screen.getByText('Permisjonen kan tidligst starte ved omsorgsovertakelsen.'),
-        ).toBeInTheDocument();
+        expect(screen.getByText('Permisjonen kan tidligst starte ved omsorgsovertakelsen.')).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: 'Petter Pjokk' })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: 'Espen Utvikler' })).toBeInTheDocument();
-        expect(
-            screen.getByText('Hvilken betydning har hvem som starter permisjonen?'),
-        ).toBeInTheDocument();
+        expect(screen.getByText('Hvilken betydning har hvem som starter permisjonen?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste'));
 
-        expect(
-            await screen.findByText('Du må velge hvem som skal starte permisjonen.'),
-        ).toBeInTheDocument();
+        expect(await screen.findByText('Du må velge hvem som skal starte permisjonen.')).toBeInTheDocument();
         expect(navigateMock).not.toHaveBeenCalled();
     });
 
@@ -305,9 +299,7 @@ describe('<FordelingSteg>', () => {
 
         expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
 
-        expect(
-            screen.queryByText('Hvem skal starte permisjonen med foreldrepenger?'),
-        ).not.toBeInTheDocument();
+        expect(screen.queryByText('Hvem skal starte permisjonen med foreldrepenger?')).not.toBeInTheDocument();
     });
 
     it('Skal vise spørsmål om hvem som starter permisjonen for mor og far ved adopsjon', async () => {

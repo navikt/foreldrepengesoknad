@@ -9,7 +9,7 @@
  * 401-filtrering holdes i hver init-fil siden mekanismen er ulik (Sentry har breadcrumbs, Faro har ikke).
  */
 
-const FEIL_VI_VIL_LUKE_BORT = ['personbruker/decorator-next'];
+const FEIL_VI_VIL_LUKE_BORT = ['personbruker/decorator-next', 'personbruker/nav-dekoratoren'];
 
 export const DISTRIBUTOR_PATTERN = /Request timeout \S*Distributor\.\S+/;
 

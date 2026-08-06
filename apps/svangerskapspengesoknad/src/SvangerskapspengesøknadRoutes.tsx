@@ -4,7 +4,7 @@ import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
 import { SvpMellomlagretData, useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
 import { useSendSøknad } from 'appData/useSendSøknad';
 import { useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate } from 'react-router';
 
 import { SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';

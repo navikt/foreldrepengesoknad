@@ -3,7 +3,7 @@ import { act, renderHook } from '@testing-library/react';
 import { API_URLS } from 'appData/queries';
 import ky, { ResponsePromise } from 'ky';
 import { ReactNode } from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { ArbeidIUtlandet, ArbeidIUtlandetType } from 'types/ArbeidIUtlandet';
 import { AvtaltFeriePerArbeidsgiver } from 'types/AvtaltFerie';
 import {

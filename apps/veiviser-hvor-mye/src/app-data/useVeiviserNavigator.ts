@@ -1,6 +1,6 @@
 import { HvorMyeRoutes } from 'appData/routes';
 import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 export const useVeiviserNavigator = () => {
     const navigate = useNavigate();

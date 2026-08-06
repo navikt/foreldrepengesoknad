@@ -2,7 +2,7 @@ import { composeStories, composeStory } from '@storybook/react-vite';
 import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 

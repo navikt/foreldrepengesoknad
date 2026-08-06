@@ -2,7 +2,7 @@ import { PlusIcon } from '@navikt/aksel-icons';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { FormEvent, useState } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router';
 
 import {
     Alert,

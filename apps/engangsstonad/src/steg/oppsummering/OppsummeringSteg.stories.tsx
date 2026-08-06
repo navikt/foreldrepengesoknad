@@ -3,7 +3,7 @@ import { ContextDataType, EsDataContext } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import dayjs from 'dayjs';
 import { ComponentProps } from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 import { Dokumentasjon } from 'types/Dokumentasjon';
 
