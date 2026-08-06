@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router';
 
 import { AppShell, createDefaultQueryClient } from '@navikt/fp-app-shell';
 import { filopplasterMessages } from '@navikt/fp-filopplaster';

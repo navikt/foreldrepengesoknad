@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { omit } from 'es-toolkit';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import {
     Arbeidsforholdstype,
     DelivisTilretteleggingPeriodeType,

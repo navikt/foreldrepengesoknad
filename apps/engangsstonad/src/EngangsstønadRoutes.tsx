@@ -3,7 +3,7 @@ import { Path } from 'appData/paths';
 import { EsMellomlagretData, useEsMellomlagring } from 'appData/useEsMellomlagring';
 import { useEsSendSøknad } from 'appData/useEsSendSøknad';
 import { useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate } from 'react-router';
 
 import { EsPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';

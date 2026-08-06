@@ -1,5 +1,5 @@
 import { FormattedMessage } from 'react-intl';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 
 import { Alert, HStack, Link, Loader, VStack } from '@navikt/ds-react';
 

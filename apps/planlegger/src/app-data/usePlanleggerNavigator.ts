@@ -1,6 +1,6 @@
 import { PlanleggerRoutes } from 'appData/routes';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 import { compressToUrl } from '@navikt/fp-utils';
 

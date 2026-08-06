@@ -1,5 +1,5 @@
 import { ReactNode, useRef } from 'react';
-import { Navigate, Outlet, Route, Routes, useMatch, useNavigate } from 'react-router-dom';
+import { Navigate, Outlet, Route, Routes, useMatch, useNavigate } from 'react-router';
 
 import { OversiktPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 

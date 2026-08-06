@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { API_URLS } from 'appData/queries';
 import { HttpResponse, http } from 'msw';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 
 import { SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 

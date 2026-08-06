@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { API_URLS, useAnnenPartVedtakOptions } from 'api/queries';
 import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { VERSJON_MELLOMLAGRING } from 'utils/mellomlagringUtils';
 
 import { ApiError, captureApiError, captureMessage } from '@navikt/fp-observability';

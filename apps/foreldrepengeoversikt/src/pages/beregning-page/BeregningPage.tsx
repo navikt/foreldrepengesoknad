@@ -5,7 +5,7 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { groupBy, partition, sortBy, sumBy } from 'es-toolkit';
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Link as RouterLink, useParams } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router';
 import { Foreldrepengesak, SvangerskapspengeSak } from 'types/Sak.ts';
 
 import {

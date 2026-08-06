@@ -4,7 +4,7 @@ import { API_URLS } from 'appData/queries';
 import ky, { HTTPError } from 'ky';
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { Dokumentasjon, erTerminDokumentasjon } from 'types/Dokumentasjon';
 
 import { ApiError } from '@navikt/fp-observability';
