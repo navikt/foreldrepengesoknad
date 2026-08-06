@@ -1714,6 +1714,9 @@ importers:
 
   packages/steg-arbeidsforhold-og-inntekt:
     dependencies:
+      '@navikt/aksel-icons':
+        specifier: 'catalog:'
+        version: 8.16.1
       '@navikt/ds-css':
         specifier: 'catalog:'
         version: 8.16.1

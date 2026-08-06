@@ -61,6 +61,7 @@
     "JobbIUtlandetPanel.Validering.LandDuHarJobber": "You must specify which country you have worked in",
     "JobbIUtlandetPanel.NavnPåArbeidsgiver": "What is the name of your employer?",
     "JobbIUtlandetPanel.Validering.NavnPåArbeidsgiver": "You must specify the name of your employer",
+    "JobbIUtlandetPanel.Validering.NavnPåArbeidsgiverMaksLengde": "The name of the employer cannot be longer than 100 characters",
     "JobbIUtlandetPanel.JobberDuDerNå": "Do you still work there now?",
     "JobbIUtlandetPanel.Validering.JobberDuDerNå": "You must specify whether you still work there now",
     "JobbIUtlandetPanel.RadioButton.Nei": "No",
