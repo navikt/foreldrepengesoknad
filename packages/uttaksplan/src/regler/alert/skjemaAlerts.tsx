@@ -185,7 +185,7 @@ type KontekstuellAlertKontekst = {
     erEndringssøknad: boolean;
 };
 
-const AKTIVITETSKRAV_SOM_KREVER_DOKUMENTASJON: ReadonlyArray<MorsAktivitet> = [
+const AKTIVITETSKRAV_SOM_KREVER_DOKUMENTASJON: readonly MorsAktivitet[] = [
     'ARBEID',
     'UTDANNING',
     'ARBEID_OG_UTDANNING',
