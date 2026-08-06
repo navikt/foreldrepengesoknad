@@ -483,6 +483,8 @@ describe('Fordeling - FarMedmorAleneomsorgEttBarnTerminEtterWLB', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til far med aleneomsorg med fødte tvillinger', async () => {
+        MockDate.set(new Date('2024-09-12'));
+
         await FarMedmorAleneomsorgEttBarnTerminEtterWLB.run({
             args: {
                 ...FarMedmorAleneomsorgEttBarnTerminEtterWLB.args,
@@ -490,8 +492,6 @@ describe('Fordeling - FarMedmorAleneomsorgEttBarnTerminEtterWLB', () => {
                 mellomlagreSøknadOgNaviger,
             },
         });
-
-        MockDate.set(new Date('2024-09-12'));
 
         expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
         expect(screen.getByText('46 uker til deg')).toBeInTheDocument();
