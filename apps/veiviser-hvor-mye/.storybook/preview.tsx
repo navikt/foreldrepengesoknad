@@ -71,11 +71,13 @@ const preview: Preview = {
 
             return (
                 <div style={{ display: 'flex', flexDirection: 'column', minHeight: 'calc(100vh - 50px)' }}>
-                    <div style={{ backgroundColor: '#AC7976' }}>--- Nav Header (Placeholder) ---</div>
+                    {/* Nav-dekoratøren rendrar reelle header/footer-landemerke i produksjon; simuler det
+                        same her slik at axe-testane ikkje slår ut på mangel som ikkje finst i drift. */}
+                    <header style={{ backgroundColor: '#AC7976' }}>--- Nav Header (Placeholder) ---</header>
                     <div id="app">
                         <Story />
                     </div>
-                    <div style={{ backgroundColor: '#AC7976' }}>--- Nav Footer (Placeholder) ---</div>
+                    <footer style={{ backgroundColor: '#AC7976' }}>--- Nav Footer (Placeholder) ---</footer>
                 </div>
             );
         },
