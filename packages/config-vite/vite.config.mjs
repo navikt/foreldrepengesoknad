@@ -42,6 +42,14 @@ const createConfig = (setupFileDirName) => {
     const args = process.argv.join(' ');
     // Kjører browser-mode kun hvis --project=browser er satt. Dette for å unngå at både jsdom og browser-mode kjører i editorer, som ikke filtrerer på prosjekt.
     const enableBrowser = /--project(?:=|\s+)browser\b/.test(args);
+    const browserModeExclusions = process.cwd().endsWith('/apps/planlegger')
+        ? [
+              '**/ArbeidssituasjonSteg.test.tsx',
+              '**/FordelingSteg.test.tsx',
+              '**/HvorLangPeriodeSteg.test.tsx',
+              '**/PlanenDeresSteg_Fødsel.test.tsx',
+          ]
+        : [];
 
     return defineConfig({
         plugins: [
@@ -87,6 +95,7 @@ const createConfig = (setupFileDirName) => {
                         testTimeout: 30000,
                         exclude: [
                             '**/intl.test.ts',
+                            ...browserModeExclusions,
                             '**/node_modules/**',
                             '**/dist/**',
                             '**/.{idea,git,cache,output,temp}/**',
