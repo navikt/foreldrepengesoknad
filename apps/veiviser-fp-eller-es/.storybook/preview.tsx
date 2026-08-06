@@ -79,11 +79,15 @@ const preview: Preview = {
                 <div style={{ display: 'flex', flexDirection: 'column', minHeight: 'calc(100vh - 50px)' }}>
                     {/* Nav-dekoratøren rendrar reelle header/footer-landemerke i produksjon; simuler det
                         same her slik at axe-testane ikkje slår ut på mangel som ikkje finst i drift. */}
-                    <header style={{ backgroundColor: '#AC7976' }}>--- Nav Header (Placeholder) ---</header>
+                    <header style={{ backgroundColor: '#AC7976', color: '#000000' }}>
+                        --- Nav Header (Placeholder) ---
+                    </header>
                     <div id="app">
                         <Story />
                     </div>
-                    <footer style={{ backgroundColor: '#AC7976' }}>--- Nav Footer (Placeholder) ---</footer>
+                    <footer style={{ backgroundColor: '#AC7976', color: '#000000' }}>
+                        --- Nav Footer (Placeholder) ---
+                    </footer>
                 </div>
             );
         },
