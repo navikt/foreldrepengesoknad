@@ -3,6 +3,8 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/PlanleggerDataContext';
 
+import { formatCurrencyWithKr } from '@navikt/fp-utils';
+
 import * as stories from './HvorMyeSteg.stories';
 
 const { FlereForsørgere, AleneforsørgerMor } = composeStories(stories);
@@ -41,24 +43,29 @@ describe('<HvorMyeSteg>', () => {
         const morLønn = await screen.findByLabelText('Hva tjener du ca. i måneden? (valgfritt)');
         await userEvent.type(morLønn, '4000');
 
-        const satser = stories.AleneforsørgerMor.args!.satser;
+        const satser = stories.AleneforsørgerMor.args.satser;
         const minÅrslønn = Math.round(satser.grunnbeløp[0]!.verdi / 2);
-        const minÅrslønnFormatted = new Intl.NumberFormat('nb-NO', {
-            style: 'currency',
-            currency: 'NOK',
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0,
-        }).format(minÅrslønn);
+        const minÅrslønnFormatted = formatCurrencyWithKr(minÅrslønn);
+        const normaliserWhitespace = (tekst: string) => tekst.replace(/\s+/g, ' ');
 
         expect(
             await screen.findByText(
-                (content) =>
-                    content.includes(`Med årslønn under ${minÅrslønnFormatted}`) &&
-                    content.includes('har du ikke rett til foreldrepenger'),
+                (content) => {
+                    const normalisertContent = normaliserWhitespace(content);
+                    return (
+                        normalisertContent.includes(
+                            normaliserWhitespace(`Med årslønn under ${minÅrslønnFormatted}`),
+                        ) && normalisertContent.includes('har du ikke rett til foreldrepenger')
+                    );
+                },
             ),
         ).toBeInTheDocument();
         expect(screen.getByText(/48\s?000\s?kr i året/)).toBeInTheDocument();
-        expect(screen.getByText((content) => content.includes(`${minÅrslønnFormatted} i året`))).toBeInTheDocument();
+        expect(
+            screen.getByText((content) =>
+                normaliserWhitespace(content).includes(normaliserWhitespace(`${minÅrslønnFormatted} i året`)),
+            ),
+        ).toBeInTheDocument();
     });
 
     it('skal ikke vise infoboks om manglende rett når årslønn er over 1/2 G', async () => {

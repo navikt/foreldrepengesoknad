@@ -145,6 +145,9 @@ catalogs:
 overrides:
   '@opentelemetry/core@<2.8.0': ^2.8.0
 
+patchedDependencies:
+  storybook@10.5.5: f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde
+
 importers:
 
   .:
@@ -170,7 +173,7 @@ importers:
         version: 2.15.0(@types/node@26.1.2)(typescript@6.0.3)
       msw-storybook-addon:
         specifier: 3.0.0
-        version: 3.0.0(msw@2.15.0(@types/node@26.1.2)(typescript@6.0.3))(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
+        version: 3.0.0(msw@2.15.0(@types/node@26.1.2)(typescript@6.0.3))(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
       prettier:
         specifier: 3.9.6
         version: 3.9.6
@@ -270,7 +273,7 @@ importers:
         version: link:../../packages/utils-test
       '@storybook/react-vite':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/dom':
         specifier: 'catalog:'
         version: 10.4.1
@@ -312,7 +315,7 @@ importers:
         version: 1.3.2
       storybook:
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+        version: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -424,7 +427,7 @@ importers:
         version: link:../../packages/utils-test
       '@storybook/react-vite':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/dom':
         specifier: 'catalog:'
         version: 10.4.1
@@ -478,7 +481,7 @@ importers:
         version: 1.3.2
       storybook:
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+        version: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -611,7 +614,7 @@ importers:
         version: link:../../packages/utils-test
       '@storybook/react-vite':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/dom':
         specifier: 'catalog:'
         version: 10.4.1
@@ -659,7 +662,7 @@ importers:
         version: 1.3.2
       storybook:
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+        version: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -768,7 +771,7 @@ importers:
         version: link:../../packages/utils-test
       '@storybook/react-vite':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/dom':
         specifier: 'catalog:'
         version: 10.4.1
@@ -813,7 +816,7 @@ importers:
         version: 1.3.2
       storybook:
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+        version: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -937,7 +940,7 @@ importers:
         version: link:../../packages/utils-test
       '@storybook/react-vite':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/dom':
         specifier: 'catalog:'
         version: 10.4.1
@@ -982,7 +985,7 @@ importers:
         version: 1.3.2
       storybook:
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+        version: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -1076,7 +1079,7 @@ importers:
         version: link:../../packages/utils-test
       '@storybook/react-vite':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/dom':
         specifier: 'catalog:'
         version: 10.4.1
@@ -1118,7 +1121,7 @@ importers:
         version: 1.3.2
       storybook:
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+        version: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -1218,7 +1221,7 @@ importers:
         version: link:../../packages/utils-test
       '@storybook/react-vite':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/dom':
         specifier: 'catalog:'
         version: 10.4.1
@@ -1263,7 +1266,7 @@ importers:
         version: 1.3.2
       storybook:
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+        version: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -1378,7 +1381,7 @@ importers:
         version: 1.0.1(eslint@10.8.0(jiti@2.7.0))
       eslint-plugin-storybook:
         specifier: 10.5.5
-        version: 10.5.5(eslint@10.8.0(jiti@2.7.0))(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)
+        version: 10.5.5(eslint@10.8.0(jiti@2.7.0))(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)
       globals:
         specifier: 17.8.0
         version: 17.8.0
@@ -1488,7 +1491,7 @@ importers:
         version: link:../utils-test
       '@storybook/react-vite':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/jest-dom':
         specifier: 'catalog:'
         version: 7.0.0(@testing-library/dom@10.4.1)
@@ -1509,7 +1512,7 @@ importers:
         version: 30.0.1(@noble/hashes@1.8.0)
       storybook:
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+        version: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1573,10 +1576,10 @@ importers:
         version: link:../utils-test
       '@storybook/addon-links':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
+        version: 10.5.5(@types/react@19.2.18)(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
       '@storybook/react-vite':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/jest-dom':
         specifier: 'catalog:'
         version: 7.0.0(@testing-library/dom@10.4.1)
@@ -1600,10 +1603,10 @@ importers:
         version: 30.0.1(@noble/hashes@1.8.0)
       storybook:
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+        version: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.1.19(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
+        version: 10.2.1(react-intl@10.1.19(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -1771,10 +1774,10 @@ importers:
         version: link:../utils-test
       '@storybook/addon-links':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
+        version: 10.5.5(@types/react@19.2.18)(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
       '@storybook/react-vite':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/jest-dom':
         specifier: 'catalog:'
         version: 7.0.0(@testing-library/dom@10.4.1)
@@ -1795,10 +1798,10 @@ importers:
         version: 30.0.1(@noble/hashes@1.8.0)
       storybook:
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+        version: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.1.19(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
+        version: 10.2.1(react-intl@10.1.19(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -1874,10 +1877,10 @@ importers:
         version: link:../utils-test
       '@storybook/addon-links':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
+        version: 10.5.5(@types/react@19.2.18)(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
       '@storybook/react-vite':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/jest-dom':
         specifier: 'catalog:'
         version: 7.0.0(@testing-library/dom@10.4.1)
@@ -1898,10 +1901,10 @@ importers:
         version: 30.0.1(@noble/hashes@1.8.0)
       storybook:
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+        version: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.1.19(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
+        version: 10.2.1(react-intl@10.1.19(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -1971,10 +1974,10 @@ importers:
         version: link:../utils-test
       '@storybook/addon-links':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
+        version: 10.5.5(@types/react@19.2.18)(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
       '@storybook/react-vite':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/jest-dom':
         specifier: 'catalog:'
         version: 7.0.0(@testing-library/dom@10.4.1)
@@ -1995,10 +1998,10 @@ importers:
         version: 30.0.1(@noble/hashes@1.8.0)
       storybook:
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+        version: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.1.19(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
+        version: 10.2.1(react-intl@10.1.19(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -2056,10 +2059,10 @@ importers:
         version: link:../utils-test
       '@storybook/addon-links':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
+        version: 10.5.5(@types/react@19.2.18)(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
       '@storybook/react-vite':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/jest-dom':
         specifier: 'catalog:'
         version: 7.0.0(@testing-library/dom@10.4.1)
@@ -2077,10 +2080,10 @@ importers:
         version: 30.0.1(@noble/hashes@1.8.0)
       storybook:
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+        version: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.1.19(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
+        version: 10.2.1(react-intl@10.1.19(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -2147,10 +2150,10 @@ importers:
         version: link:../utils-test
       '@storybook/addon-links':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
+        version: 10.5.5(@types/react@19.2.18)(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
       '@storybook/react-vite':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/jest-dom':
         specifier: 'catalog:'
         version: 7.0.0(@testing-library/dom@10.4.1)
@@ -2171,10 +2174,10 @@ importers:
         version: 30.0.1(@noble/hashes@1.8.0)
       storybook:
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+        version: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.1.19(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
+        version: 10.2.1(react-intl@10.1.19(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -2250,10 +2253,10 @@ importers:
         version: link:../utils-test
       '@storybook/addon-links':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
+        version: 10.5.5(@types/react@19.2.18)(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
       '@storybook/react-vite':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/jest-dom':
         specifier: 'catalog:'
         version: 7.0.0(@testing-library/dom@10.4.1)
@@ -2274,10 +2277,10 @@ importers:
         version: 30.0.1(@noble/hashes@1.8.0)
       storybook:
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+        version: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.1.19(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
+        version: 10.2.1(react-intl@10.1.19(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -2369,10 +2372,10 @@ importers:
         version: link:../utils-test
       '@storybook/addon-links':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
+        version: 10.5.5(@types/react@19.2.18)(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
       '@storybook/react-vite':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/jest-dom':
         specifier: 'catalog:'
         version: 7.0.0(@testing-library/dom@10.4.1)
@@ -2393,10 +2396,10 @@ importers:
         version: 30.0.1(@noble/hashes@1.8.0)
       storybook:
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+        version: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.1.19(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
+        version: 10.2.1(react-intl@10.1.19(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -2506,7 +2509,7 @@ importers:
         version: link:../config-typescript
       '@storybook/react-vite':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/jest-dom':
         specifier: 'catalog:'
         version: 7.0.0(@testing-library/dom@10.4.1)
@@ -2530,7 +2533,7 @@ importers:
         version: 3.0.5
       storybook:
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+        version: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
       vite:
         specifier: 'catalog:'
         version: 8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
@@ -2609,10 +2612,10 @@ importers:
         version: link:../utils-test
       '@storybook/addon-links':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
+        version: 10.5.5(@types/react@19.2.18)(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
       '@storybook/react-vite':
         specifier: 'catalog:'
-        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@testing-library/jest-dom':
         specifier: 'catalog:'
         version: 7.0.0(@testing-library/dom@10.4.1)
@@ -2636,10 +2639,10 @@ importers:
         version: 3.0.5
       storybook:
         specifier: 'catalog:'
-        version: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+        version: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.1.19(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
+        version: 10.2.1(react-intl@10.1.19(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -9102,18 +9105,18 @@ snapshots:
 
   '@standard-schema/spec@1.1.0': {}
 
-  '@storybook/addon-links@10.5.5(@types/react@19.2.18)(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))':
+  '@storybook/addon-links@10.5.5(@types/react@19.2.18)(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))':
     dependencies:
       '@storybook/global': 5.0.0
-      storybook: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+      storybook: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
     optionalDependencies:
       '@types/react': 19.2.18
       react: 19.2.8
 
-  '@storybook/builder-vite@10.5.5(esbuild@0.28.1)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))':
+  '@storybook/builder-vite@10.5.5(esbuild@0.28.1)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))':
     dependencies:
-      '@storybook/csf-plugin': 10.5.5(esbuild@0.28.1)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
-      storybook: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+      '@storybook/csf-plugin': 10.5.5(esbuild@0.28.1)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+      storybook: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
       ts-dedent: 2.3.0
       vite: 8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
     transitivePeerDependencies:
@@ -9121,9 +9124,9 @@ snapshots:
       - rollup
       - webpack
 
-  '@storybook/csf-plugin@10.5.5(esbuild@0.28.1)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))':
+  '@storybook/csf-plugin@10.5.5(esbuild@0.28.1)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))':
     dependencies:
-      storybook: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+      storybook: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
       unplugin: 2.3.11
     optionalDependencies:
       esbuild: 0.28.1
@@ -9135,28 +9138,28 @@ snapshots:
     dependencies:
       react: 19.2.8
 
-  '@storybook/react-dom-shim@10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))':
+  '@storybook/react-dom-shim@10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))':
     dependencies:
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
-      storybook: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+      storybook: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
     optionalDependencies:
       '@types/react': 19.2.18
       '@types/react-dom': 19.2.4(@types/react@19.2.18)
 
-  '@storybook/react-vite@10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))':
+  '@storybook/react-vite@10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))':
     dependencies:
       '@joshwooding/vite-plugin-react-docgen-typescript': 0.7.0(typescript@6.0.3)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       '@rollup/pluginutils': 5.4.0
-      '@storybook/builder-vite': 10.5.5(esbuild@0.28.1)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
-      '@storybook/react': 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)
+      '@storybook/builder-vite': 10.5.5(esbuild@0.28.1)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+      '@storybook/react': 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)
       empathic: 2.0.1
       magic-string: 0.30.21
       react: 19.2.8
       react-docgen: 8.0.3
       react-dom: 19.2.8(react@19.2.8)
       resolve: 1.22.12
-      storybook: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+      storybook: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
       tsconfig-paths: 4.2.0
       vite: 8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
     optionalDependencies:
@@ -9169,15 +9172,15 @@ snapshots:
       - supports-color
       - webpack
 
-  '@storybook/react@10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)':
+  '@storybook/react@10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)':
     dependencies:
       '@storybook/global': 5.0.0
-      '@storybook/react-dom-shim': 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
+      '@storybook/react-dom-shim': 10.5.5(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
       react: 19.2.8
       react-docgen: 8.0.3
       react-docgen-typescript: 2.4.0(typescript@6.0.3)
       react-dom: 19.2.8(react@19.2.8)
-      storybook: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+      storybook: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
     optionalDependencies:
       '@types/react': 19.2.18
       '@types/react-dom': 19.2.4(@types/react@19.2.18)
@@ -10527,12 +10530,12 @@ snapshots:
       eslint: 10.8.0(jiti@2.7.0)
       globals: 16.5.0
 
-  eslint-plugin-storybook@10.5.5(eslint@10.8.0(jiti@2.7.0))(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3):
+  eslint-plugin-storybook@10.5.5(eslint@10.8.0(jiti@2.7.0))(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3):
     dependencies:
       '@typescript-eslint/types': 8.65.0
       '@typescript-eslint/utils': 8.65.0(eslint@10.8.0(jiti@2.7.0))(typescript@6.0.3)
       eslint: 10.8.0(jiti@2.7.0)
-      storybook: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+      storybook: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -11413,10 +11416,10 @@ snapshots:
 
   ms@2.1.3: {}
 
-  msw-storybook-addon@3.0.0(msw@2.15.0(@types/node@26.1.2)(typescript@6.0.3))(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)):
+  msw-storybook-addon@3.0.0(msw@2.15.0(@types/node@26.1.2)(typescript@6.0.3))(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)):
     dependencies:
       msw: 2.15.0(@types/node@26.1.2)(typescript@6.0.3)
-      storybook: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+      storybook: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
 
   msw@2.15.0(@types/node@26.1.2)(typescript@6.0.3):
     dependencies:
@@ -12072,22 +12075,22 @@ snapshots:
       es-errors: 1.3.0
       internal-slot: 1.1.0
 
-  storybook-i18n@10.1.1(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)):
+  storybook-i18n@10.1.1(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)):
     dependencies:
       '@storybook/icons': 2.1.0(react@19.2.8)
-      storybook: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+      storybook: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
     transitivePeerDependencies:
       - react
 
-  storybook-react-intl@10.2.1(react-intl@10.1.19(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)):
+  storybook-react-intl@10.2.1(react-intl@10.1.19(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)):
     dependencies:
       react-intl: 10.1.19(@types/react@19.2.18)(react@19.2.8)
-      storybook: 10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
-      storybook-i18n: 10.1.1(react@19.2.8)(storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
+      storybook: 10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8)
+      storybook-i18n: 10.1.1(react@19.2.8)(storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))
     transitivePeerDependencies:
       - react
 
-  storybook@10.5.5(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8):
+  storybook@10.5.5(patch_hash=f429c4fdff05cc5edb0ceb4ef127b9a1779ab524870c80f6eaf4e68d8cfa4dde)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8):
     dependencies:
       '@storybook/global': 5.0.0
       '@storybook/icons': 2.1.0(react@19.2.8)

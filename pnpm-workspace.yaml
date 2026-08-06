@@ -66,3 +66,8 @@ allowBuilds:
 
 overrides:
   '@opentelemetry/core@<2.8.0': ^2.8.0
+
+patchedDependencies:
+  # Upstream fix: https://github.com/storybookjs/storybook/commit/237e189ec490f241ef6541ab4e14ae8d4e832f44
+  # Fjern patchen når Storybook 10.6 eller nyare stabil versjon blir teken i bruk.
+  storybook@10.5.5: patches/storybook@10.5.5.patch
