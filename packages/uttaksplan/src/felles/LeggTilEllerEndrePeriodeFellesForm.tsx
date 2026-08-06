@@ -921,7 +921,7 @@ export const mapFraFormValuesTilUttakPeriode = (
                     : undefined,
             samtidigUttak:
                 values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentMor) : undefined,
-            overføringÅrsak: values.overføringsårsak,
+            overføringÅrsak: erOverføringMor ? values.overføringsårsak : undefined,
             flerbarnsdager: values.ønskerFlerbarnsdager ?? false,
         });
     }
@@ -948,7 +948,7 @@ export const mapFraFormValuesTilUttakPeriode = (
                     : undefined,
             samtidigUttak:
                 values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentFarMedmor) : undefined,
-            overføringÅrsak: values.overføringsårsak,
+            overføringÅrsak: erOverføringFarMedmor ? values.overføringsårsak : undefined,
             flerbarnsdager: values.ønskerFlerbarnsdager ?? false,
         });
     }
