@@ -11,8 +11,8 @@ catalog:
   '@navikt/ds-tailwind': 8.16.1
   '@navikt/nav-dekoratoren-moduler': 4.2.2
   '@sentry/vite-plugin': 5.4.0
-  '@storybook/addon-links': 10.5.5
-  '@storybook/react-vite': 10.5.5
+  '@storybook/addon-links': 10.4.6
+  '@storybook/react-vite': 10.4.6
   '@tanstack/react-query': 5.101.4
   '@tanstack/react-query-devtools': 5.101.4
   '@testing-library/dom': 10.4.1
@@ -43,7 +43,7 @@ catalog:
   react-hook-form: 7.84.0
   react-intl: 10.1.19
   react-router-dom: 7.18.2
-  storybook: 10.5.5
+  storybook: 10.4.6
   storybook-react-intl: 10.2.1
   tailwindcss: 4.3.3
   ts-node: 10.9.2
@@ -66,8 +66,3 @@ allowBuilds:
 
 overrides:
   '@opentelemetry/core@<2.8.0': ^2.8.0
-
-patchedDependencies:
-  # Upstream fix: https://github.com/storybookjs/storybook/commit/237e189ec490f241ef6541ab4e14ae8d4e832f44
-  # Fjern patchen når Storybook 10.6 eller nyare stabil versjon blir teken i bruk.
-  storybook@10.5.5: patches/storybook@10.5.5.patch
