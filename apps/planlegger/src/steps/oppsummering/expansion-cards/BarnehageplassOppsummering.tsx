@@ -36,7 +36,7 @@ export const BarnehageplassOppsummering = ({ hvemPlanlegger, barnet }: Props) =>
                         <IconCircleWrapper size="medium" color="lightBlue">
                             <TeddyBearIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                         </IconCircleWrapper>
-                        <ExpansionCard.Title size="small">
+                        <ExpansionCard.Title size="small" as="h2">
                             <FormattedMessage id="BarnehageplassOppsummering.Tittel" />
                         </ExpansionCard.Title>
                     </HStack>

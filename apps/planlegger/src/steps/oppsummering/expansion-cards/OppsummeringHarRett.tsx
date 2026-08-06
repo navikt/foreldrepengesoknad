@@ -107,7 +107,7 @@ export const OppsummeringHarRett = ({
                         <IconCircleWrapper size="medium" color="lightBlue">
                             <CalendarIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                         </IconCircleWrapper>
-                        <ExpansionCard.Title size="small">
+                        <ExpansionCard.Title size="small" as="h2">
                             <FormattedMessage
                                 id="OppsummeringHarRett.Tittel"
                                 values={{ erAlenesøker: erAlenesøker(hvemPlanlegger) }}

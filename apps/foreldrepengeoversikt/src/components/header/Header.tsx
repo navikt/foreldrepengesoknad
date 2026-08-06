@@ -77,12 +77,14 @@ function BabyIkon({ ytelse }: { ytelse: Ytelse | undefined }) {
         <>
             <Show above="md">
                 <div className="bg-ax-brand-blue-400 h-[60px] w-[60px] rounded-full pt-2 pl-2">
-                    {createElement(icon, { fontSize: '44', className: 'text-ax-brand-blue-700' })}
+                    {/* Reint dekorativt – overskrifta ved sida av gir same informasjon. */}
+                    {createElement(icon, { fontSize: '44', className: 'text-ax-brand-blue-700', 'aria-hidden': true })}
                 </div>
             </Show>
             <Show below="md">
                 <div className="bg-ax-brand-blue-400 h-[38px] w-[38px] rounded-full pt-2 pl-2">
-                    {createElement(icon, { fontSize: '22', className: 'text-ax-brand-blue-700' })}
+                    {/* Reint dekorativt – overskrifta ved sida av gir same informasjon. */}
+                    {createElement(icon, { fontSize: '22', className: 'text-ax-brand-blue-700', 'aria-hidden': true })}
                 </div>
             </Show>
         </>

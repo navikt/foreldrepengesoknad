@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { HttpResponse, http } from 'msw';
+import { HttpResponse, delay, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { saker } from 'storybookData/saker/saker';
 import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo.ts';
@@ -35,14 +35,20 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.get(API_URLS.minidialog, () =>
-                HttpResponse.json([
+            // I produksjon er saker-spørringa alt henta (og dermed alltid ferdig) før
+            // MinidialogPage nokon gong blir rendra, sidan Foreldrepengeoversikt.tsx
+            // ventar på henne på app-rot-nivå. Her testar vi derimot sida i isolasjon,
+            // så vi legg på ei lita, deterministisk forsinking på minidialog-kallet for
+            // å spegle den garantien og unngå eit race mellom dei to spørringane.
+            http.get(API_URLS.minidialog, async () => {
+                await delay(20);
+                return HttpResponse.json([
                     {
                         saksnummer: '1',
                         opprettet: '2023-02-09',
                     },
-                ] satisfies TilbakekrevingUttalelseOppgave_fpoversikt[]),
-            ),
+                ] satisfies TilbakekrevingUttalelseOppgave_fpoversikt[]);
+            }),
             http.get(API_URLS.saker, () => HttpResponse.json(saker)),
             http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
             http.post(API_URLS.ettersend, () => new HttpResponse(null, { status: 200 })),

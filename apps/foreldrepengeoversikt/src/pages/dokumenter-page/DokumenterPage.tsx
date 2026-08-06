@@ -120,13 +120,13 @@ const DokumenterPageInner = () => {
                                     {paginatedSortedDokumenter.map((dokument) => {
                                         return (
                                             <Table.Row key={dokument.dokumentId}>
-                                                <Table.DataCell className="max-w-70" scope="row">
+                                                <Table.HeaderCell className="max-w-70" scope="row">
                                                     <DokumentLenke dokument={dokument} />
-                                                </Table.DataCell>
-                                                <Table.DataCell scope="row">
+                                                </Table.HeaderCell>
+                                                <Table.DataCell>
                                                     {formatDateExtended(dokument.mottatt)}
                                                 </Table.DataCell>
-                                                <Table.DataCell scope="row">
+                                                <Table.DataCell>
                                                     <DokumentAvsender dokumentType={dokument.type} />
                                                 </Table.DataCell>
                                             </Table.Row>
@@ -143,7 +143,7 @@ const DokumenterPageInner = () => {
                         </VStack>
                     </div>
                     <Alert variant="info" className="mb-8">
-                        <Heading level="3" size="small">
+                        <Heading level="2" size="small">
                             <FormattedMessage id="dokumenter.savner" />
                         </Heading>
                         <BodyLong>

@@ -7,9 +7,11 @@ import { links } from '@navikt/fp-constants';
 
 export const HvorMyeOgHvaSkjerNåLinkPanel = () => {
     return (
-        <div className="bg-ax-neutral-200 p-4">
+        // Eigen landemerke-region for «andre veivisere»-lenkjer, sidan innhaldet ligg
+        // utanfor sida sitt <main> (VeiviserPage).
+        <Box as="section" aria-labelledby="hvorMyeOgHvaSkjerNåLinkPanelTittel" className="bg-ax-neutral-200 p-4">
             <VStack gap="space-8" className="mx-auto max-w-[560px]">
-                <Heading size="small" level="2">
+                <Heading id="hvorMyeOgHvaSkjerNåLinkPanelTittel" size="small" level="2">
                     <FormattedMessage id="HvorMyeOgHvaSkjerNåLinkPanel.AndreVeivisere" />
                 </Heading>
                 <LinkCard>
@@ -37,6 +39,6 @@ export const HvorMyeOgHvaSkjerNåLinkPanel = () => {
                     </LinkCard.Title>
                 </LinkCard>
             </VStack>
-        </div>
+        </Box>
     );
 };

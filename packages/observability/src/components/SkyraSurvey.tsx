@@ -21,9 +21,11 @@ declare global {
 
 export interface SkyraSurveyProps {
     slug: string;
+    /** Heading-nivå (h1-h6) for tittelen, slik at ho passar inn i den omkringliggande overskriftsstrukturen. */
+    titleAs?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 }
 
-export const SkyraSurvey = ({ slug }: SkyraSurveyProps) => {
+export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
     const intl = useIntl();
     const resolvedTitle = intl.formatMessage({ id: 'SkyraSurvey.Tittel' });
     const surveyKey = `skyra-survey-${slug}-completed`;
@@ -114,7 +116,7 @@ export const SkyraSurvey = ({ slug }: SkyraSurveyProps) => {
             <ExpansionCard.Header>
                 <HStack gap="space-24" align="center" wrap={false}>
                     <TasklistIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
-                    <ExpansionCard.Title size="small">{resolvedTitle}</ExpansionCard.Title>
+                    <ExpansionCard.Title size="small" as={titleAs}>{resolvedTitle}</ExpansionCard.Title>
                 </HStack>
             </ExpansionCard.Header>
             <ExpansionCard.Content>

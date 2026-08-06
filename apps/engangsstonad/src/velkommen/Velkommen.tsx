@@ -68,7 +68,7 @@ export const Velkommen = ({ startSøknad, erVelkommen, mellomlagreOgNaviger }: P
                 </GuidePanel>
                 <ExpansionCard size="medium" aria-label={intl.formatMessage({ id: 'Velkommen.Info.Header' })}>
                     <ExpansionCard.Header>
-                        <ExpansionCard.Title size="small">
+                        <ExpansionCard.Title size="small" as="h2">
                             <FormattedMessage id="Velkommen.Info.Header" />
                         </ExpansionCard.Title>
                     </ExpansionCard.Header>
