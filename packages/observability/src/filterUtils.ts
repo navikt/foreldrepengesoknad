@@ -23,26 +23,25 @@ export interface StackFrame {
 /**
  * Sjekker om stackframes mangler opprinnelse i vår kode.
  *
- * Logikk: Hvis en frame er fra et asset (FARO: `/assets/*.js`) og matcher
- * FEIL_VI_VIL_LUKE_BORT, er det en uønsket asset-frame → return true (filtrer).
- * Hvis framen er fra våre egne assets (ikke i FEIL_VI_VIL_LUKE_BORT) → return false (ikke filtrer).
- * Hvis framen ikke er et asset (altså ikke fra vår bundle) → return true (filtrer).
+ * Logikk: Hvis en frame kommer fra dekoratøren (filnavnet inneholder noe fra
+ * FEIL_VI_VIL_LUKE_BORT, uavhengig av filtype/plassering) → return true (filtrer).
+ * Dette fanger opp alt fra dekoratøren, ikke bare bundlede `/assets/*.js`-chunks
+ * (f.eks. rå kildefiler som `personbruker/nav-dekoratoren/src/helpers/auth.ts`).
+ * Hvis framen er fra vårt eget asset (FARO: `/assets/*.js`) → return false (ikke filtrer).
+ * Hvis framen verken er fra dekoratøren eller vårt eget asset (altså ikke fra vår bundle) → return true (filtrer).
  *
  * Funksjonen returnerer true hvis minst én frame ikke har opprinnelse i vår kode,
- * eller hvis en frame kommer fra en uønsket asset.
+ * eller hvis en frame kommer fra dekoratøren.
  */
 export const harUtenforstaendeKodeOpprinnelse = (frames: StackFrame[]): boolean => {
     return frames.some((frame) => {
-        const assetFrame = frame.filename && /\/assets\/.*\.js$/.test(frame.filename);
-
-        if (assetFrame) {
-            const erUønsketAssetFrame = FEIL_VI_VIL_LUKE_BORT.some((feil) => frame.filename?.includes(feil));
-            if (erUønsketAssetFrame) {
-                return true;
-            }
-            return false;
+        const erDekoratørFrame = FEIL_VI_VIL_LUKE_BORT.some((feil) => frame.filename?.includes(feil));
+        if (erDekoratørFrame) {
+            return true;
         }
-        return true;
+
+        const assetFrame = frame.filename && /\/assets\/.*\.js$/.test(frame.filename);
+        return !assetFrame;
     });
 };
 
