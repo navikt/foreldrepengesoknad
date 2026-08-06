@@ -11,11 +11,14 @@ export const getFørsteUttaksdag2UkerFørFødsel = (
     familiehendelsesdato: string,
     termindato: string | undefined,
 ): string => {
-    const terminEllerFamHendelsesdatoMinusToUker =
+    // Far/medmor skal kunne starte to uker før termin eller to uker før fødsel, avhengig av hva som gir
+    // tidligst dato. Uten dette blir tidligste dato feil dersom barnet er født mer enn to uker før termin,
+    // fordi (rå) fødselsdato da vil være senere enn termindato minus to uker.
+    const familiehendelsesdatoMinusToUker = dayjs(familiehendelsesdato).subtract(ANTALL_DAGER_TO_UKER, 'day');
+    const datoÅRegneFra =
         termindato === undefined
-            ? dayjs(familiehendelsesdato).subtract(ANTALL_DAGER_TO_UKER, 'day')
-            : dayjs(termindato).subtract(ANTALL_DAGER_TO_UKER, 'day');
-    const datoÅRegneFra = dayjs.min(terminEllerFamHendelsesdatoMinusToUker, dayjs(familiehendelsesdato));
+            ? familiehendelsesdatoMinusToUker
+            : dayjs.min(dayjs(termindato).subtract(ANTALL_DAGER_TO_UKER, 'day'), familiehendelsesdatoMinusToUker);
     return Uttaksdagen.denneEllerNeste(datoÅRegneFra.format(ISO_DATE_FORMAT)).getDato();
 };
 
