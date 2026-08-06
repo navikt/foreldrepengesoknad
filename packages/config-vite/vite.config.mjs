@@ -81,9 +81,6 @@ const createConfig = (setupFileDirName) => {
                     extends: true,
                     test: {
                         name: 'browser',
-                        // Storybook instrumenterer HTMLElement.focus. Éin delt realm hindrar at
-                        // den instrumenterte metoden blir brukt på element frå eit anna iframe.
-                        isolate: false,
                         // Headless chromium i CI er tregare enn jsdom. Gje litt høgare
                         // timeout slik at userEvent-flytar (opplasting, skriving av
                         // datoar, fleirstegs-flytar) rekk å fullføre.
