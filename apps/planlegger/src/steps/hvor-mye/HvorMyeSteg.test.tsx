@@ -3,6 +3,8 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/PlanleggerDataContext';
 
+import { formatCurrencyWithKr } from '@navikt/fp-utils';
+
 import * as stories from './HvorMyeSteg.stories';
 
 const { FlereForsørgere, AleneforsørgerMor } = composeStories(stories);
@@ -33,5 +35,47 @@ describe('<HvorMyeSteg>', () => {
         expect(await screen.findAllByText('Hvor mye')).toHaveLength(2);
         expect(screen.getByText('Hva tjener du ca. i måneden? (valgfritt)')).toBeInTheDocument();
         expect(screen.queryByText('Hva tjener Espen ca. i måneden? (valgfritt)')).not.toBeInTheDocument();
+    });
+
+    it('skal vise infoboks om at man ikke har rett til foreldrepenger når årslønn er under 1/2 G', async () => {
+        render(<AleneforsørgerMor />);
+
+        const morLønn = await screen.findByLabelText('Hva tjener du ca. i måneden? (valgfritt)');
+        await userEvent.type(morLønn, '4000');
+
+        const satser = stories.AleneforsørgerMor.args.satser;
+        const minÅrslønn = Math.round(satser.grunnbeløp[0]!.verdi / 2);
+        const minÅrslønnFormatted = formatCurrencyWithKr(minÅrslønn);
+        const normaliserWhitespace = (tekst: string) => tekst.replace(/\s+/g, ' ');
+
+        expect(
+            await screen.findByText(
+                (content) => {
+                    const normalisertContent = normaliserWhitespace(content);
+                    return (
+                        normalisertContent.includes(
+                            normaliserWhitespace(`Med årslønn under ${minÅrslønnFormatted}`),
+                        ) && normalisertContent.includes('har du ikke rett til foreldrepenger')
+                    );
+                },
+            ),
+        ).toBeInTheDocument();
+        expect(screen.getByText(/48\s?000\s?kr i året/)).toBeInTheDocument();
+        expect(
+            screen.getByText((content) =>
+                normaliserWhitespace(content).includes(normaliserWhitespace(`${minÅrslønnFormatted} i året`)),
+            ),
+        ).toBeInTheDocument();
+    });
+
+    it('skal ikke vise infoboks om manglende rett når årslønn er over 1/2 G', async () => {
+        render(<AleneforsørgerMor />);
+
+        const morLønn = await screen.findByLabelText('Hva tjener du ca. i måneden? (valgfritt)');
+        await userEvent.type(morLønn, '30000');
+
+        expect(
+            screen.queryByText('Med årslønn under 68 275 kr har du ikke rett til foreldrepenger'),
+        ).not.toBeInTheDocument();
     });
 });

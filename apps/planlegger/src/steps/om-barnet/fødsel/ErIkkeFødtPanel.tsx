@@ -142,24 +142,24 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetPlanleggerIkkeOppgi
                             <BodyShort>
                                 <FormattedMessage id="Fødsel.ForeldrepengerInfoTekst.KanSøke" />
                             </BodyShort>
-                            <BodyShort>
-                                {erFedre || erFar ? (
-                                    <VStack gap="space-8">
+                            {erFedre || erFar ? (
+                                <VStack gap="space-8">
+                                    <BodyShort>
+                                        <FormattedMessage
+                                            id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
+                                            values={{
+                                                erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
+                                            }}
+                                        />
+                                    </BodyShort>
+                                    {erFedre && (
                                         <BodyShort>
-                                            <FormattedMessage
-                                                id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
-                                                values={{
-                                                    erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
-                                                }}
-                                            />
+                                            <FormattedMessage id="Fødsel.ForeldrepengerInfoTekst.StebarnsadopterendeFar" />
                                         </BodyShort>
-                                        {erFedre && (
-                                            <BodyShort>
-                                                <FormattedMessage id="Fødsel.ForeldrepengerInfoTekst.StebarnsadopterendeFar" />
-                                            </BodyShort>
-                                        )}
-                                    </VStack>
-                                ) : (
+                                    )}
+                                </VStack>
+                            ) : (
+                                <BodyShort>
                                     <FormattedMessage
                                         id="Fødsel.ForeldrepengerInfoTekst.SøkeFireUkerFør"
                                         values={{
@@ -167,8 +167,8 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetPlanleggerIkkeOppgi
                                             erAlenesøker,
                                         }}
                                     />
-                                )}
-                            </BodyShort>
+                                </BodyShort>
+                            )}
                             {!erFedre && (
                                 <>
                                     {!erAlenesøker && (
