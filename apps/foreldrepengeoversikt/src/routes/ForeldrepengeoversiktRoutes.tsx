@@ -82,13 +82,13 @@ function RedirectTilSakHvisDetKunFinnesEn({ saker }: { readonly saker: SakOppsla
 
 export function PageRouteLayout({ header, children }: { readonly header: ReactNode; readonly children: ReactNode }) {
     return (
-        // Éin samla main-landemerke for header + innhald på sida. Det globale
-        // banner-/footer-landemerket kjem frå Nav-dekoratøren rundt heile appen.
-        <main>
+        // NB: index.html har allereie eit <main id="app">-element som pakkar inn heile
+        // appen. Ikkje legg til eit nytt <main> her – det ville gitt nøsta main-landemerke.
+        <>
             {header}
             <LayoutWrapper className="ax-md:pb-28 pr-4 pb-4 pl-4">{children}</LayoutWrapper>
             {/*Viktig at Snarveier ligger her slik at den har tilgang til saksnummer fra Route da snarveien er dynamiske*/}
             <Snarveier />
-        </main>
+        </>
     );
 }

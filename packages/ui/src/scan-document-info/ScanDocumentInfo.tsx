@@ -5,7 +5,7 @@ import { BodyLong, Box, ExpansionCard, Link, List, VStack } from '@navikt/ds-rea
 import { links } from '@navikt/fp-constants';
 
 type Props = {
-    /** Overstyststyrer heading-nivå (h1-h6) for tittelen, slik at ho passar inn i den omkringliggande overskriftsstrukturen. */
+    /** Overstyrer heading-nivå (h1-h6) for tittelen, slik at ho passar inn i den omkringliggande overskriftsstrukturen. */
     headingAs?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 };
 

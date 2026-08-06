@@ -86,7 +86,17 @@ const preview: Preview = {
         // packages/utils-test/src/a11y/uuTest.ts for den faktiske a11y-testinga i CI.
         a11y: { test: 'todo' },
     },
-    decorators: [withIntlProvider, withThemeDecorator],
+    decorators: [
+        withIntlProvider,
+        withThemeDecorator,
+        (Story) => (
+            // index.html har eit <main id="app">-element som pakkar inn heile appen i drift.
+            // Simuler det same her slik at axe-testane ikkje slår ut på ei mangel som ikkje finst i drift.
+            <main id="app">
+                <Story />
+            </main>
+        ),
+    ],
     loaders: [
         mswLoader(async () => {
             // jsdom-testene har ingen service worker; bruk msw/node-server der.
