@@ -185,11 +185,9 @@ type KontekstuellAlertKontekst = {
     erEndringssøknad: boolean;
 };
 
-const AKTIVITETSKRAV_SOM_KREVER_DOKUMENTASJON: readonly MorsAktivitet[] = [
-    'ARBEID',
-    'UTDANNING',
-    'ARBEID_OG_UTDANNING',
-];
+const AKTIVITETSKRAV_SOM_KREVER_DOKUMENTASJON: ReadonlySet<MorsAktivitet> = new Set(
+    ['ARBEID', 'UTDANNING', 'ARBEID_OG_UTDANNING'] satisfies MorsAktivitet[],
+);
 
 const KONTEKSTUELL_GRADERING_ALERT = lagAlertregel<KontekstuellAlertKontekst>({
     id: 'kontekstuelleAlerts.graderingDagerReduseres',
@@ -234,7 +232,7 @@ const AKTIVITETSKRAV_DOKUMENTASJON_ALERT = lagAlertregel<KontekstuellAlertKontek
     skalVises: (ctx) =>
         !ctx.erEndringssøknad &&
         ctx.morsAktivitet !== undefined &&
-        AKTIVITETSKRAV_SOM_KREVER_DOKUMENTASJON.includes(ctx.morsAktivitet),
+        AKTIVITETSKRAV_SOM_KREVER_DOKUMENTASJON.has(ctx.morsAktivitet),
 });
 
 export const KONTEKSTUELLE_ALERTS: ReadonlyArray<Alertregel<KontekstuellAlertKontekst>> = [
