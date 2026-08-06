@@ -1,6 +1,6 @@
 import { onBreadcrumbClick, setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler';
 import { useIntl } from 'react-intl';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router';
 
 import { assertUnreachable } from '@navikt/fp-validation';
 

@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 import * as stories from './HvorLangPeriodeSteg.stories';
 
@@ -16,8 +16,8 @@ const {
     FlereForsørgereEttBarnBeggeHarRettAdopsjon,
 } = composeStories(stories);
 
-vi.mock('react-router-dom', async () => {
-    const actual = await vi.importActual('react-router-dom');
+vi.mock('react-router', async () => {
+    const actual = await vi.importActual('react-router');
     return {
         ...actual,
         useNavigate: vi.fn(),

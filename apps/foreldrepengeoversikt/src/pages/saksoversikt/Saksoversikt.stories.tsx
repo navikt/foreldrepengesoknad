@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router';
 import { annenPartVedtak } from 'storybookData/annenPartVedtak/annenPartVedtak';
 import { dokumenter } from 'storybookData/dokumenter/dokumenter';
 import { manglendeVedlegg } from 'storybookData/manglendeVedlegg/manglendeVedlegg';

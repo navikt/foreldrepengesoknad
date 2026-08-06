@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { Action, EsDataContext } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import { ComponentProps } from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 
 import { Velkommen } from './Velkommen';

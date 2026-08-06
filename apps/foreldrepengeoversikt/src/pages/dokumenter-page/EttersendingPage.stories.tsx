@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router';
 import { dokumenter } from 'storybookData/dokumenter/dokumenter';
 
 import { withQueryClient } from '@navikt/fp-utils-test';

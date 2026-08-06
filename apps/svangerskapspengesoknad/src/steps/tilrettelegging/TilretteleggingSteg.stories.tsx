@@ -3,7 +3,7 @@ import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext'
 import { SøknadRoute, TILRETTELEGGING_PARAM, addTilretteleggingIdToRoute } from 'appData/routes';
 import dayjs from 'dayjs';
 import { ComponentProps } from 'react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router';
 import { action } from 'storybook/actions';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';

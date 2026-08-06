@@ -222,7 +222,6 @@ const HeaderForDesktop = () => {
                         <FormattedMessage id="RedigeringPanel.EndreTil" />
                     </Heading>
                 </HStack>
-                {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
                 <div onClick={(e) => e.stopPropagation()}>
                     <Chips size="small">
                         <Chips.Removable onDelete={() => setValgtePerioder([])}>
@@ -279,7 +278,6 @@ const HeaderForMobil = ({
                             <FormattedMessage id="RedigeringPanel.EndreTil" />
                         </Heading>
                         {erMinimert && (
-                            // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
                             <div onClick={(e) => e.stopPropagation()}>
                                 <Chips size="small">
                                     <Chips.Removable onDelete={() => setValgtePerioder([])}>
@@ -300,7 +298,6 @@ const HeaderForMobil = ({
                 </HStack>
 
                 {!erMinimert && (
-                    // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
                     <div onClick={(e) => e.stopPropagation()}>
                         <Chips size="small">
                             <Chips.Removable onDelete={() => setValgtePerioder([])}>

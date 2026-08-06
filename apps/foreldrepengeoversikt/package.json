@@ -48,7 +48,7 @@
         "react": "catalog:",
         "react-dom": "catalog:",
         "react-intl": "catalog:",
-        "react-router-dom": "catalog:"
+        "react-router": "catalog:"
     },
     "devDependencies": {
         "@navikt/fp-config-eslint": "workspace:*",

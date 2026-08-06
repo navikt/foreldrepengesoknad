@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router';
 import { enBortfaltNaturalytelse } from 'storybookData/inntektsmeldinger/enBortfaltNaturalytelse';
 import { flereBortfalteNaturalytelser } from 'storybookData/inntektsmeldinger/flereBortfalteNaturalytelser';
 import { medDelvisRefusjon } from 'storybookData/inntektsmeldinger/medDelvisRefusjon';

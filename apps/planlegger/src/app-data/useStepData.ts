@@ -2,7 +2,7 @@ import { PATH_ORDER, PlanleggerRoutes, REQUIRED_APP_STEPS } from 'appData/routes
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { erFlereSøkere } from 'utils/HvemPlanleggerUtils';

@@ -1,7 +1,7 @@
 import { REQUIRED_APP_STEPS, REQUIRED_APP_STEPS_ENDRINGSSØKNAD, ROUTES_ORDER, SøknadRoutes } from 'appData/routes.ts';
 import { useMemo } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import { skalViseOmsorgsovertakelseDokumentasjon } from 'steps/manglende-vedlegg/dokumentasjon/OmsorgsovertakelseDokumentasjon.tsx';
 import { skalViseTerminbekreftelseDokumentasjon } from 'steps/manglende-vedlegg/dokumentasjon/TerminbekreftelseDokumentasjon.tsx';
 import { AnnenInntektType } from 'types/AndreInntektskilder';

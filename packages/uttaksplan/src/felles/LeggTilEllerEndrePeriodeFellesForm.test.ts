@@ -79,4 +79,42 @@ describe('mapFraFormValuesTilUttakPeriode', () => {
 
         expect(periode?.gradering?.aktivitet).toEqual({ type: 'ANNET' });
     });
+
+    it('nullstiller overføringÅrsak for far/medmor når kontoType endres frå MØDREKVOTE (overføring) til FEDREKVOTE (eigen kvote)', () => {
+        // Reproduserer feilen der ei "overta mødrekvote"-periode blir endra til fedrekvote,
+        // men overføringsårsak heng igjen i form-state og blir feilaktig sendt med vidare.
+        const values = {
+            forelder: 'FAR_MEDMOR',
+            kontoTypeFarMedmor: 'FEDREKVOTE',
+            overføringsårsak: 'SYKDOM_ANNEN_FORELDER',
+        } satisfies LeggTilEllerEndrePeriodeFormFormValues;
+
+        const [periode] = mapFraFormValuesTilUttakPeriode(values, PERIODE, 'FAR_MEDMOR', true);
+
+        expect(periode?.overføringÅrsak).toBeUndefined();
+    });
+
+    it('nullstiller overføringÅrsak for mor når kontoType endres frå FEDREKVOTE (overføring) til MØDREKVOTE (eigen kvote)', () => {
+        const values = {
+            forelder: 'MOR',
+            kontoTypeMor: 'MØDREKVOTE',
+            overføringsårsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
+        } satisfies LeggTilEllerEndrePeriodeFormFormValues;
+
+        const [periode] = mapFraFormValuesTilUttakPeriode(values, PERIODE, 'MOR', true);
+
+        expect(periode?.overføringÅrsak).toBeUndefined();
+    });
+
+    it('beheld overføringÅrsak for far/medmor når kontoType framleis er MØDREKVOTE (reell overføring)', () => {
+        const values = {
+            forelder: 'FAR_MEDMOR',
+            kontoTypeFarMedmor: 'MØDREKVOTE',
+            overføringsårsak: 'SYKDOM_ANNEN_FORELDER',
+        } satisfies LeggTilEllerEndrePeriodeFormFormValues;
+
+        const [periode] = mapFraFormValuesTilUttakPeriode(values, PERIODE, 'FAR_MEDMOR', true);
+
+        expect(periode?.overføringÅrsak).toBe('SYKDOM_ANNEN_FORELDER');
+    });
 });

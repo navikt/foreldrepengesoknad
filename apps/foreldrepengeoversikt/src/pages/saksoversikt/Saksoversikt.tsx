@@ -2,9 +2,9 @@ import { FilesIcon, FolderFileIcon, PencilIcon, WalletIcon } from '@navikt/aksel
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import { lazy, Suspense } from 'react';
+import { Suspense, lazy } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import { Alert, BodyShort, HGrid, HStack, Heading, Skeleton, VStack } from '@navikt/ds-react';
 
@@ -43,7 +43,9 @@ dayjs.extend(isSameOrBefore);
 // DinPlan drar med seg de tunge UI-komponentene i @navikt/fp-uttaksplan (kalender, liste,
 // kvoteoppsummering). Den lastes derfor lazy, siden den kun vises for FORELDREPENGER-saker,
 // slik at brukere med SVANGERSKAPSPENGER- eller ENGANGSSTØNAD-saker ikke trenger disse bytene.
-const DinPlan = lazy(() => import('../../sections/din-plan/DinPlan.tsx').then((module) => ({ default: module.DinPlan })));
+const DinPlan = lazy(() =>
+    import('../../sections/din-plan/DinPlan.tsx').then((module) => ({ default: module.DinPlan })),
+);
 
 interface Props {
     søkerinfo: OversiktPersonopplysningerDto_fpoversikt;

@@ -3,7 +3,7 @@ import { act, renderHook } from '@testing-library/react';
 import { API_URLS } from 'appData/queries';
 import ky, { type KyResponse } from 'ky';
 import { ReactNode } from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { Dokumentasjon } from 'types/Dokumentasjon';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
