@@ -7,7 +7,7 @@ import { Heading, Loader, VStack } from '@navikt/ds-react';
 import { EttersendelseDto } from '@navikt/fp-types';
 import { useDocumentTitle } from '@navikt/fp-utils';
 
-import { minidialogOptions, sendEttersending } from '../../api/queries.ts';
+import { hentSakerOptions, minidialogOptions, sendEttersending } from '../../api/queries.ts';
 import { ContentSection } from '../../components/content-section/ContentSection';
 import { DinSakHeader } from '../../components/header/Header';
 import { MinidialogSkjema } from '../../components/minidialog-skjema/MinidialogSkjema';
@@ -25,6 +25,9 @@ export const MinidialogPage = () => {
     });
 
     const sak = useGetSelectedSak();
+    // Sjekk om saker-spørringa framleis lastar (delt cache med useGetSelectedSak),
+    // slik at vi ikkje navigerer vekk før vi faktisk veit om saka finst.
+    const sakerQuery = useQuery(hentSakerOptions());
 
     const intl = useIntl();
     useDocumentTitle(
@@ -37,7 +40,7 @@ export const MinidialogPage = () => {
         mutationFn: (ettersendelse: EttersendelseDto) => sendEttersending(ettersendelse),
     });
 
-    if (minidialogQuery.isPending) {
+    if (minidialogQuery.isPending || sakerQuery.isPending) {
         return <Loader />;
     }
 
