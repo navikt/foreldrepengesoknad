@@ -161,7 +161,7 @@ export const useStepConfig = (
     eksisterendeSak: FpSak_fpoversikt | undefined = undefined,
 ) => {
     const intl = useIntl();
-    const pathToLabelMap = getPathToLabelMap(intl);
+    const pathToLabelMap = useMemo(() => getPathToLabelMap(intl), [intl]);
 
     const location = useLocation();
     const getStateData = useContextGetAnyData();
@@ -182,7 +182,7 @@ export const useStepConfig = (
                     ? [path]
                     : [],
             ),
-        [requiredSteps, getStateData, arbeidsforhold, erEndringssøknad, eksisterendeSak],
+        [requiredSteps, getStateData, arbeidsforhold, eksisterendeSak],
     );
 
     return useMemo(

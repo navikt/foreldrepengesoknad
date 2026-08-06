@@ -87,12 +87,10 @@ export const UttaksplanOppsummering = ({ navnPåForeldre, registrerteArbeidsforh
                     </FormSummary.Label>
                     <FormSummary.Value>{dekningsgradTekst}</FormSummary.Value>
                 </FormSummary.Answer>
-                <FormSummary.Answer>
-                    <UttaksplanOppsummeringsliste
-                        navnPåForeldre={navnPåForeldre}
-                        registrerteArbeidsforhold={registrerteArbeidsforhold}
-                    />
-                </FormSummary.Answer>
+                <UttaksplanOppsummeringsliste
+                    navnPåForeldre={navnPåForeldre}
+                    registrerteArbeidsforhold={registrerteArbeidsforhold}
+                />
                 {harJustertUttakVedFødsel !== undefined && (
                     <FormSummary.Answer>
                         <FormSummary.Label>

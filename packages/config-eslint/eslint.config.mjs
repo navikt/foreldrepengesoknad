@@ -53,6 +53,8 @@ export default [
             'import-x/no-unresolved': OFF,
             'import-x/named': OFF,
             'vitest/no-disabled-tests': ERROR,
+            // Delte assert-hjelparar (t.d. UU-sjekken i @navikt/fp-utils-test) tel som assertions.
+            'vitest/expect-expect': [ERROR, { assertFunctionNames: ['expect', 'forventIngenUuFeil'] }],
             '@typescript-eslint/no-restricted-types': [
                 'error',
                 {
