@@ -119,6 +119,7 @@
     "kvote.kvote.Fedrekvote": "Fedrekvote",
     "kvote.kvote.Medmorkvote": "Medmorkvote",
     "kvote.kvote.Mødrekvote": "Mødrekvote",
+    "kvote.kvote.ForeldreNavn": "{navn} kvote",
     "kvote.kvote.ForeldrepengerFørFødsel": "Foreldrepengar før fødsel",
     "kvote.kvote.Foreldrepenger": "Foreldrepengar",
     "kvote.kvote.Fellesperioder": "Fellesperiodar",

@@ -119,6 +119,7 @@
     "kvote.kvote.Fedrekvote": "Father's quota",
     "kvote.kvote.Medmorkvote": "Co-Mother's quota",
     "kvote.kvote.Mødrekvote": "Mother's quota",
+    "kvote.kvote.ForeldreNavn": "{navn} quota",
     "kvote.kvote.ForeldrepengerFørFødsel": "Parental benefits before birth",
     "kvote.kvote.Foreldrepenger": "Parental benefits",
     "kvote.kvote.Fellesperioder": "Shared periods",
