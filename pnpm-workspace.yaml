@@ -66,3 +66,4 @@ allowBuilds:
 
 overrides:
   '@opentelemetry/core@<2.8.0': ^2.8.0
+  storybook: 10.4.6
