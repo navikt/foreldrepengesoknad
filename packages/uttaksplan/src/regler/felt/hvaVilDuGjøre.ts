@@ -14,11 +14,7 @@ export const lagHvaVilDuGjøreValidatorer = (intl: IntlShape, kontekst: StaticKo
     lagHvaVilDuGjøreRegler(intl).map((regel) => lagFeltvalidator(regel, kontekst));
 
 type HvaVilDuGjøre =
-    | 'LEGG_TIL_FERIE'
-    | 'LEGG_TIL_UTSETTELSE'
-    | 'LEGG_TIL_PAUSE'
-    | 'LEGG_TIL_OPPHOLD'
-    | 'LEGG_TIL_PERIODE';
+    'LEGG_TIL_FERIE' | 'LEGG_TIL_UTSETTELSE' | 'LEGG_TIL_PAUSE' | 'LEGG_TIL_OPPHOLD' | 'LEGG_TIL_PERIODE';
 
 type HvaVilDuGjøreInput = {
     nyHvaVilDuGjøre: HvaVilDuGjøre | undefined;
@@ -60,6 +56,19 @@ export const lagHvaVilDuGjøreRegler = (intl: IntlShape): ReadonlyArray<Feltrege
                 input.familiehendelsedato,
             ),
         feilmelding: intl.formatMessage({ id: 'uttaksplan.valgPanel.pause' }),
+    },
+    {
+        id: 'hvaVilDuGjøre.ferieEllerOppholdKanIkkeLeggesFørFamiliehendelsesdato',
+        beskrivelse:
+            'Ferie eller periode uten foreldrepenger kan ikke legges til før familiehendelsesdato (fødsel/termin/' +
+            'omsorgsovertakelse) — det finnes ingen stønadsrettighet å ta ferie/opphold fra før dette tidspunktet.',
+        erBrutt: (input) =>
+            (input.nyHvaVilDuGjøre === 'LEGG_TIL_FERIE' || input.nyHvaVilDuGjøre === 'LEGG_TIL_OPPHOLD') &&
+            UttaksperiodeValidatorer.erNoenPerioderFørFamiliehendelsesdato(
+                valgtPeriode(input),
+                input.familiehendelsedato,
+            ),
+        feilmelding: intl.formatMessage({ id: 'uttaksplan.valgPanel.ferieFørFamiliehendelsesdato' }),
     },
     {
         id: 'hvaVilDuGjøre.ferieEllerOppholdKanIkkeLeggesIFørsteSeksUkerEtterFødselForMor',

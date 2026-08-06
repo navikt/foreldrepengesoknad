@@ -112,4 +112,34 @@ describe('hvaVilDuGjøreValg', () => {
             expect(VIS_LEGG_TIL_PAUSE_VALG.skalVises(kontekst)).toBe(true);
         });
     });
+
+    describe('periode før familiehendelsesdato', () => {
+        it('skal ikke vise «Legg til ferie» når perioden starter før familiehendelsesdato', () => {
+            const kontekst = lagKontekst({
+                søker: 'MOR',
+                valgtePerioder: [{ fom: '2024-07-15', tom: '2024-07-29' }],
+            });
+
+            expect(VIS_LEGG_TIL_FERIE_VALG.skalVises(kontekst)).toBe(false);
+        });
+
+        it('skal ikke vise «Legg til periode uten foreldrepenger» når perioden starter før familiehendelsesdato', () => {
+            const kontekst = lagKontekst({
+                søker: 'MOR',
+                valgtePerioder: [{ fom: '2024-07-15', tom: '2024-07-29' }],
+            });
+
+            expect(VIS_LEGG_TIL_OPPHOLD_VALG.skalVises(kontekst)).toBe(false);
+        });
+
+        it('skal gjelde for far/medmor med BARE_SØKER_RETT også', () => {
+            const kontekst = lagKontekst({
+                søker: 'FAR_MEDMOR',
+                rettighetType: 'BARE_SØKER_RETT',
+                valgtePerioder: [{ fom: '2024-07-15', tom: '2024-07-29' }],
+            });
+
+            expect(VIS_LEGG_TIL_FERIE_VALG.skalVises(kontekst)).toBe(false);
+        });
+    });
 });
