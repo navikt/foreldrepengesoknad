@@ -1,6 +1,6 @@
 import { PlanleggerRoutes } from 'appData/routes';
-import { lazy, Suspense } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Suspense, lazy } from 'react';
+import { Navigate, Route, Routes } from 'react-router';
 import { ArbeidssituasjonSteg } from 'steps/arbeidssituasjon/ArbeidssituasjonSteg';
 import { BarnehageplassSteg } from 'steps/barnehageplass/BarnehageplassSteg';
 import { FordelingSteg } from 'steps/fordeling/FordelingSteg';

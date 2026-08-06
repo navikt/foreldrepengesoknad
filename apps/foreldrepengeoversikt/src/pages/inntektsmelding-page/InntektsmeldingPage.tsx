@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import classNames from 'classnames';
 import { ReactNode } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router';
 
 import { Alert, BodyShort, Box, Detail, HGrid, Heading, List, Loader, VStack } from '@navikt/ds-react';
 

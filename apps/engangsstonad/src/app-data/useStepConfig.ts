@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
-import { useLocation } from 'react-router-dom';
-
+import { useLocation } from 'react-router';
 import { erTerminDokumentasjon } from 'types/Dokumentasjon';
 
 import { notEmpty } from '@navikt/fp-validation';

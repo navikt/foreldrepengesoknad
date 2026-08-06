@@ -2,7 +2,7 @@ import { CheckmarkIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { Link as LinkInternal } from 'react-router-dom';
+import { Link as LinkInternal } from 'react-router';
 
 import {
     Accordion,

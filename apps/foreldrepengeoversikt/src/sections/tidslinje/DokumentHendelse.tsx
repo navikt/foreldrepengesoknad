@@ -1,7 +1,7 @@
 import { FileIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import { FormattedMessage } from 'react-intl';
-import { Link as RouterLink, useParams } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router';
 
 import { HStack, Link } from '@navikt/ds-react';
 

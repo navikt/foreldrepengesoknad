@@ -6,7 +6,7 @@ import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { getArbeidsgiverNavnForTilrettelegging, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
 
 import { Link, VStack } from '@navikt/ds-react';
