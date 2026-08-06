@@ -8,8 +8,7 @@ import { LayoutWrapper } from '../../sections/LayoutWrapper.tsx';
 
 export const BruktOpplysningerOmArbeidsforhold = () => {
     return (
-        // NB: index.html har allereie eit <main id="app">-element som pakkar inn heile
-        // appen. Ikkje legg til eit nytt <main> her – det ville gitt nøsta main-landemerke.
+        // Merk: index.html har allereie <main id="app">; ikkje legg til eit nytt main her.
         <LayoutWrapper className="ax-md:pb-28 p-4">
             <VStack className="bg-ax-bg-default border-ax-brand-blue-300 rounded-2xl border-2 p-4 shadow">
                 <Heading size="small" level="2" spacing>

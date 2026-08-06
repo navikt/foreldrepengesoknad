@@ -25,8 +25,9 @@ export const MinidialogPage = () => {
     });
 
     const sak = useGetSelectedSak();
-    // Sjekk om saker-spørringa framleis lastar (delt cache med useGetSelectedSak),
-    // slik at vi ikkje navigerer vekk før vi faktisk veit om saka finst.
+    // useGetSelectedSak() returnerer undefined både når saka ikkje finst OG når
+    // saker-spørringa framleis lastar. Sjekk isPending eksplisitt (delt cache-nøkkel,
+    // så ingen ekstra nettverkskall) for å unngå å navigere vekk før vi veit om saka finst.
     const sakerQuery = useQuery(hentSakerOptions());
 
     const intl = useIntl();
