@@ -8,6 +8,7 @@
         "build:storybook": "storybook build -o .storybook-static-build",
         "test": "vitest --project=jsdom --watch=false",
         "test:browser": "vitest --project=browser",
+        "test:browser:a11y": "vitest --project=browser --watch=false src/tilgjengelighet.test.tsx",
         "eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
         "eslint:fix": "eslint --quiet --fix \"./src/**/*.{js,ts,tsx}\"",
         "prettier:fix": "prettier --write src",

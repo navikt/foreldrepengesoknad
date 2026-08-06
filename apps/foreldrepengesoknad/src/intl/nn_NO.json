@@ -1,4 +1,6 @@
 {
+    "Mellomlagring.FeiletVedFortsettSenere": "Vi klarte ikkje å lagre søknaden din no, så du er framleis inne i søknaden. Prøv «Fortsett seinare» på nytt om litt. Viss du lukkar sida no, kan du miste det du har fylt ut.",
+    "Mellomlagring.FeiletVedFortsettSenere.Lukk": "Lukk",
     "søknad.pagetitle": "Søknad om foreldrepengar",
     "søknad.pageheading": "Søknad om foreldrepengar",
     "fødselsdato": "fødselsdato",
