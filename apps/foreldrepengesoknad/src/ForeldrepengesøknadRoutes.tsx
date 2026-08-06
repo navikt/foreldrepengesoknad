@@ -8,7 +8,8 @@ import { useSendSøknad } from 'appData/useSendSøknad';
 import { Forside } from 'pages/forside/Forside';
 import { Søknadsmetadata } from 'pages/forside/utils/useStartSøknad';
 import { KvitteringPage } from 'pages/kvittering/KvitteringPage';
-import { lazy, Suspense, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { AndreInntektskilderSteg } from 'steps/andre-inntektskilder/AndreInntektskilderSteg';
 import { AnnenForelderSteg } from 'steps/annen-forelder/AnnenForelderSteg';
@@ -24,18 +25,13 @@ import { SøkersituasjonSteg } from 'steps/søkersituasjon/SøkersituasjonSteg';
 import { SenereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-senere/SenereUtenlandsoppholdSteg';
 import { TidligereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-tidligere/TidligereUtenlandsoppholdSteg';
 import { UtenlandsoppholdSteg } from 'steps/utenlandsopphold/UtenlandsoppholdSteg';
+import { UttaksplanSteg } from 'steps/uttaksplan/UttaksplanSteg';
+
+import { Alert, Button, VStack } from '@navikt/ds-react';
 
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
-import { ErrorPage, Spinner, Umyndig } from '@navikt/fp-ui';
+import { ErrorPage, Umyndig } from '@navikt/fp-ui';
 import { erMyndig } from '@navikt/fp-utils';
-
-// Uttaksplan-steget (inkl. kalender og regelmotor i @navikt/fp-uttaksplan) er den klart største
-// enkeltavhengigheten i søknaden. Den lastes derfor lazy, med prefetch fra FordelingSteg
-// (steget rett før i den vanlege søknadsflyten, sjå ROUTES_ORDER) slik at chunken ligg i
-// nettlesarcache før brukaren faktisk navigerer dit.
-const UttaksplanSteg = lazy(() =>
-    import('steps/uttaksplan/UttaksplanSteg').then((module) => ({ default: module.UttaksplanSteg })),
-);
 
 interface SøknadRoutesOptions {
     harGodkjentVilkår: boolean;
@@ -72,15 +68,13 @@ const renderSøknadRoutes = ({
                 <Route
                     path={SøknadRoutes.UTTAKSPLAN}
                     element={
-                        <Suspense fallback={<Spinner />}>
-                            <UttaksplanSteg
-                                søkerInfo={søkerInfo}
-                                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                avbrytSøknad={avbrytSøknad}
-                                foreldrepengerSaker={foreldrepengerSaker}
-                                erEndringssøknad={erEndringssøknad}
-                            />
-                        </Suspense>
+                        <UttaksplanSteg
+                            søkerInfo={søkerInfo}
+                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                            avbrytSøknad={avbrytSøknad}
+                            foreldrepengerSaker={foreldrepengerSaker}
+                            erEndringssøknad={erEndringssøknad}
+                        />
                     }
                 />
                 <Route
@@ -171,15 +165,13 @@ const renderSøknadRoutes = ({
             <Route
                 path={SøknadRoutes.UTTAKSPLAN}
                 element={
-                    <Suspense fallback={<Spinner />}>
-                        <UttaksplanSteg
-                            søkerInfo={søkerInfo}
-                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                            avbrytSøknad={avbrytSøknad}
-                            foreldrepengerSaker={foreldrepengerSaker}
-                            erEndringssøknad={erEndringssøknad}
-                        />
-                    </Suspense>
+                    <UttaksplanSteg
+                        søkerInfo={søkerInfo}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                        foreldrepengerSaker={foreldrepengerSaker}
+                        erEndringssøknad={erEndringssøknad}
+                    />
                 }
             />
             <Route
@@ -304,12 +296,11 @@ export const ForeldrepengesøknadRoutes = ({
 
     const { sendSøknad, errorSendSøknad } = useSendSøknad(søkerInfo, erEndringssøknad, foreldrepengerSaker);
 
-    const mellomlagreSøknadOgNaviger = useMellomlagreSøknad(
-        foreldrepengerSaker,
-        søkerInfo,
-        erEndringssøknad,
-        søknadGjelderNyttBarn,
-    );
+    const {
+        mellomlagreSøknad: mellomlagreSøknadOgNaviger,
+        lagringFeilet,
+        nullstillLagringFeilet,
+    } = useMellomlagreSøknad(foreldrepengerSaker, søkerInfo, erEndringssøknad, søknadGjelderNyttBarn);
 
     const avbrytSøknad = useAvbrytSøknad(setErEndringssøknad, setHarGodkjentVilkår, setSøknadGjelderNyttBarn);
 
@@ -358,31 +349,47 @@ export const ForeldrepengesøknadRoutes = ({
     }
 
     return (
-        <Routes>
-            <Route
-                path={SøknadRoutes.VELKOMMEN}
-                element={
-                    <Forside
-                        saker={foreldrepengerSaker}
-                        harGodkjentVilkår={harGodkjentVilkår}
-                        søkerInfo={søkerInfo}
-                        oppdaterSøknadsmetadata={oppdaterSøknadsmetadata}
-                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    />
-                }
-            />
-            <Route path={SøknadRoutes.IKKE_MYNDIG} element={<Umyndig appName="foreldrepengesoknad" />} />
+        <VStack gap="space-16">
+            {lagringFeilet && (
+                <VStack align="center" paddingBlock="space-16" paddingInline="space-16">
+                    <VStack maxWidth="600px" width="100%">
+                        <Alert variant="error">
+                            <VStack align="start" gap="space-8">
+                                <FormattedMessage id="Mellomlagring.FeiletVedFortsettSenere" />
+                                <Button type="button" variant="secondary" size="small" onClick={nullstillLagringFeilet}>
+                                    <FormattedMessage id="Mellomlagring.FeiletVedFortsettSenere.Lukk" />
+                                </Button>
+                            </VStack>
+                        </Alert>
+                    </VStack>
+                </VStack>
+            )}
+            <Routes>
+                <Route
+                    path={SøknadRoutes.VELKOMMEN}
+                    element={
+                        <Forside
+                            saker={foreldrepengerSaker}
+                            harGodkjentVilkår={harGodkjentVilkår}
+                            søkerInfo={søkerInfo}
+                            oppdaterSøknadsmetadata={oppdaterSøknadsmetadata}
+                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        />
+                    }
+                />
+                <Route path={SøknadRoutes.IKKE_MYNDIG} element={<Umyndig appName="foreldrepengesoknad" />} />
 
-            {renderSøknadRoutes({
-                harGodkjentVilkår,
-                erEndringssøknad,
-                søkerInfo,
-                mellomlagreSøknadOgNaviger,
-                sendSøknad,
-                avbrytSøknad,
-                søknadGjelderNyttBarn,
-                foreldrepengerSaker,
-            })}
-        </Routes>
+                {renderSøknadRoutes({
+                    harGodkjentVilkår,
+                    erEndringssøknad,
+                    søkerInfo,
+                    mellomlagreSøknadOgNaviger,
+                    sendSøknad,
+                    avbrytSøknad,
+                    søknadGjelderNyttBarn,
+                    foreldrepengerSaker,
+                })}
+            </Routes>
+        </VStack>
     );
 };

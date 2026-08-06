@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { renderHook } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import { API_URLS } from 'appData/queries';
 import ky, { ResponsePromise } from 'ky';
 import { ReactNode } from 'react';
@@ -221,7 +221,7 @@ describe('useSendSøknad', () => {
             wrapper: getWrapper(tilrettelegginger, tilretteleggingerVedlegg, undefined, ferie),
         });
 
-        await result.current.sendSøknad();
+        await act(() => result.current.sendSøknad());
 
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
@@ -352,7 +352,7 @@ describe('useSendSøknad', () => {
             wrapper: getWrapper(tilrettelegginger, tilretteleggingerVedlegg),
         });
 
-        await result.current.sendSøknad();
+        await act(() => result.current.sendSøknad());
 
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
@@ -488,7 +488,7 @@ describe('useSendSøknad', () => {
             wrapper: getWrapper(tilrettelegginger, tilretteleggingerVedlegg, tilretteleggingPerioder),
         });
 
-        await result.current.sendSøknad();
+        await act(() => result.current.sendSøknad());
 
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(

@@ -1,6 +1,7 @@
 import {
     BabyWrappedIcon,
     BriefcaseIcon,
+    HospitalIcon,
     PersonGroupIcon,
     PersonPregnantIcon,
     StethoscopeIcon,
@@ -83,18 +84,35 @@ export const FordelingPåvirkninger = ({
                         <>
                             <div className={styles.påvirkning}>
                                 <div className={styles.ikonFrame}>
-                                    <StethoscopeIcon className={styles.ikon} aria-hidden={true} />
+                                    <HospitalIcon className={styles.ikon} aria-hidden={true} />
                                 </div>
                                 <VStack>
                                     <BodyShort className={styles.undertittel}>
                                         <FormattedMessage
-                                            id="fordeling.påvirkninger.barnSyk.tittel"
+                                            id="fordeling.påvirkninger.barnInnlagtFørTermin.tittel"
                                             values={{ antallBarn: barn.antallBarn }}
                                         />
                                     </BodyShort>
                                     <FormattedMessage
-                                        id="fordeling.påvirkninger.barnSyk.info"
-                                        values={{ morTekst, antallBarn: barn.antallBarn }}
+                                        id="fordeling.påvirkninger.barnInnlagtFørTermin.info"
+                                        values={{ antallBarn: barn.antallBarn }}
+                                    />
+                                </VStack>
+                            </div>
+                            <div className={styles.påvirkning}>
+                                <div className={styles.ikonFrame}>
+                                    <HospitalIcon className={styles.ikon} aria-hidden={true} />
+                                </div>
+                                <VStack>
+                                    <BodyShort className={styles.undertittel}>
+                                        <FormattedMessage
+                                            id="fordeling.påvirkninger.barnInnlagtEtterTermin.tittel"
+                                            values={{ antallBarn: barn.antallBarn }}
+                                        />
+                                    </BodyShort>
+                                    <FormattedMessage
+                                        id="fordeling.påvirkninger.barnInnlagtEtterTermin.info"
+                                        values={{ antallBarn: barn.antallBarn }}
                                     />
                                 </VStack>
                             </div>
