@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { BrukerRolleSak_fpoversikt, Familiesituasjon, RettighetType_fpoversikt } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, Familiesituasjon, MorsAktivitet, RettighetType_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
@@ -50,14 +50,23 @@ export const useBlokkerendeAlert = (input: {
  * Aktive kontekstuelle alerts i legg-til-/endre-skjemaet, ferdig pakket
  * med variant og melding. Konsumentene rendrer kun.
  */
-export const useSkjemaKontekstuelleAlerts = (valgtePerioder: Periode[]): SkjemaKontekstuelleAlerts => {
-    const { familiehendelsedato } = useUttaksplanData();
-    const ctx: KontekstuellAlertKontekst = { valgtePerioder, familiehendelsedato };
+export const useSkjemaKontekstuelleAlerts = (
+    valgtePerioder: Periode[],
+    morsAktivitet?: MorsAktivitet,
+): SkjemaKontekstuelleAlerts => {
+    const { familiehendelsedato, erEndringssøknad } = useUttaksplanData();
+    const ctx: KontekstuellAlertKontekst = { valgtePerioder, familiehendelsedato, morsAktivitet, erEndringssøknad };
     return {
         graderingDagerReduseres: KONTEKSTUELL_GRADERING_ALERT.skalVises(ctx)
             ? {
                   melding: KONTEKSTUELL_GRADERING_ALERT.getMelding(ctx),
                   variant: KONTEKSTUELL_GRADERING_ALERT.variant,
+              }
+            : undefined,
+        aktivitetskravDokumentasjon: AKTIVITETSKRAV_DOKUMENTASJON_ALERT.skalVises(ctx)
+            ? {
+                  melding: AKTIVITETSKRAV_DOKUMENTASJON_ALERT.getMelding(ctx),
+                  variant: AKTIVITETSKRAV_DOKUMENTASJON_ALERT.variant,
               }
             : undefined,
     };
@@ -172,7 +181,15 @@ export const BLOKKERENDE_ALERTS: ReadonlyArray<Alertregel<BlokkerendeAlertKontek
 type KontekstuellAlertKontekst = {
     valgtePerioder: Periode[];
     familiehendelsedato: string;
+    morsAktivitet?: MorsAktivitet;
+    erEndringssøknad: boolean;
 };
+
+const AKTIVITETSKRAV_SOM_KREVER_DOKUMENTASJON: ReadonlyArray<MorsAktivitet> = [
+    'ARBEID',
+    'UTDANNING',
+    'ARBEID_OG_UTDANNING',
+];
 
 const KONTEKSTUELL_GRADERING_ALERT = lagAlertregel<KontekstuellAlertKontekst>({
     id: 'kontekstuelleAlerts.graderingDagerReduseres',
@@ -196,10 +213,38 @@ const KONTEKSTUELL_GRADERING_ALERT = lagAlertregel<KontekstuellAlertKontekst>({
         ),
 });
 
-export const KONTEKSTUELLE_ALERTS: ReadonlyArray<Alertregel<KontekstuellAlertKontekst>> = [KONTEKSTUELL_GRADERING_ALERT];
+const AKTIVITETSKRAV_DOKUMENTASJON_ALERT = lagAlertregel<KontekstuellAlertKontekst>({
+    id: 'kontekstuelleAlerts.aktivitetskravDokumentasjon',
+    beskrivelse:
+        'Brukeren har i en førstegangssøknad valgt et aktivitetskrav (arbeid, ' +
+        'utdanning eller arbeid og utdanning) for perioden. Denne typen aktivitet ' +
+        'krever normalt dokumentasjon, og planlagt aktivitet langt fram i tid kan ' +
+        'ofte ikke dokumenteres ennå. Alerten forbereder brukeren på at søknaden ' +
+        'kan bli liggende på vent i påvente av dokumentasjon, slik at brukeren kan ' +
+        'vurdere å søke i flere omganger i stedet.',
+    visningssteder: SKJEMA_VISNINGSSTEDER,
+    meldinger: [
+        <FormattedMessage
+            key="LeggTilEllerEndrePeriodeFellesForm.AktivitetskravDokumentasjon"
+            id="LeggTilEllerEndrePeriodeFellesForm.AktivitetskravDokumentasjon"
+        />,
+    ],
+    variant: 'info',
+    type: 'kontekstuell',
+    skalVises: (ctx) =>
+        !ctx.erEndringssøknad &&
+        ctx.morsAktivitet !== undefined &&
+        AKTIVITETSKRAV_SOM_KREVER_DOKUMENTASJON.includes(ctx.morsAktivitet),
+});
+
+export const KONTEKSTUELLE_ALERTS: ReadonlyArray<Alertregel<KontekstuellAlertKontekst>> = [
+    KONTEKSTUELL_GRADERING_ALERT,
+    AKTIVITETSKRAV_DOKUMENTASJON_ALERT,
+];
 
 type SkjemaKontekstuelleAlerts = {
     graderingDagerReduseres?: { melding: ReactNode; variant: 'info' | 'warning' };
+    aktivitetskravDokumentasjon?: { melding: ReactNode; variant: 'info' | 'warning' };
 };
 
 /**

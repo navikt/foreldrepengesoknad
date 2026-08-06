@@ -311,6 +311,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         stillingsprosentFarMedmor,
         skalDuKombinereArbeidOgUttakFarMedmor,
         ønskerFlerbarnsdager,
+        morsAktivitet,
     } = formMethods.watch();
 
     const feltSynlighet = useFeltSynlighet(valgtePerioder, {
@@ -327,7 +328,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         ønskerFlerbarnsdager,
     });
 
-    const skjemaKontekstuelleAlerts = useSkjemaKontekstuelleAlerts(valgtePerioder);
+    const skjemaKontekstuelleAlerts = useSkjemaKontekstuelleAlerts(valgtePerioder, morsAktivitet);
 
     const erBareFarHarRett = søker === 'FAR_MEDMOR' && rettighetType === 'BARE_SØKER_RETT';
 
@@ -687,6 +688,11 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                             );
                         })}
                     </RhfSelect>
+                    {skjemaKontekstuelleAlerts.aktivitetskravDokumentasjon && (
+                        <Alert variant={skjemaKontekstuelleAlerts.aktivitetskravDokumentasjon.variant}>
+                            {skjemaKontekstuelleAlerts.aktivitetskravDokumentasjon.melding}
+                        </Alert>
+                    )}
                 </>
             )}
             {forelder === 'BEGGE' && (
