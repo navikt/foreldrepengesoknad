@@ -15,10 +15,11 @@ export const getFørsteUttaksdag2UkerFørFødsel = (
     // tidligste dato. Uten dette blir tidligste dato feil dersom barnet er født mer enn to uker før termin,
     // fordi fødselsdatoen da er tidligere enn termindato minus to uker, og vi må derfor regne to uker tilbake fra fødsel.
     const familiehendelsesdatoMinusToUker = dayjs(familiehendelsesdato).subtract(ANTALL_DAGER_TO_UKER, 'day');
+    const termindatoMinusToUker = termindato ? dayjs(termindato).subtract(ANTALL_DAGER_TO_UKER, 'day') : undefined;
     const datoÅRegneFra =
-        termindato === undefined
+        termindatoMinusToUker === undefined
             ? familiehendelsesdatoMinusToUker
-            : dayjs.min(dayjs(termindato).subtract(ANTALL_DAGER_TO_UKER, 'day'), familiehendelsesdatoMinusToUker);
+            : dayjs.min(termindatoMinusToUker, familiehendelsesdatoMinusToUker);
     return Uttaksdagen.denneEllerNeste(datoÅRegneFra.format(ISO_DATE_FORMAT)).getDato();
 };
 
