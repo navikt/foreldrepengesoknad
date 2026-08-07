@@ -1299,7 +1299,9 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
         expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
     });
 
-    it('skal ikke kunne begynne uttaket før fødselsdato', async () => {
+    it('skal ikke kunne begynne uttaket tidligere enn to uker før fødselsdato', async () => {
+        // Barnet er født mer enn to uker før termin (prematurt). Far/medmor skal da kunne starte
+        // to uker før fødselsdatoen, ikke først fra fødselsdatoen. Se TFP-5892.
         MockDate.set(new Date('2024-02-25'));
         await FarMedmorSøkerDeltUttakEttBarnFødtPrematurt.run({
             args: {
@@ -1311,10 +1313,10 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
         expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
         await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
         const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
-        await userEvent.type(oppstart, '20.02.2024');
+        await userEvent.type(oppstart, '06.02.2024');
         fireEvent.blur(oppstart);
         await userEvent.click(screen.getByText('Neste steg'));
-        expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 21.02.2024.')).toHaveLength(2);
+        expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 07.02.2024.')).toHaveLength(2);
     });
 });
 
