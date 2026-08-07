@@ -629,7 +629,7 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Endre til ferie')).toBeInTheDocument();
     });
 
-    it('mor og far tar samtidig uttak - far fellesperiode med 100% samtidig uttak skal trigge aktivitetskrav', async () => {
+    it('mor og far tar samtidig uttak - far fellesperiode med 100 % samtidig uttak skal trigge aktivitetskrav', async () => {
         render(<SamtidigUttak />);
 
         const september = screen.getByTestId('year:2026;month:8');
