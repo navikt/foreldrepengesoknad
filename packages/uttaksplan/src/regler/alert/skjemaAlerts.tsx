@@ -185,9 +185,11 @@ type KontekstuellAlertKontekst = {
     erEndringssøknad: boolean;
 };
 
-const AKTIVITETSKRAV_SOM_KREVER_DOKUMENTASJON: ReadonlySet<MorsAktivitet> = new Set(
-    ['ARBEID', 'UTDANNING', 'ARBEID_OG_UTDANNING'] satisfies MorsAktivitet[],
-);
+const AKTIVITETSKRAV_SOM_KREVER_DOKUMENTASJON: ReadonlySet<MorsAktivitet> = new Set([
+    'ARBEID',
+    'UTDANNING',
+    'ARBEID_OG_UTDANNING',
+] satisfies MorsAktivitet[]);
 
 const KONTEKSTUELL_GRADERING_ALERT = lagAlertregel<KontekstuellAlertKontekst>({
     id: 'kontekstuelleAlerts.graderingDagerReduseres',

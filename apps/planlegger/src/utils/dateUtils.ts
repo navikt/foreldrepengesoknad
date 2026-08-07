@@ -18,4 +18,3 @@ export const erFødtFørUke33 = (fødselsdato?: string, termindato?: string): bo
  */
 export const getAntallVirkedagerFraFødselTilTermin = (fødselsdato: string, termindato: string): number =>
     Uttaksdagen.denneEllerNeste(fødselsdato).getUttaksdagerFremTilDato(termindato);
-

@@ -12,9 +12,9 @@ import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 import { BarnVelger } from './BarnVelger';
 import { DinePlikter } from './dine-plikter/DinePlikter';
-import { getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './utils/forsideUtils';
 import { DinePersonopplysningerModal } from './modaler/DinePersonopplysningerModal';
 import { ForsideFormValues } from './types/ForsideFormValues';
+import { getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './utils/forsideUtils';
 import { useFjernPlanleggerDataFraUrl } from './utils/useFjernPlanleggerDataFraUrl';
 import { Søknadsmetadata, useStartSøknad } from './utils/useStartSøknad';
 

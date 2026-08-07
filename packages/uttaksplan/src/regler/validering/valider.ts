@@ -6,12 +6,13 @@ import { lagFarMedmorRundtFødselOmråde } from './farMedmorRundtFødsel';
 import { lagSamtidigUttakOmråde } from './samtidigUttak';
 import { ValideringInput, Valideringsområde, førsteBrutteValideringsregel } from './types';
 
-export const lagValideringsområder = (intl: IntlShape) => [
-    lagArbeidOgUttakFørsteSeksUkerOmråde(intl),
-    lagSamtidigUttakOmråde(intl),
-    lagFarMedmorRundtFødselOmråde(intl),
-    lagFarMedmorMaksToUkerRundtFødselOmråde(intl),
-] as const;
+export const lagValideringsområder = (intl: IntlShape) =>
+    [
+        lagArbeidOgUttakFørsteSeksUkerOmråde(intl),
+        lagSamtidigUttakOmråde(intl),
+        lagFarMedmorRundtFødselOmråde(intl),
+        lagFarMedmorMaksToUkerRundtFødselOmråde(intl),
+    ] as const;
 
 const validerOmråde = <TCtx>(område: Valideringsområde<TCtx>, input: ValideringInput): string | null => {
     const kontekst = område.byggKontekst(input);

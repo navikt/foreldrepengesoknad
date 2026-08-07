@@ -116,7 +116,9 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
             <ExpansionCard.Header>
                 <HStack gap="space-24" align="center" wrap={false}>
                     <TasklistIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
-                    <ExpansionCard.Title size="small" as={titleAs}>{resolvedTitle}</ExpansionCard.Title>
+                    <ExpansionCard.Title size="small" as={titleAs}>
+                        {resolvedTitle}
+                    </ExpansionCard.Title>
                 </HStack>
             </ExpansionCard.Header>
             <ExpansionCard.Content>

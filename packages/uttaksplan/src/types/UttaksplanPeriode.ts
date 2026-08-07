@@ -34,9 +34,7 @@ export type Uttaksplanperiode =
 // Denne blir brukt av kalendervisninga som kun viser tapte dagar
 // (Kalender viser i tillegg familiehendelsesdato, men denne blir utleda i kalender-typen, mogleg ein bør endra på det)
 export type UttaksplanperiodeMedKunTapteDager =
-    | UttakPeriode_fpoversikt
-    | UttakPeriodeAnnenpartEøs_fpoversikt
-    | TapteDagerHull;
+    UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt | TapteDagerHull;
 
 export const erVanligUttakPeriode = (periode: Uttaksplanperiode): periode is UttakPeriode_fpoversikt =>
     !erEøsUttakPeriode(periode) &&

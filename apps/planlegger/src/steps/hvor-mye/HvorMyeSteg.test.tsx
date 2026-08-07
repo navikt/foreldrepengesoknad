@@ -49,16 +49,13 @@ describe('<HvorMyeSteg>', () => {
         const normaliserWhitespace = (tekst: string) => tekst.replace(/\s+/g, ' ');
 
         expect(
-            await screen.findByText(
-                (content) => {
-                    const normalisertContent = normaliserWhitespace(content);
-                    return (
-                        normalisertContent.includes(
-                            normaliserWhitespace(`Med årslønn under ${minÅrslønnFormatted}`),
-                        ) && normalisertContent.includes('har du ikke rett til foreldrepenger')
-                    );
-                },
-            ),
+            await screen.findByText((content) => {
+                const normalisertContent = normaliserWhitespace(content);
+                return (
+                    normalisertContent.includes(normaliserWhitespace(`Med årslønn under ${minÅrslønnFormatted}`)) &&
+                    normalisertContent.includes('har du ikke rett til foreldrepenger')
+                );
+            }),
         ).toBeInTheDocument();
         expect(screen.getByText(/48\s?000\s?kr i året/)).toBeInTheDocument();
         expect(

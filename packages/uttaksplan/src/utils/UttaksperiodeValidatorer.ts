@@ -54,12 +54,14 @@ export const UttaksperiodeValidatorer = {
      * seks lovpålagte ukene da forskyves og kan overlappe med perioden.
      */
     erNoenPerioderIUke7EtterFamiliehendelsesdato(perioder: Periode[], familiehendelsedato: string) {
-        const førsteDag = Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(
-            ANTALL_UTTAKSDAGER_SEKS_UKER,
-        );
-        const sisteDag = Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(
-            ANTALL_UTTAKSDAGER_SYV_UKER,
-        );
+        const førsteDag =
+            Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(
+                ANTALL_UTTAKSDAGER_SEKS_UKER,
+            );
+        const sisteDag =
+            Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(
+                ANTALL_UTTAKSDAGER_SYV_UKER,
+            );
 
         return perioder.some((periode) => {
             const fom = dayjs(periode.fom);
@@ -69,9 +71,10 @@ export const UttaksperiodeValidatorer = {
     },
 
     erNoenPerioderInnenforIntervalletTreUkerFørFamDatoOgFamDato(perioder: Periode[], familiehendelsedato: string) {
-        const førsteDag = Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(
-            ANTALL_UTTAKSDAGER_TRE_UKER,
-        );
+        const førsteDag =
+            Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(
+                ANTALL_UTTAKSDAGER_TRE_UKER,
+            );
         const sisteDag = Uttaksdagen.forrige(familiehendelsedato).getDato();
 
         return perioder.some((periode) => {
@@ -139,9 +142,10 @@ export const UttaksperiodeValidatorer = {
     },
 
     erNoenPerioderFørTreUkerFørFamDatoEllerEtterLikFamDato(perioder: Periode[], familiehendelsedato: string) {
-        const førsteDag = Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(
-            ANTALL_UTTAKSDAGER_TRE_UKER,
-        );
+        const førsteDag =
+            Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(
+                ANTALL_UTTAKSDAGER_TRE_UKER,
+            );
         const sisteDag = Uttaksdagen.forrige(familiehendelsedato).getDato();
 
         return perioder.some((p) => dayjs(p.tom).isAfter(sisteDag) || dayjs(p.fom).isBefore(førsteDag));

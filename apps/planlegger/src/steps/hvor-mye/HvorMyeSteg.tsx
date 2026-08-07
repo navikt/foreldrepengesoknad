@@ -103,10 +103,7 @@ export const HvorMyeSteg = ({ satser }: Props) => {
                                 />
                             </BluePanel>
                             {lønnSøker1Valid && harSøker1IkkeRettTilFp && (
-                                <HarIkkeRettTilFpInfobox
-                                    antattÅrslønn={årslønnSøker1}
-                                    minÅrslønn={minÅrslønn}
-                                />
+                                <HarIkkeRettTilFpInfobox antattÅrslønn={årslønnSøker1} minÅrslønn={minÅrslønn} />
                             )}
                             {lønnSøker1Valid && !harSøker1IkkeRettTilFp && (
                                 <Utbetaling
@@ -139,10 +136,7 @@ export const HvorMyeSteg = ({ satser }: Props) => {
                                     />
                                 </BluePanel>
                                 {lønnSøker2Valid && harSøker2IkkeRettTilFp && (
-                                    <HarIkkeRettTilFpInfobox
-                                        antattÅrslønn={årslønnSøker2}
-                                        minÅrslønn={minÅrslønn}
-                                    />
+                                    <HarIkkeRettTilFpInfobox antattÅrslønn={årslønnSøker2} minÅrslønn={minÅrslønn} />
                                 )}
                                 {lønnSøker2Valid && !harSøker2IkkeRettTilFp && (
                                     <Utbetaling

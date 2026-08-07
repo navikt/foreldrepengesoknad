@@ -20,7 +20,7 @@ import {
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { useFormSubmitValidator } from '../../../../felles/uttaksplanValidatorer';
-import { useLeggTilEndreSkjemaInfoAlerts, useKanKunErstatte } from '../../../../regler/alert/informasjonsAlertHooks';
+import { useKanKunErstatte, useLeggTilEndreSkjemaInfoAlerts } from '../../../../regler/alert/informasjonsAlertHooks';
 import { erEøsUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
@@ -108,8 +108,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
             : [],
     );
 
-    const erGradertMor =
-        skalDuKombinereArbeidOgUttakMor === true && (forelder === 'MOR' || forelder === 'BEGGE');
+    const erGradertMor = skalDuKombinereArbeidOgUttakMor === true && (forelder === 'MOR' || forelder === 'BEGGE');
 
     const kanKunErstatte = useKanKunErstatte({
         valgtePerioder: sammenslåtteValgtePerioder,

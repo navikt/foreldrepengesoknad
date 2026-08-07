@@ -69,7 +69,8 @@ export const UttaksplanForm = ({
             (p) =>
                 Uttaksperioden.erIkkeEøsPeriode(p) &&
                 (p.resultat === undefined ||
-                    (opprinneligPlan !== undefined && !opprinneligPlan.some((o) => erSammePeriodeInkludertDatoer(p, o)))),
+                    (opprinneligPlan !== undefined &&
+                        !opprinneligPlan.some((o) => erSammePeriodeInkludertDatoer(p, o)))),
         ) ?? [];
     const gjeldendeUttaksplan = erEndringssøknad ? uttaksplanMedKunNyePerioder : uttaksplan;
 

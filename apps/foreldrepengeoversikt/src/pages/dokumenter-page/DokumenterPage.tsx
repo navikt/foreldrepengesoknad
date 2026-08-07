@@ -123,9 +123,7 @@ const DokumenterPageInner = () => {
                                                 <Table.HeaderCell className="max-w-70" scope="row">
                                                     <DokumentLenke dokument={dokument} />
                                                 </Table.HeaderCell>
-                                                <Table.DataCell>
-                                                    {formatDateExtended(dokument.mottatt)}
-                                                </Table.DataCell>
+                                                <Table.DataCell>{formatDateExtended(dokument.mottatt)}</Table.DataCell>
                                                 <Table.DataCell>
                                                     <DokumentAvsender dokumentType={dokument.type} />
                                                 </Table.DataCell>

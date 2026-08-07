@@ -162,7 +162,6 @@ export const getEffektivHvemPlanlegger = (
     };
 };
 
-
 export const erFarSøker2 = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is FarOgFar | MorOgFar =>
     hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR || hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR;
 

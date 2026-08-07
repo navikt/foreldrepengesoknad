@@ -55,8 +55,7 @@ describe('getError', () => {
 describe('getValidationRules', () => {
     it('skal lage en regel per valideringsfunksjon, indeksert på posisjon', () => {
         const ikkeTom = (value: string): ValidationReturnType => (value ? null : 'Påkrevd');
-        const minstTreTegn = (value: string): ValidationReturnType =>
-            value.length >= 3 ? null : 'For kort';
+        const minstTreTegn = (value: string): ValidationReturnType => (value.length >= 3 ? null : 'For kort');
 
         const rules = getValidationRules([ikkeTom, minstTreTegn]) as Record<
             string,
@@ -69,10 +68,7 @@ describe('getValidationRules', () => {
     it('skal returnere true når valideringsfunksjonen ikke gir feil', () => {
         const ikkeTom = (value: string): ValidationReturnType => (value ? null : 'Påkrevd');
 
-        const rules = getValidationRules([ikkeTom]) as Record<
-            string,
-            (value: string) => ValidationReturnType | true
-        >;
+        const rules = getValidationRules([ikkeTom]) as Record<string, (value: string) => ValidationReturnType | true>;
 
         expect(rules['0']?.('noe')).toBe(true);
     });
@@ -80,10 +76,7 @@ describe('getValidationRules', () => {
     it('skal returnere feilmeldingen når valideringsfunksjonen gir feil', () => {
         const ikkeTom = (value: string): ValidationReturnType => (value ? null : 'Påkrevd');
 
-        const rules = getValidationRules([ikkeTom]) as Record<
-            string,
-            (value: string) => ValidationReturnType | true
-        >;
+        const rules = getValidationRules([ikkeTom]) as Record<string, (value: string) => ValidationReturnType | true>;
 
         expect(rules['0']?.('')).toBe('Påkrevd');
     });

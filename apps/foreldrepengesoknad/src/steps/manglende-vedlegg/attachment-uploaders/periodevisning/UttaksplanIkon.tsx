@@ -16,14 +16,14 @@ export interface UttaksplanIkonProps extends SVGProps<SVGSVGElement> {
 }
 
 export enum UttaksplanIkonKeys {
-    'arbeid' = 'arbeid',
-    'ferie' = 'ferie',
-    'sykdom' = 'sykdom',
-    'termin' = 'termin',
-    'uttak' = 'uttak',
-    'info' = 'info',
-    'advarsel' = 'advarsel',
-    'feil' = 'feil',
+    arbeid = 'arbeid',
+    ferie = 'ferie',
+    sykdom = 'sykdom',
+    termin = 'termin',
+    uttak = 'uttak',
+    info = 'info',
+    advarsel = 'advarsel',
+    feil = 'feil',
 }
 
 interface Props {

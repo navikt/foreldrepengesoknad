@@ -13,9 +13,9 @@ import * as hvorMyeStories from './steps/hvor-mye/HvorMyeSteg.stories';
 import * as omBarnetStories from './steps/om-barnet/OmBarnetSteg.stories';
 import * as omPlanleggerenStories from './steps/om-planleggeren/OmPlanleggerenSteg.stories';
 import * as oppsummeringStories from './steps/oppsummering/OppsummeringSteg.stories';
-import * as hvaErMuligStories from './steps/planen-deres/hva-er-mulig/HvaErMulig.stories';
 import * as planenDeresAdopsjonStories from './steps/planen-deres/PlanenDeresSteg_Adopsjon.stories';
 import * as planenDeresFødselStories from './steps/planen-deres/PlanenDeresSteg_Fødsel.stories';
+import * as hvaErMuligStories from './steps/planen-deres/hva-er-mulig/HvaErMulig.stories';
 import * as uforutsetteEndringerStories from './steps/planen-deres/uforutsette-endringer/UforutsetteEndringer.stories';
 
 // Éin representativ variant per side. WCAG 2.1 AA er lovpålagt for nav.no, og statisk

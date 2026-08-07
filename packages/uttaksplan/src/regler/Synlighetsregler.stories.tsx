@@ -1,5 +1,5 @@
-import { Meta, StoryObj } from '@storybook/react-vite';
 import { linkTo } from '@storybook/addon-links';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Kolonne, RegelIdBadge, RegelkatalogSide } from './RegelkatalogSide';
 import {
@@ -23,18 +23,18 @@ import {
     VIS_MOR_RADIO,
 } from './synlighet/forelderValg';
 import {
-    SKAL_VISE_FERIEKNAPP,
-    SKAL_VISE_LEGG_TIL_KNAPPETEKST,
-    SKAL_VISE_PAUSEKNAPP,
-    SKAL_VISE_UTSETTELSESKNAPP,
-} from './synlighet/knapperIRedigeringspanel';
-import {
     VIS_LEGG_TIL_FERIE_VALG,
     VIS_LEGG_TIL_OPPHOLD_VALG,
     VIS_LEGG_TIL_PAUSE_VALG,
     VIS_LEGG_TIL_PERIODE_VALG,
     VIS_LEGG_TIL_UTSETTELSE_VALG,
 } from './synlighet/hvaVilDuGjøreValg';
+import {
+    SKAL_VISE_FERIEKNAPP,
+    SKAL_VISE_LEGG_TIL_KNAPPETEKST,
+    SKAL_VISE_PAUSEKNAPP,
+    SKAL_VISE_UTSETTELSESKNAPP,
+} from './synlighet/knapperIRedigeringspanel';
 import { Synlighetsområde } from './synlighet/types';
 
 /**
@@ -145,12 +145,7 @@ const KNAPPER_I_REDIGERINGSPANEL_OMRÅDE: Synlighetsområde = {
         'Når brukeren har markert én eller flere dager i kalenderen, viser redigeringspanelet ulike ' +
         'handlingsknapper avhengig av søker, rettighet, familiesituasjon og hvor periodene ligger i ' +
         'forhold til familiehendelsesdatoen. Reglene under bestemmer hvilke knapper som faktisk vises.',
-    regler: [
-        SKAL_VISE_UTSETTELSESKNAPP,
-        SKAL_VISE_PAUSEKNAPP,
-        SKAL_VISE_FERIEKNAPP,
-        SKAL_VISE_LEGG_TIL_KNAPPETEKST,
-    ],
+    regler: [SKAL_VISE_UTSETTELSESKNAPP, SKAL_VISE_PAUSEKNAPP, SKAL_VISE_FERIEKNAPP, SKAL_VISE_LEGG_TIL_KNAPPETEKST],
 };
 
 const ALLE_SYNLIGHETSREGLER: readonly Synlighetsområde[] = [

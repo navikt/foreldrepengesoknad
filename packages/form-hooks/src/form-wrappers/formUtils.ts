@@ -18,8 +18,7 @@ export const getError = <T extends FieldValues>(
     const error = name
         .split('.')
         .reduce<unknown>(
-            (node, key) =>
-                node && typeof node === 'object' ? (node as Record<string, unknown>)[key] : undefined,
+            (node, key) => (node && typeof node === 'object' ? (node as Record<string, unknown>)[key] : undefined),
             errors,
         );
 

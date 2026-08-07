@@ -126,12 +126,7 @@ const PlanStatus = () => {
 };
 
 const AlleDagerLagtTilBoks = () => (
-    <Box
-        padding="space-12"
-        borderRadius="8"
-        borderWidth="1"
-        className="bg-ax-bg-success-soft border-ax-border-success"
-    >
+    <Box padding="space-12" borderRadius="8" borderWidth="1" className="bg-ax-bg-success-soft border-ax-border-success">
         <HStack gap="space-8" align="start" wrap={false}>
             <CheckmarkCircleIcon className="text-ax-text-success shrink-0" fontSize="1.5rem" aria-hidden />
             <BodyShort size="small">
@@ -155,11 +150,7 @@ const LagtTilForMyeTags = ({ tellingData, kunEnHarRettData }: TellingData) => {
     let tags: React.ReactNode;
     if (rettighetType === 'BEGGE_RETT') {
         tags = (
-            <ForMyeTagsBeggeRett
-                erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
-                intl={intl}
-                tellingData={tellingData}
-            />
+            <ForMyeTagsBeggeRett erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} intl={intl} tellingData={tellingData} />
         );
     } else if (søker === 'FAR_MEDMOR') {
         tags = <ForMyeTagsKunFar intl={intl} kunEnHarRettData={kunEnHarRettData} />;
@@ -304,12 +295,16 @@ const ForMyeTagsKunMor = ({
 };
 
 const useHarPerioderSomKanLeggesTil = (
-    { ubrukteDagerMor, ubrukteDagerFar, ubrukteDagerFelles, antallUbrukteDager }: ReturnType<
-        typeof useTellDagerIUttaksPeriodene
-    >,
-    { ubrukteDagerAktivitetsfri, ubrukteDagerMedAktivitetskrav }: ReturnType<
-        typeof useUbrukteDagerPerKontoKunEnHarRett
-    >,
+    {
+        ubrukteDagerMor,
+        ubrukteDagerFar,
+        ubrukteDagerFelles,
+        antallUbrukteDager,
+    }: ReturnType<typeof useTellDagerIUttaksPeriodene>,
+    {
+        ubrukteDagerAktivitetsfri,
+        ubrukteDagerMedAktivitetskrav,
+    }: ReturnType<typeof useUbrukteDagerPerKontoKunEnHarRett>,
 ) => {
     const {
         foreldreInfo: { rettighetType, søker },
@@ -325,12 +320,16 @@ const useHarPerioderSomKanLeggesTil = (
 };
 
 const useHarLagtTilForMye = (
-    { ubrukteDagerMor, ubrukteDagerFar, ubrukteDagerFelles, antallOvertrukketDager }: ReturnType<
-        typeof useTellDagerIUttaksPeriodene
-    >,
-    { overtrukketDagerAktivitetsfri, overtrukketDagerMedAktivitetskrav }: ReturnType<
-        typeof useUbrukteDagerPerKontoKunEnHarRett
-    >,
+    {
+        ubrukteDagerMor,
+        ubrukteDagerFar,
+        ubrukteDagerFelles,
+        antallOvertrukketDager,
+    }: ReturnType<typeof useTellDagerIUttaksPeriodene>,
+    {
+        overtrukketDagerAktivitetsfri,
+        overtrukketDagerMedAktivitetskrav,
+    }: ReturnType<typeof useUbrukteDagerPerKontoKunEnHarRett>,
 ) => {
     const {
         foreldreInfo: { rettighetType, søker },
@@ -352,9 +351,7 @@ const PerioderSomKanLeggesTilTags = ({ tellingData, kunEnHarRettData }: TellingD
     } = useUttaksplanData();
 
     if (rettighetType === 'BEGGE_RETT') {
-        return (
-            <TagsBeggeRett erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} intl={intl} tellingData={tellingData} />
-        );
+        return <TagsBeggeRett erMedmorDelAvSøknaden={erMedmorDelAvSøknaden} intl={intl} tellingData={tellingData} />;
     }
 
     if (søker === 'FAR_MEDMOR') {
