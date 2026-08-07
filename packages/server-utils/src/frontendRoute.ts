@@ -27,8 +27,19 @@ export const setupAndServeHtml = async (router: Router) => {
         ...dekoratørProps,
     });
     const renderedHtml = replaceNaisMetaTags(replaceAppSettings(html));
+    const appVersionEtag = config.app.version ? `"${config.app.version}"` : undefined;
 
-    router.get('*splat', (_, response) => {
+    router.get('*splat', (request, response) => {
+        response.set('Cache-Control', 'max-age=0, must-revalidate');
+
+        if (appVersionEtag) {
+            response.set('ETag', appVersionEtag);
+            if (request.fresh) {
+                response.status(304).end();
+                return;
+            }
+        }
+
         response.send(renderedHtml);
     });
 };
