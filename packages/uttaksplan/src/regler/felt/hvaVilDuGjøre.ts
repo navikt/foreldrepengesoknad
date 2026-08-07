@@ -11,7 +11,7 @@ import { Feltregel, Periode } from '../types';
  * feilmelding.
  */
 export const lagHvaVilDuGjøreValidatorer = (intl: IntlShape, kontekst: StaticKontekst) =>
-    lagHvaVilDuGjøreRegler(intl).map((regel) => lagFeltvalidator(regel, kontekst));
+    lagHvaVilDuGjøreRegler(intl, kontekst.familiesituasjon).map((regel) => lagFeltvalidator(regel, kontekst));
 
 type HvaVilDuGjøre =
     'LEGG_TIL_FERIE' | 'LEGG_TIL_UTSETTELSE' | 'LEGG_TIL_PAUSE' | 'LEGG_TIL_OPPHOLD' | 'LEGG_TIL_PERIODE';
@@ -30,7 +30,10 @@ type HvaVilDuGjøreInput = {
 const valgtPeriode = ({ fomValue, tomValue }: HvaVilDuGjøreInput): Periode[] =>
     fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [];
 
-export const lagHvaVilDuGjøreRegler = (intl: IntlShape): ReadonlyArray<Feltregel<HvaVilDuGjøreInput>> => [
+export const lagHvaVilDuGjøreRegler = (
+    intl: IntlShape,
+    familiesituasjon: Familiesituasjon,
+): ReadonlyArray<Feltregel<HvaVilDuGjøreInput>> => [
     {
         id: 'hvaVilDuGjøre.utsettelseMåLiggeInnenforSeksUkerEtterFødsel',
         beskrivelse:
@@ -68,7 +71,10 @@ export const lagHvaVilDuGjøreRegler = (intl: IntlShape): ReadonlyArray<Feltrege
                 valgtPeriode(input),
                 input.familiehendelsedato,
             ),
-        feilmelding: intl.formatMessage({ id: 'uttaksplan.valgPanel.ferieFørFamiliehendelsesdato' }),
+        feilmelding: intl.formatMessage(
+            { id: 'uttaksplan.valgPanel.ferieFørFamiliehendelsesdato' },
+            { familiesituasjon },
+        ),
     },
     {
         id: 'hvaVilDuGjøre.ferieEllerOppholdKanIkkeLeggesIFørsteSeksUkerEtterFødselForMor',

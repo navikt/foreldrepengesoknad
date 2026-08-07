@@ -42,7 +42,7 @@ const lagInput = (overrides: Partial<Input> = {}): Input => ({
 });
 
 const evaluer = (input: Input): string | undefined => {
-    const regler = lagHvaVilDuGjøreRegler(intlMock);
+    const regler = lagHvaVilDuGjøreRegler(intlMock, input.familiesituasjon);
     return regler.find((regel) => regel.erBrutt(input))?.feilmelding;
 };
 
@@ -125,8 +125,12 @@ describe('hvaVilDuGjøre — ferie/opphold kan ikke legges i de første seks uke
     });
 });
 
-const FERIE_FØR_FAMILIEHENDELSESDATO_FEILMELDING =
-    'Ferie og perioder uten foreldrepenger kan ikke legges til før fødsel/termin/omsorgsovertakelse.';
+const FERIE_FØR_FAMILIEHENDELSESDATO_FEILMELDING_TERMIN =
+    'Ferie og perioder uten foreldrepenger kan ikke legges til før termin.';
+const FERIE_FØR_FAMILIEHENDELSESDATO_FEILMELDING_FØDSEL =
+    'Ferie og perioder uten foreldrepenger kan ikke legges til før fødsel.';
+const FERIE_FØR_FAMILIEHENDELSESDATO_FEILMELDING_ADOPSJON =
+    'Ferie og perioder uten foreldrepenger kan ikke legges til før omsorgsovertakelse.';
 
 describe('hvaVilDuGjøre — ferie/opphold kan ikke legges før familiehendelsesdato', () => {
     it('skal melde feil når «Legg til ferie» er valgt med fom før familiehendelsesdato', () => {
@@ -138,7 +142,7 @@ describe('hvaVilDuGjøre — ferie/opphold kan ikke legges før familiehendelses
             }),
         );
 
-        expect(feil).toBe(FERIE_FØR_FAMILIEHENDELSESDATO_FEILMELDING);
+        expect(feil).toBe(FERIE_FØR_FAMILIEHENDELSESDATO_FEILMELDING_TERMIN);
     });
 
     it('skal melde feil når «Legg til opphold» er valgt med fom før familiehendelsesdato', () => {
@@ -150,7 +154,7 @@ describe('hvaVilDuGjøre — ferie/opphold kan ikke legges før familiehendelses
             }),
         );
 
-        expect(feil).toBe(FERIE_FØR_FAMILIEHENDELSESDATO_FEILMELDING);
+        expect(feil).toBe(FERIE_FØR_FAMILIEHENDELSESDATO_FEILMELDING_TERMIN);
     });
 
     it('skal melde feil selv om bare deler av perioden er før familiehendelsesdato', () => {
@@ -162,7 +166,7 @@ describe('hvaVilDuGjøre — ferie/opphold kan ikke legges før familiehendelses
             }),
         );
 
-        expect(feil).toBe(FERIE_FØR_FAMILIEHENDELSESDATO_FEILMELDING);
+        expect(feil).toBe(FERIE_FØR_FAMILIEHENDELSESDATO_FEILMELDING_TERMIN);
     });
 
     it('skal ikke melde feil når perioden starter på eller etter familiehendelsesdato', () => {
@@ -187,7 +191,7 @@ describe('hvaVilDuGjøre — ferie/opphold kan ikke legges før familiehendelses
             }),
         );
 
-        expect(feil).toBe(FERIE_FØR_FAMILIEHENDELSESDATO_FEILMELDING);
+        expect(feil).toBe(FERIE_FØR_FAMILIEHENDELSESDATO_FEILMELDING_TERMIN);
     });
 
     it('skal ikke gjelde for «Legg til utsettelse»', () => {
@@ -199,6 +203,33 @@ describe('hvaVilDuGjøre — ferie/opphold kan ikke legges før familiehendelses
             }),
         );
 
-        expect(feil).not.toBe(FERIE_FØR_FAMILIEHENDELSESDATO_FEILMELDING);
+        expect(feil).not.toBe(FERIE_FØR_FAMILIEHENDELSESDATO_FEILMELDING_TERMIN);
+    });
+
+    it('skal bruke riktig ord for fødsel når familiesituasjon er «fødsel»', () => {
+        const feil = evaluer(
+            lagInput({
+                nyHvaVilDuGjøre: 'LEGG_TIL_FERIE',
+                fomValue: '2024-07-15',
+                tomValue: '2024-07-29',
+                familiesituasjon: 'fødsel',
+            }),
+        );
+
+        expect(feil).toBe(FERIE_FØR_FAMILIEHENDELSESDATO_FEILMELDING_FØDSEL);
+    });
+
+    it('skal bruke riktig ord for omsorgsovertakelse når familiesituasjon er «adopsjon»', () => {
+        const feil = evaluer(
+            lagInput({
+                nyHvaVilDuGjøre: 'LEGG_TIL_FERIE',
+                fomValue: '2024-07-15',
+                tomValue: '2024-07-29',
+                familiesituasjon: 'adopsjon',
+                søker: 'FAR_MEDMOR',
+            }),
+        );
+
+        expect(feil).toBe(FERIE_FØR_FAMILIEHENDELSESDATO_FEILMELDING_ADOPSJON);
     });
 });
