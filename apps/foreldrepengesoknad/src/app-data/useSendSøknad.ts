@@ -4,7 +4,7 @@ import { API_URLS } from 'api/queries';
 import { SøknadRoutes } from 'appData/routes';
 import ky, { HTTPError } from 'ky';
 import { useIntl } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 import { ApiError } from '@navikt/fp-observability';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, FpSoknadProblemDetails } from '@navikt/fp-types';

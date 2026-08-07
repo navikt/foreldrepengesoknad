@@ -1,6 +1,6 @@
 import { Buildings3Icon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router';
 
 import { Tag, VStack } from '@navikt/ds-react';
 

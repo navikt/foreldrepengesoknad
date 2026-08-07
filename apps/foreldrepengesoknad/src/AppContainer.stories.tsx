@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { API_URLS } from 'api/queries';
 import { HttpResponse, http } from 'msw';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { annenPartVedtak } from 'storybookData/annenPartVedtak';
 import { kvittering } from 'storybookData/kvittering';
 import { saker } from 'storybookData/saker';

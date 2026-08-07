@@ -1,9 +1,9 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { renderHook } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import { API_URLS } from 'api/queries';
 import ky, { ResponsePromise } from 'ky';
 import { ReactNode } from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { AnnenInntektType, SluttpakkeInntekt } from 'types/AndreInntektskilder';
 import { AnnenForelder } from 'types/AnnenForelder';
 import { VedleggDataType } from 'types/VedleggDataType';
@@ -256,7 +256,7 @@ describe('useFpSendSøknad', () => {
             wrapper: getWrapper(),
         });
 
-        await result.current.sendSøknad();
+        await act(() => result.current.sendSøknad());
 
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
@@ -349,7 +349,7 @@ describe('useFpSendSøknad', () => {
             wrapper: getWrapper([]),
         });
 
-        await result.current.sendSøknad();
+        await act(() => result.current.sendSøknad());
 
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(

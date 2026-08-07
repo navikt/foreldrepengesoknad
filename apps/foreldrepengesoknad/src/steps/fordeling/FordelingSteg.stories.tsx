@@ -5,7 +5,7 @@ import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 import { AnnenForelder } from 'types/AnnenForelder';
 

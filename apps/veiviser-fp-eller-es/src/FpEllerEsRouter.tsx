@@ -1,6 +1,6 @@
 import { FpEllerEsRoutes } from 'appData/routes';
 import { useState } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router';
 
 import { Satser } from '@navikt/fp-types';
 

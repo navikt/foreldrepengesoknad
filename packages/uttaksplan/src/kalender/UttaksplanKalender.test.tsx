@@ -1064,7 +1064,7 @@ describe('UttaksplanKalender', () => {
         expect(within(juni).getByTestId('day:17;dayColor:BLUESTRIPED')).toBeInTheDocument();
     });
 
-    it('skal ikke vise forskyvspørsmålet når en har valgt dager før familiehendelsesdato', async () => {
+    it('skal ikke vise «Endre til ferie»-knappen når en har valgt dager før familiehendelsesdato', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 
         const april = screen.getByTestId('year:2024;month:3');
@@ -1076,16 +1076,11 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
 
-        await userEvent.click(screen.getByText('Endre til ferie'));
-
-        // Når «Endre og flytt resten av planen» ikke er mulig (valgt dager før seks
-        // uker etter fødsel/termin) er «Endre uten å flytte» eneste valg. Da skal
-        // spørsmålet ikke vises – endringen utføres direkte uten å flytte planen.
-        expect(screen.queryByText('Hva skal skje med resten av planen?')).not.toBeInTheDocument();
-
-        const aprilEtter = screen.getByTestId('year:2024;month:3');
-        expect(await within(aprilEtter).findByTestId('day:1;dayColor:BLUEOUTLINE')).toBeInTheDocument();
-        expect(within(aprilEtter).getByTestId('day:19;dayColor:BLACK')).toBeInTheDocument();
+        // Ferie kan ikke legges til eller endres til før familiehendelsesdato —
+        // knappen skal derfor ikke vises når valgte dager ligger før dette
+        // tidspunktet.
+        expect(screen.queryByText('Endre til ferie')).not.toBeInTheDocument();
+        expect(screen.queryByText('Legg til ferie')).not.toBeInTheDocument();
     });
 
     it('skal kunne velge å forskyve periodene ved endring til fars periode', async () => {
@@ -1335,7 +1330,9 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
 
-        expect(screen.getByText('Endre til ferie')).toBeInTheDocument();
+        // Dag 20 ligger før familiehendelsesdato (2026-01-21) — ferie kan ikke
+        // legges til eller endres til her, så knappen skal ikke vises.
+        expect(screen.queryByText('Endre til ferie')).not.toBeInTheDocument();
 
         await userEvent.click(within(januar).getByTestId('day:22;dayColor:BLUE'));
 

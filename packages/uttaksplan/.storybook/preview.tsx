@@ -21,6 +21,10 @@ const withIntlProvider = getIntlDecorator({
 });
 
 export const parameters = {
+    // a11y-addonen viser tilgjengelegheitsbrot i eit eige panel i Storybook UI-et, til lokal DX-feedback.
+    // Han er ikkje ein CI-gate (best-practice-regler på isolerte komponentar gir mykje støy) - sjå
+    // packages/utils-test/src/a11y/uuTest.ts for den faktiske a11y-testinga i CI.
+    a11y: { test: 'todo' },
     actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
         matchers: {

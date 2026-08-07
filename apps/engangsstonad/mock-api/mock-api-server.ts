@@ -65,9 +65,9 @@ router.delete('/fpsoknad/api/storage/ENGANGSSTONAD', (_req, res) => {
     return res.sendStatus(200);
 });
 
-router.post('/fpsoknad/api/storage/ENGANGSSTONAD/vedlegg', (req, res) => {
-    res.setHeader('Location', `http://localhost:8080/engangsstonad/dist/vedlegg/${req.body.id}`);
-    res.sendStatus(201);
+router.post('/fpsoknad/api/storage/ENGANGSSTONAD/vedlegg', (_req, res) => {
+    res.setHeader('Location', 'http://localhost:8080/engangsstonad/dist/vedlegg/123');
+    res.status(201).json('123');
 });
 
 router.delete('/fpsoknad/api/storage/ENGANGSSTONAD/vedlegg', (_req, res) => {

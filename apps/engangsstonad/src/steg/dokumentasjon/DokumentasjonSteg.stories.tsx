@@ -4,7 +4,7 @@ import { Path } from 'appData/paths';
 import { API_URLS } from 'appData/queries';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 
 import { BarnDto } from '@navikt/fp-types';

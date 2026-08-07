@@ -129,6 +129,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         uttakPerioder,
         foreldreInfo: { søker, rettighetType },
         familiehendelsedato,
+        familiesituasjon,
         erPeriodeneTilAnnenPartLåst,
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
@@ -289,6 +290,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         tomValue,
         perioder,
         familiehendelsedato,
+        familiesituasjon,
         søker,
         rettighetType,
     });

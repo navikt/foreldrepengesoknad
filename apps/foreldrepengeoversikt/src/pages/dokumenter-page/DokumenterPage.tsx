@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router';
 
 import { Alert, BodyLong, Button, Heading, Loader, Pagination, SortState, Table, VStack } from '@navikt/ds-react';
 
@@ -120,13 +120,13 @@ const DokumenterPageInner = () => {
                                     {paginatedSortedDokumenter.map((dokument) => {
                                         return (
                                             <Table.Row key={dokument.dokumentId}>
-                                                <Table.DataCell className="max-w-70" scope="row">
+                                                <Table.HeaderCell className="max-w-70" scope="row">
                                                     <DokumentLenke dokument={dokument} />
-                                                </Table.DataCell>
-                                                <Table.DataCell scope="row">
+                                                </Table.HeaderCell>
+                                                <Table.DataCell>
                                                     {formatDateExtended(dokument.mottatt)}
                                                 </Table.DataCell>
-                                                <Table.DataCell scope="row">
+                                                <Table.DataCell>
                                                     <DokumentAvsender dokumentType={dokument.type} />
                                                 </Table.DataCell>
                                             </Table.Row>
@@ -143,7 +143,7 @@ const DokumenterPageInner = () => {
                         </VStack>
                     </div>
                     <Alert variant="info" className="mb-8">
-                        <Heading level="3" size="small">
+                        <Heading level="2" size="small">
                             <FormattedMessage id="dokumenter.savner" />
                         </Heading>
                         <BodyLong>

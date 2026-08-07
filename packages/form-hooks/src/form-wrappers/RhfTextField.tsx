@@ -41,7 +41,7 @@ export const RhfTextField = <T extends FieldValues>({
 
     const {
         formState: { errors },
-    } = useFormContext();
+    } = useFormContext<T>();
 
     const { field } = useController({
         name,

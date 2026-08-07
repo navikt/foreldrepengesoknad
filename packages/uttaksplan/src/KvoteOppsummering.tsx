@@ -7,10 +7,11 @@ import { BodyShort, ExpansionCard, HGrid, HStack, VStack } from '@navikt/ds-reac
 import {
     KontoDto,
     KontoTypeUttak,
+    NavnPåForeldre,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
-import { formatOppramsing } from '@navikt/fp-utils';
+import { capitalizeFirstLetter, formatOppramsing, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from './context/UttaksplanDataContext';
 import { erVanligUttakPeriode } from './types/UttaksplanPeriode';
@@ -628,7 +629,7 @@ const StandardVisning = ({
         familiesituasjon,
         familiehendelsedato,
         valgtStønadskvote,
-        foreldreInfo: { erMedmorDelAvSøknaden },
+        foreldreInfo: { erMedmorDelAvSøknaden, erFarOgFar, navnPåForeldre },
     } = useUttaksplanData();
     const harAktivitetsfriKvote = valgtStønadskvote.kontoer.some((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
 
@@ -664,6 +665,8 @@ const StandardVisning = ({
                         kontoType={konto.konto}
                         erMedmorDelAvSøknaden={erMedmorDelAvSøknaden}
                         harAktivitetsfriKvote={harAktivitetsfriKvote}
+                        erFarOgFar={erFarOgFar}
+                        navnPåForeldre={navnPåForeldre}
                     />
                     {' - '}
                     {getVarighetString(konto.dager, intl)}
@@ -734,11 +737,31 @@ const VisningsnavnForKvote = ({
     kontoType,
     erMedmorDelAvSøknaden,
     harAktivitetsfriKvote,
+    erFarOgFar,
+    navnPåForeldre,
 }: {
     kontoType: KontoTypeUttak;
     erMedmorDelAvSøknaden?: boolean;
     harAktivitetsfriKvote?: boolean;
+    erFarOgFar?: boolean;
+    navnPåForeldre: NavnPåForeldre;
 }) => {
+    const intl = useIntl();
+
+    // Når begge foreldrene er fedre (f.eks. adopsjon) representerer ikke MØDREKVOTE/FEDREKVOTE
+    // en mor og en far, men to fedre – så vi viser forelderens faktiske navn i stedet for de
+    // generiske "Mødrekvote"/"Fedrekvote"-tekstene. Se getForelderVisningsnavnForFarOgFar for
+    // tilsvarende mønster brukt andre steder i uttaksplanen.
+    if (erFarOgFar && (kontoType === 'MØDREKVOTE' || kontoType === 'FEDREKVOTE')) {
+        const navn = kontoType === 'MØDREKVOTE' ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+        return (
+            <FormattedMessage
+                id="kvote.kvote.ForeldreNavn"
+                values={{ navn: getNavnGenitivEierform(capitalizeFirstLetter(navn), intl.locale) }}
+            />
+        );
+    }
+
     switch (kontoType) {
         case 'AKTIVITETSFRI_KVOTE':
             return <FormattedMessage id="kvote.kvote.ForeldrepengerUtenAktivitetskrav" />;

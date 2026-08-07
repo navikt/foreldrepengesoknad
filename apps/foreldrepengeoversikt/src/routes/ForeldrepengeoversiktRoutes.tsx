@@ -1,5 +1,5 @@
 import { ReactNode, useRef } from 'react';
-import { Navigate, Outlet, Route, Routes, useMatch, useNavigate } from 'react-router-dom';
+import { Navigate, Outlet, Route, Routes, useMatch, useNavigate } from 'react-router';
 
 import { OversiktPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 
@@ -82,6 +82,7 @@ function RedirectTilSakHvisDetKunFinnesEn({ saker }: { readonly saker: SakOppsla
 
 export function PageRouteLayout({ header, children }: { readonly header: ReactNode; readonly children: ReactNode }) {
     return (
+        // Merk: index.html har allereie <main id="app">; ikkje legg til eit nytt main her.
         <>
             {header}
             <LayoutWrapper className="ax-md:pb-28 pr-4 pb-4 pl-4">{children}</LayoutWrapper>

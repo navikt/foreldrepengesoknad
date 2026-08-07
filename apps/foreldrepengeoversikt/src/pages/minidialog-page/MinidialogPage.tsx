@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router';
 
 import { Heading, Loader, VStack } from '@navikt/ds-react';
 

@@ -148,9 +148,11 @@ export const OppsummeringSteg = ({ stønadskvoter, satser }: Props) => {
                     </VStack>
                 </VStack>
             </OppsummeringHeader>
-            <div className="bg-ax-neutral-200 pb-4">
+            {/* Eigen landemerke-region for «andre veivisere»-lenkjer, sidan innhaldet ligg
+                utanfor sida sitt <main> (OppsummeringHeader/Page). */}
+            <Box as="section" aria-labelledby="oppsummeringAndreVeivisereTittel" className="bg-ax-neutral-200 pb-4">
                 <VStack gap="space-16" className="mx-auto max-w-[560px] px-8 py-4">
-                    <Heading level="2" size="medium">
+                    <Heading id="oppsummeringAndreVeivisereTittel" level="2" size="medium">
                         <FormattedMessage id="OppsummeringSteg.AndreVeivisere" />
                     </Heading>
                     <LinkCard size="small">
@@ -178,7 +180,7 @@ export const OppsummeringSteg = ({ stønadskvoter, satser }: Props) => {
                         </LinkCard.Title>
                     </LinkCard>
                 </VStack>
-            </div>
+            </Box>
         </>
     );
 };

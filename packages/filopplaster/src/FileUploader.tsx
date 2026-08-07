@@ -110,9 +110,8 @@ export const FileUploader = ({
                 label={label}
                 description={
                     <VStack gap="space-8">
+                        {description}
                         <BodyShort>
-                            {description}
-                            {description && ' '}
                             <FormattedMessage
                                 id="FileInput.Vedlegg.Lovlige"
                                 values={{ maxStørrelse: MAX_FIL_STØRRELSE_MB }}

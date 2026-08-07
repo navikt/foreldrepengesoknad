@@ -3,7 +3,7 @@ import { PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { API_URLS } from 'appData/queries';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps, StrictMode } from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 
 import { KontoBeregningResultatDto } from '@navikt/fp-types';
 import { ErrorBoundary } from '@navikt/fp-ui';
@@ -116,6 +116,26 @@ export const DefaultMockaStønadskvoterOgSatser: Story = {
 
     beforeEach({ msw }) {
         msw.use(http.post(API_URLS.konto, () => HttpResponse.json(STØNADSKVOTER)));
+    },
+};
+
+export const MedValidertKontoKall: Story = {
+    ...Default,
+
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.konto, async ({ request }) => {
+                const body = (await request.json()) as {
+                    fødselsdato?: string;
+                    termindato?: string;
+                    omsorgsovertakelseDato?: string;
+                };
+                if (!body.fødselsdato && !body.termindato && !body.omsorgsovertakelseDato) {
+                    return new HttpResponse(null, { status: 500 });
+                }
+                return HttpResponse.json(STØNADSKVOTER);
+            }),
+        );
     },
 };
 

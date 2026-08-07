@@ -4,7 +4,7 @@ import { Path } from 'appData/paths';
 import { API_URLS } from 'appData/queries';
 import { VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
 import { HttpResponse, http } from 'msw';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 
 import { EsPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 

@@ -143,24 +143,24 @@ export const ErFødtPanel = ({
                             <FormattedMessage id="ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid" />
                         </BodyShort>
 
-                        <BodyShort>
-                            {erFedre || erFar ? (
-                                <VStack gap="space-8">
+                        {erFedre || erFar ? (
+                            <VStack gap="space-8">
+                                <BodyShort>
+                                    <FormattedMessage
+                                        id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
+                                        values={{
+                                            erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
+                                        }}
+                                    />
+                                </BodyShort>
+                                {erFedre && (
                                     <BodyShort>
-                                        <FormattedMessage
-                                            id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
-                                            values={{
-                                                erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
-                                            }}
-                                        />
+                                        <FormattedMessage id="Fødsel.ForeldrepengerInfoTekst.StebarnsadopterendeFar" />
                                     </BodyShort>
-                                    {erFedre && (
-                                        <BodyShort>
-                                            <FormattedMessage id="Fødsel.ForeldrepengerInfoTekst.StebarnsadopterendeFar" />
-                                        </BodyShort>
-                                    )}
-                                </VStack>
-                            ) : (
+                                )}
+                            </VStack>
+                        ) : (
+                            <BodyShort>
                                 <FormattedMessage
                                     id="Fødsel.ForeldrepengerInfoTekst.SøkeFireUkerFør"
                                     values={{
@@ -168,8 +168,8 @@ export const ErFødtPanel = ({
                                         erAlenesøker,
                                     }}
                                 />
-                            )}
-                        </BodyShort>
+                            </BodyShort>
+                        )}
                         {!erFedre && (
                             <>
                                 {!erAlenesøker && (

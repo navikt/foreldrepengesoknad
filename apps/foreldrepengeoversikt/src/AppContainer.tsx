@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router';
 
 import { AppShell, createDefaultQueryClient } from '@navikt/fp-app-shell';
 import { filopplasterMessages } from '@navikt/fp-filopplaster';
@@ -6,7 +6,7 @@ import { formHookMessages } from '@navikt/fp-form-hooks';
 import { observabilityMessages } from '@navikt/fp-observability';
 import { uiMessages } from '@navikt/fp-ui';
 import { utilsMessages } from '@navikt/fp-utils';
-import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan';
+import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan/intl';
 
 import { Foreldrepengeoversikt } from './Foreldrepengeoversikt';
 import { ErrorBoundary } from './components/error-boundary/ErrorBoundary';

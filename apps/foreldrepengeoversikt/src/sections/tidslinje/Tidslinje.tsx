@@ -16,7 +16,7 @@ import {
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Link as LinkInternal } from 'react-router-dom';
+import { Link as LinkInternal } from 'react-router';
 
 import { BodyShort, Box, Button, Link, List, Process, ReadMore, VStack } from '@navikt/ds-react';
 

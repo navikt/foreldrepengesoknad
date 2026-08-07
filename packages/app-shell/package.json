@@ -27,7 +27,7 @@
         "ky": "catalog:",
         "react": "catalog:",
         "react-dom": "catalog:",
-        "react-router-dom": "catalog:"
+        "react-router": "catalog:"
     },
     "devDependencies": {
         "@navikt/fp-config-eslint": "workspace:*",

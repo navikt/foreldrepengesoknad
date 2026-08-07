@@ -88,6 +88,18 @@ export const BeggeRettMorIngenDagerBrukt: Story = {
     },
 };
 
+export const BeggeRettFarOgFarIngenDagerBrukt: Story = {
+    args: {
+        ...BeggeRettMorIngenDagerBrukt.args,
+        foreldreInfo: {
+            ...DEFAULT_FORELDRE_INFO,
+            rettighetType: 'BEGGE_RETT',
+            søker: 'FAR_MEDMOR',
+            erFarOgFar: true,
+        },
+    },
+};
+
 export const BeggeRettMorAlleDagerBrukt: Story = {
     args: {
         valgtStønadskvote: kontoNårBeggeHarRett,

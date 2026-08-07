@@ -28,7 +28,7 @@ export const HarArbeidsforhold = ({ arbeidsforhold, harArbeidsforhold }: Props) 
                 >
                     <VStack gap="space-16">
                         <HStack justify="space-between">
-                            <Heading size="xsmall">
+                            <Heading size="xsmall" level="3">
                                 {arbforhold.arbeidsgiverIdType === 'orgnr' || arbforhold.arbeidsgiverNavn ? (
                                     capitalizeFirstLetterInEveryWordOnly(arbforhold.arbeidsgiverNavn)
                                 ) : (

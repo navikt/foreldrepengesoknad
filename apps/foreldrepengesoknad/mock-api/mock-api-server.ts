@@ -181,7 +181,7 @@ router.delete('/fpsoknad/api/storage/FORELDREPENGER/vedlegg/:uuid', (_req, res) 
 
 router.post('/fpsoknad/api/storage/FORELDREPENGER/vedlegg', (_req, res) => {
     res.setHeader('Location', 'http://localhost:8888/vedlegg/123');
-    res.sendStatus(201);
+    res.status(201).json('123');
 });
 
 router.get('/fpoversikt/api/saker/erOppdatert', (_req, res) => {

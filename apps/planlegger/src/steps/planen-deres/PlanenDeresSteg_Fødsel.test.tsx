@@ -8,8 +8,8 @@ import { DELT_UTTAK_80_TO_BARN, DELT_UTTAK_100_TO_BARN } from '@navikt/fp-utils-
 import { endreFordelingMedSlider } from '../../../vitest/testHelpers';
 import * as stories from './PlanenDeresSteg_Fødsel.stories';
 
-vi.mock('react-router-dom', async () => {
-    const actual = await vi.importActual('react-router-dom');
+vi.mock('react-router', async () => {
+    const actual = await vi.importActual('react-router');
     return {
         ...actual,
         useNavigate: vi.fn(),
@@ -683,7 +683,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
     });
 
     it('skal lagre planforslaget til context ved navigering til oppsummering uten at brukeren har gjort endringer', async () => {
-        const { useNavigate } = await import('react-router-dom');
+        const { useNavigate } = await import('react-router');
         const navigateMock = vi.fn();
         vi.mocked(useNavigate).mockReturnValue(navigateMock);
 

@@ -483,6 +483,8 @@ describe('Fordeling - FarMedmorAleneomsorgEttBarnTerminEtterWLB', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til far med aleneomsorg med fødte tvillinger', async () => {
+        MockDate.set(new Date('2024-09-12'));
+
         await FarMedmorAleneomsorgEttBarnTerminEtterWLB.run({
             args: {
                 ...FarMedmorAleneomsorgEttBarnTerminEtterWLB.args,
@@ -490,8 +492,6 @@ describe('Fordeling - FarMedmorAleneomsorgEttBarnTerminEtterWLB', () => {
                 mellomlagreSøknadOgNaviger,
             },
         });
-
-        MockDate.set(new Date('2024-09-12'));
 
         expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
         expect(screen.getByText('46 uker til deg')).toBeInTheDocument();
@@ -616,7 +616,7 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
 
         await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
         expect(
-            screen.getByText('Hvis barnet blir innlagt på sykehus de første 6 ukene etter fødsel.'),
+            screen.getByText('Hvis barnet er innlagt på sykehus før termindato'),
         ).toBeInTheDocument();
         expect(screen.getByText('Hvis du blir syk de første seks ukene med foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Hvis du blir syk eller innlagt på helseinstitusjon')).toBeInTheDocument();
@@ -909,7 +909,7 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
 
         await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
         expect(
-            screen.getByText('Hvis barnet blir innlagt på sykehus de første 6 ukene etter fødsel.'),
+            screen.getByText('Hvis barnet er innlagt på sykehus før termindato'),
         ).toBeInTheDocument();
         expect(screen.getByText('Hvis du blir syk de første seks ukene med foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Hvis du blir syk eller innlagt på helseinstitusjon')).toBeInTheDocument();
@@ -1036,7 +1036,7 @@ describe('Fordeling - MorDeltUttakTvillingerFødt', () => {
 
         await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
         expect(
-            screen.getByText('Hvis barna blir innlagt på sykehus de første 6 ukene etter fødsel.'),
+            screen.getByText('Hvis barna er innlagt på sykehus før termindato'),
         ).toBeInTheDocument();
 
         expect(
@@ -1124,7 +1124,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021', () => {
 
         await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
         expect(
-            screen.queryByText('Hvis barnet blir innlagt på sykehus de første 6 ukene etter fødsel.'),
+            screen.queryByText('Hvis barnet er innlagt på sykehus før termindato'),
         ).not.toBeInTheDocument();
         expect(screen.queryByText('Hvis du blir syk de første seks ukene med foreldrepenger')).not.toBeInTheDocument();
         expect(screen.queryByText('Hvis du blir syk eller innlagt på helseinstitusjon')).not.toBeInTheDocument();
@@ -1299,7 +1299,9 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
         expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
     });
 
-    it('skal ikke kunne begynne uttaket før fødselsdato', async () => {
+    it('skal ikke kunne begynne uttaket tidligere enn to uker før fødselsdato', async () => {
+        // Barnet er født mer enn to uker før termin (prematurt). Far/medmor skal da kunne starte
+        // to uker før fødselsdatoen, ikke først fra fødselsdatoen. Se TFP-5892.
         MockDate.set(new Date('2024-02-25'));
         await FarMedmorSøkerDeltUttakEttBarnFødtPrematurt.run({
             args: {
@@ -1311,10 +1313,10 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
         expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
         await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
         const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
-        await userEvent.type(oppstart, '20.02.2024');
+        await userEvent.type(oppstart, '06.02.2024');
         fireEvent.blur(oppstart);
         await userEvent.click(screen.getByText('Neste steg'));
-        expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 21.02.2024.')).toHaveLength(2);
+        expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 07.02.2024.')).toHaveLength(2);
     });
 });
 
@@ -1486,7 +1488,7 @@ describe('Fordeling - BareMorHarRettAdopsjon', () => {
         expect(screen.getByText('Hvis du får et nytt barn før det har gått tre år')).toBeInTheDocument();
         expect(screen.getByText('Hvis du jobber samtidig som du har foreldrepenger')).toBeInTheDocument();
         expect(
-            screen.queryByText('Hvis barnet blir innlagt på sykehus de første 6 ukene etter fødsel.'),
+            screen.queryByText('Hvis barnet er innlagt på sykehus før termindato'),
         ).not.toBeInTheDocument();
         expect(screen.queryByText('Hvis du blir syk de første seks ukene med foreldrepenger')).not.toBeInTheDocument();
         expect(screen.queryByText('Hvis du blir syk eller innlagt på helseinstitusjon')).not.toBeInTheDocument();
@@ -1530,7 +1532,7 @@ describe('Fordeling - BareFarHarRettOgMorErUførTermin4Barn', () => {
         expect(screen.getByText('Hvis du jobber samtidig som du har foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Hvis barna blir født før svangerskapsuke 33')).toBeInTheDocument();
         expect(
-            screen.queryByText('Hvis barnet blir innlagt på sykehus de første 6 ukene etter fødsel.'),
+            screen.queryByText('Hvis barnet er innlagt på sykehus før termindato'),
         ).not.toBeInTheDocument();
         expect(screen.queryByText('Hvis du blir syk de første seks ukene med foreldrepenger')).not.toBeInTheDocument();
         expect(screen.queryByText('Hvis du blir syk eller innlagt på helseinstitusjon')).not.toBeInTheDocument();

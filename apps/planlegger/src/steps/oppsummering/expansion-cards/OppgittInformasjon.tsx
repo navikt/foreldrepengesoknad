@@ -92,7 +92,7 @@ export const OppgittInformasjon = ({
                         <IconCircleWrapper size="medium" color="lightBlue">
                             <ChatElipsisIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                         </IconCircleWrapper>
-                        <ExpansionCard.Title size="small">
+                        <ExpansionCard.Title size="small" as="h2">
                             <FormattedMessage id="OppgittInformasjon.OppgittInformasjon" values={{ erAlenesøker }} />
                         </ExpansionCard.Title>
                     </HStack>

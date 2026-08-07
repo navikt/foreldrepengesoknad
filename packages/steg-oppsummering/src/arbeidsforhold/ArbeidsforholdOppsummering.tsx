@@ -60,15 +60,16 @@ export const ArbeidsforholdOppsummering = ({
                                 ))}
                             </FormSummary.Answers>
                         )}
+                        {/* Alerten må ligge inni <dd>-en: eit <div> i ein <dl> kan berre innehalde dt/dd-grupper. */}
+                        {skalViseAlertOmIM && (
+                            <Alert variant="info" style={{ marginTop: 'var(--ax-space-8)' }}>
+                                <FormattedMessage
+                                    id="ArbeidsforholdOppsummering.inntektsmelding"
+                                    values={{ antall: arbeidsforhold.length }}
+                                />
+                            </Alert>
+                        )}
                     </FormSummary.Value>
-                    {skalViseAlertOmIM && (
-                        <Alert variant="info" style={{ marginTop: 'var(--ax-space-8)' }}>
-                            <FormattedMessage
-                                id="ArbeidsforholdOppsummering.inntektsmelding"
-                                values={{ antall: arbeidsforhold.length }}
-                            />
-                        </Alert>
-                    )}
                 </FormSummary.Answer>
                 {frilansoppdrag.length === 0 && (
                     <FormSummary.Answer>
