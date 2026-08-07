@@ -12,10 +12,6 @@
         "cpu": "50m",
         "mem": "230Mi"
     },
-    "redirect": {
-        "host": "foreldrepenger.nav.no",
-        "ingressClassName": "nais-ingress-external"
-    },
     "haproxyredirect": {
         "host": "foreldrepenger.nav.no",
         "ingressClassName": "external-haproxy"
