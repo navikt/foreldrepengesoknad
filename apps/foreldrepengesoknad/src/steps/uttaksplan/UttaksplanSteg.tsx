@@ -79,7 +79,12 @@ export const UttaksplanSteg = ({
     );
 
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad, eksisterendeSak);
-    const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger, erEndringssøknad, eksisterendeSak);
+    const navigator = useFpNavigator(
+        søkerInfo.arbeidsforhold,
+        mellomlagreSøknadOgNaviger,
+        erEndringssøknad,
+        eksisterendeSak,
+    );
 
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const erAleneOmOmsorg = oppgittAnnenForelder ? oppgittAnnenForelder.erAleneOmOmsorg : true;

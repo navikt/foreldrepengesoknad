@@ -3,6 +3,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { ReactNode } from 'react';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
+
 import {
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriodeResultat_fpoversikt,
@@ -42,9 +43,7 @@ const lagPeriode = (o: Partial<UttakPeriode_fpoversikt> = {}): UttakPeriode_fpov
     ...o,
 });
 
-const lagEøs = (
-    o: Partial<UttakPeriodeAnnenpartEøs_fpoversikt> = {},
-): UttakPeriodeAnnenpartEøs_fpoversikt => ({
+const lagEøs = (o: Partial<UttakPeriodeAnnenpartEøs_fpoversikt> = {}): UttakPeriodeAnnenpartEøs_fpoversikt => ({
     fom: FOM,
     tom: TOM,
     kontoType: 'FELLESPERIODE',
@@ -107,15 +106,13 @@ const beregnEntry = (s: FargeSpec): FargeEntry => ({
     beskrivelse: s.beskrivelse,
     kalender: s.kalenderPeriode
         ? {
-              fargekode: getKalenderFargeForPeriode(
+              fargekode: getKalenderFargeForPeriode(s.kalenderPeriode, s.kalenderErFarEllerMedmor ?? false, [
                   s.kalenderPeriode,
-                  s.kalenderErFarEllerMedmor ?? false,
-                  [s.kalenderPeriode],
-              ),
+              ]),
               legendLabel:
                   getLegendLabelFromPeriode(s.kalenderPeriode, s.kalenderErFarEllerMedmor ?? false) ?? '(ingen)',
           }
-        : s.kalenderStatisk ?? { fargekode: null, legendLabel: '—' },
+        : (s.kalenderStatisk ?? { fargekode: null, legendLabel: '—' }),
     liste: s.listePerioder
         ? {
               bakgrunn: finnBakgrunnsfarge(
@@ -252,8 +249,7 @@ const OMRÅDER: FargeOmråde[] = [
                 beregnEntry({
                     id: 'samtidig-far',
                     periodetype: 'Samtidig uttak (sett fra far)',
-                    beskrivelse:
-                        'Kalender: blå topp, grønn bunn. Liste: samme gradient (ikke perspektivavhengig).',
+                    beskrivelse: 'Kalender: blå topp, grønn bunn. Liste: samme gradient (ikke perspektivavhengig).',
                     kalenderPeriode: farSamtidig,
                     kalenderErFarEllerMedmor: true,
                     listePerioder,
@@ -365,9 +361,7 @@ const OMRÅDER: FargeOmråde[] = [
                     'Bare liste: far/medmors fellesperiode der mors aktivitet ikke er oppgitt. ' +
                     'Rød bakgrunn (danger-200) signaliserer at perioden trenger redigering.',
                 kalenderStatisk: { fargekode: null, legendLabel: '(bare liste)' },
-                listePerioder: [
-                    lagPeriode({ forelder: 'FAR_MEDMOR', kontoType: 'FELLESPERIODE' }),
-                ],
+                listePerioder: [lagPeriode({ forelder: 'FAR_MEDMOR', kontoType: 'FELLESPERIODE' })],
                 listeHarMorsAktivitetIkkeErValgt: true,
             }),
         ],
@@ -388,12 +382,7 @@ const OMRÅDER: FargeOmråde[] = [
                 kalenderStatisk: {
                     fargekode: null,
                     ikon: (
-                        <HeartFillIcon
-                            aria-hidden
-                            color="var(--ax-bg-brand-magenta-strong)"
-                            width={25}
-                            height={25}
-                        />
+                        <HeartFillIcon aria-hidden color="var(--ax-bg-brand-magenta-strong)" width={25} height={25} />
                     ),
                     legendLabel: 'FØDSEL / TERMIN / ADOPSJON',
                 },
@@ -406,22 +395,14 @@ const OMRÅDER: FargeOmråde[] = [
                 beskrivelse: 'Dato for barnehagestart — markerer slutten på foreldrepengeperioden.',
                 kalenderStatisk: {
                     fargekode: null,
-                    ikon: (
-                        <TeddyBearFillIcon
-                            aria-hidden
-                            color="var(--ax-brand-beige-800)"
-                            width={25}
-                            height={25}
-                        />
-                    ),
+                    ikon: <TeddyBearFillIcon aria-hidden color="var(--ax-brand-beige-800)" width={25} height={25} />,
                     legendLabel: 'BARNEHAGEPLASS',
                 },
             }),
             beregnEntry({
                 id: 'helg',
                 periodetype: 'Helg',
-                beskrivelse:
-                    'Lørdag og søndag — det telles ikke uttaksdager i helgene. Bare i kalenderen.',
+                beskrivelse: 'Lørdag og søndag — det telles ikke uttaksdager i helgene. Bare i kalenderen.',
                 kalenderStatisk: { fargekode: 'GRAY', legendLabel: 'HELG' },
             }),
         ],
@@ -437,8 +418,7 @@ const OMRÅDER: FargeOmråde[] = [
             beregnEntry({
                 id: 'none',
                 periodetype: 'Ingen periode',
-                beskrivelse:
-                    'Dager uten periode — standard for dager som ikke er del av noen uttaksperiode.',
+                beskrivelse: 'Dager uten periode — standard for dager som ikke er del av noen uttaksperiode.',
                 kalenderStatisk: { fargekode: 'NONE', legendLabel: '(ingen)' },
             }),
             beregnEntry({
@@ -573,8 +553,8 @@ const Fargekatalog = () => {
                     <strong>NB:</strong> Fargene i denne oversikten er <em>dynamisk utledet</em> fra produksjonskoden
                     (samme funksjoner som appen bruker). Endringer i{' '}
                     <code className="font-mono">getKalenderFargeForPeriode</code>,{' '}
-                    <code className="font-mono">finnBakgrunnsfarge</code>,{' '}
-                    <code className="font-mono">getIkon</code> osv. blir automatisk reflektert her.
+                    <code className="font-mono">finnBakgrunnsfarge</code>, <code className="font-mono">getIkon</code>{' '}
+                    osv. blir automatisk reflektert her.
                     <br />
                     <br />
                     Hovedmønster: <strong>blå = mor</strong>, <strong>grønn = far / medmor</strong>,{' '}

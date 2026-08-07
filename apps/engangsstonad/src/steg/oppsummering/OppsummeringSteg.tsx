@@ -37,10 +37,7 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreOgNaviger }: Props) =
                 onFortsettSenere={navigator.fortsettSøknadSenere}
                 onStepChange={navigator.goToStep}
             >
-                <OmBarnetOppsummering
-                    omBarnet={omBarnet}
-                    onVilEndreSvar={() => navigator.goToStep(Path.OM_BARNET)}
-                />
+                <OmBarnetOppsummering omBarnet={omBarnet} onVilEndreSvar={() => navigator.goToStep(Path.OM_BARNET)} />
                 <BoIUtlandetOppsummering
                     onVilEndreSvar={() => navigator.goToStep(Path.UTENLANDSOPPHOLD)}
                     tidligereUtenlandsopphold={tidligereUtenlandsopphold ?? []}

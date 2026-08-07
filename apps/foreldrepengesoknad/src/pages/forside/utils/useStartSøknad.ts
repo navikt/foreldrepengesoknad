@@ -14,8 +14,8 @@ import { captureMessage } from '@navikt/fp-observability';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 
 import { ValgtBarn } from '../../../types/ValgtBarn';
-import { bestemSøknadsstart } from './forsideUtils';
 import { ForsideFormValues } from '../types/ForsideFormValues';
+import { bestemSøknadsstart } from './forsideUtils';
 
 export type Søknadsmetadata = {
     harGodkjentVilkår: boolean;
@@ -94,9 +94,7 @@ export const useStartSøknad = ({
     const startSøknad = (values: ForsideFormValues) => {
         // Skal i utgangspunktet ikke få submitte hvis denne ikke er true
         if (!values.harForståttRettigheterOgPlikter) {
-            captureMessage(
-                'harForståttRettigheterOgPlikter er falsy til tross for at formet skal ha validert den',
-            );
+            captureMessage('harForståttRettigheterOgPlikter er falsy til tross for at formet skal ha validert den');
             return;
         }
 

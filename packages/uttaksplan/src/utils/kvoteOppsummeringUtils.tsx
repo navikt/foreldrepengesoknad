@@ -186,9 +186,7 @@ export const useUbrukteDagerPerKontoKunEnHarRett = () => {
         : 0;
 
     const ubrukteFørFødselDager =
-        førFødselKonto && familiesituasjon !== 'fødsel'
-            ? Math.max(0, førFødselKonto.dager - bruktFørFødsel)
-            : 0;
+        førFødselKonto && familiesituasjon !== 'fødsel' ? Math.max(0, førFødselKonto.dager - bruktFørFødsel) : 0;
 
     const aktivitetsfriDiff = aktivitetsfriKonto ? aktivitetsfriKonto.dager - bruktAktivitetsfri : 0;
     const medAktivitetskravDiff = foreldrepengerKonto

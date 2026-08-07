@@ -6,7 +6,7 @@ import ky from 'ky';
 import { useIntl } from 'react-intl';
 
 import { RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
-import { erMyndig, erLikUansettRekkefølge, useDocumentTitle } from '@navikt/fp-utils';
+import { erLikUansettRekkefølge, erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ApiErrorHandler, SvangerskapspengesøknadRoutes } from './SvangerskapspengesøknadRoutes';

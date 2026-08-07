@@ -1,5 +1,5 @@
-import { Meta, StoryObj } from '@storybook/react-vite';
 import { linkTo } from '@storybook/addon-links';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Tag } from '@navikt/ds-react';
 
@@ -85,7 +85,11 @@ const kolonner: ReadonlyArray<Kolonne<Kvoteregel>> = [
     {
         overskrift: 'Kvotetype',
         bredde: '18%',
-        render: (r) => <Tag variant="success-moderate" size="small">{r.kontotype}</Tag>,
+        render: (r) => (
+            <Tag variant="success-moderate" size="small">
+                {r.kontotype}
+            </Tag>
+        ),
     },
     {
         overskrift: 'Når kvoten er gyldig',

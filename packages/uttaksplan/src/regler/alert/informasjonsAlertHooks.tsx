@@ -4,24 +4,24 @@ import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { kanMisteDagerVedEndringTilFerie } from '../../felles/uttaksplanValidatorer';
+import { ForeldreInfo } from '../../types/ForeldreInfo';
 import {
     Uttaksplanperiode,
     UttaksplanperiodeMedKunTapteDager,
     erEøsUttakPeriode,
     erVanligUttakPeriode,
 } from '../../types/UttaksplanPeriode';
-import { ForeldreInfo } from '../../types/ForeldreInfo';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { erDetReadonlyPerioderEtterValgtePerioder } from '../../utils/periodeUtils';
 import { Periode } from '../types';
 import {
     ADOPSJON_PERIODE_FØR_FAMHEND,
     EØS_UTTAK_KAN_GI_AVSLAG,
+    FERIE_UKE_7_ETTER_TERMIN,
     ForskyvEllerErstattKontekst,
     GRADERINGSAKTIVITET_IKKE_VALGT_EKSISTERENDE,
     IKKE_REDIGERBAR_PLEIEPENGER,
     KAN_MISTE_DAGER,
-    FERIE_UKE_7_ETTER_TERMIN,
     MANGLER_GRADERINGSAKTIVITET_KALENDER,
     MANGLER_GRADERINGSAKTIVITET_LISTE,
     MANGLER_MORS_AKTIVITET_KALENDER,

@@ -279,11 +279,7 @@ export type com_neovisionaries_i18n_CountryCode =
     | 'ZW';
 
 export type no_nav_foreldrepenger_kontrakter_felles_kodeverk_KontoType =
-    | 'FELLESPERIODE'
-    | 'MØDREKVOTE'
-    | 'FEDREKVOTE'
-    | 'FORELDREPENGER'
-    | 'FORELDREPENGER_FØR_FØDSEL';
+    'FELLESPERIODE' | 'MØDREKVOTE' | 'FEDREKVOTE' | 'FORELDREPENGER' | 'FORELDREPENGER_FØR_FØDSEL';
 
 export type no_nav_foreldrepenger_kontrakter_felles_kodeverk_MorsAktivitet =
     | 'ARBEID'
@@ -297,10 +293,7 @@ export type no_nav_foreldrepenger_kontrakter_felles_kodeverk_MorsAktivitet =
     | 'IKKE_OPPGITT';
 
 export type no_nav_foreldrepenger_kontrakter_felles_kodeverk_Overføringsårsak =
-    | 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER'
-    | 'SYKDOM_ANNEN_FORELDER'
-    | 'ALENEOMSORG'
-    | 'IKKE_RETT_ANNEN_FORELDER';
+    'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' | 'SYKDOM_ANNEN_FORELDER' | 'ALENEOMSORG' | 'IKKE_RETT_ANNEN_FORELDER';
 
 export type BrukerRolle = 'MOR' | 'FAR' | 'MEDMOR';
 

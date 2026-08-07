@@ -223,10 +223,7 @@ const HeaderForDesktop = () => {
                     </Heading>
                 </HStack>
                 <Chips size="small">
-                    <Chips.Removable
-                        onDelete={() => setValgtePerioder([])}
-                        onClick={(e) => e.stopPropagation()}
-                    >
+                    <Chips.Removable onDelete={() => setValgtePerioder([])} onClick={(e) => e.stopPropagation()}>
                         {intl.formatMessage(
                             { id: 'RedigeringPanel.ValgteDager' },
                             {
@@ -301,10 +298,7 @@ const HeaderForMobil = ({
 
                 {!erMinimert && (
                     <Chips size="small">
-                        <Chips.Removable
-                            onDelete={() => setValgtePerioder([])}
-                            onClick={(e) => e.stopPropagation()}
-                        >
+                        <Chips.Removable onDelete={() => setValgtePerioder([])} onClick={(e) => e.stopPropagation()}>
                             {intl.formatMessage(
                                 { id: 'RedigeringPanel.ValgteDager' },
                                 {

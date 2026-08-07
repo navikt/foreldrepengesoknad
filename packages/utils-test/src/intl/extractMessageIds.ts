@@ -71,10 +71,7 @@ const collectIdFromObject = (node: ts.Node, ids: string[]): void => {
         return;
     }
     for (const property of node.properties) {
-        if (
-            ts.isPropertyAssignment(property) &&
-            getPropertyName(property.name) === 'id'
-        ) {
+        if (ts.isPropertyAssignment(property) && getPropertyName(property.name) === 'id') {
             const id = getStaticString(property.initializer);
             if (id !== undefined) {
                 ids.push(id);
@@ -98,11 +95,7 @@ const collectIdsFromMessagesObject = (node: ts.Node, ids: string[]): void => {
 /** Plukker ut `id="..."` eller `id={'...'}` fra JSX-attributter. */
 const collectIdFromJsxAttributes = (attributes: ts.JsxAttributes, ids: string[]): void => {
     for (const attribute of attributes.properties) {
-        if (
-            ts.isJsxAttribute(attribute) &&
-            attribute.name.getText() === 'id' &&
-            attribute.initializer !== undefined
-        ) {
+        if (ts.isJsxAttribute(attribute) && attribute.name.getText() === 'id' && attribute.initializer !== undefined) {
             const id = getJsxAttributeString(attribute.initializer);
             if (id !== undefined) {
                 ids.push(id);
@@ -118,9 +111,7 @@ const getPropertyName = (name: ts.PropertyName): string | undefined => {
     return undefined;
 };
 
-const getJsxAttributeString = (
-    initializer: ts.JsxAttributeValue,
-): string | undefined => {
+const getJsxAttributeString = (initializer: ts.JsxAttributeValue): string | undefined => {
     if (ts.isStringLiteral(initializer)) {
         return initializer.text;
     }

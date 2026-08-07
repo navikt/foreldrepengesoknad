@@ -1,4 +1,10 @@
-import { isDateAAfterDateB, isDateASameOrBeforeDateB, isDateRangesOverlapping, isDateWithinRange, isValidDate } from './dateValidation';
+import {
+    isDateAAfterDateB,
+    isDateASameOrBeforeDateB,
+    isDateRangesOverlapping,
+    isDateWithinRange,
+    isValidDate,
+} from './dateValidation';
 
 describe('dateValidation (datouavhengige funksjoner)', () => {
     describe('isValidDate', () => {

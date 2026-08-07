@@ -528,7 +528,9 @@ describe('UttaksplanListe', () => {
         render(<MarkeringNårGraderingsaktivitetMangler />);
 
         expect(
-            await screen.findByText('Du må velge hvor du skal jobbe samtidig som du har foreldrepenger før du går videre'),
+            await screen.findByText(
+                'Du må velge hvor du skal jobbe samtidig som du har foreldrepenger før du går videre',
+            ),
         ).toBeInTheDocument();
 
         expect(

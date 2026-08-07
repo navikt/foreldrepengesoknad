@@ -3,8 +3,8 @@ import { useEffect, useRef, useState } from 'react';
 import { loggUmamiEvent } from '@navikt/fp-observability';
 
 import { ContextDataType, useContextGetAnyData, useContextSaveData } from './EsDataContext';
-import { MellomlagreSøknadFn } from './useEsMellomlagring';
 import { Path } from './paths';
+import { MellomlagreSøknadFn } from './useEsMellomlagring';
 import { lagAppStegliste, useCurrentPath } from './useStepConfig';
 
 export const useEsNavigator = (mellomlagreOgNaviger: MellomlagreSøknadFn) => {

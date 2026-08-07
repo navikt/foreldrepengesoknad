@@ -3,8 +3,8 @@ import { screen } from '@testing-library/react';
 
 import { forventIngenUuFeil } from '@navikt/fp-utils-test/a11y';
 
-import * as beregningPageStories from './pages/beregning-page/BeregningPage.stories';
 import * as bruktOpplysningerStories from './pages/BruktOpplysningerOmArbeidsforhold/BruktOpplysningerOmArbeidsforhold.stories';
+import * as beregningPageStories from './pages/beregning-page/BeregningPage.stories';
 import * as dokumenterEttersendingStories from './pages/dokumenter-page/EttersendingPage.stories';
 import * as ettersendingStories from './pages/ettersending/EttersendingPage.stories';
 import * as forsideStories from './pages/forside/Forside.stories';

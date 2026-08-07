@@ -15,8 +15,4 @@ export const skalBesvareFlerbarnsdager = (
     antallBarn: number,
     forelder: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined,
     kontotype: KontoTypeUttak | undefined,
-): boolean =>
-    antallBarn > 1 &&
-    forelder !== 'MOR' &&
-    kontotype !== 'MØDREKVOTE' &&
-    kontotype !== 'AKTIVITETSFRI_KVOTE';
+): boolean => antallBarn > 1 && forelder !== 'MOR' && kontotype !== 'MØDREKVOTE' && kontotype !== 'AKTIVITETSFRI_KVOTE';

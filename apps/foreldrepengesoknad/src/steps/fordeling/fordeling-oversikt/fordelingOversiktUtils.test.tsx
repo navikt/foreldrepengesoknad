@@ -18,7 +18,9 @@ const lagEøs = (fom: string, tom: string): UttakPeriodeAnnenpartEøs_fpoversikt
 
 describe('getSisteUttaksdagAnnenForelder', () => {
     it('returnerer undefined når det ikke er delt uttak', () => {
-        expect(getSisteUttaksdagAnnenForelder(true, false, [lagUttak('MOR', '2025-04-01', '2025-04-30')])).toBeUndefined();
+        expect(
+            getSisteUttaksdagAnnenForelder(true, false, [lagUttak('MOR', '2025-04-01', '2025-04-30')]),
+        ).toBeUndefined();
     });
 
     it('returnerer undefined når annen parts perioder mangler eller er tomme', () => {

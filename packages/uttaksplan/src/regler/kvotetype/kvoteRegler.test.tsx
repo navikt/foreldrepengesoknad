@@ -209,7 +209,10 @@ describe('useGyldigeKvotetyper - mors kvoter', () => {
     it.each([
         { beskrivelse: 'foreldrepenger før fødsel når familiehendelsesdato er valgt', fom: '2024-05-27' },
         { beskrivelse: 'foreldrepenger når en har valgt dag før tre uker før fødsel', fom: '2024-05-24' },
-        { beskrivelse: 'noen gyldige kontotyper for mor når en har valgt dag mer enn 12 uker før fødsel', fom: '2024-03-24' },
+        {
+            beskrivelse: 'noen gyldige kontotyper for mor når en har valgt dag mer enn 12 uker før fødsel',
+            fom: '2024-03-24',
+        },
     ])('skal ikke ha $beskrivelse', ({ fom }) => {
         const { result } = renderHook(
             () =>
