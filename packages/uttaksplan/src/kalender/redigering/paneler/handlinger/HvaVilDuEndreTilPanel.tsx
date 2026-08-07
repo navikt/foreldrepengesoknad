@@ -222,7 +222,7 @@ const HeaderForDesktop = () => {
                         <FormattedMessage id="RedigeringPanel.EndreTil" />
                     </Heading>
                 </HStack>
-                <div onClick={(e) => e.stopPropagation()}>
+                <div onClick={(e) => e.stopPropagation()} role="presentation">
                     <Chips size="small">
                         <Chips.Removable onDelete={() => setValgtePerioder([])}>
                             {intl.formatMessage(
@@ -278,7 +278,7 @@ const HeaderForMobil = ({
                             <FormattedMessage id="RedigeringPanel.EndreTil" />
                         </Heading>
                         {erMinimert && (
-                            <div onClick={(e) => e.stopPropagation()}>
+                            <div onClick={(e) => e.stopPropagation()} role="presentation">
                                 <Chips size="small">
                                     <Chips.Removable onDelete={() => setValgtePerioder([])}>
                                         {intl.formatMessage(
@@ -298,7 +298,7 @@ const HeaderForMobil = ({
                 </HStack>
 
                 {!erMinimert && (
-                    <div onClick={(e) => e.stopPropagation()}>
+                    <div onClick={(e) => e.stopPropagation()} role="presentation">
                         <Chips size="small">
                             <Chips.Removable onDelete={() => setValgtePerioder([])}>
                                 {intl.formatMessage(
