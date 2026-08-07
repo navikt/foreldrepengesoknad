@@ -79,7 +79,10 @@ export const SKAL_VISE_FERIEKNAPP: Synlighetsregel<KnapperIRedigeringspanelKonte
     beskrivelse:
         '«Legg til ferie»-knappen vises som hovedalternativ når verken utsettelse eller pause er tilgjengelig. ' +
         'For far/medmor med BARE_SØKER_RETT skjules den likevel hvis minst én valgt periode ligger på eller ' +
-        'etter seks uker etter familiehendelsesdato — der er pause det riktige valget i stedet for ferie.',
+        'etter seks uker etter familiehendelsesdato — der er pause det riktige valget i stedet for ferie. ' +
+        'Knappen skjules også alltid hvis minst én valgt periode (ny eller eksisterende) ligger før ' +
+        'familiehendelsesdato — det finnes ingen stønadsrettighet å ta eller endre til ferie fra før dette ' +
+        'tidspunktet, verken ved å legge til nye dager eller ved å endre eksisterende perioder.',
     skalVises: (k) =>
         !SKAL_VISE_UTSETTELSESKNAPP.skalVises(k) &&
         !SKAL_VISE_PAUSEKNAPP.skalVises(k) &&
@@ -89,6 +92,10 @@ export const SKAL_VISE_FERIEKNAPP: Synlighetsregel<KnapperIRedigeringspanelKonte
                 [...k.sammenslåtteValgtePerioder],
                 k.familiehendelsedato,
             )
+        ) &&
+        !UttaksperiodeValidatorer.erNoenPerioderFørFamiliehendelsesdato(
+            [...k.sammenslåtteValgtePerioder],
+            k.familiehendelsedato,
         ),
 };
 

@@ -11,14 +11,10 @@ import { Feltregel, Periode } from '../types';
  * feilmelding.
  */
 export const lagHvaVilDuGjøreValidatorer = (intl: IntlShape, kontekst: StaticKontekst) =>
-    lagHvaVilDuGjøreRegler(intl).map((regel) => lagFeltvalidator(regel, kontekst));
+    lagHvaVilDuGjøreRegler(intl, kontekst.familiesituasjon).map((regel) => lagFeltvalidator(regel, kontekst));
 
 type HvaVilDuGjøre =
-    | 'LEGG_TIL_FERIE'
-    | 'LEGG_TIL_UTSETTELSE'
-    | 'LEGG_TIL_PAUSE'
-    | 'LEGG_TIL_OPPHOLD'
-    | 'LEGG_TIL_PERIODE';
+    'LEGG_TIL_FERIE' | 'LEGG_TIL_UTSETTELSE' | 'LEGG_TIL_PAUSE' | 'LEGG_TIL_OPPHOLD' | 'LEGG_TIL_PERIODE';
 
 type HvaVilDuGjøreInput = {
     nyHvaVilDuGjøre: HvaVilDuGjøre | undefined;
@@ -34,7 +30,10 @@ type HvaVilDuGjøreInput = {
 const valgtPeriode = ({ fomValue, tomValue }: HvaVilDuGjøreInput): Periode[] =>
     fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [];
 
-export const lagHvaVilDuGjøreRegler = (intl: IntlShape): ReadonlyArray<Feltregel<HvaVilDuGjøreInput>> => [
+export const lagHvaVilDuGjøreRegler = (
+    intl: IntlShape,
+    familiesituasjon: Familiesituasjon,
+): ReadonlyArray<Feltregel<HvaVilDuGjøreInput>> => [
     {
         id: 'hvaVilDuGjøre.utsettelseMåLiggeInnenforSeksUkerEtterFødsel',
         beskrivelse:
@@ -60,6 +59,22 @@ export const lagHvaVilDuGjøreRegler = (intl: IntlShape): ReadonlyArray<Feltrege
                 input.familiehendelsedato,
             ),
         feilmelding: intl.formatMessage({ id: 'uttaksplan.valgPanel.pause' }),
+    },
+    {
+        id: 'hvaVilDuGjøre.ferieEllerOppholdKanIkkeLeggesFørFamiliehendelsesdato',
+        beskrivelse:
+            'Ferie eller periode uten foreldrepenger kan ikke legges til før familiehendelsesdato (fødsel/termin/' +
+            'omsorgsovertakelse) — det finnes ingen stønadsrettighet å ta ferie/opphold fra før dette tidspunktet.',
+        erBrutt: (input) =>
+            (input.nyHvaVilDuGjøre === 'LEGG_TIL_FERIE' || input.nyHvaVilDuGjøre === 'LEGG_TIL_OPPHOLD') &&
+            UttaksperiodeValidatorer.erNoenPerioderFørFamiliehendelsesdato(
+                valgtPeriode(input),
+                input.familiehendelsedato,
+            ),
+        feilmelding: intl.formatMessage(
+            { id: 'uttaksplan.valgPanel.ferieFørFamiliehendelsesdato' },
+            { familiesituasjon },
+        ),
     },
     {
         id: 'hvaVilDuGjøre.ferieEllerOppholdKanIkkeLeggesIFørsteSeksUkerEtterFødselForMor',

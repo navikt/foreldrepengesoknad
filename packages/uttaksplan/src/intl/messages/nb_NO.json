@@ -15,6 +15,7 @@
     "uttaksplan.valgPanel.pause": "Pause kan kun legges til når en har valgt dager etter 6-ukersperioden etter fødsel/termin",
     "uttaksplan.valgPanel.ferie": "Ferie og perioder uten foreldrepenger kan kun legges til i 6-ukersperioden etter fødsel/termin eller før",
     "uttaksplan.valgPanel.ferieMor": "Ferie og perioder uten foreldrepenger kan ikke legges til i de første seks ukene etter fødsel/termin. Bruk utsettelse i stedet.",
+    "uttaksplan.valgPanel.ferieFørFamiliehendelsesdato": "Ferie og perioder uten foreldrepenger kan ikke legges til før {familiesituasjon, select, fødsel {fødsel} termin {termin} other {omsorgsovertakelse}}.",
     "uttaksplan.valgPanel.leggTilPeriode": "Legge til periode med foreldrepenger",
     "uttaksplan.valgPanel.leggTilPeriode.endre": "Periode med foreldrepenger",
     "uttaksplan.valgPanel.leggTilFerie": "Legge til ferie",
