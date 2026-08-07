@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { API_URLS } from 'api/queries';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
@@ -68,6 +69,22 @@ const DEFAULT_FRILANSOPPDRAG = [
         fom: '2024-01-15T00:00:00.000Z',
         stillingsprosent: 0,
     },
+    {
+        arbeidsgiverId: '888777667',
+        arbeidsgiverIdType: 'orgnr',
+        arbeidsgiverNavn: 'Frilans Media AS',
+        fom: '2022-03-01T00:00:00.000Z',
+        stillingsprosent: 0,
+        tom: '2023-12-31T00:00:00.000Z',
+    },
+    {
+        arbeidsgiverId: '888777668',
+        arbeidsgiverIdType: 'orgnr',
+        arbeidsgiverNavn: 'Frilans Kultur AS',
+        fom: '2020-06-01T00:00:00.000Z',
+        stillingsprosent: 0,
+        tom: '2021-09-30T00:00:00.000Z',
+    },
 ] satisfies EksternArbeidsforholdDto_fpoversikt[];
 
 const DEFAULT_SELVSTENDIG_NÆRING = [
@@ -101,27 +118,36 @@ const meta = {
         },
     },
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
+        const freshQueryClient = new QueryClient({
+            defaultOptions: {
+                queries: {
+                    retry: false,
+                },
+            },
+        });
         return (
-            <MemoryRouter initialEntries={[SøknadRoutes.ARBEID_OG_INNTEKT]}>
-                <FpDataContext
-                    onDispatch={gåTilNesteSide}
-                    initialState={{
-                        [ContextDataType.SØKERSITUASJON]: {
-                            rolle: 'mor',
-                            situasjon: 'fødsel',
-                        },
-                        [ContextDataType.OM_BARNET]: {
-                            termindato: '2024-02-18',
-                            type: BarnType.FØDT,
-                            fødselsdatoer: ['2024-02-18'],
-                            antallBarn: 1,
-                        },
-                        [ContextDataType.ANDRE_INNTEKTSKILDER]: [],
-                    }}
-                >
-                    <ArbeidsforholdOgInntektSteg {...rest} />
-                </FpDataContext>
-            </MemoryRouter>
+            <QueryClientProvider client={freshQueryClient}>
+                <MemoryRouter initialEntries={[SøknadRoutes.ARBEID_OG_INNTEKT]}>
+                    <FpDataContext
+                        onDispatch={gåTilNesteSide}
+                        initialState={{
+                            [ContextDataType.SØKERSITUASJON]: {
+                                rolle: 'mor',
+                                situasjon: 'fødsel',
+                            },
+                            [ContextDataType.OM_BARNET]: {
+                                termindato: '2024-02-18',
+                                type: BarnType.FØDT,
+                                fødselsdatoer: ['2024-02-18'],
+                                antallBarn: 1,
+                            },
+                            [ContextDataType.ANDRE_INNTEKTSKILDER]: [],
+                        }}
+                    >
+                        <ArbeidsforholdOgInntektSteg {...rest} />
+                    </FpDataContext>
+                </MemoryRouter>
+            </QueryClientProvider>
         );
     },
 } satisfies Meta<StoryArgs>;
