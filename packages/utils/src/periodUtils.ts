@@ -12,21 +12,25 @@ type PeriodFormatOptions = {
     useShortYear?: boolean;
 };
 
-const formatDateShortMonthWithYear = (date: string): string => dayjs(date).format('D. MMM YYYY');
-
-const getFormatter = (useShortYear: boolean, useShortMonth: boolean) => {
+const getFormatter = (useShortYear: boolean) => {
     if (useShortYear) {
         return formatDateShortYear;
-    }
-    if (useShortMonth) {
-        return formatDateShortMonthWithYear;
     }
     return formatDate;
 };
 
 export const periodFormat = (fom: string, tom: string | undefined, intl: IntlShape, options?: PeriodFormatOptions) => {
     const { separator = '-', showTodayString = false, useShortMonth = false, useShortYear = false } = options ?? {};
-    const formatter = getFormatter(useShortYear, useShortMonth);
+
+    if (useShortMonth) {
+        const formatShortMonth = (date: string) =>
+            intl.formatDate(date, { day: 'numeric', month: 'short', year: 'numeric' });
+        const fomFormatted = formatShortMonth(fom);
+        const tomFormatted = formaterTomDato(tom, showTodayString, intl, formatShortMonth);
+        return `${fomFormatted} ${separator} ${tomFormatted}`;
+    }
+
+    const formatter = getFormatter(useShortYear);
     const fomFormatted = formatter(fom);
     const tomFormatted = formaterTomDato(tom, showTodayString, intl, formatter);
     return `${fomFormatted} ${separator} ${tomFormatted}`;

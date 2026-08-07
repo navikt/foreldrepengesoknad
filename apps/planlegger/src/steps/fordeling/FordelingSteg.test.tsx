@@ -197,7 +197,7 @@ describe('<FordelingSteg>', () => {
 
         expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
 
-        // Med 1 barn og 100% dekningsgrad er det 16 uker = 80 dager, ingen restdager
+        // Med 1 barn og 100 % dekningsgrad er det 16 uker = 80 dager, ingen restdager
         expect(
             screen.queryByText(/ekstra dag.*med fellesperiode vil legge seg inn i planen automatisk/i),
         ).not.toBeInTheDocument();

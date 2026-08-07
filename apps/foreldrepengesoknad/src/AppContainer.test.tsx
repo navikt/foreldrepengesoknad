@@ -230,7 +230,7 @@ describe('<AppContainer>', () => {
         await userEvent.click(screen.getByText('Jeg kan ikke oppgi den andre forelderen'));
         await userEvent.click(screen.getByText('Neste steg'));
 
-        // Step 6: PERIODE_MED_FORELDREPENGER - verify 100% pre-selected
+        // Step 6: PERIODE_MED_FORELDREPENGER - verify 100 % pre-selected
         await waitFor(() => expect(screen.getAllByText('Periode med foreldrepenger')).toHaveLength(2));
         expect(screen.getByText('Steg 6 av 8')).toBeInTheDocument();
         expect(screen.getByDisplayValue('100')).toBeInTheDocument();

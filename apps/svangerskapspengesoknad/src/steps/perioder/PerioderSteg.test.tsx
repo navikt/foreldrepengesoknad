@@ -260,7 +260,7 @@ describe('<PerioderSteg>', () => {
         ).toBeInTheDocument();
     });
 
-    it('stillingsprosenten skal valideres mot samlet stillingsprosent (100%) fordi et av stillingsprosentene på skjæringstidspunktet er på 0%', async () => {
+    it('stillingsprosenten skal valideres mot samlet stillingsprosent (100 %) fordi et av stillingsprosentene på skjæringstidspunktet er på 0%', async () => {
         render(<FlereStillinger />);
 
         expect(await screen.findByText('Du skal jobbe fra:')).toBeInTheDocument();
