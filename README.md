@@ -109,3 +109,4 @@ Gode bidrag som blir merget inn kan bli belønnet med eksklusive Nav-sokker som 
 ## For NAV-ansatte
 
 Interne henvendelser kan sendes via Slack i kanalen #teamforeldrepenger.
+<!-- sist oppdatert: 2026-08-09 -->
