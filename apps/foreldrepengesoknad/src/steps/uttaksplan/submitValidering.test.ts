@@ -1,6 +1,10 @@
-import { UttakPeriode_fpoversikt, UttakPeriodeAnnenpartEøs_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
-import { erSammePeriodeInkludertDatoer, harBrukerKunSlettetPerioder, harMinstEnUttaksEllerOverføringsperiode } from './submitValidering';
+import {
+    erSammePeriodeInkludertDatoer,
+    harBrukerKunSlettetPerioder,
+    harMinstEnUttaksEllerOverføringsperiode,
+} from './submitValidering';
 
 const innvilget: UttakPeriode_fpoversikt['resultat'] = {
     innvilget: true,
@@ -19,7 +23,9 @@ const lagPeriode = (overrides: Partial<UttakPeriode_fpoversikt> = {}): UttakPeri
     ...overrides,
 });
 
-const lagEøsPeriode = (overrides: Partial<UttakPeriodeAnnenpartEøs_fpoversikt> = {}): UttakPeriodeAnnenpartEøs_fpoversikt => ({
+const lagEøsPeriode = (
+    overrides: Partial<UttakPeriodeAnnenpartEøs_fpoversikt> = {},
+): UttakPeriodeAnnenpartEøs_fpoversikt => ({
     fom: '2024-10-01',
     tom: '2024-10-31',
     kontoType: 'FELLESPERIODE',

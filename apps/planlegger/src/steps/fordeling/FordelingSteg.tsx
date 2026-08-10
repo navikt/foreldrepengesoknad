@@ -77,7 +77,8 @@ export const FordelingSteg = ({ stønadskvoter }: Props) => {
 
     const hvemStarterPermisjon = formMethods.watch('hvemStarterPermisjon');
 
-    const skalSpørreOmHvemSomStarterPermisjonen = kanVelgeHvemSomStarterPermisjonen(hvemPlanlegger) && erBarnetAdoptert(barnet);
+    const skalSpørreOmHvemSomStarterPermisjonen =
+        kanVelgeHvemSomStarterPermisjonen(hvemPlanlegger) && erBarnetAdoptert(barnet);
     const navnForHvemStarterPermisjon = kanVelgeHvemSomStarterPermisjonen(hvemPlanlegger)
         ? getNavnForHvemStarterPermisjon(hvemPlanlegger, intl)
         : undefined;
@@ -155,7 +156,11 @@ export const FordelingSteg = ({ stønadskvoter }: Props) => {
                                     </Radio>
                                     <Radio value="søker2">{navnForHvemStarterPermisjon.navnSøker2}</Radio>
                                 </BlueRadioGroup>
-                                <ReadMore header={<FormattedMessage id="FordelingSteg.HvemStarterPermisjon.ReadMore.Tittel" />}>
+                                <ReadMore
+                                    header={
+                                        <FormattedMessage id="FordelingSteg.HvemStarterPermisjon.ReadMore.Tittel" />
+                                    }
+                                >
                                     <FormattedMessage id="FordelingSteg.HvemStarterPermisjon.ReadMore.Tekst" />
                                 </ReadMore>
                             </>
@@ -231,4 +236,3 @@ export const FordelingSteg = ({ stønadskvoter }: Props) => {
         </PlanleggerStepPage>
     );
 };
-

@@ -20,8 +20,8 @@ import { EksternArbeidsforholdDto_fpoversikt, Søkerrolle, SøkersituasjonFp } f
 import {
     isBeforeTodayOrToday,
     isRequired,
-    isValidDate as isValidDateValidator,
     isValidDateString,
+    isValidDate as isValidDateValidator,
     terminbekreftelsedatoIsValid,
 } from '@navikt/fp-validation';
 
@@ -45,7 +45,8 @@ export const TerminPanel = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtN
 
     const formMethods = useFormContext<UfødtBarn>();
     const termindato = formMethods.watch('termindato');
-    const erForTidligTilÅSøkePåTermin = termindato && isValidDateString(termindato) ? !erIUke22Pluss3(termindato) : false;
+    const erForTidligTilÅSøkePåTermin =
+        termindato && isValidDateString(termindato) ? !erIUke22Pluss3(termindato) : false;
 
     const søkerErFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const farMedMorSøkerPåTermin = søkerErFarMedmor && termindato;

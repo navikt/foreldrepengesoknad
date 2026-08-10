@@ -47,6 +47,4 @@ export type KontoBeregningGrunnlagDto = {
 export type no_nav_foreldrepenger_stønadskonto_regelmodell_grunnlag_Brukerrolle = 'MOR' | 'FAR' | 'MEDMOR' | 'UKJENT';
 
 export type no_nav_foreldrepenger_stønadskonto_regelmodell_grunnlag_Rettighetstype =
-    | 'ALENEOMSORG'
-    | 'BARE_SØKER_RETT'
-    | 'BEGGE_RETT';
+    'ALENEOMSORG' | 'BARE_SØKER_RETT' | 'BEGGE_RETT';

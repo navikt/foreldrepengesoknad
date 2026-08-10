@@ -25,9 +25,7 @@ describe('finnValgtePerioder', () => {
             flerbarnsdager: false,
         };
 
-        const valgtePerioder: CalendarPeriod[] = [
-            { fom: '2024-01-01', tom: '2024-01-12', color: 'BLUE', srText: '' },
-        ];
+        const valgtePerioder: CalendarPeriod[] = [{ fom: '2024-01-01', tom: '2024-01-12', color: 'BLUE', srText: '' }];
 
         const resultat = finnValgtePerioder(valgtePerioder, [utenAktivitetskrav, medAktivitetskrav]);
 
@@ -38,4 +36,3 @@ describe('finnValgtePerioder', () => {
         expect(medKrav?.valgteDagerIPeriode).toBe(5);
     });
 });
-

@@ -60,10 +60,7 @@ const HeaderDesktop = ({ labels }: { labels: React.ReactNode }) => {
             <VStack gap="space-16">
                 <HStack justify="space-between" align="center" wrap={false}>
                     <Chips size="small">
-                        <Chips.Removable
-                            onDelete={() => setValgtePerioder([])}
-                            onClick={(e) => e.stopPropagation()}
-                        >
+                        <Chips.Removable onDelete={() => setValgtePerioder([])} onClick={(e) => e.stopPropagation()}>
                             {intl.formatMessage(
                                 { id: 'RedigeringPanel.ValgteDager' },
                                 {
@@ -129,10 +126,7 @@ const HeaderMobil = ({
                     )}
 
                     <Chips size="small">
-                        <Chips.Removable
-                            onDelete={() => setValgtePerioder([])}
-                            onClick={(e) => e.stopPropagation()}
-                        >
+                        <Chips.Removable onDelete={() => setValgtePerioder([])} onClick={(e) => e.stopPropagation()}>
                             {intl.formatMessage(
                                 { id: 'RedigeringPanel.ValgteDager' },
                                 {

@@ -1,4 +1,9 @@
-import type { BrukerRolleSak_fpoversikt, Familiesituasjon, KontoTypeUttak, RettighetType_fpoversikt } from '@navikt/fp-types';
+import type {
+    BrukerRolleSak_fpoversikt,
+    Familiesituasjon,
+    KontoTypeUttak,
+    RettighetType_fpoversikt,
+} from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
@@ -253,8 +258,7 @@ const FAR_MEDMOR_FORELDREPENGER_FØR_FØDSEL: Kvoteregel<KvoteKontekst> = {
     id: 'farMedmorKvoter.foreldrepengerFørFødsel',
     forelder: 'FAR_MEDMOR',
     kontotype: 'FORELDREPENGER_FØR_FØDSEL',
-    beskrivelse:
-        'Foreldrepenger før fødsel gjelder kun mor og er aldri tilgjengelig for far/medmor.',
+    beskrivelse: 'Foreldrepenger før fødsel gjelder kun mor og er aldri tilgjengelig for far/medmor.',
     erGyldig: () => false,
 };
 
@@ -298,8 +302,7 @@ const FAR_MEDMOR_FEDREKVOTE: Kvoteregel<KvoteKontekst> = {
     forelder: 'FAR_MEDMOR',
     kontotype: 'FEDREKVOTE',
     beskrivelse:
-        'Fedrekvote kan velges av far/medmor når perioden ikke ligger mer enn 2 uker før ' +
-        'familiehendelsesdatoen.',
+        'Fedrekvote kan velges av far/medmor når perioden ikke ligger mer enn 2 uker før ' + 'familiehendelsesdatoen.',
     erGyldig: (k) => farMedmorErAktuell(k) && !harPeriodeFørToUkerFørFamiliehendelsesdato(k),
 };
 

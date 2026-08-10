@@ -96,7 +96,17 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
                       uttaksplanAnnenPart,
                   )
                 : [],
-        [valgtStønadskvote, minsterett, søkersituasjon, barn, navnMor, navnFarMedmor, annenForelder, intl, uttaksplanAnnenPart],
+        [
+            valgtStønadskvote,
+            minsterett,
+            søkersituasjon,
+            barn,
+            navnMor,
+            navnFarMedmor,
+            annenForelder,
+            intl,
+            uttaksplanAnnenPart,
+        ],
     );
     const ukerMedFellesperiode = valgtStønadskvote ? getAntallUkerFellesperiode(valgtStønadskvote) : 0;
     const dagerMedFellesperiode = ukerMedFellesperiode * 5;

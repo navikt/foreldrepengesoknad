@@ -166,70 +166,79 @@ const UttaksplanListe = ({
                         </Alert>
                     )}
                     <FormSummary.Answers>
-                    {uttaksplan.map((periode) => {
-                        if (Uttaksperioden.erIkkeEøsPeriode(periode) && Uttaksperioden.erUttaksperiode(periode)) {
-                            const tidsperiode = formatTidsperiode(periode.fom, periode.tom);
-                            return (
-                                <FormSummary.Answer key={periode.kontoType + tidsperiode}>
-                                    <FormSummary.Label>{tidsperiode}</FormSummary.Label>
-                                    <FormSummary.Value>
-                                        {getUttaksperiodeNavn(periode)}
-                                        <Uttaksperiodedetaljer
-                                            periode={periode}
-                                            registrerteArbeidsforhold={registrerteArbeidsforhold}
-                                            annenForelder={annenForelder}
-                                            barn={barn}
-                                            erSøker={erSøker}
-                                        />
-                                    </FormSummary.Value>
-                                </FormSummary.Answer>
-                            );
-                        }
-                        if (!('trekkdager' in periode) && periode.utsettelseÅrsak !== undefined) {
-                            return (
-                                <FormSummary.Answer key={lagKeyFraPeriode(periode)}>
-                                    <FormSummary.Label>{formatTidsperiode(periode.fom, periode.tom)}</FormSummary.Label>
-                                    <FormSummary.Value>
-                                        <FormattedMessage id="oppsummering.utsettelse.pga" />
-                                        <Utsettelsesperiodedetaljer periode={periode} />
-                                    </FormSummary.Value>
-                                </FormSummary.Answer>
-                            );
-                        }
-                        if (!('trekkdager' in periode) && periode.overføringÅrsak !== undefined) {
-                            return (
-                                <FormSummary.Answer key={lagKeyFraPeriode(periode)}>
-                                    <FormSummary.Label>{formatTidsperiode(periode.fom, periode.tom)}</FormSummary.Label>
-                                    <FormSummary.Value>
-                                        <FormattedMessage
-                                            id="oppsummering.overtakelse.pga"
-                                            values={{ kvote: getStønadskvoteNavnFraKvote(periode.kontoType) }}
-                                        />
-                                        <Overføringsperiodedetaljer periode={periode} navnPåForeldre={navnPåForeldre} />
-                                    </FormSummary.Value>
-                                </FormSummary.Answer>
-                            );
-                        }
-                        if (!('trekkdager' in periode) && periode.oppholdÅrsak !== undefined) {
-                            return (
-                                <FormSummary.Answer key={lagKeyFraPeriode(periode)}>
-                                    <FormSummary.Label>{formatTidsperiode(periode.fom, periode.tom)}</FormSummary.Label>
-                                    <FormSummary.Value>
-                                        {getPeriodeTittel(
-                                            intl,
-                                            periode,
-                                            navnPåForeldre,
-                                            familiehendelsesdato,
-                                            getTermindato(barn) ? getTermindato(barn) : undefined,
-                                            søkersituasjon.situasjon,
-                                            søkerErFarEllerMedmor,
-                                        )}
-                                    </FormSummary.Value>
-                                </FormSummary.Answer>
-                            );
-                        }
-                        return null;
-                    })}
+                        {uttaksplan.map((periode) => {
+                            if (Uttaksperioden.erIkkeEøsPeriode(periode) && Uttaksperioden.erUttaksperiode(periode)) {
+                                const tidsperiode = formatTidsperiode(periode.fom, periode.tom);
+                                return (
+                                    <FormSummary.Answer key={periode.kontoType + tidsperiode}>
+                                        <FormSummary.Label>{tidsperiode}</FormSummary.Label>
+                                        <FormSummary.Value>
+                                            {getUttaksperiodeNavn(periode)}
+                                            <Uttaksperiodedetaljer
+                                                periode={periode}
+                                                registrerteArbeidsforhold={registrerteArbeidsforhold}
+                                                annenForelder={annenForelder}
+                                                barn={barn}
+                                                erSøker={erSøker}
+                                            />
+                                        </FormSummary.Value>
+                                    </FormSummary.Answer>
+                                );
+                            }
+                            if (!('trekkdager' in periode) && periode.utsettelseÅrsak !== undefined) {
+                                return (
+                                    <FormSummary.Answer key={lagKeyFraPeriode(periode)}>
+                                        <FormSummary.Label>
+                                            {formatTidsperiode(periode.fom, periode.tom)}
+                                        </FormSummary.Label>
+                                        <FormSummary.Value>
+                                            <FormattedMessage id="oppsummering.utsettelse.pga" />
+                                            <Utsettelsesperiodedetaljer periode={periode} />
+                                        </FormSummary.Value>
+                                    </FormSummary.Answer>
+                                );
+                            }
+                            if (!('trekkdager' in periode) && periode.overføringÅrsak !== undefined) {
+                                return (
+                                    <FormSummary.Answer key={lagKeyFraPeriode(periode)}>
+                                        <FormSummary.Label>
+                                            {formatTidsperiode(periode.fom, periode.tom)}
+                                        </FormSummary.Label>
+                                        <FormSummary.Value>
+                                            <FormattedMessage
+                                                id="oppsummering.overtakelse.pga"
+                                                values={{ kvote: getStønadskvoteNavnFraKvote(periode.kontoType) }}
+                                            />
+                                            <Overføringsperiodedetaljer
+                                                periode={periode}
+                                                navnPåForeldre={navnPåForeldre}
+                                            />
+                                        </FormSummary.Value>
+                                    </FormSummary.Answer>
+                                );
+                            }
+                            if (!('trekkdager' in periode) && periode.oppholdÅrsak !== undefined) {
+                                return (
+                                    <FormSummary.Answer key={lagKeyFraPeriode(periode)}>
+                                        <FormSummary.Label>
+                                            {formatTidsperiode(periode.fom, periode.tom)}
+                                        </FormSummary.Label>
+                                        <FormSummary.Value>
+                                            {getPeriodeTittel(
+                                                intl,
+                                                periode,
+                                                navnPåForeldre,
+                                                familiehendelsesdato,
+                                                getTermindato(barn) ? getTermindato(barn) : undefined,
+                                                søkersituasjon.situasjon,
+                                                søkerErFarEllerMedmor,
+                                            )}
+                                        </FormSummary.Value>
+                                    </FormSummary.Answer>
+                                );
+                            }
+                            return null;
+                        })}
                     </FormSummary.Answers>
                 </VStack>
             </FormSummary.Value>

@@ -1,4 +1,11 @@
-import { formatValue, hasMaxValue, hasMinValue, isValidDecimal, isValidInteger, isValidNumberForm } from './numberFormValidation';
+import {
+    formatValue,
+    hasMaxValue,
+    hasMinValue,
+    isValidDecimal,
+    isValidInteger,
+    isValidNumberForm,
+} from './numberFormValidation';
 
 const FEIL = 'feilmelding';
 

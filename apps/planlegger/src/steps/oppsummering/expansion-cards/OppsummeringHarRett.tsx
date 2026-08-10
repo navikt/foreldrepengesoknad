@@ -5,8 +5,8 @@ import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import {
     erAlenesøker,
-    getErFarEllerMedmor,
     getEffektivHvemPlanlegger,
+    getErFarEllerMedmor,
     getFornavnPåSøker1,
     getFornavnPåSøker2,
     getNavnGenitivEierform,

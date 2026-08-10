@@ -1,6 +1,6 @@
 export enum DelivisTilretteleggingPeriodeType {
-    'SAMMME_PERIODE_FREM_TIL_TERMIN' = 'SAMMME_PERIODE_FREM_TIL_TERMIN',
-    'VARIERTE_PERIODER' = 'VARIERTE_PERIODER',
+    SAMMME_PERIODE_FREM_TIL_TERMIN = 'SAMMME_PERIODE_FREM_TIL_TERMIN',
+    VARIERTE_PERIODER = 'VARIERTE_PERIODER',
 }
 
 export type Tilretteleggingstype = 'ingen' | 'delvis' | 'hel';

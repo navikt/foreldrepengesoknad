@@ -141,11 +141,7 @@ describe('useUbrukteDagerPerKontoKunEnHarRett – overtrekk når kun far/medmor 
     };
 
     const lagWrapper =
-        (
-            valgtStønadskvote: KontoBeregningDto,
-            uttakPerioder: UttakPeriode_fpoversikt[],
-            termindato = '2025-05-06',
-        ) =>
+        (valgtStønadskvote: KontoBeregningDto, uttakPerioder: UttakPeriode_fpoversikt[], termindato = '2025-05-06') =>
         ({ children }: { children: React.ReactNode }) => (
             <UttaksplanDataProvider
                 barn={{ type: BarnType.UFØDT, termindato, antallBarn: 1 }}

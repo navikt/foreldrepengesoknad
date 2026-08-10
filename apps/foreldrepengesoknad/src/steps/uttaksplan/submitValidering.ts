@@ -157,9 +157,7 @@ export const harKunPerioderForAnnenForelder = (
 // Ein overføringsperiode (t.d. far som overtek mødrekvote fordi mor er for sjuk) er eit
 // reelt uttak av foreldrepengar, og er ein gyldig søknad åleine på lik linje med ein uttaksperiode.
 export const harMinstEnUttaksEllerOverføringsperiode = (perioder: UttaksplanPerioder) =>
-    perioder.some(
-        (periode) => Uttaksperioden.erUttaksperiode(periode) || Uttaksperioden.erOverføringsperiode(periode),
-    );
+    perioder.some((periode) => Uttaksperioden.erUttaksperiode(periode) || Uttaksperioden.erOverføringsperiode(periode));
 
 export const erKunUtsettelser = (perioder: UttaksplanPerioder) => {
     if (perioder.length === 0) {

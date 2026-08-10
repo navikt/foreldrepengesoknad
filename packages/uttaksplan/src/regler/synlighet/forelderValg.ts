@@ -1,8 +1,8 @@
 import type { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { useGyldigeKvotetyper } from '../kvotetype/kvoteRegler';
 import { erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
+import { useGyldigeKvotetyper } from '../kvotetype/kvoteRegler';
 import { Periode } from '../types';
 import { ForelderValg, Synlighetsregel } from './types';
 
@@ -149,9 +149,8 @@ export const VIS_FORELDER_VALG: Synlighetsregel<ForelderValgKontekst> = {
         'typisk når bare én forelder har rett til foreldrepenger — skjules spørsmålet, og forelderverdien ' +
         'settes automatisk til det eneste mulige valget.',
     skalVises: (k) =>
-        [VIS_MOR_RADIO.skalVises(k), VIS_FAR_MEDMOR_RADIO.skalVises(k), VIS_BEGGE_RADIO.skalVises(k)].filter(
-            Boolean,
-        ).length > 1,
+        [VIS_MOR_RADIO.skalVises(k), VIS_FAR_MEDMOR_RADIO.skalVises(k), VIS_BEGGE_RADIO.skalVises(k)].filter(Boolean)
+            .length > 1,
 };
 
 /**
@@ -173,8 +172,7 @@ export const VIS_KONTO_FAR_MEDMOR_RADIOGRUPPE: Synlighetsregel<ForelderValgKonte
     beskrivelse:
         'Radiogruppen for å velge kvotetype for far/medmor vises når den valgte forelderen er Far/medmor ' +
         'eller Begge, og det finnes minst én gyldig stønadskontotype for far/medmor.',
-    skalVises: (k) =>
-        (k.forelder === 'FAR_MEDMOR' || k.forelder === 'BEGGE') && k.harGyldigeKontoerForFarMedmor,
+    skalVises: (k) => (k.forelder === 'FAR_MEDMOR' || k.forelder === 'BEGGE') && k.harGyldigeKontoerForFarMedmor,
 };
 
 type ForelderValgSynlighet = {
@@ -190,7 +188,5 @@ type ForelderValgSynlighet = {
     erMorLåst: boolean;
     erFarMedmorLåst: boolean;
     gyldigeStønadskontoerForMor: ReturnType<typeof useGyldigeKvotetyper>['gyldigeStønadskontoerForMor'];
-    gyldigeStønadskontoerForFarMedmor: ReturnType<
-        typeof useGyldigeKvotetyper
-    >['gyldigeStønadskontoerForFarMedmor'];
+    gyldigeStønadskontoerForFarMedmor: ReturnType<typeof useGyldigeKvotetyper>['gyldigeStønadskontoerForFarMedmor'];
 };

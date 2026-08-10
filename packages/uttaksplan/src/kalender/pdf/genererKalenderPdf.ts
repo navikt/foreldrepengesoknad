@@ -291,7 +291,13 @@ export const genererKalenderPdf = async ({
         // Siste vern mot ugyldige argument til jsPDF: utan dette kastar addImage
         // «Invalid argument passed to jsPDF.scale» dersom ein dimensjon er NaN,
         // Infinity eller ≤ 0 (t.d. frå eit blankt/tomt canvas).
-        if (!erGyldigCanvas(canvas) || !Number.isFinite(bredde) || !Number.isFinite(høgde) || bredde <= 0 || høgde <= 0) {
+        if (
+            !erGyldigCanvas(canvas) ||
+            !Number.isFinite(bredde) ||
+            !Number.isFinite(høgde) ||
+            bredde <= 0 ||
+            høgde <= 0
+        ) {
             return;
         }
         pdf.addImage(canvas.toDataURL('image/jpeg', JPEG_KVALITET), 'JPEG', x, øvst, bredde, høgde);

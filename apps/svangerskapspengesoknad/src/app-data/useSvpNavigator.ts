@@ -2,8 +2,8 @@ import { loggUmamiEvent } from '@navikt/fp-observability';
 import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataType, useContextSaveData } from './SvpDataContext';
-import { MellomlagreSøknadFn } from './useMellomlagreSøknad';
 import { SøknadRoute } from './routes';
+import { MellomlagreSøknadFn } from './useMellomlagreSøknad';
 import { useStepConfig } from './useStepConfig';
 
 export const useSvpNavigator = (

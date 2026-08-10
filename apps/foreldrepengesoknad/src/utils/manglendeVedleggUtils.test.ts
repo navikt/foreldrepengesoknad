@@ -1,6 +1,6 @@
 import { AnnenForelder } from 'types/AnnenForelder';
 
-import { UttakPeriode_fpoversikt, UttakPeriodeResultat_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriodeResultat_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { finnPerioderSomInngårISøknaden, perioderSomKreverVedlegg } from './manglendeVedleggUtils';
 
@@ -100,11 +100,7 @@ describe('finnPerioderSomInngårISøknaden', () => {
             morsAktivitet: 'TRENGER_HJELP',
         };
 
-        const resultat = finnPerioderSomInngårISøknaden(
-            [periodeUtenResultat, nyFellesperiodeMorJobber],
-            true,
-            false,
-        );
+        const resultat = finnPerioderSomInngårISøknaden([periodeUtenResultat, nyFellesperiodeMorJobber], true, false);
 
         expect(resultat).toEqual([periodeUtenResultat, nyFellesperiodeMorJobber]);
     });
