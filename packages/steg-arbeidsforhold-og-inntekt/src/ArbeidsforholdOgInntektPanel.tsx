@@ -1,9 +1,8 @@
-import { PlusIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, Button, Radio, ReadMore, VStack } from '@navikt/ds-react';
+import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { loggUmamiEvent } from '@navikt/fp-observability';
@@ -12,7 +11,7 @@ import { ProgressStep, Step, StepButtons } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 
 import { AndreInntektskilderModal } from './components/andre-inntekter/AndreInntektskilderModal';
-import { LeggTilAndreInntekter } from './components/andre-inntekter/LeggTilAndreInntekter.tsx';
+import { LeggTilAndreInntekterWizard } from './components/andre-inntekter/LeggTilAndreInntekterWizard.tsx';
 import { ArbeidsforholdInformasjon } from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import { BrukerKanIkkeSøke } from './components/bruker-kan-ikke-søke/BrukerKanIkkeSøke';
 import { HvemKanDriveMedEgenNæring } from './components/hvem-kan-drive-egen-næring/HvemKanDriveMedEgenNæring';
@@ -201,7 +200,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                                     <FormattedMessage id="ArbeidsforholdOgInntektPanel.ReadMore.Body.AndreInntektskilder" />
                                 </BodyShort>
                             </ReadMore>
-                            <LeggTilAndreInntekter />
+                            <LeggTilAndreInntekterWizard />
                         </VStack>
                     )}
                     <VStack gap="space-16">
