@@ -439,7 +439,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         },
     );
 
-    it('Skal vise info om forskjell på 80% og 100 % dekningsgrad for barn født før 1.juli 2024, hvis dato er før 1. juli 2024', async () => {
+    it('Skal vise info om forskjell på 80 % og 100 % dekningsgrad for barn født før 1.juli 2024, hvis dato er før 1. juli 2024', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
         MockDate.set(new Date('2024-06-30'));
@@ -462,7 +462,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         MockDate.reset();
     });
 
-    it('Skal vise info om forskjell på 80% og 100 % dekningsgrad for barn født før 1.juli 2024, hvis dato er etter 1. juli 2024', async () => {
+    it('Skal vise info om forskjell på 80 % og 100 % dekningsgrad for barn født før 1.juli 2024, hvis dato er etter 1. juli 2024', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
         MockDate.set(new Date('2024-07-01'));
@@ -486,7 +486,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
     });
 
     it(
-        'Skal vise info om at det er lite forskjell på 80% og 100 % dekningsgrad for barn med termin før 1.juli 2024,' +
+        'Skal vise info om at det er lite forskjell på 80 % og 100 % dekningsgrad for barn med termin før 1.juli 2024,' +
             ' hvis dato er etter 1. juli 2024',
         async () => {
             const gåTilNesteSide = vi.fn();
@@ -512,7 +512,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         },
     );
 
-    it('Skal vise info om forskjell på 80% og 100 % dekningsgrad for barn med adopsjonsdato etter 1.juli 2024, hvis dato er før 1. juli 2024', async () => {
+    it('Skal vise info om forskjell på 80 % og 100 % dekningsgrad for barn med adopsjonsdato etter 1.juli 2024, hvis dato er før 1. juli 2024', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
         MockDate.set(new Date('2024-06-30'));
@@ -536,7 +536,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
     });
 
     it(
-        'Skal vise info om at det er lite forskjell på 80% og 100 % dekningsgrad for barn med adopsjonsdato' +
+        'Skal vise info om at det er lite forskjell på 80 % og 100 % dekningsgrad for barn med adopsjonsdato' +
             ' etter 1.juli 2024, hvis dato er etter 1. juli 2024.',
         async () => {
             const gåTilNesteSide = vi.fn();
