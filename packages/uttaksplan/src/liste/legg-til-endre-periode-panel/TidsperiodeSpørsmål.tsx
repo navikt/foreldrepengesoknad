@@ -51,7 +51,12 @@ export const TidsperiodeSpørsmål = () => {
     );
 
     const harGyldigFomOgTom =
-        fom !== undefined && fom !== '' && dayjs(fom).isValid() && tom !== undefined && tom !== '' && dayjs(tom).isValid();
+        fom !== undefined &&
+        fom !== '' &&
+        dayjs(fom).isValid() &&
+        tom !== undefined &&
+        tom !== '' &&
+        dayjs(tom).isValid();
 
     return (
         <VStack gap="space-16">

@@ -15,9 +15,7 @@ export const AntallBarnSelect = () => {
             name="antallBarnSelect"
             control={control}
             label={intl.formatMessage({ id: 'omBarnet.antallBarnSelect.label' })}
-            validate={[
-                isRequired(intl.formatMessage({ id: 'valideringsfeil.omBarnet.antallBarnSelect.duMåOppgi' })),
-            ]}
+            validate={[isRequired(intl.formatMessage({ id: 'valideringsfeil.omBarnet.antallBarnSelect.duMåOppgi' }))]}
         >
             <option value="3">3</option>
             <option value="4">4</option>

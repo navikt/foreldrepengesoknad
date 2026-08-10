@@ -16,7 +16,11 @@ import { assertUnreachable } from '@navikt/fp-validation';
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { Uttaksplanperiode, erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
-import { erAvslåttPeriode, harPeriodeDerMorsAktivitetIkkeErValgt, harPeriodeMedUkjentGraderingsaktivitet } from '../../../../utils/periodeUtils';
+import {
+    erAvslåttPeriode,
+    harPeriodeDerMorsAktivitetIkkeErValgt,
+    harPeriodeMedUkjentGraderingsaktivitet,
+} from '../../../../utils/periodeUtils';
 import { getStønadskvoteNavn } from '../../../utils/uttaksplanListeUtils';
 
 interface Props {

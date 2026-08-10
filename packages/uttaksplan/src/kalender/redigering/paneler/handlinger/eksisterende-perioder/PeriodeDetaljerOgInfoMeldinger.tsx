@@ -29,9 +29,7 @@ export const PeriodeDetaljerOgInfoMeldinger = () => {
     // «dager du kan miste»-hull, ikke for vilkårlige nye dager.
     const valgteTapteDagerHull = uttakPerioderInkludertTapteDager
         .filter(erTapteDagerHull)
-        .filter((hull) =>
-            sammenslåtteValgtePerioder.some((valgt) => valgt.fom <= hull.tom && valgt.tom >= hull.fom),
-        );
+        .filter((hull) => sammenslåtteValgtePerioder.some((valgt) => valgt.fom <= hull.tom && valgt.tom >= hull.fom));
 
     const tapteDagerFom = valgteTapteDagerHull.map((hull) => hull.fom).sort((a, b) => a.localeCompare(b))[0];
 
@@ -47,9 +45,7 @@ export const PeriodeDetaljerOgInfoMeldinger = () => {
             )}
 
             {eksisterendePerioderSomErValgt.length > 0 && (
-                <EksisterendeValgtePerioder
-                    perioder={eksisterendePerioderSomErValgt}
-                />
+                <EksisterendeValgtePerioder perioder={eksisterendePerioderSomErValgt} />
             )}
 
             {adopsjonFørFamhend && (

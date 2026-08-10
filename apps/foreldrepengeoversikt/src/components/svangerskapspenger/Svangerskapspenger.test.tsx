@@ -69,14 +69,21 @@ describe('lagKronologiskeSvpPerioder', () => {
     });
 
     it('beholder en enkelt periode uendret', () => {
-        const perioder = lagKronologiskeSvpPerioder(lagSak([lagArbeidsforhold([tilrettelegging('2025-04-01', '2025-04-10')])]));
+        const perioder = lagKronologiskeSvpPerioder(
+            lagSak([lagArbeidsforhold([tilrettelegging('2025-04-01', '2025-04-10')])]),
+        );
         expect(perioder).toHaveLength(1);
         expect(perioder[0]).toMatchObject({ fom: '2025-04-01', tom: '2025-04-10' });
     });
 
     it('sorterer to ikke-overlappende perioder kronologisk', () => {
         const perioder = lagKronologiskeSvpPerioder(
-            lagSak([lagArbeidsforhold([tilrettelegging('2025-05-01', '2025-05-10'), tilrettelegging('2025-04-01', '2025-04-10')])]),
+            lagSak([
+                lagArbeidsforhold([
+                    tilrettelegging('2025-05-01', '2025-05-10'),
+                    tilrettelegging('2025-04-01', '2025-04-10'),
+                ]),
+            ]),
         );
         expect(perioder.map((p) => p.fom)).toEqual(['2025-04-01', '2025-05-01']);
     });

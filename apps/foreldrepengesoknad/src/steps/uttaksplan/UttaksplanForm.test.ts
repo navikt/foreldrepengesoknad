@@ -1,7 +1,7 @@
 import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { kanJustereFarsUttakRundtFødsel } from './UttaksplanForm';
-import { harKunPerioderForAnnenForelder, erKunUtsettelser } from './submitValidering';
+import { erKunUtsettelser, harKunPerioderForAnnenForelder } from './submitValidering';
 
 const utsettelseFar: UttakPeriode_fpoversikt = {
     fom: '2026-06-01',

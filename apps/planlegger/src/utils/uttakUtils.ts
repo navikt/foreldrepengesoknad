@@ -395,9 +395,7 @@ export const getSøkersPerioder = (
     starterForelder?: 'MOR' | 'FAR_MEDMOR',
 ) => {
     const søkersForelder = starterForelder ?? (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR');
-    return erDeltUttak
-        ? gjeldendeUttaksplan.filter((p) => p.forelder === søkersForelder)
-        : gjeldendeUttaksplan;
+    return erDeltUttak ? gjeldendeUttaksplan.filter((p) => p.forelder === søkersForelder) : gjeldendeUttaksplan;
 };
 
 export const getAnnenpartsPerioder = (
@@ -408,7 +406,5 @@ export const getAnnenpartsPerioder = (
 ) => {
     const søkersForelder = starterForelder ?? (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR');
     const annenpartsForelder = søkersForelder === 'MOR' ? 'FAR_MEDMOR' : 'MOR';
-    return erDeltUttak
-        ? gjeldendeUttaksplan.filter((p) => p.forelder === annenpartsForelder)
-        : [];
+    return erDeltUttak ? gjeldendeUttaksplan.filter((p) => p.forelder === annenpartsForelder) : [];
 };

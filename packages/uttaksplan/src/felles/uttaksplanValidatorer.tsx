@@ -7,12 +7,8 @@ import { valider } from '../regler/validering/valider';
 import { UttaksperiodeValidatorer } from '../utils/UttaksperiodeValidatorer';
 import { LeggTilEllerEndrePeriodeFormFormValues } from './LeggTilEllerEndrePeriodeFellesForm';
 
-export {
-    lagStillingsprosentValidator as prosentValideringGradering,
-} from '../regler/felt/stillingsprosent';
-export {
-    lagSamtidigUttaksprosentValidator as valideringSamtidigUttak,
-} from '../regler/felt/samtidigUttaksprosent';
+export { lagStillingsprosentValidator as prosentValideringGradering } from '../regler/felt/stillingsprosent';
+export { lagSamtidigUttaksprosentValidator as valideringSamtidigUttak } from '../regler/felt/samtidigUttaksprosent';
 
 export const kanMisteDagerVedEndringTilFerie = (
     perioder: Array<{ fom: string; tom: string }>,

@@ -275,7 +275,13 @@ export const MiniStickyRad: Story = {
                 <KvoteProgresjonRing tone="mor" progress={0} size="mini" aria-label="Før fødsel: 0 %" />
                 <KvoteProgresjonRing tone="mor" progress={0.958} size="mini" aria-label="Mødrekvote: 96 %" />
                 <KvoteProgresjonRing tone="far" progress={1} complete size="mini" aria-label="Fedrekvote: ferdig" />
-                <KvoteProgresjonRing tone="felles" progress={1} complete size="mini" aria-label="Fellesperiode: ferdig" />
+                <KvoteProgresjonRing
+                    tone="felles"
+                    progress={1}
+                    complete
+                    size="mini"
+                    aria-label="Fellesperiode: ferdig"
+                />
             </div>
             <span className="text-[13px] font-medium text-[var(--ax-text-default)]">
                 <strong className="text-[var(--ax-warning-600)]">3u 4d igjen</strong> i planen

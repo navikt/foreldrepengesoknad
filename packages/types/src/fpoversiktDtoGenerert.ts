@@ -233,11 +233,7 @@ export type AnnenPartRequest_fpoversikt = {
 };
 
 export type no_nav_foreldrepenger_kontrakter_felles_kodeverk_KontoType =
-    | 'FELLESPERIODE'
-    | 'MØDREKVOTE'
-    | 'FEDREKVOTE'
-    | 'FORELDREPENGER'
-    | 'FORELDREPENGER_FØR_FØDSEL';
+    'FELLESPERIODE' | 'MØDREKVOTE' | 'FEDREKVOTE' | 'FORELDREPENGER' | 'FORELDREPENGER_FØR_FØDSEL';
 
 export type no_nav_foreldrepenger_kontrakter_felles_kodeverk_MorsAktivitet =
     | 'ARBEID'
@@ -251,10 +247,7 @@ export type no_nav_foreldrepenger_kontrakter_felles_kodeverk_MorsAktivitet =
     | 'IKKE_OPPGITT';
 
 export type no_nav_foreldrepenger_kontrakter_felles_kodeverk_Overføringsårsak =
-    | 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER'
-    | 'SYKDOM_ANNEN_FORELDER'
-    | 'ALENEOMSORG'
-    | 'IKKE_RETT_ANNEN_FORELDER';
+    'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' | 'SYKDOM_ANNEN_FORELDER' | 'ALENEOMSORG' | 'IKKE_RETT_ANNEN_FORELDER';
 
 export type Aktivitet_fpoversikt = {
     arbeidsgiver?: Arbeidsgiver_fpoversikt;
@@ -349,11 +342,7 @@ export type no_nav_foreldrepenger_kontrakter_felles_kodeverk_AktivitetStatus =
     | 'VENTELØNN_VARTPENGER';
 
 export type BehandlingTilstand_fpoversikt =
-    | 'UNDER_BEHANDLING'
-    | 'VENT_TIDLIG_SØKNAD'
-    | 'VENT_MELDEKORT'
-    | 'VENT_DOKUMENTASJON'
-    | 'VENT_INNTEKTSMELDING';
+    'UNDER_BEHANDLING' | 'VENT_TIDLIG_SØKNAD' | 'VENT_MELDEKORT' | 'VENT_DOKUMENTASJON' | 'VENT_INNTEKTSMELDING';
 
 export type Beregningsgrunnlag_fpoversikt = {
     beregningAktivitetStatuser: BeregningAktivitetStatus_fpoversikt[];
@@ -435,11 +424,7 @@ export type FpÅpenBehandling_fpoversikt = {
 };
 
 export type Inntektskilde_fpoversikt =
-    | 'INNTEKTSMELDING'
-    | 'A_INNTEKT'
-    | 'VEDTAK_ANNEN_YTELSE'
-    | 'SKJØNNSFASTSATT'
-    | 'PGI';
+    'INNTEKTSMELDING' | 'A_INNTEKT' | 'VEDTAK_ANNEN_YTELSE' | 'SKJØNNSFASTSATT' | 'PGI';
 
 export type Person_fpoversikt = {
     aktørId?: string;
@@ -561,10 +546,7 @@ export type Vedtak_fpoversikt = {
 };
 
 export type AvslagÅrsak_fpoversikt =
-    | 'ARBEIDSGIVER_KAN_TILRETTELEGGE'
-    | 'SØKER_ER_INNVILGET_SYKEPENGER'
-    | 'MANGLENDE_DOKUMENTASJON'
-    | 'ANNET';
+    'ARBEIDSGIVER_KAN_TILRETTELEGGE' | 'SØKER_ER_INNVILGET_SYKEPENGER' | 'MANGLENDE_DOKUMENTASJON' | 'ANNET';
 
 export type TidslinjeHendelseDto_fpoversikt = {
     aktørType: AktørType_fpoversikt;

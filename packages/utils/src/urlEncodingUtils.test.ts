@@ -7,7 +7,13 @@ describe('urlEncodingUtils', () => {
         OM_BARNET: { erFødsel: true, antallBarn: '1', termindato: '2025-07-24' },
         UTTAKSPLAN: [
             { forelder: 'MOR', kontoType: 'MØDREKVOTE', fom: '2025-07-24', tom: '2025-11-05', flerbarnsdager: false },
-            { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', fom: '2025-11-06', tom: '2026-02-25', flerbarnsdager: false },
+            {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                fom: '2025-11-06',
+                tom: '2026-02-25',
+                flerbarnsdager: false,
+            },
         ],
     });
 
