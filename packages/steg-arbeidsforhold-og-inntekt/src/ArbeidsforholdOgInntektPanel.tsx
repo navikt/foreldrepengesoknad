@@ -12,6 +12,7 @@ import { ProgressStep, Step, StepButtons } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 
 import { AndreInntektskilderModal } from './components/andre-inntekter/AndreInntektskilderModal';
+import { LeggTilAndreInntekter } from './components/andre-inntekter/LeggTilAndreInntekter.tsx';
 import { ArbeidsforholdInformasjon } from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import { BrukerKanIkkeSøke } from './components/bruker-kan-ikke-søke/BrukerKanIkkeSøke';
 import { HvemKanDriveMedEgenNæring } from './components/hvem-kan-drive-egen-næring/HvemKanDriveMedEgenNæring';
@@ -200,15 +201,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                                     <FormattedMessage id="ArbeidsforholdOgInntektPanel.ReadMore.Body.AndreInntektskilder" />
                                 </BodyShort>
                             </ReadMore>
-                            <Button
-                                type="button"
-                                variant="secondary"
-                                size="small"
-                                icon={<PlusIcon aria-hidden />}
-                                onClick={() => setVisAndreInntekterModal(true)}
-                            >
-                                <FormattedMessage id="inntektsinformasjon.leggTilAndreInntekter" />
-                            </Button>
+                            <LeggTilAndreInntekter />
                         </VStack>
                     )}
                     <VStack gap="space-16">
