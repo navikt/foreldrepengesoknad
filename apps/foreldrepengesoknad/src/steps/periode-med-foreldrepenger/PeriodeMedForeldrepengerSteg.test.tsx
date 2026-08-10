@@ -329,7 +329,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
 
         expect(screen.queryByText('Hvor lang periode med foreldrepenger vil du ha?')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Dere har valgt 49 uker med 100 % foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Dere har valgt 49 uker med 100% foreldrepenger')).toBeInTheDocument();
         expect(
             screen.getByText('Dette ble valgt av Helga i søknaden hennes, og det kan ikke endres av deg.'),
         ).toBeInTheDocument();
