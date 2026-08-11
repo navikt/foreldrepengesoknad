@@ -1,16 +1,28 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import type { ComponentProps } from 'react';
 import { IntlProvider } from 'react-intl';
 
 import { formHookMessages } from '@navikt/fp-form-hooks';
 import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
+import { uiMessages } from '@navikt/fp-ui';
 
+import nbMessages from '../../intl/messages/nb_NO.json';
+import { AnnenInntektType } from '../../types/AndreInntektskilder';
 import { LeggTilAndreInntekterWizard } from './LeggTilAndreInntekterWizard';
 
-const renderWizard = () =>
+interface RenderWizardProps {
+    onSaveAndreInntekt?: ComponentProps<typeof LeggTilAndreInntekterWizard>['onSaveAndreInntekt'];
+    onSaveEgenNæring?: ComponentProps<typeof LeggTilAndreInntekterWizard>['onSaveEgenNæring'];
+}
+
+const renderWizard = (props: RenderWizardProps = {}) =>
     render(
-        <IntlProvider locale="nb" messages={{ ...formHookMessages.nb, ...egenNæringMessages.nb }}>
-            <LeggTilAndreInntekterWizard />
+        <IntlProvider
+            locale="nb"
+            messages={{ ...formHookMessages.nb, ...egenNæringMessages.nb, ...uiMessages.nb, ...nbMessages }}
+        >
+            <LeggTilAndreInntekterWizard {...props} />
         </IntlProvider>,
     );
 
@@ -88,11 +100,77 @@ describe('<LeggTilAndreInntekterWizard>', () => {
 
         expect(screen.getByText(expectedText)).toBeInTheDocument();
         expect(screen.queryByText('Hvilken type virksomhet har du?')).not.toBeInTheDocument();
-        if (skalViseEgenNæring) {
-            expect(screen.getByText('Hva heter virksomheten? (valgfritt)')).toBeInTheDocument();
-        } else {
-            expect(screen.queryByText('Hva heter virksomheten? (valgfritt)')).not.toBeInTheDocument();
-            expect(screen.getByRole('button', { name: 'Legg til' })).toBeDisabled();
-        }
+        expect(screen.queryByText('Hva heter virksomheten? (valgfritt)') !== null).toBe(skalViseEgenNæring);
+        expect(screen.getByRole('button', { name: 'Legg til' }).hasAttribute('disabled')).toBe(!skalViseEgenNæring);
+    });
+
+    it('skal validere og lagre annen inntekt før wizarden avsluttes', async () => {
+        const onSaveAndreInntekt = vi.fn();
+        renderWizard({ onSaveAndreInntekt });
+
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
+        await userEvent.click(screen.getByRole('radio', { name: /Annen pensjonsgivende inntekt/ }));
+        await userEvent.click(screen.getByRole('button', { name: 'Neste' }));
+        await userEvent.click(screen.getByRole('radio', { name: 'Etterlønn eller sluttvederlag' }));
+
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
+        expect(onSaveAndreInntekt).not.toHaveBeenCalled();
+        expect(screen.getAllByText('Du må oppgi perioden den gjelder fra').length).toBeGreaterThan(0);
+
+        await userEvent.type(screen.getByLabelText('Perioden den gjelder fra'), '01.01.2024');
+        await userEvent.type(screen.getByLabelText('Til'), '31.01.2024');
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
+
+        expect(onSaveAndreInntekt).toHaveBeenCalledWith({
+            type: AnnenInntektType.SLUTTPAKKE,
+            fom: '2024-01-01',
+            tom: '2024-01-31',
+        });
+        expect(screen.getByRole('button', { name: 'Legg til inntekt' })).toBeInTheDocument();
+    });
+
+    it('skal lagre fisker som EGEN_NÆRING', async () => {
+        const onSaveEgenNæring = vi.fn();
+        renderWizard({ onSaveEgenNæring });
+
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
+        await userEvent.click(screen.getByRole('radio', { name: /Jeg er fisker eller mannskap på båt/ }));
+        await userEvent.click(screen.getByRole('button', { name: 'Neste' }));
+        await userEvent.click(screen.getByRole('radio', { name: 'Lott' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Neste' }));
+
+        await userEvent.click(
+            within(screen.getByRole('radiogroup', { name: 'Er virksomheten registrert i Norge?' })).getByRole('radio', {
+                name: 'Ja',
+            }),
+        );
+        await userEvent.type(screen.getByLabelText('Når startet du virksomheten?'), '30.04.2023');
+        await userEvent.click(
+            within(screen.getByRole('radiogroup', { name: 'Jobber du der fortsatt?' })).getByRole('radio', {
+                name: 'Ja',
+            }),
+        );
+        await userEvent.type(
+            screen.getByLabelText('Hva har du hatt i næringsresultat før skatt de siste 12 månedene?'),
+            '1000',
+        );
+        await userEvent.click(
+            within(
+                screen.getByRole('radiogroup', {
+                    name: 'Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?',
+                }),
+            ).getByRole('radio', { name: 'Nei' }),
+        );
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
+
+        expect(onSaveEgenNæring).toHaveBeenCalledWith(
+            expect.objectContaining({
+                næringstype: 'FISKE',
+                fom: '2023-04-30',
+                næringsinntekt: '1000',
+                registrertINorge: true,
+            }),
+        );
+        expect(screen.getByRole('button', { name: 'Legg til inntekt' })).toBeInTheDocument();
     });
 });

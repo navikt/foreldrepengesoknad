@@ -33,18 +33,18 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
         expect(screen.getAllByText('Du må oppgi om du har arbeidet i utlandet de siste 4 ukene.')).toHaveLength(2);
     });
 
-    it('skal vise knapp for andre inntekter og åpne modal', async () => {
+    it('skal vise og åpne wizard for andre inntekter', async () => {
         render(<ForForeldrepenger />);
 
         expect(await screen.findAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
-        expect(screen.getByText('Legg til andre inntekter')).toBeInTheDocument();
+        expect(screen.getByText('Legg til inntekt')).toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText('Nei')[0]!);
         await userEvent.click(screen.getAllByText('Nei')[1]!);
 
-        await userEvent.click(screen.getByText('Legg til andre inntekter'));
+        await userEvent.click(screen.getByText('Legg til inntekt'));
 
-        expect(screen.getByText('Andre inntekter')).toBeInTheDocument();
+        expect(screen.getByText('Hvilken type inntekt har du hatt?')).toBeInTheDocument();
     });
 
     it('skal vise andre inntekter som en egen boks i sammendraget', async () => {
@@ -52,11 +52,34 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
 
         expect(await screen.findAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
 
-        expect(screen.getByText('Legg til andre inntekter')).toBeInTheDocument();
+        expect(screen.getByText('Legg til inntekt')).toBeInTheDocument();
 
         expect(screen.getByText('Dine andre inntekter')).toBeInTheDocument();
         expect(screen.getByText('Jobb i utlandet')).toBeInTheDocument();
         expect(screen.getByText('Københavns Kommune')).toBeInTheDocument();
+    });
+
+    it('skal appende en ny inntekt til eksisterende inntekter', async () => {
+        const saveAndreInntektskilder = vi.fn();
+        render(<ForForeldrepengerMedAndreInntekter saveAndreInntektskilder={saveAndreInntektskilder} />);
+
+        await screen.findAllByText('Arbeidsforhold og inntekt');
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
+        await userEvent.click(screen.getByRole('radio', { name: /Annen pensjonsgivende inntekt/ }));
+        await userEvent.click(screen.getByRole('button', { name: 'Neste' }));
+        await userEvent.click(screen.getByRole('radio', { name: 'Etterlønn eller sluttvederlag' }));
+        await userEvent.type(screen.getByLabelText('Perioden den gjelder fra'), '01.01.2024');
+        await userEvent.type(screen.getByLabelText('Til'), '31.01.2024');
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
+
+        expect(saveAndreInntektskilder).toHaveBeenCalledWith([
+            expect.objectContaining({ type: 'JOBB_I_UTLANDET' }),
+            {
+                type: 'ETTERLØNN_SLUTTPAKKE',
+                fom: '2024-01-01',
+                tom: '2024-01-31',
+            },
+        ]);
     });
 
     it('skal vise selvstendig næring som en egen boks i sammendraget', async () => {

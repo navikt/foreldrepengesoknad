@@ -6,11 +6,10 @@ import { BodyShort, InlineMessage, Radio, ReadMore, VStack } from '@navikt/ds-re
 
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { loggUmamiEvent } from '@navikt/fp-observability';
-import { AppName, ArbeidsforholdOgInntekt, EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { AppName, ArbeidsforholdOgInntekt, EksternArbeidsforholdDto_fpoversikt, NæringDto } from '@navikt/fp-types';
 import { ProgressStep, Step, StepButtons } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 
-import { AndreInntektskilderModal } from './components/andre-inntekter/AndreInntektskilderModal';
 import { LeggTilAndreInntekterWizard } from './components/andre-inntekter/LeggTilAndreInntekterWizard.tsx';
 import { ArbeidsforholdInformasjon } from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import { BrukerKanIkkeSøke } from './components/bruker-kan-ikke-søke/BrukerKanIkkeSøke';
@@ -27,6 +26,7 @@ interface Props<TYPE> {
     andreInntektskilder: AndreInntektskilderUtkast[];
     saveOnNext: (formValues: ArbeidsforholdOgInntekt) => void;
     saveAndreInntektskilder: (values: AndreInntektskilder[]) => void;
+    saveEgenNæring?: (value: NæringDto) => void;
     onAvsluttOgSlett: () => void;
     onFortsettSenere?: () => void;
     onStepChange?: (id: TYPE) => void;
@@ -43,6 +43,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
     andreInntektskilder,
     saveOnNext,
     saveAndreInntektskilder,
+    saveEgenNæring,
     onAvsluttOgSlett,
     onFortsettSenere,
     onStepChange,
@@ -53,7 +54,6 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
     const intl = useIntl();
 
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [visAndreInntekterModal, setVisAndreInntekterModal] = useState(false);
 
     const formMethods = useForm<ArbeidsforholdOgInntekt>({
         defaultValues: {
@@ -139,7 +139,12 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                                     <FormattedMessage id="ArbeidsforholdOgInntektPanel.ReadMore.Body.AndreInntektskilder" />
                                 </BodyShort>
                             </ReadMore>
-                            <LeggTilAndreInntekterWizard />
+                            <LeggTilAndreInntekterWizard
+                                onSaveEgenNæring={saveEgenNæring}
+                                onSaveAndreInntekt={(annenInntekt) =>
+                                    saveAndreInntektskilder([...ferdigeAndreInntektskilder, annenInntekt])
+                                }
+                            />
                         </VStack>
                     )}
                     <VStack gap="space-16">
@@ -155,14 +160,6 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                         goToPreviousStep={goToPreviousStep}
                     />
                 </VStack>
-                <AndreInntektskilderModal
-                    open={visAndreInntekterModal}
-                    onOpenChange={setVisAndreInntekterModal}
-                    initialValues={andreInntektskilder.filter(
-                        (entry): entry is AndreInntektskilder => entry.type !== undefined,
-                    )}
-                    onSave={saveAndreInntektskilder}
-                />
             </RhfForm>
         </Step>
     );

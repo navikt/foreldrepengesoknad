@@ -1,17 +1,16 @@
-import { FileIcon, PersonEnvelopeIcon } from '@navikt/aksel-icons';
+import { FileIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, HStack, InfoCard, VStack } from '@navikt/ds-react';
+import { HStack, InfoCard, VStack } from '@navikt/ds-react';
 
 import { RhfDateRangepicker } from '@navikt/fp-form-hooks';
-import { BluePanel } from '@navikt/fp-ui';
 import { isBeforeOrSame, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
-import { AndreInntektskilder } from '../../types/AndreInntektskilder';
+import { AndreInntektskilderUtkast, AnnenInntektType } from '../../types/AndreInntektskilder';
 
 interface Props {
     index: number;
-    inntektskilde: AndreInntektskilder;
+    inntektskilde: Extract<AndreInntektskilderUtkast, { type: AnnenInntektType.SLUTTPAKKE }>;
 }
 
 export const EtterlønnEllerSluttvederlagPanel = ({ index, inntektskilde }: Props) => {

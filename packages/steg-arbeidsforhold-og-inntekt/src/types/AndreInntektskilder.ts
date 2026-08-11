@@ -32,7 +32,13 @@ interface JobbIUtlandetInntekt extends AnnenInntektBase {
 
 export type AndreInntektskilder = SluttpakkeInntekt | MilitærtjenesteInntekt | JobbIUtlandetInntekt;
 
-export type AndreInntektskilderUtkast = AndreInntektskilder | { type: undefined };
+type InntektskildeUtkast<T extends AndreInntektskilder> = Pick<T, 'type'> & Partial<Omit<T, 'type'>>;
+
+export type AndreInntektskilderUtkast =
+    | InntektskildeUtkast<SluttpakkeInntekt>
+    | InntektskildeUtkast<MilitærtjenesteInntekt>
+    | InntektskildeUtkast<JobbIUtlandetInntekt>
+    | { type: undefined };
 
 export type AndreInntekterFormValues = {
     andreInntektskilder: AndreInntektskilderUtkast[];

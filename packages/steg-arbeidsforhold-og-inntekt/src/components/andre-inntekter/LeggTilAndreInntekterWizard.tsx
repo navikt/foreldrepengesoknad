@@ -1,11 +1,20 @@
 import { ExclamationmarkTriangleIcon, InformationSquareIcon, PersonEnvelopeIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 
 import { Heading, InfoCard, Label, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
+import { ErrorSummaryHookForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { EgenNæringForm } from '@navikt/fp-steg-egen-naering';
 import type { NæringDto } from '@navikt/fp-types';
+import { isRequired } from '@navikt/fp-validation';
 
+import {
+    AndreInntekterFormValues,
+    AndreInntektskilder,
+    AnnenInntektType,
+    erFerdigUtfylt,
+} from '../../types/AndreInntektskilder.ts';
 import { EtterlønnEllerSluttvederlagPanel } from './EtterlønnEllerSluttvederlagPanel.tsx';
 import { FørstegangstjenestePanel } from './FørstegangstjenestePanel.tsx';
 import { JobbIUtlandetPanel } from './JobbIUtlandetPanel.tsx';
@@ -28,6 +37,7 @@ enum Inntektstype {
 
 interface Props {
     onSaveEgenNæring?: (egenNæring: NæringDto) => void;
+    onSaveAndreInntekt?: (annenInntekt: AndreInntektskilder) => void;
 }
 
 interface EgenNæringWizardFormProps {
@@ -36,10 +46,13 @@ interface EgenNæringWizardFormProps {
     onBack: () => void;
 }
 
-export const LeggTilAndreInntekterWizard = ({ onSaveEgenNæring }: Props) => {
+export const LeggTilAndreInntekterWizard = ({ onSaveEgenNæring, onSaveAndreInntekt }: Props) => {
     return (
         <div className="rounded-xl border border-dashed border-ax-border-neutral bg-ax-bg-input py-4 px-5">
-            <LeggTilAndreInntekterWizardInner onSaveEgenNæring={onSaveEgenNæring} />
+            <LeggTilAndreInntekterWizardInner
+                onSaveEgenNæring={onSaveEgenNæring}
+                onSaveAndreInntekt={onSaveAndreInntekt}
+            />
         </div>
     );
 };
@@ -62,7 +75,7 @@ const EgenNæringWizardForm = ({ onSubmit, onAbort, onBack }: EgenNæringWizardF
     );
 };
 
-const LeggTilAndreInntekterWizardInner = ({ onSaveEgenNæring }: Props) => {
+const LeggTilAndreInntekterWizardInner = ({ onSaveEgenNæring, onSaveAndreInntekt }: Props) => {
     const [step, setStep] = useState(WizardStep.START);
     const [inntektstype, setInntektstype] = useState<Inntektstype>();
 
@@ -134,7 +147,10 @@ const LeggTilAndreInntekterWizardInner = ({ onSaveEgenNæring }: Props) => {
             <AnnenInntektForm
                 onAbort={avsluttWizard}
                 onBack={() => setStep(WizardStep.VELG_INNTEKTSTYPE)}
-                onComplete={avsluttWizard}
+                onSubmit={(annenInntekt) => {
+                    onSaveAndreInntekt?.(annenInntekt);
+                    avsluttWizard();
+                }}
             />
         );
     }
@@ -341,39 +357,60 @@ const EgenBåtInntekt = (props: FiskerNæringProps) => {
     );
 };
 
-type AnnenInntektValg = '1' | '2' | '3';
+interface AnnenInntektFormProps {
+    onAbort: () => void;
+    onBack: () => void;
+    onSubmit: (annenInntekt: AndreInntektskilder) => void;
+}
 
-const AnnenInntektForm = ({ onAbort, onBack, onComplete }: WizardBranchFormProps) => {
-    const [annenInntektValg, setAnnenInntektValg] = useState<AnnenInntektValg>();
+const AnnenInntektForm = ({ onAbort, onBack, onSubmit }: AnnenInntektFormProps) => {
+    const formMethods = useForm<AndreInntekterFormValues>({
+        defaultValues: { andreInntektskilder: [{ type: undefined }] },
+        shouldUnregister: true,
+    });
+    const inntektskilde = formMethods.watch('andreInntektskilder.0') ?? { type: undefined };
+
+    const submitForm = formMethods.handleSubmit((values) => {
+        const ferdigInntektskilde = values.andreInntektskilder.find(erFerdigUtfylt);
+        if (ferdigInntektskilde) {
+            onSubmit(ferdigInntektskilde);
+        }
+    });
 
     return (
-        <VStack gap="space-40">
-            <Heading level="2" size="small">
-                Legg til inntektskilde
-            </Heading>
-            <RadioGroup
-                legend="Hvilken annen type pensjonsgivende inntekt har du hatt de siste 10 månedene?"
-                value={annenInntektValg ?? ''}
-                onChange={setAnnenInntektValg}
-            >
-                <Radio value="1">Jobb i utlandet </Radio>
-                <Radio value="2">Etterlønn eller sluttvederlag </Radio>
-                <Radio value="3">Førstegangstjeneste </Radio>
-            </RadioGroup>
-            {annenInntektValg === '1' && <JobbIUtlandetPanel index={0} inntektskilde={{ type: 'JOBB_I_UTLANDET' }} />}
-            {annenInntektValg === '2' && (
-                <EtterlønnEllerSluttvederlagPanel index={0} inntektskilde={{ type: 'ETTERLONN_ELLER_SLUTTVEDERLAG' }} />
-            )}
-            {annenInntektValg === '3' && (
-                <FørstegangstjenestePanel index={0} inntektskilde={{ type: 'MILITÆR_ELLER_SIVILTJENESTE' }} />
-            )}
-            <WizardNavigator
-                isLastStep
-                isNextDisabled={!annenInntektValg}
-                onCancel={onAbort}
-                onBack={onBack}
-                onNext={onComplete}
-            />
-        </VStack>
+        <FormProvider {...formMethods}>
+            <VStack gap="space-40">
+                <Heading level="2" size="small">
+                    Legg til inntektskilde
+                </Heading>
+                <ErrorSummaryHookForm />
+                <RhfRadioGroup
+                    name="andreInntektskilder.0.type"
+                    control={formMethods.control}
+                    label="Hvilken annen type pensjonsgivende inntekt har du hatt de siste 10 månedene?"
+                    validate={[isRequired('Du må velge hvilken type pensjonsgivende inntekt du har hatt.')]}
+                >
+                    <Radio value={AnnenInntektType.JOBB_I_UTLANDET}>Jobb i utlandet</Radio>
+                    <Radio value={AnnenInntektType.SLUTTPAKKE}>Etterlønn eller sluttvederlag</Radio>
+                    <Radio value={AnnenInntektType.MILITÆRTJENESTE}>Førstegangstjeneste</Radio>
+                </RhfRadioGroup>
+                {inntektskilde.type === AnnenInntektType.JOBB_I_UTLANDET && (
+                    <JobbIUtlandetPanel index={0} inntektskilde={inntektskilde} />
+                )}
+                {inntektskilde.type === AnnenInntektType.SLUTTPAKKE && (
+                    <EtterlønnEllerSluttvederlagPanel index={0} inntektskilde={inntektskilde} />
+                )}
+                {inntektskilde.type === AnnenInntektType.MILITÆRTJENESTE && (
+                    <FørstegangstjenestePanel index={0} inntektskilde={inntektskilde} />
+                )}
+                <WizardNavigator
+                    isLastStep
+                    isNextDisabled={!inntektskilde.type}
+                    onCancel={onAbort}
+                    onBack={onBack}
+                    onNext={submitForm}
+                />
+            </VStack>
+        </FormProvider>
     );
 };

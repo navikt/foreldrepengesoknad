@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -8,16 +8,16 @@ import { RhfDatepicker, RhfRadioGroup, RhfSelect, RhfTextField } from '@navikt/f
 import { createCountryOptions } from '@navikt/fp-utils';
 import { hasMaxLength, isBeforeOrSame, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
-import { AndreInntekterFormValues, AndreInntektskilder, AnnenInntektType } from '../../types/AndreInntektskilder';
+import { AndreInntekterFormValues, AndreInntektskilderUtkast, AnnenInntektType } from '../../types/AndreInntektskilder';
 
 interface Props {
     index: number;
-    inntektskilde: AndreInntektskilder;
+    inntektskilde: Extract<AndreInntektskilderUtkast, { type: AnnenInntektType.JOBB_I_UTLANDET }>;
 }
 
 export const JobbIUtlandetPanel = ({ index, inntektskilde }: Props) => {
     const intl = useIntl();
-    const today = useMemo(() => new Date(), []);
+    const [today] = useState(() => new Date().toISOString().slice(0, 10));
 
     const { control } = useFormContext<AndreInntekterFormValues>();
 
