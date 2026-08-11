@@ -1,6 +1,7 @@
+import { BriefcaseClockIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, Box, Detail, HStack, Heading, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, HStack, Heading, Label, Tag, VStack } from '@navikt/ds-react';
 
 import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
@@ -23,48 +24,51 @@ export const HarArbeidsforhold = ({ arbeidsforhold, harArbeidsforhold }: Props) 
                 <Box
                     key={arbforhold.arbeidsgiverId + arbforhold.fom + arbforhold.fom}
                     padding="space-16"
-                    background="brand-blue-moderate"
-                    borderRadius="4"
+                    className="border border-ax-border-info-subtle bg-ax-bg-info-soft rounded-(--ax-radius-12)"
                 >
                     <VStack gap="space-16">
-                        <HStack justify="space-between">
-                            <Heading size="xsmall" level="3">
-                                {arbforhold.arbeidsgiverIdType === 'orgnr' || arbforhold.arbeidsgiverNavn ? (
-                                    capitalizeFirstLetterInEveryWordOnly(arbforhold.arbeidsgiverNavn)
-                                ) : (
-                                    <FormattedMessage id="HarArbeidsforhold.arbeidsgiver" />
-                                )}
-                            </Heading>
-                            <Detail uppercase>
-                                <FormattedMessage
-                                    id="inntektsinformasjon.arbeidsforhold.stillingsprosent"
-                                    values={{
-                                        stillingsprosent: arbforhold.stillingsprosent,
-                                    }}
-                                />
-                            </Detail>
-                        </HStack>
+                        <Heading size="xsmall" level="3">
+                            {arbforhold.arbeidsgiverIdType === 'orgnr' || arbforhold.arbeidsgiverNavn ? (
+                                capitalizeFirstLetterInEveryWordOnly(arbforhold.arbeidsgiverNavn)
+                            ) : (
+                                <FormattedMessage id="HarArbeidsforhold.arbeidsgiver" />
+                            )}
+                        </Heading>
+                        <Tag
+                            className="inline-flex items-center gap-0.5 px-1.5 py-0.5 w-max"
+                            icon={<BriefcaseClockIcon aria-hidden />}
+                            variant="info"
+                        >
+                            Arbeidstaker{' '}
+                            <FormattedMessage
+                                id="inntektsinformasjon.arbeidsforhold.stillingsprosent"
+                                values={{
+                                    stillingsprosent: arbforhold.stillingsprosent,
+                                }}
+                            />
+                        </Tag>
                         {arbforhold.arbeidsgiverIdType === 'orgnr' && (
-                            <BodyShort>
+                            <HStack justify="space-between">
+                                <Label>Org.nummer</Label>
+                                <BodyShort className="text-ax-text-neutral-subtle" size="small">
+                                    {arbforhold.arbeidsgiverId}
+                                </BodyShort>
+                            </HStack>
+                        )}
+                        <HStack justify="space-between">
+                            <Label>Dato:</Label>
+                            <BodyShort className="text-ax-text-neutral-subtle" size="small">
                                 <FormattedMessage
-                                    id="inntektsinformasjon.arbeidsforhold.organisasjonsnummer"
+                                    id="inntektsinformasjon.arbeidsforhold.periode"
                                     values={{
-                                        organisasjonsnummer: arbforhold.arbeidsgiverId,
+                                        fom: formatDate(arbforhold.fom),
+                                        tom: arbforhold.tom
+                                            ? formatDate(arbforhold.tom)
+                                            : intl.formatMessage({ id: 'HarArbeidsforhold.pågående' }),
                                     }}
                                 />
                             </BodyShort>
-                        )}
-                        <BodyShort>
-                            <FormattedMessage
-                                id="inntektsinformasjon.arbeidsforhold.periode"
-                                values={{
-                                    fom: formatDate(arbforhold.fom),
-                                    tom: arbforhold.tom
-                                        ? formatDate(arbforhold.tom)
-                                        : intl.formatMessage({ id: 'HarArbeidsforhold.pågående' }),
-                                }}
-                            />
-                        </BodyShort>
+                        </HStack>
                     </VStack>
                 </Box>
             ))}

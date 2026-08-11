@@ -12,6 +12,7 @@ export const HvemKanVæreFrilanser = ({ appOrigin }: Props) => {
 
     return (
         <ReadMore
+            variant="moderate"
             onOpenChange={(open) =>
                 loggUmamiEvent({
                     origin: appOrigin,

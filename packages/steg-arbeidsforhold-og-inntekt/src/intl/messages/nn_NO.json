@@ -8,7 +8,7 @@
     "inntektsinformasjon.arbeidsforhold.utbetalingerFraNAV": "Viss du får utbetalingar frå Nav, treng du ikkje å opplyse om det i søknaden.",
     "inntektsinformasjon.arbeidsforhold.ingenRegistrerteArbeidsforhold": "Du er ikkje registrert med nokre arbeidsforhold.",
     "inntektsinformasjon.arbeidsforhold.organisasjonsnummer": "Org nr: {organisasjonsnummer}",
-    "inntektsinformasjon.arbeidsforhold.stillingsprosent": "{stillingsprosent} prosent",
+    "inntektsinformasjon.arbeidsforhold.stillingsprosent": "{stillingsprosent}%",
     "inntektsinformasjon.arbeidsforhold.periode": "{fom} - {tom}",
     "inntektsinformasjon.inntektsmelding.header": "{antall, plural, one {Arbeidsgivaren din} other {Arbeidsgivarane dine}} blir kontakta av Nav.",
     "inntektsinformasjon.inntektsmelding.body": "{antall, plural, one {Arbeidsgivaren din} other {Arbeidsgivarane dine}} blir kontakta av Nav for å sende opplysningar om inntekta di. Dette vil skje fire veker før du skal starte permisjonen, eller med ein gong søknaden er sendt dersom det allereie er mindre enn fire veker til du skal i permisjon.",

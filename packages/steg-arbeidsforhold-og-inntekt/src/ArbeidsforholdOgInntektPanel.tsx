@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
+import { BodyShort, InlineMessage, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { loggUmamiEvent } from '@navikt/fp-observability';
@@ -85,9 +85,9 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
             >
                 <VStack gap="space-40">
                     <ErrorSummaryHookForm />
-                    <BodyShort>
+                    <InlineMessage status="info">
                         <FormattedMessage id="inntektsinformasjon.arbeidsforhold.utbetalingerFraNAV" />
-                    </BodyShort>
+                    </InlineMessage>
                     <VStack gap="space-8">
                         <ArbeidsforholdInformasjon
                             appOrigin={appOrigin}
@@ -205,7 +205,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                     )}
                     <VStack gap="space-16">
                         {erSvp && <InfoOmFørstegangstjeneste />}
-                        <InfoTilFiskere erSvp={erSvp} />
+                        {erSvp && <InfoTilFiskere erSvp />}
                     </VStack>
                     {erSvp && kanIkkeSøke && <BrukerKanIkkeSøke />}
                     <StepButtons

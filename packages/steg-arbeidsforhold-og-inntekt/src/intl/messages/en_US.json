@@ -8,7 +8,7 @@
     "inntektsinformasjon.arbeidsforhold.utbetalingerFraNAV": "If you receive payments from Nav, you do not need to provide that information in the application.",
     "inntektsinformasjon.arbeidsforhold.ingenRegistrerteArbeidsforhold": "You are not registered with any employment relationships.",
     "inntektsinformasjon.arbeidsforhold.organisasjonsnummer": "Org no: {organisasjonsnummer}",
-    "inntektsinformasjon.arbeidsforhold.stillingsprosent": "{stillingsprosent} percent",
+    "inntektsinformasjon.arbeidsforhold.stillingsprosent": "{stillingsprosent}%",
     "inntektsinformasjon.arbeidsforhold.periode": "{fom} - {tom}",
     "inntektsinformasjon.inntektsmelding.header": "{count, plural, one {Your employer} other {Your employers}} will be contacted by Nav.",
     "inntektsinformasjon.inntektsmelding.body": "{count, plural, one {Your employer} other {Your employers}} will be contacted by Nav to provide information about your income. This will happen four weeks before you start your leave, or immediately after the application is submitted if there are already fewer than four weeks until your leave begins.",
