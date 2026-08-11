@@ -33,7 +33,7 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
         expect(screen.getAllByText('Du må oppgi om du har arbeidet i utlandet de siste 4 ukene.')).toHaveLength(2);
     });
 
-    it('skal vise skjema for egen næring i andre inntekter-wizarden', async () => {
+    it('skal vise knapp for andre inntekter og åpne modal', async () => {
         render(<ForForeldrepenger />);
 
         expect(await screen.findAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
@@ -44,12 +44,7 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
 
         await userEvent.click(screen.getByText('Legg til andre inntekter'));
 
-        expect(screen.getByText('Hvilken type inntekt har du hatt?')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Jeg har jobbet i min ektefelles næring hvor vi har fordelt inntekt'));
-
-        expect(screen.getByText('Hvilken type virksomhet har du?')).toBeInTheDocument();
-        expect(screen.getByText('Hva heter virksomheten?')).toBeInTheDocument();
+        expect(screen.getByText('Andre inntekter')).toBeInTheDocument();
     });
 
     it('skal vise andre inntekter som en egen boks i sammendraget', async () => {
