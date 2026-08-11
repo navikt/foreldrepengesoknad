@@ -30,7 +30,7 @@ export const setupAndServeHtml = async (router: Router) => {
     const appVersionEtag = config.app.version ? `W/"${config.app.version}"` : undefined;
 
     router.get('*splat', (request, response) => {
-        response.set('Cache-Control', 'max-age=0, must-revalidate');
+        response.set('Cache-Control', 'private, max-age=0, must-revalidate');
 
         if (appVersionEtag) {
             response.set('ETag', appVersionEtag);
