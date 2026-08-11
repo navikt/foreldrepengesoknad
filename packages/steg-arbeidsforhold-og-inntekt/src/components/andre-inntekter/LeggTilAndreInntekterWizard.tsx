@@ -1,7 +1,7 @@
 import { ExclamationmarkTriangleIcon, InformationSquareIcon, PersonEnvelopeIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 
-import { Button, HStack, Heading, InfoCard, Label, Radio, RadioGroup } from '@navikt/ds-react';
+import { Heading, InfoCard, Label, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
 import { EgenNæringForm } from '@navikt/fp-steg-egen-naering';
 import type { NæringDto } from '@navikt/fp-types';
@@ -10,6 +10,21 @@ import { EtterlønnEllerSluttvederlagPanel } from './EtterlønnEllerSluttvederla
 import { FørstegangstjenestePanel } from './FørstegangstjenestePanel.tsx';
 import { JobbIUtlandetPanel } from './JobbIUtlandetPanel.tsx';
 import { LeggTilAndreInntekterButton } from './LeggTilAndreInntekterButton.tsx';
+import { WizardNavigator } from './WizardNavigator.tsx';
+
+enum WizardStep {
+    START,
+    VELG_INNTEKTSTYPE,
+    EGEN_NÆRING,
+    FISKER,
+    ANNEN_INNTEKT,
+}
+
+enum Inntektstype {
+    EGEN_NÆRING = 'EGEN_NÆRING',
+    FISKER = 'FISKER',
+    ANNEN_INNTEKT = 'ANNEN_INNTEKT',
+}
 
 interface Props {
     onSaveEgenNæring?: (egenNæring: NæringDto) => void;
@@ -17,7 +32,8 @@ interface Props {
 
 interface EgenNæringWizardFormProps {
     onSubmit: (egenNæring: NæringDto) => void;
-    onCancel: () => void;
+    onAbort: () => void;
+    onBack: () => void;
 }
 
 export const LeggTilAndreInntekterWizard = ({ onSaveEgenNæring }: Props) => {
@@ -28,7 +44,7 @@ export const LeggTilAndreInntekterWizard = ({ onSaveEgenNæring }: Props) => {
     );
 };
 
-const EgenNæringWizardForm = ({ onSubmit, onCancel }: EgenNæringWizardFormProps) => {
+const EgenNæringWizardForm = ({ onSubmit, onAbort, onBack }: EgenNæringWizardFormProps) => {
     return (
         <>
             <Heading level="2" size="small">
@@ -39,14 +55,7 @@ const EgenNæringWizardForm = ({ onSubmit, onCancel }: EgenNæringWizardFormProp
                 onSubmit={onSubmit}
                 withoutFormElement
                 renderActions={(submitForm) => (
-                    <HStack gap="space-16" justify="end">
-                        <Button type="button" variant="secondary" onClick={onCancel}>
-                            Tilbake
-                        </Button>
-                        <Button type="button" onClick={() => void submitForm()}>
-                            Legg til
-                        </Button>
-                    </HStack>
+                    <WizardNavigator isLastStep onCancel={onAbort} onBack={onBack} onNext={() => submitForm()} />
                 )}
             />
         </>
@@ -54,48 +63,90 @@ const EgenNæringWizardForm = ({ onSubmit, onCancel }: EgenNæringWizardFormProp
 };
 
 const LeggTilAndreInntekterWizardInner = ({ onSaveEgenNæring }: Props) => {
-    const [step, setStep] = useState(4);
+    const [step, setStep] = useState(WizardStep.START);
+    const [inntektstype, setInntektstype] = useState<Inntektstype>();
 
-    if (step === 0) {
-        return <LeggTilAndreInntekterButton />;
+    const avsluttWizard = () => {
+        setInntektstype(undefined);
+        setStep(WizardStep.START);
+    };
+
+    if (step === WizardStep.START) {
+        return <LeggTilAndreInntekterButton onClick={() => setStep(WizardStep.VELG_INNTEKTSTYPE)} />;
     }
-    if (step === 1) {
+
+    if (step === WizardStep.VELG_INNTEKTSTYPE) {
         return (
-            <RadioGroup
-                legend="Hvilken type inntekt har du hatt?"
-                description="Oppgi kun aktiv inntekt de siste 10 måendene"
-                onChange={(value) => {
-                    if (value === 'egen_næring') {
-                        setStep(4);
-                    }
-                }}
-            >
-                <Radio value="egen_næring" description="Bidratt til driften av ektefelles virksomhet og hatt inntekt">
-                    Jeg har jobbet i min ektefelles næring hvor vi har fordelt inntekt
-                </Radio>
-                <Radio value="20" description="Hyre og/eller lott, eller egen båt">
-                    Jeg er fisker eller mannskap på båt Hyre og/eller lott, eller egen båt
-                </Radio>
-                <Radio value="40" description="Førstegangstjeneste, sluttpakke, etterlønn, eller arbeid i utlandet">
-                    Annen pensjonsgivende inntekt
-                </Radio>
-            </RadioGroup>
+            <VStack gap="space-40">
+                <RadioGroup
+                    legend="Hvilken type inntekt har du hatt?"
+                    description="Oppgi kun aktiv inntekt de siste 10 månedene"
+                    value={inntektstype ?? ''}
+                    onChange={setInntektstype}
+                >
+                    <Radio
+                        value={Inntektstype.EGEN_NÆRING}
+                        description="Bidratt til driften av ektefelles virksomhet og hatt inntekt"
+                    >
+                        Jeg har jobbet i min ektefelles næring hvor vi har fordelt inntekt
+                    </Radio>
+                    <Radio value={Inntektstype.FISKER} description="Hyre og/eller lott, eller egen båt">
+                        Jeg er fisker eller mannskap på båt Hyre og/eller lott, eller egen båt
+                    </Radio>
+                    <Radio
+                        value={Inntektstype.ANNEN_INNTEKT}
+                        description="Førstegangstjeneste, sluttpakke, etterlønn, eller arbeid i utlandet"
+                    >
+                        Annen pensjonsgivende inntekt
+                    </Radio>
+                </RadioGroup>
+                <WizardNavigator
+                    isLastStep={false}
+                    isNextDisabled={!inntektstype}
+                    onCancel={avsluttWizard}
+                    onNext={() => {
+                        if (inntektstype === Inntektstype.EGEN_NÆRING) {
+                            setStep(WizardStep.EGEN_NÆRING);
+                        } else if (inntektstype === Inntektstype.FISKER) {
+                            setStep(WizardStep.FISKER);
+                        } else if (inntektstype === Inntektstype.ANNEN_INNTEKT) {
+                            setStep(WizardStep.ANNEN_INNTEKT);
+                        }
+                    }}
+                />
+            </VStack>
         );
     }
-    if (step === 2) {
-        return <FiskerForm />;
+
+    if (step === WizardStep.FISKER) {
+        return (
+            <FiskerForm
+                onAbort={avsluttWizard}
+                onBack={() => setStep(WizardStep.VELG_INNTEKTSTYPE)}
+                onComplete={avsluttWizard}
+            />
+        );
     }
-    if (step === 3) {
-        return <AnnenInntektForm />;
+
+    if (step === WizardStep.ANNEN_INNTEKT) {
+        return (
+            <AnnenInntektForm
+                onAbort={avsluttWizard}
+                onBack={() => setStep(WizardStep.VELG_INNTEKTSTYPE)}
+                onComplete={avsluttWizard}
+            />
+        );
     }
-    if (step === 4) {
+
+    if (step === WizardStep.EGEN_NÆRING) {
         return (
             <EgenNæringWizardForm
                 onSubmit={(egenNæring) => {
                     onSaveEgenNæring?.(egenNæring);
-                    setStep(0);
+                    avsluttWizard();
                 }}
-                onCancel={() => setStep(1)}
+                onAbort={avsluttWizard}
+                onBack={() => setStep(WizardStep.VELG_INNTEKTSTYPE)}
             />
         );
     }
@@ -103,10 +154,19 @@ const LeggTilAndreInntekterWizardInner = ({ onSaveEgenNæring }: Props) => {
     return null;
 };
 
-const FiskerForm = () => {
-    const fiskerValg = 'egen_båt';
+interface WizardBranchFormProps {
+    onAbort: () => void;
+    onBack: () => void;
+    onComplete: () => void;
+}
+
+type FiskerValg = 'lott' | 'hyre' | 'lott_og_hyre' | 'egen_båt';
+
+const FiskerForm = ({ onAbort, onBack, onComplete }: WizardBranchFormProps) => {
+    const [fiskerValg, setFiskerValg] = useState<FiskerValg>();
+
     return (
-        <>
+        <VStack gap="space-40">
             <Heading level="2" size="small">
                 Legg til inntektskilde
             </Heading>
@@ -117,7 +177,11 @@ const FiskerForm = () => {
                     Opplysningene dine vil også sendes til Skatteetaten.
                 </InfoCard.Message>
             </InfoCard>
-            <RadioGroup legend="Hvilken ordning har du som fisker eller mannskap?" onChange={() => {}}>
+            <RadioGroup
+                legend="Hvilken ordning har du som fisker eller mannskap?"
+                value={fiskerValg ?? ''}
+                onChange={setFiskerValg}
+            >
                 <Radio value="lott">Lott</Radio>
                 <Radio value="hyre">Hyre</Radio>
                 <Radio value="lott_og_hyre">Lott og hyre Description</Radio>
@@ -127,7 +191,14 @@ const FiskerForm = () => {
             {fiskerValg === 'lott' && <LottInntekt />}
             {fiskerValg === 'lott_og_hyre' && <LottOgHyreInntekt />}
             {fiskerValg === 'egen_båt' && <EgenBåtInntekt />}
-        </>
+            <WizardNavigator
+                isLastStep
+                isNextDisabled={!fiskerValg}
+                onCancel={onAbort}
+                onBack={onBack}
+                onNext={onComplete}
+            />
+        </VStack>
     );
 };
 
@@ -202,16 +273,20 @@ const EgenBåtInntekt = () => {
     );
 };
 
-const AnnenInntektForm = () => {
-    const annenInntektValg = '3';
+type AnnenInntektValg = '1' | '2' | '3';
+
+const AnnenInntektForm = ({ onAbort, onBack, onComplete }: WizardBranchFormProps) => {
+    const [annenInntektValg, setAnnenInntektValg] = useState<AnnenInntektValg>();
+
     return (
-        <>
+        <VStack gap="space-40">
             <Heading level="2" size="small">
                 Legg til inntektskilde
             </Heading>
             <RadioGroup
                 legend="Hvilken annen type pensjonsgivende inntekt har du hatt de siste 10 månedene?"
-                onChange={() => {}}
+                value={annenInntektValg ?? ''}
+                onChange={setAnnenInntektValg}
             >
                 <Radio value="1">Jobb i utlandet </Radio>
                 <Radio value="2">Etterlønn eller sluttvederlag </Radio>
@@ -224,6 +299,13 @@ const AnnenInntektForm = () => {
             {annenInntektValg === '3' && (
                 <FørstegangstjenestePanel index={0} inntektskilde={{ type: 'MILITÆR_ELLER_SIVILTJENESTE' }} />
             )}
-        </>
+            <WizardNavigator
+                isLastStep
+                isNextDisabled={!annenInntektValg}
+                onCancel={onAbort}
+                onBack={onBack}
+                onNext={onComplete}
+            />
+        </VStack>
     );
 };
