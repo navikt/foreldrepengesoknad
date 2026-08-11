@@ -1,11 +1,11 @@
+import { FileIcon } from '@navikt/aksel-icons';
 import { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, HStack, Radio, VStack } from '@navikt/ds-react';
+import { HStack, InfoCard, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfRadioGroup } from '@navikt/fp-form-hooks';
-import { BluePanel } from '@navikt/fp-ui';
 import { isBeforeOrSame, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { AndreInntekterFormValues, AndreInntektskilder, AnnenInntektType } from '../../types/AndreInntektskilder';
@@ -78,11 +78,14 @@ export const FørstegangstjenestePanel = ({ index, inntektskilde }: Props) => {
                     />
                 )}
             </HStack>
-            <BluePanel isDarkBlue>
-                <BodyShort>
+            <InfoCard data-color="info">
+                <InfoCard.Header icon={<FileIcon aria-hidden />}>
+                    <InfoCard.Title>Inntekten må dokumenteres</InfoCard.Title>
+                </InfoCard.Header>
+                <InfoCard.Content>
                     <FormattedMessage id="FørstegangstjenestePanel.Vedlegg" />
-                </BodyShort>
-            </BluePanel>
+                </InfoCard.Content>
+            </InfoCard>
         </VStack>
     );
 };

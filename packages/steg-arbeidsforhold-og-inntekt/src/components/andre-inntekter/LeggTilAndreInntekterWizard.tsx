@@ -3,6 +3,9 @@ import { useState } from 'react';
 
 import { Heading, InfoCard, Label, Radio, RadioGroup } from '@navikt/ds-react';
 
+import { EtterlønnEllerSluttvederlagPanel } from './EtterlønnEllerSluttvederlagPanel.tsx';
+import { FørstegangstjenestePanel } from './FørstegangstjenestePanel.tsx';
+import { JobbIUtlandetPanel } from './JobbIUtlandetPanel.tsx';
 import { LeggTilAndreInntekterButton } from './LeggTilAndreInntekterButton.tsx';
 
 export const LeggTilAndreInntekterWizard = () => {
@@ -14,7 +17,7 @@ export const LeggTilAndreInntekterWizard = () => {
 };
 
 const LeggTilAndreInntekterWizardInner = () => {
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(3);
 
     if (step === 0) {
         return <LeggTilAndreInntekterButton />;
@@ -148,7 +151,7 @@ const EgenBåtInntekt = () => {
 };
 
 const AnnenInntektForm = () => {
-    const annenInntektValg = '1';
+    const annenInntektValg = '3';
     return (
         <>
             <Heading level="2" size="small">
@@ -158,13 +161,17 @@ const AnnenInntektForm = () => {
                 legend="Hvilken annen type pensjonsgivende inntekt har du hatt de siste 10 månedene?"
                 onChange={() => {}}
             >
-                <Radio value="1">Jobb i utlandet Description</Radio>
-                <Radio value="2">Etterlønn eller sluttvederlag Description</Radio>
-                <Radio value="3">Førstegangstjeneste Description</Radio>
+                <Radio value="1">Jobb i utlandet </Radio>
+                <Radio value="2">Etterlønn eller sluttvederlag </Radio>
+                <Radio value="3">Førstegangstjeneste </Radio>
             </RadioGroup>
-            {annenInntektValg === '1' && <LottOgHyreInntekt />}
-            {annenInntektValg === '2' && <HyreInntekt />}
-            {annenInntektValg === '3' && <LottInntekt />}
+            {annenInntektValg === '1' && <JobbIUtlandetPanel index={0} inntektskilde={{ type: 'JOBB_I_UTLANDET' }} />}
+            {annenInntektValg === '2' && (
+                <EtterlønnEllerSluttvederlagPanel index={0} inntektskilde={{ type: 'ETTERLONN_ELLER_SLUTTVEDERLAG' }} />
+            )}
+            {annenInntektValg === '3' && (
+                <FørstegangstjenestePanel index={0} inntektskilde={{ type: 'MILITÆR_ELLER_SIVILTJENESTE' }} />
+            )}
         </>
     );
 };

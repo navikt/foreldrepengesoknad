@@ -1,6 +1,7 @@
+import { FileIcon, PersonEnvelopeIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, HStack, VStack } from '@navikt/ds-react';
+import { BodyShort, HStack, InfoCard, VStack } from '@navikt/ds-react';
 
 import { RhfDateRangepicker } from '@navikt/fp-form-hooks';
 import { BluePanel } from '@navikt/fp-ui';
@@ -49,11 +50,15 @@ export const EtterlønnEllerSluttvederlagPanel = ({ index, inntektskilde }: Prop
                     ]}
                 />
             </HStack>
-            <BluePanel isDarkBlue>
-                <BodyShort>
+
+            <InfoCard data-color="info">
+                <InfoCard.Header icon={<FileIcon aria-hidden />}>
+                    <InfoCard.Title>Inntekten må dokumenteres</InfoCard.Title>
+                </InfoCard.Header>
+                <InfoCard.Content>
                     <FormattedMessage id="EtterlønnEllerSluttvederlagPanel.Vedlegg" />
-                </BodyShort>
-            </BluePanel>
+                </InfoCard.Content>
+            </InfoCard>
         </VStack>
     );
 };
