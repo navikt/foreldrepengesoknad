@@ -124,6 +124,7 @@ const LeggTilAndreInntekterWizardInner = ({ onSaveEgenNæring }: Props) => {
                 onAbort={avsluttWizard}
                 onBack={() => setStep(WizardStep.VELG_INNTEKTSTYPE)}
                 onComplete={avsluttWizard}
+                onSaveEgenNæring={onSaveEgenNæring}
             />
         );
     }
@@ -160,49 +161,113 @@ interface WizardBranchFormProps {
     onComplete: () => void;
 }
 
+interface FiskerFormProps extends WizardBranchFormProps {
+    onSaveEgenNæring?: (egenNæring: NæringDto) => void;
+}
+
+interface FiskerNæringProps {
+    onAbort: () => void;
+    onBack: () => void;
+    onSubmit: (egenNæring: NæringDto) => void;
+}
+
 type FiskerValg = 'lott' | 'hyre' | 'lott_og_hyre' | 'egen_båt';
 
-const FiskerForm = ({ onAbort, onBack, onComplete }: WizardBranchFormProps) => {
+enum FiskerStep {
+    VELG_ORDNING,
+    VIS_INFORMASJON,
+}
+
+const FiskerForm = ({ onAbort, onBack, onComplete, onSaveEgenNæring }: FiskerFormProps) => {
     const [fiskerValg, setFiskerValg] = useState<FiskerValg>();
+    const [step, setStep] = useState(FiskerStep.VELG_ORDNING);
+
+    if (step === FiskerStep.VELG_ORDNING) {
+        return (
+            <VStack gap="space-40">
+                <Heading level="2" size="small">
+                    Legg til inntektskilde
+                </Heading>
+                <Label>Inntekt som fisker eller mannskap</Label>
+                <InfoCard data-color="meta-lime">
+                    <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
+                        Vi trenger riktig informasjon om arbeidssituasjonen din for å beregne foreldrepengene dine.
+                        Opplysningene dine vil også sendes til Skatteetaten.
+                    </InfoCard.Message>
+                </InfoCard>
+                <RadioGroup
+                    legend="Hvilken ordning har du som fisker eller mannskap?"
+                    value={fiskerValg ?? ''}
+                    onChange={setFiskerValg}
+                >
+                    <Radio value="lott">Lott</Radio>
+                    <Radio value="hyre">Hyre</Radio>
+                    <Radio value="lott_og_hyre">Lott og hyre Description</Radio>
+                    <Radio value="egen_båt">Egen båt</Radio>
+                </RadioGroup>
+                <WizardNavigator
+                    isLastStep={false}
+                    isNextDisabled={!fiskerValg}
+                    onCancel={onAbort}
+                    onBack={onBack}
+                    onNext={() => setStep(FiskerStep.VIS_INFORMASJON)}
+                />
+            </VStack>
+        );
+    }
+
+    if (fiskerValg === 'hyre') {
+        return (
+            <VStack gap="space-40">
+                <Heading level="2" size="small">
+                    Legg til inntektskilde
+                </Heading>
+                <HyreInntekt />
+                <WizardNavigator
+                    isLastStep
+                    isNextDisabled
+                    onCancel={onAbort}
+                    onBack={() => setStep(FiskerStep.VELG_ORDNING)}
+                    onNext={onComplete}
+                />
+            </VStack>
+        );
+    }
+
+    const fiskerNæringProps: FiskerNæringProps = {
+        onAbort,
+        onBack: () => setStep(FiskerStep.VELG_ORDNING),
+        onSubmit: (egenNæring) => {
+            onSaveEgenNæring?.(egenNæring);
+            onComplete();
+        },
+    };
 
     return (
         <VStack gap="space-40">
             <Heading level="2" size="small">
                 Legg til inntektskilde
             </Heading>
-            <Label>Inntekt som fisker eller mannskap</Label>
-            <InfoCard data-color="meta-lime">
-                <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
-                    Vi trenger riktig informasjon om arbeidssituasjonen din for å beregne foreldrepengene dine.
-                    Opplysningene dine vil også sendes til Skatteetaten.
-                </InfoCard.Message>
-            </InfoCard>
-            <RadioGroup
-                legend="Hvilken ordning har du som fisker eller mannskap?"
-                value={fiskerValg ?? ''}
-                onChange={setFiskerValg}
-            >
-                <Radio value="lott">Lott</Radio>
-                <Radio value="hyre">Hyre</Radio>
-                <Radio value="lott_og_hyre">Lott og hyre Description</Radio>
-                <Radio value="egen_båt">Egen båt</Radio>
-            </RadioGroup>
-            {fiskerValg === 'hyre' && <HyreInntekt />}
-            {fiskerValg === 'lott' && <LottInntekt />}
-            {fiskerValg === 'lott_og_hyre' && <LottOgHyreInntekt />}
-            {fiskerValg === 'egen_båt' && <EgenBåtInntekt />}
-            <WizardNavigator
-                isLastStep
-                isNextDisabled={!fiskerValg}
-                onCancel={onAbort}
-                onBack={onBack}
-                onNext={onComplete}
-            />
+            {fiskerValg === 'lott' && <LottInntekt {...fiskerNæringProps} />}
+            {fiskerValg === 'lott_og_hyre' && <LottOgHyreInntekt {...fiskerNæringProps} />}
+            {fiskerValg === 'egen_båt' && <EgenBåtInntekt {...fiskerNæringProps} />}
         </VStack>
     );
 };
 
-const LottInntekt = () => {
+const FiskerEgenNæringForm = ({ onSubmit, onAbort, onBack }: FiskerNæringProps) => (
+    <EgenNæringForm
+        fixedNæringstype="FISKE"
+        appOrigin="foreldrepengesoknad"
+        onSubmit={onSubmit}
+        withoutFormElement
+        renderActions={(submitForm) => (
+            <WizardNavigator isLastStep onCancel={onAbort} onBack={onBack} onNext={() => submitForm()} />
+        )}
+    />
+);
+
+const LottInntekt = (props: FiskerNæringProps) => {
     return (
         <>
             <Label>Inntekt fra lott</Label>
@@ -215,6 +280,7 @@ const LottInntekt = () => {
                     behandles inntekten som selvstendig næringsdrivende, og vi trenger opplysninger om virksomheten din.
                 </InfoCard.Content>
             </InfoCard>
+            <FiskerEgenNæringForm {...props} />
         </>
     );
 };
@@ -235,7 +301,7 @@ const HyreInntekt = () => {
     );
 };
 
-const LottOgHyreInntekt = () => {
+const LottOgHyreInntekt = (props: FiskerNæringProps) => {
     return (
         <>
             <Label>Inntekt fra lott og hyre</Label>
@@ -252,11 +318,12 @@ const LottOgHyreInntekt = () => {
                     foreldrepenger.
                 </InfoCard.Content>
             </InfoCard>
+            <FiskerEgenNæringForm {...props} />
         </>
     );
 };
 
-const EgenBåtInntekt = () => {
+const EgenBåtInntekt = (props: FiskerNæringProps) => {
     return (
         <>
             <Label>Fiske med egen båt</Label>
@@ -269,6 +336,7 @@ const EgenBåtInntekt = () => {
                     tilpasset din situasjon og du får veiledning og informasjon underveis.
                 </InfoCard.Content>
             </InfoCard>
+            <FiskerEgenNæringForm {...props} />
         </>
     );
 };

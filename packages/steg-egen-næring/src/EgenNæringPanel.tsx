@@ -79,6 +79,7 @@ interface Props<TYPE> {
 
 interface EgenNæringFormProps {
     egenNæring?: NæringDto;
+    fixedNæringstype?: NæringDto['næringstype'];
     onSubmit: (formValues: NæringDto) => void;
     appOrigin: AppName;
     children?: ReactNode;
@@ -90,6 +91,7 @@ export const EGEN_NÆRING_ID = 'naering';
 
 export const EgenNæringForm = ({
     egenNæring,
+    fixedNæringstype,
     onSubmit,
     appOrigin,
     children,
@@ -106,7 +108,11 @@ export const EgenNæringForm = ({
 
     const formMethods = useForm<NæringFormValues>({
         shouldUnregister: true,
-        defaultValues: { ...egenNæring, pågående: egenNæringDefaultValue },
+        defaultValues: {
+            ...egenNæring,
+            næringstype: fixedNæringstype ?? egenNæring?.næringstype,
+            pågående: egenNæringDefaultValue,
+        },
     });
 
     const navnPåNæringSpm = intl.formatMessage({ id: 'egenNæring.navnPåNæring' });
@@ -133,25 +139,26 @@ export const EgenNæringForm = ({
     const formContent = (
         <VStack gap="space-40">
             <ErrorSummaryHookForm />
-            <RhfRadioGroup
-                name="næringstype"
-                control={formMethods.control}
-                label={intl.formatMessage({ id: 'egenNæring.næringstype' })}
-                validate={[isRequired(intl.formatMessage({ id: 'valideringsfeil.egenNæringType.påkrevd' }))]}
-            >
-                <Radio value="DAGMAMMA">
-                    <FormattedMessage id="egenNæring.næringstype.dagmamma" />
-                </Radio>
-                <Radio value="FISKE">
-                    <FormattedMessage id="egenNæring.næringstype.fiske" />
-                </Radio>
-                <Radio value="JORDBRUK_SKOGBRUK">
-                    <FormattedMessage id="egenNæring.næringstype.jordbrukSkogbruk" />
-                </Radio>
-                <Radio value="ANNEN">
-                    <FormattedMessage id="egenNæring.næringstype.annen" />
-                </Radio>
-            </RhfRadioGroup>
+            {fixedNæringstype ? (
+                <input type="hidden" {...formMethods.register('næringstype')} />
+            ) : (
+                <RhfRadioGroup
+                    name="næringstype"
+                    control={formMethods.control}
+                    label={intl.formatMessage({ id: 'egenNæring.næringstype' })}
+                    validate={[isRequired(intl.formatMessage({ id: 'valideringsfeil.egenNæringType.påkrevd' }))]}
+                >
+                    <Radio value="DAGMAMMA">
+                        <FormattedMessage id="egenNæring.næringstype.dagmamma" />
+                    </Radio>
+                    <Radio value="JORDBRUK_SKOGBRUK">
+                        <FormattedMessage id="egenNæring.næringstype.jordbrukSkogbruk" />
+                    </Radio>
+                    <Radio value="ANNEN">
+                        <FormattedMessage id="egenNæring.næringstype.annen" />
+                    </Radio>
+                </RhfRadioGroup>
+            )}
             <RhfTextField
                 name="navnPåNæringen"
                 control={formMethods.control}

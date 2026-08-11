@@ -2,12 +2,58 @@ import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
+import { IntlProvider } from 'react-intl';
 
+import { Button } from '@navikt/ds-react';
+
+import { formHookMessages } from '@navikt/fp-form-hooks';
+
+import { EgenNæringForm } from './EgenNæringPanel';
 import * as stories from './EgenNæringPanel.stories';
+import nbMessages from './intl/messages/nb_NO.json';
 
 const { Default } = composeStories(stories);
 
 describe('<Arbeid som selvstendig næringsdrivende>', () => {
+    it('skal låse næringstype til fiske i plugin-varianten', async () => {
+        const onSubmit = vi.fn();
+
+        render(
+            <IntlProvider locale="nb" messages={{ ...formHookMessages.nb, ...nbMessages }}>
+                <EgenNæringForm
+                    fixedNæringstype="FISKE"
+                    egenNæring={{
+                        fom: '2023-04-30',
+                        harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
+                        navnPåNæringen: 'Fiskebåten',
+                        næringsinntekt: 1000,
+                        næringstype: 'ANNEN',
+                        organisasjonsnummer: '997519485',
+                        registrertINorge: true,
+                    }}
+                    appOrigin="foreldrepengesoknad"
+                    onSubmit={onSubmit}
+                    withoutFormElement
+                    renderActions={(submitForm) => (
+                        <Button type="button" onClick={() => void submitForm()}>
+                            Legg til
+                        </Button>
+                    )}
+                />
+            </IntlProvider>,
+        );
+
+        expect(screen.queryByText('Hvilken type virksomhet har du?')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
+
+        expect(onSubmit).toHaveBeenCalledWith(
+            expect.objectContaining({
+                næringstype: 'FISKE',
+            }),
+        );
+    });
+
     it('skal vise feilmelding når ingenting er fylt eller huket av', async () => {
         render(<Default />);
 
@@ -77,40 +123,11 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         });
     });
 
-    it('skal ikke vise feilmelding hvis fisker ikke fyller ut navn eller orgnummer', async () => {
+    it('skal ikke vise fiske som valg for selvstendig næring', async () => {
         render(<Default />);
 
         expect(await screen.findByText('Hvilken type virksomhet har du?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Fiske'));
-
-        expect(screen.getByText('Er virksomheten registrert i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[0]!);
-
-        const startdatoInput = screen.getByLabelText('Når startet du virksomheten?');
-        await userEvent.type(startdatoInput, dayjs('2023-04-30').format('DD.MM.YYYY'));
-        await userEvent.tab();
-
-        expect(screen.getByText('Jobber du der fortsatt?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[1]!);
-
-        expect(
-            screen.getByText('Hva har du hatt i næringsresultat før skatt de siste 12 månedene?'),
-        ).toBeInTheDocument();
-        const næringsresultatInput = screen.getByLabelText(
-            'Hva har du hatt i næringsresultat før skatt de siste 12 månedene?',
-        );
-        await userEvent.type(næringsresultatInput, '1000');
-        await userEvent.tab();
-
-        expect(
-            screen.getByText('Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?'),
-        ).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[0]!);
-
-        await userEvent.click(screen.getByText('Neste steg'));
-
-        expect(screen.queryByText('Du må oppgi organisasjonsnummer.')).not.toBeInTheDocument();
-        expect(screen.queryByText('Du må oppgi næringsresultat de siste 12 månedene.')).not.toBeInTheDocument();
+        expect(screen.queryByRole('radio', { name: 'Fiske' })).not.toBeInTheDocument();
     });
 
     it('validering av dato på feil format', async () => {
