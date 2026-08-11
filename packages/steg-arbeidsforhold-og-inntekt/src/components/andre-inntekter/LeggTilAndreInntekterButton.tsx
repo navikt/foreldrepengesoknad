@@ -3,7 +3,11 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Button, VStack } from '@navikt/ds-react';
 
-export const LeggTilAndreInntekterButton = () => {
+interface Props {
+    onClick?: () => void;
+}
+
+export const LeggTilAndreInntekterButton = ({ onClick }: Props) => {
     return (
         <VStack
             gap="space-8"
@@ -13,7 +17,7 @@ export const LeggTilAndreInntekterButton = () => {
             className="rounded-xl border border-dashed border-ax-border-neutral bg-ax-bg-input"
         >
             <BodyShort weight="semibold">Mangler en inntektskilde?</BodyShort>
-            <Button type="button" variant="secondary" size="small" icon={<PlusIcon aria-hidden />}>
+            <Button type="button" variant="secondary" size="small" icon={<PlusIcon aria-hidden />} onClick={onClick}>
                 <FormattedMessage id="inntektsinformasjon.leggTilAndreInntekter" />
             </Button>
         </VStack>

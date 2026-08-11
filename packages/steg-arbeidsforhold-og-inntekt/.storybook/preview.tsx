@@ -1,6 +1,7 @@
 import { Preview } from '@storybook/react-vite';
 
 import { formHookMessages } from '@navikt/fp-form-hooks';
+import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
 import { uiMessages } from '@navikt/fp-ui';
 import { getIntlDecorator, withThemeDecorator } from '@navikt/fp-utils-test';
 
@@ -10,9 +11,9 @@ import nnMessages from '../src/intl/messages/nn_NO.json';
 import './index.css';
 
 const withIntlProvider = getIntlDecorator({
-    nb: { ...nbMessages, ...uiMessages.nb, ...formHookMessages.nb },
-    nn: { ...nnMessages, ...uiMessages.nn, ...formHookMessages.nn },
-    en: { ...enMessages, ...uiMessages.en, ...formHookMessages.en },
+    nb: { ...nbMessages, ...egenNæringMessages.nb, ...uiMessages.nb, ...formHookMessages.nb },
+    nn: { ...nnMessages, ...egenNæringMessages.nn, ...uiMessages.nn, ...formHookMessages.nn },
+    en: { ...enMessages, ...egenNæringMessages.en, ...uiMessages.en, ...formHookMessages.en },
 });
 
 export const parameters = {

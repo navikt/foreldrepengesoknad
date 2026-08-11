@@ -1763,6 +1763,9 @@ importers:
       '@navikt/fp-observability':
         specifier: workspace:*
         version: link:../observability
+      '@navikt/fp-steg-egen-naering':
+        specifier: workspace:*
+        version: link:../steg-egen-næring
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
