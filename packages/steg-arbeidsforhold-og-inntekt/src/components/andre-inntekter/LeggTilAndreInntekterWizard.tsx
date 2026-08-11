@@ -1,4 +1,4 @@
-import { ExclamationmarkTriangleIcon, InformationSquareIcon } from '@navikt/aksel-icons';
+import { ExclamationmarkTriangleIcon, InformationSquareIcon, PersonEnvelopeIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 
 import { Detail, Heading, InfoCard, Label, Radio, RadioGroup } from '@navikt/ds-react';
@@ -48,6 +48,7 @@ Oppgi kun aktiv inntekt de siste 10 måendene"
 };
 
 const FiskerForm = () => {
+    const fiskerValg = 'egen_båt';
     return (
         <>
             <Heading level="2" size="small">
@@ -66,12 +67,30 @@ const FiskerForm = () => {
                 <Radio value="lott_og_hyre">Lott og hyre Description</Radio>
                 <Radio value="egen_båt">Egen båt</Radio>
             </RadioGroup>
-            <HyreInntekt />
+            {fiskerValg === 'hyre' && <HyreInntekt />}
+            {fiskerValg === 'lott' && <LottInntekt />}
+            {fiskerValg === 'lott_og_hyre' && <LottOgHyreInntekt />}
+            {fiskerValg === 'egen_båt' && <EgenBåtInntekt />}
         </>
     );
 };
 
-const LottInntekt = () => {};
+const LottInntekt = () => {
+    return (
+        <>
+            <Label>Inntekt fra lott</Label>
+            <InfoCard data-color="info">
+                <InfoCard.Header icon={<PersonEnvelopeIcon aria-hidden />}>
+                    <InfoCard.Title>Du er selvstendig næringsdrivende</InfoCard.Title>
+                </InfoCard.Header>
+                <InfoCard.Content>
+                    Lott regnes som næringsinntekt, fordi du får en andel av fangstverdien, og ikke fast lønn. Derfor
+                    behandles inntekten som selvstendig næringsdrivende, og vi trenger opplysninger om virksomheten din.
+                </InfoCard.Content>
+            </InfoCard>
+        </>
+    );
+};
 
 const HyreInntekt = () => {
     return (
@@ -89,6 +108,40 @@ const HyreInntekt = () => {
     );
 };
 
-const LottOgHyreInntekt = () => {};
+const LottOgHyreInntekt = () => {
+    return (
+        <>
+            <Label>Inntekt fra lott og hyre</Label>
+            <InfoCard data-color="info">
+                <InfoCard.Header icon={<PersonEnvelopeIcon aria-hidden />}>
+                    <InfoCard.Title>Du er både selvstendig næringsdrivende og arbeidstaker</InfoCard.Title>
+                </InfoCard.Header>
+                <InfoCard.Content>
+                    Lott regnes som næringsinntekt, fordi du får en andel av fangstverdien, og ikke fast lønn. Derfor
+                    regnes du som selvstendig næringsdrivende, og vi trenger opplysninger om virksomheten din. Du regnes
+                    som arbeidstaker når du som fisker eller mannskap får hyre (lønn). Hvis arbeidsforholdet ditt ikke
+                    vises i oversikten, betyr det at arbeidsgiver ikke har meldt det inn i Arbeidsgiver- og
+                    arbeidstakerregisteret. Det er ikke lovpålagt, men det må gjøres for at du skal kunne få
+                    foreldrepenger.
+                </InfoCard.Content>
+            </InfoCard>
+        </>
+    );
+};
 
-const EgenBåtInntekt = () => {};
+const EgenBåtInntekt = () => {
+    return (
+        <>
+            <Label>Fiske med egen båt</Label>
+            <InfoCard data-color="info">
+                <InfoCard.Header icon={<PersonEnvelopeIcon aria-hidden />}>
+                    <InfoCard.Title>Du er selvstendig næringsdrivende</InfoCard.Title>
+                </InfoCard.Header>
+                <InfoCard.Content>
+                    Hvis du er fisker med egen båt, er du selvstendig næringsdrivende. Spørsmålene du får i søknaden er
+                    tilpasset din situasjon og du får veiledning og informasjon underveis.
+                </InfoCard.Content>
+            </InfoCard>
+        </>
+    );
+};
