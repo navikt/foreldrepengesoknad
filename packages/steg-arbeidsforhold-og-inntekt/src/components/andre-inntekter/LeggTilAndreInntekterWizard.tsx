@@ -1,23 +1,60 @@
 import { ExclamationmarkTriangleIcon, InformationSquareIcon, PersonEnvelopeIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 
-import { Heading, InfoCard, Label, Radio, RadioGroup } from '@navikt/ds-react';
+import { Button, HStack, Heading, InfoCard, Label, Radio, RadioGroup } from '@navikt/ds-react';
+
+import { EgenNæringForm } from '@navikt/fp-steg-egen-naering';
+import type { NæringDto } from '@navikt/fp-types';
 
 import { EtterlønnEllerSluttvederlagPanel } from './EtterlønnEllerSluttvederlagPanel.tsx';
 import { FørstegangstjenestePanel } from './FørstegangstjenestePanel.tsx';
 import { JobbIUtlandetPanel } from './JobbIUtlandetPanel.tsx';
 import { LeggTilAndreInntekterButton } from './LeggTilAndreInntekterButton.tsx';
 
-export const LeggTilAndreInntekterWizard = () => {
+interface Props {
+    onSaveEgenNæring?: (egenNæring: NæringDto) => void;
+}
+
+interface EgenNæringWizardFormProps {
+    onSubmit: (egenNæring: NæringDto) => void;
+    onCancel: () => void;
+}
+
+export const LeggTilAndreInntekterWizard = ({ onSaveEgenNæring }: Props) => {
     return (
         <div className="rounded-xl border border-dashed border-ax-border-neutral bg-ax-bg-input py-4 px-5">
-            <LeggTilAndreInntekterWizardInner />
+            <LeggTilAndreInntekterWizardInner onSaveEgenNæring={onSaveEgenNæring} />
         </div>
     );
 };
 
-const LeggTilAndreInntekterWizardInner = () => {
-    const [step, setStep] = useState(3);
+const EgenNæringWizardForm = ({ onSubmit, onCancel }: EgenNæringWizardFormProps) => {
+    return (
+        <>
+            <Heading level="2" size="small">
+                Legg til inntektskilde
+            </Heading>
+            <EgenNæringForm
+                appOrigin="foreldrepengesoknad"
+                onSubmit={onSubmit}
+                withoutFormElement
+                renderActions={(submitForm) => (
+                    <HStack gap="space-16" justify="end">
+                        <Button type="button" variant="secondary" onClick={onCancel}>
+                            Tilbake
+                        </Button>
+                        <Button type="button" onClick={() => void submitForm()}>
+                            Legg til
+                        </Button>
+                    </HStack>
+                )}
+            />
+        </>
+    );
+};
+
+const LeggTilAndreInntekterWizardInner = ({ onSaveEgenNæring }: Props) => {
+    const [step, setStep] = useState(4);
 
     if (step === 0) {
         return <LeggTilAndreInntekterButton />;
@@ -27,9 +64,13 @@ const LeggTilAndreInntekterWizardInner = () => {
             <RadioGroup
                 legend="Hvilken type inntekt har du hatt?"
                 description="Oppgi kun aktiv inntekt de siste 10 måendene"
-                onChange={() => {}}
+                onChange={(value) => {
+                    if (value === 'egen_næring') {
+                        setStep(4);
+                    }
+                }}
             >
-                <Radio value="10" description="Bidratt til driften av ektefelles virksomhet og hatt inntekt">
+                <Radio value="egen_næring" description="Bidratt til driften av ektefelles virksomhet og hatt inntekt">
                     Jeg har jobbet i min ektefelles næring hvor vi har fordelt inntekt
                 </Radio>
                 <Radio value="20" description="Hyre og/eller lott, eller egen båt">
@@ -46,6 +87,17 @@ const LeggTilAndreInntekterWizardInner = () => {
     }
     if (step === 3) {
         return <AnnenInntektForm />;
+    }
+    if (step === 4) {
+        return (
+            <EgenNæringWizardForm
+                onSubmit={(egenNæring) => {
+                    onSaveEgenNæring?.(egenNæring);
+                    setStep(0);
+                }}
+                onCancel={() => setStep(1)}
+            />
+        );
     }
 
     return null;
