@@ -96,15 +96,15 @@ describe('getTotalStillingsprosentPåSkjæringstidspunktet', () => {
         { fom: '2023-08-01', tom: '2023-11-01', stillingsprosent: 0 },
         { fom: '2023-10-01', stillingsprosent: 30 },
     ];
-    it('Skal returnere 100% fordi den ene stillingen som er aktiv da er på 0%', () => {
+    it('Skal returnere 100 % fordi den ene stillingen som er aktiv da er på 0%', () => {
         const summertProsent = getTotalStillingsprosentPåSkjæringstidspunktet(stillingerMedNullProsent, '2023-06-02');
         expect(summertProsent).toEqual(100);
     });
-    it('Skal returnere 100% fordi begge de aktive stillingene er 0%', () => {
+    it('Skal returnere 100 % fordi begge de aktive stillingene er 0%', () => {
         const summertProsent = getTotalStillingsprosentPåSkjæringstidspunktet(stillingerMedNullProsent, '2023-08-02');
         expect(summertProsent).toEqual(100);
     });
-    it('Skal returnere 100% fordi noen av de aktive stillingene er 100%', () => {
+    it('Skal returnere 100 % fordi noen av de aktive stillingene er 100 %', () => {
         const summertProsent = getTotalStillingsprosentPåSkjæringstidspunktet(stillingerMedNullProsent, '2023-10-30');
         expect(summertProsent).toEqual(100);
     });

@@ -555,7 +555,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
     });
 
     it('Skal ikke vise ekstra dag info når det ikke er restdager', async () => {
-        // Med 1 barn og 100% dekningsgrad er det 16 uker = 80 dager, ingen restdager
+        // Med 1 barn og 100 % dekningsgrad er det 16 uker = 80 dager, ingen restdager
         render(<MorOgFarBeggeHarRett />);
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
