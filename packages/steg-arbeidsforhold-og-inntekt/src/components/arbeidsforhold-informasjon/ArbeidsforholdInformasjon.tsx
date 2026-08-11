@@ -10,6 +10,7 @@ import { AndreInntektskilderBox } from './AndreInntektskilderBox';
 import { FrilansOppdrag } from './FrilansOppdrag.tsx';
 import { HarArbeidsforhold } from './HarArbeidsforhold';
 import { HarIkkeArbeidsforhold } from './HarIkkeArbeidsforhold';
+import { SelvstendigNæring } from './SelvstendigNæring.tsx';
 
 interface Props {
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
@@ -28,7 +29,6 @@ export const ArbeidsforholdInformasjon = ({
     andreInntektskilder,
 }: Props) => {
     const harArbeidsforhold = arbeidsforhold.length > 0;
-    const harSelvstendigNæring = selvstendigNæring.length > 0;
     const harAndreInntektskilder = andreInntektskilder.length > 0;
     const intl = useIntl();
 
@@ -40,14 +40,7 @@ export const ArbeidsforholdInformasjon = ({
             <HarIkkeArbeidsforhold harArbeidsforhold={harArbeidsforhold} />
             <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={arbeidsforhold} />
             <FrilansOppdrag frilansoppdrag={frilansoppdrag} />
-            {harSelvstendigNæring && (
-                <>
-                    <BodyShort style={{ fontWeight: 'bold' }}>
-                        <FormattedMessage id="inntektsinformasjon.egenNæring.label" />
-                    </BodyShort>
-                    <HarArbeidsforhold harArbeidsforhold={harSelvstendigNæring} arbeidsforhold={selvstendigNæring} />
-                </>
-            )}
+            <SelvstendigNæring selvstendigNæring={selvstendigNæring} />
             {harAndreInntektskilder && (
                 <>
                     <BodyShort style={{ fontWeight: 'bold' }}>
