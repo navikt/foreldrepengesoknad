@@ -27,7 +27,7 @@ export const setupAndServeHtml = async (router: Router) => {
         ...dekoratørProps,
     });
     const renderedHtml = replaceNaisMetaTags(replaceAppSettings(html));
-    const appVersionEtag = config.app.version ? `"${config.app.version}"` : undefined;
+    const appVersionEtag = config.app.version ? `W/"${config.app.version}"` : undefined;
 
     router.get('*splat', (request, response) => {
         response.set('Cache-Control', 'max-age=0, must-revalidate');
