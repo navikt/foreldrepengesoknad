@@ -14,8 +14,6 @@ import { AndreInntektskilderModal } from './components/andre-inntekter/AndreInnt
 import { LeggTilAndreInntekterWizard } from './components/andre-inntekter/LeggTilAndreInntekterWizard.tsx';
 import { ArbeidsforholdInformasjon } from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import { BrukerKanIkkeSøke } from './components/bruker-kan-ikke-søke/BrukerKanIkkeSøke';
-import { HvemKanDriveMedEgenNæring } from './components/hvem-kan-drive-egen-næring/HvemKanDriveMedEgenNæring';
-import { HvemKanVæreFrilanser } from './components/hvem-kan-være-frilanser/HvemKanVæreFrilanser';
 import { InfoOmArbeidIUtlandet } from './components/info-om-arbeid-i-utlandet/InfoOmArbeidIUtlandet';
 import { InfoOmFørstegangstjeneste } from './components/info-om-førstegangstjeneste/InfoOmFørstegangstjeneste';
 import { InfoTilFiskere } from './components/info-til-fiskere/InfoTilFiskere';
@@ -64,7 +62,6 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
         },
     });
 
-    const harFrilansoppdrag = frilansoppdrag.length > 0;
     const ferdigeAndreInntektskilder = andreInntektskilder.filter(erFerdigUtfylt);
 
     const hattInntektSomFrilans = formMethods.watch('harJobbetSomFrilans');
@@ -96,64 +93,6 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                             selvstendigNæring={selvstendigNæring}
                             andreInntektskilder={ferdigeAndreInntektskilder}
                         />
-                    </VStack>
-                    {!harFrilansoppdrag && (
-                        <VStack gap="space-4">
-                            <RhfRadioGroup
-                                name="harJobbetSomFrilans"
-                                control={formMethods.control}
-                                label={intl.formatMessage(
-                                    { id: 'inntektsinformasjon.harDuJobbetSomFrilans' },
-                                    { erSvp },
-                                )}
-                                validate={[isRequired(intl.formatMessage({ id: 'valideringsfeil.frilans.påkrevd' }))]}
-                                description={
-                                    erSvp &&
-                                    intl.formatMessage({
-                                        id: 'inntektsinformasjon.beskrivelse',
-                                    })
-                                }
-                            >
-                                <Radio value={false}>
-                                    <FormattedMessage id="inntektsinformasjon.nei" />
-                                </Radio>
-                                <Radio value={true}>
-                                    <FormattedMessage id="inntektsinformasjon.ja" />
-                                </Radio>
-                            </RhfRadioGroup>
-                            <HvemKanVæreFrilanser appOrigin={appOrigin} />
-                        </VStack>
-                    )}
-                    <VStack gap="space-4">
-                        <RhfRadioGroup
-                            name="harJobbetSomSelvstendigNæringsdrivende"
-                            control={formMethods.control}
-                            label={intl.formatMessage(
-                                {
-                                    id: 'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende',
-                                },
-                                { erSvp },
-                            )}
-                            validate={[
-                                isRequired(
-                                    intl.formatMessage({ id: 'valideringsfeil.hattInntektSomNæringsdrivende.påkrevd' }),
-                                ),
-                            ]}
-                            description={
-                                erSvp &&
-                                intl.formatMessage({
-                                    id: 'inntektsinformasjon.beskrivelse',
-                                })
-                            }
-                        >
-                            <Radio value={false}>
-                                <FormattedMessage id="inntektsinformasjon.nei" />
-                            </Radio>
-                            <Radio value={true}>
-                                <FormattedMessage id="inntektsinformasjon.ja" />
-                            </Radio>
-                        </RhfRadioGroup>
-                        <HvemKanDriveMedEgenNæring />
                     </VStack>
                     {erSvp && (
                         <VStack gap="space-4">
