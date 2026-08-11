@@ -1,7 +1,7 @@
 import { ExclamationmarkTriangleIcon, InformationSquareIcon, PersonEnvelopeIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 
-import { Detail, Heading, InfoCard, Label, Radio, RadioGroup } from '@navikt/ds-react';
+import { Heading, InfoCard, Label, Radio, RadioGroup } from '@navikt/ds-react';
 
 import { LeggTilAndreInntekterButton } from './LeggTilAndreInntekterButton.tsx';
 
@@ -14,7 +14,7 @@ export const LeggTilAndreInntekterWizard = () => {
 };
 
 const LeggTilAndreInntekterWizardInner = () => {
-    const [step, setStep] = useState(2);
+    const [step, setStep] = useState(1);
 
     if (step === 0) {
         return <LeggTilAndreInntekterButton />;
@@ -22,16 +22,14 @@ const LeggTilAndreInntekterWizardInner = () => {
     if (step === 1) {
         return (
             <RadioGroup
-                legend="Hvilken type inntekt har du hatt?
-Oppgi kun aktiv inntekt de siste 10 måendene"
+                legend="Hvilken type inntekt har du hatt?"
                 description="Oppgi kun aktiv inntekt de siste 10 måendene"
                 onChange={() => {}}
             >
                 <Radio value="10" description="Bidratt til driften av ektefelles virksomhet og hatt inntekt">
-                    Jeg har jobbet i min ektefelles næring hvor vi har fordelt inntekt Bidratt til driften av ektefelles
-                    virksomhet og hatt inntekt
+                    Jeg har jobbet i min ektefelles næring hvor vi har fordelt inntekt
                 </Radio>
-                <Radio value="20" description="Gjelder fra året man blir 21">
+                <Radio value="20" description="Hyre og/eller lott, eller egen båt">
                     Jeg er fisker eller mannskap på båt Hyre og/eller lott, eller egen båt
                 </Radio>
                 <Radio value="40" description="Førstegangstjeneste, sluttpakke, etterlønn, eller arbeid i utlandet">
@@ -42,6 +40,9 @@ Oppgi kun aktiv inntekt de siste 10 måendene"
     }
     if (step === 2) {
         return <FiskerForm />;
+    }
+    if (step === 3) {
+        return <AnnenInntektForm />;
     }
 
     return null;
@@ -142,6 +143,28 @@ const EgenBåtInntekt = () => {
                     tilpasset din situasjon og du får veiledning og informasjon underveis.
                 </InfoCard.Content>
             </InfoCard>
+        </>
+    );
+};
+
+const AnnenInntektForm = () => {
+    const annenInntektValg = '1';
+    return (
+        <>
+            <Heading level="2" size="small">
+                Legg til inntektskilde
+            </Heading>
+            <RadioGroup
+                legend="Hvilken annen type pensjonsgivende inntekt har du hatt de siste 10 månedene?"
+                onChange={() => {}}
+            >
+                <Radio value="1">Jobb i utlandet Description</Radio>
+                <Radio value="2">Etterlønn eller sluttvederlag Description</Radio>
+                <Radio value="3">Førstegangstjeneste Description</Radio>
+            </RadioGroup>
+            {annenInntektValg === '1' && <LottOgHyreInntekt />}
+            {annenInntektValg === '2' && <HyreInntekt />}
+            {annenInntektValg === '3' && <LottInntekt />}
         </>
     );
 };
