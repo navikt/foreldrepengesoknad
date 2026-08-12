@@ -20,19 +20,23 @@ import { JobbIUtlandetPanel } from './JobbIUtlandetPanel.tsx';
 import { LeggTilAndreInntekterButton } from './LeggTilAndreInntekterButton.tsx';
 import { WizardNavigator } from './WizardNavigator.tsx';
 
-enum WizardStep {
-    START,
-    VELG_INNTEKTSTYPE,
-    EGEN_NÆRING,
-    FISKER,
-    ANNEN_INNTEKT,
-}
+const WizardStep = {
+    START: 'START',
+    VELG_INNTEKTSTYPE: 'VELG_INNTEKTSTYPE',
+    EGEN_NÆRING: 'EGEN_NÆRING',
+    FISKER: 'FISKER',
+    ANNEN_INNTEKT: 'ANNEN_INNTEKT',
+} as const;
 
-enum Inntektstype {
-    EGEN_NÆRING = 'EGEN_NÆRING',
-    FISKER = 'FISKER',
-    ANNEN_INNTEKT = 'ANNEN_INNTEKT',
-}
+type WizardStep = (typeof WizardStep)[keyof typeof WizardStep];
+
+const Inntektstype = {
+    EGEN_NÆRING: 'EGEN_NÆRING',
+    FISKER: 'FISKER',
+    ANNEN_INNTEKT: 'ANNEN_INNTEKT',
+} as const;
+
+type Inntektstype = (typeof Inntektstype)[keyof typeof Inntektstype];
 
 interface Props {
     harRegistrertNæring?: boolean;
@@ -85,7 +89,7 @@ const LeggTilAndreInntekterWizardInner = ({
     onSaveEgenNæring,
     onSaveAndreInntekt,
 }: Props) => {
-    const [step, setStep] = useState(WizardStep.START);
+    const [step, setStep] = useState<WizardStep>(WizardStep.START);
     const [inntektstype, setInntektstype] = useState<Inntektstype>();
 
     const avsluttWizard = () => {
@@ -206,14 +210,16 @@ interface FiskerNæringProps {
 
 type FiskerValg = 'lott' | 'hyre' | 'lott_og_hyre' | 'egen_båt';
 
-enum FiskerStep {
-    VELG_ORDNING,
-    VIS_INFORMASJON,
-}
+const FiskerStep = {
+    VELG_ORDNING: 'VELG_ORDNING',
+    VIS_INFORMASJON: 'VIS_INFORMASJON',
+} as const;
+
+type FiskerStep = (typeof FiskerStep)[keyof typeof FiskerStep];
 
 const FiskerForm = ({ onAbort, onBack, onComplete, onSaveEgenNæring }: FiskerFormProps) => {
     const [fiskerValg, setFiskerValg] = useState<FiskerValg>();
-    const [step, setStep] = useState(FiskerStep.VELG_ORDNING);
+    const [step, setStep] = useState<FiskerStep>(FiskerStep.VELG_ORDNING);
 
     if (step === FiskerStep.VELG_ORDNING) {
         return (
@@ -381,16 +387,23 @@ interface AnnenInntektFormProps {
     onSubmitEgenNæring: (egenNæring: NæringDto) => void;
 }
 
-type AnnenInntektValg = AnnenInntektType | 'NÆRING_I_UTLANDET';
+const AnnenInntektValg = {
+    ...AnnenInntektType,
+    NÆRING_I_UTLANDET: 'NÆRING_I_UTLANDET',
+} as const;
 
-enum AnnenInntektStep {
-    VELG_INNTEKTSTYPE,
-    FYLL_UT_INNTEKT,
-}
+type AnnenInntektValg = (typeof AnnenInntektValg)[keyof typeof AnnenInntektValg];
+
+const AnnenInntektStep = {
+    VELG_INNTEKTSTYPE: 'VELG_INNTEKTSTYPE',
+    FYLL_UT_INNTEKT: 'FYLL_UT_INNTEKT',
+} as const;
+
+type AnnenInntektStep = (typeof AnnenInntektStep)[keyof typeof AnnenInntektStep];
 
 const AnnenInntektForm = ({ onAbort, onBack, onSubmit, onSubmitEgenNæring }: AnnenInntektFormProps) => {
     const [valgtInntektstype, setValgtInntektstype] = useState<AnnenInntektValg>();
-    const [step, setStep] = useState(AnnenInntektStep.VELG_INNTEKTSTYPE);
+    const [step, setStep] = useState<AnnenInntektStep>(AnnenInntektStep.VELG_INNTEKTSTYPE);
     const formMethods = useForm<AndreInntekterFormValues>({
         defaultValues: { andreInntektskilder: [{ type: undefined }] },
         shouldUnregister: true,
@@ -399,7 +412,10 @@ const AnnenInntektForm = ({ onAbort, onBack, onSubmit, onSubmitEgenNæring }: An
 
     const velgInntektstype = (type: AnnenInntektValg) => {
         setValgtInntektstype(type);
-        formMethods.setValue('andreInntektskilder.0', type === 'NÆRING_I_UTLANDET' ? { type: undefined } : { type });
+        formMethods.setValue(
+            'andreInntektskilder.0',
+            type === AnnenInntektValg.NÆRING_I_UTLANDET ? { type: undefined } : { type },
+        );
     };
 
     const submitForm = formMethods.handleSubmit((values) => {
@@ -421,7 +437,7 @@ const AnnenInntektForm = ({ onAbort, onBack, onSubmit, onSubmitEgenNæring }: An
                     onChange={velgInntektstype}
                 >
                     <Radio value={AnnenInntektType.JOBB_I_UTLANDET}>Jobb i utlandet</Radio>
-                    <Radio value="NÆRING_I_UTLANDET">Næring i utlandet</Radio>
+                    <Radio value={AnnenInntektValg.NÆRING_I_UTLANDET}>Næring i utlandet</Radio>
                     <Radio value={AnnenInntektType.SLUTTPAKKE}>Etterlønn eller sluttvederlag</Radio>
                     <Radio value={AnnenInntektType.MILITÆRTJENESTE}>Førstegangstjeneste</Radio>
                 </RadioGroup>
@@ -443,7 +459,7 @@ const AnnenInntektForm = ({ onAbort, onBack, onSubmit, onSubmitEgenNæring }: An
                     Legg til inntektskilde
                 </Heading>
                 <ErrorSummaryHookForm />
-                {valgtInntektstype === 'NÆRING_I_UTLANDET' && (
+                {valgtInntektstype === AnnenInntektValg.NÆRING_I_UTLANDET && (
                     <EgenNæringForm
                         fixedRegistrertINorge={false}
                         appOrigin="foreldrepengesoknad"
@@ -468,7 +484,7 @@ const AnnenInntektForm = ({ onAbort, onBack, onSubmit, onSubmitEgenNæring }: An
                 {inntektskilde.type === AnnenInntektType.MILITÆRTJENESTE && (
                     <FørstegangstjenestePanel index={0} inntektskilde={inntektskilde} />
                 )}
-                {valgtInntektstype !== 'NÆRING_I_UTLANDET' && (
+                {valgtInntektstype !== AnnenInntektValg.NÆRING_I_UTLANDET && (
                     <WizardNavigator
                         isLastStep
                         isNextDisabled={!inntektskilde.type}

@@ -12,7 +12,7 @@ import { AndreInntekterFormValues, AndreInntektskilderUtkast, AnnenInntektType }
 
 interface Props {
     index: number;
-    inntektskilde: Extract<AndreInntektskilderUtkast, { type: AnnenInntektType.JOBB_I_UTLANDET }>;
+    inntektskilde: Extract<AndreInntektskilderUtkast, { type: typeof AnnenInntektType.JOBB_I_UTLANDET }>;
 }
 
 export const JobbIUtlandetPanel = ({ index, inntektskilde }: Props) => {

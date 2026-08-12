@@ -10,7 +10,7 @@ import { AndreInntektskilderUtkast, AnnenInntektType } from '../../types/AndreIn
 
 interface Props {
     index: number;
-    inntektskilde: Extract<AndreInntektskilderUtkast, { type: AnnenInntektType.SLUTTPAKKE }>;
+    inntektskilde: Extract<AndreInntektskilderUtkast, { type: typeof AnnenInntektType.SLUTTPAKKE }>;
 }
 
 export const EtterlønnEllerSluttvederlagPanel = ({ index, inntektskilde }: Props) => {
