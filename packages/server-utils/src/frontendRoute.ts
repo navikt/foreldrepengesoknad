@@ -1,6 +1,7 @@
 import { fetchDecoratorHtml, injectDecoratorServerSide } from '@navikt/nav-dekoratoren-moduler/ssr/index.js';
 import { addViteModeHtmlToResponse } from '@navikt/vite-mode';
 import { Router } from 'express';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 
 import config from './config.js';
@@ -27,7 +28,9 @@ export const setupAndServeHtml = async (router: Router) => {
         ...dekoratørProps,
     });
     const renderedHtml = replaceNaisMetaTags(replaceAppSettings(html));
-    const appVersionEtag = config.app.version ? `W/"${config.app.version}"` : undefined;
+    const appVersionEtag = config.app.version
+        ? `W/"${createHash('sha256').update(config.app.version).digest('hex')}"`
+        : undefined;
 
     router.get('*splat', (request, response) => {
         response.set('Cache-Control', 'private, max-age=0, must-revalidate');
