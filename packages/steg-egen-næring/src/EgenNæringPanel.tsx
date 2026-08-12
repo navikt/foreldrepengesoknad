@@ -397,7 +397,7 @@ export const EgenNæringPanel = <TYPE extends string>({
     appOrigin,
 }: Props<TYPE>) => (
     <Step steps={stepConfig} onStepChange={onStepChange} someFieldsOptional>
-        <EgenNæringForm egenNæring={egenNæring} onSubmit={saveOnNext} appOrigin={appOrigin}>
+        <EgenNæringForm egenNæring={egenNæring} fixedRegistrertINorge onSubmit={saveOnNext} appOrigin={appOrigin}>
             <StepButtonsHookForm<NæringFormValues>
                 onAvsluttOgSlett={onAvsluttOgSlett}
                 onFortsettSenere={onFortsettSenere}

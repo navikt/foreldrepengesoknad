@@ -171,12 +171,17 @@ describe('<LeggTilAndreInntekterWizard>', () => {
         expect(screen.queryByText('I hvilket land er virksomheten din registrert i?')).not.toBeInTheDocument();
         await userEvent.click(screen.getByRole('button', { name: 'Neste' }));
 
-        expect(screen.queryByText('Er virksomheten registrert i Norge?')).not.toBeInTheDocument();
-        expect(screen.getByText('I hvilket land er virksomheten din registrert i?')).toBeInTheDocument();
+        expect(screen.getByText('Er virksomheten registrert i Norge?')).toBeInTheDocument();
+        expect(screen.queryByText('I hvilket land er virksomheten din registrert i?')).not.toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Tilbake' })).toBeInTheDocument();
 
         await userEvent.click(screen.getByRole('radio', { name: 'Annen type virksomhet' }));
         await userEvent.type(screen.getByLabelText('Hva heter virksomheten?'), 'Svensk virksomhet');
+        await userEvent.click(
+            within(screen.getByRole('radiogroup', { name: 'Er virksomheten registrert i Norge?' })).getByRole('radio', {
+                name: 'Nei',
+            }),
+        );
         await userEvent.selectOptions(screen.getByLabelText('I hvilket land er virksomheten din registrert i?'), 'SE');
         await userEvent.type(screen.getByLabelText('Når startet du virksomheten?'), '30.04.2023');
         await userEvent.click(
@@ -217,11 +222,7 @@ describe('<LeggTilAndreInntekterWizard>', () => {
         await userEvent.click(screen.getByRole('radio', { name: 'Lott' }));
         await userEvent.click(screen.getByRole('button', { name: 'Neste' }));
 
-        await userEvent.click(
-            within(screen.getByRole('radiogroup', { name: 'Er virksomheten registrert i Norge?' })).getByRole('radio', {
-                name: 'Ja',
-            }),
-        );
+        expect(screen.queryByText('Er virksomheten registrert i Norge?')).not.toBeInTheDocument();
         await userEvent.type(screen.getByLabelText('Når startet du virksomheten?'), '30.04.2023');
         await userEvent.click(
             within(screen.getByRole('radiogroup', { name: 'Jobber du der fortsatt?' })).getByRole('radio', {

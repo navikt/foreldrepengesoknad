@@ -55,6 +55,7 @@ const EgenNæringWizardForm = ({ onSubmit, onAbort, onBack }: EgenNæringWizardF
             </Heading>
             <EgenNæringForm
                 appOrigin="foreldrepengesoknad"
+                fixedRegistrertINorge
                 onSubmit={onSubmit}
                 withoutFormElement
                 renderActions={(submitForm) => (
@@ -273,6 +274,7 @@ const FiskerForm = ({ onAbort, onBack, onComplete, onSaveEgenNæring }: FiskerFo
 const FiskerEgenNæringForm = ({ onSubmit, onAbort, onBack }: FiskerNæringProps) => (
     <EgenNæringForm
         fixedNæringstype="FISKE"
+        fixedRegistrertINorge
         appOrigin="foreldrepengesoknad"
         onSubmit={onSubmit}
         withoutFormElement
@@ -425,7 +427,6 @@ const AnnenInntektForm = ({ onAbort, onBack, onSubmit, onSubmitEgenNæring }: An
                 <ErrorSummaryHookForm />
                 {valgtInntektstype === 'NÆRING_I_UTLANDET' && (
                     <EgenNæringForm
-                        fixedRegistrertINorge={false}
                         appOrigin="foreldrepengesoknad"
                         onSubmit={onSubmitEgenNæring}
                         withoutFormElement
