@@ -3,24 +3,24 @@ import userEvent from '@testing-library/user-event';
 import { IntlProvider } from 'react-intl';
 
 import nbMessages from '../../intl/messages/nb_NO.json';
-import { type AndreInntektskilder, AnnenInntektType } from '../../types/AndreInntektskilder';
+import { type AndreInntektskilder } from '../../types/AndreInntektskilder';
 import { AndreInntektskilderBox } from './AndreInntektskilderBox';
 
 const inntektskilder = [
     {
-        type: AnnenInntektType.JOBB_I_UTLANDET,
+        type: 'JOBB_I_UTLANDET',
         land: 'DK',
         arbeidsgiverNavn: 'Københavns kommune',
         pågående: true,
         fom: '2024-01-01',
     },
     {
-        type: AnnenInntektType.SLUTTPAKKE,
+        type: 'ETTERLØNN_SLUTTPAKKE',
         fom: '2024-02-01',
         tom: '2024-03-31',
     },
     {
-        type: AnnenInntektType.MILITÆRTJENESTE,
+        type: 'MILITÆR_ELLER_SIVILTJENESTE',
         pågående: false,
         fom: '2023-04-01',
         tom: '2023-10-31',

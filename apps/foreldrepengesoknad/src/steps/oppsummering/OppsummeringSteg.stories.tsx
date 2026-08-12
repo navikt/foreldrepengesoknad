@@ -9,7 +9,7 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 import { annenPartVedtak } from 'storybookData/annenPartVedtak';
-import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
+import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { AnnenForelder } from 'types/AnnenForelder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
@@ -641,7 +641,7 @@ export const MorMedAndreInntekterJobbIUtlandet: Story = {
         },
         andreInntekter: [
             {
-                type: AnnenInntektType.JOBB_I_UTLANDET,
+                type: 'JOBB_I_UTLANDET',
                 pågående: false,
                 fom: '2018-01-01',
                 tom: '2021-01-01',
@@ -649,12 +649,12 @@ export const MorMedAndreInntekterJobbIUtlandet: Story = {
                 land: 'SE',
             },
             {
-                type: AnnenInntektType.MILITÆRTJENESTE,
+                type: 'MILITÆR_ELLER_SIVILTJENESTE',
                 pågående: true,
                 fom: '2022-01-01',
             },
             {
-                type: AnnenInntektType.SLUTTPAKKE,
+                type: 'ETTERLØNN_SLUTTPAKKE',
                 fom: '2022-01-01',
                 tom: '2023-01-01',
             },
@@ -676,7 +676,7 @@ export const MorMedAndreInntekterMilitærtjeneste: Story = {
         },
         andreInntekter: [
             {
-                type: AnnenInntektType.MILITÆRTJENESTE,
+                type: 'MILITÆR_ELLER_SIVILTJENESTE',
                 pågående: false,
                 fom: '2018-01-01',
                 tom: '2021-01-01',

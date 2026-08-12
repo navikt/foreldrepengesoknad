@@ -8,7 +8,6 @@ import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
 import { uiMessages } from '@navikt/fp-ui';
 
 import nbMessages from '../../intl/messages/nb_NO.json';
-import { AnnenInntektType } from '../../types/AndreInntektskilder';
 import { LeggTilAndreInntekterWizard } from './LeggTilAndreInntekterWizard';
 
 interface RenderWizardProps {
@@ -126,7 +125,7 @@ describe('<LeggTilAndreInntekterWizard>', () => {
         await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
 
         expect(onSaveAndreInntekt).toHaveBeenCalledWith({
-            type: AnnenInntektType.SLUTTPAKKE,
+            type: 'ETTERLØNN_SLUTTPAKKE',
             fom: '2024-01-01',
             tom: '2024-01-31',
         });

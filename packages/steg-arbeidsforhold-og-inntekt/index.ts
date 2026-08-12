@@ -14,7 +14,7 @@ export { AndreInntektskilderModal } from './src/components/andre-inntekter/Andre
 export { HarArbeidsforhold } from './src/components/arbeidsforhold-informasjon/HarArbeidsforhold';
 export { HarIkkeArbeidsforhold } from './src/components/arbeidsforhold-informasjon/HarIkkeArbeidsforhold';
 export {
-    AnnenInntektType,
+    type AnnenInntektType,
     type AndreInntektskilder,
     type AndreInntektskilderUtkast,
     type AndreInntekterFormValues,

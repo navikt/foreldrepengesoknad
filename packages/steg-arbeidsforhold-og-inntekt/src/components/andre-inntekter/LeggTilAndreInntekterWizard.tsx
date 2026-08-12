@@ -8,35 +8,16 @@ import { ErrorSummaryHookForm } from '@navikt/fp-form-hooks';
 import { EgenNæringForm } from '@navikt/fp-steg-egen-naering';
 import type { NæringDto } from '@navikt/fp-types';
 
-import {
-    AndreInntekterFormValues,
-    AndreInntektskilder,
-    AnnenInntektType,
-    erFerdigUtfylt,
-} from '../../types/AndreInntektskilder.ts';
+import { AndreInntekterFormValues, AndreInntektskilder, erFerdigUtfylt } from '../../types/AndreInntektskilder.ts';
 import { EtterlønnEllerSluttvederlagPanel } from './EtterlønnEllerSluttvederlagPanel.tsx';
 import { FørstegangstjenestePanel } from './FørstegangstjenestePanel.tsx';
 import { JobbIUtlandetPanel } from './JobbIUtlandetPanel.tsx';
 import { LeggTilAndreInntekterButton } from './LeggTilAndreInntekterButton.tsx';
 import { WizardNavigator } from './WizardNavigator.tsx';
 
-const WizardStep = {
-    START: 'START',
-    VELG_INNTEKTSTYPE: 'VELG_INNTEKTSTYPE',
-    EGEN_NÆRING: 'EGEN_NÆRING',
-    FISKER: 'FISKER',
-    ANNEN_INNTEKT: 'ANNEN_INNTEKT',
-} as const;
+type WizardStep = 'START' | 'VELG_INNTEKTSTYPE' | 'EGEN_NÆRING' | 'FISKER' | 'ANNEN_INNTEKT';
 
-type WizardStep = (typeof WizardStep)[keyof typeof WizardStep];
-
-const Inntektstype = {
-    EGEN_NÆRING: 'EGEN_NÆRING',
-    FISKER: 'FISKER',
-    ANNEN_INNTEKT: 'ANNEN_INNTEKT',
-} as const;
-
-type Inntektstype = (typeof Inntektstype)[keyof typeof Inntektstype];
+type Inntektstype = 'EGEN_NÆRING' | 'FISKER' | 'ANNEN_INNTEKT';
 
 interface Props {
     harRegistrertNæring?: boolean;
@@ -89,23 +70,23 @@ const LeggTilAndreInntekterWizardInner = ({
     onSaveEgenNæring,
     onSaveAndreInntekt,
 }: Props) => {
-    const [step, setStep] = useState<WizardStep>(WizardStep.START);
+    const [step, setStep] = useState<WizardStep>('START');
     const [inntektstype, setInntektstype] = useState<Inntektstype>();
 
     const avsluttWizard = () => {
         setInntektstype(undefined);
-        setStep(WizardStep.START);
+        setStep('START');
     };
 
-    if (step === WizardStep.START) {
+    if (step === 'START') {
         return (
             <LeggTilAndreInntekterButton
-                onClick={() => setStep(harRegistrertNæring ? WizardStep.ANNEN_INNTEKT : WizardStep.VELG_INNTEKTSTYPE)}
+                onClick={() => setStep(harRegistrertNæring ? 'ANNEN_INNTEKT' : 'VELG_INNTEKTSTYPE')}
             />
         );
     }
 
-    if (step === WizardStep.VELG_INNTEKTSTYPE) {
+    if (step === 'VELG_INNTEKTSTYPE') {
         return (
             <VStack gap="space-40">
                 <RadioGroup
@@ -115,16 +96,16 @@ const LeggTilAndreInntekterWizardInner = ({
                     onChange={setInntektstype}
                 >
                     <Radio
-                        value={Inntektstype.EGEN_NÆRING}
+                        value="EGEN_NÆRING"
                         description="Bidratt til driften av ektefelles virksomhet og hatt inntekt"
                     >
                         Jeg har jobbet i min ektefelles næring hvor vi har fordelt inntekt
                     </Radio>
-                    <Radio value={Inntektstype.FISKER} description="Hyre og/eller lott, eller egen båt">
+                    <Radio value="FISKER" description="Hyre og/eller lott, eller egen båt">
                         Jeg er fisker eller mannskap på båt Hyre og/eller lott, eller egen båt
                     </Radio>
                     <Radio
-                        value={Inntektstype.ANNEN_INNTEKT}
+                        value="ANNEN_INNTEKT"
                         description="Førstegangstjeneste, sluttpakke, etterlønn, eller arbeid i utlandet"
                     >
                         Annen pensjonsgivende inntekt
@@ -135,12 +116,12 @@ const LeggTilAndreInntekterWizardInner = ({
                     isNextDisabled={!inntektstype}
                     onCancel={avsluttWizard}
                     onNext={() => {
-                        if (inntektstype === Inntektstype.EGEN_NÆRING) {
-                            setStep(WizardStep.EGEN_NÆRING);
-                        } else if (inntektstype === Inntektstype.FISKER) {
-                            setStep(WizardStep.FISKER);
-                        } else if (inntektstype === Inntektstype.ANNEN_INNTEKT) {
-                            setStep(WizardStep.ANNEN_INNTEKT);
+                        if (inntektstype === 'EGEN_NÆRING') {
+                            setStep('EGEN_NÆRING');
+                        } else if (inntektstype === 'FISKER') {
+                            setStep('FISKER');
+                        } else if (inntektstype === 'ANNEN_INNTEKT') {
+                            setStep('ANNEN_INNTEKT');
                         }
                     }}
                 />
@@ -148,22 +129,22 @@ const LeggTilAndreInntekterWizardInner = ({
         );
     }
 
-    if (step === WizardStep.FISKER) {
+    if (step === 'FISKER') {
         return (
             <FiskerForm
                 onAbort={avsluttWizard}
-                onBack={() => setStep(WizardStep.VELG_INNTEKTSTYPE)}
+                onBack={() => setStep('VELG_INNTEKTSTYPE')}
                 onComplete={avsluttWizard}
                 onSaveEgenNæring={onSaveEgenNæring}
             />
         );
     }
 
-    if (step === WizardStep.ANNEN_INNTEKT) {
+    if (step === 'ANNEN_INNTEKT') {
         return (
             <AnnenInntektForm
                 onAbort={avsluttWizard}
-                onBack={harRegistrertNæring ? undefined : () => setStep(WizardStep.VELG_INNTEKTSTYPE)}
+                onBack={harRegistrertNæring ? undefined : () => setStep('VELG_INNTEKTSTYPE')}
                 onSubmit={(annenInntekt) => {
                     onSaveAndreInntekt?.(annenInntekt);
                     avsluttWizard();
@@ -176,7 +157,7 @@ const LeggTilAndreInntekterWizardInner = ({
         );
     }
 
-    if (step === WizardStep.EGEN_NÆRING) {
+    if (step === 'EGEN_NÆRING') {
         return (
             <EgenNæringWizardForm
                 onSubmit={(egenNæring) => {
@@ -184,7 +165,7 @@ const LeggTilAndreInntekterWizardInner = ({
                     avsluttWizard();
                 }}
                 onAbort={avsluttWizard}
-                onBack={() => setStep(WizardStep.VELG_INNTEKTSTYPE)}
+                onBack={() => setStep('VELG_INNTEKTSTYPE')}
             />
         );
     }
@@ -210,18 +191,13 @@ interface FiskerNæringProps {
 
 type FiskerValg = 'lott' | 'hyre' | 'lott_og_hyre' | 'egen_båt';
 
-const FiskerStep = {
-    VELG_ORDNING: 'VELG_ORDNING',
-    VIS_INFORMASJON: 'VIS_INFORMASJON',
-} as const;
-
-type FiskerStep = (typeof FiskerStep)[keyof typeof FiskerStep];
+type FiskerStep = 'VELG_ORDNING' | 'VIS_INFORMASJON';
 
 const FiskerForm = ({ onAbort, onBack, onComplete, onSaveEgenNæring }: FiskerFormProps) => {
     const [fiskerValg, setFiskerValg] = useState<FiskerValg>();
-    const [step, setStep] = useState<FiskerStep>(FiskerStep.VELG_ORDNING);
+    const [step, setStep] = useState<FiskerStep>('VELG_ORDNING');
 
-    if (step === FiskerStep.VELG_ORDNING) {
+    if (step === 'VELG_ORDNING') {
         return (
             <VStack gap="space-40">
                 <Heading level="2" size="small">
@@ -249,7 +225,7 @@ const FiskerForm = ({ onAbort, onBack, onComplete, onSaveEgenNæring }: FiskerFo
                     isNextDisabled={!fiskerValg}
                     onCancel={onAbort}
                     onBack={onBack}
-                    onNext={() => setStep(FiskerStep.VIS_INFORMASJON)}
+                    onNext={() => setStep('VIS_INFORMASJON')}
                 />
             </VStack>
         );
@@ -266,7 +242,7 @@ const FiskerForm = ({ onAbort, onBack, onComplete, onSaveEgenNæring }: FiskerFo
                     isLastStep
                     isNextDisabled
                     onCancel={onAbort}
-                    onBack={() => setStep(FiskerStep.VELG_ORDNING)}
+                    onBack={() => setStep('VELG_ORDNING')}
                     onNext={onComplete}
                 />
             </VStack>
@@ -275,7 +251,7 @@ const FiskerForm = ({ onAbort, onBack, onComplete, onSaveEgenNæring }: FiskerFo
 
     const fiskerNæringProps: FiskerNæringProps = {
         onAbort,
-        onBack: () => setStep(FiskerStep.VELG_ORDNING),
+        onBack: () => setStep('VELG_ORDNING'),
         onSubmit: (egenNæring) => {
             onSaveEgenNæring?.(egenNæring);
             onComplete();
@@ -387,23 +363,14 @@ interface AnnenInntektFormProps {
     onSubmitEgenNæring: (egenNæring: NæringDto) => void;
 }
 
-const AnnenInntektValg = {
-    ...AnnenInntektType,
-    NÆRING_I_UTLANDET: 'NÆRING_I_UTLANDET',
-} as const;
+type AnnenInntektValg =
+    'JOBB_I_UTLANDET' | 'NÆRING_I_UTLANDET' | 'ETTERLØNN_SLUTTPAKKE' | 'MILITÆR_ELLER_SIVILTJENESTE';
 
-type AnnenInntektValg = (typeof AnnenInntektValg)[keyof typeof AnnenInntektValg];
-
-const AnnenInntektStep = {
-    VELG_INNTEKTSTYPE: 'VELG_INNTEKTSTYPE',
-    FYLL_UT_INNTEKT: 'FYLL_UT_INNTEKT',
-} as const;
-
-type AnnenInntektStep = (typeof AnnenInntektStep)[keyof typeof AnnenInntektStep];
+type AnnenInntektStep = 'VELG_INNTEKTSTYPE' | 'FYLL_UT_INNTEKT';
 
 const AnnenInntektForm = ({ onAbort, onBack, onSubmit, onSubmitEgenNæring }: AnnenInntektFormProps) => {
     const [valgtInntektstype, setValgtInntektstype] = useState<AnnenInntektValg>();
-    const [step, setStep] = useState<AnnenInntektStep>(AnnenInntektStep.VELG_INNTEKTSTYPE);
+    const [step, setStep] = useState<AnnenInntektStep>('VELG_INNTEKTSTYPE');
     const formMethods = useForm<AndreInntekterFormValues>({
         defaultValues: { andreInntektskilder: [{ type: undefined }] },
         shouldUnregister: true,
@@ -412,10 +379,7 @@ const AnnenInntektForm = ({ onAbort, onBack, onSubmit, onSubmitEgenNæring }: An
 
     const velgInntektstype = (type: AnnenInntektValg) => {
         setValgtInntektstype(type);
-        formMethods.setValue(
-            'andreInntektskilder.0',
-            type === AnnenInntektValg.NÆRING_I_UTLANDET ? { type: undefined } : { type },
-        );
+        formMethods.setValue('andreInntektskilder.0', type === 'NÆRING_I_UTLANDET' ? { type: undefined } : { type });
     };
 
     const submitForm = formMethods.handleSubmit((values) => {
@@ -425,7 +389,7 @@ const AnnenInntektForm = ({ onAbort, onBack, onSubmit, onSubmitEgenNæring }: An
         }
     });
 
-    if (step === AnnenInntektStep.VELG_INNTEKTSTYPE) {
+    if (step === 'VELG_INNTEKTSTYPE') {
         return (
             <VStack gap="space-40">
                 <Heading level="2" size="small">
@@ -436,17 +400,17 @@ const AnnenInntektForm = ({ onAbort, onBack, onSubmit, onSubmitEgenNæring }: An
                     value={valgtInntektstype ?? ''}
                     onChange={velgInntektstype}
                 >
-                    <Radio value={AnnenInntektType.JOBB_I_UTLANDET}>Jobb i utlandet</Radio>
-                    <Radio value={AnnenInntektValg.NÆRING_I_UTLANDET}>Næring i utlandet</Radio>
-                    <Radio value={AnnenInntektType.SLUTTPAKKE}>Etterlønn eller sluttvederlag</Radio>
-                    <Radio value={AnnenInntektType.MILITÆRTJENESTE}>Førstegangstjeneste</Radio>
+                    <Radio value="JOBB_I_UTLANDET">Jobb i utlandet</Radio>
+                    <Radio value="NÆRING_I_UTLANDET">Næring i utlandet</Radio>
+                    <Radio value="ETTERLØNN_SLUTTPAKKE">Etterlønn eller sluttvederlag</Radio>
+                    <Radio value="MILITÆR_ELLER_SIVILTJENESTE">Førstegangstjeneste</Radio>
                 </RadioGroup>
                 <WizardNavigator
                     isLastStep={false}
                     isNextDisabled={!valgtInntektstype}
                     onCancel={onAbort}
                     onBack={onBack}
-                    onNext={() => setStep(AnnenInntektStep.FYLL_UT_INNTEKT)}
+                    onNext={() => setStep('FYLL_UT_INNTEKT')}
                 />
             </VStack>
         );
@@ -459,7 +423,7 @@ const AnnenInntektForm = ({ onAbort, onBack, onSubmit, onSubmitEgenNæring }: An
                     Legg til inntektskilde
                 </Heading>
                 <ErrorSummaryHookForm />
-                {valgtInntektstype === AnnenInntektValg.NÆRING_I_UTLANDET && (
+                {valgtInntektstype === 'NÆRING_I_UTLANDET' && (
                     <EgenNæringForm
                         fixedRegistrertINorge={false}
                         appOrigin="foreldrepengesoknad"
@@ -469,27 +433,27 @@ const AnnenInntektForm = ({ onAbort, onBack, onSubmit, onSubmitEgenNæring }: An
                             <WizardNavigator
                                 isLastStep
                                 onCancel={onAbort}
-                                onBack={() => setStep(AnnenInntektStep.VELG_INNTEKTSTYPE)}
+                                onBack={() => setStep('VELG_INNTEKTSTYPE')}
                                 onNext={() => submitEgenNæring()}
                             />
                         )}
                     />
                 )}
-                {inntektskilde.type === AnnenInntektType.JOBB_I_UTLANDET && (
+                {inntektskilde.type === 'JOBB_I_UTLANDET' && (
                     <JobbIUtlandetPanel index={0} inntektskilde={inntektskilde} />
                 )}
-                {inntektskilde.type === AnnenInntektType.SLUTTPAKKE && (
+                {inntektskilde.type === 'ETTERLØNN_SLUTTPAKKE' && (
                     <EtterlønnEllerSluttvederlagPanel index={0} inntektskilde={inntektskilde} />
                 )}
-                {inntektskilde.type === AnnenInntektType.MILITÆRTJENESTE && (
+                {inntektskilde.type === 'MILITÆR_ELLER_SIVILTJENESTE' && (
                     <FørstegangstjenestePanel index={0} inntektskilde={inntektskilde} />
                 )}
-                {valgtInntektstype !== AnnenInntektValg.NÆRING_I_UTLANDET && (
+                {valgtInntektstype !== 'NÆRING_I_UTLANDET' && (
                     <WizardNavigator
                         isLastStep
                         isNextDisabled={!inntektskilde.type}
                         onCancel={onAbort}
-                        onBack={() => setStep(AnnenInntektStep.VELG_INNTEKTSTYPE)}
+                        onBack={() => setStep('VELG_INNTEKTSTYPE')}
                         onNext={submitForm}
                     />
                 )}

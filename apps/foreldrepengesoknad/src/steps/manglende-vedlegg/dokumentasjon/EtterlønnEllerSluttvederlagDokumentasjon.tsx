@@ -1,5 +1,5 @@
 import { useIntl } from 'react-intl';
-import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
+import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
@@ -26,12 +26,12 @@ export const EtterlønnEllerSluttvederlagDokumentasjon = ({
         !arbeidsforholdOgInntekt ||
         arbeidsforholdOgInntekt.harHattAndreInntektskilder === false ||
         !andreInntektskilder ||
-        !andreInntektskilder.some((i) => i.type === AnnenInntektType.SLUTTPAKKE)
+        !andreInntektskilder.some((i) => i.type === 'ETTERLØNN_SLUTTPAKKE')
     ) {
         return null;
     }
 
-    const perioder = andreInntektskilder.filter((i) => i.type === AnnenInntektType.SLUTTPAKKE);
+    const perioder = andreInntektskilder.filter((i) => i.type === 'ETTERLØNN_SLUTTPAKKE');
 
     return (
         <VedleggUploader

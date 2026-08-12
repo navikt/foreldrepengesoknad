@@ -4,7 +4,6 @@ import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router';
 import { skalViseOmsorgsovertakelseDokumentasjon } from 'steps/manglende-vedlegg/dokumentasjon/OmsorgsovertakelseDokumentasjon.tsx';
 import { skalViseTerminbekreftelseDokumentasjon } from 'steps/manglende-vedlegg/dokumentasjon/TerminbekreftelseDokumentasjon.tsx';
-import { AnnenInntektType } from 'types/AndreInntektskilder';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { VedleggDataType } from 'types/VedleggDataType';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
@@ -130,7 +129,7 @@ const showManglendeDokumentasjonSteg = (
                 : false;
 
         const skalHaAndreInntekterDok = andreInntektskilder?.some(
-            (i) => i.type === AnnenInntektType.MILITÆRTJENESTE || i.type === AnnenInntektType.SLUTTPAKKE,
+            (i) => i.type === 'MILITÆR_ELLER_SIVILTJENESTE' || i.type === 'ETTERLØNN_SLUTTPAKKE',
         );
 
         return (

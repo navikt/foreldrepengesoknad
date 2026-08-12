@@ -8,11 +8,11 @@ import { RhfDatepicker, RhfRadioGroup, RhfSelect, RhfTextField } from '@navikt/f
 import { createCountryOptions } from '@navikt/fp-utils';
 import { hasMaxLength, isBeforeOrSame, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
-import { AndreInntekterFormValues, AndreInntektskilderUtkast, AnnenInntektType } from '../../types/AndreInntektskilder';
+import { AndreInntekterFormValues, AndreInntektskilderUtkast } from '../../types/AndreInntektskilder';
 
 interface Props {
     index: number;
-    inntektskilde: Extract<AndreInntektskilderUtkast, { type: typeof AnnenInntektType.JOBB_I_UTLANDET }>;
+    inntektskilde: Extract<AndreInntektskilderUtkast, { type: 'JOBB_I_UTLANDET' }>;
 }
 
 export const JobbIUtlandetPanel = ({ index, inntektskilde }: Props) => {
@@ -21,7 +21,7 @@ export const JobbIUtlandetPanel = ({ index, inntektskilde }: Props) => {
 
     const { control } = useFormContext<AndreInntekterFormValues>();
 
-    if (inntektskilde.type !== AnnenInntektType.JOBB_I_UTLANDET) {
+    if (inntektskilde.type !== 'JOBB_I_UTLANDET') {
         throw new Error('Inntektskilde ikke av type JOBB_I_UTLANDET');
     }
 

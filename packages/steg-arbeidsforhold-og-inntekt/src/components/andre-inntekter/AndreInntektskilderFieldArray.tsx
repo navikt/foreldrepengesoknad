@@ -7,11 +7,7 @@ import { RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { HorizontalLine } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 
-import {
-    AndreInntekterFormValues,
-    type AndreInntektskilderUtkast,
-    AnnenInntektType,
-} from '../../types/AndreInntektskilder';
+import { AndreInntekterFormValues, type AndreInntektskilderUtkast } from '../../types/AndreInntektskilder';
 import { EtterlønnEllerSluttvederlagPanel } from './EtterlønnEllerSluttvederlagPanel';
 import { FørstegangstjenestePanel } from './FørstegangstjenestePanel';
 import { JobbIUtlandetPanel } from './JobbIUtlandetPanel';
@@ -44,23 +40,23 @@ export const AndreInntektskilderFieldArray = ({ showControls = true }: Props) =>
                                 isRequired(intl.formatMessage({ id: 'AndreInntektskilderStep.Validering.OppgiType' })),
                             ]}
                         >
-                            <Radio value={AnnenInntektType.JOBB_I_UTLANDET}>
+                            <Radio value="JOBB_I_UTLANDET">
                                 <FormattedMessage id="AndreInntektskilderStep.RadioButton.Utlandet" />
                             </Radio>
-                            <Radio value={AnnenInntektType.SLUTTPAKKE}>
+                            <Radio value="ETTERLØNN_SLUTTPAKKE">
                                 <FormattedMessage id="AndreInntektskilderStep.RadioButton.Etterlønn" />
                             </Radio>
-                            <Radio value={AnnenInntektType.MILITÆRTJENESTE}>
+                            <Radio value="MILITÆR_ELLER_SIVILTJENESTE">
                                 <FormattedMessage id="AndreInntektskilderStep.RadioButton.Førstegangstjeneste" />
                             </Radio>
                         </RhfRadioGroup>
-                        {inntektskilde.type === AnnenInntektType.JOBB_I_UTLANDET && (
+                        {inntektskilde.type === 'JOBB_I_UTLANDET' && (
                             <JobbIUtlandetPanel index={index} inntektskilde={inntektskilde} />
                         )}
-                        {inntektskilde.type === AnnenInntektType.SLUTTPAKKE && (
+                        {inntektskilde.type === 'ETTERLØNN_SLUTTPAKKE' && (
                             <EtterlønnEllerSluttvederlagPanel index={index} inntektskilde={inntektskilde} />
                         )}
-                        {inntektskilde.type === AnnenInntektType.MILITÆRTJENESTE && (
+                        {inntektskilde.type === 'MILITÆR_ELLER_SIVILTJENESTE' && (
                             <FørstegangstjenestePanel index={index} inntektskilde={inntektskilde} />
                         )}
                         {showControls && index === 0 && fields.length > 1 && <HorizontalLine />}

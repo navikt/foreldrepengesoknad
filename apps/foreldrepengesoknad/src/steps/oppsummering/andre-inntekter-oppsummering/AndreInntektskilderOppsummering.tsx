@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
+import { AndreInntektskilder } from 'types/AndreInntektskilder';
 
 import { FormSummary } from '@navikt/ds-react';
 
@@ -40,18 +40,18 @@ export const AndreInntektskilderOppsummering = ({ andreInntektskilder, onVilEndr
                                             <FormattedMessage id="AndreInntektskilderStep.HvilkenTypeAnnenInntekskilder" />
                                         </FormSummary.Label>
                                         <FormSummary.Value>
-                                            {annenInntektskilde.type === AnnenInntektType.JOBB_I_UTLANDET && (
+                                            {annenInntektskilde.type === 'JOBB_I_UTLANDET' && (
                                                 <FormattedMessage id="AndreInntektskilderStep.RadioButton.Utlandet" />
                                             )}
-                                            {annenInntektskilde.type === AnnenInntektType.SLUTTPAKKE && (
+                                            {annenInntektskilde.type === 'ETTERLØNN_SLUTTPAKKE' && (
                                                 <FormattedMessage id="AndreInntektskilderStep.RadioButton.Etterlønn" />
                                             )}
-                                            {annenInntektskilde.type === AnnenInntektType.MILITÆRTJENESTE && (
+                                            {annenInntektskilde.type === 'MILITÆR_ELLER_SIVILTJENESTE' && (
                                                 <FormattedMessage id="AndreInntektskilderStep.RadioButton.Førstegangstjeneste" />
                                             )}
                                         </FormSummary.Value>
                                     </FormSummary.Answer>
-                                    {annenInntektskilde.type === AnnenInntektType.JOBB_I_UTLANDET && (
+                                    {annenInntektskilde.type === 'JOBB_I_UTLANDET' && (
                                         <>
                                             <FormSummary.Answer>
                                                 <FormSummary.Label>
@@ -97,7 +97,7 @@ export const AndreInntektskilderOppsummering = ({ andreInntektskilder, onVilEndr
                                             )}
                                         </>
                                     )}
-                                    {annenInntektskilde.type === AnnenInntektType.SLUTTPAKKE && (
+                                    {annenInntektskilde.type === 'ETTERLØNN_SLUTTPAKKE' && (
                                         <>
                                             <FormSummary.Answer>
                                                 <FormSummary.Label>
@@ -117,7 +117,7 @@ export const AndreInntektskilderOppsummering = ({ andreInntektskilder, onVilEndr
                                             </FormSummary.Answer>
                                         </>
                                     )}
-                                    {annenInntektskilde.type === AnnenInntektType.MILITÆRTJENESTE && (
+                                    {annenInntektskilde.type === 'MILITÆR_ELLER_SIVILTJENESTE' && (
                                         <>
                                             {annenInntektskilde.pågående && (
                                                 <FormSummary.Answer>

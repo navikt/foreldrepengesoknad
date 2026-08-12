@@ -4,7 +4,7 @@ import { API_URLS } from 'api/queries';
 import ky, { ResponsePromise } from 'ky';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
-import { AnnenInntektType, SluttpakkeInntekt } from 'types/AndreInntektskilder';
+import { SluttpakkeInntekt } from 'types/AndreInntektskilder';
 import { AnnenForelder } from 'types/AnnenForelder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
@@ -120,7 +120,7 @@ const EGEN_NÆRING = {
 
 const ANDRE_INNTEKTSKILDER = [
     {
-        type: AnnenInntektType.SLUTTPAKKE,
+        type: 'ETTERLØNN_SLUTTPAKKE',
         fom: '2023-01-01',
         tom: '2024-01-01',
     } satisfies SluttpakkeInntekt,

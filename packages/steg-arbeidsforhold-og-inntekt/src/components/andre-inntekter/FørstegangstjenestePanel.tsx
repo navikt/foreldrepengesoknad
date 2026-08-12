@@ -8,11 +8,11 @@ import { HStack, InfoCard, Radio, VStack } from '@navikt/ds-react';
 import { RhfDatepicker, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { isBeforeOrSame, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
-import { AndreInntekterFormValues, AndreInntektskilderUtkast, AnnenInntektType } from '../../types/AndreInntektskilder';
+import { AndreInntekterFormValues, AndreInntektskilderUtkast } from '../../types/AndreInntektskilder';
 
 interface Props {
     index: number;
-    inntektskilde: Extract<AndreInntektskilderUtkast, { type: typeof AnnenInntektType.MILITÆRTJENESTE }>;
+    inntektskilde: Extract<AndreInntektskilderUtkast, { type: 'MILITÆR_ELLER_SIVILTJENESTE' }>;
 }
 
 export const FørstegangstjenestePanel = ({ index, inntektskilde }: Props) => {
@@ -21,7 +21,7 @@ export const FørstegangstjenestePanel = ({ index, inntektskilde }: Props) => {
 
     const { control } = useFormContext<AndreInntekterFormValues>();
 
-    if (inntektskilde.type !== AnnenInntektType.MILITÆRTJENESTE) {
+    if (inntektskilde.type !== 'MILITÆR_ELLER_SIVILTJENESTE') {
         throw new Error('Inntektskilde ikke av type MILITÆRTJENESTE');
     }
 

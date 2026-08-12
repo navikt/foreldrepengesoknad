@@ -5,20 +5,20 @@ import { BodyShort, Box, Button, HStack, Heading, Label, Tag, VStack } from '@na
 
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 
-import { type AndreInntektskilder, AnnenInntektType } from '../../types/AndreInntektskilder';
+import { type AndreInntektskilder } from '../../types/AndreInntektskilder';
 
 interface Props {
     andreInntektskilder: AndreInntektskilder[];
     onRemove: (index: number) => void;
 }
 
-const getTittelId = (type: AnnenInntektType) => {
+const getTittelId = (type: AndreInntektskilder['type']) => {
     switch (type) {
-        case AnnenInntektType.JOBB_I_UTLANDET:
+        case 'JOBB_I_UTLANDET':
             return 'AndreInntektskilderStep.RadioButton.Utlandet';
-        case AnnenInntektType.SLUTTPAKKE:
+        case 'ETTERLØNN_SLUTTPAKKE':
             return 'AndreInntektskilderStep.RadioButton.Etterlønn';
-        case AnnenInntektType.MILITÆRTJENESTE:
+        case 'MILITÆR_ELLER_SIVILTJENESTE':
             return 'AndreInntektskilderStep.RadioButton.Førstegangstjeneste';
     }
 };
@@ -37,7 +37,7 @@ const Inntektsdetaljer = ({ inntekt }: { inntekt: AndreInntektskilder }) => {
 
     return (
         <>
-            {inntekt.type === AnnenInntektType.JOBB_I_UTLANDET && (
+            {inntekt.type === 'JOBB_I_UTLANDET' && (
                 <>
                     <DetaljRad label={<FormattedMessage id="JobbIUtlandetPanel.LandDuHarJobbet" />}>
                         {inntekt.land}

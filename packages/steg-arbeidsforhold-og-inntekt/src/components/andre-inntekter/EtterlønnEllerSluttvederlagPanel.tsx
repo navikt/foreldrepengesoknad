@@ -6,11 +6,11 @@ import { HStack, InfoCard, VStack } from '@navikt/ds-react';
 import { RhfDateRangepicker } from '@navikt/fp-form-hooks';
 import { isBeforeOrSame, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
-import { AndreInntektskilderUtkast, AnnenInntektType } from '../../types/AndreInntektskilder';
+import { AndreInntektskilderUtkast } from '../../types/AndreInntektskilder';
 
 interface Props {
     index: number;
-    inntektskilde: Extract<AndreInntektskilderUtkast, { type: typeof AnnenInntektType.SLUTTPAKKE }>;
+    inntektskilde: Extract<AndreInntektskilderUtkast, { type: 'ETTERLØNN_SLUTTPAKKE' }>;
 }
 
 export const EtterlønnEllerSluttvederlagPanel = ({ index, inntektskilde }: Props) => {

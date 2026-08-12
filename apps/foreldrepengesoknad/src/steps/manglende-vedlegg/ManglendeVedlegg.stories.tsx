@@ -7,7 +7,7 @@ import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
-import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
+import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { AnnenForelder } from 'types/AnnenForelder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
@@ -251,12 +251,12 @@ export const HarAndreInntektskilderMilitærtjeneste: Story = {
                 fom: '2024-01-01',
                 tom: '2024-04-01',
                 pågående: false,
-                type: AnnenInntektType.MILITÆRTJENESTE,
+                type: 'MILITÆR_ELLER_SIVILTJENESTE',
             },
             {
                 fom: '2024-05-01',
                 pågående: true,
-                type: AnnenInntektType.MILITÆRTJENESTE,
+                type: 'MILITÆR_ELLER_SIVILTJENESTE',
             },
         ],
         erEndringssøknad: false,
@@ -277,12 +277,12 @@ export const HarAndreInntektskilderEtterlønn: Story = {
             {
                 fom: '2024-01-01',
                 tom: '2024-04-01',
-                type: AnnenInntektType.SLUTTPAKKE,
+                type: 'ETTERLØNN_SLUTTPAKKE',
             },
             {
                 fom: '2024-05-01',
                 tom: '2024-07-01',
-                type: AnnenInntektType.SLUTTPAKKE,
+                type: 'ETTERLØNN_SLUTTPAKKE',
             },
         ],
         erEndringssøknad: false,

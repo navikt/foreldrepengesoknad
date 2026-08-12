@@ -1,12 +1,6 @@
 import { CountryCode } from '@navikt/fp-types';
 
-export const AnnenInntektType = {
-    SLUTTPAKKE: 'ETTERLØNN_SLUTTPAKKE',
-    MILITÆRTJENESTE: 'MILITÆR_ELLER_SIVILTJENESTE',
-    JOBB_I_UTLANDET: 'JOBB_I_UTLANDET',
-} as const;
-
-export type AnnenInntektType = (typeof AnnenInntektType)[keyof typeof AnnenInntektType];
+export type AnnenInntektType = 'ETTERLØNN_SLUTTPAKKE' | 'MILITÆR_ELLER_SIVILTJENESTE' | 'JOBB_I_UTLANDET';
 
 interface AnnenInntektBase {
     type: AnnenInntektType;
@@ -14,18 +8,18 @@ interface AnnenInntektBase {
 }
 
 export interface SluttpakkeInntekt extends AnnenInntektBase {
-    type: typeof AnnenInntektType.SLUTTPAKKE;
+    type: 'ETTERLØNN_SLUTTPAKKE';
     tom: string;
 }
 
 interface MilitærtjenesteInntekt extends AnnenInntektBase {
-    type: typeof AnnenInntektType.MILITÆRTJENESTE;
+    type: 'MILITÆR_ELLER_SIVILTJENESTE';
     pågående: boolean;
     tom?: string;
 }
 
 interface JobbIUtlandetInntekt extends AnnenInntektBase {
-    type: typeof AnnenInntektType.JOBB_I_UTLANDET;
+    type: 'JOBB_I_UTLANDET';
     arbeidsgiverNavn: string;
     land: CountryCode;
     pågående: boolean;

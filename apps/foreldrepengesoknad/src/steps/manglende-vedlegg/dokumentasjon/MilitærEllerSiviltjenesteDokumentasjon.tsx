@@ -1,5 +1,5 @@
 import { useIntl } from 'react-intl';
-import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
+import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
@@ -26,12 +26,12 @@ export const MilitærEllerSiviltjenesteDokumentasjon = ({
         !arbeidsforholdOgInntekt ||
         (arbeidsforholdOgInntekt && !arbeidsforholdOgInntekt.harHattAndreInntektskilder) ||
         !andreInntektskilder ||
-        !andreInntektskilder.some((i) => i.type === AnnenInntektType.MILITÆRTJENESTE)
+        !andreInntektskilder.some((i) => i.type === 'MILITÆR_ELLER_SIVILTJENESTE')
     ) {
         return null;
     }
 
-    const perioder = andreInntektskilder.filter((i) => i.type === AnnenInntektType.MILITÆRTJENESTE);
+    const perioder = andreInntektskilder.filter((i) => i.type === 'MILITÆR_ELLER_SIVILTJENESTE');
 
     return (
         <VedleggUploader

@@ -5,7 +5,7 @@ import { action } from 'storybook/actions';
 import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { ArbeidsforholdOgInntektPanel } from './ArbeidsforholdOgInntektPanel';
-import { type AndreInntektskilder, AnnenInntektType } from './types/AndreInntektskilder';
+import { type AndreInntektskilder } from './types/AndreInntektskilder';
 
 const DEFAULT_ARBEIDSFORHOLD = [
     {
@@ -53,7 +53,7 @@ const DEFAULT_SELVSTENDIG_NÆRING = [
 
 const DEFAULT_ANDRE_INNTEKTSKILDER = [
     {
-        type: AnnenInntektType.JOBB_I_UTLANDET,
+        type: 'JOBB_I_UTLANDET',
         land: 'DK',
         arbeidsgiverNavn: 'Københavns Kommune',
         pågående: false,
