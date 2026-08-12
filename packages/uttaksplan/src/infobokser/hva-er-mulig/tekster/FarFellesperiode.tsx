@@ -65,12 +65,13 @@ export const FarFellesperiode = ({ erFarOgFar }: Props) => {
                                     erAdopsjon,
                                 }}
                             />
+                            {barn.antallBarn > 1 && !erMedmor && !erFarOgFar && (
+                                <>
+                                    {' '}
+                                    <FormattedMessage id="HvaErMulig.FarFellesperiode.Flerbarnsdager" />
+                                </>
+                            )}
                         </BodyLong>
-                        {barn.antallBarn > 1 && !erMedmor && !erFarOgFar && (
-                            <BodyLong>
-                                <FormattedMessage id="HvaErMulig.FarFellesperiode.Flerbarnsdager" />
-                            </BodyLong>
-                        )}
                     </>
                 ) : (
                     <>
@@ -92,12 +93,13 @@ export const FarFellesperiode = ({ erFarOgFar }: Props) => {
                                     erAdopsjon,
                                 }}
                             />
+                            {barn.antallBarn > 1 && !erMedmor && !erFarOgFar && (
+                                <>
+                                    {' '}
+                                    <FormattedMessage id="HvaErMulig.FarFellesperiode.Flerbarnsdager" />
+                                </>
+                            )}
                         </BodyLong>
-                        {barn.antallBarn > 1 && !erMedmor && !erFarOgFar && (
-                            <BodyLong>
-                                <FormattedMessage id="HvaErMulig.FarFellesperiode.Flerbarnsdager" />
-                            </BodyLong>
-                        )}
                     </>
                 )}
             </div>
