@@ -134,6 +134,20 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
         expect(screen.queryByRole('heading', { name: 'Fiskebåten' })).not.toBeInTheDocument();
     });
 
+    it('skal lagre selvstendig næringsdrivende når næring finnes i registeret', async () => {
+        const saveOnNext = vi.fn();
+        render(<ForForeldrepengerMedSelvstendigNæring saveOnNext={saveOnNext} />);
+
+        await screen.findAllByText('Arbeidsforhold og inntekt');
+        await userEvent.click(screen.getByRole('button', { name: 'Neste steg' }));
+
+        expect(saveOnNext).toHaveBeenCalledWith(
+            expect.objectContaining({
+                harJobbetSomSelvstendigNæringsdrivende: true,
+            }),
+        );
+    });
+
     it('skal hoppe over inntektstypesteget når selvstendig næring finnes i registeret', async () => {
         render(<ForForeldrepengerMedSelvstendigNæring />);
 

@@ -61,6 +61,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
         defaultValues: {
             ...arbeidsforholdOgInntekt,
             ...(frilansoppdrag.length > 0 && { harJobbetSomFrilans: true }),
+            ...(selvstendigNæring.length > 0 && { harJobbetSomSelvstendigNæringsdrivende: true }),
         },
     });
 
