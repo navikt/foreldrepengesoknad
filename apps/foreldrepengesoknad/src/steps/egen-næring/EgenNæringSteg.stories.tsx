@@ -27,7 +27,6 @@ const meta = {
                     initialState={{
                         [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
                             harJobbetSomSelvstendigNæringsdrivende: true,
-                            harHattAndreInntektskilder: false,
                             harJobbetSomFrilans: false,
                         },
                     }}

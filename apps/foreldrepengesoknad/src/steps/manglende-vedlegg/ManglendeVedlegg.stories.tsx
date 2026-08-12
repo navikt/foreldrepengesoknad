@@ -91,7 +91,6 @@ const defaultBarn = {
 } satisfies Barn;
 
 const defaultArbeidsforholdOgInntekt = {
-    harHattAndreInntektskilder: false,
     harJobbetSomFrilans: false,
     harJobbetSomSelvstendigNæringsdrivende: false,
 };
@@ -242,7 +241,6 @@ export const HarAndreInntektskilderMilitærtjeneste: Story = {
     args: {
         søkerInfo: defaultSøkerinfo,
         arbeidsforholdOgInntekt: {
-            harHattAndreInntektskilder: true,
             harJobbetSomFrilans: false,
             harJobbetSomSelvstendigNæringsdrivende: false,
         },
@@ -269,7 +267,6 @@ export const HarAndreInntektskilderEtterlønn: Story = {
     args: {
         søkerInfo: defaultSøkerinfo,
         arbeidsforholdOgInntekt: {
-            harHattAndreInntektskilder: true,
             harJobbetSomFrilans: false,
             harJobbetSomSelvstendigNæringsdrivende: false,
         },

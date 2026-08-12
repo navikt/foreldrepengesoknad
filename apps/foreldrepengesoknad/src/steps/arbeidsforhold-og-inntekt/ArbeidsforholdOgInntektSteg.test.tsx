@@ -3,7 +3,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
-import { SøknadRoutes } from 'appData/routes';
 
 import { mswWrapper } from '@navikt/fp-utils-test';
 
@@ -37,7 +36,6 @@ describe('<ArbeidsforholdOgInntektSteg>', () => {
 
             expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
                 data: {
-                    harHattAndreInntektskilder: false,
                     harJobbetSomFrilans: false,
                     harJobbetSomSelvstendigNæringsdrivende: false,
                 },
@@ -54,12 +52,6 @@ describe('<ArbeidsforholdOgInntektSteg>', () => {
                 key: ContextDataType.EGEN_NÆRING,
                 type: 'update',
             });
-            expect(gåTilNesteSide).not.toHaveBeenCalledWith({
-                data: SøknadRoutes.ANDRE_INNTEKTER,
-                key: ContextDataType.APP_ROUTE,
-                type: 'update',
-            });
-
             expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce();
         }),
     );

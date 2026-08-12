@@ -110,16 +110,6 @@ export const ArbeidsforholdOppsummering = ({
                         </FormSummary.Value>
                     </FormSummary.Answer>
                 )}
-                {erForeldrepenger && (
-                    <FormSummary.Answer>
-                        <FormSummary.Label>
-                            <FormattedMessage id="ArbeidsforholdOppsummering.HarHattAndreInntektskilder" />
-                        </FormSummary.Label>
-                        <FormSummary.Value>
-                            <JaNeiTekst ja={arbeidsforholdOgInntekt.harHattAndreInntektskilder} />
-                        </FormSummary.Value>
-                    </FormSummary.Answer>
-                )}
             </FormSummary.Answers>
             <FormSummary.Footer>
                 <FormSummary.EditLink onClick={onVilEndreSvar}>

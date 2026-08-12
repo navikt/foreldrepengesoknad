@@ -26,7 +26,6 @@ const getPathToLabelMap = (intl: IntlShape) =>
         [SøknadRoutes.ARBEID_OG_INNTEKT]: intl.formatMessage({ id: 'steps.label.inntektsinformasjon' }),
         [SøknadRoutes.FRILANS]: intl.formatMessage({ id: 'steps.label.frilans' }),
         [SøknadRoutes.EGEN_NÆRING]: intl.formatMessage({ id: 'steps.label.egenNæring' }),
-        [SøknadRoutes.ANDRE_INNTEKTER]: intl.formatMessage({ id: 'steps.label.andreInntekter' }),
         [SøknadRoutes.ANNEN_FORELDER]: intl.formatMessage({ id: 'steps.label.annenForelder' }),
         [SøknadRoutes.PERIODE_MED_FORELDREPENGER]: intl.formatMessage({ id: 'steps.label.periodeMedForeldrepenger' }),
         [SøknadRoutes.FORDELING]: intl.formatMessage({ id: 'steps.label.fordeling' }),
@@ -53,7 +52,7 @@ const showUtenlandsoppholdStep = (
     return false;
 };
 
-const showFrilansOgEgenNæringOgAndreInntekter = (
+const showFrilansOgEgenNæring = (
     path: SøknadRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
 ) => {
@@ -65,10 +64,6 @@ const showFrilansOgEgenNæringOgAndreInntekter = (
         const erValgt =
             getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT)?.harJobbetSomSelvstendigNæringsdrivende === true;
         return erValgt || !!getData(ContextDataType.EGEN_NÆRING);
-    }
-    if (path === SøknadRoutes.ANDRE_INNTEKTER) {
-        const erValgt = getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT)?.harHattAndreInntektskilder === true;
-        return erValgt || !!getData(ContextDataType.ANDRE_INNTEKTSKILDER);
     }
     return false;
 };
@@ -177,7 +172,7 @@ export const useStepConfig = (
                 (requiredSteps.includes(path) && skalViseFordelingSteg(path, getStateData)) ||
                 showUtenlandsoppholdStep(path, getStateData) ||
                 showManglendeDokumentasjonSteg(path, getStateData, arbeidsforhold, eksisterendeSak) ||
-                showFrilansOgEgenNæringOgAndreInntekter(path, getStateData)
+                showFrilansOgEgenNæring(path, getStateData)
                     ? [path]
                     : [],
             ),

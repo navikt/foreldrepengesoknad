@@ -89,7 +89,6 @@ export const ArbeidsforholdOgInntektOppsummering: Story = {
                     arbeidsforholdOgInntekt={{
                         harJobbetSomFrilans: true,
                         harJobbetSomSelvstendigNæringsdrivende: true,
-                        harHattAndreInntektskilder: false,
                     }}
                     onVilEndreSvar={() => {}}
                 />

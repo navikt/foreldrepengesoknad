@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react';
 
 import { forventIngenUuFeil } from '@navikt/fp-utils-test/a11y';
 
-import * as andreInntektskilderStories from './steps/andre-inntektskilder/AndreInntektskilderSteg.stories';
+import * as forsideStories from './pages/forside/Forside.stories';
 import * as annenForelderStories from './steps/annen-forelder/AnnenForelderSteg.stories';
 import * as arbeidsforholdOgInntektStories from './steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg.stories';
 import * as egenNæringStories from './steps/egen-næring/EgenNæringSteg.stories';
@@ -18,7 +18,6 @@ import * as senereUtenlandsoppholdStories from './steps/utenlandsopphold-senere/
 import * as tidligereUtenlandsoppholdStories from './steps/utenlandsopphold-tidligere/TidligereUtenlandsoppholdSteg.stories';
 import * as utenlandsoppholdStories from './steps/utenlandsopphold/UtenlandsoppholdSteg.stories';
 import * as uttaksplanStories from './steps/uttaksplan/UttaksplanSteg.stories';
-import * as forsideStories from './pages/forside/Forside.stories';
 
 // Éin representativ variant per side. WCAG 2.1 AA er lovpålagt for nav.no, og statisk
 // jsx-a11y-linting fangar berre ein liten del av krava – difor køyrer vi axe mot ferdig
@@ -41,7 +40,6 @@ const SIDER: Array<[string, KøyrbarStory]> = [
     ['Arbeidsforhold og inntekt', composeStories(arbeidsforholdOgInntektStories).Default],
     ['Frilans', composeStories(frilansStories).Default],
     ['Egen næring', composeStories(egenNæringStories).Default],
-    ['Andre inntektskilder', composeStories(andreInntektskilderStories).Default],
     ['Oppsummering', composeStories(oppsummeringStories).Default],
 ];
 

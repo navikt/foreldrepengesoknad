@@ -1,5 +1,4 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
-import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { FormattedMessage } from 'react-intl';
@@ -7,7 +6,6 @@ import { FormattedMessage } from 'react-intl';
 import { EgenNæringPanel } from '@navikt/fp-steg-egen-naering';
 import { EksternArbeidsforholdDto_fpoversikt, NæringDto } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
-import { notEmpty } from '@navikt/fp-validation';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -20,8 +18,6 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
     const navigator = useFpNavigator(arbeidsforhold, mellomlagreSøknadOgNaviger);
 
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
-    const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
-
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
 
     const onSubmit = (values: NæringDto) => {
@@ -29,10 +25,6 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
             ...values,
             organisasjonsnummer: values.organisasjonsnummer === '' ? undefined : values.organisasjonsnummer,
         });
-
-        if (arbeidsforholdOgInntekt.harHattAndreInntektskilder) {
-            return navigator.goToStep(SøknadRoutes.ANDRE_INNTEKTER);
-        }
 
         return navigator.goToNextStep();
     };

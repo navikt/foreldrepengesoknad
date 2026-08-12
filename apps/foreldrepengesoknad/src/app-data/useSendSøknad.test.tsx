@@ -212,7 +212,6 @@ const getWrapper =
                             [ContextDataType.OM_BARNET]: BARNET,
                             [ContextDataType.ANNEN_FORELDER]: ANNEN_FORELDER,
                             [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
-                                harHattAndreInntektskilder: true,
                                 harJobbetSomFrilans: true,
                                 harJobbetSomSelvstendigNæringsdrivende: true,
                             },

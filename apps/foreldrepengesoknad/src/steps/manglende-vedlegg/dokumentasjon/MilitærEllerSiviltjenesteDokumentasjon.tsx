@@ -3,31 +3,24 @@ import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { ArbeidsforholdOgInntektFp, Attachment } from '@navikt/fp-types';
+import { Attachment } from '@navikt/fp-types';
 
 import { VedleggUploader, formaterPerioderForVisning } from '../attachment-uploaders/VedleggUploader';
 
 interface Props {
     attachments: Attachment[];
     updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
-    arbeidsforholdOgInntekt: ArbeidsforholdOgInntektFp | undefined;
     andreInntektskilder?: AndreInntektskilder[];
 }
 
 export const MilitærEllerSiviltjenesteDokumentasjon = ({
     attachments,
     updateAttachments,
-    arbeidsforholdOgInntekt,
     andreInntektskilder,
 }: Props) => {
     const intl = useIntl();
 
-    if (
-        !arbeidsforholdOgInntekt ||
-        (arbeidsforholdOgInntekt && !arbeidsforholdOgInntekt.harHattAndreInntektskilder) ||
-        !andreInntektskilder ||
-        !andreInntektskilder.some((i) => i.type === 'MILITÆR_ELLER_SIVILTJENESTE')
-    ) {
+    if (!andreInntektskilder || !andreInntektskilder.some((i) => i.type === 'MILITÆR_ELLER_SIVILTJENESTE')) {
         return null;
     }
 

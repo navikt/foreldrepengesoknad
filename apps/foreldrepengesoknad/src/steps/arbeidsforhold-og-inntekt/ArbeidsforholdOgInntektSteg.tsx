@@ -13,7 +13,6 @@ import {
     ArbeidsforholdOgInntekt,
     ArbeidsforholdOgInntektFp,
     EksternArbeidsforholdDto_fpoversikt,
-    isArbeidsforholdOgInntektFp,
 } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
@@ -62,34 +61,24 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
     );
 
     const onSubmit = (values: ArbeidsforholdOgInntekt) => {
-        const valuesWithAndreInntekter: ArbeidsforholdOgInntektFp = {
+        const arbeidsforholdOgInntektFp: ArbeidsforholdOgInntektFp = {
             harJobbetSomFrilans: values.harJobbetSomFrilans,
             harJobbetSomSelvstendigNæringsdrivende: values.harJobbetSomSelvstendigNæringsdrivende,
-            harHattAndreInntektskilder: isArbeidsforholdOgInntektFp(values)
-                ? values.harHattAndreInntektskilder
-                : andreInntektskilder.length > 0,
         };
 
-        if (!isArbeidsforholdOgInntektFp(valuesWithAndreInntekter)) {
-            throw new Error('values er på feil format');
-        }
+        oppdaterArbeidsforholdOgInntekt(arbeidsforholdOgInntektFp);
 
-        oppdaterArbeidsforholdOgInntekt(valuesWithAndreInntekter);
-
-        if (valuesWithAndreInntekter.harHattAndreInntektskilder === false) {
-            oppdaterAndreInntektskilder(undefined);
-        }
-        if (valuesWithAndreInntekter.harJobbetSomFrilans === false) {
+        if (arbeidsforholdOgInntektFp.harJobbetSomFrilans === false) {
             oppdaterFrilans(undefined);
         }
-        if (valuesWithAndreInntekter.harJobbetSomSelvstendigNæringsdrivende === false) {
+        if (arbeidsforholdOgInntektFp.harJobbetSomSelvstendigNæringsdrivende === false) {
             oppdaterEgenNæring(undefined);
         }
 
-        if (valuesWithAndreInntekter.harJobbetSomFrilans) {
+        if (arbeidsforholdOgInntektFp.harJobbetSomFrilans) {
             return navigator.goToStep(SøknadRoutes.FRILANS);
         }
-        if (valuesWithAndreInntekter.harJobbetSomSelvstendigNæringsdrivende) {
+        if (arbeidsforholdOgInntektFp.harJobbetSomSelvstendigNæringsdrivende) {
             return navigator.goToStep(SøknadRoutes.EGEN_NÆRING);
         }
 

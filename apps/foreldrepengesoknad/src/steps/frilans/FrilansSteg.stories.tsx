@@ -28,7 +28,6 @@ const meta = {
                         [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
                             harJobbetSomFrilans: true,
                             harJobbetSomSelvstendigNæringsdrivende: false,
-                            harHattAndreInntektskilder: false,
                         },
                     }}
                 >

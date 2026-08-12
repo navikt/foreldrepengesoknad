@@ -82,7 +82,6 @@ export const ManglendeVedlegg = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG) || {};
-    const arbeidsforholdOgInntekt = useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const andreInntektskilder = useContextGetData(ContextDataType.ANDRE_INNTEKTSKILDER);
     const eksisterendeSaksnummer = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
     const saveVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
@@ -302,13 +301,11 @@ export const ManglendeVedlegg = ({
                         <EtterlønnEllerSluttvederlagDokumentasjon
                             attachments={etterlønnEllerSluttvederlagVedlegg}
                             updateAttachments={updateAttachments}
-                            arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                             andreInntektskilder={andreInntektskilder}
                         />
                         <MilitærEllerSiviltjenesteDokumentasjon
                             attachments={militærEllerSiviltjenesteVedlegg}
                             updateAttachments={updateAttachments}
-                            arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                             andreInntektskilder={andreInntektskilder}
                         />
 

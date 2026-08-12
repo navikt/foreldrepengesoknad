@@ -153,7 +153,7 @@ export const OppsummeringSteg = (props: Props) => {
                 />
                 <AndreInntektskilderOppsummering
                     andreInntektskilder={andreInntektskilder}
-                    onVilEndreSvar={() => navigator.goToStep(SøknadRoutes.ANDRE_INNTEKTER)}
+                    onVilEndreSvar={() => navigator.goToStep(SøknadRoutes.ARBEID_OG_INNTEKT)}
                 />
                 {!erEndringssøknad && (
                     <PeriodeMedForeldrepengerOppsummering

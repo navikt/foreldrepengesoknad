@@ -12,14 +12,14 @@ interface Props {
     onRemove: (index: number) => void;
 }
 
-const getTittelId = (type: AndreInntektskilder['type']) => {
+const getTittel = (intl: ReturnType<typeof useIntl>, type: AndreInntektskilder['type']) => {
     switch (type) {
         case 'JOBB_I_UTLANDET':
-            return 'AndreInntektskilderStep.RadioButton.Utlandet';
+            return intl.formatMessage({ id: 'AndreInntektskilderStep.RadioButton.Utlandet' });
         case 'ETTERLØNN_SLUTTPAKKE':
-            return 'AndreInntektskilderStep.RadioButton.Etterlønn';
+            return intl.formatMessage({ id: 'AndreInntektskilderStep.RadioButton.Etterlønn' });
         case 'MILITÆR_ELLER_SIVILTJENESTE':
-            return 'AndreInntektskilderStep.RadioButton.Førstegangstjeneste';
+            return intl.formatMessage({ id: 'AndreInntektskilderStep.RadioButton.Førstegangstjeneste' });
     }
 };
 
@@ -79,7 +79,7 @@ export const AndreInntektskilderBox = ({ andreInntektskilder, onRemove }: Props)
                 >
                     <VStack gap="space-16">
                         <Heading size="xsmall" level="3">
-                            <FormattedMessage id={getTittelId(inntekt.type)} />
+                            {getTittel(intl, inntekt.type)}
                         </Heading>
                         <Tag
                             className="inline-flex w-max items-center gap-0.5 px-1.5 py-0.5"
@@ -96,7 +96,7 @@ export const AndreInntektskilderBox = ({ andreInntektskilder, onRemove }: Props)
                             data-color="danger"
                             icon={<TrashIcon aria-hidden />}
                             className="self-start"
-                            aria-label={`Fjern ${intl.formatMessage({ id: getTittelId(inntekt.type) })}`}
+                            aria-label={`Fjern ${getTittel(intl, inntekt.type)}`}
                             onClick={() => onRemove(index)}
                         >
                             Fjern

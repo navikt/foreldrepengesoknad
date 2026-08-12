@@ -3,31 +3,24 @@ import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { ArbeidsforholdOgInntektFp, Attachment } from '@navikt/fp-types';
+import { Attachment } from '@navikt/fp-types';
 
 import { VedleggUploader, formaterPerioderForVisning } from '../attachment-uploaders/VedleggUploader';
 
 interface Props {
     attachments: Attachment[];
     updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
-    arbeidsforholdOgInntekt: ArbeidsforholdOgInntektFp | undefined;
     andreInntektskilder?: AndreInntektskilder[];
 }
 
 export const EtterlønnEllerSluttvederlagDokumentasjon = ({
     attachments,
     updateAttachments,
-    arbeidsforholdOgInntekt,
     andreInntektskilder,
 }: Props) => {
     const intl = useIntl();
 
-    if (
-        !arbeidsforholdOgInntekt ||
-        arbeidsforholdOgInntekt.harHattAndreInntektskilder === false ||
-        !andreInntektskilder ||
-        !andreInntektskilder.some((i) => i.type === 'ETTERLØNN_SLUTTPAKKE')
-    ) {
+    if (!andreInntektskilder || !andreInntektskilder.some((i) => i.type === 'ETTERLØNN_SLUTTPAKKE')) {
         return null;
     }
 

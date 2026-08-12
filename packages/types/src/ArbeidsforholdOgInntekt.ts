@@ -8,7 +8,7 @@ export type ArbeidsforholdOgInntektSvp = {
 } & ArbeidsforholdOgInntektFelles;
 
 export type ArbeidsforholdOgInntektFp = {
-    harHattAndreInntektskilder: boolean;
+    harHattArbeidIUtlandet?: never;
 } & ArbeidsforholdOgInntektFelles;
 
 export type ArbeidsforholdOgInntekt = ArbeidsforholdOgInntektSvp | ArbeidsforholdOgInntektFp;
@@ -16,7 +16,7 @@ export type ArbeidsforholdOgInntekt = ArbeidsforholdOgInntektSvp | Arbeidsforhol
 export const isArbeidsforholdOgInntektFp = (
     arbeidsforholdOgInntekt: ArbeidsforholdOgInntekt,
 ): arbeidsforholdOgInntekt is ArbeidsforholdOgInntektFp => {
-    return (arbeidsforholdOgInntekt as ArbeidsforholdOgInntektFp).harHattAndreInntektskilder !== undefined;
+    return !isArbeidsforholdOgInntektSvp(arbeidsforholdOgInntekt);
 };
 
 export const isArbeidsforholdOgInntektSvp = (
