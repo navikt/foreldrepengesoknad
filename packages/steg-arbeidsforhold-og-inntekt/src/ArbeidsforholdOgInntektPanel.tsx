@@ -140,6 +140,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                                 </BodyShort>
                             </ReadMore>
                             <LeggTilAndreInntekterWizard
+                                harRegistrertNæring={selvstendigNæring.length > 0}
                                 onSaveEgenNæring={saveEgenNæring}
                                 onSaveAndreInntekt={(annenInntekt) =>
                                     saveAndreInntektskilder([...ferdigeAndreInntektskilder, annenInntekt])

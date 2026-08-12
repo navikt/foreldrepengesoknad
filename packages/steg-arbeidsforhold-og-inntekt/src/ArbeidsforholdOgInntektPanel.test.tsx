@@ -90,6 +90,20 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
         expect(screen.getByText('Kari Konsulent')).toBeInTheDocument();
     });
 
+    it('skal hoppe over inntektstypesteget når selvstendig næring finnes i registeret', async () => {
+        render(<ForForeldrepengerMedSelvstendigNæring />);
+
+        await screen.findAllByText('Arbeidsforhold og inntekt');
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
+
+        expect(
+            screen.getByRole('radiogroup', {
+                name: 'Hvilken annen type pensjonsgivende inntekt har du hatt de siste 10 månedene?',
+            }),
+        ).toBeInTheDocument();
+        expect(screen.queryByText('Hvilken type inntekt har du hatt?')).not.toBeInTheDocument();
+    });
+
     it('skal ikke vise feilmelding', async () => {
         const saveOnNext = vi.fn();
 

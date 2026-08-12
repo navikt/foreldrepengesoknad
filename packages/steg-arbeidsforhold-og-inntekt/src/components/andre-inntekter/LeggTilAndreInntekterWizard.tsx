@@ -36,6 +36,7 @@ enum Inntektstype {
 }
 
 interface Props {
+    harRegistrertNæring?: boolean;
     onSaveEgenNæring?: (egenNæring: NæringDto) => void;
     onSaveAndreInntekt?: (annenInntekt: AndreInntektskilder) => void;
 }
@@ -46,10 +47,15 @@ interface EgenNæringWizardFormProps {
     onBack: () => void;
 }
 
-export const LeggTilAndreInntekterWizard = ({ onSaveEgenNæring, onSaveAndreInntekt }: Props) => {
+export const LeggTilAndreInntekterWizard = ({
+    harRegistrertNæring = false,
+    onSaveEgenNæring,
+    onSaveAndreInntekt,
+}: Props) => {
     return (
         <div className="rounded-xl border border-dashed border-ax-border-neutral bg-ax-bg-input py-4 px-5">
             <LeggTilAndreInntekterWizardInner
+                harRegistrertNæring={harRegistrertNæring}
                 onSaveEgenNæring={onSaveEgenNæring}
                 onSaveAndreInntekt={onSaveAndreInntekt}
             />
@@ -75,7 +81,11 @@ const EgenNæringWizardForm = ({ onSubmit, onAbort, onBack }: EgenNæringWizardF
     );
 };
 
-const LeggTilAndreInntekterWizardInner = ({ onSaveEgenNæring, onSaveAndreInntekt }: Props) => {
+const LeggTilAndreInntekterWizardInner = ({
+    harRegistrertNæring = false,
+    onSaveEgenNæring,
+    onSaveAndreInntekt,
+}: Props) => {
     const [step, setStep] = useState(WizardStep.START);
     const [inntektstype, setInntektstype] = useState<Inntektstype>();
 
@@ -85,7 +95,11 @@ const LeggTilAndreInntekterWizardInner = ({ onSaveEgenNæring, onSaveAndreInntek
     };
 
     if (step === WizardStep.START) {
-        return <LeggTilAndreInntekterButton onClick={() => setStep(WizardStep.VELG_INNTEKTSTYPE)} />;
+        return (
+            <LeggTilAndreInntekterButton
+                onClick={() => setStep(harRegistrertNæring ? WizardStep.ANNEN_INNTEKT : WizardStep.VELG_INNTEKTSTYPE)}
+            />
+        );
     }
 
     if (step === WizardStep.VELG_INNTEKTSTYPE) {
@@ -146,7 +160,7 @@ const LeggTilAndreInntekterWizardInner = ({ onSaveEgenNæring, onSaveAndreInntek
         return (
             <AnnenInntektForm
                 onAbort={avsluttWizard}
-                onBack={() => setStep(WizardStep.VELG_INNTEKTSTYPE)}
+                onBack={harRegistrertNæring ? undefined : () => setStep(WizardStep.VELG_INNTEKTSTYPE)}
                 onSubmit={(annenInntekt) => {
                     onSaveAndreInntekt?.(annenInntekt);
                     avsluttWizard();
@@ -359,7 +373,7 @@ const EgenBåtInntekt = (props: FiskerNæringProps) => {
 
 interface AnnenInntektFormProps {
     onAbort: () => void;
-    onBack: () => void;
+    onBack?: () => void;
     onSubmit: (annenInntekt: AndreInntektskilder) => void;
 }
 

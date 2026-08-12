@@ -12,6 +12,7 @@ import { AnnenInntektType } from '../../types/AndreInntektskilder';
 import { LeggTilAndreInntekterWizard } from './LeggTilAndreInntekterWizard';
 
 interface RenderWizardProps {
+    harRegistrertNæring?: ComponentProps<typeof LeggTilAndreInntekterWizard>['harRegistrertNæring'];
     onSaveAndreInntekt?: ComponentProps<typeof LeggTilAndreInntekterWizard>['onSaveAndreInntekt'];
     onSaveEgenNæring?: ComponentProps<typeof LeggTilAndreInntekterWizard>['onSaveEgenNæring'];
 }
@@ -126,6 +127,26 @@ describe('<LeggTilAndreInntekterWizard>', () => {
             fom: '2024-01-01',
             tom: '2024-01-31',
         });
+        expect(screen.getByRole('button', { name: 'Legg til inntekt' })).toBeInTheDocument();
+    });
+
+    it('skal gå direkte til annen pensjonsgivende inntekt når næring finnes i registeret', async () => {
+        renderWizard({ harRegistrertNæring: true });
+
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
+
+        expect(
+            screen.getByRole('radiogroup', {
+                name: 'Hvilken annen type pensjonsgivende inntekt har du hatt de siste 10 månedene?',
+            }),
+        ).toBeInTheDocument();
+        expect(screen.queryByText('Hvilken type inntekt har du hatt?')).not.toBeInTheDocument();
+        expect(screen.queryByRole('radio', { name: /ektefelles næring/ })).not.toBeInTheDocument();
+        expect(screen.queryByRole('radio', { name: /fisker eller mannskap/ })).not.toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: 'Tilbake' })).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Avbryt' }));
+
         expect(screen.getByRole('button', { name: 'Legg til inntekt' })).toBeInTheDocument();
     });
 
