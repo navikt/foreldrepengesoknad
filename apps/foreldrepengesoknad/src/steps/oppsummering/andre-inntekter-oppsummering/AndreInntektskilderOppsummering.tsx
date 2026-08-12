@@ -91,7 +91,7 @@ export const AndreInntektskilderOppsummering = ({ andreInntektskilder, onVilEndr
                                                         <FormattedMessage id="JobbIUtlandetPanel.Tom" />
                                                     </FormSummary.Label>
                                                     <FormSummary.Value>
-                                                        {formatDate(annenInntektskilde.tom)}
+                                                        {annenInntektskilde.tom && formatDate(annenInntektskilde.tom)}
                                                     </FormSummary.Value>
                                                 </FormSummary.Answer>
                                             )}
@@ -112,7 +112,7 @@ export const AndreInntektskilderOppsummering = ({ andreInntektskilder, onVilEndr
                                                     <FormattedMessage id="EtterlønnEllerSluttvederlagPanel.Tom" />
                                                 </FormSummary.Label>
                                                 <FormSummary.Value>
-                                                    {formatDate(annenInntektskilde.tom)}
+                                                    {annenInntektskilde.tom && formatDate(annenInntektskilde.tom)}
                                                 </FormSummary.Value>
                                             </FormSummary.Answer>
                                         </>
@@ -143,7 +143,7 @@ export const AndreInntektskilderOppsummering = ({ andreInntektskilder, onVilEndr
                                                         <FormattedMessage id="JobbIUtlandetPanel.Tom" />
                                                     </FormSummary.Label>
                                                     <FormSummary.Value>
-                                                        {formatDate(annenInntektskilde.tom)}
+                                                        {annenInntektskilde.tom && formatDate(annenInntektskilde.tom)}
                                                     </FormSummary.Value>
                                                 </FormSummary.Answer>
                                             )}
