@@ -80,6 +80,7 @@ interface Props<TYPE> {
 interface EgenNæringFormProps {
     egenNæring?: NæringDto;
     fixedNæringstype?: NæringDto['næringstype'];
+    fixedRegistrertINorge?: boolean;
     onSubmit: (formValues: NæringDto) => void;
     appOrigin: AppName;
     children?: ReactNode;
@@ -92,6 +93,7 @@ export const EGEN_NÆRING_ID = 'naering';
 export const EgenNæringForm = ({
     egenNæring,
     fixedNæringstype,
+    fixedRegistrertINorge,
     onSubmit,
     appOrigin,
     children,
@@ -111,6 +113,7 @@ export const EgenNæringForm = ({
         defaultValues: {
             ...egenNæring,
             næringstype: fixedNæringstype ?? egenNæring?.næringstype,
+            registrertINorge: fixedRegistrertINorge ?? egenNæring?.registrertINorge,
             pågående: egenNæringDefaultValue,
         },
     });
@@ -186,26 +189,36 @@ export const EgenNæringForm = ({
                 ]}
                 shouldReplaceInvisibleChars
             />
-            <RhfRadioGroup
-                name="registrertINorge"
-                control={formMethods.control}
-                label={intl.formatMessage(
-                    { id: 'egenNæring.erNæringenRegistrertINorge' },
-                    {
-                        navnPåNæringen: navnPåNæring,
-                    },
-                )}
-                validate={[
-                    isRequired(intl.formatMessage({ id: 'valideringsfeil.egenNæringRegistrertINorge.påkrevd' })),
-                ]}
-            >
-                <Radio value={true}>
-                    <FormattedMessage id="ja" />
-                </Radio>
-                <Radio value={false}>
-                    <FormattedMessage id="nei" />
-                </Radio>
-            </RhfRadioGroup>
+            {fixedRegistrertINorge !== undefined ? (
+                <input
+                    type="hidden"
+                    value={String(fixedRegistrertINorge)}
+                    {...formMethods.register('registrertINorge', {
+                        setValueAs: (value) => value === true || value === 'true',
+                    })}
+                />
+            ) : (
+                <RhfRadioGroup
+                    name="registrertINorge"
+                    control={formMethods.control}
+                    label={intl.formatMessage(
+                        { id: 'egenNæring.erNæringenRegistrertINorge' },
+                        {
+                            navnPåNæringen: navnPåNæring,
+                        },
+                    )}
+                    validate={[
+                        isRequired(intl.formatMessage({ id: 'valideringsfeil.egenNæringRegistrertINorge.påkrevd' })),
+                    ]}
+                >
+                    <Radio value={true}>
+                        <FormattedMessage id="ja" />
+                    </Radio>
+                    <Radio value={false}>
+                        <FormattedMessage id="nei" />
+                    </Radio>
+                </RhfRadioGroup>
+            )}
             <OrgnummerEllerLand orgNummerErValgfritt={næringsType === 'FISKE'} registrertINorge={registrertINorge} />
             <RhfDatepicker
                 name="fom"

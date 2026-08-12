@@ -114,6 +114,9 @@ describe('<LeggTilAndreInntekterWizard>', () => {
         await userEvent.click(screen.getByRole('button', { name: 'Neste' }));
         await userEvent.click(screen.getByRole('radio', { name: 'Etterlønn eller sluttvederlag' }));
 
+        expect(screen.queryByLabelText('Perioden den gjelder fra')).not.toBeInTheDocument();
+        await userEvent.click(screen.getByRole('button', { name: 'Neste' }));
+
         await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
         expect(onSaveAndreInntekt).not.toHaveBeenCalled();
         expect(screen.getAllByText('Du må oppgi perioden den gjelder fra').length).toBeGreaterThan(0);
@@ -147,6 +150,61 @@ describe('<LeggTilAndreInntekterWizard>', () => {
 
         await userEvent.click(screen.getByRole('button', { name: 'Avbryt' }));
 
+        expect(screen.getByRole('button', { name: 'Legg til inntekt' })).toBeInTheDocument();
+    });
+
+    it('skal vise skjema for næring i utlandet', async () => {
+        const onSaveEgenNæring = vi.fn();
+        renderWizard({ harRegistrertNæring: true, onSaveEgenNæring });
+
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
+
+        const inntektstyper = screen.getAllByRole('radio');
+        expect(inntektstyper.map((radio) => radio.nextElementSibling?.textContent)).toEqual([
+            'Jobb i utlandet',
+            'Næring i utlandet',
+            'Etterlønn eller sluttvederlag',
+            'Førstegangstjeneste',
+        ]);
+
+        await userEvent.click(screen.getByRole('radio', { name: 'Næring i utlandet' }));
+
+        expect(screen.queryByText('I hvilket land er virksomheten din registrert i?')).not.toBeInTheDocument();
+        await userEvent.click(screen.getByRole('button', { name: 'Neste' }));
+
+        expect(screen.queryByText('Er virksomheten registrert i Norge?')).not.toBeInTheDocument();
+        expect(screen.getByText('I hvilket land er virksomheten din registrert i?')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Tilbake' })).toBeInTheDocument();
+
+        await userEvent.click(screen.getByRole('radio', { name: 'Annen type virksomhet' }));
+        await userEvent.type(screen.getByLabelText('Hva heter virksomheten?'), 'Svensk virksomhet');
+        await userEvent.selectOptions(screen.getByLabelText('I hvilket land er virksomheten din registrert i?'), 'SE');
+        await userEvent.type(screen.getByLabelText('Når startet du virksomheten?'), '30.04.2023');
+        await userEvent.click(
+            within(screen.getByRole('radiogroup', { name: 'Jobber du der fortsatt?' })).getByRole('radio', {
+                name: 'Ja',
+            }),
+        );
+        await userEvent.type(
+            screen.getByLabelText('Hva har du hatt i næringsresultat før skatt de siste 12 månedene?'),
+            '1000',
+        );
+        await userEvent.click(
+            within(
+                screen.getByRole('radiogroup', {
+                    name: 'Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?',
+                }),
+            ).getByRole('radio', { name: 'Nei' }),
+        );
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
+
+        expect(onSaveEgenNæring).toHaveBeenCalledWith(
+            expect.objectContaining({
+                næringstype: 'ANNEN',
+                registrertINorge: false,
+                registrertILand: 'SE',
+            }),
+        );
         expect(screen.getByRole('button', { name: 'Legg til inntekt' })).toBeInTheDocument();
     });
 

@@ -54,6 +54,48 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         );
     });
 
+    it('skal låse registrering til utlandet i plugin-varianten', async () => {
+        const onSubmit = vi.fn();
+
+        render(
+            <IntlProvider locale="nb" messages={{ ...formHookMessages.nb, ...nbMessages }}>
+                <EgenNæringForm
+                    fixedRegistrertINorge={false}
+                    egenNæring={{
+                        fom: '2023-04-30',
+                        harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
+                        navnPåNæringen: 'Utenlandsk virksomhet',
+                        næringsinntekt: 1000,
+                        næringstype: 'ANNEN',
+                        organisasjonsnummer: '997519485',
+                        registrertILand: 'SE',
+                        registrertINorge: true,
+                    }}
+                    appOrigin="foreldrepengesoknad"
+                    onSubmit={onSubmit}
+                    withoutFormElement
+                    renderActions={(submitForm) => (
+                        <Button type="button" onClick={() => void submitForm()}>
+                            Legg til
+                        </Button>
+                    )}
+                />
+            </IntlProvider>,
+        );
+
+        expect(screen.queryByText('Er virksomheten registrert i Norge?')).not.toBeInTheDocument();
+        expect(screen.getByText('I hvilket land er virksomheten din registrert i?')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
+
+        expect(onSubmit).toHaveBeenCalledWith(
+            expect.objectContaining({
+                registrertILand: 'SE',
+                registrertINorge: false,
+            }),
+        );
+    });
+
     it('skal vise feilmelding når ingenting er fylt eller huket av', async () => {
         render(<Default />);
 

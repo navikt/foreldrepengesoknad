@@ -4,10 +4,9 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { Heading, InfoCard, Label, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm } from '@navikt/fp-form-hooks';
 import { EgenNæringForm } from '@navikt/fp-steg-egen-naering';
 import type { NæringDto } from '@navikt/fp-types';
-import { isRequired } from '@navikt/fp-validation';
 
 import {
     AndreInntekterFormValues,
@@ -163,6 +162,10 @@ const LeggTilAndreInntekterWizardInner = ({
                 onBack={harRegistrertNæring ? undefined : () => setStep(WizardStep.VELG_INNTEKTSTYPE)}
                 onSubmit={(annenInntekt) => {
                     onSaveAndreInntekt?.(annenInntekt);
+                    avsluttWizard();
+                }}
+                onSubmitEgenNæring={(egenNæring) => {
+                    onSaveEgenNæring?.(egenNæring);
                     avsluttWizard();
                 }}
             />
@@ -375,14 +378,29 @@ interface AnnenInntektFormProps {
     onAbort: () => void;
     onBack?: () => void;
     onSubmit: (annenInntekt: AndreInntektskilder) => void;
+    onSubmitEgenNæring: (egenNæring: NæringDto) => void;
 }
 
-const AnnenInntektForm = ({ onAbort, onBack, onSubmit }: AnnenInntektFormProps) => {
+type AnnenInntektValg = AnnenInntektType | 'NÆRING_I_UTLANDET';
+
+enum AnnenInntektStep {
+    VELG_INNTEKTSTYPE,
+    FYLL_UT_INNTEKT,
+}
+
+const AnnenInntektForm = ({ onAbort, onBack, onSubmit, onSubmitEgenNæring }: AnnenInntektFormProps) => {
+    const [valgtInntektstype, setValgtInntektstype] = useState<AnnenInntektValg>();
+    const [step, setStep] = useState(AnnenInntektStep.VELG_INNTEKTSTYPE);
     const formMethods = useForm<AndreInntekterFormValues>({
         defaultValues: { andreInntektskilder: [{ type: undefined }] },
         shouldUnregister: true,
     });
     const inntektskilde = formMethods.watch('andreInntektskilder.0') ?? { type: undefined };
+
+    const velgInntektstype = (type: AnnenInntektValg) => {
+        setValgtInntektstype(type);
+        formMethods.setValue('andreInntektskilder.0', type === 'NÆRING_I_UTLANDET' ? { type: undefined } : { type });
+    };
 
     const submitForm = formMethods.handleSubmit((values) => {
         const ferdigInntektskilde = values.andreInntektskilder.find(erFerdigUtfylt);
@@ -391,6 +409,33 @@ const AnnenInntektForm = ({ onAbort, onBack, onSubmit }: AnnenInntektFormProps) 
         }
     });
 
+    if (step === AnnenInntektStep.VELG_INNTEKTSTYPE) {
+        return (
+            <VStack gap="space-40">
+                <Heading level="2" size="small">
+                    Legg til inntektskilde
+                </Heading>
+                <RadioGroup
+                    legend="Hvilken annen type pensjonsgivende inntekt har du hatt de siste 10 månedene?"
+                    value={valgtInntektstype ?? ''}
+                    onChange={velgInntektstype}
+                >
+                    <Radio value={AnnenInntektType.JOBB_I_UTLANDET}>Jobb i utlandet</Radio>
+                    <Radio value="NÆRING_I_UTLANDET">Næring i utlandet</Radio>
+                    <Radio value={AnnenInntektType.SLUTTPAKKE}>Etterlønn eller sluttvederlag</Radio>
+                    <Radio value={AnnenInntektType.MILITÆRTJENESTE}>Førstegangstjeneste</Radio>
+                </RadioGroup>
+                <WizardNavigator
+                    isLastStep={false}
+                    isNextDisabled={!valgtInntektstype}
+                    onCancel={onAbort}
+                    onBack={onBack}
+                    onNext={() => setStep(AnnenInntektStep.FYLL_UT_INNTEKT)}
+                />
+            </VStack>
+        );
+    }
+
     return (
         <FormProvider {...formMethods}>
             <VStack gap="space-40">
@@ -398,16 +443,22 @@ const AnnenInntektForm = ({ onAbort, onBack, onSubmit }: AnnenInntektFormProps) 
                     Legg til inntektskilde
                 </Heading>
                 <ErrorSummaryHookForm />
-                <RhfRadioGroup
-                    name="andreInntektskilder.0.type"
-                    control={formMethods.control}
-                    label="Hvilken annen type pensjonsgivende inntekt har du hatt de siste 10 månedene?"
-                    validate={[isRequired('Du må velge hvilken type pensjonsgivende inntekt du har hatt.')]}
-                >
-                    <Radio value={AnnenInntektType.JOBB_I_UTLANDET}>Jobb i utlandet</Radio>
-                    <Radio value={AnnenInntektType.SLUTTPAKKE}>Etterlønn eller sluttvederlag</Radio>
-                    <Radio value={AnnenInntektType.MILITÆRTJENESTE}>Førstegangstjeneste</Radio>
-                </RhfRadioGroup>
+                {valgtInntektstype === 'NÆRING_I_UTLANDET' && (
+                    <EgenNæringForm
+                        fixedRegistrertINorge={false}
+                        appOrigin="foreldrepengesoknad"
+                        onSubmit={onSubmitEgenNæring}
+                        withoutFormElement
+                        renderActions={(submitEgenNæring) => (
+                            <WizardNavigator
+                                isLastStep
+                                onCancel={onAbort}
+                                onBack={() => setStep(AnnenInntektStep.VELG_INNTEKTSTYPE)}
+                                onNext={() => submitEgenNæring()}
+                            />
+                        )}
+                    />
+                )}
                 {inntektskilde.type === AnnenInntektType.JOBB_I_UTLANDET && (
                     <JobbIUtlandetPanel index={0} inntektskilde={inntektskilde} />
                 )}
@@ -417,13 +468,15 @@ const AnnenInntektForm = ({ onAbort, onBack, onSubmit }: AnnenInntektFormProps) 
                 {inntektskilde.type === AnnenInntektType.MILITÆRTJENESTE && (
                     <FørstegangstjenestePanel index={0} inntektskilde={inntektskilde} />
                 )}
-                <WizardNavigator
-                    isLastStep
-                    isNextDisabled={!inntektskilde.type}
-                    onCancel={onAbort}
-                    onBack={onBack}
-                    onNext={submitForm}
-                />
+                {valgtInntektstype !== 'NÆRING_I_UTLANDET' && (
+                    <WizardNavigator
+                        isLastStep
+                        isNextDisabled={!inntektskilde.type}
+                        onCancel={onAbort}
+                        onBack={() => setStep(AnnenInntektStep.VELG_INNTEKTSTYPE)}
+                        onNext={submitForm}
+                    />
+                )}
             </VStack>
         </FormProvider>
     );
