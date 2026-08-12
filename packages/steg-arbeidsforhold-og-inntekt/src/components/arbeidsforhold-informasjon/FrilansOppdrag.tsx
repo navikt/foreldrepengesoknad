@@ -24,7 +24,7 @@ export const FrilansOppdrag = ({ frilansoppdrag }: Props) => {
             >
                 <VStack gap="space-16">
                     <Heading size="xsmall" level="3">
-                        Mine frilansoppdrag
+                        Mine frilansoppdrag TODO
                     </Heading>
                     <Tag
                         className="inline-flex w-max items-center gap-0.5 px-1.5 py-0.5"
