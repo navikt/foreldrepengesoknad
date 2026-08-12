@@ -4,7 +4,7 @@ import { API_URLS } from 'api/queries';
 import ky, { ResponsePromise } from 'ky';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
-import { SluttpakkeInntekt } from 'types/AndreInntektskilder';
+import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { AnnenForelder } from 'types/AnnenForelder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
@@ -123,7 +123,7 @@ const ANDRE_INNTEKTSKILDER = [
         type: 'ETTERLØNN_SLUTTPAKKE',
         fom: '2023-01-01',
         tom: '2024-01-01',
-    } satisfies SluttpakkeInntekt,
+    } satisfies AndreInntektskilder,
 ];
 
 const VEDLEGG = {
