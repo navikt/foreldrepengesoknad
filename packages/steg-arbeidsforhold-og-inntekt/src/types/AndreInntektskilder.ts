@@ -28,13 +28,30 @@ interface JobbIUtlandetInntekt extends AnnenInntektBase {
 
 export type AndreInntektskilder = SluttpakkeInntekt | MilitærtjenesteInntekt | JobbIUtlandetInntekt;
 
-type InntektskildeUtkast<T extends AndreInntektskilder> = Pick<T, 'type'> & Partial<Omit<T, 'type'>>;
+export interface SluttpakkeInntektUtkast {
+    type: 'ETTERLØNN_SLUTTPAKKE';
+    fom?: string;
+    tom?: string;
+}
+
+export interface MilitærtjenesteInntektUtkast {
+    type: 'MILITÆR_ELLER_SIVILTJENESTE';
+    fom?: string;
+    pågående?: boolean;
+    tom?: string;
+}
+
+export interface JobbIUtlandetInntektUtkast {
+    type: 'JOBB_I_UTLANDET';
+    arbeidsgiverNavn?: string;
+    land?: CountryCode;
+    fom?: string;
+    pågående?: boolean;
+    tom?: string;
+}
 
 export type AndreInntektskilderUtkast =
-    | InntektskildeUtkast<SluttpakkeInntekt>
-    | InntektskildeUtkast<MilitærtjenesteInntekt>
-    | InntektskildeUtkast<JobbIUtlandetInntekt>
-    | { type: undefined };
+    SluttpakkeInntektUtkast | MilitærtjenesteInntektUtkast | JobbIUtlandetInntektUtkast | { type: undefined };
 
 export type AndreInntekterFormValues = {
     andreInntektskilder: AndreInntektskilderUtkast[];

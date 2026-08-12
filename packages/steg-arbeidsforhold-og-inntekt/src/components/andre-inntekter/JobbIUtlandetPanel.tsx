@@ -8,11 +8,11 @@ import { RhfDatepicker, RhfRadioGroup, RhfSelect, RhfTextField } from '@navikt/f
 import { createCountryOptions } from '@navikt/fp-utils';
 import { hasMaxLength, isBeforeOrSame, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
-import { AndreInntekterFormValues, AndreInntektskilderUtkast } from '../../types/AndreInntektskilder';
+import { AndreInntekterFormValues, JobbIUtlandetInntektUtkast } from '../../types/AndreInntektskilder';
 
 interface Props {
     index: number;
-    inntektskilde: Extract<AndreInntektskilderUtkast, { type: 'JOBB_I_UTLANDET' }>;
+    inntektskilde: JobbIUtlandetInntektUtkast;
 }
 
 export const JobbIUtlandetPanel = ({ index, inntektskilde }: Props) => {
