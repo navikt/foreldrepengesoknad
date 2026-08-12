@@ -17,6 +17,7 @@ export const FarFellesperiode = ({ erFarOgFar }: Props) => {
     const intl = useIntl();
 
     const {
+        barn,
         familiesituasjon,
         foreldreInfo: { rettighetType, søker, erMedmorDelAvSøknaden },
     } = useUttaksplanData();
@@ -65,6 +66,14 @@ export const FarFellesperiode = ({ erFarOgFar }: Props) => {
                                 }}
                             />
                         </BodyLong>
+                        {barn.antallBarn > 1 && (
+                            <BodyLong>
+                                <FormattedMessage
+                                    id="HvaErMulig.FarFellesperiode.Flerbarnsdager.Adopsjon"
+                                    values={{ erMedmor, erFedre: erFarOgFar }}
+                                />
+                            </BodyLong>
+                        )}
                     </>
                 ) : (
                     <>
@@ -87,6 +96,11 @@ export const FarFellesperiode = ({ erFarOgFar }: Props) => {
                                 }}
                             />
                         </BodyLong>
+                        {barn.antallBarn > 1 && (
+                            <BodyLong>
+                                <FormattedMessage id="HvaErMulig.FarFellesperiode.Flerbarnsdager" values={{ erMedmor }} />
+                            </BodyLong>
+                        )}
                     </>
                 )}
             </div>
