@@ -44,22 +44,20 @@ export const FarFellesperiode = ({ hvemPlanlegger, barnet }: Props) => {
                             />
                         </Heading>
                         <BodyLong>
-                            <FormattedMessage
-                                id="HvaErMulig.FarFellesperiode.Tekst.Adopsjon"
-                                values={{
-                                    hvem: capitalizeFirstLetter(finnSøker1Tekst(intl, hvemPlanlegger)),
-                                    erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
-                                    erFar: finnSøker2Tekst(intl, hvemPlanlegger),
-                                    erMedmor,
-                                    erFedre,
-                                    erAdopsjon,
-                                }}
-                            />
-                            {barnet.antallBarn !== '1' && !erMedmor && !erFedre && (
-                                <>
-                                    {' '}
-                                    <FormattedMessage id="HvaErMulig.FarFellesperiode.Flerbarnsdager" />
-                                </>
+                            {barnet.antallBarn !== '1' && !erMedmor && !erFedre ? (
+                                <FormattedMessage id="HvaErMulig.FarFellesperiode.TekstMorOgFarFlerbarnsdager" />
+                            ) : (
+                                <FormattedMessage
+                                    id="HvaErMulig.FarFellesperiode.Tekst.Adopsjon"
+                                    values={{
+                                        hvem: capitalizeFirstLetter(finnSøker1Tekst(intl, hvemPlanlegger)),
+                                        erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
+                                        erFar: finnSøker2Tekst(intl, hvemPlanlegger),
+                                        erMedmor,
+                                        erFedre,
+                                        erAdopsjon,
+                                    }}
+                                />
                             )}
                         </BodyLong>
                     </>
@@ -72,22 +70,20 @@ export const FarFellesperiode = ({ hvemPlanlegger, barnet }: Props) => {
                             />
                         </Heading>
                         <BodyLong>
-                            <FormattedMessage
-                                id="HvaErMulig.FarFellesperiode.Tekst"
-                                values={{
-                                    hvem: capitalizeFirstLetter(finnSøker1Tekst(intl, hvemPlanlegger)),
-                                    erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
-                                    erFar: finnSøker2Tekst(intl, hvemPlanlegger),
-                                    erMedmor,
-                                    erFedre,
-                                    erAdopsjon,
-                                }}
-                            />
-                            {barnet.antallBarn !== '1' && !erMedmor && !erFedre && (
-                                <>
-                                    {' '}
-                                    <FormattedMessage id="HvaErMulig.FarFellesperiode.Flerbarnsdager" />
-                                </>
+                            {barnet.antallBarn !== '1' && !erMedmor && !erFedre ? (
+                                <FormattedMessage id="HvaErMulig.FarFellesperiode.TekstMorOgFarFlerbarnsdager" />
+                            ) : (
+                                <FormattedMessage
+                                    id="HvaErMulig.FarFellesperiode.Tekst"
+                                    values={{
+                                        hvem: capitalizeFirstLetter(finnSøker1Tekst(intl, hvemPlanlegger)),
+                                        erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
+                                        erFar: finnSøker2Tekst(intl, hvemPlanlegger),
+                                        erMedmor,
+                                        erFedre,
+                                        erAdopsjon,
+                                    }}
+                                />
                             )}
                         </BodyLong>
                     </>

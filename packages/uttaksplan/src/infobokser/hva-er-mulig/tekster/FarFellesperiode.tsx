@@ -54,22 +54,20 @@ export const FarFellesperiode = ({ erFarOgFar }: Props) => {
                             />
                         </Heading>
                         <BodyLong>
-                            <FormattedMessage
-                                id="HvaErMulig.FarFellesperiode.Tekst.Adopsjon"
-                                values={{
-                                    hvem: morEllerFarTekst ? capitalizeFirstLetter(morEllerFarTekst) : '',
-                                    erMorHovedsøker: erMorDelAvSøknaden,
-                                    erFar: medmorEllerFarTekst,
-                                    erMedmor,
-                                    erFedre: erFarOgFar,
-                                    erAdopsjon,
-                                }}
-                            />
-                            {barn.antallBarn > 1 && !erMedmor && !erFarOgFar && (
-                                <>
-                                    {' '}
-                                    <FormattedMessage id="HvaErMulig.FarFellesperiode.Flerbarnsdager" />
-                                </>
+                            {barn.antallBarn > 1 && !erMedmor && !erFarOgFar ? (
+                                <FormattedMessage id="HvaErMulig.FarFellesperiode.TekstMorOgFarFlerbarnsdager" />
+                            ) : (
+                                <FormattedMessage
+                                    id="HvaErMulig.FarFellesperiode.Tekst.Adopsjon"
+                                    values={{
+                                        hvem: morEllerFarTekst ? capitalizeFirstLetter(morEllerFarTekst) : '',
+                                        erMorHovedsøker: erMorDelAvSøknaden,
+                                        erFar: medmorEllerFarTekst,
+                                        erMedmor,
+                                        erFedre: erFarOgFar,
+                                        erAdopsjon,
+                                    }}
+                                />
                             )}
                         </BodyLong>
                     </>
@@ -82,22 +80,20 @@ export const FarFellesperiode = ({ erFarOgFar }: Props) => {
                             />
                         </Heading>
                         <BodyLong>
-                            <FormattedMessage
-                                id="HvaErMulig.FarFellesperiode.Tekst"
-                                values={{
-                                    hvem: morEllerFarTekst ? capitalizeFirstLetter(morEllerFarTekst) : '',
-                                    erMorHovedsøker: erMorDelAvSøknaden,
-                                    erFar: medmorEllerFarTekst,
-                                    erMedmor,
-                                    erFedre: erFarOgFar,
-                                    erAdopsjon,
-                                }}
-                            />
-                            {barn.antallBarn > 1 && !erMedmor && !erFarOgFar && (
-                                <>
-                                    {' '}
-                                    <FormattedMessage id="HvaErMulig.FarFellesperiode.Flerbarnsdager" />
-                                </>
+                            {barn.antallBarn > 1 && !erMedmor && !erFarOgFar ? (
+                                <FormattedMessage id="HvaErMulig.FarFellesperiode.TekstMorOgFarFlerbarnsdager" />
+                            ) : (
+                                <FormattedMessage
+                                    id="HvaErMulig.FarFellesperiode.Tekst"
+                                    values={{
+                                        hvem: morEllerFarTekst ? capitalizeFirstLetter(morEllerFarTekst) : '',
+                                        erMorHovedsøker: erMorDelAvSøknaden,
+                                        erFar: medmorEllerFarTekst,
+                                        erMedmor,
+                                        erFedre: erFarOgFar,
+                                        erAdopsjon,
+                                    }}
+                                />
                             )}
                         </BodyLong>
                     </>
