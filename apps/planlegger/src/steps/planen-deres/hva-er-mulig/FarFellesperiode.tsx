@@ -56,12 +56,9 @@ export const FarFellesperiode = ({ hvemPlanlegger, barnet }: Props) => {
                                 }}
                             />
                         </BodyLong>
-                        {barnet.antallBarn !== '1' && (
+                        {barnet.antallBarn !== '1' && !erMedmor && !erFedre && (
                             <BodyLong>
-                                <FormattedMessage
-                                    id="HvaErMulig.FarFellesperiode.Flerbarnsdager.Adopsjon"
-                                    values={{ erMedmor, erFedre }}
-                                />
+                                <FormattedMessage id="HvaErMulig.FarFellesperiode.Flerbarnsdager" />
                             </BodyLong>
                         )}
                     </>
@@ -86,9 +83,9 @@ export const FarFellesperiode = ({ hvemPlanlegger, barnet }: Props) => {
                                 }}
                             />
                         </BodyLong>
-                        {barnet.antallBarn !== '1' && (
+                        {barnet.antallBarn !== '1' && !erMedmor && !erFedre && (
                             <BodyLong>
-                                <FormattedMessage id="HvaErMulig.FarFellesperiode.Flerbarnsdager" values={{ erMedmor }} />
+                                <FormattedMessage id="HvaErMulig.FarFellesperiode.Flerbarnsdager" />
                             </BodyLong>
                         )}
                     </>
