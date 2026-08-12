@@ -66,14 +66,20 @@ const meta = {
     component: ArbeidsforholdOgInntektPanel,
     render: (args) => {
         const [andreInntektskilder, setAndreInntektskilder] = useState(args.andreInntektskilder);
+        const [egenNæring, setEgenNæring] = useState(args.egenNæring);
 
         return (
             <ArbeidsforholdOgInntektPanel
                 {...args}
                 andreInntektskilder={andreInntektskilder}
+                egenNæring={egenNæring}
                 saveAndreInntektskilder={(values) => {
                     setAndreInntektskilder(values);
                     args.saveAndreInntektskilder(values);
+                }}
+                saveEgenNæring={(value) => {
+                    setEgenNæring(value);
+                    args.saveEgenNæring?.(value);
                 }}
             />
         );

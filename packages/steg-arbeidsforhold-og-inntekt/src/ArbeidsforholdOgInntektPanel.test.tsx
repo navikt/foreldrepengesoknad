@@ -2,6 +2,8 @@ import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import type { NæringDto } from '@navikt/fp-types';
+
 import * as stories from './ArbeidsforholdOgInntektPanel.stories';
 
 const {
@@ -10,6 +12,16 @@ const {
     ForForeldrepengerMedAndreInntekter,
     ForForeldrepengerMedSelvstendigNæring,
 } = composeStories(stories);
+
+const manueltLagtTilNæring = {
+    navnPåNæringen: 'Fiskebåten',
+    næringstype: 'FISKE',
+    fom: '2023-01-01',
+    næringsinntekt: 1000,
+    registrertINorge: true,
+    organisasjonsnummer: '998877665',
+    harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
+} satisfies NæringDto;
 
 describe('<ArbeidsforholdOgInntektPanel>', () => {
     it('skal vise feilmelding hvis spørsmål ikke er besvart', async () => {
@@ -99,6 +111,27 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
         expect(await screen.findAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
         expect(screen.getByText('Arbeid som selvstendig næringsdrivende')).toBeInTheDocument();
         expect(screen.getByText('Kari Konsulent')).toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: /Fjern Kari Konsulent/ })).not.toBeInTheDocument();
+    });
+
+    it('skal fjerne manuelt lagt til egen næring fra context', async () => {
+        const saveEgenNæring = vi.fn();
+        render(<ForForeldrepenger egenNæring={manueltLagtTilNæring} saveEgenNæring={saveEgenNæring} />);
+
+        await screen.findAllByText('Arbeidsforhold og inntekt');
+        await userEvent.click(screen.getByRole('button', { name: 'Fjern Fiskebåten' }));
+
+        expect(saveEgenNæring).toHaveBeenCalledWith(undefined);
+        expect(screen.queryByRole('heading', { name: 'Fiskebåten' })).not.toBeInTheDocument();
+    });
+
+    it('skal ikke kunne fjerne egen næring når den kommer fra registeret', async () => {
+        render(<ForForeldrepengerMedSelvstendigNæring egenNæring={manueltLagtTilNæring} />);
+
+        await screen.findAllByText('Arbeidsforhold og inntekt');
+
+        expect(screen.queryByRole('button', { name: /Fjern/ })).not.toBeInTheDocument();
+        expect(screen.queryByRole('heading', { name: 'Fiskebåten' })).not.toBeInTheDocument();
     });
 
     it('skal hoppe over inntektstypesteget når selvstendig næring finnes i registeret', async () => {

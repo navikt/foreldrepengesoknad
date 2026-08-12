@@ -23,10 +23,11 @@ interface Props<TYPE> {
     aktiveArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     frilansoppdrag: EksternArbeidsforholdDto_fpoversikt[];
     selvstendigNæring: EksternArbeidsforholdDto_fpoversikt[];
+    egenNæring?: NæringDto;
     andreInntektskilder: AndreInntektskilderUtkast[];
     saveOnNext: (formValues: ArbeidsforholdOgInntekt) => void;
     saveAndreInntektskilder: (values: AndreInntektskilder[]) => void;
-    saveEgenNæring?: (value: NæringDto) => void;
+    saveEgenNæring?: (value?: NæringDto) => void;
     onAvsluttOgSlett: () => void;
     onFortsettSenere?: () => void;
     onStepChange?: (id: TYPE) => void;
@@ -40,6 +41,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
     aktiveArbeidsforhold,
     frilansoppdrag,
     selvstendigNæring,
+    egenNæring,
     andreInntektskilder,
     saveOnNext,
     saveAndreInntektskilder,
@@ -91,12 +93,14 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                             arbeidsforhold={aktiveArbeidsforhold}
                             frilansoppdrag={frilansoppdrag}
                             selvstendigNæring={selvstendigNæring}
+                            egenNæring={selvstendigNæring.length === 0 ? egenNæring : undefined}
                             andreInntektskilder={ferdigeAndreInntektskilder}
                             onRemoveAndreInntekt={(index) =>
                                 saveAndreInntektskilder(
                                     ferdigeAndreInntektskilder.filter((_, currentIndex) => currentIndex !== index),
                                 )
                             }
+                            onRemoveEgenNæring={() => saveEgenNæring?.(undefined)}
                         />
                     </VStack>
                     {erSvp && (

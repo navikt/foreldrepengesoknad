@@ -3,21 +3,24 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, ReadMore, VStack } from '@navikt/ds-react';
 
 import { loggUmamiEvent } from '@navikt/fp-observability';
-import { AppName, EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { AppName, EksternArbeidsforholdDto_fpoversikt, NæringDto } from '@navikt/fp-types';
 
 import { type AndreInntektskilder } from '../../types/AndreInntektskilder';
 import { AndreInntektskilderBox } from './AndreInntektskilderBox';
 import { FrilansOppdrag } from './FrilansOppdrag.tsx';
 import { HarArbeidsforhold } from './HarArbeidsforhold';
 import { HarIkkeArbeidsforhold } from './HarIkkeArbeidsforhold';
+import { ManueltLagtTilNæring } from './ManueltLagtTilNæring';
 import { SelvstendigNæring } from './SelvstendigNæring.tsx';
 
 interface Props {
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     frilansoppdrag: EksternArbeidsforholdDto_fpoversikt[];
     selvstendigNæring: EksternArbeidsforholdDto_fpoversikt[];
+    egenNæring?: NæringDto;
     andreInntektskilder: AndreInntektskilder[];
     onRemoveAndreInntekt: (index: number) => void;
+    onRemoveEgenNæring: () => void;
     visManglerInfo?: boolean;
     appOrigin: AppName;
 }
@@ -27,8 +30,10 @@ export const ArbeidsforholdInformasjon = ({
     arbeidsforhold,
     frilansoppdrag,
     selvstendigNæring,
+    egenNæring,
     andreInntektskilder,
     onRemoveAndreInntekt,
+    onRemoveEgenNæring,
 }: Props) => {
     const harArbeidsforhold = arbeidsforhold.length > 0;
     const intl = useIntl();
@@ -42,6 +47,7 @@ export const ArbeidsforholdInformasjon = ({
             <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={arbeidsforhold} />
             <FrilansOppdrag frilansoppdrag={frilansoppdrag} />
             <SelvstendigNæring selvstendigNæring={selvstendigNæring} />
+            <ManueltLagtTilNæring egenNæring={egenNæring} onRemove={onRemoveEgenNæring} />
             <AndreInntektskilderBox andreInntektskilder={andreInntektskilder} onRemove={onRemoveAndreInntekt} />
             <ReadMore
                 variant="moderate"
