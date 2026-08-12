@@ -20,6 +20,7 @@ export const FarFellesperiode = ({ hvemPlanlegger, barnet }: Props) => {
     const erAdopsjon = erBarnetAdoptert(barnet);
     const erFedre = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR;
     const erMedmor = hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR;
+    const erMorOgFar = hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR;
 
     return (
         <HStack gap="space-20" wrap={false}>
@@ -44,7 +45,7 @@ export const FarFellesperiode = ({ hvemPlanlegger, barnet }: Props) => {
                             />
                         </Heading>
                         <BodyLong>
-                            {barnet.antallBarn !== '1' && !erMedmor && !erFedre ? (
+                            {barnet.antallBarn !== '1' && erMorOgFar ? (
                                 <FormattedMessage id="HvaErMulig.FarFellesperiode.TekstMorOgFarFlerbarnsdager" />
                             ) : (
                                 <FormattedMessage
@@ -70,7 +71,7 @@ export const FarFellesperiode = ({ hvemPlanlegger, barnet }: Props) => {
                             />
                         </Heading>
                         <BodyLong>
-                            {barnet.antallBarn !== '1' && !erMedmor && !erFedre ? (
+                            {barnet.antallBarn !== '1' && erMorOgFar ? (
                                 <FormattedMessage id="HvaErMulig.FarFellesperiode.TekstMorOgFarFlerbarnsdager" />
                             ) : (
                                 <FormattedMessage

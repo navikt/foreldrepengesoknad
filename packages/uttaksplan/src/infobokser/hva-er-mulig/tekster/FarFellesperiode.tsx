@@ -31,6 +31,8 @@ export const FarFellesperiode = ({ erFarOgFar }: Props) => {
 
     const erMorDelAvSøknaden = !erFarOgFar && (søker === 'MOR' || rettighetType === 'BEGGE_RETT');
 
+    const erMorOgFar = rettighetType === 'BEGGE_RETT' && !erMedmor && !erFarOgFar;
+
     return (
         <HStack gap="space-20" wrap={false}>
             <div>
@@ -54,7 +56,7 @@ export const FarFellesperiode = ({ erFarOgFar }: Props) => {
                             />
                         </Heading>
                         <BodyLong>
-                            {barn.antallBarn > 1 && !erMedmor && !erFarOgFar ? (
+                            {barn.antallBarn > 1 && erMorOgFar ? (
                                 <FormattedMessage id="HvaErMulig.FarFellesperiode.TekstMorOgFarFlerbarnsdager" />
                             ) : (
                                 <FormattedMessage
@@ -80,7 +82,7 @@ export const FarFellesperiode = ({ erFarOgFar }: Props) => {
                             />
                         </Heading>
                         <BodyLong>
-                            {barn.antallBarn > 1 && !erMedmor && !erFarOgFar ? (
+                            {barn.antallBarn > 1 && erMorOgFar ? (
                                 <FormattedMessage id="HvaErMulig.FarFellesperiode.TekstMorOgFarFlerbarnsdager" />
                             ) : (
                                 <FormattedMessage
