@@ -12,11 +12,7 @@ import { EtterlønnEllerSluttvederlagPanel } from './EtterlønnEllerSluttvederla
 import { FørstegangstjenestePanel } from './FørstegangstjenestePanel';
 import { JobbIUtlandetPanel } from './JobbIUtlandetPanel';
 
-type Props = {
-    showControls?: boolean;
-};
-
-export const AndreInntektskilderFieldArray = ({ showControls = true }: Props) => {
+export const AndreInntektskilderFieldArray = () => {
     const intl = useIntl();
     const { control, watch } = useFormContext<AndreInntekterFormValues>();
     const { fields, append, remove } = useFieldArray({
@@ -59,8 +55,8 @@ export const AndreInntektskilderFieldArray = ({ showControls = true }: Props) =>
                         {inntektskilde.type === 'MILITÆR_ELLER_SIVILTJENESTE' && (
                             <FørstegangstjenestePanel index={index} inntektskilde={inntektskilde} />
                         )}
-                        {showControls && index === 0 && fields.length > 1 && <HorizontalLine />}
-                        {showControls && index !== 0 && (
+                        {index === 0 && fields.length > 1 && <HorizontalLine />}
+                        {index !== 0 && (
                             <VStack gap="space-8">
                                 <HStack>
                                     <Button type="button" variant="tertiary" onClick={() => remove(index)}>
@@ -73,13 +69,11 @@ export const AndreInntektskilderFieldArray = ({ showControls = true }: Props) =>
                     </VStack>
                 );
             })}
-            {showControls && (
-                <HStack>
-                    <Button type="button" variant="secondary" onClick={() => append({ type: undefined })} size="small">
-                        <FormattedMessage id="AndreInntektskilderStep.LeggTil" />
-                    </Button>
-                </HStack>
-            )}
+            <HStack>
+                <Button type="button" variant="secondary" onClick={() => append({ type: undefined })} size="small">
+                    <FormattedMessage id="AndreInntektskilderStep.LeggTil" />
+                </Button>
+            </HStack>
         </VStack>
     );
 };
