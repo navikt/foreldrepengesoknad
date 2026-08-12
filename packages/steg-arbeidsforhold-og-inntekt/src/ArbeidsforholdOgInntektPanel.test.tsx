@@ -54,7 +54,7 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
 
         expect(screen.getByText('Legg til inntekt')).toBeInTheDocument();
 
-        expect(screen.getByText('Dine andre inntekter')).toBeInTheDocument();
+        expect(screen.queryByText('Dine andre inntekter')).not.toBeInTheDocument();
         expect(screen.getByText('Jobb i utlandet')).toBeInTheDocument();
         expect(screen.getByText('Københavns Kommune')).toBeInTheDocument();
     });

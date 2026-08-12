@@ -29,7 +29,6 @@ export const ArbeidsforholdInformasjon = ({
     andreInntektskilder,
 }: Props) => {
     const harArbeidsforhold = arbeidsforhold.length > 0;
-    const harAndreInntektskilder = andreInntektskilder.length > 0;
     const intl = useIntl();
 
     return (
@@ -41,14 +40,7 @@ export const ArbeidsforholdInformasjon = ({
             <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={arbeidsforhold} />
             <FrilansOppdrag frilansoppdrag={frilansoppdrag} />
             <SelvstendigNæring selvstendigNæring={selvstendigNæring} />
-            {harAndreInntektskilder && (
-                <>
-                    <BodyShort style={{ fontWeight: 'bold' }}>
-                        <FormattedMessage id="inntektsinformasjon.andreInntekter.label" />
-                    </BodyShort>
-                    <AndreInntektskilderBox andreInntektskilder={andreInntektskilder} />
-                </>
-            )}
+            <AndreInntektskilderBox andreInntektskilder={andreInntektskilder} />
             <ReadMore
                 variant="moderate"
                 header={

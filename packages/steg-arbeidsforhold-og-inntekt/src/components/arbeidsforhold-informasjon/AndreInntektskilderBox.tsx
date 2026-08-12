@@ -1,6 +1,7 @@
-import { FormattedMessage } from 'react-intl';
+import { BriefcaseClockIcon } from '@navikt/aksel-icons';
+import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, Box, Heading, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, HStack, Heading, Label, Tag, VStack } from '@navikt/ds-react';
 
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 
@@ -21,6 +22,45 @@ const getTittelId = (type: AnnenInntektType) => {
     }
 };
 
+const DetaljRad = ({ label, children }: { label: React.ReactNode; children: React.ReactNode }) => (
+    <HStack justify="space-between">
+        <Label>{label}</Label>
+        <BodyShort className="text-ax-text-neutral-subtle" size="small">
+            {children}
+        </BodyShort>
+    </HStack>
+);
+
+const Inntektsdetaljer = ({ inntekt }: { inntekt: AndreInntektskilder }) => {
+    const intl = useIntl();
+
+    return (
+        <>
+            {inntekt.type === AnnenInntektType.JOBB_I_UTLANDET && (
+                <>
+                    <DetaljRad label={<FormattedMessage id="JobbIUtlandetPanel.LandDuHarJobbet" />}>
+                        {inntekt.land}
+                    </DetaljRad>
+                    <DetaljRad label={<FormattedMessage id="JobbIUtlandetPanel.NavnPåArbeidsgiver" />}>
+                        {capitalizeFirstLetterInEveryWordOnly(inntekt.arbeidsgiverNavn)}
+                    </DetaljRad>
+                </>
+            )}
+            <DetaljRad label="Dato:">
+                <FormattedMessage
+                    id="inntektsinformasjon.arbeidsforhold.periode"
+                    values={{
+                        fom: formatDate(inntekt.fom),
+                        tom: inntekt.tom
+                            ? formatDate(inntekt.tom)
+                            : intl.formatMessage({ id: 'HarArbeidsforhold.pågående' }),
+                    }}
+                />
+            </DetaljRad>
+        </>
+    );
+};
+
 export const AndreInntektskilderBox = ({ andreInntektskilder }: Props) => {
     if (andreInntektskilder.length === 0) {
         return null;
@@ -30,87 +70,22 @@ export const AndreInntektskilderBox = ({ andreInntektskilder }: Props) => {
         <VStack gap="space-8">
             {andreInntektskilder.map((inntekt) => (
                 <Box
-                    key={`${inntekt.type}-${inntekt.fom}-${'tom' in inntekt ? (inntekt.tom ?? '') : ''}`}
+                    key={`${inntekt.type}-${inntekt.fom}-${inntekt.tom ?? ''}`}
                     padding="space-16"
-                    background="brand-blue-moderate"
-                    borderRadius="4"
+                    className="rounded-(--ax-radius-12) border border-ax-border-info-subtle bg-ax-bg-info-soft"
                 >
                     <VStack gap="space-16">
-                        <Heading size="xsmall">
+                        <Heading size="xsmall" level="3">
                             <FormattedMessage id={getTittelId(inntekt.type)} />
                         </Heading>
-                        {inntekt.type === AnnenInntektType.JOBB_I_UTLANDET && (
-                            <>
-                                <BodyShort>
-                                    <FormattedMessage id="JobbIUtlandetPanel.LandDuHarJobbet" />
-                                </BodyShort>
-                                <BodyShort>{inntekt.land}</BodyShort>
-                                <BodyShort>
-                                    <FormattedMessage id="JobbIUtlandetPanel.NavnPåArbeidsgiver" />
-                                </BodyShort>
-                                <BodyShort>{capitalizeFirstLetterInEveryWordOnly(inntekt.arbeidsgiverNavn)}</BodyShort>
-                                {!inntekt.tom && (
-                                    <BodyShort>
-                                        <FormattedMessage id="JobbIUtlandetPanel.JobberDuDerNå" />
-                                    </BodyShort>
-                                )}
-                                {!inntekt.tom && (
-                                    <BodyShort>
-                                        <FormattedMessage id="pågående" />
-                                    </BodyShort>
-                                )}
-                                <BodyShort>
-                                    <FormattedMessage id="JobbIUtlandetPanel.Fom" />
-                                </BodyShort>
-                                <BodyShort>{formatDate(inntekt.fom)}</BodyShort>
-                                {inntekt.tom && (
-                                    <>
-                                        <BodyShort>
-                                            <FormattedMessage id="JobbIUtlandetPanel.Tom" />
-                                        </BodyShort>
-                                        <BodyShort>{formatDate(inntekt.tom)}</BodyShort>
-                                    </>
-                                )}
-                            </>
-                        )}
-                        {inntekt.type === AnnenInntektType.SLUTTPAKKE && (
-                            <>
-                                <BodyShort>
-                                    <FormattedMessage id="EtterlønnEllerSluttvederlagPanel.Fom" />
-                                </BodyShort>
-                                <BodyShort>{formatDate(inntekt.fom)}</BodyShort>
-                                <BodyShort>
-                                    <FormattedMessage id="EtterlønnEllerSluttvederlagPanel.Tom" />
-                                </BodyShort>
-                                <BodyShort>{formatDate(inntekt.tom)}</BodyShort>
-                            </>
-                        )}
-                        {inntekt.type === AnnenInntektType.MILITÆRTJENESTE && (
-                            <>
-                                {inntekt.pågående && (
-                                    <>
-                                        <BodyShort>
-                                            <FormattedMessage id="FørstegangstjenestePanel.IFørstegangstjenesteNå" />
-                                        </BodyShort>
-                                        <BodyShort>
-                                            <FormattedMessage id="FørstegangstjenestePanel.RadioButton.Ja" />
-                                        </BodyShort>
-                                    </>
-                                )}
-                                <BodyShort>
-                                    <FormattedMessage id="FørstegangstjenestePanel.Fom" />
-                                </BodyShort>
-                                <BodyShort>{formatDate(inntekt.fom)}</BodyShort>
-                                {inntekt.tom && (
-                                    <>
-                                        <BodyShort>
-                                            <FormattedMessage id="FørstegangstjenestePanel.Tom" />
-                                        </BodyShort>
-                                        <BodyShort>{formatDate(inntekt.tom)}</BodyShort>
-                                    </>
-                                )}
-                            </>
-                        )}
+                        <Tag
+                            className="inline-flex w-max items-center gap-0.5 px-1.5 py-0.5"
+                            icon={<BriefcaseClockIcon aria-hidden />}
+                            variant="info"
+                        >
+                            Annen inntekt
+                        </Tag>
+                        <Inntektsdetaljer inntekt={inntekt} />
                     </VStack>
                 </Box>
             ))}
