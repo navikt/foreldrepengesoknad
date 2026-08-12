@@ -12,7 +12,7 @@ export const useLoggOverlappIVedtak = (
     perioderFraBackend: UttakPeriode_fpoversikt[] | undefined,
     perioderAnnenPartFraBackend: UttakPeriode_fpoversikt[] | undefined,
 ): void => {
-    const lastCheckedFingerprint = useRef<string | null>(null);
+    const lastCheckedFingerprintRef = useRef<string | null>(null);
 
     useEffect(() => {
         if (!uttaksplan || uttaksplan.length === 0) {
@@ -20,10 +20,10 @@ export const useLoggOverlappIVedtak = (
         }
 
         const fingerprint = uttaksplan.map((p) => `${p.fom}:${p.tom}`).join(',');
-        if (lastCheckedFingerprint.current === fingerprint) {
+        if (lastCheckedFingerprintRef.current === fingerprint) {
             return;
         }
-        lastCheckedFingerprint.current = fingerprint;
+        lastCheckedFingerprintRef.current = fingerprint;
 
         const { perioderUttaksplan, ugyldigeOverlapp } = finnUgyldigeOverlappIUttaksplan(uttaksplan);
         if (ugyldigeOverlapp.length > 0) {

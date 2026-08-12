@@ -37,12 +37,12 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
 
     const { uttakPerioder, erEndringssøknad } = useUttaksplanData();
 
-    const harLoggetInitielleOverlapp = useRef(false);
+    const harLoggetInitielleOverlappRef = useRef(false);
     useEffect(() => {
-        if (harLoggetInitielleOverlapp.current) {
+        if (harLoggetInitielleOverlappRef.current) {
             return;
         }
-        harLoggetInitielleOverlapp.current = true;
+        harLoggetInitielleOverlappRef.current = true;
 
         const ugyldigeOverlapp = finnUgyldigeOverlapp(uttakPerioder);
         if (ugyldigeOverlapp.length === 0) {

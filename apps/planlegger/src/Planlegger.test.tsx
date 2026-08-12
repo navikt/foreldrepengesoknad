@@ -325,7 +325,9 @@ describe('<Planlegger>', () => {
 
         await waitFor(() => expect(screen.getAllByText('Arbeidssituasjon')).toHaveLength(2));
         await userEvent.click(
-            screen.getByText('Har jobbet minst 6 av de siste 10 månedene og har tjent 68 275 kr eller mer det siste året'),
+            screen.getByText(
+                'Har jobbet minst 6 av de siste 10 månedene og har tjent 68 275 kr eller mer det siste året',
+            ),
         );
         await userEvent.click(screen.getByText('Ja'));
         await userEvent.click(screen.getByText('Forrige'));

@@ -17,6 +17,7 @@ import { Periode } from '../types';
 import {
     ADOPSJON_PERIODE_FØR_FAMHEND,
     EØS_UTTAK_KAN_GI_AVSLAG,
+    FERIE_UKE_7_ETTER_TERMIN,
     ForskyvEllerErstattKontekst,
     GRADERINGSAKTIVITET_IKKE_VALGT_EKSISTERENDE,
     IKKE_REDIGERBAR_PLEIEPENGER,
