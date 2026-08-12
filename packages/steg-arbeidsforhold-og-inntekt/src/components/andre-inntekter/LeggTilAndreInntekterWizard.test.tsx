@@ -212,6 +212,44 @@ describe('<LeggTilAndreInntekterWizard>', () => {
         expect(screen.getByRole('button', { name: 'Legg til inntekt' })).toBeInTheDocument();
     });
 
+    it('skal kreve virksomhetstype for norsk næring lagt til fra registerscenarioet', async () => {
+        const onSaveEgenNæring = vi.fn();
+        renderWizard({ harRegistrertNæring: true, onSaveEgenNæring });
+
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
+        await userEvent.click(screen.getByRole('radio', { name: 'Næring i utlandet' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Neste' }));
+
+        await userEvent.type(screen.getByLabelText('Hva heter virksomheten?'), 'Svensk virksomhet');
+        await userEvent.click(
+            within(screen.getByRole('radiogroup', { name: 'Er virksomheten registrert i Norge?' })).getByRole('radio', {
+                name: 'Ja',
+            }),
+        );
+        await userEvent.type(screen.getByLabelText('Hva er organisasjonsnummeret?'), '997519485');
+        await userEvent.type(screen.getByLabelText('Når startet du virksomheten?'), '30.04.2023');
+        await userEvent.click(
+            within(screen.getByRole('radiogroup', { name: 'Jobber du der fortsatt?' })).getByRole('radio', {
+                name: 'Ja',
+            }),
+        );
+        await userEvent.type(
+            screen.getByLabelText('Hva har du hatt i næringsresultat før skatt de siste 12 månedene?'),
+            '1000',
+        );
+        await userEvent.click(
+            within(
+                screen.getByRole('radiogroup', {
+                    name: 'Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?',
+                }),
+            ).getByRole('radio', { name: 'Nei' }),
+        );
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
+
+        expect(screen.getAllByText('Du må oppgi type virksomhet du har.')).toHaveLength(2);
+        expect(onSaveEgenNæring).not.toHaveBeenCalled();
+    });
+
     it('skal lagre fisker som EGEN_NÆRING', async () => {
         const onSaveEgenNæring = vi.fn();
         renderWizard({ onSaveEgenNæring });
