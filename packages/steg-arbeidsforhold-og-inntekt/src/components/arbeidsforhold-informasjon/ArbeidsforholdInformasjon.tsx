@@ -17,6 +17,7 @@ interface Props {
     frilansoppdrag: EksternArbeidsforholdDto_fpoversikt[];
     selvstendigNæring: EksternArbeidsforholdDto_fpoversikt[];
     andreInntektskilder: AndreInntektskilder[];
+    onRemoveAndreInntekt: (index: number) => void;
     visManglerInfo?: boolean;
     appOrigin: AppName;
 }
@@ -27,6 +28,7 @@ export const ArbeidsforholdInformasjon = ({
     frilansoppdrag,
     selvstendigNæring,
     andreInntektskilder,
+    onRemoveAndreInntekt,
 }: Props) => {
     const harArbeidsforhold = arbeidsforhold.length > 0;
     const intl = useIntl();
@@ -40,7 +42,7 @@ export const ArbeidsforholdInformasjon = ({
             <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={arbeidsforhold} />
             <FrilansOppdrag frilansoppdrag={frilansoppdrag} />
             <SelvstendigNæring selvstendigNæring={selvstendigNæring} />
-            <AndreInntektskilderBox andreInntektskilder={andreInntektskilder} />
+            <AndreInntektskilderBox andreInntektskilder={andreInntektskilder} onRemove={onRemoveAndreInntekt} />
             <ReadMore
                 variant="moderate"
                 header={

@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { IntlProvider } from 'react-intl';
 
 import nbMessages from '../../intl/messages/nb_NO.json';
@@ -26,10 +27,10 @@ const inntektskilder = [
     },
 ] satisfies AndreInntektskilder[];
 
-const renderInntektskilder = (andreInntektskilder: AndreInntektskilder[]) =>
+const renderInntektskilder = (andreInntektskilder: AndreInntektskilder[], onRemove = vi.fn()) =>
     render(
         <IntlProvider locale="nb" messages={nbMessages}>
-            <AndreInntektskilderBox andreInntektskilder={andreInntektskilder} />
+            <AndreInntektskilderBox andreInntektskilder={andreInntektskilder} onRemove={onRemove} />
         </IntlProvider>,
     );
 
@@ -56,5 +57,14 @@ describe('<AndreInntektskilderBox>', () => {
 
         expect(screen.getByRole('heading', { name: 'Førstegangstjeneste' })).toBeInTheDocument();
         expect(screen.getByText('01.04.2023 - 31.10.2023')).toBeInTheDocument();
+    });
+
+    it('skal fjerne valgt annen inntekt', async () => {
+        const onRemove = vi.fn();
+        renderInntektskilder(inntektskilder, onRemove);
+
+        await userEvent.click(screen.getByRole('button', { name: 'Fjern Etterlønn eller sluttvederlag' }));
+
+        expect(onRemove).toHaveBeenCalledWith(1);
     });
 });

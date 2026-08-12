@@ -59,6 +59,17 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
         expect(screen.getByText('Københavns Kommune')).toBeInTheDocument();
     });
 
+    it('skal fjerne en annen inntekt fra context-arrayet', async () => {
+        const saveAndreInntektskilder = vi.fn();
+        render(<ForForeldrepengerMedAndreInntekter saveAndreInntektskilder={saveAndreInntektskilder} />);
+
+        await screen.findAllByText('Arbeidsforhold og inntekt');
+        await userEvent.click(screen.getByRole('button', { name: 'Fjern Jobb i utlandet' }));
+
+        expect(saveAndreInntektskilder).toHaveBeenCalledWith([]);
+        expect(screen.queryByRole('heading', { name: 'Jobb i utlandet' })).not.toBeInTheDocument();
+    });
+
     it('skal appende en ny inntekt til eksisterende inntekter', async () => {
         const saveAndreInntektskilder = vi.fn();
         render(<ForForeldrepengerMedAndreInntekter saveAndreInntektskilder={saveAndreInntektskilder} />);

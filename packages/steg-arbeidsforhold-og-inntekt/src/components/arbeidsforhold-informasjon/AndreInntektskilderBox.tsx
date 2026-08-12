@@ -1,7 +1,7 @@
-import { BriefcaseClockIcon } from '@navikt/aksel-icons';
+import { BriefcaseClockIcon, TrashIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, Box, HStack, Heading, Label, Tag, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, Button, HStack, Heading, Label, Tag, VStack } from '@navikt/ds-react';
 
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 
@@ -9,6 +9,7 @@ import { type AndreInntektskilder, AnnenInntektType } from '../../types/AndreInn
 
 interface Props {
     andreInntektskilder: AndreInntektskilder[];
+    onRemove: (index: number) => void;
 }
 
 const getTittelId = (type: AnnenInntektType) => {
@@ -61,14 +62,16 @@ const Inntektsdetaljer = ({ inntekt }: { inntekt: AndreInntektskilder }) => {
     );
 };
 
-export const AndreInntektskilderBox = ({ andreInntektskilder }: Props) => {
+export const AndreInntektskilderBox = ({ andreInntektskilder, onRemove }: Props) => {
+    const intl = useIntl();
+
     if (andreInntektskilder.length === 0) {
         return null;
     }
 
     return (
         <VStack gap="space-8">
-            {andreInntektskilder.map((inntekt) => (
+            {andreInntektskilder.map((inntekt, index) => (
                 <Box
                     key={`${inntekt.type}-${inntekt.fom}-${inntekt.tom ?? ''}`}
                     padding="space-16"
@@ -86,6 +89,18 @@ export const AndreInntektskilderBox = ({ andreInntektskilder }: Props) => {
                             Annen inntekt
                         </Tag>
                         <Inntektsdetaljer inntekt={inntekt} />
+                        <Button
+                            type="button"
+                            size="small"
+                            variant="tertiary"
+                            data-color="danger"
+                            icon={<TrashIcon aria-hidden />}
+                            className="self-start"
+                            aria-label={`Fjern ${intl.formatMessage({ id: getTittelId(inntekt.type) })}`}
+                            onClick={() => onRemove(index)}
+                        >
+                            Fjern
+                        </Button>
                     </VStack>
                 </Box>
             ))}

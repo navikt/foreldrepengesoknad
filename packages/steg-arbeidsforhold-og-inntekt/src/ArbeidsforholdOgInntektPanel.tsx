@@ -92,6 +92,11 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                             frilansoppdrag={frilansoppdrag}
                             selvstendigNæring={selvstendigNæring}
                             andreInntektskilder={ferdigeAndreInntektskilder}
+                            onRemoveAndreInntekt={(index) =>
+                                saveAndreInntektskilder(
+                                    ferdigeAndreInntektskilder.filter((_, currentIndex) => currentIndex !== index),
+                                )
+                            }
                         />
                     </VStack>
                     {erSvp && (
