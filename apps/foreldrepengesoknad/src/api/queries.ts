@@ -15,6 +15,7 @@ import {
     KontoBeregningResultatDto,
     MorArbeidRequest_fpoversikt,
     Saker_fpoversikt,
+    SelvstendigNæringDto_fpoversikt,
 } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -33,7 +34,7 @@ export const API_URLS = {
     konto: `${urlPrefiks}/fpgrunndata/api/konto`,
     trengerDokumentereMorsArbeid: `${urlPrefiks}/fpoversikt/api/arbeid/morDokumentasjon`,
     mineFrilansoppdrag: `${urlPrefiks}/fpoversikt/api/arbeid/mineFrilansoppdrag`,
-    mineSN: `${urlPrefiks}/fpoversikt/api/arbeid/mineSN`,
+    selvstendigNæring: `${urlPrefiks}/fpoversikt/api/arbeid/selvstendigNaering`,
     erOppdatert: `${urlPrefiks}/fpoversikt/api/saker/erOppdatert`,
 
     mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/FORELDREPENGER`,
@@ -112,10 +113,10 @@ export const mineFrilansoppdragOptions = () =>
         staleTime: Infinity,
     });
 
-export const mineSNOptions = () =>
+export const selvstendigNæringOptions = () =>
     queryOptions({
-        queryKey: ['MINE_SN'],
-        queryFn: () => ky.get(API_URLS.mineSN).json<EksternArbeidsforholdDto_fpoversikt[]>(),
+        queryKey: ['SELVSTENDIG_NÆRING'],
+        queryFn: () => ky.get(API_URLS.selvstendigNæring).json<SelvstendigNæringDto_fpoversikt[]>(),
         staleTime: Infinity,
     });
 

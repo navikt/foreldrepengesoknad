@@ -7,7 +7,7 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 
-import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, SelvstendigNæringDto_fpoversikt } from '@navikt/fp-types';
 
 import { ArbeidsforholdOgInntektSteg } from './ArbeidsforholdOgInntektSteg';
 
@@ -61,13 +61,12 @@ const DEFAULT_ARBEIDSFORHOLD = [
 
 const DEFAULT_SELVSTENDIG_NÆRING = [
     {
-        arbeidsgiverId: '991122334',
-        arbeidsgiverIdType: 'orgnr',
-        arbeidsgiverNavn: 'Mitt Konsulentfirma AS',
-        fom: '2024-01-01T00:00:00.000Z',
-        stillingsprosent: 100,
+        organisasjonsnummer: '991122334',
+        navn: 'Mitt Konsulentfirma AS',
+        næringstype: 'ANNEN',
+        underAvvikling: false,
     },
-] satisfies EksternArbeidsforholdDto_fpoversikt[];
+] satisfies SelvstendigNæringDto_fpoversikt[];
 
 const promiseAction = () => () => {
     action('button-click')();
@@ -83,7 +82,7 @@ const meta = {
     component: ArbeidsforholdOgInntektSteg,
     parameters: {
         msw: {
-            handlers: [http.get(API_URLS.mineSN, () => HttpResponse.json(DEFAULT_SELVSTENDIG_NÆRING))],
+            handlers: [http.get(API_URLS.selvstendigNæring, () => HttpResponse.json(DEFAULT_SELVSTENDIG_NÆRING))],
         },
     },
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {

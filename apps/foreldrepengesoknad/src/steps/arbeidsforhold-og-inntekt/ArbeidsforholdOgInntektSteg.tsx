@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { mineFrilansoppdragOptions, mineSNOptions } from 'api/queries';
+import { mineFrilansoppdragOptions, selvstendigNæringOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
@@ -44,7 +44,7 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
     });
     const frilansoppdrag = frilansoppdragQuery.data ?? [];
 
-    const selvstendigNæringQuery = useQuery(mineSNOptions());
+    const selvstendigNæringQuery = useQuery(selvstendigNæringOptions());
     const selvstendigNæring = selvstendigNæringQuery.data ?? [];
 
     const oppdaterArbeidsforholdOgInntekt = useContextSaveData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);

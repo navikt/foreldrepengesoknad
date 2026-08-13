@@ -208,6 +208,19 @@ router.get('/fpoversikt/api/arbeid/mineFrilansoppdrag', (_req, res) => {
     ]);
 });
 
+router.get('/fpoversikt/api/arbeid/selvstendigNaering', (_req, res) => {
+    res.send([
+        {
+            organisasjonsnummer: '991122334',
+            navn: 'Mitt Konsulentfirma AS',
+            næringstype: 'ANNEN',
+            organisasjonsformKode: 'ENK',
+            organisasjonsformBeskrivelse: 'Enkeltpersonforetak',
+            underAvvikling: false,
+        },
+    ]);
+});
+
 app.use('', router);
 
 const port = process.env.PORT || 8888;

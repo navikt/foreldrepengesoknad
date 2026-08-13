@@ -1,5 +1,7 @@
 // Types from fpoversiktDtoGenerert
 export type { EksternArbeidsforholdDto_fpoversikt } from './fpoversiktDtoGenerert';
+export type { Virksomhetstype_fpoversikt } from './fpoversiktDtoGenerert';
+export type { SelvstendigNæringDto_fpoversikt } from './fpoversiktDtoGenerert';
 export type { MorArbeidRequest_fpoversikt } from './fpoversiktDtoGenerert';
 export type { PeriodeRequest_fpoversikt } from './fpoversiktDtoGenerert';
 export type { PeriodeMedAktivitetskravType_fpoversikt } from './fpoversiktDtoGenerert';

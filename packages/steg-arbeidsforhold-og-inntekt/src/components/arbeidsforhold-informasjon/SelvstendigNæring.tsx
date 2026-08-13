@@ -1,34 +1,19 @@
 import { ExclamationmarkTriangleIcon, PersonEnvelopeIcon } from '@navikt/aksel-icons';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import { BodyShort, Box, HStack, Heading, InfoCard, Label, List, ReadMore, Tag, VStack } from '@navikt/ds-react';
 
-import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
-import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
+import { SelvstendigNæringDto_fpoversikt } from '@navikt/fp-types';
+import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
 interface Props {
-    selvstendigNæring: EksternArbeidsforholdDto_fpoversikt[];
+    selvstendigNæring: SelvstendigNæringDto_fpoversikt[];
 }
 
-const getNæringKey = (næring: EksternArbeidsforholdDto_fpoversikt) =>
-    `${næring.arbeidsgiverId}-${næring.fom}-${næring.tom ?? ''}`;
+const getNæringKey = (næring: SelvstendigNæringDto_fpoversikt) => næring.organisasjonsnummer;
 
-const getNæringNavn = (næring: EksternArbeidsforholdDto_fpoversikt, fallback: string) =>
-    næring.arbeidsgiverNavn ? capitalizeFirstLetterInEveryWordOnly(næring.arbeidsgiverNavn) : fallback;
-
-const NæringPeriode = ({ næring }: { næring: EksternArbeidsforholdDto_fpoversikt }) => {
-    const intl = useIntl();
-
-    return (
-        <FormattedMessage
-            id="inntektsinformasjon.arbeidsforhold.periode"
-            values={{
-                fom: formatDate(næring.fom),
-                tom: næring.tom ? formatDate(næring.tom) : intl.formatMessage({ id: 'HarArbeidsforhold.pågående' }),
-            }}
-        />
-    );
-};
+const getNæringNavn = (næring: SelvstendigNæringDto_fpoversikt, fallback: string) =>
+    næring.navn ? capitalizeFirstLetterInEveryWordOnly(næring.navn) : fallback;
 
 const ManglerOpplysninger = () => (
     <InfoCard data-color="warning">
@@ -70,12 +55,7 @@ export const SelvstendigNæring = ({ selvstendigNæring }: Props) => {
                                 {selvstendigNæring.map((næring) => (
                                     <List.Item key={getNæringKey(næring)} title={getNæringNavn(næring, fallbackNavn)}>
                                         <VStack gap="space-4">
-                                            {næring.arbeidsgiverIdType === 'orgnr' && (
-                                                <BodyShort size="small">Org.nummer: {næring.arbeidsgiverId}</BodyShort>
-                                            )}
-                                            <BodyShort size="small">
-                                                <NæringPeriode næring={næring} />
-                                            </BodyShort>
+                                            <BodyShort size="small">Org.nummer: {næring.organisasjonsnummer}</BodyShort>
                                         </VStack>
                                     </List.Item>
                                 ))}
@@ -107,18 +87,10 @@ export const SelvstendigNæring = ({ selvstendigNæring }: Props) => {
                     >
                         Selvstendig næringsdrivende
                     </Tag>
-                    {næring.arbeidsgiverIdType === 'orgnr' && (
-                        <HStack justify="space-between">
-                            <Label>Org.nummer</Label>
-                            <BodyShort className="text-ax-text-neutral-subtle" size="small">
-                                {næring.arbeidsgiverId}
-                            </BodyShort>
-                        </HStack>
-                    )}
                     <HStack justify="space-between">
-                        <Label>Dato:</Label>
+                        <Label>Org.nummer</Label>
                         <BodyShort className="text-ax-text-neutral-subtle" size="small">
-                            <NæringPeriode næring={næring} />
+                            {næring.organisasjonsnummer}
                         </BodyShort>
                     </HStack>
                     <ManglerOpplysninger />

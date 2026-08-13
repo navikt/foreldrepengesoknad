@@ -2,30 +2,33 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { IntlProvider } from 'react-intl';
 
-import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { SelvstendigNæringDto_fpoversikt } from '@navikt/fp-types';
 
 import nbMessages from '../../intl/messages/nb_NO.json';
 import { SelvstendigNæring } from './SelvstendigNæring';
 
 const næringer = [
     {
-        arbeidsgiverId: '998877665',
-        arbeidsgiverIdType: 'orgnr',
-        arbeidsgiverNavn: 'Kari Konsulent',
-        fom: '2024-01-01T00:00:00.000Z',
-        stillingsprosent: 100,
+        organisasjonsnummer: '998877665',
+        navn: 'Kari Konsulent',
+        næringstype: 'ANNEN',
+        underAvvikling: false,
     },
     {
-        arbeidsgiverId: '998877666',
-        arbeidsgiverIdType: 'orgnr',
-        arbeidsgiverNavn: 'Ola Fisk',
-        fom: '2023-02-01T00:00:00.000Z',
-        tom: '2025-03-31T00:00:00.000Z',
-        stillingsprosent: 100,
+        organisasjonsnummer: '998877666',
+        navn: 'Ola Fisk',
+        næringstype: 'FISKE',
+        underAvvikling: true,
     },
-] satisfies EksternArbeidsforholdDto_fpoversikt[];
+    {
+        organisasjonsnummer: '998877667',
+        navn: 'Tredje Næring',
+        næringstype: 'ANNEN',
+        underAvvikling: false,
+    },
+] satisfies SelvstendigNæringDto_fpoversikt[];
 
-const renderNæringer = (selvstendigNæring: EksternArbeidsforholdDto_fpoversikt[]) =>
+const renderNæringer = (selvstendigNæring: SelvstendigNæringDto_fpoversikt[]) =>
     render(
         <IntlProvider locale="nb" messages={nbMessages}>
             <SelvstendigNæring selvstendigNæring={selvstendigNæring} />
@@ -44,7 +47,6 @@ describe('<SelvstendigNæring>', () => {
 
         expect(screen.getByRole('heading', { name: 'Kari Konsulent' })).toBeInTheDocument();
         expect(screen.getByText('998877665')).toBeInTheDocument();
-        expect(screen.getByText('01.01.2024 - Pågående')).toBeInTheDocument();
         expect(screen.queryByRole('button', { name: 'Dine næringer' })).not.toBeInTheDocument();
     });
 
@@ -54,16 +56,16 @@ describe('<SelvstendigNæring>', () => {
         expect(screen.getByRole('heading', { name: 'Mine næringer' })).toBeInTheDocument();
         expect(screen.getAllByText('Selvstendig næringsdrivende')).toHaveLength(1);
         expect(
-            screen.getAllByText('Vi trenger flere opplysninger om næringen din. Dette kan du fylle ut i neste steg.'),
+            screen.getAllByText('Vi mangler opplysninger om næringen. Dette kan du legge til i neste steg.'),
         ).toHaveLength(1);
 
         await userEvent.click(screen.getByRole('button', { name: 'Dine næringer' }));
 
         expect(screen.getByText('Kari Konsulent')).toBeInTheDocument();
         expect(screen.getByText('Org.nummer: 998877665')).toBeInTheDocument();
-        expect(screen.getByText('01.01.2024 - Pågående')).toBeInTheDocument();
         expect(screen.getByText('Ola Fisk')).toBeInTheDocument();
         expect(screen.getByText('Org.nummer: 998877666')).toBeInTheDocument();
-        expect(screen.getByText('01.02.2023 - 31.03.2025')).toBeInTheDocument();
+        expect(screen.getByText('Tredje Næring')).toBeInTheDocument();
+        expect(screen.getByText('Org.nummer: 998877667')).toBeInTheDocument();
     });
 });

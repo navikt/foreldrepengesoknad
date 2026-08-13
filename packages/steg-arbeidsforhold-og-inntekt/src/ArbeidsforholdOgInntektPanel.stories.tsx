@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { action } from 'storybook/actions';
 
-import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, SelvstendigNæringDto_fpoversikt } from '@navikt/fp-types';
 
 import { ArbeidsforholdOgInntektPanel } from './ArbeidsforholdOgInntektPanel';
 import { type AndreInntektskilder } from './types/AndreInntektskilder';
@@ -43,13 +43,12 @@ const DEFAULT_FRILANSOPPDRAG = [
 
 const DEFAULT_SELVSTENDIG_NÆRING = [
     {
-        arbeidsgiverId: '998877665',
-        arbeidsgiverIdType: 'orgnr',
-        arbeidsgiverNavn: 'Kari Konsulent',
-        fom: '2024-01-01T00:00:00.000Z',
-        stillingsprosent: 100,
+        organisasjonsnummer: '998877665',
+        navn: 'Kari Konsulent',
+        næringstype: 'ANNEN',
+        underAvvikling: false,
     },
-] satisfies EksternArbeidsforholdDto_fpoversikt[];
+] satisfies SelvstendigNæringDto_fpoversikt[];
 
 const DEFAULT_ANDRE_INNTEKTSKILDER = [
     {

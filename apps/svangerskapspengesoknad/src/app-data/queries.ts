@@ -6,6 +6,7 @@ import {
     EksternArbeidsforholdDto_fpoversikt,
     ForsendelseStatus,
     Saker_fpoversikt,
+    SelvstendigNæringDto_fpoversikt,
     SvpPersonopplysningerDto_fpoversikt,
 } from '@navikt/fp-types';
 
@@ -22,7 +23,7 @@ export const API_URLS = {
     saker: `${urlPrefiks}/fpoversikt/api/saker`,
     erOppdatert: `${urlPrefiks}/fpoversikt/api/saker/erOppdatert`,
     mineFrilansoppdrag: `${urlPrefiks}/fpoversikt/api/arbeid/mineFrilansoppdrag`,
-    mineSN: `${urlPrefiks}/fpoversikt/api/arbeid/mineSN`,
+    selvstendigNæring: `${urlPrefiks}/fpoversikt/api/arbeid/selvstendigNaering`,
 
     status: `${urlPrefiks}/fpsoknad/api/soknad/status`,
     mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/SVANGERSKAPSPENGER`,
@@ -78,9 +79,9 @@ export const mineFrilansoppdragOptions = () =>
         staleTime: Infinity,
     });
 
-export const mineSNOptions = () =>
+export const selvstendigNæringOptions = () =>
     queryOptions({
-        queryKey: ['MINE_SN'],
-        queryFn: () => ky.get(API_URLS.mineSN).json<EksternArbeidsforholdDto_fpoversikt[]>(),
+        queryKey: ['SELVSTENDIG_NÆRING'],
+        queryFn: () => ky.get(API_URLS.selvstendigNæring).json<SelvstendigNæringDto_fpoversikt[]>(),
         staleTime: Infinity,
     });

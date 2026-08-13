@@ -41,13 +41,14 @@ const søkerinfoKvinne = {
     },
 } satisfies FpPersonopplysningerDto_fpoversikt;
 
-const mineSN = [
+const selvstendigNæring = [
     {
-        arbeidsgiverId: '991122334',
-        arbeidsgiverIdType: 'orgnr',
-        arbeidsgiverNavn: 'Mitt Konsulentfirma AS',
-        fom: '2024-01-01T00:00:00.000Z',
-        stillingsprosent: 100,
+        organisasjonsnummer: '991122334',
+        navn: 'Mitt Konsulentfirma AS',
+        næringstype: 'ANNEN',
+        organisasjonsformKode: 'ENK',
+        organisasjonsformBeskrivelse: 'Enkeltpersonforetak',
+        underAvvikling: false,
     },
 ];
 
@@ -69,7 +70,7 @@ const meta = {
             http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
             http.get(API_URLS.saker, () => HttpResponse.json(saker)),
             http.get(API_URLS.mineFrilansoppdrag, () => HttpResponse.json(mineFrilansoppdrag)),
-            http.get(API_URLS.mineSN, () => HttpResponse.json(mineSN)),
+            http.get(API_URLS.selvstendigNæring, () => HttpResponse.json(selvstendigNæring)),
             http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
             http.post(API_URLS.konto, () => HttpResponse.json({ 80: stønadskvoter, 100: stønadskvoter })),
             http.get(API_URLS.sendSøknad, () => HttpResponse.json(kvittering)),
@@ -101,7 +102,7 @@ export const SøkerErKvinne: Story = {
             http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfoKvinne)),
             http.get(API_URLS.saker, () => HttpResponse.json(saker)),
             http.get(API_URLS.mineFrilansoppdrag, () => HttpResponse.json(mineFrilansoppdrag)),
-            http.get(API_URLS.mineSN, () => HttpResponse.json(mineSN)),
+            http.get(API_URLS.selvstendigNæring, () => HttpResponse.json(selvstendigNæring)),
             http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
             http.post(API_URLS.konto, () => HttpResponse.json({ 80: stønadskvoter, 100: stønadskvoter })),
             http.get(API_URLS.sendSøknad, () => HttpResponse.json(kvittering)),

@@ -3,7 +3,12 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, ReadMore, VStack } from '@navikt/ds-react';
 
 import { loggUmamiEvent } from '@navikt/fp-observability';
-import { AppName, EksternArbeidsforholdDto_fpoversikt, NæringDto } from '@navikt/fp-types';
+import {
+    AppName,
+    EksternArbeidsforholdDto_fpoversikt,
+    NæringDto,
+    SelvstendigNæringDto_fpoversikt,
+} from '@navikt/fp-types';
 
 import { type AndreInntektskilder } from '../../types/AndreInntektskilder';
 import { AndreInntektskilderBox } from './AndreInntektskilderBox';
@@ -16,7 +21,7 @@ import { SelvstendigNæring } from './SelvstendigNæring.tsx';
 interface Props {
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     frilansoppdrag: EksternArbeidsforholdDto_fpoversikt[];
-    selvstendigNæring: EksternArbeidsforholdDto_fpoversikt[];
+    selvstendigNæring: SelvstendigNæringDto_fpoversikt[];
     egenNæring?: NæringDto;
     andreInntektskilder: AndreInntektskilder[];
     onRemoveAndreInntekt: (index: number) => void;

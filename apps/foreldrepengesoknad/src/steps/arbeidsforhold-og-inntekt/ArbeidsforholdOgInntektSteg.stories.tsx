@@ -9,7 +9,7 @@ import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 
 import { BarnType } from '@navikt/fp-constants';
-import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, SelvstendigNæringDto_fpoversikt } from '@navikt/fp-types';
 
 import { ArbeidsforholdOgInntektSteg } from './ArbeidsforholdOgInntektSteg';
 
@@ -89,13 +89,12 @@ const DEFAULT_FRILANSOPPDRAG = [
 
 const DEFAULT_SELVSTENDIG_NÆRING = [
     {
-        arbeidsgiverId: '991122334',
-        arbeidsgiverIdType: 'orgnr',
-        arbeidsgiverNavn: 'Mitt Konsulentfirma AS',
-        fom: '2024-01-01T00:00:00.000Z',
-        stillingsprosent: 100,
+        organisasjonsnummer: '991122334',
+        navn: 'Mitt Konsulentfirma AS',
+        næringstype: 'ANNEN',
+        underAvvikling: false,
     },
-] satisfies EksternArbeidsforholdDto_fpoversikt[];
+] satisfies SelvstendigNæringDto_fpoversikt[];
 
 const promiseAction = () => () => {
     action('button-click')();
@@ -113,7 +112,7 @@ const meta = {
         msw: {
             handlers: [
                 http.get(API_URLS.mineFrilansoppdrag, () => HttpResponse.json(DEFAULT_FRILANSOPPDRAG)),
-                http.get(API_URLS.mineSN, () => HttpResponse.json(DEFAULT_SELVSTENDIG_NÆRING)),
+                http.get(API_URLS.selvstendigNæring, () => HttpResponse.json(DEFAULT_SELVSTENDIG_NÆRING)),
             ],
         },
     },

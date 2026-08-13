@@ -8,7 +8,13 @@ import { BodyShort, ExpansionCard, InlineMessage, Label, Link, Radio, VStack } f
 import { links } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { loggUmamiEvent } from '@navikt/fp-observability';
-import { AppName, ArbeidsforholdOgInntekt, EksternArbeidsforholdDto_fpoversikt, NæringDto } from '@navikt/fp-types';
+import {
+    AppName,
+    ArbeidsforholdOgInntekt,
+    EksternArbeidsforholdDto_fpoversikt,
+    NæringDto,
+    SelvstendigNæringDto_fpoversikt,
+} from '@navikt/fp-types';
 import { ProgressStep, Step, StepButtons } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 
@@ -24,7 +30,7 @@ interface Props<TYPE> {
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntekt;
     aktiveArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     frilansoppdrag: EksternArbeidsforholdDto_fpoversikt[];
-    selvstendigNæring: EksternArbeidsforholdDto_fpoversikt[];
+    selvstendigNæring: SelvstendigNæringDto_fpoversikt[];
     egenNæring?: NæringDto;
     andreInntektskilder: AndreInntektskilderUtkast[];
     saveOnNext: (formValues: ArbeidsforholdOgInntekt) => void;
@@ -56,7 +62,6 @@ const ArbeidsforholdDefinisjoner = ({ appOrigin }: { appOrigin: AppName }) => {
     return (
         <ExpansionCard
             size="small"
-            defaultOpen
             aria-labelledby={tittelId}
             onToggle={(open) =>
                 loggUmamiEvent({
