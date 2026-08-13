@@ -39,10 +39,8 @@ interface Props<TYPE> {
 }
 
 const Definisjon = ({ icon, tittel, children }: { icon: ReactNode; tittel: ReactNode; children: ReactNode }) => (
-    <div className="flex items-start gap-3">
-        <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-ax-bg-info-soft text-ax-text-neutral">
-            {icon}
-        </div>
+    <div className="flex gap-3">
+        <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-(--ax-info-200)">{icon}</div>
         <VStack gap="space-2" className="min-w-0 flex-1">
             <Label as="p" size="small">
                 {tittel}
@@ -58,7 +56,6 @@ const ArbeidsforholdDefinisjoner = ({ appOrigin }: { appOrigin: AppName }) => {
     return (
         <ExpansionCard
             size="small"
-            defaultOpen
             aria-labelledby={tittelId}
             onToggle={(open) =>
                 loggUmamiEvent({
@@ -76,7 +73,7 @@ const ArbeidsforholdDefinisjoner = ({ appOrigin }: { appOrigin: AppName }) => {
                 </ExpansionCard.Title>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
-                <VStack gap="space-20" className="px-[10px] py-[9px]">
+                <VStack gap="space-20" className="p-2.5">
                     <Definisjon
                         icon={<PersonEnvelopeIcon aria-hidden fontSize="1.5rem" />}
                         tittel={<FormattedMessage id="ArbeidsforholdOgInntektPanel.Definisjoner.Selvstendig.Tittel" />}
