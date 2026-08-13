@@ -428,6 +428,7 @@ const AnnenInntektForm = ({ onAbort, onBack, onSubmit, onSubmitEgenNæring }: An
                 {valgtInntektstype === 'NÆRING_I_UTLANDET' && (
                     <EgenNæringForm
                         appOrigin="foreldrepengesoknad"
+                        fixedRegistrertINorge={false}
                         onSubmit={onSubmitEgenNæring}
                         withoutFormElement
                         renderActions={(submitEgenNæring) => (
