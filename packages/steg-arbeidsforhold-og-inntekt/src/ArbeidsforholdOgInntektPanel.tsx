@@ -44,6 +44,10 @@ interface Props<TYPE> {
     appOrigin: AppName;
 }
 
+type ArbeidsforholdOgInntektFormValues = {
+    harHattArbeidIUtlandet: boolean;
+};
+
 const Definisjon = ({ icon, tittel, children }: { icon: ReactNode; tittel: ReactNode; children: ReactNode }) => (
     <div className="flex gap-3">
         <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-(--ax-info-200)">{icon}</div>
@@ -162,18 +166,16 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const formMethods = useForm<ArbeidsforholdOgInntekt>({
+    const formMethods = useForm<ArbeidsforholdOgInntektFormValues>({
         defaultValues: {
-            ...arbeidsforholdOgInntekt,
-            ...(frilansoppdrag.length > 0 && { harJobbetSomFrilans: true }),
-            ...(selvstendigNæring.length > 0 && { harJobbetSomSelvstendigNæringsdrivende: true }),
+            harHattArbeidIUtlandet: arbeidsforholdOgInntekt?.harHattArbeidIUtlandet,
         },
     });
 
     const ferdigeAndreInntektskilder = andreInntektskilder.filter(erFerdigUtfylt);
 
-    const hattInntektSomFrilans = formMethods.watch('harJobbetSomFrilans');
-    const hattInntektSomNæringsdrivende = formMethods.watch('harJobbetSomSelvstendigNæringsdrivende');
+    const hattInntektSomFrilans = frilansoppdrag.length > 0;
+    const hattInntektSomNæringsdrivende = selvstendigNæring.length > 0 || egenNæring !== undefined;
     const kanIkkeSøke = aktiveArbeidsforhold.length === 0 && !hattInntektSomFrilans && !hattInntektSomNæringsdrivende;
 
     const erSvp = appOrigin === 'svangerskapspengesoknad';
@@ -184,7 +186,11 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                 formMethods={formMethods}
                 onSubmit={(values) => {
                     setIsSubmitting(true);
-                    saveOnNext(values);
+                    const registrerteArbeidsforhold = {
+                        harJobbetSomFrilans: hattInntektSomFrilans,
+                        harJobbetSomSelvstendigNæringsdrivende: hattInntektSomNæringsdrivende,
+                    };
+                    saveOnNext(erSvp ? { ...registrerteArbeidsforhold, ...values } : registrerteArbeidsforhold);
                 }}
             >
                 <VStack gap="space-40">

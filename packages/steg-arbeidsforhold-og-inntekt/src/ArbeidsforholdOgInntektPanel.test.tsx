@@ -169,6 +169,44 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
         );
     });
 
+    it('skal lagre selvstendig næringsdrivende når næring er lagt til manuelt', async () => {
+        const saveOnNext = vi.fn();
+        render(<ForForeldrepenger egenNæring={manueltLagtTilNæring} saveOnNext={saveOnNext} />);
+
+        await screen.findAllByText('Arbeidsforhold og inntekt');
+        await userEvent.click(screen.getByRole('button', { name: 'Neste steg' }));
+
+        expect(saveOnNext).toHaveBeenCalledWith(
+            expect.objectContaining({
+                harJobbetSomSelvstendigNæringsdrivende: true,
+            }),
+        );
+    });
+
+    it('skal lagre selvstendig næringsdrivende når registerdata lastes etter første render', async () => {
+        const saveOnNext = vi.fn();
+        const selvstendigNæring = [
+            {
+                organisasjonsnummer: '998877665',
+                navn: 'Kari Konsulent',
+                næringstype: 'ANNEN',
+                underAvvikling: false,
+            },
+        ] as const;
+        const { rerender } = render(<ForForeldrepenger selvstendigNæring={[]} saveOnNext={saveOnNext} />);
+
+        await screen.findAllByText('Arbeidsforhold og inntekt');
+        rerender(<ForForeldrepenger selvstendigNæring={[...selvstendigNæring]} saveOnNext={saveOnNext} />);
+        await screen.findByText('Kari Konsulent');
+        await userEvent.click(screen.getByRole('button', { name: 'Neste steg' }));
+
+        expect(saveOnNext).toHaveBeenCalledWith(
+            expect.objectContaining({
+                harJobbetSomSelvstendigNæringsdrivende: true,
+            }),
+        );
+    });
+
     it('skal hoppe over inntektstypesteget når selvstendig næring finnes i registeret', async () => {
         render(<ForForeldrepengerMedSelvstendigNæring />);
 
