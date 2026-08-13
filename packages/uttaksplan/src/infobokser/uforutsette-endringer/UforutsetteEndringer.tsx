@@ -7,8 +7,8 @@ import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { FødtFørUke33 } from './tekster/FødtFørUke33';
-import { HvisBarnetErInnlagt } from './tekster/HvisBarnetErInnlagt';
-import { HvisBarnetErSyktEllerInnlagt } from './tekster/HvisBarnetErSyktEllerInnlagt';
+import { HvisBarnetErInnlagtEtterTermindato } from './tekster/HvisBarnetErInnlagtEtterTermindato';
+import { HvisBarnetErInnlagtFørTermindato } from './tekster/HvisBarnetErInnlagtFørTermindato';
 import { HvisDuBlirSyk } from './tekster/HvisDuBlirSyk';
 import { HvisMorBlirSyk } from './tekster/HvisMorBlirSyk';
 import { NyttBarnFørTreÅr } from './tekster/NyttBarnFørTreÅr';
@@ -54,6 +54,7 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
                             <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer" />
                         </ExpansionCard.Title>
                     </div>
+                    <span>test</span>
                 </HStack>
             </ExpansionCard.Header>
 
@@ -65,10 +66,12 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
                                 {!erFarOgFarKunMedfarHarRett && <FødtFørUke33 />}
                                 {((erAleneforsørger && !erMorDelAvSøknaden) ||
                                     erFarOgFar ||
-                                    kunFarEllerMedmorHarRett) && <HvisBarnetErSyktEllerInnlagt />}
+                                    kunFarEllerMedmorHarRett) && <HvisBarnetErInnlagtEtterTermindato />}
                                 {((beggeHarRett && !erFarOgFar) ||
                                     kunMorHarRett ||
-                                    (erAleneforsørger && erMorDelAvSøknaden)) && <HvisBarnetErInnlagt />}
+                                    (erAleneforsørger && erMorDelAvSøknaden)) && (
+                                        <HvisBarnetErInnlagtFørTermindato />
+                                    ) && <HvisBarnetErInnlagtEtterTermindato />}
                                 {erMorDelAvSøknaden && <HvisMorBlirSyk />}
 
                                 <HvisDuBlirSyk />
@@ -76,7 +79,7 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
                             </>
                         ) : (
                             <>
-                                <HvisBarnetErSyktEllerInnlagt />
+                                <HvisBarnetErInnlagtEtterTermindato />
                                 <HvisDuBlirSyk />
                                 <NyttBarnFørTreÅr />
                             </>
