@@ -1,4 +1,4 @@
-import { BriefcaseClockIcon, ExclamationmarkTriangleIcon } from '@navikt/aksel-icons';
+import { ExclamationmarkTriangleIcon, PersonEnvelopeIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Box, HStack, Heading, InfoCard, Label, List, ReadMore, Tag, VStack } from '@navikt/ds-react';
@@ -60,7 +60,7 @@ export const SelvstendigNæring = ({ selvstendigNæring }: Props) => {
                         </Heading>
                         <Tag
                             className="inline-flex w-max items-center gap-0.5 px-1.5 py-0.5"
-                            icon={<BriefcaseClockIcon aria-hidden />}
+                            icon={<PersonEnvelopeIcon aria-hidden />}
                             variant="info"
                         >
                             Selvstendig næringsdrivende
@@ -102,7 +102,7 @@ export const SelvstendigNæring = ({ selvstendigNæring }: Props) => {
                     </Heading>
                     <Tag
                         className="inline-flex w-max items-center gap-0.5 px-1.5 py-0.5"
-                        icon={<BriefcaseClockIcon aria-hidden />}
+                        icon={<PersonEnvelopeIcon aria-hidden />}
                         variant="info"
                     >
                         Selvstendig næringsdrivende

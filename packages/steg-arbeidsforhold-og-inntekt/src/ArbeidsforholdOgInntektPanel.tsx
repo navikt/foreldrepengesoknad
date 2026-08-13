@@ -69,8 +69,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
 
     const hattInntektSomFrilans = formMethods.watch('harJobbetSomFrilans');
     const hattInntektSomNæringsdrivende = formMethods.watch('harJobbetSomSelvstendigNæringsdrivende');
-    const kanIkkeSøke =
-        aktiveArbeidsforhold.length === 0 && hattInntektSomFrilans === false && hattInntektSomNæringsdrivende === false;
+    const kanIkkeSøke = aktiveArbeidsforhold.length === 0 && !hattInntektSomFrilans && !hattInntektSomNæringsdrivende;
 
     const erSvp = appOrigin === 'svangerskapspengesoknad';
 

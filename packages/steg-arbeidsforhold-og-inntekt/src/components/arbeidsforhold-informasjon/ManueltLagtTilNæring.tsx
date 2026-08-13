@@ -1,4 +1,4 @@
-import { BriefcaseClockIcon, TrashIcon } from '@navikt/aksel-icons';
+import { PersonEnvelopeIcon, TrashIcon } from '@navikt/aksel-icons';
 import { useIntl } from 'react-intl';
 
 import { BodyShort, Box, Button, HStack, Heading, Label, Tag, VStack } from '@navikt/ds-react';
@@ -33,7 +33,7 @@ export const ManueltLagtTilNæring = ({ egenNæring, onRemove }: Props) => {
                 </Heading>
                 <Tag
                     className="inline-flex w-max items-center gap-0.5 px-1.5 py-0.5"
-                    icon={<BriefcaseClockIcon aria-hidden />}
+                    icon={<PersonEnvelopeIcon aria-hidden />}
                     variant="info"
                 >
                     Selvstendig næringsdrivende
