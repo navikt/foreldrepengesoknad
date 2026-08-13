@@ -76,5 +76,11 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Du er ikke registrert med noen arbeidsforhold.')).toBeInTheDocument();
         expect(screen.getByText('Arbeid som selvstendig næringsdrivende')).toBeInTheDocument();
         expect(screen.getByText('Arbeid som frilanser')).toBeInTheDocument();
+        expect(
+            screen.queryByText('Har du jobbet og hatt inntekt som frilanser de siste 10 månedene?'),
+        ).not.toBeInTheDocument();
+        expect(
+            screen.queryByText('Har du jobbet og hatt inntekt som selvstendig næringsdrivende de siste 10 månedene?'),
+        ).not.toBeInTheDocument();
     });
 });

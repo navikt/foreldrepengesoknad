@@ -311,7 +311,6 @@ export const EgenNæringForm = ({
                         name="næringsinntekt"
                         control={formMethods.control}
                         label={intl.formatMessage({ id: 'egenNæring.næringsinntekt' })}
-                        description={intl.formatMessage({ id: 'egenNæring.næringsinntekt.description' })}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.egenNæringInntekt.påkrevd' })),
                             isValidInteger(intl.formatMessage({ id: 'valideringsfeil.næringsinntekt.ugyldigFormat' })),
@@ -329,14 +328,33 @@ export const EgenNæringForm = ({
                         }
                         header={intl.formatMessage({ id: 'egenNæring.næringsinntekt.info.apneLabel' })}
                     >
-                        <BodyShort>
-                            <FormattedMessage id="egenNæring.næringsinntekt.info" />
-                        </BodyShort>
+                        <VStack gap="space-24">
+                            <BodyShort>
+                                <FormattedMessage id="egenNæring.næringsinntekt.info.del1" />
+                            </BodyShort>
+                            <BodyShort>
+                                <FormattedMessage id="egenNæring.næringsinntekt.info.del2" />
+                            </BodyShort>
+                        </VStack>
                     </ReadMore>
                     <RhfRadioGroup
                         name="harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene"
                         control={formMethods.control}
                         label={intl.formatMessage({ id: 'egenNæring.blittYrkesaktivSiste3År' })}
+                        description={
+                            <ReadMore
+                                header={intl.formatMessage({ id: 'egenNæring.blittYrkesaktivSiste3År.info.tittel' })}
+                            >
+                                <VStack gap="space-24">
+                                    <BodyShort>
+                                        <FormattedMessage id="egenNæring.blittYrkesaktivSiste3År.info.del1" />
+                                    </BodyShort>
+                                    <BodyShort>
+                                        <FormattedMessage id="egenNæring.blittYrkesaktivSiste3År.info.del2" />
+                                    </BodyShort>
+                                </VStack>
+                            </ReadMore>
+                        }
                         validate={[
                             isRequired(
                                 intl.formatMessage({

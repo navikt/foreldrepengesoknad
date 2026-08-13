@@ -43,7 +43,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
             </IntlProvider>,
         );
 
-        expect(screen.queryByText('Hvilken type virksomhet har du?')).not.toBeInTheDocument();
+        expect(screen.queryByText('Hvilken type næring har du hatt?')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
 
@@ -99,7 +99,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
     it('skal vise feilmelding når ingenting er fylt eller huket av', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Hvilken type virksomhet har du?')).toBeInTheDocument();
+        expect(await screen.findByText('Hvilken type næring har du hatt?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -118,8 +118,8 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
 
         render(<Default saveOnNext={saveOnNext} />);
 
-        expect(await screen.findByText('Hvilken type virksomhet har du?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Jordbruk'));
+        expect(await screen.findByText('Hvilken type næring har du hatt?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Gårdsdrift'));
 
         const virksomhetsnavnInput = screen.getByLabelText('Hva heter virksomheten?');
         await userEvent.type(virksomhetsnavnInput, 'Virksomhetsnavn AS');
@@ -137,13 +137,11 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         await userEvent.click(screen.getAllByText('Ja')[0]!);
 
         const næringsresultatInput = screen.getByLabelText(
-            'Hva har du hatt i næringsresultat før skatt de siste 12 månedene?',
+            'Hva var næringsresultatet ditt før skatt de siste 12 månedene?',
         );
         await userEvent.type(næringsresultatInput, '1000');
 
-        expect(
-            screen.getByText('Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?'),
-        ).toBeInTheDocument();
+        expect(screen.getByText('Har du vært yrkesaktiv i mindre enn tre år?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Nei')[1]!);
 
         await userEvent.click(screen.getByText('Neste steg'));
@@ -166,7 +164,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
     it('skal ikke vise fiske som valg for selvstendig næring', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Hvilken type virksomhet har du?')).toBeInTheDocument();
+        expect(await screen.findByText('Hvilken type næring har du hatt?')).toBeInTheDocument();
         expect(screen.queryByRole('radio', { name: 'Fiske' })).not.toBeInTheDocument();
     });
 
@@ -186,9 +184,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         await userEvent.type(sluttdatoInput, 'sjnkf');
         await userEvent.tab();
 
-        expect(
-            screen.getByText('Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?'),
-        ).toBeInTheDocument();
+        expect(screen.getByText('Har du vært yrkesaktiv i mindre enn tre år?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[1]!);
 
         expect(screen.getByText('Når ble du yrkesaktiv?')).toBeInTheDocument();
@@ -209,7 +205,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
     it('skal skjule spørsmål om registreringsland i ordinært næringssteg', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Hvilken type virksomhet har du?')).toBeInTheDocument();
+        expect(await screen.findByText('Hvilken type næring har du hatt?')).toBeInTheDocument();
         expect(screen.queryByText('Er virksomheten registrert i Norge?')).not.toBeInTheDocument();
         expect(screen.queryByText('I hvilket land er virksomheten din registrert i?')).not.toBeInTheDocument();
     });
@@ -217,8 +213,8 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
     it('skal vise feilmelding ved desimaltall i næringsinntekt etter varig endring', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Hvilken type virksomhet har du?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Jordbruk'));
+        expect(await screen.findByText('Hvilken type næring har du hatt?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Gårdsdrift'));
 
         const virksomhetsnavnInput = screen.getByLabelText('Hva heter virksomheten?');
         await userEvent.type(virksomhetsnavnInput, 'Gården AS');
@@ -254,7 +250,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
 
         render(<Default onFortsettSenere={vi.fn()} onAvsluttOgSlett={onAvsluttOgSlett} />);
 
-        expect(await screen.findByText('Hvilken type virksomhet har du?')).toBeInTheDocument();
+        expect(await screen.findByText('Hvilken type næring har du hatt?')).toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText('Slett søknaden')[0]!);
         await userEvent.click(screen.getAllByText('Slett søknaden')[1]!);

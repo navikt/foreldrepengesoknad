@@ -2,7 +2,7 @@ import { ExclamationmarkTriangleIcon, InformationSquareIcon, PersonEnvelopeIcon 
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { Heading, InfoCard, Label, Radio, RadioGroup, VStack } from '@navikt/ds-react';
+import { BodyShort, Heading, InfoCard, Label, Radio, RadioGroup, ReadMore, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm } from '@navikt/fp-form-hooks';
 import { EgenNæringForm } from '@navikt/fp-steg-egen-naering';
@@ -90,20 +90,20 @@ const LeggTilAndreInntekterWizardInner = ({
     if (step === 'VELG_INNTEKTSTYPE') {
         return (
             <VStack gap="space-40">
+                <Heading level="2" size="small">
+                    Legg til inntektskilde
+                </Heading>
                 <RadioGroup
                     legend="Hvilken type inntekt har du hatt?"
                     description="Oppgi kun aktiv inntekt de siste 10 månedene"
                     value={inntektstype ?? ''}
                     onChange={setInntektstype}
                 >
-                    <Radio
-                        value="EGEN_NÆRING"
-                        description="Bidratt til driften av ektefelles virksomhet og hatt inntekt"
-                    >
+                    <Radio value="EGEN_NÆRING" description="Jobbet i ektefelles virksomhet (ENK).">
                         Jeg har jobbet i min ektefelles næring hvor vi har fordelt inntekt
                     </Radio>
                     <Radio value="FISKER" description="Hyre og/eller lott, eller egen båt">
-                        Jeg er fisker eller mannskap på båt Hyre og/eller lott, eller egen båt
+                        Jeg er fisker eller mannskap på båt
                     </Radio>
                     <Radio
                         value="ANNEN_INNTEKT"
@@ -112,6 +112,20 @@ const LeggTilAndreInntekterWizardInner = ({
                         Annen pensjonsgivende inntekt
                     </Radio>
                 </RadioGroup>
+                <VStack gap="space-12">
+                    <ReadMore variant="moderate" header="Hva er aktiv inntekt?">
+                        <BodyShort>
+                            Aktiv inntekt er inntekt fra arbeid eller oppdrag du selv har utført i perioden.
+                        </BodyShort>
+                    </ReadMore>
+                    <ReadMore variant="moderate" header="Savner du en inntekt i oversikten?">
+                        <BodyShort>
+                            Hvis du oppdager feil eller manglende opplysninger, må du be arbeidsgiveren din om å
+                            registrere riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret. Vi henter
+                            opplysningene derfra.
+                        </BodyShort>
+                    </ReadMore>
+                </VStack>
                 <WizardNavigator
                     isLastStep={false}
                     isNextDisabled={!inntektstype}
@@ -219,7 +233,7 @@ const FiskerForm = ({ onAbort, onBack, onComplete, onSaveEgenNæring }: FiskerFo
                 >
                     <Radio value="lott">Lott</Radio>
                     <Radio value="hyre">Hyre</Radio>
-                    <Radio value="lott_og_hyre">Lott og hyre Description</Radio>
+                    <Radio value="lott_og_hyre">Lott og hyre</Radio>
                     <Radio value="egen_båt">Egen båt</Radio>
                 </RadioGroup>
                 <WizardNavigator

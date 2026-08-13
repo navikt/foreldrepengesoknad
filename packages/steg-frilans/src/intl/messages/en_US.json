@@ -1,6 +1,8 @@
 {
     "FrilansPanel.Oppstart": "When did you start as a freelancer?",
-    "FrilansPanel.JobberFremdelesSomFrilans": "Are you still working as a freelancer?",
+    "FrilansPanel.JobberFremdelesSomFrilans": "Are you still a freelancer?",
+    "FrilansPanel.JobberFremdelesSomFrilans.ReadMore.Tittel": "Why do we need to know whether you are still a freelancer?",
+    "FrilansPanel.JobberFremdelesSomFrilans.ReadMore.Tekst": "Whether you are still active as a freelancer affects how your parental benefit is calculated. If you currently have one or more active freelance assignments, answer “Yes” here. Otherwise, enter the last day you worked as a freelancer.",
     "FrilansPanel.JobberFremdelesSomFrilans.Ja": "Yes",
     "FrilansPanel.JobberFremdelesSomFrilans.Nei": "No",
     "FrilansPanel.SluttetDato": "When did you stop working as a freelancer?",
@@ -11,5 +13,5 @@
     "FrilansPanel.Valideringsfeil.TilOgMedDato.GyldigDato": "The end date must be a valid date on the format dd.mm.yyyy.",
     "FrilansPanel.Valideringsfeil.TilOgMedDato.ErIFremtiden": "The end date must be before or equal to today's date.",
     "FrilansPanel.Valideringsfeil.TilOgMedDato.FørStartdato": "The end date cannot be before the start date.",
-    "FrilansPanel.Valideringsfeil.JobberFremdelesSomFrilans.Påkrevd": "You must state whether you are still working as a freelancer."
+    "FrilansPanel.Valideringsfeil.JobberFremdelesSomFrilans.Påkrevd": "You must state whether you are still a freelancer."
 }

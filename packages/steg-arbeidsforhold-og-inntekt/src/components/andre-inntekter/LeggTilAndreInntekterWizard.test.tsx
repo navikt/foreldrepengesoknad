@@ -33,12 +33,10 @@ describe('<LeggTilAndreInntekterWizard>', () => {
         await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
 
         expect(screen.queryByRole('button', { name: 'Tilbake' })).not.toBeInTheDocument();
-        const neste = screen.getByRole('button', { name: 'Neste' });
+        const neste = screen.getByRole('button', { name: 'Fortsett' });
         expect(neste).toBeDisabled();
 
-        await userEvent.click(
-            screen.getByText('Jeg er fisker eller mannskap på båt Hyre og/eller lott, eller egen båt'),
-        );
+        await userEvent.click(screen.getByText('Jeg er fisker eller mannskap på båt'));
 
         expect(screen.getByText('Hvilken type inntekt har du hatt?')).toBeInTheDocument();
         expect(neste).toBeEnabled();
@@ -49,7 +47,7 @@ describe('<LeggTilAndreInntekterWizard>', () => {
         expect(screen.getByRole('button', { name: 'Tilbake' })).toBeInTheDocument();
         expect(screen.queryByText('Inntekt fra lott')).not.toBeInTheDocument();
 
-        const nesteFiskersteg = screen.getByRole('button', { name: 'Neste' });
+        const nesteFiskersteg = screen.getByRole('button', { name: 'Fortsett' });
         expect(nesteFiskersteg).toBeDisabled();
 
         await userEvent.click(screen.getByRole('radio', { name: 'Lott' }));
@@ -80,7 +78,7 @@ describe('<LeggTilAndreInntekterWizard>', () => {
     it.each([
         ['Lott', 'Inntekt fra lott', true],
         ['Hyre', 'Du må be arbeidsgiver må registrere deg som arbeidstaker', false],
-        ['Lott og hyre Description', 'Inntekt fra lott og hyre', true],
+        ['Lott og hyre', 'Inntekt fra lott og hyre', true],
         ['Egen båt', 'Fiske med egen båt', true],
     ])('skal vise riktig informasjonssteg for %s', async (radioLabel, expectedText, skalViseEgenNæring) => {
         renderWizard();
@@ -88,18 +86,18 @@ describe('<LeggTilAndreInntekterWizard>', () => {
         await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
         await userEvent.click(
             screen.getByRole('radio', {
-                name: /Jeg er fisker eller mannskap på båt Hyre og\/eller lott, eller egen båt/,
+                name: /Jeg er fisker eller mannskap på båt/,
             }),
         );
-        await userEvent.click(screen.getByRole('button', { name: 'Neste' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
         await userEvent.click(screen.getByRole('radio', { name: radioLabel }));
 
         expect(screen.queryByText(expectedText)).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getByRole('button', { name: 'Neste' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
 
         expect(screen.getByText(expectedText)).toBeInTheDocument();
-        expect(screen.queryByText('Hvilken type virksomhet har du?')).not.toBeInTheDocument();
+        expect(screen.queryByText('Hvilken type næring har du hatt?')).not.toBeInTheDocument();
         expect(screen.queryByText('Hva heter virksomheten? (valgfritt)') !== null).toBe(skalViseEgenNæring);
         expect(screen.getByRole('button', { name: 'Legg til' }).hasAttribute('disabled')).toBe(!skalViseEgenNæring);
     });
@@ -110,11 +108,11 @@ describe('<LeggTilAndreInntekterWizard>', () => {
 
         await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
         await userEvent.click(screen.getByRole('radio', { name: /Annen pensjonsgivende inntekt/ }));
-        await userEvent.click(screen.getByRole('button', { name: 'Neste' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
         await userEvent.click(screen.getByRole('radio', { name: 'Etterlønn eller sluttvederlag' }));
 
         expect(screen.queryByLabelText('Perioden den gjelder fra')).not.toBeInTheDocument();
-        await userEvent.click(screen.getByRole('button', { name: 'Neste' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
 
         await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
         expect(onSaveAndreInntekt).not.toHaveBeenCalled();
@@ -159,7 +157,7 @@ describe('<LeggTilAndreInntekterWizard>', () => {
 
         await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
         await userEvent.click(screen.getByRole('radio', { name: /Annen pensjonsgivende inntekt/ }));
-        await userEvent.click(screen.getByRole('button', { name: 'Neste' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
 
         const inntektstyper = screen.getAllByRole('radio');
         expect(inntektstyper.map((radio) => radio.nextElementSibling?.textContent)).toEqual([
@@ -172,13 +170,13 @@ describe('<LeggTilAndreInntekterWizard>', () => {
         await userEvent.click(screen.getByRole('radio', { name: 'Næring i utlandet' }));
 
         expect(screen.queryByText('I hvilket land er virksomheten din registrert i?')).not.toBeInTheDocument();
-        await userEvent.click(screen.getByRole('button', { name: 'Neste' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
 
         expect(screen.queryByText('Er virksomheten registrert i Norge?')).not.toBeInTheDocument();
         expect(screen.getByText('I hvilket land er virksomheten din registrert i?')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Tilbake' })).toBeInTheDocument();
 
-        await userEvent.click(screen.getByRole('radio', { name: 'Annen type virksomhet' }));
+        await userEvent.click(screen.getByRole('radio', { name: 'Annet' }));
         await userEvent.type(screen.getByLabelText('Hva heter virksomheten?'), 'Svensk virksomhet');
         await userEvent.selectOptions(screen.getByLabelText('I hvilket land er virksomheten din registrert i?'), 'SE');
         await userEvent.type(screen.getByLabelText('Når startet du virksomheten?'), '30.04.2023');
@@ -188,13 +186,13 @@ describe('<LeggTilAndreInntekterWizard>', () => {
             }),
         );
         await userEvent.type(
-            screen.getByLabelText('Hva har du hatt i næringsresultat før skatt de siste 12 månedene?'),
+            screen.getByLabelText('Hva var næringsresultatet ditt før skatt de siste 12 månedene?'),
             '1000',
         );
         await userEvent.click(
             within(
                 screen.getByRole('radiogroup', {
-                    name: 'Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?',
+                    name: 'Har du vært yrkesaktiv i mindre enn tre år?',
                 }),
             ).getByRole('radio', { name: 'Nei' }),
         );
@@ -216,9 +214,9 @@ describe('<LeggTilAndreInntekterWizard>', () => {
 
         await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
         await userEvent.click(screen.getByRole('radio', { name: /Jeg er fisker eller mannskap på båt/ }));
-        await userEvent.click(screen.getByRole('button', { name: 'Neste' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
         await userEvent.click(screen.getByRole('radio', { name: 'Lott' }));
-        await userEvent.click(screen.getByRole('button', { name: 'Neste' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
 
         expect(screen.queryByText('Er virksomheten registrert i Norge?')).not.toBeInTheDocument();
         await userEvent.type(screen.getByLabelText('Når startet du virksomheten?'), '30.04.2023');
@@ -228,13 +226,13 @@ describe('<LeggTilAndreInntekterWizard>', () => {
             }),
         );
         await userEvent.type(
-            screen.getByLabelText('Hva har du hatt i næringsresultat før skatt de siste 12 månedene?'),
+            screen.getByLabelText('Hva var næringsresultatet ditt før skatt de siste 12 månedene?'),
             '1000',
         );
         await userEvent.click(
             within(
                 screen.getByRole('radiogroup', {
-                    name: 'Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?',
+                    name: 'Har du vært yrkesaktiv i mindre enn tre år?',
                 }),
             ).getByRole('radio', { name: 'Nei' }),
         );

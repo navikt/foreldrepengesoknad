@@ -110,7 +110,7 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
         await screen.findAllByText('Arbeidsforhold og inntekt');
         await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
         await userEvent.click(screen.getByRole('radio', { name: /Annen pensjonsgivende inntekt/ }));
-        await userEvent.click(screen.getByRole('button', { name: 'Neste' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
         await userEvent.click(screen.getByRole('radio', { name: 'Etterlønn eller sluttvederlag' }));
         await userEvent.type(screen.getByLabelText('Perioden den gjelder fra'), '01.01.2024');
         await userEvent.type(screen.getByLabelText('Til'), '31.01.2024');

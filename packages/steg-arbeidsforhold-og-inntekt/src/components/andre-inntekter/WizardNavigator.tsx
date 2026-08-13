@@ -20,7 +20,7 @@ export const WizardNavigator = ({ isLastStep, isNextDisabled = false, onCancel, 
                 </Button>
             )}
             <Button type="button" disabled={isNextDisabled} onClick={() => void onNext()}>
-                {isLastStep ? 'Legg til' : 'Neste'}
+                {isLastStep ? 'Legg til' : 'Fortsett'}
             </Button>
         </HStack>
     </HStack>

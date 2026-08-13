@@ -56,6 +56,7 @@ const ArbeidsforholdDefinisjoner = ({ appOrigin }: { appOrigin: AppName }) => {
     return (
         <ExpansionCard
             size="small"
+            defaultOpen
             aria-labelledby={tittelId}
             onToggle={(open) =>
                 loggUmamiEvent({

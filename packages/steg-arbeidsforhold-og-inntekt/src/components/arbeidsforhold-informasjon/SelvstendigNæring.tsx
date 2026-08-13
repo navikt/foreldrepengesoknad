@@ -33,7 +33,7 @@ const NæringPeriode = ({ næring }: { næring: EksternArbeidsforholdDto_fpovers
 const ManglerOpplysninger = () => (
     <InfoCard data-color="warning">
         <InfoCard.Message icon={<ExclamationmarkTriangleIcon aria-hidden />}>
-            Vi trenger flere opplysninger om næringen din. Dette kan du fylle ut i neste steg.
+            Vi mangler opplysninger om næringen. Dette kan du legge til i neste steg.
         </InfoCard.Message>
     </InfoCard>
 );

@@ -71,15 +71,10 @@ export const ArbeidsforholdOppsummering = ({
                         )}
                     </FormSummary.Value>
                 </FormSummary.Answer>
-                {frilansoppdrag.length === 0 && (
+                {!erForeldrepenger && frilansoppdrag.length === 0 && (
                     <FormSummary.Answer>
                         <FormSummary.Label>
-                            {erForeldrepenger && (
-                                <FormattedMessage id="ArbeidsforholdOppsummering.HarDuJobbetSomFrilansFp" />
-                            )}
-                            {!erForeldrepenger && (
-                                <FormattedMessage id="ArbeidsforholdOppsummering.HarDuJobbetSomFrilans" />
-                            )}
+                            <FormattedMessage id="ArbeidsforholdOppsummering.HarDuJobbetSomFrilans" />
                         </FormSummary.Label>
                         <FormSummary.Value>
                             <JaNeiTekst ja={arbeidsforholdOgInntekt.harJobbetSomFrilans} />
@@ -87,19 +82,16 @@ export const ArbeidsforholdOppsummering = ({
                     </FormSummary.Answer>
                 )}
 
-                <FormSummary.Answer>
-                    <FormSummary.Label>
-                        {erForeldrepenger && (
-                            <FormattedMessage id="ArbeidsforholdOppsummering.HarJobbetSomSelvstendigNæringsdrivendeFp" />
-                        )}
-                        {!erForeldrepenger && (
+                {!erForeldrepenger && (
+                    <FormSummary.Answer>
+                        <FormSummary.Label>
                             <FormattedMessage id="ArbeidsforholdOppsummering.HarJobbetSomSelvstendigNæringsdrivende" />
-                        )}
-                    </FormSummary.Label>
-                    <FormSummary.Value>
-                        <JaNeiTekst ja={arbeidsforholdOgInntekt.harJobbetSomSelvstendigNæringsdrivende} />
-                    </FormSummary.Value>
-                </FormSummary.Answer>
+                        </FormSummary.Label>
+                        <FormSummary.Value>
+                            <JaNeiTekst ja={arbeidsforholdOgInntekt.harJobbetSomSelvstendigNæringsdrivende} />
+                        </FormSummary.Value>
+                    </FormSummary.Answer>
+                )}
                 {!erForeldrepenger && (
                     <FormSummary.Answer>
                         <FormSummary.Label>

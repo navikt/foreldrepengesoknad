@@ -33,7 +33,7 @@ export const FrilansOppdrag = ({ frilansoppdrag }: Props) => {
                     >
                         Frilanser
                     </Tag>
-                    <ReadMore header={<FormattedMessage id="inntektsinformasjon.frilansoppdrag.label" />}>
+                    <ReadMore header={<FormattedMessage id="inntektsinformasjon.frilansoppdrag.visOppdrag" />}>
                         <List>
                             {frilansoppdrag.map((arbforhold) => (
                                 <List.Item

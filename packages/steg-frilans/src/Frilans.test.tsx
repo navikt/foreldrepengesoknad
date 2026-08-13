@@ -16,7 +16,7 @@ describe('<Arbeid som frilanser>', () => {
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(screen.getAllByText('Du må oppgi en startdato.')[0]).toBeInTheDocument();
-        expect(screen.getAllByText('Du må oppgi om du fortsatt jobber som frilanser.')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('Du må oppgi om du fortsatt er frilanser.')[0]).toBeInTheDocument();
     });
 
     it('skal ikke vise feilmelding, alt er utfylt', async () => {
@@ -25,13 +25,13 @@ describe('<Arbeid som frilanser>', () => {
         render(<Default saveOnNext={saveOnNext} />);
 
         expect(await screen.findByText('Når startet du som frilanser?')).toBeInTheDocument();
-        expect(screen.getByText('Jobber du fortsatt som frilanser?')).toBeInTheDocument();
+        expect(screen.getByText('Er du fortsatt frilanser?')).toBeInTheDocument();
 
         const frilansStartdatoInput = screen.getByLabelText('Når startet du som frilanser?');
         await userEvent.type(frilansStartdatoInput, dayjs('2023-12-30').format('DD.MM.YYYY'));
         await userEvent.tab();
 
-        expect(screen.getByText('Jobber du fortsatt som frilanser?')).toBeInTheDocument();
+        expect(screen.getByText('Er du fortsatt frilanser?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -48,7 +48,7 @@ describe('<Arbeid som frilanser>', () => {
         render(<Default />);
 
         expect(await screen.findByText('Når startet du som frilanser?')).toBeInTheDocument();
-        expect(screen.getByText('Jobber du fortsatt som frilanser?')).toBeInTheDocument();
+        expect(screen.getByText('Er du fortsatt frilanser?')).toBeInTheDocument();
 
         const frilansStartdatoInput = screen.getByLabelText('Når startet du som frilanser?');
         await userEvent.type(frilansStartdatoInput, 'sjnkf');

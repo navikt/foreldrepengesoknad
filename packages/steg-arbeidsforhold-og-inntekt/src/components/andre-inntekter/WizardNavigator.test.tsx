@@ -12,7 +12,7 @@ describe('<WizardNavigator>', () => {
 
         expect(screen.queryByRole('button', { name: 'Tilbake' })).not.toBeInTheDocument();
         await userEvent.click(screen.getByRole('button', { name: 'Avbryt' }));
-        await userEvent.click(screen.getByRole('button', { name: 'Neste' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
 
         expect(onCancel).toHaveBeenCalledOnce();
         expect(onNext).toHaveBeenCalledOnce();
