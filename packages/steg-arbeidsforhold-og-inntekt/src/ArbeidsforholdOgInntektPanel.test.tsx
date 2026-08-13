@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import type { NæringDto } from '@navikt/fp-types';
@@ -57,6 +57,27 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
         await userEvent.click(screen.getByText('Legg til inntekt'));
 
         expect(screen.getByText('Hvilken type inntekt har du hatt?')).toBeInTheDocument();
+    });
+
+    it('skal vise definisjoner av arbeidsforhold og inntekt i et åpent kort', async () => {
+        render(<ForForeldrepenger />);
+
+        await screen.findAllByText('Arbeidsforhold og inntekt');
+
+        const card = screen.getByRole('region', {
+            name: 'Hvordan defineres ulike typer arbeidsforhold og inntekt?',
+        });
+        const toggle = within(card).getByRole('button', { name: 'Vis mer' });
+
+        expect(toggle).toHaveAttribute('aria-expanded', 'true');
+        expect(screen.getByText('Hva er selvstendig næring?')).toBeVisible();
+        expect(screen.getByText('Hvordan defineres frilans?')).toBeVisible();
+        expect(screen.getByText('Er du fisker eller mannskap på båt?')).toBeVisible();
+        expect(screen.getByText('Har du hatt annen pensjonsgivende inntekt?')).toBeVisible();
+
+        await userEvent.click(toggle);
+
+        expect(toggle).toHaveAttribute('aria-expanded', 'false');
     });
 
     it('skal vise andre inntekter som en egen boks i sammendraget', async () => {

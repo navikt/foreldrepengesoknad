@@ -144,6 +144,7 @@ const LeggTilAndreInntekterWizardInner = ({
     if (step === 'ANNEN_INNTEKT') {
         return (
             <AnnenInntektForm
+                harRegistrertNæring={harRegistrertNæring}
                 onAbort={avsluttWizard}
                 onBack={harRegistrertNæring ? undefined : () => setStep('VELG_INNTEKTSTYPE')}
                 onSubmit={(annenInntekt) => {
@@ -359,6 +360,7 @@ const EgenBåtInntekt = (props: FiskerNæringProps) => {
 };
 
 interface AnnenInntektFormProps {
+    harRegistrertNæring: boolean;
     onAbort: () => void;
     onBack?: () => void;
     onSubmit: (annenInntekt: AndreInntektskilder) => void;
@@ -370,7 +372,13 @@ type AnnenInntektValg =
 
 type AnnenInntektStep = 'VELG_INNTEKTSTYPE' | 'FYLL_UT_INNTEKT';
 
-const AnnenInntektForm = ({ onAbort, onBack, onSubmit, onSubmitEgenNæring }: AnnenInntektFormProps) => {
+const AnnenInntektForm = ({
+    harRegistrertNæring,
+    onAbort,
+    onBack,
+    onSubmit,
+    onSubmitEgenNæring,
+}: AnnenInntektFormProps) => {
     const [valgtInntektstype, setValgtInntektstype] = useState<AnnenInntektValg>();
     const [step, setStep] = useState<AnnenInntektStep>('VELG_INNTEKTSTYPE');
     const formMethods = useForm<AndreInntekterFormValues>({
@@ -403,7 +411,7 @@ const AnnenInntektForm = ({ onAbort, onBack, onSubmit, onSubmitEgenNæring }: An
                     onChange={velgInntektstype}
                 >
                     <Radio value="JOBB_I_UTLANDET">Jobb i utlandet</Radio>
-                    <Radio value="NÆRING_I_UTLANDET">Næring i utlandet</Radio>
+                    {!harRegistrertNæring && <Radio value="NÆRING_I_UTLANDET">Næring i utlandet</Radio>}
                     <Radio value="ETTERLØNN_SLUTTPAKKE">Etterlønn eller sluttvederlag</Radio>
                     <Radio value="MILITÆR_ELLER_SIVILTJENESTE">Førstegangstjeneste</Radio>
                 </RadioGroup>

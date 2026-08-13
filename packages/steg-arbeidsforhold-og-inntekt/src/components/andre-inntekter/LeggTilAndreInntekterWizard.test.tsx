@@ -145,6 +145,7 @@ describe('<LeggTilAndreInntekterWizard>', () => {
         expect(screen.queryByText('Hvilken type inntekt har du hatt?')).not.toBeInTheDocument();
         expect(screen.queryByRole('radio', { name: /ektefelles næring/ })).not.toBeInTheDocument();
         expect(screen.queryByRole('radio', { name: /fisker eller mannskap/ })).not.toBeInTheDocument();
+        expect(screen.queryByRole('radio', { name: 'Næring i utlandet' })).not.toBeInTheDocument();
         expect(screen.queryByRole('button', { name: 'Tilbake' })).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByRole('button', { name: 'Avbryt' }));
@@ -154,9 +155,11 @@ describe('<LeggTilAndreInntekterWizard>', () => {
 
     it('skal vise skjema for næring i utlandet', async () => {
         const onSaveEgenNæring = vi.fn();
-        renderWizard({ harRegistrertNæring: true, onSaveEgenNæring });
+        renderWizard({ onSaveEgenNæring });
 
         await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
+        await userEvent.click(screen.getByRole('radio', { name: /Annen pensjonsgivende inntekt/ }));
+        await userEvent.click(screen.getByRole('button', { name: 'Neste' }));
 
         const inntektstyper = screen.getAllByRole('radio');
         expect(inntektstyper.map((radio) => radio.nextElementSibling?.textContent)).toEqual([
