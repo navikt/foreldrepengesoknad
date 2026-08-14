@@ -46,11 +46,21 @@ export const useFinnFørsteSubmitFeilmelding = ({
         oppgittAnnenForelder?.harRettPåForeldrepengerIEØS === true;
     const erAleneOmOmsorg = oppgittAnnenForelder ? oppgittAnnenForelder.erAleneOmOmsorg : true;
 
+    const søkersForelder = erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
+
+    const finnSøkersPerioder = (perioder: UttaksplanPerioder) =>
+        perioder
+            .filter((periode) => Uttaksperioden.erIkkeEøsPeriode(periode))
+            .filter((periode) => periode.forelder === søkersForelder);
+
     const manglerPerioderEtterValg = (perioder: UttaksplanPerioder) =>
         perioder.length === 0 && !harBrukerKunSlettetPerioder(uttaksplan, opprinneligPlan);
 
+    // Innsendinga inneheld berre søkjaren sine eigne perioder (sjå filtrerUtAnnenPartsPerioder i apiUtils),
+    // så valideringa må sjå på dei same periodane. Ser ein på heile planen, kan annen part sine perioder
+    // "dekke over" at søkjaren ikkje har eigne perioder, og backend svarar då at uttaksplanen er tom.
     const manglerUttaksperioderForNySøknad = (perioder: UttaksplanPerioder) =>
-        !erEndringssøknad && !harMinstEnUttaksEllerOverføringsperiode(perioder);
+        !erEndringssøknad && !harMinstEnUttaksEllerOverføringsperiode(finnSøkersPerioder(perioder));
 
     const harOvertrukketDager = () => erAntallDagerOvertrukket;
 
@@ -62,13 +72,8 @@ export const useFinnFørsteSubmitFeilmelding = ({
             perioder,
         );
 
-    const manglerGraderingsaktivitet = (perioder: UttaksplanPerioder) => {
-        const søkersForelder = erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
-        const søkersPerioder = perioder.filter(
-            (periode) => Uttaksperioden.erIkkeEøsPeriode(periode) && periode.forelder === søkersForelder,
-        );
-        return harPeriodeMedUkjentGraderingsaktivitet(søkersPerioder, søkersForelder);
-    };
+    const manglerGraderingsaktivitet = (perioder: UttaksplanPerioder) =>
+        harPeriodeMedUkjentGraderingsaktivitet(finnSøkersPerioder(perioder), søkersForelder);
 
     const harKunPerioderForDenAndreForelderen = (perioder: UttaksplanPerioder) =>
         harKunPerioderForAnnenForelder(erSøkerFarEllerMedmor, erAleneOmOmsorg, perioder);
