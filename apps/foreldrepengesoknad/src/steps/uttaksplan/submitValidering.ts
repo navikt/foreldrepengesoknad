@@ -50,7 +50,7 @@ export const useFinnFørsteSubmitFeilmelding = ({
 
     const finnSøkersPerioder = (perioder: UttaksplanPerioder) =>
         perioder
-            .filter(Uttaksperioden.erIkkeEøsPeriode)
+            .filter((periode) => Uttaksperioden.erIkkeEøsPeriode(periode))
             .filter((periode) => periode.forelder === søkersForelder);
 
     const manglerPerioderEtterValg = (perioder: UttaksplanPerioder) =>
