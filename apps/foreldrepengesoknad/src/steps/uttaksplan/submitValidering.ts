@@ -49,7 +49,9 @@ export const useFinnFørsteSubmitFeilmelding = ({
     const søkersForelder = erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
 
     const finnSøkersPerioder = (perioder: UttaksplanPerioder) =>
-        perioder.filter((periode) => Uttaksperioden.erIkkeEøsPeriode(periode) && periode.forelder === søkersForelder);
+        perioder
+            .filter(Uttaksperioden.erIkkeEøsPeriode)
+            .filter((periode) => periode.forelder === søkersForelder);
 
     const manglerPerioderEtterValg = (perioder: UttaksplanPerioder) =>
         perioder.length === 0 && !harBrukerKunSlettetPerioder(uttaksplan, opprinneligPlan);
