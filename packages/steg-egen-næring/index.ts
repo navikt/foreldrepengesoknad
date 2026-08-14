@@ -9,3 +9,4 @@ export const egenNæringMessages = {
 };
 
 export { EgenNæringForm, EgenNæringPanel, EGEN_NÆRING_ID } from './src/EgenNæringPanel';
+export { getForhåndsvalgtNæringstype } from './src/getForhåndsvalgtNæringstype';

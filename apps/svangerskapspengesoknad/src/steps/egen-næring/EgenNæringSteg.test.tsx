@@ -18,8 +18,9 @@ describe('<EgenNæringSteg>', () => {
 
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Hvilken type virksomhet har du?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Jordbruk'));
+        expect(await screen.findByText('Hvilken type næring har du hatt?')).toBeInTheDocument();
+        expect(await screen.findByRole('radio', { name: 'Gårdsdrift' })).toBeChecked();
+        await userEvent.click(screen.getByText('Gårdsdrift'));
 
         const virksomhetsnavnInput = screen.getByLabelText('Hva heter virksomheten?');
         await userEvent.type(virksomhetsnavnInput, 'Virksomhetsnavn AS');
@@ -37,13 +38,11 @@ describe('<EgenNæringSteg>', () => {
         await userEvent.click(screen.getAllByText('Ja')[0]!);
 
         const næringsresultatInput = screen.getByLabelText(
-            'Hva har du hatt i næringsresultat før skatt de siste 12 månedene?',
+            'Hva var næringsresultatet ditt før skatt de siste 12 månedene?',
         );
         await userEvent.type(næringsresultatInput, '1000');
 
-        expect(
-            screen.getByText('Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?'),
-        ).toBeInTheDocument();
+        expect(screen.getByText('Har du vært yrkesaktiv i mindre enn tre år?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Nei')[1]!);
 
         await userEvent.click(screen.getByText('Neste steg'));

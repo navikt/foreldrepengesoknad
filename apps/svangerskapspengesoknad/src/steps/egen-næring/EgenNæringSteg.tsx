@@ -1,13 +1,15 @@
+import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
+import { selvstendigNæringOptions } from 'appData/queries';
 import { SøknadRoute } from 'appData/routes';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { FormattedMessage } from 'react-intl';
 import { getRuteVelgArbeidEllerSkjema as getRuteSkjemaEllerVelgArbeid } from 'utils/tilretteleggingUtils';
 
-import { EgenNæringPanel } from '@navikt/fp-steg-egen-naering';
+import { EgenNæringPanel, getForhåndsvalgtNæringstype } from '@navikt/fp-steg-egen-naering';
 import { EksternArbeidsforholdDto_fpoversikt, NæringDto } from '@navikt/fp-types';
-import { SkjemaRotLayout } from '@navikt/fp-ui';
+import { SkjemaRotLayout, Spinner } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 type Props = {
@@ -25,6 +27,7 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
+    const selvstendigNæringQuery = useQuery(selvstendigNæringOptions());
 
     const onSubmit = (values: NæringDto) => {
         oppdaterEgenNæring(values);
@@ -35,10 +38,15 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
         return navigator.goToStep(nextRoute);
     };
 
+    if (selvstendigNæringQuery.isPending) {
+        return <Spinner />;
+    }
+
     return (
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <EgenNæringPanel
                 egenNæring={egenNæring}
+                initialNæringstype={getForhåndsvalgtNæringstype(selvstendigNæringQuery.data ?? [])}
                 saveOnNext={onSubmit}
                 onAvsluttOgSlett={avbrytSøknad}
                 onFortsettSenere={navigator.fortsettSøknadSenere}

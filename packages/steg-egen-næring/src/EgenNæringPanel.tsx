@@ -68,6 +68,7 @@ const validateEgenNæringNavn = (intl: IntlShape, erValgfri: boolean) => (value:
 
 interface Props<TYPE> {
     egenNæring?: NæringDto;
+    initialNæringstype?: NæringDto['næringstype'];
     saveOnNext: (formValues: NæringDto) => void;
     onAvsluttOgSlett: () => void;
     onFortsettSenere?: () => void;
@@ -79,6 +80,7 @@ interface Props<TYPE> {
 
 interface EgenNæringFormProps {
     egenNæring?: NæringDto;
+    initialNæringstype?: NæringDto['næringstype'];
     fixedNæringstype?: NæringDto['næringstype'];
     fixedRegistrertINorge?: boolean;
     onSubmit: (formValues: NæringDto) => void;
@@ -92,6 +94,7 @@ export const EGEN_NÆRING_ID = 'naering';
 
 export const EgenNæringForm = ({
     egenNæring,
+    initialNæringstype,
     fixedNæringstype,
     fixedRegistrertINorge,
     onSubmit,
@@ -112,7 +115,7 @@ export const EgenNæringForm = ({
         shouldUnregister: true,
         defaultValues: {
             ...egenNæring,
-            næringstype: fixedNæringstype ?? egenNæring?.næringstype,
+            næringstype: fixedNæringstype ?? egenNæring?.næringstype ?? initialNæringstype,
             registrertINorge: fixedRegistrertINorge ?? egenNæring?.registrertINorge,
             pågående: egenNæringDefaultValue,
         },
@@ -406,6 +409,7 @@ export const EgenNæringForm = ({
 
 export const EgenNæringPanel = <TYPE extends string>({
     egenNæring,
+    initialNæringstype,
     saveOnNext,
     onAvsluttOgSlett,
     onFortsettSenere,
@@ -415,7 +419,13 @@ export const EgenNæringPanel = <TYPE extends string>({
     appOrigin,
 }: Props<TYPE>) => (
     <Step steps={stepConfig} onStepChange={onStepChange} someFieldsOptional>
-        <EgenNæringForm egenNæring={egenNæring} fixedRegistrertINorge onSubmit={saveOnNext} appOrigin={appOrigin}>
+        <EgenNæringForm
+            egenNæring={egenNæring}
+            initialNæringstype={initialNæringstype}
+            fixedRegistrertINorge
+            onSubmit={saveOnNext}
+            appOrigin={appOrigin}
+        >
             <StepButtonsHookForm<NæringFormValues>
                 onAvsluttOgSlett={onAvsluttOgSlett}
                 onFortsettSenere={onFortsettSenere}

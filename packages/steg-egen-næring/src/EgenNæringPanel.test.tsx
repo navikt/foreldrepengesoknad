@@ -15,6 +15,45 @@ import nbMessages from './intl/messages/nb_NO.json';
 const { Default } = composeStories(stories);
 
 describe('<Arbeid som selvstendig næringsdrivende>', () => {
+    it('skal forhåndsvelge en redigerbar næringstype', async () => {
+        render(
+            <IntlProvider locale="nb" messages={{ ...formHookMessages.nb, ...nbMessages }}>
+                <EgenNæringForm
+                    initialNæringstype="ANNEN"
+                    appOrigin="foreldrepengesoknad"
+                    onSubmit={vi.fn()}
+                    withoutFormElement
+                />
+            </IntlProvider>,
+        );
+
+        expect(screen.getByRole('radio', { name: 'Annet' })).toBeChecked();
+
+        await userEvent.click(screen.getByRole('radio', { name: 'Gårdsdrift' }));
+
+        expect(screen.getByRole('radio', { name: 'Gårdsdrift' })).toBeChecked();
+    });
+
+    it('skal prioritere mellomlagret næringstype over foreslått næringstype', () => {
+        render(
+            <IntlProvider locale="nb" messages={{ ...formHookMessages.nb, ...nbMessages }}>
+                <EgenNæringForm
+                    initialNæringstype="ANNEN"
+                    egenNæring={{
+                        fom: '2023-04-30',
+                        næringstype: 'JORDBRUK_SKOGBRUK',
+                        registrertINorge: true,
+                    }}
+                    appOrigin="foreldrepengesoknad"
+                    onSubmit={vi.fn()}
+                    withoutFormElement
+                />
+            </IntlProvider>,
+        );
+
+        expect(screen.getByRole('radio', { name: 'Gårdsdrift' })).toBeChecked();
+    });
+
     it('skal låse næringstype til fiske i plugin-varianten', async () => {
         const onSubmit = vi.fn();
 
