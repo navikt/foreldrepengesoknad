@@ -4,6 +4,7 @@ import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
 import { BlueRadioGroup } from 'components/form-wrappers/BlueRadioGroup';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
@@ -38,6 +39,15 @@ export const FordelingSteg = ({ stønadskvoter }: Props) => {
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
 
+    // Fordeling er steget rett før PlanenDeres i planleggerflyten (sjå PlanleggerRouter), som
+    // gjer det til det mest sannsynlege neste steget herfrå. PlanenDeres-steget er lazy-lasta
+    // fordi det trekker inn @navikt/fp-uttaksplan, den klart tyngste enkeltavhengigheten i
+    // appen. Ved å prefetche chunken her, mens brukaren fordeler dagane, rekk han/ho gjerne å
+    // bli lasta ned før brukaren faktisk navigerer til PlanenDeres.
+    useEffect(() => {
+        void import('steps/planen-deres/PlanenDeresSteg');
+    }, []);
+
     const fordeling = useContextGetData(ContextDataType.FORDELING);
     const { dekningsgrad } = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
@@ -67,7 +77,8 @@ export const FordelingSteg = ({ stønadskvoter }: Props) => {
 
     const hvemStarterPermisjon = formMethods.watch('hvemStarterPermisjon');
 
-    const skalSpørreOmHvemSomStarterPermisjonen = kanVelgeHvemSomStarterPermisjonen(hvemPlanlegger) && erBarnetAdoptert(barnet);
+    const skalSpørreOmHvemSomStarterPermisjonen =
+        kanVelgeHvemSomStarterPermisjonen(hvemPlanlegger) && erBarnetAdoptert(barnet);
     const navnForHvemStarterPermisjon = kanVelgeHvemSomStarterPermisjonen(hvemPlanlegger)
         ? getNavnForHvemStarterPermisjon(hvemPlanlegger, intl)
         : undefined;
@@ -145,7 +156,11 @@ export const FordelingSteg = ({ stønadskvoter }: Props) => {
                                     </Radio>
                                     <Radio value="søker2">{navnForHvemStarterPermisjon.navnSøker2}</Radio>
                                 </BlueRadioGroup>
-                                <ReadMore header={<FormattedMessage id="FordelingSteg.HvemStarterPermisjon.ReadMore.Tittel" />}>
+                                <ReadMore
+                                    header={
+                                        <FormattedMessage id="FordelingSteg.HvemStarterPermisjon.ReadMore.Tittel" />
+                                    }
+                                >
                                     <FormattedMessage id="FordelingSteg.HvemStarterPermisjon.ReadMore.Tekst" />
                                 </ReadMore>
                             </>
@@ -221,4 +236,3 @@ export const FordelingSteg = ({ stønadskvoter }: Props) => {
         </PlanleggerStepPage>
     );
 };
-

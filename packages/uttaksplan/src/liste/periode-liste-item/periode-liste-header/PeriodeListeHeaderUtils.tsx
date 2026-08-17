@@ -16,6 +16,7 @@ import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../types/UttaksplanPeriode';
 import {
+    erAlleUttaksplanperioderAvslått,
     erUttaksplanperiodeErForelderMor,
     erUttaksplanperiodeEøs,
     erUttaksplanperiodeFamiliehendelseDato,
@@ -23,7 +24,6 @@ import {
     erUttaksplanperiodeTapteDager,
     erUttaksplanperiodeUtenUttak,
     erUttaksplanperiodeUtsettelse,
-    erAlleUttaksplanperioderAvslått,
     getSisteUttaksplanperiodeTom,
     getUttaksplanperiodeForelder,
     getUttaksplanperiodeUtsettelseÅrsak,

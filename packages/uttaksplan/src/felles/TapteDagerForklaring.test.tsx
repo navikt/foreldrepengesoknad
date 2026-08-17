@@ -45,10 +45,7 @@ const DEFAULT_DATA = {
     erEndringssøknad: false,
 } satisfies ComponentProps<typeof UttaksplanDataProvider>;
 
-const renderForklaring = (
-    fom: string,
-    customData?: Partial<ComponentProps<typeof UttaksplanDataProvider>>,
-) => {
+const renderForklaring = (fom: string, customData?: Partial<ComponentProps<typeof UttaksplanDataProvider>>) => {
     const data = { ...DEFAULT_DATA, ...customData } as ComponentProps<typeof UttaksplanDataProvider>;
     return render(
         <IntlProvider locale="nb" messages={messages}>

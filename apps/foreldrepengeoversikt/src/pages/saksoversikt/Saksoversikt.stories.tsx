@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router';
 import { annenPartVedtak } from 'storybookData/annenPartVedtak/annenPartVedtak';
 import { dokumenter } from 'storybookData/dokumenter/dokumenter';
 import { manglendeVedlegg } from 'storybookData/manglendeVedlegg/manglendeVedlegg';
@@ -49,17 +49,16 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Foreldrepenger: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
-                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelserFP)),
-                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
-                http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
+            http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+            http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelserFP)),
+            http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
+            http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
+        );
     },
+
     args: {
         søkerinfo: søkerinfo,
         saksnummer: '1',
@@ -93,14 +92,13 @@ const engangsstønadHandlers = [
 ];
 
 export const Engangsstønad: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                ...engangsstønadHandlers,
-                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_ES_førstegangssøknad)),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            ...engangsstønadHandlers,
+            http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_ES_førstegangssøknad)),
+        );
     },
+
     args: {
         søkerinfo: søkerinfo,
         saksnummer: '352011079',
@@ -121,14 +119,13 @@ const svangerskapspengerHandlers = [
 ];
 
 export const Svangerskapspenger: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                ...svangerskapspengerHandlers,
-                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelserFP)),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            ...svangerskapspengerHandlers,
+            http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelserFP)),
+        );
     },
+
     args: {
         saksnummer: '202',
         søkerinfo: søkerinfo,
@@ -136,17 +133,16 @@ export const Svangerskapspenger: Story = {
 };
 
 export const ForeldrepengerTestAvSkyraNyligInnsending: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
-                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_FP_førstegangssøknad_nylig)),
-                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
-                http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
+            http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+            http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_FP_førstegangssøknad_nylig)),
+            http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
+            http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
+        );
     },
+
     args: {
         søkerinfo: søkerinfo,
         saksnummer: '1',
@@ -154,17 +150,16 @@ export const ForeldrepengerTestAvSkyraNyligInnsending: Story = {
 };
 
 export const ForeldrepengerTestAvSkyraGammelInnsending: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
-                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_FP_førstegangssøknad_gammel)),
-                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
-                http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
+            http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+            http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_FP_førstegangssøknad_gammel)),
+            http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
+            http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
+        );
     },
+
     args: {
         søkerinfo: søkerinfo,
         saksnummer: '1',
@@ -172,17 +167,16 @@ export const ForeldrepengerTestAvSkyraGammelInnsending: Story = {
 };
 
 export const ForeldrepengerEndringssøknad: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
-                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_FP_endringssøknad_nylig)),
-                http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
-                http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
+            http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+            http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_FP_endringssøknad_nylig)),
+            http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
+            http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
+        );
     },
+
     args: {
         søkerinfo: søkerinfo,
         saksnummer: '1',
@@ -190,25 +184,23 @@ export const ForeldrepengerEndringssøknad: Story = {
 };
 
 export const EngangsstønadTestAvSkyraNyligInnsending: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                ...engangsstønadHandlers,
-                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_ES_førstegangssøknad_nylig)),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            ...engangsstønadHandlers,
+            http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_ES_førstegangssøknad_nylig)),
+        );
     },
+
     args: Engangsstønad.args,
 };
 
 export const SvangerskapspengerTestAvSkyraNyligInnsending: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                ...svangerskapspengerHandlers,
-                http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_SVP_førstegangssøknad_nylig)),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            ...svangerskapspengerHandlers,
+            http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_SVP_førstegangssøknad_nylig)),
+        );
     },
+
     args: Svangerskapspenger.args,
 };

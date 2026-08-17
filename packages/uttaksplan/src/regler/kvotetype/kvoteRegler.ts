@@ -1,4 +1,9 @@
-import type { BrukerRolleSak_fpoversikt, Familiesituasjon, KontoTypeUttak, RettighetType_fpoversikt } from '@navikt/fp-types';
+import type {
+    BrukerRolleSak_fpoversikt,
+    Familiesituasjon,
+    KontoTypeUttak,
+    RettighetType_fpoversikt,
+} from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
@@ -78,8 +83,8 @@ const harPeriodeFørSeksUkerEtterFamiliehendelsesdato = (k: KvoteKontekst) =>
         k.familiehendelsedato,
     );
 
-const harPeriodeMerEnn60DagerFørFamiliehendelsesdato = (k: KvoteKontekst) =>
-    UttaksperiodeValidatorer.erNoenPerioderMerEnn60DagerFørFamiliehendelsesdato(
+const harPeriodeMerEnnTolvUkerFørFamiliehendelsesdato = (k: KvoteKontekst) =>
+    UttaksperiodeValidatorer.erNoenPerioderMerEnnTolvUkerFørFamiliehendelsesdato(
         k.valgtePerioder,
         k.familiehendelsedato,
     );
@@ -185,8 +190,9 @@ const MOR_FORELDREPENGER: Kvoteregel<KvoteKontekst> = {
     beskrivelse:
         'Foreldrepenger kan velges av mor ved adopsjon, eller ellers når perioden følger reglene om ' +
         'foreldrepenger rundt fødsel/termin: ved aleneomsorg/bare-mor-har-rett må perioden være innenfor ' +
-        '60 dager før familiehendelsesdato og utenfor intervallet 3 uker før til familiehendelsesdato; ellers ' +
-        'kan perioden ikke ligge innenfor de første seks ukene etter familiehendelsesdato.',
+        '12 uker (60 uttaksdager) før familiehendelsesdato og utenfor intervallet 3 uker før til ' +
+        'familiehendelsesdato; ellers kan perioden ikke ligge innenfor de første seks ukene etter ' +
+        'familiehendelsesdato.',
     erGyldig: (k) => {
         if (!morErAktuell(k)) {
             return false;
@@ -197,7 +203,7 @@ const MOR_FORELDREPENGER: Kvoteregel<KvoteKontekst> = {
         if (!harKunEnPartRett(k) && harPeriodeFørSeksUkerEtterFamiliehendelsesdato(k)) {
             return false;
         }
-        if (harKunEnPartRett(k) && harPeriodeMerEnn60DagerFørFamiliehendelsesdato(k)) {
+        if (harKunEnPartRett(k) && harPeriodeMerEnnTolvUkerFørFamiliehendelsesdato(k)) {
             return false;
         }
         if (harKunEnPartRett(k) && harPeriodeInnenforTreUkerFørFamDatoOgFamDato(k)) {
@@ -225,7 +231,7 @@ const MOR_FELLESPERIODE: Kvoteregel<KvoteKontekst> = {
     beskrivelse:
         'Fellesperiode kan velges av mor ved adopsjon, eller ellers når perioden ikke ligger i de seks ' +
         'første ukene etter familiehendelsesdato, ikke i intervallet 3 uker før familiehendelsesdato til ' +
-        'familiehendelsesdatoen, og ikke mer enn 60 dager før familiehendelsesdatoen.',
+        'familiehendelsesdatoen, og ikke mer enn 12 uker (60 uttaksdager) før familiehendelsesdatoen.',
     erGyldig: (k) => {
         if (!morErAktuell(k)) {
             return false;
@@ -239,7 +245,7 @@ const MOR_FELLESPERIODE: Kvoteregel<KvoteKontekst> = {
         if (harPeriodeInnenforTreUkerFørFamDatoOgFamDato(k)) {
             return false;
         }
-        if (harPeriodeMerEnn60DagerFørFamiliehendelsesdato(k)) {
+        if (harPeriodeMerEnnTolvUkerFørFamiliehendelsesdato(k)) {
             return false;
         }
         return true;
@@ -252,8 +258,7 @@ const FAR_MEDMOR_FORELDREPENGER_FØR_FØDSEL: Kvoteregel<KvoteKontekst> = {
     id: 'farMedmorKvoter.foreldrepengerFørFødsel',
     forelder: 'FAR_MEDMOR',
     kontotype: 'FORELDREPENGER_FØR_FØDSEL',
-    beskrivelse:
-        'Foreldrepenger før fødsel gjelder kun mor og er aldri tilgjengelig for far/medmor.',
+    beskrivelse: 'Foreldrepenger før fødsel gjelder kun mor og er aldri tilgjengelig for far/medmor.',
     erGyldig: () => false,
 };
 
@@ -297,8 +302,7 @@ const FAR_MEDMOR_FEDREKVOTE: Kvoteregel<KvoteKontekst> = {
     forelder: 'FAR_MEDMOR',
     kontotype: 'FEDREKVOTE',
     beskrivelse:
-        'Fedrekvote kan velges av far/medmor når perioden ikke ligger mer enn 2 uker før ' +
-        'familiehendelsesdatoen.',
+        'Fedrekvote kan velges av far/medmor når perioden ikke ligger mer enn 2 uker før ' + 'familiehendelsesdatoen.',
     erGyldig: (k) => farMedmorErAktuell(k) && !harPeriodeFørToUkerFørFamiliehendelsesdato(k),
 };
 
@@ -335,9 +339,9 @@ const FAR_MEDMOR_FELLESPERIODE: Kvoteregel<KvoteKontekst> = {
     beskrivelse:
         'Fellesperiode kan velges av far/medmor: ved flerbarnsdager er den alltid tilgjengelig. Ellers ' +
         'er den ikke gyldig dersom perioden ligger i intervallet 3 uker før familiehendelsesdato til ' +
-        'familiehendelsesdatoen, mer enn 60 dager før familiehendelsesdatoen, mer enn 2 uker før ' +
-        'familiehendelsesdatoen, eller i de første seks ukene etter familiehendelsesdato samtidig som ' +
-        'samtidig uttak er valgt.',
+        'familiehendelsesdatoen, mer enn 12 uker (60 uttaksdager) før familiehendelsesdatoen, mer enn ' +
+        '2 uker før familiehendelsesdatoen, eller i de første seks ukene etter familiehendelsesdato ' +
+        'samtidig som samtidig uttak er valgt.',
     erGyldig: (k) => {
         if (!farMedmorErAktuell(k)) {
             return false;
@@ -348,7 +352,7 @@ const FAR_MEDMOR_FELLESPERIODE: Kvoteregel<KvoteKontekst> = {
         if (harPeriodeInnenforTreUkerFørFamDatoOgFamDato(k)) {
             return false;
         }
-        if (harPeriodeMerEnn60DagerFørFamiliehendelsesdato(k)) {
+        if (harPeriodeMerEnnTolvUkerFørFamiliehendelsesdato(k)) {
             return false;
         }
         if (harPeriodeInnenforFamDatoOgSeksUkerEtterFamDato(k) && k.harValgtSamtidigUttak) {

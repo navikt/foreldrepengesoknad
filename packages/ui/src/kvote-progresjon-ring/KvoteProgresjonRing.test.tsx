@@ -3,13 +3,8 @@ import { render, screen } from '@testing-library/react';
 
 import * as stories from './KvoteProgresjonRing.stories';
 
-const {
-    Modrekvote_Delvis,
-    Modrekvote_Ferdig,
-    Fellesperiode_Splitta,
-    Mini_Mor,
-    AlleFireRingar,
-} = composeStories(stories);
+const { Modrekvote_Delvis, Modrekvote_Ferdig, Fellesperiode_Splitta, Mini_Mor, AlleFireRingar } =
+    composeStories(stories);
 
 describe('<KvoteProgresjonRing>', () => {
     it('viser etikett for mødrekvote', async () => {

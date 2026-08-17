@@ -6,6 +6,15 @@
     "type": "module",
     "main": "index.ts",
     "types": "index.ts",
+    "exports": {
+        ".": "./index.ts",
+        "./validators": "./src/utils/index-utils.ts",
+        "./flerbarnsdager": "./src/utils/index-utils.ts",
+        "./periode-utils": "./src/utils/index-utils.ts",
+        "./intl": "./src/utils/index-utils.ts",
+        "./delt-uttak": "./src/utils/index-utils.ts",
+        "./ikke-delt-uttak": "./src/utils/index-utils.ts"
+    },
     "scripts": {
         "build:storybook": "storybook build -o .storybook-static-build",
         "test": "vitest --project=jsdom --watch=false",
@@ -42,6 +51,7 @@
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
+        "@storybook/addon-a11y": "catalog:",
         "@storybook/addon-links": "catalog:",
         "@storybook/react-vite": "catalog:",
         "@testing-library/jest-dom": "catalog:",

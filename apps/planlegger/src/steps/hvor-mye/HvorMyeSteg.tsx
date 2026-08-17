@@ -9,6 +9,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { HvorMye } from 'types/HvorMye';
 import { erAlenesøker, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
+import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
 import { BodyShort, Heading, Link, Spacer, VStack } from '@navikt/ds-react';
 
@@ -19,6 +20,7 @@ import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils';
 import { isValidNumberForm, notEmpty } from '@navikt/fp-validation';
 
+import { HarIkkeRettTilFpInfobox } from './infoboks/HarIkkeRettTilFpInfobox';
 import { Utbetaling } from './infoboks/Utbetaling';
 
 interface Props {
@@ -59,6 +61,14 @@ export const HvorMyeSteg = ({ satser }: Props) => {
     const lønnSøker1Valid = erValidLønn(lønnSøker1);
     const lønnSøker2Valid = erValidLønn(lønnSøker2);
 
+    const grunnbeløpet = finnSisteGrunnbeløp(satser);
+    const minÅrslønn = Math.round(grunnbeløpet / 2);
+
+    const årslønnSøker1 = Number(lønnSøker1) * 12;
+    const årslønnSøker2 = Number(lønnSøker2) * 12;
+    const harSøker1IkkeRettTilFp = årslønnSøker1 < minÅrslønn;
+    const harSøker2IkkeRettTilFp = årslønnSøker2 < minÅrslønn;
+
     const onSubmit = (formValues: HvorMye) => {
         oppdaterHvorMye(formValues);
         navigator.goToNextStep(PlanleggerRoutes.HVOR_LANG_PERIODE);
@@ -92,7 +102,10 @@ export const HvorMyeSteg = ({ satser }: Props) => {
                                     description={intl.formatMessage({ id: 'HvorMyeSteg.LønnBeskrivelse' })}
                                 />
                             </BluePanel>
-                            {lønnSøker1Valid && (
+                            {lønnSøker1Valid && harSøker1IkkeRettTilFp && (
+                                <HarIkkeRettTilFpInfobox antattÅrslønn={årslønnSøker1} minÅrslønn={minÅrslønn} />
+                            )}
+                            {lønnSøker1Valid && !harSøker1IkkeRettTilFp && (
                                 <Utbetaling
                                     lønnSøker={Number(lønnSøker1)}
                                     satser={satser}
@@ -122,7 +135,10 @@ export const HvorMyeSteg = ({ satser }: Props) => {
                                         description={intl.formatMessage({ id: 'HvorMyeSteg.LønnBeskrivelse' })}
                                     />
                                 </BluePanel>
-                                {lønnSøker2Valid && (
+                                {lønnSøker2Valid && harSøker2IkkeRettTilFp && (
+                                    <HarIkkeRettTilFpInfobox antattÅrslønn={årslønnSøker2} minÅrslønn={minÅrslønn} />
+                                )}
+                                {lønnSøker2Valid && !harSøker2IkkeRettTilFp && (
                                     <Utbetaling
                                         satser={satser}
                                         lønnSøker={Number(lønnSøker2)}

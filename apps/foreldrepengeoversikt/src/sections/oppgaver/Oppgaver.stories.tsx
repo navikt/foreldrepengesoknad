@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 
 import { withQueryClient } from '@navikt/fp-utils-test';
 
@@ -24,31 +24,29 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.get(API_URLS.minidialog, () =>
-                    HttpResponse.json([
-                        {
-                            saksnr: '352011079',
-                            opprettet: '2023-02-09',
-                        },
-                    ]),
-                ),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.get(API_URLS.minidialog, () =>
+                HttpResponse.json([
+                    {
+                        saksnr: '352011079',
+                        opprettet: '2023-02-09',
+                    },
+                ]),
+            ),
+        );
     },
+
     args: {
         saksnummer: '352011079',
     },
 };
 
 export const FeilIMinidialogApiKall: Story = {
-    parameters: {
-        msw: {
-            handlers: [http.get(API_URLS.minidialog, () => new HttpResponse(null, { status: 400 }))],
-        },
+    beforeEach({ msw }) {
+        msw.use(http.get(API_URLS.minidialog, () => new HttpResponse(null, { status: 400 })));
     },
+
     args: {
         saksnummer: '352011079',
     },

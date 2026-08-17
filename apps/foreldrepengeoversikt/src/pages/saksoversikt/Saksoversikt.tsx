@@ -2,10 +2,11 @@ import { FilesIcon, FolderFileIcon, PencilIcon, WalletIcon } from '@navikt/aksel
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import { Suspense, lazy } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
-import { Alert, BodyShort, HGrid, HStack, Heading, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, HGrid, HStack, Heading, Skeleton, VStack } from '@navikt/ds-react';
 
 import { DEFAULT_SATSER, links } from '@navikt/fp-constants';
 import { SkyraSurvey } from '@navikt/fp-observability';
@@ -28,7 +29,6 @@ import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
-import { DinPlan } from '../../sections/din-plan/DinPlan.tsx';
 import { Oppgaver } from '../../sections/oppgaver/Oppgaver';
 import { Tidslinje } from '../../sections/tidslinje/Tidslinje.tsx';
 import { TidslinjeSkeleton } from '../../sections/tidslinje/TidslinjeSkeleton.tsx';
@@ -39,6 +39,13 @@ import { BeregningLenkePanel } from '../beregning-page/BeregningLenkePanel.tsx';
 import { InntektsmeldingLenkePanel } from '../inntektsmelding-page/InntektsmeldingLenkePanel';
 
 dayjs.extend(isSameOrBefore);
+
+// DinPlan drar med seg de tunge UI-komponentene i @navikt/fp-uttaksplan (kalender, liste,
+// kvoteoppsummering). Den lastes derfor lazy, siden den kun vises for FORELDREPENGER-saker,
+// slik at brukere med SVANGERSKAPSPENGER- eller ENGANGSSTØNAD-saker ikke trenger disse bytene.
+const DinPlan = lazy(() =>
+    import('../../sections/din-plan/DinPlan.tsx').then((module) => ({ default: module.DinPlan })),
+);
 
 interface Props {
     søkerinfo: OversiktPersonopplysningerDto_fpoversikt;
@@ -179,15 +186,17 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                             showSkeleton={annenPartsVedtakQuery.isLoading}
                             skeletonProps={{ height: '210px', variant: 'rounded' }}
                         >
-                            <DinPlan
-                                sak={gjeldendeSak}
-                                annenPartsPerioder={annenPartsVedtakQuery.data?.perioder ?? []}
-                                navnPåForeldre={getNavnPåForeldre(
-                                    gjeldendeSak,
-                                    søkerinfo.navn.fornavn,
-                                    getNavnAnnenForelder(søkerinfo, gjeldendeSak, intl),
-                                )}
-                            />
+                            <Suspense fallback={<Skeleton height="210px" variant="rounded" />}>
+                                <DinPlan
+                                    sak={gjeldendeSak}
+                                    annenPartsPerioder={annenPartsVedtakQuery.data?.perioder ?? []}
+                                    navnPåForeldre={getNavnPåForeldre(
+                                        gjeldendeSak,
+                                        søkerinfo.navn.fornavn,
+                                        getNavnAnnenForelder(søkerinfo, gjeldendeSak, intl),
+                                    )}
+                                />
+                            </Suspense>
                         </ContentSection>
                     </div>
                 )}

@@ -2,7 +2,8 @@ import { Preview } from '@storybook/react-vite';
 import dayjs from 'dayjs';
 import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
-import { initialize, mswLoader } from 'msw-storybook-addon';
+import { mswLoader } from 'msw-storybook-addon/csf3';
+import type { SetupWorker } from 'msw/browser';
 
 import { formHookMessages } from '@navikt/fp-form-hooks';
 import { uiMessages } from '@navikt/fp-ui';
@@ -59,14 +60,13 @@ export const globalTypes = {
     },
 };
 
-initialize({
-    onUnhandledRequest: 'bypass',
-    serviceWorker: {
-        url: './mockServiceWorker.js',
-    },
-});
-
 const preview: Preview = {
+    parameters: {
+        // a11y-addonen viser tilgjengelegheitsbrot i eit eige panel i Storybook UI-et, til lokal DX-feedback.
+        // Han er ikkje ein CI-gate (best-practice-regler på isolerte komponentar gir mykje støy) - sjå
+        // packages/utils-test/src/a11y/uuTest.ts for den faktiske a11y-testinga i CI.
+        a11y: { test: 'todo' },
+    },
     decorators: [
         withIntlProvider,
         withThemeDecorator,
@@ -77,16 +77,43 @@ const preview: Preview = {
 
             return (
                 <div style={{ display: 'flex', flexDirection: 'column', minHeight: 'calc(100vh - 50px)' }}>
-                    <div style={{ backgroundColor: '#AC7976' }}>--- Nav Header (Placeholder) ---</div>
+                    {/* Nav-dekoratøren rendrar reelle header/footer-landemerke i produksjon; simuler det
+                        same her slik at axe-testane ikkje slår ut på mangel som ikkje finst i drift. */}
+                    <header style={{ backgroundColor: '#AC7976', color: '#000000' }}>
+                        --- Nav Header (Placeholder) ---
+                    </header>
                     <div id="app">
                         <Story />
                     </div>
-                    <div style={{ backgroundColor: '#AC7976' }}>--- Nav Footer (Placeholder) ---</div>
+                    <footer style={{ backgroundColor: '#AC7976', color: '#000000' }}>
+                        --- Nav Footer (Placeholder) ---
+                    </footer>
                 </div>
             );
         },
     ],
-    loaders: [mswLoader],
+    loaders: [
+        mswLoader(async () => {
+            // jsdom-testene har ingen service worker; bruk msw/node-server der.
+            // I nettleseren (Storybook og browser-mode-tester) bruker vi service worker.
+            if (import.meta.env['TEST_MODE'] === 'jsdom-mode') {
+                const { setupServer } = await import('msw/node');
+                const server = setupServer();
+                server.listen({ onUnhandledRequest: 'bypass' });
+                return server as unknown as SetupWorker;
+            }
+
+            const { setupWorker } = await import('msw/browser');
+            const worker = setupWorker();
+            await worker.start({
+                onUnhandledRequest: 'bypass',
+                serviceWorker: {
+                    url: './mockServiceWorker.js',
+                },
+            });
+            return worker;
+        }),
+    ],
 };
 
 //eslint-disable-next-line import-x/no-default-export

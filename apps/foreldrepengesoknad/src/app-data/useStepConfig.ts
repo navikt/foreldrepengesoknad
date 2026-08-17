@@ -1,7 +1,7 @@
 import { REQUIRED_APP_STEPS, REQUIRED_APP_STEPS_ENDRINGSSØKNAD, ROUTES_ORDER, SøknadRoutes } from 'appData/routes.ts';
 import { useMemo } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import { skalViseOmsorgsovertakelseDokumentasjon } from 'steps/manglende-vedlegg/dokumentasjon/OmsorgsovertakelseDokumentasjon.tsx';
 import { skalViseTerminbekreftelseDokumentasjon } from 'steps/manglende-vedlegg/dokumentasjon/TerminbekreftelseDokumentasjon.tsx';
 import { AnnenInntektType } from 'types/AndreInntektskilder';
@@ -161,7 +161,7 @@ export const useStepConfig = (
     eksisterendeSak: FpSak_fpoversikt | undefined = undefined,
 ) => {
     const intl = useIntl();
-    const pathToLabelMap = getPathToLabelMap(intl);
+    const pathToLabelMap = useMemo(() => getPathToLabelMap(intl), [intl]);
 
     const location = useLocation();
     const getStateData = useContextGetAnyData();
@@ -182,7 +182,7 @@ export const useStepConfig = (
                     ? [path]
                     : [],
             ),
-        [requiredSteps, getStateData, arbeidsforhold, erEndringssøknad, eksisterendeSak],
+        [requiredSteps, getStateData, arbeidsforhold, eksisterendeSak],
     );
 
     return useMemo(

@@ -1,6 +1,7 @@
 import { fetchDecoratorHtml, injectDecoratorServerSide } from '@navikt/nav-dekoratoren-moduler/ssr/index.js';
 import { addViteModeHtmlToResponse } from '@navikt/vite-mode';
 import { Router } from 'express';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 
 import config from './config.js';
@@ -26,11 +27,41 @@ export const setupAndServeHtml = async (router: Router) => {
         filePath: spaFilePath,
         ...dekoratørProps,
     });
-    const renderedHtml = replaceAppSettings(html);
+    const renderedHtml = replaceNaisMetaTags(replaceAppSettings(html));
+    const appVersionEtag = config.app.version
+        ? `W/"${createHash('sha256').update(config.app.version).digest('hex')}"`
+        : undefined;
 
-    router.get('*splat', (_, response) => {
+    router.get('*splat', (request, response) => {
+        response.set('Cache-Control', 'private, max-age=0, must-revalidate');
+
+        if (appVersionEtag) {
+            response.set('ETag', appVersionEtag);
+            if (request.fresh) {
+                response.status(304).end();
+                return;
+            }
+        }
+
         response.send(renderedHtml);
     });
+};
+
+const replaceNaisMetaTags = (html: string) => {
+    const metaTags = [
+        { name: 'nais-telemetry-url', content: process.env.NAIS_FRONTEND_TELEMETRY_COLLECTOR_URL },
+        { name: 'nais-app', content: process.env.NAIS_APP_NAME },
+        { name: 'nais-team', content: process.env.NAIS_TEAM ?? process.env.NAIS_NAMESPACE },
+        { name: 'nais-cluster', content: process.env.NAIS_CLUSTER_NAME },
+        { name: 'nais-version', content: process.env.NAIS_APP_IMAGE?.split(':').at(-1) },
+    ];
+
+    const tags = metaTags
+        .filter((tag): tag is { name: string; content: string } => Boolean(tag.content))
+        .map((tag) => `<meta name="${tag.name}" content="${tag.content}" />`)
+        .join('\n        ');
+
+    return html.replaceAll('{{{NAIS_META_TAGS}}}', tags);
 };
 
 const replaceAppSettings = (html: string) => {
@@ -52,7 +83,6 @@ const setupViteMode = (router: Router) => {
         indexFilePath: 'src/bootstrap.tsx',
         subpath: config.app.publicPath,
         mountId: 'app',
-        setCSPHeaders: true,
     });
     router.get('*splat', async (request, response, next) => {
         const viteModeHtml = response.viteModeHtml;

@@ -110,17 +110,11 @@ export const Month = React.memo(
                         </HGrid>
 
                         {Array.from({ length: nrOfWeeks }).map((_, week) => {
-                            const weekNr = firstDayOfMonth
-                                .add(week * 7 - (startWeekDay - 1), 'day')
-                                .isoWeek();
+                            const weekNr = firstDayOfMonth.add(week * 7 - (startWeekDay - 1), 'day').isoWeek();
                             return (
                                 <HGrid key={`week-${weekNr}`} columns={nrOfColumns}>
                                     {showWeekNumbers && (
-                                        <div
-                                            key={`weeknr-${weekNr}`}
-                                            className={styles.weeknr}
-                                            data-testid="ukenummer"
-                                        >
+                                        <div key={`weeknr-${weekNr}`} className={styles.weeknr} data-testid="ukenummer">
                                             {weekNr}
                                         </div>
                                     )}

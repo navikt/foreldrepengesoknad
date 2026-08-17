@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 import * as stories from './HvorLangPeriodeSteg.stories';
 
@@ -16,8 +16,8 @@ const {
     FlereForsørgereEttBarnBeggeHarRettAdopsjon,
 } = composeStories(stories);
 
-vi.mock('react-router-dom', async () => {
-    const actual = await vi.importActual('react-router-dom');
+vi.mock('react-router', async () => {
+    const actual = await vi.importActual('react-router');
     return {
         ...actual,
         useNavigate: vi.fn(),
@@ -245,10 +245,10 @@ describe('<HvorLangPeriodePlanleggerSteg>', () => {
 
         await userEvent.click(screen.getByText('100 % utbetaling over 49 uker'));
 
-        expect(screen.queryByText('Siste dag med foreldrepenger kan bli mandag 15. juni 2026')).toBeInTheDocument();
+        expect(screen.getByText('Siste dag med foreldrepenger kan bli mandag 15. juni 2026')).toBeInTheDocument();
 
         expect(
-            screen.queryByText(
+            screen.getByText(
                 'Dette er hvis dere har foreldrepenger sammenhengende fra omsorgsovertagelsen den 08. juli 2025.',
             ),
         ).toBeInTheDocument();

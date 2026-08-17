@@ -25,14 +25,13 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const SkalIkkeFeileOpplasting: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(API_URLS.lastOppFPVedlegg, () => new HttpResponse(null, { status: 200 })),
-                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.lastOppFPVedlegg, () => new HttpResponse(null, { status: 200 })),
+            http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
+        );
     },
+
     args: {
         onSubmit: action('button-click'),
         ettersendelseErSendt: false,
@@ -47,13 +46,12 @@ export const SkalIkkeFeileOpplasting: Story = {
 };
 
 export const SkalFeileOpplasting: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(API_URLS.lastOppFPVedlegg, () => new HttpResponse(null, { status: 400 })),
-                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.lastOppFPVedlegg, () => new HttpResponse(null, { status: 400 })),
+            http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
+        );
     },
+
     args: SkalIkkeFeileOpplasting.args,
 };

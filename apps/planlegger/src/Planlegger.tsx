@@ -9,7 +9,7 @@ import { API_URLS } from 'appData/queries';
 import ky from 'ky';
 import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
@@ -65,6 +65,12 @@ const getStønadskvoter = async (
     return ky.post(API_URLS.konto, { json: params }).json<KontoBeregningResultatDto>();
 };
 
+const harGyldigDato = (omBarnet?: OmBarnetPlanlegger): boolean =>
+    !!omBarnet &&
+    ((erBarnetFødt(omBarnet) && !!omBarnet.fødselsdato) ||
+        (erBarnetUFødt(omBarnet) && !!omBarnet.termindato) ||
+        (erBarnetAdoptert(omBarnet) && !!omBarnet.overtakelsesdato));
+
 export const PlanleggerDataFetcher = () => {
     const omBarnet = useContextGetData(ContextDataType.OM_BARNET);
     const arbeidssituasjon = useContextGetData(ContextDataType.ARBEIDSSITUASJON);
@@ -75,7 +81,7 @@ export const PlanleggerDataFetcher = () => {
     const stønadskvoterData = useQuery({
         queryKey: ['KVOTER', omBarnet, arbeidssituasjon, hvemPlanlegger],
         queryFn: () => getStønadskvoter(omBarnet, arbeidssituasjon, hvemPlanlegger),
-        enabled: hvemHarRett !== undefined && hvemHarRett !== 'ingenHarRett',
+        enabled: hvemHarRett !== undefined && hvemHarRett !== 'ingenHarRett' && harGyldigDato(omBarnet),
         select: (data: KontoBeregningResultatDto): KontoBeregningResultatDto => {
             // TODO (TOR) Dette bør ligga i backend. Verkar pussig å henta kontoar for far-og-far, og så modifisera det her
 

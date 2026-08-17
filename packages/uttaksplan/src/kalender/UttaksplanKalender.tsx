@@ -40,30 +40,25 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
         return () => scrollAbortRef.current?.abort();
     }, []);
 
-    const setEndredePerioderMedScroll = useCallback(
-        (perioder: Array<{ fom: string; tom: string }>) => {
-            if (perioder.length === 0) {
-                setEndredePerioder([]);
-                return;
+    const setEndredePerioderMedScroll = useCallback((perioder: Array<{ fom: string; tom: string }>) => {
+        if (perioder.length === 0) {
+            setEndredePerioder([]);
+            return;
+        }
+
+        const førsteDato = dayjs(perioder[0]!.fom);
+        const element = document.querySelector(`[data-month-key="${førsteDato.year()}-${førsteDato.month()}"]`);
+
+        scrollAbortRef.current?.abort();
+        scrollAbortRef.current = new AbortController();
+        const signal = scrollAbortRef.current.signal;
+
+        void ventPåScrollFerdig(element, signal).then(() => {
+            if (!signal.aborted) {
+                setEndredePerioder(perioder);
             }
-
-            const førsteDato = dayjs(perioder[0]!.fom);
-            const element = document.querySelector(
-                `[data-month-key="${førsteDato.year()}-${førsteDato.month()}"]`,
-            );
-
-            scrollAbortRef.current?.abort();
-            scrollAbortRef.current = new AbortController();
-            const signal = scrollAbortRef.current.signal;
-
-            void ventPåScrollFerdig(element, signal).then(() => {
-                if (!signal.aborted) {
-                    setEndredePerioder(perioder);
-                }
-            });
-        },
-        [],
-    );
+        });
+    }, []);
 
     const setRedigeringAktivOgValgtePerioder = useCallback<React.Dispatch<React.SetStateAction<CalendarPeriod[]>>>(
         (perioder) => {

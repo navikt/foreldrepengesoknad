@@ -1,9 +1,9 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { renderHook } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import { API_URLS } from 'appData/queries';
 import ky, { type KyResponse } from 'ky';
 import { ReactNode } from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { Dokumentasjon } from 'types/Dokumentasjon';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
@@ -117,7 +117,7 @@ describe('useEsSendSøknad', () => {
             wrapper: getWrapper(omBarnetAdopsjon, DOKUMENTASJON),
         });
 
-        await result.current.sendSøknad();
+        await act(() => result.current.sendSøknad());
 
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
@@ -165,7 +165,7 @@ describe('useEsSendSøknad', () => {
             wrapper: getWrapper(omBarnetErFødt),
         });
 
-        await result.current.sendSøknad();
+        await act(() => result.current.sendSøknad());
 
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
@@ -205,7 +205,7 @@ describe('useEsSendSøknad', () => {
             wrapper: getWrapper(omBarnetVenterPåFødsel, { ...DOKUMENTASJON, terminbekreftelsedato: '2024-01-01' }),
         });
 
-        await result.current.sendSøknad();
+        await act(() => result.current.sendSøknad());
 
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(

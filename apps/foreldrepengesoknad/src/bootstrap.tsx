@@ -6,7 +6,6 @@ import './styles/app.css';
 
 void bootstrapApp({
     sentryDsn: 'https://8e90481464a4442db8c86bc31b9e41ad@sentry.gc.nav.no/11',
-    appName: 'foreldrepengesoknad',
     availableLocales: ['nb', 'nn'],
     app: <AppContainer />,
 });

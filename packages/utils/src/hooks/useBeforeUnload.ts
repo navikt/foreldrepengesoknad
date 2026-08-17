@@ -1,15 +1,15 @@
 import { useEffect, useRef } from 'react';
 
 export const useBeforeUnload = (fn: () => void) => {
-    const cb = useRef(fn);
+    const cbRef = useRef(fn);
 
     useEffect(() => {
-        cb.current = fn;
+        cbRef.current = fn;
     }, [fn]);
 
     useEffect(() => {
-        globalThis.addEventListener('beforeunload', cb.current);
+        globalThis.addEventListener('beforeunload', cbRef.current);
 
-        return () => globalThis.removeEventListener('beforeunload', cb.current);
+        return () => globalThis.removeEventListener('beforeunload', cbRef.current);
     }, []);
 };

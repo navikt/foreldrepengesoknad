@@ -4,7 +4,7 @@ import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 import { annenPartVedtak } from 'storybookData/annenPartVedtak';
 import { AnnenForelder } from 'types/AnnenForelder';
@@ -359,9 +359,8 @@ export const FarFødselMorHarVedtak: Story = {
             ],
         },
     },
-    parameters: {
-        msw: {
-            handlers: [http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak))],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)));
     },
 };

@@ -2,7 +2,8 @@ import { Preview } from '@storybook/react-vite';
 import dayjs from 'dayjs';
 import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
-import { initialize, mswLoader } from 'msw-storybook-addon';
+import { mswLoader } from 'msw-storybook-addon/csf3';
+import type { SetupWorker } from 'msw/browser';
 
 import '@navikt/ds-css';
 
@@ -21,6 +22,10 @@ const withIntlProvider = getIntlDecorator({
 });
 
 export const parameters = {
+    // a11y-addonen viser tilgjengelegheitsbrot i eit eige panel i Storybook UI-et, til lokal DX-feedback.
+    // Han er ikkje ein CI-gate (best-practice-regler på isolerte komponentar gir mykje støy) - sjå
+    // packages/utils-test/src/a11y/uuTest.ts for den faktiske a11y-testinga i CI.
+    a11y: { test: 'todo' },
     actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
         matchers: {
@@ -59,15 +64,30 @@ export const globalTypes = {
     },
 };
 
-initialize({
-    onUnhandledRequest: 'bypass',
-    serviceWorker: {
-        url: './mockServiceWorker.js',
-    },
-});
 const preview: Preview = {
     decorators: [withIntlProvider, withThemeDecorator],
-    loaders: [mswLoader],
+    loaders: [
+        mswLoader(async () => {
+            // jsdom-testene har ingen service worker; bruk msw/node-server der.
+            // I nettleseren (Storybook og browser-mode-tester) bruker vi service worker.
+            if (import.meta.env['TEST_MODE'] === 'jsdom-mode') {
+                const { setupServer } = await import('msw/node');
+                const server = setupServer();
+                server.listen({ onUnhandledRequest: 'bypass' });
+                return server as unknown as SetupWorker;
+            }
+
+            const { setupWorker } = await import('msw/browser');
+            const worker = setupWorker();
+            await worker.start({
+                onUnhandledRequest: 'bypass',
+                serviceWorker: {
+                    url: './mockServiceWorker.js',
+                },
+            });
+            return worker;
+        }),
+    ],
 };
 
 //eslint-disable-next-line import-x/no-default-export

@@ -63,9 +63,7 @@ export const erAlleUttaksplanperioderAvslått = (uttaksplanperioder: Uttaksplanp
         uttaksplanperioder.length > 0 &&
         uttaksplanperioder.every(
             (p) =>
-                erVanligUttakPeriode(p) &&
-                erAvslåttPeriode(p) &&
-                p.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER',
+                erVanligUttakPeriode(p) && erAvslåttPeriode(p) && p.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER',
         )
     );
 };

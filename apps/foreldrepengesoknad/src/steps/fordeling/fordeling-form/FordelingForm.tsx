@@ -26,6 +26,7 @@ type Props = {
     goToNextDefaultStep: () => void;
     onAvsluttOgSlett?: () => void;
     onFortsettSenere?: () => void;
+    visOppstartsvalg: boolean;
 };
 
 export const FordelingForm = ({
@@ -37,6 +38,7 @@ export const FordelingForm = ({
     goToNextDefaultStep,
     onAvsluttOgSlett,
     onFortsettSenere,
+    visOppstartsvalg,
 }: Props) => {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
@@ -85,12 +87,14 @@ export const FordelingForm = ({
                         erFarEllerMedmor={erFarEllerMedmor}
                     />
                 )}
-                <OppstartAvForeldrepenger
-                    navnPåForeldre={navnPåForeldre}
-                    erFarEllerMedmor={erFarEllerMedmor}
-                    førsteDagEtterAnnenForelder={førsteDagEtterAnnenForelder}
-                    oppstartsvalg={oppstartsValgOptions}
-                />
+                {visOppstartsvalg && (
+                    <OppstartAvForeldrepenger
+                        navnPåForeldre={navnPåForeldre}
+                        erFarEllerMedmor={erFarEllerMedmor}
+                        førsteDagEtterAnnenForelder={førsteDagEtterAnnenForelder}
+                        oppstartsvalg={oppstartsValgOptions}
+                    />
+                )}
 
                 <StepButtonsHookForm
                     goToPreviousStep={goToPreviousDefaultStep}

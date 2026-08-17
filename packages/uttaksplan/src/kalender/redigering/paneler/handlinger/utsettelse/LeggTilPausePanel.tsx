@@ -54,7 +54,13 @@ export const LeggTilPausePanel = ({ setVisPausePanel }: Props) => {
                     <Button variant="primary" size="small" className="flex-1" disabled={!formMethods.formState.isDirty}>
                         <FormattedMessage id="LeggTilPausePanel.LeggTil" />
                     </Button>
-                    <Button type="button" variant="secondary" size="small" className="flex-1" onClick={() => setVisPausePanel(false)}>
+                    <Button
+                        type="button"
+                        variant="secondary"
+                        size="small"
+                        className="flex-1"
+                        onClick={() => setVisPausePanel(false)}
+                    >
                         <FormattedMessage id="LeggTilPausePanel.Lukk" />
                     </Button>
                 </HStack>

@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { API_URLS } from 'api/queries';
 import { HttpResponse, http } from 'msw';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { annenPartVedtak } from 'storybookData/annenPartVedtak';
 import { kvittering } from 'storybookData/kvittering';
 import { saker } from 'storybookData/saker';
@@ -43,22 +43,22 @@ const søkerinfoKvinne = {
 
 const meta = {
     component: AppContainer,
-    parameters: {
-        msw: {
-            handlers: [
-                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
-                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-                http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
-                http.post(API_URLS.konto, () => HttpResponse.json({ 80: stønadskvoter, 100: stønadskvoter })),
-                http.get(API_URLS.sendSøknad, () => HttpResponse.json(kvittering)),
-                http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 204 })),
-                http.post(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
-                http.post(API_URLS.sendSøknad, () => new HttpResponse(null, { status: 200 })),
-                http.delete(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
-                http.post(API_URLS.sendVedlegg, () => new HttpResponse(null, { status: 200 })),
-            ],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(
+            http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
+            http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+            http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
+            http.post(API_URLS.konto, () => HttpResponse.json({ 80: stønadskvoter, 100: stønadskvoter })),
+            http.get(API_URLS.sendSøknad, () => HttpResponse.json(kvittering)),
+            http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
+            http.post(API_URLS.sendSøknad, () => new HttpResponse(null, { status: 200 })),
+            http.delete(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
+            http.post(API_URLS.sendVedlegg, () => new HttpResponse(null, { status: 200 })),
+        );
     },
+
     render: () => {
         return (
             <MemoryRouter>
@@ -74,20 +74,18 @@ type Story = StoryObj<typeof meta>;
 export const SøkerErMann: Story = {};
 
 export const SøkerErKvinne: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfoKvinne)),
-                http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-                http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
-                http.post(API_URLS.konto, () => HttpResponse.json({ 80: stønadskvoter, 100: stønadskvoter })),
-                http.get(API_URLS.sendSøknad, () => HttpResponse.json(kvittering)),
-                http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
-                http.post(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
-                http.post(API_URLS.sendSøknad, () => new HttpResponse(null, { status: 200 })),
-                http.delete(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
-                http.post(API_URLS.sendVedlegg, () => new HttpResponse(null, { status: 200 })),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfoKvinne)),
+            http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+            http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
+            http.post(API_URLS.konto, () => HttpResponse.json({ 80: stønadskvoter, 100: stønadskvoter })),
+            http.get(API_URLS.sendSøknad, () => HttpResponse.json(kvittering)),
+            http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
+            http.post(API_URLS.sendSøknad, () => new HttpResponse(null, { status: 200 })),
+            http.delete(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
+            http.post(API_URLS.sendVedlegg, () => new HttpResponse(null, { status: 200 })),
+        );
     },
 };

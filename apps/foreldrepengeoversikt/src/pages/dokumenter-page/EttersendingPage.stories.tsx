@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router';
 import { dokumenter } from 'storybookData/dokumenter/dokumenter';
 
 import { withQueryClient } from '@navikt/fp-utils-test';
@@ -28,9 +28,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    parameters: {
-        msw: {
-            handlers: [http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter))],
-        },
+    beforeEach({ msw }) {
+        msw.use(http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)));
     },
 };

@@ -1,7 +1,7 @@
 import { SackKronerIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import { hentInntektsmelding } from '../../api/queries.ts';
 import { LenkePanel } from '../../components/lenke-panel/LenkePanel';

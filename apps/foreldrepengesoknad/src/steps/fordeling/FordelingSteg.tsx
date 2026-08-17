@@ -10,6 +10,7 @@ import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
+import { kanGenerereUttaksplanForslag } from 'steps/uttaksplan/hooks/useUttaksplanForslag';
 import { getIsDeltUttak } from 'utils/annenForelderUtils';
 import { getTermindato } from 'utils/barnUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
@@ -37,6 +38,16 @@ type Props = {
 
 export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
     const intl = useIntl();
+
+    // Fordeling er steget rett før Uttaksplan i søknadsflyten (sjå ROUTES_ORDER), som gjer
+    // det til det mest sannsynlege neste steget herfrå. Uttaksplansteget er lazy-lasta (sjå
+    // ForeldrepengesøknadRoutes) fordi det trekker inn @navikt/fp-uttaksplan, den klart
+    // største enkeltavhengigheten i søknaden. Ved å prefetche chunken her, mens brukaren
+    // fyller ut fordelinga, rekk han/ho gjerne å bli lasta ned før brukaren faktisk navigerer
+    // til Uttaksplan.
+    useEffect(() => {
+        void import('steps/uttaksplan/UttaksplanSteg');
+    }, []);
 
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useFpNavigator(arbeidsforhold, mellomlagreSøknadOgNaviger);
@@ -86,11 +97,25 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
                       uttaksplanAnnenPart,
                   )
                 : [],
-        [valgtStønadskvote, minsterett, søkersituasjon, barn, navnMor, navnFarMedmor, annenForelder, intl, uttaksplanAnnenPart],
+        [
+            valgtStønadskvote,
+            minsterett,
+            søkersituasjon,
+            barn,
+            navnMor,
+            navnFarMedmor,
+            annenForelder,
+            intl,
+            uttaksplanAnnenPart,
+        ],
     );
     const ukerMedFellesperiode = valgtStønadskvote ? getAntallUkerFellesperiode(valgtStønadskvote) : 0;
     const dagerMedFellesperiode = ukerMedFellesperiode * 5;
     const sisteDagAnnenForelder = getSisteUttaksdagAnnenForelder(erFarEllerMedmor, deltUttak, uttaksplanAnnenPart);
+    // Startdatoen som blir spurt om her blir berre brukt til å generere eit forslag til
+    // uttaksplan (useUttaksplanForslag). Om annen part allereie har perioder klarer ikkje den
+    // hooken å lage noko forslag uansett kva startdato som blir valgt, så då spør me ikkje.
+    const visOppstartsvalg = kanGenerereUttaksplanForslag(uttaksplanAnnenPart);
 
     const førsteDagEtterAnnenForelder = sisteDagAnnenForelder
         ? Uttaksdagen.neste(sisteDagAnnenForelder).getDato()
@@ -155,6 +180,7 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
                         onAvsluttOgSlett={avbrytSøknad}
                         onFortsettSenere={navigator.fortsettSøknadSenere}
                         førsteDagEtterAnnenForelder={førsteDagEtterAnnenForelder}
+                        visOppstartsvalg={visOppstartsvalg}
                     />
                 </VStack>
             </Step>

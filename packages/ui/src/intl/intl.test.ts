@@ -15,6 +15,5 @@ createIntlMessagesTest({
     // ProgressStepper.StepCounter sendes til Aksel-komponenten som selv gjør string-interpolering,
     // så den fanges ikke av extract().
     ignoreReferenceKey: (key) =>
-        key.includes('AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.') ||
-        key.includes('ProgressStepper.StepCounter'),
+        key.includes('AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.') || key.includes('ProgressStepper.StepCounter'),
 });

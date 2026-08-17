@@ -1,12 +1,16 @@
-import enMessages from './src/intl/messages/en_US.json';
-import nbMessages from './src/intl/messages/nb_NO.json';
-import nnMessages from './src/intl/messages/nn_NO.json';
-
-export const nyUttaksplanMessages = {
-    nb: nbMessages,
-    nn: nnMessages,
-    en: enMessages,
-};
+/**
+ * ⚠️ Denne barrelen drar med seg HELE pakken (kalender, lister, forslagsmotor)
+ * inn i hovedbunten hvis noe eagerly-lastet (ikke-lazy) kode importerer fra
+ * den – selv én liten funksjon er nok. Uttaksplan-steget er lazy-lastet
+ * nettopp for å unngå dette.
+ *
+ * Trenger kode utenfor steps/uttaksplan/** en util herfra: legg til en egen
+ * subpath i package.json sitt "exports"-kart (se ./validators, ./intl,
+ * ./delt-uttak osv. – alle peker på den samla, lette barrelen
+ * src/utils/index-utils.ts) i stedet for å importere fra denne barrelen
+ * eller fra /src/-stier direkte.
+ */
+export { nyUttaksplanMessages } from './src/intl/nyUttaksplanMessages';
 
 export { UttaksplanDataProvider } from './src/context/UttaksplanDataContext';
 export { UttaksplanRedigeringProvider } from './src/context/UttaksplanRedigeringContext';
@@ -24,10 +28,8 @@ export { useErAntallDagerOvertrukketIUttaksplan } from './src/utils/kvoteOppsumm
 export { UttaksperiodeValidatorer } from './src/utils/UttaksperiodeValidatorer';
 export { skalBesvareFlerbarnsdager } from './src/utils/flerbarnsdager';
 export {
-    sorterUttakPerioder,
     harPeriodeDerMorsAktivitetIkkeErValgt,
     harPeriodeMedUkjentGraderingsaktivitet,
-    getAntallUttaksdagerIVinduRundtFødsel,
     finnAntallTidelerÅTrekke,
     erPerioderEkslFomTomLike,
 } from './src/utils/periodeUtils';

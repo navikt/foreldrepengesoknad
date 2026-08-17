@@ -7,7 +7,11 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, Button, ErrorMessage, HStack, Heading, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
-import { BrukerRolleSak_fpoversikt, UttakPeriode_fpoversikt, UttakPeriodeAnnenpartEøs_fpoversikt } from '@navikt/fp-types';
+import {
+    BrukerRolleSak_fpoversikt,
+    UttakPeriodeAnnenpartEøs_fpoversikt,
+    UttakPeriode_fpoversikt,
+} from '@navikt/fp-types';
 import { Tidsperioden, omitMany } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
@@ -27,10 +31,10 @@ import {
     FormValues as UtsettelseFormValues,
 } from '../../felles/utsettelse/LeggTilUtsettelseForm';
 import { useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
-import { useListePanelInfoAlerts, useKanKunErstatte } from '../../regler/alert/informasjonsAlertHooks';
+import { useKanKunErstatte, useListePanelInfoAlerts } from '../../regler/alert/informasjonsAlertHooks';
 import { lagHvaVilDuGjøreValidatorer } from '../../regler/felt/hvaVilDuGjøre';
 import { useGyldigeKvotetyper } from '../../regler/kvotetype/kvoteRegler';
-import { useHvaVilDuGjøreValgSynlighet, HvaVilDuGjøreValgSynlighet } from '../../regler/synlighet/hvaVilDuGjøreValg';
+import { HvaVilDuGjøreValgSynlighet, useHvaVilDuGjøreValgSynlighet } from '../../regler/synlighet/hvaVilDuGjøreValg';
 import {
     Uttaksplanperiode,
     erEøsUttakPeriode,
@@ -42,11 +46,7 @@ import { erDetEksisterendePerioderEtterValgtePerioder } from '../../utils/period
 import { TidsperiodeSpørsmål } from './/TidsperiodeSpørsmål';
 
 export type HvaVilDuGjøre =
-    | 'LEGG_TIL_FERIE'
-    | 'LEGG_TIL_UTSETTELSE'
-    | 'LEGG_TIL_PAUSE'
-    | 'LEGG_TIL_OPPHOLD'
-    | 'LEGG_TIL_PERIODE';
+    'LEGG_TIL_FERIE' | 'LEGG_TIL_UTSETTELSE' | 'LEGG_TIL_PAUSE' | 'LEGG_TIL_OPPHOLD' | 'LEGG_TIL_PERIODE';
 
 export type FormValues = {
     fom?: string;
@@ -104,9 +104,7 @@ const byggEnkelHandlingPerioder = (
 type UttakPeriodeEllerEøs = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
 
 const erOverlappendeMedEøsPerioder = (perioder: UttakPeriodeEllerEøs[], fom: string, tom: string): boolean =>
-    perioder.some(
-        (periode) => erEøsUttakPeriode(periode) && Tidsperioden.forPeriode(periode).overlapper({ fom, tom }),
-    );
+    perioder.some((periode) => erEøsUttakPeriode(periode) && Tidsperioden.forPeriode(periode).overlapper({ fom, tom }));
 
 const skalViseEndreEllerForskyvPanel = (
     harPeriodeDerMorsAktivitetIkkeErValgt: boolean,
@@ -131,6 +129,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         uttakPerioder,
         foreldreInfo: { søker, rettighetType },
         familiehendelsedato,
+        familiesituasjon,
         erPeriodeneTilAnnenPartLåst,
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
@@ -164,8 +163,10 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
 
     const valgtePerioder = fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [];
 
-    const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } =
-        useVisForskyvEllerErstattPanel(valgtePerioder);
+    const overlapperMedEøsPerioder =
+        !!fomValue && !!tomValue && erOverlappendeMedEøsPerioder(uttakPerioder, fomValue, tomValue);
+
+    const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } = useVisForskyvEllerErstattPanel(valgtePerioder);
 
     const kanKunErstatte = useKanKunErstatte({
         valgtePerioder,
@@ -190,11 +191,6 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
 
         const fom = notEmpty(values.fom);
         const tom = notEmpty(values.tom);
-
-        if (erOverlappendeMedEøsPerioder(uttakPerioder, fom, tom)) {
-            setFeilmelding(intl.formatMessage({ id: 'uttaksplan.overskriderEøs' }));
-            return;
-        }
 
         if (hvaVilDuGjøre === 'LEGG_TIL_PERIODE') {
             const submitFeilmelding = formSubmitValidator([{ fom, tom }], values);
@@ -275,8 +271,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
 
     const perioder = fomValue && tomValue ? [{ fom: fomValue, tom: tomValue }] : [];
 
-    const harGyldigTidsperiode =
-        !!fomValue && !!tomValue && dayjs(fomValue).isValid() && dayjs(tomValue).isValid();
+    const harGyldigTidsperiode = !!fomValue && !!tomValue && dayjs(fomValue).isValid() && dayjs(tomValue).isValid();
 
     const hvaVilDuGjøreSynlighet = useHvaVilDuGjøreValgSynlighet(perioder);
 
@@ -295,6 +290,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         tomValue,
         perioder,
         familiehendelsedato,
+        familiesituasjon,
         søker,
         rettighetType,
     });
@@ -334,6 +330,12 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                 </Alert>
             )}
 
+            {overlapperMedEøsPerioder && (
+                <Alert variant="warning" size="small">
+                    <FormattedMessage id="RedigeringPanel.EøsUttakKanGiAvslag" />
+                </Alert>
+            )}
+
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 {visEndreEllerForskyvPanel && fomValue && tomValue && (
                     <LeggTilPeriodeForskyvEllerErstattPanel
@@ -351,9 +353,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                                 label={intl.formatMessage({ id: 'uttaksplan.valgPanel.label' })}
                                 control={formMethods.control}
                                 validate={[
-                                    isRequired(
-                                        intl.formatMessage({ id: 'leggTilPeriodePanel.hvaVilDuGjøre.påkrevd' }),
-                                    ),
+                                    isRequired(intl.formatMessage({ id: 'leggTilPeriodePanel.hvaVilDuGjøre.påkrevd' })),
                                     ...hvaVilDuGjøreFeltvalidatorer,
                                 ]}
                                 onChange={resetFormValuesVedEndringAvHvaVilDuGjøre}

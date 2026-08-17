@@ -2,7 +2,7 @@ import { composeStories, composeStory } from '@storybook/react-vite';
 import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 
@@ -230,7 +230,7 @@ describe('<AppContainer>', () => {
         await userEvent.click(screen.getByText('Jeg kan ikke oppgi den andre forelderen'));
         await userEvent.click(screen.getByText('Neste steg'));
 
-        // Step 6: PERIODE_MED_FORELDREPENGER - verify 100% pre-selected
+        // Step 6: PERIODE_MED_FORELDREPENGER - verify 100 % pre-selected
         await waitFor(() => expect(screen.getAllByText('Periode med foreldrepenger')).toHaveLength(2));
         expect(screen.getByText('Steg 6 av 8')).toBeInTheDocument();
         expect(screen.getByDisplayValue('100')).toBeInTheDocument();

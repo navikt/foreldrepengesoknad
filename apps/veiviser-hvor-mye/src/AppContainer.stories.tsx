@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { API_URLS } from 'appData/queries';
 import { HttpResponse, http } from 'msw';
 import { StrictMode } from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 
 import type { KontoBeregningResultatDto } from '@navikt/fp-types';
 
@@ -69,11 +69,11 @@ const createKontoHandler = () =>
 const meta = {
     title: 'AppContainer',
     component: AppContainer,
-    parameters: {
-        msw: {
-            handlers: [createKontoHandler()],
-        },
+
+    beforeEach({ msw }) {
+        msw.use(createKontoHandler());
     },
+
     render: () => {
         return (
             <StrictMode>
@@ -91,9 +91,7 @@ type Story = StoryObj<typeof meta>;
 export const HvorMyeVeiviser: Story = {};
 
 export const HvorMyeVeiviserMockaStønadskvoterOgSatser: Story = {
-    parameters: {
-        msw: {
-            handlers: [createKontoHandler()],
-        },
+    beforeEach({ msw }) {
+        msw.use(createKontoHandler());
     },
 };

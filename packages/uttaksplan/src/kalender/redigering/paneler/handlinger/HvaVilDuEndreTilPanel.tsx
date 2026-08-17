@@ -12,7 +12,7 @@ import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forsk
 import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { useKanKunErstatte } from '../../../../regler/alert/informasjonsAlertHooks';
 import { useKnapperIRedigeringspanelSynlighet } from '../../../../regler/synlighet/knapperIRedigeringspanel';
-import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
+import { erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
@@ -57,8 +57,6 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
         sammenslåtteValgtePerioder,
         uttakPerioderInkludertTapteDager,
     );
-
-    const harValgtEøsPeriode = eksisterendePerioderSomErValgt.some((p) => erEøsUttakPeriode(p));
 
     const harPeriodeMedPleiepenger = eksisterendePerioderSomErValgt.some(
         (p) =>
@@ -142,7 +140,7 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
 
                         <PeriodeDetaljerOgInfoMeldinger />
 
-                        {(harPeriodeMedPleiepenger || harValgtEøsPeriode) && (
+                        {harPeriodeMedPleiepenger && (
                             <HStack justify="end">
                                 <Button
                                     type="button"
@@ -154,7 +152,7 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
                                 </Button>
                             </HStack>
                         )}
-                        {!harPeriodeMedPleiepenger && !harValgtEøsPeriode && (
+                        {!harPeriodeMedPleiepenger && (
                             <HStack gap="space-12" wrap={false} className="w-full">
                                 <LeggTilOgEndreKnapp
                                     åpneRedigeringsmodus={åpneRedigeringsmodus}
@@ -224,19 +222,16 @@ const HeaderForDesktop = () => {
                         <FormattedMessage id="RedigeringPanel.EndreTil" />
                     </Heading>
                 </HStack>
-                {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
-                <div onClick={(e) => e.stopPropagation()}>
-                    <Chips size="small">
-                        <Chips.Removable onDelete={() => setValgtePerioder([])}>
-                            {intl.formatMessage(
-                                { id: 'RedigeringPanel.ValgteDager' },
-                                {
-                                    varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
-                                },
-                            )}
-                        </Chips.Removable>
-                    </Chips>
-                </div>
+                <Chips size="small">
+                    <Chips.Removable onDelete={() => setValgtePerioder([])} onClick={(e) => e.stopPropagation()}>
+                        {intl.formatMessage(
+                            { id: 'RedigeringPanel.ValgteDager' },
+                            {
+                                varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
+                            },
+                        )}
+                    </Chips.Removable>
+                </Chips>
             </VStack>
         </Box>
     );
@@ -281,40 +276,37 @@ const HeaderForMobil = ({
                             <FormattedMessage id="RedigeringPanel.EndreTil" />
                         </Heading>
                         {erMinimert && (
-                            // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
-                            <div onClick={(e) => e.stopPropagation()}>
-                                <Chips size="small">
-                                    <Chips.Removable onDelete={() => setValgtePerioder([])}>
-                                        {intl.formatMessage(
-                                            { id: 'RedigeringPanel.ValgteDager' },
-                                            {
-                                                varighet: getVarighetString(
-                                                    finnAntallDager(sammenslåtteValgtePerioder),
-                                                    intl,
-                                                ),
-                                            },
-                                        )}
-                                    </Chips.Removable>
-                                </Chips>
-                            </div>
+                            <Chips size="small">
+                                <Chips.Removable
+                                    onDelete={() => setValgtePerioder([])}
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    {intl.formatMessage(
+                                        { id: 'RedigeringPanel.ValgteDager' },
+                                        {
+                                            varighet: getVarighetString(
+                                                finnAntallDager(sammenslåtteValgtePerioder),
+                                                intl,
+                                            ),
+                                        },
+                                    )}
+                                </Chips.Removable>
+                            </Chips>
                         )}
                     </HStack>
                 </HStack>
 
                 {!erMinimert && (
-                    // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
-                    <div onClick={(e) => e.stopPropagation()}>
-                        <Chips size="small">
-                            <Chips.Removable onDelete={() => setValgtePerioder([])}>
-                                {intl.formatMessage(
-                                    { id: 'RedigeringPanel.ValgteDager' },
-                                    {
-                                        varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
-                                    },
-                                )}
-                            </Chips.Removable>
-                        </Chips>
-                    </div>
+                    <Chips size="small">
+                        <Chips.Removable onDelete={() => setValgtePerioder([])} onClick={(e) => e.stopPropagation()}>
+                            {intl.formatMessage(
+                                { id: 'RedigeringPanel.ValgteDager' },
+                                {
+                                    varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
+                                },
+                            )}
+                        </Chips.Removable>
+                    </Chips>
                 )}
             </VStack>
         </Box>

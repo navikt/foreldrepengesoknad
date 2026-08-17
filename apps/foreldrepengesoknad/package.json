@@ -8,6 +8,7 @@
         "build:storybook": "storybook build -o .storybook-static-build",
         "test": "vitest --project=jsdom --watch=false",
         "test:browser": "vitest --project=browser",
+        "test:browser:a11y": "vitest --project=browser --watch=false src/tilgjengelighet.test.tsx",
         "eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
         "eslint:fix": "eslint --quiet --fix \"./src/**/*.{js,ts,tsx}\"",
         "prettier:fix": "prettier --write src",
@@ -55,13 +56,14 @@
         "react-dom": "catalog:",
         "react-hook-form": "catalog:",
         "react-intl": "catalog:",
-        "react-router-dom": "catalog:"
+        "react-router": "catalog:"
     },
     "devDependencies": {
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
+        "@storybook/addon-a11y": "catalog:",
         "@storybook/react-vite": "catalog:",
         "@testing-library/dom": "catalog:",
         "@testing-library/jest-dom": "catalog:",

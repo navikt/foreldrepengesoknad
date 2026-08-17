@@ -1,5 +1,3 @@
-import { ComponentType, ReactNode } from 'react';
-
 import {
     ExclamationmarkTriangleIcon,
     EyeIcon,
@@ -7,6 +5,8 @@ import {
     ShieldCheckmarkIcon,
     TokenIcon,
 } from '@navikt/aksel-icons';
+import { ComponentType, ReactNode } from 'react';
+
 import { BodyLong, BodyShort, Box, HStack, Heading, Link, Tag, VStack } from '@navikt/ds-react';
 
 /**
@@ -77,7 +77,10 @@ const FARGER = {
         border: 'border-ax-border-danger',
         Icon: ShieldCheckmarkIcon,
     },
-} as const satisfies Record<string, { badge: string; border: string; Icon: ComponentType<{ className?: string; 'aria-hidden'?: boolean }> }>;
+} as const satisfies Record<
+    string,
+    { badge: string; border: string; Icon: ComponentType<{ className?: string; 'aria-hidden'?: boolean }> }
+>;
 
 type Katalogfarge = keyof typeof FARGER;
 
@@ -112,13 +115,13 @@ const Hero = ({ tittel, intro, kildesti, farge, badge }: HeroProps) => {
                     </BodyShort>
                 </HStack>
                 <Heading size="xlarge" level="1">
-                {tittel}
-            </Heading>
-            <BodyLong size="medium" className="max-w-3xl">
-                {intro}
-            </BodyLong>
-        </VStack>
-    </Box>
+                    {tittel}
+                </Heading>
+                <BodyLong size="medium" className="max-w-3xl">
+                    {intro}
+                </BodyLong>
+            </VStack>
+        </Box>
     );
 };
 
@@ -256,7 +259,7 @@ export type RegelkatalogSideProps<T> = {
 export const RegelIdBadge = ({ id }: { id: string }) => (
     <code className="rounded bg-ax-bg-neutral-moderate px-2 py-0.5 font-mono text-xs">
         {id.split('.').map((segment, i, arr) => (
-            <span key={`${i}-${segment}`}>
+            <span key={arr.slice(0, i + 1).join('.')}>
                 {segment}
                 {i < arr.length - 1 && (
                     <>

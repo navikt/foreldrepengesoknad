@@ -44,10 +44,17 @@ export const useHvaVilDuGjøreValgSynlighet = (valgtePerioder: Periode[]): HvaVi
 export const VIS_LEGG_TIL_FERIE_VALG: Synlighetsregel<HvaVilDuGjøreValgKontekst> = {
     id: 'hvaVilDuGjøreValg.visLeggTilFerie',
     beskrivelse:
-        '«Legge til ferie» vises for alle søkere, med ett unntak: for far/medmor med BARE_SØKER_RETT skjules ' +
-        'alternativet når hele det valgte tidsrommet ligger på eller etter seks uker etter familiehendelsesdato ' +
-        '— ferie er da ikke aktuelt, og pause er det riktige valget i stedet.',
-    skalVises: (k) => !erFerieEllerOppholdSkjultForFarMedmorBareRett(k),
+        '«Legge til ferie» vises for alle søkere, med tre unntak: (1) for mor (ikke ved adopsjon) skjules ' +
+        'alternativet når det valgte tidsrommet ligger innenfor de første seks ukene etter familiehendelsesdato ' +
+        '— der er utsettelse (barn/bruker innlagt eller bruker sykdom/skade) det eneste gyldige valget, ikke ' +
+        'ferie. (2) For far/medmor med BARE_SØKER_RETT skjules alternativet når hele det valgte tidsrommet ' +
+        'ligger på eller etter seks uker etter familiehendelsesdato — ferie er da ikke aktuelt, og pause er det ' +
+        'riktige valget i stedet. (3) Alternativet skjules alltid når noen del av det valgte tidsrommet ligger ' +
+        'før familiehendelsesdato — det finnes ingen stønadsrettighet å ta ferie fra før dette tidspunktet.',
+    skalVises: (k) =>
+        !VIS_LEGG_TIL_UTSETTELSE_VALG.skalVises(k) &&
+        !erFerieEllerOppholdSkjultForFarMedmorBareRett(k) &&
+        !erFerieEllerOppholdSkjultFørFamiliehendelsesdato(k),
 };
 
 export const VIS_LEGG_TIL_UTSETTELSE_VALG: Synlighetsregel<HvaVilDuGjøreValgKontekst> = {
@@ -82,10 +89,15 @@ export const VIS_LEGG_TIL_PAUSE_VALG: Synlighetsregel<HvaVilDuGjøreValgKontekst
 export const VIS_LEGG_TIL_OPPHOLD_VALG: Synlighetsregel<HvaVilDuGjøreValgKontekst> = {
     id: 'hvaVilDuGjøreValg.visLeggTilOpphold',
     beskrivelse:
-        '«Legge til periode uten foreldrepenger» vises for alle søkere, med samme unntak som ferie: for ' +
+        '«Legge til periode uten foreldrepenger» vises for alle søkere, med samme unntak som ferie: for mor ' +
+        '(ikke ved adopsjon) skjules alternativet i de første seks ukene etter familiehendelsesdato, for ' +
         'far/medmor med BARE_SØKER_RETT skjules alternativet når hele det valgte tidsrommet ligger på eller ' +
-        'etter seks uker etter familiehendelsesdato.',
-    skalVises: (k) => !erFerieEllerOppholdSkjultForFarMedmorBareRett(k),
+        'etter seks uker etter familiehendelsesdato, og alternativet skjules alltid når noen del av det valgte ' +
+        'tidsrommet ligger før familiehendelsesdato.',
+    skalVises: (k) =>
+        !VIS_LEGG_TIL_UTSETTELSE_VALG.skalVises(k) &&
+        !erFerieEllerOppholdSkjultForFarMedmorBareRett(k) &&
+        !erFerieEllerOppholdSkjultFørFamiliehendelsesdato(k),
 };
 
 export const VIS_LEGG_TIL_PERIODE_VALG: Synlighetsregel<HvaVilDuGjøreValgKontekst> = {
@@ -125,3 +137,6 @@ const erFerieEllerOppholdSkjultForFarMedmorBareRett = (k: HvaVilDuGjøreValgKont
         k.valgtePerioder,
         k.familiehendelsedato,
     );
+
+const erFerieEllerOppholdSkjultFørFamiliehendelsesdato = (k: HvaVilDuGjøreValgKontekst): boolean =>
+    UttaksperiodeValidatorer.erNoenPerioderFørFamiliehendelsesdato(k.valgtePerioder, k.familiehendelsedato);

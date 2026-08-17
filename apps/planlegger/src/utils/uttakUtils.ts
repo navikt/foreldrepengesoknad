@@ -5,7 +5,7 @@ import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { KontoBeregningDto, KontoDto, OmBarnetPlanlegger, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen, treUkerSiden } from '@navikt/fp-utils';
-import { deltUttak, ikkeDeltUttak } from '@navikt/fp-uttaksplan';
+import { deltUttak, ikkeDeltUttak } from '@navikt/fp-uttaksplan/delt-uttak';
 
 import { erFarSøker2, erMedmorDelAvSøknaden } from './HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from './barnetUtils';
@@ -395,9 +395,7 @@ export const getSøkersPerioder = (
     starterForelder?: 'MOR' | 'FAR_MEDMOR',
 ) => {
     const søkersForelder = starterForelder ?? (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR');
-    return erDeltUttak
-        ? gjeldendeUttaksplan.filter((p) => p.forelder === søkersForelder)
-        : gjeldendeUttaksplan;
+    return erDeltUttak ? gjeldendeUttaksplan.filter((p) => p.forelder === søkersForelder) : gjeldendeUttaksplan;
 };
 
 export const getAnnenpartsPerioder = (
@@ -408,7 +406,5 @@ export const getAnnenpartsPerioder = (
 ) => {
     const søkersForelder = starterForelder ?? (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR');
     const annenpartsForelder = søkersForelder === 'MOR' ? 'FAR_MEDMOR' : 'MOR';
-    return erDeltUttak
-        ? gjeldendeUttaksplan.filter((p) => p.forelder === annenpartsForelder)
-        : [];
+    return erDeltUttak ? gjeldendeUttaksplan.filter((p) => p.forelder === annenpartsForelder) : [];
 };

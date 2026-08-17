@@ -528,7 +528,9 @@ describe('UttaksplanListe', () => {
         render(<MarkeringNårGraderingsaktivitetMangler />);
 
         expect(
-            await screen.findByText('Du må velge hvor du skal jobbe samtidig som du har foreldrepenger før du går videre'),
+            await screen.findByText(
+                'Du må velge hvor du skal jobbe samtidig som du har foreldrepenger før du går videre',
+            ),
         ).toBeInTheDocument();
 
         expect(
@@ -840,7 +842,7 @@ describe('UttaksplanListe', () => {
         expect(screen.queryByRole('radio', { name: 'Ferie' })).not.toBeInTheDocument();
     });
 
-    it('Skal ikke kunne endre EØS-perioder', async () => {
+    it('Skal kunne legge inn eget uttak i annen parts EØS-periode, med advarsel om avslag', async () => {
         const oppdaterUttaksplan = vi.fn();
 
         render(<EøsPerioderForAnnenPart oppdaterUttaksplan={oppdaterUttaksplan} />);
@@ -856,18 +858,22 @@ describe('UttaksplanListe', () => {
         await userEvent.type(tilOgMedDato, dayjs('2025-10-15').format('DD.MM.YYYY'));
         await userEvent.tab();
 
+        expect(
+            screen.getByText(
+                'Den andre forelderen mottar pengestøtte i et annet EU/EØS-land. Hvis dere ønsker å motta ' +
+                    'foreldrepenger samtidig, kan dette medføre avslag. Årsaken er at saken må vurderes i ' +
+                    'samsvar med norske regelverk for foreldrepenger.',
+            ),
+        ).toBeInTheDocument();
+
         expect(await screen.findByText('Hva vil du gjøre?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Legge til ferie'));
 
         await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
 
-        expect(screen.getByText('Periode kan ikke overlappe med en eksisterende EU/EØS-periode')).toBeInTheDocument();
-
-        await userEvent.clear(fraOgMedDato);
-        await userEvent.type(fraOgMedDato, dayjs('2025-10-09').format('DD.MM.YYYY'));
-        await userEvent.tab();
-
-        await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
+        expect(
+            screen.queryByText('Periode kan ikke overlappe med en eksisterende EU/EØS-periode'),
+        ).not.toBeInTheDocument();
 
         // Annen parts EØS-perioder ligger låst senere i planen, så «Endre uten å
         // flytte resten av planen» er eneste valg. Da skal spørsmålet ikke vises,

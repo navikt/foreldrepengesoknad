@@ -1,7 +1,7 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getDatoForAleneomsorg, getErMorUfør } from 'utils/annenForelderUtils';
-import { getErSøkerFarEllerMedmor, getKjønnFromFnr } from 'utils/personUtils';
+import { getErFarOgFar, getErSøkerFarEllerMedmor } from 'utils/personUtils';
 
 import {
     Barn,
@@ -153,6 +153,16 @@ const lagDeltUttakForFarMedmor = (
     return forslag;
 };
 
+/**
+ * Om annen part allerede har uttaksperioder (t.d. eit vedtak), klarer ikkje
+ * useUttaksplanForslag å lage eit fornuftig forslag – uansett kva startdato
+ * brukaren ville ha valgt. Denne funksjonen let ein sjekke dette på førehand,
+ * slik at ein kan unngå å spørje brukaren om ein startdato som uansett ikkje
+ * vil bli brukt.
+ */
+export const kanGenerereUttaksplanForslag = (annenPartsPerioder?: UttakPeriode_fpoversikt[]): boolean =>
+    !(annenPartsPerioder !== undefined && annenPartsPerioder.length > 0);
+
 export const useUttaksplanForslag = (
     valgtStønadskvote?: KontoBeregningDto,
     annenPartsPerioder?: UttakPeriode_fpoversikt[],
@@ -163,7 +173,7 @@ export const useUttaksplanForslag = (
     const fordeling = useContextGetData(ContextDataType.FORDELING);
     const familiehendelsedato = getFamiliehendelsedato(barn);
 
-    if ((annenPartsPerioder !== undefined && annenPartsPerioder.length > 0) || !valgtStønadskvote || !fordeling) {
+    if (!kanGenerereUttaksplanForslag(annenPartsPerioder) || !valgtStønadskvote || !fordeling) {
         return [];
     }
 
@@ -219,7 +229,7 @@ export const useUttaksplanForslag = (
         });
     }
 
-    const erFarOgFar = getKjønnFromFnr(annenForelder) === 'M' && søkersituasjon.rolle === 'far';
+    const erFarOgFar = getErFarOgFar(søkersituasjon.rolle, annenForelder);
 
     const bareFarMedmorHarRett =
         søkersituasjon.rolle !== 'mor' &&

@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router';
 import { saker } from 'storybookData/saker/saker';
 
 import { withQueryClient } from '@navikt/fp-utils-test';
@@ -28,9 +28,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    parameters: {
-        msw: {
-            handlers: [http.get(API_URLS.saker, () => HttpResponse.json(saker))],
-        },
+    beforeEach({ msw }) {
+        msw.use(http.get(API_URLS.saker, () => HttpResponse.json(saker)));
     },
 };

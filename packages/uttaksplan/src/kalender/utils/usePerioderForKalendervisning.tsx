@@ -30,7 +30,12 @@ import {
     erVanligUttakPeriode,
 } from '../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
-import { erAvslåttPeriode, erUttaksperiode, harPeriodeDerMorsAktivitetIkkeErValgt, harPeriodeMedUkjentGraderingsaktivitet } from '../../utils/periodeUtils';
+import {
+    erAvslåttPeriode,
+    erUttaksperiode,
+    harPeriodeDerMorsAktivitetIkkeErValgt,
+    harPeriodeMedUkjentGraderingsaktivitet,
+} from '../../utils/periodeUtils';
 import { filtrerBortAnnenPartsIdentiskePerioder } from './uttaksplanKalenderUtils';
 
 export const usePerioderForKalendervisning = (

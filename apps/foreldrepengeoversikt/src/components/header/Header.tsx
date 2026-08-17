@@ -2,7 +2,7 @@ import { BabyWrappedIcon, PersonPregnantIcon, StrollerIcon } from '@navikt/aksel
 import { useQuery } from '@tanstack/react-query';
 import { ReactNode, createElement } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { Sak } from 'types/Sak.ts';
 
 import { Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
@@ -77,12 +77,14 @@ function BabyIkon({ ytelse }: { ytelse: Ytelse | undefined }) {
         <>
             <Show above="md">
                 <div className="bg-ax-brand-blue-400 h-[60px] w-[60px] rounded-full pt-2 pl-2">
-                    {createElement(icon, { fontSize: '44', className: 'text-ax-brand-blue-700' })}
+                    {/* Reint dekorativt – overskrifta ved sida av gir same informasjon. */}
+                    {createElement(icon, { fontSize: '44', className: 'text-ax-brand-blue-700', 'aria-hidden': true })}
                 </div>
             </Show>
             <Show below="md">
                 <div className="bg-ax-brand-blue-400 h-[38px] w-[38px] rounded-full pt-2 pl-2">
-                    {createElement(icon, { fontSize: '22', className: 'text-ax-brand-blue-700' })}
+                    {/* Reint dekorativt – overskrifta ved sida av gir same informasjon. */}
+                    {createElement(icon, { fontSize: '22', className: 'text-ax-brand-blue-700', 'aria-hidden': true })}
                 </div>
             </Show>
         </>

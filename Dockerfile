@@ -14,7 +14,7 @@ ARG SERVER="server"
 
 WORKDIR /app
 
-COPY ${SERVER}/dist/index.js /app/index.js
+COPY ${SERVER}/dist/index.mjs /app/index.mjs
 COPY apps/${APP}/dist /app/public
 
-CMD ["index.js"]
+CMD ["index.mjs"]

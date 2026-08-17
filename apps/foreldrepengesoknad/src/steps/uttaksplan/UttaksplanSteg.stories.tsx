@@ -4,7 +4,7 @@ import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 import { AnnenForelder } from 'types/AnnenForelder';
 import { FellesperiodeFordelingValg, Fordeling, OppstartValg } from 'types/Fordeling';
@@ -143,25 +143,24 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const FødselMorOgFarBeggeHarRett: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
-                http.post(API_URLS.konto, () =>
-                    HttpResponse.json({
-                        '80': {
-                            kontoer: DELT_UTTAK_80,
-                            minsteretter: MINSTERETTER,
-                        },
-                        '100': {
-                            kontoer: DELT_UTTAK_100,
-                            minsteretter: MINSTERETTER,
-                        },
-                    }),
-                ),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.konto, () =>
+                HttpResponse.json({
+                    '80': {
+                        kontoer: DELT_UTTAK_80,
+                        minsteretter: MINSTERETTER,
+                    },
+                    '100': {
+                        kontoer: DELT_UTTAK_100,
+                        minsteretter: MINSTERETTER,
+                    },
+                }),
+            ),
+        );
     },
+
     args: {
         søkerInfo: søkerInfoKvinne,
         søkersituasjon: {
@@ -193,25 +192,24 @@ export const FødselMorOgFarBeggeHarRett: Story = {
 };
 
 export const FødselMorOgFarKunMorHarRett: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
-                http.post(API_URLS.konto, () =>
-                    HttpResponse.json({
-                        '80': {
-                            kontoer: IKKE_DELT_UTTAK_80_MOR,
-                            minsteretter: MINSTERETTER,
-                        },
-                        '100': {
-                            kontoer: IKKE_DELT_UTTAK_100_MOR,
-                            minsteretter: MINSTERETTER,
-                        },
-                    }),
-                ),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.konto, () =>
+                HttpResponse.json({
+                    '80': {
+                        kontoer: IKKE_DELT_UTTAK_80_MOR,
+                        minsteretter: MINSTERETTER,
+                    },
+                    '100': {
+                        kontoer: IKKE_DELT_UTTAK_100_MOR,
+                        minsteretter: MINSTERETTER,
+                    },
+                }),
+            ),
+        );
     },
+
     args: {
         ...FødselMorOgFarBeggeHarRett.args,
         søkerInfo: søkerInfoKvinne,
@@ -243,7 +241,7 @@ export const FødselMorOgFarKunMorHarRett: Story = {
 };
 
 export const FødselMorOgMedmorBeggeHarRett: Story = {
-    parameters: FødselMorOgFarBeggeHarRett.parameters,
+    beforeEach: FødselMorOgFarBeggeHarRett.beforeEach,
     args: {
         ...FødselMorOgFarBeggeHarRett.args,
         annenForelder: {
@@ -260,7 +258,7 @@ export const FødselMorOgMedmorBeggeHarRett: Story = {
 };
 
 export const FødselMorOgMedmorKunMorHarRett: Story = {
-    parameters: FødselMorOgFarKunMorHarRett.parameters,
+    beforeEach: FødselMorOgFarKunMorHarRett.beforeEach,
     args: {
         ...FødselMorOgFarKunMorHarRett.args,
         annenForelder: {
@@ -280,25 +278,24 @@ export const FødselMorOgMedmorKunMorHarRett: Story = {
 };
 
 export const FødselMorOgMedmorKunMedmorHarRettMorUfør: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
-                http.post(API_URLS.konto, () =>
-                    HttpResponse.json({
-                        '80': {
-                            kontoer: IKKE_DELT_UTTAK_80_FARMEDMOR_MOR_UFØR,
-                            minsteretter: MINSTERETTER,
-                        },
-                        '100': {
-                            kontoer: IKKE_DELT_UTTAK_100_FARMEDMOR_MOR_UFØR,
-                            minsteretter: MINSTERETTER,
-                        },
-                    }),
-                ),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.konto, () =>
+                HttpResponse.json({
+                    '80': {
+                        kontoer: IKKE_DELT_UTTAK_80_FARMEDMOR_MOR_UFØR,
+                        minsteretter: MINSTERETTER,
+                    },
+                    '100': {
+                        kontoer: IKKE_DELT_UTTAK_100_FARMEDMOR_MOR_UFØR,
+                        minsteretter: MINSTERETTER,
+                    },
+                }),
+            ),
+        );
     },
+
     args: {
         søkerInfo: søkerInfoKvinne,
         søkersituasjon: {
@@ -328,25 +325,24 @@ export const FødselMorOgMedmorKunMedmorHarRettMorUfør: Story = {
 };
 
 export const FødselBareFarSøkerAleneOmOmsorg: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
-                http.post(API_URLS.konto, () =>
-                    HttpResponse.json({
-                        '80': {
-                            kontoer: ALENE_OM_OMSORG_80_FARMEDMOR,
-                            minsteretter: MINSTERETTER,
-                        },
-                        '100': {
-                            kontoer: ALENE_OM_OMSORG_100_FARMEDMOR,
-                            minsteretter: MINSTERETTER,
-                        },
-                    }),
-                ),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.konto, () =>
+                HttpResponse.json({
+                    '80': {
+                        kontoer: ALENE_OM_OMSORG_80_FARMEDMOR,
+                        minsteretter: MINSTERETTER,
+                    },
+                    '100': {
+                        kontoer: ALENE_OM_OMSORG_100_FARMEDMOR,
+                        minsteretter: MINSTERETTER,
+                    },
+                }),
+            ),
+        );
     },
+
     args: {
         ...FødselMorOgFarBeggeHarRett.args,
         søkerInfo: søkerInfoMann,
@@ -371,25 +367,24 @@ export const FødselBareFarSøkerAleneOmOmsorg: Story = {
 };
 
 export const AdopsjonMorOgFarBeggeHarRett: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
-                http.post(API_URLS.konto, () =>
-                    HttpResponse.json({
-                        '100': {
-                            kontoer: DELT_UTTAK_100_ADOPSJON,
-                            minsteretter: MINSTERETTER,
-                        },
-                        '80': {
-                            kontoer: DELT_UTTAK_80_ADOPSJON,
-                            minsteretter: MINSTERETTER,
-                        },
-                    }),
-                ),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.konto, () =>
+                HttpResponse.json({
+                    '100': {
+                        kontoer: DELT_UTTAK_100_ADOPSJON,
+                        minsteretter: MINSTERETTER,
+                    },
+                    '80': {
+                        kontoer: DELT_UTTAK_80_ADOPSJON,
+                        minsteretter: MINSTERETTER,
+                    },
+                }),
+            ),
+        );
     },
+
     args: {
         søkerInfo: søkerInfoKvinne,
         søkersituasjon: {
@@ -421,25 +416,24 @@ export const AdopsjonMorOgFarBeggeHarRett: Story = {
 };
 
 export const AdopsjonMorOgFarKunMorHarRett: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
-                http.post(API_URLS.konto, () =>
-                    HttpResponse.json({
-                        '100': {
-                            kontoer: IKKE_DELT_UTTAK_100_ADOPSJON_MOR,
-                            minsteretter: MINSTERETTER,
-                        },
-                        '80': {
-                            kontoer: IKKE_DELT_UTTAK_80_ADOPSJON_MOR,
-                            minsteretter: MINSTERETTER,
-                        },
-                    }),
-                ),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.konto, () =>
+                HttpResponse.json({
+                    '100': {
+                        kontoer: IKKE_DELT_UTTAK_100_ADOPSJON_MOR,
+                        minsteretter: MINSTERETTER,
+                    },
+                    '80': {
+                        kontoer: IKKE_DELT_UTTAK_80_ADOPSJON_MOR,
+                        minsteretter: MINSTERETTER,
+                    },
+                }),
+            ),
+        );
     },
+
     args: {
         søkerInfo: søkerInfoKvinne,
         søkersituasjon: {
@@ -468,25 +462,24 @@ export const AdopsjonMorOgFarKunMorHarRett: Story = {
 };
 
 export const AdopsjonMorOgFarKunFarHarRettMorErUfør: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
-                http.post(API_URLS.konto, () =>
-                    HttpResponse.json({
-                        '100': {
-                            kontoer: IKKE_DELT_UTTAK_100_FARMEDMOR_MOR_UFØR,
-                            minsteretter: MINSTERETTER,
-                        },
-                        '80': {
-                            kontoer: IKKE_DELT_UTTAK_80_FARMEDMOR_MOR_UFØR,
-                            minsteretter: MINSTERETTER,
-                        },
-                    }),
-                ),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.konto, () =>
+                HttpResponse.json({
+                    '100': {
+                        kontoer: IKKE_DELT_UTTAK_100_FARMEDMOR_MOR_UFØR,
+                        minsteretter: MINSTERETTER,
+                    },
+                    '80': {
+                        kontoer: IKKE_DELT_UTTAK_80_FARMEDMOR_MOR_UFØR,
+                        minsteretter: MINSTERETTER,
+                    },
+                }),
+            ),
+        );
     },
+
     args: {
         søkerInfo: søkerInfoMann,
         søkersituasjon: {
@@ -516,7 +509,7 @@ export const AdopsjonMorOgFarKunFarHarRettMorErUfør: Story = {
 };
 
 export const AdopsjonMorOgMedmorBeggeHarRett: Story = {
-    parameters: AdopsjonMorOgFarBeggeHarRett.parameters,
+    beforeEach: AdopsjonMorOgFarBeggeHarRett.beforeEach,
     args: {
         ...AdopsjonMorOgFarBeggeHarRett.args,
         søkerInfo: søkerInfoKvinne,
@@ -549,7 +542,7 @@ export const AdopsjonMorOgMedmorBeggeHarRett: Story = {
 };
 
 export const AdopsjonMorOgMedmorKunMorHarRett: Story = {
-    parameters: AdopsjonMorOgFarKunMorHarRett.parameters,
+    beforeEach: AdopsjonMorOgFarKunMorHarRett.beforeEach,
     args: {
         ...AdopsjonMorOgFarKunMorHarRett.args,
         annenForelder: {
@@ -564,7 +557,7 @@ export const AdopsjonMorOgMedmorKunMorHarRett: Story = {
 };
 
 export const AdopsjonMorOgMedmorKunMedmorHarRettMorErUfør: Story = {
-    parameters: AdopsjonMorOgFarKunFarHarRettMorErUfør.parameters,
+    beforeEach: AdopsjonMorOgFarKunFarHarRettMorErUfør.beforeEach,
     args: {
         ...AdopsjonMorOgFarKunFarHarRettMorErUfør.args,
         annenForelder: {
@@ -580,7 +573,7 @@ export const AdopsjonMorOgMedmorKunMedmorHarRettMorErUfør: Story = {
 };
 
 export const AdopsjonBareFarSøkerAleneOmOmsorg: Story = {
-    parameters: AdopsjonMorOgFarKunMorHarRett.parameters,
+    beforeEach: AdopsjonMorOgFarKunMorHarRett.beforeEach,
     args: {
         ...AdopsjonMorOgFarKunMorHarRett.args,
         søkerInfo: søkerInfoMann,
@@ -602,31 +595,30 @@ export const AdopsjonBareFarSøkerAleneOmOmsorg: Story = {
 // Story som reproduserer buggen der annen part har et vedtak med tomme perioder (perioder: []).
 // API returnerer en gyldig AnnenPartSak, men uten perioder. Dette resulterte tidligere i en tom uttaksplan.
 export const FødselMorOgFarBeggeHarRettAnnenPartTomtVedtak: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(API_URLS.annenPartVedtak, () =>
-                    HttpResponse.json({
-                        antallBarn: 1,
-                        dekningsgrad: 'HUNDRE',
-                        perioder: [],
-                    }),
-                ),
-                http.post(API_URLS.konto, () =>
-                    HttpResponse.json({
-                        '80': {
-                            kontoer: DELT_UTTAK_80,
-                            minsteretter: MINSTERETTER,
-                        },
-                        '100': {
-                            kontoer: DELT_UTTAK_100,
-                            minsteretter: MINSTERETTER,
-                        },
-                    }),
-                ),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.annenPartVedtak, () =>
+                HttpResponse.json({
+                    antallBarn: 1,
+                    dekningsgrad: 'HUNDRE',
+                    perioder: [],
+                }),
+            ),
+            http.post(API_URLS.konto, () =>
+                HttpResponse.json({
+                    '80': {
+                        kontoer: DELT_UTTAK_80,
+                        minsteretter: MINSTERETTER,
+                    },
+                    '100': {
+                        kontoer: DELT_UTTAK_100,
+                        minsteretter: MINSTERETTER,
+                    },
+                }),
+            ),
+        );
     },
+
     args: {
         ...FødselMorOgFarBeggeHarRett.args,
     },
@@ -636,25 +628,24 @@ export const FødselMorOgFarBeggeHarRettAnnenPartTomtVedtak: Story = {
 // Forslaget skal kun inneholde to uker med uttak (fedrekvote simultant med mødrekvote),
 // ikke gjenstående fedrekvote plassert langt frem i tid.
 export const FødselFarBeggeHarRettStarterPåTermin: Story = {
-    parameters: {
-        msw: {
-            handlers: [
-                http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
-                http.post(API_URLS.konto, () =>
-                    HttpResponse.json({
-                        '80': {
-                            kontoer: DELT_UTTAK_80,
-                            minsteretter: MINSTERETTER,
-                        },
-                        '100': {
-                            kontoer: DELT_UTTAK_100,
-                            minsteretter: MINSTERETTER,
-                        },
-                    }),
-                ),
-            ],
-        },
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.konto, () =>
+                HttpResponse.json({
+                    '80': {
+                        kontoer: DELT_UTTAK_80,
+                        minsteretter: MINSTERETTER,
+                    },
+                    '100': {
+                        kontoer: DELT_UTTAK_100,
+                        minsteretter: MINSTERETTER,
+                    },
+                }),
+            ),
+        );
     },
+
     args: {
         søkerInfo: søkerInfoMann,
         søkersituasjon: {
@@ -715,7 +706,7 @@ const INNVILGET_PLAN_FRA_EKSISTERENDE_SAK: UttakPeriode_fpoversikt[] = [
  * uten å få feilmeldingen "Du må gjøre en endring for å kunne søke om endring".
  */
 export const NySøknadFørVedtakMedEksisterendeSak: Story = {
-    parameters: FødselMorOgFarBeggeHarRett.parameters,
+    beforeEach: FødselMorOgFarBeggeHarRett.beforeEach,
     args: {
         ...FødselMorOgFarBeggeHarRett.args,
         erEndringssøknad: false,
@@ -759,11 +750,32 @@ const planleggerUttaksplan = [
 ] satisfies UttakPeriode_fpoversikt[];
 
 export const FødselMorOgFarBeggeHarRettOverførtFraPlanlegger: Story = {
-    parameters: FødselMorOgFarBeggeHarRett.parameters,
+    beforeEach: FødselMorOgFarBeggeHarRett.beforeEach,
     args: {
         ...FødselMorOgFarBeggeHarRett.args,
         fordeling: undefined,
         uttaksplan: planleggerUttaksplan,
         kommerFraPlanlegger: true,
+    },
+};
+
+// Planen inneheld berre den andre forelderen sine perioder. Innsendinga filtrerer bort desse,
+// så søknaden ville blitt sendt utan uttaksperioder om ein ikkje stoppa brukaren her.
+export const FødselFarAleneOmOmsorgKunAnnenPartsPerioder: Story = {
+    beforeEach: FødselBareFarSøkerAleneOmOmsorg.beforeEach,
+    args: {
+        ...FødselBareFarSøkerAleneOmOmsorg.args,
+        annenForelder: {
+            fnr: '31430574828',
+            fornavn: 'Trude',
+            etternavn: 'Utvikler',
+            kanIkkeOppgis: false,
+            erAleneOmOmsorg: true,
+            datoForAleneomsorg: '2024-07-01',
+            harRettPåForeldrepengerINorge: false,
+            harRettPåForeldrepengerIEØS: false,
+            harOppholdtSegIEØS: false,
+        },
+        uttaksplan: planleggerUttaksplan.filter((periode) => periode.forelder === 'MOR'),
     },
 };

@@ -32,6 +32,7 @@
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
+        "@storybook/addon-a11y": "catalog:",
         "@storybook/addon-links": "catalog:",
         "@storybook/react-vite": "catalog:",
         "@testing-library/jest-dom": "catalog:",

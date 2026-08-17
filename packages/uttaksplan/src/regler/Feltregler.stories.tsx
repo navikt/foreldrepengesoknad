@@ -58,7 +58,7 @@ const Feltregler = () => {
                 'Når brukeren velger hva som skal legges til i uttaksplanen (ferie, utsettelse, pause, opphold eller ' +
                 'periode), sjekker vi at valget er gyldig i forhold til når perioden ligger og hvilke rettigheter ' +
                 'brukeren har.',
-            regler: lagHvaVilDuGjøreRegler(intl),
+            regler: lagHvaVilDuGjøreRegler(intl, 'fødsel'),
         },
     ];
 

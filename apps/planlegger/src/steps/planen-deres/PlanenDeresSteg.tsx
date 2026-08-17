@@ -9,7 +9,7 @@ import { useEffektivHvemPlanlegger } from 'appData/useEffektivHvemPlanlegger';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
 import { FordelingSlider } from 'components/FordelingSlider';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { HvemPlanleggerType } from 'types/HvemPlanlegger';
 import {
@@ -65,6 +65,14 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
     const stepConfig = useStepData();
 
     useScrollBehaviour();
+
+    // Oppsummering er steget rett etter PlanenDeres i planleggerflyten (sjå PlanleggerRouter).
+    // Det er også lazy-lasta (bruker UttaksplanKalender via OppsummeringHarRett), så vi
+    // prefetcher chunken her, mens brukaren jobbar med planen sin, slik at den normalt er
+    // hentet før brukaren faktisk navigerer videre.
+    useEffect(() => {
+        void import('steps/oppsummering/OppsummeringSteg');
+    }, []);
 
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));

@@ -53,7 +53,13 @@ export const LeggTilUtsettelsePanel = ({ setVisUtsettelsePanel }: Props) => {
                     <Button variant="primary" size="small" className="flex-1" disabled={!formMethods.formState.isDirty}>
                         <FormattedMessage id="LeggTilUtsettelsePanel.LeggTil" />
                     </Button>
-                    <Button type="button" variant="secondary" size="small" className="flex-1" onClick={() => setVisUtsettelsePanel(false)}>
+                    <Button
+                        type="button"
+                        variant="secondary"
+                        size="small"
+                        className="flex-1"
+                        onClick={() => setVisUtsettelsePanel(false)}
+                    >
                         <FormattedMessage id="LeggTilUtsettelsePanel.Lukk" />
                     </Button>
                 </HStack>

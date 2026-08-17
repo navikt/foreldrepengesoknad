@@ -3,7 +3,7 @@ import { VedleggDataType } from 'types/VedleggDataType';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
-import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan';
+import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan/validators';
 
 export const isPeriodeMedMorInnleggelse = (
     periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
