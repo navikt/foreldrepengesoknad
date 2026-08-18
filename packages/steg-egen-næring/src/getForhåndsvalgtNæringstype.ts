@@ -4,7 +4,7 @@ export const getForhåndsvalgtNæringstype = (
     selvstendigNæring: SelvstendigNæringDto_fpoversikt[],
 ): NæringDto['næringstype'] | undefined => {
     const [førsteNæring] = selvstendigNæring;
-    if (førsteNæring === undefined || førsteNæring.næringstype === 'FISKE') {
+    if (førsteNæring === undefined) {
         return undefined;
     }
 

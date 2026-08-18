@@ -110,12 +110,14 @@ export const EgenNæringForm = ({
      * Hvis egenNæring finnes har bruker gjort et valg, og da vil vi velge false/true for radioknappen
      */
     const egenNæringDefaultValue = egenNæring === undefined ? undefined : !egenNæring.tom;
+    const næringstype = fixedNæringstype ?? egenNæring?.næringstype ?? initialNæringstype;
+    const skjultNæringstype = fixedNæringstype ?? (næringstype === 'FISKE' ? 'FISKE' : undefined);
 
     const formMethods = useForm<NæringFormValues>({
         shouldUnregister: true,
         defaultValues: {
             ...egenNæring,
-            næringstype: fixedNæringstype ?? egenNæring?.næringstype ?? initialNæringstype,
+            næringstype,
             registrertINorge: fixedRegistrertINorge ?? egenNæring?.registrertINorge,
             pågående: egenNæringDefaultValue,
         },
@@ -145,7 +147,7 @@ export const EgenNæringForm = ({
     const formContent = (
         <VStack gap="space-40">
             <ErrorSummaryHookForm />
-            {fixedNæringstype ? (
+            {skjultNæringstype ? (
                 <input type="hidden" {...formMethods.register('næringstype')} />
             ) : (
                 <RhfRadioGroup

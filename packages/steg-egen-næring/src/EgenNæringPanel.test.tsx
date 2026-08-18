@@ -54,6 +54,42 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         expect(screen.getByRole('radio', { name: 'Gårdsdrift' })).toBeChecked();
     });
 
+    it('skal skjule forhåndsvalgt fiske som virksomhetstype', () => {
+        const { container } = render(
+            <IntlProvider locale="nb" messages={{ ...formHookMessages.nb, ...nbMessages }}>
+                <EgenNæringForm
+                    initialNæringstype="FISKE"
+                    appOrigin="foreldrepengesoknad"
+                    onSubmit={vi.fn()}
+                    withoutFormElement
+                />
+            </IntlProvider>,
+        );
+
+        expect(screen.queryByRole('radiogroup', { name: 'Hvilken type næring har du hatt?' })).not.toBeInTheDocument();
+        expect(container.querySelector('input[type="hidden"][name="næringstype"]')).toHaveValue('FISKE');
+    });
+
+    it('skal vise mellomlagret ikke-fiske selv om foreslått type er fiske', () => {
+        render(
+            <IntlProvider locale="nb" messages={{ ...formHookMessages.nb, ...nbMessages }}>
+                <EgenNæringForm
+                    initialNæringstype="FISKE"
+                    egenNæring={{
+                        fom: '2023-04-30',
+                        næringstype: 'ANNEN',
+                        registrertINorge: true,
+                    }}
+                    appOrigin="foreldrepengesoknad"
+                    onSubmit={vi.fn()}
+                    withoutFormElement
+                />
+            </IntlProvider>,
+        );
+
+        expect(screen.getByRole('radio', { name: 'Annet' })).toBeChecked();
+    });
+
     it('skal låse næringstype til fiske i plugin-varianten', async () => {
         const onSubmit = vi.fn();
 

@@ -32,7 +32,7 @@ describe('getForhåndsvalgtNæringstype', () => {
         expect(getForhåndsvalgtNæringstype([lagNæring('ANNEN'), lagNæring('DAGMAMMA', '887766554')])).toBeUndefined();
     });
 
-    it('skal ikke foreslå fiske selv om alle virksomhetene er fiske', () => {
-        expect(getForhåndsvalgtNæringstype([lagNæring('FISKE'), lagNæring('FISKE', '887766554')])).toBeUndefined();
+    it('skal foreslå fiske når alle virksomhetene er fiske', () => {
+        expect(getForhåndsvalgtNæringstype([lagNæring('FISKE'), lagNæring('FISKE', '887766554')])).toBe('FISKE');
     });
 });
