@@ -289,6 +289,7 @@ export const ForeldrepengesøknadRoutes = ({
     lagretHarGodkjentVilkår,
     lagretSøknadGjelderNyttBarn,
 }: Props) => {
+    const navigate = useNavigate();
     const routerLocation = useLocation();
     const isFirstTimeLoadingAppRef = useRef(true);
 
@@ -333,6 +334,23 @@ export const ForeldrepengesøknadRoutes = ({
         }
     }, [currentRoute, søkerInfo.fødselsdato, lagretHarGodkjentVilkår, navigate, routerLocation.pathname]);
 
+    useEffect(() => {
+        if (!appRoute || !harGodkjentVilkår || !erMyndig(søkerInfo.fødselsdato)) {
+            return;
+        }
+
+        const currentPath = decodeURIComponent(routerLocation.pathname);
+
+        const ignoredPaths = [SøknadRoutes.KVITTERING, SøknadRoutes.IKKE_MYNDIG].map((path) => path.toString());
+        if (ignoredPaths.includes(currentPath)) {
+            return;
+        }
+
+        if (currentPath !== appRoute.toString()) {
+            void navigate(appRoute, { replace: true });
+        }
+    }, [appRoute, harGodkjentVilkår, søkerInfo.fødselsdato, routerLocation.pathname, navigate]);
+
     if (errorSendSøknad) {
         return (
             <ErrorPage
@@ -341,17 +359,6 @@ export const ForeldrepengesøknadRoutes = ({
                 retryCallback={() => location.reload()}
             />
         );
-    }
-
-    if (
-        appRoute &&
-        harGodkjentVilkår &&
-        erMyndig(søkerInfo.fødselsdato) &&
-        routerLocation.pathname !== appRoute.toString() &&
-        routerLocation.pathname !== SøknadRoutes.KVITTERING.toString() &&
-        routerLocation.pathname !== `/${SøknadRoutes.IKKE_MYNDIG}`
-    ) {
-        return <Navigate to={appRoute} replace />;
     }
 
     return (
