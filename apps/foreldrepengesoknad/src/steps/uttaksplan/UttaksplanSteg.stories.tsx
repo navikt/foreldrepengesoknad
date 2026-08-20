@@ -758,3 +758,24 @@ export const FødselMorOgFarBeggeHarRettOverførtFraPlanlegger: Story = {
         kommerFraPlanlegger: true,
     },
 };
+
+// Planen inneheld berre den andre forelderen sine perioder. Innsendinga filtrerer bort desse,
+// så søknaden ville blitt sendt utan uttaksperioder om ein ikkje stoppa brukaren her.
+export const FødselFarAleneOmOmsorgKunAnnenPartsPerioder: Story = {
+    beforeEach: FødselBareFarSøkerAleneOmOmsorg.beforeEach,
+    args: {
+        ...FødselBareFarSøkerAleneOmOmsorg.args,
+        annenForelder: {
+            fnr: '31430574828',
+            fornavn: 'Trude',
+            etternavn: 'Utvikler',
+            kanIkkeOppgis: false,
+            erAleneOmOmsorg: true,
+            datoForAleneomsorg: '2024-07-01',
+            harRettPåForeldrepengerINorge: false,
+            harRettPåForeldrepengerIEØS: false,
+            harOppholdtSegIEØS: false,
+        },
+        uttaksplan: planleggerUttaksplan.filter((periode) => periode.forelder === 'MOR'),
+    },
+};
