@@ -7,9 +7,9 @@ import { useSendSøknad } from 'appData/useSendSøknad';
 import { Forside } from 'pages/forside/Forside';
 import { Søknadsmetadata } from 'pages/forside/utils/useStartSøknad';
 import { KvitteringPage } from 'pages/kvittering/KvitteringPage';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Navigate, Route, Routes, useLocation } from 'react-router';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router';
 import { AndreInntektskilderSteg } from 'steps/andre-inntektskilder/AndreInntektskilderSteg';
 import { AnnenForelderSteg } from 'steps/annen-forelder/AnnenForelderSteg';
 import { ArbeidsforholdOgInntektSteg } from 'steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg';
@@ -333,23 +333,6 @@ export const ForeldrepengesøknadRoutes = ({
             }
         }
     }, [currentRoute, søkerInfo.fødselsdato, lagretHarGodkjentVilkår, navigate, routerLocation.pathname]);
-
-    useEffect(() => {
-        if (!appRoute || !harGodkjentVilkår || !erMyndig(søkerInfo.fødselsdato)) {
-            return;
-        }
-
-        const currentPath = decodeURIComponent(routerLocation.pathname);
-
-        const ignoredPaths = [SøknadRoutes.KVITTERING, SøknadRoutes.IKKE_MYNDIG].map((path) => path.toString());
-        if (ignoredPaths.includes(currentPath)) {
-            return;
-        }
-
-        if (currentPath !== appRoute.toString()) {
-            void navigate(appRoute, { replace: true });
-        }
-    }, [appRoute, harGodkjentVilkår, søkerInfo.fødselsdato, routerLocation.pathname, navigate]);
 
     if (errorSendSøknad) {
         return (
