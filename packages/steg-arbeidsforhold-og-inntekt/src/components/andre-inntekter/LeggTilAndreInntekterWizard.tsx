@@ -6,7 +6,7 @@ import { BodyShort, Heading, InfoCard, Label, Radio, RadioGroup, ReadMore, VStac
 
 import { ErrorSummaryHookForm } from '@navikt/fp-form-hooks';
 import { EgenNæringForm } from '@navikt/fp-steg-egen-naering';
-import type { NæringDto } from '@navikt/fp-types';
+import type { AppName, NæringDto } from '@navikt/fp-types';
 
 import { AndreInntekterFormValues, AndreInntektskilder, erFerdigUtfylt } from '../../types/AndreInntektskilder.ts';
 import { EtterlønnEllerSluttvederlagPanel } from './EtterlønnEllerSluttvederlagPanel.tsx';
@@ -20,18 +20,21 @@ type WizardStep = 'START' | 'VELG_INNTEKTSTYPE' | 'EGEN_NÆRING' | 'FISKER' | 'A
 type Inntektstype = 'EGEN_NÆRING' | 'FISKER' | 'ANNEN_INNTEKT';
 
 interface Props {
+    appOrigin: AppName;
     harRegistrertNæring?: boolean;
     onSaveEgenNæring?: (egenNæring: NæringDto) => void;
     onSaveAndreInntekt?: (annenInntekt: AndreInntektskilder) => void;
 }
 
 interface EgenNæringWizardFormProps {
+    appOrigin: AppName;
     onSubmit: (egenNæring: NæringDto) => void;
     onAbort: () => void;
     onBack: () => void;
 }
 
 export const LeggTilAndreInntekterWizard = ({
+    appOrigin,
     harRegistrertNæring = false,
     onSaveEgenNæring,
     onSaveAndreInntekt,
@@ -39,6 +42,7 @@ export const LeggTilAndreInntekterWizard = ({
     return (
         <div className="rounded-xl border border-dashed border-ax-border-neutral bg-ax-bg-input py-4 px-5">
             <LeggTilAndreInntekterWizardInner
+                appOrigin={appOrigin}
                 harRegistrertNæring={harRegistrertNæring}
                 onSaveEgenNæring={onSaveEgenNæring}
                 onSaveAndreInntekt={onSaveAndreInntekt}
@@ -47,14 +51,14 @@ export const LeggTilAndreInntekterWizard = ({
     );
 };
 
-const EgenNæringWizardForm = ({ onSubmit, onAbort, onBack }: EgenNæringWizardFormProps) => {
+const EgenNæringWizardForm = ({ appOrigin, onSubmit, onAbort, onBack }: EgenNæringWizardFormProps) => {
     return (
         <>
             <Heading level="2" size="small">
                 Legg til inntektskilde
             </Heading>
             <EgenNæringForm
-                appOrigin="foreldrepengesoknad"
+                appOrigin={appOrigin}
                 fixedRegistrertINorge
                 onSubmit={onSubmit}
                 withoutFormElement
@@ -67,6 +71,7 @@ const EgenNæringWizardForm = ({ onSubmit, onAbort, onBack }: EgenNæringWizardF
 };
 
 const LeggTilAndreInntekterWizardInner = ({
+    appOrigin,
     harRegistrertNæring = false,
     onSaveEgenNæring,
     onSaveAndreInntekt,
@@ -107,7 +112,11 @@ const LeggTilAndreInntekterWizardInner = ({
                     </Radio>
                     <Radio
                         value="ANNEN_INNTEKT"
-                        description="Førstegangstjeneste, sluttpakke, etterlønn, eller arbeid i utlandet"
+                        description={
+                            appOrigin === 'svangerskapspengesoknad'
+                                ? 'Arbeid i utlandet'
+                                : 'Førstegangstjeneste, sluttpakke, etterlønn, eller arbeid i utlandet'
+                        }
                     >
                         Annen pensjonsgivende inntekt
                     </Radio>
@@ -147,6 +156,7 @@ const LeggTilAndreInntekterWizardInner = ({
     if (step === 'FISKER') {
         return (
             <FiskerForm
+                appOrigin={appOrigin}
                 onAbort={avsluttWizard}
                 onBack={() => setStep('VELG_INNTEKTSTYPE')}
                 onComplete={avsluttWizard}
@@ -158,6 +168,7 @@ const LeggTilAndreInntekterWizardInner = ({
     if (step === 'ANNEN_INNTEKT') {
         return (
             <AnnenInntektForm
+                appOrigin={appOrigin}
                 harRegistrertNæring={harRegistrertNæring}
                 onAbort={avsluttWizard}
                 onBack={harRegistrertNæring ? undefined : () => setStep('VELG_INNTEKTSTYPE')}
@@ -176,6 +187,7 @@ const LeggTilAndreInntekterWizardInner = ({
     if (step === 'EGEN_NÆRING') {
         return (
             <EgenNæringWizardForm
+                appOrigin={appOrigin}
                 onSubmit={(egenNæring) => {
                     onSaveEgenNæring?.(egenNæring);
                     avsluttWizard();
@@ -196,10 +208,12 @@ interface WizardBranchFormProps {
 }
 
 interface FiskerFormProps extends WizardBranchFormProps {
+    appOrigin: AppName;
     onSaveEgenNæring?: (egenNæring: NæringDto) => void;
 }
 
 interface FiskerNæringProps {
+    appOrigin: AppName;
     onAbort: () => void;
     onBack: () => void;
     onSubmit: (egenNæring: NæringDto) => void;
@@ -209,7 +223,7 @@ type FiskerValg = 'lott' | 'hyre' | 'lott_og_hyre' | 'egen_båt';
 
 type FiskerStep = 'VELG_ORDNING' | 'VIS_INFORMASJON';
 
-const FiskerForm = ({ onAbort, onBack, onComplete, onSaveEgenNæring }: FiskerFormProps) => {
+const FiskerForm = ({ appOrigin, onAbort, onBack, onComplete, onSaveEgenNæring }: FiskerFormProps) => {
     const [fiskerValg, setFiskerValg] = useState<FiskerValg>();
     const [step, setStep] = useState<FiskerStep>('VELG_ORDNING');
 
@@ -266,6 +280,7 @@ const FiskerForm = ({ onAbort, onBack, onComplete, onSaveEgenNæring }: FiskerFo
     }
 
     const fiskerNæringProps: FiskerNæringProps = {
+        appOrigin,
         onAbort,
         onBack: () => setStep('VELG_ORDNING'),
         onSubmit: (egenNæring) => {
@@ -286,11 +301,11 @@ const FiskerForm = ({ onAbort, onBack, onComplete, onSaveEgenNæring }: FiskerFo
     );
 };
 
-const FiskerEgenNæringForm = ({ onSubmit, onAbort, onBack }: FiskerNæringProps) => (
+const FiskerEgenNæringForm = ({ appOrigin, onSubmit, onAbort, onBack }: FiskerNæringProps) => (
     <EgenNæringForm
         fixedNæringstype="FISKE"
         fixedRegistrertINorge
-        appOrigin="foreldrepengesoknad"
+        appOrigin={appOrigin}
         onSubmit={onSubmit}
         withoutFormElement
         renderActions={(submitForm) => (
@@ -374,6 +389,7 @@ const EgenBåtInntekt = (props: FiskerNæringProps) => {
 };
 
 interface AnnenInntektFormProps {
+    appOrigin: AppName;
     harRegistrertNæring: boolean;
     onAbort: () => void;
     onBack?: () => void;
@@ -387,6 +403,7 @@ type AnnenInntektValg =
 type AnnenInntektStep = 'VELG_INNTEKTSTYPE' | 'FYLL_UT_INNTEKT';
 
 const AnnenInntektForm = ({
+    appOrigin,
     harRegistrertNæring,
     onAbort,
     onBack,
@@ -426,8 +443,12 @@ const AnnenInntektForm = ({
                 >
                     <Radio value="JOBB_I_UTLANDET">Jobb i utlandet</Radio>
                     {!harRegistrertNæring && <Radio value="NÆRING_I_UTLANDET">Næring i utlandet</Radio>}
-                    <Radio value="ETTERLØNN_SLUTTPAKKE">Etterlønn eller sluttvederlag</Radio>
-                    <Radio value="MILITÆR_ELLER_SIVILTJENESTE">Førstegangstjeneste</Radio>
+                    {appOrigin !== 'svangerskapspengesoknad' && (
+                        <>
+                            <Radio value="ETTERLØNN_SLUTTPAKKE">Etterlønn eller sluttvederlag</Radio>
+                            <Radio value="MILITÆR_ELLER_SIVILTJENESTE">Førstegangstjeneste</Radio>
+                        </>
+                    )}
                 </RadioGroup>
                 <WizardNavigator
                     isLastStep={false}
@@ -449,7 +470,7 @@ const AnnenInntektForm = ({
                 <ErrorSummaryHookForm />
                 {valgtInntektstype === 'NÆRING_I_UTLANDET' && (
                     <EgenNæringForm
-                        appOrigin="foreldrepengesoknad"
+                        appOrigin={appOrigin}
                         fixedRegistrertINorge={false}
                         onSubmit={onSubmitEgenNæring}
                         withoutFormElement

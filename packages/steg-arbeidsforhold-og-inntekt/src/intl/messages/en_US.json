@@ -28,7 +28,6 @@
     "inntektsinformasjon.infoTilFiskere.del8": "For the part of your income that is wages, you are considered an employee, and you receive pay as an employee. Not all fishermen are registered with an employment relationship in the Employer and Employee Register, so it is visible in the application. If you are a fisherman with wages, your employer must submit an income report with information about your income.",
     "inntektsinformasjon.infoTilFiskere.del9": "For the part of your income that is share, you are considered self-employed. In the application dialog, you must answer yes to the question of whether you are self-employed, and you must select that you are a fisherman when you fill out the information about your business. The questions you receive in the application are tailored to your situation, and you will receive guidance and information along the way. When you provide us with information that you are a fisherman, we will register the correct information about you and send the correct information about you to the Tax Administration.",
     "inntektsinformasjon.infoTilFiskere.del10": "On the Tax Administration's website, you can read more about <a>wages and share</a>.",
-    "inntektsinformasjon.beskrivelse": "Calculated from the date you start receiving maternity benefits",
     "inntektsinformasjon.harDuJobbetSomFrilans.apneLabel": "How is a freelancer defined?",
     "inntektsinformasjon.harDuJobbetSomFrilans.infoboksTekst.del1": "A freelancer is an employment relationship for individuals who receive payment or other compensation for work or assignments performed but who are not employed.",
     "inntektsinformasjon.harDuJobbetSomFrilans.infoboksTekst.del2": "Examples of professions that are often freelancers are copywriters, actors, journalists, translators, elected officials, politicians in municipalities, county councils, and the Parliament who receive compensation for political work, support contacts, foster parents, and individuals with care pay.",
@@ -36,7 +35,6 @@
     "inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.apneLabel": "How is a self-employed person defined?",
     "inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.infoboks.del1": "When you are considered self-employed is not clearly defined by law. A hobby is tax-free, while business is taxable activity.",
     "inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.infoboks.del2": "You can find out if you are self-employed in the guide at the <a>Tax Administration</a>. There you can also find more information about what it means to be self-employed.",
-    "inntektsinformasjon.hattArbeidIUtlandet": "Have you worked abroad in the last 4 weeks?",
     "inntektsinformasjon.alert.ingenArbeidsforhold.tittel": "You cannot apply for pregnancy benefits since you have no employment.",
     "inntektsinformasjon.alert.ingenArbeidsforhold": "As there is no registered employment for you, or any information indicating that you are a freelancer or self-employed, you are unfortunately not eligible to apply for maternity benefits.",
     "ArbeidsforholdOgInntektPanel.Definisjoner.Tittel": "How are different types of employment and income defined?",
@@ -95,9 +93,6 @@
     "FørstegangstjenestePanel.TilOgMedDato.ErIFremtiden": "The to date must be before or equal to today",
     "InfoOmArbeidIUtlandet.apneLabel": "How can this affect maternity benefits?",
     "InfoOmArbeidIUtlandet.innhold": "To assess whether you are eligible for maternity benefits, we also consider work in another EEA country besides Norway in the last four weeks.",
-    "inntektsinformasjon.ja": "Yes",
-    "inntektsinformasjon.nei": "No",
     "HarArbeidsforhold.arbeidsgiver": "Private employer",
-    "HarArbeidsforhold.pågående": "Ongoing",
-    "valideringsfeil.hattArbeidIUtlandet.påkrevd": "You must specify whether you have worked abroad in the last 4 weeks."
+    "HarArbeidsforhold.pågående": "Ongoing"
 }

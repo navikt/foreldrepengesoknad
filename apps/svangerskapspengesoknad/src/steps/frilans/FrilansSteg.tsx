@@ -29,8 +29,9 @@ export const FrilansSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeid
     const onSubmit = (values: Frilans) => {
         oppdaterFrilans(values);
 
-        const route = arbeidsforholdOgInntekt.harHattArbeidIUtlandet ? SøknadRoute.ARBEID_I_UTLANDET : undefined;
-        const nextRoute = arbeidsforholdOgInntekt.harJobbetSomSelvstendigNæringsdrivende ? SøknadRoute.NÆRING : route;
+        const nextRoute = arbeidsforholdOgInntekt.harJobbetSomSelvstendigNæringsdrivende
+            ? SøknadRoute.NÆRING
+            : undefined;
 
         return navigator.goToStep(
             nextRoute ?? getRuteVelgArbeidEllerSkjema(barnet.termindato, arbeidsforhold, arbeidsforholdOgInntekt),

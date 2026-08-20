@@ -160,10 +160,6 @@ const getStepConfig = (
         steps.push(createStep(SøknadRoute.NÆRING, intl, currentPath));
     }
 
-    if (arbeidsforholdOgInntekt?.harHattArbeidIUtlandet) {
-        steps.push(createStep(SøknadRoute.ARBEID_I_UTLANDET, intl, currentPath));
-    }
-
     const harKunEttArbeid = barn?.termindato
         ? søkerHarKunEtAktivtArbeid(
               barn.termindato,

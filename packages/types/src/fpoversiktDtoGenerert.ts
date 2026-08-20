@@ -18,10 +18,7 @@ export type Virksomhetstype_fpoversikt = 'ANNEN' | 'JORDBRUK_SKOGBRUK' | 'FISKE'
 export type SelvstendigNæringDto_fpoversikt = {
     navn?: string;
     næringstype: Virksomhetstype_fpoversikt;
-    organisasjonsformBeskrivelse?: string;
-    organisasjonsformKode?: string;
     organisasjonsnummer: string;
-    underAvvikling: boolean;
 };
 
 export type MorArbeidRequest_fpoversikt = {

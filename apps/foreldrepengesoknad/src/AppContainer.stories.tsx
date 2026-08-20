@@ -46,9 +46,6 @@ const selvstendigNæring = [
         organisasjonsnummer: '991122334',
         navn: 'Mitt Konsulentfirma AS',
         næringstype: 'ANNEN',
-        organisasjonsformKode: 'ENK',
-        organisasjonsformBeskrivelse: 'Enkeltpersonforetak',
-        underAvvikling: false,
     },
 ];
 

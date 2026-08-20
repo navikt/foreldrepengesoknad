@@ -125,7 +125,9 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
                     egenNæring={egenNæring}
                     onVilEndreSvar={() => navigator.goToStep(SøknadRoute.NÆRING)}
                 />
-                <JobbetIUtlandetOppsummering onVilEndreSvar={() => navigator.goToStep(SøknadRoute.ARBEID_I_UTLANDET)} />
+                <JobbetIUtlandetOppsummering
+                    onVilEndreSvar={() => navigator.goToStep(SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT)}
+                />
                 <DokumentasjonOppsummering
                     tilretteleggingerVedlegg={tilretteleggingerVedlegg}
                     alleArbeidsforhold={søkerInfo.arbeidsforhold}

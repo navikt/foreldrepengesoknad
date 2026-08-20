@@ -11,6 +11,7 @@ import nbMessages from '../../intl/messages/nb_NO.json';
 import { LeggTilAndreInntekterWizard } from './LeggTilAndreInntekterWizard';
 
 interface RenderWizardProps {
+    appOrigin?: ComponentProps<typeof LeggTilAndreInntekterWizard>['appOrigin'];
     harRegistrertNæring?: ComponentProps<typeof LeggTilAndreInntekterWizard>['harRegistrertNæring'];
     onSaveAndreInntekt?: ComponentProps<typeof LeggTilAndreInntekterWizard>['onSaveAndreInntekt'];
     onSaveEgenNæring?: ComponentProps<typeof LeggTilAndreInntekterWizard>['onSaveEgenNæring'];
@@ -22,7 +23,7 @@ const renderWizard = (props: RenderWizardProps = {}) =>
             locale="nb"
             messages={{ ...formHookMessages.nb, ...egenNæringMessages.nb, ...uiMessages.nb, ...nbMessages }}
         >
-            <LeggTilAndreInntekterWizard {...props} />
+            <LeggTilAndreInntekterWizard appOrigin="foreldrepengesoknad" {...props} />
         </IntlProvider>,
     );
 
@@ -206,6 +207,25 @@ describe('<LeggTilAndreInntekterWizard>', () => {
             }),
         );
         expect(screen.getByRole('button', { name: 'Legg til inntekt' })).toBeInTheDocument();
+    });
+
+    it('skal skjule etterlønn og førstegangstjeneste for svangerskapspengesøknaden', async () => {
+        renderWizard({ appOrigin: 'svangerskapspengesoknad' });
+
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
+
+        expect(screen.getByRole('radio', { name: 'Annen pensjonsgivende inntekt' })).toBeVisible();
+        expect(screen.getByText('Arbeid i utlandet')).toBeVisible();
+        expect(screen.queryByText('Etterlønn eller sluttvederlag')).not.toBeInTheDocument();
+        expect(screen.queryByText('Førstegangstjeneste')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByRole('radio', { name: /Annen pensjonsgivende inntekt/ }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
+
+        expect(screen.getByRole('radio', { name: 'Jobb i utlandet' })).toBeVisible();
+        expect(screen.getByRole('radio', { name: 'Næring i utlandet' })).toBeVisible();
+        expect(screen.queryByRole('radio', { name: 'Etterlønn eller sluttvederlag' })).not.toBeInTheDocument();
+        expect(screen.queryByRole('radio', { name: 'Førstegangstjeneste' })).not.toBeInTheDocument();
     });
 
     it('skal lagre fisker som EGEN_NÆRING', async () => {

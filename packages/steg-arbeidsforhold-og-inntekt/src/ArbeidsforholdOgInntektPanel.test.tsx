@@ -24,25 +24,12 @@ const manueltLagtTilNæring = {
 } satisfies NæringDto;
 
 describe('<ArbeidsforholdOgInntektPanel>', () => {
-    it('skal vise feilmelding hvis spørsmål ikke er besvart', async () => {
+    it('skal vise inntektswizard i stedet for spørsmål om arbeid i utlandet for svangerskapspenger', async () => {
         render(<ForSvangerskapspenger />);
 
         expect(await screen.findAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
-        expect(screen.getByText('Har du jobbet og hatt inntekt som frilanser de siste 4 ukene?')).toBeInTheDocument();
-        expect(
-            screen.getByText('Har du jobbet og hatt inntekt som selvstendig næringsdrivende de siste 4 ukene?'),
-        ).toBeInTheDocument();
-        expect(screen.getByText('Har du jobbet i utlandet de siste 4 ukene?')).toBeInTheDocument();
-
-        expect(screen.getByText('Neste steg')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Neste steg'));
-
-        expect(screen.getAllByText('Du må oppgi om du har arbeidet som frilanser de siste 4 ukene.')).toHaveLength(2);
-        expect(
-            screen.getAllByText('Du må oppgi om du har hatt inntekt som selvstendig næringsdrivende de siste 4 ukene.'),
-        ).toHaveLength(2);
-        expect(screen.getAllByText('Du må oppgi om du har arbeidet i utlandet de siste 4 ukene.')).toHaveLength(2);
+        expect(screen.getByRole('button', { name: 'Legg til inntekt' })).toBeInTheDocument();
+        expect(screen.queryByText('Har du jobbet i utlandet de siste 4 ukene?')).not.toBeInTheDocument();
     });
 
     it('skal vise og åpne wizard for andre inntekter', async () => {
@@ -190,7 +177,6 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
                 organisasjonsnummer: '998877665',
                 navn: 'Kari Konsulent',
                 næringstype: 'ANNEN',
-                underAvvikling: false,
             },
         ] as const;
         const { rerender } = render(<ForForeldrepenger selvstendigNæring={[]} saveOnNext={saveOnNext} />);
@@ -221,38 +207,42 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
         expect(screen.queryByText('Hvilken type inntekt har du hatt?')).not.toBeInTheDocument();
     });
 
-    it('skal ikke vise feilmelding', async () => {
+    it('skal utlede at søker ikke har hatt arbeid i utlandet når ingen slik inntekt er lagt til', async () => {
         const saveOnNext = vi.fn();
 
         render(<ForSvangerskapspenger saveOnNext={saveOnNext} />);
 
         expect(await screen.findAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
-
-        await userEvent.click(screen.getAllByText('Nei')[0]!);
-
-        await userEvent.click(screen.getAllByText('Nei')[1]!);
-
-        await userEvent.click(screen.getAllByText('Ja')[2]!);
-        expect(screen.getByText('Neste steg')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Neste steg'));
-
-        expect(
-            screen.queryByText('Du må oppgi om du har arbeidet som frilanser de siste 4 ukene.'),
-        ).not.toBeInTheDocument();
-        expect(
-            screen.queryByText('Du må oppgi om du har hatt inntekt som selvstendig næringsdrivende de siste 4 ukene.'),
-        ).not.toBeInTheDocument();
-        expect(
-            screen.queryByText('Du må oppgi om du har arbeidet i utlandet de siste 4 ukene.'),
-        ).not.toBeInTheDocument();
+        await userEvent.click(screen.getByRole('button', { name: 'Neste steg' }));
 
         expect(saveOnNext).toHaveBeenCalledTimes(1);
         expect(saveOnNext).toHaveBeenNthCalledWith(1, {
-            harHattArbeidIUtlandet: true,
+            harHattArbeidIUtlandet: false,
             harJobbetSomFrilans: false,
             harJobbetSomSelvstendigNæringsdrivende: false,
         });
+    });
+
+    it('skal la SVP-søker gå videre med arbeid i utlandet som eneste inntektskilde', async () => {
+        render(
+            <ForSvangerskapspenger
+                aktiveArbeidsforhold={[]}
+                andreInntektskilder={[
+                    {
+                        type: 'JOBB_I_UTLANDET',
+                        arbeidsgiverNavn: 'Svensk arbeidsgiver',
+                        land: 'SE',
+                        fom: '2024-01-01',
+                        pågående: true,
+                    },
+                ]}
+            />,
+        );
+
+        expect(await screen.findByRole('button', { name: 'Neste steg' })).toBeInTheDocument();
+        expect(
+            screen.queryByText('Du kan ikke søke om svangerskapspenger siden du ikke har noen arbeidsforhold.'),
+        ).not.toBeInTheDocument();
     });
 
     it('skal avslutte søknad', async () => {

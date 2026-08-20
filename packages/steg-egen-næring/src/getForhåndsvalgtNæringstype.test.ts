@@ -9,7 +9,6 @@ const lagNæring = (
     navn: 'Kari Konsulent',
     næringstype,
     organisasjonsnummer,
-    underAvvikling: false,
 });
 
 describe('getForhåndsvalgtNæringstype', () => {

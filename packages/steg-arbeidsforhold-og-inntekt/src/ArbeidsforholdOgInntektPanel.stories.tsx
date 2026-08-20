@@ -46,7 +46,6 @@ const DEFAULT_SELVSTENDIG_NÆRING = [
         organisasjonsnummer: '998877665',
         navn: 'Kari Konsulent',
         næringstype: 'ANNEN',
-        underAvvikling: false,
     },
 ] satisfies SelvstendigNæringDto_fpoversikt[];
 

@@ -214,9 +214,6 @@ router.get('/fpoversikt/api/arbeid/selvstendigNaering', (_req, res) => {
             organisasjonsnummer: '991122334',
             navn: 'Mitt Konsulentfirma AS',
             næringstype: 'ANNEN',
-            organisasjonsformKode: 'ENK',
-            organisasjonsformBeskrivelse: 'Enkeltpersonforetak',
-            underAvvikling: false,
         },
     ]);
 });

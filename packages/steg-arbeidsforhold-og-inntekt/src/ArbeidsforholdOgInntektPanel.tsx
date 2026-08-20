@@ -1,12 +1,12 @@
 import { BankNoteIcon, BoatIcon, PersonEnvelopeIcon, TasklistIcon } from '@navikt/aksel-icons';
 import { type ReactNode, useId, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
-import { BodyShort, ExpansionCard, InlineMessage, Label, Link, Radio, VStack } from '@navikt/ds-react';
+import { BodyShort, ExpansionCard, InlineMessage, Label, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm } from '@navikt/fp-form-hooks';
 import { loggUmamiEvent } from '@navikt/fp-observability';
 import {
     AppName,
@@ -16,7 +16,6 @@ import {
     SelvstendigNæringDto_fpoversikt,
 } from '@navikt/fp-types';
 import { ProgressStep, Step, StepButtons } from '@navikt/fp-ui';
-import { isRequired } from '@navikt/fp-validation';
 
 import { LeggTilAndreInntekterWizard } from './components/andre-inntekter/LeggTilAndreInntekterWizard.tsx';
 import { ArbeidsforholdInformasjon } from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
@@ -43,10 +42,6 @@ interface Props<TYPE> {
     stepConfig: Array<ProgressStep<TYPE>>;
     appOrigin: AppName;
 }
-
-type ArbeidsforholdOgInntektFormValues = {
-    harHattArbeidIUtlandet: boolean;
-};
 
 const Definisjon = ({ icon, tittel, children }: { icon: ReactNode; tittel: ReactNode; children: ReactNode }) => (
     <div className="flex gap-3">
@@ -146,7 +141,6 @@ const ArbeidsforholdDefinisjoner = ({ appOrigin }: { appOrigin: AppName }) => {
 };
 
 export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
-    arbeidsforholdOgInntekt,
     aktiveArbeidsforhold,
     frilansoppdrag,
     selvstendigNæring,
@@ -162,21 +156,20 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
     stepConfig,
     appOrigin,
 }: Props<TYPE>) => {
-    const intl = useIntl();
-
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const formMethods = useForm<ArbeidsforholdOgInntektFormValues>({
-        defaultValues: {
-            harHattArbeidIUtlandet: arbeidsforholdOgInntekt?.harHattArbeidIUtlandet,
-        },
-    });
+    const formMethods = useForm();
 
     const ferdigeAndreInntektskilder = andreInntektskilder.filter(erFerdigUtfylt);
 
     const hattInntektSomFrilans = frilansoppdrag.length > 0;
     const hattInntektSomNæringsdrivende = selvstendigNæring.length > 0 || egenNæring !== undefined;
-    const kanIkkeSøke = aktiveArbeidsforhold.length === 0 && !hattInntektSomFrilans && !hattInntektSomNæringsdrivende;
+    const harAnnenInntekt = ferdigeAndreInntektskilder.length > 0;
+    const kanIkkeSøke =
+        aktiveArbeidsforhold.length === 0 &&
+        !hattInntektSomFrilans &&
+        !hattInntektSomNæringsdrivende &&
+        !harAnnenInntekt;
 
     const erSvp = appOrigin === 'svangerskapspengesoknad';
 
@@ -184,13 +177,22 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
         <Step steps={stepConfig} onStepChange={onStepChange}>
             <RhfForm
                 formMethods={formMethods}
-                onSubmit={(values) => {
+                onSubmit={() => {
                     setIsSubmitting(true);
                     const registrerteArbeidsforhold = {
                         harJobbetSomFrilans: hattInntektSomFrilans,
                         harJobbetSomSelvstendigNæringsdrivende: hattInntektSomNæringsdrivende,
                     };
-                    saveOnNext(erSvp ? { ...registrerteArbeidsforhold, ...values } : registrerteArbeidsforhold);
+                    saveOnNext(
+                        erSvp
+                            ? {
+                                  ...registrerteArbeidsforhold,
+                                  harHattArbeidIUtlandet: ferdigeAndreInntektskilder.some(
+                                      (inntekt) => inntekt.type === 'JOBB_I_UTLANDET',
+                                  ),
+                              }
+                            : registrerteArbeidsforhold,
+                    );
                 }}
             >
                 <VStack gap="space-40">
@@ -214,43 +216,18 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                             onRemoveEgenNæring={() => saveEgenNæring?.(undefined)}
                         />
                     </VStack>
-                    {erSvp && (
-                        <VStack gap="space-4">
-                            <RhfRadioGroup
-                                name="harHattArbeidIUtlandet"
-                                control={formMethods.control}
-                                label={intl.formatMessage({ id: 'inntektsinformasjon.hattArbeidIUtlandet' })}
-                                validate={[
-                                    isRequired(
-                                        intl.formatMessage({ id: 'valideringsfeil.hattArbeidIUtlandet.påkrevd' }),
-                                    ),
-                                ]}
-                                description={intl.formatMessage({
-                                    id: 'inntektsinformasjon.beskrivelse',
-                                })}
-                            >
-                                <Radio value={false}>
-                                    <FormattedMessage id="inntektsinformasjon.nei" />
-                                </Radio>
-                                <Radio value={true}>
-                                    <FormattedMessage id="inntektsinformasjon.ja" />
-                                </Radio>
-                            </RhfRadioGroup>
-                            <InfoOmArbeidIUtlandet />
-                        </VStack>
-                    )}
-                    {!erSvp && (
-                        <VStack gap="space-4">
-                            <ArbeidsforholdDefinisjoner appOrigin={appOrigin} />
-                            <LeggTilAndreInntekterWizard
-                                harRegistrertNæring={selvstendigNæring.length > 0}
-                                onSaveEgenNæring={saveEgenNæring}
-                                onSaveAndreInntekt={(annenInntekt) =>
-                                    saveAndreInntektskilder([...ferdigeAndreInntektskilder, annenInntekt])
-                                }
-                            />
-                        </VStack>
-                    )}
+                    <VStack gap="space-4">
+                        {!erSvp && <ArbeidsforholdDefinisjoner appOrigin={appOrigin} />}
+                        <LeggTilAndreInntekterWizard
+                            appOrigin={appOrigin}
+                            harRegistrertNæring={selvstendigNæring.length > 0}
+                            onSaveEgenNæring={saveEgenNæring}
+                            onSaveAndreInntekt={(annenInntekt) =>
+                                saveAndreInntektskilder([...ferdigeAndreInntektskilder, annenInntekt])
+                            }
+                        />
+                        {erSvp && <InfoOmArbeidIUtlandet />}
+                    </VStack>
                     <VStack gap="space-16">
                         {erSvp && <InfoOmFørstegangstjeneste />}
                         {erSvp && <InfoTilFiskere erSvp />}

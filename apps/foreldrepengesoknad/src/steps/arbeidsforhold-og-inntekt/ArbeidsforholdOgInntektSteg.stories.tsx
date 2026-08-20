@@ -92,7 +92,6 @@ const DEFAULT_SELVSTENDIG_NÆRING = [
         organisasjonsnummer: '991122334',
         navn: 'Mitt Konsulentfirma AS',
         næringstype: 'ANNEN',
-        underAvvikling: false,
     },
 ] satisfies SelvstendigNæringDto_fpoversikt[];
 

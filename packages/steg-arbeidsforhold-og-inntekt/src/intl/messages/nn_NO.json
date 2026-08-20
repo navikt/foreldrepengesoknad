@@ -28,7 +28,6 @@
     "inntektsinformasjon.infoTilFiskere.del8": "For den delen av inntekta di som er hyre, er du å rekna som arbeidstakar, og du mottek lønn som arbeidstakar. Det er ikkje alle fiskarar som er registrert med eit arbeidsforhold i arbeids- og arbeidstakarregisteret slik at det er synleg i søknaden. Viss du er fiskar med hyre, må arbeidsgivaren din sende inn inntektsmelding med informasjon om inntekta di.",
     "inntektsinformasjon.infoTilFiskere.del9": "For den delen av inntekta di som er lott, er du å rekna som sjølvstendig næringsdrivande. I søknadsdialogen må du svara ja på spørsmålet om du er sjølvstendig næringsdrivande, du må velje at du er fiskar når du fyller ut informasjon om næringa di. Spørsmåla du får i søknaden er tilpassa di situasjon, og du får rettleiing og informasjon undervegs. Når du gjev oss informasjon om at du er fiskar, får vi registrert rett informasjon om deg, og vi får sendt rett informasjon om deg til skatteetaten.",
     "inntektsinformasjon.infoTilFiskere.del10": "På skatteetaten sine heimesider kan du lese meir om <a>lott og hyre</a>.",
-    "inntektsinformasjon.beskrivelse": "Blir rekna frå datoen du skal starta med svangerskapspengar",
     "inntektsinformasjon.harDuJobbetSomFrilans.apneLabel": "Korleis vert frilansar definert?",
     "inntektsinformasjon.harDuJobbetSomFrilans.infoboksTekst.del1": "Frilansar er eit arbeidsforhold for personar som mottar lønn eller annan godtgjersle for utført arbeid eller oppdrag, men som ikkje er tilsett.",
     "inntektsinformasjon.harDuJobbetSomFrilans.infoboksTekst.del2": "Døme på yrke som ofte er frilansarar er tekstforfattarar, skodespelarar, journalistar, omsettarar, folkevalde, politikarar i kommunar, fylkeskommunar og på Stortinget som får godtgjersle for politisk arbeid, støttekontaktar, fosterforeldre og personar med omsorgslønn.",
@@ -36,7 +35,6 @@
     "inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.apneLabel": "Korleis vert sjølvstendig næringsdrivande definert?",
     "inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.infoboks.del1": "Når du er å rekna som næringsdrivande er ikkje klart definert i lova. Hobby er skattefritt, medan næring er skattepliktig verksemd.",
     "inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.infoboks.del2": "Du kan finna ut om du er sjølvstendig næringsdrivande i vegvisaren til <a>skatteetaten</a>. Der kan du og finne meir informasjon om kva det tyder å vere sjølvstendig næringsdrivande.",
-    "inntektsinformasjon.hattArbeidIUtlandet": "Har du jobba i utlandet dei siste 4 vekene?",
     "inntektsinformasjon.alert.ingenArbeidsforhold.tittel": "Du kan ikkje søkje om svangerskapspengar sidan du ikkje har noko arbeidsforhold.",
     "inntektsinformasjon.alert.ingenArbeidsforhold": "Sidan det ikkje er registrert nokon arbeidsforhold på deg, eller har opplyst at du er frilansar eller sjølvstendig næringsdrivande, har du dessverre ikkje moglegheit til å sende søknad om svangerskapspengar.",
     "ArbeidsforholdOgInntektPanel.Definisjoner.Tittel": "Korleis vert ulike typar arbeidsforhold og inntekt definerte?",
@@ -95,9 +93,6 @@
     "FørstegangstjenestePanel.TilOgMedDato.ErIFremtiden": "Til og med dato må vere før eller lik dagens dato",
     "InfoOmArbeidIUtlandet.apneLabel": "Korleis kan dette påverke svangerskapspengane?",
     "InfoOmArbeidIUtlandet.innhold": "For å vurdera om du har rett til svangerskapspengar tel me med arbeid i andre EØS-land enn Noreg i dei siste fire vekene.",
-    "inntektsinformasjon.ja": "Ja",
-    "inntektsinformasjon.nei": "Nei",
     "HarArbeidsforhold.arbeidsgiver": "Privat arbeidsgivar",
-    "HarArbeidsforhold.pågående": "Pågåande",
-    "valideringsfeil.hattArbeidIUtlandet.påkrevd": "Du må oppgi om du har arbeidd i utlandet dei siste 4 vekene."
+    "HarArbeidsforhold.pågående": "Pågåande"
 }

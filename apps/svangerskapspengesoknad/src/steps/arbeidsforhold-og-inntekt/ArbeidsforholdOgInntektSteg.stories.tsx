@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
-import { API_URLS } from 'appData/queries';
+import { API_URLS, selvstendigNæringOptions } from 'appData/queries';
 import { SøknadRoute } from 'appData/routes';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
@@ -64,7 +65,6 @@ const DEFAULT_SELVSTENDIG_NÆRING = [
         organisasjonsnummer: '991122334',
         navn: 'Mitt Konsulentfirma AS',
         næringstype: 'ANNEN',
-        underAvvikling: false,
     },
 ] satisfies SelvstendigNæringDto_fpoversikt[];
 
@@ -86,25 +86,35 @@ const meta = {
         },
     },
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
+        const queryClient = new QueryClient({
+            defaultOptions: {
+                queries: {
+                    retry: false,
+                },
+            },
+        });
+        queryClient.setQueryData(selvstendigNæringOptions().queryKey, DEFAULT_SELVSTENDIG_NÆRING);
         return (
-            <MemoryRouter initialEntries={[SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT]}>
-                <SvpDataContext
-                    onDispatch={gåTilNesteSide}
-                    initialState={{
-                        [ContextDataType.UTENLANDSOPPHOLD]: {
-                            harBoddUtenforNorgeSiste12Mnd: false,
-                            skalBoUtenforNorgeNeste12Mnd: false,
-                        },
-                        [ContextDataType.OM_BARNET]: {
-                            erBarnetFødt: false,
-                            termindato: '2024-02-18',
-                            fødselsdato: '2024-02-18',
-                        },
-                    }}
-                >
-                    <ArbeidsforholdOgInntektSteg {...rest} />
-                </SvpDataContext>
-            </MemoryRouter>
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter initialEntries={[SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT]}>
+                    <SvpDataContext
+                        onDispatch={gåTilNesteSide}
+                        initialState={{
+                            [ContextDataType.UTENLANDSOPPHOLD]: {
+                                harBoddUtenforNorgeSiste12Mnd: false,
+                                skalBoUtenforNorgeNeste12Mnd: false,
+                            },
+                            [ContextDataType.OM_BARNET]: {
+                                erBarnetFødt: false,
+                                termindato: '2024-02-18',
+                                fødselsdato: '2024-02-18',
+                            },
+                        }}
+                    >
+                        <ArbeidsforholdOgInntektSteg {...rest} />
+                    </SvpDataContext>
+                </MemoryRouter>
+            </QueryClientProvider>
         );
     },
 } satisfies Meta<StoryArgs>;

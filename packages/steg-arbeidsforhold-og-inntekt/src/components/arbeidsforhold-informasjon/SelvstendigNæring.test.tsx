@@ -12,19 +12,16 @@ const næringer = [
         organisasjonsnummer: '998877665',
         navn: 'Kari Konsulent',
         næringstype: 'ANNEN',
-        underAvvikling: false,
     },
     {
         organisasjonsnummer: '998877666',
         navn: 'Ola Fisk',
         næringstype: 'FISKE',
-        underAvvikling: true,
     },
     {
         organisasjonsnummer: '998877667',
         navn: 'Tredje Næring',
         næringstype: 'ANNEN',
-        underAvvikling: false,
     },
 ] satisfies SelvstendigNæringDto_fpoversikt[];
 

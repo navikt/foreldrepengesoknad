@@ -6,10 +6,11 @@ import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { useTilretteleggingerHelper } from 'appData/useTilretteleggingerHelper';
 import { FormattedMessage } from 'react-intl';
+import { ArbeidIUtlandetType } from 'types/ArbeidIUtlandet';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { getRuteVelgArbeidEllerSkjema } from 'utils/tilretteleggingUtils';
 
-import { ArbeidsforholdOgInntektPanel } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
+import { AndreInntektskilder, ArbeidsforholdOgInntektPanel } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
 import {
     ArbeidsforholdOgInntekt,
@@ -32,9 +33,6 @@ const getNextRoute = (
     if (values.harJobbetSomSelvstendigNæringsdrivende) {
         return SøknadRoute.NÆRING;
     }
-    if (values.harHattArbeidIUtlandet) {
-        return SøknadRoute.ARBEID_I_UTLANDET;
-    }
     return getRuteVelgArbeidEllerSkjema(termindato, aktiveArbeidsforhold, values);
 };
 
@@ -50,6 +48,8 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
     const { fjernTilrettelegginger } = useTilretteleggingerHelper();
 
     const arbeidsforholdOgInntekt = useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
+    const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
+    const arbeidIUtlandet = useContextGetData(ContextDataType.ARBEID_I_UTLANDET);
     const { termindato } = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const oppdaterArbeidsforholdOgInntekt = useContextSaveData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
@@ -61,6 +61,35 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
     const selvstendigNæring = selvstendigNæringQuery.data ?? [];
 
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
+    const andreInntektskilder: AndreInntektskilder[] =
+        arbeidIUtlandet?.arbeidIUtlandet.map((inntekt) => ({
+            ...inntekt,
+            type: 'JOBB_I_UTLANDET',
+        })) ?? [];
+
+    const lagreAndreInntektskilder = (inntektskilder: AndreInntektskilder[]) => {
+        const jobbIUtlandet = inntektskilder
+            .filter((inntekt) => inntekt.type === 'JOBB_I_UTLANDET')
+            .map((inntekt) => {
+                if (
+                    inntekt.arbeidsgiverNavn === undefined ||
+                    inntekt.land === undefined ||
+                    inntekt.pågående === undefined
+                ) {
+                    throw new Error('Arbeid i utlandet mangler påkrevde opplysninger');
+                }
+                return {
+                    type: ArbeidIUtlandetType.JOBB_I_UTLANDET,
+                    arbeidsgiverNavn: inntekt.arbeidsgiverNavn,
+                    land: inntekt.land,
+                    fom: inntekt.fom,
+                    tom: inntekt.tom,
+                    pågående: inntekt.pågående,
+                };
+            });
+
+        oppdaterArbeidIUtlandet(jobbIUtlandet.length > 0 ? { arbeidIUtlandet: jobbIUtlandet } : undefined);
+    };
 
     const onSubmit = (values: ArbeidsforholdOgInntekt) => {
         if (!isArbeidsforholdOgInntektSvp(values)) {
@@ -96,10 +125,12 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
                 aktiveArbeidsforhold={aktiveArbeidsforhold}
                 frilansoppdrag={[]}
                 selvstendigNæring={selvstendigNæring}
-                andreInntektskilder={[]}
+                egenNæring={egenNæring}
+                andreInntektskilder={andreInntektskilder}
                 arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                 saveOnNext={onSubmit}
-                saveAndreInntektskilder={() => undefined}
+                saveAndreInntektskilder={lagreAndreInntektskilder}
+                saveEgenNæring={oppdaterEgenNæring}
                 onAvsluttOgSlett={avbrytSøknad}
                 onFortsettSenere={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
