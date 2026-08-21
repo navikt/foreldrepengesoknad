@@ -2,6 +2,8 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyLong, BodyShort, Box, Dialog, HStack, Link, List, VStack } from '@navikt/ds-react';
 
+import { links } from '@navikt/fp-constants';
+
 export const DinePersonopplysningerModal = () => {
     return (
         <Dialog>
@@ -26,11 +28,7 @@ export const DinePersonopplysningerModal = () => {
                                     id="velkommen.dinePersonopplysninger.behandling.html"
                                     values={{
                                         a: (msg) => (
-                                            <Link
-                                                href="https://www.nav.no/foreldrepenger"
-                                                rel="noreferrer"
-                                                target="_blank"
-                                            >
+                                            <Link href={links.omForeldrepenger} rel="noreferrer" target="_blank">
                                                 {msg}
                                             </Link>
                                         ),
@@ -145,14 +143,7 @@ export const DinePersonopplysningerModal = () => {
                                         id="velkommen.dinePersonopplysninger.avsnitt.personvernerklaringen.html"
                                         values={{
                                             a: (msg) => (
-                                                <Link
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                    href={
-                                                        'https://www.nav.no/no/Nav+og+samfunn/Om+Nav/personvern-i-arbeids-og' +
-                                                        '-velferdsetaten/personvernerkl%C3%A6ring-for-arbeids-og-velferdsetaten'
-                                                    }
-                                                >
+                                                <Link target="_blank" rel="noreferrer" href={links.personvern}>
                                                     {msg}
                                                 </Link>
                                             ),
