@@ -9,9 +9,10 @@ import { IconCircleWrapper } from '@navikt/fp-ui';
 
 interface Props {
     arbeidssituasjon: Arbeidssituasjon;
+    antallBarn: string;
 }
 
-export const HvisBarnetErSyktEllerInnlagt = ({ arbeidssituasjon }: Props) => {
+export const HvisBarnetErInnlagtEtterTermindato = ({ arbeidssituasjon, antallBarn }: Props) => {
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const kunEnPartSkalHa = hvemHarRett !== 'beggeHarRett';
 
@@ -30,12 +31,12 @@ export const HvisBarnetErSyktEllerInnlagt = ({ arbeidssituasjon }: Props) => {
             </div>
             <div>
                 <Heading size="small" level="4">
-                    <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErSyktEllerInnlagt" />
+                    <FormattedMessage id="UforutsetteEndringer.barnInnlagtEtterTermin.tittel" values={{ antallBarn }} />
                 </Heading>
                 <BodyLong>
                     <FormattedMessage
-                        id="UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErSyktEllerInnlagt.Tekst"
-                        values={{ erAleneforsørger: kunEnPartSkalHa }}
+                        id="UforutsetteEndringer.barnInnlagtEtterTermin.info"
+                        values={{ erAleneforsørger: kunEnPartSkalHa, antallBarn }}
                     />
                 </BodyLong>
             </div>

@@ -12,8 +12,8 @@ import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import { FødtFørUke33 } from './FødtFørUke33';
-import { HvisBarnetErInnlagt } from './HvisBarnetErInnlagt';
-import { HvisBarnetErSyktEllerInnlagt } from './HvisBarnetErSyktEllerInnlagt';
+import { HvisBarnetErInnlagtFørTermindato } from './HvisBarnetErInnlagtFørTermindato';
+import { HvisBarnetErInnlagtEtterTermindato } from './HvisBarnetErInnlagtEtterTermindato';
 import { HvisDuBlirSyk } from './HvisDuBlirSyk';
 import { HvisMorBlirSyk } from './HvisMorBlirSyk';
 import { NyttBarnFørTreÅr } from './NyttBarnFørTreÅr';
@@ -70,12 +70,13 @@ export const UforutsetteEndringer = ({ hvemPlanlegger, arbeidssituasjon, barnet 
                                 {((erAleneforsørger && !erMorDelAvSøknaden(hvemPlanlegger)) ||
                                     erFarOgFar ||
                                     kunFarEllerMedmorHarRett) && (
-                                    <HvisBarnetErSyktEllerInnlagt arbeidssituasjon={arbeidssituasjon} />
+                                    <HvisBarnetErInnlagtEtterTermindato arbeidssituasjon={arbeidssituasjon} antallBarn={barnet.antallBarn} />
                                 )}
                                 {((beggeHarRett && !erFarOgFar) ||
                                     kunMorHarRett ||
                                     (erAleneforsørger && erMorDelAvSøknaden(hvemPlanlegger))) && (
-                                    <HvisBarnetErInnlagt arbeidssituasjon={arbeidssituasjon} />
+                                    <HvisBarnetErInnlagtFørTermindato arbeidssituasjon={arbeidssituasjon} antallBarn={barnet.antallBarn} />
+                                    
                                 )}
 
                                 {!erFarOgFarKunMedfarHarRett && (
@@ -87,7 +88,7 @@ export const UforutsetteEndringer = ({ hvemPlanlegger, arbeidssituasjon, barnet 
                         ) : (
                             <>
                                 <HvisDuBlirSyk arbeidssituasjon={arbeidssituasjon} />
-                                <HvisBarnetErSyktEllerInnlagt arbeidssituasjon={arbeidssituasjon} />
+                                <HvisBarnetErInnlagtEtterTermindato arbeidssituasjon={arbeidssituasjon} antallBarn={barnet.antallBarn} />
                                 <NyttBarnFørTreÅr arbeidssituasjon={arbeidssituasjon} hvemPlanlegger={hvemPlanlegger} />
                             </>
                         )}
