@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
-import { API_URLS, selvstendigNæringOptions } from 'appData/queries';
+import { API_URLS, mineFrilansoppdragOptions, selvstendigNæringOptions } from 'appData/queries';
 import { SøknadRoute } from 'appData/routes';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
@@ -68,6 +68,16 @@ const DEFAULT_SELVSTENDIG_NÆRING = [
     },
 ] satisfies SelvstendigNæringDto_fpoversikt[];
 
+const DEFAULT_FRILANSOPPDRAG = [
+    {
+        arbeidsgiverId: '999999999',
+        arbeidsgiverIdType: 'orgnr',
+        arbeidsgiverNavn: 'Frilans Oppdrag AS',
+        fom: '2024-01-15T00:00:00.000Z',
+        stillingsprosent: 0,
+    },
+] satisfies EksternArbeidsforholdDto_fpoversikt[];
+
 const promiseAction = () => () => {
     action('button-click')();
     return Promise.resolve();
@@ -75,6 +85,7 @@ const promiseAction = () => () => {
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
+    frilansoppdrag?: EksternArbeidsforholdDto_fpoversikt[];
 } & ComponentProps<typeof ArbeidsforholdOgInntektSteg>;
 
 const meta = {
@@ -85,7 +96,7 @@ const meta = {
             handlers: [http.get(API_URLS.selvstendigNæring, () => HttpResponse.json(DEFAULT_SELVSTENDIG_NÆRING))],
         },
     },
-    render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
+    render: ({ gåTilNesteSide = action('button-click'), frilansoppdrag = [], ...rest }) => {
         const queryClient = new QueryClient({
             defaultOptions: {
                 queries: {
@@ -94,6 +105,7 @@ const meta = {
             },
         });
         queryClient.setQueryData(selvstendigNæringOptions().queryKey, DEFAULT_SELVSTENDIG_NÆRING);
+        queryClient.setQueryData(mineFrilansoppdragOptions().queryKey, frilansoppdrag);
         return (
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter initialEntries={[SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT]}>
@@ -134,5 +146,12 @@ export const BrukerKanIkkeSøke: Story = {
     args: {
         ...Default.args,
         arbeidsforhold: [],
+    },
+};
+
+export const MedFrilansoppdrag: Story = {
+    args: {
+        ...Default.args,
+        frilansoppdrag: DEFAULT_FRILANSOPPDRAG,
     },
 };

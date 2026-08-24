@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
-import { selvstendigNæringOptions } from 'appData/queries';
+import { mineFrilansoppdragOptions, selvstendigNæringOptions } from 'appData/queries';
 import { SøknadRoute } from 'appData/routes';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
@@ -59,6 +59,16 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
 
     const selvstendigNæringQuery = useQuery(selvstendigNæringOptions());
     const selvstendigNæring = selvstendigNæringQuery.data ?? [];
+
+    const frilansoppdragQuery = useQuery({
+        ...mineFrilansoppdragOptions(),
+        select: (data) => {
+            const threeMonthsAgo = new Date();
+            threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+            return data.filter((oppdrag) => !oppdrag.tom || new Date(oppdrag.tom) >= threeMonthsAgo);
+        },
+    });
+    const frilansoppdrag = frilansoppdragQuery.data ?? [];
 
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
     const andreInntektskilder: AndreInntektskilder[] =
@@ -123,7 +133,7 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <ArbeidsforholdOgInntektPanel
                 aktiveArbeidsforhold={aktiveArbeidsforhold}
-                frilansoppdrag={[]}
+                frilansoppdrag={frilansoppdrag}
                 selvstendigNæring={selvstendigNæring}
                 egenNæring={egenNæring}
                 andreInntektskilder={andreInntektskilder}

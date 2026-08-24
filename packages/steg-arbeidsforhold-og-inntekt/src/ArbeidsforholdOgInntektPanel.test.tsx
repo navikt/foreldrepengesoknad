@@ -30,6 +30,7 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
         expect(await screen.findAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
         expect(screen.getByRole('button', { name: 'Legg til inntekt' })).toBeInTheDocument();
         expect(screen.queryByText('Har du jobbet i utlandet de siste 4 ukene?')).not.toBeInTheDocument();
+        expect(screen.queryByText('Informasjon til deg som er fisker')).not.toBeInTheDocument();
     });
 
     it('skal vise og åpne wizard for andre inntekter', async () => {

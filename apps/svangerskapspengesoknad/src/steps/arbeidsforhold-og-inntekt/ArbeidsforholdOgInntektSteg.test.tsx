@@ -6,9 +6,15 @@ import { SøknadRoute } from 'appData/routes';
 
 import * as stories from './ArbeidsforholdOgInntektSteg.stories';
 
-const { Default } = composeStories(stories);
+const { Default, MedFrilansoppdrag } = composeStories(stories);
 
 describe('<ArbeidsforholdOgInntektSteg>', () => {
+    it('skal vise frilansoppdrag', async () => {
+        await MedFrilansoppdrag.run();
+
+        expect(await screen.findByText('Mine frilansoppdrag')).toBeInTheDocument();
+    });
+
     it('skal gå til neste steg når informasjon er korrekt', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
