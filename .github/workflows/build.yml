@@ -2,9 +2,6 @@ name: Build app
 on:
   workflow_call:
     secrets:
-      READER_TOKEN:
-        description: 'A token passed from the caller workflow'
-        required: true
       SENTRY_AUTH_TOKEN:
         description: 'A token passed from the caller workflow'
         required: true
@@ -51,7 +48,7 @@ jobs:
     name: Build and test
     permissions:
       contents: read
-      packages: write
+      packages: read
       id-token: write
     runs-on: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' && 'ubuntu-latest') || inputs.runs-on }}
     env:
@@ -94,7 +91,7 @@ jobs:
       - name: Installere dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Opprett SENTRY_RELEASE environment variable
         if: inputs.push-image
