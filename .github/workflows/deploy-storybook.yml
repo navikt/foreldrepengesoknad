@@ -19,5 +19,3 @@ jobs:
     with:
       package-manager: pnpm
       cache: turbo
-    secrets:
-      READER_TOKEN: ${{ secrets.READER_TOKEN }}
