@@ -67,28 +67,6 @@ export const FordelingPåvirkninger = ({
     const fødtFørUke33 = erFødtFørUke33(familiehendelsesdato, termindato);
     const visInfoBarnInnlagtFørTermin = !erAdopsjon && førsteOkt2021Gjelder && fødtFørUke33 && !erFarOgFar;
 
-    // eslint-disable-next-line no-console
-    console.log('[FordelingPåvirkninger] konstanter', {
-        ANTALL_UKER_MINSTERETT_MOR_TO_TETTE_FØDSEL,
-        ANTALL_UKER_MINSTERETT_MOR_TO_TETTE_ADOPSJON,
-        ANTALL_UKER_MINSTERETT_FAR_TO_TETTE,
-        heading,
-        degEllerSeg,
-        degEllerMor,
-        duEllerDere,
-        morMinsterettUkerToTette,
-        farMinsterettUkerToTette,
-        søkerensMinsterettToTette,
-        wlbReglerGjelder,
-        førsteOkt2021Gjelder,
-        visInfoMorSykFørsteSeksUker,
-        visInfoMorSykISinPeriode,
-        visInfoFørFørsteOkt2021,
-        fødtFørUke33,
-        visInfoBarnInnlagtFørTermin,
-        barnAntall: barn.antallBarn,
-    });
-
     return (
         <div className={styles.fordelingPåvirkninger}>
             <ExpansionCard
