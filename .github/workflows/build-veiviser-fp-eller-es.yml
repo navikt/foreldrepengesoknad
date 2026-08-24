@@ -31,7 +31,6 @@ jobs:
       # Må matche upload-to-CDN destination (teamforeldrepenger + /foreldrepenger/foreldrepenger-eller-engangsstonad).
       vite-cdn-url: 'https://cdn.nav.no/teamforeldrepenger/foreldrepenger/foreldrepenger-eller-engangsstonad/'
     secrets:
-      READER_TOKEN: ${{ secrets.READER_TOKEN }}
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
   upload-to-CDN:
