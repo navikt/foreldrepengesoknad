@@ -20,6 +20,7 @@ import { OversiktPerDel } from './OversiktPerDel';
 import { SammenhengendeUttakInformasjon } from './SammenhengendeUttakInformasjon';
 import { getFarTekst, getMorTekst } from './fordelingOversiktUtils';
 import { BeggeHarRettGraf } from './grafer/begge-har-rett-graf/BeggeHarRettGraf';
+import { getErFarOgFar } from '../../../utils/personUtils';
 
 interface Props {
     kontoer: KontoBeregningDto;
@@ -37,6 +38,7 @@ export const FordelingOversikt = ({ kontoer, navnFarMedmor, navnMor, deltUttak, 
     const { antallBarn } = barn;
     const erBarnetFødt = isFødtBarn(barn);
     const erIkkeFødtBarn = isUfødtBarn(barn);
+    const erFarOgFar = getErFarOgFar(søkersituasjon.rolle, annenForelder);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
@@ -107,6 +109,7 @@ export const FordelingOversikt = ({ kontoer, navnFarMedmor, navnMor, deltUttak, 
                 erIkkeFødtBarn={erIkkeFødtBarn}
                 familiehendelsesdato={familiehendelsesdato}
                 annenForelderHarKunRettIEØS={!!annenForelderHarKunRettIEØS}
+                erFarOgFar={erFarOgFar}
             />
         </VStack>
     );

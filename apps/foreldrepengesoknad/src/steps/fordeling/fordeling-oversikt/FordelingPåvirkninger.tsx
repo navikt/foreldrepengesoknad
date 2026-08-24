@@ -8,7 +8,8 @@ import {
 } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from 'utils/dateUtils';
+import { getTermindato } from 'utils/barnUtils';
+import { andreAugust2022ReglerGjelder, erFødtFørUke33, førsteOktober2021ReglerGjelder } from 'utils/dateUtils';
 
 import { BodyShort, ExpansionCard, VStack } from '@navikt/ds-react';
 
@@ -31,6 +32,7 @@ interface Props {
     erIkkeFødtBarn: boolean;
     familiehendelsesdato: string;
     annenForelderHarKunRettIEØS: boolean;
+    erFarOgFar: boolean;
 }
 
 export const FordelingPåvirkninger = ({
@@ -43,6 +45,7 @@ export const FordelingPåvirkninger = ({
     erIkkeFødtBarn,
     familiehendelsesdato,
     annenForelderHarKunRettIEØS,
+    erFarOgFar,
 }: Props) => {
     const intl = useIntl();
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
@@ -60,6 +63,32 @@ export const FordelingPåvirkninger = ({
     const visInfoMorSykFørsteSeksUker = deltUttak && !erAdopsjon && førsteOkt2021Gjelder;
     const visInfoMorSykISinPeriode = deltUttak && førsteOkt2021Gjelder;
     const visInfoFørFørsteOkt2021 = deltUttak && !førsteOkt2021Gjelder;
+    const termindato = getTermindato(barn);
+    const fødtFørUke33 = erFødtFørUke33(familiehendelsesdato, termindato);
+    const visInfoBarnInnlagtFørTermin = !erAdopsjon && førsteOkt2021Gjelder && fødtFørUke33 && !erFarOgFar;
+
+    // eslint-disable-next-line no-console
+    console.log('[FordelingPåvirkninger] konstanter', {
+        ANTALL_UKER_MINSTERETT_MOR_TO_TETTE_FØDSEL,
+        ANTALL_UKER_MINSTERETT_MOR_TO_TETTE_ADOPSJON,
+        ANTALL_UKER_MINSTERETT_FAR_TO_TETTE,
+        heading,
+        degEllerSeg,
+        degEllerMor,
+        duEllerDere,
+        morMinsterettUkerToTette,
+        farMinsterettUkerToTette,
+        søkerensMinsterettToTette,
+        wlbReglerGjelder,
+        førsteOkt2021Gjelder,
+        visInfoMorSykFørsteSeksUker,
+        visInfoMorSykISinPeriode,
+        visInfoFørFørsteOkt2021,
+        fødtFørUke33,
+        visInfoBarnInnlagtFørTermin,
+        barnAntall: barn.antallBarn,
+    });
+
     return (
         <div className={styles.fordelingPåvirkninger}>
             <ExpansionCard
@@ -80,7 +109,7 @@ export const FordelingPåvirkninger = ({
                     <ExpansionCard.Title className={styles.heading}>{heading}</ExpansionCard.Title>
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
-                    {visInfoMorSykFørsteSeksUker && (
+                    {visInfoBarnInnlagtFørTermin && (
                         <>
                             <div className={styles.påvirkning}>
                                 <div className={styles.ikonFrame}>
@@ -113,6 +142,28 @@ export const FordelingPåvirkninger = ({
                                     <FormattedMessage
                                         id="fordeling.påvirkninger.barnInnlagtEtterTermin.info"
                                         values={{ antallBarn: barn.antallBarn }}
+                                    />
+                                </VStack>
+                            </div>
+                        </>
+                    )}
+
+                    {visInfoMorSykFørsteSeksUker && (
+                        <>
+                            <div className={styles.påvirkning}>
+                                <div className={styles.ikonFrame}>
+                                    <StethoscopeIcon className={styles.ikon} aria-hidden={true} />
+                                </div>
+                                <VStack>
+                                    <BodyShort className={styles.undertittel}>
+                                        <FormattedMessage
+                                            id="fordeling.påvirkninger.barnSyk.tittel"
+                                            values={{ antallBarn: barn.antallBarn }}
+                                        />
+                                    </BodyShort>
+                                    <FormattedMessage
+                                        id="fordeling.påvirkninger.barnSyk.info"
+                                        values={{ morTekst, antallBarn: barn.antallBarn }}
                                     />
                                 </VStack>
                             </div>
