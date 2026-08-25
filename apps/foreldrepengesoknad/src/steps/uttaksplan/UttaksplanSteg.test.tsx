@@ -18,6 +18,7 @@ const {
     FødselFarBeggeHarRettStarterPåTermin,
     NySøknadFørVedtakMedEksisterendeSak,
     FødselMorOgFarBeggeHarRettOverførtFraPlanlegger,
+    FødselFarAleneOmOmsorgKunAnnenPartsPerioder,
 } = composeStories(stories);
 
 describe('<UttaksplanSteg>', () => {
@@ -249,6 +250,30 @@ describe('<UttaksplanSteg>', () => {
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(await screen.findByText('Du må gjøre en endring for å kunne søke om endring')).toBeInTheDocument();
+    });
+
+    it('skal stoppe innsending når planen kun har perioder for den andre forelderen og søker har aleneomsorg', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        await FødselFarAleneOmOmsorgKunAnnenPartsPerioder.run({
+            args: {
+                ...FødselFarAleneOmOmsorgKunAnnenPartsPerioder.args,
+                gåTilNesteSide,
+                mellomlagreSøknadOgNaviger,
+            },
+        });
+
+        expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(await screen.findByText('Du må ha minst én uttaksperiode i planen.')).toBeInTheDocument();
+
+        const navigasjonsAction = gåTilNesteSide.mock.calls.find(
+            ([action]) => action.key === ContextDataType.APP_ROUTE,
+        );
+        expect(navigasjonsAction).toBeUndefined();
     });
 
     it('skal hente opp den overførte planen frå planleggeren igjen med "Tilbakestill plan" etter "Fjern alt"', async () => {

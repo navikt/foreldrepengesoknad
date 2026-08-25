@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
 import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
@@ -12,6 +12,66 @@ import * as stories from './EgenNæringSteg.stories';
 const { Default } = composeStories(stories);
 
 describe('<EgenNæringSteg>', () => {
+    it('skal lagre tomt valgfritt organisasjonsnummer som undefined for fiske', async () => {
+        const gåTilNesteSide = vi.fn();
+        const startdato = dayjs().subtract(1, 'year');
+
+        render(<Default gåTilNesteSide={gåTilNesteSide} />);
+
+        expect(await screen.findByText('Hvilken type virksomhet har du?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Fiske'));
+
+        await userEvent.click(
+            within(screen.getByRole('radiogroup', { name: 'Er virksomheten registrert i Norge?' })).getByRole('radio', {
+                name: 'Ja',
+            }),
+        );
+
+        const orgnummerInput = screen.getByLabelText(/Hva er organisasjonsnummeret?/);
+        await userEvent.type(orgnummerInput, '123');
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(
+            screen.getAllByText('Organisasjonsnummeret er ikke et gyldig norsk organisasjonsnummer.'),
+        ).not.toHaveLength(0);
+
+        await userEvent.clear(orgnummerInput);
+
+        await userEvent.type(screen.getByLabelText('Når startet du virksomheten?'), startdato.format('DD.MM.YYYY'));
+        await userEvent.click(
+            within(screen.getByRole('radiogroup', { name: 'Jobber du der fortsatt?' })).getByRole('radio', {
+                name: 'Ja',
+            }),
+        );
+        await userEvent.type(
+            screen.getByLabelText('Hva har du hatt i næringsresultat før skatt de siste 12 månedene?'),
+            '1000',
+        );
+        await userEvent.click(
+            within(
+                screen.getByRole('radiogroup', {
+                    name: 'Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?',
+                }),
+            ).getByRole('radio', { name: 'Nei' }),
+        );
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                fom: startdato.format('YYYY-MM-DD'),
+                harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
+                navnPåNæringen: undefined,
+                næringsinntekt: '1000',
+                næringstype: 'FISKE',
+                organisasjonsnummer: undefined,
+                registrertINorge: true,
+            },
+            key: ContextDataType.EGEN_NÆRING,
+            type: 'update',
+        });
+    });
+
     it('skal gå til neste steg når informasjon er korrekt', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();

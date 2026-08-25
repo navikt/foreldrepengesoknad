@@ -29,7 +29,10 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
     const selvstendigNæringQuery = useQuery(selvstendigNæringOptions());
 
     const onSubmit = (values: NæringDto) => {
-        oppdaterEgenNæring(values);
+        oppdaterEgenNæring({
+            ...values,
+            organisasjonsnummer: values.organisasjonsnummer === '' ? undefined : values.organisasjonsnummer,
+        });
 
         const nextRoute = getRuteSkjemaEllerVelgArbeid(barnet.termindato, arbeidsforhold, arbeidsforholdOgInntekt);
         return navigator.goToStep(nextRoute);

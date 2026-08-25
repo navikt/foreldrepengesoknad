@@ -37,33 +37,46 @@ const getPathToLabelMap = (intl: IntlShape) =>
         [SøknadRoutes.IKKE_MYNDIG]: '',
     }) satisfies Record<SøknadRoutes, string>;
 
+const isAfterStep = (previousStepPath: SøknadRoutes, currentStepPath: SøknadRoutes): boolean => {
+    return ROUTES_ORDER.indexOf(currentStepPath) > ROUTES_ORDER.indexOf(previousStepPath);
+};
+
 const showUtenlandsoppholdStep = (
     path: SøknadRoutes,
+    currentPath: SøknadRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
 ) => {
     if (path === SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD) {
-        const erValgt = getData(ContextDataType.UTENLANDSOPPHOLD)?.harBoddUtenforNorgeSiste12Mnd === true;
-        return erValgt || !!getData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+        const erValgtOgEtterSteg =
+            getData(ContextDataType.UTENLANDSOPPHOLD)?.harBoddUtenforNorgeSiste12Mnd === true &&
+            isAfterStep(SøknadRoutes.UTENLANDSOPPHOLD, currentPath);
+        return erValgtOgEtterSteg || !!getData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     }
     if (path === SøknadRoutes.SENERE_UTENLANDSOPPHOLD) {
-        const erValgt = getData(ContextDataType.UTENLANDSOPPHOLD)?.skalBoUtenforNorgeNeste12Mnd === true;
-        return erValgt || !!getData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
+        const erValgtOgEtterSteg =
+            getData(ContextDataType.UTENLANDSOPPHOLD)?.skalBoUtenforNorgeNeste12Mnd === true &&
+            isAfterStep(SøknadRoutes.UTENLANDSOPPHOLD, currentPath);
+        return erValgtOgEtterSteg || !!getData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     }
     return false;
 };
 
 const showFrilansOgEgenNæring = (
     path: SøknadRoutes,
+    currentPath: SøknadRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
 ) => {
     if (path === SøknadRoutes.FRILANS) {
-        const erValgt = getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT)?.harJobbetSomFrilans === true;
-        return erValgt || !!getData(ContextDataType.FRILANS);
+        const erValgtOgEtterSteg =
+            getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT)?.harJobbetSomFrilans === true &&
+            isAfterStep(SøknadRoutes.ARBEID_OG_INNTEKT, currentPath);
+        return erValgtOgEtterSteg || !!getData(ContextDataType.FRILANS);
     }
     if (path === SøknadRoutes.EGEN_NÆRING) {
-        const erValgt =
-            getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT)?.harJobbetSomSelvstendigNæringsdrivende === true;
-        return erValgt || !!getData(ContextDataType.EGEN_NÆRING);
+        const erValgtOgEtterSteg =
+            getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT)?.harJobbetSomSelvstendigNæringsdrivende === true &&
+            isAfterStep(SøknadRoutes.ARBEID_OG_INNTEKT, currentPath);
+        return erValgtOgEtterSteg || !!getData(ContextDataType.EGEN_NÆRING);
     }
     return false;
 };
@@ -170,13 +183,13 @@ export const useStepConfig = (
         () =>
             ROUTES_ORDER.flatMap((path) =>
                 (requiredSteps.includes(path) && skalViseFordelingSteg(path, getStateData)) ||
-                showUtenlandsoppholdStep(path, getStateData) ||
+                showUtenlandsoppholdStep(path, currentPath, getStateData) ||
                 showManglendeDokumentasjonSteg(path, getStateData, arbeidsforhold, eksisterendeSak) ||
-                showFrilansOgEgenNæring(path, getStateData)
+                showFrilansOgEgenNæring(path, currentPath, getStateData)
                     ? [path]
                     : [],
             ),
-        [requiredSteps, getStateData, arbeidsforhold, eksisterendeSak],
+        [requiredSteps, currentPath, getStateData, arbeidsforhold, eksisterendeSak],
     );
 
     return useMemo(

@@ -190,7 +190,7 @@ describe('ikkeDeltUttak - Adopsjon', () => {
         expect(forslag[0]!.tom).toEqual('2022-11-18');
     });
 
-    it('skal gi far aktivitetsfri kvote etterfulgt av foreldrepenger når bare far har rett ved adopsjon', () => {
+    it('skal gi far foreldrepenger (uten å automatisk bruke aktivitetsfri kvote) når bare far har rett ved adopsjon', () => {
         const forslag = ikkeDeltUttak({
             situasjon: 'adopsjon',
             famDato,
@@ -202,15 +202,11 @@ describe('ikkeDeltUttak - Adopsjon', () => {
             farOgFar: false,
         });
 
-        expect(forslag.length).toEqual(2);
+        expect(forslag.length).toEqual(1);
         expect(forslag[0]!.kontoType).toEqual('FORELDREPENGER');
         expect(forslag[0]!.forelder).toEqual('FAR_MEDMOR');
-        expect(forslag[0]!.morsAktivitet).toEqual('IKKE_OPPGITT');
+        expect(forslag[0]!.morsAktivitet).toBeUndefined();
         expect(forslag[0]!.fom).toEqual('2022-08-08');
-        expect(forslag[0]!.tom).toEqual('2022-09-30');
-        expect(forslag[1]!.kontoType).toEqual('FORELDREPENGER');
-        expect(forslag[1]!.forelder).toEqual('FAR_MEDMOR');
-        expect(forslag[1]!.fom).toEqual('2022-10-03');
-        expect(forslag[1]!.tom).toEqual('2023-01-13');
+        expect(forslag[0]!.tom).toEqual('2022-11-18');
     });
 });
