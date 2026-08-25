@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { ExclamationmarkIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
 
@@ -24,8 +23,7 @@ interface Props {
 export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Props) => {
     const {
         familiesituasjon,
-        familiehendelsedato,
-        termindato,
+        fødtFørUke33,
         foreldreInfo: { rettighetType, søker },
     } = useUttaksplanData();
 
@@ -44,12 +42,6 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
         søker === 'FAR_MEDMOR' && (erAleneforsørger || rettighetType === 'BARE_SØKER_RETT');
 
     const erFarOgFarKunMedfarHarRett = erFarOgFar && rettighetType === 'BARE_SØKER_RETT';
-
-    const ANTALL_DAGER_UKE_33_GRENSE = 49;
-    const fødtFørUke33 =
-        !!familiehendelsedato &&
-        !!termindato &&
-        dayjs(termindato).diff(dayjs(familiehendelsedato), 'day') > ANTALL_DAGER_UKE_33_GRENSE;
 
     return (
         <ExpansionCard aria-label="." onToggle={loggExpansionCardOpen('toggle-uforutsette-endringer')} size="small">
