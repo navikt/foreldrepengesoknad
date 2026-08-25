@@ -27,7 +27,10 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
 
     const onSubmit = (values: NæringDto) => {
-        oppdaterEgenNæring(values);
+        oppdaterEgenNæring({
+            ...values,
+            organisasjonsnummer: values.organisasjonsnummer === '' ? undefined : values.organisasjonsnummer,
+        });
 
         const route = arbeidsforholdOgInntekt.harHattArbeidIUtlandet ? SøknadRoute.ARBEID_I_UTLANDET : undefined;
         const nextRoute =
