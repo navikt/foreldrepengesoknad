@@ -174,11 +174,6 @@ export const useUttaksplanForslag = (
     const fordeling = useContextGetData(ContextDataType.FORDELING);
     const familiehendelsedato = getFamiliehendelsedato(barn);
 
-    // Så lenge me ikkje veit om annen part har periodar eller ikkje (spørringa lastar
-    // framleis), kan me ikkje stole på at ei manglande liste betyr «ingen periodar».
-    // Fordelinga kan då òg mangle oppstartAvForeldrepengerValg/oppstartDato (feltet vart
-    // skjult på Fordeling-steget fordi annen part hadde periodar der og då), så me må
-    // vente med å generere forslag til me veit sikkert.
     if (
         annenPartsPerioderLaster ||
         !kanGenerereUttaksplanForslag(annenPartsPerioder) ||
