@@ -5,7 +5,6 @@ import './index.css';
 import './styles/global.css';
 
 void bootstrapApp({
-    sentryDsn: 'https://4cb9a04935f48499fb83548dedbd4def@sentry.gc.nav.no/183',
     availableLocales: ['nb', 'nn', 'en'],
     withPluralRulesPolyfill: false,
     app: <AppContainer />,

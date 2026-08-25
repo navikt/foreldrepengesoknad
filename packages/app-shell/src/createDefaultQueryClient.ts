@@ -6,16 +6,16 @@ import type { ProblemDetails } from '@navikt/fp-types';
 
 export interface CreateDefaultQueryClientOptions {
     /**
-     * Sentry-melding som logges når et query feiler med HTTPError og
+     * Telemetrimelding som logges når et query feiler med HTTPError og
      * ikke er 401/403. Hvis denne ikke er satt registreres ingen
      * onError-handler på QueryCache (brukes av apper uten API-kall som
-     * trenger Sentry-rapportering, f.eks. veivisere/planlegger).
+     * trenger feilrapportering, f.eks. veivisere/planlegger).
      */
-    sentryQueryErrorMessage?: string;
+    apiQueryErrorMessage?: string;
 }
 
-export const createDefaultQueryClient = ({ sentryQueryErrorMessage }: CreateDefaultQueryClientOptions = {}) => {
-    const queryCache = sentryQueryErrorMessage
+export const createDefaultQueryClient = ({ apiQueryErrorMessage }: CreateDefaultQueryClientOptions = {}) => {
+    const queryCache = apiQueryErrorMessage
         ? new QueryCache({
               onError: (error) => {
                   if (error instanceof HTTPError) {
@@ -27,7 +27,7 @@ export const createDefaultQueryClient = ({ sentryQueryErrorMessage }: CreateDefa
                           return;
                       }
                       const apiError = error.data as ProblemDetails | undefined;
-                      captureApiError(sentryQueryErrorMessage, apiError);
+                      captureApiError(apiQueryErrorMessage, apiError);
                   }
               },
           })
@@ -36,7 +36,7 @@ export const createDefaultQueryClient = ({ sentryQueryErrorMessage }: CreateDefa
     const mutationCache = new MutationCache({
         onError: (error) => {
             if (error instanceof ApiError) {
-                captureApiError(error.sentryMessage, error.problemDetails);
+                captureApiError(error.telemetryMessage, error.problemDetails);
             }
         },
     });

@@ -10,7 +10,6 @@ catalog:
   '@navikt/ds-react': 8.16.1
   '@navikt/ds-tailwind': 8.16.1
   '@navikt/nav-dekoratoren-moduler': 4.2.2
-  '@sentry/vite-plugin': 5.4.0
   '@storybook/addon-a11y': 10.4.6
   '@storybook/addon-links': 10.4.6
   '@storybook/react-vite': 10.4.6
@@ -60,7 +59,6 @@ minimumReleaseAgeExclude:
 allowBuilds:
   msw: true
   '@parcel/watcher': false
-  '@sentry/cli': false
   esbuild: false
   core-js: false
   unrs-resolver: false
