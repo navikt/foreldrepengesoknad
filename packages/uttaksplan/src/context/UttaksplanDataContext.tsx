@@ -1,5 +1,4 @@
 import { createContext, use, useMemo } from 'react';
-
 import {
     Barn,
     EksternArbeidsforholdDto_fpoversikt,
@@ -9,7 +8,7 @@ import {
     UttakPeriode_fpoversikt,
     isFødtBarn,
 } from '@navikt/fp-types';
-import { Uttaksperioden, getFamiliehendelsedato, getFamiliesituasjon } from '@navikt/fp-utils';
+import { Uttaksperioden, erFødtFørUke33, getFamiliehendelsedato, getFamiliesituasjon } from '@navikt/fp-utils';
 
 import { ForeldreInfo } from '../types/ForeldreInfo';
 import { sorterPerioder } from '../utils/periodeUtils';
@@ -38,6 +37,7 @@ type ContextValues = Omit<Props, 'children'> & {
      * skal ikke vises.
      */
     kanVelgeArbeidsgiver: boolean;
+    fødtFørUke33: boolean;
 };
 
 const UttaksplanDataContext = createContext<ContextValues | null>(null);
@@ -50,6 +50,8 @@ export const UttaksplanDataProvider = (props: Props) => {
         const familiesituasjon = getFamiliesituasjon(otherProps.barn);
         const termindato = isFødtBarn(otherProps.barn) ? otherProps.barn.termindato : undefined;
 
+        const fødtFørUke33 = erFødtFørUke33(familiehendelsedato, termindato);
+
         const sortertePerioder = filtrerBortPerioderUtenTrekkdager(otherProps.uttakPerioder).sort(sorterPerioder);
 
         return {
@@ -57,6 +59,7 @@ export const UttaksplanDataProvider = (props: Props) => {
             familiehendelsedato,
             familiesituasjon,
             termindato,
+            fødtFørUke33,
             uttakPerioder: sortertePerioder,
             kanVelgeArbeidsgiver: otherProps.aktiveArbeidsforhold !== undefined,
         };

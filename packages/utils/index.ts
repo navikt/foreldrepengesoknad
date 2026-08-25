@@ -68,6 +68,7 @@ export {
     dateIsSameOrAfter,
     dateIsSameOrBefore,
     formaterDatoUtenDag,
+    erFødtFørUke33,
 } from './src/dateUtils';
 
 export { Uttaksdagen, erUttaksdag } from './src/uttak/Uttaksdagen';
