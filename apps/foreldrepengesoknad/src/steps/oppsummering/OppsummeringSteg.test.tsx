@@ -239,13 +239,11 @@ describe('<Oppsummering>', () => {
         await FarMedUførMorUgift.run();
 
         const dinPlanDiv = getCardDiv(screen.getByText('Din plan'));
-        await dinPlanDiv.findByText('49 uker med 100 prosent foreldrepenger');
+        await dinPlanDiv.findByText('3 av 10 uker med foreldrepenger uten aktivitetskrav');
 
-        expect(
-            checkAndGetParentDiv(dinPlanDiv.getByText('Du har planlagt')).getByText(
-                '49 uker med 100 prosent foreldrepenger',
-            ),
-        ).toBeInTheDocument();
+        const duHarPlanlagtDiv = checkAndGetParentDiv(dinPlanDiv.getByText('Du har planlagt'));
+        expect(duHarPlanlagtDiv.getByText('3 av 10 uker med foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
+        expect(duHarPlanlagtDiv.getByText('25 av 30 uker med foreldrepenger med aktivitetskrav')).toBeInTheDocument();
         expect(
             checkAndGetParentDiv(dinPlanDiv.getByText('Onsdag 24.11.21 - tirsdag 14.12.21')).getByText(
                 /Foreldrepenger uten aktivitetskrav/,

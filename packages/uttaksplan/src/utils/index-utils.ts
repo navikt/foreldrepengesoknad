@@ -16,3 +16,4 @@ export * from './periodeUtils';
 export { nyUttaksplanMessages } from '../intl/nyUttaksplanMessages';
 export { deltUttak } from './forslag/deltUttak';
 export { ikkeDeltUttak } from './forslag/ikkeDeltUttak';
+export { finnDinPlanKvoteRader, type DinPlanKvoteRad } from './kvoteOppsummeringUtils';

@@ -1,6 +1,7 @@
 import { sum, sumBy } from 'es-toolkit';
 
 import {
+    BrukerRolleSak_fpoversikt,
     Familiesituasjon,
     KontoBeregningDto,
     KontoDto,
@@ -13,6 +14,71 @@ import {
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
 import { finnAntallTidelerÅTrekke } from './periodeUtils';
+
+export type DinPlanKvoteRad = {
+    kontoType: KontoTypeUttak;
+    bruktUker: number;
+    tilgjengeligUker: number;
+};
+
+// Rekkefølga radene skal visast i «Du har planlagt»-lista i oppsummeringssteget.
+const DIN_PLAN_KVOTE_REKKEFØLGE: KontoTypeUttak[] = [
+    'FORELDREPENGER_FØR_FØDSEL',
+    'MØDREKVOTE',
+    'FEDREKVOTE',
+    'AKTIVITETSFRI_KVOTE',
+    'FORELDREPENGER',
+    'FELLESPERIODE',
+];
+
+/**
+ * Finn kor mange veker søkjaren har planlagt å bruke av kvar stønadskonto,
+ * samanlikna med kor mange veker som er tilgjengelege totalt på den kontoen.
+ * Brukt til å byggja opp «Du har planlagt»-lista i oppsummeringssteget.
+ *
+ * Reknar kun med søkjaren sine eigne periodar (ikkje periodar den andre
+ * forelderen har lagt inn i den same uttaksplanen), sidan det er søkjaren sin
+ * eigen søknad som skal oppsummerast her. Ein konto blir kun teken med dersom
+ * søkjaren faktisk har planlagt å bruke noko av han.
+ */
+export const finnDinPlanKvoteRader = (
+    uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    søkerRolle: BrukerRolleSak_fpoversikt,
+    kontoer: KontoDto[],
+    familiesituasjon: Familiesituasjon,
+    familiehendelsedato: string,
+): DinPlanKvoteRad[] => {
+    const søkersPerioder = uttakPerioder
+        .filter(
+            (periode): periode is UttakPeriode_fpoversikt =>
+                'forelder' in periode && periode.forelder === søkerRolle,
+        )
+        .filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
+
+    return DIN_PLAN_KVOTE_REKKEFØLGE.reduce<DinPlanKvoteRad[]>((rader, kontoType) => {
+        const konto = kontoer.find((k) => k.konto === kontoType);
+        if (!konto || konto.dager <= 0) {
+            return rader;
+        }
+
+        const relevantePerioder = søkersPerioder.filter((p) => getUttaksKontoType(p) === kontoType);
+        const bruktDager = summerDagerIPerioder(relevantePerioder, [konto], familiesituasjon, familiehendelsedato);
+
+        if (bruktDager <= 0) {
+            return rader;
+        }
+
+        // Kontoane er alltid heile veker (multiplum av 5 dagar). Brukt tal på dagar
+        // vert her avrunda til næraste heile veke for ei enkel oppsummeringslinje –
+        // den eksakte periode-for-periode-oversikta finst lenger ned på sida.
+        rader.push({
+            kontoType,
+            bruktUker: Math.round(bruktDager / 5),
+            tilgjengeligUker: konto.dager / 5,
+        });
+        return rader;
+    }, []);
+};
 
 export const useErAntallDagerOvertrukketIUttaksplan = () => {
     const {

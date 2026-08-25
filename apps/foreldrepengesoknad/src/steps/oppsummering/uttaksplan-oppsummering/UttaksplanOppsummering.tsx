@@ -1,15 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { getUkerOgDagerFromDager } from 'utils/dateUtils';
-import { getAntallUkerFraStønadskvoter } from 'utils/stønadskvoterUtils';
+import { FormattedMessage } from 'react-intl';
 
 import { FormSummary } from '@navikt/ds-react';
 
 import { EksternArbeidsforholdDto_fpoversikt, NavnPåForeldre } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { DinPlanKvoter } from './DinPlanKvoter';
 import { UttaksplanOppsummeringsliste } from './UttaksplanOppsummeringsliste';
 
 interface Props {
@@ -19,8 +18,6 @@ interface Props {
 }
 
 export const UttaksplanOppsummering = ({ navnPåForeldre, registrerteArbeidsforhold, onVilEndreSvar }: Props) => {
-    const intl = useIntl();
-
     const dekningsgrad = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
 
     const harJustertUttakVedFødsel = useContextGetData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
@@ -36,43 +33,6 @@ export const UttaksplanOppsummering = ({ navnPåForeldre, registrerteArbeidsforh
     });
     const valgteStønadskvoter = tilgjengeligeStønadskvoterQuery.data;
 
-    const antallUkerIUttaksplan = getAntallUkerFraStønadskvoter(valgteStønadskvoter?.kontoer ?? []);
-
-    const antallUkerOgDagerIUttaksplan = getUkerOgDagerFromDager(antallUkerIUttaksplan * 5);
-
-    let dekningsgradTekst: string;
-
-    if (antallUkerOgDagerIUttaksplan.dager > 0) {
-        if (dekningsgrad === '100') {
-            dekningsgradTekst = intl.formatMessage(
-                { id: 'oppsummering.uttak.dekningsgrad.verdi100.ukerOgDager' },
-                { antallUker: antallUkerOgDagerIUttaksplan.uker, antallDager: antallUkerOgDagerIUttaksplan.dager },
-            );
-        } else {
-            dekningsgradTekst = intl.formatMessage(
-                { id: 'oppsummering.uttak.dekningsgrad.verdi80.ukerOgDager' },
-                { antallUker: antallUkerOgDagerIUttaksplan.uker, antallDager: antallUkerOgDagerIUttaksplan.dager },
-            );
-        }
-    } else {
-        dekningsgradTekst =
-            dekningsgrad === '100'
-                ? intl.formatMessage(
-                      { id: 'oppsummering.uttak.dekningsgrad.verdi100.bareUker' },
-                      {
-                          antallUker: antallUkerOgDagerIUttaksplan.uker,
-                          antallDager: antallUkerOgDagerIUttaksplan.dager,
-                      },
-                  )
-                : intl.formatMessage(
-                      { id: 'oppsummering.uttak.dekningsgrad.verdi80.bareUker' },
-                      {
-                          antallUker: antallUkerOgDagerIUttaksplan.uker,
-                          antallDager: antallUkerOgDagerIUttaksplan.dager,
-                      },
-                  );
-    }
-
     return (
         <FormSummary>
             <FormSummary.Header>
@@ -85,7 +45,9 @@ export const UttaksplanOppsummering = ({ navnPåForeldre, registrerteArbeidsforh
                     <FormSummary.Label>
                         <FormattedMessage id="oppsummering.uttak.dekningsgrad.label" />
                     </FormSummary.Label>
-                    <FormSummary.Value>{dekningsgradTekst}</FormSummary.Value>
+                    <FormSummary.Value>
+                        <DinPlanKvoter kontoer={valgteStønadskvoter?.kontoer ?? []} />
+                    </FormSummary.Value>
                 </FormSummary.Answer>
                 <UttaksplanOppsummeringsliste
                     navnPåForeldre={navnPåForeldre}

@@ -193,6 +193,14 @@ const STØNADSKONTO_100 = {
             konto: 'FORELDREPENGER_FØR_FØDSEL',
             dager: 15,
         },
+        {
+            konto: 'AKTIVITETSFRI_KVOTE',
+            dager: 50,
+        },
+        {
+            konto: 'FORELDREPENGER',
+            dager: 150,
+        },
     ],
     minsteretter: {
         farRundtFødsel: 0,
@@ -217,6 +225,14 @@ const STØNADSKONTO_80 = {
         {
             konto: 'FORELDREPENGER_FØR_FØDSEL',
             dager: 15,
+        },
+        {
+            konto: 'AKTIVITETSFRI_KVOTE',
+            dager: 60,
+        },
+        {
+            konto: 'FORELDREPENGER',
+            dager: 190,
         },
     ],
     minsteretter: {
