@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
 import { IconCircleWrapper } from '@navikt/fp-ui';
+import { erFødtFørUke33 } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { FødtFørUke33 } from './tekster/FødtFørUke33';
@@ -23,9 +24,12 @@ interface Props {
 export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Props) => {
     const {
         familiesituasjon,
-        fødtFørUke33,
+        familiehendelsedato,
+        termindato,
         foreldreInfo: { rettighetType, søker },
     } = useUttaksplanData();
+
+    const fødtFørUke33 = erFødtFørUke33(familiehendelsedato, termindato);
 
     const erFødsel = familiesituasjon === 'fødsel';
 
@@ -42,6 +46,8 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
         søker === 'FAR_MEDMOR' && (erAleneforsørger || rettighetType === 'BARE_SØKER_RETT');
 
     const erFarOgFarKunMedfarHarRett = erFarOgFar && rettighetType === 'BARE_SØKER_RETT';
+
+    console.log('er født før uke 33', fødtFørUke33);
 
     return (
         <ExpansionCard aria-label="." onToggle={loggExpansionCardOpen('toggle-uforutsette-endringer')} size="small">
@@ -66,7 +72,7 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
                         {erFødsel ? (
                             <>
                                 {!erFarOgFarKunMedfarHarRett && <FødtFørUke33 />}
-                                
+
                                 <HvisDuBlirSyk />
 
                                 {erMorDelAvSøknaden && <HvisMorBlirSyk />}
@@ -78,11 +84,19 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
                                     ((beggeHarRett && !erFarOgFar) ||
                                         kunMorHarRett ||
                                         (erAleneforsørger && erMorDelAvSøknaden)) && (
-                                    <>
-                                        <HvisBarnetErPrematurInnlagtFørTermin />
-                                        <HvisBarnetErPrematurInnlagtEtterTermin />
-                                    </>
-                                )}
+                                        <>
+                                            <HvisBarnetErPrematurInnlagtFørTermin />
+                                            <HvisBarnetErPrematurInnlagtEtterTermin />
+                                        </>
+                                    )}
+                                {!fødtFørUke33 &&
+                                    ((beggeHarRett && !erFarOgFar) ||
+                                        kunMorHarRett ||
+                                        (erAleneforsørger && erMorDelAvSøknaden)) && (
+                                        <>
+                                            <HvisBarnetErSyktEllerInnlagt />
+                                        </>
+                                    )}
 
                                 {((erAleneforsørger && erMorDelAvSøknaden) ||
                                     kunMorHarRett ||
@@ -94,7 +108,6 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
                             <>
                                 <HvisDuBlirSyk />
                                 <HvisBarnetErSyktEllerInnlagt />
-
                                 <NyttBarnFørTreÅr />
                             </>
                         )}
