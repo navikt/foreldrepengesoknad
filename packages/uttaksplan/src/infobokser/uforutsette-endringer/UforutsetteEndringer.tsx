@@ -7,7 +7,8 @@ import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { FødtFørUke33 } from './tekster/FødtFørUke33';
-import { HvisBarnetErInnlagt } from './tekster/HvisBarnetErInnlagt';
+import { HvisBarnetErPrematurInnlagtEtterTermin } from './tekster/HvisBarnetErPrematurInnlagtEtterTermin';
+import { HvisBarnetErPrematurInnlagtFørTermin } from './tekster/HvisBarnetErPrematurInnlagtFørTermin';
 import { HvisBarnetErSykt } from './tekster/HvisBarnetErSykt';
 import { HvisBarnetErSyktEllerInnlagt } from './tekster/HvisBarnetErSyktEllerInnlagt';
 import { HvisDuBlirSyk } from './tekster/HvisDuBlirSyk';
@@ -74,7 +75,10 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
                                     kunFarEllerMedmorHarRett) && <HvisBarnetErSyktEllerInnlagt />}
                                 {((beggeHarRett && !erFarOgFar) ||
                                     kunMorHarRett ||
-                                    (erAleneforsørger && erMorDelAvSøknaden)) && <HvisBarnetErInnlagt />}
+                                    (erAleneforsørger && erMorDelAvSøknaden)) && <HvisBarnetErPrematurInnlagtFørTermin />}
+                                {((beggeHarRett && !erFarOgFar) ||
+                                    kunMorHarRett ||
+                                    (erAleneforsørger && erMorDelAvSøknaden)) && <HvisBarnetErPrematurInnlagtEtterTermin />}
 
                                 {((erAleneforsørger && erMorDelAvSøknaden) ||
                                     kunMorHarRett ||
