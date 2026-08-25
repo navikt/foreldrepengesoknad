@@ -19,7 +19,7 @@ import {
     SelvstendigNæringsdrivendeOppsummering,
 } from '@navikt/fp-steg-oppsummering';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, Søkerrolle, isUfødtBarn } from '@navikt/fp-types';
-import { SkjemaRotLayout } from '@navikt/fp-ui';
+import { ManglendeDataSide, SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { AndreInntektskilderOppsummering } from './andre-inntekter-oppsummering/AndreInntektskilderOppsummering';
@@ -53,6 +53,7 @@ export const OppsummeringSteg = (props: Props) => {
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const andreInntektskilder = useContextGetData(ContextDataType.ANDRE_INNTEKTSKILDER);
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
 
     const eksisterendeSak = foreldrepengerSaker?.find((sak) => sak.saksnummer === eksisterendeSaksnummer);
 
@@ -90,6 +91,18 @@ export const OppsummeringSteg = (props: Props) => {
         søkerErFarEllerMedmor,
         getFamiliehendelsedato(barn),
     );
+
+    if (uttaksplan === undefined) {
+        return (
+            <ManglendeDataSide
+                pageTitle={<FormattedMessage id="søknad.pageheading" />}
+                heading={<FormattedMessage id="Oppsummering.ManglerUttaksplan.Heading" />}
+                description={<FormattedMessage id="Oppsummering.ManglerUttaksplan.Description" />}
+                actionLabel={<FormattedMessage id="Oppsummering.ManglerUttaksplan.Action" />}
+                onAction={() => navigator.goToStep(SøknadRoutes.UTTAKSPLAN)}
+            />
+        );
+    }
 
     return (
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
