@@ -6,6 +6,7 @@ import { BodyShort, Box, Button, HStack, Heading, Label, Tag, VStack } from '@na
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 
 import { type AndreInntektskilder } from '../../types/AndreInntektskilder';
+import { useScrollIntoViewWhenAdded } from './useScrollIntoViewWhenAdded';
 
 interface Props {
     andreInntektskilder: AndreInntektskilder[];
@@ -64,6 +65,7 @@ const Inntektsdetaljer = ({ inntekt }: { inntekt: AndreInntektskilder }) => {
 
 export const AndreInntektskilderBox = ({ andreInntektskilder, onRemove }: Props) => {
     const intl = useIntl();
+    const nyesteInntektRef = useScrollIntoViewWhenAdded(andreInntektskilder.length);
 
     if (andreInntektskilder.length === 0) {
         return null;
@@ -74,6 +76,7 @@ export const AndreInntektskilderBox = ({ andreInntektskilder, onRemove }: Props)
             {andreInntektskilder.map((inntekt, index) => (
                 <Box
                     key={`${inntekt.type}-${inntekt.fom}-${inntekt.tom ?? ''}`}
+                    ref={index === andreInntektskilder.length - 1 ? nyesteInntektRef : undefined}
                     padding="space-16"
                     className="rounded-(--ax-radius-12) border border-ax-border-info-subtle bg-ax-bg-info-soft"
                 >

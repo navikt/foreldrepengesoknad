@@ -18,6 +18,16 @@ const egenNæring = {
 } satisfies NæringDto;
 
 describe('<ManueltLagtTilNæring>', () => {
+    const scrollIntoView = vi.fn();
+
+    beforeEach(() => {
+        HTMLElement.prototype.scrollIntoView = scrollIntoView;
+    });
+
+    afterEach(() => {
+        scrollIntoView.mockReset();
+    });
+
     it('skal vise og fjerne manuelt lagt til næring', async () => {
         const onRemove = vi.fn();
 
@@ -33,5 +43,21 @@ describe('<ManueltLagtTilNæring>', () => {
         await userEvent.click(screen.getByRole('button', { name: 'Fjern Fiskebåten' }));
 
         expect(onRemove).toHaveBeenCalledTimes(1);
+    });
+
+    it('skal scrolle ny næring inn i synsfeltet', () => {
+        const { rerender } = render(
+            <IntlProvider locale="nb" messages={nbMessages}>
+                <ManueltLagtTilNæring onRemove={vi.fn()} />
+            </IntlProvider>,
+        );
+
+        rerender(
+            <IntlProvider locale="nb" messages={nbMessages}>
+                <ManueltLagtTilNæring egenNæring={egenNæring} onRemove={vi.fn()} />
+            </IntlProvider>,
+        );
+
+        expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'center' });
     });
 });

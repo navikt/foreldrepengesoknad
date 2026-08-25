@@ -6,6 +6,8 @@ import { BodyShort, Box, Button, HStack, Heading, Label, Tag, VStack } from '@na
 import { NæringDto } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 
+import { useScrollIntoViewWhenAdded } from './useScrollIntoViewWhenAdded';
+
 interface Props {
     egenNæring?: NæringDto;
     onRemove: () => void;
@@ -13,6 +15,7 @@ interface Props {
 
 export const ManueltLagtTilNæring = ({ egenNæring, onRemove }: Props) => {
     const intl = useIntl();
+    const næringRef = useScrollIntoViewWhenAdded(egenNæring ? 1 : 0);
 
     if (!egenNæring) {
         return null;
@@ -24,6 +27,7 @@ export const ManueltLagtTilNæring = ({ egenNæring, onRemove }: Props) => {
 
     return (
         <Box
+            ref={næringRef}
             padding="space-16"
             className="rounded-(--ax-radius-12) border border-ax-border-info-subtle bg-ax-bg-info-soft"
         >

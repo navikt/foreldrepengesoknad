@@ -35,6 +35,16 @@ const renderInntektskilder = (andreInntektskilder: AndreInntektskilder[], onRemo
     );
 
 describe('<AndreInntektskilderBox>', () => {
+    const scrollIntoView = vi.fn();
+
+    beforeEach(() => {
+        HTMLElement.prototype.scrollIntoView = scrollIntoView;
+    });
+
+    afterEach(() => {
+        scrollIntoView.mockReset();
+    });
+
     it('skal ikke vise noe uten andre inntekter', () => {
         const { container } = renderInntektskilder([]);
 
@@ -66,5 +76,17 @@ describe('<AndreInntektskilderBox>', () => {
         await userEvent.click(screen.getByRole('button', { name: 'Fjern Etterlønn eller sluttvederlag' }));
 
         expect(onRemove).toHaveBeenCalledWith(1);
+    });
+
+    it('skal scrolle den nye inntekten inn i synsfeltet', () => {
+        const { rerender } = renderInntektskilder([]);
+
+        rerender(
+            <IntlProvider locale="nb" messages={nbMessages}>
+                <AndreInntektskilderBox andreInntektskilder={[inntektskilder[0]!]} onRemove={vi.fn()} />
+            </IntlProvider>,
+        );
+
+        expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'center' });
     });
 });
