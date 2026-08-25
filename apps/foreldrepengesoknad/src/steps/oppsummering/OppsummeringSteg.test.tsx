@@ -28,6 +28,7 @@ const {
     FarSøkerMorMåDokumentereArbeid,
     FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning,
     FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon,
+    ManglerUttaksplan,
 } = composeStories(stories);
 
 describe('<Oppsummering>', () => {
@@ -239,13 +240,11 @@ describe('<Oppsummering>', () => {
         await FarMedUførMorUgift.run();
 
         const dinPlanDiv = getCardDiv(screen.getByText('Din plan'));
-        await dinPlanDiv.findByText('49 uker med 100 prosent foreldrepenger');
+        await dinPlanDiv.findByText('3 av 10 uker med foreldrepenger uten aktivitetskrav');
 
-        expect(
-            checkAndGetParentDiv(dinPlanDiv.getByText('Du har planlagt')).getByText(
-                '49 uker med 100 prosent foreldrepenger',
-            ),
-        ).toBeInTheDocument();
+        const duHarPlanlagtDiv = checkAndGetParentDiv(dinPlanDiv.getByText('Du har planlagt'));
+        expect(duHarPlanlagtDiv.getByText('3 av 10 uker med foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
+        expect(duHarPlanlagtDiv.getByText('25 av 30 uker med foreldrepenger med aktivitetskrav')).toBeInTheDocument();
         expect(
             checkAndGetParentDiv(dinPlanDiv.getByText('Onsdag 24.11.21 - tirsdag 14.12.21')).getByText(
                 /Foreldrepenger uten aktivitetskrav/,
@@ -263,6 +262,22 @@ describe('<Oppsummering>', () => {
                 ),
             ).getByText('Nei'),
         ).toBeInTheDocument();
+    });
+
+    it('skal vise en gjenopprettingsside når uttaksplanen mangler', async () => {
+        const gåTilNesteSide = vi.fn();
+        render(<ManglerUttaksplan gåTilNesteSide={gåTilNesteSide} />);
+
+        expect(screen.getByRole('heading', { name: 'Planen din mangler' })).toBeInTheDocument();
+        expect(screen.getByText('Du må fullføre planen før du kan se oppsummeringen.')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Gå til planen' }));
+
+        expect(gåTilNesteSide).toHaveBeenCalledWith({
+            type: 'update',
+            key: ContextDataType.APP_ROUTE,
+            data: SøknadRoutes.UTTAKSPLAN,
+        });
     });
 
     it('Skal vise "Foreldrepenger uten aktivitetskrav" når mor er ufør', async () => {

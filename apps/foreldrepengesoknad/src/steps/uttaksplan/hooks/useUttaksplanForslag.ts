@@ -166,6 +166,7 @@ export const kanGenerereUttaksplanForslag = (annenPartsPerioder?: UttakPeriode_f
 export const useUttaksplanForslag = (
     valgtStønadskvote?: KontoBeregningDto,
     annenPartsPerioder?: UttakPeriode_fpoversikt[],
+    annenPartsPerioderLaster = false,
 ): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
@@ -173,7 +174,12 @@ export const useUttaksplanForslag = (
     const fordeling = useContextGetData(ContextDataType.FORDELING);
     const familiehendelsedato = getFamiliehendelsedato(barn);
 
-    if (!kanGenerereUttaksplanForslag(annenPartsPerioder) || !valgtStønadskvote || !fordeling) {
+    if (
+        annenPartsPerioderLaster ||
+        !kanGenerereUttaksplanForslag(annenPartsPerioder) ||
+        !valgtStønadskvote ||
+        !fordeling
+    ) {
         return [];
     }
 

@@ -24,6 +24,7 @@ import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, Søkerrolle, isUf
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { ManglendeUttaksplanSide } from './ManglendeUttaksplanSide';
 import { AndreInntektskilderOppsummering } from './andre-inntekter-oppsummering/AndreInntektskilderOppsummering';
 import { AnnenForelderOppsummering } from './annen-forelder-oppsummering/AnnenForelderOppsummering';
 import { BarnOppsummering } from './barn-oppsummering/BarnOppsummering';
@@ -55,6 +56,7 @@ export const OppsummeringSteg = (props: Props) => {
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const andreInntektskilder = useContextGetData(ContextDataType.ANDRE_INNTEKTSKILDER);
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
+    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
 
     const eksisterendeSak = foreldrepengerSaker?.find((sak) => sak.saksnummer === eksisterendeSaksnummer);
 
@@ -102,6 +104,10 @@ export const OppsummeringSteg = (props: Props) => {
         },
     });
     const frilansoppdrag = frilansoppdragQuery.data ?? [];
+
+    if (uttaksplan === undefined) {
+        return <ManglendeUttaksplanSide onGåTilUttaksplan={() => navigator.goToStep(SøknadRoutes.UTTAKSPLAN)} />;
+    }
 
     return (
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>

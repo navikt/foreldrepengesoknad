@@ -394,7 +394,7 @@
     "LeggTilEllerEndrePeriodeForm.Overføring.Info2.FarMedmor": "I nokre tilfelle kan du søkje om å overta den andre forelderen sin kvote.",
     "LeggTilEllerEndrePeriodeForm.Overføring.Info1.ForeldreNavn": "{navnGenitiv} kvote er vanlegvis berre for {navn}.",
     "LeggTilEllerEndrePeriodeForm.Overføringsårsak.Påkrevd": "Du må velje ei årsak for overføring av kvote",
-    "LeggTilEllerEndrePeriodeForm.Infotekst.FedrekvoteRundtFødsel": "Dei første seks vekene er vanlegvis berre for mor. I nokre tilfelle kan du få foreldrepengar i staden for mor.",
+    "LeggTilEllerEndrePeriodeForm.Infotekst.FedrekvoteRundtFødsel": "Viss både mor og far skal ha foreldrepengar ved fødsel, må du velje at begge skal ha foreldrepengar. Viss ikkje søkjer du om å få foreldrepengar i staden for mor.",
     "VelgPeriodePanelStep.VelgPeriode": "Du må velga kva for periode du vil endra på",
     "LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon": "Du har valgt ein kombinasjon av dagar som ikkje er gyldige for nokon foreldre.",
     "LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.fødsel": "Du kan ikkje endre planen når du markerer dagar både før og etter fødselsdato. Du må først endre planen før fødselsdato, og så endre planen frå og med fødselsdatoen.",

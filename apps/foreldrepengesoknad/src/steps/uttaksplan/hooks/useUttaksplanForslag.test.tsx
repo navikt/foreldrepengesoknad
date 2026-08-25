@@ -253,6 +253,22 @@ describe('useUttaksplanForslag – far med delt uttak', () => {
             expect(result.current).toEqual([]);
         });
     });
+
+    describe('når annenPartsPerioder framleis lastar', () => {
+        it('returnerer tom liste i staden for å kaste feil, sjølv om fordeling manglar oppstartsvalg', () => {
+            // Reproduserer race-condition: annen part har periodar (oppstartsvalg vart difor
+            // skjult og aldri lagra på Fordeling-steget), men spørringa på Uttaksplan-steget
+            // har ikkje levert data enno (annenPartsPerioder er undefined mens den lastar).
+            const { result } = renderHook(() => useUttaksplanForslag(STØNADSKVOTE, undefined, true), {
+                wrapper: getWrapper({
+                    ...baseFarDeltUttakContext,
+                    [ContextDataType.FORDELING]: {},
+                }),
+            });
+
+            expect(result.current).toEqual([]);
+        });
+    });
 });
 
 describe('kanGenerereUttaksplanForslag', () => {

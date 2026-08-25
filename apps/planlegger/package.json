@@ -38,7 +38,6 @@
         "@navikt/fp-uttaksplan": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
         "@navikt/nav-dekoratoren-moduler": "catalog:",
-        "@sentry/vite-plugin": "catalog:",
         "@tanstack/react-query": "catalog:",
         "dayjs": "catalog:",
         "es-toolkit": "catalog:",
