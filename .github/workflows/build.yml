@@ -1,10 +1,6 @@
 name: Build app
 on:
   workflow_call:
-    secrets:
-      SENTRY_AUTH_TOKEN:
-        description: 'A token passed from the caller workflow'
-        required: true
     inputs:
       runs-on:
         required: false
@@ -93,17 +89,9 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Opprett SENTRY_RELEASE environment variable
-        if: inputs.push-image
-        id: sentry_release_key
-        run: |
-          echo "SENTRY_RELEASE=$APP-$(git rev-parse --short HEAD)-$(date +%Y.%m.%d.%H%M%S)" >> "$GITHUB_OUTPUT"
-
       - name: Bygg og test app
         run: pnpm exec turbo run build test --filter="$APP"
         env:
-          VITE_SENTRY_RELEASE: ${{ steps.sentry_release_key.outputs.SENTRY_RELEASE }}
-          SENTRY_AUTH_TOKEN: ${{ inputs.push-image && secrets.SENTRY_AUTH_TOKEN || '' }}
           VITE_CDN_URL: ${{ inputs.vite-cdn-url }}
 
       - name: Bygg server

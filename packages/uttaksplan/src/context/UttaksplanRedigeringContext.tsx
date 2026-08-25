@@ -1,6 +1,6 @@
 import { createContext, use, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { captureMessage, withScope } from '@navikt/fp-observability';
+import { captureException } from '@navikt/fp-observability';
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { erEøsUttakPeriode } from '../types/UttaksplanPeriode';
@@ -49,20 +49,17 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
             return;
         }
 
-        withScope((scope) => {
-            scope.setLevel('warning');
-            scope.setTag('feiltype', 'uttaksplan-initielle-overlapp');
-            scope.setExtra('erEndringssøknad', erEndringssøknad);
-            scope.setExtra('antallUgyldigeOverlapp', ugyldigeOverlapp.length);
-            scope.setExtra(
-                'ugyldigeOverlappPar',
-                ugyldigeOverlapp.slice(0, 20).map(([a, b]) => ({
+        captureException(new Error('Uttaksplan har ugyldig overlappende perioder før redigering startet'), {
+            context: {
+                feiltype: 'uttaksplan-initielle-overlapp',
+                erEndringssøknad,
+                antallUgyldigeOverlapp: ugyldigeOverlapp.length,
+                ugyldigeOverlappPar: ugyldigeOverlapp.slice(0, 20).map(([a, b]) => ({
                     a: periodeTilLoggObjekt(a),
                     b: periodeTilLoggObjekt(b),
                 })),
-            );
-            scope.setExtra('opprinneligPerioder', uttakPerioder.map(periodeTilLoggObjekt));
-            captureMessage('Uttaksplan har ugyldig overlappende perioder før redigering startet', 'warning');
+                opprinneligPerioder: uttakPerioder.map(periodeTilLoggObjekt),
+            },
         });
     }, [uttakPerioder]);
 

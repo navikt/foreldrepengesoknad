@@ -1,7 +1,7 @@
 import dayjs, { Dayjs } from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
-import { captureMessage, withScope } from '@navikt/fp-observability';
+import { captureException } from '@navikt/fp-observability';
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
@@ -198,31 +198,24 @@ const validerOgLoggOverlapp = (
         return;
     }
 
-    withScope((scope) => {
-        scope.setLevel('warning');
-        scope.setTag('feiltype', 'uttaksplan-builder-overlapp');
-        scope.setTag('builderKilde', kilde);
-        scope.setExtra('builderKilde', kilde);
-        scope.setExtra('antallUgyldigeOverlapp', ugyldigeOverlapp.length);
-        scope.setExtra(
-            'ugyldigeOverlappPar',
-            ugyldigeOverlapp.slice(0, 20).map(([a, b]) => ({
+    captureException(new Error('UttakPeriodeBuilder produserte ugyldig overlappende perioder'), {
+        context: {
+            feiltype: 'uttaksplan-builder-overlapp',
+            builderKilde: kilde,
+            antallUgyldigeOverlapp: ugyldigeOverlapp.length,
+            ugyldigeOverlappPar: ugyldigeOverlapp.slice(0, 20).map(([a, b]) => ({
                 a: periodeTilLoggObjekt(a),
                 b: periodeTilLoggObjekt(b),
             })),
-        );
-        scope.setExtra('opprinneligPerioder', opprinneligPerioder.map(periodeTilLoggObjekt));
-        scope.setExtra('resultatPerioder', resultat.map(periodeTilLoggObjekt));
-        scope.setExtra(
-            'operasjonsLogg',
-            operasjonsLogg.map((op) => ({
+            opprinneligPerioder: opprinneligPerioder.map(periodeTilLoggObjekt),
+            resultatPerioder: resultat.map(periodeTilLoggObjekt),
+            operasjonsLogg: operasjonsLogg.map((op) => ({
                 operasjon: op.operasjon,
                 forskyvPerioder: op.forskyvPerioder,
                 nyePerioder: op.nyePerioder?.map(periodeTilLoggObjekt),
                 perioderSomSkalFjernes: op.perioderSomSkalFjernes,
             })),
-        );
-        captureMessage('UttakPeriodeBuilder produserte ugyldig overlappende perioder', 'warning');
+        },
     });
 };
 
