@@ -8,6 +8,7 @@ import { IconCircleWrapper } from '@navikt/fp-ui';
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { FødtFørUke33 } from './tekster/FødtFørUke33';
 import { HvisBarnetErInnlagt } from './tekster/HvisBarnetErInnlagt';
+import { HvisBarnetErSykt } from './tekster/HvisBarnetErSykt';
 import { HvisBarnetErSyktEllerInnlagt } from './tekster/HvisBarnetErSyktEllerInnlagt';
 import { HvisDuBlirSyk } from './tekster/HvisDuBlirSyk';
 import { HvisMorBlirSyk } from './tekster/HvisMorBlirSyk';
@@ -63,21 +64,29 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
                         {erFødsel ? (
                             <>
                                 {!erFarOgFarKunMedfarHarRett && <FødtFørUke33 />}
+                                
+                                <HvisDuBlirSyk />
+
+                                {erMorDelAvSøknaden && <HvisMorBlirSyk />}
+
                                 {((erAleneforsørger && !erMorDelAvSøknaden) ||
                                     erFarOgFar ||
                                     kunFarEllerMedmorHarRett) && <HvisBarnetErSyktEllerInnlagt />}
                                 {((beggeHarRett && !erFarOgFar) ||
                                     kunMorHarRett ||
                                     (erAleneforsørger && erMorDelAvSøknaden)) && <HvisBarnetErInnlagt />}
-                                {erMorDelAvSøknaden && <HvisMorBlirSyk />}
 
-                                <HvisDuBlirSyk />
+                                {((erAleneforsørger && erMorDelAvSøknaden) ||
+                                    kunMorHarRett ||
+                                    (beggeHarRett && !erFarOgFar)) && <HvisBarnetErSykt />}
+
                                 <NyttBarnFørTreÅr />
                             </>
                         ) : (
                             <>
-                                <HvisBarnetErSyktEllerInnlagt />
                                 <HvisDuBlirSyk />
+                                <HvisBarnetErSyktEllerInnlagt />
+
                                 <NyttBarnFørTreÅr />
                             </>
                         )}
