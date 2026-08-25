@@ -255,6 +255,7 @@ type StoryArgs = {
     andreInntekter?: AndreInntektskilder[];
     vedlegg?: VedleggDataType;
     uttaksplan?: UttakPeriode_fpoversikt[];
+    manglerUttaksplan?: boolean;
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof OppsummeringSteg>;
 
@@ -289,6 +290,7 @@ const meta = {
         gåTilNesteSide,
         vedlegg = defaultVedlegg,
         uttaksplan = defaultUttaksplan,
+        manglerUttaksplan = false,
         ...rest
     }) => {
         const freshQueryClient = new QueryClient({
@@ -316,7 +318,7 @@ const meta = {
                             [ContextDataType.UTENLANDSOPPHOLD_SENERE]: utenlandsoppholdSenere,
                             [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: utenlandsoppholdTidligere,
                             [ContextDataType.PERIODE_MED_FORELDREPENGER]: '100',
-                            [ContextDataType.UTTAKSPLAN]: uttaksplan,
+                            [ContextDataType.UTTAKSPLAN]: manglerUttaksplan ? undefined : uttaksplan,
                             [ContextDataType.VEDLEGG]: vedlegg,
                         }}
                     >
@@ -338,6 +340,13 @@ export const Default: Story = {
         søkerInfo: defaultSøkerinfoMor,
         avbrytSøknad: action('button-click'),
         mellomlagreSøknadOgNaviger: promiseAction(),
+    },
+};
+
+export const ManglerUttaksplan: Story = {
+    args: {
+        ...Default.args,
+        manglerUttaksplan: true,
     },
 };
 

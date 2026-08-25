@@ -28,6 +28,7 @@ const {
     FarSøkerMorMåDokumentereArbeid,
     FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning,
     FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon,
+    ManglerUttaksplan,
 } = composeStories(stories);
 
 describe('<Oppsummering>', () => {
@@ -261,6 +262,22 @@ describe('<Oppsummering>', () => {
                 ),
             ).getByText('Nei'),
         ).toBeInTheDocument();
+    });
+
+    it('skal vise en gjenopprettingsside når uttaksplanen mangler', async () => {
+        const gåTilNesteSide = vi.fn();
+        render(<ManglerUttaksplan gåTilNesteSide={gåTilNesteSide} />);
+
+        expect(screen.getByRole('heading', { name: 'Planen din mangler' })).toBeInTheDocument();
+        expect(screen.getByText('Du må fullføre planen før du kan se oppsummeringen.')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Gå til planen' }));
+
+        expect(gåTilNesteSide).toHaveBeenCalledWith({
+            type: 'update',
+            key: ContextDataType.APP_ROUTE,
+            data: SøknadRoutes.UTTAKSPLAN,
+        });
     });
 
     it('Skal vise "Foreldrepenger uten aktivitetskrav" når mor er ufør', async () => {
