@@ -55,17 +55,17 @@ export const finnDinPlanKvoteRader = (
         )
         .filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
 
-    return DIN_PLAN_KVOTE_REKKEFØLGE.reduce<DinPlanKvoteRad[]>((rader, kontoType) => {
+    return DIN_PLAN_KVOTE_REKKEFØLGE.map((kontoType): DinPlanKvoteRad | undefined => {
         const konto = kontoer.find((k) => k.konto === kontoType);
         if (!konto || konto.dager <= 0) {
-            return rader;
+            return undefined;
         }
 
         const relevantePerioder = søkersPerioder.filter((p) => getUttaksKontoType(p) === kontoType);
         const bruktDager = summerDagerIPerioder(relevantePerioder, [konto], familiesituasjon, familiehendelsedato);
 
         if (bruktDager <= 0) {
-            return rader;
+            return undefined;
         }
 
         // Kontoane er alltid heile veker (multiplum av 5 dagar). Brukt tal på dagar
@@ -73,13 +73,12 @@ export const finnDinPlanKvoteRader = (
         // den eksakte periode-for-periode-oversikta finst lenger ned på sida. Avrunding
         // oppover (i staden for til næraste) sikrar at ein rad aldri viser «0 av X uker»
         // sjølv om søkjaren berre har planlagt nokre få dagar (mindre enn ei veke).
-        rader.push({
+        return {
             kontoType,
             bruktUker: Math.ceil(bruktDager / 5),
             tilgjengeligUker: konto.dager / 5,
-        });
-        return rader;
-    }, []);
+        };
+    }).filter((rad): rad is DinPlanKvoteRad => rad !== undefined);
 };
 
 export const useErAntallDagerOvertrukketIUttaksplan = () => {
