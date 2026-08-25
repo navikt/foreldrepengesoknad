@@ -33,11 +33,16 @@ jobs:
       branch: ${{ inputs.branch }}
       app: ${{ inputs.app }}
       image_suffix: '/${{ inputs.app }}'
-      # Kun planlegger bakar CDN-URL inn i assets (jf. build-planlegger.yml).
-      vite-cdn-url: ${{ inputs.app == 'planlegger' && 'https://cdn.nav.no/teamforeldrepenger/foreldrepenger/planlegger/' || '' }}
-    secrets:
-      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-
+      # Må matche upload-to-CDN destination (teamforeldrepenger + appens vite base).
+      vite-cdn-url: >-
+        ${{ inputs.app == 'engangsstonad' && 'https://cdn.nav.no/teamforeldrepenger/engangsstonad/soknad/'
+        || inputs.app == 'foreldrepengeoversikt' && 'https://cdn.nav.no/teamforeldrepenger/foreldrepenger/oversikt/'
+        || inputs.app == 'foreldrepengesoknad' && 'https://cdn.nav.no/teamforeldrepenger/foreldrepenger/soknad/'
+        || inputs.app == 'svangerskapspengesoknad' && 'https://cdn.nav.no/teamforeldrepenger/svangerskapspenger/soknad/'
+        || inputs.app == 'planlegger' && 'https://cdn.nav.no/teamforeldrepenger/foreldrepenger/planlegger/'
+        || inputs.app == 'veiviser-fp-eller-es' && 'https://cdn.nav.no/teamforeldrepenger/foreldrepenger/foreldrepenger-eller-engangsstonad/'
+        || inputs.app == 'veiviser-hvor-mye' && 'https://cdn.nav.no/teamforeldrepenger/foreldrepenger/hvor-mye/'
+        || '' }}
   upload-to-CDN:
     name: Upload assets to CDN
     needs: build-app

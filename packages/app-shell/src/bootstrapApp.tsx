@@ -4,12 +4,10 @@ import { type ReactElement, StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router';
 
-import { initFaro, initSentry } from '@navikt/fp-observability';
+import { initFaro } from '@navikt/fp-observability';
 import type { LocaleAll } from '@navikt/fp-types';
 
 export interface BootstrapAppOptions {
-    /** Sentry DSN for appen. */
-    sentryDsn: string;
     /** ID på DOM-noden React skal monteres i. Default `'app'`. */
     containerId?: string;
     /** basename til BrowserRouter. Default `import.meta.env.BASE_URL`. */
@@ -69,7 +67,6 @@ const loadPluralRulesPolyfill = async (locales: readonly LocaleAll[]) => {
 };
 
 export const bootstrapApp = async ({
-    sentryDsn,
     containerId = 'app',
     basename,
     availableLocales,
@@ -87,7 +84,6 @@ export const bootstrapApp = async ({
     }
 
     dayjs.locale(defaultDayjsLocale);
-    initSentry({ dsn: sentryDsn });
     initFaro();
 
     const container = document.getElementById(containerId);

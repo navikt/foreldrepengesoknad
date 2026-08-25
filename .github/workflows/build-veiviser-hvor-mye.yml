@@ -30,9 +30,6 @@ jobs:
       # Bakes inn i asset-referansene (renderBuiltUrl) slik at veiviser-hvor-mye laster assets fra CDN.
       # Må matche upload-to-CDN destination (teamforeldrepenger + /foreldrepenger/hvor-mye).
       vite-cdn-url: 'https://cdn.nav.no/teamforeldrepenger/foreldrepenger/hvor-mye/'
-    secrets:
-      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-
   upload-to-CDN:
     name: Upload assets to CDN
     if: github.ref_name == 'master'

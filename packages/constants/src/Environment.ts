@@ -1,7 +1,7 @@
 /**
  * Image navnet er på følgende format:
  * europe-north1-docker.pkg.dev/nais-management-233d/teamforeldrepenger/navikt/foreldrepengesoknad/svangerskapspengesoknad:2025.11.04.144040-5887ba6
- * Sentry støtter ikke "/". Stripper derfor alt frem til siste /
+ * Bruk bare image-navn og tag som appversjon.
  */
 const formatAppVersion = (appVersion: string) => {
     const lastSlashIndex = appVersion.lastIndexOf('/');

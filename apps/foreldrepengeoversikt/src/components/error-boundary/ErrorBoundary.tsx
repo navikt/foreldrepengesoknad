@@ -20,8 +20,9 @@ export class ErrorBoundary extends Component<Props, State> {
     }
 
     componentDidCatch(error: Error | null): void {
+        this.setState((oldState) => ({ ...oldState, hasError: true, error }));
+
         if (error && error.message !== 'globalThis.hasFocus is not a function') {
-            this.setState((oldState) => ({ ...oldState, hasError: true, error }));
             captureException(error);
         }
     }

@@ -147,7 +147,7 @@ export const useMellomlagreSøknad = (
             (error: unknown) => {
                 //Logg feil. Om kallaren har bedt om det, blir brukaren også varsla.
                 if (error instanceof ApiError) {
-                    captureApiError(error.sentryMessage, error.problemDetails);
+                    captureApiError(error.telemetryMessage, error.problemDetails);
                 } else if (error instanceof Error) {
                     captureMessage(error.message);
                 }

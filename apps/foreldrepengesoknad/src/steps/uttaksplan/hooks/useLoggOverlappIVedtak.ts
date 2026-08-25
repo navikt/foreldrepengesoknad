@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { useEffect, useRef } from 'react';
 
-import { captureMessage, withScope } from '@navikt/fp-observability';
+import { captureException } from '@navikt/fp-observability';
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 dayjs.extend(isSameOrBefore);
@@ -27,21 +27,18 @@ export const useLoggOverlappIVedtak = (
 
         const { perioderUttaksplan, ugyldigeOverlapp } = finnUgyldigeOverlappIUttaksplan(uttaksplan);
         if (ugyldigeOverlapp.length > 0) {
-            withScope((scope) => {
-                scope.setLevel('warning');
-                scope.setTag('feiltype', 'uttaksplan-overlapp-etter-transformasjon');
-                scope.setExtra('antallUgyldigeOverlapp', ugyldigeOverlapp.length);
-                scope.setExtra(
-                    'ugyldigeOverlappPar',
-                    ugyldigeOverlapp.slice(0, 20).map(([a, b]) => ({
+            captureException(new Error('Uttaksplan har ugyldig overlappande periodar etter transformasjon'), {
+                context: {
+                    feiltype: 'uttaksplan-overlapp-etter-transformasjon',
+                    antallUgyldigeOverlapp: ugyldigeOverlapp.length,
+                    ugyldigeOverlappPar: ugyldigeOverlapp.slice(0, 20).map(([a, b]) => ({
                         a: periodeTilLoggObjekt(a),
                         b: periodeTilLoggObjekt(b),
                     })),
-                );
-                scope.setExtra('uttaksplan', perioderUttaksplan.map(periodeTilLoggObjekt));
-                scope.setExtra('perioderFraBackend', perioderFraBackend?.map(periodeTilLoggObjekt));
-                scope.setExtra('perioderAnnenPartFraBackend', perioderAnnenPartFraBackend?.map(periodeTilLoggObjekt));
-                captureMessage('Uttaksplan har ugyldig overlappande periodar etter transformasjon', 'warning');
+                    uttaksplan: perioderUttaksplan.map(periodeTilLoggObjekt),
+                    perioderFraBackend: perioderFraBackend?.map(periodeTilLoggObjekt),
+                    perioderAnnenPartFraBackend: perioderAnnenPartFraBackend?.map(periodeTilLoggObjekt),
+                },
             });
         }
     }, [uttaksplan, perioderFraBackend, perioderAnnenPartFraBackend]);

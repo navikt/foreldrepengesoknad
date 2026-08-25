@@ -106,7 +106,7 @@ export const useMellomlagreSøknad = (
 
             lagreEllerSlett().catch((error: Error) => {
                 if (error instanceof ApiError) {
-                    captureApiError(error.sentryMessage, error.problemDetails);
+                    captureApiError(error.telemetryMessage, error.problemDetails);
                 } else {
                     captureMessage(error.message);
                 }
