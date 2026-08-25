@@ -47,7 +47,6 @@ export { ByttBrowserModal } from './src/bytt-browser-modal/ByttBrowserModal';
 export { VeiviserPage } from './src/veivisere/VeiviserPage';
 export { FrontPage } from './src/veivisere/frontpage/FrontPage';
 export { RegisterdataUtdatert } from './src/registerdata-utdatert/RegisterdataUtdatert';
-export { ManglendeDataSide } from './src/manglende-data-side/ManglendeDataSide';
 export { Spinner } from './src/loaders/Spinner';
 export { Slider } from './src/slider/Slider';
 export { PeriodLabel } from './src/period-label/PeriodLabel';

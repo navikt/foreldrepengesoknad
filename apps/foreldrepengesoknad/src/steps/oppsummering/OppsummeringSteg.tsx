@@ -19,9 +19,10 @@ import {
     SelvstendigNæringsdrivendeOppsummering,
 } from '@navikt/fp-steg-oppsummering';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, Søkerrolle, isUfødtBarn } from '@navikt/fp-types';
-import { ManglendeDataSide, SkjemaRotLayout } from '@navikt/fp-ui';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { ManglendeUttaksplanSide } from './ManglendeUttaksplanSide';
 import { AndreInntektskilderOppsummering } from './andre-inntekter-oppsummering/AndreInntektskilderOppsummering';
 import { AnnenForelderOppsummering } from './annen-forelder-oppsummering/AnnenForelderOppsummering';
 import { BarnOppsummering } from './barn-oppsummering/BarnOppsummering';
@@ -93,15 +94,7 @@ export const OppsummeringSteg = (props: Props) => {
     );
 
     if (uttaksplan === undefined) {
-        return (
-            <ManglendeDataSide
-                pageTitle={<FormattedMessage id="søknad.pageheading" />}
-                heading={<FormattedMessage id="Oppsummering.ManglerUttaksplan.Heading" />}
-                description={<FormattedMessage id="Oppsummering.ManglerUttaksplan.Description" />}
-                actionLabel={<FormattedMessage id="Oppsummering.ManglerUttaksplan.Action" />}
-                onAction={() => navigator.goToStep(SøknadRoutes.UTTAKSPLAN)}
-            />
-        );
+        return <ManglendeUttaksplanSide onGåTilUttaksplan={() => navigator.goToStep(SøknadRoutes.UTTAKSPLAN)} />;
     }
 
     return (
