@@ -69,11 +69,13 @@ export const finnDinPlanKvoteRader = (
         }
 
         // Kontoane er alltid heile veker (multiplum av 5 dagar). Brukt tal på dagar
-        // vert her avrunda til næraste heile veke for ei enkel oppsummeringslinje –
-        // den eksakte periode-for-periode-oversikta finst lenger ned på sida.
+        // vert her avrunda opp til næraste heile veke for ei enkel oppsummeringslinje –
+        // den eksakte periode-for-periode-oversikta finst lenger ned på sida. Avrunding
+        // oppover (i staden for til næraste) sikrar at ein rad aldri viser «0 av X uker»
+        // sjølv om søkjaren berre har planlagt nokre få dagar (mindre enn ei veke).
         rader.push({
             kontoType,
-            bruktUker: Math.round(bruktDager / 5),
+            bruktUker: Math.ceil(bruktDager / 5),
             tilgjengeligUker: konto.dager / 5,
         });
         return rader;
