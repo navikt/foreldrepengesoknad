@@ -22,6 +22,7 @@ type Inntektstype = 'EGEN_NÆRING' | 'FISKER' | 'ANNEN_INNTEKT';
 interface Props {
     appOrigin: AppName;
     harRegistrertNæring?: boolean;
+    harEgenNæring?: boolean;
     onSaveEgenNæring?: (egenNæring: NæringDto) => void;
     onSaveAndreInntekt?: (annenInntekt: AndreInntektskilder) => void;
 }
@@ -36,6 +37,7 @@ interface EgenNæringWizardFormProps {
 export const LeggTilAndreInntekterWizard = ({
     appOrigin,
     harRegistrertNæring = false,
+    harEgenNæring = false,
     onSaveEgenNæring,
     onSaveAndreInntekt,
 }: Props) => {
@@ -44,6 +46,7 @@ export const LeggTilAndreInntekterWizard = ({
             <LeggTilAndreInntekterWizardInner
                 appOrigin={appOrigin}
                 harRegistrertNæring={harRegistrertNæring}
+                harEgenNæring={harEgenNæring}
                 onSaveEgenNæring={onSaveEgenNæring}
                 onSaveAndreInntekt={onSaveAndreInntekt}
             />
@@ -73,6 +76,7 @@ const EgenNæringWizardForm = ({ appOrigin, onSubmit, onAbort, onBack }: EgenNæ
 const LeggTilAndreInntekterWizardInner = ({
     appOrigin,
     harRegistrertNæring = false,
+    harEgenNæring = false,
     onSaveEgenNæring,
     onSaveAndreInntekt,
 }: Props) => {
@@ -104,12 +108,16 @@ const LeggTilAndreInntekterWizardInner = ({
                     value={inntektstype ?? ''}
                     onChange={setInntektstype}
                 >
-                    <Radio value="EGEN_NÆRING" description="Jobbet i ektefelles virksomhet (ENK).">
-                        Jeg har jobbet i min ektefelles næring hvor vi har fordelt inntekt
-                    </Radio>
-                    <Radio value="FISKER" description="Hyre og/eller lott, eller egen båt">
-                        Jeg er fisker eller mannskap på båt
-                    </Radio>
+                    {!harEgenNæring && (
+                        <>
+                            <Radio value="EGEN_NÆRING" description="Jobbet i ektefelles virksomhet (ENK).">
+                                Jeg har jobbet i min ektefelles næring hvor vi har fordelt inntekt
+                            </Radio>
+                            <Radio value="FISKER" description="Hyre og/eller lott, eller egen båt">
+                                Jeg er fisker eller mannskap på båt
+                            </Radio>
+                        </>
+                    )}
                     <Radio
                         value="ANNEN_INNTEKT"
                         description={
@@ -169,7 +177,7 @@ const LeggTilAndreInntekterWizardInner = ({
         return (
             <AnnenInntektForm
                 appOrigin={appOrigin}
-                harRegistrertNæring={harRegistrertNæring}
+                harNæring={harRegistrertNæring || harEgenNæring}
                 onAbort={avsluttWizard}
                 onBack={harRegistrertNæring ? undefined : () => setStep('VELG_INNTEKTSTYPE')}
                 onSubmit={(annenInntekt) => {
@@ -390,7 +398,7 @@ const EgenBåtInntekt = (props: FiskerNæringProps) => {
 
 interface AnnenInntektFormProps {
     appOrigin: AppName;
-    harRegistrertNæring: boolean;
+    harNæring: boolean;
     onAbort: () => void;
     onBack?: () => void;
     onSubmit: (annenInntekt: AndreInntektskilder) => void;
@@ -404,7 +412,7 @@ type AnnenInntektStep = 'VELG_INNTEKTSTYPE' | 'FYLL_UT_INNTEKT';
 
 const AnnenInntektForm = ({
     appOrigin,
-    harRegistrertNæring,
+    harNæring,
     onAbort,
     onBack,
     onSubmit,
@@ -442,7 +450,7 @@ const AnnenInntektForm = ({
                     onChange={velgInntektstype}
                 >
                     <Radio value="JOBB_I_UTLANDET">Jobb i utlandet</Radio>
-                    {!harRegistrertNæring && <Radio value="NÆRING_I_UTLANDET">Næring i utlandet</Radio>}
+                    {!harNæring && <Radio value="NÆRING_I_UTLANDET">Næring i utlandet</Radio>}
                     {appOrigin !== 'svangerskapspengesoknad' && (
                         <>
                             <Radio value="ETTERLØNN_SLUTTPAKKE">Etterlønn eller sluttvederlag</Radio>

@@ -13,6 +13,7 @@ import { LeggTilAndreInntekterWizard } from './LeggTilAndreInntekterWizard';
 interface RenderWizardProps {
     appOrigin?: ComponentProps<typeof LeggTilAndreInntekterWizard>['appOrigin'];
     harRegistrertNæring?: ComponentProps<typeof LeggTilAndreInntekterWizard>['harRegistrertNæring'];
+    harEgenNæring?: ComponentProps<typeof LeggTilAndreInntekterWizard>['harEgenNæring'];
     onSaveAndreInntekt?: ComponentProps<typeof LeggTilAndreInntekterWizard>['onSaveAndreInntekt'];
     onSaveEgenNæring?: ComponentProps<typeof LeggTilAndreInntekterWizard>['onSaveEgenNæring'];
 }
@@ -150,6 +151,24 @@ describe('<LeggTilAndreInntekterWizard>', () => {
         await userEvent.click(screen.getByRole('button', { name: 'Avbryt' }));
 
         expect(screen.getByRole('button', { name: 'Legg til inntekt' })).toBeInTheDocument();
+    });
+
+    it('skal skjule valg som kan opprette ny egen næring når egen næring allerede er lagt til', async () => {
+        renderWizard({ harEgenNæring: true });
+
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
+
+        expect(screen.queryByRole('radio', { name: /ektefelles næring/ })).not.toBeInTheDocument();
+        expect(screen.queryByRole('radio', { name: /fisker eller mannskap/ })).not.toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: /Annen pensjonsgivende inntekt/ })).toBeInTheDocument();
+
+        await userEvent.click(screen.getByRole('radio', { name: /Annen pensjonsgivende inntekt/ }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
+
+        expect(screen.queryByRole('radio', { name: 'Næring i utlandet' })).not.toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: 'Jobb i utlandet' })).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: 'Etterlønn eller sluttvederlag' })).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: 'Førstegangstjeneste' })).toBeInTheDocument();
     });
 
     it('skal vise skjema for næring i utlandet', async () => {

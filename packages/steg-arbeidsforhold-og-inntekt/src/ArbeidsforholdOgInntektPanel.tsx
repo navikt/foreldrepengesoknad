@@ -119,6 +119,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                         <LeggTilAndreInntekterWizard
                             appOrigin={appOrigin}
                             harRegistrertNæring={selvstendigNæring.length > 0}
+                            harEgenNæring={egenNæring !== undefined}
                             onSaveEgenNæring={saveEgenNæring}
                             onSaveAndreInntekt={(annenInntekt) =>
                                 saveAndreInntektskilder([...ferdigeAndreInntektskilder, annenInntekt])
