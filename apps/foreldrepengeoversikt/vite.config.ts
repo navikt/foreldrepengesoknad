@@ -4,7 +4,7 @@ import { mergeConfig } from 'vite';
 
 import { createSharedConfigWithCrossorgin } from '@navikt/fp-config-vite';
 
-const setupFileDirName = path.resolve(__dirname, './vitest/setupTests.ts');
+const setupFileDirName = path.resolve(import.meta.dirname, './vitest/setupTests.ts');
 
 // Settes i build-workflowen (build-foreldrepengeoversikt.yml -> build.yml). Når den er satt serveres de bygde
 // assetene fra CDN, mens `base` fortsatt styrer routing (BrowserRouter) og API-prefiks.
@@ -25,7 +25,7 @@ export default mergeConfig(createSharedConfigWithCrossorgin(setupFileDirName), {
     },
     resolve: {
         alias: {
-            storybookData: path.resolve(__dirname, './.storybook/storybook-data'),
+            storybookData: path.resolve(import.meta.dirname, './.storybook/storybook-data'),
         },
     },
 });
