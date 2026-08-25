@@ -1,7 +1,10 @@
+import { BankNoteIcon, BoatIcon, PersonEnvelopeIcon, TasklistIcon } from '@navikt/aksel-icons';
+import { type ReactNode, useId } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, ReadMore, VStack } from '@navikt/ds-react';
+import { BodyShort, ExpansionCard, Label, Link, ReadMore, VStack } from '@navikt/ds-react';
 
+import { links } from '@navikt/fp-constants';
 import { loggUmamiEvent } from '@navikt/fp-observability';
 import {
     AppName,
@@ -30,6 +33,103 @@ interface Props {
     appOrigin: AppName;
 }
 
+const Definisjon = ({ icon, tittel, children }: { icon: ReactNode; tittel: ReactNode; children: ReactNode }) => (
+    <div className="flex gap-3">
+        <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-(--ax-info-200)">{icon}</div>
+        <VStack gap="space-2" className="min-w-0 flex-1">
+            <Label as="p" size="small">
+                {tittel}
+            </Label>
+            {children}
+        </VStack>
+    </div>
+);
+
+const ArbeidsforholdDefinisjoner = ({ appOrigin }: { appOrigin: AppName }) => {
+    const tittelId = useId();
+
+    return (
+        <ExpansionCard
+            size="small"
+            aria-labelledby={tittelId}
+            onToggle={(open) =>
+                loggUmamiEvent({
+                    origin: appOrigin,
+                    eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                    eventData: {
+                        tittel: 'ArbeidsforholdOgInntektPanel.Definisjoner.Tittel',
+                    },
+                })
+            }
+        >
+            <ExpansionCard.Header>
+                <ExpansionCard.Title id={tittelId} size="small" as="h3">
+                    <FormattedMessage id="ArbeidsforholdOgInntektPanel.Definisjoner.Tittel" />
+                </ExpansionCard.Title>
+            </ExpansionCard.Header>
+            <ExpansionCard.Content>
+                <VStack gap="space-20" className="p-2.5">
+                    <Definisjon
+                        icon={<PersonEnvelopeIcon aria-hidden fontSize="1.5rem" />}
+                        tittel={<FormattedMessage id="ArbeidsforholdOgInntektPanel.Definisjoner.Selvstendig.Tittel" />}
+                    >
+                        <BodyShort size="small">
+                            <FormattedMessage
+                                id="ArbeidsforholdOgInntektPanel.Definisjoner.Selvstendig.Beskrivelse"
+                                values={{
+                                    a: (tekst) => (
+                                        <Link href={links.næringsdrivendeInfoBoks} target="_blank" rel="noreferrer">
+                                            {tekst}
+                                        </Link>
+                                    ),
+                                }}
+                            />
+                        </BodyShort>
+                    </Definisjon>
+                    <Definisjon
+                        icon={<TasklistIcon aria-hidden fontSize="1.5rem" />}
+                        tittel={<FormattedMessage id="ArbeidsforholdOgInntektPanel.Definisjoner.Frilans.Tittel" />}
+                    >
+                        <BodyShort size="small">
+                            <FormattedMessage
+                                id="ArbeidsforholdOgInntektPanel.Definisjoner.Frilans.Beskrivelse"
+                                values={{
+                                    a: (tekst) => (
+                                        <Link href={links.frilanserInfoBoks} target="_blank" rel="noreferrer">
+                                            {tekst}
+                                        </Link>
+                                    ),
+                                }}
+                            />
+                        </BodyShort>
+                    </Definisjon>
+                    <Definisjon
+                        icon={<BoatIcon aria-hidden fontSize="1.5rem" />}
+                        tittel={<FormattedMessage id="ArbeidsforholdOgInntektPanel.Definisjoner.Fisker.Tittel" />}
+                    >
+                        <VStack gap="space-20">
+                            <BodyShort size="small">
+                                <FormattedMessage id="ArbeidsforholdOgInntektPanel.Definisjoner.Fisker.Beskrivelse1" />
+                            </BodyShort>
+                            <BodyShort size="small">
+                                <FormattedMessage id="ArbeidsforholdOgInntektPanel.Definisjoner.Fisker.Beskrivelse2" />
+                            </BodyShort>
+                        </VStack>
+                    </Definisjon>
+                    <Definisjon
+                        icon={<BankNoteIcon aria-hidden fontSize="1.5rem" />}
+                        tittel={<FormattedMessage id="ArbeidsforholdOgInntektPanel.Definisjoner.Annen.Tittel" />}
+                    >
+                        <BodyShort size="small">
+                            <FormattedMessage id="ArbeidsforholdOgInntektPanel.Definisjoner.Annen.Beskrivelse" />
+                        </BodyShort>
+                    </Definisjon>
+                </VStack>
+            </ExpansionCard.Content>
+        </ExpansionCard>
+    );
+};
+
 export const ArbeidsforholdInformasjon = ({
     appOrigin,
     arbeidsforhold,
@@ -48,6 +148,7 @@ export const ArbeidsforholdInformasjon = ({
             <BodyShort style={{ fontWeight: 'bold' }}>
                 <FormattedMessage id="inntektsinformasjon.arbeidsforhold.label" />
             </BodyShort>
+            {appOrigin === 'foreldrepengesoknad' && <ArbeidsforholdDefinisjoner appOrigin={appOrigin} />}
             <HarIkkeArbeidsforhold harArbeidsforhold={harArbeidsforhold} />
             <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={arbeidsforhold} />
             <FrilansOppdrag frilansoppdrag={frilansoppdrag} />
