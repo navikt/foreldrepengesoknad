@@ -17,8 +17,8 @@ import { finnAntallTidelerÅTrekke } from './periodeUtils';
 
 export type DinPlanKvoteRad = {
     kontoType: KontoTypeUttak;
-    bruktUker: number;
-    tilgjengeligUker: number;
+    bruktDager: number;
+    tilgjengeligDager: number;
 };
 
 // Rekkefølga radene skal visast i «Du har planlagt»-lista i oppsummeringssteget.
@@ -32,14 +32,23 @@ const DIN_PLAN_KVOTE_REKKEFØLGE: KontoTypeUttak[] = [
 ];
 
 /**
- * Finn kor mange veker søkjaren har planlagt å bruke av kvar stønadskonto,
- * samanlikna med kor mange veker som er tilgjengelege totalt på den kontoen.
+ * Finn kor mange dagar søkjaren har planlagt å bruke av kvar stønadskonto,
+ * samanlikna med kor mange dagar som er tilgjengelege totalt på den kontoen.
  * Brukt til å byggja opp «Du har planlagt»-lista i oppsummeringssteget.
  *
  * Reknar kun med søkjaren sine eigne periodar (ikkje periodar den andre
  * forelderen har lagt inn i den same uttaksplanen), sidan det er søkjaren sin
  * eigen søknad som skal oppsummerast her. Ein konto blir kun teken med dersom
  * søkjaren faktisk har planlagt å bruke noko av han.
+ *
+ * Returnerer talet på dagar (ikkje avrunda til veker). Ei rad kan gjelde ein
+ * søkjar som t.d. har planlagt gradert uttak (t.d. 20 % uttak/80 % arbeid) eller
+ * berre delvis brukt ein konto – i begge tilfelle vil talet på brukte dagar då
+ * ikkje vere eit heiltal multiplum av 5. Å avrunda til næraste (eller øvste)
+ * heile veke her ville gitt misvisande rader som t.d. «3 av 3 uker» sjølv om
+ * søkjaren eigentleg berre har brukt 2 uker og 1 dag av 3 tilgjengelege uker.
+ * Formatering til «uker og dager» skjer derfor i UI-laget (sjå getVarighetString),
+ * ikkje her.
  */
 export const finnDinPlanKvoteRader = (
     uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
@@ -68,15 +77,14 @@ export const finnDinPlanKvoteRader = (
             return undefined;
         }
 
-        // Kontoane er alltid heile veker (multiplum av 5 dagar). Brukt tal på dagar
-        // vert her avrunda opp til næraste heile veke for ei enkel oppsummeringslinje –
-        // den eksakte periode-for-periode-oversikta finst lenger ned på sida. Avrunding
-        // oppover (i staden for til næraste) sikrar at ein rad aldri viser «0 av X uker»
-        // sjølv om søkjaren berre har planlagt nokre få dagar (mindre enn ei veke).
+        // Kontoane sitt tal på dagar er alltid heile veker (multiplum av 5), men bruktDager
+        // treng ikkje vere det – t.d. ved gradert uttak eller når søkjaren berre har planlagt
+        // ein del av kontoen. Vi returnerer difor rå dagtal, og let UI-laget formatere med
+        // uker og dager (sjå kommentar over finnDinPlanKvoteRader).
         return {
             kontoType,
-            bruktUker: Math.ceil(bruktDager / 5),
-            tilgjengeligUker: konto.dager / 5,
+            bruktDager,
+            tilgjengeligDager: konto.dager,
         };
     }).filter((rad): rad is DinPlanKvoteRad => rad !== undefined);
 };

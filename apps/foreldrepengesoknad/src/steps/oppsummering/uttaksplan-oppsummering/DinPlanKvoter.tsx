@@ -1,5 +1,6 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { IntlShape, useIntl } from 'react-intl';
+import { getVarighetString } from 'utils/dateUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
@@ -13,8 +14,16 @@ interface Props {
     kontoer: KontoDto[];
 }
 
+// Viser brukt/tilgjengelig som «uker og dager» (t.d. «2 uker og 1 dag») i staden for
+// berre heile uker. Ei rad kan gjelde gradert uttak eller ein delvis brukt konto, der
+// talet på brukte dagar ikkje er eit heiltal multiplum av 5 – å runda dette til næraste
+// (eller øvste) heile veke kan då feilaktig sjå ut som kontoen er fullt brukt opp, sjølv
+// om det framleis står att nokre dagar.
 const formaterRad = (intl: IntlShape, rad: DinPlanKvoteRad): string => {
-    const values = { brukt: rad.bruktUker, tilgjengelig: rad.tilgjengeligUker };
+    const values = {
+        brukt: getVarighetString(rad.bruktDager, intl),
+        tilgjengelig: getVarighetString(rad.tilgjengeligDager, intl),
+    };
 
     switch (rad.kontoType) {
         case 'FORELDREPENGER_FØR_FØDSEL':

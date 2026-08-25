@@ -296,16 +296,16 @@ describe('finnDinPlanKvoteRader', () => {
         const rader = finnDinPlanKvoteRader(uttakPerioder, 'MOR', KONTOER.kontoer, 'fødsel', FAMILIEHENDELSESDATO);
 
         expect(rader).toEqual([
-            { kontoType: 'FORELDREPENGER_FØR_FØDSEL', bruktUker: 3, tilgjengeligUker: 3 },
-            { kontoType: 'MØDREKVOTE', bruktUker: 20, tilgjengeligUker: 15 },
-            { kontoType: 'FELLESPERIODE', bruktUker: 10, tilgjengeligUker: 16 },
+            { kontoType: 'FORELDREPENGER_FØR_FØDSEL', bruktDager: 15, tilgjengeligDager: 15 },
+            { kontoType: 'MØDREKVOTE', bruktDager: 100, tilgjengeligDager: 75 },
+            { kontoType: 'FELLESPERIODE', bruktDager: 50, tilgjengeligDager: 80 },
         ]);
         // FEDREKVOTE finst på kontoen, men søkjar (mor) har ikkje planlagt noko der, og skal derfor ikkje vises.
         expect(rader.some((rad) => rad.kontoType === 'FEDREKVOTE')).toBe(false);
     });
 
-    it('skal runde bruktUker opp til 1 (ikkje 0) når søkjaren har planlagt mindre enn ei veke', () => {
-        const totoDagarFørFødsel: UttakPeriode_fpoversikt = {
+    it('skal returnere rå dagtal (ikkje avrunda til uker) når søkjaren har planlagt mindre enn ei veke', () => {
+        const toDagarFørFødsel: UttakPeriode_fpoversikt = {
             fom: '2024-03-28',
             tom: '2024-03-29', // 2 dager, mindre enn 5 dager (ei veke)
             forelder: 'MOR',
@@ -313,9 +313,9 @@ describe('finnDinPlanKvoteRader', () => {
             flerbarnsdager: false,
         };
 
-        const rader = finnDinPlanKvoteRader([totoDagarFørFødsel], 'MOR', KONTOER.kontoer, 'fødsel', FAMILIEHENDELSESDATO);
+        const rader = finnDinPlanKvoteRader([toDagarFørFødsel], 'MOR', KONTOER.kontoer, 'fødsel', FAMILIEHENDELSESDATO);
 
-        expect(rader).toEqual([{ kontoType: 'FORELDREPENGER_FØR_FØDSEL', bruktUker: 1, tilgjengeligUker: 3 }]);
+        expect(rader).toEqual([{ kontoType: 'FORELDREPENGER_FØR_FØDSEL', bruktDager: 2, tilgjengeligDager: 15 }]);
     });
 
     it('skal ikkje ta med periodar som tilhøyrer den andre forelderen', () => {
@@ -338,7 +338,7 @@ describe('finnDinPlanKvoteRader', () => {
 
         // Kun mor sin eigen mødrekvoteperiode skal telje med – far sin fedrekvoteperiode skal ignorerast
         // sjølv om han ligg i den same uttaksplanen (delt uttak).
-        expect(rader).toEqual([{ kontoType: 'MØDREKVOTE', bruktUker: 6, tilgjengeligUker: 15 }]);
+        expect(rader).toEqual([{ kontoType: 'MØDREKVOTE', bruktDager: 30, tilgjengeligDager: 75 }]);
     });
 
     it('skal ikkje ta med ein konto dersom han ikkje finst i kontoDto-lista, eller har 0 dagar tilgjengeleg', () => {
