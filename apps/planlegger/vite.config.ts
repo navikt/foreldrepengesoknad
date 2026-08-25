@@ -5,7 +5,7 @@ import { mergeConfig } from 'vite';
 
 import { createSharedAppConfig } from '@navikt/fp-config-vite';
 
-const setupFileDirName = path.resolve(__dirname, './vitest/setupTests.ts');
+const setupFileDirName = path.resolve(import.meta.dirname, './vitest/setupTests.ts');
 
 // Settes i build-workflowen (build-planlegger.yml -> build.yml). Når den er satt serveres de bygde
 // assetene fra CDN, mens `base` fortsatt styrer routing (BrowserRouter) og API-prefiks.
@@ -39,11 +39,11 @@ export default mergeConfig(createSharedAppConfig(setupFileDirName), {
     ],
     resolve: {
         alias: {
-            steps: path.resolve(__dirname, './src/steps'),
-            components: path.resolve(__dirname, './src/components'),
-            appData: path.resolve(__dirname, './src/app-data'),
-            types: path.resolve(__dirname, './src/types'),
-            utils: path.resolve(__dirname, './src/utils'),
+            steps: path.resolve(import.meta.dirname, './src/steps'),
+            components: path.resolve(import.meta.dirname, './src/components'),
+            appData: path.resolve(import.meta.dirname, './src/app-data'),
+            types: path.resolve(import.meta.dirname, './src/types'),
+            utils: path.resolve(import.meta.dirname, './src/utils'),
         },
     },
 });
