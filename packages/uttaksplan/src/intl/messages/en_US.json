@@ -394,7 +394,7 @@
     "LeggTilEllerEndrePeriodeForm.Overføring.Info2.FarMedmor": "In some cases, you can apply to take over the other parent's quota.",
     "LeggTilEllerEndrePeriodeForm.Overføring.Info1.ForeldreNavn": "{navnGenitiv} quota is ordinarily reserved for {navn}.",
     "LeggTilEllerEndrePeriodeForm.Overføringsårsak.Påkrevd": "You must select a reason for taking over the quota",
-    "LeggTilEllerEndrePeriodeForm.Infotekst.FedrekvoteRundtFødsel": "If both the mother and father are going to have parental benefit around the birth, you must choose that both are to have parental benefit. Otherwise, you are applying to receive parental benefit instead of the mother.",
+    "LeggTilEllerEndrePeriodeForm.Infotekst.FedrekvoteRundtFødsel": "If you both want to have parental benefits around the birth, you must choose that both are to have parental benefits. Otherwise, you are applying to receive parental benefits instead of the mother.",
     "VelgPeriodePanelStep.VelgPeriode": "You must select which period you want to change",
     "LeggTilEllerEndrePeriodeForm.Forelder.UgyldigKombinasjon": "You have selected a combination of days that is not valid for any parent.",
     "LeggTilEllerEndrePeriodeForm.KryssetFamiliehendelse.fødsel": "You cannot edit the plan when you mark days both before and after the date of birth. You must first edit the plan before the date of birth, and then edit the plan from the date of birth and onwards.",

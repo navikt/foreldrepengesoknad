@@ -1017,7 +1017,7 @@ describe('UttaksplanKalender', () => {
 
         expect(
             screen.queryByText(
-                'Hvis både mor og far skal ha foreldrepenger ved fødsel, må du velge at begge skal ha' +
+                'Hvis dere skal ha foreldrepenger ved fødsel, må du velge at begge skal ha' +
                     ' foreldrepenger. Hvis ikke søker du om å få foreldrepenger i stedet for mor.',
             ),
         ).not.toBeInTheDocument();
@@ -1034,7 +1034,7 @@ describe('UttaksplanKalender', () => {
 
         expect(
             screen.getByText(
-                'Hvis både mor og far skal ha foreldrepenger ved fødsel, må du velge at begge skal ha' +
+                'Hvis dere skal ha foreldrepenger ved fødsel, må du velge at begge skal ha' +
                     ' foreldrepenger. Hvis ikke søker du om å få foreldrepenger i stedet for mor.',
             ),
         ).toBeInTheDocument();
