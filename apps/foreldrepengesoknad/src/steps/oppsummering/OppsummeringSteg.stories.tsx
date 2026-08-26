@@ -131,6 +131,41 @@ const defaultUttaksplan = [
     },
 ] satisfies UttakPeriode_fpoversikt[];
 
+const defaultUttaksplanFar = [
+    {
+        forelder: 'FAR_MEDMOR',
+        kontoType: 'FEDREKVOTE',
+        fom: '2022-01-26',
+        tom: '2022-03-14',
+        flerbarnsdager: false,
+    },
+    {
+        forelder: 'FAR_MEDMOR',
+        kontoType: 'FELLESPERIODE',
+        fom: '2022-03-15',
+        tom: '2022-06-25',
+        flerbarnsdager: false,
+    },
+] satisfies UttakPeriode_fpoversikt[];
+
+const defaultUttaksplanFarAleneomsorg = [
+    {
+        forelder: 'FAR_MEDMOR',
+        kontoType: 'FORELDREPENGER',
+        fom: '2021-11-24',
+        tom: '2021-12-14',
+        flerbarnsdager: false,
+        morsAktivitet: 'IKKE_OPPGITT',
+    },
+    {
+        forelder: 'FAR_MEDMOR',
+        kontoType: 'FORELDREPENGER',
+        fom: '2021-12-15',
+        tom: '2022-06-07',
+        flerbarnsdager: false,
+    },
+] satisfies UttakPeriode_fpoversikt[];
+
 const defaultArbeidsforholdOgInntekt = {
     harHattAndreInntektskilder: false,
     harJobbetSomFrilans: false,
@@ -412,6 +447,7 @@ export const FarMedAleneOmsorg: Story = {
             antallBarn: 2,
             termindato: '2025-10-01',
         },
+        uttaksplan: defaultUttaksplanFarAleneomsorg,
     },
 };
 
@@ -438,23 +474,7 @@ export const FarMedUførMorUgift: Story = {
             antallBarn: 1,
             termindato: '2025-10-01',
         },
-        uttaksplan: [
-            {
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FORELDREPENGER',
-                fom: '2021-11-24',
-                tom: '2021-12-14',
-                flerbarnsdager: false,
-                morsAktivitet: 'IKKE_OPPGITT',
-            },
-            {
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FORELDREPENGER',
-                fom: '2021-12-15',
-                tom: '2022-06-07',
-                flerbarnsdager: false,
-            },
-        ],
+        uttaksplan: defaultUttaksplanFarAleneomsorg,
     },
 };
 
@@ -475,6 +495,7 @@ export const FarMedMorSomHarRettIEØS: Story = {
         søkerInfo: {
             ...defaultSøkerinfoFar,
         },
+        uttaksplan: defaultUttaksplanFar,
     },
 };
 
@@ -495,6 +516,7 @@ export const FarMedMorSomHarOppholdsSegIEØSMenIkkeHarRettIEØS: Story = {
         søkerInfo: {
             ...defaultSøkerinfoFar,
         },
+        uttaksplan: defaultUttaksplanFar,
     },
 };
 
@@ -513,6 +535,7 @@ export const FarMedMorSomHarRettINorge: Story = {
         søkerInfo: {
             ...defaultSøkerinfoFar,
         },
+        uttaksplan: defaultUttaksplanFar,
     },
 };
 
@@ -934,6 +957,7 @@ export const FarSøkerMorMåIkkeDokumentereArbeid: Story = {
             harHattAndreInntektskilder: false,
             harJobbetSomSelvstendigNæringsdrivende: false,
         },
+        uttaksplan: defaultUttaksplanFar,
     },
 
     beforeEach({ msw }) {
@@ -984,6 +1008,7 @@ export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story =
             harHattAndreInntektskilder: false,
             harJobbetSomSelvstendigNæringsdrivende: false,
         },
+        uttaksplan: defaultUttaksplanFar,
     },
 
     beforeEach({ msw }) {
@@ -1030,6 +1055,7 @@ export const FarSøkerMorMåDokumentereArbeid: Story = {
             harHattAndreInntektskilder: false,
             harJobbetSomSelvstendigNæringsdrivende: false,
         },
+        uttaksplan: defaultUttaksplanFar,
     },
 
     beforeEach({ msw }) {
@@ -1088,6 +1114,14 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
             ...defaultUttaksplan.slice(0, 2), // Behold de første periodene
             {
                 forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                fom: '2022-03-30',
+                tom: '2022-06-07',
+                samtidigUttak: 50,
+                flerbarnsdager: false,
+            } satisfies UttakPeriode_fpoversikt,
+            {
+                forelder: 'FAR_MEDMOR',
                 kontoType: 'FELLESPERIODE',
                 fom: '2022-03-30',
                 tom: '2022-06-07',
