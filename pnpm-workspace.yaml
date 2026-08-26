@@ -57,8 +57,11 @@ minimumReleaseAgeExclude:
   - '@navikt/*'
 
 allowBuilds:
-  esbuild: false
   msw: true
+  '@parcel/watcher': false
+  esbuild: false
+  core-js: false
+  unrs-resolver: false
 
 overrides:
   js-yaml@>=4.0.0 <4.3.0: ^4.3.0
