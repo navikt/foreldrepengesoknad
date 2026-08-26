@@ -57,6 +57,7 @@ minimumReleaseAgeExclude:
   - '@navikt/*'
 
 allowBuilds:
+  esbuild: false
   msw: true
 
 overrides:
