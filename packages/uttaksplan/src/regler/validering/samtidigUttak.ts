@@ -98,7 +98,7 @@ const lagRegler = (intl: IntlShape): ReadonlyArray<Valideringsregel<SamtidigUtta
             k.kombinertUttaksprosent <= 150 &&
             k.kontoTypeFarMedmor === 'FEDREKVOTE' &&
             k.kontoTypeMor === 'MØDREKVOTE' &&
-            k.ønskerFlerbarnsdager === false,
+            !k.ønskerFlerbarnsdager,
         feilmelding: intl.formatMessage({
             id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.ToKvoterMerEnn100Prosent',
         }),
