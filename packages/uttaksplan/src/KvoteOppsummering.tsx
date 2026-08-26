@@ -650,7 +650,9 @@ const StandardVisning = ({
     const dagerBrukt = summerDagerIPerioder(perioder, [konto], familiesituasjon, familiehendelsedato);
     const ubrukteDager = konto.dager - dagerBrukt;
     const overtrukketDager = ubrukteDager * -1;
-    const prosentBruktAvkvote = Math.floor((dagerBrukt / konto.dager) * 100);
+    // konto.dager kan vere 0 når heile kvoten er omfordelt. Då er 0 dagar brukt av 0
+    // tilgjengelege, og vi viser 0 % i staden for NaN.
+    const prosentBruktAvkvote = konto.dager > 0 ? Math.floor((dagerBrukt / konto.dager) * 100) : 0;
     const prosentOvertrukketKvote = Math.floor((konto.dager / dagerBrukt) * 100);
 
     const finnIkon = () => {
