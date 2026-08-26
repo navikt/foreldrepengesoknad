@@ -22,12 +22,30 @@ export const API_URLS = {
     hentVedlegg: (uuid: string) => `${urlPrefiks}/fpsoknad/api/storage/ENGANGSSTONAD/vedlegg/${uuid}`,
 } as const;
 
+/**
+ * Lettvektssjekk mot et innlogget endepunkt, kun for å oppdage at sesjonen har
+ * løpt ut mens fanen har ligget i bakgrunnen. Svaret brukes ikke til noe: ved 401
+ * laster feilhåndteringen i createDefaultQueryClient siden på nytt, slik at
+ * Wonderwall sender brukeren til innlogging.
+ *
+ * Har egen queryKey slik at den ikke deler cache med statusOptions, som
+ * kvitteringssiden poller på. Registerdata (personinfo, mellomlagring) skal ikke
+ * hentes på nytt ved fanebytte, fordi endringer der fører til at en påbegynt
+ * søknad blir forkastet.
+ */
+export const sesjonssjekkOptions = () =>
+    queryOptions({
+        queryKey: ['SESJONSSJEKK'],
+        queryFn: () => ky.get(API_URLS.status).json<ForsendelseStatus>(),
+        staleTime: Infinity,
+        refetchOnWindowFocus: 'always',
+    });
+
 export const personOptions = () =>
     queryOptions({
         queryKey: ['PERSONINFO'],
         queryFn: () => ky.get(API_URLS.personInfo).json<EsPersonopplysningerDto_fpoversikt>(),
         staleTime: Infinity,
-        refetchOnWindowFocus: 'always',
     });
 
 export const mellomlagretInfoOptions = () =>
@@ -36,7 +54,6 @@ export const mellomlagretInfoOptions = () =>
         queryFn: () => jsonEllerNull<EsMellomlagretData>(ky.get(API_URLS.mellomlagring)),
         select: (data) => data ?? undefined,
         staleTime: Infinity,
-        refetchOnWindowFocus: 'always',
     });
 
 export const statusOptions = () =>
@@ -55,5 +72,4 @@ export const statusOptions = () =>
             return status;
         },
         staleTime: Infinity,
-        refetchOnWindowFocus: 'always',
     });

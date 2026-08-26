@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { EsDataContext } from 'appData/EsDataContext';
-import { API_URLS, mellomlagretInfoOptions, personOptions } from 'appData/queries';
+import { API_URLS, mellomlagretInfoOptions, personOptions, sesjonssjekkOptions } from 'appData/queries';
 import { VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
 import ky from 'ky';
 import { useIntl } from 'react-intl';
@@ -26,6 +26,9 @@ export const Engangsstønad = () => {
     useDocumentTitle(intl.formatMessage({ id: 'Engangsstønad.Pagetitle' }));
 
     const personinfo = useQuery(personOptions());
+
+    // Oppdager at sesjonen har løpt ut når brukeren kommer tilbake til fanen
+    useQuery(sesjonssjekkOptions());
 
     const mellomlagretInfo = useQuery(mellomlagretInfoOptions());
 
