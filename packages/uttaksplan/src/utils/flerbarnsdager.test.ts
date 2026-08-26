@@ -13,8 +13,8 @@ describe('skalBesvareFlerbarnsdager', () => {
         expect(skalBesvareFlerbarnsdager(2, 'MOR', 'FELLESPERIODE', 50)).toBe(true);
     });
 
-    it('skal returnere false for mor med samtidig uttak hvis kontotype er mødrekvote', () => {
-        expect(skalBesvareFlerbarnsdager(2, 'MOR', 'MØDREKVOTE', 50)).toBe(false);
+    it('skal returnere true for mor med samtidig uttak selv om kontotype er mødrekvote', () => {
+        expect(skalBesvareFlerbarnsdager(2, 'MOR', 'MØDREKVOTE', 50)).toBe(true);
     });
 
     it('skal returnere false for mor med samtidig uttak hvis kontotype er aktivitetsfri kvote', () => {
