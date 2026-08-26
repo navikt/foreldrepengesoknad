@@ -1,6 +1,6 @@
 import { IntlShape } from 'react-intl';
 
-import { BrukerRolleSak_fpoversikt, RettighetType_fpoversikt } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, KontoDto, RettighetType_fpoversikt } from '@navikt/fp-types';
 import { CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 import { getLocaleFromSessionStorage, getNavnGenitivEierform } from '@navikt/fp-utils';
 import { assertUnreachable } from '@navikt/fp-validation';
@@ -12,6 +12,7 @@ import {
     erTapteDagerHull,
     erVanligUttakPeriode,
 } from '../../types/UttaksplanPeriode';
+import { getUttaksKontoType } from '../../utils/kvoteBeregning';
 import { erAvslåttPeriode } from '../../utils/periodeUtils';
 
 export type UttaksplanKalenderLegendInfo = {
@@ -444,6 +445,7 @@ const getFarsDelGradertLabel = (
 export const getLegendLabelFromPeriode = (
     p: UttaksplanperiodeMedKunTapteDager,
     erFarEllerMedmor: boolean,
+    kontoer: KontoDto[],
 ): LegendLabel | undefined => {
     if (erAvslåttPeriode(p)) {
         if (erVanligUttakPeriode(p) && p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
@@ -464,7 +466,7 @@ export const getLegendLabelFromPeriode = (
                     return erFarEllerMedmor ? 'MORS_DEL_EØS' : 'FARS_DEL_EØS';
                 }
 
-                if (p.morsAktivitet === 'IKKE_OPPGITT') {
+                if (erVanligUttakPeriode(p) && getUttaksKontoType(p, kontoer) === 'AKTIVITETSFRI_KVOTE') {
                     if (p.gradering?.arbeidstidprosent) {
                         return 'FARS_DEL_AKTIVITETSFRI_GRADERT';
                     }

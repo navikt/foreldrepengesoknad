@@ -23,6 +23,7 @@ import {
     summerDagerIPerioder,
     tellDagerIUttaksPeriodene,
 } from './utils/kvoteBeregning';
+import { useOverførteDagerFraAktivitetsfriKvote } from './utils/kvoteOppsummeringUtils';
 
 interface Props {
     visStatusIkoner: boolean;
@@ -424,7 +425,9 @@ const ForeldrepengerFørFødselKvoter = ({ visStatusIkoner }: { visStatusIkoner:
 
     const filtrertePerioder = useFiltrertePerioder();
 
-    const relevantePerioder = filtrertePerioder.filter((p) => getUttaksKontoType(p) === 'FORELDREPENGER_FØR_FØDSEL');
+    const relevantePerioder = filtrertePerioder.filter(
+        (p) => getUttaksKontoType(p, valgtStønadskvote.kontoer) === 'FORELDREPENGER_FØR_FØDSEL',
+    );
     const relevantKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
     return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} visStatusIkoner={visStatusIkoner} />;
 };
@@ -433,11 +436,14 @@ const KunEnHarForeldrepengeKvoter = ({ visStatusIkoner }: { visStatusIkoner: boo
     const { valgtStønadskvote } = useUttaksplanData();
 
     const filtrertePerioder = useFiltrertePerioder();
+    const overførteDager = useOverførteDagerFraAktivitetsfriKvote();
 
-    const relevantKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FORELDREPENGER');
+    const råKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FORELDREPENGER');
+    // Dagar som er omfordelte til den aktivitetsfrie kvoten er ikkje lenger
+    // tilgjengelege her, jf. finnOverførteDagerFraAktivitetsfriKvote.
+    const relevantKonto = råKonto ? { ...råKonto, dager: råKonto.dager - overførteDager } : undefined;
     const relevantePerioder = filtrertePerioder.filter(
-        (p) =>
-            getUttaksKontoType(p) === 'FORELDREPENGER' && erVanligUttakPeriode(p) && p.morsAktivitet !== 'IKKE_OPPGITT',
+        (p) => getUttaksKontoType(p, valgtStønadskvote.kontoer) === 'FORELDREPENGER',
     );
 
     return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} visStatusIkoner={visStatusIkoner} />;
@@ -451,7 +457,7 @@ const FedreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
     const relevantKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FEDREKVOTE');
     const relevantePerioder = filtrertePerioder.filter(
         (p) =>
-            getUttaksKontoType(p) === 'FEDREKVOTE' ||
+            getUttaksKontoType(p, valgtStønadskvote.kontoer) === 'FEDREKVOTE' ||
             (erVanligUttakPeriode(p) && p.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER'),
     );
 
@@ -461,19 +467,16 @@ const FedreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
 const AktivitetsfriKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
     const { valgtStønadskvote } = useUttaksplanData();
 
-    const relevantKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
+    const overførteDager = useOverførteDagerFraAktivitetsfriKvote();
+
+    const råKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
+    const relevantKonto = råKonto ? { ...råKonto, dager: råKonto.dager + overførteDager } : undefined;
 
     const filtrertePerioder = useFiltrertePerioder();
 
-    const relevantePerioder = filtrertePerioder.filter((p) => {
-        // I planlegger og søknad brukes denne kontoen på periodene.
-        const harMatchendeKonto = getUttaksKontoType(p) === 'AKTIVITETSFRI_KVOTE';
-
-        // Perioder som kommer fra søknad i innsyn ligger på foreldrepengerkontoen av en eller annen grunn.
-        const harMatchendePeriode =
-            getUttaksKontoType(p) === 'FORELDREPENGER' && erVanligUttakPeriode(p) && p.morsAktivitet === 'IKKE_OPPGITT';
-        return harMatchendePeriode || harMatchendeKonto;
-    });
+    const relevantePerioder = filtrertePerioder.filter(
+        (p) => getUttaksKontoType(p, valgtStønadskvote.kontoer) === 'AKTIVITETSFRI_KVOTE',
+    );
 
     return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} visStatusIkoner={visStatusIkoner} />;
 };
@@ -486,7 +489,7 @@ const MødreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
     const relevantKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'MØDREKVOTE');
     const relevantePerioder = filtrertePerioder.filter(
         (p) =>
-            getUttaksKontoType(p) === 'MØDREKVOTE' ||
+            getUttaksKontoType(p, valgtStønadskvote.kontoer) === 'MØDREKVOTE' ||
             (erVanligUttakPeriode(p) && p.oppholdÅrsak === 'MØDREKVOTE_ANNEN_FORELDER'),
     );
     return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} visStatusIkoner={visStatusIkoner} />;
@@ -505,7 +508,10 @@ const FellesKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
     }
     const dagerBruktAvDeg = summerDagerIPerioder(
         filtrertePerioder.filter(
-            (p) => getUttaksKontoType(p) === 'FELLESPERIODE' && erVanligUttakPeriode(p) && p.forelder === forelder,
+            (p) =>
+                getUttaksKontoType(p, valgtStønadskvote.kontoer) === 'FELLESPERIODE' &&
+                erVanligUttakPeriode(p) &&
+                p.forelder === forelder,
         ),
         valgtStønadskvote.kontoer,
         familiesituasjon,
@@ -515,7 +521,8 @@ const FellesKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
         filtrertePerioder.filter(
             (p) =>
                 erVanligUttakPeriode(p) &&
-                (getUttaksKontoType(p) === 'FELLESPERIODE' || p.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER') &&
+                (getUttaksKontoType(p, valgtStønadskvote.kontoer) === 'FELLESPERIODE' ||
+                    p.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER') &&
                 p.forelder !== forelder,
         ),
         valgtStønadskvote.kontoer,
