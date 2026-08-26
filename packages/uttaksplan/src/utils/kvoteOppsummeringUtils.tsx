@@ -40,15 +40,6 @@ const DIN_PLAN_KVOTE_REKKEFØLGE: KontoTypeUttak[] = [
  * forelderen har lagt inn i den same uttaksplanen), sidan det er søkjaren sin
  * eigen søknad som skal oppsummerast her. Ein konto blir kun teken med dersom
  * søkjaren faktisk har planlagt å bruke noko av han.
- *
- * Returnerer talet på dagar (ikkje avrunda til veker). Ei rad kan gjelde ein
- * søkjar som t.d. har planlagt gradert uttak (t.d. 20 % uttak/80 % arbeid) eller
- * berre delvis brukt ein konto – i begge tilfelle vil talet på brukte dagar då
- * ikkje vere eit heiltal multiplum av 5. Å avrunda til næraste (eller øvste)
- * heile veke her ville gitt misvisande rader som t.d. «3 av 3 uker» sjølv om
- * søkjaren eigentleg berre har brukt 2 uker og 1 dag av 3 tilgjengelege uker.
- * Formatering til «uker og dager» skjer derfor i UI-laget (sjå getVarighetString),
- * ikkje her.
  */
 export const finnDinPlanKvoteRader = (
     uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
@@ -59,8 +50,7 @@ export const finnDinPlanKvoteRader = (
 ): DinPlanKvoteRad[] => {
     const søkersPerioder = uttakPerioder
         .filter(
-            (periode): periode is UttakPeriode_fpoversikt =>
-                'forelder' in periode && periode.forelder === søkerRolle,
+            (periode): periode is UttakPeriode_fpoversikt => 'forelder' in periode && periode.forelder === søkerRolle,
         )
         .filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
 
