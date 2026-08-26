@@ -143,9 +143,6 @@ catalogs:
       version: 4.1.10
 
 overrides:
-  body-parser@>=2.0.0 <2.3.0: ^2.3.0
-  brace-expansion@>=2.0.0 <2.1.4: ^2.1.4
-  dompurify@<=3.4.11: ^3.4.12
   js-yaml@>=4.0.0 <4.3.0: ^4.3.0
   react-router@>=7.12.0 <8.3.0: ^8.3.0
 
