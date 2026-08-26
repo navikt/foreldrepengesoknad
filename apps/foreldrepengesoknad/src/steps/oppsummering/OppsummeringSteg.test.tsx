@@ -272,7 +272,9 @@ describe('<Oppsummering>', () => {
         await FarMedAleneOmsorg.run();
 
         const dinPlanDiv = getCardDiv(screen.getByText('Din plan'));
-        const duHarPlanlagtDiv = checkAndGetParentDiv(await dinPlanDiv.findByText('Du har planlagt'));
+        await dinPlanDiv.findByText('3 uker av 10 uker med foreldrepenger uten aktivitetskrav');
+
+        const duHarPlanlagtDiv = checkAndGetParentDiv(dinPlanDiv.getByText('Du har planlagt'));
         expect(
             duHarPlanlagtDiv.getByText('3 uker av 10 uker med foreldrepenger uten aktivitetskrav'),
         ).toBeInTheDocument();
@@ -285,7 +287,9 @@ describe('<Oppsummering>', () => {
         await FarMedMorSomHarRettIEØS.run();
 
         const dinPlanDiv = getCardDiv(screen.getByText('Din plan'));
-        const duHarPlanlagtDiv = checkAndGetParentDiv(await dinPlanDiv.findByText('Du har planlagt'));
+        await dinPlanDiv.findByText('6 uker og 4 dager av 15 uker av din kvote (fedrekvoten)');
+
+        const duHarPlanlagtDiv = checkAndGetParentDiv(dinPlanDiv.getByText('Du har planlagt'));
         expect(
             duHarPlanlagtDiv.getByText('6 uker og 4 dager av 15 uker av din kvote (fedrekvoten)'),
         ).toBeInTheDocument();
