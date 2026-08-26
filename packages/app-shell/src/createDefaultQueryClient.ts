@@ -4,6 +4,8 @@ import { HTTPError } from 'ky';
 import { ApiError, captureApiError } from '@navikt/fp-observability';
 import type { ProblemDetails } from '@navikt/fp-types';
 
+import { lastInnPåNyttVedUtløptSesjon } from './lastInnPåNyttVedUtløptSesjon';
+
 export interface CreateDefaultQueryClientOptions {
     /**
      * Telemetrimelding som logges når et query feiler med HTTPError og
@@ -18,11 +20,10 @@ export const createDefaultQueryClient = ({ apiQueryErrorMessage }: CreateDefault
     const queryCache = apiQueryErrorMessage
         ? new QueryCache({
               onError: (error) => {
+                  if (lastInnPåNyttVedUtløptSesjon(error)) {
+                      return;
+                  }
                   if (error instanceof HTTPError) {
-                      if (error.response?.status === 401) {
-                          location.reload();
-                          return;
-                      }
                       if (error.response?.status === 403) {
                           return;
                       }
@@ -35,6 +36,12 @@ export const createDefaultQueryClient = ({ apiQueryErrorMessage }: CreateDefault
 
     const mutationCache = new MutationCache({
         onError: (error) => {
+            // Innsending og mellomlagring kaster 401 videre som rå HTTPError, ikke
+            // som ApiError. Uten denne sjekken ble en utløpt sesjon svelget stille
+            // og brukeren mistet det som var fylt ut.
+            if (lastInnPåNyttVedUtløptSesjon(error)) {
+                return;
+            }
             if (error instanceof ApiError) {
                 captureApiError(error.telemetryMessage, error.problemDetails);
             }

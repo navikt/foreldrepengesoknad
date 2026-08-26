@@ -4,6 +4,7 @@ import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 
+import { lastInnPåNyttVedUtløptSesjon } from '@navikt/fp-app-shell';
 import { ApiError, captureApiError, captureMessage } from '@navikt/fp-observability';
 import { FpSoknadProblemDetails, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 
@@ -105,6 +106,10 @@ export const useMellomlagreSøknad = (
             };
 
             lagreEllerSlett().catch((error: Error) => {
+                if (lastInnPåNyttVedUtløptSesjon(error)) {
+                    return;
+                }
+
                 if (error instanceof ApiError) {
                     captureApiError(error.telemetryMessage, error.problemDetails);
                 } else {

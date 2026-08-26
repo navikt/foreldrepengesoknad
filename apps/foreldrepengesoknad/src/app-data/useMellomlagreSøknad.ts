@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { VERSJON_MELLOMLAGRING } from 'utils/mellomlagringUtils';
 
+import { lastInnPåNyttVedUtløptSesjon } from '@navikt/fp-app-shell';
 import { ApiError, captureApiError, captureMessage } from '@navikt/fp-observability';
 import {
     AnnenPartSak_fpoversikt,
@@ -145,6 +146,10 @@ export const useMellomlagreSøknad = (
         lagre().then(
             () => fullfør('ok'),
             (error: unknown) => {
+                if (lastInnPåNyttVedUtløptSesjon(error)) {
+                    return;
+                }
+
                 //Logg feil. Om kallaren har bedt om det, blir brukaren også varsla.
                 if (error instanceof ApiError) {
                     captureApiError(error.telemetryMessage, error.problemDetails);
