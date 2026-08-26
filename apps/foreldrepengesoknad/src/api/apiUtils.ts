@@ -338,7 +338,12 @@ const midlertidigMappingAvUttaksplan = (
         : false;
 
     return uttaksplan.map((periode) => {
-        const skalViseFlerbarnsdager = skalBesvareFlerbarnsdager(barn.antallBarn, periode.forelder, periode.kontoType);
+        const skalViseFlerbarnsdager = skalBesvareFlerbarnsdager(
+            barn.antallBarn,
+            periode.forelder,
+            periode.kontoType,
+            periode.samtidigUttak,
+        );
 
         if (periode.oppholdÅrsak) {
             return {
