@@ -76,7 +76,7 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
                                 <HvisDuBlirSyk />
 
                                 {erMorDelAvSøknaden && <HvisMorBlirSyk />}
-
+                                {/* Her må annen inn: */}
                                 {((erAleneforsørger && !erMorDelAvSøknaden) ||
                                     erFarOgFar ||
                                     kunFarEllerMedmorHarRett) && <HvisBarnetErSyktEllerInnlagt />}
