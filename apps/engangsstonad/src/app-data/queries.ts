@@ -27,6 +27,7 @@ export const personOptions = () =>
         queryKey: ['PERSONINFO'],
         queryFn: () => ky.get(API_URLS.personInfo).json<EsPersonopplysningerDto_fpoversikt>(),
         staleTime: Infinity,
+        refetchOnWindowFocus: 'always',
     });
 
 export const mellomlagretInfoOptions = () =>
@@ -35,6 +36,7 @@ export const mellomlagretInfoOptions = () =>
         queryFn: () => jsonEllerNull<EsMellomlagretData>(ky.get(API_URLS.mellomlagring)),
         select: (data) => data ?? undefined,
         staleTime: Infinity,
+        refetchOnWindowFocus: 'always',
     });
 
 export const statusOptions = () =>
@@ -53,4 +55,5 @@ export const statusOptions = () =>
             return status;
         },
         staleTime: Infinity,
+        refetchOnWindowFocus: 'always',
     });

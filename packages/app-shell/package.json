@@ -7,7 +7,6 @@
     "scripts": {
         "eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
         "eslint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
-        "test": "vitest --project=jsdom --watch=false",
         "prettier:fix": "prettier --write src",
         "tsc": "tsc --noEmit",
         "tsc:watch": "tsc --noEmit --watch",
@@ -33,14 +32,10 @@
     "devDependencies": {
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
-        "@navikt/fp-config-vite": "workspace:*",
-        "@testing-library/jest-dom": "catalog:",
         "@types/react": "catalog:",
         "@types/react-dom": "catalog:",
         "eslint": "catalog:",
-        "jsdom": "catalog:",
         "typescript": "catalog:",
-        "vite": "catalog:",
-        "vitest": "catalog:"
+        "vite": "catalog:"
     }
 }
