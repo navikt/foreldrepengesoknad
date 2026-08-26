@@ -131,8 +131,6 @@ const defaultUttaksplan = [
     },
 ] satisfies UttakPeriode_fpoversikt[];
 
-// Brukes av "far er søker og mor har egen rett"-historier, slik at «Du har planlagt»
-// får perioder som faktisk tilhører far (søkerRolle), i stedet for å arve morens periode fra defaultUttaksplan.
 const defaultUttaksplanFar = [
     {
         forelder: 'FAR_MEDMOR',
@@ -150,7 +148,6 @@ const defaultUttaksplanFar = [
     },
 ] satisfies UttakPeriode_fpoversikt[];
 
-// Brukes av "far har aleneomsorg"-historier, der far har hele kvoten alene (ingen deling med mor).
 const defaultUttaksplanFarAleneomsorg = [
     {
         forelder: 'FAR_MEDMOR',

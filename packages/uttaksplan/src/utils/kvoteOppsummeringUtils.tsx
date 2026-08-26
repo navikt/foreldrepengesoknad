@@ -67,10 +67,6 @@ export const finnDinPlanKvoteRader = (
             return undefined;
         }
 
-        // Kontoane sitt tal på dagar er alltid heile veker (multiplum av 5), men bruktDager
-        // treng ikkje vere det – t.d. ved gradert uttak eller når søkjaren berre har planlagt
-        // ein del av kontoen. Vi returnerer difor rå dagtal, og let UI-laget formatere med
-        // uker og dager (sjå kommentar over finnDinPlanKvoteRader).
         return {
             kontoType,
             bruktDager,

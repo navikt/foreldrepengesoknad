@@ -14,11 +14,6 @@ interface Props {
     kontoer: KontoDto[];
 }
 
-// Viser brukt/tilgjengelig som «uker og dager» (t.d. «2 uker og 1 dag») i staden for
-// berre heile uker. Ei rad kan gjelde gradert uttak eller ein delvis brukt konto, der
-// talet på brukte dagar ikkje er eit heiltal multiplum av 5 – å runda dette til næraste
-// (eller øvste) heile veke kan då feilaktig sjå ut som kontoen er fullt brukt opp, sjølv
-// om det framleis står att nokre dagar.
 const formaterRad = (intl: IntlShape, rad: DinPlanKvoteRad): string => {
     const values = {
         brukt: getVarighetString(rad.bruktDager, intl),
@@ -41,9 +36,6 @@ const formaterRad = (intl: IntlShape, rad: DinPlanKvoteRad): string => {
     }
 };
 
-// Viser kor mange veker søkjaren har planlagt å bruke av kvar stønadskonto,
-// samanlikna med kor mange veker som er tilgjengelege totalt («3 av 3 veker
-// før fødsel», «20 av 20 veker av din kvote (mødrekvoten)» osv.).
 export const DinPlanKvoter = ({ kontoer }: Props) => {
     const intl = useIntl();
 
@@ -73,4 +65,3 @@ export const DinPlanKvoter = ({ kontoer }: Props) => {
         </VStack>
     );
 };
-
