@@ -60,4 +60,15 @@ describe('<ManueltLagtTilNæring>', () => {
 
         expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'center' });
     });
+
+    it('skal kunne vise næringen uten fjern-knapp', () => {
+        render(
+            <IntlProvider locale="nb" messages={nbMessages}>
+                <ManueltLagtTilNæring egenNæring={egenNæring} />
+            </IntlProvider>,
+        );
+
+        expect(screen.getByRole('heading', { name: 'Fiskebåten' })).toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: 'Fjern Fiskebåten' })).not.toBeInTheDocument();
+    });
 });

@@ -10,12 +10,12 @@ import { useScrollIntoViewWhenAdded } from './useScrollIntoViewWhenAdded';
 
 interface Props {
     egenNæring?: NæringDto;
-    onRemove: () => void;
+    onRemove?: () => void;
 }
 
 export const ManueltLagtTilNæring = ({ egenNæring, onRemove }: Props) => {
     const intl = useIntl();
-    const næringRef = useScrollIntoViewWhenAdded(egenNæring ? 1 : 0);
+    const næringRef = useScrollIntoViewWhenAdded(egenNæring && onRemove ? 1 : 0);
 
     if (!egenNæring) {
         return null;
@@ -67,18 +67,20 @@ export const ManueltLagtTilNæring = ({ egenNæring, onRemove }: Props) => {
                             : intl.formatMessage({ id: 'HarArbeidsforhold.pågående' })}
                     </BodyShort>
                 </HStack>
-                <Button
-                    type="button"
-                    size="small"
-                    variant="tertiary"
-                    data-color="danger"
-                    icon={<TrashIcon aria-hidden />}
-                    className="self-start"
-                    aria-label={`Fjern ${navn}`}
-                    onClick={onRemove}
-                >
-                    Fjern
-                </Button>
+                {onRemove && (
+                    <Button
+                        type="button"
+                        size="small"
+                        variant="tertiary"
+                        data-color="danger"
+                        icon={<TrashIcon aria-hidden />}
+                        className="self-start"
+                        aria-label={`Fjern ${navn}`}
+                        onClick={onRemove}
+                    >
+                        Fjern
+                    </Button>
+                )}
             </VStack>
         </Box>
     );

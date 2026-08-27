@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { mineFrilansoppdragOptions } from 'api/queries';
+import { mineFrilansoppdragOptions, selvstendigNæringOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
@@ -104,6 +104,8 @@ export const OppsummeringSteg = (props: Props) => {
         },
     });
     const frilansoppdrag = frilansoppdragQuery.data ?? [];
+    const selvstendigNæringQuery = useQuery(selvstendigNæringOptions());
+    const selvstendigNæring = selvstendigNæringQuery.data ?? [];
 
     if (uttaksplan === undefined) {
         return <ManglendeUttaksplanSide onGåTilUttaksplan={() => navigator.goToStep(SøknadRoutes.UTTAKSPLAN)} />;
@@ -155,6 +157,7 @@ export const OppsummeringSteg = (props: Props) => {
                 />
                 <SelvstendigNæringsdrivendeOppsummering
                     egenNæring={egenNæring}
+                    selvstendigNæring={selvstendigNæring}
                     onVilEndreSvar={() => navigator.goToStep(SøknadRoutes.EGEN_NÆRING)}
                 />
                 <AndreInntektskilderOppsummering

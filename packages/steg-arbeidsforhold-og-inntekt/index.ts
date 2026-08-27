@@ -11,6 +11,8 @@ export const arbeidsforholdOgInntektMessages = {
 export { ArbeidsforholdOgInntektPanel } from './src/ArbeidsforholdOgInntektPanel';
 export { HarArbeidsforhold } from './src/components/arbeidsforhold-informasjon/HarArbeidsforhold';
 export { HarIkkeArbeidsforhold } from './src/components/arbeidsforhold-informasjon/HarIkkeArbeidsforhold';
+export { ManueltLagtTilNæring } from './src/components/arbeidsforhold-informasjon/ManueltLagtTilNæring';
+export { SelvstendigNæring } from './src/components/arbeidsforhold-informasjon/SelvstendigNæring';
 export {
     type AnnenInntektType,
     type AndreInntektskilder,

@@ -1,5 +1,6 @@
 import { Preview } from '@storybook/react-vite';
 
+import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { uiMessages } from '@navikt/fp-ui';
 import { getIntlDecorator, withThemeDecorator } from '@navikt/fp-utils-test';
 
@@ -9,9 +10,9 @@ import nnMessages from '../src/intl/messages/nn_NO.json';
 import './index.css';
 
 const withIntlProvider = getIntlDecorator({
-    nb: { ...nbMessages, ...uiMessages.nb },
-    nn: { ...nnMessages, ...uiMessages.nn },
-    en: { ...enMessages, ...uiMessages.en },
+    nb: { ...nbMessages, ...uiMessages.nb, ...arbeidsforholdOgInntektMessages.nb },
+    nn: { ...nnMessages, ...uiMessages.nn, ...arbeidsforholdOgInntektMessages.nn },
+    en: { ...enMessages, ...uiMessages.en, ...arbeidsforholdOgInntektMessages.en },
 });
 
 export const parameters = {

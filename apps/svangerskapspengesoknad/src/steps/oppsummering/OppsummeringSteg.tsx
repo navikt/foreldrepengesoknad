@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, useContextGetData } from 'appData/SvpDataContext';
-import { mineFrilansoppdragOptions } from 'appData/queries';
+import { mineFrilansoppdragOptions, selvstendigNæringOptions } from 'appData/queries';
 import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
@@ -61,6 +61,8 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
         },
     });
     const frilansoppdrag = frilansoppdragQuery.data ?? [];
+    const selvstendigNæringQuery = useQuery(selvstendigNæringOptions());
+    const selvstendigNæring = selvstendigNæringQuery.data ?? [];
 
     const førsteTilretteleggingId = getTilretteleggingId(
         søkerInfo.arbeidsforhold,
@@ -123,6 +125,7 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
                 <FrilansOppsummering frilans={frilans} onVilEndreSvar={() => navigator.goToStep(SøknadRoute.FRILANS)} />
                 <SelvstendigNæringsdrivendeOppsummering
                     egenNæring={egenNæring}
+                    selvstendigNæring={selvstendigNæring}
                     onVilEndreSvar={() => navigator.goToStep(SøknadRoute.NÆRING)}
                 />
                 <JobbetIUtlandetOppsummering

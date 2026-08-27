@@ -8,6 +8,7 @@ import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
 interface Props {
     selvstendigNæring: SelvstendigNæringDto_fpoversikt[];
+    visManglerOpplysninger?: boolean;
 }
 
 const getNæringKey = (næring: SelvstendigNæringDto_fpoversikt) => næring.organisasjonsnummer;
@@ -23,7 +24,7 @@ const ManglerOpplysninger = () => (
     </InfoCard>
 );
 
-export const SelvstendigNæring = ({ selvstendigNæring }: Props) => {
+export const SelvstendigNæring = ({ selvstendigNæring, visManglerOpplysninger = true }: Props) => {
     const intl = useIntl();
 
     if (selvstendigNæring.length === 0) {
@@ -61,7 +62,7 @@ export const SelvstendigNæring = ({ selvstendigNæring }: Props) => {
                                 ))}
                             </List>
                         </ReadMore>
-                        <ManglerOpplysninger />
+                        {visManglerOpplysninger && <ManglerOpplysninger />}
                     </VStack>
                 </Box>
             </VStack>
@@ -93,7 +94,7 @@ export const SelvstendigNæring = ({ selvstendigNæring }: Props) => {
                             {næring.organisasjonsnummer}
                         </BodyShort>
                     </HStack>
-                    <ManglerOpplysninger />
+                    {visManglerOpplysninger && <ManglerOpplysninger />}
                 </VStack>
             </Box>
         </VStack>

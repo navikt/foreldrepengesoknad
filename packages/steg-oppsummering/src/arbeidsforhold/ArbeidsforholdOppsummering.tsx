@@ -2,11 +2,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, FormSummary } from '@navikt/ds-react';
 
+import { ManueltLagtTilNæring, SelvstendigNæring } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import {
     ArbeidsforholdOgInntekt,
     EksternArbeidsforholdDto_fpoversikt,
     Frilans,
     NæringDto,
+    SelvstendigNæringDto_fpoversikt,
     isArbeidsforholdOgInntektFp,
 } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatCurrencyWithKr, formatDate } from '@navikt/fp-utils';
@@ -144,11 +146,13 @@ const ArbeidsforholdFormSummaryValue = ({
 type SelvstendigNæringsdrivendeOppsummeringProps = {
     onVilEndreSvar: () => void;
     egenNæring?: NæringDto;
+    selvstendigNæring?: SelvstendigNæringDto_fpoversikt[];
 };
 
 export const SelvstendigNæringsdrivendeOppsummering = ({
     onVilEndreSvar,
     egenNæring,
+    selvstendigNæring = [],
 }: SelvstendigNæringsdrivendeOppsummeringProps) => {
     if (!egenNæring) {
         return null;
@@ -168,25 +172,14 @@ export const SelvstendigNæringsdrivendeOppsummering = ({
             <FormSummary.Answers>
                 <FormSummary.Answer>
                     <FormSummary.Label>
-                        <FormattedMessage id="ArbeidsforholdOppsummering.næringstype" />
+                        <FormattedMessage id="ArbeidsforholdOppsummering.næringsvirksomhet" />
                     </FormSummary.Label>
                     <FormSummary.Value>
-                        {(() => {
-                            switch (egenNæring?.næringstype) {
-                                case 'FISKE':
-                                    return <FormattedMessage id="ArbeidsforholdOppsummering.næringstype.fiske" />;
-                                case 'DAGMAMMA':
-                                    return <FormattedMessage id="ArbeidsforholdOppsummering.næringstype.dagmamma" />;
-                                case 'JORDBRUK_SKOGBRUK':
-                                    return (
-                                        <FormattedMessage id="ArbeidsforholdOppsummering.næringstype.jordbrukSkogbruk" />
-                                    );
-                                case 'ANNEN':
-                                    return <FormattedMessage id="ArbeidsforholdOppsummering.næringstype.annen" />;
-                                default:
-                                    return null;
-                            }
-                        })()}
+                        {selvstendigNæring.length > 0 ? (
+                            <SelvstendigNæring selvstendigNæring={selvstendigNæring} visManglerOpplysninger={false} />
+                        ) : (
+                            <ManueltLagtTilNæring egenNæring={egenNæring} />
+                        )}
                     </FormSummary.Value>
                 </FormSummary.Answer>
                 {egenNæring.navnPåNæringen && (
@@ -197,14 +190,6 @@ export const SelvstendigNæringsdrivendeOppsummering = ({
                         <FormSummary.Value>{egenNæring.navnPåNæringen}</FormSummary.Value>
                     </FormSummary.Answer>
                 )}
-                <FormSummary.Answer>
-                    <FormSummary.Label>
-                        <FormattedMessage id="ArbeidsforholdOppsummering.erNæringenRegistrertINorge" />
-                    </FormSummary.Label>
-                    <FormSummary.Value>
-                        <JaNeiTekst ja={egenNæring.registrertINorge} />
-                    </FormSummary.Value>
-                </FormSummary.Answer>
                 {egenNæring.organisasjonsnummer && (
                     <FormSummary.Answer>
                         <FormSummary.Label>

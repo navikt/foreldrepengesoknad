@@ -93,6 +93,13 @@ export const ArbeidsforholdOgInntektOppsummering: Story = {
                     onVilEndreSvar={() => {}}
                 />
                 <SelvstendigNæringsdrivendeOppsummering
+                    selvstendigNæring={[
+                        {
+                            navn: 'Fiskebåten',
+                            organisasjonsnummer: '998877665',
+                            næringstype: 'FISKE',
+                        },
+                    ]}
                     egenNæring={{
                         navnPåNæringen: 'Fiske',
                         fom: '2018-01-01',

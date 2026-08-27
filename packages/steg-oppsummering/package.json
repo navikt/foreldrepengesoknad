@@ -19,6 +19,7 @@
     "dependencies": {
         "@navikt/ds-css": "catalog:",
         "@navikt/ds-react": "catalog:",
+        "@navikt/fp-steg-arbeidsforhold-og-inntekt": "workspace:*",
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
