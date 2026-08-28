@@ -876,7 +876,7 @@ export const getFordelingFraKontoer = (
         fordelingsinformasjon.push(fordeling);
     }
     if (erFarEllerMedmor && annenPartHarKunRettIEØS) {
-        return fordelingsinformasjon.reverse();
+        return fordelingsinformasjon.toReversed();
     }
     return fordelingsinformasjon;
 };

@@ -187,7 +187,7 @@ export const getAlleTidslinjehendelser = (props: {
         });
     }
 
-    return [...tidslinjeHendelser].sort((a, b) => sorterTidslinjehendelser(a.opprettet, b.opprettet));
+    return [...tidslinjeHendelser].toSorted((a, b) => sorterTidslinjehendelser(a.opprettet, b.opprettet));
 };
 
 const getTidslinjeHendelstypeAvVenteårsak = (venteårsak: BehandlingTilstand_fpoversikt) => {
@@ -315,7 +315,7 @@ export const getRelevantNyTidslinjehendelse = (
     const søknadHendelser = new Set(['FØRSTEGANGSSØKNAD', 'FØRSTEGANGSSØKNAD_NY', 'ENDRINGSSØKNAD']);
 
     const sorterteHendelser = tidslinjehendelser
-        ? [...tidslinjehendelser].sort((a, b) => sorterTidslinjehendelser(a.opprettet, b.opprettet)).reverse()
+        ? [...tidslinjehendelser].toSorted((a, b) => sorterTidslinjehendelser(a.opprettet, b.opprettet)).toReversed()
         : undefined;
 
     return sorterteHendelser

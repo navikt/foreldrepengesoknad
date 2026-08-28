@@ -332,7 +332,7 @@ export const kanJustereFarsUttakRundtFødsel = (
         return false;
     }
 
-    const sortertePerioder = [...farMedmorPerioder].sort((p1, p2) => dayjs(p1.fom).diff(dayjs(p2.fom)));
+    const sortertePerioder = [...farMedmorPerioder].toSorted((p1, p2) => dayjs(p1.fom).diff(dayjs(p2.fom)));
 
     const termindatoUttaksdag = Uttaksdagen.denneEllerNeste(termindato).getDato();
     const intervallFom = dayjs(termindatoUttaksdag).subtract(2, 'week');

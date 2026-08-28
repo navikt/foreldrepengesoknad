@@ -123,7 +123,8 @@ const getTilretteleggingLabels = (
 const createStep = (route: SøknadRoute, intl: IntlShape, currentPath: string): ProgressStep<string> => ({
     id: route,
     label: getStepLabels(intl)[route],
-    isSelected: currentPath === route,
+    // eslint-disable-next-line unicorn/no-useless-coercion
+    isSelected: currentPath === route.toString(),
 });
 
 const getStepConfig = (

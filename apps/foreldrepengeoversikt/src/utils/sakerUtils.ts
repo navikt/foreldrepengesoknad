@@ -123,32 +123,34 @@ export const grupperSakerPåBarn = (registrerteBarn: OversiktBarnDto_fpoversikt[
     const result: GruppertSak[] = [];
 
     sorterteSaker.forEach((sak) => {
-        if (sak.familiehendelse) {
-            const familiehendelsedato = getFamiliehendelseDato(sak.familiehendelse);
-            const relevantSak = result.find((gruppertSak) => findRelevantSak(gruppertSak, familiehendelsedato));
-
-            if (relevantSak) {
-                relevantSak.saker.push(sak);
-            }
-
-            if (relevantSak && result.includes(relevantSak)) {
-                return;
-            } else {
-                const type = utledFamiliesituasjon(
-                    sak.familiehendelse,
-                    'gjelderAdopsjon' in sak ? sak.gjelderAdopsjon : undefined,
-                );
-                const gruppertSak: GruppertSak = {
-                    antallBarn: sak.familiehendelse.antallBarn,
-                    familiehendelsedato,
-                    saker: [sak],
-                    type,
-                    ytelse: sak.ytelse,
-                    barn: type === 'termin' ? undefined : getBarnGrupperingFraSak(sak, registrerteBarn),
-                };
-                result.push(gruppertSak);
-            }
+        if (!sak.familiehendelse) {
+            return;
         }
+
+        const familiehendelsedato = getFamiliehendelseDato(sak.familiehendelse);
+        const relevantSak = result.find((gruppertSak) => findRelevantSak(gruppertSak, familiehendelsedato));
+
+        if (relevantSak) {
+            relevantSak.saker.push(sak);
+        }
+
+        if (relevantSak && result.includes(relevantSak)) {
+            return;
+        }
+
+        const type = utledFamiliesituasjon(
+            sak.familiehendelse,
+            'gjelderAdopsjon' in sak ? sak.gjelderAdopsjon : undefined,
+        );
+        const gruppertSak: GruppertSak = {
+            antallBarn: sak.familiehendelse.antallBarn,
+            familiehendelsedato,
+            saker: [sak],
+            type,
+            ytelse: sak.ytelse,
+            barn: type === 'termin' ? undefined : getBarnGrupperingFraSak(sak, registrerteBarn),
+        };
+        result.push(gruppertSak);
     });
 
     return result;
@@ -321,22 +323,22 @@ const getTittelBarnNårNavnSkalIkkeVises = (
             ),
             undertittel: '',
         };
-    } else {
-        const fødselsdatoTekst = formaterFødselsdatoerPåBarn(fødselsdatoer, intl);
-        if (fødselsdatoer !== undefined && fødselsdatoer.length > 0) {
-            return {
-                tittel: intl.formatMessage(
-                    { id: 'barnHeader.fødtBarn' },
-                    {
-                        barnTekst,
-                        fødselsdatoTekst,
-                    },
-                ),
-                undertittel: '',
-            };
-        }
-        return { tittel: '', undertittel: '' };
     }
+
+    const fødselsdatoTekst = formaterFødselsdatoerPåBarn(fødselsdatoer, intl);
+    if (fødselsdatoer !== undefined && fødselsdatoer.length > 0) {
+        return {
+            tittel: intl.formatMessage(
+                { id: 'barnHeader.fødtBarn' },
+                {
+                    barnTekst,
+                    fødselsdatoTekst,
+                },
+            ),
+            undertittel: '',
+        };
+    }
+    return { tittel: '', undertittel: '' };
 };
 
 export const getNavnPåBarna = (fornavn: string[], intl: IntlShape): string => {

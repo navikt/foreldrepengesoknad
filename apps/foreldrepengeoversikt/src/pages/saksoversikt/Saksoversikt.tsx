@@ -54,7 +54,7 @@ interface Props {
 
 const finnSøknadstidspunkt = (tidslinjehendelser: TidslinjeHendelseDto_fpoversikt[]) => {
     const nySøknadHendelse = [...tidslinjehendelser]
-        .sort((t1, t2) => (dayjs(t1.opprettet).isBefore(t2.opprettet, 'day') ? 1 : -1))
+        .toSorted((t1, t2) => (dayjs(t1.opprettet).isBefore(t2.opprettet, 'day') ? 1 : -1))
         .find((th) => th.tidslinjeHendelseType === 'FØRSTEGANGSSØKNAD_NY');
     return nySøknadHendelse
         ? nySøknadHendelse.opprettet

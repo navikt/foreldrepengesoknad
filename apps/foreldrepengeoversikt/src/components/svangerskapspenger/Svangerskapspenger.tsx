@@ -293,7 +293,7 @@ export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
                 avslutningÅrsak: af.avslutningÅrsak,
             })),
         )
-        .sort((a, b) => a.fom.localeCompare(b.fom));
+        .toSorted((a, b) => a.fom.localeCompare(b.fom));
 
     const endeligePerioder = [];
     const perioderÅBruke = [...perioder];
@@ -377,5 +377,5 @@ export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
             endeligePerioder.push(periode);
         }
     }
-    return endeligePerioder.sort((a, b) => a.fom.localeCompare(b.fom));
+    return endeligePerioder.toSorted((a, b) => a.fom.localeCompare(b.fom));
 };

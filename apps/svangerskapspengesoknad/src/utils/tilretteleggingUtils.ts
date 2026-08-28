@@ -150,8 +150,9 @@ export const mapFlereTilretteleggingPerioder = (
     });
 
     let sisteTom = dayjs(TIDENES_MORGEN);
-    for (const dato of allePerioder.map((p) => dayjs(p.tom))) {
-        sisteTom = dayjs(sisteTom).isBefore(dato) ? dato : sisteTom;
+    for (const periode of allePerioder) {
+        const tom = dayjs(periode.tom);
+        sisteTom = dayjs(sisteTom).isBefore(tom) ? tom : sisteTom;
     }
 
     if (!sisteTom.isSame(sisteDagForSvangerskapspenger, 'day')) {

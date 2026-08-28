@@ -6,11 +6,11 @@ const filtrerBort = <T>(
 ): Record<string, T> => {
     const filtrerteTilrettelegginger: Record<string, T> = {};
 
-    Object.keys(tilrettelegginger).forEach((id) => {
+    for (const [id, tilrettelegging] of Object.entries(tilrettelegginger)) {
         if (!tilretteleggingerSomSkalFjernes.includes(id)) {
-            filtrerteTilrettelegginger[id] = tilrettelegginger[id]!;
+            filtrerteTilrettelegginger[id] = tilrettelegging;
         }
-    });
+    }
 
     return filtrerteTilrettelegginger;
 };

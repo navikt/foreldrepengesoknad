@@ -35,11 +35,11 @@ dayjs.extend(timezone);
 dayjs.extend(advanced);
 
 export const getEldsteRegistrerteBarn = (registrerteBarn: FpBarnDto_fpoversikt[]): FpBarnDto_fpoversikt => {
-    return [...registrerteBarn].sort((a, b) => (isDateABeforeDateB(a.fødselsdato, b.fødselsdato) ? 1 : -1)).at(-1)!;
+    return [...registrerteBarn].toSorted((a, b) => (isDateABeforeDateB(a.fødselsdato, b.fødselsdato) ? 1 : -1)).at(-1)!;
 };
 
 export const sorterDatoEtterEldst = (dato: string[]): string[] => {
-    return [...dato].sort((a, b) => (isDateABeforeDateB(a, b) ? -1 : 1));
+    return [...dato].toSorted((a, b) => (isDateABeforeDateB(a, b) ? -1 : 1));
 };
 
 const isDateABeforeDateB = (a: string, b: string): boolean => {

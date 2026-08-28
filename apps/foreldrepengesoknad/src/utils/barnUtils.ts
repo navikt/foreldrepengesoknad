@@ -107,20 +107,20 @@ export const getTittelBarnNårNavnSkalIkkeVises = (
                 adopsjonsdato: dayjs(omsorgsovertagelsesdato).format(DDMMMMYYY_DATE_FORMAT),
             },
         );
-    } else {
-        const fødselsdatoTekst = formaterFødselsdatoerPåBarn(fødselsdatoer);
-        const barnTekst = getTekstForAntallBarn(antallBarn, intl);
-
-        return fødselsdatoer !== undefined && fødselsdatoer.length > 0
-            ? intl.formatMessage(
-                  { id: 'velkommen.barnVelger.fødtBarn.barn' },
-                  {
-                      barnTekst,
-                      fødselsdato: fødselsdatoTekst,
-                  },
-              )
-            : '';
     }
+
+    const fødselsdatoTekst = formaterFødselsdatoerPåBarn(fødselsdatoer);
+    const barnTekst = getTekstForAntallBarn(antallBarn, intl);
+
+    return fødselsdatoer !== undefined && fødselsdatoer.length > 0
+        ? intl.formatMessage(
+              { id: 'velkommen.barnVelger.fødtBarn.barn' },
+              {
+                  barnTekst,
+                  fødselsdato: fødselsdatoTekst,
+              },
+          )
+        : '';
 };
 
 export const formaterNavnPåBarn = (

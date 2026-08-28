@@ -74,7 +74,7 @@ const getAttachmentTypeSelectOptions = (intl: IntlShape, manglendeSkjemanummer: 
                     skjemanummer,
                     text: intl.formatMessage({ id: `ettersendelse.${skjemanummer}` }),
                 }))
-                .sort((selectOption, nextSelectOption) => {
+                .toSorted((selectOption, nextSelectOption) => {
                     if (selectOption.skjemanummer === Skjemanummer.ANNET) {
                         return 1;
                     }

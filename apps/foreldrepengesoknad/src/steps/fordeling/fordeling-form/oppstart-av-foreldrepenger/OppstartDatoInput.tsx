@@ -103,18 +103,18 @@ const startDatoMorFødtBarn = (termindato: string | undefined, fødselsdato: str
             maxDate: sisteOppstartsdato,
             weekendsNotSelectable: true,
         };
-    } else {
-        const tidligstOppstartsdato =
-            termindatoMinus12Uker ??
-            dayjs(Uttaksdagen.denneEllerNeste(fødselsdato).getDato())
-                .subtract(MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL, 'weeks')
-                .format(ISO_DATE_FORMAT);
-        return {
-            minDate: tidligstOppstartsdato,
-            maxDate: sisteOppstartsdato,
-            weekendsNotSelectable: true,
-        };
     }
+
+    const tidligstOppstartsdato =
+        termindatoMinus12Uker ??
+        dayjs(Uttaksdagen.denneEllerNeste(fødselsdato).getDato())
+            .subtract(MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL, 'weeks')
+            .format(ISO_DATE_FORMAT);
+    return {
+        minDate: tidligstOppstartsdato,
+        maxDate: sisteOppstartsdato,
+        weekendsNotSelectable: true,
+    };
 };
 
 const startdatoPermisjonMor = (

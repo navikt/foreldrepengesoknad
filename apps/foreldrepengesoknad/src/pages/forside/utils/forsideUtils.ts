@@ -150,7 +150,7 @@ const getSelectableFlerlingerFraPDL = (
     barnFødtISammePeriode: FpBarnDto_fpoversikt[],
     annenForelder: AnnenForelderDto_fpoversikt | undefined,
 ): ValgtBarn | undefined => {
-    const alleBarna = [registrertBarn, ...barnFødtISammePeriode].sort(sorterPersonEtterEldstOgNavn);
+    const alleBarna = [registrertBarn, ...barnFødtISammePeriode].toSorted(sorterPersonEtterEldstOgNavn);
     const minstEttBarnDødeForMerEnn3MndSiden = alleBarna.some(
         (b) => !getLeverBarnet(b) && getDødeBarnetForMerEnn3MånederSiden(b),
     );

@@ -174,20 +174,20 @@ const getRadioOptionFarPåFødselWLB = (
                 <FormattedMessage id="fordeling.oppstartValg.påFødsel.barnErFødt" values={{ antallBarn }} />
             </Radio>
         );
-    } else {
-        const description = deltUttak
-            ? intl.formatMessage({ id: 'fordeling.oppstartValg.påFødsel.description.barnErIkkeFødt' })
-            : '';
-        return (
-            <Radio
-                key={OppstartValg.FAMILIEHENDELSESDATO}
-                value={OppstartValg.FAMILIEHENDELSESDATO}
-                description={description}
-            >
-                <FormattedMessage id="fordeling.oppstartValg.påFødsel.barnErIkkeFødt" />
-            </Radio>
-        );
     }
+
+    const description = deltUttak
+        ? intl.formatMessage({ id: 'fordeling.oppstartValg.påFødsel.description.barnErIkkeFødt' })
+        : '';
+    return (
+        <Radio
+            key={OppstartValg.FAMILIEHENDELSESDATO}
+            value={OppstartValg.FAMILIEHENDELSESDATO}
+            description={description}
+        >
+            <FormattedMessage id="fordeling.oppstartValg.påFødsel.barnErIkkeFødt" />
+        </Radio>
+    );
 };
 
 const getRadioOptionMorFødsel = (antallBarn: number) => {
