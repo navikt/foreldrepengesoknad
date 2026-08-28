@@ -31,17 +31,17 @@ export const ForeldrepengeoversiktRoutes = ({ søkerinfo, saker }: Props) => {
                 <Route element={<Breadcrumb />}>
                     <Route element={<RedirectTilSakHvisDetKunFinnesEn saker={saker} />}>
                         <Route
-                            path={`${OversiktRoutes.HOVEDSIDE}`}
+                            path={OversiktRoutes.HOVEDSIDE}
                             element={<Forside saker={saker} søkerinfo={søkerinfo} />}
                         />
-                        <Route path={`${OversiktRoutes.SAKSOVERSIKT}/:saksnummer`}>
+                        <Route path={OversiktRoutes.SAKSOVERSIKT + '/:saksnummer'}>
                             <Route index element={<Saksoversikt søkerinfo={søkerinfo} />} />
                             <Route path={OversiktRoutes.DOKUMENTER} element={<DokumenterPage />} />
-                            <Route path={`${OversiktRoutes.OPPGAVER}`} element={<MinidialogPage />} />
+                            <Route path={OversiktRoutes.OPPGAVER} element={<MinidialogPage />} />
                             <Route path={OversiktRoutes.ETTERSEND} element={<EttersendingPage saker={saker} />} />
                             <Route path={OversiktRoutes.INNTEKTSMELDING} element={<InntektsmeldingOversiktPage />} />
                             <Route
-                                path={`${OversiktRoutes.INNTEKTSMELDING}/:journalpostId`}
+                                path={OversiktRoutes.INNTEKTSMELDING + '/:journalpostId'}
                                 element={<InntektsmeldingPage />}
                             />
                             <Route path={OversiktRoutes.BEREGNING} element={<BeregningPage />} />

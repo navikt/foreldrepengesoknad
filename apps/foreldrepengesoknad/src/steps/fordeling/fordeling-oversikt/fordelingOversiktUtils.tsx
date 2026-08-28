@@ -502,9 +502,8 @@ const getFordelingMor = (
     dagerMorsKvoteBruktAvFar?: number,
 ): DelInformasjon => {
     const dagerFørFødsel = getAntallUkerForeldrepengerFørFødsel(kontoer) * 5;
-    const dagerMødrekvote = kunMorFårForeldrepenger
-        ? getAntallUkerForeldrepenger(kontoer) * 5
-        : getAntallUkerMødrekvote(kontoer) * 5;
+    const dagerMødrekvote =
+        (kunMorFårForeldrepenger ? getAntallUkerForeldrepenger(kontoer) : getAntallUkerMødrekvote(kontoer)) * 5;
 
     const fordelingDager = [];
     const fordelingInfo = [];

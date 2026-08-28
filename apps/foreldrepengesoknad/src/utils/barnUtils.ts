@@ -140,7 +140,7 @@ export const formaterNavnPåBarn = (
         const sisteFornavn = fornavn.at(-1);
         return `${fornavnene} og ${sisteFornavn}`;
     }
-    return `${fornavn[0]}`;
+    return String(fornavn[0]);
 };
 
 export const formaterFødselsdatoerPåBarn = (fødselsdatoer: string[] | undefined): string | undefined => {

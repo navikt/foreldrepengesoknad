@@ -149,7 +149,7 @@ export const DokumentasjonLastetOppLabel = ({ attachment }: Props) => {
             );
         }
         default: {
-            throw new Error();
+            throw new Error('Ukjent skjemanummer for periodevedleggslabel.');
         }
     }
 };

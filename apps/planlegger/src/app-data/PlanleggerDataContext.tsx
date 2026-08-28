@@ -58,7 +58,7 @@ export const PlanleggerDataContext = ({ children, initialState, onDispatch }: Pr
                 return {};
             }
             default: {
-                throw new Error();
+                throw new Error('Ukjent handling i planleggerdata-reduceren.');
             }
         }
     }, initialState || defaultInitialState);

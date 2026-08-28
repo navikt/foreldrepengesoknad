@@ -30,7 +30,7 @@ import {
 } from '@navikt/fp-validation';
 
 const getMinDatoTermin = (erBarnetFødt: boolean, fødselsdato?: string): Dayjs =>
-    erBarnetFødt && fødselsdato && isStringADate(fødselsdato) ? enMånedSiden(fødselsdato) : enMånedSiden(dayjs());
+    enMånedSiden(erBarnetFødt && fødselsdato && isStringADate(fødselsdato) ? fødselsdato : dayjs());
 
 const validerTermindato = (intl: IntlShape, fødselsdato?: string) => (termindato: string) => {
     if (fødselsdato && !dayjs(termindato).subtract(6, 'months').isSameOrBefore(dayjs(fødselsdato), 'day')) {

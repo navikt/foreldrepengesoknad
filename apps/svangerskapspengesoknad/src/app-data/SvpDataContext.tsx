@@ -77,7 +77,7 @@ export const SvpDataContext = ({ children, initialState, onDispatch }: Props): J
                 return {};
             }
             default: {
-                throw new Error();
+                throw new Error('Ukjent handling i svangerskapspengedata-reduceren.');
             }
         }
     }, initialState || defaultInitialState);

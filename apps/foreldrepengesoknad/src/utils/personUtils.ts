@@ -8,7 +8,7 @@ export const formaterNavn = (fornavn: string, etternavn: string, visEtternavn: b
     if (visEtternavn) {
         return mellomnavn ? `${fornavn} ${mellomnavn} ${etternavn}` : `${fornavn} ${etternavn}`;
     }
-    return mellomnavn ? `${fornavn} ${mellomnavn}` : `${fornavn}`;
+    return mellomnavn ? `${fornavn} ${mellomnavn}` : fornavn;
 };
 
 export const getKjønnFromFnr = (annenForelder: AnnenForelder): Kjønn_fpoversikt | undefined => {

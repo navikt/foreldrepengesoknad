@@ -345,7 +345,7 @@ export const getNavnPåBarna = (fornavn: string[], intl: IntlShape): string => {
               fornavn.map((n) => n.trim()),
               intl,
           )
-        : `${fornavn[0]}`;
+        : String(fornavn[0]);
 };
 
 type SakTittelArguments = {

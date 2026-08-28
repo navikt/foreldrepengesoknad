@@ -208,9 +208,9 @@ const validateSammenhengendePerioderFom = (
     const alleTom = allePerioder
         .filter((p) => p.tom || p.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP)
         .map((periode) => {
-            return periode.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP
-                ? dayjs(sisteDagForSvangerskapspenger)
-                : dayjs(periode.tom);
+            return dayjs(
+                periode.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP ? sisteDagForSvangerskapspenger : periode.tom,
+            );
         });
     const finnesTomSomErDagenFørFom = alleTom.some((tom) => dayjs(fom).subtract(1, 'd').isSame(dayjs(tom), 'day'));
     if (!finnesTomSomErDagenFørFom) {

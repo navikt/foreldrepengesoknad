@@ -100,7 +100,7 @@ export const DokumentasjonOppsummering = ({ onVilEndreSvar, navnPåForeldre }: P
                                                         <Link
                                                             key={vedlegg.id}
                                                             download={vedleggNedlastingsnavn(vedlegg.filename)}
-                                                            href={`${API_URLS.hentVedlegg(vedlegg.uuid)}`}
+                                                            href={API_URLS.hentVedlegg(vedlegg.uuid)}
                                                             target="_blank"
                                                             rel="noreferrer noopener"
                                                         >

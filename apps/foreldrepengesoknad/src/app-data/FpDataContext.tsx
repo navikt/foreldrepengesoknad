@@ -88,7 +88,7 @@ export const FpDataContext = ({ children, initialState, onDispatch }: Props): JS
                 return {};
             }
             default: {
-                throw new Error();
+                throw new Error('Ukjent handling i søknadsdata-reduceren.');
             }
         }
     }, initialState || defaultInitialState);
