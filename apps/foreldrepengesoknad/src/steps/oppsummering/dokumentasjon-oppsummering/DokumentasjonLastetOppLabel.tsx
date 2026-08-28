@@ -21,8 +21,6 @@ export const getTidsperiodeString = (tidsperioder: AttachmentMetadataTidsperiode
         } else {
             periodeString = `${formatDate(tidsperiode.fom)} - ${tidsperiode.tom ? formatDate(tidsperiode.tom) : ''}`;
         }
-
-        periodeString;
     }
 
     return periodeString;

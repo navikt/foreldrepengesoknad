@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
-import { useEffect } from 'react';
-import { useFieldArray, useFormContext } from 'react-hook-form';
+import { FieldArrayWithId, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { VStack } from '@navikt/ds-react';
@@ -57,44 +56,20 @@ const finnAntallBarnTekst = (antall: number) => {
     }
 };
 
-type FormValues = {
+export type FormValues = {
     fødselsdatoer?: Array<{
         dato?: string;
     }>;
 };
 
 interface Props {
-    antallBarn?: number;
-    antallBarnDropDown?: string;
     adopsjonsdato?: string;
+    fields: Array<FieldArrayWithId<FormValues, 'fødselsdatoer', 'id'>>;
 }
 
-export const FødselsdatoerFieldArray = ({ adopsjonsdato, antallBarn, antallBarnDropDown }: Props) => {
+export const FødselsdatoerFieldArray = ({ adopsjonsdato, fields }: Props) => {
     const intl = useIntl();
     const { control } = useFormContext<FormValues>();
-    const { fields, remove, append } = useFieldArray({
-        control,
-        name: 'fødselsdatoer',
-    });
-
-    useEffect(() => {
-        if (!antallBarn || (antallBarn === 3 && !antallBarnDropDown)) {
-            return;
-        }
-        const antall = !antallBarnDropDown || antallBarn < 3 ? antallBarn : Number(antallBarnDropDown);
-        const diff = fields.length - antall;
-        if (diff > 0) {
-            const indexes = Array.from({ length: diff }).keys();
-            for (const index of indexes) {
-                remove(fields.length - index - 1);
-            }
-        }
-        if (diff < 0) {
-            for (const _ of Array.from({ length: antall - fields.length })) {
-                append({ dato: undefined });
-            }
-        }
-    }, [antallBarn, antallBarnDropDown, append, fields.length, remove]);
 
     return (
         <VStack gap="space-40">

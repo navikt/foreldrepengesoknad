@@ -89,12 +89,10 @@ const getSelectableBarnFraSak = (sak: FpSak_fpoversikt, registrerteBarn: FpBarnD
     const barnType = getSelectableBarnType(sak.gjelderAdopsjon, sak.familiehendelse, pdlBarn);
     const fødselsdatoFraSak = sak.familiehendelse.fødselsdato;
 
-    let fødselsdatoer;
-    if (pdlBarn && pdlBarn.length > 0) {
-        fødselsdatoer = pdlBarn.map((barn) => dayjs.utc(barn.fødselsdato).toDate());
-    } else if (fødselsdatoFraSak !== undefined) {
-        fødselsdatoer = new Array(sak.familiehendelse.antallBarn).fill(fødselsdatoFraSak);
-    }
+    const fødselsdatoer =
+        pdlBarn && pdlBarn.length > 0
+            ? pdlBarn.map((barn) => dayjs.utc(barn.fødselsdato).format(ISO_DATE_FORMAT))
+            : getFødselsdatoerFraSak(fødselsdatoFraSak, sak.familiehendelse.antallBarn);
     return {
         id: guid(),
         type: barnType,
@@ -123,6 +121,14 @@ const getSelectableBarnFraSak = (sak: FpSak_fpoversikt, registrerteBarn: FpBarnD
         alleBarnaLever:
             pdlBarn !== undefined && pdlBarn.length > 0 ? pdlBarn.every((barn) => getLeverBarnet(barn)) : false,
     };
+};
+
+const getFødselsdatoerFraSak = (fødselsdato: string | undefined, antallBarn: number) => {
+    if (fødselsdato === undefined) {
+        return;
+    }
+
+    return Array.from({ length: antallBarn }, () => fødselsdato);
 };
 
 const getSelectableBarnFraPDL = (

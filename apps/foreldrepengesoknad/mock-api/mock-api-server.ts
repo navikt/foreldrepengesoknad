@@ -64,9 +64,9 @@ export const getStønadskvoter = async (req: any) => {
         const jsonResponse = await data.json();
 
         return jsonResponse;
-    } catch (err) {
+    } catch (error) {
         // eslint-disable-next-line no-console
-        console.log(err);
+        console.log(error);
     }
 };
 

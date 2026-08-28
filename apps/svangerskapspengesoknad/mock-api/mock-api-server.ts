@@ -27,7 +27,7 @@ export const getSoknad = () => {
     }
     try {
         return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-    } catch (err) {
+    } catch {
         return {};
     }
 };
@@ -39,7 +39,7 @@ export const getSokerInfo = () => {
     }
     try {
         return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-    } catch (err) {
+    } catch {
         return {};
     }
 };
@@ -51,7 +51,7 @@ export const getSoknadSendt = () => {
     }
     try {
         return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-    } catch (err) {
+    } catch {
         return {};
     }
 };
@@ -59,12 +59,12 @@ export const getSoknadSendt = () => {
 export const getMellomlagretData = () => {
     const fileName = getFilePathMellomlagretData();
     if (!fs.existsSync(fileName)) {
-        return undefined;
+        return;
     }
     try {
         return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-    } catch (err) {
-        return undefined;
+    } catch {
+        return;
     }
 };
 

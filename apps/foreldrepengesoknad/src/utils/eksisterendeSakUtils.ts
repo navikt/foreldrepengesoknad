@@ -149,7 +149,8 @@ const getFødselsdatoer = (valgteBarn: ValgtBarn, sak: Saksgrunnlag): string[] =
         return sorterDatoEtterEldst(valgteBarn.fødselsdatoer);
     }
     if (sak.fødselsdato) {
-        return Array.from({ length: sak.antallBarn }, () => sak.fødselsdato);
+        const { fødselsdato } = sak;
+        return Array.from({ length: sak.antallBarn }, () => fødselsdato);
     }
     return [];
 };

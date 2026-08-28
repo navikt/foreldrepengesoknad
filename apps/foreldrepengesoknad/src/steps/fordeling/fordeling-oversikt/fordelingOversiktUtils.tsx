@@ -97,8 +97,7 @@ export const getFordelingDelTittel = (
     if (erFødsel && delInfo.eier === FordelingEier.Mor) {
         const dagerFørFødsel = 15;
         const dagerEtterFødsel = delInfo.sumDager - dagerFørFødsel;
-        let varighetUkerEtterFødsel: number | string;
-        varighetUkerEtterFødsel =
+        const varighetUkerEtterFødsel =
             dagerEtterFødsel % 5 === 0
                 ? (delInfo.sumDager - dagerFørFødsel) / 5
                 : getVarighetString(delInfo.sumDager - dagerFørFødsel, intl);

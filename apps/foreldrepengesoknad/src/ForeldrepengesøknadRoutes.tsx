@@ -331,7 +331,8 @@ export const ForeldrepengesøknadRoutes = ({
         isFirstTimeLoadingAppRef.current = false;
         if (isRouteAvailable(currentRoute, lagretHarGodkjentVilkår)) {
             void navigate(currentRoute);
-        } else if (routerLocation.pathname === SøknadRoutes.OPPSUMMERING) {
+            // eslint-disable-next-line unicorn/no-useless-coercion
+        } else if (routerLocation.pathname === SøknadRoutes.OPPSUMMERING.toString()) {
             void navigate(SøknadRoutes.UTTAKSPLAN);
         }
     }, [currentRoute, søkerInfo.fødselsdato, lagretHarGodkjentVilkår, navigate, routerLocation.pathname]);

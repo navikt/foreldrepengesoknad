@@ -182,7 +182,8 @@ export const useStepConfig = (
     const getStateData = useContextGetAnyData();
 
     const currentPath = useMemo(
-        () => notEmpty(Object.values(SøknadRoutes).find((v) => v === decodeURIComponent(location.pathname))),
+        // eslint-disable-next-line unicorn/no-useless-coercion
+        () => notEmpty(Object.values(SøknadRoutes).find((v) => v.toString() === decodeURIComponent(location.pathname))),
         [location.pathname],
     );
 

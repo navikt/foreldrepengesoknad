@@ -55,15 +55,14 @@ router.post('/fpgrunndata/api/konto', async (req: any, res: any) => {
         });
         const jsonResponse = await data.json();
         res.send(jsonResponse);
-    } catch (err) {
-        console.log(err);
+    } catch (error) {
+        console.log(error);
     }
 });
 
 router.get('/fpgrunndata/api/satser', async (_req: any, res: any) => {
     try {
         const data = await fetch('https://fpgrunnlag.ekstern.dev.nav.no/fpgrunndata/api/satser', {
-            method: 'GET',
             headers: {
                 accept: 'application/json, text/plain, */*',
                 'content-type': 'application/json',
@@ -71,7 +70,7 @@ router.get('/fpgrunndata/api/satser', async (_req: any, res: any) => {
         });
         const jsonResponse = await data.json();
         res.send(jsonResponse);
-    } catch (err) {
-        console.log(err);
+    } catch (error) {
+        console.log(error);
     }
 });

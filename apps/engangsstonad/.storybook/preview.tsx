@@ -22,7 +22,7 @@ scriptTag.innerHTML = JSON.stringify({
     APP_VERSION: 'test',
     INNSYN: 'test',
 });
-document.head.appendChild(scriptTag);
+document.head.append(scriptTag);
 
 const withIntlProvider = getIntlDecorator({
     nb: {

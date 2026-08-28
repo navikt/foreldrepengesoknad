@@ -339,8 +339,8 @@ const uttaksplanMedAllePerioder: Uttaksplanperiode[] = [
     periode_7,
 ];
 
-const getUttaksplanUtenPeriode = (removePeriode: Uttaksplanperiode): Uttaksplanperiode[] => {
-    return uttaksplanMedAllePerioder.filter((periode) => periode !== removePeriode);
+const getUttaksplanUtenPeriode = (periodeSomSkalFjernes: Uttaksplanperiode): Uttaksplanperiode[] => {
+    return uttaksplanMedAllePerioder.filter((periode) => periode !== periodeSomSkalFjernes);
 };
 
 const uttaksplanUtenPeriode_1 = getUttaksplanUtenPeriode(periode_1);
