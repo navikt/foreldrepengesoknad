@@ -47,11 +47,7 @@ const isDateABeforeDateB = (a: string, b: string): boolean => {
         return false;
     }
 
-    if (dayjs(a).isBefore(b, 'day')) {
-        return true;
-    }
-
-    return false;
+    return dayjs(a).isBefore(b, 'day');
 };
 
 export const getRelevantFamiliehendelseDato = (
@@ -61,13 +57,14 @@ export const getRelevantFamiliehendelseDato = (
 ): string => {
     if (omsorgsovertakelsesdato !== undefined) {
         return omsorgsovertakelsesdato;
-    } else if (fødselsdato !== undefined) {
+    }
+    if (fødselsdato !== undefined) {
         return fødselsdato;
-    } else if (termindato !== undefined) {
-        return termindato;
-    } else {
+    }
+    if (termindato === undefined) {
         throw new Error('Mangler fødselsdato/termindato/adopsjonsdato for barnet.');
     }
+    return termindato;
 };
 
 export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: string): boolean => {
@@ -98,10 +95,7 @@ export const førsteJuli2024ReglerGjelder = (barn: Barn): boolean => {
         return false;
     }
     const familiehendelsesdato = getFamiliehendelsedato(barn);
-    if ((isFødtBarn(barn) || isAdoptertBarn(barn)) && dayjs(familiehendelsesdato).isBefore(førsteJuli2024, 'day')) {
-        return false;
-    }
-    return true;
+    return !((isFødtBarn(barn) || isAdoptertBarn(barn)) && dayjs(familiehendelsesdato).isBefore(førsteJuli2024, 'day'));
 };
 
 export const getEndringstidspunktNy = (
@@ -136,10 +130,12 @@ export const getEndringstidspunktNy = (
                 endringstidspunktNyPlan = fom;
             }
 
-            if (opprinneligPeriodeMedSammeFom !== undefined && søkerensUpdatedPlan.length - 1 === index) {
-                if (!erPeriodeIOpprinneligPlan([periode], opprinneligPeriodeMedSammeFom)) {
-                    endringstidspunktNyPlan = fom;
-                }
+            if (
+                opprinneligPeriodeMedSammeFom !== undefined &&
+                søkerensUpdatedPlan.length - 1 === index &&
+                !erPeriodeIOpprinneligPlan([periode], opprinneligPeriodeMedSammeFom)
+            ) {
+                endringstidspunktNyPlan = fom;
             }
         }
 
@@ -245,7 +241,9 @@ export const getVarighetString = (antallDager: number, intl: IntlShape, format: 
     return ukerStr;
 };
 
-/** Barnet regnes som født før 33. svangerskapsuke når det er født mer enn 7 uker (49 dager) før termin. */
+/**
+Barnet regnes som født før 33. svangerskapsuke når det er født mer enn 7 uker (49 dager) før termin.
+*/
 const ANTALL_DAGER_UKE_33_GRENSE = 49;
 
 export const erFødtFørUke33 = (fødselsdato?: string, termindato?: string): boolean => {

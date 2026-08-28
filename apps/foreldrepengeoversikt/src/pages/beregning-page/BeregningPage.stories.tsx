@@ -111,7 +111,7 @@ export const BeregningMedNaturalytelser: Story = {
                             },
                         ],
                         erAktiv: true,
-                        inntektPrMnd: 80000,
+                        inntektPrMnd: 80_000,
                         journalpostId: 'jp-nat-1',
                         mottattTidspunkt: '2025-11-01T10:00:00.000',
                         refusjonPrMnd: 0,

@@ -39,42 +39,42 @@ export const tidslinjeTittelForFamiliehendelse = ({
 
     if (gjelderAdopsjon && familiehendelse.omsorgsovertakelse) {
         return getTidslinjeTittelForAdopsjon(navn, familiehendelse.omsorgsovertakelse, intl);
-    } else if (familiehendelse.fødselsdato) {
-        return intl.formatMessage({ id: 'tidslinje.tittel.FAMILIEHENDELSE.fødsel' }, { navn });
-    } else {
-        return intl.formatMessage({ id: 'tidslinje.tittel.FAMILIEHENDELSE.termindato' });
     }
+    return familiehendelse.fødselsdato
+        ? intl.formatMessage({ id: 'tidslinje.tittel.FAMILIEHENDELSE.fødsel' }, { navn })
+        : intl.formatMessage({ id: 'tidslinje.tittel.FAMILIEHENDELSE.termindato' });
 };
 
 const getTidslinjetekstForAntallBarn = (antallBarn: number, intl: IntlShape, gjelderAdopsjon: boolean): string => {
     if (antallBarn === 1 || antallBarn === 0) {
         return intl.formatMessage({ id: 'barnet' });
-    } else if (antallBarn > 1 && gjelderAdopsjon) {
+    }
+    if (antallBarn > 1 && gjelderAdopsjon) {
         return intl.formatMessage({ id: 'barna' });
-    } else if (antallBarn === 2) {
+    }
+    if (antallBarn === 2) {
         return intl.formatMessage({ id: 'tvillingene' });
-    } else if (antallBarn === 3) {
+    }
+    if (antallBarn === 3) {
         return intl.formatMessage({ id: 'trillingene' });
     }
     return intl.formatMessage({ id: 'flerlingene' });
 };
 
 const getTidslinjeTittelForAdopsjon = (navn: string, omsorgsovertakelse: string, intl: IntlShape) => {
-    if (dayjs(omsorgsovertakelse).isSameOrBefore(dayjs(), 'd')) {
-        return intl.formatMessage(
-            { id: 'tidslinje.tittel.FAMILIEHENDELSE.omsorgsovertakelse.tilbakeITid' },
-            {
-                navn,
-            },
-        );
-    } else {
-        return intl.formatMessage(
-            { id: 'tidslinje.tittel.FAMILIEHENDELSE.omsorgsovertakelse.fremITid' },
-            {
-                navn,
-            },
-        );
-    }
+    return dayjs(omsorgsovertakelse).isSameOrBefore(dayjs(), 'd')
+        ? intl.formatMessage(
+              { id: 'tidslinje.tittel.FAMILIEHENDELSE.omsorgsovertakelse.tilbakeITid' },
+              {
+                  navn,
+              },
+          )
+        : intl.formatMessage(
+              { id: 'tidslinje.tittel.FAMILIEHENDELSE.omsorgsovertakelse.fremITid' },
+              {
+                  navn,
+              },
+          );
 };
 
 export const getTidslinjeTittelForBarnTreÅr = ({
@@ -96,11 +96,10 @@ export const getTidslinjeTittelForBarnTreÅr = ({
             },
         );
     }
-    if (barnFraSak.fornavn === undefined || barnFraSak.fornavn.length === 0 || !barnFraSak.alleBarnaLever) {
-        barnNavnTekst = getTidslinjetekstForAntallBarn(antallBarn, intl, false);
-    } else {
-        barnNavnTekst = getNavnPåBarna(barnFraSak.fornavn, intl);
-    }
+    barnNavnTekst =
+        barnFraSak.fornavn === undefined || barnFraSak.fornavn.length === 0 || !barnFraSak.alleBarnaLever
+            ? getTidslinjetekstForAntallBarn(antallBarn, intl, false)
+            : getNavnPåBarna(barnFraSak.fornavn, intl);
     return intl.formatMessage(
         { id: 'tidslinje.tittel.BARNET_TRE_ÅR.fødsel' },
         {
@@ -203,9 +202,8 @@ const getTidslinjeHendelstypeAvVenteårsak = (venteårsak: BehandlingTilstand_fp
     }
     if (venteårsak === 'VENT_MELDEKORT') {
         return 'VENTER_MELDEKORT';
-    } else {
-        throw new Error('Ukjent venteårsak');
     }
+    throw new Error('Ukjent venteårsak');
 };
 
 const getAktørtypeAvVenteårsak = (
@@ -223,11 +221,8 @@ const getAktørtypeAvVenteårsak = (
 const sorterTidslinjehendelser = (opprettet1: string, opprettet2: string) => {
     if (dayjs(opprettet1).isBefore(opprettet2)) {
         return -1;
-    } else if (dayjs(opprettet1).isAfter(opprettet2)) {
-        return 1;
-    } else {
-        return 0;
     }
+    return dayjs(opprettet1).isAfter(opprettet2) ? 1 : 0;
 };
 
 type TidslinjeVinduResult = {

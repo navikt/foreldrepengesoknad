@@ -173,7 +173,7 @@ const skalViseFordelingSteg = (
 export const useStepConfig = (
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     erEndringssøknad: boolean = false,
-    eksisterendeSak: FpSak_fpoversikt | undefined = undefined,
+    eksisterendeSak?: FpSak_fpoversikt,
 ) => {
     const intl = useIntl();
     const pathToLabelMap = useMemo(() => getPathToLabelMap(intl), [intl]);
@@ -182,7 +182,7 @@ export const useStepConfig = (
     const getStateData = useContextGetAnyData();
 
     const currentPath = useMemo(
-        () => notEmpty(Object.values(SøknadRoutes).find((v) => v.toString() === decodeURIComponent(location.pathname))),
+        () => notEmpty(Object.values(SøknadRoutes).find((v) => v === decodeURIComponent(location.pathname))),
         [location.pathname],
     );
 

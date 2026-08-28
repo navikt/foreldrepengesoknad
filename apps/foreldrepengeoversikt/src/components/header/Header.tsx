@@ -61,12 +61,15 @@ function BlueDot() {
 function getYtelseIkon(ytelse: Ytelse | undefined) {
     switch (ytelse) {
         case 'FORELDREPENGER':
-        case 'ENGANGSSTØNAD':
+        case 'ENGANGSSTØNAD': {
             return BabyWrappedIcon;
-        case 'SVANGERSKAPSPENGER':
+        }
+        case 'SVANGERSKAPSPENGER': {
             return PersonPregnantIcon;
-        default:
+        }
+        default: {
             return StrollerIcon;
+        }
     }
 }
 

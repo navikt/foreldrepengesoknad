@@ -324,7 +324,7 @@ export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
             }
             return Tidsperioden.forPeriode(p).inneholderDato(periode.tom);
         });
-        const overlappendePeriode = index !== -1 ? perioderÅBruke.splice(index, 1)[0] : undefined;
+        const overlappendePeriode = index === -1 ? undefined : perioderÅBruke.splice(index, 1)[0];
 
         if (overlappendePeriode) {
             let overlappendePeriode1;
@@ -346,7 +346,9 @@ export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
             };
 
             // Hvis tom er lik trenger vi ikke splitte annen periode
-            if (periode.tom !== overlappendePeriode.tom) {
+            if (periode.tom === overlappendePeriode.tom) {
+                overlappendePeriode1 = overlappendePeriode;
+            } else {
                 overlappendePeriode1 = {
                     ...overlappendePeriode,
                     tom: periode.tom,
@@ -355,8 +357,6 @@ export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
                     ...overlappendePeriode,
                     fom: dayjs(periode.tom).add(1, 'day').format('YYYY-MM-DD'),
                 };
-            } else {
-                overlappendePeriode1 = overlappendePeriode;
             }
 
             if (overlapperIkke) {

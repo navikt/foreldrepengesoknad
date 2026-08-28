@@ -307,7 +307,7 @@ const mapOppstartValgToRadioOption = (
     const erBarnetFødt = isFødtBarn(barn);
     const ankomstNorge = isAdoptertAnnetBarn(barn) ? barn.ankomstdato : undefined;
     switch (valg) {
-        case OppstartValg.FAMILIEHENDELSESDATO:
+        case OppstartValg.FAMILIEHENDELSESDATO: {
             return getRadioOptionFamiliehendelsesdato(
                 erFarEllerMedmor,
                 intl,
@@ -317,18 +317,25 @@ const mapOppstartValgToRadioOption = (
                 barn.antallBarn,
                 deltUttak,
             );
-        case OppstartValg.TRE_UKER_FØR_TERMIN:
+        }
+        case OppstartValg.TRE_UKER_FØR_TERMIN: {
             return getRadioOptionTreUkerFørTermin(barn);
-        case OppstartValg.TRE_UKER_FØR_FØDSEL:
+        }
+        case OppstartValg.TRE_UKER_FØR_FØDSEL: {
             return getRadioOptionTreUkerFørFødsel(barn);
-        case OppstartValg.DATO_FOR_ALENEOMSORG:
+        }
+        case OppstartValg.DATO_FOR_ALENEOMSORG: {
             return getRadioOptionForDatoForAleneomsorg(datoForAleneomsorg);
-        case OppstartValg.DAGEN_ETTER_ANNEN_FORELDER:
+        }
+        case OppstartValg.DAGEN_ETTER_ANNEN_FORELDER: {
             return getRadioOptionDagenEtterAnnenForelder(navnAnnenForelder, førsteDagEtterAnnenForelder);
-        case OppstartValg.ANKOMSTDATO_NORGE:
+        }
+        case OppstartValg.ANKOMSTDATO_NORGE: {
             return getRadioOptionAdopsjonAnkomstNorge(ankomstNorge);
-        case OppstartValg.ANNEN_DATO:
+        }
+        case OppstartValg.ANNEN_DATO: {
             return getRadioOptionAnnenDato();
+        }
     }
 };
 
@@ -378,7 +385,7 @@ export const OppstartValgInput = ({
                 <FormattedMessage id="fordeling.oppstartValg.description.morFødselTermin" />
             );
         }
-        return undefined;
+        return;
     };
 
     return (

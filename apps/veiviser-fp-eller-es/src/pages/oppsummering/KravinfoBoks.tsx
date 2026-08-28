@@ -44,7 +44,7 @@ export const KravinfoBoks = ({
                         {erOppfylt && <FormattedMessage id="KravinfoBoks.DuOppfyllerKravet" />}
                         {!erOppfylt && (
                             <>
-                                {jobberINorge !== undefined && jobberINorge === false ? (
+                                {jobberINorge !== undefined && !jobberINorge ? (
                                     <FormattedMessage id="KravinfoBoks.DuIkkeMestSannsynligOppfyllerKravet" />
                                 ) : (
                                     <FormattedMessage id="KravinfoBoks.DuIkkeOppfyllerKravet" />

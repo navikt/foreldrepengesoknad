@@ -6,7 +6,9 @@ import { EsPersonopplysningerDto_fpoversikt, ForsendelseStatus } from '@navikt/f
 
 const urlPrefiks = import.meta.env.BASE_URL;
 
-/** Backend returnerer null for Optional.orElse(null), som JAX-RS oversetter til 204 No Content */
+/**
+Backend returnerer null for Optional.orElse(null), som JAX-RS oversetter til 204 No Content
+*/
 const jsonEllerNull = async <T>(responsePromise: ResponsePromise) => {
     const response = await responsePromise;
     return response.status === 204 ? null : response.json<T>();

@@ -26,7 +26,7 @@ export const MilitærEllerSiviltjenesteDokumentasjon = ({
         !arbeidsforholdOgInntekt ||
         (arbeidsforholdOgInntekt && !arbeidsforholdOgInntekt.harHattAndreInntektskilder) ||
         !andreInntektskilder ||
-        !andreInntektskilder.some((i) => i.type === AnnenInntektType.MILITÆRTJENESTE)
+        andreInntektskilder.every((i) => i.type !== AnnenInntektType.MILITÆRTJENESTE)
     ) {
         return null;
     }

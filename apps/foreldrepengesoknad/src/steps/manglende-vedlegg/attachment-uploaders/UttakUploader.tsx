@@ -58,18 +58,20 @@ export const UttakUploader = ({
     const formAttachments = watch(skjemanummer);
 
     useEffect(() => {
-        if (formAttachments.length === 0) {
-            const init = lagSendSenereDokument(attachmentType, skjemanummer);
-            const sendSenereVedlegg = addMetadata(init, {
-                type: 'UTTAK',
-                perioder: perioder.map((p) => ({
-                    fom: p.fom,
-                    tom: p.tom,
-                })),
-            });
-
-            updateAttachments([sendSenereVedlegg]);
+        if (formAttachments.length > 0) {
+            return;
         }
+
+        const init = lagSendSenereDokument(attachmentType, skjemanummer);
+        const sendSenereVedlegg = addMetadata(init, {
+            type: 'UTTAK',
+            perioder: perioder.map((p) => ({
+                fom: p.fom,
+                tom: p.tom,
+            })),
+        });
+
+        updateAttachments([sendSenereVedlegg]);
     }, [updateAttachments, perioder, formAttachments, attachmentType, skjemanummer]);
 
     const renderedDescription = typeof description === 'string' ? <BodyLong>{description}</BodyLong> : description;

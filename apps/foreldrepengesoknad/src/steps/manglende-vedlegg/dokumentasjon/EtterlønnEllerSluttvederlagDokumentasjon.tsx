@@ -24,9 +24,9 @@ export const EtterlønnEllerSluttvederlagDokumentasjon = ({
 
     if (
         !arbeidsforholdOgInntekt ||
-        arbeidsforholdOgInntekt.harHattAndreInntektskilder === false ||
+        !arbeidsforholdOgInntekt.harHattAndreInntektskilder ||
         !andreInntektskilder ||
-        !andreInntektskilder.some((i) => i.type === AnnenInntektType.SLUTTPAKKE)
+        andreInntektskilder.every((i) => i.type !== AnnenInntektType.SLUTTPAKKE)
     ) {
         return null;
     }

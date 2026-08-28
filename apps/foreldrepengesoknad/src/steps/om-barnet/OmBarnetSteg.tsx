@@ -59,7 +59,7 @@ const skalViseTermindato = (
         return false;
     }
 
-    let eldsteBarnFødselsdato = undefined;
+    let eldsteBarnFødselsdato;
 
     if (valgteRegistrerteBarn !== undefined && valgteRegistrerteBarn.length > 0) {
         const eldsteBarn = getEldsteRegistrerteBarn(valgteRegistrerteBarn);

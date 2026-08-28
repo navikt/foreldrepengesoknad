@@ -8,24 +8,15 @@ import {
 } from '@navikt/fp-types';
 
 export const erBarnetUFødt = (omBarnet: OmBarnetPlanlegger): omBarnet is BarnetErIkkeFødtPlanlegger => {
-    if ((omBarnet as BarnetErIkkeFødtPlanlegger).erBarnetFødt === false) {
-        return true;
-    }
-    return false;
+    return !(omBarnet as BarnetErIkkeFødtPlanlegger).erBarnetFødt;
 };
 
 export const erBarnetFødt = (omBarnet: OmBarnetPlanlegger): omBarnet is BarnetErFødtPlanlegger => {
-    if ((omBarnet as BarnetErFødtPlanlegger).erBarnetFødt === true) {
-        return true;
-    }
-    return false;
+    return (omBarnet as BarnetErFødtPlanlegger).erBarnetFødt;
 };
 
 export const erBarnetAdoptert = (omBarnet: OmBarnetPlanlegger): omBarnet is BarnetErAdoptertPlanlegger => {
-    if ((omBarnet as BarnetErAdoptertPlanlegger).erFødsel === false) {
-        return true;
-    }
-    return false;
+    return !(omBarnet as BarnetErAdoptertPlanlegger).erFødsel;
 };
 
 export const mapOmBarnetPlanleggerTilBarn = (omBarnet: OmBarnetPlanlegger): Barn => {

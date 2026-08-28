@@ -29,7 +29,7 @@ const erBarnetAdoptert = (barnet: OmBarnetPlanlegger): barnet is BarnetErAdopter
     (barnet as BarnetErAdoptertPlanlegger).overtakelsesdato !== undefined;
 
 const erBarnetFødt = (barnet: OmBarnetPlanlegger): barnet is BarnetErFødtPlanlegger =>
-    !erBarnetAdoptert(barnet) && (barnet as BarnetErFødtPlanlegger).erBarnetFødt === true;
+    !erBarnetAdoptert(barnet) && (barnet as BarnetErFødtPlanlegger).erBarnetFødt;
 
 const utledRolleForSøker = (kjønn: Kjønn_fpoversikt | undefined): Søkerrolle | undefined =>
     kjønn === 'M' ? 'far' : undefined;

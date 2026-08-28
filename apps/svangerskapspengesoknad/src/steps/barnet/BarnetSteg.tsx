@@ -171,14 +171,14 @@ export const BarnetSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeids
                                         niMånederFremITid(dayjs()),
                                     ),
                                     (termindato) =>
-                                        !fødselsdato
-                                            ? isAfterOrSame(
+                                        fødselsdato
+                                            ? null
+                                            : isAfterOrSame(
                                                   intl.formatMessage({
                                                       id: 'valideringsfeil.barnet.termindato.vennligstOppgiBarnetsFødselsDato',
                                                   }),
                                                   enMånedSiden(dayjs()),
-                                              )(termindato)
-                                            : null,
+                                              )(termindato),
                                     isAfterOrSame(
                                         intl.formatMessage({
                                             id: 'valideringsfeil.barnet.termindato.forLangtTilbakeITid',

@@ -67,15 +67,18 @@ interface Props {
 export const SvpDataContext = ({ children, initialState, onDispatch }: Props): JSX.Element => {
     const [state, dispatch] = useReducer((oldState: ContextDataMap, action: Action) => {
         switch (action.type) {
-            case 'update':
+            case 'update': {
                 return {
                     ...oldState,
                     [action.key]: action.data,
                 };
-            case 'reset':
+            }
+            case 'reset': {
                 return {};
-            default:
+            }
+            default: {
                 throw new Error();
+            }
         }
     }, initialState || defaultInitialState);
 
@@ -93,13 +96,17 @@ export const SvpDataContext = ({ children, initialState, onDispatch }: Props): J
     );
 };
 
-/** Hook returns data for one specific data type  */
+/**
+Hook returns data for one specific data type
+*/
 export const useContextGetData = <TYPE extends ContextDataType>(key: TYPE): ContextDataMap[TYPE] => {
     const state = use(SvpStateContext);
     return state[key];
 };
 
-/** Hook returns function capable of getting all types of data from context state  */
+/**
+Hook returns function capable of getting all types of data from context state
+*/
 export const useContextGetAnyData = () => {
     const state = use(SvpStateContext);
 
@@ -108,7 +115,9 @@ export const useContextGetAnyData = () => {
     };
 };
 
-/** Hook returns save function for one specific data type */
+/**
+Hook returns save function for one specific data type
+*/
 export const useContextSaveData = <TYPE extends ContextDataType>(key: TYPE): ((data: ContextDataMap[TYPE]) => void) => {
     const dispatch = use(SvpDispatchContext);
     return (data: ContextDataMap[TYPE]) => {
@@ -118,7 +127,9 @@ export const useContextSaveData = <TYPE extends ContextDataType>(key: TYPE): ((d
     };
 };
 
-/** Hook returns state reset function  */
+/**
+Hook returns state reset function
+*/
 export const useContextReset = () => {
     const dispatch = use(SvpDispatchContext);
     return () => {

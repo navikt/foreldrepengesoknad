@@ -51,7 +51,7 @@ export const BeregningPage = () => {
     useSetBackgroundColor('blue');
     useSetSelectedRoute(OversiktRoutes.BEREGNING);
     if (!gjeldendeSak || gjeldendeSak.ytelse === 'ENGANGSSTØNAD') {
-        return undefined;
+        return;
     }
 
     return (
@@ -802,7 +802,7 @@ const BeregnetMånedsinntekt = ({ andel }: { andel: BeregningsAndel_fpoversikt }
     )?.journalpostId;
 
     switch (andel.inntektsKilde) {
-        case 'INNTEKTSMELDING':
+        case 'INNTEKTSMELDING': {
             return (
                 <FormattedMessage
                     id="beregning.andel.beregnetMånedsinntekt.inntektsmelding"
@@ -818,48 +818,68 @@ const BeregnetMånedsinntekt = ({ andel }: { andel: BeregningsAndel_fpoversikt }
                     }}
                 />
             );
-        case 'A_INNTEKT':
+        }
+        case 'A_INNTEKT': {
             return <FormattedMessage id="beregning.andel.beregnetMånedsinntekt.register" />;
-        case 'SKJØNNSFASTSATT':
+        }
+        case 'SKJØNNSFASTSATT': {
             return <FormattedMessage id="beregning.andel.beregnetMånedsinntekt.skjønnsfastsatt" />;
-        case 'PGI':
+        }
+        case 'PGI': {
             return <FormattedMessage id="beregning.andel.beregnetMånedsinntekt.skatteopplysninger" />;
-        case 'VEDTAK_ANNEN_YTELSE':
+        }
+        case 'VEDTAK_ANNEN_YTELSE': {
             return <FormattedMessage id="beregning.andel.beregnetMånedsinntekt.tidligere_vedtak" />;
-        case undefined:
+        }
+        case undefined: {
             return <FormattedMessage id="beregning.andel.beregnetMånedsinntekt.ukjent" />;
+        }
     }
 };
 
 const finnStatus = (status: AktivitetStatus, intl: ReturnType<typeof useIntl>) => {
     switch (status) {
-        case 'ARBEIDSTAKER':
+        case 'ARBEIDSTAKER': {
             return intl.formatMessage({ id: 'beregning.aktivitetStatus.arbeidstaker' });
-        case 'FRILANSER':
+        }
+        case 'FRILANSER': {
             return intl.formatMessage({ id: 'beregning.aktivitetStatus.frilanser' });
-        case 'KOMBINERT_AT_FL':
+        }
+        case 'KOMBINERT_AT_FL': {
             return intl.formatMessage({ id: 'beregning.aktivitetStatus.kombinertAtFl' });
-        case 'ARBEIDSAVKLARINGSPENGER':
+        }
+        case 'ARBEIDSAVKLARINGSPENGER': {
             return intl.formatMessage({ id: 'beregning.aktivitetStatus.arbeidsavklaringspenger' });
-        case 'VENTELØNN_VARTPENGER':
+        }
+        case 'VENTELØNN_VARTPENGER': {
             return intl.formatMessage({ id: 'beregning.aktivitetStatus.ventelonnVartpenger' });
-        case 'DAGPENGER':
+        }
+        case 'DAGPENGER': {
             return intl.formatMessage({ id: 'beregning.aktivitetStatus.dagpenger' });
-        case 'BRUKERS_ANDEL':
+        }
+        case 'BRUKERS_ANDEL': {
             return intl.formatMessage({ id: 'beregning.aktivitetStatus.ytelse' });
-        case 'KOMBINERT_AT_FL_SN':
+        }
+        case 'KOMBINERT_AT_FL_SN': {
             return intl.formatMessage({ id: 'beregning.aktivitetStatus.kombinertAtFlSn' });
-        case 'KOMBINERT_AT_SN':
+        }
+        case 'KOMBINERT_AT_SN': {
             return intl.formatMessage({ id: 'beregning.aktivitetStatus.kombinertAtSn' });
-        case 'KOMBINERT_FL_SN':
+        }
+        case 'KOMBINERT_FL_SN': {
             return intl.formatMessage({ id: 'beregning.aktivitetStatus.kombinertFlSn' });
-        case 'KUN_YTELSE':
+        }
+        case 'KUN_YTELSE': {
             return intl.formatMessage({ id: 'beregning.aktivitetStatus.ytelse' });
-        case 'MILITÆR_ELLER_SIVIL':
+        }
+        case 'MILITÆR_ELLER_SIVIL': {
             return intl.formatMessage({ id: 'beregning.aktivitetStatus.militaerEllerSivil' });
-        case 'SELVSTENDIG_NÆRINGSDRIVENDE':
+        }
+        case 'SELVSTENDIG_NÆRINGSDRIVENDE': {
             return intl.formatMessage({ id: 'beregning.aktivitetStatus.selvstendigNaeringsdrivende' });
-        case 'TILSTØTENDE_YTELSE':
+        }
+        case 'TILSTØTENDE_YTELSE': {
             return intl.formatMessage({ id: 'beregning.aktivitetStatus.ytelse' });
+        }
     }
 };

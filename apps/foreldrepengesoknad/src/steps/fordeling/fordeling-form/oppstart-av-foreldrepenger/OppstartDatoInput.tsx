@@ -123,11 +123,11 @@ const startdatoPermisjonMor = (
 ): DatepickerLimitationsString => {
     if (!fødselsdato && termindato) {
         return startDatoMorUfødtBarn(termindato);
-    } else if (fødselsdato) {
-        return startDatoMorFødtBarn(termindato, fødselsdato);
-    } else {
-        throw new Error('Mangler fødselsdato eller termindato på barnet.');
     }
+    if (fødselsdato) {
+        return startDatoMorFødtBarn(termindato, fødselsdato);
+    }
+    throw new Error('Mangler fødselsdato eller termindato på barnet.');
 };
 
 const startdatoPermisjonAleneomsorgFarMedmor = (

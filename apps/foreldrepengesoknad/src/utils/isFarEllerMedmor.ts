@@ -2,11 +2,7 @@ import { BrukerRolleSak_fpoversikt, NavnPåForeldre, Søkerrolle } from '@navikt
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 export const isFarEllerMedmor = (rolle: Søkerrolle) => {
-    if (rolle === 'far' || rolle === 'medmor') {
-        return true;
-    }
-
-    return false;
+    return rolle === 'far' || rolle === 'medmor';
 };
 
 export const getForelderNavn = (

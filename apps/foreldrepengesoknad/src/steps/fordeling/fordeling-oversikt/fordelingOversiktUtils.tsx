@@ -98,11 +98,10 @@ export const getFordelingDelTittel = (
         const dagerFørFødsel = 15;
         const dagerEtterFødsel = delInfo.sumDager - dagerFørFødsel;
         let varighetUkerEtterFødsel: number | string;
-        if (dagerEtterFødsel % 5 === 0) {
-            varighetUkerEtterFødsel = (delInfo.sumDager - dagerFørFødsel) / 5;
-        } else {
-            varighetUkerEtterFødsel = getVarighetString(delInfo.sumDager - dagerFørFødsel, intl);
-        }
+        varighetUkerEtterFødsel =
+            dagerEtterFødsel % 5 === 0
+                ? (delInfo.sumDager - dagerFørFødsel) / 5
+                : getVarighetString(delInfo.sumDager - dagerFørFødsel, intl);
 
         varighetTekst = intl.formatMessage(
             { id: 'fordeling.varighet.morFødsel' },
@@ -113,7 +112,7 @@ export const getFordelingDelTittel = (
     }
 
     switch (delInfo.eier) {
-        case FordelingEier.Mor:
+        case FordelingEier.Mor: {
             return erFarEllerMedmor
                 ? intl.formatMessage(
                       { id: 'fordeling.antallUkerTilAnnenForelder' },
@@ -128,7 +127,8 @@ export const getFordelingDelTittel = (
                           varighetTekst,
                       },
                   );
-        case FordelingEier.FarMedmor:
+        }
+        case FordelingEier.FarMedmor: {
             return erFarEllerMedmor
                 ? intl.formatMessage(
                       { id: 'fordeling.antallUkerTilDeg' },
@@ -143,7 +143,8 @@ export const getFordelingDelTittel = (
                           navn: navnFarMedmor,
                       },
                   );
-        case FordelingEier.Felles:
+        }
+        case FordelingEier.Felles: {
             return harAnnenForelderKunRettIEØS
                 ? intl.formatMessage(
                       { id: 'fordeling.antallUkerFelles.eøs' },
@@ -153,6 +154,7 @@ export const getFordelingDelTittel = (
                       },
                   )
                 : intl.formatMessage({ id: 'fordeling.antallUkerFelles' }, { varighetTekst });
+        }
     }
 };
 
@@ -274,11 +276,9 @@ const getAntallDagerSøkerensKvoteBruktAvAnnenPart = (
     if (uttaksplanAnnenPart === undefined || uttaksplanAnnenPart.length === 0) {
         return 0;
     }
-    if (erFarEllerMedmor) {
-        return getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato, erFødsel).farMedmor.dagerEgneKvoter;
-    } else {
-        return getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato, erFødsel).mor.dagerEgneKvoter;
-    }
+    return erFarEllerMedmor
+        ? getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato, erFødsel).farMedmor.dagerEgneKvoter
+        : getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato, erFødsel).mor.dagerEgneKvoter;
 };
 
 const getAntallDagerFellesperiodeBruktAvAnnenPart = (

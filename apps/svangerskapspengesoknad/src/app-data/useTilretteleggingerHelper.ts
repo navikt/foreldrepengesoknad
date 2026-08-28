@@ -27,22 +27,20 @@ export const useTilretteleggingerHelper = () => {
     const oppdaterFerie = useContextSaveData(ContextDataType.FERIE);
 
     const fjernTilrettelegginger = (tilretteleggingerSomSkalFjernes: string[]) => {
-        if (tilrettelegginger && tilretteleggingerSomSkalFjernes.length > 0) {
-            oppdaterTilrettelegginger(filtrerBort(tilrettelegginger, tilretteleggingerSomSkalFjernes));
-            if (tilretteleggingerVedlegg) {
-                oppdaterTilretteleggingerVedlegg(
-                    filtrerBort(tilretteleggingerVedlegg, tilretteleggingerSomSkalFjernes),
-                );
-            }
-            if (tilretteleggingerPerioder) {
-                oppdaterTilretteleggingerPerioder(
-                    filtrerBort(tilretteleggingerPerioder, tilretteleggingerSomSkalFjernes),
-                );
-            }
+        if (!(tilrettelegginger && tilretteleggingerSomSkalFjernes.length > 0)) {
+            return;
+        }
 
-            if (ferie) {
-                oppdaterFerie(filtrerBort(ferie, tilretteleggingerSomSkalFjernes));
-            }
+        oppdaterTilrettelegginger(filtrerBort(tilrettelegginger, tilretteleggingerSomSkalFjernes));
+        if (tilretteleggingerVedlegg) {
+            oppdaterTilretteleggingerVedlegg(filtrerBort(tilretteleggingerVedlegg, tilretteleggingerSomSkalFjernes));
+        }
+        if (tilretteleggingerPerioder) {
+            oppdaterTilretteleggingerPerioder(filtrerBort(tilretteleggingerPerioder, tilretteleggingerSomSkalFjernes));
+        }
+
+        if (ferie) {
+            oppdaterFerie(filtrerBort(ferie, tilretteleggingerSomSkalFjernes));
         }
     };
 

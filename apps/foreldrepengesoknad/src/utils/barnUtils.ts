@@ -60,12 +60,17 @@ export const getDødeBarnetForMerEnn3MånederSiden = (registrerteBarn: FpBarnDto
 };
 
 export const getTekstForAntallBarn = (antallBarn: number, intl: IntlShape): string => {
-    if (antallBarn === 1) {
-        return intl.formatMessage({ id: 'barn' });
-    } else if (antallBarn === 2) {
-        return intl.formatMessage({ id: 'tvillinger' });
-    } else if (antallBarn === 3) {
-        return intl.formatMessage({ id: 'trillinger' });
+    switch (antallBarn) {
+        case 1: {
+            return intl.formatMessage({ id: 'barn' });
+        }
+        case 2: {
+            return intl.formatMessage({ id: 'tvillinger' });
+        }
+        case 3: {
+            return intl.formatMessage({ id: 'trillinger' });
+        }
+        // No default
     }
     return intl.formatMessage({ id: 'flerlinger' });
 };

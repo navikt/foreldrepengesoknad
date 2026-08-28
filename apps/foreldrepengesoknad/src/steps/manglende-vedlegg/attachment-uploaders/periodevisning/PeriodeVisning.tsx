@@ -174,7 +174,7 @@ const renderDagMnd = (dato: string, visÅr = true): JSX.Element => {
     return (
         <VStack gap="space-4">
             <BodyShort>
-                {d.get('date')}. {d.format('MMM').substr(0, 3)}.
+                {d.get('date')}. {d.format('MMM').slice(0, 3)}.
             </BodyShort>
             {visÅr && (
                 <BodyShort as="span">

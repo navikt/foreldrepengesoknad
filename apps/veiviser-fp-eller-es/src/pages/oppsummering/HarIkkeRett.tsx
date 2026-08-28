@@ -21,7 +21,7 @@ interface Props {
 
 export const HarIkkeRett = ({ fpEllerEsSituasjon, satser }: Props) => {
     const { goToRoute } = useVeiviserNavigator();
-    const jobberIkkeINorge = fpEllerEsSituasjon.borDuINorge === false && fpEllerEsSituasjon.jobberDuINorge === false;
+    const jobberIkkeINorge = !fpEllerEsSituasjon.borDuINorge && !fpEllerEsSituasjon.jobberDuINorge;
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
 
     return (

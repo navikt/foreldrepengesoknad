@@ -47,10 +47,12 @@ export const Foreldrepengesøknad = () => {
     const planleggerData = usePlanleggerDataFromUrl(søkerinfoQuery.data?.kjønn);
 
     useEffect(() => {
-        if (søkerinfoQuery.error || sakerQuery.error) {
-            const error = new Error(intl.formatMessage({ id: 'Foreldrepengesøknad.FeilVedHentingAvInformasjon' }));
-            throw error;
+        if (!(søkerinfoQuery.error || sakerQuery.error)) {
+            return;
         }
+
+        const error = new Error(intl.formatMessage({ id: 'Foreldrepengesøknad.FeilVedHentingAvInformasjon' }));
+        throw error;
     }, [søkerinfoQuery.error, sakerQuery.error, intl]);
 
     if (!sakerQuery.data || !søkerinfoQuery.data || mellomlagretInfoQuery.isPending) {
@@ -163,9 +165,7 @@ const RegisterdataSjekk = ({
 const relevanteSaker = (saker: FpSak_fpoversikt[]) =>
     saker.map((sak) => ({
         ...omitMany(sak, ['oppdatertTidspunkt', 'åpenBehandling', 'gjeldendeVedtak']),
-        ...(sak.gjeldendeVedtak
-            ? {
-                  gjeldendeVedtak: omitMany(sak.gjeldendeVedtak, ['beregningsgrunnlag', 'tilkjentYtelse']),
-              }
-            : {}),
+        ...(sak.gjeldendeVedtak && {
+            gjeldendeVedtak: omitMany(sak.gjeldendeVedtak, ['beregningsgrunnlag', 'tilkjentYtelse']),
+        }),
     }));

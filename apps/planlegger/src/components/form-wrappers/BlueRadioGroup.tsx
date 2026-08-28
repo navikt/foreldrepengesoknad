@@ -18,7 +18,7 @@ export const BlueRadioGroup = <TFieldValues extends FieldValues, TName extends F
     const value = formMethods.watch(props.name);
 
     useEffect(() => {
-        let timeoutId = undefined;
+        let timeoutId;
         if (props.shouldAutofocus) {
             // Må vente til side-scrolling er ferdig
             timeoutId = setTimeout(() => {

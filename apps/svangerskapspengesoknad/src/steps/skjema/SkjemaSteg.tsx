@@ -86,11 +86,10 @@ export const SkjemaSteg = ({
                 message: intl.formatMessage({ id: 'skjema.maks40Filer' }, { antallVedlegg: antallForMange }),
             });
             return Promise.resolve();
-        } else {
-            oppdaterTilretteleggingerVedlegg({ ...tilretteleggingerVedlegg, [tilretteleggingId]: values.vedlegg });
-
-            return navigator.goToNextDefaultStep();
         }
+        oppdaterTilretteleggingerVedlegg({ ...tilretteleggingerVedlegg, [tilretteleggingId]: values.vedlegg });
+
+        return navigator.goToNextDefaultStep();
     };
 
     const defaultValues = {

@@ -40,7 +40,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
         return undefined;
     }
     const erAnnenPartsSak = true;
-    let termindato = undefined;
+    let termindato;
     if (eksisterendeSakAnnenPart.termindato !== undefined) {
         termindato = eksisterendeSakAnnenPart.termindato;
     } else if ((isFødtBarn(barn) || isUfødtBarn(barn)) && barn.termindato !== undefined) {
@@ -147,7 +147,8 @@ const getSøkerrolleFromSaksgrunnlag = (
 const getFødselsdatoer = (valgteBarn: ValgtBarn, sak: Saksgrunnlag): string[] => {
     if (valgteBarn.fødselsdatoer) {
         return sorterDatoEtterEldst(valgteBarn.fødselsdatoer);
-    } else if (sak.fødselsdato) {
+    }
+    if (sak.fødselsdato) {
         return new Array<string>(sak.antallBarn).fill(sak.fødselsdato);
     }
     return [];
@@ -155,7 +156,7 @@ const getFødselsdatoer = (valgteBarn: ValgtBarn, sak: Saksgrunnlag): string[] =
 
 const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag, valgteBarn: ValgtBarn): Barn => {
     switch (situasjon) {
-        case 'fødsel':
+        case 'fødsel': {
             if (sak.fødselsdato) {
                 return {
                     type: BarnType.FØDT,
@@ -171,7 +172,8 @@ const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag, valgte
                 antallBarn: sak.antallBarn,
                 termindato: sak.termindato!,
             };
-        case 'adopsjon':
+        }
+        case 'adopsjon': {
             return {
                 type: BarnType.ADOPTERT_STEBARN,
                 adopsjonsdato: sak.omsorgsovertakelsesdato!,
@@ -179,8 +181,10 @@ const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag, valgte
                 fødselsdatoer: getFødselsdatoer(valgteBarn, sak),
                 fnr: valgteBarn?.fnr,
             };
-        case 'omsorgsovertakelse':
+        }
+        case 'omsorgsovertakelse': {
             throw new Error('Kan ikke sende endringssøknad for omsorgsovertakelse');
+        }
     }
 };
 
@@ -199,7 +203,7 @@ const getAnnenForelderFromSaksgrunnlag = (
 ): AnnenForelderOppgitt => {
     switch (situasjon) {
         case 'fødsel':
-        case 'adopsjon':
+        case 'adopsjon': {
             if (erFarEllerMedmor) {
                 return {
                     fornavn: finnFornavn(annenPart, intl),
@@ -222,8 +226,10 @@ const getAnnenForelderFromSaksgrunnlag = (
                 harRettPåForeldrepengerIEØS: grunnlag.harAnnenForelderTilsvarendeRettEØS,
                 erAleneOmOmsorg: grunnlag.farMedmorErAleneOmOmsorg || grunnlag.morErAleneOmOmsorg,
             };
-        case 'omsorgsovertakelse':
+        }
+        case 'omsorgsovertakelse': {
             throw new Error('Kan ikke sende endringssøknad for omsorgsovertakelse');
+        }
     }
 };
 
@@ -237,7 +243,7 @@ const finnAnnenForelderForSaken = (
     annenForeldersFnrFraSaken: string | undefined,
 ) => {
     if ((valgtBarnFnr === undefined && fødselsdato === undefined) || !annenForeldersFnrFraSaken) {
-        return undefined;
+        return;
     }
     const barnMedGittFnr = valgtBarnFnr
         ? barn.find((b) => valgtBarnFnr.includes(b.fnr) && b.annenPart !== undefined)
@@ -260,7 +266,7 @@ const finnAnnenForelderForSaken = (
         return getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, annenPart, grunnlag.søkerErFarEllerMedmor, intl);
     }
 
-    return undefined;
+    return;
 };
 
 const getBarnFromValgteBarn = (valgteBarn: ValgtBarn): Barn => {
@@ -275,23 +281,22 @@ const getBarnFromValgteBarn = (valgteBarn: ValgtBarn): Barn => {
                     ? valgteBarn.fnr.filter((fnr) => !!fnr)
                     : undefined,
         };
-    } else if (valgteBarn.termindato) {
-        return {
-            type: BarnType.UFØDT,
-            antallBarn: valgteBarn.antallBarn,
-            termindato: dayjs(valgteBarn.termindato).format(ISO_DATE_FORMAT),
-        };
-    } else {
-        return {
-            type: BarnType.IKKE_UTFYLT,
-            antallBarn: valgteBarn.antallBarn,
-            fødselsdatoer: valgteBarn.fødselsdatoer ? sorterDatoEtterEldst(valgteBarn.fødselsdatoer) : [],
-            fnr:
-                valgteBarn.fnr !== undefined && valgteBarn.fnr.length > 0
-                    ? valgteBarn.fnr.filter((fnr) => !!fnr)
-                    : undefined,
-        };
     }
+    return valgteBarn.termindato
+        ? {
+              type: BarnType.UFØDT,
+              antallBarn: valgteBarn.antallBarn,
+              termindato: dayjs(valgteBarn.termindato).format(ISO_DATE_FORMAT),
+          }
+        : {
+              type: BarnType.IKKE_UTFYLT,
+              antallBarn: valgteBarn.antallBarn,
+              fødselsdatoer: valgteBarn.fødselsdatoer ? sorterDatoEtterEldst(valgteBarn.fødselsdatoer) : [],
+              fnr:
+                  valgteBarn.fnr !== undefined && valgteBarn.fnr.length > 0
+                      ? valgteBarn.fnr.filter((fnr) => !!fnr)
+                      : undefined,
+          };
 };
 
 const getAnnenForelderFromValgteBarn = (valgteBarn: ValgtBarn): AnnenForelder | undefined => {
@@ -312,11 +317,11 @@ const getRolleFarEllerMedmorFraFnr = (fnr: string): Søkerrolle => {
     const kjønn = getKjønnFromFnrString(fnr);
     if (kjønn === 'K') {
         return 'medmor';
-    } else if (kjønn === 'M') {
-        return 'far';
-    } else {
-        throw new Error('Kan ikke utlede kjønn fra fødselsnummer.');
     }
+    if (kjønn === 'M') {
+        return 'far';
+    }
+    throw new Error('Kan ikke utlede kjønn fra fødselsnummer.');
 };
 
 export const lagNySøknadForRegistrerteBarn = (valgteBarn: ValgtBarn) => {
@@ -339,7 +344,7 @@ const opprettAnnenForelderFraEksisterendeSak = (
     situasjon: Situasjon,
     valgteBarnFnr: string[] | undefined,
 ): AnnenForelderOppgitt => {
-    const fnrAnnenForelderFraSak = annenPartFraSak !== undefined ? annenPartFraSak.fnr : undefined;
+    const fnrAnnenForelderFraSak = annenPartFraSak === undefined ? undefined : annenPartFraSak.fnr;
 
     const mockAnnenForelder = {
         fornavn: intl.formatMessage({ id: 'annen.forelder' }),

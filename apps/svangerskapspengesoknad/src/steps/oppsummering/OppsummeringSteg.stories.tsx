@@ -218,11 +218,11 @@ const meta = {
                             tom: '',
                             næringstype: 'FISKE',
                             registrertINorge: true,
-                            næringsinntekt: 700000,
+                            næringsinntekt: 700_000,
                             organisasjonsnummer: '12132323',
                             hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
                             varigEndringDato: '2024-01-01',
-                            varigEndringInntektEtterEndring: 500000,
+                            varigEndringInntektEtterEndring: 500_000,
                         },
                     }}
                 >

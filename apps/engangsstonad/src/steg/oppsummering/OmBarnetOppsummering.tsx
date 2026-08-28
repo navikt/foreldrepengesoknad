@@ -16,13 +16,15 @@ function AntallBarnFormattedText({ omBarnet }: { readonly omBarnet: BarnDto }) {
 
     if (antallBarn === 1) {
         return <FormattedMessage id={'OmBarnetOppsummering.EttBarn'} />;
-    } else if (antallBarn === 2 && !harAdoptert) {
-        return <FormattedMessage id={'OmBarnetOppsummering.Tvillinger'} />;
-    } else if (antallBarn === 2 && harAdoptert) {
-        return <FormattedMessage id={'OmBarnetOppsummering.ToBarn'} />;
-    } else {
-        return <FormattedMessage id={'OmBarnetOppsummering.FlereBarn'} />;
     }
+    if (antallBarn === 2 && !harAdoptert) {
+        return <FormattedMessage id={'OmBarnetOppsummering.Tvillinger'} />;
+    }
+    return antallBarn === 2 && harAdoptert ? (
+        <FormattedMessage id={'OmBarnetOppsummering.ToBarn'} />
+    ) : (
+        <FormattedMessage id={'OmBarnetOppsummering.FlereBarn'} />
+    );
 }
 
 export const OmBarnetOppsummering = ({ omBarnet, onVilEndreSvar }: Props) => {

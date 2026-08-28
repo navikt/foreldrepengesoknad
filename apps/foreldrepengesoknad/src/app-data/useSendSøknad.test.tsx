@@ -109,12 +109,12 @@ const EGEN_NÆRING = {
     næringstype: 'FISKE',
     fom: '2023-01-01',
     tom: '2023-10-01',
-    næringsinntekt: 100000,
+    næringsinntekt: 100_000,
     navnPåNæringen: 'Fiskeriet',
     registrertINorge: true,
     hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
     varigEndringDato: '2024-01-01',
-    varigEndringInntektEtterEndring: 10000,
+    varigEndringInntektEtterEndring: 10_000,
     varigEndringBeskrivelse: 'Beskrivelse av endring',
 } satisfies NæringDto;
 
@@ -285,7 +285,7 @@ describe('useFpSendSøknad', () => {
                         hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
                         varigEndringDato: '2024-01-01',
                         varigEndringBeskrivelse: 'Beskrivelse av endring',
-                        varigEndringInntektEtterEndring: 10000,
+                        varigEndringInntektEtterEndring: 10_000,
                     },
                     annenForelder: {
                         type: 'norsk',

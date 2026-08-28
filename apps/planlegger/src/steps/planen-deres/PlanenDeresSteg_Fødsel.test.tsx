@@ -653,12 +653,8 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         const mobilContainere = document.querySelectorAll('.aksel-responsive__below--sm');
 
-        const kortDatoerPeriode1 = Array.from(mobilContainere).some((el) =>
-            el.textContent?.includes('10.06.24 – 11.10.24'),
-        );
-        const kortDatoerPeriode2 = Array.from(mobilContainere).some((el) =>
-            el.textContent?.includes('14.10.24 – 16.05.25'),
-        );
+        const kortDatoerPeriode1 = [...mobilContainere].some((el) => el.textContent?.includes('10.06.24 – 11.10.24'));
+        const kortDatoerPeriode2 = [...mobilContainere].some((el) => el.textContent?.includes('14.10.24 – 16.05.25'));
 
         expect(kortDatoerPeriode1).toBe(true);
         expect(kortDatoerPeriode2).toBe(true);
@@ -671,10 +667,10 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         const desktopContainere = document.querySelectorAll('.aksel-responsive__above--sm');
 
-        const langtDatoerPeriode1 = Array.from(desktopContainere).some((el) =>
+        const langtDatoerPeriode1 = [...desktopContainere].some((el) =>
             el.textContent?.includes('10. juni 2024 – 11. okt. 2024'),
         );
-        const langtDatoerPeriode2 = Array.from(desktopContainere).some((el) =>
+        const langtDatoerPeriode2 = [...desktopContainere].some((el) =>
             el.textContent?.includes('14. okt. 2024 – 16. mai 2025'),
         );
 

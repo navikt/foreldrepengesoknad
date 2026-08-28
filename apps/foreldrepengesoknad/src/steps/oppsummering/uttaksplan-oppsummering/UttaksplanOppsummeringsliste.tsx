@@ -251,4 +251,4 @@ const lagKeyFraPeriode = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpa
 
 // TODO (TOR) Denne fjerninga av avslåtte periodar uten trekkdagar bør ligga i backend
 const filtrerBortPerioderUtenTrekkdager = (perioder: UttakPeriode_fpoversikt[]) =>
-    perioder.filter((periode) => !(periode.resultat?.innvilget === false && periode.resultat.trekkerDager === false));
+    perioder.filter((periode) => periode.resultat?.innvilget !== false || periode.resultat.trekkerDager);

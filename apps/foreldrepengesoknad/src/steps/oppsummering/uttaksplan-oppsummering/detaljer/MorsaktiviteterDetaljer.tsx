@@ -11,26 +11,36 @@ interface Props {
 
 const getMorsAktivitetTekst = (intl: IntlShape, aktivitet: MorsAktivitet): string => {
     switch (aktivitet) {
-        case 'ARBEID':
+        case 'ARBEID': {
             return intl.formatMessage({ id: 'oppsummering.morsAktivitet.Arbeid' });
-        case 'ARBEID_OG_UTDANNING':
+        }
+        case 'ARBEID_OG_UTDANNING': {
             return intl.formatMessage({ id: 'oppsummering.morsAktivitet.ArbeidOgUtdanning' });
-        case 'INNLAGT':
+        }
+        case 'INNLAGT': {
             return intl.formatMessage({ id: 'oppsummering.morsAktivitet.Innlagt' });
-        case 'INTROPROG':
+        }
+        case 'INTROPROG': {
             return intl.formatMessage({ id: 'oppsummering.morsAktivitet.Introduksjonsprogrammet' });
-        case 'KVALPROG':
+        }
+        case 'KVALPROG': {
             return intl.formatMessage({ id: 'oppsummering.morsAktivitet.Kvalifiseringsprogrammet' });
-        case 'TRENGER_HJELP':
+        }
+        case 'TRENGER_HJELP': {
             return intl.formatMessage({ id: 'oppsummering.morsAktivitet.TrengerHjelp' });
-        case 'UFØRE':
+        }
+        case 'UFØRE': {
             return intl.formatMessage({ id: 'oppsummering.morsAktivitet.Uføre' });
-        case 'UTDANNING':
+        }
+        case 'UTDANNING': {
             return intl.formatMessage({ id: 'oppsummering.morsAktivitet.Utdanning' });
-        case 'IKKE_OPPGITT':
+        }
+        case 'IKKE_OPPGITT': {
             return intl.formatMessage({ id: 'oppsummering.morsAktivitet.UtenAktivitetsKrav' });
-        default:
+        }
+        default: {
             return assertUnreachable('Mor har ingen aktivitet');
+        }
     }
 };
 

@@ -162,7 +162,7 @@ const validateAtPeriodeIkkeOverlapper = (
     if ((tom || tomType) && fom && allePerioder.length > 0) {
         const andrePerioderLagtTilEtter = allePerioder.filter((_p, i) => i > index);
         const overlappendePerioder = andrePerioderLagtTilEtter.filter((p) => {
-            let periodeTom = undefined;
+            let periodeTom;
             if (p.tomType && p.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP) {
                 periodeTom = sisteDagForSvangerskapspenger;
             }

@@ -25,7 +25,7 @@ interface Props {
 }
 
 export const UforutsetteEndringer = ({ hvemPlanlegger, arbeidssituasjon, barnet }: Props) => {
-    const erFødsel = barnet.erFødsel === true;
+    const erFødsel = barnet.erFødsel;
     const erAleneforsørger =
         hvemPlanlegger.type === HvemPlanleggerType.MOR || hvemPlanlegger.type === HvemPlanleggerType.FAR;
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);

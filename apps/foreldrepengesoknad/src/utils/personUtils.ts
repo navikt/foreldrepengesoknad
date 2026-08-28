@@ -58,7 +58,7 @@ export const getMorErAleneOmOmsorg = (
     søkerErAleneOmOmsorg: boolean,
     annenForelder: AnnenForelder,
 ) => {
-    return søkerErMor && (søkerErAleneOmOmsorg || annenForelder.kanIkkeOppgis === true);
+    return søkerErMor && (søkerErAleneOmOmsorg || annenForelder.kanIkkeOppgis);
 };
 
 export const getMorHarRettPåForeldrepengerINorgeEllerEØS = (
@@ -66,7 +66,7 @@ export const getMorHarRettPåForeldrepengerINorgeEllerEØS = (
     søkerErFarEllerMedmor: boolean,
     annenForelder: AnnenForelder,
 ) => {
-    if (søkerErFarEllerMedmor === true && isAnnenForelderOppgitt(annenForelder)) {
+    if (søkerErFarEllerMedmor && isAnnenForelderOppgitt(annenForelder)) {
         return (
             annenForelder.harRettPåForeldrepengerINorge === true || annenForelder.harRettPåForeldrepengerIEØS === true
         );
@@ -79,7 +79,7 @@ export const getFarMedmorErAleneOmOmsorg = (
     søkerErAleneOmOmsorg: boolean,
     annenForelder: AnnenForelder,
 ) => {
-    return søkerErFarMedmor && (søkerErAleneOmOmsorg || annenForelder.kanIkkeOppgis === true);
+    return søkerErFarMedmor && (søkerErAleneOmOmsorg || annenForelder.kanIkkeOppgis);
 };
 
 export const getNavnPåForeldre = (

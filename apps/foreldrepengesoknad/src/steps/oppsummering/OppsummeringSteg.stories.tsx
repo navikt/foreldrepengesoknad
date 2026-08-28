@@ -642,7 +642,7 @@ export const MorMedSelvstendigNæringsdrivende: Story = {
             tom: '2021-01-01',
             næringstype: 'FISKE',
             organisasjonsnummer: '123',
-            næringsinntekt: 1000000,
+            næringsinntekt: 1_000_000,
             registrertINorge: true,
             harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: true,
             hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
@@ -741,7 +741,7 @@ const FIL_INFO = {
     filesize: 1234,
     url: 'test',
     id: '1',
-    file: new File(['abc'.repeat(100000)], 'Filnavn1.jpg'),
+    file: new File(['abc'.repeat(100_000)], 'Filnavn1.jpg'),
     pending: false,
     uploaded: true,
     innsendingsType: 'LASTET_OPP',
@@ -912,18 +912,16 @@ export const VisSendInnSenereVedlegg: Story = {
     args: {
         ...Default.args,
         vedlegg: {
-            ...(VisAlleVedlegg.args?.vedlegg
-                ? Object.entries(VisAlleVedlegg.args.vedlegg).reduce(
-                      (result, entry) => ({
-                          ...result,
-                          [entry[0]]: entry[1].map((value) => ({
-                              ...value,
-                              innsendingsType: 'SEND_SENERE',
-                          })),
-                      }),
-                      {},
-                  )
-                : {}),
+            ...(VisAlleVedlegg.args?.vedlegg &&
+                Object.fromEntries(
+                    Object.entries(VisAlleVedlegg.args.vedlegg).map((entry) => [
+                        entry[0],
+                        entry[1].map((value) => ({
+                            ...value,
+                            innsendingsType: 'SEND_SENERE',
+                        })),
+                    ]),
+                )),
         },
     },
 };

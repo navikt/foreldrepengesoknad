@@ -72,12 +72,12 @@ const getSak = (sakinfo: SakInfo): FpSak_fpoversikt => {
         ønskerJustertUttakVedFødsel: false,
         oppdatertTidspunkt: '2022-05-06',
         åpenBehandling:
-            sakinfo.åpenbehandlingTilstand !== undefined
-                ? {
+            sakinfo.åpenbehandlingTilstand === undefined
+                ? undefined
+                : {
                       tilstand: sakinfo.åpenbehandlingTilstand,
                       søknadsperioder: [],
-                  }
-                : undefined,
+                  },
         annenPart: {
             fnr: '123456789',
         },

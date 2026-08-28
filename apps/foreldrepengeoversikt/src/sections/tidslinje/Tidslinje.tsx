@@ -458,7 +458,7 @@ const Hendelse = ({
                 </Process.Event>
             );
         }
-        case 'FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV':
+        case 'FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV': {
             return (
                 <Process.Event
                     status={status}
@@ -471,8 +471,10 @@ const Hendelse = ({
                     <DokumenterTilHendelse hendelse={hendelse} />
                 </Process.Event>
             );
-        default:
+        }
+        default: {
             return null;
+        }
     }
 };
 

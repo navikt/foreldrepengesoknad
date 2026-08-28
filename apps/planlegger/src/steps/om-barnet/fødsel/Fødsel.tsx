@@ -67,7 +67,7 @@ export const Fødsel = ({
                     scrollToBottom={scrollToBottom}
                 />
             )}
-            {erBarnetFødt === false && (
+            {!erBarnetFødt && (
                 <ErIkkeFødtPanel
                     hvemPlanlegger={hvemPlanlegger}
                     erOmBarnetPlanleggerIkkeOppgittFraFør={erOmBarnetPlanleggerIkkeOppgittFraFør}

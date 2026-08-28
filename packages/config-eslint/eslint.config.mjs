@@ -5,11 +5,29 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 import * as importPlugin from 'eslint-plugin-import-x';
 import reactYouMightNotNeedAnEffect from 'eslint-plugin-react-you-might-not-need-an-effect';
 import storybook from 'eslint-plugin-storybook';
+import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 const OFF = 0;
 const ERROR = 2;
+
+const IGNORED_UNICORN_RULES = {
+    'unicorn/consistent-boolean-name': OFF,
+    'unicorn/filename-case': OFF,
+    'unicorn/name-replacements': OFF,
+    'unicorn/no-nested-ternary': OFF,
+    'unicorn/no-null': OFF,
+    'unicorn/prevent-abbreviations': OFF,
+};
+
+export const unicornConfig = [
+    eslintPluginUnicorn.configs['flat/recommended'],
+    eslintConfigPrettier,
+    {
+        rules: IGNORED_UNICORN_RULES,
+    },
+];
 
 export default [
     {

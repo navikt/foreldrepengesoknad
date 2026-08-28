@@ -21,7 +21,7 @@ const finnHvemSomHarRett = (fpEllerEsSituasjon: FpEllerEsSituasjon, satser: Sats
 
     const { situasjon, lønnPerMåned, borDuINorge, jobberDuINorge } = fpEllerEsSituasjon;
     const lønnPerMånedNummer = formatValue(lønnPerMåned);
-    const erLønnOverEllerLik200000 = lønnPerMånedNummer !== undefined && lønnPerMånedNummer * 12 >= 200000;
+    const erLønnOverEllerLik200000 = lønnPerMånedNummer !== undefined && lønnPerMånedNummer * 12 >= 200_000;
     const erLønnOverEllerLikMinstelønn = lønnPerMånedNummer !== undefined && lønnPerMånedNummer * 12 >= minstelønn;
     if (
         situasjon === 'mor' &&

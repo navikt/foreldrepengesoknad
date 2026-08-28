@@ -118,24 +118,26 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
         };
 
         const encodedData = compressToUrl(JSON.stringify(contextData));
-        const currentPath = globalThis.location.pathname;
+        const currentPath = location.pathname;
         const newUrl = `${currentPath}?data=${encodedData}`;
 
-        globalThis.history.replaceState(null, '', newUrl);
+        history.replaceState(null, '', newUrl);
     };
 
     const planforslag = useLagUttaksplanForslag(valgtStønadskvote);
 
     const kvoteOppsummeringRef = useRef<HTMLDivElement>(null);
     const scrollToKvoteOppsummering = () => {
-        if (kvoteOppsummeringRef.current) {
-            // Håndter spesielt for å unngå at element en scroller til blir liggende under headeren
-            const elementTop = kvoteOppsummeringRef.current.getBoundingClientRect().top + window.scrollY;
-            window.scrollTo({
-                top: elementTop - 80,
-                behavior: 'smooth',
-            });
+        if (!kvoteOppsummeringRef.current) {
+            return;
         }
+
+        // Håndter spesielt for å unngå at element en scroller til blir liggende under headeren
+        const elementTop = kvoteOppsummeringRef.current.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({
+            top: elementTop - 80,
+            behavior: 'smooth',
+        });
     };
 
     const farOgFarKunEnPartHarRett =

@@ -97,14 +97,14 @@ export const FødselPanel = ({ søkersituasjon, erFarEllerMedmor, søknadGjelder
                     {antallBarn !== undefined && antallBarn === 3 && <AntallBarnSelect />}
                 </>
             )}
-            {erBarnetFødt !== true && (
+            {!erBarnetFødt && (
                 <TerminPanel
                     søkersituasjon={søkersituasjon}
                     arbeidsforhold={arbeidsforhold}
                     søknadGjelderEtNyttBarn={søknadGjelderEtNyttBarn}
                 />
             )}
-            {erBarnetFødt === true && søknadGjelderEtNyttBarn && <ErFødtPanel />}
+            {erBarnetFødt && søknadGjelderEtNyttBarn && <ErFødtPanel />}
         </>
     );
 };

@@ -30,22 +30,26 @@ export const getAlleYtelser = (saker: SakOppslag): Sak[] => {
 
 export const ytelseSomTekst = (ytelse: Sak['ytelse'], intl: IntlShape) => {
     switch (ytelse) {
-        case 'ENGANGSSTØNAD':
+        case 'ENGANGSSTØNAD': {
             return intl.formatMessage({ id: 'ytelse.ENGANGSSTØNAD' });
-        case 'SVANGERSKAPSPENGER':
+        }
+        case 'SVANGERSKAPSPENGER': {
             return intl.formatMessage({ id: 'ytelse.SVANGERSKAPSPENGER' });
-        case 'FORELDREPENGER':
+        }
+        case 'FORELDREPENGER': {
             return intl.formatMessage({ id: 'ytelse.FORELDREPENGER' });
+        }
     }
 };
 
 export const getFørsteUttaksdagIForeldrepengesaken = (sak: Foreldrepengesak) => {
     if (sak.gjeldendeVedtak && sak.gjeldendeVedtak.perioder.length > 0) {
         return sak.gjeldendeVedtak.perioder[0]!.fom;
-    } else if (sak.åpenBehandling?.søknadsperioder && sak.åpenBehandling?.søknadsperioder.length > 0) {
+    }
+    if (sak.åpenBehandling?.søknadsperioder && sak.åpenBehandling?.søknadsperioder.length > 0) {
         return sak.åpenBehandling?.søknadsperioder[0]!.fom;
     }
-    return undefined;
+    return;
 };
 
 export const getBarnFraSak = (familiehendelse: Familiehendelse_fpoversikt, gjelderAdopsjon: boolean): Barn => {
@@ -145,9 +149,8 @@ export const grupperSakerPåBarn = (registrerteBarn: OversiktBarnDto_fpoversikt[
 
                 return result;
             }
-        } else {
-            return result;
         }
+        return result;
     }, [] as GruppertSak[]);
 };
 
@@ -199,7 +202,7 @@ const findRelevantSak = (gruppertSak: GruppertSak, familiehendelsedato: string) 
         );
     }
 
-    return undefined;
+    return;
 };
 
 export const utledFamiliesituasjon = (
@@ -250,12 +253,18 @@ export const getNavnAnnenForelder = (
 };
 
 const getTekstForAntallBarn = (antallBarn: number, intl: IntlShape): string => {
-    if (antallBarn === 1 || antallBarn === 0) {
-        return intl.formatMessage({ id: 'barn' });
-    } else if (antallBarn === 2) {
-        return intl.formatMessage({ id: 'tvillinger' });
-    } else if (antallBarn === 3) {
-        return intl.formatMessage({ id: 'trillinger' });
+    switch (antallBarn) {
+        case 1:
+        case 0: {
+            return intl.formatMessage({ id: 'barn' });
+        }
+        case 2: {
+            return intl.formatMessage({ id: 'tvillinger' });
+        }
+        case 3: {
+            return intl.formatMessage({ id: 'trillinger' });
+        }
+        // No default
     }
     return intl.formatMessage({ id: 'flerlinger' });
 };
@@ -331,14 +340,12 @@ const getTittelBarnNårNavnSkalIkkeVises = (
 };
 
 export const getNavnPåBarna = (fornavn: string[], intl: IntlShape): string => {
-    if (fornavn.length > 1) {
-        return formatOppramsing(
-            fornavn.map((n) => n.trim()),
-            intl,
-        );
-    } else {
-        return `${fornavn[0]}`;
-    }
+    return fornavn.length > 1
+        ? formatOppramsing(
+              fornavn.map((n) => n.trim()),
+              intl,
+          )
+        : `${fornavn[0]}`;
 };
 
 type SakTittelArguments = {

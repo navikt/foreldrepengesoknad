@@ -24,11 +24,11 @@ export type AnnenForelderIkkeOppgitt = {
 export type AnnenForelder = AnnenForelderIkkeOppgitt | AnnenForelderOppgitt;
 
 export const isAnnenForelderOppgitt = (annenForelder: AnnenForelder): annenForelder is AnnenForelderOppgitt => {
-    return annenForelder.kanIkkeOppgis === false;
+    return !annenForelder.kanIkkeOppgis;
 };
 
 export const isAnnenForelderIkkeOppgitt = (annenForelder: AnnenForelder): annenForelder is AnnenForelderIkkeOppgitt => {
-    return annenForelder.kanIkkeOppgis === true;
+    return annenForelder.kanIkkeOppgis;
 };
 
 export const isAnnenForelderOppgittNorsk = (annenForelder: AnnenForelder): annenForelder is AnnenForelderOppgitt => {

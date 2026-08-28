@@ -38,7 +38,7 @@ export const OmBarnetSteg = ({ kjønn, mellomlagreOgNaviger }: Props) => {
 
     const onSubmit = (formValues: FormValues) => {
         mapOgLagreOmBarnet(formValues);
-        if (formValues.erBarnetFødt === true) {
+        if (formValues.erBarnetFødt) {
             oppdaterDokumentasjon(undefined);
         }
         return navigator.goToNextDefaultStep();

@@ -56,7 +56,7 @@ const mapOmDetValgteBarnetFormDataToState = (
             type: BarnType.ADOPTERT_ANNET_BARN,
             adopsjonsdato: values.adopsjonsdato,
             adoptertIUtlandet: values.adoptertIUtlandet,
-            ankomstdato: values.adoptertIUtlandet === true ? values.ankomstdato : undefined,
+            ankomstdato: values.adoptertIUtlandet ? values.ankomstdato : undefined,
         };
     }
     throw new Error('Unreachable code');
@@ -126,7 +126,7 @@ export const mapOmBarnetFormDataToState = (
             adopsjonsdato: values.adopsjonsdato,
             antallBarn: values.antallBarn < 3 ? values.antallBarn : Number.parseInt(values.antallBarnSelect!, 10),
             adoptertIUtlandet: values.adoptertIUtlandet,
-            ankomstdato: values.adoptertIUtlandet === true ? values.ankomstdato : undefined,
+            ankomstdato: values.adoptertIUtlandet ? values.ankomstdato : undefined,
         };
     }
 

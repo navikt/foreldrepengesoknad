@@ -319,18 +319,20 @@ export const ForeldrepengesøknadRoutes = ({
     useQuery(annenPartVedtakOptions);
 
     useEffect(() => {
-        if (
+        if (!(
             currentRoute &&
             erMyndig(søkerInfo.fødselsdato) &&
             lagretHarGodkjentVilkår &&
             isFirstTimeLoadingAppRef.current
-        ) {
-            isFirstTimeLoadingAppRef.current = false;
-            if (isRouteAvailable(currentRoute, lagretHarGodkjentVilkår)) {
-                void navigate(currentRoute);
-            } else if (routerLocation.pathname === SøknadRoutes.OPPSUMMERING.toString()) {
-                void navigate(SøknadRoutes.UTTAKSPLAN);
-            }
+        )) {
+            return;
+        }
+
+        isFirstTimeLoadingAppRef.current = false;
+        if (isRouteAvailable(currentRoute, lagretHarGodkjentVilkår)) {
+            void navigate(currentRoute);
+        } else if (routerLocation.pathname === SøknadRoutes.OPPSUMMERING) {
+            void navigate(SøknadRoutes.UTTAKSPLAN);
         }
     }, [currentRoute, søkerInfo.fødselsdato, lagretHarGodkjentVilkår, navigate, routerLocation.pathname]);
 
