@@ -20,7 +20,7 @@ export const erBarnetAdoptert = (omBarnet: OmBarnetPlanlegger): omBarnet is Barn
 };
 
 export const mapOmBarnetPlanleggerTilBarn = (omBarnet: OmBarnetPlanlegger): Barn => {
-    const antallBarn = Number.parseInt(omBarnet.antallBarn, 10);
+    const antallBarn = Number(omBarnet.antallBarn);
 
     if (erBarnetUFødt(omBarnet)) {
         return {

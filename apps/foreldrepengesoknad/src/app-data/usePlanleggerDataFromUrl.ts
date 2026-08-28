@@ -35,7 +35,7 @@ const utledRolleForSøker = (kjønn: Kjønn_fpoversikt | undefined): Søkerrolle
     kjønn === 'M' ? 'far' : undefined;
 
 const mapOmBarnetTilBarn = (barnet: OmBarnetPlanlegger): Barn => {
-    const antallBarn = Number.parseInt(barnet.antallBarn, 10);
+    const antallBarn = Number(barnet.antallBarn);
 
     if (erBarnetAdoptert(barnet)) {
         return {

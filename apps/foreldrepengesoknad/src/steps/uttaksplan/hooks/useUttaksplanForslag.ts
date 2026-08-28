@@ -25,10 +25,10 @@ const getFellesperioderDagerFordeling = (fordeling: Fordeling, fellesperiodeDage
     }
     if (fordeling.fordelingValg === FellesperiodeFordelingValg.VIL_VELGE) {
         const antallDager = fordeling.antallDagerFellesperiodeTilSøker
-            ? Number.parseInt(fordeling.antallDagerFellesperiodeTilSøker, 10)
+            ? Number(fordeling.antallDagerFellesperiodeTilSøker)
             : 0;
         const antallUker = fordeling.antallUkerFellesperiodeTilSøker
-            ? Number.parseInt(fordeling.antallUkerFellesperiodeTilSøker, 10)
+            ? Number(fordeling.antallUkerFellesperiodeTilSøker)
             : 0;
         const fellesperiodeDagerMor = antallUker * 5 + antallDager;
         return {
