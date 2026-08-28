@@ -3,17 +3,17 @@ import { ContextDataType, useContextGetData, useContextSaveData } from './SvpDat
 const filtrerBort = <T>(
     tilrettelegginger: Record<string, T>,
     tilretteleggingerSomSkalFjernes: string[],
-): Record<string, T> =>
-    Object.keys(tilrettelegginger).reduce(
-        (acc, id) =>
-            tilretteleggingerSomSkalFjernes.includes(id)
-                ? acc
-                : {
-                      ...acc,
-                      [id]: tilrettelegginger[id],
-                  },
-        {},
-    );
+): Record<string, T> => {
+    const filtrerteTilrettelegginger: Record<string, T> = {};
+
+    Object.keys(tilrettelegginger).forEach((id) => {
+        if (!tilretteleggingerSomSkalFjernes.includes(id)) {
+            filtrerteTilrettelegginger[id] = tilrettelegginger[id]!;
+        }
+    });
+
+    return filtrerteTilrettelegginger;
+};
 
 export const useTilretteleggingerHelper = () => {
     const tilrettelegginger = useContextGetData(ContextDataType.TILRETTELEGGINGER);

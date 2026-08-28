@@ -317,19 +317,20 @@ export type UttakUkerOgDager = {
 
 export const finnAntallUkerOgDagerMedForeldrepenger = (stønadskvote: KontoBeregningDto): UttakUkerOgDager => {
     const { kontoer } = stønadskvote;
+    let uker = 0;
+    let totaltAntallDager = 0;
+    let dager = 0;
+
+    kontoer.forEach((konto, index) => {
+        uker += Math.round(konto.dager / 5);
+        totaltAntallDager += konto.dager;
+
+        dager = index === kontoer.length - 1 ? totaltAntallDager % 5 : totaltAntallDager;
+    });
+
     return {
-        uker: kontoer.reduce((prev: number, current: KontoDto) => {
-            return Math.round(current.dager / 5) + prev;
-        }, 0),
-        dager: kontoer.reduce((prev: number, current: KontoDto, index: number) => {
-            const result = current.dager + prev;
-
-            if (index === kontoer.length - 1) {
-                return result % 5;
-            }
-
-            return result;
-        }, 0),
+        uker,
+        dager,
     };
 };
 

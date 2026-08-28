@@ -46,6 +46,16 @@ const mapYtelse = (sakstype: Ytelse) => {
 
 const DEFAULT_OPTION = 'default';
 
+const getSkjemanummerTextMap = (intl: IntlShape, sak: Sak): Record<Skjemanummer, string> => {
+    const skjemanummerTextMap = {} as Record<Skjemanummer, string>;
+
+    getRelevanteSkjemanummer(sak).forEach((skjemanr) => {
+        skjemanummerTextMap[skjemanr] = intl.formatMessage({ id: `ettersendelse.${skjemanr}` });
+    });
+
+    return skjemanummerTextMap;
+};
+
 const getAttachmentTypeSelectOptions = (intl: IntlShape, manglendeSkjemanummer: string[], sak: Sak | undefined) => {
     if (!sak) {
         return null;
@@ -194,17 +204,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
                         skjemanummer={type}
                         existingAttachments={vedlegg}
                         uploadPath={mapYtelse(sak!.ytelse)}
-                        skjemanummerTextMap={
-                            sak
-                                ? getRelevanteSkjemanummer(sak).reduce(
-                                      (prev, skjemanr) => ({
-                                          ...prev,
-                                          [skjemanr]: intl.formatMessage({ id: `ettersendelse.${skjemanr}` }),
-                                      }),
-                                      {} as Record<Skjemanummer, string>,
-                                  )
-                                : undefined
-                        }
+                        skjemanummerTextMap={sak ? getSkjemanummerTextMap(intl, sak) : undefined}
                     />
                 )}
                 {vedlegg && vedlegg.length > 0 && vedlegg.length <= 40 && (

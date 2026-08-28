@@ -149,9 +149,10 @@ export const mapFlereTilretteleggingPerioder = (
         } as const;
     });
 
-    const sisteTom = allePerioder
-        .map((p) => dayjs(p.tom))
-        .reduce((siste, dato) => (dayjs(siste).isBefore(dato) ? dato : siste), dayjs(TIDENES_MORGEN));
+    let sisteTom = dayjs(TIDENES_MORGEN);
+    for (const dato of allePerioder.map((p) => dayjs(p.tom))) {
+        sisteTom = dayjs(sisteTom).isBefore(dato) ? dato : sisteTom;
+    }
 
     if (!sisteTom.isSame(sisteDagForSvangerskapspenger, 'day')) {
         allePerioder.push(
@@ -170,7 +171,7 @@ export const getOpprinneligStillingsprosent = (
     allePerioder: PeriodeMedVariasjonFormValues[],
     stillinger: Stilling[],
 ) => {
-    const sorterePerioder = [...allePerioder].sort(sorterTilretteleggingsperioder);
+    const sorterePerioder = allePerioder.toSorted(sorterTilretteleggingsperioder);
     const førstePeriodeFom = sorterePerioder.length > 0 ? sorterePerioder[0]!.fom : undefined;
     return førstePeriodeFom ? getTotalStillingsprosentPåSkjæringstidspunktet(stillinger, førstePeriodeFom) : 100;
 };
