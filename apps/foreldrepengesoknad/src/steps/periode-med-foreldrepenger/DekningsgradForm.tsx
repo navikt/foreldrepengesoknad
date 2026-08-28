@@ -25,7 +25,7 @@ const finnSisteDagMedForeldrepenger = (stønadskvoter: KontoBeregningDto, barn: 
 
     const dato = erAdopsjon ? barn.adopsjonsdato : termindato;
 
-    if ((!erAdopsjon && !!fødselsdato) || !dato) {
+    if (!dato || (!erAdopsjon && !!fødselsdato)) {
         return undefined;
     }
 

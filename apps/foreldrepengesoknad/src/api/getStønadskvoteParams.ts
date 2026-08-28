@@ -81,7 +81,7 @@ const finnRettighetstype = (
     if (morErAleneOmOmsorg || farHarAleneomsorg) {
         return 'ALENEOMSORG';
     }
-    if ((farHarRett && morHarRett) || annenForelderHarRettIEØS) {
+    if (annenForelderHarRettIEØS || (farHarRett && morHarRett)) {
         return 'BEGGE_RETT';
     }
     return 'BARE_SØKER_RETT';

@@ -176,9 +176,9 @@ export const useUttaksplanForslag = (
 
     if (
         annenPartsPerioderLaster ||
-        !kanGenerereUttaksplanForslag(annenPartsPerioder) ||
         !valgtStønadskvote ||
-        !fordeling
+        !fordeling ||
+        !kanGenerereUttaksplanForslag(annenPartsPerioder)
     ) {
         return [];
     }
@@ -303,7 +303,7 @@ const getOppstartsdatoFromFordelingValg = (
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const ankomstDatoNorge = isAdoptertAnnetBarn(barn) && barn.adoptertIUtlandet ? barn.ankomstdato : undefined;
 
-    if ((!oppstartValg || oppstartValg === OppstartValg.ANNEN_DATO) && oppstartDato) {
+    if (oppstartDato && (!oppstartValg || oppstartValg === OppstartValg.ANNEN_DATO)) {
         return Uttaksdagen.denneEllerNeste(oppstartDato).getDato();
     }
     switch (oppstartValg) {

@@ -100,7 +100,7 @@ const mapBarn = (barn: BarnDto, dokumentasjon?: Dokumentasjon): BarnDto => {
         throw new Error('Det er feil i data om barnet: mangler terminbekreftelse for termin-barn');
     }
 
-    return barn.type === 'termin' && dokumentasjon && erTerminDokumentasjon(dokumentasjon)
+    return dokumentasjon && barn.type === 'termin' && erTerminDokumentasjon(dokumentasjon)
         ? { ...barn, terminbekreftelseDato: dokumentasjon.terminbekreftelsedato }
         : barn;
 };

@@ -33,7 +33,7 @@ export const validateFødselsnummer =
 
         const validFnrResult = isFødselsnummerFormatValid(fnr);
 
-        if (!erUtenlandskFnr && !isSixteenOrOlder(fnr, validFnrResult) && validFnrResult === 'fnr') {
+        if (!erUtenlandskFnr && validFnrResult === 'fnr' && !isSixteenOrOlder(fnr, validFnrResult)) {
             return intl.formatMessage({ id: 'valideringsfeil.fødselsnummer.underSeksten' });
         }
 

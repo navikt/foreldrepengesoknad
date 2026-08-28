@@ -243,7 +243,7 @@ export const getNavnAnnenForelder = (
 ) => {
     const fødselsdatoFraSak = sak?.familiehendelse ? sak.familiehendelse.fødselsdato : undefined;
     const barn =
-        søkerinfo.barn && fødselsdatoFraSak
+        fødselsdatoFraSak && søkerinfo.barn
             ? søkerinfo.barn.find((b) => dayjs(b.fødselsdato).isSame(fødselsdatoFraSak, 'd'))
             : undefined;
     const annenForelderNavn = barn?.annenPartFornavn;
@@ -298,7 +298,7 @@ const getTittelBarnNårNavnSkalIkkeVises = (
     type: Familiesituasjon,
 ): { tittel: string; undertittel: string } => {
     const barnTekst = getTekstForAntallBarn(antallBarn, intl);
-    if ((antallBarn === 0 && fødselsdatoer === undefined) || type === 'termin') {
+    if (type === 'termin' || (antallBarn === 0 && fødselsdatoer === undefined)) {
         return {
             tittel: intl.formatMessage(
                 { id: 'barnHeader.terminBarn' },

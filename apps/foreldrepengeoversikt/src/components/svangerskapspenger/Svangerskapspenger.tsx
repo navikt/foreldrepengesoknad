@@ -33,7 +33,7 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
     const terminDato = svpSak.familiehendelse.termindato;
     const harAvslag = svpSak.gjeldendeVedtak?.avslagÅrsak !== undefined;
 
-    if (arbeidsforhold.length === 0 || !terminDato || harAvslag) {
+    if (!terminDato || harAvslag || arbeidsforhold.length === 0) {
         return null;
     }
     const perioder = lagKronologiskeSvpPerioder(svpSak);

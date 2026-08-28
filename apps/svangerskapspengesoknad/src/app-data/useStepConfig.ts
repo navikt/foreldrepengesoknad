@@ -198,7 +198,7 @@ const getStepConfig = (
                 }),
             );
         }
-    } else if ((harValgtEnTilrettelegging || harKunEttArbeid) && barn && arbeidsforholdOgInntekt) {
+    } else if (barn && arbeidsforholdOgInntekt && (harValgtEnTilrettelegging || harKunEttArbeid)) {
         const tilretteleggingId = harValgtEnTilrettelegging
             ? valgteArbeidsforhold[0]
             : getTilretteleggingId(arbeidsforhold, barn.termindato, arbeidsforholdOgInntekt);

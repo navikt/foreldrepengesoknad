@@ -321,8 +321,8 @@ export const ForeldrepengesøknadRoutes = ({
     useEffect(() => {
         if (!(
             currentRoute &&
-            erMyndig(søkerInfo.fødselsdato) &&
             lagretHarGodkjentVilkår &&
+            erMyndig(søkerInfo.fødselsdato) &&
             isFirstTimeLoadingAppRef.current
         )) {
             return;

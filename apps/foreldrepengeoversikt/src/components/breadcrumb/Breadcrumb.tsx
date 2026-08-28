@@ -103,7 +103,7 @@ export const Breadcrumb = () => {
     const getRoute = (route: OversiktRoutes | 'https://www.nav.no/minside', saksnummer: string | undefined): string => {
         const sakRoute = `${OversiktRoutes.SAKSOVERSIKT}/${saksnummer}`;
 
-        if (route === OversiktRoutes.SAKSOVERSIKT && saksnummer) {
+        if (saksnummer && route === OversiktRoutes.SAKSOVERSIKT) {
             return sakRoute;
         }
 

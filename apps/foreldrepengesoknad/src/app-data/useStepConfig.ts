@@ -135,7 +135,7 @@ const showManglendeDokumentasjonSteg = (
             : [];
 
         const skalHaUttakDok =
-            annenForelder && perioderSomSkalSjekkes.length > 0 && familiehendelsedato
+            familiehendelsedato && annenForelder && perioderSomSkalSjekkes.length > 0
                 ? kreverUttaksplanVedleggNy(
                       perioderSomSkalSjekkes,
                       erFarEllerMedmor,

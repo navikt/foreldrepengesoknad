@@ -94,7 +94,7 @@ export const getFordelingDelTittel = (
 ): string => {
     let varighetTekst: string;
     const navnAnnenForelder = erFarEllerMedmor ? navnMor : navnFarMedmor;
-    if (delInfo.eier === FordelingEier.Mor && erFødsel) {
+    if (erFødsel && delInfo.eier === FordelingEier.Mor) {
         const dagerFørFødsel = 15;
         const dagerEtterFødsel = delInfo.sumDager - dagerFørFødsel;
         let varighetUkerEtterFødsel: number | string;

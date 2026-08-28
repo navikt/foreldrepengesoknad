@@ -81,7 +81,7 @@ export const FødselsdatoerFieldArray = ({ adopsjonsdato, antallBarn, antallBarn
         if (!antallBarn || (antallBarn === 3 && !antallBarnDropDown)) {
             return;
         }
-        const antall = antallBarn < 3 || !antallBarnDropDown ? antallBarn : Number(antallBarnDropDown);
+        const antall = !antallBarnDropDown || antallBarn < 3 ? antallBarn : Number(antallBarnDropDown);
         const diff = fields.length - antall;
         if (diff > 0) {
             for (const index of Array.from({ length: diff }).keys()) {

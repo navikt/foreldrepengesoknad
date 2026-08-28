@@ -242,7 +242,7 @@ const finnAnnenForelderForSaken = (
     valgtBarnFnr: string[] | undefined,
     annenForeldersFnrFraSaken: string | undefined,
 ) => {
-    if ((valgtBarnFnr === undefined && fødselsdato === undefined) || !annenForeldersFnrFraSaken) {
+    if (!annenForeldersFnrFraSaken || (valgtBarnFnr === undefined && fødselsdato === undefined)) {
         return;
     }
     const barnMedGittFnr = valgtBarnFnr

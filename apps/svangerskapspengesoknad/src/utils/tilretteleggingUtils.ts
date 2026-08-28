@@ -101,7 +101,7 @@ export const mapEnTilretteleggingPeriode = (
             : sisteDagForSvangerskapspenger;
 
     const type =
-        tilrettelegging.type === 'delvis' && stillingsprosent && stillingsprosent > 0
+        stillingsprosent && tilrettelegging.type === 'delvis' && stillingsprosent > 0
             ? ('delvis' as const)
             : ('ingen' as const);
 

@@ -228,12 +228,12 @@ export const getVarighetString = (antallDager: number, intl: IntlShape, format: 
         return dagerStr;
     }
     const ukerStr = intl.formatMessage({ id: 'varighet.uker' }, { uker });
-    if (dager > 0 && format === 'full') {
+    if (format === 'full' && dager > 0) {
         return `${ukerStr}${intl.formatMessage({
             id: `varighet.separator--full`,
         })}${dagerStr}`;
     }
-    if (dager > 0 && format === 'normal') {
+    if (format === 'normal' && dager > 0) {
         return `${ukerStr}${intl.formatMessage({
             id: `varighet.separator--normal`,
         })}${dagerStr}`;

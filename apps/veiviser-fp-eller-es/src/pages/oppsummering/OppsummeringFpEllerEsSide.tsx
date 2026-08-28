@@ -44,14 +44,14 @@ const finnHvemSomHarRett = (fpEllerEsSituasjon: FpEllerEsSituasjon, satser: Sats
     }
     if (
         situasjon === 'mor' &&
-        ((!erLønnOverEllerLik200000 && !erLønnOverEllerLikMinstelønn) || erLønnOverEllerLikMinstelønn) &&
+        (erLønnOverEllerLikMinstelønn || (!erLønnOverEllerLik200000 && !erLønnOverEllerLikMinstelønn)) &&
         (borDuINorge || jobberDuINorge)
     ) {
         return 'morHarRettEs';
     }
     if (
         situasjon !== 'mor' &&
-        ((!erLønnOverEllerLik200000 && !erLønnOverEllerLikMinstelønn) || erLønnOverEllerLikMinstelønn) &&
+        (erLønnOverEllerLikMinstelønn || (!erLønnOverEllerLik200000 && !erLønnOverEllerLikMinstelønn)) &&
         (borDuINorge || jobberDuINorge)
     ) {
         return 'farEllerMedmorKanHaRettEs';

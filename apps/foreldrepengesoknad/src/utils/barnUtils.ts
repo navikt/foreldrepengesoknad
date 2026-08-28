@@ -131,7 +131,7 @@ export const formaterNavnPåBarn = (
     antallBarn: number,
     intl: IntlShape,
 ): string => {
-    if (fornavn === undefined || fornavn.length === 0 || !alleBarnaLever) {
+    if (fornavn === undefined || !alleBarnaLever || fornavn.length === 0) {
         return getTittelBarnNårNavnSkalIkkeVises(omsorgsovertagelsesdato, fødselsdatoer, antallBarn, intl);
     }
 

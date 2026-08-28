@@ -72,7 +72,7 @@ function RedirectTilSakHvisDetKunFinnesEn({ saker }: { readonly saker: SakOppsla
     // Etter første gang denne komponenten rendres skal det ikke lenger tillates redirects.
     const harRedirectetRef = useRef(false);
 
-    if (viErPåLandingSiden && !harRedirectetRef.current && harKunDetteSaksnummeret) {
+    if (harKunDetteSaksnummeret && viErPåLandingSiden && !harRedirectetRef.current) {
         harRedirectetRef.current = true;
         void navigate(`${OversiktRoutes.SAKSOVERSIKT}/${harKunDetteSaksnummeret}`);
     }

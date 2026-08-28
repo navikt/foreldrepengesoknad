@@ -159,7 +159,7 @@ const validateAtPeriodeIkkeOverlapper = (
     intl: IntlShape,
     sisteDagForSvangerskapspenger: string,
 ) => {
-    if ((tom || tomType) && fom && allePerioder.length > 0) {
+    if (fom && (tom || tomType) && allePerioder.length > 0) {
         const andrePerioderLagtTilEtter = allePerioder.filter((_p, i) => i > index);
         const overlappendePerioder = andrePerioderLagtTilEtter.filter((p) => {
             let periodeTom;

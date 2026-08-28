@@ -49,7 +49,7 @@ const getTidslinjetekstForAntallBarn = (antallBarn: number, intl: IntlShape, gje
     if (antallBarn === 1 || antallBarn === 0) {
         return intl.formatMessage({ id: 'barnet' });
     }
-    if (antallBarn > 1 && gjelderAdopsjon) {
+    if (gjelderAdopsjon && antallBarn > 1) {
         return intl.formatMessage({ id: 'barna' });
     }
     if (antallBarn === 2) {

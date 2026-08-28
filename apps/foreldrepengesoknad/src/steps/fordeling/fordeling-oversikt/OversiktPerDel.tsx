@@ -52,7 +52,7 @@ export const OversiktPerDel = ({
         annenForelderKunRettIEØS,
     );
 
-    const hoverClass = currentUthevet === delInformasjon.eier && erDeltUttak ? styles.hover : styles.noHover;
+    const hoverClass = erDeltUttak && currentUthevet === delInformasjon.eier ? styles.hover : styles.noHover;
 
     return (
         <VStack

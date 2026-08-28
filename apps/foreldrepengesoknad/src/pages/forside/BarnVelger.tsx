@@ -96,7 +96,7 @@ export const BarnVelger = ({ selectableBarn, harPlanleggerData }: Props) => {
 
     const { control } = useFormContext<ForsideFormValues>();
 
-    if (selectableBarn.length === 0 && !harPlanleggerData) {
+    if (!harPlanleggerData && selectableBarn.length === 0) {
         return null;
     }
 

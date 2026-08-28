@@ -23,9 +23,9 @@ export const MilitærEllerSiviltjenesteDokumentasjon = ({
     const intl = useIntl();
 
     if (
+        !andreInntektskilder ||
         !arbeidsforholdOgInntekt ||
         (arbeidsforholdOgInntekt && !arbeidsforholdOgInntekt.harHattAndreInntektskilder) ||
-        !andreInntektskilder ||
         andreInntektskilder.every((i) => i.type !== AnnenInntektType.MILITÆRTJENESTE)
     ) {
         return null;
