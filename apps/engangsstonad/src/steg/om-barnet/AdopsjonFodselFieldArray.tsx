@@ -41,9 +41,7 @@ export const AdopsjonFodselFieldArray = ({ adopsjonsdato, antallBarn, antallBarn
             }
         }
         if (diff < 0) {
-            for (const _ of Array.from({ length: antall - fields.length })) {
-                append({ dato: undefined });
-            }
+            append(Array.from({ length: -diff }, () => ({ dato: undefined })));
         }
     }, [antallBarn, antallBarnDropDown, append, fields.length, remove]);
 
