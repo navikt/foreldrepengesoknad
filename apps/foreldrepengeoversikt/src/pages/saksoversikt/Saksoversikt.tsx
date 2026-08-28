@@ -43,9 +43,10 @@ dayjs.extend(isSameOrBefore);
 // DinPlan drar med seg de tunge UI-komponentene i @navikt/fp-uttaksplan (kalender, liste,
 // kvoteoppsummering). Den lastes derfor lazy, siden den kun vises for FORELDREPENGER-saker,
 // slik at brukere med SVANGERSKAPSPENGER- eller ENGANGSSTØNAD-saker ikke trenger disse bytene.
-const DinPlan = lazy(() =>
-    import('../../sections/din-plan/DinPlan.tsx').then((module) => ({ default: module.DinPlan })),
-);
+const DinPlan = lazy(async () => {
+    const { DinPlan } = await import('../../sections/din-plan/DinPlan.tsx');
+    return { default: DinPlan };
+});
 
 interface Props {
     søkerinfo: OversiktPersonopplysningerDto_fpoversikt;

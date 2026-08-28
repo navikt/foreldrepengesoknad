@@ -19,12 +19,14 @@ import { Spinner } from '@navikt/fp-ui';
 // (kalender, liste, kvoteoppsummering, modaler). De lastes derfor lazy, med prefetch fra
 // stegene rett før i planleggerflyten (sjå FordelingSteg og PlanenDeresSteg), slik at bytene
 // normalt er hentet før brukaren faktisk navigerer dit.
-const PlanenDeresSteg = lazy(() =>
-    import('steps/planen-deres/PlanenDeresSteg').then((module) => ({ default: module.PlanenDeresSteg })),
-);
-const OppsummeringSteg = lazy(() =>
-    import('steps/oppsummering/OppsummeringSteg').then((module) => ({ default: module.OppsummeringSteg })),
-);
+const PlanenDeresSteg = lazy(async () => {
+    const { PlanenDeresSteg } = await import('steps/planen-deres/PlanenDeresSteg');
+    return { default: PlanenDeresSteg };
+});
+const OppsummeringSteg = lazy(async () => {
+    const { OppsummeringSteg } = await import('steps/oppsummering/OppsummeringSteg');
+    return { default: OppsummeringSteg };
+});
 
 interface Props {
     stønadskvoter?: { '100': KontoBeregningDto; '80': KontoBeregningDto };

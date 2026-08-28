@@ -105,17 +105,24 @@ export const useMellomlagreSøknad = (
             }
         };
 
-        lagreEllerSlett().catch((error: Error) => {
-            if (error instanceof ApiError) {
-                captureApiError(error.telemetryMessage, error.problemDetails);
-            } else {
-                captureMessage(error.message);
-            }
+        const lagreOgHåndterFeil = async () => {
+            try {
+                await lagreEllerSlett();
+            } catch (error: unknown) {
+                const lagringsfeil = error as Error;
+                if (lagringsfeil instanceof ApiError) {
+                    captureApiError(lagringsfeil.telemetryMessage, lagringsfeil.problemDetails);
+                } else {
+                    captureMessage(lagringsfeil.message);
+                }
 
-            if (promiseRef.current) {
-                promiseRef.current();
+                if (promiseRef.current) {
+                    promiseRef.current();
+                }
             }
-        });
+        };
+
+        void lagreOgHåndterFeil();
     }, [forespørsel]);
 
     const mellomlagreOgNaviger = useCallback<MellomlagreSøknadFn>((options) => {

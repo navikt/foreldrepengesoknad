@@ -140,9 +140,10 @@ export const useMellomlagreSøknad = (
             }
         };
 
-        lagre().then(
-            () => fullfør('ok'),
-            (error: unknown) => {
+        const lagreOgFullfør = async () => {
+            try {
+                await lagre();
+            } catch (error: unknown) {
                 //Logg feil. Om kallaren har bedt om det, blir brukaren også varsla.
                 if (error instanceof ApiError) {
                     captureApiError(error.telemetryMessage, error.problemDetails);
@@ -151,8 +152,13 @@ export const useMellomlagreSøknad = (
                 }
 
                 fullfør('feilet');
-            },
-        );
+                return;
+            }
+
+            fullfør('ok');
+        };
+
+        void lagreOgFullfør();
     }, [seq]);
 
     const mellomlagreSøknad = useCallback<MellomlagreSøknadFn>(
