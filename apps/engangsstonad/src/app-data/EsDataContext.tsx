@@ -53,7 +53,7 @@ export const EsDataContext = ({ children, initialState, onDispatch }: Props): JS
                 return {};
             }
             default: {
-                throw new Error();
+                throw new Error('Ugyldig type');
             }
         }
     }, initialState || defaultInitialState);
