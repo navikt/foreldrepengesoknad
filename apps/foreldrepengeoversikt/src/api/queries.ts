@@ -51,6 +51,7 @@ export const søkerInfoOptions = () =>
         queryKey: ['SØKERINFO'],
         queryFn: () => ky.get(API_URLS.søkerInfo, { timeout: 30000 }).json<OversiktPersonopplysningerDto_fpoversikt>(),
         staleTime: Infinity,
+        refetchOnWindowFocus: 'always',
     });
 
 export const minidialogOptions = () =>

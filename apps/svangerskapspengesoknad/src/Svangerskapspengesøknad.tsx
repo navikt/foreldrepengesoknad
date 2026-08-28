@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { SvpDataContext } from 'appData/SvpDataContext';
-import { API_URLS, mellomlagretInfoOptions, sesjonssjekkOptions, søkerinfoOptions } from 'appData/queries';
+import { API_URLS, mellomlagretInfoOptions, søkerinfoOptions } from 'appData/queries';
 import { VERSJON_MELLOMLAGRING } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
 import { useIntl } from 'react-intl';
@@ -28,9 +28,6 @@ export const Svangerskapspengesøknad = () => {
     useDocumentTitle(intl.formatMessage({ id: 'Svangerskapspengesøknad.pagetitle' }));
 
     const søkerinfo = useQuery(søkerinfoOptions());
-
-    // Oppdager at sesjonen har løpt ut når brukeren kommer tilbake til fanen
-    useQuery(sesjonssjekkOptions());
 
     const mellomlagretInfo = useQuery(mellomlagretInfoOptions());
 

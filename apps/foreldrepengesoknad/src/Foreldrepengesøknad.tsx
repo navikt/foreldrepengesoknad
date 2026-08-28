@@ -3,7 +3,6 @@ import {
     API_URLS,
     mellomlagretInfoOptions,
     sakerOptions,
-    sesjonssjekkOptions,
     søkerinfoOptions,
     useAnnenPartVedtakOptions,
 } from 'api/queries';
@@ -39,9 +38,6 @@ export const Foreldrepengesøknad = () => {
     useDocumentTitle(intl.formatMessage({ id: 'søknad.pagetitle' }));
 
     const søkerinfoQuery = useQuery(søkerinfoOptions());
-
-    // Oppdager at sesjonen har løpt ut når brukeren kommer tilbake til fanen
-    useQuery(sesjonssjekkOptions());
 
     const sakerQuery = useQuery(sakerOptions());
 
