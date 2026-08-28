@@ -112,15 +112,24 @@ const UttaksplanListe = ({
     const erAleneOmOmsorg = erAnnenForelderOppgitt ? annenForelder?.erAleneOmOmsorg : false;
 
     const getStønadskvoteNavnFraKvote = (konto: KontoType | undefined, morsAktivitet?: MorsAktivitet) => {
-        return konto === undefined
-            ? ''
-            : getStønadskvoteNavn(intl, konto, navnPåForeldre, søkerErFarEllerMedmor, erAleneOmOmsorg, morsAktivitet);
+        return (
+            (konto !== undefined &&
+                getStønadskvoteNavn(
+                    intl,
+                    konto,
+                    navnPåForeldre,
+                    søkerErFarEllerMedmor,
+                    erAleneOmOmsorg,
+                    morsAktivitet,
+                )) ||
+            ''
+        );
     };
 
     const getUttaksperiodeNavn = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
         const morsAktivitet = Uttaksperioden.erIkkeEøsPeriode(periode) ? periode.morsAktivitet : undefined;
         const tittel = getStønadskvoteNavnFraKvote(periode.kontoType, morsAktivitet);
-        const termindato = getTermindato(barn) ? getTermindato(barn) : undefined;
+        const termindato = (getTermindato(barn) && getTermindato(barn)) || undefined;
         return søkersituasjon.situasjon === 'fødsel' &&
             isUttaksperiodeFarMedmorPgaFødsel(periode, familiehendelsesdato, termindato)
             ? tittel + intl.formatMessage({ id: 'rundtFødsel' })
@@ -229,7 +238,7 @@ const UttaksplanListe = ({
                                                 periode,
                                                 navnPåForeldre,
                                                 familiehendelsesdato,
-                                                getTermindato(barn) ? getTermindato(barn) : undefined,
+                                                (getTermindato(barn) && getTermindato(barn)) || undefined,
                                                 søkersituasjon.situasjon,
                                                 søkerErFarEllerMedmor,
                                             )}

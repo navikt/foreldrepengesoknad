@@ -84,7 +84,7 @@ const skalBesvaresVedUtsettelse = (søkerErFarEllerMedmor: boolean, annenForelde
 };
 
 const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UttakUtsettelseÅrsak_fpoversikt) =>
-    årsak === 'SØKER_SYKDOM' || årsak === 'SØKER_INNLAGT' || årsak === 'BARN_INNLAGT';
+    ['SØKER_SYKDOM', 'SØKER_INNLAGT', 'BARN_INNLAGT'].includes(årsak);
 
 const dokumentasjonBehøvesForUttaksperiode = (
     periode: UttakPeriode_fpoversikt,

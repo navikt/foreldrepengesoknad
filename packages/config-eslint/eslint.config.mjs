@@ -14,6 +14,7 @@ const ERROR = 2;
 
 const IGNORED_UNICORN_RULES = {
     'unicorn/consistent-boolean-name': OFF,
+    'unicorn/no-array-callback-reference': OFF,
     'unicorn/consistent-function-scoping': OFF,
     'unicorn/filename-case': OFF,
     'unicorn/max-nested-calls': OFF,

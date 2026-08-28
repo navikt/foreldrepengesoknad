@@ -49,9 +49,9 @@ const DEFAULT_OPTION = 'default';
 const getSkjemanummerTextMap = (intl: IntlShape, sak: Sak): Record<Skjemanummer, string> => {
     const skjemanummerTextMap = {} as Record<Skjemanummer, string>;
 
-    getRelevanteSkjemanummer(sak).forEach((skjemanr) => {
+    for (const skjemanr of getRelevanteSkjemanummer(sak)) {
         skjemanummerTextMap[skjemanr] = intl.formatMessage({ id: `ettersendelse.${skjemanr}` });
-    });
+    }
 
     return skjemanummerTextMap;
 };

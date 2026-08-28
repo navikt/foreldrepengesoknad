@@ -41,7 +41,7 @@ const getMorHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder)
 
 const getTermindatoSomSkalBrukes = (barn: Barn, termindatoSaksgrunnlag?: string): string | undefined => {
     if (isFødtBarn(barn) || isUfødtBarn(barn)) {
-        return termindatoSaksgrunnlag ? termindatoSaksgrunnlag : barn.termindato;
+        return termindatoSaksgrunnlag || barn.termindato;
     }
 
     return undefined;
@@ -56,7 +56,7 @@ export const getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter = (
         return termindatoSaksgrunnlagAnnenPart;
     }
 
-    return termindatoSaksgrunnlag ? termindatoSaksgrunnlag : undefined;
+    return termindatoSaksgrunnlag || undefined;
 };
 
 export const getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter = (

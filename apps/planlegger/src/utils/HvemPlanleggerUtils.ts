@@ -12,21 +12,21 @@ const erGyldigNavn = (navn: string | undefined): navn is string => {
 };
 
 export const erFlereSøkere = (hvemPlanlegger: HvemPlanlegger) =>
-    hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR ||
-    hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR ||
-    hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR;
+    [HvemPlanleggerType.MOR_OG_FAR, HvemPlanleggerType.FAR_OG_FAR, HvemPlanleggerType.MOR_OG_MEDMOR].includes(
+        hvemPlanlegger.type,
+    );
 
 export const erAlenesøker = (hvemPlanlegger: HvemPlanlegger) => !erFlereSøkere(hvemPlanlegger);
 
 export const erMorDelAvSøknaden = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is MorOgFar | MorOgMedmor | Mor =>
-    hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR ||
-    hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR ||
-    hvemPlanlegger.type === HvemPlanleggerType.MOR;
+    [HvemPlanleggerType.MOR_OG_FAR, HvemPlanleggerType.MOR_OG_MEDMOR, HvemPlanleggerType.MOR].includes(
+        hvemPlanlegger.type,
+    );
 
 export const erFarDelAvSøknaden = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is MorOgFar | FarOgFar | Far =>
-    hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR ||
-    hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR ||
-    hvemPlanlegger.type === HvemPlanleggerType.FAR;
+    [HvemPlanleggerType.MOR_OG_FAR, HvemPlanleggerType.FAR_OG_FAR, HvemPlanleggerType.FAR].includes(
+        hvemPlanlegger.type,
+    );
 
 export const erMedmorDelAvSøknaden = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is MorOgMedmor =>
     hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR;
@@ -38,7 +38,7 @@ export const erFarOgFar = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is Fa
 Likekjønnet par: to fedre eller to mødre/medmødre
 */
 export const erLikekjønnetPar = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is FarOgFar | MorOgMedmor =>
-    hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR || hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR;
+    [HvemPlanleggerType.FAR_OG_FAR, HvemPlanleggerType.MOR_OG_MEDMOR].includes(hvemPlanlegger.type);
 
 /**
  * Par der brukeren (ved adopsjon, se {@link FordelingSteg}) kan velge hvem som skal starte permisjonen,
@@ -316,7 +316,7 @@ export const getTekstForDeSomHarRett = (
 
 const navnSlutterPåSLyd = (navn: string): boolean => {
     const sisteBokstav = (navn.at(-1) ?? '').toLowerCase();
-    return sisteBokstav === 's' || sisteBokstav === 'x' || sisteBokstav === 'z';
+    return ['s', 'x', 'z'].includes(sisteBokstav);
 };
 
 export const getNavnGenitivEierform = (navn: string, locale: string): string => {

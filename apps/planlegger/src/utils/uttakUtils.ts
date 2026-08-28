@@ -321,12 +321,18 @@ export const finnAntallUkerOgDagerMedForeldrepenger = (stønadskvote: KontoBereg
     let totaltAntallDager = 0;
     let dager = 0;
 
-    kontoer.forEach((konto, index) => {
+    const kontoerLength = kontoer.length;
+    for (let index = 0; index < kontoerLength; index++) {
+        if (!(index in kontoer)) {
+            continue;
+        }
+
+        const konto = kontoer[index]!;
         uker += Math.round(konto.dager / 5);
         totaltAntallDager += konto.dager;
 
         dager = index === kontoer.length - 1 ? totaltAntallDager % 5 : totaltAntallDager;
-    });
+    }
 
     return {
         uker,

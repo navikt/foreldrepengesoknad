@@ -11,11 +11,11 @@ export type UkerOgDager = {
 export const getAntallUkerOgDager = (stønadskvoter: KontoBeregningDto): UttakUkerOgDager => {
     const sum: UttakUkerOgDager = { uker: 0, dager: 0 };
 
-    Object.values(stønadskvoter.kontoer).forEach((konto) => {
+    for (const konto of Object.values(stønadskvoter.kontoer)) {
         const ukerOgDager = getUkerOgDager(konto.dager);
         sum.uker += ukerOgDager.uker;
         sum.dager += ukerOgDager.dager;
-    });
+    }
 
     return sum;
 };

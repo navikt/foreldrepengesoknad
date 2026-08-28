@@ -122,9 +122,9 @@ export const grupperSakerPåBarn = (registrerteBarn: OversiktBarnDto_fpoversikt[
 
     const result: GruppertSak[] = [];
 
-    sorterteSaker.forEach((sak) => {
+    for (const sak of sorterteSaker) {
         if (!sak.familiehendelse) {
-            return;
+            continue;
         }
 
         const familiehendelsedato = getFamiliehendelseDato(sak.familiehendelse);
@@ -135,7 +135,7 @@ export const grupperSakerPåBarn = (registrerteBarn: OversiktBarnDto_fpoversikt[
         }
 
         if (relevantSak && result.includes(relevantSak)) {
-            return;
+            continue;
         }
 
         const type = utledFamiliesituasjon(
@@ -151,7 +151,7 @@ export const grupperSakerPåBarn = (registrerteBarn: OversiktBarnDto_fpoversikt[
             barn: type === 'termin' ? undefined : getBarnGrupperingFraSak(sak, registrerteBarn),
         };
         result.push(gruppertSak);
-    });
+    }
 
     return result;
 };
