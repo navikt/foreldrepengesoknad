@@ -8,11 +8,11 @@ import {
 } from '@navikt/fp-types';
 
 export const erBarnetUFødt = (omBarnet: OmBarnetPlanlegger): omBarnet is BarnetErIkkeFødtPlanlegger => {
-    return !(omBarnet as BarnetErIkkeFødtPlanlegger).erBarnetFødt;
+    return 'erBarnetFødt' in omBarnet && !omBarnet.erBarnetFødt;
 };
 
 export const erBarnetFødt = (omBarnet: OmBarnetPlanlegger): omBarnet is BarnetErFødtPlanlegger => {
-    return (omBarnet as BarnetErFødtPlanlegger).erBarnetFødt;
+    return 'erBarnetFødt' in omBarnet && omBarnet.erBarnetFødt;
 };
 
 export const erBarnetAdoptert = (omBarnet: OmBarnetPlanlegger): omBarnet is BarnetErAdoptertPlanlegger => {

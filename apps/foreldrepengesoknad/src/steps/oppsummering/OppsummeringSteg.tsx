@@ -70,6 +70,7 @@ export const OppsummeringSteg = (props: Props) => {
         return <ManglendeUttaksplanSide onGåTilUttaksplan={() => navigator.goToStep(SøknadRoutes.UTTAKSPLAN)} />;
     }
 
+    const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(
         søkerInfo.arbeidsforhold,
         søkersituasjon.situasjon === 'adopsjon',
@@ -84,7 +85,6 @@ export const OppsummeringSteg = (props: Props) => {
         isUfødtBarn(barn),
     );
 
-    const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const navnPåForeldre = getNavnPåForeldre(søkerInfo, annenForelder, søkerErFarEllerMedmor, intl);
     const erEndringssøknadOgAnnenForelderHarRett =
         erEndringssøknad && isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge;
