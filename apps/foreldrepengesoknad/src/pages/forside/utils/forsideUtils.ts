@@ -67,7 +67,7 @@ const getPDLBarnForSakMedFødteBarn = (
           )
         : [];
 
-    return pdlBarnMedSammeFnr.concat(pdlBarnMedSammeFødselsdato);
+    return [...pdlBarnMedSammeFnr, ...pdlBarnMedSammeFødselsdato];
 };
 
 const getSelectableBarnFraSak = (sak: FpSak_fpoversikt, registrerteBarn: FpBarnDto_fpoversikt[]): ValgtBarn => {
@@ -150,7 +150,7 @@ const getSelectableFlerlingerFraPDL = (
     barnFødtISammePeriode: FpBarnDto_fpoversikt[],
     annenForelder: AnnenForelderDto_fpoversikt | undefined,
 ): ValgtBarn | undefined => {
-    const alleBarna = [registrertBarn].concat(barnFødtISammePeriode).sort(sorterPersonEtterEldstOgNavn);
+    const alleBarna = [registrertBarn, ...barnFødtISammePeriode].sort(sorterPersonEtterEldstOgNavn);
     const minstEttBarnDødeForMerEnn3MndSiden = alleBarna.some(
         (b) => !getLeverBarnet(b) && getDødeBarnetForMerEnn3MånederSiden(b),
     );
@@ -261,7 +261,7 @@ export const getSelectableBarnOptions = (saker: FpSak_fpoversikt[], registrerteB
     const avsluttedeSaker = saker.filter((sak) => sak.sakAvsluttet);
     const barnFraSaker = getSelectableBarnOptionsFromSaker(åpneSaker, registrerteBarn);
     const barnFraPDL = getSelectableBarnOptionsFraPDL(registrerteBarn, barnFraSaker, avsluttedeSaker);
-    return barnFraSaker.concat(barnFraPDL);
+    return [...barnFraSaker, ...barnFraPDL];
 };
 
 export const sorterSelectableBarnEtterYngst = (b1: ValgtBarn, b2: ValgtBarn) => {

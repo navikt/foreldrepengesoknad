@@ -219,7 +219,7 @@ export const mapTilSøknadDto = (
             uttaksperioder: midlertidigMappingAvUttaksplan(søkersPerioder, barn, annenForelder),
             ønskerJustertUttakVedFødsel,
         },
-        utenlandsopphold: (utenlandsoppholdSiste12Mnd ?? []).concat(utenlandsoppholdNeste12Mnd ?? []),
+        utenlandsopphold: [...(utenlandsoppholdSiste12Mnd ?? []), ...(utenlandsoppholdNeste12Mnd ?? [])],
         vedlegg: convertAttachmentsMapToArray(vedlegg),
     };
 };

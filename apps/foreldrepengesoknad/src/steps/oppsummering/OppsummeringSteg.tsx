@@ -66,6 +66,24 @@ export const OppsummeringSteg = (props: Props) => {
         eksisterendeSak,
     );
 
+    if (uttaksplan === undefined) {
+        return <ManglendeUttaksplanSide onGåTilUttaksplan={() => navigator.goToStep(SøknadRoutes.UTTAKSPLAN)} />;
+    }
+
+    const aktiveArbeidsforhold = getAktiveArbeidsforhold(
+        søkerInfo.arbeidsforhold,
+        søkersituasjon.situasjon === 'adopsjon',
+        søkerErFarEllerMedmor,
+        getFamiliehendelsedato(barn),
+    );
+
+    const visInfoboksOmFarskapsportal = skalViseInfoOmFarskapsportal(
+        søkerInfo,
+        søkersituasjon.rolle,
+        annenForelder,
+        isUfødtBarn(barn),
+    );
+
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const navnPåForeldre = getNavnPåForeldre(søkerInfo, annenForelder, søkerErFarEllerMedmor, intl);
     const erEndringssøknadOgAnnenForelderHarRett =
@@ -78,24 +96,6 @@ export const OppsummeringSteg = (props: Props) => {
               },
           )
         : '';
-
-    const visInfoboksOmFarskapsportal = skalViseInfoOmFarskapsportal(
-        søkerInfo,
-        søkersituasjon.rolle,
-        annenForelder,
-        isUfødtBarn(barn),
-    );
-
-    const aktiveArbeidsforhold = getAktiveArbeidsforhold(
-        søkerInfo.arbeidsforhold,
-        søkersituasjon.situasjon === 'adopsjon',
-        søkerErFarEllerMedmor,
-        getFamiliehendelsedato(barn),
-    );
-
-    if (uttaksplan === undefined) {
-        return <ManglendeUttaksplanSide onGåTilUttaksplan={() => navigator.goToStep(SøknadRoutes.UTTAKSPLAN)} />;
-    }
 
     return (
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>

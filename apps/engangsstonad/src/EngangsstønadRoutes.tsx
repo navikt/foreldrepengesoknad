@@ -36,13 +36,14 @@ export const EngangsstønadRoutes = ({ personinfo, mellomlagretData }: Props) =>
     const mellomlagreOgNaviger = useEsMellomlagring(personinfo, setErVelkommen);
 
     useEffect(() => {
-        if (!mellomlagretData?.[ContextDataType.CURRENT_PATH]) {
+        const currentPath = mellomlagretData?.[ContextDataType.CURRENT_PATH];
+        if (!currentPath) {
             return;
         }
 
         // eslint-disable-next-line @eslint-react/set-state-in-effect -- OK, skjer kun ved ekstern endring
         setErVelkommen(true);
-        void navigate(mellomlagretData[ContextDataType.CURRENT_PATH]);
+        void navigate(currentPath);
     }, [mellomlagretData]);
 
     if (errorSendSøknad) {

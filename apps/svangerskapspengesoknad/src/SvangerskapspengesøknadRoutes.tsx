@@ -209,13 +209,14 @@ export const SvangerskapspengesøknadRoutes = ({ søkerInfo, mellomlagretData }:
     const avbrytSøknad = useAvbrytSøknad(setHarGodkjentVilkår);
 
     useEffect(() => {
-        if (!mellomlagretData?.[ContextDataType.APP_ROUTE]) {
+        const appRoute = mellomlagretData?.[ContextDataType.APP_ROUTE];
+        if (!appRoute) {
             return;
         }
 
         // eslint-disable-next-line @eslint-react/set-state-in-effect -- OK, kun kjørt ved endringa av ekstern data
         setHarGodkjentVilkår(true);
-        void navigate(mellomlagretData[ContextDataType.APP_ROUTE]);
+        void navigate(appRoute);
     }, [mellomlagretData]);
 
     if (errorSendSøknad) {

@@ -174,7 +174,6 @@ const getDatoAvgrensninger = (
     const termindatoDate = termindato;
     const fødselsdatoDate = fødselsdato;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
-    const familiehendelsesdatoDate = getFamiliehendelsedatoDate(barn);
     if (erAdopsjon) {
         return startdatoPermisjonAdopsjon(familiehendelsesdato);
     }
@@ -184,6 +183,7 @@ const getDatoAvgrensninger = (
     if (erFarEllerMedmor && erAleneOmOmsorg && datoForAleneomsorg) {
         return startdatoPermisjonAleneomsorgFarMedmor(datoForAleneomsorg, familiehendelsesdato);
     }
+    const familiehendelsesdatoDate = getFamiliehendelsedatoDate(barn);
     return startdatoPermisjonFarMedmor(familiehendelsesdatoDate, termindatoDate, søkersituasjon.situasjon);
 };
 interface Props {

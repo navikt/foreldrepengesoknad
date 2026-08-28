@@ -675,10 +675,6 @@ const getFordelingForeldrepengerFar = (
     const dagerForeldrepenger = getAntallUkerForeldrepenger(kontoer) * 5;
     const dagerUtenAktivitetskrav = getAntallUkerAktivitetsfriKvote(kontoer) * 5;
     const dagerTotalt = dagerForeldrepenger + dagerUtenAktivitetskrav;
-    const fordelingDager = [];
-    const fordelingInfo = [];
-    const fargekode = FordelingFargekode.SØKER_FAR;
-    const antallBarn = barn.antallBarn;
     if (erAleneOmsorg) {
         return getFordelingForeldrepengerFarAleneomsorg(
             dagerTotalt,
@@ -689,6 +685,10 @@ const getFordelingForeldrepengerFar = (
         );
     }
 
+    const fordelingDager = [];
+    const fordelingInfo = [];
+    const fargekode = FordelingFargekode.SØKER_FAR;
+    const antallBarn = barn.antallBarn;
     const dagerMedAktivitetskrav = dagerTotalt - dagerUtenAktivitetskrav;
     if (dagerUtenAktivitetskrav > 0) {
         const varighetTekst = getVarighetString(dagerUtenAktivitetskrav, intl);

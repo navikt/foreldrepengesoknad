@@ -39,7 +39,7 @@ export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt)
             },
             språkkode: getDecoratorLanguageCookie('decorator-language').toUpperCase() as Målform,
             barn: mapBarn(barn, dokumentasjon),
-            utenlandsopphold: (tidligereUtenlandsopphold ?? []).concat(senereUtenlandsopphold ?? []),
+            utenlandsopphold: [...(tidligereUtenlandsopphold ?? []), ...(senereUtenlandsopphold ?? [])],
             vedlegg:
                 dokumentasjon?.vedlegg.map((vedlegg) => ({
                     ...vedlegg,

@@ -113,8 +113,6 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
         gjeldendeSak?.ytelse === 'FORELDREPENGER' &&
         (søknadstidspunkt ? dayjs().diff(dayjs(søknadstidspunkt), 'minute') < 5 : false);
 
-    const harMinstEttArbeidsforhold = søkerinfo.harArbeidsforhold;
-
     if (!gjeldendeSak) {
         return (
             <Alert variant="warning">
@@ -122,6 +120,8 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
             </Alert>
         );
     }
+
+    const harMinstEttArbeidsforhold = søkerinfo.harArbeidsforhold;
 
     return (
         <VStack gap="space-16">

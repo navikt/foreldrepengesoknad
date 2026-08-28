@@ -61,6 +61,7 @@ export const Foreldrepengesøknad = () => {
 
     const skalBrukeMellomlagretData = mellomlagretInfoData !== undefined && shouldApplyStorage(mellomlagretInfoData);
     const mellomlagretData = skalBrukeMellomlagretData ? mellomlagretInfoData : undefined;
+    const lagretAppRoute = mellomlagretData?.[ContextDataType.APP_ROUTE];
 
     const initialState: ContextDataMap | undefined = planleggerData
         ? { ...mellomlagretData, ...planleggerData, [ContextDataType.KOMMER_FRA_PLANLEGGER]: true }
@@ -77,13 +78,9 @@ export const Foreldrepengesøknad = () => {
                     <ForeldrepengesøknadRoutes
                         søkerInfo={søkerinfoQuery.data}
                         foreldrepengerSaker={sakerQuery.data.foreldrepenger}
-                        currentRoute={
-                            skalBrukeMellomlagretData
-                                ? notEmpty(mellomlagretData?.[ContextDataType.APP_ROUTE])
-                                : SøknadRoutes.VELKOMMEN
-                        }
+                        currentRoute={skalBrukeMellomlagretData ? notEmpty(lagretAppRoute) : SøknadRoutes.VELKOMMEN}
                         lagretErEndringssøknad={mellomlagretData?.erEndringssøknad ?? false}
-                        lagretHarGodkjentVilkår={!!mellomlagretData?.[ContextDataType.APP_ROUTE]}
+                        lagretHarGodkjentVilkår={!!lagretAppRoute}
                         lagretSøknadGjelderNyttBarn={mellomlagretData?.søknadGjelderEtNyttBarn ?? false}
                     />
                 </RegisterdataSjekk>

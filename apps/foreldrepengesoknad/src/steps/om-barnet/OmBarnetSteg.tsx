@@ -136,9 +136,10 @@ const OmBarnetStegInner = ({
 
     const valgteRegistrerteBarn =
         !søknadGjelderNyttBarn && omBarnet && !isUfødtBarn(omBarnet)
-            ? registrerteBarn
-                  .filter((b) => findBarnetIRegistrerteBarn(b, omBarnet))
-                  .concat(dødfødteUtenFnrMedSammeFødselsdato)
+            ? [
+                  ...registrerteBarn.filter((b) => findBarnetIRegistrerteBarn(b, omBarnet)),
+                  ...dødfødteUtenFnrMedSammeFødselsdato,
+              ]
             : undefined;
 
     const barnSøktOmFørMenIkkeRegistrert =

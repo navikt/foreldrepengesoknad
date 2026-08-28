@@ -130,17 +130,6 @@ const EttersendingPageInner = ({ saker }: Props) => {
         mutationFn: (valuesToSend: EttersendelseDto) => sendEttersending(valuesToSend),
     });
 
-    const onSubmit = (e: FormEvent) => {
-        e.preventDefault();
-
-        mutate({
-            saksnummer: sak!.saksnummer,
-            type: sak!.ytelse,
-            fnr: notEmpty(søkerInfo).fnr,
-            vedlegg,
-        });
-    };
-
     if (isSuccess || isError) {
         return (
             <>
@@ -164,6 +153,17 @@ const EttersendingPageInner = ({ saker }: Props) => {
             </>
         );
     }
+
+    const onSubmit = (e: FormEvent) => {
+        e.preventDefault();
+
+        mutate({
+            saksnummer: sak!.saksnummer,
+            type: sak!.ytelse,
+            fnr: notEmpty(søkerInfo).fnr,
+            vedlegg,
+        });
+    };
 
     return (
         <form onSubmit={onSubmit}>

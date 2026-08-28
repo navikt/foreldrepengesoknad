@@ -99,8 +99,6 @@ export const validatePeriodeFom =
         sluttDatoArbeid: string | undefined,
     ) =>
     (fom: string) => {
-        const tom = allePerioder[index]?.tom;
-        const tomType = allePerioder[index]?.tomType;
         if (fom && behovForTilretteleggingFom && dayjs(fom).isBefore(dayjs(behovForTilretteleggingFom), 'd')) {
             return intl.formatMessage({ id: 'valideringsfeil.periode.fom.førBehovForTilretteleggingFom' });
         }
@@ -117,6 +115,8 @@ export const validatePeriodeFom =
             );
         }
 
+        const tom = allePerioder[index]?.tom;
+        const tomType = allePerioder[index]?.tomType;
         const overlappendePerioderFeil = validateAtPeriodeIkkeOverlapper(
             fom,
             tom,

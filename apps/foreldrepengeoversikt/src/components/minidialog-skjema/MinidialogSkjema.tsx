@@ -95,6 +95,28 @@ export const MinidialogSkjema = ({
         enabled: ettersendelseErSendt && fetchCounter < 30 && allowedToFetch,
     });
 
+    if (ettersendelseErSendt) {
+        return (
+            <MinidialogVenterPåSvar
+                fetchCounter={fetchCounter}
+                allowedToFetch={allowedToFetch}
+                saksnummer={minidialog.saksnummer}
+            />
+        );
+    }
+
+    if (ettersendelseError) {
+        return (
+            <VStack gap="space-16">
+                <ScrollToTop />
+                <Alert variant="error"> {ettersendelseError}</Alert>
+                <Link as={RouterLink} to={`/sak/${minidialog.saksnummer}`}>
+                    <FormattedMessage id="miniDialog.kvittering.gåTilbakeTilSaken" />
+                </Link>
+            </VStack>
+        );
+    }
+
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
 
@@ -129,28 +151,6 @@ export const MinidialogSkjema = ({
             onSubmit(submitData);
         }
     };
-
-    if (ettersendelseErSendt) {
-        return (
-            <MinidialogVenterPåSvar
-                fetchCounter={fetchCounter}
-                allowedToFetch={allowedToFetch}
-                saksnummer={minidialog.saksnummer}
-            />
-        );
-    }
-
-    if (ettersendelseError) {
-        return (
-            <VStack gap="space-16">
-                <ScrollToTop />
-                <Alert variant="error"> {ettersendelseError}</Alert>
-                <Link as={RouterLink} to={`/sak/${minidialog.saksnummer}`}>
-                    <FormattedMessage id="miniDialog.kvittering.gåTilbakeTilSaken" />
-                </Link>
-            </VStack>
-        );
-    }
 
     return (
         <form onSubmit={handleSubmit}>

@@ -92,7 +92,7 @@ export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: OversiktBarnD
           )
         : [];
 
-    const alleBarn = pdlBarnMedSammeFnr.concat(pdlBarnMedSammeFødselsdato);
+    const alleBarn = [...pdlBarnMedSammeFnr, ...pdlBarnMedSammeFødselsdato];
     alleBarn.sort(sorterPersonEtterEldstOgNavn);
     const alleBarnFødselsdatoer = alleBarn.filter((b) => b.fødselsdato !== undefined).map((b) => b.fødselsdato);
     let fødselsdatoer = [] as string[];

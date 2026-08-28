@@ -114,7 +114,7 @@ export const getSøknadForInnsending = (
         frilans,
         egenNæring,
         andreInntekterSiste10Mnd: hentData(ContextDataType.ARBEID_I_UTLANDET)?.arbeidIUtlandet,
-        utenlandsopphold: (tidligereUtenlandsopphold ?? []).concat(senereUtenlandsopphold ?? []),
+        utenlandsopphold: [...(tidligereUtenlandsopphold ?? []), ...(senereUtenlandsopphold ?? [])],
         tilretteleggingsbehov: finnTilretteleggingsbehov(
             søkerinfo.arbeidsforhold,
             barn,

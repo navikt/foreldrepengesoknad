@@ -12,11 +12,11 @@ interface Props {
 
 function AntallBarnFormattedText({ omBarnet }: { readonly omBarnet: BarnDto }) {
     const antallBarn = omBarnet.antallBarn ?? 1;
-    const harAdoptert = omBarnet.type === 'adopsjon';
 
     if (antallBarn === 1) {
         return <FormattedMessage id={'OmBarnetOppsummering.EttBarn'} />;
     }
+    const harAdoptert = omBarnet.type === 'adopsjon';
     if (antallBarn === 2 && !harAdoptert) {
         return <FormattedMessage id={'OmBarnetOppsummering.Tvillinger'} />;
     }

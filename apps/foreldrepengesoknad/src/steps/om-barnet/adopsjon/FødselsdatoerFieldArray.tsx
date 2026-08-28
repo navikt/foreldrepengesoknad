@@ -90,9 +90,9 @@ export const FødselsdatoerFieldArray = ({ adopsjonsdato, antallBarn, antallBarn
             }
         }
         if (diff < 0) {
-            Array.from({ length: antall - fields.length }).forEach(() => {
+            for (const _ of Array.from({ length: antall - fields.length })) {
                 append({ dato: undefined });
-            });
+            }
         }
     }, [antallBarn, antallBarnDropDown, append, fields.length, remove]);
 

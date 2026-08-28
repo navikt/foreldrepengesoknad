@@ -7,17 +7,16 @@ export type HvemHarRett = 'beggeHarRett' | 'kunSøker1HarRett' | 'kunSøker2HarR
 
 export const utledHvemSomHarRett = (arbeidssituasjon: Arbeidssituasjon): HvemHarRett => {
     const beggeHarRett = arbeidssituasjon.status === Arbeidsstatus.JOBBER && arbeidssituasjon.jobberAnnenPart === true;
-    const kunSøker1HarRett =
-        arbeidssituasjon.status === Arbeidsstatus.JOBBER && arbeidssituasjon.jobberAnnenPart !== true;
-    const kunSøker2HarRett =
-        arbeidssituasjon.status !== Arbeidsstatus.JOBBER && arbeidssituasjon.jobberAnnenPart === true;
-
     if (beggeHarRett) {
         return 'beggeHarRett';
     }
+    const kunSøker1HarRett =
+        arbeidssituasjon.status === Arbeidsstatus.JOBBER && arbeidssituasjon.jobberAnnenPart !== true;
     if (kunSøker1HarRett) {
         return 'kunSøker1HarRett';
     }
+    const kunSøker2HarRett =
+        arbeidssituasjon.status !== Arbeidsstatus.JOBBER && arbeidssituasjon.jobberAnnenPart === true;
     return kunSøker2HarRett ? 'kunSøker2HarRett' : 'ingenHarRett';
 };
 

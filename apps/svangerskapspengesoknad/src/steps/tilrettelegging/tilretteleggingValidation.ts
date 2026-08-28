@@ -147,7 +147,6 @@ export const validateSammePeriodeFremTilTerminTilbakeIJobbDato =
         kanHaSVPFremTilTreUkerFørTermin: boolean,
     ) =>
     (value: string) => {
-        const erDelvis = type === 'delvis';
         if (
             hasValue(value) &&
             hasValue(behovForTilretteleggingFom) &&
@@ -157,6 +156,7 @@ export const validateSammePeriodeFremTilTerminTilbakeIJobbDato =
                 id: 'valideringsfeil.sammePeriodeFremTilTerminTom.førBehovForTilretteleggingFom',
             });
         }
+        const erDelvis = type === 'delvis';
         if (hasValue(fom) && dayjs(value).isBefore(dayjs(fom), 'd')) {
             return erDelvis
                 ? intl.formatMessage({ id: 'valideringsfeil.sammePeriodeFremTilTerminTom.førFomDato.delvis' })

@@ -172,8 +172,6 @@ export const useUttaksplanForslag = (
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
-    const familiehendelsedato = getFamiliehendelsedato(barn);
-
     if (
         annenPartsPerioderLaster ||
         !valgtStønadskvote ||
@@ -182,6 +180,8 @@ export const useUttaksplanForslag = (
     ) {
         return [];
     }
+
+    const familiehendelsedato = getFamiliehendelsedato(barn);
 
     // TODO (Andreas) - Må finne ut av hvordan man skal gjøre ting når annen part har perioder
     // const annenPartsSistePeriode = annenPartsPerioder?.at(-1);
@@ -299,13 +299,11 @@ const getOppstartsdatoFromFordelingValg = (
 ): string => {
     const oppstartValg = fordeling.oppstartAvForeldrepengerValg;
     const oppstartDato = fordeling.oppstartDato;
-    const termindato = getTermindato(barn);
-    const familiehendelsesdato = getFamiliehendelsedato(barn);
-    const ankomstDatoNorge = isAdoptertAnnetBarn(barn) && barn.adoptertIUtlandet ? barn.ankomstdato : undefined;
-
     if (oppstartDato && (!oppstartValg || oppstartValg === OppstartValg.ANNEN_DATO)) {
         return Uttaksdagen.denneEllerNeste(oppstartDato).getDato();
     }
+    const termindato = getTermindato(barn);
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
     switch (oppstartValg) {
         case OppstartValg.TRE_UKER_FØR_TERMIN: {
             return getFørsteUttaksdagForeldrepengerFørFødsel(termindato);
@@ -317,7 +315,9 @@ const getOppstartsdatoFromFordelingValg = (
             return Uttaksdagen.denneEllerNeste(familiehendelsesdato).getDato();
         }
         case OppstartValg.ANKOMSTDATO_NORGE: {
-            return getFørsteUttaksdagAnkomstdatoNorge(ankomstDatoNorge);
+            return getFørsteUttaksdagAnkomstdatoNorge(
+                isAdoptertAnnetBarn(barn) && barn.adoptertIUtlandet ? barn.ankomstdato : undefined,
+            );
         }
         case OppstartValg.DAGEN_ETTER_ANNEN_FORELDER: {
             return getNesteUttaksdagEtterAnnenForelder(sisteDagAnnenForelder ?? familiehendelsesdato); // TODO (Andreas) - Default verdi for øyeblikket

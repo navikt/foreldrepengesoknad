@@ -40,12 +40,12 @@ export const PeriodeMedForeldrepengerSteg = ({ arbeidsforhold, mellomlagreSøkna
     const kontoerOptions = useStønadsKontoerOptions();
     const tilgjengeligeStønadskvoterQuery = useQuery(kontoerOptions);
 
-    const visAnnenPartsValg = annenPartVedtak && annenPartVedtak.perioder.length > 0;
-    const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && !annenPartVedtak;
-
     if (tilgjengeligeStønadskvoterQuery.isPending) {
         return <Spinner />;
     }
+
+    const visAnnenPartsValg = annenPartVedtak && annenPartVedtak.perioder.length > 0;
+    const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && !annenPartVedtak;
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>

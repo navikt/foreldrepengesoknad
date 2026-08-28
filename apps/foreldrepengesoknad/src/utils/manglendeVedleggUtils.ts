@@ -92,6 +92,10 @@ const dokumentasjonBehøvesForUttaksperiode = (
     familiehendelsedato: string,
 ): boolean => {
     const harIkkeAktivitetskrav = periode.kontoType === 'FORELDREPENGER' && periode.morsAktivitet === 'IKKE_OPPGITT';
+    if (harIkkeAktivitetskrav) {
+        return false;
+    }
+
     const erPeriodeMedFedrekvoteIFødselspermTidsrommet =
         UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
             periode,
@@ -100,10 +104,6 @@ const dokumentasjonBehøvesForUttaksperiode = (
         ) &&
         periode.kontoType === 'FEDREKVOTE' &&
         !periode.samtidigUttak;
-
-    if (harIkkeAktivitetskrav) {
-        return false;
-    }
 
     // Dokumentasjon av mors aktivitet ("hva skal mor gjøre i denne perioden") skal kun kreves i
     // far/medmor sin søknad. I mors egen søknad skal det aldri kreves dokumentasjon for mors
