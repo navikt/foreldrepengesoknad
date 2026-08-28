@@ -2783,6 +2783,9 @@ importers:
         specifier: 'catalog:'
         version: 4.2.0
     devDependencies:
+      '@navikt/fp-config-eslint':
+        specifier: workspace:*
+        version: link:../packages/config-eslint
       '@navikt/fp-config-typescript':
         specifier: workspace:*
         version: link:../packages/config-typescript
@@ -2795,6 +2798,12 @@ importers:
       esbuild:
         specifier: 0.28.1
         version: 0.28.1
+      eslint:
+        specifier: 'catalog:'
+        version: 10.8.0(jiti@2.7.0)
+      eslint-plugin-unicorn:
+        specifier: 73.0.0
+        version: 73.0.0(eslint@10.8.0(jiti@2.7.0))
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
