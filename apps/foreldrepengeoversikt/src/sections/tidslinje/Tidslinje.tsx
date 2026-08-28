@@ -385,12 +385,12 @@ const Hendelse = ({
             );
         }
         case 'FREMTIDIG_VEDTAK': {
-            const url =
-                sak.ytelse === 'SVANGERSKAPSPENGER'
-                    ? links.saksbehandlingstiderSvp
-                    : sak.ytelse === 'ENGANGSSTØNAD'
-                      ? links.saksbehandlingstiderEs
-                      : links.saksbehandlingstiderFp;
+            const saksbehandlingstider = {
+                SVANGERSKAPSPENGER: links.saksbehandlingstiderSvp,
+                ENGANGSSTØNAD: links.saksbehandlingstiderEs,
+                FORELDREPENGER: links.saksbehandlingstiderFp,
+            };
+            const url = saksbehandlingstider[sak.ytelse];
 
             return (
                 <Process.Event

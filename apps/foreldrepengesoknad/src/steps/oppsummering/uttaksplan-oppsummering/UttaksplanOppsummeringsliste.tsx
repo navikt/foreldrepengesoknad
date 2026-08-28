@@ -110,6 +110,7 @@ const UttaksplanListe = ({
     const erAnnenForelderOppgitt = isAnnenForelderOppgitt(annenForelder);
 
     const erAleneOmOmsorg = erAnnenForelderOppgitt ? annenForelder?.erAleneOmOmsorg : false;
+    const termindato = getTermindato(barn);
 
     const getStønadskvoteNavnFraKvote = (konto: KontoType | undefined, morsAktivitet?: MorsAktivitet) => {
         return (
@@ -129,7 +130,6 @@ const UttaksplanListe = ({
     const getUttaksperiodeNavn = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
         const morsAktivitet = Uttaksperioden.erIkkeEøsPeriode(periode) ? periode.morsAktivitet : undefined;
         const tittel = getStønadskvoteNavnFraKvote(periode.kontoType, morsAktivitet);
-        const termindato = (getTermindato(barn) && getTermindato(barn)) || undefined;
         return søkersituasjon.situasjon === 'fødsel' &&
             isUttaksperiodeFarMedmorPgaFødsel(periode, familiehendelsesdato, termindato)
             ? tittel + intl.formatMessage({ id: 'rundtFødsel' })
@@ -238,7 +238,7 @@ const UttaksplanListe = ({
                                                 periode,
                                                 navnPåForeldre,
                                                 familiehendelsesdato,
-                                                (getTermindato(barn) && getTermindato(barn)) || undefined,
+                                                termindato,
                                                 søkersituasjon.situasjon,
                                                 søkerErFarEllerMedmor,
                                             )}

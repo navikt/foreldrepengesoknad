@@ -43,13 +43,7 @@ export const ytelseSomTekst = (ytelse: Sak['ytelse'], intl: IntlShape) => {
 };
 
 export const getFørsteUttaksdagIForeldrepengesaken = (sak: Foreldrepengesak) => {
-    if (sak.gjeldendeVedtak && sak.gjeldendeVedtak.perioder.length > 0) {
-        return sak.gjeldendeVedtak.perioder[0]!.fom;
-    }
-    if (sak.åpenBehandling?.søknadsperioder && sak.åpenBehandling?.søknadsperioder.length > 0) {
-        return sak.åpenBehandling?.søknadsperioder[0]!.fom;
-    }
-    return;
+    return sak.gjeldendeVedtak?.perioder[0]?.fom ?? sak.åpenBehandling?.søknadsperioder?.[0]?.fom;
 };
 
 export const getBarnFraSak = (familiehendelse: Familiehendelse_fpoversikt, gjelderAdopsjon: boolean): Barn => {
@@ -197,14 +191,11 @@ const findRelevantSak = (gruppertSak: GruppertSak, familiehendelsedato: string) 
     const startdato = dayjs(familiehendelsedato).subtract(2, 'months');
     const sluttdato = dayjs(familiehendelsedato).add(3, 'weeks');
 
-    if (gruppertSak) {
-        return (
-            dayjs(gruppertSak.familiehendelsedato).isAfter(startdato) &&
-            dayjs(gruppertSak.familiehendelsedato).isSameOrBefore(sluttdato)
-        );
-    }
-
-    return;
+    return (
+        gruppertSak &&
+        dayjs(gruppertSak.familiehendelsedato).isAfter(startdato) &&
+        dayjs(gruppertSak.familiehendelsedato).isSameOrBefore(sluttdato)
+    );
 };
 
 export const utledFamiliesituasjon = (

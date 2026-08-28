@@ -377,15 +377,12 @@ export const OppstartValgInput = ({
         if (erFarEllerMedmor && !erAleneOmOmsorg && !bareFarHarRett) {
             return <FormattedMessage id="fordeling.oppstartValg.description.fedreWLB" />;
         }
-        if (erMorFødsel) {
-            const erBarnetFødt = isFødtBarn(barn);
-            return erBarnetFødt ? (
-                <FormattedMessage id="fordeling.oppstartValg.description.morFødsel" />
-            ) : (
-                <FormattedMessage id="fordeling.oppstartValg.description.morFødselTermin" />
-            );
-        }
-        return;
+        const morFødselDescription = isFødtBarn(barn) ? (
+            <FormattedMessage id="fordeling.oppstartValg.description.morFødsel" />
+        ) : (
+            <FormattedMessage id="fordeling.oppstartValg.description.morFødselTermin" />
+        );
+        return erMorFødsel ? morFødselDescription : null;
     };
 
     return (
