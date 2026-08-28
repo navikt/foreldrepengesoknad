@@ -35,7 +35,8 @@ export const AdopsjonFodselFieldArray = ({ adopsjonsdato, antallBarn, antallBarn
         const antall = !antallBarnDropDown || antallBarn < 3 ? antallBarn : Number(antallBarnDropDown);
         const diff = fields.length - antall;
         if (diff > 0) {
-            for (const index of Array.from({ length: diff }).keys()) {
+            const indexes = Array.from({ length: diff }).keys();
+            for (const index of indexes) {
                 remove(fields.length - index - 1);
             }
         }
