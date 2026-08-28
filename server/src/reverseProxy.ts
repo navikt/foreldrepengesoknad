@@ -66,19 +66,18 @@ function addProxyHandler(router: Router, { ingoingUrl, outgoingUrl, scope }: Pro
             if (obo.ok) {
                 request.headers['obo-token'] = obo.token;
                 return next();
-            } else {
-                logger.error('Veksling av OBO-token feilet', obo.error);
-                response.status(403).send();
             }
+            logger.error('Veksling av OBO-token feilet', obo.error);
+            response.status(403).send();
         },
         createProxyMiddleware({
             target: outgoingUrl,
             changeOrigin: true,
-            logger: logger,
+            logger: logger.logger,
             on: {
                 proxyReq: (proxyRequest, request) => {
                     const obo = request.headers['obo-token'];
-                    if (obo) {
+                    if (typeof obo === 'string') {
                         proxyRequest.removeHeader('obo-token');
                         proxyRequest.removeHeader('cookie');
                         proxyRequest.setHeader('Authorization', `Bearer ${obo}`);

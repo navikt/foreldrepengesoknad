@@ -15,7 +15,7 @@ import { configureReverseProxyApi } from './reverseProxy.js';
 import { rewriteHtmlAmpersandsInQueryString } from './rewriteHtmlAmpersandsInQueryString';
 import { validerInnkommendeIdportenToken } from './tokenValidation.js';
 
-const server = express();
+export const server = express();
 
 await setupServerDefaults(server);
 setupActuators(server);
@@ -46,5 +46,3 @@ await setupAndServeHtml(router);
 server.use(serverConfig.app.publicPath, router);
 
 server.use(errorHandling);
-
-export default server;

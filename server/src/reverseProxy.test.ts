@@ -5,7 +5,7 @@ import { afterAll, beforeAll, expect, test, vi } from 'vitest';
 
 vi.mock('@navikt/oasis', () => ({
     getToken: () => 'mock-idporten-token',
-    requestTokenxOboToken: async () => ({ ok: true, token: 'mock-obo-token' }),
+    requestTokenxOboToken: () => Promise.resolve({ ok: true, token: 'mock-obo-token' }),
 }));
 
 let app: express.Express;
@@ -14,8 +14,8 @@ let backendPort: number;
 let lastRequest: { path: string; headers: http.IncomingHttpHeaders };
 
 beforeAll(async () => {
-    backendServer = http.createServer((req, res) => {
-        lastRequest = { path: req.url ?? '', headers: req.headers };
+    backendServer = http.createServer((request, res) => {
+        lastRequest = { path: request.url ?? '', headers: request.headers };
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ ok: true }));
     });
@@ -34,11 +34,21 @@ beforeAll(async () => {
         },
         serverConfig: {
             påkrevMiljøVariabel: (name: string) => {
-                if (name === 'FPSOKNAD_API_URL') return `http://localhost:${backendPort}/fpsoknad/api`;
-                if (name === 'FPSOKNAD_API_SCOPE') return 'api://test-fpsoknad/.default';
-                if (name === 'FPOVERSIKT_API_URL') return `http://localhost:${backendPort}/fpoversikt/api`;
-                if (name === 'FPOVERSIKT_API_SCOPE') return 'api://test-fpoversikt/.default';
-                if (name === 'FPGRUNNDATA_API_URL') return `http://localhost:${backendPort}/fpgrunndata/api`;
+                if (name === 'FPSOKNAD_API_URL') {
+                    return `http://localhost:${backendPort}/fpsoknad/api`;
+                }
+                if (name === 'FPSOKNAD_API_SCOPE') {
+                    return 'api://test-fpsoknad/.default';
+                }
+                if (name === 'FPOVERSIKT_API_URL') {
+                    return `http://localhost:${backendPort}/fpoversikt/api`;
+                }
+                if (name === 'FPOVERSIKT_API_SCOPE') {
+                    return 'api://test-fpoversikt/.default';
+                }
+                if (name === 'FPGRUNNDATA_API_URL') {
+                    return `http://localhost:${backendPort}/fpgrunndata/api`;
+                }
                 return `mock-${name}`;
             },
         },
