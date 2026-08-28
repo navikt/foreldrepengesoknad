@@ -208,10 +208,7 @@ const Hendelse = ({
                 tittel = intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK.innvilget' });
             }
 
-            let ikon = <InboxDownIcon />;
-            if (harInnvilget) {
-                ikon = <ThumbUpIcon />;
-            }
+            const ikon = harInnvilget ? <ThumbUpIcon /> : <InboxDownIcon />;
 
             return (
                 <Process.Event status={status} timestamp={hendelseDatoMedKlokkeslett} title={tittel} bullet={ikon}>
@@ -388,13 +385,12 @@ const Hendelse = ({
             );
         }
         case 'FREMTIDIG_VEDTAK': {
-            let url = links.saksbehandlingstiderFp;
-            if (sak.ytelse === 'SVANGERSKAPSPENGER') {
-                url = links.saksbehandlingstiderSvp;
-            }
-            if (sak.ytelse === 'ENGANGSSTØNAD') {
-                url = links.saksbehandlingstiderEs;
-            }
+            const url =
+                sak.ytelse === 'SVANGERSKAPSPENGER'
+                    ? links.saksbehandlingstiderSvp
+                    : sak.ytelse === 'ENGANGSSTØNAD'
+                      ? links.saksbehandlingstiderEs
+                      : links.saksbehandlingstiderFp;
 
             return (
                 <Process.Event

@@ -37,7 +37,7 @@ export const validateFødselsnummer =
             return intl.formatMessage({ id: 'valideringsfeil.fødselsnummer.underSeksten' });
         }
 
-        return (['fnr', 'dnr', 'hnr'] as (typeof validFnrResult)[]).includes(validFnrResult)
+        return (['fnr', 'dnr', 'hnr'] as Array<typeof validFnrResult>).includes(validFnrResult)
             ? null
             : intl.formatMessage({ id: 'valideringsfeil.fødselsnummer.ugyldigFødselsnummer' });
     };

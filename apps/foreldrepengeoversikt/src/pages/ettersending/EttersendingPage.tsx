@@ -3,6 +3,8 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { FormEvent, useState } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Link, useParams, useSearchParams } from 'react-router';
+import { Sak } from 'types/Sak.ts';
+import { SakOppslag } from 'types/SakOppslag.ts';
 
 import {
     Alert,
@@ -29,8 +31,6 @@ import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
-import { Sak } from '../../types/Sak';
-import { SakOppslag } from '../../types/SakOppslag';
 import { getAlleYtelser } from '../../utils/sakerUtils';
 import { getRelevanteSkjemanummer } from '../../utils/skjemanummerUtils';
 
@@ -94,7 +94,8 @@ const konverterSelectVerdi = (selectText: string): Skjemanummer | typeof DEFAULT
         return selectText;
     }
 
-    const snr = Object.values(Skjemanummer).find((value) => value === selectText);
+    // eslint-disable-next-line unicorn/no-useless-coercion
+    const snr = Object.values(Skjemanummer).find((value) => value.toString() === selectText);
     if (snr) {
         return snr;
     }

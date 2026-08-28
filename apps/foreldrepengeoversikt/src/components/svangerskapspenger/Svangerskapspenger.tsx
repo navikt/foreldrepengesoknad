@@ -359,17 +359,10 @@ export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
                 };
             }
 
-            if (overlapperIkke) {
-                const nyePerioder = [periode, overlappendePeriode1, overlappendePeriode2].filter(
-                    (x) => x !== undefined,
-                );
-                perioderÅBruke.unshift(...nyePerioder);
-            } else {
-                const nyePerioder = [periode1, periode2, overlappendePeriode1, overlappendePeriode2].filter(
-                    (x) => x !== undefined,
-                );
-                perioderÅBruke.unshift(...nyePerioder);
-            }
+            const nyePerioder = overlapperIkke
+                ? [periode, overlappendePeriode1, overlappendePeriode2].filter((x) => x !== undefined)
+                : [periode1, periode2, overlappendePeriode1, overlappendePeriode2].filter((x) => x !== undefined);
+            perioderÅBruke.unshift(...nyePerioder);
         }
 
         // Hvis det ikke finnes overlappende perioder så er perioden "ferdig"

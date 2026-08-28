@@ -5,7 +5,7 @@ export const ScrollToTop = () => {
     const { pathname } = useLocation();
 
     useEffect(() => {
-        globalThis.scrollTo(0, 0);
+        scrollTo(0, 0);
     }, [pathname]);
 
     return null;

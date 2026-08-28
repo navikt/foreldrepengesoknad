@@ -323,7 +323,7 @@ export const finnAntallUkerOgDagerMedForeldrepenger = (stønadskvote: KontoBereg
 
     const kontoerLength = kontoer.length;
     for (let index = 0; index < kontoerLength; index++) {
-        if (!(index in kontoer)) {
+        if (!Object.hasOwn(kontoer, index)) {
             continue;
         }
 

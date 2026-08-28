@@ -486,10 +486,7 @@ const fjernLeadingOgTrailingMånederUtenUtbetaling = (andelerPerDag: DagMedPerio
     };
 
     const førstePåMånedMedSum = andelerSortertPåMåned.findIndex((dager) => beregnSumForMåned(dager) !== 0);
-    const sistePåMånedMedSum =
-        andelerSortertPåMåned.length -
-        1 -
-        [...andelerSortertPåMåned].toReversed().findIndex((dager) => beregnSumForMåned(dager) !== 0);
+    const sistePåMånedMedSum = andelerSortertPåMåned.findLastIndex((dager) => beregnSumForMåned(dager) !== 0);
 
     return førstePåMånedMedSum === -1 ? [] : andelerSortertPåMåned.slice(førstePåMånedMedSum, sistePåMånedMedSum + 1);
 };

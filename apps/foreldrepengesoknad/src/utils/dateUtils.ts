@@ -86,10 +86,9 @@ export const andreAugust2022ReglerGjelder = (familiehendelsesdato: string): bool
 };
 
 export const førsteJuli2024ReglerGjelder = (barn: Barn): boolean => {
-    let førsteJuli2024 = '2024-07-01';
-    if (toggleUtils.isFeatureEnabled(FeatureToggle.test1Juli2024Regler)) {
-        førsteJuli2024 = '2024-06-18';
-    }
+    const førsteJuli2024 = toggleUtils.isFeatureEnabled(FeatureToggle.test1Juli2024Regler)
+        ? '2024-06-18'
+        : '2024-07-01';
 
     if (dayjs().isBefore(dayjs(førsteJuli2024), 'day')) {
         return false;
