@@ -40,6 +40,11 @@ export enum ContextDataType {
     KOMMER_FRA_PLANLEGGER = 'KOMMER_FRA_PLANLEGGER',
 }
 
+type OpprinneligUttaksplan = {
+    saksnummer: string;
+    perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+};
+
 export type ContextDataMap = {
     [ContextDataType.APP_ROUTE]?: SøknadRoutes;
     [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]?: string;
@@ -56,9 +61,7 @@ export type ContextDataMap = {
     [ContextDataType.PERIODE_MED_FORELDREPENGER]?: Dekningsgrad;
     [ContextDataType.FORDELING]?: Fordeling;
     [ContextDataType.UTTAKSPLAN]?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
-    // Snapshot av planen slik brukaren fekk han presentert då endringssøknaden vart starta. Alt som
-    // avvik frå denne er noko brukaren faktisk har endra, og berre det skal styre endringstidspunktet.
-    [ContextDataType.OPPRINNELIG_UTTAKSPLAN]?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    [ContextDataType.OPPRINNELIG_UTTAKSPLAN]?: OpprinneligUttaksplan;
     [ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL]?: boolean;
     [ContextDataType.VEDLEGG]?: VedleggDataType;
     [ContextDataType.KOMMER_FRA_PLANLEGGER]?: boolean;

@@ -178,11 +178,11 @@ export const getSøknadsdataForInnsending = (
 ): ForeldrepengesøknadDto | EndringssøknadForeldrepengerDto => {
     const valgtEksisterendeSaksnr = hentData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
 
-    const eksisterendeSak = foreldrepengerSaker.find((sak) => sak.saksnummer === valgtEksisterendeSaksnr);
+    if (erEndringssøknad && foreldrepengerSaker.every((sak) => sak.saksnummer !== valgtEksisterendeSaksnr)) {
+        throw new Error('Finner ikke valgt sak for endringssøknad');
+    }
 
-    return erEndringssøknad
-        ? mapTilEndringssøknadDto(hentData, søkerinfo, eksisterendeSak)
-        : mapTilSøknadDto(hentData, søkerinfo);
+    return erEndringssøknad ? mapTilEndringssøknadDto(hentData, søkerinfo) : mapTilSøknadDto(hentData, søkerinfo);
 };
 
 export const mapTilSøknadDto = (
@@ -241,7 +241,6 @@ const mapSøkerInfoTilSøknadDto = (søkerinfo: FpPersonopplysningerDto_fpoversi
 export const mapTilEndringssøknadDto = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     søkerinfo: FpPersonopplysningerDto_fpoversikt,
-    eksisterendeSak?: FpSak_fpoversikt,
 ): EndringssøknadForeldrepengerDto => {
     const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
@@ -255,7 +254,7 @@ export const mapTilEndringssøknadDto = (
     const søkersNyePerioder = filtrerUtAnnenPartsPerioder(uttaksplan, søkersituasjon.rolle);
 
     const søkersEksisterendePerioder = filtrerUtAnnenPartsPerioder(
-        finnOpprinneligPlan(opprinneligUttaksplan, eksisterendeSak),
+        finnOpprinneligPlan(opprinneligUttaksplan, valgtEksisterendeSaksnr),
         søkersituasjon.rolle,
     );
 
@@ -293,20 +292,17 @@ export const mapTilEndringssøknadDto = (
     };
 };
 
-// Endringstidspunktet skal utleiast mot planen slik brukaren fekk han presentert. Fell tilbake på dei rå
-// vedtaksperiodane berre for mellomlagra søknader frå før snapshotet vart innført.
 const finnOpprinneligPlan = (
-    opprinneligUttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
-    eksisterendeSak: FpSak_fpoversikt | undefined,
+    opprinneligUttaksplan: ContextDataMap[ContextDataType.OPPRINNELIG_UTTAKSPLAN],
+    valgtEksisterendeSaksnr: string,
 ): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
-    if (opprinneligUttaksplan !== undefined) {
-        return opprinneligUttaksplan;
+    if (opprinneligUttaksplan === undefined) {
+        throw new Error('Mangler opprinnelig uttaksplan for endringssøknad');
     }
-
-    return [
-        ...(eksisterendeSak?.gjeldendeVedtak?.perioder ?? []),
-        ...(eksisterendeSak?.gjeldendeVedtak?.perioderAnnenpartEøs ?? []),
-    ];
+    if (opprinneligUttaksplan.saksnummer !== valgtEksisterendeSaksnr) {
+        throw new Error('Opprinnelig uttaksplan tilhører ikke valgt sak');
+    }
+    return opprinneligUttaksplan.perioder;
 };
 
 const filtrerPerioderFraOgMedEndringstidspunkt = (

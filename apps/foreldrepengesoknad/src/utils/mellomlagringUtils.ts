@@ -1,7 +1,16 @@
+import type { ContextDataType } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
-import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
+import type { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 
-export const VERSJON_MELLOMLAGRING = 23;
+export const VERSJON_MELLOMLAGRING = 22;
+
+type MellomlagretDataForValidering = Pick<FpMellomlagretData, 'version'> &
+    Partial<
+        Pick<
+            FpMellomlagretData,
+            'erEndringssøknad' | ContextDataType.APP_ROUTE | ContextDataType.OPPRINNELIG_UTTAKSPLAN
+        >
+    >;
 
 const isEndringssøknadRoute = (route: SøknadRoutes): boolean => {
     switch (route) {
@@ -15,8 +24,12 @@ const isEndringssøknadRoute = (route: SøknadRoutes): boolean => {
     }
 };
 
-export const shouldApplyStorage = (storedState: FpMellomlagretData): boolean => {
+export const shouldApplyStorage = (storedState: MellomlagretDataForValidering): boolean => {
     if (storedState?.erEndringssøknad && storedState.APP_ROUTE && !isEndringssøknadRoute(storedState.APP_ROUTE)) {
+        return false;
+    }
+
+    if (storedState.erEndringssøknad && storedState.OPPRINNELIG_UTTAKSPLAN === undefined) {
         return false;
     }
 

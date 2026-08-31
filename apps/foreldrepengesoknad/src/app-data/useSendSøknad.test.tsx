@@ -227,6 +227,10 @@ const getWrapper =
                             [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: TIDLIGERE_UTENLANDSOPPHOLD,
                             [ContextDataType.UTENLANDSOPPHOLD_SENERE]: SENERE_UTENLANDSOPPHOLD,
                             [ContextDataType.UTTAKSPLAN]: uttaksplan,
+                            [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: {
+                                saksnummer: '1',
+                                perioder: [EKSISTERENDE_PERIODE],
+                            },
                             [ContextDataType.VEDLEGG]: VEDLEGG,
                             [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: '1',
                             [ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL]: true,

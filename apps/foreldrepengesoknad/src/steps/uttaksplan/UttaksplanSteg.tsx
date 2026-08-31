@@ -123,7 +123,10 @@ export const UttaksplanSteg = ({
         ...annenPartVedtakOptionsWrapped,
     });
 
-    const uttaksplanForEksisterendeSak = useUttaksplanForEksisterendeSak(annenPartVedtakQuery.data?.perioder);
+    const uttaksplanForEksisterendeSak = useUttaksplanForEksisterendeSak(
+        annenPartVedtakQuery.data?.perioder,
+        !annenPartVedtakQuery.isFetching,
+    );
 
     const valgteStønadskvoter = tilgjengeligeStønadskvoterQuery.data;
 
