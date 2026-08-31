@@ -31,6 +31,7 @@ export const sakerOptions = () =>
         queryKey: ['SAKER'],
         queryFn: () => ky.get(API_URLS.saker).json<Saker_fpoversikt>(),
         staleTime: Infinity,
+        refetchOnWindowFocus: 'always',
     });
 
 export const søkerinfoOptions = () =>
@@ -38,6 +39,7 @@ export const søkerinfoOptions = () =>
         queryKey: ['SØKERINFO'],
         queryFn: () => ky.get(API_URLS.søkerInfo, { timeout: 30_000 }).json<SvpPersonopplysningerDto_fpoversikt>(),
         staleTime: Infinity,
+        refetchOnWindowFocus: 'always',
     });
 
 export const mellomlagretInfoOptions = () =>
@@ -46,6 +48,7 @@ export const mellomlagretInfoOptions = () =>
         queryFn: () => jsonEllerNull<SvpMellomlagretData>(ky.get(API_URLS.mellomlagring)),
         select: (data) => data ?? undefined,
         staleTime: Infinity,
+        refetchOnWindowFocus: 'always',
     });
 
 export const statusOptions = () =>
@@ -64,4 +67,5 @@ export const statusOptions = () =>
             return status;
         },
         staleTime: Infinity,
+        refetchOnWindowFocus: 'always',
     });
