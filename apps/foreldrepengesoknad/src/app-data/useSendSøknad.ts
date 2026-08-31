@@ -1,6 +1,6 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { getSøknadsdataForInnsending } from 'api/apiUtils';
-import { API_URLS } from 'api/queries';
+import { API_URLS, mineFrilansoppdragOptions, selvstendigNæringOptions } from 'api/queries';
 import { SøknadRoutes } from 'appData/routes';
 import ky, { HTTPError } from 'ky';
 import { useIntl } from 'react-intl';
@@ -21,13 +21,26 @@ export const useSendSøknad = (
     const intl = useIntl();
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
+    const queryClient = useQueryClient();
 
     const { mutate: slettMellomlagring } = useMutation({
         mutationFn: () => ky.delete(API_URLS.mellomlagring),
     });
 
     const send = async () => {
-        const cleanedSøknad = getSøknadsdataForInnsending(erEndringssøknad, hentData, søkerinfo, foreldrepengerSaker);
+        // Leses fra cachen slik at vi sender inn nøyaktig de aktivitetene søker fikk forelagt i søknadsdialogen
+        const forelagteAktiviteter = {
+            frilansoppdrag: queryClient.getQueryData(mineFrilansoppdragOptions().queryKey),
+            selvstendigNæring: queryClient.getQueryData(selvstendigNæringOptions().queryKey),
+        };
+
+        const cleanedSøknad = getSøknadsdataForInnsending(
+            erEndringssøknad,
+            hentData,
+            søkerinfo,
+            foreldrepengerSaker,
+            forelagteAktiviteter,
+        );
 
         const abortSignal = initAbortSignal();
 

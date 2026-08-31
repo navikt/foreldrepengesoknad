@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { act, renderHook } from '@testing-library/react';
-import { API_URLS } from 'appData/queries';
+import { API_URLS, mineFrilansoppdragOptions, selvstendigNæringOptions } from 'appData/queries';
 import ky, { ResponsePromise } from 'ky';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
@@ -19,8 +19,10 @@ import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
 import {
     Attachment,
     AvtaltFerieDto,
+    EksternArbeidsforholdDto_fpoversikt,
     FRILANS_ID,
     NæringDto,
+    SelvstendigNæringDto_fpoversikt,
     SvangerskapspengesøknadDto,
     SvpPersonopplysningerDto_fpoversikt,
     UtenlandsoppholdPeriode,
@@ -134,6 +136,24 @@ const ARBEID_I_UTLANDET = {
     ],
 } satisfies ArbeidIUtlandet;
 
+const FORELAGT_FRILANSOPPDRAG = [
+    {
+        arbeidsgiverId: '12345678910',
+        arbeidsgiverIdType: 'fnr',
+        arbeidsgiverNavn: 'Ola Nordmann',
+        fom: '2024-03-01',
+        stillingsprosent: 0,
+    },
+] satisfies EksternArbeidsforholdDto_fpoversikt[];
+
+const FORELAGT_SELVSTENDIG_NÆRING = [
+    {
+        navn: 'Sagene Fiskeri',
+        organisasjonsnummer: '974760673',
+        næringstype: 'FISKE',
+    },
+] satisfies SelvstendigNæringDto_fpoversikt[];
+
 const getWrapper =
     (
         tilrettelegginger: Record<string, DelvisTilrettelegging | IngenTilrettelegging>,
@@ -170,6 +190,7 @@ describe('useSendSøknad', () => {
     afterEach(() => {
         vi.restoreAllMocks();
         vi.clearAllMocks();
+        queryClient.clear();
     });
 
     it('skal sende inn tilrettelegging for to arbeidsforhold', async () => {
@@ -238,6 +259,8 @@ describe('useSendSøknad', () => {
                             stillingsprosent: af.stillingsprosent,
                             fom: af.fom,
                         })),
+                        frilansoppdrag: [],
+                        selvstendigNæring: [],
                     },
                     språkkode: 'NB',
                     barn: BARNET,
@@ -324,6 +347,9 @@ describe('useSendSøknad', () => {
         } as ResponsePromise<void>);
         const deleteMock = vi.spyOn(ky, 'delete').mockReturnValue(undefined as unknown as ResponsePromise<unknown>);
 
+        queryClient.setQueryData(mineFrilansoppdragOptions().queryKey, FORELAGT_FRILANSOPPDRAG);
+        queryClient.setQueryData(selvstendigNæringOptions().queryKey, FORELAGT_SELVSTENDIG_NÆRING);
+
         const tilrettelegginger = {
             [EGEN_NÆRING_ID]: {
                 behovForTilretteleggingFom: '2024-05-10',
@@ -369,6 +395,10 @@ describe('useSendSøknad', () => {
                             stillingsprosent: af.stillingsprosent,
                             fom: af.fom,
                         })),
+                        frilansoppdrag: [{ navn: 'Ola Nordmann', fom: '2024-03-01' }],
+                        selvstendigNæring: [
+                            { navn: 'Sagene Fiskeri', organisasjonsnummer: '974760673', næringstype: 'FISKE' },
+                        ],
                     },
                     språkkode: 'NB',
                     barn: BARNET,
@@ -505,6 +535,8 @@ describe('useSendSøknad', () => {
                             stillingsprosent: af.stillingsprosent,
                             fom: af.fom,
                         })),
+                        frilansoppdrag: [],
+                        selvstendigNæring: [],
                     },
                     språkkode: 'NB',
                     barn: BARNET,

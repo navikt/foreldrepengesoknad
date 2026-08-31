@@ -34,14 +34,7 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const andreInntektskilder = useContextGetData(ContextDataType.ANDRE_INNTEKTSKILDER) ?? [];
 
-    const frilansoppdragQuery = useQuery({
-        ...mineFrilansoppdragOptions(),
-        select: (data) => {
-            const threeMonthsAgo = new Date();
-            threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
-            return data.filter((oppdrag) => !oppdrag.tom || new Date(oppdrag.tom) >= threeMonthsAgo);
-        },
-    });
+    const frilansoppdragQuery = useQuery(mineFrilansoppdragOptions());
     const frilansoppdrag = frilansoppdragQuery.data ?? [];
 
     const selvstendigNæringQuery = useQuery(selvstendigNæringOptions());

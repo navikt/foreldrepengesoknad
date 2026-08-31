@@ -95,14 +95,7 @@ export const OppsummeringSteg = (props: Props) => {
         getFamiliehendelsedato(barn),
     );
 
-    const frilansoppdragQuery = useQuery({
-        ...mineFrilansoppdragOptions(),
-        select: (data) => {
-            const threeMonthsAgo = new Date();
-            threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
-            return data.filter((oppdrag) => !oppdrag.tom || new Date(oppdrag.tom) >= threeMonthsAgo);
-        },
-    });
+    const frilansoppdragQuery = useQuery(mineFrilansoppdragOptions());
     const frilansoppdrag = frilansoppdragQuery.data ?? [];
     const selvstendigNæringQuery = useQuery(selvstendigNæringOptions());
     const selvstendigNæring = selvstendigNæringQuery.data ?? [];

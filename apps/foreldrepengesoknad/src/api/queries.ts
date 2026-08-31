@@ -17,6 +17,7 @@ import {
     Saker_fpoversikt,
     SelvstendigNæringDto_fpoversikt,
 } from '@navikt/fp-types';
+import { filtrerForelagteFrilansoppdrag } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 const urlPrefiks = import.meta.env.BASE_URL;
@@ -109,7 +110,11 @@ export const trengerDokumentereMorsArbeidOptions = (data: MorArbeidRequest_fpove
 export const mineFrilansoppdragOptions = () =>
     queryOptions({
         queryKey: ['MINE_FRILANSOPPDRAG'],
-        queryFn: () => ky.get(API_URLS.mineFrilansoppdrag).json<EksternArbeidsforholdDto_fpoversikt[]>(),
+        queryFn: async () =>
+            filtrerForelagteFrilansoppdrag(
+                await ky.get(API_URLS.mineFrilansoppdrag).json<EksternArbeidsforholdDto_fpoversikt[]>(),
+            ),
+
         staleTime: Infinity,
     });
 

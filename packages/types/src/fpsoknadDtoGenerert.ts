@@ -314,7 +314,9 @@ export type Målform = 'NB' | 'NN' | 'EN' | 'E';
 export type SøkerDto = {
     arbeidsforhold?: Arbeidsforhold[];
     fnr: string;
+    frilansoppdrag?: Frilansoppdrag[];
     navn: Navn;
+    selvstendigNæring?: SelvstendigNæring[];
 };
 
 export type Arbeidsforhold = {
@@ -323,6 +325,18 @@ export type Arbeidsforhold = {
     orgnummer?: string;
     stillingsprosent?: number;
     tom?: string;
+};
+
+export type Frilansoppdrag = {
+    fom?: string;
+    navn?: string;
+    tom?: string;
+};
+
+export type SelvstendigNæring = {
+    navn?: string;
+    næringstype?: Virksomhetstype;
+    organisasjonsnummer?: string;
 };
 
 export type Navn = {

@@ -17,6 +17,7 @@ export {
     getLocaleKey,
 } from './src/countryUtils';
 export { omitOne, omitMany, erLikUansettRekkefølge } from './src/objectUtils';
+export { filtrerForelagteFrilansoppdrag } from './src/frilansoppdragUtils';
 export { redirect } from './src/loginUtils';
 
 export { useAbortSignal } from './src/hooks/useAbortSignal';
