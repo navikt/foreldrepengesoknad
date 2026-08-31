@@ -113,28 +113,25 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         // Verifiserer at slideren ikke vises når kun én har rett
         expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
+        // Aktivitetsfri kvote (uten aktivitetskrav) skal ikke lenger foreslås automatisk her, kun med aktivitetskrav.
+        expect(screen.queryByText('Dine foreldrepenger uten aktivitetskrav')).not.toBeInTheDocument();
         expect(screen.getByText('Dine foreldrepenger med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:1;dayColor:NONE;with-icon')).toBeInTheDocument();
         expect(within(juli).getByTestId('day:2;dayColor:NONE')).toBeInTheDocument();
-        expect(within(juli).queryAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(0);
+        expect(within(juli).queryAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(0);
 
         const august = screen.getByTestId('year:2024;month:7');
-        expect(within(august).getByTestId('day:12;dayColor:GREENOUTLINE')).toBeInTheDocument();
-        expect(within(august).queryAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(15);
+        expect(within(august).getByTestId('day:12;dayColor:GREEN;with-icon')).toBeInTheDocument();
+        expect(within(august).queryAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(15);
 
-        const november = screen.getByTestId('year:2024;month:10');
-        expect(within(november).getByTestId('day:22;dayColor:GREENOUTLINE')).toBeInTheDocument();
-        expect(within(november).getByTestId('day:25;dayColor:GREEN;with-icon')).toBeInTheDocument();
-        expect(within(november).queryAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(16);
-        expect(within(november).queryAllByTestId('dayColor:GREEN;with-icon', { exact: false })).toHaveLength(5);
-
-        const mai2025 = screen.getByTestId('year:2025;month:4');
-        expect(within(mai2025).getByTestId('day:16;dayColor:GREEN;with-icon')).toBeInTheDocument();
-        expect(within(mai2025).getAllByTestId('dayColor:GREEN;with-icon', { exact: false })).toHaveLength(12);
+        const januar2025 = screen.getByTestId('year:2025;month:0');
+        expect(within(januar2025).getByTestId('day:31;dayColor:GREEN;with-icon')).toBeInTheDocument();
+        expect(within(januar2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(23);
+        const februar2025 = screen.getByTestId('year:2025;month:1');
+        expect(within(februar2025).queryAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(0);
     });
 
     it('skal vise korrekt data for fødsel - mor og far - kun far har rett', async () => {
@@ -255,29 +252,26 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         // Verifiserer at slideren ikke vises når kun én har rett
         expect(screen.queryByRole('slider')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Dine foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
+        // Aktivitetsfri kvote (uten aktivitetskrav) skal ikke lenger foreslås automatisk her, kun med aktivitetskrav.
+        expect(screen.queryByText('Dine foreldrepenger uten aktivitetskrav')).not.toBeInTheDocument();
         expect(screen.getByText('Dine foreldrepenger med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:1;dayColor:NONE;with-icon')).toBeInTheDocument();
         expect(within(juli).getByTestId('day:2;dayColor:NONE')).toBeInTheDocument();
-        expect(within(juli).queryAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(0);
+        expect(within(juli).queryAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(0);
 
         const august = screen.getByTestId('year:2024;month:7');
         expect(within(august).getByTestId('day:9;dayColor:NONE')).toBeInTheDocument();
-        expect(within(august).getByTestId('day:12;dayColor:GREENOUTLINE')).toBeInTheDocument();
-        expect(within(august).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(15);
+        expect(within(august).getByTestId('day:12;dayColor:GREEN;with-icon')).toBeInTheDocument();
+        expect(within(august).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(15);
 
-        const november = screen.getByTestId('year:2024;month:10');
-        expect(within(november).getByTestId('day:1;dayColor:GREENOUTLINE')).toBeInTheDocument();
-        expect(within(november).getByTestId('day:25;dayColor:GREEN;with-icon')).toBeInTheDocument();
-        expect(within(november).getAllByTestId('dayColor:GREENOUTLINE', { exact: false })).toHaveLength(16);
-        expect(within(november).getAllByTestId('dayColor:GREEN;with-icon', { exact: false })).toHaveLength(5);
-
-        const mai2025 = screen.getByTestId('year:2025;month:4');
-        expect(within(mai2025).getByTestId('day:16;dayColor:GREEN;with-icon')).toBeInTheDocument();
-        expect(within(mai2025).getAllByTestId('dayColor:GREEN;with-icon', { exact: false })).toHaveLength(12);
+        const januar2025 = screen.getByTestId('year:2025;month:0');
+        expect(within(januar2025).getByTestId('day:31;dayColor:GREEN;with-icon')).toBeInTheDocument();
+        expect(within(januar2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(23);
+        const februar2025 = screen.getByTestId('year:2025;month:1');
+        expect(within(februar2025).queryAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(0);
     });
 
     it('skal vise korrekt data for fødsel - mor og medmor - kun medmor har rett', async () => {
