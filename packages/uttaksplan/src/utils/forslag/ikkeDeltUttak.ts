@@ -20,26 +20,17 @@ const ikkeDeltUttakAdopsjonFarMedmor = ({
     const perioder: UttakPeriode_fpoversikt[] = [];
 
     if (erMorUfør) {
-        const aktivitetsFriPeriode: UttakPeriode_fpoversikt = {
+        // Aktivitetsfri kvote (foreldrepenger uten aktivitetskrav) skal ikke brukes i det foreslåtte forslaget
+        // her, siden dette er en kvote brukeren selv bør velge å bruke, ikke noe vi automatisk foreslår.
+        const periode: UttakPeriode_fpoversikt = {
             forelder: 'FAR_MEDMOR',
             kontoType: 'FORELDREPENGER',
-            morsAktivitet: 'IKKE_OPPGITT',
-            fom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).fom,
-            tom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).tom,
+            fom: getTidsperiodeString(førsteUttaksdag, foreldrepengerKonto.dager).fom,
+            tom: getTidsperiodeString(førsteUttaksdag, foreldrepengerKonto.dager).tom,
             flerbarnsdager: false,
         };
-        perioder.push(aktivitetsFriPeriode);
 
-        const aktivitetskravPeriode: UttakPeriode_fpoversikt = {
-            forelder: 'FAR_MEDMOR',
-            kontoType: 'FORELDREPENGER',
-            fom: getTidsperiodeString(Uttaksdagen.neste(aktivitetsFriPeriode.tom).getDato(), foreldrepengerKonto.dager)
-                .fom,
-            tom: getTidsperiodeString(Uttaksdagen.neste(aktivitetsFriPeriode.tom).getDato(), foreldrepengerKonto.dager)
-                .tom,
-            flerbarnsdager: false,
-        };
-        perioder.push(aktivitetskravPeriode);
+        perioder.push(periode);
     } else if (farOgFar) {
         const periode: UttakPeriode_fpoversikt = {
             forelder: 'FAR_MEDMOR',
@@ -182,44 +173,18 @@ const ikkeDeltUttakFødselFarMedmor = ({
     const perioder: UttakPeriode_fpoversikt[] = [];
 
     if (erMorUfør) {
-        if (erAleneOmOmsorg) {
-            const aktivitetskravPeriode: UttakPeriode_fpoversikt = {
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FORELDREPENGER',
-                fom: getTidsperiodeString(startDato, foreldrepengerKonto.dager).fom,
-                tom: getTidsperiodeString(startDato, foreldrepengerKonto.dager).tom,
-                flerbarnsdager: false,
-            };
+        // Aktivitetsfri kvote (foreldrepenger uten aktivitetskrav) skal ikke brukes i det foreslåtte
+        // forslaget her, siden dette er en kvote brukeren selv bør velge å bruke, ikke noe vi
+        // automatisk foreslår.
+        const aktivitetskravPeriode: UttakPeriode_fpoversikt = {
+            forelder: 'FAR_MEDMOR',
+            kontoType: 'FORELDREPENGER',
+            fom: getTidsperiodeString(startDato, foreldrepengerKonto.dager).fom,
+            tom: getTidsperiodeString(startDato, foreldrepengerKonto.dager).tom,
+            flerbarnsdager: false,
+        };
 
-            perioder.push(aktivitetskravPeriode);
-        } else {
-            const aktivitetsFriPeriode: UttakPeriode_fpoversikt = {
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FORELDREPENGER',
-                morsAktivitet: 'IKKE_OPPGITT',
-                fom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).fom,
-                tom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).tom,
-                flerbarnsdager: false,
-            };
-
-            perioder.push(aktivitetsFriPeriode);
-
-            const aktivitetskravPeriode: UttakPeriode_fpoversikt = {
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FORELDREPENGER',
-                fom: getTidsperiodeString(
-                    Uttaksdagen.neste(aktivitetsFriPeriode.tom).getDato(),
-                    foreldrepengerKonto.dager,
-                ).fom,
-                tom: getTidsperiodeString(
-                    Uttaksdagen.neste(aktivitetsFriPeriode.tom).getDato(),
-                    foreldrepengerKonto.dager,
-                ).tom,
-                flerbarnsdager: false,
-            };
-
-            perioder.push(aktivitetskravPeriode);
-        }
+        perioder.push(aktivitetskravPeriode);
     } else {
         if (farOgFar && !erAleneOmOmsorg) {
             const periode: UttakPeriode_fpoversikt = {
