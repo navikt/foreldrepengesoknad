@@ -248,20 +248,16 @@ export const mapTilEndringssøknadDto = (
     const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
     const valgtEksisterendeSaksnr = notEmpty(hentData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR));
     const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN));
+    const opprinneligUttaksplan = hentData(ContextDataType.OPPRINNELIG_UTTAKSPLAN);
     const ønskerJustertUttakVedFødsel = hentData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
     const vedlegg = hentData(ContextDataType.VEDLEGG);
 
     const søkersNyePerioder = filtrerUtAnnenPartsPerioder(uttaksplan, søkersituasjon.rolle);
-    const eksisterendePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> = [];
 
-    if (eksisterendeSak?.gjeldendeVedtak?.perioder !== undefined) {
-        eksisterendePerioder.push(...eksisterendeSak.gjeldendeVedtak.perioder);
-    }
-    if (eksisterendeSak?.gjeldendeVedtak?.perioderAnnenpartEøs !== undefined) {
-        eksisterendePerioder.push(...eksisterendeSak.gjeldendeVedtak.perioderAnnenpartEøs);
-    }
-
-    const søkersEksisterendePerioder = filtrerUtAnnenPartsPerioder(eksisterendePerioder, søkersituasjon.rolle);
+    const søkersEksisterendePerioder = filtrerUtAnnenPartsPerioder(
+        finnOpprinneligPlan(opprinneligUttaksplan, eksisterendeSak),
+        søkersituasjon.rolle,
+    );
 
     const endringstidspunkt = getEndringstidspunktNy(søkersEksisterendePerioder, søkersNyePerioder);
 
@@ -295,6 +291,22 @@ export const mapTilEndringssøknadDto = (
             ønskerJustertUttakVedFødsel,
         },
     };
+};
+
+// Endringstidspunktet skal utleiast mot planen slik brukaren fekk han presentert. Fell tilbake på dei rå
+// vedtaksperiodane berre for mellomlagra søknader frå før snapshotet vart innført.
+const finnOpprinneligPlan = (
+    opprinneligUttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
+    eksisterendeSak: FpSak_fpoversikt | undefined,
+): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
+    if (opprinneligUttaksplan !== undefined) {
+        return opprinneligUttaksplan;
+    }
+
+    return [
+        ...(eksisterendeSak?.gjeldendeVedtak?.perioder ?? []),
+        ...(eksisterendeSak?.gjeldendeVedtak?.perioderAnnenpartEøs ?? []),
+    ];
 };
 
 const filtrerPerioderFraOgMedEndringstidspunkt = (
