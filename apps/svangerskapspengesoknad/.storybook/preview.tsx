@@ -24,7 +24,7 @@ scriptTag.innerHTML = JSON.stringify({
     LOG_VALIDATION: 'test',
     INNSYN: 'test',
 });
-document.head.appendChild(scriptTag);
+document.head.append(scriptTag);
 
 const withIntlProvider = getIntlDecorator({
     nb: {

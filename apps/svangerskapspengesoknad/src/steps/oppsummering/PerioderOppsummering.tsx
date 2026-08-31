@@ -307,7 +307,8 @@ function SvpPeriodeDatoTekst({ periode }: { periode: UtvidetTilrettelegging }) {
                 }}
             />
         );
-    } else if (kanHaSvpFremTilTreUkerFørTermin) {
+    }
+    if (kanHaSvpFremTilTreUkerFørTermin) {
         return (
             <FormattedMessage
                 id="oppsummering.periode.fremTilTreUkerFørTermin"

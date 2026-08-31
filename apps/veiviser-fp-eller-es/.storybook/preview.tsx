@@ -21,7 +21,7 @@ scriptTag.id = 'nav:appSettings';
 scriptTag.innerHTML = JSON.stringify({
     APPRES_CMS_URL: '',
 });
-document.head.appendChild(scriptTag);
+document.head.append(scriptTag);
 
 dayjs.locale('nb');
 

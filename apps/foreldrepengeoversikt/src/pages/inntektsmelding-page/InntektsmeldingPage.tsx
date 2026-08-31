@@ -30,7 +30,7 @@ const useGetYtelse = () => {
         select: mapSakerDTOToSaker,
     }).data;
     if (!saker) {
-        return undefined;
+        return;
     }
 
     return getAlleYtelser(saker).find((sak) => sak.saksnummer === params.saksnummer)?.ytelse;

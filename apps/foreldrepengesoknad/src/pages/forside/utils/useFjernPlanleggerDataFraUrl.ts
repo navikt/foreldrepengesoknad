@@ -10,10 +10,12 @@ export const useFjernPlanleggerDataFraUrl = () => {
     const [searchParams, setSearchParams] = useSearchParams();
 
     useEffect(() => {
-        if (searchParams.has('planleggerData')) {
-            const oppdatert = new URLSearchParams(searchParams);
-            oppdatert.delete('planleggerData');
-            setSearchParams(oppdatert, { replace: true });
+        if (!searchParams.has('planleggerData')) {
+            return;
         }
+
+        const oppdatert = new URLSearchParams(searchParams);
+        oppdatert.delete('planleggerData');
+        setSearchParams(oppdatert, { replace: true });
     }, [searchParams, setSearchParams]);
 };

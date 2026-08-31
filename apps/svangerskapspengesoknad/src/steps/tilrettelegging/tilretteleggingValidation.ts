@@ -147,7 +147,6 @@ export const validateSammePeriodeFremTilTerminTilbakeIJobbDato =
         kanHaSVPFremTilTreUkerFørTermin: boolean,
     ) =>
     (value: string) => {
-        const erDelvis = type === 'delvis';
         if (
             hasValue(value) &&
             hasValue(behovForTilretteleggingFom) &&
@@ -157,6 +156,7 @@ export const validateSammePeriodeFremTilTerminTilbakeIJobbDato =
                 id: 'valideringsfeil.sammePeriodeFremTilTerminTom.førBehovForTilretteleggingFom',
             });
         }
+        const erDelvis = type === 'delvis';
         if (hasValue(fom) && dayjs(value).isBefore(dayjs(fom), 'd')) {
             return erDelvis
                 ? intl.formatMessage({ id: 'valideringsfeil.sammePeriodeFremTilTerminTom.førFomDato.delvis' })
@@ -256,11 +256,10 @@ export const validerTilretteleggingTomType =
                 return kanHaSVPFremTilTreUkerFørTermin
                     ? intl.formatMessage({ id: 'valideringsfeil.tomType.påkrevd.delvis.tilTermin' })
                     : intl.formatMessage({ id: 'valideringsfeil.tomType.påkrevd.delvis.tilFødsel' });
-            } else {
-                return kanHaSVPFremTilTreUkerFørTermin
-                    ? intl.formatMessage({ id: 'valideringsfeil.tomType.påkrevd.ingen.tilTermin' })
-                    : intl.formatMessage({ id: 'valideringsfeil.tomType.påkrevd.ingen.tilFødsel' });
             }
+            return kanHaSVPFremTilTreUkerFørTermin
+                ? intl.formatMessage({ id: 'valideringsfeil.tomType.påkrevd.ingen.tilTermin' })
+                : intl.formatMessage({ id: 'valideringsfeil.tomType.påkrevd.ingen.tilFødsel' });
         }
 
         return null;

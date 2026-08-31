@@ -1,7 +1,7 @@
 const s4 = () => {
-    return Math.floor((1 + Math.random()) * 0x10000)
+    return Math.floor((1 + Math.random()) * 0x1_00_00)
         .toString()
-        .substring(1);
+        .slice(1);
 };
 
 export const guid = () => `${s4()}${s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;

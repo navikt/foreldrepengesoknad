@@ -61,15 +61,17 @@ export const VedleggUploader = ({
     const formAttachments = watch(skjemanummer);
 
     useEffect(() => {
-        if (formAttachments.length === 0) {
-            const init = lagSendSenereDokument(attachmentType, skjemanummer);
-            const sendSenereVedlegg = addMetadata(init, {
-                type: metadataType,
-                perioder,
-            });
-
-            updateAttachments([sendSenereVedlegg]);
+        if (formAttachments.length > 0) {
+            return;
         }
+
+        const init = lagSendSenereDokument(attachmentType, skjemanummer);
+        const sendSenereVedlegg = addMetadata(init, {
+            type: metadataType,
+            perioder,
+        });
+
+        updateAttachments([sendSenereVedlegg]);
     }, [updateAttachments, formAttachments, attachmentType, skjemanummer, metadataType]);
 
     return (

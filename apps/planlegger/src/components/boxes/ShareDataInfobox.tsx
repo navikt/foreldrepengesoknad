@@ -33,7 +33,7 @@ export const ShareDataInfobox = ({ erAlenesøker }: Props) => {
                 <HStack>
                     <CopyButton
                         className="bg-ax-bg-accent-strong hover:bg-ax-bg-accent-strong-hover text-ax-text-neutral-contrast"
-                        copyText={globalThis.location.href}
+                        copyText={location.href}
                         text={intl.formatMessage({ id: 'OppsummeringSteg.KopierUrl' })}
                         activeText={intl.formatMessage({ id: 'OppsummeringSteg.KopiertUrl' })}
                         variant="action"

@@ -3,7 +3,7 @@ import { Attachment, Dokumenterer, InnsendingType } from '@navikt/fp-types';
 
 import { guid } from './guid';
 
-const generateAttachmentId = () => 'V'.concat(guid().replace(/-/g, ''));
+const generateAttachmentId = () => 'V'.concat(guid().replaceAll('-', ''));
 
 export const mapFilTilVedlegg = (
     file: File,
@@ -25,7 +25,7 @@ export const mapFilTilVedlegg = (
 });
 
 export const isAttachmentWithError = ({ pending, uploaded, filesize }: Attachment) =>
-    (pending === false && uploaded === false) || filesize === 0;
+    (!pending && !uploaded) || filesize === 0;
 
 export const lagSendSenereDokument = (
     type: AttachmentType,

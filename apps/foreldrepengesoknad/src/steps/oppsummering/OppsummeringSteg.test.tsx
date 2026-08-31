@@ -33,7 +33,7 @@ const {
 
 describe('<Oppsummering>', () => {
     afterEach(() => {
-        document.body.innerHTML = '';
+        document.body.replaceChildren();
     });
 
     const getCardDiv = (element: HTMLElement) =>

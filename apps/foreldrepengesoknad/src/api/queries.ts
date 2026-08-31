@@ -19,7 +19,9 @@ import { notEmpty } from '@navikt/fp-validation';
 
 const urlPrefiks = import.meta.env.BASE_URL;
 
-/** Backend returnerer null for Optional.orElse(null), som JAX-RS oversetter til 204 No Content */
+/**
+Backend returnerer null for Optional.orElse(null), som JAX-RS oversetter til 204 No Content
+*/
 const jsonEllerNull = async <T>(responsePromise: ResponsePromise) => {
     const response = await responsePromise;
     return response.status === 204 ? null : response.json<T>();
@@ -69,7 +71,7 @@ export const sakerOptions = () =>
 export const søkerinfoOptions = () =>
     queryOptions({
         queryKey: ['SØKERINFO'],
-        queryFn: () => ky.get(API_URLS.søkerInfo, { timeout: 30000 }).json<FpPersonopplysningerDto_fpoversikt>(),
+        queryFn: () => ky.get(API_URLS.søkerInfo, { timeout: 30_000 }).json<FpPersonopplysningerDto_fpoversikt>(),
         staleTime: Infinity,
     });
 

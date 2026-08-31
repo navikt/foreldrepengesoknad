@@ -39,7 +39,7 @@ export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt)
             },
             språkkode: getDecoratorLanguageCookie('decorator-language').toUpperCase() as Målform,
             barn: mapBarn(barn, dokumentasjon),
-            utenlandsopphold: (tidligereUtenlandsopphold ?? []).concat(senereUtenlandsopphold ?? []),
+            utenlandsopphold: [...(tidligereUtenlandsopphold ?? []), ...(senereUtenlandsopphold ?? [])],
             vedlegg:
                 dokumentasjon?.vedlegg.map((vedlegg) => ({
                     ...vedlegg,
@@ -70,7 +70,7 @@ export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt)
                 const feilmelding = callId
                     ? intl.formatMessage(
                           { id: 'useEsSendSøknad.FeilVedInnsending.MedCallId' },
-                          { callId: callId.substring(0, 6) },
+                          { callId: callId.slice(0, 6) },
                       )
                     : intl.formatMessage({ id: 'useEsSendSøknad.FeilVedInnsending.UtenCallId' });
                 throw new ApiError(feilmelding, 'Feil ved innsending av engangsstønad', jsonResponse);
@@ -100,7 +100,7 @@ const mapBarn = (barn: BarnDto, dokumentasjon?: Dokumentasjon): BarnDto => {
         throw new Error('Det er feil i data om barnet: mangler terminbekreftelse for termin-barn');
     }
 
-    return barn.type === 'termin' && dokumentasjon && erTerminDokumentasjon(dokumentasjon)
+    return dokumentasjon && barn.type === 'termin' && erTerminDokumentasjon(dokumentasjon)
         ? { ...barn, terminbekreftelseDato: dokumentasjon.terminbekreftelsedato }
         : barn;
 };

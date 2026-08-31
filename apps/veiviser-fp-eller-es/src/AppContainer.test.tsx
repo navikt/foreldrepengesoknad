@@ -1,10 +1,13 @@
 import { composeStories } from '@storybook/react-vite';
-import { screen } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import * as stories from './AppContainer.stories';
 
 const { FpEllerEsVeiviserMockaStønadskvoterOgSatser } = composeStories(stories);
+
+const velgSvar = (spørsmål: string, svar: 'Ja' | 'Nei') =>
+    userEvent.click(within(screen.getByRole('radiogroup', { name: spørsmål })).getByRole('radio', { name: svar }));
 
 describe('<AppContainer>', () => {
     beforeEach(() => {
@@ -28,16 +31,19 @@ describe('<AppContainer>', () => {
                 'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
             ),
         ).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Ja'));
+        await velgSvar(
+            'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
+            'Ja',
+        );
 
         expect(screen.getByText('Har du hatt inntekt 6 av de 10 siste månedene?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[1]!);
+        await velgSvar('Har du hatt inntekt 6 av de 10 siste månedene?', 'Ja');
 
         const hvorMye = screen.getByLabelText('Omtrent hvor mye tjener du i måneden før skatt?');
         await userEvent.type(hvorMye, '50000');
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[2]!);
+        await velgSvar('Bor du i Norge?', 'Ja');
 
         await userEvent.click(screen.getByText('Se resultatet'));
 

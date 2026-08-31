@@ -208,10 +208,7 @@ const Hendelse = ({
                 tittel = intl.formatMessage({ id: 'tidslinje.tittel.VEDTAK.innvilget' });
             }
 
-            let ikon = <InboxDownIcon />;
-            if (harInnvilget) {
-                ikon = <ThumbUpIcon />;
-            }
+            const ikon = harInnvilget ? <ThumbUpIcon /> : <InboxDownIcon />;
 
             return (
                 <Process.Event status={status} timestamp={hendelseDatoMedKlokkeslett} title={tittel} bullet={ikon}>
@@ -388,13 +385,12 @@ const Hendelse = ({
             );
         }
         case 'FREMTIDIG_VEDTAK': {
-            let url = links.saksbehandlingstiderFp;
-            if (sak.ytelse === 'SVANGERSKAPSPENGER') {
-                url = links.saksbehandlingstiderSvp;
-            }
-            if (sak.ytelse === 'ENGANGSSTØNAD') {
-                url = links.saksbehandlingstiderEs;
-            }
+            const saksbehandlingstider = {
+                SVANGERSKAPSPENGER: links.saksbehandlingstiderSvp,
+                ENGANGSSTØNAD: links.saksbehandlingstiderEs,
+                FORELDREPENGER: links.saksbehandlingstiderFp,
+            };
+            const url = saksbehandlingstider[sak.ytelse];
 
             return (
                 <Process.Event
@@ -458,7 +454,7 @@ const Hendelse = ({
                 </Process.Event>
             );
         }
-        case 'FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV':
+        case 'FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV': {
             return (
                 <Process.Event
                     status={status}
@@ -471,8 +467,10 @@ const Hendelse = ({
                     <DokumenterTilHendelse hendelse={hendelse} />
                 </Process.Event>
             );
-        default:
+        }
+        default: {
             return null;
+        }
     }
 };
 

@@ -6,7 +6,11 @@ import { isRequired } from '@navikt/fp-validation';
 
 import { BarnetFormValues } from './OmBarnetFormValues';
 
-export const AntallBarnSelect = () => {
+interface Props {
+    onChange?: (antallBarn: number) => void;
+}
+
+export const AntallBarnSelect = ({ onChange }: Props) => {
     const intl = useIntl();
     const { control } = useFormContext<BarnetFormValues>();
 
@@ -16,6 +20,12 @@ export const AntallBarnSelect = () => {
             control={control}
             label={intl.formatMessage({ id: 'omBarnet.antallBarnSelect.label' })}
             validate={[isRequired(intl.formatMessage({ id: 'valideringsfeil.omBarnet.antallBarnSelect.duMåOppgi' }))]}
+            onChange={(event) => {
+                const { target } = event;
+                if ('value' in target && typeof target.value === 'string') {
+                    onChange?.(Number(target.value));
+                }
+            }}
         >
             <option value="3">3</option>
             <option value="4">4</option>

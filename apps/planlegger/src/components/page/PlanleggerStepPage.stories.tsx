@@ -17,7 +17,7 @@ export const Default: Story = {
             { id: PlanleggerRoutes.FORDELING, isSelected: true, label: 'Fordeling' },
             { id: PlanleggerRoutes.HVEM_PLANLEGGER, isSelected: false, label: 'Hvem planlegger' },
         ],
-        goToStep: () => undefined,
+        goToStep: () => {},
         children: <div>Steginnhold</div>,
     },
 };

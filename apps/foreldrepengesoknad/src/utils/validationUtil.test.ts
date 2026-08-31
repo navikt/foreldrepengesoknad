@@ -94,15 +94,15 @@ describe('getIllegalChars', () => {
         const result = getIllegalChars('¤Special !@#%^&*()`~<>');
         expect(result).toEqual('~<>');
     });
-    it('should return \u2f8a (glyphen) as invalid char', () => {
-        const result = getIllegalChars('\u2f8aSome text');
-        expect(result).toEqual('\u2f8a');
+    it('should return \u{2F8A} (glyphen) as invalid char', () => {
+        const result = getIllegalChars('\u{2F8A}Some text');
+        expect(result).toEqual('\u{2F8A}');
     });
-    it('should return \uFFFD (replacement char) as invalid char', () => {
+    it('should return \u{FFFD} (replacement char) as invalid char', () => {
         const result = getIllegalChars(
-            'Albert Åberg og/å Prøysen beholder sine nordiske tegn, mens replacement character \uFFFDer ikke lov',
+            'Albert Åberg og/å Prøysen beholder sine nordiske tegn, mens replacement character \u{FFFD}er ikke lov',
         );
-        expect(result).toEqual('\uFFFD');
+        expect(result).toEqual('\u{FFFD}');
     });
     it('should return empty string if all input is valid', () => {
         const result = getIllegalChars('Lovlig input.');

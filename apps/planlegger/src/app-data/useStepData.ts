@@ -112,6 +112,7 @@ export const useStepData = (): Array<ProgressStep<PlanleggerRoutes>> => {
 
     const currentPath = useMemo(() => {
         const route = Object.values(PlanleggerRoutes).find(
+            // eslint-disable-next-line unicorn/no-useless-coercion
             (v) => v.toString() === decodeURIComponent(location.pathname),
         );
         return route ?? PlanleggerRoutes.OM_PLANLEGGEREN;

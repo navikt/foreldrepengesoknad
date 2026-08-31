@@ -98,14 +98,16 @@ export const UttaksplanSteg = ({
 
     const kvoteOppsummeringRef = useRef<HTMLDivElement>(null);
     const scrollToKvoteOppsummering = () => {
-        if (kvoteOppsummeringRef.current) {
-            // Håndter spesielt for å unngå at element en scroller til blir liggende under headeren
-            const elementTop = kvoteOppsummeringRef.current.getBoundingClientRect().top + window.scrollY;
-            window.scrollTo({
-                top: elementTop - 80,
-                behavior: 'smooth',
-            });
+        if (!kvoteOppsummeringRef.current) {
+            return;
         }
+
+        // Håndter spesielt for å unngå at element en scroller til blir liggende under headeren
+        const elementTop = kvoteOppsummeringRef.current.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({
+            top: elementTop - 80,
+            behavior: 'smooth',
+        });
     };
 
     const kontoerOptions = useStønadsKontoerOptions();

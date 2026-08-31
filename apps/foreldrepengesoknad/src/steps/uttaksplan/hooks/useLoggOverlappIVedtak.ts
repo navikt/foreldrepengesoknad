@@ -63,7 +63,7 @@ const erOverlappande = (a: UttakPeriode_fpoversikt, b: UttakPeriode_fpoversikt):
 // (sjå filtrerBortPerioderUtenTrekkdager i UttaksplanDataContext). Dei skal difor ikkje reknast som
 // ugyldige overlapp her, sjølv om dei overlappar annen part sin reelle periode i mellomresultatet.
 const okkupererTid = (periode: UttakPeriode_fpoversikt): boolean =>
-    !(periode.resultat?.innvilget === false && periode.resultat?.trekkerDager === false);
+    periode.resultat?.innvilget !== false || periode.resultat?.trekkerDager;
 
 const finnUgyldigeOverlapp = (
     perioder: UttakPeriode_fpoversikt[],
@@ -75,15 +75,15 @@ const finnUgyldigeOverlapp = (
             const b = perioder[j]!;
             if (
                 erOverlappande(a, b) &&
-                !(
+                (!(
                     a.utsettelseÅrsak === undefined &&
                     b.utsettelseÅrsak === undefined &&
                     a.oppholdÅrsak === undefined &&
-                    b.oppholdÅrsak === undefined &&
-                    a.samtidigUttak !== undefined &&
-                    b.samtidigUttak !== undefined &&
-                    a.forelder !== b.forelder
-                )
+                    b.oppholdÅrsak === undefined
+                ) ||
+                    a.samtidigUttak === undefined ||
+                    b.samtidigUttak === undefined ||
+                    a.forelder === b.forelder)
             ) {
                 ugyldigeOverlapp.push([a, b]);
             }

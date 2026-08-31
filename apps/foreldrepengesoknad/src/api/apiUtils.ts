@@ -72,12 +72,15 @@ const cleanBarn = (barn: Barn): BarnDto => {
 
 const konverterRolle = (rolle: Søkerrolle): BrukerRolle => {
     switch (rolle) {
-        case 'mor':
+        case 'mor': {
             return 'MOR';
-        case 'far':
+        }
+        case 'far': {
             return 'FAR';
-        case 'medmor':
+        }
+        case 'medmor': {
             return 'MEDMOR';
+        }
     }
 };
 
@@ -177,11 +180,9 @@ export const getSøknadsdataForInnsending = (
 
     const eksisterendeSak = foreldrepengerSaker.find((sak) => sak.saksnummer === valgtEksisterendeSaksnr);
 
-    if (erEndringssøknad) {
-        return mapTilEndringssøknadDto(hentData, søkerinfo, eksisterendeSak);
-    } else {
-        return mapTilSøknadDto(hentData, søkerinfo);
-    }
+    return erEndringssøknad
+        ? mapTilEndringssøknadDto(hentData, søkerinfo, eksisterendeSak)
+        : mapTilSøknadDto(hentData, søkerinfo);
 };
 
 export const mapTilSøknadDto = (
@@ -218,7 +219,7 @@ export const mapTilSøknadDto = (
             uttaksperioder: midlertidigMappingAvUttaksplan(søkersPerioder, barn, annenForelder),
             ønskerJustertUttakVedFødsel,
         },
-        utenlandsopphold: (utenlandsoppholdSiste12Mnd ?? []).concat(utenlandsoppholdNeste12Mnd ?? []),
+        utenlandsopphold: [...(utenlandsoppholdSiste12Mnd ?? []), ...(utenlandsoppholdNeste12Mnd ?? [])],
         vedlegg: convertAttachmentsMapToArray(vedlegg),
     };
 };
@@ -399,38 +400,52 @@ const midlertidigMappingAvUttaksplan = (
 
 const midlertidigMappingAvOppholdÅrsak = (årsak: UttakOppholdÅrsak_fpoversikt): Oppholdsårsak => {
     switch (årsak) {
-        case 'FEDREKVOTE_ANNEN_FORELDER':
+        case 'FEDREKVOTE_ANNEN_FORELDER': {
             return 'UTTAK_FEDREKVOTE_ANNEN_FORELDER';
-        case 'FELLESPERIODE_ANNEN_FORELDER':
+        }
+        case 'FELLESPERIODE_ANNEN_FORELDER': {
             return 'UTTAK_FELLESP_ANNEN_FORELDER';
-        case 'FORELDREPENGER_ANNEN_FORELDER':
+        }
+        case 'FORELDREPENGER_ANNEN_FORELDER': {
             return 'UTTAK_FORELDREPENGER_ANNEN_FORELDER';
-        case 'MØDREKVOTE_ANNEN_FORELDER':
+        }
+        case 'MØDREKVOTE_ANNEN_FORELDER': {
             return 'UTTAK_MØDREKVOTE_ANNEN_FORELDER';
-        default:
+        }
+        default: {
             throw new Error('Ukjent oppholdsårsak');
+        }
     }
 };
 
 const midlertidigMappingAvUtsettelseÅrsak = (årsak: UttakUtsettelseÅrsak_fpoversikt): UtsettelsesÅrsak => {
     switch (årsak) {
-        case 'ARBEID':
+        case 'ARBEID': {
             return 'ARBEID';
-        case 'BARN_INNLAGT':
+        }
+        case 'BARN_INNLAGT': {
             return 'INSTITUSJONSOPPHOLD_BARNET';
-        case 'FRI':
+        }
+        case 'FRI': {
             return 'FRI';
-        case 'HV_ØVELSE':
+        }
+        case 'HV_ØVELSE': {
             return 'HV_OVELSE';
-        case 'LOVBESTEMT_FERIE':
+        }
+        case 'LOVBESTEMT_FERIE': {
             return 'LOVBESTEMT_FERIE';
-        case 'NAV_TILTAK':
+        }
+        case 'NAV_TILTAK': {
             return 'NAV_TILTAK';
-        case 'SØKER_INNLAGT':
+        }
+        case 'SØKER_INNLAGT': {
             return 'INSTITUSJONSOPPHOLD_SØKER';
-        case 'SØKER_SYKDOM':
+        }
+        case 'SØKER_SYKDOM': {
             return 'SYKDOM';
-        default:
+        }
+        default: {
             throw new Error('Ukjent utsettelsesårsak');
+        }
     }
 };

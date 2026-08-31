@@ -54,7 +54,7 @@ router.post('/fpgrunndata/api/konto', async (req, res) => {
         });
         const jsonResponse = await data.json();
         res.send(jsonResponse);
-    } catch (err) {
-        console.log(err);
+    } catch (error) {
+        console.log(error);
     }
 });

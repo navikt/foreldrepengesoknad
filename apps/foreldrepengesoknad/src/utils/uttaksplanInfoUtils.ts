@@ -45,7 +45,7 @@ export const isUttaksperiodeFarMedmorMedValgForUttakRundtFødsel = (
         periode.forelder === 'FAR_MEDMOR' &&
         periode.kontoType === 'FEDREKVOTE' &&
         periode.morsAktivitet === undefined &&
-        !!periode.flerbarnsdager === false &&
+        !periode.flerbarnsdager &&
         !!periode.samtidigUttak
     );
 };

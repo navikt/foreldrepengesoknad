@@ -6,18 +6,18 @@ export const VERSJON_MELLOMLAGRING = 22;
 const isEndringssøknadRoute = (route: SøknadRoutes): boolean => {
     switch (route) {
         case SøknadRoutes.UTTAKSPLAN:
-        case SøknadRoutes.OPPSUMMERING:
+        case SøknadRoutes.OPPSUMMERING: {
             return true;
-        default:
+        }
+        default: {
             return false;
+        }
     }
 };
 
 export const shouldApplyStorage = (storedState: FpMellomlagretData): boolean => {
-    if (storedState?.erEndringssøknad) {
-        if (storedState.APP_ROUTE && !isEndringssøknadRoute(storedState.APP_ROUTE)) {
-            return false;
-        }
+    if (storedState?.erEndringssøknad && storedState.APP_ROUTE && !isEndringssøknadRoute(storedState.APP_ROUTE)) {
+        return false;
     }
 
     return storedState.version === VERSJON_MELLOMLAGRING;

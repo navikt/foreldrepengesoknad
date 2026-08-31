@@ -21,18 +21,24 @@ const formaterRad = (intl: IntlShape, rad: DinPlanKvoteRad): string => {
     };
 
     switch (rad.kontoType) {
-        case 'FORELDREPENGER_FØR_FØDSEL':
+        case 'FORELDREPENGER_FØR_FØDSEL': {
             return intl.formatMessage({ id: 'oppsummering.uttak.dinPlan.rad.førFødsel' }, values);
-        case 'MØDREKVOTE':
+        }
+        case 'MØDREKVOTE': {
             return intl.formatMessage({ id: 'oppsummering.uttak.dinPlan.rad.mødrekvote' }, values);
-        case 'FEDREKVOTE':
+        }
+        case 'FEDREKVOTE': {
             return intl.formatMessage({ id: 'oppsummering.uttak.dinPlan.rad.fedrekvote' }, values);
-        case 'FELLESPERIODE':
+        }
+        case 'FELLESPERIODE': {
             return intl.formatMessage({ id: 'oppsummering.uttak.dinPlan.rad.fellesperiode' }, values);
-        case 'AKTIVITETSFRI_KVOTE':
+        }
+        case 'AKTIVITETSFRI_KVOTE': {
             return intl.formatMessage({ id: 'oppsummering.uttak.dinPlan.rad.aktivitetsfriKvote' }, values);
-        case 'FORELDREPENGER':
+        }
+        case 'FORELDREPENGER': {
             return intl.formatMessage({ id: 'oppsummering.uttak.dinPlan.rad.foreldrepengerMedAktivitetskrav' }, values);
+        }
     }
 };
 

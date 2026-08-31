@@ -21,7 +21,7 @@ const finnHvemSomHarRett = (fpEllerEsSituasjon: FpEllerEsSituasjon, satser: Sats
 
     const { situasjon, lønnPerMåned, borDuINorge, jobberDuINorge } = fpEllerEsSituasjon;
     const lønnPerMånedNummer = formatValue(lønnPerMåned);
-    const erLønnOverEllerLik200000 = lønnPerMånedNummer !== undefined && lønnPerMånedNummer * 12 >= 200000;
+    const erLønnOverEllerLik200000 = lønnPerMånedNummer !== undefined && lønnPerMånedNummer * 12 >= 200_000;
     const erLønnOverEllerLikMinstelønn = lønnPerMånedNummer !== undefined && lønnPerMånedNummer * 12 >= minstelønn;
     if (
         situasjon === 'mor' &&
@@ -44,14 +44,14 @@ const finnHvemSomHarRett = (fpEllerEsSituasjon: FpEllerEsSituasjon, satser: Sats
     }
     if (
         situasjon === 'mor' &&
-        ((!erLønnOverEllerLik200000 && !erLønnOverEllerLikMinstelønn) || erLønnOverEllerLikMinstelønn) &&
+        (erLønnOverEllerLikMinstelønn || (!erLønnOverEllerLik200000 && !erLønnOverEllerLikMinstelønn)) &&
         (borDuINorge || jobberDuINorge)
     ) {
         return 'morHarRettEs';
     }
     if (
         situasjon !== 'mor' &&
-        ((!erLønnOverEllerLik200000 && !erLønnOverEllerLikMinstelønn) || erLønnOverEllerLikMinstelønn) &&
+        (erLønnOverEllerLikMinstelønn || (!erLønnOverEllerLik200000 && !erLønnOverEllerLikMinstelønn)) &&
         (borDuINorge || jobberDuINorge)
     ) {
         return 'farEllerMedmorKanHaRettEs';

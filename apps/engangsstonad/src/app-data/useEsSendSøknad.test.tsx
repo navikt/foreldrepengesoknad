@@ -137,7 +137,7 @@ describe('useEsSendSøknad', () => {
                         fødselsdatoer: ['2024-01-01'],
                     },
                     språkkode: 'NB',
-                    utenlandsopphold: TIDLIGERE_UTENLANDSOPPHOLD.concat(SENERE_UTENLANDSOPPHOLD),
+                    utenlandsopphold: [...TIDLIGERE_UTENLANDSOPPHOLD, ...SENERE_UTENLANDSOPPHOLD],
                     vedlegg: [
                         {
                             ...DOKUMENTASJON.vedlegg[0]!,
@@ -184,7 +184,7 @@ describe('useEsSendSøknad', () => {
                         antallBarn: 1,
                     },
                     språkkode: 'NB',
-                    utenlandsopphold: TIDLIGERE_UTENLANDSOPPHOLD.concat(SENERE_UTENLANDSOPPHOLD),
+                    utenlandsopphold: [...TIDLIGERE_UTENLANDSOPPHOLD, ...SENERE_UTENLANDSOPPHOLD],
                     vedlegg: [],
                 } satisfies EngangsstønadDto,
             }),
@@ -224,7 +224,7 @@ describe('useEsSendSøknad', () => {
                         termindato: '2024-01-01',
                     },
                     språkkode: 'NB',
-                    utenlandsopphold: TIDLIGERE_UTENLANDSOPPHOLD.concat(SENERE_UTENLANDSOPPHOLD),
+                    utenlandsopphold: [...TIDLIGERE_UTENLANDSOPPHOLD, ...SENERE_UTENLANDSOPPHOLD],
                     vedlegg: [
                         {
                             ...DOKUMENTASJON.vedlegg[0]!,

@@ -1375,6 +1375,9 @@ importers:
       eslint-plugin-storybook:
         specifier: 10.4.6
         version: 10.4.6(eslint@10.8.0(jiti@2.7.0))(storybook@10.4.6(@testing-library/dom@10.4.1)(@types/react@19.2.18)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)
+      eslint-plugin-unicorn:
+        specifier: 73.0.0
+        version: 73.0.0(eslint@10.8.0(jiti@2.7.0))
       globals:
         specifier: 17.8.0
         version: 17.8.0

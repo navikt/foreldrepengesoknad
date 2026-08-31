@@ -5,8 +5,8 @@ export const medRefusjonsPerioder = [
         versjon: 2,
         erAktiv: true,
         stillingsprosent: 100,
-        inntektPrMnd: 140000,
-        refusjonPrMnd: 110000,
+        inntektPrMnd: 140_000,
+        refusjonPrMnd: 110_000,
         arbeidsgiverNavn: 'Laksinor',
         arbeidsgiverIdent: '123',
         journalpostId: '1017115920',
@@ -16,7 +16,7 @@ export const medRefusjonsPerioder = [
         refusjonsperioder: [
             {
                 fomDato: '2024-10-12',
-                refusjonsbeløpMnd: 30000,
+                refusjonsbeløpMnd: 30_000,
             },
             {
                 fomDato: '2024-10-13',
@@ -24,7 +24,7 @@ export const medRefusjonsPerioder = [
             },
             {
                 fomDato: '2024-10-14',
-                refusjonsbeløpMnd: 140000,
+                refusjonsbeløpMnd: 140_000,
             },
         ],
     },

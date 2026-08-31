@@ -95,21 +95,23 @@ type Story = StoryObj<typeof meta>;
 
 export const VisAppKvinneMedArbeid: Story = {
     beforeEach({ msw }) {
-        msw.use(...HANDLERS.concat([http.get(API_URLS.søkerInfo, () => HttpResponse.json(defaultSøkerinfo))]));
+        msw.use(
+            ...HANDLERS,
+            http.get(API_URLS.søkerInfo, () => HttpResponse.json(defaultSøkerinfo)),
+        );
     },
 };
 
 export const VisAppKvinneUtenArbeid: Story = {
     beforeEach({ msw }) {
         msw.use(
-            ...HANDLERS.concat([
-                http.get(API_URLS.søkerInfo, () =>
-                    HttpResponse.json({
-                        ...defaultSøkerinfo,
-                        arbeidsforhold: [],
-                    }),
-                ),
-            ]),
+            ...HANDLERS,
+            http.get(API_URLS.søkerInfo, () =>
+                HttpResponse.json({
+                    ...defaultSøkerinfo,
+                    arbeidsforhold: [],
+                }),
+            ),
         );
     },
 };
@@ -117,14 +119,13 @@ export const VisAppKvinneUtenArbeid: Story = {
 export const VisAppMann: Story = {
     beforeEach({ msw }) {
         msw.use(
-            ...HANDLERS.concat([
-                http.get(API_URLS.søkerInfo, () =>
-                    HttpResponse.json({
-                        ...defaultSøkerinfo,
-                        kjønn: 'M',
-                    }),
-                ),
-            ]),
+            ...HANDLERS,
+            http.get(API_URLS.søkerInfo, () =>
+                HttpResponse.json({
+                    ...defaultSøkerinfo,
+                    kjønn: 'M',
+                }),
+            ),
         );
     },
 };
@@ -132,15 +133,14 @@ export const VisAppMann: Story = {
 export const VisAppUmyndig: Story = {
     beforeEach({ msw }) {
         msw.use(
-            ...HANDLERS.concat([
-                http.get(API_URLS.søkerInfo, () =>
-                    HttpResponse.json({
-                        ...defaultSøkerinfo,
-                        kjønn: 'K',
-                        fødselsdato: '2023-08-30',
-                    }),
-                ),
-            ]),
+            ...HANDLERS,
+            http.get(API_URLS.søkerInfo, () =>
+                HttpResponse.json({
+                    ...defaultSøkerinfo,
+                    kjønn: 'K',
+                    fødselsdato: '2023-08-30',
+                }),
+            ),
         );
     },
 };

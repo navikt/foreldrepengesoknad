@@ -46,7 +46,7 @@ describe('<HvorMyeSteg>', () => {
         const satser = stories.AleneforsørgerMor.args.satser;
         const minÅrslønn = Math.round(satser.grunnbeløp[0]!.verdi / 2);
         const minÅrslønnFormatted = formatCurrencyWithKr(minÅrslønn);
-        const normaliserWhitespace = (tekst: string) => tekst.replace(/\s+/g, ' ');
+        const normaliserWhitespace = (tekst: string) => tekst.replaceAll(/\s+/g, ' ');
 
         expect(
             await screen.findByText((content) => {

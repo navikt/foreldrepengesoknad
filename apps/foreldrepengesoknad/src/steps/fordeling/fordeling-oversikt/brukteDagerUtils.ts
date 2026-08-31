@@ -41,10 +41,12 @@ const isFellesperiodeKvote = (uttak: KontoDto): boolean => uttak.konto === 'FELL
 const isMorsKvote = (uttak: KontoDto): boolean => {
     switch (uttak.konto) {
         case 'FORELDREPENGER_FØR_FØDSEL':
-        case 'MØDREKVOTE':
+        case 'MØDREKVOTE': {
             return true;
-        default:
+        }
+        default: {
             return false;
+        }
     }
 };
 

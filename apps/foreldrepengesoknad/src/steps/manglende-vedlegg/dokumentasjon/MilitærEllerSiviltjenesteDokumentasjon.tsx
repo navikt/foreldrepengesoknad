@@ -23,10 +23,10 @@ export const MilitærEllerSiviltjenesteDokumentasjon = ({
     const intl = useIntl();
 
     if (
+        !andreInntektskilder ||
         !arbeidsforholdOgInntekt ||
         (arbeidsforholdOgInntekt && !arbeidsforholdOgInntekt.harHattAndreInntektskilder) ||
-        !andreInntektskilder ||
-        !andreInntektskilder.some((i) => i.type === AnnenInntektType.MILITÆRTJENESTE)
+        andreInntektskilder.every((i) => i.type !== AnnenInntektType.MILITÆRTJENESTE)
     ) {
         return null;
     }

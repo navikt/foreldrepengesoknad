@@ -41,12 +41,18 @@ export const getAktivitetTekst = (
     if (type === 'ORDINÆRT_ARBEID' && orgnummer !== undefined && arbeidsforhold && arbeidsforhold.length > 0) {
         const arbeidsgiverNavn = getValgtArbeidsgiverNavn(arbeidsforhold, orgnummer);
         return intl.formatMessage({ id: `oppsummering.uttak.arbeidstaker` }, { orgnr: orgnummer, arbeidsgiverNavn });
-    } else if (type === 'SELVSTENDIG_NÆRINGSDRIVENDE') {
-        return intl.formatMessage({ id: 'oppsummering.uttak.selvstendig_næringsdrivende' });
-    } else if (type === 'FRILANS') {
-        return intl.formatMessage({ id: 'oppsummering.uttak.frilans' });
-    } else if (type === 'ANNET') {
-        return intl.formatMessage({ id: 'oppsummering.uttak.annet' });
+    }
+    switch (type) {
+        case 'SELVSTENDIG_NÆRINGSDRIVENDE': {
+            return intl.formatMessage({ id: 'oppsummering.uttak.selvstendig_næringsdrivende' });
+        }
+        case 'FRILANS': {
+            return intl.formatMessage({ id: 'oppsummering.uttak.frilans' });
+        }
+        case 'ANNET': {
+            return intl.formatMessage({ id: 'oppsummering.uttak.annet' });
+        }
+        // No default
     }
 
     throw new Error(`Ikke håndtert aktivitetstype: ${type}`);

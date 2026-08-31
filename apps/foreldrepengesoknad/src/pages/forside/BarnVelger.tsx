@@ -96,7 +96,7 @@ export const BarnVelger = ({ selectableBarn, harPlanleggerData }: Props) => {
 
     const { control } = useFormContext<ForsideFormValues>();
 
-    if (selectableBarn.length === 0 && !harPlanleggerData) {
+    if (!harPlanleggerData && selectableBarn.length === 0) {
         return null;
     }
 
@@ -105,10 +105,10 @@ export const BarnVelger = ({ selectableBarn, harPlanleggerData }: Props) => {
 
     let radios: ReactElement[] = [];
     if (fødteOgAdopterteBarn.length > 0) {
-        radios = radios.concat(getRadioForFødtEllerAdoptertBarn(fødteOgAdopterteBarn, intl));
+        radios = [...radios, ...getRadioForFødtEllerAdoptertBarn(fødteOgAdopterteBarn, intl)];
     }
     if (ufødteBarn.length > 0) {
-        radios = radios.concat(getRadioForUfødtBarn(ufødteBarn, intl));
+        radios = [...radios, ...getRadioForUfødtBarn(ufødteBarn, intl)];
     }
 
     const radioOptionsToAdd = [];
@@ -146,7 +146,7 @@ export const BarnVelger = ({ selectableBarn, harPlanleggerData }: Props) => {
             label={<FormattedMessage id="velkommen.intro.harSaker.barnVelger.label" />}
             validate={[isRequired(intl.formatMessage({ id: 'steg.footer.spørsmålMåBesvares' }))]}
         >
-            {radios.concat(radioOptionsToAdd)}
+            {[...radios, ...radioOptionsToAdd]}
         </RhfRadioGroup>
     );
 };

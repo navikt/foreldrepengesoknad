@@ -30,22 +30,20 @@ export const getAlleYtelser = (saker: SakOppslag): Sak[] => {
 
 export const ytelseSomTekst = (ytelse: Sak['ytelse'], intl: IntlShape) => {
     switch (ytelse) {
-        case 'ENGANGSSTØNAD':
+        case 'ENGANGSSTØNAD': {
             return intl.formatMessage({ id: 'ytelse.ENGANGSSTØNAD' });
-        case 'SVANGERSKAPSPENGER':
+        }
+        case 'SVANGERSKAPSPENGER': {
             return intl.formatMessage({ id: 'ytelse.SVANGERSKAPSPENGER' });
-        case 'FORELDREPENGER':
+        }
+        case 'FORELDREPENGER': {
             return intl.formatMessage({ id: 'ytelse.FORELDREPENGER' });
+        }
     }
 };
 
 export const getFørsteUttaksdagIForeldrepengesaken = (sak: Foreldrepengesak) => {
-    if (sak.gjeldendeVedtak && sak.gjeldendeVedtak.perioder.length > 0) {
-        return sak.gjeldendeVedtak.perioder[0]!.fom;
-    } else if (sak.åpenBehandling?.søknadsperioder && sak.åpenBehandling?.søknadsperioder.length > 0) {
-        return sak.åpenBehandling?.søknadsperioder[0]!.fom;
-    }
-    return undefined;
+    return sak.gjeldendeVedtak?.perioder[0]?.fom ?? sak.åpenBehandling?.søknadsperioder?.[0]?.fom;
 };
 
 export const getBarnFraSak = (familiehendelse: Familiehendelse_fpoversikt, gjelderAdopsjon: boolean): Barn => {
@@ -88,7 +86,7 @@ export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: OversiktBarnD
           )
         : [];
 
-    const alleBarn = pdlBarnMedSammeFnr.concat(pdlBarnMedSammeFødselsdato);
+    const alleBarn = [...pdlBarnMedSammeFnr, ...pdlBarnMedSammeFødselsdato];
     alleBarn.sort(sorterPersonEtterEldstOgNavn);
     const alleBarnFødselsdatoer = alleBarn.filter((b) => b.fødselsdato !== undefined).map((b) => b.fødselsdato);
     let fødselsdatoer = [] as string[];
@@ -116,39 +114,40 @@ export const grupperSakerPåBarn = (registrerteBarn: OversiktBarnDto_fpoversikt[
         ['desc'],
     );
 
-    return sorterteSaker.reduce((result, sak) => {
-        if (sak.familiehendelse) {
-            const familiehendelsedato = getFamiliehendelseDato(sak.familiehendelse);
-            const relevantSak = result.find((gruppertSak) => findRelevantSak(gruppertSak, familiehendelsedato));
+    const result: GruppertSak[] = [];
 
-            if (relevantSak) {
-                relevantSak.saker.push(sak);
-            }
-
-            if (relevantSak && result.includes(relevantSak)) {
-                return result;
-            } else {
-                const type = utledFamiliesituasjon(
-                    sak.familiehendelse,
-                    'gjelderAdopsjon' in sak ? sak.gjelderAdopsjon : undefined,
-                );
-                const gruppertSak: GruppertSak = {
-                    antallBarn: sak.familiehendelse.antallBarn,
-                    familiehendelsedato,
-                    saker: [sak],
-                    type,
-                    ytelse: sak.ytelse,
-                    barn: type === 'termin' ? undefined : getBarnGrupperingFraSak(sak, registrerteBarn),
-                };
-
-                result.push(gruppertSak);
-
-                return result;
-            }
-        } else {
-            return result;
+    for (const sak of sorterteSaker) {
+        if (!sak.familiehendelse) {
+            continue;
         }
-    }, [] as GruppertSak[]);
+
+        const familiehendelsedato = getFamiliehendelseDato(sak.familiehendelse);
+        const relevantSak = result.find((gruppertSak) => findRelevantSak(gruppertSak, familiehendelsedato));
+
+        if (relevantSak) {
+            relevantSak.saker.push(sak);
+        }
+
+        if (relevantSak && result.includes(relevantSak)) {
+            continue;
+        }
+
+        const type = utledFamiliesituasjon(
+            sak.familiehendelse,
+            'gjelderAdopsjon' in sak ? sak.gjelderAdopsjon : undefined,
+        );
+        const gruppertSak: GruppertSak = {
+            antallBarn: sak.familiehendelse.antallBarn,
+            familiehendelsedato,
+            saker: [sak],
+            type,
+            ytelse: sak.ytelse,
+            barn: type === 'termin' ? undefined : getBarnGrupperingFraSak(sak, registrerteBarn),
+        };
+        result.push(gruppertSak);
+    }
+
+    return result;
 };
 
 const addYtelseToSak = (
@@ -192,14 +191,11 @@ const findRelevantSak = (gruppertSak: GruppertSak, familiehendelsedato: string) 
     const startdato = dayjs(familiehendelsedato).subtract(2, 'months');
     const sluttdato = dayjs(familiehendelsedato).add(3, 'weeks');
 
-    if (gruppertSak) {
-        return (
-            dayjs(gruppertSak.familiehendelsedato).isAfter(startdato) &&
-            dayjs(gruppertSak.familiehendelsedato).isSameOrBefore(sluttdato)
-        );
-    }
-
-    return undefined;
+    return (
+        gruppertSak &&
+        dayjs(gruppertSak.familiehendelsedato).isAfter(startdato) &&
+        dayjs(gruppertSak.familiehendelsedato).isSameOrBefore(sluttdato)
+    );
 };
 
 export const utledFamiliesituasjon = (
@@ -240,7 +236,7 @@ export const getNavnAnnenForelder = (
 ) => {
     const fødselsdatoFraSak = sak?.familiehendelse ? sak.familiehendelse.fødselsdato : undefined;
     const barn =
-        søkerinfo.barn && fødselsdatoFraSak
+        fødselsdatoFraSak && søkerinfo.barn
             ? søkerinfo.barn.find((b) => dayjs(b.fødselsdato).isSame(fødselsdatoFraSak, 'd'))
             : undefined;
     const annenForelderNavn = barn?.annenPartFornavn;
@@ -250,12 +246,18 @@ export const getNavnAnnenForelder = (
 };
 
 const getTekstForAntallBarn = (antallBarn: number, intl: IntlShape): string => {
-    if (antallBarn === 1 || antallBarn === 0) {
-        return intl.formatMessage({ id: 'barn' });
-    } else if (antallBarn === 2) {
-        return intl.formatMessage({ id: 'tvillinger' });
-    } else if (antallBarn === 3) {
-        return intl.formatMessage({ id: 'trillinger' });
+    switch (antallBarn) {
+        case 1:
+        case 0: {
+            return intl.formatMessage({ id: 'barn' });
+        }
+        case 2: {
+            return intl.formatMessage({ id: 'tvillinger' });
+        }
+        case 3: {
+            return intl.formatMessage({ id: 'trillinger' });
+        }
+        // No default
     }
     return intl.formatMessage({ id: 'flerlinger' });
 };
@@ -289,7 +291,7 @@ const getTittelBarnNårNavnSkalIkkeVises = (
     type: Familiesituasjon,
 ): { tittel: string; undertittel: string } => {
     const barnTekst = getTekstForAntallBarn(antallBarn, intl);
-    if ((antallBarn === 0 && fødselsdatoer === undefined) || type === 'termin') {
+    if (type === 'termin' || (antallBarn === 0 && fødselsdatoer === undefined)) {
         return {
             tittel: intl.formatMessage(
                 { id: 'barnHeader.terminBarn' },
@@ -312,33 +314,31 @@ const getTittelBarnNårNavnSkalIkkeVises = (
             ),
             undertittel: '',
         };
-    } else {
-        const fødselsdatoTekst = formaterFødselsdatoerPåBarn(fødselsdatoer, intl);
-        if (fødselsdatoer !== undefined && fødselsdatoer.length > 0) {
-            return {
-                tittel: intl.formatMessage(
-                    { id: 'barnHeader.fødtBarn' },
-                    {
-                        barnTekst,
-                        fødselsdatoTekst,
-                    },
-                ),
-                undertittel: '',
-            };
-        }
-        return { tittel: '', undertittel: '' };
     }
+
+    const fødselsdatoTekst = formaterFødselsdatoerPåBarn(fødselsdatoer, intl);
+    if (fødselsdatoer !== undefined && fødselsdatoer.length > 0) {
+        return {
+            tittel: intl.formatMessage(
+                { id: 'barnHeader.fødtBarn' },
+                {
+                    barnTekst,
+                    fødselsdatoTekst,
+                },
+            ),
+            undertittel: '',
+        };
+    }
+    return { tittel: '', undertittel: '' };
 };
 
 export const getNavnPåBarna = (fornavn: string[], intl: IntlShape): string => {
-    if (fornavn.length > 1) {
-        return formatOppramsing(
-            fornavn.map((n) => n.trim()),
-            intl,
-        );
-    } else {
-        return `${fornavn[0]}`;
-    }
+    return fornavn.length > 1
+        ? formatOppramsing(
+              fornavn.map((n) => n.trim()),
+              intl,
+          )
+        : String(fornavn[0]);
 };
 
 type SakTittelArguments = {

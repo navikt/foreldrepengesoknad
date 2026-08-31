@@ -2,7 +2,9 @@ import dayjs from 'dayjs';
 
 import { Uttaksdagen } from '@navikt/fp-utils';
 
-/** Barnet regnes som født før 33. svangerskapsuke når det er født mer enn 7 uker (49 dager) før termin. */
+/**
+Barnet regnes som født før 33. svangerskapsuke når det er født mer enn 7 uker (49 dager) før termin.
+*/
 const ANTALL_DAGER_UKE_33_GRENSE = 49;
 
 export const erFødtFørUke33 = (fødselsdato?: string, termindato?: string): boolean => {
