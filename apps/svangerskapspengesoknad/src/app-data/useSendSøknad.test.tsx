@@ -395,10 +395,15 @@ describe('useSendSøknad', () => {
                             stillingsprosent: af.stillingsprosent,
                             fom: af.fom,
                         })),
-                        frilansoppdrag: [{ navn: 'Ola Nordmann', fom: '2024-03-01' }],
-                        selvstendigNæring: [
-                            { navn: 'Sagene Fiskeri', organisasjonsnummer: '974760673', næringstype: 'FISKE' },
-                        ],
+                        frilansoppdrag: FORELAGT_FRILANSOPPDRAG.map((fo) => ({
+                            navn: fo.arbeidsgiverNavn,
+                            fom: fo.fom,
+                        })),
+                        selvstendigNæring: FORELAGT_SELVSTENDIG_NÆRING.map((sn) => ({
+                            navn: sn.navn,
+                            organisasjonsnummer: sn.organisasjonsnummer,
+                            næringstype: sn.næringstype,
+                        })),
                     },
                     språkkode: 'NB',
                     barn: BARNET,

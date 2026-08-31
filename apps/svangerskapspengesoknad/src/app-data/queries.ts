@@ -80,8 +80,10 @@ export const mineFrilansoppdragOptions = () =>
             filtrerForelagteFrilansoppdrag(
                 await ky.get(API_URLS.mineFrilansoppdrag).json<EksternArbeidsforholdDto_fpoversikt[]>(),
             ),
-
         staleTime: Infinity,
+        // Uendelig gcTime slik at oppdragene søker fikk forelagt ligger i cachen helt fram til innsending,
+        // også når queryen er inaktiv i mer enn default gcTime (5 min) mens søker fyller ut resten av søknaden
+        gcTime: Infinity,
     });
 
 export const selvstendigNæringOptions = () =>
@@ -89,4 +91,6 @@ export const selvstendigNæringOptions = () =>
         queryKey: ['SELVSTENDIG_NÆRING'],
         queryFn: () => ky.get(API_URLS.selvstendigNæring).json<SelvstendigNæringDto_fpoversikt[]>(),
         staleTime: Infinity,
+        // Se kommentar over: næringene skal ikke gc-es bort før søknaden er sendt inn
+        gcTime: Infinity,
     });

@@ -19,6 +19,7 @@ import {
     Frilans,
     NæringDto,
     SelvstendigNæringDto_fpoversikt,
+    SøkerDto,
     SøkersituasjonFp,
     UtenlandsoppholdPeriode,
     UttakPeriode_fpoversikt,
@@ -195,13 +196,18 @@ const EXPECTED_SØKER_INFO = {
     })),
     frilansoppdrag: [],
     selvstendigNæring: [],
-};
+} satisfies SøkerDto;
 
+// Utledes fra testdataene over slik at forventningen ikke dupliserer dem som strengliteraler
 const EXPECTED_SØKER_INFO_MED_FORELAGTE_AKTIVITETER = {
     ...EXPECTED_SØKER_INFO,
-    frilansoppdrag: [{ navn: 'Ola Nordmann', fom: '2024-03-01' }],
-    selvstendigNæring: [{ navn: 'Sagene Fiskeri', organisasjonsnummer: '974760673', næringstype: 'FISKE' }],
-};
+    frilansoppdrag: FORELAGT_FRILANSOPPDRAG.map((fo) => ({ navn: fo.arbeidsgiverNavn, fom: fo.fom })),
+    selvstendigNæring: FORELAGT_SELVSTENDIG_NÆRING.map((sn) => ({
+        navn: sn.navn,
+        organisasjonsnummer: sn.organisasjonsnummer,
+        næringstype: sn.næringstype,
+    })),
+} satisfies SøkerDto;
 
 const saker = [
     {
