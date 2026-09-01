@@ -4,7 +4,13 @@ import { FormattedMessage } from 'react-intl';
 import { Box, FormSummary, List } from '@navikt/ds-react';
 
 import { JaNeiTekst } from '@navikt/fp-steg-oppsummering';
-import { ArbeidsforholdDto, AvtaltFerieDto, EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import {
+    ArbeidsforholdDto,
+    AvtaltFerieDto,
+    EksternArbeidsforholdDto_fpoversikt,
+    isPrivatArbeidsgiverDto,
+    isVirksomhetDto,
+} from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 
 export function FerieOppsummering({
@@ -119,19 +125,15 @@ const FlereArbeidsgivereFerieOppsummering = ({
     });
 };
 
-const getArbeidsforholdId = (arbeidsforhold: ArbeidsforholdDto) => {
-    switch (arbeidsforhold.type) {
-        case 'frilanser': {
-            return 'frilanser';
-        }
-        case 'selvstendig': {
-            return 'selvstendig';
-        }
-        case 'privat': {
-            return arbeidsforhold.id;
-        }
-        case 'virksomhet': {
-            return arbeidsforhold.id;
-        }
+const getArbeidsforholdId = (arbeidsforhold: ArbeidsforholdDto): string | undefined => {
+    if (isPrivatArbeidsgiverDto(arbeidsforhold) || isVirksomhetDto(arbeidsforhold)) {
+        return arbeidsforhold.id;
     }
+    if (arbeidsforhold.type === 'frilanser') {
+        return 'frilanser';
+    }
+    if (arbeidsforhold.type === 'selvstendig') {
+        return 'selvstendig';
+    }
+    return undefined;
 };

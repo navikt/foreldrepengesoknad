@@ -49,6 +49,13 @@ export {
     isAdoptertAnnetBarn,
     isIkkeUtfyltTypeBarn,
 } from './src/Barn';
+export { isAdopsjonDto, isFødselDto, isOmsorgsovertakelseDto, isTerminDto } from './src/BarnDto';
+export {
+    isFrilanserDto,
+    isPrivatArbeidsgiverDto,
+    isSelvstendigNæringsdrivendeDto,
+    isVirksomhetDto,
+} from './src/ArbeidsforholdDto';
 export type { Utenlandsopphold, UtenlandsoppholdPeriode } from './src/Utenlandsopphold';
 
 export type { Barn, FødtBarn, UfødtBarn, AdoptertAnnetBarn, AdoptertBarn, IkkeUtfyltTypeBarn } from './src/Barn';

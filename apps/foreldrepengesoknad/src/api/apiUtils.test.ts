@@ -10,6 +10,7 @@ import {
     FødtBarn,
     UttakPeriode_fpoversikt,
     Uttaksplanperiode,
+    isFødselDto,
 } from '@navikt/fp-types';
 
 import { getUttaksplanMedFriUtsettelsesperiode, mapTilEndringssøknadDto, mapTilSøknadDto } from './apiUtils';
@@ -142,7 +143,7 @@ describe('mapTilSøknadDto', () => {
 
     it('skal mappe barn korrekt (type, fødselsdato, termindato)', () => {
         const barn = søknad.barn;
-        if (barn.type !== 'fødsel') {
+        if (!isFødselDto(barn)) {
             throw new Error('type er ikkje fødsel');
         }
         expect(Object.hasOwn(barn, 'fnr')).toBe(false);
