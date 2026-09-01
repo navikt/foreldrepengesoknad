@@ -15,6 +15,7 @@ import {
     FpBarnDto_fpoversikt,
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
+    Gradering_fpoversikt,
     Person_fpoversikt,
     Situasjon,
     Søkerrolle,
@@ -472,7 +473,7 @@ export const erPeriodeIOpprinneligPlan = (
             nyPeriode.kontoType === p.kontoType &&
             nyPeriode.flerbarnsdager === p.flerbarnsdager &&
             nyPeriode.forelder === p.forelder &&
-            nyPeriode.gradering === p.gradering &&
+            erLikGradering(nyPeriode.gradering, p.gradering) &&
             nyPeriode.utsettelseÅrsak === p.utsettelseÅrsak &&
             nyPeriode.samtidigUttak === p.samtidigUttak &&
             nyPeriode.resultat?.innvilget === p.resultat?.innvilget &&
@@ -485,3 +486,9 @@ export const erPeriodeIOpprinneligPlan = (
         );
     });
 };
+
+const erLikGradering = (a: Gradering_fpoversikt | undefined, b: Gradering_fpoversikt | undefined): boolean =>
+    a?.arbeidstidprosent === b?.arbeidstidprosent &&
+    a?.aktivitet?.type === b?.aktivitet?.type &&
+    a?.aktivitet?.arbeidsgiver?.id === b?.aktivitet?.arbeidsgiver?.id &&
+    a?.aktivitet?.arbeidsgiver?.type === b?.aktivitet?.arbeidsgiver?.type;
