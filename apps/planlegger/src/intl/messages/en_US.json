@@ -238,7 +238,7 @@
     "OversiktSteg.80": "80 % for {uker} weeks {dager, select, 0 {} 1 {+ {dager} day} other {+ {dager} days}}",
     "OversiktSteg.Far": "father",
     "OversiktSteg.Infoboks.FarOgFar.DereHarOppgitt": "You have indicated that only one of you is entitled to parental benefit.",
-    "OversiktSteg.Infoboks.FarOgFar.DenSomErBiologisk": "The one who is the biological father can have parental benefit from birth, while the one who adopts the child as a stepparent must wait until the adoption is approved before having parental benefit.",
+    "OversiktSteg.Infoboks.FarOgFar.DenSomErBiologisk": "The one who is the biological father can have parental benefit from birth, while the one who adopts the child as a stepparent must wait until the adoption is approved before receiving parental benefit.",
     "OversiktSteg.Infoboks.FarOgFar.HvisDetErStebarnsadopsjon": "If only the one who is adopting the child as a stepparent is to receive parental benefit, you will be entitled to 40 weeks instead of 46 weeks at 100 % and 56 weeks at 80 % parental benefit.",
     "OversiktSteg.Infoboks.FarOgFar.BeggeHarRett.DereHarOppgitt": "You have stated that you are both entitled to parental benefits",
     "OversiktSteg.Infoboks.FarOgFar.BeggeHarRett.BiologiskFar": "You have stated that you are both entitled to parental benefits. The biological father usually receives the entire parental benefit period, but a father who adopts a stepchild can still receive parental benefits if there are days remaining in the parental benefit period when the adoption has been finalized.",
