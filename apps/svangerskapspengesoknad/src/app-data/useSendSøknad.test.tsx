@@ -82,14 +82,14 @@ const TIDLIGERE_UTENLANDSOPPHOLD: UtenlandsoppholdPeriode[] = [
     {
         fom: '2023-01-01',
         tom: '2023-10-01',
-        landkode: 'SE',
+        landkode: 'SWE',
     },
 ];
 const SENERE_UTENLANDSOPPHOLD: UtenlandsoppholdPeriode[] = [
     {
         fom: '2025-01-01',
         tom: '2025-10-01',
-        landkode: 'SE',
+        landkode: 'SWE',
     },
 ];
 
@@ -129,20 +129,10 @@ const ARBEID_I_UTLANDET = {
             tom: undefined,
             pågående: true,
             arbeidsgiverNavn: 'MUFC',
-            land: 'GB',
+            land: 'GBR',
         },
     ],
 } satisfies ArbeidIUtlandet;
-
-const EXPECTED_ARBEID_I_UTLANDET = ARBEID_I_UTLANDET.arbeidIUtlandet.map((arbeid) => ({
-    ...arbeid,
-    land: 'GBR',
-}));
-
-const EXPECTED_UTENLANDSOPPHOLD = [...TIDLIGERE_UTENLANDSOPPHOLD, ...SENERE_UTENLANDSOPPHOLD].map((opphold) => ({
-    ...opphold,
-    landkode: 'SWE',
-}));
 
 const getWrapper =
     (
@@ -254,8 +244,8 @@ describe('useSendSøknad', () => {
                     frilans: FRILANS,
                     avtaltFerie: ferie[ARBEIDSGIVER_ID].feriePerioder,
                     egenNæring: EGEN_NÆRING,
-                    andreInntekterSiste10Mnd: EXPECTED_ARBEID_I_UTLANDET,
-                    utenlandsopphold: EXPECTED_UTENLANDSOPPHOLD,
+                    andreInntekterSiste10Mnd: ARBEID_I_UTLANDET.arbeidIUtlandet,
+                    utenlandsopphold: [...TIDLIGERE_UTENLANDSOPPHOLD, ...SENERE_UTENLANDSOPPHOLD],
                     tilretteleggingsbehov: [
                         {
                             arbeidsforhold: {
@@ -385,8 +375,8 @@ describe('useSendSøknad', () => {
                     frilans: FRILANS,
                     avtaltFerie: INGEN_FERIE,
                     egenNæring: EGEN_NÆRING,
-                    andreInntekterSiste10Mnd: EXPECTED_ARBEID_I_UTLANDET,
-                    utenlandsopphold: EXPECTED_UTENLANDSOPPHOLD,
+                    andreInntekterSiste10Mnd: ARBEID_I_UTLANDET.arbeidIUtlandet,
+                    utenlandsopphold: [...TIDLIGERE_UTENLANDSOPPHOLD, ...SENERE_UTENLANDSOPPHOLD],
                     tilretteleggingsbehov: [
                         {
                             arbeidsforhold: {
@@ -521,8 +511,8 @@ describe('useSendSøknad', () => {
                     frilans: FRILANS,
                     avtaltFerie: INGEN_FERIE,
                     egenNæring: EGEN_NÆRING,
-                    andreInntekterSiste10Mnd: EXPECTED_ARBEID_I_UTLANDET,
-                    utenlandsopphold: EXPECTED_UTENLANDSOPPHOLD,
+                    andreInntekterSiste10Mnd: ARBEID_I_UTLANDET.arbeidIUtlandet,
+                    utenlandsopphold: [...TIDLIGERE_UTENLANDSOPPHOLD, ...SENERE_UTENLANDSOPPHOLD],
                     tilretteleggingsbehov: [
                         {
                             arbeidsforhold: {

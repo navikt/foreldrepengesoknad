@@ -1,6 +1,5 @@
 import { ContextDataMap, ContextDataType } from 'appData/FpDataContext';
 import dayjs from 'dayjs';
-import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
 import { AnnenForelder, isAnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { VedleggDataType } from 'types/VedleggDataType';
@@ -9,7 +8,6 @@ import { getEndringstidspunktNy } from 'utils/dateUtils';
 import { Periodetype } from '@navikt/fp-constants';
 import {
     AnnenForelderDto,
-    AnnenInntektDto,
     Attachment,
     Barn,
     BarnDto,
@@ -19,12 +17,9 @@ import {
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
     Målform,
-    NæringDto,
     Oppholdsårsak,
     SøkerDto,
     Søkerrolle,
-    UtenlandsoppholdPeriode,
-    UtenlandsoppholdsperiodeDto,
     UtsettelsesÅrsak,
     UttakOppholdÅrsak_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
@@ -36,7 +31,7 @@ import {
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-types';
-import { Uttaksdagen, Uttaksperioden, getAlpha3Code, getDecoratorLanguageCookie, omitOne } from '@navikt/fp-utils';
+import { Uttaksdagen, Uttaksperioden, getDecoratorLanguageCookie, omitOne } from '@navikt/fp-utils';
 import { skalBesvareFlerbarnsdager } from '@navikt/fp-uttaksplan/flerbarnsdager';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -135,19 +130,6 @@ const convertAttachmentsMapToArray = (vedlegg: VedleggDataType | undefined): Att
     return vedleggArray;
 };
 
-const cleanUtenlandsopphold = (utenlandsopphold: UtenlandsoppholdPeriode[]): UtenlandsoppholdsperiodeDto[] =>
-    utenlandsopphold.map((opphold) => ({ ...opphold, landkode: getAlpha3Code(opphold.landkode) }));
-
-const cleanEgenNæring = (egenNæring?: NæringDto): NæringDto | undefined =>
-    egenNæring?.registrertILand
-        ? { ...egenNæring, registrertILand: getAlpha3Code(egenNæring.registrertILand) }
-        : egenNæring;
-
-const cleanAndreInntektskilder = (andreInntektskilder?: AndreInntektskilder[]): AnnenInntektDto[] | undefined =>
-    andreInntektskilder?.map((inntekt) =>
-        inntekt.type === AnnenInntektType.JOBB_I_UTLANDET ? { ...inntekt, land: getAlpha3Code(inntekt.land) } : inntekt,
-    );
-
 const cleanAnnenforelder = (annenForelder: AnnenForelder | undefined): AnnenForelderDto | undefined => {
     if (annenForelder === undefined || isAnnenForelderIkkeOppgitt(annenForelder)) {
         return;
@@ -184,7 +166,7 @@ const cleanAnnenforelder = (annenForelder: AnnenForelder | undefined): AnnenFore
         },
     };
     return annenForelder.utenlandskFnr
-        ? { type: 'utenlandsk', ...baseData, bostedsland: getAlpha3Code(annenForelder.bostedsland ?? 'UNDEFINED') }
+        ? { type: 'utenlandsk', ...baseData, bostedsland: annenForelder.bostedsland ?? 'UNDEFINED' }
         : { type: 'norsk', ...baseData };
 };
 
@@ -228,8 +210,8 @@ export const mapTilSøknadDto = (
         rolle: konverterRolle(søkersituasjon.rolle),
         språkkode: hentValgtSpråk(),
         frilans: frilans,
-        egenNæring: cleanEgenNæring(egenNæring),
-        andreInntekterSiste10Mnd: cleanAndreInntektskilder(andreInntektskilder),
+        egenNæring: egenNæring,
+        andreInntekterSiste10Mnd: andreInntektskilder,
         barn: cleanBarn(barn),
         annenForelder: cleanAnnenforelder(annenForelder),
         dekningsgrad,
@@ -237,10 +219,7 @@ export const mapTilSøknadDto = (
             uttaksperioder: midlertidigMappingAvUttaksplan(søkersPerioder, barn, annenForelder),
             ønskerJustertUttakVedFødsel,
         },
-        utenlandsopphold: cleanUtenlandsopphold([
-            ...(utenlandsoppholdSiste12Mnd ?? []),
-            ...(utenlandsoppholdNeste12Mnd ?? []),
-        ]),
+        utenlandsopphold: [...(utenlandsoppholdSiste12Mnd ?? []), ...(utenlandsoppholdNeste12Mnd ?? [])],
         vedlegg: convertAttachmentsMapToArray(vedlegg),
     };
 };

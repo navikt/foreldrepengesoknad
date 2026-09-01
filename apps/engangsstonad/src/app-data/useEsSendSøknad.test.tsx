@@ -53,21 +53,16 @@ const TIDLIGERE_UTENLANDSOPPHOLD: UtenlandsoppholdPeriode[] = [
     {
         fom: '2023-01-01',
         tom: '2023-10-01',
-        landkode: 'SE',
+        landkode: 'SWE',
     },
 ];
 const SENERE_UTENLANDSOPPHOLD: UtenlandsoppholdPeriode[] = [
     {
         fom: '2025-01-01',
         tom: '2025-10-01',
-        landkode: 'SE',
+        landkode: 'SWE',
     },
 ];
-
-const EXPECTED_UTENLANDSOPPHOLD = [...TIDLIGERE_UTENLANDSOPPHOLD, ...SENERE_UTENLANDSOPPHOLD].map((opphold) => ({
-    ...opphold,
-    landkode: 'SWE',
-}));
 
 const DEFAULT_PERSONINFO = {
     fnr: '11111111111',
@@ -142,7 +137,7 @@ describe('useEsSendSøknad', () => {
                         fødselsdatoer: ['2024-01-01'],
                     },
                     språkkode: 'NB',
-                    utenlandsopphold: EXPECTED_UTENLANDSOPPHOLD,
+                    utenlandsopphold: [...TIDLIGERE_UTENLANDSOPPHOLD, ...SENERE_UTENLANDSOPPHOLD],
                     vedlegg: [
                         {
                             ...DOKUMENTASJON.vedlegg[0]!,
@@ -189,7 +184,7 @@ describe('useEsSendSøknad', () => {
                         antallBarn: 1,
                     },
                     språkkode: 'NB',
-                    utenlandsopphold: EXPECTED_UTENLANDSOPPHOLD,
+                    utenlandsopphold: [...TIDLIGERE_UTENLANDSOPPHOLD, ...SENERE_UTENLANDSOPPHOLD],
                     vedlegg: [],
                 } satisfies EngangsstønadDto,
             }),
@@ -229,7 +224,7 @@ describe('useEsSendSøknad', () => {
                         termindato: '2024-01-01',
                     },
                     språkkode: 'NB',
-                    utenlandsopphold: EXPECTED_UTENLANDSOPPHOLD,
+                    utenlandsopphold: [...TIDLIGERE_UTENLANDSOPPHOLD, ...SENERE_UTENLANDSOPPHOLD],
                     vedlegg: [
                         {
                             ...DOKUMENTASJON.vedlegg[0]!,

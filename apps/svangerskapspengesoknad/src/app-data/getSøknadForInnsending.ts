@@ -17,11 +17,9 @@ import {
     SvangerskapspengesøknadDto,
     SvpPersonopplysningerDto_fpoversikt,
     TilretteleggingbehovDto,
-    UtenlandsoppholdPeriode,
-    UtenlandsoppholdsperiodeDto,
     VedleggDto,
 } from '@navikt/fp-types';
-import { getAlpha3Code, getDecoratorLanguageCookie } from '@navikt/fp-utils';
+import { getDecoratorLanguageCookie } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType } from './SvpDataContext';
@@ -83,14 +81,6 @@ const finnVedlegg = (
     return mappedVedlegg.flat();
 };
 
-const cleanUtenlandsopphold = (utenlandsopphold: UtenlandsoppholdPeriode[]): UtenlandsoppholdsperiodeDto[] =>
-    utenlandsopphold.map((opphold) => ({ ...opphold, landkode: getAlpha3Code(opphold.landkode) }));
-
-const cleanEgenNæring = (egenNæring?: NæringDto): NæringDto | undefined =>
-    egenNæring?.registrertILand
-        ? { ...egenNæring, registrertILand: getAlpha3Code(egenNæring.registrertILand) }
-        : egenNæring;
-
 export const getSøknadForInnsending = (
     søkerinfo: SvpPersonopplysningerDto_fpoversikt,
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
@@ -120,15 +110,9 @@ export const getSøknadForInnsending = (
         språkkode: getDecoratorLanguageCookie('decorator-language').toUpperCase() as Målform,
         barn,
         frilans,
-        egenNæring: cleanEgenNæring(egenNæring),
-        andreInntekterSiste10Mnd: hentData(ContextDataType.ARBEID_I_UTLANDET)?.arbeidIUtlandet.map((arbeid) => ({
-            ...arbeid,
-            land: getAlpha3Code(arbeid.land),
-        })),
-        utenlandsopphold: cleanUtenlandsopphold([
-            ...(tidligereUtenlandsopphold ?? []),
-            ...(senereUtenlandsopphold ?? []),
-        ]),
+        egenNæring,
+        andreInntekterSiste10Mnd: hentData(ContextDataType.ARBEID_I_UTLANDET)?.arbeidIUtlandet,
+        utenlandsopphold: [...(tidligereUtenlandsopphold ?? []), ...(senereUtenlandsopphold ?? [])],
         tilretteleggingsbehov: finnTilretteleggingsbehov(
             søkerinfo.arbeidsforhold,
             barn,

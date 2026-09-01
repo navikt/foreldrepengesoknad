@@ -11,44 +11,44 @@ countries.registerLocale(langNN);
 export const filteredListEØSCountries = (countryOptionValue: string, shouldFilter?: boolean) => {
     if (shouldFilter) {
         switch (countryOptionValue) {
-            case 'BE': // Belgia
-            case 'BG': // Bulgaria
-            case 'DK': // Danmark
-            case 'EE': // Estland
-            case 'FI': // Finland
-            case 'FR': // Frankrike
-            case 'GR': // Hellas
-            case 'IE': // Irland
-            case 'IS': // Island
-            case 'IT': // Italia
-            case 'HR': // Kroatia
-            case 'CY': // Kypros
-            case 'LV': // Latvia
-            case 'LI': // Liechtenstein
-            case 'LT': // Litauen
-            case 'LU': // Luxembourg
-            case 'MT': // Malta
-            case 'NL': // Nederland
-            case 'NO': // Norge
-            case 'PL': // Polen
-            case 'PT': // Portugal
-            case 'RO': // Romania
-            case 'SK': // Slovakia
-            case 'SI': // Slovenia
-            case 'ES': // Spania
-            case 'CH': // Sveits
-            case 'SE': // Sverige
-            case 'CZ': // Tsjekkia
-            case 'DE': // Tyskland
-            case 'HU': // Ungarn
-            case 'AT': // Østerrike
+            case 'BEL': // Belgia
+            case 'BGR': // Bulgaria
+            case 'DNK': // Danmark
+            case 'EST': // Estland
+            case 'FIN': // Finland
+            case 'FRA': // Frankrike
+            case 'GRC': // Hellas
+            case 'IRL': // Irland
+            case 'ISL': // Island
+            case 'ITA': // Italia
+            case 'HRV': // Kroatia
+            case 'CYP': // Kypros
+            case 'LVA': // Latvia
+            case 'LIE': // Liechtenstein
+            case 'LTU': // Litauen
+            case 'LUX': // Luxembourg
+            case 'MLT': // Malta
+            case 'NLD': // Nederland
+            case 'NOR': // Norge
+            case 'POL': // Polen
+            case 'PRT': // Portugal
+            case 'ROU': // Romania
+            case 'SVK': // Slovakia
+            case 'SVN': // Slovenia
+            case 'ESP': // Spania
+            case 'CHE': // Sveits
+            case 'SWE': // Sverige
+            case 'CZE': // Tsjekkia
+            case 'DEU': // Tyskland
+            case 'HUN': // Ungarn
+            case 'AUT': // Østerrike
                 return true;
             default:
                 return false;
         }
     } else {
         // Filter ut Antarktis
-        return countryOptionValue !== 'AQ';
+        return countryOptionValue !== 'ATA';
     }
 };
 
@@ -63,10 +63,10 @@ export const getLocaleKey = (locale: string): string => {
 };
 
 export const getCountryName = (alphaCode: string, locale: string): string => {
-    // i18n-iso-countries 7.5.0 bruker 'XKX' 'alpha3Code' for Kosovo. 'XXK' kode brukes i NAV.
-    // Endrer NAV sin landkode av Kosovo til i18n-iso-countries sin landkode for å hente riktig landsnavn.
+    // i18n-iso-countries sin alpha3-kode for Kosovo er 'XKK'. NAV bruker 'XXK'.
+    // Slår derfor opp med biblioteket sin kode for å finne riktig landsnavn.
     if (alphaCode === 'XXK') {
-        alphaCode = 'XKX';
+        alphaCode = 'XKK';
     }
     return countries.getName(alphaCode, getLocaleKey(locale))!;
 };
@@ -83,14 +83,7 @@ export const getAlpha3Code = (alpha2Code: string): string => {
     return countryAlpha3Code === 'XKX' || countryAlpha3Code === 'XKK' ? 'XXK' : countryAlpha3Code;
 };
 
-export const countryIsMemberOfEøsOrEfta = (isoCode: string) => {
-    let isoCodeToUse = isoCode.toUpperCase();
-    if (isoCodeToUse === 'XXK') {
-        isoCodeToUse = 'XKX';
-    }
-    isoCodeToUse = isoCodeToUse.length === 2 ? isoCodeToUse : countries.alpha3ToAlpha2(isoCodeToUse)!;
-    return filteredListEØSCountries(isoCodeToUse.toUpperCase(), true) === true;
-};
+export const countryIsMemberOfEøsOrEfta = (isoCode: string) => filteredListEØSCountries(isoCode.toUpperCase(), true);
 
 const getCountries = () => countries;
 
@@ -98,7 +91,9 @@ export const createCountryOptions = (): Array<[string, string]> => {
     const lang = 'nb';
     const land = getCountries();
 
-    const names = Object.entries(land.getNames(lang));
+    const names = Object.entries(land.getNames(lang)).map(
+        ([alpha2Code, name]) => [getAlpha3Code(alpha2Code), name] satisfies [string, string],
+    );
     return names
         .sort((a, b) => a[1].localeCompare(b[1], lang))
         .filter((countryOptionValue) => filteredListEØSCountries(countryOptionValue[0], false));

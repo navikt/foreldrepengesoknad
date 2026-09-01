@@ -91,14 +91,14 @@ const TIDLIGERE_UTENLANDSOPPHOLD = [
     {
         fom: '2023-01-01',
         tom: '2023-10-01',
-        landkode: 'SE',
+        landkode: 'SWE',
     },
 ] satisfies UtenlandsoppholdPeriode[];
 const SENERE_UTENLANDSOPPHOLD = [
     {
         fom: '2025-01-01',
         tom: '2025-10-01',
-        landkode: 'SE',
+        landkode: 'SWE',
     },
 ] satisfies UtenlandsoppholdPeriode[];
 
@@ -129,7 +129,7 @@ const ANDRE_INNTEKTSKILDER = [
         type: AnnenInntektType.JOBB_I_UTLANDET,
         fom: '2023-02-01',
         arbeidsgiverNavn: 'MUFC',
-        land: 'GB',
+        land: 'GBR',
         pågående: true,
     } satisfies AndreInntektskilder,
 ];

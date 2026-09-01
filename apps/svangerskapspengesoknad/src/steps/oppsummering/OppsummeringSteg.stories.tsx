@@ -201,7 +201,7 @@ const meta = {
                                     type: ArbeidIUtlandetType.JOBB_I_UTLANDET,
                                     arbeidsgiverNavn: 'MUFC',
                                     fom: '2024-01-01',
-                                    land: 'SE',
+                                    land: 'SWE',
                                     pågående: true,
                                     tom: '',
                                 },

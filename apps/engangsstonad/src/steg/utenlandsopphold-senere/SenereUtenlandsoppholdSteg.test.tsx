@@ -23,7 +23,7 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
         expect(screen.getAllByText('Skal bo i utlandet')).toHaveLength(2);
         expect(screen.getByText('Steg 4 av 5')).toBeInTheDocument();
 
-        await userEvent.selectOptions(utils.getByLabelText('Hvilket land skal du bo i?'), 'CA');
+        await userEvent.selectOptions(utils.getByLabelText('Hvilket land skal du bo i?'), 'CAN');
 
         const fraOgMed = utils.getByLabelText('Fra og med');
         await userEvent.type(fraOgMed, dayjs().add(1, 'day').format(DDMMYYYY_DATE_FORMAT));
@@ -35,7 +35,7 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
 
         await userEvent.click(screen.getByText('Legg til flere opphold i utlandet'));
 
-        await userEvent.selectOptions(utils.getAllByLabelText('Hvilket land skal du bo i?')[1]!, 'AS');
+        await userEvent.selectOptions(utils.getAllByLabelText('Hvilket land skal du bo i?')[1]!, 'ASM');
 
         const fraOgMedP2 = utils.getAllByLabelText('Fra og med')[1]!;
         await userEvent.type(fraOgMedP2, dayjs().add(22, 'day').format(DDMMYYYY_DATE_FORMAT));
@@ -51,12 +51,12 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
         expect(nesteStegFn).toHaveBeenNthCalledWith(1, {
             data: [
                 {
-                    landkode: 'CA',
+                    landkode: 'CAN',
                     fom: dayjs().add(1, 'day').format(ISO_DATE_FORMAT),
                     tom: dayjs().add(20, 'day').format(ISO_DATE_FORMAT),
                 },
                 {
-                    landkode: 'AS',
+                    landkode: 'ASM',
                     fom: dayjs().add(22, 'day').format(ISO_DATE_FORMAT),
                     tom: dayjs().add(30, 'day').format(ISO_DATE_FORMAT),
                 },

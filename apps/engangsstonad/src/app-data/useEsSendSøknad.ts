@@ -15,7 +15,7 @@ import {
     FpSoknadProblemDetails,
     Målform,
 } from '@navikt/fp-types';
-import { getAlpha3Code, getDecoratorLanguageCookie, useAbortSignal } from '@navikt/fp-utils';
+import { getDecoratorLanguageCookie, useAbortSignal } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetAnyData } from './EsDataContext';
@@ -39,9 +39,7 @@ export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt)
             },
             språkkode: getDecoratorLanguageCookie('decorator-language').toUpperCase() as Målform,
             barn: mapBarn(barn, dokumentasjon),
-            utenlandsopphold: [...(tidligereUtenlandsopphold ?? []), ...(senereUtenlandsopphold ?? [])].map(
-                (opphold) => ({ ...opphold, landkode: getAlpha3Code(opphold.landkode) }),
-            ),
+            utenlandsopphold: [...(tidligereUtenlandsopphold ?? []), ...(senereUtenlandsopphold ?? [])],
             vedlegg:
                 dokumentasjon?.vedlegg.map((vedlegg) => ({
                     ...vedlegg,

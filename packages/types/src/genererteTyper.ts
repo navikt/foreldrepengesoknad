@@ -72,7 +72,10 @@ export type { no_nav_foreldrepenger_kontrakter_felles_kodeverk_AktivitetStatus a
 export type { TilkjentYtelsePeriode_fpoversikt } from './fpoversiktDtoGenerert';
 
 // Types from fpsoknadDtoGenerert
-export type { com_neovisionaries_i18n_CountryCode as CountryCode } from './fpsoknadDtoGenerert';
+// Landkode sendes nå som alpha-3 (ISO 3166-1), ikke den auto-genererte alpha-2-unionen
+// (com_neovisionaries_i18n_CountryCode). Widet manuelt til string fram til backend-kontrakten
+// er regenerert med alpha-3-koder.
+export type CountryCode = string;
 export type { BrukerRolle } from './fpsoknadDtoGenerert';
 export type { EndringssøknadForeldrepengerDto } from './fpsoknadDtoGenerert';
 export type { Målform } from './fpsoknadDtoGenerert';
