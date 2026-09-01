@@ -8,7 +8,7 @@ import { Adopsjon, Fødsel } from 'types/OmBarnet';
 import { VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { BarnDto, Kjønn_fpoversikt, Søkersituasjon, isAdopsjonDto, isFødselDto, isTerminDto } from '@navikt/fp-types';
+import { BarnDto, Kjønn_fpoversikt, Søkersituasjon } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -107,7 +107,7 @@ const mapBarnFraDtoTilForm = (barn: BarnDto): Partial<FormValues> => {
         antallBarn: antallBarn > 2 ? 3 : antallBarn,
         antallBarnDropDown: antallBarn > 2 ? antallBarn.toString() : undefined,
     };
-    if (isAdopsjonDto(barn)) {
+    if (barn.type === 'adopsjon') {
         return {
             ...base,
             adopsjonAvEktefellesBarn: barn.adopsjonAvEktefellesBarn,
@@ -116,7 +116,7 @@ const mapBarnFraDtoTilForm = (barn: BarnDto): Partial<FormValues> => {
             fødselsdatoer: (barn.fødselsdatoer ?? []).map((dato) => ({ dato })),
         } satisfies Partial<Adopsjon & { antallBarnDropDown?: string }>;
     }
-    if (isFødselDto(barn)) {
+    if (barn.type === 'fødsel') {
         return {
             ...base,
             erBarnetFødt: true,
@@ -124,7 +124,7 @@ const mapBarnFraDtoTilForm = (barn: BarnDto): Partial<FormValues> => {
             termindato: barn.termindato,
         } satisfies Partial<Fødsel & { antallBarnDropDown?: string }>;
     }
-    if (isTerminDto(barn)) {
+    if (barn.type === 'termin') {
         return {
             ...base,
             erBarnetFødt: false,

@@ -66,7 +66,20 @@ export type AdopsjonDto = {
     søkerAdopsjonAlene?: boolean;
 };
 
-export type BarnDto = (AdopsjonDto | FødselDto | OmsorgsovertakelseDto | TerminDto) & {
+export type BarnDto = (
+    | ({
+          type: 'adopsjon';
+      } & AdopsjonDto)
+    | ({
+          type: 'fødsel';
+      } & FødselDto)
+    | ({
+          type: 'omsorgsovertakelse';
+      } & OmsorgsovertakelseDto)
+    | ({
+          type: 'termin';
+      } & TerminDto)
+) & {
     type: string;
 };
 
@@ -88,7 +101,14 @@ export type TerminDto = {
     termindato: string;
 };
 
-export type AnnenForelderDto = (NorskForelderDto | UtenlandskForelderDto) & {
+export type AnnenForelderDto = (
+    | ({
+          type: 'norsk';
+      } & NorskForelderDto)
+    | ({
+          type: 'utenlandsk';
+      } & UtenlandskForelderDto)
+) & {
     type: string;
 };
 
@@ -180,13 +200,35 @@ export type UttaksplanDto = {
 };
 
 export type Uttaksplanperiode = (
-    OppholdsPeriodeDto | OverføringsPeriodeDto | UtsettelsesPeriodeDto | UttaksPeriodeDto
+    | ({
+          type: 'opphold';
+      } & OppholdsPeriodeDto)
+    | ({
+          type: 'overføring';
+      } & OverføringsPeriodeDto)
+    | ({
+          type: 'utsettelse';
+      } & UtsettelsesPeriodeDto)
+    | ({
+          type: 'uttak';
+      } & UttaksPeriodeDto)
 ) & {
     type: string;
 };
 
 export type ArbeidsforholdDto = (
-    FrilanserDto | PrivatArbeidsgiverDto | SelvstendigNæringsdrivendeDto | VirksomhetDto
+    | ({
+          type: 'frilanser';
+      } & FrilanserDto)
+    | ({
+          type: 'privat';
+      } & PrivatArbeidsgiverDto)
+    | ({
+          type: 'selvstendig';
+      } & SelvstendigNæringsdrivendeDto)
+    | ({
+          type: 'virksomhet';
+      } & VirksomhetDto)
 ) & {
     type: string;
 };
@@ -387,7 +429,17 @@ export type TilretteleggingbehovDto = {
     tilretteleggingstiltak?: string;
 };
 
-export type TilretteleggingDto = (Del | Hel | Ingen) & {
+export type TilretteleggingDto = (
+    | ({
+          type: 'delvis';
+      } & Del)
+    | ({
+          type: 'hel';
+      } & Hel)
+    | ({
+          type: 'ingen';
+      } & Ingen)
+) & {
     type: string;
 };
 

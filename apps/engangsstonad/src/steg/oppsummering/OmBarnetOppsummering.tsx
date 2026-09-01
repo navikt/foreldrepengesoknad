@@ -2,7 +2,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { FormSummary } from '@navikt/ds-react';
 
-import { BarnDto, isAdopsjonDto, isFødselDto, isTerminDto } from '@navikt/fp-types';
+import { BarnDto } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
 interface Props {
@@ -16,7 +16,7 @@ function AntallBarnFormattedText({ omBarnet }: { readonly omBarnet: BarnDto }) {
     if (antallBarn === 1) {
         return <FormattedMessage id={'OmBarnetOppsummering.EttBarn'} />;
     }
-    const harAdoptert = isAdopsjonDto(omBarnet);
+    const harAdoptert = omBarnet.type === 'adopsjon';
     if (antallBarn === 2 && !harAdoptert) {
         return <FormattedMessage id={'OmBarnetOppsummering.Tvillinger'} />;
     }
@@ -28,9 +28,9 @@ function AntallBarnFormattedText({ omBarnet }: { readonly omBarnet: BarnDto }) {
 }
 
 export const OmBarnetOppsummering = ({ omBarnet, onVilEndreSvar }: Props) => {
-    const harAdoptert = isAdopsjonDto(omBarnet);
-    const harTermin = isTerminDto(omBarnet);
-    const harFødt = isFødselDto(omBarnet);
+    const harAdoptert = omBarnet.type === 'adopsjon';
+    const harTermin = omBarnet.type === 'termin';
+    const harFødt = omBarnet.type === 'fødsel';
 
     return (
         <FormSummary>

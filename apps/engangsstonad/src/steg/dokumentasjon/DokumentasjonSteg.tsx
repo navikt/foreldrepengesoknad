@@ -9,7 +9,7 @@ import { Dokumentasjon } from 'types/Dokumentasjon';
 import { VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Attachment, isTerminDto } from '@navikt/fp-types';
+import { Attachment } from '@navikt/fp-types';
 import { ScanDocumentInfo, SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -73,7 +73,7 @@ export const DokumentasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
                             <TerminDokPanel
                                 attachments={dokumentasjon?.vedlegg}
                                 updateAttachments={updateAttachments}
-                                termindato={isTerminDto(barn) ? barn.termindato : ''}
+                                termindato={barn.type === 'termin' ? barn.termindato : ''}
                             />
                         )}
                         <ScanDocumentInfo />
