@@ -10,4 +10,11 @@ describe('<OmPlanleggerenSteg>', () => {
         render(<Default />);
         expect(await screen.findAllByText('Planlegg foreldrepenger')).toHaveLength(2);
     });
+
+    it('skal vise infotekst om at opplysninger ikke lagres', async () => {
+        render(<Default />);
+        expect(
+            await screen.findByText(/Vi lagrer ikke opplysningene dine hos oss/),
+        ).toBeInTheDocument();
+    });
 });
