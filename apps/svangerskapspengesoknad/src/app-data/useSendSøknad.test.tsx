@@ -129,10 +129,20 @@ const ARBEID_I_UTLANDET = {
             tom: undefined,
             pågående: true,
             arbeidsgiverNavn: 'MUFC',
-            land: 'UK',
+            land: 'GB',
         },
     ],
 } satisfies ArbeidIUtlandet;
+
+const EXPECTED_ARBEID_I_UTLANDET = ARBEID_I_UTLANDET.arbeidIUtlandet.map((arbeid) => ({
+    ...arbeid,
+    land: 'GBR',
+}));
+
+const EXPECTED_UTENLANDSOPPHOLD = [...TIDLIGERE_UTENLANDSOPPHOLD, ...SENERE_UTENLANDSOPPHOLD].map((opphold) => ({
+    ...opphold,
+    landkode: 'SWE',
+}));
 
 const getWrapper =
     (
@@ -244,8 +254,8 @@ describe('useSendSøknad', () => {
                     frilans: FRILANS,
                     avtaltFerie: ferie[ARBEIDSGIVER_ID].feriePerioder,
                     egenNæring: EGEN_NÆRING,
-                    andreInntekterSiste10Mnd: ARBEID_I_UTLANDET.arbeidIUtlandet,
-                    utenlandsopphold: [...TIDLIGERE_UTENLANDSOPPHOLD, ...SENERE_UTENLANDSOPPHOLD],
+                    andreInntekterSiste10Mnd: EXPECTED_ARBEID_I_UTLANDET,
+                    utenlandsopphold: EXPECTED_UTENLANDSOPPHOLD,
                     tilretteleggingsbehov: [
                         {
                             arbeidsforhold: {
@@ -375,8 +385,8 @@ describe('useSendSøknad', () => {
                     frilans: FRILANS,
                     avtaltFerie: INGEN_FERIE,
                     egenNæring: EGEN_NÆRING,
-                    andreInntekterSiste10Mnd: ARBEID_I_UTLANDET.arbeidIUtlandet,
-                    utenlandsopphold: [...TIDLIGERE_UTENLANDSOPPHOLD, ...SENERE_UTENLANDSOPPHOLD],
+                    andreInntekterSiste10Mnd: EXPECTED_ARBEID_I_UTLANDET,
+                    utenlandsopphold: EXPECTED_UTENLANDSOPPHOLD,
                     tilretteleggingsbehov: [
                         {
                             arbeidsforhold: {
@@ -511,8 +521,8 @@ describe('useSendSøknad', () => {
                     frilans: FRILANS,
                     avtaltFerie: INGEN_FERIE,
                     egenNæring: EGEN_NÆRING,
-                    andreInntekterSiste10Mnd: ARBEID_I_UTLANDET.arbeidIUtlandet,
-                    utenlandsopphold: [...TIDLIGERE_UTENLANDSOPPHOLD, ...SENERE_UTENLANDSOPPHOLD],
+                    andreInntekterSiste10Mnd: EXPECTED_ARBEID_I_UTLANDET,
+                    utenlandsopphold: EXPECTED_UTENLANDSOPPHOLD,
                     tilretteleggingsbehov: [
                         {
                             arbeidsforhold: {

@@ -403,7 +403,9 @@ export type NorskForelderDto = {
 };
 
 export type UtenlandskForelderDto = {
-    bostedsland: com_neovisionaries_i18n_CountryCode;
+    // Landkode sendes nå som alpha-3 (ISO 3166-1). Typen er manuelt utvidet til string
+    // fram til backend-kontrakten er regenerert med den nye alpha-3-oppsettet.
+    bostedsland: string;
     etternavn: string;
     fnr: string;
     fornavn: string;
@@ -605,7 +607,8 @@ export type EngangsstønadDto = {
 
 export type UtenlandsoppholdsperiodeDto = {
     fom: string;
-    landkode: com_neovisionaries_i18n_CountryCode;
+    // Landkode sendes nå som alpha-3 (ISO 3166-1), se kommentar på UtenlandskForelderDto.bostedsland.
+    landkode: string;
     tom: string;
 };
 
@@ -630,7 +633,8 @@ export type Dekningsgrad = '80' | '100';
 export type AnnenInntektDto = {
     arbeidsgiverNavn?: string;
     fom: string;
-    land?: com_neovisionaries_i18n_CountryCode;
+    // Landkode sendes nå som alpha-3 (ISO 3166-1), se kommentar på UtenlandskForelderDto.bostedsland.
+    land?: string;
     tom?: string;
     type: AnnenOpptjeningType;
 };
@@ -660,7 +664,8 @@ export type NæringDto = {
     næringstype: Virksomhetstype;
     oppstartsdato?: string;
     organisasjonsnummer?: string;
-    registrertILand?: com_neovisionaries_i18n_CountryCode;
+    // Landkode sendes nå som alpha-3 (ISO 3166-1), se kommentar på UtenlandskForelderDto.bostedsland.
+    registrertILand?: string;
     registrertINorge: boolean;
     tom?: string;
     varigEndringBeskrivelse?: string;
