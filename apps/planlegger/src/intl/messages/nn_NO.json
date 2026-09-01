@@ -197,7 +197,7 @@
     "OmBarnetSteg.To": "To",
     "OmBarnetSteg.Tvillinger": "Tvillingar",
     "OmPlanleggerenSteg.Ingress": "Planleggaren er både for dei som er i permisjon, ventar barn og for dei som planlegg å få barn.",
-    "OmPlanleggerenSteg.IngenLagring": "Vi lagrar ikkje noko av det du legg inn i planleggaren, men når du er ferdig kan du kopiere lenka og bruke ho igjen seinare for å hente opp planen din.",
+    "OmPlanleggerenSteg.IngenLagring": "Vi lagrar ikkje opplysningane dine hos oss. Planen blir lagra i lenka (URL-en), så du kan kopiere ho og bruke ho seinare for å hente opp planen igjen.",
     "OmPlanleggerenSteg.Start.Planlegger": "Start",
     "OmPlanleggerenSteg.TaVarePå": "Ved å kopiere lenka kan {erAlenesøker, select, true {du} other {dykk}} ta vare på resultatet for å sjå på det seinare, endre eller dele. Det {erAlenesøker, select, true {du} other {dykk}} har oppgitt vil då bli synlig for den du deler med",
     "OmPlanleggerenSteg.TaVarePåHeader": "{erAlenesøker, select, true {Du} other {Dykk}} kan ta vare på resultatet",

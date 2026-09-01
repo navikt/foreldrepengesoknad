@@ -197,7 +197,7 @@
     "OmBarnetSteg.To": "Two",
     "OmBarnetSteg.Tvillinger": "Twins",
     "OmPlanleggerenSteg.Ingress": "The planner is for those who are on leave, expecting a child, and for those planning to have children.",
-    "OmPlanleggerenSteg.IngenLagring": "We do not store any of the information you enter in the planner, but when you are done you can copy the link and use it again later to retrieve your plan.",
+    "OmPlanleggerenSteg.IngenLagring": "We do not store your information. The plan is saved in the link (URL), so you can copy it and use it later to retrieve your plan.",
     "OmPlanleggerenSteg.Start.Planlegger": "Start",
     "OmPlanleggerenSteg.TaVarePå": "By copying the link, you can save the result for later viewing or sharing. What you have entered will then be visible to the person you share it with",
     "OmPlanleggerenSteg.TaVarePåHeader": "You can save the result",
