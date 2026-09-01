@@ -4,280 +4,6 @@ export type ClientOptions = {
     baseUrl: `${string}://${string}/fpsoknad` | (string & {});
 };
 
-export type com_neovisionaries_i18n_CountryCode =
-    | 'UNDEFINED'
-    | 'AC'
-    | 'AD'
-    | 'AE'
-    | 'AF'
-    | 'AG'
-    | 'AI'
-    | 'AL'
-    | 'AM'
-    | 'AN'
-    | 'AO'
-    | 'AQ'
-    | 'AR'
-    | 'AS'
-    | 'AT'
-    | 'AU'
-    | 'AW'
-    | 'AX'
-    | 'AZ'
-    | 'BA'
-    | 'BB'
-    | 'BD'
-    | 'BE'
-    | 'BF'
-    | 'BG'
-    | 'BH'
-    | 'BI'
-    | 'BJ'
-    | 'BL'
-    | 'BM'
-    | 'BN'
-    | 'BO'
-    | 'BQ'
-    | 'BR'
-    | 'BS'
-    | 'BT'
-    | 'BU'
-    | 'BV'
-    | 'BW'
-    | 'BY'
-    | 'BZ'
-    | 'CA'
-    | 'CC'
-    | 'CD'
-    | 'CF'
-    | 'CG'
-    | 'CH'
-    | 'CI'
-    | 'CK'
-    | 'CL'
-    | 'CM'
-    | 'CN'
-    | 'CO'
-    | 'CP'
-    | 'CR'
-    | 'CS'
-    | 'CU'
-    | 'CV'
-    | 'CW'
-    | 'CX'
-    | 'CY'
-    | 'CZ'
-    | 'DE'
-    | 'DG'
-    | 'DJ'
-    | 'DK'
-    | 'DM'
-    | 'DO'
-    | 'DZ'
-    | 'EA'
-    | 'EC'
-    | 'EE'
-    | 'EG'
-    | 'EH'
-    | 'ER'
-    | 'ES'
-    | 'ET'
-    | 'EU'
-    | 'EZ'
-    | 'FI'
-    | 'FJ'
-    | 'FK'
-    | 'FM'
-    | 'FO'
-    | 'FR'
-    | 'FX'
-    | 'GA'
-    | 'GB'
-    | 'GD'
-    | 'GE'
-    | 'GF'
-    | 'GG'
-    | 'GH'
-    | 'GI'
-    | 'GL'
-    | 'GM'
-    | 'GN'
-    | 'GP'
-    | 'GQ'
-    | 'GR'
-    | 'GS'
-    | 'GT'
-    | 'GU'
-    | 'GW'
-    | 'GY'
-    | 'HK'
-    | 'HM'
-    | 'HN'
-    | 'HR'
-    | 'HT'
-    | 'HU'
-    | 'IC'
-    | 'ID'
-    | 'IE'
-    | 'IL'
-    | 'IM'
-    | 'IN'
-    | 'IO'
-    | 'IQ'
-    | 'IR'
-    | 'IS'
-    | 'IT'
-    | 'JE'
-    | 'JM'
-    | 'JO'
-    | 'JP'
-    | 'KE'
-    | 'KG'
-    | 'KH'
-    | 'KI'
-    | 'KM'
-    | 'KN'
-    | 'KP'
-    | 'KR'
-    | 'KW'
-    | 'KY'
-    | 'KZ'
-    | 'LA'
-    | 'LB'
-    | 'LC'
-    | 'LI'
-    | 'LK'
-    | 'LR'
-    | 'LS'
-    | 'LT'
-    | 'LU'
-    | 'LV'
-    | 'LY'
-    | 'MA'
-    | 'MC'
-    | 'MD'
-    | 'ME'
-    | 'MF'
-    | 'MG'
-    | 'MH'
-    | 'MK'
-    | 'ML'
-    | 'MM'
-    | 'MN'
-    | 'MO'
-    | 'MP'
-    | 'MQ'
-    | 'MR'
-    | 'MS'
-    | 'MT'
-    | 'MU'
-    | 'MV'
-    | 'MW'
-    | 'MX'
-    | 'MY'
-    | 'MZ'
-    | 'NA'
-    | 'NC'
-    | 'NE'
-    | 'NF'
-    | 'NG'
-    | 'NI'
-    | 'NL'
-    | 'NO'
-    | 'NP'
-    | 'NR'
-    | 'NT'
-    | 'NU'
-    | 'NZ'
-    | 'OM'
-    | 'PA'
-    | 'PE'
-    | 'PF'
-    | 'PG'
-    | 'PH'
-    | 'PK'
-    | 'PL'
-    | 'PM'
-    | 'PN'
-    | 'PR'
-    | 'PS'
-    | 'PT'
-    | 'PW'
-    | 'PY'
-    | 'QA'
-    | 'RE'
-    | 'RO'
-    | 'RS'
-    | 'RU'
-    | 'RW'
-    | 'SA'
-    | 'SB'
-    | 'SC'
-    | 'SD'
-    | 'SE'
-    | 'SF'
-    | 'SG'
-    | 'SH'
-    | 'SI'
-    | 'SJ'
-    | 'SK'
-    | 'SL'
-    | 'SM'
-    | 'SN'
-    | 'SO'
-    | 'SR'
-    | 'SS'
-    | 'ST'
-    | 'SU'
-    | 'SV'
-    | 'SX'
-    | 'SY'
-    | 'SZ'
-    | 'TA'
-    | 'TC'
-    | 'TD'
-    | 'TF'
-    | 'TG'
-    | 'TH'
-    | 'TJ'
-    | 'TK'
-    | 'TL'
-    | 'TM'
-    | 'TN'
-    | 'TO'
-    | 'TP'
-    | 'TR'
-    | 'TT'
-    | 'TV'
-    | 'TW'
-    | 'TZ'
-    | 'UA'
-    | 'UG'
-    | 'UK'
-    | 'UM'
-    | 'US'
-    | 'UY'
-    | 'UZ'
-    | 'VA'
-    | 'VC'
-    | 'VE'
-    | 'VG'
-    | 'VI'
-    | 'VN'
-    | 'VU'
-    | 'WF'
-    | 'WS'
-    | 'XI'
-    | 'XU'
-    | 'XK'
-    | 'YE'
-    | 'YT'
-    | 'YU'
-    | 'ZA'
-    | 'ZM'
-    | 'ZR'
-    | 'ZW';
-
 export type no_nav_foreldrepenger_kontrakter_felles_kodeverk_KontoType =
     'FELLESPERIODE' | 'MØDREKVOTE' | 'FEDREKVOTE' | 'FORELDREPENGER' | 'FORELDREPENGER_FØR_FØDSEL';
 
@@ -340,20 +66,7 @@ export type AdopsjonDto = {
     søkerAdopsjonAlene?: boolean;
 };
 
-export type BarnDto = (
-    | ({
-          type: 'adopsjon';
-      } & AdopsjonDto)
-    | ({
-          type: 'fødsel';
-      } & FødselDto)
-    | ({
-          type: 'omsorgsovertakelse';
-      } & OmsorgsovertakelseDto)
-    | ({
-          type: 'termin';
-      } & TerminDto)
-) & {
+export type BarnDto = (AdopsjonDto | FødselDto | OmsorgsovertakelseDto | TerminDto) & {
     type: string;
 };
 
@@ -375,14 +88,7 @@ export type TerminDto = {
     termindato: string;
 };
 
-export type AnnenForelderDto = (
-    | ({
-          type: 'norsk';
-      } & NorskForelderDto)
-    | ({
-          type: 'utenlandsk';
-      } & UtenlandskForelderDto)
-) & {
+export type AnnenForelderDto = (NorskForelderDto | UtenlandskForelderDto) & {
     type: string;
 };
 
@@ -403,8 +109,6 @@ export type NorskForelderDto = {
 };
 
 export type UtenlandskForelderDto = {
-    // Landkode sendes nå som alpha-3 (ISO 3166-1). Typen er manuelt utvidet til string
-    // fram til backend-kontrakten er regenerert med den nye alpha-3-oppsettet.
     bostedsland: string;
     etternavn: string;
     fnr: string;
@@ -476,35 +180,13 @@ export type UttaksplanDto = {
 };
 
 export type Uttaksplanperiode = (
-    | ({
-          type: 'opphold';
-      } & OppholdsPeriodeDto)
-    | ({
-          type: 'overføring';
-      } & OverføringsPeriodeDto)
-    | ({
-          type: 'utsettelse';
-      } & UtsettelsesPeriodeDto)
-    | ({
-          type: 'uttak';
-      } & UttaksPeriodeDto)
+    OppholdsPeriodeDto | OverføringsPeriodeDto | UtsettelsesPeriodeDto | UttaksPeriodeDto
 ) & {
     type: string;
 };
 
 export type ArbeidsforholdDto = (
-    | ({
-          type: 'frilanser';
-      } & FrilanserDto)
-    | ({
-          type: 'privat';
-      } & PrivatArbeidsgiverDto)
-    | ({
-          type: 'selvstendig';
-      } & SelvstendigNæringsdrivendeDto)
-    | ({
-          type: 'virksomhet';
-      } & VirksomhetDto)
+    FrilanserDto | PrivatArbeidsgiverDto | SelvstendigNæringsdrivendeDto | VirksomhetDto
 ) & {
     type: string;
 };
@@ -607,7 +289,6 @@ export type EngangsstønadDto = {
 
 export type UtenlandsoppholdsperiodeDto = {
     fom: string;
-    // Landkode sendes nå som alpha-3 (ISO 3166-1), se kommentar på UtenlandskForelderDto.bostedsland.
     landkode: string;
     tom: string;
 };
@@ -633,7 +314,6 @@ export type Dekningsgrad = '80' | '100';
 export type AnnenInntektDto = {
     arbeidsgiverNavn?: string;
     fom: string;
-    // Landkode sendes nå som alpha-3 (ISO 3166-1), se kommentar på UtenlandskForelderDto.bostedsland.
     land?: string;
     tom?: string;
     type: AnnenOpptjeningType;
@@ -651,8 +331,8 @@ export type AnnenOpptjeningType =
     | 'VARTPENGER';
 
 export type FrilansDto = {
-    tom?: string;
     oppstart: string;
+    tom?: string;
 };
 
 export type NæringDto = {
@@ -664,7 +344,6 @@ export type NæringDto = {
     næringstype: Virksomhetstype;
     oppstartsdato?: string;
     organisasjonsnummer?: string;
-    // Landkode sendes nå som alpha-3 (ISO 3166-1), se kommentar på UtenlandskForelderDto.bostedsland.
     registrertILand?: string;
     registrertINorge: boolean;
     tom?: string;
@@ -708,17 +387,7 @@ export type TilretteleggingbehovDto = {
     tilretteleggingstiltak?: string;
 };
 
-export type TilretteleggingDto = (
-    | ({
-          type: 'delvis';
-      } & Del)
-    | ({
-          type: 'hel';
-      } & Hel)
-    | ({
-          type: 'ingen';
-      } & Ingen)
-) & {
+export type TilretteleggingDto = (Del | Hel | Ingen) & {
     type: string;
 };
 
