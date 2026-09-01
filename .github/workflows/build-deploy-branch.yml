@@ -66,6 +66,7 @@ jobs:
   deploy-dev:
     name: Deploy dev
     permissions:
+      contents: read
       id-token: write
     needs: [build-app, upload-to-CDN]
     uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main
