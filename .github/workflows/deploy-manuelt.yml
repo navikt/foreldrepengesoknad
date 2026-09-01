@@ -28,8 +28,9 @@ on:
 
 jobs:
   deploy:
-    name: Deploy
+    name: Deploy manuelt til ${{ inputs.environment }}
     permissions:
+      contents: read
       id-token: write
     uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main
     with:
