@@ -22,7 +22,7 @@ import {
     getUttaksKontoType,
     summerDagerIPerioder,
     tellDagerIUttaksPeriodene,
-} from './utils/kvoteOppsummeringUtils';
+} from './utils/kvoteBeregning';
 
 interface Props {
     visStatusIkoner: boolean;

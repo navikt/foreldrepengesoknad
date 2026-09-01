@@ -39,35 +39,31 @@ describe('getBrukteDager', () => {
             },
         ];
 
-        const resultat = getBrukteDager(KONTOER, perioder, '2026-03-16', true);
+        const resultat = getBrukteDager(KONTOER, perioder, '2026-03-16', 'fødsel');
 
         expect(resultat.farMedmor.dagerEgneKvoter).toBe(75);
         expect(resultat.mor.dagerEgneKvoter).toBe(0);
     });
 
     it.each([
-        {
-            navn: 'MODREKVOTE_ANNEN_FORELDER',
-            oppholdÅrsak: 'MØDREKVOTE_ANNEN_FORELDER' as const,
-            forelder: 'MOR' as const,
-            hentResultat: (resultat: ReturnType<typeof getBrukteDager>) => resultat.mor.dagerEgneKvoter,
-        },
-        {
-            navn: 'FELLESPERIODE_ANNEN_FORELDER',
-            oppholdÅrsak: 'FELLESPERIODE_ANNEN_FORELDER' as const,
-            forelder: 'MOR' as const,
-            hentResultat: (resultat: ReturnType<typeof getBrukteDager>) => resultat.mor.dagerFellesperiode,
-        },
-    ])('kobler $navn til riktig kvote', ({ oppholdÅrsak, forelder, hentResultat }) => {
+        [
+            'MØDREKVOTE_ANNEN_FORELDER' as const,
+            (resultat: ReturnType<typeof getBrukteDager>) => resultat.mor.dagerEgneKvoter,
+        ],
+        [
+            'FELLESPERIODE_ANNEN_FORELDER' as const,
+            (resultat: ReturnType<typeof getBrukteDager>) => resultat.mor.dagerFellesperiode,
+        ],
+    ])('kobler %s til riktig kvote', (oppholdÅrsak, hentResultat) => {
         const periode: UttakPeriode_fpoversikt = {
             fom: '2026-04-17',
             tom: '2026-04-17',
-            forelder,
+            forelder: 'MOR',
             oppholdÅrsak,
             flerbarnsdager: false,
         };
 
-        const resultat = getBrukteDager(KONTOER, [periode], '2026-03-16', true);
+        const resultat = getBrukteDager(KONTOER, [periode], '2026-03-16', 'fødsel');
 
         expect(hentResultat(resultat)).toBe(1);
     });

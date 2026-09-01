@@ -6,7 +6,8 @@ import { KontoBeregningDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { UttaksplanDataProvider } from '../context/UttaksplanDataContext';
 import { ForeldreInfo } from '../types/ForeldreInfo';
-import { finnDinPlanKvoteRader, summerDagerIPerioder, useUbrukteDagerPerKontoKunEnHarRett } from './kvoteOppsummeringUtils';
+import { finnDinPlanKvoteRader, summerDagerIPerioder } from './kvoteBeregning';
+import { useUbrukteDagerPerKontoKunEnHarRett } from './kvoteOppsummeringUtils';
 
 const FAMILIEHENDELSESDATO = '2024-04-01'; // Mandag
 
