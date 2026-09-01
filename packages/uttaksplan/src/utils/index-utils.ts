@@ -16,4 +16,9 @@ export * from './periodeUtils';
 export { nyUttaksplanMessages } from '../intl/nyUttaksplanMessages';
 export { deltUttak } from './forslag/deltUttak';
 export { ikkeDeltUttak } from './forslag/ikkeDeltUttak';
-export { finnDinPlanKvoteRader, type DinPlanKvoteRad } from './kvoteOppsummeringUtils';
+export {
+    filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger,
+    finnDinPlanKvoteRader,
+    summerDagerIPerioder,
+    type DinPlanKvoteRad,
+} from './kvoteOppsummeringUtils';

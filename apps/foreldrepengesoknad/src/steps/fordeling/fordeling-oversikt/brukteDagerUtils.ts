@@ -8,7 +8,10 @@ import {
     UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
-import { finnAntallTidelerÅTrekke } from '@navikt/fp-uttaksplan/periode-utils';
+import {
+    filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger,
+    summerDagerIPerioder,
+} from '@navikt/fp-uttaksplan/periode-utils';
 
 type Periode = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
 
@@ -54,13 +57,6 @@ const isFarMedmorsKvote = (uttak: KontoDto): boolean => {
     return uttak.konto === 'FEDREKVOTE';
 };
 
-const filtrerAvslåttePerioderMenBeholdPleiepenger = (periode: Periode): boolean => {
-    if (Uttaksperioden.erEøsPeriode(periode)) {
-        return true;
-    }
-    return periode.resultat?.trekkerDager ?? true;
-};
-
 const beregnBrukteUttaksdager = (
     tilgjengeligeStønadskvoter: KontoBeregningDto,
     perioder: Periode[],
@@ -69,14 +65,13 @@ const beregnBrukteUttaksdager = (
 ): KontoDto[] => {
     return tilgjengeligeStønadskvoter.kontoer
         .map((konto) => {
-            const perioderForKonto = perioder.filter((p) => p.kontoType === konto.konto);
-            // Trekkdagar summerast i tideler (heiltal) for å unngå flyttalsfeil, og
-            // golvast til heile dagar heilt til slutt – sjå finnAntallTidelerÅTrekke.
-            const tideler = perioderForKonto.reduce(
-                (sum, p) => sum + finnAntallTidelerÅTrekke(p, erFødsel, familiehendelsesdato),
-                0,
+            const dager = summerDagerIPerioder(
+                perioder,
+                [konto],
+                erFødsel ? 'fødsel' : 'adopsjon',
+                familiehendelsesdato,
             );
-            return { konto: konto.konto, dager: Math.floor(tideler / 10) };
+            return { konto: konto.konto, dager };
         })
         .filter((k) => k.dager > 0);
 };
@@ -139,7 +134,9 @@ export const getBrukteDager = (
     familiehendelsesdato: string,
     erFødsel: boolean,
 ): BrukteDager => {
-    const perioderMedUttak = (perioder ?? []).filter(filtrerAvslåttePerioderMenBeholdPleiepenger);
+    const perioderMedUttak = (perioder ?? []).filter(
+        filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger,
+    );
     return {
         mor: getBrukteDagerForForelder(
             tilgjengeligeStønadskvoter,
