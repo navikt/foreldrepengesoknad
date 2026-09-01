@@ -10,7 +10,7 @@ import { useLoggOverlappIVedtak } from './useLoggOverlappIVedtak';
 
 export const useUttaksplanForEksisterendeSak = (
     perioderAnnenPart: UttakPeriode_fpoversikt[] | undefined,
-    erAnnenPartVedtakFerdigHentet = true,
+    erAnnenPartVedtakAvklart = true,
 ): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined => {
     const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
     const opprinneligUttaksplan = useContextGetData(ContextDataType.OPPRINNELIG_UTTAKSPLAN);
@@ -33,7 +33,7 @@ export const useUttaksplanForEksisterendeSak = (
     useLoggOverlappIVedtak(uttaksplan, perioderFraBackend, perioderAnnenPart);
 
     useEffect(() => {
-        if (!erAnnenPartVedtakFerdigHentet) {
+        if (!erAnnenPartVedtakAvklart) {
             return;
         }
         if (sakerQuery.isFetching) {
@@ -52,7 +52,7 @@ export const useUttaksplanForEksisterendeSak = (
             perioder: uttaksplan,
         });
     }, [
-        erAnnenPartVedtakFerdigHentet,
+        erAnnenPartVedtakAvklart,
         sakerQuery.isFetching,
         valgtEksisterendeSaksnr,
         uttaksplan,

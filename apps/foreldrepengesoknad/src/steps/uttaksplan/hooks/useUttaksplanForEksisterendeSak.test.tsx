@@ -58,16 +58,16 @@ describe('useUttaksplanForEksisterendeSak', () => {
         ],
     };
 
-    it('lagrer ikke snapshot før annen parts vedtak er ferdig hentet', async () => {
+    it('lagrer ikke snapshot før annen parts vedtak er avklart', async () => {
         const onDispatch = vi.fn();
-        const { rerender } = renderHook(({ erFerdigHentet }) => useUttaksplanForEksisterendeSak([], erFerdigHentet), {
-            initialProps: { erFerdigHentet: false },
+        const { rerender } = renderHook(({ erAvklart }) => useUttaksplanForEksisterendeSak([], erAvklart), {
+            initialProps: { erAvklart: false },
             wrapper: getWrapper(sakerMedPeriode, undefined, onDispatch),
         });
 
         expect(onDispatch).not.toHaveBeenCalled();
 
-        rerender({ erFerdigHentet: true });
+        rerender({ erAvklart: true });
 
         await waitFor(() =>
             expect(onDispatch).toHaveBeenCalledWith({
