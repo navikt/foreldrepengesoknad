@@ -2131,9 +2131,6 @@ importers:
       dayjs:
         specifier: 'catalog:'
         version: 1.11.21
-      i18n-iso-countries:
-        specifier: 'catalog:'
-        version: 7.14.0
       react:
         specifier: 'catalog:'
         version: 19.2.8
