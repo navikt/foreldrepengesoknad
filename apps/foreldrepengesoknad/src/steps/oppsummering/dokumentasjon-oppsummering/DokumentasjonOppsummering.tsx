@@ -74,10 +74,7 @@ export const DokumentasjonOppsummering = ({ onVilEndreSvar, navnPåForeldre }: P
                                 }
                                 const vedlegg = idOgVedlegg[1][0]!;
 
-                                if (vedlegg.innsendingsType === 'AUTOMATISK') {
-                                    return false;
-                                }
-                                return true;
+                                return vedlegg.innsendingsType !== 'AUTOMATISK';
                             })
                             .map((idOgVedlegg) => (
                                 <FormSummary.Answer key={idOgVedlegg[1][0]!.id}>
@@ -103,7 +100,7 @@ export const DokumentasjonOppsummering = ({ onVilEndreSvar, navnPåForeldre }: P
                                                         <Link
                                                             key={vedlegg.id}
                                                             download={vedleggNedlastingsnavn(vedlegg.filename)}
-                                                            href={`${API_URLS.hentVedlegg(vedlegg.uuid)}`}
+                                                            href={API_URLS.hentVedlegg(vedlegg.uuid)}
                                                             target="_blank"
                                                             rel="noreferrer noopener"
                                                         >

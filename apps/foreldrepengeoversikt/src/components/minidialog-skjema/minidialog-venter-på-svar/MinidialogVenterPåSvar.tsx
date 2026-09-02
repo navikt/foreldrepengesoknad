@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const MinidialogVenterPåSvar = ({ fetchCounter, allowedToFetch, saksnummer }: Props) => {
-    if (fetchCounter < 30 && allowedToFetch) {
+    if (allowedToFetch && fetchCounter < 30) {
         return (
             <>
                 <ScrollToTop />
@@ -26,7 +26,7 @@ export const MinidialogVenterPåSvar = ({ fetchCounter, allowedToFetch, saksnumm
         );
     }
 
-    if (fetchCounter < 30 && !allowedToFetch) {
+    if (!allowedToFetch && fetchCounter < 30) {
         return (
             <>
                 <ScrollToTop />

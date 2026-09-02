@@ -66,7 +66,7 @@ export const BarnFødselOppsummering = ({ barn }: Props) => {
                     <FormSummary.Value>{formatDate(barn.fødselsdatoer[0]!)}</FormSummary.Value>
                 </FormSummary.Answer>
             )}
-            {erBarnetfødt === false && barn.terminbekreftelsedato && (
+            {!erBarnetfødt && barn.terminbekreftelsedato && (
                 <FormSummary.Answer>
                     <FormSummary.Label>
                         <FormattedMessage id="omBarnet.terminbekreftelseDato" />

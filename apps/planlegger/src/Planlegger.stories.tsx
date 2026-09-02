@@ -90,7 +90,7 @@ const meta = {
         return (
             <StrictMode>
                 <MemoryRouter>
-                    <ErrorBoundary appName="planlegger" retryCallback={() => undefined}>
+                    <ErrorBoundary appName="planlegger" retryCallback={() => {}}>
                         <PlanleggerDataContext initialState={{}}>
                             <PlanleggerDataFetcher />
                         </PlanleggerDataContext>
@@ -106,7 +106,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        changeLocale: () => undefined,
+        changeLocale: () => {},
         locale: 'nb',
     },
 };

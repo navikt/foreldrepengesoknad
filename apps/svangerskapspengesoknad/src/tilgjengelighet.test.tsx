@@ -53,10 +53,10 @@ describe('tilgjengelegheit', () => {
 
             // Vent til sida faktisk er rendra – nokre steg hentar data
             // før dei viser noko anna enn ein spinner.
-            await screen.findAllByRole('heading', undefined, { timeout: 15000 });
+            await screen.findAllByRole('heading', undefined, { timeout: 15_000 });
 
             await forventIngenUuFeil();
         },
-        30000,
+        30_000,
     );
 });

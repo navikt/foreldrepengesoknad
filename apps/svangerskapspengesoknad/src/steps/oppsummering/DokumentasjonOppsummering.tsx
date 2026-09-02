@@ -25,7 +25,7 @@ export function DokumentasjonOppsummering({
                 </FormSummary.Heading>
             </FormSummary.Header>
             <FormSummary.Answers>
-                {Object.keys(tilretteleggingerVedlegg).map((tilretteleggingId) => (
+                {Object.entries(tilretteleggingerVedlegg).map(([tilretteleggingId, value]) => (
                     <FormSummary.Answer key={tilretteleggingId}>
                         <FormSummary.Label>
                             <DokumentasjonLabel
@@ -35,12 +35,12 @@ export function DokumentasjonOppsummering({
                         </FormSummary.Label>
                         <FormSummary.Value>
                             <VStack>
-                                {tilretteleggingerVedlegg[tilretteleggingId]?.map((vedlegg) => {
+                                {value?.map((vedlegg) => {
                                     return vedlegg.uuid ? (
                                         <Link
                                             key={vedlegg.id}
                                             download={vedleggNedlastingsnavn(vedlegg.filename)}
-                                            href={`${API_URLS.hentVedlegg(vedlegg.uuid)}`}
+                                            href={API_URLS.hentVedlegg(vedlegg.uuid)}
                                             target="_blank"
                                             rel="noreferrer noopener"
                                         >
@@ -73,10 +73,12 @@ function DokumentasjonLabel({
 }) {
     const intl = useIntl();
     switch (tilretteleggingId) {
-        case FRILANS_ID:
+        case FRILANS_ID: {
             return <FormattedMessage id="oppsummering.dokumentasjon.frilanser" />;
-        case EGEN_NÆRING_ID:
+        }
+        case EGEN_NÆRING_ID: {
             return <FormattedMessage id="oppsummering.dokumentasjon.selvstendig" />;
+        }
         default: {
             const navn = getArbeidsgiverNavnForTilrettelegging(intl, tilretteleggingId, alleArbeidsforhold);
             return (

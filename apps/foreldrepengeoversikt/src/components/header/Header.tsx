@@ -61,12 +61,15 @@ function BlueDot() {
 function getYtelseIkon(ytelse: Ytelse | undefined) {
     switch (ytelse) {
         case 'FORELDREPENGER':
-        case 'ENGANGSSTØNAD':
+        case 'ENGANGSSTØNAD': {
             return BabyWrappedIcon;
-        case 'SVANGERSKAPSPENGER':
+        }
+        case 'SVANGERSKAPSPENGER': {
             return PersonPregnantIcon;
-        default:
+        }
+        default: {
             return StrollerIcon;
+        }
     }
 }
 
@@ -222,44 +225,43 @@ export function DinSakHeader({ sak }: { sak?: Sak }) {
     const intl = useIntl();
     const søkerinfo = useQuery(søkerInfoOptions()).data;
 
-    if (!sak) {
-        return null;
-    }
-
-    const harMinstEttArbeidsforhold = søkerinfo?.harArbeidsforhold ?? false;
-
-    const ytelseTekst = ytelseSomTekst(sak.ytelse, intl);
-    return (
-        <HeaderWrapper>
-            <HGrid columns="max-content 1fr" gap="space-24" align="start">
-                <BabyIkon ytelse={sak.ytelse} />
-                <VStack>
-                    <HStack gap="space-24" align="center">
-                        <Heading level="1" size="medium">
-                            <FormattedMessage id="header.dinSak" />
-                        </Heading>
-                        <StatusTag sak={sak} harMinstEttArbeidsforhold={harMinstEttArbeidsforhold} />
-                    </HStack>
-                    <Show above="md">
-                        <HStack gap="space-12" align="center">
-                            <Detail uppercase>{ytelseTekst}</Detail>
-                            <BlueDot />
-                            <SaksnummerDetail />
-                            <BlueDot />
-                            <FamiliehendelseDescription sak={sak} søkerinfo={søkerinfo} />
-                        </HStack>
-                    </Show>
-                    <Show below="md">
-                        <VStack gap="space-4">
-                            <HStack gap="space-8" align="center">
-                                {capitalizeFirstLetter(ytelseTekst)} <BlueDot />
-                                <SaksnummerDetail />
-                            </HStack>
-                            <FamiliehendelseDescription sak={sak} søkerinfo={søkerinfo} />
-                        </VStack>
-                    </Show>
-                </VStack>
-            </HGrid>
-        </HeaderWrapper>
-    );
+    return sak
+        ? (() => {
+              const harMinstEttArbeidsforhold = søkerinfo?.harArbeidsforhold ?? false;
+              const ytelseTekst = ytelseSomTekst(sak.ytelse, intl);
+              return (
+                  <HeaderWrapper>
+                      <HGrid columns="max-content 1fr" gap="space-24" align="start">
+                          <BabyIkon ytelse={sak.ytelse} />
+                          <VStack>
+                              <HStack gap="space-24" align="center">
+                                  <Heading level="1" size="medium">
+                                      <FormattedMessage id="header.dinSak" />
+                                  </Heading>
+                                  <StatusTag sak={sak} harMinstEttArbeidsforhold={harMinstEttArbeidsforhold} />
+                              </HStack>
+                              <Show above="md">
+                                  <HStack gap="space-12" align="center">
+                                      <Detail uppercase>{ytelseTekst}</Detail>
+                                      <BlueDot />
+                                      <SaksnummerDetail />
+                                      <BlueDot />
+                                      <FamiliehendelseDescription sak={sak} søkerinfo={søkerinfo} />
+                                  </HStack>
+                              </Show>
+                              <Show below="md">
+                                  <VStack gap="space-4">
+                                      <HStack gap="space-8" align="center">
+                                          {capitalizeFirstLetter(ytelseTekst)} <BlueDot />
+                                          <SaksnummerDetail />
+                                      </HStack>
+                                      <FamiliehendelseDescription sak={sak} søkerinfo={søkerinfo} />
+                                  </VStack>
+                              </Show>
+                          </VStack>
+                      </HGrid>
+                  </HeaderWrapper>
+              );
+          })()
+        : null;
 }

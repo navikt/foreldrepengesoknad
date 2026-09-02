@@ -41,7 +41,7 @@ export const BarnehageplassSteg = ({ uttaksdata }: Props) => {
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const erAlenesøker = erAlene(hvemPlanlegger);
     const antallBarn = barnet.antallBarn;
-    const sluttdato = uttaksdata?.sluttdatoPeriode2 ? uttaksdata.sluttdatoPeriode2 : uttaksdata?.sluttdatoPeriode1;
+    const sluttdato = uttaksdata?.sluttdatoPeriode2 || uttaksdata?.sluttdatoPeriode1;
 
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>

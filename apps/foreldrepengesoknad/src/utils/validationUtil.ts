@@ -33,11 +33,11 @@ export const validateFødselsnummer =
 
         const validFnrResult = isFødselsnummerFormatValid(fnr);
 
-        if (!erUtenlandskFnr && !isSixteenOrOlder(fnr, validFnrResult) && validFnrResult === 'fnr') {
+        if (!erUtenlandskFnr && validFnrResult === 'fnr' && !isSixteenOrOlder(fnr, validFnrResult)) {
             return intl.formatMessage({ id: 'valideringsfeil.fødselsnummer.underSeksten' });
         }
 
-        return validFnrResult === 'fnr' || validFnrResult === 'dnr' || validFnrResult === 'hnr'
+        return (['fnr', 'dnr', 'hnr'] as Array<typeof validFnrResult>).includes(validFnrResult)
             ? null
             : intl.formatMessage({ id: 'valideringsfeil.fødselsnummer.ugyldigFødselsnummer' });
     };

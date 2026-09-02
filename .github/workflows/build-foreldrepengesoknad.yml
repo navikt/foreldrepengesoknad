@@ -32,9 +32,6 @@ jobs:
       # Bakes inn i asset-referansene (renderBuiltUrl) slik at foreldrepengesoknad laster assets fra CDN.
       # Må matche upload-to-CDN destination (teamforeldrepenger + /foreldrepenger/soknad).
       vite-cdn-url: 'https://cdn.nav.no/teamforeldrepenger/foreldrepenger/soknad/'
-    secrets:
-      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-
   upload-to-CDN:
     name: Upload assets to CDN
     if: github.ref_name == 'master'
@@ -51,6 +48,7 @@ jobs:
   deploy-dev:
     name: Deploy dev
     permissions:
+      contents: read
       id-token: write
     if: github.ref_name == 'master'
     needs: [build-app, upload-to-CDN]
@@ -65,6 +63,7 @@ jobs:
   deploy-prod:
     name: Deploy prod
     permissions:
+      contents: read
       id-token: write
     if: github.ref_name == 'master'
     needs: [build-app, deploy-dev]

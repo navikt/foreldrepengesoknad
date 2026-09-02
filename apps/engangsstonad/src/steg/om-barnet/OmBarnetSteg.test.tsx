@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
@@ -10,6 +10,9 @@ import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import * as stories from './OmBarnetSteg.stories';
 
 const { VisSideForAdopsjonKvinne, VisSideForAdopsjonMann, VisSideForFodsel } = composeStories(stories);
+
+const velgSvar = (spørsmål: string, svar: 'Ja' | 'Nei') =>
+    userEvent.click(within(screen.getByRole('radiogroup', { name: spørsmål })).getByRole('radio', { name: svar }));
 
 describe('<OmBarnetSteg>', () => {
     it('skal vise side for adopsjon for kvinne', async () => {
@@ -78,7 +81,7 @@ describe('<OmBarnetSteg>', () => {
         expect(screen.getAllByText('Barnet')).toHaveLength(2);
         expect(screen.getByText('Steg 2 av 4')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Nei'));
+        await velgSvar('Adopterer du ektefellens barn?', 'Nei');
 
         const adopsjonsdato = utils.getByLabelText('Når overtar du omsorgen?');
         await userEvent.type(adopsjonsdato, dayjs().format(DDMMYYYY_DATE_FORMAT));
@@ -95,7 +98,7 @@ describe('<OmBarnetSteg>', () => {
         expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
         expect(screen.getAllByText('Du må oppgi om du adopterer alene')).toHaveLength(2);
 
-        await userEvent.click(screen.getAllByText('Ja')[1]!);
+        await velgSvar('Adopterer du alene?', 'Ja');
 
         await userEvent.click(screen.getByText('Neste steg'));
 

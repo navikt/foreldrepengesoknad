@@ -5,11 +5,33 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 import * as importPlugin from 'eslint-plugin-import-x';
 import reactYouMightNotNeedAnEffect from 'eslint-plugin-react-you-might-not-need-an-effect';
 import storybook from 'eslint-plugin-storybook';
+import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 const OFF = 0;
 const ERROR = 2;
+
+const IGNORED_UNICORN_RULES = {
+    'unicorn/consistent-boolean-name': OFF,
+    'unicorn/no-array-callback-reference': OFF,
+    'unicorn/consistent-function-scoping': OFF,
+    'unicorn/filename-case': OFF,
+    'unicorn/max-nested-calls': OFF,
+    'unicorn/no-top-level-side-effects': OFF,
+    'unicorn/name-replacements': OFF,
+    'unicorn/no-nested-ternary': OFF,
+    'unicorn/no-null': OFF,
+    'unicorn/prevent-abbreviations': OFF,
+};
+
+export const unicornConfig = [
+    eslintPluginUnicorn.configs['flat/recommended'],
+    eslintConfigPrettier,
+    {
+        rules: IGNORED_UNICORN_RULES,
+    },
+];
 
 export default [
     {
@@ -92,7 +114,7 @@ export default [
                             group: ['@navikt/fp-*/src', '@navikt/fp-*/src/**'],
                             message:
                                 'Importer fra pakkens public API (f.eks. @navikt/fp-utils), ikke interne /src/-stier. Mangler eksporten? Legg den til i pakkens index.ts.',
-                        }
+                        },
                     ],
                 },
             ],

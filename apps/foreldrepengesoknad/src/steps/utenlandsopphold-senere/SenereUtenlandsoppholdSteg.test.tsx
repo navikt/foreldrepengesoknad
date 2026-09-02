@@ -26,7 +26,7 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
 
         expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
 
-        await userEvent.selectOptions(screen.getByLabelText('Hvilket land skal du bo i?'), 'CA');
+        await userEvent.selectOptions(screen.getByLabelText('Hvilket land skal du bo i?'), 'CAN');
 
         const fraOgMed = screen.getByLabelText('Fra og med');
         await userEvent.type(fraOgMed, dayjs().add(1, 'day').format(DDMMYYYY_DATE_FORMAT));
@@ -44,7 +44,7 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: [
                 {
-                    landkode: 'CA',
+                    landkode: 'CAN',
                     fom: dayjs().add(1, 'day').format(ISO_DATE_FORMAT),
                     tom: dayjs().add(20, 'day').format(ISO_DATE_FORMAT),
                 },

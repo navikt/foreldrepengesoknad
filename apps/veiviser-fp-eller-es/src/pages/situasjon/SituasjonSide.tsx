@@ -48,13 +48,7 @@ const resetFields = (
     const updatedFormValues = {
         ...formMethods.getValues(),
         [fieldName]: newValue,
-        ...etterfølgendeFelt.reduce(
-            (prev, current) => ({
-                ...prev,
-                [current]: null,
-            }),
-            {},
-        ),
+        ...Object.fromEntries(etterfølgendeFelt.map((current) => [current, null])),
     };
 
     formMethods.reset(updatedFormValues);
@@ -162,7 +156,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                             </ReadMore>
                         </VStack>
                     )}
-                    {erIArbeid === false && (
+                    {!erIArbeid && (
                         <VStack gap="space-12">
                             <BlueRadioGroup
                                 name="harHattAndreInntekter"
@@ -182,7 +176,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                     <FormattedMessage id="SituasjonSide.AndreInntektskilderDetaljer" />
                                 </BodyShort>
                             </ReadMore>
-                            {harHattAndreInntekter === false && (
+                            {!harHattAndreInntekter && (
                                 <Infobox
                                     header={<FormattedMessage id="SituasjonSide.JobbetMinst6av10" />}
                                     headingLevel="2"
@@ -212,7 +206,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                     <FormattedMessage id="SituasjonSide.Nei" />
                                 </Radio>
                             </BlueRadioGroup>
-                            {harHattInntekt === false && (
+                            {!harHattInntekt && (
                                 <Infobox
                                     header={<FormattedMessage id="SituasjonSide.JobbetMinst6av10" />}
                                     headingLevel="2"
@@ -310,7 +304,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                         </VStack>
                     )}
 
-                    {(lønnPerMåned || harHattInntekt === false || harHattAndreInntekter === false) && (
+                    {(lønnPerMåned || !harHattInntekt || !harHattAndreInntekter) && (
                         <VStack gap="space-12">
                             <BlueRadioGroup
                                 name="borDuINorge"
@@ -329,7 +323,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                     )}
                     <Spacer />
 
-                    {borDuINorge === false && (
+                    {!borDuINorge && (
                         <VStack gap="space-12">
                             <BlueRadioGroup
                                 name="jobberDuINorge"
@@ -344,7 +338,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                     <FormattedMessage id="SituasjonSide.Nei" />
                                 </Radio>
                             </BlueRadioGroup>
-                            {jobberDuINorge === false && (
+                            {!jobberDuINorge && (
                                 <Infobox
                                     header={<FormattedMessage id="SituasjonSide.MåVæreMedlem" />}
                                     headingLevel="2"

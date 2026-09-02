@@ -53,4 +53,9 @@ export { PeriodLabel } from './src/period-label/PeriodLabel';
 export { SamtykkePanel } from './src/samtykke-panel/SamtykkePanel';
 export { DekningsgradUtbetalingEksempel } from './src/dekningsgrad-utbetaling-eksempel/DekningsgradUtbetalingEksempel';
 export { KvoteProgresjonRing } from './src/kvote-progresjon-ring/KvoteProgresjonRing';
-export type { KvoteProgresjonRingProps, KvoteTone, KvoteRingSize, KvoteProgresjonRingSplitInfo } from './src/kvote-progresjon-ring/KvoteProgresjonRing';
+export type {
+    KvoteProgresjonRingProps,
+    KvoteTone,
+    KvoteRingSize,
+    KvoteProgresjonRingSplitInfo,
+} from './src/kvote-progresjon-ring/KvoteProgresjonRing';

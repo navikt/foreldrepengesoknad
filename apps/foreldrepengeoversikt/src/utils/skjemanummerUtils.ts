@@ -28,11 +28,13 @@ const skjemanummerForFørstegangssøknadForeldrepenger = (skjemanummer: Skjemanu
         case Skjemanummer.DOK_INNTEKT:
         case Skjemanummer.DOK_OPPHOLD:
         case Skjemanummer.DOK_OPPFØLGING:
-        case Skjemanummer.DOK_REISE:
+        case Skjemanummer.DOK_REISE: {
             // case Skjemanummer.DEPRECATED_TILBAKEBETALING: // TODO Putt disse inn igjen om en måneds tid
             return false;
-        default:
+        }
+        default: {
             return true;
+        }
     }
 };
 
@@ -58,10 +60,13 @@ const isSkjemanummerForEndringssøknadForeldrepenger = (skjemanummer: Skjemanumm
         case Skjemanummer.HV_ØVELSE:
         case Skjemanummer.NAV_TILTAK:
         case Skjemanummer.TERMINBEKREFTELSE:
-        case Skjemanummer.DEPRECATED_TILBAKEBETALING: // TODO fjern disse igjen om en måneds tid
+        case Skjemanummer.DEPRECATED_TILBAKEBETALING: {
+            // TODO fjern disse igjen om en måneds tid
             return true;
-        default:
+        }
+        default: {
             return false;
+        }
     }
 };
 
@@ -74,10 +79,12 @@ const isSkjemanummerForSvangerskapspengesoknad = (skjemanummer: Skjemanummer): b
         case Skjemanummer.TILBAKEBETALING:
         case Skjemanummer.TERMINBEKREFTELSE:
         case Skjemanummer.SKATTEMELDING:
-        case Skjemanummer.RESULTATREGNSKAP:
+        case Skjemanummer.RESULTATREGNSKAP: {
             return true;
-        default:
+        }
+        default: {
             return false;
+        }
     }
 };
 
@@ -90,9 +97,11 @@ const isSkjemanummerForEngangsstønad = (skjemanummer: Skjemanummer): boolean =>
         case Skjemanummer.DOK_INNTEKT:
         case Skjemanummer.DOK_OPPHOLD:
         case Skjemanummer.DOK_OPPFØLGING:
-        case Skjemanummer.DOK_REISE:
+        case Skjemanummer.DOK_REISE: {
             return true;
-        default:
+        }
+        default: {
             return false;
+        }
     }
 };

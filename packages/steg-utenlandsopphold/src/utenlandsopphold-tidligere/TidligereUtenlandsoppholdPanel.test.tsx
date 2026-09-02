@@ -46,7 +46,7 @@ describe('<TidligereUtenlandsoppholdPanel>', () => {
 
         expect(await screen.findAllByText('Har bodd i utlandet')).toHaveLength(2);
 
-        await userEvent.selectOptions(utils.getByLabelText('Hvilket land bodde du i?'), 'CA');
+        await userEvent.selectOptions(utils.getByLabelText('Hvilket land bodde du i?'), 'CAN');
 
         const fraOgMed = utils.getByLabelText('Fra og med');
         await userEvent.type(fraOgMed, dayjs().subtract(30, 'day').format(DDMMYYYY_DATE_FORMAT));
@@ -58,7 +58,7 @@ describe('<TidligereUtenlandsoppholdPanel>', () => {
 
         await userEvent.click(screen.getByText('Legg til flere opphold i utlandet'));
 
-        await userEvent.selectOptions(utils.getAllByLabelText('Hvilket land bodde du i?')[1]!, 'AS');
+        await userEvent.selectOptions(utils.getAllByLabelText('Hvilket land bodde du i?')[1]!, 'ASM');
 
         const fraOgMedP2 = utils.getAllByLabelText('Fra og med')[1]!;
         await userEvent.type(fraOgMedP2, dayjs().subtract(22, 'day').format(DDMMYYYY_DATE_FORMAT));
@@ -73,12 +73,12 @@ describe('<TidligereUtenlandsoppholdPanel>', () => {
         expect(saveOnNext).toHaveBeenCalledTimes(1);
         expect(saveOnNext).toHaveBeenNthCalledWith(1, [
             {
-                landkode: 'CA',
+                landkode: 'CAN',
                 fom: dayjs().subtract(30, 'day').format(ISO_DATE_FORMAT),
                 tom: dayjs().subtract(25, 'day').format(ISO_DATE_FORMAT),
             },
             {
-                landkode: 'AS',
+                landkode: 'ASM',
                 fom: dayjs().subtract(22, 'day').format(ISO_DATE_FORMAT),
                 tom: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
             },
@@ -92,7 +92,7 @@ describe('<TidligereUtenlandsoppholdPanel>', () => {
 
         expect(await screen.findAllByText('Har bodd i utlandet')).toHaveLength(2);
 
-        await userEvent.selectOptions(utils.getByLabelText('Hvilket land bodde du i?'), 'CA');
+        await userEvent.selectOptions(utils.getByLabelText('Hvilket land bodde du i?'), 'CAN');
 
         const fraOgMed = utils.getByLabelText('Fra og med');
         await userEvent.type(fraOgMed, dayjs().subtract(30, 'day').format(DDMMYYYY_DATE_FORMAT));
@@ -104,7 +104,7 @@ describe('<TidligereUtenlandsoppholdPanel>', () => {
 
         await userEvent.click(screen.getByText('Legg til flere opphold i utlandet'));
 
-        await userEvent.selectOptions(utils.getAllByLabelText('Hvilket land bodde du i?')[1]!, 'AS');
+        await userEvent.selectOptions(utils.getAllByLabelText('Hvilket land bodde du i?')[1]!, 'ASM');
 
         const fraOgMedP2 = utils.getAllByLabelText('Fra og med')[1]!;
         await userEvent.type(fraOgMedP2, dayjs().subtract(25, 'day').format(DDMMYYYY_DATE_FORMAT));
@@ -141,7 +141,7 @@ describe('<TidligereUtenlandsoppholdPanel>', () => {
 
         expect(await screen.findAllByText('Har bodd i utlandet')).toHaveLength(2);
 
-        await userEvent.selectOptions(screen.getByLabelText('Hvilket land bodde du i?'), 'CA');
+        await userEvent.selectOptions(screen.getByLabelText('Hvilket land bodde du i?'), 'CAN');
 
         await userEvent.click(screen.getByText('Forrige steg'));
 
@@ -149,7 +149,7 @@ describe('<TidligereUtenlandsoppholdPanel>', () => {
         expect(saveOnPrevious).toHaveBeenNthCalledWith(1, [
             {
                 fom: '',
-                landkode: 'CA',
+                landkode: 'CAN',
                 tom: '',
             },
         ]);

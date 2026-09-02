@@ -8,13 +8,14 @@ export const getFamiliehendelseType = (
 ) => {
     if (omsorgsovertagelsesdato !== undefined) {
         return FamiliehendelseType.ADOPSJON;
-    } else if (fødselsdato !== undefined) {
+    }
+    if (fødselsdato !== undefined) {
         return FamiliehendelseType.FØDSEL;
-    } else if (termindato !== undefined) {
-        return FamiliehendelseType.TERM;
-    } else {
+    }
+    if (termindato === undefined) {
         throw new Error('Fødselsdato/ termindato/ omsorgsovertakelsedato mangler');
     }
+    return FamiliehendelseType.TERM;
 };
 
 export const getFamiliehendelseNavn = (erAdopsjon: boolean, erBarnetFødt: boolean, intl: IntlShape) => {

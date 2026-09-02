@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { renderHook } from '@testing-library/react';
+import { renderHook, waitFor } from '@testing-library/react';
 import { sakerOptions } from 'api/queries';
-import { ContextDataType, FpDataContext } from 'appData/FpDataContext';
+import { Action, ContextDataMap, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { ReactNode } from 'react';
 
 import { Saker_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
@@ -14,13 +14,16 @@ vi.mock('./useLoggOverlappIVedtak', () => ({
 
 const SAKSNUMMER = '123456789';
 
-const getWrapper = (saker: Saker_fpoversikt) => {
+const getWrapper = (saker: Saker_fpoversikt, initialState?: ContextDataMap, onDispatch?: (action: Action) => void) => {
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     queryClient.setQueryData(sakerOptions().queryKey, saker);
 
     return ({ children }: { children: ReactNode }) => (
         <QueryClientProvider client={queryClient}>
-            <FpDataContext initialState={{ [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER }}>
+            <FpDataContext
+                initialState={{ [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER, ...initialState }}
+                onDispatch={onDispatch}
+            >
                 {children}
             </FpDataContext>
         </QueryClientProvider>
@@ -28,6 +31,74 @@ const getWrapper = (saker: Saker_fpoversikt) => {
 };
 
 describe('useUttaksplanForEksisterendeSak', () => {
+    const periode: UttakPeriode_fpoversikt = {
+        fom: '2025-01-01',
+        tom: '2025-01-10',
+        forelder: 'MOR',
+        kontoType: 'MØDREKVOTE',
+        flerbarnsdager: false,
+    };
+    const sakerMedPeriode: Saker_fpoversikt = {
+        engangsstønad: [],
+        svangerskapspenger: [],
+        foreldrepenger: [
+            {
+                saksnummer: SAKSNUMMER,
+                familiehendelse: { antallBarn: 1, fødselsdato: '2025-01-01' },
+                forelder: 'MOR',
+                gjelderAdopsjon: false,
+                kanSøkeOmEndring: true,
+                morUføretrygd: false,
+                oppdatertTidspunkt: '2025-01-01T00:00:00',
+                rettighetType: 'BEGGE_RETT',
+                sakAvsluttet: false,
+                sakTilhørerMor: true,
+                gjeldendeVedtak: { perioder: [periode] },
+            },
+        ],
+    };
+
+    it('lagrer ikke snapshot før annen parts vedtak er avklart', async () => {
+        const onDispatch = vi.fn();
+        const { rerender } = renderHook(({ erAvklart }) => useUttaksplanForEksisterendeSak([], erAvklart), {
+            initialProps: { erAvklart: false },
+            wrapper: getWrapper(sakerMedPeriode, undefined, onDispatch),
+        });
+
+        expect(onDispatch).not.toHaveBeenCalled();
+
+        rerender({ erAvklart: true });
+
+        await waitFor(() =>
+            expect(onDispatch).toHaveBeenCalledWith({
+                type: 'update',
+                key: ContextDataType.OPPRINNELIG_UTTAKSPLAN,
+                data: {
+                    saksnummer: SAKSNUMMER,
+                    perioder: [periode],
+                },
+            }),
+        );
+    });
+
+    it('overskriver ikke et eksisterende snapshot ved refetch', () => {
+        const onDispatch = vi.fn();
+        const eksisterendeSnapshot = {
+            saksnummer: SAKSNUMMER,
+            perioder: [],
+        };
+
+        renderHook(() => useUttaksplanForEksisterendeSak([], true), {
+            wrapper: getWrapper(
+                sakerMedPeriode,
+                { [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: eksisterendeSnapshot },
+                onDispatch,
+            ),
+        });
+
+        expect(onDispatch).not.toHaveBeenCalled();
+    });
+
     it('testcase 0 - mor har samtidigattak, søkar (far) sine periodar skal justerast', () => {
         const perioderAnnenPart: UttakPeriode_fpoversikt[] = [
             {

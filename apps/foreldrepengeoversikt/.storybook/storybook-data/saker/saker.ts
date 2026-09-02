@@ -734,7 +734,7 @@ export const saker_SVP_innvilget = {
                                 type: 'INGEN',
                                 resultat: {
                                     resultatType: 'INNVILGET',
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                             },
                         ],
@@ -758,7 +758,7 @@ export const saker_SVP_innvilget = {
                                 type: 'INGEN',
                                 resultat: {
                                     resultatType: 'INNVILGET',
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                             },
                         ],
@@ -802,7 +802,7 @@ export const saker_SVP_under_behandling = {
                                     fom: '2025-12-27',
                                     tom: '2026-02-05',
                                     type: 'DELVIS',
-                                    arbeidstidprosent: 40.0,
+                                    arbeidstidprosent: 40,
                                 },
                             ],
                             oppholdsperioder: [],
@@ -1012,7 +1012,7 @@ export const saker_beregning_direkte_utbetaling = {
                             årsak: 'ANNET',
                         },
                         gradering: {
-                            arbeidstidprosent: 10.0,
+                            arbeidstidprosent: 10,
                             aktivitet: {
                                 type: 'ORDINÆRT_ARBEID',
                                 arbeidsgiver: {
@@ -1031,24 +1031,24 @@ export const saker_beregning_direkte_utbetaling = {
                     beregningsandeler: [
                         {
                             aktivitetStatus: 'ARBEIDSTAKER',
-                            fastsattPrÅr: 480000.0,
+                            fastsattPrÅr: 480_000,
                             inntektsKilde: 'INNTEKTSMELDING',
                             arbeidsforhold: {
                                 arbeidsgiverIdent: '992260475',
                                 arbeidsgiverNavn: 'NAV FAMILIE- OG PENSJONSYTELSER STORD',
-                                refusjonPrMnd: 0.0,
+                                refusjonPrMnd: 0,
                             },
                             dagsatsArbeidsgiver: 0,
                             dagsatsSøker: 1502,
                         },
                         {
                             aktivitetStatus: 'ARBEIDSTAKER',
-                            fastsattPrÅr: 480000.0,
+                            fastsattPrÅr: 480_000,
                             inntektsKilde: 'INNTEKTSMELDING',
                             arbeidsforhold: {
                                 arbeidsgiverIdent: '992260432',
                                 arbeidsgiverNavn: 'NAV FAMILIE- OG PENSJONSYTELSER BERGEN',
-                                refusjonPrMnd: 0.0,
+                                refusjonPrMnd: 0,
                             },
                             dagsatsArbeidsgiver: 0,
                             dagsatsSøker: 1502,
@@ -1060,7 +1060,7 @@ export const saker_beregning_direkte_utbetaling = {
                             hjemmel: 'F_14_7_8_30',
                         },
                     ],
-                    grunnbeløp: 130160.0,
+                    grunnbeløp: 130_160,
                 },
                 tilkjentYtelse: {
                     utbetalingsperioder: [
@@ -1074,7 +1074,7 @@ export const saker_beregning_direkte_utbetaling = {
                                     dagsats: 1502,
                                     aktivitetStatus: 'ARBEIDSTAKER',
                                     tilBruker: true,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                                 {
                                     aktivitetStatus: 'ARBEIDSTAKER',
@@ -1082,7 +1082,7 @@ export const saker_beregning_direkte_utbetaling = {
                                     arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER STORD',
                                     dagsats: 1502,
                                     tilBruker: true,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                             ],
                         },
@@ -1096,7 +1096,7 @@ export const saker_beregning_direkte_utbetaling = {
                                     dagsats: 1502,
                                     aktivitetStatus: 'ARBEIDSTAKER',
                                     tilBruker: true,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                                 {
                                     arbeidsgiverIdent: '992260475',
@@ -1104,7 +1104,7 @@ export const saker_beregning_direkte_utbetaling = {
                                     dagsats: 1502,
                                     aktivitetStatus: 'ARBEIDSTAKER',
                                     tilBruker: true,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                             ],
                         },
@@ -1118,7 +1118,7 @@ export const saker_beregning_direkte_utbetaling = {
                                     dagsats: 1502,
                                     aktivitetStatus: 'ARBEIDSTAKER',
                                     tilBruker: true,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                                 {
                                     arbeidsgiverIdent: '992260475',
@@ -1126,7 +1126,7 @@ export const saker_beregning_direkte_utbetaling = {
                                     dagsats: 1502,
                                     aktivitetStatus: 'ARBEIDSTAKER',
                                     tilBruker: true,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                             ],
                         },
@@ -1140,7 +1140,7 @@ export const saker_beregning_direkte_utbetaling = {
                                     dagsats: 1352,
                                     aktivitetStatus: 'ARBEIDSTAKER',
                                     tilBruker: true,
-                                    utbetalingsgrad: 90.0,
+                                    utbetalingsgrad: 90,
                                 },
                                 {
                                     arbeidsgiverIdent: '992260475',
@@ -1148,7 +1148,7 @@ export const saker_beregning_direkte_utbetaling = {
                                     dagsats: 1502,
                                     aktivitetStatus: 'ARBEIDSTAKER',
                                     tilBruker: true,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                             ],
                         },
@@ -1263,19 +1263,19 @@ export const saker_beregning_delvis_refusjon = {
                     beregningsandeler: [
                         {
                             aktivitetStatus: 'ARBEIDSTAKER',
-                            fastsattPrÅr: 500000.0,
+                            fastsattPrÅr: 500_000,
                             inntektsKilde: 'SKJØNNSFASTSATT',
                             arbeidsforhold: {
                                 arbeidsgiverIdent: '992257822',
                                 arbeidsgiverNavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
-                                refusjonPrMnd: 4166.0,
+                                refusjonPrMnd: 4166,
                             },
                             dagsatsArbeidsgiver: 192,
                             dagsatsSøker: 1731,
                         },
                         {
                             aktivitetStatus: 'FRILANSER',
-                            fastsattPrÅr: 500000.0,
+                            fastsattPrÅr: 500_000,
                             inntektsKilde: 'SKJØNNSFASTSATT',
                             dagsatsSøker: 1081,
                             dagsatsArbeidsgiver: 0,
@@ -1287,7 +1287,7 @@ export const saker_beregning_delvis_refusjon = {
                             hjemmel: 'F_14_7_8_40',
                         },
                     ],
-                    grunnbeløp: 130160.0,
+                    grunnbeløp: 130_160,
                 },
                 tilkjentYtelse: {
                     utbetalingsperioder: [
@@ -1299,7 +1299,7 @@ export const saker_beregning_delvis_refusjon = {
                                     dagsats: 1081,
                                     aktivitetStatus: 'ARBEIDSTAKER',
                                     tilBruker: true,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                                 {
                                     arbeidsgiverIdent: '992257822',
@@ -1307,7 +1307,7 @@ export const saker_beregning_delvis_refusjon = {
                                     dagsats: 1731,
                                     aktivitetStatus: 'ARBEIDSTAKER',
                                     tilBruker: true,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                                 {
                                     arbeidsgiverIdent: '992257822',
@@ -1315,7 +1315,7 @@ export const saker_beregning_delvis_refusjon = {
                                     dagsats: 192,
                                     tilBruker: false,
                                     aktivitetStatus: 'ARBEIDSTAKER',
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                             ],
                         },
@@ -1327,7 +1327,7 @@ export const saker_beregning_delvis_refusjon = {
                                     dagsats: 1081,
                                     aktivitetStatus: 'ARBEIDSTAKER',
                                     tilBruker: true,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                                 {
                                     arbeidsgiverIdent: '992257822',
@@ -1335,7 +1335,7 @@ export const saker_beregning_delvis_refusjon = {
                                     dagsats: 1731,
                                     aktivitetStatus: 'ARBEIDSTAKER',
                                     tilBruker: true,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                                 {
                                     aktivitetStatus: 'ARBEIDSTAKER',
@@ -1343,7 +1343,7 @@ export const saker_beregning_delvis_refusjon = {
                                     arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
                                     dagsats: 192,
                                     tilBruker: false,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                             ],
                         },
@@ -1355,7 +1355,7 @@ export const saker_beregning_delvis_refusjon = {
                                     dagsats: 1081,
                                     aktivitetStatus: 'ARBEIDSTAKER',
                                     tilBruker: true,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                                 {
                                     arbeidsgiverIdent: '992257822',
@@ -1363,7 +1363,7 @@ export const saker_beregning_delvis_refusjon = {
                                     dagsats: 1731,
                                     aktivitetStatus: 'ARBEIDSTAKER',
                                     tilBruker: true,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                                 {
                                     aktivitetStatus: 'ARBEIDSTAKER',
@@ -1371,7 +1371,7 @@ export const saker_beregning_delvis_refusjon = {
                                     arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
                                     dagsats: 192,
                                     tilBruker: false,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                             ],
                         },
@@ -1383,7 +1383,7 @@ export const saker_beregning_delvis_refusjon = {
                                     dagsats: 1081,
                                     aktivitetStatus: 'ARBEIDSTAKER',
                                     tilBruker: true,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                                 {
                                     arbeidsgiverIdent: '992257822',
@@ -1391,7 +1391,7 @@ export const saker_beregning_delvis_refusjon = {
                                     dagsats: 1731,
                                     aktivitetStatus: 'ARBEIDSTAKER',
                                     tilBruker: true,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                                 {
                                     aktivitetStatus: 'ARBEIDSTAKER',
@@ -1399,7 +1399,7 @@ export const saker_beregning_delvis_refusjon = {
                                     arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
                                     dagsats: 192,
                                     tilBruker: false,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                             ],
                         },
@@ -1407,7 +1407,7 @@ export const saker_beregning_delvis_refusjon = {
                     feriepenger: [
                         {
                             opptjeningsår: '2026-12-31',
-                            årsbeløp: 10594,
+                            årsbeløp: 10_594,
                             arbeidsgiverIdent: '992257822',
                             tilBruker: true,
                         },
@@ -1502,12 +1502,12 @@ export const saker_beregning_full_refusjon = {
                     beregningsandeler: [
                         {
                             aktivitetStatus: 'ARBEIDSTAKER',
-                            fastsattPrÅr: 480000.0,
+                            fastsattPrÅr: 480_000,
                             inntektsKilde: 'INNTEKTSMELDING',
                             arbeidsforhold: {
                                 arbeidsgiverIdent: '992257822',
                                 arbeidsgiverNavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
-                                refusjonPrMnd: 500000.0,
+                                refusjonPrMnd: 500_000,
                             },
                             dagsatsArbeidsgiver: 1846,
                             dagsatsSøker: 0,
@@ -1519,7 +1519,7 @@ export const saker_beregning_full_refusjon = {
                             hjemmel: 'F_14_7_8_30',
                         },
                     ],
-                    grunnbeløp: 130160.0,
+                    grunnbeløp: 130_160,
                 },
                 tilkjentYtelse: {
                     utbetalingsperioder: [
@@ -1533,7 +1533,7 @@ export const saker_beregning_full_refusjon = {
                                     dagsats: 0,
                                     aktivitetStatus: 'ARBEIDSTAKER',
                                     tilBruker: true,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                                 {
                                     aktivitetStatus: 'ARBEIDSTAKER',
@@ -1541,7 +1541,7 @@ export const saker_beregning_full_refusjon = {
                                     arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
                                     dagsats: 1846,
                                     tilBruker: false,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                             ],
                         },
@@ -1555,7 +1555,7 @@ export const saker_beregning_full_refusjon = {
                                     dagsats: 0,
                                     aktivitetStatus: 'ARBEIDSTAKER',
                                     tilBruker: true,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                                 {
                                     aktivitetStatus: 'ARBEIDSTAKER',
@@ -1563,7 +1563,7 @@ export const saker_beregning_full_refusjon = {
                                     arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
                                     dagsats: 1846,
                                     tilBruker: false,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                             ],
                         },
@@ -1577,7 +1577,7 @@ export const saker_beregning_full_refusjon = {
                                     dagsats: 0,
                                     aktivitetStatus: 'ARBEIDSTAKER',
                                     tilBruker: true,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                                 {
                                     aktivitetStatus: 'ARBEIDSTAKER',
@@ -1585,7 +1585,7 @@ export const saker_beregning_full_refusjon = {
                                     arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
                                     dagsats: 1846,
                                     tilBruker: false,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                             ],
                         },
@@ -1599,7 +1599,7 @@ export const saker_beregning_full_refusjon = {
                                     dagsats: 0,
                                     aktivitetStatus: 'ARBEIDSTAKER',
                                     tilBruker: true,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                                 {
                                     aktivitetStatus: 'ARBEIDSTAKER',
@@ -1607,7 +1607,7 @@ export const saker_beregning_full_refusjon = {
                                     arbeidsgivernavn: 'NAV FAMILIE- OG PENSJONSYTELSER OSLO',
                                     dagsats: 1846,
                                     tilBruker: false,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                             ],
                         },
@@ -1615,7 +1615,7 @@ export const saker_beregning_full_refusjon = {
                     feriepenger: [
                         {
                             opptjeningsår: '2026-12-31',
-                            årsbeløp: 11298,
+                            årsbeløp: 11_298,
                             arbeidsgiverIdent: '992257822',
                             tilBruker: false,
                         },
@@ -1679,12 +1679,12 @@ export const saker_beregning_svp_direkte_utbetaling = {
                     beregningsandeler: [
                         {
                             aktivitetStatus: 'ARBEIDSTAKER',
-                            fastsattPrÅr: 540000.0,
+                            fastsattPrÅr: 540_000,
                             inntektsKilde: 'INNTEKTSMELDING',
                             arbeidsforhold: {
                                 arbeidsgiverIdent: '992260475',
                                 arbeidsgiverNavn: 'NAV FAMILIE- OG PENSJONSYTELSER STORD',
-                                refusjonPrMnd: 0.0,
+                                refusjonPrMnd: 0,
                             },
                             dagsatsArbeidsgiver: 0,
                             dagsatsSøker: 2077,
@@ -1696,7 +1696,7 @@ export const saker_beregning_svp_direkte_utbetaling = {
                             hjemmel: 'F_14_7_8_30',
                         },
                     ],
-                    grunnbeløp: 130160.0,
+                    grunnbeløp: 130_160,
                 },
                 tilkjentYtelse: {
                     utbetalingsperioder: [
@@ -1710,7 +1710,7 @@ export const saker_beregning_svp_direkte_utbetaling = {
                                     dagsats: 2077,
                                     aktivitetStatus: 'ARBEIDSTAKER',
                                     tilBruker: true,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                             ],
                         },
@@ -1724,7 +1724,7 @@ export const saker_beregning_svp_direkte_utbetaling = {
                                     dagsats: 2077,
                                     aktivitetStatus: 'ARBEIDSTAKER',
                                     tilBruker: true,
-                                    utbetalingsgrad: 100.0,
+                                    utbetalingsgrad: 100,
                                 },
                             ],
                         },
@@ -1782,7 +1782,7 @@ const beregningIkkeStøttetSak = (saksnummer: string, aktivitetStatus: Aktivitet
                                         aktivitetStatus,
                                         dagsats: 1154,
                                         tilBruker: true,
-                                        utbetalingsgrad: 100.0,
+                                        utbetalingsgrad: 100,
                                     },
                                 ],
                             },
@@ -1839,26 +1839,26 @@ export const saker_beregning_cross_year = {
                     beregningsandeler: [
                         {
                             aktivitetStatus: 'ARBEIDSTAKER',
-                            fastsattPrÅr: 400000.0,
+                            fastsattPrÅr: 400_000,
                             inntektsKilde: 'INNTEKTSMELDING',
                             arbeidsforhold: {
                                 arbeidsgiverIdent: '999999999',
                                 arbeidsgiverNavn: 'TESTBEDRIFTEN AS',
-                                refusjonPrMnd: 0.0,
+                                refusjonPrMnd: 0,
                             },
                             dagsatsArbeidsgiver: 526,
                             dagsatsSøker: 0,
                         },
                         {
                             aktivitetStatus: 'SELVSTENDIG_NÆRINGSDRIVENDE',
-                            fastsattPrÅr: 0.0,
+                            fastsattPrÅr: 0,
                             inntektsKilde: 'SKJØNNSFASTSATT',
                             dagsatsArbeidsgiver: 0,
                             dagsatsSøker: 0,
                         },
                     ],
                     beregningAktivitetStatuser: [{ aktivitetStatus: 'KOMBINERT_AT_SN', hjemmel: 'F_14_7_8_30' }],
-                    grunnbeløp: 130160.0,
+                    grunnbeløp: 130_160,
                 },
                 tilkjentYtelse: {
                     utbetalingsperioder: [

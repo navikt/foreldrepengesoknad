@@ -20,13 +20,11 @@ skyra-survey::part(heading) {
     font-size: 20px;
     font-weight: 600;
     line-height: 32px;
-    color: var(--ax-text-neutral);
 }
 
 skyra-survey::part(bodyHtml) {
     font-size: 18px;
     font-weight: 400;
-    color: var(--ax-text-neutral);
 }
 
 skyra-survey::part(button-primary) {

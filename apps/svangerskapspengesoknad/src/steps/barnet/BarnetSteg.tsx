@@ -30,7 +30,7 @@ import {
 } from '@navikt/fp-validation';
 
 const getMinDatoTermin = (erBarnetFødt: boolean, fødselsdato?: string): Dayjs =>
-    erBarnetFødt && fødselsdato && isStringADate(fødselsdato) ? enMånedSiden(fødselsdato) : enMånedSiden(dayjs());
+    enMånedSiden(erBarnetFødt && fødselsdato && isStringADate(fødselsdato) ? fødselsdato : dayjs());
 
 const validerTermindato = (intl: IntlShape, fødselsdato?: string) => (termindato: string) => {
     if (fødselsdato && !dayjs(termindato).subtract(6, 'months').isSameOrBefore(dayjs(fødselsdato), 'day')) {
@@ -171,14 +171,14 @@ export const BarnetSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeids
                                         niMånederFremITid(dayjs()),
                                     ),
                                     (termindato) =>
-                                        !fødselsdato
-                                            ? isAfterOrSame(
+                                        fødselsdato
+                                            ? null
+                                            : isAfterOrSame(
                                                   intl.formatMessage({
                                                       id: 'valideringsfeil.barnet.termindato.vennligstOppgiBarnetsFødselsDato',
                                                   }),
                                                   enMånedSiden(dayjs()),
-                                              )(termindato)
-                                            : null,
+                                              )(termindato),
                                     isAfterOrSame(
                                         intl.formatMessage({
                                             id: 'valideringsfeil.barnet.termindato.forLangtTilbakeITid',

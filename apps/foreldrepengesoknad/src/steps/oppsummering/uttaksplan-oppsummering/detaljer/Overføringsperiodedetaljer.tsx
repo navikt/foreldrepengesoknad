@@ -12,7 +12,8 @@ interface Props {
 const getNavnPåAnnenForelder = (navnPåForeldre: NavnPåForeldre, konto: KontoTypeUttak | undefined, intl: IntlShape) => {
     if (konto === 'FEDREKVOTE') {
         return navnPåForeldre.farMedmor;
-    } else if (konto === 'MØDREKVOTE') {
+    }
+    if (konto === 'MØDREKVOTE') {
         return navnPåForeldre.mor;
     }
     return intl.formatMessage({ id: 'annen.forelder' });

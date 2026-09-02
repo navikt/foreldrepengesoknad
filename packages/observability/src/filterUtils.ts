@@ -1,12 +1,11 @@
 /**
- * Felles filtreringslogikk for Sentry og Faro.
+ * Felles filtreringslogikk for Faro.
  *
  * Vi prøver å bruke samme regler for å luke bort støy der det er mulig:
  * - Dekoratør-feil (personbruker/decorator-next)
  * - Nettleserutvidelser (taleassistenter)
  *
- * Sentry har i tillegg filter for oversettelsesverktøy (removeChild/insertBefore).
- * 401-filtrering holdes i hver init-fil siden mekanismen er ulik (Sentry har breadcrumbs, Faro har ikke).
+ * Filtrene luker blant annet bort feil fra oversettelsesverktøy (removeChild/insertBefore).
  */
 
 const FEIL_VI_VIL_LUKE_BORT = ['personbruker/decorator-next', 'personbruker/nav-dekoratoren'];

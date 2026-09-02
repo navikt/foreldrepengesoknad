@@ -1017,8 +1017,8 @@ describe('UttaksplanKalender', () => {
 
         expect(
             screen.queryByText(
-                'De første seks ukene er vanligvis kun for mor.' +
-                    ' I noen tilfeller kan du få foreldrepenger i stedet for mor.',
+                'Hvis dere skal ha foreldrepenger ved fødsel, må du velge at begge skal ha' +
+                    ' foreldrepenger. Hvis ikke søker du om å få foreldrepenger i stedet for mor.',
             ),
         ).not.toBeInTheDocument();
 
@@ -1034,8 +1034,8 @@ describe('UttaksplanKalender', () => {
 
         expect(
             screen.getByText(
-                'De første seks ukene er vanligvis kun for mor.' +
-                    ' I noen tilfeller kan du få foreldrepenger i stedet for mor.',
+                'Hvis dere skal ha foreldrepenger ved fødsel, må du velge at begge skal ha' +
+                    ' foreldrepenger. Hvis ikke søker du om å få foreldrepenger i stedet for mor.',
             ),
         ).toBeInTheDocument();
     });

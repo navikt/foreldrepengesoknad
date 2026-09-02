@@ -5,7 +5,7 @@ export const enBortfaltNaturalytelse = [
         versjon: 2,
         erAktiv: true,
         stillingsprosent: 100,
-        inntektPrMnd: 40000.78,
+        inntektPrMnd: 40_000.78,
         refusjonPrMnd: 4000,
         arbeidsgiverNavn: 'Laksinor',
         arbeidsgiverIdent: '123',

@@ -15,7 +15,7 @@ import { FordelingValg } from './FordelingValg';
 
 const getInputErNullEllerHeltall = (input: number) => {
     if (input) {
-        return input >= 0 && input % 1 === 0;
+        return input >= 0 && Number.isSafeInteger(input);
     }
     return true;
 };

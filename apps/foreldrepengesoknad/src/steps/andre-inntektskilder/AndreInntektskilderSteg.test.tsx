@@ -21,7 +21,7 @@ describe('<AndreInntektskilderSteg>', () => {
         ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jobb i utlandet'));
 
-        await userEvent.selectOptions(screen.getByLabelText('Hvilket land har du jobbet i?'), 'UA');
+        await userEvent.selectOptions(screen.getByLabelText('Hvilket land har du jobbet i?'), 'UKR');
         await userEvent.tab();
 
         await userEvent.type(screen.getByLabelText('Hva er navnet på arbeidsgiveren?'), 'Nav');
@@ -40,7 +40,7 @@ describe('<AndreInntektskilderSteg>', () => {
                 {
                     arbeidsgiverNavn: 'Nav',
                     fom: '2023-04-30',
-                    land: 'UA',
+                    land: 'UKR',
                     type: 'JOBB_I_UTLANDET',
                     pågående: true,
                 },
@@ -68,7 +68,7 @@ describe('<AndreInntektskilderSteg>', () => {
         ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jobb i utlandet'));
 
-        await userEvent.selectOptions(screen.getByLabelText('Hvilket land har du jobbet i?'), 'UA');
+        await userEvent.selectOptions(screen.getByLabelText('Hvilket land har du jobbet i?'), 'UKR');
         await userEvent.tab();
 
         await userEvent.type(screen.getByLabelText('Hva er navnet på arbeidsgiveren?'), 'Nav');
@@ -92,7 +92,7 @@ describe('<AndreInntektskilderSteg>', () => {
                     arbeidsgiverNavn: 'Nav',
                     fom: '2023-04-30',
                     tom: '2023-09-30',
-                    land: 'UA',
+                    land: 'UKR',
                     type: 'JOBB_I_UTLANDET',
                     pågående: false,
                 },
@@ -178,7 +178,7 @@ describe('<AndreInntektskilderSteg>', () => {
         ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jobb i utlandet'));
 
-        await userEvent.selectOptions(screen.getByLabelText('Hvilket land har du jobbet i?'), 'UA');
+        await userEvent.selectOptions(screen.getByLabelText('Hvilket land har du jobbet i?'), 'UKR');
         await userEvent.tab();
 
         const navnFelt = screen.getByLabelText('Hva er navnet på arbeidsgiveren?');
@@ -450,7 +450,7 @@ describe('<AndreInntektskilderSteg>', () => {
         ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jobb i utlandet'));
 
-        await userEvent.selectOptions(screen.getByLabelText('Hvilket land har du jobbet i?'), 'UA');
+        await userEvent.selectOptions(screen.getByLabelText('Hvilket land har du jobbet i?'), 'UKR');
         await userEvent.tab();
 
         await userEvent.type(screen.getByLabelText('Hva er navnet på arbeidsgiveren?'), 'Nav');
@@ -493,7 +493,7 @@ describe('<AndreInntektskilderSteg>', () => {
                 {
                     arbeidsgiverNavn: 'Nav',
                     fom: '2023-04-30',
-                    land: 'UA',
+                    land: 'UKR',
                     type: 'JOBB_I_UTLANDET',
                     pågående: true,
                 },

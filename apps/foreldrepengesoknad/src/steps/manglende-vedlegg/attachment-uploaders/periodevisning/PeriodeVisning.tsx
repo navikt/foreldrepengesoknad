@@ -155,12 +155,12 @@ const getVarighetString = (antallDager: number, intl: IntlShape, format: Varighe
         return dagerStr;
     }
     const ukerStr = intl.formatMessage({ id: 'varighet.uker' }, { uker });
-    if (dager > 0 && format === 'full') {
+    if (format === 'full' && dager > 0) {
         return `${ukerStr}${intl.formatMessage({
             id: `varighet.separator--full`,
         })}${dagerStr}`;
     }
-    if (dager > 0 && format === 'normal') {
+    if (format === 'normal' && dager > 0) {
         return `${ukerStr}${intl.formatMessage({
             id: `varighet.separator--normal`,
         })}${dagerStr}`;
@@ -174,7 +174,7 @@ const renderDagMnd = (dato: string, visÅr = true): JSX.Element => {
     return (
         <VStack gap="space-4">
             <BodyShort>
-                {d.get('date')}. {d.format('MMM').substr(0, 3)}.
+                {d.get('date')}. {d.format('MMM').slice(0, 3)}.
             </BodyShort>
             {visÅr && (
                 <BodyShort as="span">

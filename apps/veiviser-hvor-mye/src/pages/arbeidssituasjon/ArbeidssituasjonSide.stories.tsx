@@ -23,7 +23,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        setArbeidssituasjon: () => undefined,
+        setArbeidssituasjon: () => {},
         arbeidssituasjon: undefined,
         satser: DEFAULT_SATSER,
     },

@@ -33,19 +33,26 @@ interface Props {
 
 export const UttaksplanIkon = ({ ikon, title }: Props) => {
     switch (ikon) {
-        case 'arbeid':
+        case 'arbeid': {
             return <Buildings3Icon title={title} width={32} height={32} />;
-        case 'ferie':
+        }
+        case 'ferie': {
             return <ParasolBeachIcon title={title} width={32} height={32} />;
-        case 'sykdom':
+        }
+        case 'sykdom': {
             return <BandageIcon title={title} width={32} height={32} />;
-        case 'info':
+        }
+        case 'info': {
             return <InformationSquareIcon />;
-        case 'advarsel':
+        }
+        case 'advarsel': {
             return <ExclamationmarkTriangleFillIcon />;
-        case 'feil':
+        }
+        case 'feil': {
             return <XMarkOctagonFillIcon />;
-        default:
+        }
+        default: {
             return <UttakIkon title={title} />;
+        }
     }
 };

@@ -60,7 +60,7 @@ declare global {
 
 // Eksportert kun for bruk i stories/tester
 export const queryClient = createDefaultQueryClient({
-    sentryQueryErrorMessage: 'API query-feil i foreldrepengesøknad',
+    apiQueryErrorMessage: 'API query-feil i foreldrepengesøknad',
 });
 
 export const AppContainer = () => (

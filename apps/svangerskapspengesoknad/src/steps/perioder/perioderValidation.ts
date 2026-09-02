@@ -99,8 +99,6 @@ export const validatePeriodeFom =
         sluttDatoArbeid: string | undefined,
     ) =>
     (fom: string) => {
-        const tom = allePerioder[index]?.tom;
-        const tomType = allePerioder[index]?.tomType;
         if (fom && behovForTilretteleggingFom && dayjs(fom).isBefore(dayjs(behovForTilretteleggingFom), 'd')) {
             return intl.formatMessage({ id: 'valideringsfeil.periode.fom.førBehovForTilretteleggingFom' });
         }
@@ -117,6 +115,8 @@ export const validatePeriodeFom =
             );
         }
 
+        const tom = allePerioder[index]?.tom;
+        const tomType = allePerioder[index]?.tomType;
         const overlappendePerioderFeil = validateAtPeriodeIkkeOverlapper(
             fom,
             tom,
@@ -159,10 +159,10 @@ const validateAtPeriodeIkkeOverlapper = (
     intl: IntlShape,
     sisteDagForSvangerskapspenger: string,
 ) => {
-    if ((tom || tomType) && fom && allePerioder.length > 0) {
+    if (fom && (tom || tomType) && allePerioder.length > 0) {
         const andrePerioderLagtTilEtter = allePerioder.filter((_p, i) => i > index);
         const overlappendePerioder = andrePerioderLagtTilEtter.filter((p) => {
-            let periodeTom = undefined;
+            let periodeTom;
             if (p.tomType && p.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP) {
                 periodeTom = sisteDagForSvangerskapspenger;
             }
@@ -208,9 +208,9 @@ const validateSammenhengendePerioderFom = (
     const alleTom = allePerioder
         .filter((p) => p.tom || p.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP)
         .map((periode) => {
-            return periode.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP
-                ? dayjs(sisteDagForSvangerskapspenger)
-                : dayjs(periode.tom);
+            return dayjs(
+                periode.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP ? sisteDagForSvangerskapspenger : periode.tom,
+            );
         });
     const finnesTomSomErDagenFørFom = alleTom.some((tom) => dayjs(fom).subtract(1, 'd').isSame(dayjs(tom), 'day'));
     if (!finnesTomSomErDagenFørFom) {

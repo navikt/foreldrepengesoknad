@@ -150,7 +150,7 @@ export const harKunPerioderForAnnenForelder = (
     erAleneOmOmsorg: boolean,
     perioder?: UttaksplanPerioder,
 ) => {
-    if (!perioder || perioder.length === 0 || erAleneOmOmsorg) {
+    if (erAleneOmOmsorg || !perioder || perioder.length === 0) {
         return false;
     }
 

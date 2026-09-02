@@ -35,11 +35,11 @@ dayjs.extend(timezone);
 dayjs.extend(advanced);
 
 export const getEldsteRegistrerteBarn = (registrerteBarn: FpBarnDto_fpoversikt[]): FpBarnDto_fpoversikt => {
-    return [...registrerteBarn].sort((a, b) => (isDateABeforeDateB(a.fødselsdato, b.fødselsdato) ? 1 : -1)).at(-1)!;
+    return [...registrerteBarn].toSorted((a, b) => (isDateABeforeDateB(a.fødselsdato, b.fødselsdato) ? 1 : -1)).at(-1)!;
 };
 
 export const sorterDatoEtterEldst = (dato: string[]): string[] => {
-    return [...dato].sort((a, b) => (isDateABeforeDateB(a, b) ? -1 : 1));
+    return [...dato].toSorted((a, b) => (isDateABeforeDateB(a, b) ? -1 : 1));
 };
 
 const isDateABeforeDateB = (a: string, b: string): boolean => {
@@ -47,11 +47,7 @@ const isDateABeforeDateB = (a: string, b: string): boolean => {
         return false;
     }
 
-    if (dayjs(a).isBefore(b, 'day')) {
-        return true;
-    }
-
-    return false;
+    return dayjs(a).isBefore(b, 'day');
 };
 
 export const getRelevantFamiliehendelseDato = (
@@ -61,13 +57,14 @@ export const getRelevantFamiliehendelseDato = (
 ): string => {
     if (omsorgsovertakelsesdato !== undefined) {
         return omsorgsovertakelsesdato;
-    } else if (fødselsdato !== undefined) {
+    }
+    if (fødselsdato !== undefined) {
         return fødselsdato;
-    } else if (termindato !== undefined) {
-        return termindato;
-    } else {
+    }
+    if (termindato === undefined) {
         throw new Error('Mangler fødselsdato/termindato/adopsjonsdato for barnet.');
     }
+    return termindato;
 };
 
 export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: string): boolean => {
@@ -89,19 +86,15 @@ export const andreAugust2022ReglerGjelder = (familiehendelsesdato: string): bool
 };
 
 export const førsteJuli2024ReglerGjelder = (barn: Barn): boolean => {
-    let førsteJuli2024 = '2024-07-01';
-    if (toggleUtils.isFeatureEnabled(FeatureToggle.test1Juli2024Regler)) {
-        førsteJuli2024 = '2024-06-18';
-    }
+    const førsteJuli2024 = toggleUtils.isFeatureEnabled(FeatureToggle.test1Juli2024Regler)
+        ? '2024-06-18'
+        : '2024-07-01';
 
     if (dayjs().isBefore(dayjs(førsteJuli2024), 'day')) {
         return false;
     }
     const familiehendelsesdato = getFamiliehendelsedato(barn);
-    if ((isFødtBarn(barn) || isAdoptertBarn(barn)) && dayjs(familiehendelsesdato).isBefore(førsteJuli2024, 'day')) {
-        return false;
-    }
-    return true;
+    return !((isFødtBarn(barn) || isAdoptertBarn(barn)) && dayjs(familiehendelsesdato).isBefore(førsteJuli2024, 'day'));
 };
 
 export const getEndringstidspunktNy = (
@@ -136,10 +129,12 @@ export const getEndringstidspunktNy = (
                 endringstidspunktNyPlan = fom;
             }
 
-            if (opprinneligPeriodeMedSammeFom !== undefined && søkerensUpdatedPlan.length - 1 === index) {
-                if (!erPeriodeIOpprinneligPlan([periode], opprinneligPeriodeMedSammeFom)) {
-                    endringstidspunktNyPlan = fom;
-                }
+            if (
+                opprinneligPeriodeMedSammeFom !== undefined &&
+                søkerensUpdatedPlan.length - 1 === index &&
+                !erPeriodeIOpprinneligPlan([periode], opprinneligPeriodeMedSammeFom)
+            ) {
+                endringstidspunktNyPlan = fom;
             }
         }
 
@@ -232,12 +227,12 @@ export const getVarighetString = (antallDager: number, intl: IntlShape, format: 
         return dagerStr;
     }
     const ukerStr = intl.formatMessage({ id: 'varighet.uker' }, { uker });
-    if (dager > 0 && format === 'full') {
+    if (format === 'full' && dager > 0) {
         return `${ukerStr}${intl.formatMessage({
             id: `varighet.separator--full`,
         })}${dagerStr}`;
     }
-    if (dager > 0 && format === 'normal') {
+    if (format === 'normal' && dager > 0) {
         return `${ukerStr}${intl.formatMessage({
             id: `varighet.separator--normal`,
         })}${dagerStr}`;
@@ -245,8 +240,17 @@ export const getVarighetString = (antallDager: number, intl: IntlShape, format: 
     return ukerStr;
 };
 
-/** Barnet regnes som født før 33. svangerskapsuke når det er født mer enn 7 uker (49 dager) før termin. */
-export { erFødtFørUke33 } from '@navikt/fp-utils';
+/**
+Barnet regnes som født før 33. svangerskapsuke når det er født mer enn 7 uker (49 dager) før termin.
+*/
+const ANTALL_DAGER_UKE_33_GRENSE = 49;
+
+export const erFødtFørUke33 = (fødselsdato?: string, termindato?: string): boolean => {
+    if (!fødselsdato || !termindato || !dayjs(fødselsdato).isValid() || !dayjs(termindato).isValid()) {
+        return false;
+    }
+    return dayjs(termindato).diff(dayjs(fødselsdato), 'day') > ANTALL_DAGER_UKE_33_GRENSE;
+};
 
 /**
  * Antall virkedager fra og med fødselsdato til og med dagen før termindato. Dette tilsvarer antall dager

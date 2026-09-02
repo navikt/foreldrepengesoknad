@@ -31,10 +31,12 @@ function DokumentAvsender({ dokumentType }: { dokumentType: JournalpostType_fpov
     const intl = useIntl();
     const text = (() => {
         switch (dokumentType) {
-            case 'UTGÅENDE_DOKUMENT':
+            case 'UTGÅENDE_DOKUMENT': {
                 return intl.formatMessage({ id: 'dokument.avsender.nav' });
-            case 'INNGÅENDE_DOKUMENT':
+            }
+            case 'INNGÅENDE_DOKUMENT': {
                 return intl.formatMessage({ id: 'dokument.avsender.du' });
+            }
         }
     })();
 

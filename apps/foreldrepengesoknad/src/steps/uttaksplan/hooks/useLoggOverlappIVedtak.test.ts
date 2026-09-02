@@ -4,12 +4,10 @@ import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { finnUgyldigeOverlappIUttaksplan, useLoggOverlappIVedtak } from './useLoggOverlappIVedtak';
 
-const captureMessage = vi.hoisted(() => vi.fn());
+const captureException = vi.hoisted(() => vi.fn());
 
 vi.mock('@navikt/fp-observability', () => ({
-    captureMessage: (...args: unknown[]) => captureMessage(...args),
-    withScope: (callback: (scope: unknown) => void) =>
-        callback({ setLevel: vi.fn(), setTag: vi.fn(), setExtra: vi.fn() }),
+    captureException: (...args: unknown[]) => captureException(...args),
 }));
 
 const innvilget: UttakPeriode_fpoversikt['resultat'] = {
@@ -130,11 +128,11 @@ describe('finnUgyldigeOverlappIUttaksplan', () => {
 });
 
 // vi.mock av barrel-pakka @navikt/fp-observability gjeld ikkje i Vitest browser-mode
-// (pre-bundla). Denne bolken dekker sideeffekten (logging via captureMessage) og køyrer
+// (pre-bundla). Denne bolken dekker sideeffekten (feilrapportering) og køyrer
 // difor berre i jsdom; sjølve overlapp-logikken er dekka av testane over som køyrer i begge modus.
 describe.skipIf(import.meta.env['TEST_MODE'] === 'browser-mode')('useLoggOverlappIVedtak (logging)', () => {
     beforeEach(() => {
-        captureMessage.mockClear();
+        captureException.mockClear();
     });
 
     it('loggar ikkje når ein avslått periode utan trekkdagar overlappar annen part sin reelle periode', () => {
@@ -155,7 +153,7 @@ describe.skipIf(import.meta.env['TEST_MODE'] === 'browser-mode')('useLoggOverlap
 
         renderHook(() => useLoggOverlappIVedtak([morAvslått, farReell], [morAvslått], [farReell]));
 
-        expect(captureMessage).not.toHaveBeenCalled();
+        expect(captureException).not.toHaveBeenCalled();
     });
 
     it('loggar når to reelle periodar overlappar utan samtidig uttak', () => {
@@ -176,9 +174,14 @@ describe.skipIf(import.meta.env['TEST_MODE'] === 'browser-mode')('useLoggOverlap
 
         renderHook(() => useLoggOverlappIVedtak([mor, far], [mor], [far]));
 
-        expect(captureMessage).toHaveBeenCalledWith(
-            'Uttaksplan har ugyldig overlappande periodar etter transformasjon',
-            'warning',
+        expect(captureException).toHaveBeenCalledWith(
+            expect.objectContaining({ message: 'Uttaksplan har ugyldig overlappande periodar etter transformasjon' }),
+            expect.objectContaining({
+                context: expect.objectContaining({
+                    feiltype: 'uttaksplan-overlapp-etter-transformasjon',
+                    antallUgyldigeOverlapp: 1,
+                }),
+            }),
         );
     });
 });

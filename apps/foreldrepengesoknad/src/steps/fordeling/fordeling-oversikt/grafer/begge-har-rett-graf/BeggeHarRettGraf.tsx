@@ -22,24 +22,33 @@ const getRowClass = (antallPerioder: number, periodeIndex: number) => {
 
 export const getFargeClass = (fargekode: FordelingFargekode): string => {
     switch (fargekode) {
-        case FordelingFargekode.ANNEN_PART_FAR:
+        case FordelingFargekode.ANNEN_PART_FAR: {
             return styles.annenPartFar!;
-        case FordelingFargekode.ANNEN_PART_MOR:
+        }
+        case FordelingFargekode.ANNEN_PART_MOR: {
             return styles.annenPartMor!;
-        case FordelingFargekode.FEDREKVOTE_BRUKT_AV_MOR:
+        }
+        case FordelingFargekode.FEDREKVOTE_BRUKT_AV_MOR: {
             return styles.fedrekvoteBruktAvMor!;
-        case FordelingFargekode.FELLESPERIODE_BRUKT_AV_FAR:
+        }
+        case FordelingFargekode.FELLESPERIODE_BRUKT_AV_FAR: {
             return styles.fellesperiodeBruktAvFar!;
-        case FordelingFargekode.FELLESPERIODE_BRUKT_AV_MOR:
+        }
+        case FordelingFargekode.FELLESPERIODE_BRUKT_AV_MOR: {
             return styles.fellesperiodeBruktAvMor!;
-        case FordelingFargekode.IKKE_TILDELT:
+        }
+        case FordelingFargekode.IKKE_TILDELT: {
             return styles.ikkeTildelt!;
-        case FordelingFargekode.MØDREKVOTE_BRUKT_AV_FAR:
+        }
+        case FordelingFargekode.MØDREKVOTE_BRUKT_AV_FAR: {
             return styles.mødrekvoteBruktAvFar!;
-        case FordelingFargekode.SØKER_FAR:
+        }
+        case FordelingFargekode.SØKER_FAR: {
             return styles.søkerFar!;
-        case FordelingFargekode.SØKER_MOR:
+        }
+        case FordelingFargekode.SØKER_MOR: {
             return styles.søkerMor!;
+        }
     }
 };
 

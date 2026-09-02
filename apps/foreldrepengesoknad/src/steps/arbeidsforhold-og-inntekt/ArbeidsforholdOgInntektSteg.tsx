@@ -50,13 +50,13 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
 
         oppdaterArbeidsforholdOgInntekt(values);
 
-        if (values.harHattAndreInntektskilder === false) {
+        if (!values.harHattAndreInntektskilder) {
             oppdaterAndreInntektskilder(undefined);
         }
-        if (values.harJobbetSomFrilans === false) {
+        if (!values.harJobbetSomFrilans) {
             oppdaterFrilans(undefined);
         }
-        if (values.harJobbetSomSelvstendigNæringsdrivende === false) {
+        if (!values.harJobbetSomSelvstendigNæringsdrivende) {
             oppdaterEgenNæring(undefined);
         }
 

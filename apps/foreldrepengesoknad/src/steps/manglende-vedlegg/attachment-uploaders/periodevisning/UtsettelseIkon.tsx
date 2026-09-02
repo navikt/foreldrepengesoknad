@@ -13,17 +13,20 @@ interface Props {
 
 const getIkonForÅrsak = (årsak: UttakUtsettelseÅrsak_fpoversikt): UttaksplanIkonKeys => {
     switch (årsak) {
-        case 'LOVBESTEMT_FERIE':
+        case 'LOVBESTEMT_FERIE': {
             return UttaksplanIkonKeys.ferie;
+        }
         case 'ARBEID':
         case 'HV_ØVELSE':
         case 'NAV_TILTAK':
-        case 'FRI':
+        case 'FRI': {
             return UttaksplanIkonKeys.arbeid;
+        }
         case 'BARN_INNLAGT':
         case 'SØKER_INNLAGT':
-        case 'SØKER_SYKDOM':
+        case 'SØKER_SYKDOM': {
             return UttaksplanIkonKeys.sykdom;
+        }
     }
 };
 

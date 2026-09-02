@@ -103,18 +103,18 @@ const startDatoMorFødtBarn = (termindato: string | undefined, fødselsdato: str
             maxDate: sisteOppstartsdato,
             weekendsNotSelectable: true,
         };
-    } else {
-        const tidligstOppstartsdato =
-            termindatoMinus12Uker ??
-            dayjs(Uttaksdagen.denneEllerNeste(fødselsdato).getDato())
-                .subtract(MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL, 'weeks')
-                .format(ISO_DATE_FORMAT);
-        return {
-            minDate: tidligstOppstartsdato,
-            maxDate: sisteOppstartsdato,
-            weekendsNotSelectable: true,
-        };
     }
+
+    const tidligstOppstartsdato =
+        termindatoMinus12Uker ??
+        dayjs(Uttaksdagen.denneEllerNeste(fødselsdato).getDato())
+            .subtract(MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL, 'weeks')
+            .format(ISO_DATE_FORMAT);
+    return {
+        minDate: tidligstOppstartsdato,
+        maxDate: sisteOppstartsdato,
+        weekendsNotSelectable: true,
+    };
 };
 
 const startdatoPermisjonMor = (
@@ -123,11 +123,11 @@ const startdatoPermisjonMor = (
 ): DatepickerLimitationsString => {
     if (!fødselsdato && termindato) {
         return startDatoMorUfødtBarn(termindato);
-    } else if (fødselsdato) {
-        return startDatoMorFødtBarn(termindato, fødselsdato);
-    } else {
-        throw new Error('Mangler fødselsdato eller termindato på barnet.');
     }
+    if (fødselsdato) {
+        return startDatoMorFødtBarn(termindato, fødselsdato);
+    }
+    throw new Error('Mangler fødselsdato eller termindato på barnet.');
 };
 
 const startdatoPermisjonAleneomsorgFarMedmor = (
@@ -174,7 +174,6 @@ const getDatoAvgrensninger = (
     const termindatoDate = termindato;
     const fødselsdatoDate = fødselsdato;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
-    const familiehendelsesdatoDate = getFamiliehendelsedatoDate(barn);
     if (erAdopsjon) {
         return startdatoPermisjonAdopsjon(familiehendelsesdato);
     }
@@ -184,6 +183,7 @@ const getDatoAvgrensninger = (
     if (erFarEllerMedmor && erAleneOmOmsorg && datoForAleneomsorg) {
         return startdatoPermisjonAleneomsorgFarMedmor(datoForAleneomsorg, familiehendelsesdato);
     }
+    const familiehendelsesdatoDate = getFamiliehendelsedatoDate(barn);
     return startdatoPermisjonFarMedmor(familiehendelsesdatoDate, termindatoDate, søkersituasjon.situasjon);
 };
 interface Props {

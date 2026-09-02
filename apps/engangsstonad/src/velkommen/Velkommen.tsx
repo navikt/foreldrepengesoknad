@@ -22,11 +22,11 @@ export const Velkommen = ({ startSøknad, erVelkommen, mellomlagreOgNaviger }: P
     const [isChecked, setIsChecked] = useState(erVelkommen);
 
     const bekreft = () => {
-        if (!isChecked) {
-            setIsError(true);
-        } else {
+        if (isChecked) {
             startSøknad(true);
             void navigator.goToNextDefaultStep();
+        } else {
+            setIsError(true);
         }
     };
 

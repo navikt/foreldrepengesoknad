@@ -45,7 +45,7 @@ export const FarFellesperiode = ({ hvemPlanlegger, barnet }: Props) => {
                             />
                         </Heading>
                         <BodyLong>
-                            {barnet.antallBarn !== '1' && erMorOgFar ? (
+                            {erMorOgFar && barnet.antallBarn !== '1' ? (
                                 <FormattedMessage id="HvaErMulig.FarFellesperiode.TekstMorOgFarFlerbarnsdager" />
                             ) : (
                                 <FormattedMessage
@@ -71,7 +71,7 @@ export const FarFellesperiode = ({ hvemPlanlegger, barnet }: Props) => {
                             />
                         </Heading>
                         <BodyLong>
-                            {barnet.antallBarn !== '1' && erMorOgFar ? (
+                            {erMorOgFar && barnet.antallBarn !== '1' ? (
                                 <FormattedMessage id="HvaErMulig.FarFellesperiode.TekstMorOgFarFlerbarnsdager" />
                             ) : (
                                 <FormattedMessage

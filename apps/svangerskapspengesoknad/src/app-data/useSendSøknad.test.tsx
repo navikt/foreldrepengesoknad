@@ -82,14 +82,14 @@ const TIDLIGERE_UTENLANDSOPPHOLD: UtenlandsoppholdPeriode[] = [
     {
         fom: '2023-01-01',
         tom: '2023-10-01',
-        landkode: 'SE',
+        landkode: 'SWE',
     },
 ];
 const SENERE_UTENLANDSOPPHOLD: UtenlandsoppholdPeriode[] = [
     {
         fom: '2025-01-01',
         tom: '2025-10-01',
-        landkode: 'SE',
+        landkode: 'SWE',
     },
 ];
 
@@ -103,7 +103,7 @@ const EGEN_NÆRING = {
     næringstype: 'FISKE',
     fom: '2023-01-01',
     tom: '2023-10-01',
-    næringsinntekt: 100000,
+    næringsinntekt: 100_000,
     navnPåNæringen: 'Fiskeriet',
     registrertINorge: true,
 } satisfies NæringDto;
@@ -129,7 +129,7 @@ const ARBEID_I_UTLANDET = {
             tom: undefined,
             pågående: true,
             arbeidsgiverNavn: 'MUFC',
-            land: 'UK',
+            land: 'GBR',
         },
     ],
 } satisfies ArbeidIUtlandet;
@@ -245,7 +245,7 @@ describe('useSendSøknad', () => {
                     avtaltFerie: ferie[ARBEIDSGIVER_ID].feriePerioder,
                     egenNæring: EGEN_NÆRING,
                     andreInntekterSiste10Mnd: ARBEID_I_UTLANDET.arbeidIUtlandet,
-                    utenlandsopphold: TIDLIGERE_UTENLANDSOPPHOLD.concat(SENERE_UTENLANDSOPPHOLD),
+                    utenlandsopphold: [...TIDLIGERE_UTENLANDSOPPHOLD, ...SENERE_UTENLANDSOPPHOLD],
                     tilretteleggingsbehov: [
                         {
                             arbeidsforhold: {
@@ -376,7 +376,7 @@ describe('useSendSøknad', () => {
                     avtaltFerie: INGEN_FERIE,
                     egenNæring: EGEN_NÆRING,
                     andreInntekterSiste10Mnd: ARBEID_I_UTLANDET.arbeidIUtlandet,
-                    utenlandsopphold: TIDLIGERE_UTENLANDSOPPHOLD.concat(SENERE_UTENLANDSOPPHOLD),
+                    utenlandsopphold: [...TIDLIGERE_UTENLANDSOPPHOLD, ...SENERE_UTENLANDSOPPHOLD],
                     tilretteleggingsbehov: [
                         {
                             arbeidsforhold: {
@@ -512,7 +512,7 @@ describe('useSendSøknad', () => {
                     avtaltFerie: INGEN_FERIE,
                     egenNæring: EGEN_NÆRING,
                     andreInntekterSiste10Mnd: ARBEID_I_UTLANDET.arbeidIUtlandet,
-                    utenlandsopphold: TIDLIGERE_UTENLANDSOPPHOLD.concat(SENERE_UTENLANDSOPPHOLD),
+                    utenlandsopphold: [...TIDLIGERE_UTENLANDSOPPHOLD, ...SENERE_UTENLANDSOPPHOLD],
                     tilretteleggingsbehov: [
                         {
                             arbeidsforhold: {

@@ -56,7 +56,7 @@ declare global {
 }
 
 const queryClient = createDefaultQueryClient({
-    sentryQueryErrorMessage: 'API query-feil i foreldrepengeoversikt',
+    apiQueryErrorMessage: 'API query-feil i foreldrepengeoversikt',
 });
 
 export const AppContainer = () => (

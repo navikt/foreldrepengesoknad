@@ -28,13 +28,9 @@ export const getPeriodeDerSøkerErTilbakeIFullStilling = (
     opprinneligStillingsprosent: number,
 ): PeriodeMedVariasjonFormValues | undefined => {
     return varierendePerioder.find((p) => {
-        if (opprinneligStillingsprosent > 0) {
-            return (
-                hasValue(p.stillingsprosent) && getFloatFromString(p.stillingsprosent) === opprinneligStillingsprosent
-            );
-        } else {
-            return hasValue(p.stillingsprosent) && getFloatFromString(p.stillingsprosent) === 100;
-        }
+        return opprinneligStillingsprosent > 0
+            ? hasValue(p.stillingsprosent) && getFloatFromString(p.stillingsprosent) === opprinneligStillingsprosent
+            : hasValue(p.stillingsprosent) && getFloatFromString(p.stillingsprosent) === 100;
     });
 };
 
@@ -88,11 +84,9 @@ export const getNesteDagEtterSistePeriode = (
     const alleTomDatoer = alleVarierendePerioder
         .filter((p) => p.tom || p.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP)
         .map((periode) => {
-            if (periode.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP) {
-                return dayjs(sisteDagForSvangerskapspenger).add(1, 'd');
-            } else {
-                return dayjs(periode.tom);
-            }
+            return periode.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP
+                ? dayjs(sisteDagForSvangerskapspenger).add(1, 'd')
+                : dayjs(periode.tom);
         });
 
     const maxTomDato = alleTomDatoer.length > 0 ? dayjs.max(alleTomDatoer) : undefined;

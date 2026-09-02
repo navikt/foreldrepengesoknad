@@ -174,20 +174,20 @@ const getRadioOptionFarPåFødselWLB = (
                 <FormattedMessage id="fordeling.oppstartValg.påFødsel.barnErFødt" values={{ antallBarn }} />
             </Radio>
         );
-    } else {
-        const description = deltUttak
-            ? intl.formatMessage({ id: 'fordeling.oppstartValg.påFødsel.description.barnErIkkeFødt' })
-            : '';
-        return (
-            <Radio
-                key={OppstartValg.FAMILIEHENDELSESDATO}
-                value={OppstartValg.FAMILIEHENDELSESDATO}
-                description={description}
-            >
-                <FormattedMessage id="fordeling.oppstartValg.påFødsel.barnErIkkeFødt" />
-            </Radio>
-        );
     }
+
+    const description = deltUttak
+        ? intl.formatMessage({ id: 'fordeling.oppstartValg.påFødsel.description.barnErIkkeFødt' })
+        : '';
+    return (
+        <Radio
+            key={OppstartValg.FAMILIEHENDELSESDATO}
+            value={OppstartValg.FAMILIEHENDELSESDATO}
+            description={description}
+        >
+            <FormattedMessage id="fordeling.oppstartValg.påFødsel.barnErIkkeFødt" />
+        </Radio>
+    );
 };
 
 const getRadioOptionMorFødsel = (antallBarn: number) => {
@@ -307,7 +307,7 @@ const mapOppstartValgToRadioOption = (
     const erBarnetFødt = isFødtBarn(barn);
     const ankomstNorge = isAdoptertAnnetBarn(barn) ? barn.ankomstdato : undefined;
     switch (valg) {
-        case OppstartValg.FAMILIEHENDELSESDATO:
+        case OppstartValg.FAMILIEHENDELSESDATO: {
             return getRadioOptionFamiliehendelsesdato(
                 erFarEllerMedmor,
                 intl,
@@ -317,18 +317,25 @@ const mapOppstartValgToRadioOption = (
                 barn.antallBarn,
                 deltUttak,
             );
-        case OppstartValg.TRE_UKER_FØR_TERMIN:
+        }
+        case OppstartValg.TRE_UKER_FØR_TERMIN: {
             return getRadioOptionTreUkerFørTermin(barn);
-        case OppstartValg.TRE_UKER_FØR_FØDSEL:
+        }
+        case OppstartValg.TRE_UKER_FØR_FØDSEL: {
             return getRadioOptionTreUkerFørFødsel(barn);
-        case OppstartValg.DATO_FOR_ALENEOMSORG:
+        }
+        case OppstartValg.DATO_FOR_ALENEOMSORG: {
             return getRadioOptionForDatoForAleneomsorg(datoForAleneomsorg);
-        case OppstartValg.DAGEN_ETTER_ANNEN_FORELDER:
+        }
+        case OppstartValg.DAGEN_ETTER_ANNEN_FORELDER: {
             return getRadioOptionDagenEtterAnnenForelder(navnAnnenForelder, førsteDagEtterAnnenForelder);
-        case OppstartValg.ANKOMSTDATO_NORGE:
+        }
+        case OppstartValg.ANKOMSTDATO_NORGE: {
             return getRadioOptionAdopsjonAnkomstNorge(ankomstNorge);
-        case OppstartValg.ANNEN_DATO:
+        }
+        case OppstartValg.ANNEN_DATO: {
             return getRadioOptionAnnenDato();
+        }
     }
 };
 
@@ -370,15 +377,12 @@ export const OppstartValgInput = ({
         if (erFarEllerMedmor && !erAleneOmOmsorg && !bareFarHarRett) {
             return <FormattedMessage id="fordeling.oppstartValg.description.fedreWLB" />;
         }
-        if (erMorFødsel) {
-            const erBarnetFødt = isFødtBarn(barn);
-            return erBarnetFødt ? (
-                <FormattedMessage id="fordeling.oppstartValg.description.morFødsel" />
-            ) : (
-                <FormattedMessage id="fordeling.oppstartValg.description.morFødselTermin" />
-            );
-        }
-        return undefined;
+        const morFødselDescription = isFødtBarn(barn) ? (
+            <FormattedMessage id="fordeling.oppstartValg.description.morFødsel" />
+        ) : (
+            <FormattedMessage id="fordeling.oppstartValg.description.morFødselTermin" />
+        );
+        return erMorFødsel ? morFødselDescription : null;
     };
 
     return (

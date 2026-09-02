@@ -84,7 +84,7 @@ const skalBesvaresVedUtsettelse = (søkerErFarEllerMedmor: boolean, annenForelde
 };
 
 const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UttakUtsettelseÅrsak_fpoversikt) =>
-    årsak === 'SØKER_SYKDOM' || årsak === 'SØKER_INNLAGT' || årsak === 'BARN_INNLAGT';
+    ['SØKER_SYKDOM', 'SØKER_INNLAGT', 'BARN_INNLAGT'].includes(årsak);
 
 const dokumentasjonBehøvesForUttaksperiode = (
     periode: UttakPeriode_fpoversikt,
@@ -92,6 +92,10 @@ const dokumentasjonBehøvesForUttaksperiode = (
     familiehendelsedato: string,
 ): boolean => {
     const harIkkeAktivitetskrav = periode.kontoType === 'FORELDREPENGER' && periode.morsAktivitet === 'IKKE_OPPGITT';
+    if (harIkkeAktivitetskrav) {
+        return false;
+    }
+
     const erPeriodeMedFedrekvoteIFødselspermTidsrommet =
         UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
             periode,
@@ -100,10 +104,6 @@ const dokumentasjonBehøvesForUttaksperiode = (
         ) &&
         periode.kontoType === 'FEDREKVOTE' &&
         !periode.samtidigUttak;
-
-    if (harIkkeAktivitetskrav) {
-        return false;
-    }
 
     // Dokumentasjon av mors aktivitet ("hva skal mor gjøre i denne perioden") skal kun kreves i
     // far/medmor sin søknad. I mors egen søknad skal det aldri kreves dokumentasjon for mors

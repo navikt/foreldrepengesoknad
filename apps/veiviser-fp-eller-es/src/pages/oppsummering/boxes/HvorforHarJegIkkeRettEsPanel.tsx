@@ -41,7 +41,7 @@ export const HvorforHarJegIkkeRettEsPanel = ({ fpEllerEsSituasjon }: Props) => {
                             headerLevel="3"
                             boxBodyText={
                                 <>
-                                    {borDuINorge === false && jobberDuINorge === false ? (
+                                    {!borDuINorge && !jobberDuINorge ? (
                                         <FormattedMessage
                                             id="HvorforHarJegRettPanel.IkkeMedlem"
                                             values={{

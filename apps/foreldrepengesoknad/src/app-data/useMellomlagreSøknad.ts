@@ -96,7 +96,7 @@ export const useMellomlagreSøknad = (
                 // Lagre kun når kallet faktisk har et resultat, slik at vi ikkje
                 // lagrar undefined når kallet er pending/feila og dermed gir falske
                 // utslag i RegisterdataUtdatert-sjekken ved neste oppstart.
-                ...(annenPartVedtakQuery.isSuccess ? { annenPartVedtak: annenPartVedtakQuery.data } : {}),
+                ...(annenPartVedtakQuery.isSuccess && { annenPartVedtak: annenPartVedtakQuery.data }),
                 ...state,
             } satisfies FpMellomlagretData;
 
@@ -106,15 +106,13 @@ export const useMellomlagreSøknad = (
                     headers: {
                         fnr: søkerInfo.fnr,
                     },
-                    ...(medRetry
-                        ? {
-                              retry: {
-                                  limit: 2,
-                                  methods: ['post'],
-                                  statusCodes: [408, 429, 500, 502, 503, 504],
-                              },
-                          }
-                        : {}),
+                    ...(medRetry && {
+                        retry: {
+                            limit: 2,
+                            methods: ['post'],
+                            statusCodes: [408, 429, 500, 502, 503, 504],
+                        },
+                    }),
                 });
             } catch (error: unknown) {
                 if (error instanceof HTTPError) {
@@ -142,19 +140,25 @@ export const useMellomlagreSøknad = (
             }
         };
 
-        lagre().then(
-            () => fullfør('ok'),
-            (error: unknown) => {
+        const lagreOgFullfør = async () => {
+            try {
+                await lagre();
+            } catch (error: unknown) {
                 //Logg feil. Om kallaren har bedt om det, blir brukaren også varsla.
                 if (error instanceof ApiError) {
-                    captureApiError(error.sentryMessage, error.problemDetails);
+                    captureApiError(error.telemetryMessage, error.problemDetails);
                 } else if (error instanceof Error) {
                     captureMessage(error.message);
                 }
 
                 fullfør('feilet');
-            },
-        );
+                return;
+            }
+
+            fullfør('ok');
+        };
+
+        void lagreOgFullfør();
     }, [seq]);
 
     const mellomlagreSøknad = useCallback<MellomlagreSøknadFn>(
