@@ -33,17 +33,11 @@ export const useUttaksplanForEksisterendeSak = (
     useLoggOverlappIVedtak(uttaksplan, perioderFraBackend, perioderAnnenPart);
 
     useEffect(() => {
-        if (!erAnnenPartVedtakAvklart) {
-            return;
-        }
-        if (sakerQuery.isFetching) {
-            return;
-        }
-        if (
-            uttaksplan === undefined ||
-            valgtEksisterendeSaksnr === undefined ||
-            opprinneligUttaksplan?.saksnummer === valgtEksisterendeSaksnr
-        ) {
+        const hentingAvGrunnlagPågår = sakerQuery.isFetching || !erAnnenPartVedtakAvklart;
+        const manglerGrunnlag = uttaksplan === undefined || valgtEksisterendeSaksnr === undefined;
+        const harSnapshotForValgtSak = opprinneligUttaksplan?.saksnummer === valgtEksisterendeSaksnr;
+
+        if (hentingAvGrunnlagPågår || manglerGrunnlag || harSnapshotForValgtSak) {
             return;
         }
 

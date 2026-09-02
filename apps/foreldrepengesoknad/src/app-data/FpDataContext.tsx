@@ -40,7 +40,7 @@ export enum ContextDataType {
     KOMMER_FRA_PLANLEGGER = 'KOMMER_FRA_PLANLEGGER',
 }
 
-type OpprinneligUttaksplan = {
+export type OpprinneligUttaksplan = {
     saksnummer: string;
     perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
 };

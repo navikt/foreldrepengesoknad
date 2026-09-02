@@ -1,4 +1,4 @@
-import { ContextDataMap, ContextDataType } from 'appData/FpDataContext';
+import { ContextDataMap, ContextDataType, OpprinneligUttaksplan } from 'appData/FpDataContext';
 import dayjs from 'dayjs';
 import { AnnenForelder, isAnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
@@ -293,7 +293,7 @@ export const mapTilEndringssøknadDto = (
 };
 
 const finnOpprinneligPlan = (
-    opprinneligUttaksplan: ContextDataMap[ContextDataType.OPPRINNELIG_UTTAKSPLAN],
+    opprinneligUttaksplan: OpprinneligUttaksplan | undefined,
     valgtEksisterendeSaksnr: string,
 ): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
     if (opprinneligUttaksplan === undefined) {
