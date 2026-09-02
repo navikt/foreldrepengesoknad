@@ -7,27 +7,26 @@ export type HvemHarRett = 'beggeHarRett' | 'kunSøker1HarRett' | 'kunSøker2HarR
 
 export const utledHvemSomHarRett = (arbeidssituasjon: Arbeidssituasjon): HvemHarRett => {
     const beggeHarRett = arbeidssituasjon.status === Arbeidsstatus.JOBBER && arbeidssituasjon.jobberAnnenPart === true;
-    const kunSøker1HarRett =
-        arbeidssituasjon.status === Arbeidsstatus.JOBBER && arbeidssituasjon.jobberAnnenPart !== true;
-    const kunSøker2HarRett =
-        arbeidssituasjon.status !== Arbeidsstatus.JOBBER && arbeidssituasjon.jobberAnnenPart === true;
-
     if (beggeHarRett) {
         return 'beggeHarRett';
     }
+    const kunSøker1HarRett =
+        arbeidssituasjon.status === Arbeidsstatus.JOBBER && arbeidssituasjon.jobberAnnenPart !== true;
     if (kunSøker1HarRett) {
         return 'kunSøker1HarRett';
     }
+    const kunSøker2HarRett =
+        arbeidssituasjon.status !== Arbeidsstatus.JOBBER && arbeidssituasjon.jobberAnnenPart === true;
     return kunSøker2HarRett ? 'kunSøker2HarRett' : 'ingenHarRett';
 };
 
 export const harKunMedmorEllerFarSøker2Rett = (hvemHarRett: HvemHarRett, hvemPlanlegger: HvemPlanlegger): boolean =>
     hvemHarRett === 'kunSøker2HarRett' &&
-    (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR ||
-        hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR ||
-        hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR);
+    [HvemPlanleggerType.MOR_OG_MEDMOR, HvemPlanleggerType.FAR_OG_FAR, HvemPlanleggerType.MOR_OG_FAR].includes(
+        hvemPlanlegger.type,
+    );
 export const harKunFarSøker1Rett = (hvemHarRett: HvemHarRett, hvemPlanlegger: HvemPlanlegger): boolean =>
-    (hvemPlanlegger.type === HvemPlanleggerType.FAR || hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR) &&
+    [HvemPlanleggerType.FAR, HvemPlanleggerType.FAR_OG_FAR].includes(hvemPlanlegger.type) &&
     hvemHarRett === 'kunSøker1HarRett';
 
 export const harMorRett = (hvemHarRett: HvemHarRett, hvemPlanlegger: HvemPlanlegger): boolean =>

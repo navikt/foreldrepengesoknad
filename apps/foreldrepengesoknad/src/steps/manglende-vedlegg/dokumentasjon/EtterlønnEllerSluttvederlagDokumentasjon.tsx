@@ -23,10 +23,9 @@ export const EtterlønnEllerSluttvederlagDokumentasjon = ({
     const intl = useIntl();
 
     if (
-        !arbeidsforholdOgInntekt ||
-        arbeidsforholdOgInntekt.harHattAndreInntektskilder === false ||
         !andreInntektskilder ||
-        !andreInntektskilder.some((i) => i.type === AnnenInntektType.SLUTTPAKKE)
+        arbeidsforholdOgInntekt?.harHattAndreInntektskilder !== true ||
+        andreInntektskilder.every((i) => i.type !== AnnenInntektType.SLUTTPAKKE)
     ) {
         return null;
     }

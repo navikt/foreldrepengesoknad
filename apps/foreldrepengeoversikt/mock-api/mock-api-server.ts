@@ -12,12 +12,11 @@ const getFileContent = (filnavn: string) => {
     const fileName = getFilePath(filnavn);
     if (!fs.existsSync(fileName)) {
         return {};
-    } else {
-        try {
-            return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-        } catch {
-            return {};
-        }
+    }
+    try {
+        return JSON.parse(fs.readFileSync(fileName, 'utf8'));
+    } catch {
+        return {};
     }
 };
 
@@ -53,12 +52,11 @@ export const getKonto = () => {
     const fileName = getFilePath('konto.json');
     if (!fs.existsSync(fileName)) {
         return {};
-    } else {
-        try {
-            return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-        } catch {
-            return {};
-        }
+    }
+    try {
+        return JSON.parse(fs.readFileSync(fileName, 'utf8'));
+    } catch {
+        return {};
     }
 };
 

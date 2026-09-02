@@ -1,7 +1,7 @@
 import { FileIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import { useFormContext } from 'react-hook-form';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyLong, Box, HStack, Radio, VStack } from '@navikt/ds-react';
@@ -11,7 +11,7 @@ import { isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { AntallBarnSelect } from '../AntallBarnSelect';
 import { BarnetFormValues } from '../OmBarnetFormValues';
-import { FødselsdatoerFieldArray } from './FødselsdatoerFieldArray';
+import { FødselsdatoerFieldArray, FormValues as FødselsdatoerFormValues } from './FødselsdatoerFieldArray';
 
 dayjs.extend(isSameOrBefore);
 
@@ -23,11 +23,24 @@ export const AdopsjonPanel = ({ søknadGjelderEtNyttBarn }: Props) => {
     const intl = useIntl();
 
     const formMethods = useFormContext<BarnetFormValues>();
+    const { control } = useFormContext<FødselsdatoerFormValues>();
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: 'fødselsdatoer',
+    });
 
     const adopsjonAvEktefellesBarn = formMethods.watch('adopsjonAvEktefellesBarn');
     const antallBarn = formMethods.watch('antallBarn');
-    const antallBarnSelect = formMethods.watch('antallBarnSelect');
     const adopsjonsdato = formMethods.watch('adopsjonsdato');
+    const oppdaterFødselsdatoer = (antall: number) => {
+        const diff = fields.length - antall;
+        if (diff > 0) {
+            remove(Array.from({ length: diff }, (_, index) => fields.length - index - 1));
+        }
+        if (diff < 0) {
+            append(Array.from({ length: -diff }, () => ({ dato: undefined })));
+        }
+    };
 
     return (
         <>
@@ -86,6 +99,12 @@ export const AdopsjonPanel = ({ søknadGjelderEtNyttBarn }: Props) => {
                                 }),
                             ),
                         ]}
+                        onChange={(value) => {
+                            const antall = Number(value);
+                            if (antall < 3) {
+                                oppdaterFødselsdatoer(antall);
+                            }
+                        }}
                     >
                         <Radio value={1}>
                             <FormattedMessage id="omBarnet.radiobutton.ettBarn" />
@@ -97,12 +116,8 @@ export const AdopsjonPanel = ({ søknadGjelderEtNyttBarn }: Props) => {
                             <FormattedMessage id="omBarnet.radiobutton.flere" />
                         </Radio>
                     </RhfRadioGroup>
-                    {antallBarn === 3 && <AntallBarnSelect />}
-                    <FødselsdatoerFieldArray
-                        adopsjonsdato={adopsjonsdato}
-                        antallBarn={antallBarn}
-                        antallBarnDropDown={antallBarnSelect}
-                    />
+                    {antallBarn === 3 && <AntallBarnSelect onChange={oppdaterFødselsdatoer} />}
+                    <FødselsdatoerFieldArray adopsjonsdato={adopsjonsdato} fields={fields} />
                 </>
             )}
         </>

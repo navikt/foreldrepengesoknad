@@ -22,21 +22,21 @@ import { getTermindato } from '../../../utils/barnUtils';
 const getFellesperioderDagerFordeling = (fordeling: Fordeling, fellesperiodeDagerTilgjengelig: number) => {
     if (fordeling.fordelingValg === FellesperiodeFordelingValg.ALT) {
         return { fellesperiodeDagerMor: fellesperiodeDagerTilgjengelig, fellesperiodeDagerFarMedmor: 0 };
-    } else if (fordeling.fordelingValg === FellesperiodeFordelingValg.VIL_VELGE) {
+    }
+    if (fordeling.fordelingValg === FellesperiodeFordelingValg.VIL_VELGE) {
         const antallDager = fordeling.antallDagerFellesperiodeTilSøker
-            ? Number.parseInt(fordeling.antallDagerFellesperiodeTilSøker, 10)
+            ? Number(fordeling.antallDagerFellesperiodeTilSøker)
             : 0;
         const antallUker = fordeling.antallUkerFellesperiodeTilSøker
-            ? Number.parseInt(fordeling.antallUkerFellesperiodeTilSøker, 10)
+            ? Number(fordeling.antallUkerFellesperiodeTilSøker)
             : 0;
         const fellesperiodeDagerMor = antallUker * 5 + antallDager;
         return {
             fellesperiodeDagerMor,
             fellesperiodeDagerFarMedmor: fellesperiodeDagerTilgjengelig - fellesperiodeDagerMor,
         };
-    } else {
-        return { fellesperiodeDagerMor: 0, fellesperiodeDagerFarMedmor: 0 };
     }
+    return { fellesperiodeDagerMor: 0, fellesperiodeDagerFarMedmor: 0 };
 };
 
 const lagDeltUttakForFarMedmor = (
@@ -153,19 +153,35 @@ const lagDeltUttakForFarMedmor = (
     return forslag;
 };
 
+/**
+ * Om annen part allerede har uttaksperioder (t.d. eit vedtak), klarer ikkje
+ * useUttaksplanForslag å lage eit fornuftig forslag – uansett kva startdato
+ * brukaren ville ha valgt. Denne funksjonen let ein sjekke dette på førehand,
+ * slik at ein kan unngå å spørje brukaren om ein startdato som uansett ikkje
+ * vil bli brukt.
+ */
+export const kanGenerereUttaksplanForslag = (annenPartsPerioder?: UttakPeriode_fpoversikt[]): boolean =>
+    annenPartsPerioder === undefined || annenPartsPerioder.length === 0;
+
 export const useUttaksplanForslag = (
     valgtStønadskvote?: KontoBeregningDto,
     annenPartsPerioder?: UttakPeriode_fpoversikt[],
+    annenPartsPerioderLaster = false,
 ): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
-    const familiehendelsedato = getFamiliehendelsedato(barn);
-
-    if ((annenPartsPerioder !== undefined && annenPartsPerioder.length > 0) || !valgtStønadskvote || !fordeling) {
+    if (
+        annenPartsPerioderLaster ||
+        !valgtStønadskvote ||
+        !fordeling ||
+        !kanGenerereUttaksplanForslag(annenPartsPerioder)
+    ) {
         return [];
     }
+
+    const familiehendelsedato = getFamiliehendelsedato(barn);
 
     // TODO (Andreas) - Må finne ut av hvordan man skal gjøre ting når annen part har perioder
     // const annenPartsSistePeriode = annenPartsPerioder?.at(-1);
@@ -283,28 +299,35 @@ const getOppstartsdatoFromFordelingValg = (
 ): string => {
     const oppstartValg = fordeling.oppstartAvForeldrepengerValg;
     const oppstartDato = fordeling.oppstartDato;
-    const termindato = getTermindato(barn);
-    const familiehendelsesdato = getFamiliehendelsedato(barn);
-    const ankomstDatoNorge = isAdoptertAnnetBarn(barn) && barn.adoptertIUtlandet ? barn.ankomstdato : undefined;
-
-    if ((!oppstartValg || oppstartValg === OppstartValg.ANNEN_DATO) && oppstartDato) {
+    if (oppstartDato && (!oppstartValg || oppstartValg === OppstartValg.ANNEN_DATO)) {
         return Uttaksdagen.denneEllerNeste(oppstartDato).getDato();
     }
+    const termindato = getTermindato(barn);
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
     switch (oppstartValg) {
-        case OppstartValg.TRE_UKER_FØR_TERMIN:
+        case OppstartValg.TRE_UKER_FØR_TERMIN: {
             return getFørsteUttaksdagForeldrepengerFørFødsel(termindato);
-        case OppstartValg.TRE_UKER_FØR_FØDSEL:
+        }
+        case OppstartValg.TRE_UKER_FØR_FØDSEL: {
             return getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato);
-        case OppstartValg.FAMILIEHENDELSESDATO:
+        }
+        case OppstartValg.FAMILIEHENDELSESDATO: {
             return Uttaksdagen.denneEllerNeste(familiehendelsesdato).getDato();
-        case OppstartValg.ANKOMSTDATO_NORGE:
-            return getFørsteUttaksdagAnkomstdatoNorge(ankomstDatoNorge);
-        case OppstartValg.DAGEN_ETTER_ANNEN_FORELDER:
+        }
+        case OppstartValg.ANKOMSTDATO_NORGE: {
+            return getFørsteUttaksdagAnkomstdatoNorge(
+                isAdoptertAnnetBarn(barn) && barn.adoptertIUtlandet ? barn.ankomstdato : undefined,
+            );
+        }
+        case OppstartValg.DAGEN_ETTER_ANNEN_FORELDER: {
             return getNesteUttaksdagEtterAnnenForelder(sisteDagAnnenForelder ?? familiehendelsesdato); // TODO (Andreas) - Default verdi for øyeblikket
-        case OppstartValg.DATO_FOR_ALENEOMSORG:
+        }
+        case OppstartValg.DATO_FOR_ALENEOMSORG: {
             return getFørsteUttaksdagDatoForAleneomsorg(datoForAleneomsorg);
-        default:
+        }
+        default: {
             throw new Error('Ukjent verdi på oppstartValg.');
+        }
     }
 };
 

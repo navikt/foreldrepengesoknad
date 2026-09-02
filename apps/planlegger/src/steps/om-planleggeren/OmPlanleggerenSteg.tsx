@@ -2,7 +2,7 @@ import { ArrowRightIcon, CalendarIcon, QuestionmarkIcon } from '@navikt/aksel-ic
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { FormattedMessage } from 'react-intl';
 
-import { BodyShort, Button, HStack, Heading, VStack } from '@navikt/ds-react';
+import { BodyShort, Button, HStack, Heading, InlineMessage, VStack } from '@navikt/ds-react';
 
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
@@ -39,6 +39,11 @@ export const OmPlanleggerenSteg = () => {
                             </BodyShort>
                         </HStack>
                     </VStack>
+                    <InlineMessage status="info">
+                        <BodyShort size="small" className="text-text-subtle">
+                            <FormattedMessage id="OmPlanleggerenSteg.IngenLagring" />
+                        </BodyShort>
+                    </InlineMessage>
                     <HStack justify="center">
                         <Button
                             onClick={navigator.goToNextDefaultStep}

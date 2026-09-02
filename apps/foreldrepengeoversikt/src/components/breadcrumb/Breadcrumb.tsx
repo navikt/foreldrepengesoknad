@@ -70,31 +70,40 @@ export const Breadcrumb = () => {
 
     const getBreadcrumbs = (route: OversiktRoutes) => {
         switch (route) {
-            case OversiktRoutes.HOVEDSIDE:
+            case OversiktRoutes.HOVEDSIDE: {
                 return [minSide, hovedside];
-            case OversiktRoutes.SAKSOVERSIKT:
+            }
+            case OversiktRoutes.SAKSOVERSIKT: {
                 return [minSide, hovedside, saksoversikt];
-            case OversiktRoutes.DOKUMENTER:
+            }
+            case OversiktRoutes.DOKUMENTER: {
                 return [minSide, hovedside, saksoversikt, dokumenter];
-            case OversiktRoutes.ETTERSEND:
+            }
+            case OversiktRoutes.ETTERSEND: {
                 return [minSide, hovedside, saksoversikt, dokumenter, ettersend];
-            case OversiktRoutes.DIN_PLAN:
+            }
+            case OversiktRoutes.DIN_PLAN: {
                 return [minSide, hovedside, saksoversikt, dinPlan];
-            case OversiktRoutes.OPPGAVER:
+            }
+            case OversiktRoutes.OPPGAVER: {
                 return [minSide, hovedside, saksoversikt, oppgaver];
-            case OversiktRoutes.INNTEKTSMELDING:
+            }
+            case OversiktRoutes.INNTEKTSMELDING: {
                 return [minSide, hovedside, saksoversikt, inntektsmelding];
-            case OversiktRoutes.BEREGNING:
+            }
+            case OversiktRoutes.BEREGNING: {
                 return [minSide, hovedside, saksoversikt, beregning];
-            default:
+            }
+            default: {
                 return assertUnreachable('En rute mangler brødsmulesti');
+            }
         }
     };
 
     const getRoute = (route: OversiktRoutes | 'https://www.nav.no/minside', saksnummer: string | undefined): string => {
         const sakRoute = `${OversiktRoutes.SAKSOVERSIKT}/${saksnummer}`;
 
-        if (route === OversiktRoutes.SAKSOVERSIKT && saksnummer) {
+        if (saksnummer && route === OversiktRoutes.SAKSOVERSIKT) {
             return sakRoute;
         }
 

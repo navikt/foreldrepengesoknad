@@ -36,7 +36,6 @@
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
-        "@sentry/vite-plugin": "catalog:",
         "@tanstack/react-query": "catalog:",
         "dayjs": "catalog:",
         "ky": "catalog:",

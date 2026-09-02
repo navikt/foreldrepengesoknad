@@ -19,7 +19,9 @@ import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
 export const urlPrefiks = import.meta.env.BASE_URL;
 
-/** Backend returnerer null for Optional.orElse(null), som JAX-RS oversetter til 204 No Content */
+/**
+Backend returnerer null for Optional.orElse(null), som JAX-RS oversetter til 204 No Content
+*/
 const jsonEllerNull = async <T>(responsePromise: ResponsePromise) => {
     const response = await responsePromise;
     return response.status === 204 ? null : response.json<T>();
@@ -49,8 +51,9 @@ export const API_URLS = {
 export const søkerInfoOptions = () =>
     queryOptions({
         queryKey: ['SØKERINFO'],
-        queryFn: () => ky.get(API_URLS.søkerInfo, { timeout: 30000 }).json<OversiktPersonopplysningerDto_fpoversikt>(),
+        queryFn: () => ky.get(API_URLS.søkerInfo, { timeout: 30_000 }).json<OversiktPersonopplysningerDto_fpoversikt>(),
         staleTime: Infinity,
+        refetchOnWindowFocus: 'always',
     });
 
 export const minidialogOptions = () =>

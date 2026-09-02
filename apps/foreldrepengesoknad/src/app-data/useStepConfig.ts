@@ -39,37 +39,52 @@ const getPathToLabelMap = (intl: IntlShape) =>
         [SøknadRoutes.IKKE_MYNDIG]: '',
     }) satisfies Record<SøknadRoutes, string>;
 
+const isAfterStep = (previousStepPath: SøknadRoutes, currentStepPath: SøknadRoutes): boolean => {
+    return ROUTES_ORDER.indexOf(currentStepPath) > ROUTES_ORDER.indexOf(previousStepPath);
+};
+
 const showUtenlandsoppholdStep = (
     path: SøknadRoutes,
+    currentPath: SøknadRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
 ) => {
     if (path === SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD) {
-        const erValgt = getData(ContextDataType.UTENLANDSOPPHOLD)?.harBoddUtenforNorgeSiste12Mnd === true;
-        return erValgt || !!getData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+        const erValgtOgEtterSteg =
+            getData(ContextDataType.UTENLANDSOPPHOLD)?.harBoddUtenforNorgeSiste12Mnd === true &&
+            isAfterStep(SøknadRoutes.UTENLANDSOPPHOLD, currentPath);
+        return erValgtOgEtterSteg || !!getData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     }
     if (path === SøknadRoutes.SENERE_UTENLANDSOPPHOLD) {
-        const erValgt = getData(ContextDataType.UTENLANDSOPPHOLD)?.skalBoUtenforNorgeNeste12Mnd === true;
-        return erValgt || !!getData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
+        const erValgtOgEtterSteg =
+            getData(ContextDataType.UTENLANDSOPPHOLD)?.skalBoUtenforNorgeNeste12Mnd === true &&
+            isAfterStep(SøknadRoutes.UTENLANDSOPPHOLD, currentPath);
+        return erValgtOgEtterSteg || !!getData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     }
     return false;
 };
 
 const showFrilansOgEgenNæringOgAndreInntekter = (
     path: SøknadRoutes,
+    currentPath: SøknadRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
 ) => {
     if (path === SøknadRoutes.FRILANS) {
-        const erValgt = getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT)?.harJobbetSomFrilans === true;
-        return erValgt || !!getData(ContextDataType.FRILANS);
+        const erValgtOgEtterSteg =
+            getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT)?.harJobbetSomFrilans === true &&
+            isAfterStep(SøknadRoutes.ARBEID_OG_INNTEKT, currentPath);
+        return erValgtOgEtterSteg || !!getData(ContextDataType.FRILANS);
     }
     if (path === SøknadRoutes.EGEN_NÆRING) {
-        const erValgt =
-            getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT)?.harJobbetSomSelvstendigNæringsdrivende === true;
-        return erValgt || !!getData(ContextDataType.EGEN_NÆRING);
+        const erValgtOgEtterSteg =
+            getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT)?.harJobbetSomSelvstendigNæringsdrivende === true &&
+            isAfterStep(SøknadRoutes.ARBEID_OG_INNTEKT, currentPath);
+        return erValgtOgEtterSteg || !!getData(ContextDataType.EGEN_NÆRING);
     }
     if (path === SøknadRoutes.ANDRE_INNTEKTER) {
-        const erValgt = getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT)?.harHattAndreInntektskilder === true;
-        return erValgt || !!getData(ContextDataType.ANDRE_INNTEKTSKILDER);
+        const erValgtOgEtterSteg =
+            getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT)?.harHattAndreInntektskilder === true &&
+            isAfterStep(SøknadRoutes.ARBEID_OG_INNTEKT, currentPath);
+        return erValgtOgEtterSteg || !!getData(ContextDataType.ANDRE_INNTEKTSKILDER);
     }
     return false;
 };
@@ -120,7 +135,7 @@ const showManglendeDokumentasjonSteg = (
             : [];
 
         const skalHaUttakDok =
-            annenForelder && perioderSomSkalSjekkes.length > 0 && familiehendelsedato
+            familiehendelsedato && annenForelder && perioderSomSkalSjekkes.length > 0
                 ? kreverUttaksplanVedleggNy(
                       perioderSomSkalSjekkes,
                       erFarEllerMedmor,
@@ -158,7 +173,7 @@ const skalViseFordelingSteg = (
 export const useStepConfig = (
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     erEndringssøknad: boolean = false,
-    eksisterendeSak: FpSak_fpoversikt | undefined = undefined,
+    eksisterendeSak?: FpSak_fpoversikt,
 ) => {
     const intl = useIntl();
     const pathToLabelMap = useMemo(() => getPathToLabelMap(intl), [intl]);
@@ -167,6 +182,7 @@ export const useStepConfig = (
     const getStateData = useContextGetAnyData();
 
     const currentPath = useMemo(
+        // eslint-disable-next-line unicorn/no-useless-coercion
         () => notEmpty(Object.values(SøknadRoutes).find((v) => v.toString() === decodeURIComponent(location.pathname))),
         [location.pathname],
     );
@@ -176,13 +192,13 @@ export const useStepConfig = (
         () =>
             ROUTES_ORDER.flatMap((path) =>
                 (requiredSteps.includes(path) && skalViseFordelingSteg(path, getStateData)) ||
-                showUtenlandsoppholdStep(path, getStateData) ||
+                showUtenlandsoppholdStep(path, currentPath, getStateData) ||
                 showManglendeDokumentasjonSteg(path, getStateData, arbeidsforhold, eksisterendeSak) ||
-                showFrilansOgEgenNæringOgAndreInntekter(path, getStateData)
+                showFrilansOgEgenNæringOgAndreInntekter(path, currentPath, getStateData)
                     ? [path]
                     : [],
             ),
-        [requiredSteps, getStateData, arbeidsforhold, eksisterendeSak],
+        [requiredSteps, currentPath, getStateData, arbeidsforhold, eksisterendeSak],
     );
 
     return useMemo(

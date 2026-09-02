@@ -21,7 +21,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
 
         expect(await screen.findAllByText('Har bodd i utlandet')).toHaveLength(2);
 
-        await userEvent.selectOptions(screen.getByLabelText('Hvilket land bodde du i?'), 'CA');
+        await userEvent.selectOptions(screen.getByLabelText('Hvilket land bodde du i?'), 'CAN');
 
         const fraOgMed = screen.getByLabelText('Fra og med');
         await userEvent.type(fraOgMed, dayjs().subtract(30, 'day').format(DDMMYYYY_DATE_FORMAT));
@@ -39,7 +39,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: [
                 {
-                    landkode: 'CA',
+                    landkode: 'CAN',
                     fom: dayjs().subtract(30, 'day').format(ISO_DATE_FORMAT),
                     tom: dayjs().subtract(25, 'day').format(ISO_DATE_FORMAT),
                 },
@@ -68,7 +68,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
 
         expect(await screen.findAllByText('Har bodd i utlandet')).toHaveLength(2);
 
-        await userEvent.selectOptions(screen.getByLabelText('Hvilket land bodde du i?'), 'CA');
+        await userEvent.selectOptions(screen.getByLabelText('Hvilket land bodde du i?'), 'CAN');
 
         const fraOgMed = screen.getByLabelText('Fra og med');
         await userEvent.type(fraOgMed, dayjs().subtract(30, 'day').format(DDMMYYYY_DATE_FORMAT));
@@ -86,7 +86,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: [
                 {
-                    landkode: 'CA',
+                    landkode: 'CAN',
                     fom: dayjs().subtract(30, 'day').format(ISO_DATE_FORMAT),
                     tom: dayjs().subtract(25, 'day').format(ISO_DATE_FORMAT),
                 },

@@ -34,7 +34,7 @@ export const ValgteRegistrerteBarn = ({ valgteRegistrerteBarn, skalInkludereTerm
     const termindato = formMethods.watch('termindato');
 
     const alleBarnaLever = valgteRegistrerteBarn.every((barn) => !barn.dødsdato);
-    const sorterteBarn = [...valgteRegistrerteBarn].sort(sorterPersonEtterEldstOgNavn);
+    const sorterteBarn = [...valgteRegistrerteBarn].toSorted(sorterPersonEtterEldstOgNavn);
     const fødselsdatoer = sorterteBarn.map((b) => b.fødselsdato);
     const fødselsdato = sorterteBarn[0]!.fødselsdato;
 

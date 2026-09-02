@@ -18,8 +18,8 @@ import {
 
 import { SkjemaSteg } from './SkjemaSteg';
 
-const file1 = new File(['abc'.repeat(100000)], 'Filnavn1.jpg');
-const file2 = new File(['abc'.repeat(500000)], 'Filnavn2.jpg');
+const file1 = new File(['abc'.repeat(100_000)], 'Filnavn1.jpg');
+const file2 = new File(['abc'.repeat(500_000)], 'Filnavn2.jpg');
 
 const ARBEIDSGIVER_ID = '990322244';
 const ANNEN_ARBEIDSGIVER_ID = '975326209';

@@ -33,7 +33,7 @@ export const Svangerskapspenger = ({ svpSak }: SvangerskapspengerProps) => {
     const terminDato = svpSak.familiehendelse.termindato;
     const harAvslag = svpSak.gjeldendeVedtak?.avslagÅrsak !== undefined;
 
-    if (arbeidsforhold.length === 0 || !terminDato || harAvslag) {
+    if (!terminDato || harAvslag || arbeidsforhold.length === 0) {
         return null;
     }
     const perioder = lagKronologiskeSvpPerioder(svpSak);
@@ -293,7 +293,7 @@ export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
                 avslutningÅrsak: af.avslutningÅrsak,
             })),
         )
-        .sort((a, b) => a.fom.localeCompare(b.fom));
+        .toSorted((a, b) => a.fom.localeCompare(b.fom));
 
     const endeligePerioder = [];
     const perioderÅBruke = [...perioder];
@@ -324,7 +324,7 @@ export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
             }
             return Tidsperioden.forPeriode(p).inneholderDato(periode.tom);
         });
-        const overlappendePeriode = index !== -1 ? perioderÅBruke.splice(index, 1)[0] : undefined;
+        const overlappendePeriode = index === -1 ? undefined : perioderÅBruke.splice(index, 1)[0];
 
         if (overlappendePeriode) {
             let overlappendePeriode1;
@@ -346,7 +346,9 @@ export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
             };
 
             // Hvis tom er lik trenger vi ikke splitte annen periode
-            if (periode.tom !== overlappendePeriode.tom) {
+            if (periode.tom === overlappendePeriode.tom) {
+                overlappendePeriode1 = overlappendePeriode;
+            } else {
                 overlappendePeriode1 = {
                     ...overlappendePeriode,
                     tom: periode.tom,
@@ -355,21 +357,12 @@ export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
                     ...overlappendePeriode,
                     fom: dayjs(periode.tom).add(1, 'day').format('YYYY-MM-DD'),
                 };
-            } else {
-                overlappendePeriode1 = overlappendePeriode;
             }
 
-            if (overlapperIkke) {
-                const nyePerioder = [periode, overlappendePeriode1, overlappendePeriode2].filter(
-                    (x) => x !== undefined,
-                );
-                perioderÅBruke.unshift(...nyePerioder);
-            } else {
-                const nyePerioder = [periode1, periode2, overlappendePeriode1, overlappendePeriode2].filter(
-                    (x) => x !== undefined,
-                );
-                perioderÅBruke.unshift(...nyePerioder);
-            }
+            const nyePerioder = overlapperIkke
+                ? [periode, overlappendePeriode1, overlappendePeriode2].filter((x) => x !== undefined)
+                : [periode1, periode2, overlappendePeriode1, overlappendePeriode2].filter((x) => x !== undefined);
+            perioderÅBruke.unshift(...nyePerioder);
         }
 
         // Hvis det ikke finnes overlappende perioder så er perioden "ferdig"
@@ -377,5 +370,5 @@ export const lagKronologiskeSvpPerioder = (svpSak: SvangerskapspengeSak) => {
             endeligePerioder.push(periode);
         }
     }
-    return endeligePerioder.sort((a, b) => a.fom.localeCompare(b.fom));
+    return endeligePerioder.toSorted((a, b) => a.fom.localeCompare(b.fom));
 };

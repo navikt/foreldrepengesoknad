@@ -61,10 +61,10 @@ export const mapArbeidsforholdToVelgArbeidOptions = (
 ): VelgArbeidsforholdOptions[] => {
     const unikeArbeidsforhold = getArbeidsforholdTilretteleggingOptions(arbeidsforhold, termindato, intl);
     const næringValg =
-        inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende && egenNæring
+        egenNæring && inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende
             ? [getNæringTilretteleggingOption(egenNæring)]
             : [];
-    const frilansValg = inntektsinformasjon.harJobbetSomFrilans && frilans ? [getFrilansTilretteleggingOption()] : [];
+    const frilansValg = frilans && inntektsinformasjon.harJobbetSomFrilans ? [getFrilansTilretteleggingOption()] : [];
 
     return [...unikeArbeidsforhold, ...næringValg, ...frilansValg];
 };

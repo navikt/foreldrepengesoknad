@@ -45,12 +45,15 @@ const getUttaksdagFraOgMedDato = (dato: string): string => {
     const d = dayjs(dato).toDate();
     const newDate = dato ? new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12) : dato;
     switch (getUkedag(dato)) {
-        case 6:
+        case 6: {
             return dayjs.utc(newDate).add(48, 'hours').format(ISO_DATE_FORMAT);
-        case 7:
+        }
+        case 7: {
             return dayjs.utc(newDate).add(24, 'hours').format(ISO_DATE_FORMAT);
-        default:
+        }
+        default: {
             return dato;
+        }
     }
 };
 
@@ -63,12 +66,15 @@ const getUttaksdagTilOgMedDato = (dato: string): string => {
     const d = dayjs(dato).toDate();
     const newDate = dato ? new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12) : dato;
     switch (getUkedag(dato)) {
-        case 6:
+        case 6: {
             return dayjs.utc(newDate).subtract(24, 'hours').format(ISO_DATE_FORMAT);
-        case 7:
+        }
+        case 7: {
             return dayjs.utc(newDate).subtract(48, 'hours').format(ISO_DATE_FORMAT);
-        default:
+        }
+        default: {
             return dato;
+        }
     }
 };
 
@@ -78,7 +84,7 @@ const getUttaksdagTilOgMedDato = (dato: string): string => {
  * @param uttaksdager
  */
 const trekkUttaksdagerFraDato = (dato: string, uttaksdager: number): string => {
-    if (erUttaksdag(dato) === false) {
+    if (!erUttaksdag(dato)) {
         throw new Error('trekkUttaksdagerFraDato: Dato må være uttaksdag');
     }
     let nyDato = dato;
@@ -311,19 +317,26 @@ export type UttakUkerOgDager = {
 
 export const finnAntallUkerOgDagerMedForeldrepenger = (stønadskvote: KontoBeregningDto): UttakUkerOgDager => {
     const { kontoer } = stønadskvote;
+    let uker = 0;
+    let totaltAntallDager = 0;
+    let dager = 0;
+
+    const kontoerLength = kontoer.length;
+    for (let index = 0; index < kontoerLength; index++) {
+        if (!Object.hasOwn(kontoer, index)) {
+            continue;
+        }
+
+        const konto = kontoer[index]!;
+        uker += Math.round(konto.dager / 5);
+        totaltAntallDager += konto.dager;
+
+        dager = index === kontoer.length - 1 ? totaltAntallDager % 5 : totaltAntallDager;
+    }
+
     return {
-        uker: kontoer.reduce((prev: number, current: KontoDto) => {
-            return Math.round(current.dager / 5) + prev;
-        }, 0),
-        dager: kontoer.reduce((prev: number, current: KontoDto, index: number) => {
-            const result = current.dager + prev;
-
-            if (index === kontoer.length - 1) {
-                return result % 5;
-            }
-
-            return result;
-        }, 0),
+        uker,
+        dager,
     };
 };
 

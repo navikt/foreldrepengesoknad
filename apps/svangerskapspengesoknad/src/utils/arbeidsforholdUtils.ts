@@ -36,11 +36,9 @@ export const getTotalStillingsprosentPåSkjæringstidspunktet = (
 ): number => {
     if (skjæringstidspunkt) {
         const perioderISkjæringstidspunktet = stillinger.filter((p) => {
-            if (p.tom) {
-                return dayjs(skjæringstidspunkt).isBetween(dayjs(p.fom), dayjs(p.tom), 'day', '[]');
-            } else {
-                return dayjs(skjæringstidspunkt).isSameOrAfter(dayjs(p.fom), 'd');
-            }
+            return p.tom
+                ? dayjs(skjæringstidspunkt).isBetween(dayjs(p.fom), dayjs(p.tom), 'day', '[]')
+                : dayjs(skjæringstidspunkt).isSameOrAfter(dayjs(p.fom), 'd');
         });
 
         if (perioderISkjæringstidspunktet) {
@@ -98,9 +96,8 @@ export const getUnikeArbeidsforhold = (
                         : dayjs.max(alleTom.map((tom) => dayjs(tom)))!.format(ISO_DATE_FORMAT),
                     stillinger: getStillingerForLikeArbeidsforhold(likeArbeidsforhold),
                 };
-            } else {
-                return arbeid;
             }
+            return arbeid;
         });
         return unikeMedStillinger;
     }

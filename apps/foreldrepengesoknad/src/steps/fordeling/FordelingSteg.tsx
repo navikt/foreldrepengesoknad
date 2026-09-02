@@ -10,6 +10,7 @@ import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
+import { kanGenerereUttaksplanForslag } from 'steps/uttaksplan/hooks/useUttaksplanForslag';
 import { getIsDeltUttak } from 'utils/annenForelderUtils';
 import { getTermindato } from 'utils/barnUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
@@ -111,6 +112,10 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
     const ukerMedFellesperiode = valgtStønadskvote ? getAntallUkerFellesperiode(valgtStønadskvote) : 0;
     const dagerMedFellesperiode = ukerMedFellesperiode * 5;
     const sisteDagAnnenForelder = getSisteUttaksdagAnnenForelder(erFarEllerMedmor, deltUttak, uttaksplanAnnenPart);
+    // Startdatoen som blir spurt om her blir berre brukt til å generere eit forslag til
+    // uttaksplan (useUttaksplanForslag). Om annen part allereie har perioder klarer ikkje den
+    // hooken å lage noko forslag uansett kva startdato som blir valgt, så då spør me ikkje.
+    const visOppstartsvalg = kanGenerereUttaksplanForslag(uttaksplanAnnenPart);
 
     const førsteDagEtterAnnenForelder = sisteDagAnnenForelder
         ? Uttaksdagen.neste(sisteDagAnnenForelder).getDato()
@@ -137,8 +142,8 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
         }
         if (
             erFarEllerMedmor &&
-            isFødtBarn(oppdatertBarn) &&
             saksgrunnlagsTermindato &&
+            isFødtBarn(oppdatertBarn) &&
             oppdatertBarn.termindato !== saksgrunnlagsTermindato
         ) {
             oppdatertBarn = { ...oppdatertBarn, termindato: saksgrunnlagsTermindato };
@@ -175,6 +180,7 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
                         onAvsluttOgSlett={avbrytSøknad}
                         onFortsettSenere={navigator.fortsettSøknadSenere}
                         førsteDagEtterAnnenForelder={førsteDagEtterAnnenForelder}
+                        visOppstartsvalg={visOppstartsvalg}
                     />
                 </VStack>
             </Step>

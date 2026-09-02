@@ -36,7 +36,7 @@ export const getIsDeltUttak = (annenForelder: AnnenForelder): boolean => {
 };
 
 export const getErMorUfør = (annenForelder: AnnenForelder, erFarEllerMedmor: boolean) => {
-    if (isAnnenForelderOppgitt(annenForelder) && erFarEllerMedmor) {
+    if (erFarEllerMedmor && isAnnenForelderOppgitt(annenForelder)) {
         return !!annenForelder.erMorUfør;
     }
 

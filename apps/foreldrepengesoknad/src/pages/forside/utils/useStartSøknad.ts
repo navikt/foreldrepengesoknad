@@ -73,19 +73,16 @@ export const useStartSøknad = ({
     };
 
     const startNySøknadFraValgtBarn = (valgteBarn: ValgtBarn) => {
-        if (valgteBarn.sak !== undefined && valgteBarn.kanSøkeOmEndring === false) {
-            const søknad = lagSøknadFraValgteBarnMedSak(
-                { ...valgteBarn, sak: valgteBarn.sak }, // Gjør dette slik at funksjonen slipper deale med undefined sak
-                intl,
-                søkerInfo.barn,
-                søkerInfo.fnr,
-            );
-            oppdaterSøknadIState(søknad);
-        } else {
-            // Barn er registrert, men det finnes ingen sak
-            const søknad = lagNySøknadForRegistrerteBarn(valgteBarn);
-            oppdaterSøknadIState(søknad);
-        }
+        const søknad =
+            valgteBarn.sak !== undefined && valgteBarn.kanSøkeOmEndring === false
+                ? lagSøknadFraValgteBarnMedSak(
+                      { ...valgteBarn, sak: valgteBarn.sak }, // Gjør dette slik at funksjonen slipper deale med undefined sak
+                      intl,
+                      søkerInfo.barn,
+                      søkerInfo.fnr,
+                  )
+                : lagNySøknadForRegistrerteBarn(valgteBarn);
+        oppdaterSøknadIState(søknad);
 
         oppdaterSøknadsmetadata({ harGodkjentVilkår: true, erEndringssøknad: false, søknadGjelderNyttBarn: false });
         return navigator.goToStep(SøknadRoutes.SØKERSITUASJON);

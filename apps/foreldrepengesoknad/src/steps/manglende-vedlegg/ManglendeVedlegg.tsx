@@ -141,9 +141,8 @@ export const ManglendeVedlegg = ({
     const lagre = (formValues: ManglendeVedleggFormData) => {
         const alleVedlegg = {
             ...vedlegg,
-            [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: morKvalPerioder.length
-                ? formValues[Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]
-                : [],
+            [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]:
+                morKvalPerioder.length > 0 ? formValues[Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM] : [],
             [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]:
                 morIntroPerioder.length > 0 ? formValues[Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET] : [],
             [Skjemanummer.DOK_INNLEGGELSE_MOR]:

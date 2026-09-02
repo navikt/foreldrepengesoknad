@@ -60,7 +60,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
 };
 
 const queryClient = createDefaultQueryClient({
-    sentryQueryErrorMessage: 'API query-feil i svangerskapspengesøknad',
+    apiQueryErrorMessage: 'API query-feil i svangerskapspengesøknad',
 });
 
 export const AppContainer = () => (

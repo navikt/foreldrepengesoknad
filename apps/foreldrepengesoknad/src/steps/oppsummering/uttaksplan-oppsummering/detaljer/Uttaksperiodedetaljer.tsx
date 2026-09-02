@@ -21,7 +21,12 @@ export const Uttaksperiodedetaljer = ({ periode, annenForelder, registrerteArbei
 
     const erDeltUttakINorge = isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge;
 
-    const skalViseFlerbarnsdager = skalBesvareFlerbarnsdager(barn.antallBarn, periode.forelder, periode.kontoType);
+    const skalViseFlerbarnsdager = skalBesvareFlerbarnsdager(
+        barn.antallBarn,
+        periode.forelder,
+        periode.kontoType,
+        periode.samtidigUttak,
+    );
 
     return (
         <>

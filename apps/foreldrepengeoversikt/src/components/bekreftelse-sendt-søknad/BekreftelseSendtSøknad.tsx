@@ -340,11 +340,12 @@ const TidligstMuligeSvar = () => {
 
 const getTidspunktTekst = (mottattDato: string | undefined, intl: IntlShape) => {
     if (!mottattDato) {
-        return undefined;
+        return;
     }
     if (dayjs(mottattDato).isSame(dayjs(), 'd')) {
         return intl.formatMessage({ id: 'søknad.sendtIDag' }, { tid: formatTime(mottattDato) });
-    } else if (dayjs(mottattDato).isSame(dayjs().subtract(1, 'd'), 'd')) {
+    }
+    if (dayjs(mottattDato).isSame(dayjs().subtract(1, 'd'), 'd')) {
         return intl.formatMessage({ id: 'søknad.sendtIGår' }, { tid: formatTime(mottattDato) });
     }
     return intl.formatMessage(
@@ -364,7 +365,7 @@ const useÅpenBehandlingTilstand = () => {
     const sak = useGetSelectedSak();
 
     if (!sak || sak.ytelse === 'ENGANGSSTØNAD') {
-        return undefined;
+        return;
     }
 
     return sak.åpenBehandling?.tilstand;
@@ -374,7 +375,7 @@ const useGetTidligstMuligeSvar = () => {
     const sak = useGetSelectedSak();
 
     if (sak?.ytelse !== 'FORELDREPENGER') {
-        return undefined;
+        return;
     }
 
     return getTidligstDatoForInntektsmelding(getFørsteUttaksdagIForeldrepengesaken(sak));

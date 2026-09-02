@@ -7,7 +7,7 @@ import { BarnType } from '@navikt/fp-constants';
 import { KontoBeregningDto } from '@navikt/fp-types';
 import { DELT_UTTAK_100 } from '@navikt/fp-utils-test';
 
-import { useUttaksplanForslag } from './useUttaksplanForslag';
+import { kanGenerereUttaksplanForslag, useUttaksplanForslag } from './useUttaksplanForslag';
 
 const FØDSELSDATO = '2024-07-01';
 
@@ -252,5 +252,42 @@ describe('useUttaksplanForslag – far med delt uttak', () => {
 
             expect(result.current).toEqual([]);
         });
+    });
+
+    describe('når annenPartsPerioder framleis lastar', () => {
+        it('returnerer tom liste i staden for å kaste feil, sjølv om fordeling manglar oppstartsvalg', () => {
+            // Reproduserer race-condition: annen part har periodar (oppstartsvalg vart difor
+            // skjult og aldri lagra på Fordeling-steget), men spørringa på Uttaksplan-steget
+            // har ikkje levert data enno (annenPartsPerioder er undefined mens den lastar).
+            const { result } = renderHook(() => useUttaksplanForslag(STØNADSKVOTE, undefined, true), {
+                wrapper: getWrapper({
+                    ...baseFarDeltUttakContext,
+                    [ContextDataType.FORDELING]: {},
+                }),
+            });
+
+            expect(result.current).toEqual([]);
+        });
+    });
+});
+
+describe('kanGenerereUttaksplanForslag', () => {
+    it('returnerer true når annen part ikke har noen perioder', () => {
+        expect(kanGenerereUttaksplanForslag(undefined)).toBe(true);
+        expect(kanGenerereUttaksplanForslag([])).toBe(true);
+    });
+
+    it('returnerer false når annen part allerede har perioder', () => {
+        expect(
+            kanGenerereUttaksplanForslag([
+                {
+                    fom: '2024-07-01',
+                    tom: '2024-09-01',
+                    forelder: 'MOR',
+                    kontoType: 'MØDREKVOTE',
+                    flerbarnsdager: false,
+                },
+            ]),
+        ).toBe(false);
     });
 });

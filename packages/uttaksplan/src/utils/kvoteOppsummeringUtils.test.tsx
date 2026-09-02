@@ -6,7 +6,8 @@ import { KontoBeregningDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { UttaksplanDataProvider } from '../context/UttaksplanDataContext';
 import { ForeldreInfo } from '../types/ForeldreInfo';
-import { summerDagerIPerioder, useUbrukteDagerPerKontoKunEnHarRett } from './kvoteOppsummeringUtils';
+import { finnDinPlanKvoteRader, summerDagerIPerioder } from './kvoteBeregning';
+import { useUbrukteDagerPerKontoKunEnHarRett } from './kvoteOppsummeringUtils';
 
 const FAMILIEHENDELSESDATO = '2024-04-01'; // Mandag
 
@@ -264,5 +265,89 @@ describe('useUbrukteDagerPerKontoKunEnHarRett – overtrekk når kun far/medmor 
 
         expect(result.current.ubrukteDagerMedAktivitetskrav).toBe(0);
         expect(result.current.overtrukketDagerMedAktivitetskrav).toBe(brukteDager - 20);
+    });
+});
+
+describe('finnDinPlanKvoteRader', () => {
+    it('skal berre ta med rader for konti søkjaren faktisk har planlagt å bruke, i fast rekkefølgje', () => {
+        const uttakPerioder: UttakPeriode_fpoversikt[] = [
+            {
+                fom: '2024-03-11', // 3 uker før fødsel (fom-tom = 15 dager)
+                tom: '2024-03-29',
+                forelder: 'MOR',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                flerbarnsdager: false,
+            },
+            {
+                fom: '2024-04-01', // 20 uker mødrekvote (100 dager)
+                tom: '2024-08-16',
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                flerbarnsdager: false,
+            },
+            {
+                fom: '2024-08-19', // 10 uker fellesperiode (50 dager)
+                tom: '2024-10-25',
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                flerbarnsdager: false,
+            },
+        ];
+
+        const rader = finnDinPlanKvoteRader(uttakPerioder, 'MOR', KONTOER.kontoer, 'fødsel', FAMILIEHENDELSESDATO);
+
+        expect(rader).toEqual([
+            { kontoType: 'FORELDREPENGER_FØR_FØDSEL', bruktDager: 15, tilgjengeligDager: 15 },
+            { kontoType: 'MØDREKVOTE', bruktDager: 100, tilgjengeligDager: 75 },
+            { kontoType: 'FELLESPERIODE', bruktDager: 50, tilgjengeligDager: 80 },
+        ]);
+        // FEDREKVOTE finst på kontoen, men søkjar (mor) har ikkje planlagt noko der, og skal derfor ikkje vises.
+        expect(rader.some((rad) => rad.kontoType === 'FEDREKVOTE')).toBe(false);
+    });
+
+    it('skal returnere rå dagtal (ikkje avrunda til uker) når søkjaren har planlagt mindre enn ei veke', () => {
+        const toDagarFørFødsel: UttakPeriode_fpoversikt = {
+            fom: '2024-03-28',
+            tom: '2024-03-29', // 2 dager, mindre enn 5 dager (ei veke)
+            forelder: 'MOR',
+            kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+            flerbarnsdager: false,
+        };
+
+        const rader = finnDinPlanKvoteRader([toDagarFørFødsel], 'MOR', KONTOER.kontoer, 'fødsel', FAMILIEHENDELSESDATO);
+
+        expect(rader).toEqual([{ kontoType: 'FORELDREPENGER_FØR_FØDSEL', bruktDager: 2, tilgjengeligDager: 15 }]);
+    });
+
+    it('skal ikkje ta med periodar som tilhøyrer den andre forelderen', () => {
+        const mødrekvotePeriodeTilMor = lagMorsMødrekvotePeriode('2024-04-01', '2024-05-10');
+        const fedrekvotePeriodeTilFar: UttakPeriode_fpoversikt = {
+            fom: '2024-05-13',
+            tom: '2024-06-21',
+            forelder: 'FAR_MEDMOR',
+            kontoType: 'FEDREKVOTE',
+            flerbarnsdager: false,
+        };
+
+        const rader = finnDinPlanKvoteRader(
+            [mødrekvotePeriodeTilMor, fedrekvotePeriodeTilFar],
+            'MOR',
+            KONTOER.kontoer,
+            'fødsel',
+            FAMILIEHENDELSESDATO,
+        );
+
+        // Kun mor sin eigen mødrekvoteperiode skal telje med – far sin fedrekvoteperiode skal ignorerast
+        // sjølv om han ligg i den same uttaksplanen (delt uttak).
+        expect(rader).toEqual([{ kontoType: 'MØDREKVOTE', bruktDager: 30, tilgjengeligDager: 75 }]);
+    });
+
+    it('skal ikkje ta med ein konto dersom han ikkje finst i kontoDto-lista, eller har 0 dagar tilgjengeleg', () => {
+        const periode = lagMorsMødrekvotePeriode('2024-04-01', '2024-05-10');
+        const kontoerUtenMødrekvote = KONTOER.kontoer.filter((k) => k.konto !== 'MØDREKVOTE');
+
+        const rader = finnDinPlanKvoteRader([periode], 'MOR', kontoerUtenMødrekvote, 'fødsel', FAMILIEHENDELSESDATO);
+
+        expect(rader).toEqual([]);
     });
 });

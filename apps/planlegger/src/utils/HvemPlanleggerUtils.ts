@@ -12,21 +12,21 @@ const erGyldigNavn = (navn: string | undefined): navn is string => {
 };
 
 export const erFlereSøkere = (hvemPlanlegger: HvemPlanlegger) =>
-    hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR ||
-    hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR ||
-    hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR;
+    [HvemPlanleggerType.MOR_OG_FAR, HvemPlanleggerType.FAR_OG_FAR, HvemPlanleggerType.MOR_OG_MEDMOR].includes(
+        hvemPlanlegger.type,
+    );
 
-export const erAlenesøker = (hvemPlanlegger: HvemPlanlegger) => erFlereSøkere(hvemPlanlegger) === false;
+export const erAlenesøker = (hvemPlanlegger: HvemPlanlegger) => !erFlereSøkere(hvemPlanlegger);
 
 export const erMorDelAvSøknaden = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is MorOgFar | MorOgMedmor | Mor =>
-    hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR ||
-    hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR ||
-    hvemPlanlegger.type === HvemPlanleggerType.MOR;
+    [HvemPlanleggerType.MOR_OG_FAR, HvemPlanleggerType.MOR_OG_MEDMOR, HvemPlanleggerType.MOR].includes(
+        hvemPlanlegger.type,
+    );
 
 export const erFarDelAvSøknaden = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is MorOgFar | FarOgFar | Far =>
-    hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR ||
-    hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR ||
-    hvemPlanlegger.type === HvemPlanleggerType.FAR;
+    [HvemPlanleggerType.MOR_OG_FAR, HvemPlanleggerType.FAR_OG_FAR, HvemPlanleggerType.FAR].includes(
+        hvemPlanlegger.type,
+    );
 
 export const erMedmorDelAvSøknaden = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is MorOgMedmor =>
     hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR;
@@ -34,9 +34,11 @@ export const erMedmorDelAvSøknaden = (hvemPlanlegger: HvemPlanlegger): hvemPlan
 export const erFarOgFar = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is FarOgFar =>
     hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR;
 
-/** Likekjønnet par: to fedre eller to mødre/medmødre */
+/**
+Likekjønnet par: to fedre eller to mødre/medmødre
+*/
 export const erLikekjønnetPar = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is FarOgFar | MorOgMedmor =>
-    hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR || hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR;
+    [HvemPlanleggerType.FAR_OG_FAR, HvemPlanleggerType.MOR_OG_MEDMOR].includes(hvemPlanlegger.type);
 
 /**
  * Par der brukeren (ved adopsjon, se {@link FordelingSteg}) kan velge hvem som skal starte permisjonen,
@@ -44,7 +46,9 @@ export const erLikekjønnetPar = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegge
  */
 export type ParSomKanVelgeStarter = FarOgFar | MorOgMedmor | MorOgFar;
 
-/** Sjekker om paret kan velge hvem som starter permisjonen, se {@link ParSomKanVelgeStarter}. */
+/**
+Sjekker om paret kan velge hvem som starter permisjonen, se {@link ParSomKanVelgeStarter}.
+*/
 export const kanVelgeHvemSomStarterPermisjonen = (
     hvemPlanlegger: HvemPlanlegger,
 ): hvemPlanlegger is ParSomKanVelgeStarter =>
@@ -68,7 +72,9 @@ export const getStarterForelder = (
     return fordeling?.hvemStarterPermisjon === 'søker2' ? 'FAR_MEDMOR' : 'MOR';
 };
 
-/** Navn (uten capitalize) til bruk internt ved bytte av søker1/søker2, konsistent med getNavnPåSøker1/2 */
+/**
+Navn (uten capitalize) til bruk internt ved bytte av søker1/søker2, konsistent med getNavnPåSøker1/2
+*/
 const getRawNavnForHvemStarterPermisjon = (
     hvemPlanlegger: ParSomKanVelgeStarter,
     intl: IntlShape,
@@ -103,7 +109,9 @@ const getRawNavnForHvemStarterPermisjon = (
     };
 };
 
-/** Navn (eller fallback "Far 1"/"Far 2"/"Mor"/"Medmor"/"Far") til bruk i spørsmålet om hvem som starter permisjonen */
+/**
+Navn (eller fallback "Far 1"/"Far 2"/"Mor"/"Medmor"/"Far") til bruk i spørsmålet om hvem som starter permisjonen
+*/
 export const getNavnForHvemStarterPermisjon = (
     hvemPlanlegger: ParSomKanVelgeStarter,
     intl: IntlShape,
@@ -246,7 +254,9 @@ const getNavnPåSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): str
     return intl.formatMessage({ id: 'HvemPlanlegger.DefaultAnnenForelderNavn' });
 };
 
-/** Navn som ikke skal splittes ved henting av "fornavn" (de er allerede en kort, komplett betegnelse) */
+/**
+Navn som ikke skal splittes ved henting av "fornavn" (de er allerede en kort, komplett betegnelse)
+*/
 const erIkkeSplittbartNavn = (navn: string, intl: IntlShape): boolean =>
     [
         intl.formatMessage({ id: 'HvemPlanlegger.DefaultAnnenForelderNavn' }),
@@ -256,7 +266,7 @@ const erIkkeSplittbartNavn = (navn: string, intl: IntlShape): boolean =>
 
 export const getFornavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
     const navn = getNavnPåSøker1(hvemPlanlegger, intl);
-    return erIkkeSplittbartNavn(navn, intl) ? navn : navn.split(' ')[0]!;
+    return erIkkeSplittbartNavn(navn, intl) ? navn : navn.split(' ', 1)[0]!;
 };
 
 export const getFornavnPåSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string | undefined => {
@@ -264,7 +274,7 @@ export const getFornavnPåSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlS
     if (!navn) {
         return undefined;
     }
-    return erIkkeSplittbartNavn(navn, intl) ? navn : navn.split(' ')[0];
+    return erIkkeSplittbartNavn(navn, intl) ? navn : navn.split(' ', 1)[0];
 };
 
 export const finnSøker1Tekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string =>
@@ -306,7 +316,7 @@ export const getTekstForDeSomHarRett = (
 
 const navnSlutterPåSLyd = (navn: string): boolean => {
     const sisteBokstav = (navn.at(-1) ?? '').toLowerCase();
-    return sisteBokstav === 's' || sisteBokstav === 'x' || sisteBokstav === 'z';
+    return ['s', 'x', 'z'].includes(sisteBokstav);
 };
 
 export const getNavnGenitivEierform = (navn: string, locale: string): string => {
@@ -324,14 +334,10 @@ export const getNavnGenitivEierform = (navn: string, locale: string): string => 
 };
 
 export const getErFarEllerMedmor = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett) => {
-    if (
+    return (
         hvemPlanlegger.type === HvemPlanleggerType.FAR ||
         (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR && hvemHarRett === 'kunSøker2HarRett') ||
         hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR ||
         (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR && hvemHarRett === 'kunSøker2HarRett')
-    ) {
-        return true;
-    }
-
-    return false;
+    );
 };

@@ -59,7 +59,7 @@ declare global {
 }
 
 const queryClient = createDefaultQueryClient({
-    sentryQueryErrorMessage: 'API query-feil i engangsstønad',
+    apiQueryErrorMessage: 'API query-feil i engangsstønad',
 });
 
 export const AppContainer = () => (

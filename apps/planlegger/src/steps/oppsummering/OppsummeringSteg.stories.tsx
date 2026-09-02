@@ -93,8 +93,8 @@ export const FlereForsørgereHundreProsentTermin: Story = {
             antallDagerSøker1: 25,
         },
         hvorMye: {
-            lønnSøker1: 50000,
-            lønnSøker2: 70000,
+            lønnSøker1: 50_000,
+            lønnSøker2: 70_000,
         },
         hvorLangPeriode: {
             dekningsgrad: '100',
@@ -207,7 +207,7 @@ export const FarOgFarFødsel: Story = {
         fordeling: undefined,
         hvorMye: {
             lønnSøker1: 1000,
-            lønnSøker2: 70000,
+            lønnSøker2: 70_000,
         },
         hvorLangPeriode: {
             dekningsgrad: '100',
@@ -244,7 +244,7 @@ export const FarOgFarAdopsjonKunFar1HarRett: Story = {
         fordeling: undefined,
         hvorMye: {
             lønnSøker1: 1000,
-            lønnSøker2: 70000,
+            lønnSøker2: 70_000,
         },
         hvorLangPeriode: {
             dekningsgrad: '100',
@@ -285,7 +285,7 @@ export const FarOgFarAdopsjonBeggeHarRett: Story = {
         },
         hvorMye: {
             lønnSøker1: 1000,
-            lønnSøker2: 70000,
+            lønnSøker2: 70_000,
         },
         hvorLangPeriode: {
             dekningsgrad: '100',
@@ -349,7 +349,7 @@ export const AleneforsørgerÅttiProsentFødselToBarn: Story = {
             type: HvemPlanleggerType.MOR,
         },
         hvorMye: {
-            lønnSøker1: 70000,
+            lønnSøker1: 70_000,
         },
         hvorLangPeriode: {
             dekningsgrad: '80',
@@ -425,7 +425,7 @@ export const FlereForsørgereHundreProsentAdopsjon: Story = {
         },
         hvorMye: {
             lønnSøker1: 1000,
-            lønnSøker2: 70000,
+            lønnSøker2: 70_000,
         },
         hvorLangPeriode: {
             dekningsgrad: '100',

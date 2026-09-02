@@ -24,12 +24,11 @@ export const getSoknad = () => {
     const fileName = getFilePath('soknad.json');
     if (!fs.existsSync(fileName)) {
         return {};
-    } else {
-        try {
-            return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-        } catch (err) {
-            return {};
-        }
+    }
+    try {
+        return JSON.parse(fs.readFileSync(fileName, 'utf8'));
+    } catch {
+        return {};
     }
 };
 
@@ -37,12 +36,11 @@ export const getSokerInfo = () => {
     const fileName = getFilePath('sokerinfo.json');
     if (!fs.existsSync(fileName)) {
         return {};
-    } else {
-        try {
-            return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-        } catch (err) {
-            return {};
-        }
+    }
+    try {
+        return JSON.parse(fs.readFileSync(fileName, 'utf8'));
+    } catch {
+        return {};
     }
 };
 
@@ -50,25 +48,23 @@ export const getSoknadSendt = () => {
     const fileName = getFilePath('soknad_sendt.json');
     if (!fs.existsSync(fileName)) {
         return {};
-    } else {
-        try {
-            return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-        } catch (err) {
-            return {};
-        }
+    }
+    try {
+        return JSON.parse(fs.readFileSync(fileName, 'utf8'));
+    } catch {
+        return {};
     }
 };
 
 export const getMellomlagretData = () => {
     const fileName = getFilePathMellomlagretData();
     if (!fs.existsSync(fileName)) {
-        return undefined;
-    } else {
-        try {
-            return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-        } catch (err) {
-            return undefined;
-        }
+        return;
+    }
+    try {
+        return JSON.parse(fs.readFileSync(fileName, 'utf8'));
+    } catch {
+        return;
     }
 };
 

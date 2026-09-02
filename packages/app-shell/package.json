@@ -1,6 +1,6 @@
 {
     "name": "@navikt/fp-app-shell",
-    "description": "Felles oppsett av providers (Intl, Theme, ErrorBoundary, QueryClient, ds-react Provider) og bootstrap (Sentry, dayjs, countries) for alle fp-apper.",
+    "description": "Felles oppsett av providers (Intl, Theme, ErrorBoundary, QueryClient, ds-react Provider) og bootstrap (Faro, dayjs, countries) for alle fp-apper.",
     "main": "index.ts",
     "type": "module",
     "types": "index.ts",

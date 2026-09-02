@@ -13,7 +13,6 @@ interface Props {
 }
 
 interface State {
-    eventId: string | null;
     hasError: boolean;
     errorInfo: ErrorInfo | null;
     errorMessage: string | undefined;
@@ -22,12 +21,12 @@ interface State {
 export class ErrorBoundary extends Component<Props, State> {
     constructor(props: Props) {
         super(props);
-        this.state = { eventId: null, hasError: false, errorInfo: null, errorMessage: undefined };
+        this.state = { hasError: false, errorInfo: null, errorMessage: undefined };
     }
 
     componentDidCatch(error: Error | null, errorInfo: ErrorInfo) {
-        const eventId = captureException(error);
-        this.setState({ eventId, errorInfo });
+        captureException(error);
+        this.setState({ errorInfo });
         this.setState({ hasError: true, errorMessage: error?.message });
     }
 

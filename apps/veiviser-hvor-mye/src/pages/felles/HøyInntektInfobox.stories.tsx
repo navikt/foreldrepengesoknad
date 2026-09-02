@@ -12,20 +12,20 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        maxÅrslønnDekket: 700000,
+        maxÅrslønnDekket: 700_000,
     },
 };
 
 export const HarGråBakgrunn: Story = {
     args: {
-        maxÅrslønnDekket: 700000,
+        maxÅrslønnDekket: 700_000,
         isGray: true,
     },
 };
 
 export const VisKrIkon: Story = {
     args: {
-        maxÅrslønnDekket: 700000,
+        maxÅrslønnDekket: 700_000,
         showKrIcon: true,
     },
 };

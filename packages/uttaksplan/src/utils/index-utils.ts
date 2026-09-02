@@ -4,8 +4,10 @@
  * ./flerbarnsdager, ./periode-utils, ./intl, ./delt-uttak, ./ikke-delt-uttak).
  *
  * Desse filene har ingen tunge avhengigheiter (React-UI, kalender,
- * forslagsmotor osv.) og kan derfor trygt importerast eagerly frå kode
- * utanfor steps/uttaksplan/**, i motsetning til hovudbarrelen i ../../index.ts.
+ * forslagsmotor, uttaksplan-context osv.) og kan derfor trygt importerast
+ * eagerly frå kode utanfor steps/uttaksplan/**, i motsetning til
+ * hovudbarrelen i ../../index.ts. Reine tellefunksjonar ligg difor i
+ * kvoteBeregning.ts, ikkje i kvoteOppsummeringUtils.tsx (som har hooks).
  *
  * Dei originale filene er ikkje flytta hit, sidan dei har mange interne
  * relative importerar innanfor pakken – denne fila re-eksporterer dei berre.
@@ -16,3 +18,9 @@ export * from './periodeUtils';
 export { nyUttaksplanMessages } from '../intl/nyUttaksplanMessages';
 export { deltUttak } from './forslag/deltUttak';
 export { ikkeDeltUttak } from './forslag/ikkeDeltUttak';
+export {
+    filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger,
+    finnDinPlanKvoteRader,
+    summerDagerIPerioder,
+    type DinPlanKvoteRad,
+} from './kvoteBeregning';

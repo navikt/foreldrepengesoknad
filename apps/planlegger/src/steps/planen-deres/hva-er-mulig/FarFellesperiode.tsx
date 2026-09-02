@@ -20,6 +20,7 @@ export const FarFellesperiode = ({ hvemPlanlegger, barnet }: Props) => {
     const erAdopsjon = erBarnetAdoptert(barnet);
     const erFedre = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR;
     const erMedmor = hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR;
+    const erMorOgFar = hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR;
 
     return (
         <HStack gap="space-20" wrap={false}>
@@ -44,17 +45,21 @@ export const FarFellesperiode = ({ hvemPlanlegger, barnet }: Props) => {
                             />
                         </Heading>
                         <BodyLong>
-                            <FormattedMessage
-                                id="HvaErMulig.FarFellesperiode.Tekst.Adopsjon"
-                                values={{
-                                    hvem: capitalizeFirstLetter(finnSøker1Tekst(intl, hvemPlanlegger)),
-                                    erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
-                                    erFar: finnSøker2Tekst(intl, hvemPlanlegger),
-                                    erMedmor,
-                                    erFedre,
-                                    erAdopsjon,
-                                }}
-                            />
+                            {erMorOgFar && barnet.antallBarn !== '1' ? (
+                                <FormattedMessage id="HvaErMulig.FarFellesperiode.TekstMorOgFarFlerbarnsdager" />
+                            ) : (
+                                <FormattedMessage
+                                    id="HvaErMulig.FarFellesperiode.Tekst.Adopsjon"
+                                    values={{
+                                        hvem: capitalizeFirstLetter(finnSøker1Tekst(intl, hvemPlanlegger)),
+                                        erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
+                                        erFar: finnSøker2Tekst(intl, hvemPlanlegger),
+                                        erMedmor,
+                                        erFedre,
+                                        erAdopsjon,
+                                    }}
+                                />
+                            )}
                         </BodyLong>
                     </>
                 ) : (
@@ -66,17 +71,21 @@ export const FarFellesperiode = ({ hvemPlanlegger, barnet }: Props) => {
                             />
                         </Heading>
                         <BodyLong>
-                            <FormattedMessage
-                                id="HvaErMulig.FarFellesperiode.Tekst"
-                                values={{
-                                    hvem: capitalizeFirstLetter(finnSøker1Tekst(intl, hvemPlanlegger)),
-                                    erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
-                                    erFar: finnSøker2Tekst(intl, hvemPlanlegger),
-                                    erMedmor,
-                                    erFedre,
-                                    erAdopsjon,
-                                }}
-                            />
+                            {erMorOgFar && barnet.antallBarn !== '1' ? (
+                                <FormattedMessage id="HvaErMulig.FarFellesperiode.TekstMorOgFarFlerbarnsdager" />
+                            ) : (
+                                <FormattedMessage
+                                    id="HvaErMulig.FarFellesperiode.Tekst"
+                                    values={{
+                                        hvem: capitalizeFirstLetter(finnSøker1Tekst(intl, hvemPlanlegger)),
+                                        erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
+                                        erFar: finnSøker2Tekst(intl, hvemPlanlegger),
+                                        erMedmor,
+                                        erFedre,
+                                        erAdopsjon,
+                                    }}
+                                />
+                            )}
                         </BodyLong>
                     </>
                 )}

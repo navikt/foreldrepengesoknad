@@ -38,12 +38,12 @@ interface AdoptertAnnetBarn {
 
 export type BarnetFormValues = FødtBarn | UfødtBarn | AdoptertStebarn | AdoptertAnnetBarn | IkkeUtfyltTypeBarn;
 
-export const erFødtBarn = (barn: BarnetFormValues): barn is FødtBarn => (barn as FødtBarn).erBarnetFødt;
+export const erFødtBarn = (barn: BarnetFormValues): barn is FødtBarn => 'erBarnetFødt' in barn && barn.erBarnetFødt;
 
-export const erUfødtBarn = (barn: BarnetFormValues): barn is UfødtBarn => (barn as UfødtBarn).erBarnetFødt === false;
+export const erUfødtBarn = (barn: BarnetFormValues): barn is UfødtBarn => 'erBarnetFødt' in barn && !barn.erBarnetFødt;
 
 export const erAdoptertStebarn = (barn: BarnetFormValues): barn is AdoptertStebarn =>
-    (barn as AdoptertStebarn).adopsjonAvEktefellesBarn;
+    'adopsjonAvEktefellesBarn' in barn && barn.adopsjonAvEktefellesBarn;
 
 export const erAdoptertAnnetBarn = (barn: BarnetFormValues): barn is AdoptertAnnetBarn =>
-    (barn as AdoptertAnnetBarn).adopsjonAvEktefellesBarn === false;
+    'adopsjonAvEktefellesBarn' in barn && !barn.adopsjonAvEktefellesBarn;

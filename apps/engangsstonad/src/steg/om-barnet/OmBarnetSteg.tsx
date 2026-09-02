@@ -38,7 +38,7 @@ export const OmBarnetSteg = ({ kjønn, mellomlagreOgNaviger }: Props) => {
 
     const onSubmit = (formValues: FormValues) => {
         mapOgLagreOmBarnet(formValues);
-        if (formValues.erBarnetFødt === true) {
+        if (formValues.erBarnetFødt) {
             oppdaterDokumentasjon(undefined);
         }
         return navigator.goToNextDefaultStep();
@@ -71,7 +71,7 @@ export const OmBarnetSteg = ({ kjønn, mellomlagreOgNaviger }: Props) => {
 
 const resolveAntallBarn = (formValues: FormValues) =>
     formValues.antallBarn > 2 && formValues.antallBarnDropDown
-        ? Number.parseInt(formValues.antallBarnDropDown, 10)
+        ? Number(formValues.antallBarnDropDown)
         : formValues.antallBarn;
 
 const mapBarnFraFormTilDto = (formValues: FormValues, situasjon: Søkersituasjon['situasjon']): BarnDto => {

@@ -155,7 +155,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
                                 visEtternavn
                             />
                         )}
-                        {kanIkkeOppgis !== true && <AnnenForelderOppgittPanel rolle={rolle} barn={barn} />}
+                        {!kanIkkeOppgis && <AnnenForelderOppgittPanel rolle={rolle} barn={barn} />}
                         <StepButtonsHookForm
                             goToPreviousStep={navigator.goToPreviousDefaultStep}
                             onAvsluttOgSlett={avbrytSøknad}

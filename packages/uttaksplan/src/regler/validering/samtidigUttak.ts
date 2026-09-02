@@ -92,12 +92,13 @@ const lagRegler = (intl: IntlShape): ReadonlyArray<Valideringsregel<SamtidigUtta
         id: 'samtidigUttak.toKvoterMerEnn100Prosent',
         beskrivelse:
             'Når kombinert uttak er over 100 %, kan ikke begge foreldre ta sin egen kvote (mødrekvote og ' +
-            'fedrekvote) samtidig — bare én av dem kan bruke kvote.',
+            'fedrekvote) samtidig — bare én av dem kan bruke kvote. Unntak: flerbarnsdager.',
         erBrutt: (k) =>
             k.kombinertUttaksprosent > 100 &&
             k.kombinertUttaksprosent <= 150 &&
             k.kontoTypeFarMedmor === 'FEDREKVOTE' &&
-            k.kontoTypeMor === 'MØDREKVOTE',
+            k.kontoTypeMor === 'MØDREKVOTE' &&
+            !k.ønskerFlerbarnsdager,
         feilmelding: intl.formatMessage({
             id: 'LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.ToKvoterMerEnn100Prosent',
         }),

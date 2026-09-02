@@ -44,6 +44,7 @@ dayjs.extend(isSameOrBefore);
 // kvoteoppsummering). Den lastes derfor lazy, siden den kun vises for FORELDREPENGER-saker,
 // slik at brukere med SVANGERSKAPSPENGER- eller ENGANGSSTØNAD-saker ikke trenger disse bytene.
 const DinPlan = lazy(() =>
+    // eslint-disable-next-line unicorn/prefer-await
     import('../../sections/din-plan/DinPlan.tsx').then((module) => ({ default: module.DinPlan })),
 );
 
@@ -53,7 +54,7 @@ interface Props {
 
 const finnSøknadstidspunkt = (tidslinjehendelser: TidslinjeHendelseDto_fpoversikt[]) => {
     const nySøknadHendelse = [...tidslinjehendelser]
-        .sort((t1, t2) => (dayjs(t1.opprettet).isBefore(t2.opprettet, 'day') ? 1 : -1))
+        .toSorted((t1, t2) => (dayjs(t1.opprettet).isBefore(t2.opprettet, 'day') ? 1 : -1))
         .find((th) => th.tidslinjeHendelseType === 'FØRSTEGANGSSØKNAD_NY');
     return nySøknadHendelse
         ? nySøknadHendelse.opprettet
@@ -113,8 +114,6 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
         gjeldendeSak?.ytelse === 'FORELDREPENGER' &&
         (søknadstidspunkt ? dayjs().diff(dayjs(søknadstidspunkt), 'minute') < 5 : false);
 
-    const harMinstEttArbeidsforhold = søkerinfo.harArbeidsforhold;
-
     if (!gjeldendeSak) {
         return (
             <Alert variant="warning">
@@ -122,6 +121,8 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
             </Alert>
         );
     }
+
+    const harMinstEttArbeidsforhold = søkerinfo.harArbeidsforhold;
 
     return (
         <VStack gap="space-16">

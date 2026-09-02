@@ -906,7 +906,7 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
         expect(screen.getByText('2 av disse ukene')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
-        expect(screen.getByText('Hvis barnet er innlagt på sykehus før termindato')).toBeInTheDocument();
+        expect(screen.getByText('Hvis barnet blir innlagt på sykehus de første 6 ukene etter fødsel.')).toBeInTheDocument();
         expect(screen.getByText('Hvis du blir syk de første seks ukene med foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Hvis du blir syk eller innlagt på helseinstitusjon')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
@@ -1031,8 +1031,8 @@ describe('Fordeling - MorDeltUttakTvillingerFødt', () => {
         expect(screen.getAllByText('brukes når som helst før barna fyller 3 år.', { exact: false })).toHaveLength(3);
 
         await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
-        expect(screen.getByText('Hvis barna er innlagt på sykehus før termindato')).toBeInTheDocument();
-
+        expect(screen.getByText('Hvis barna blir innlagt på sykehus de første 6 ukene etter fødsel.')).toBeInTheDocument();
+        
         expect(
             screen.getByText(
                 'Dere kan velge om dere vil ha foreldrepenger samtidig i opp til 17 uker fordi dere har fått tvillinger.',
@@ -1042,7 +1042,6 @@ describe('Fordeling - MorDeltUttakTvillingerFødt', () => {
 
         await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
         expect(screen.queryByText('Hvis barnet blir født før svangerskapsuke 33')).not.toBeInTheDocument();
-
         expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
         expect(screen.getByText('Jeg vil ha hele fellesperioden')).toBeInTheDocument();
 
@@ -1083,6 +1082,10 @@ describe('Fordeling - MorDeltUttakFarSøkteMorsKvoteOgFellesperiode', () => {
 
         await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
         expect(screen.getByText('Hvis barnet blir født før svangerskapsuke 33')).toBeInTheDocument();
+
+        // Far (annen part) har allerede tatt ut perioder, så useUttaksplanForslag kan uansett
+        // ikke generere noe forslag - da skal ikke spørsmålet om startdato vises.
+        expect(screen.queryByText('Når vil du starte permisjonen din med foreldrepenger?')).not.toBeInTheDocument();
     });
 });
 
@@ -1117,7 +1120,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021', () => {
         expect(screen.queryByText('På fødselsdato')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
-        expect(screen.queryByText('Hvis barnet er innlagt på sykehus før termindato')).not.toBeInTheDocument();
+        expect(screen.queryByText('Hvis barnet blir innlagt på sykehus de første 6 ukene etter fødsel.')).not.toBeInTheDocument();
         expect(screen.queryByText('Hvis du blir syk de første seks ukene med foreldrepenger')).not.toBeInTheDocument();
         expect(screen.queryByText('Hvis du blir syk eller innlagt på helseinstitusjon')).not.toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
@@ -1349,10 +1352,12 @@ describe('Fordeling - FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode', () => 
         ).toBeInTheDocument();
         expect(screen.getByText('Hannes siste dag med foreldrepenger er mandag 12. august 2024.')).toBeInTheDocument();
         expect(screen.getByText('Fra Hanne sin søknad.')).toBeInTheDocument();
-        expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
-        expect(screen.getByText('Da barnet ble født')).toBeInTheDocument();
-        expect(screen.getByText('Første dag etter Hanne, 13. august 2024')).toBeInTheDocument();
-        expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+        // Hanne (annen part) har allerede tatt ut perioder, så useUttaksplanForslag kan uansett
+        // ikke generere noe forslag - da skal ikke spørsmålet om startdato vises.
+        expect(screen.queryByText('Når vil du starte permisjonen din med foreldrepenger?')).not.toBeInTheDocument();
+        expect(screen.queryByText('Da barnet ble født')).not.toBeInTheDocument();
+        expect(screen.queryByText('Første dag etter Hanne, 13. august 2024')).not.toBeInTheDocument();
+        expect(screen.queryByText('Jeg vil velge en annen dato')).not.toBeInTheDocument();
     });
 });
 describe('Fordeling - MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80', () => {

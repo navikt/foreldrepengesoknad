@@ -229,7 +229,7 @@ describe('erSammePeriodeInkludertDatoer', () => {
 
             // Simulerer filteret i UttaksplanForm: inkluder saksperioder som IKKE finnes i opprinneligPlan
             const uttaksplanMedKunNyeEllerEndredePerioder = uttaksplan.filter(
-                (p) => p.resultat === undefined || !opprinneligPlan.some((o) => erSammePeriodeInkludertDatoer(p, o)),
+                (p) => p.resultat === undefined || opprinneligPlan.every((o) => !erSammePeriodeInkludertDatoer(p, o)),
             );
 
             expect(uttaksplanMedKunNyeEllerEndredePerioder).toHaveLength(1);
@@ -241,7 +241,7 @@ describe('erSammePeriodeInkludertDatoer', () => {
             const uttaksplan = [A, B, C]; // ingenting endret
 
             const uttaksplanMedKunNyeEllerEndredePerioder = uttaksplan.filter(
-                (p) => p.resultat === undefined || !opprinneligPlan.some((o) => erSammePeriodeInkludertDatoer(p, o)),
+                (p) => p.resultat === undefined || opprinneligPlan.every((o) => !erSammePeriodeInkludertDatoer(p, o)),
             );
 
             expect(uttaksplanMedKunNyeEllerEndredePerioder).toHaveLength(0);
@@ -253,7 +253,7 @@ describe('erSammePeriodeInkludertDatoer', () => {
             const uttaksplan = [A, B, C, nyPeriode];
 
             const uttaksplanMedKunNyeEllerEndredePerioder = uttaksplan.filter(
-                (p) => p.resultat === undefined || !opprinneligPlan.some((o) => erSammePeriodeInkludertDatoer(p, o)),
+                (p) => p.resultat === undefined || opprinneligPlan.every((o) => !erSammePeriodeInkludertDatoer(p, o)),
             );
 
             expect(uttaksplanMedKunNyeEllerEndredePerioder).toHaveLength(1);

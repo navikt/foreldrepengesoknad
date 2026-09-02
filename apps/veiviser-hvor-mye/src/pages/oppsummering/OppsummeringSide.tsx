@@ -50,9 +50,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskvoter, satser }: P
     const { goToRoute } = useVeiviserNavigator();
     const { ref } = useScrollBehaviour();
 
-    const gjennomsnittslønnPerMåned = Number.parseFloat(
-        notEmpty(finnGjennomsnittsMånedslønn(notEmpty(arbeidssituasjon))),
-    );
+    const gjennomsnittslønnPerMåned = Number(notEmpty(finnGjennomsnittsMånedslønn(notEmpty(arbeidssituasjon))));
     const årslønn = gjennomsnittslønnPerMåned * 12;
 
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
@@ -226,7 +224,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskvoter, satser }: P
                                                 <BodyShort>
                                                     {formatCurrencyWithKr(
                                                         isNumber(arbeidssituasjon.lønnMåned1)
-                                                            ? Number.parseInt(arbeidssituasjon.lønnMåned1, 10)
+                                                            ? Number(arbeidssituasjon.lønnMåned1)
                                                             : 0,
                                                     )}
                                                 </BodyShort>
@@ -240,7 +238,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskvoter, satser }: P
                                                 <BodyShort>
                                                     {formatCurrencyWithKr(
                                                         isNumber(arbeidssituasjon.lønnMåned2)
-                                                            ? Number.parseInt(arbeidssituasjon.lønnMåned2, 10)
+                                                            ? Number(arbeidssituasjon.lønnMåned2)
                                                             : 0,
                                                     )}
                                                 </BodyShort>
@@ -252,7 +250,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskvoter, satser }: P
                                                 <BodyShort>
                                                     {formatCurrencyWithKr(
                                                         isNumber(arbeidssituasjon.lønnMåned3)
-                                                            ? Number.parseInt(arbeidssituasjon.lønnMåned3, 10)
+                                                            ? Number(arbeidssituasjon.lønnMåned3)
                                                             : 0,
                                                     )}
                                                 </BodyShort>
