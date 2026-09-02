@@ -1,6 +1,7 @@
 {
     "inntektsinformasjon.arbeidsforhold.label": "Your employment relationships and sources of income",
     "inntektsinformasjon.frilansoppdrag.visOppdrag": "Show my assignments",
+    "inntektsinformasjon.frilansoppdrag.oppsummering": "{antall, plural, one {# assignment} other {# assignments}}: {fom} - {tom}",
     "inntektsinformasjon.egenNæring.label": "Work as a self-employed person",
     "inntektsinformasjon.arbeidsforhold.info": "Are there errors or omissions in the overview?",
     "inntektsinformasjon.arbeidsforhold.tekst": "If you discover incorrect or missing information, ask your employer to register the correct information in the Employer and Employee Register. We retrieve the information from there.",

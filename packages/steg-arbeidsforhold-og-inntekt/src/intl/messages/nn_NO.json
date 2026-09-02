@@ -1,6 +1,7 @@
 {
     "inntektsinformasjon.arbeidsforhold.label": "Dine arbeidsforhold og inntektskjelder",
     "inntektsinformasjon.frilansoppdrag.visOppdrag": "Vis oppdraga mine",
+    "inntektsinformasjon.frilansoppdrag.oppsummering": "{antall, plural, one {# oppdrag} other {# oppdrag}}: {fom} - {tom}",
     "inntektsinformasjon.egenNæring.label": "Arbeid som sjølvstendig næringsdrivande",
     "inntektsinformasjon.arbeidsforhold.info": "Er det feil eller manglar i oversikta?",
     "inntektsinformasjon.arbeidsforhold.tekst": "Dersom du oppdagar feil eller manglande opplysningar, må du be arbeidsgivaren din registrere rett informasjon i Arbeidsgivar- og arbeidstakarregisteret. Vi hentar opplysningane derfrå.",
