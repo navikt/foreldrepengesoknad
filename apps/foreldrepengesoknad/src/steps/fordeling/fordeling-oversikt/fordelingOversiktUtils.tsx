@@ -21,6 +21,7 @@ import { Link } from '@navikt/ds-react';
 import { links } from '@navikt/fp-constants';
 import {
     Barn,
+    Familiesituasjon,
     KontoBeregningDto,
     Minsteretter,
     NavnPåForeldre,
@@ -31,7 +32,13 @@ import {
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-types';
-import { Uttaksdagen, Uttaksperioden, capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
+import {
+    Uttaksdagen,
+    Uttaksperioden,
+    capitalizeFirstLetter,
+    getFamiliesituasjon,
+    getNavnGenitivEierform,
+} from '@navikt/fp-utils';
 
 import { getBrukteDager } from './brukteDagerUtils';
 
@@ -270,26 +277,26 @@ const getAntallDagerSøkerensKvoteBruktAvAnnenPart = (
     kontoer: KontoBeregningDto,
     erFarEllerMedmor: boolean,
     familiehendelsesdato: string,
-    erFødsel: boolean,
+    familiesituasjon: Familiesituasjon,
 ): number => {
     if (uttaksplanAnnenPart === undefined || uttaksplanAnnenPart.length === 0) {
         return 0;
     }
     return erFarEllerMedmor
-        ? getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato, erFødsel).farMedmor.dagerEgneKvoter
-        : getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato, erFødsel).mor.dagerEgneKvoter;
+        ? getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato, familiesituasjon).farMedmor.dagerEgneKvoter
+        : getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato, familiesituasjon).mor.dagerEgneKvoter;
 };
 
 const getAntallDagerFellesperiodeBruktAvAnnenPart = (
     uttaksplanAnnenPart: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
     kontoer: KontoBeregningDto,
     familiehendelsesdato: string,
-    erFødsel: boolean,
+    familiesituasjon: Familiesituasjon,
 ): number => {
     if (uttaksplanAnnenPart === undefined || uttaksplanAnnenPart.length === 0) {
         return 0;
     }
-    return getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato, erFødsel).mor.dagerFellesperiode;
+    return getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato, familiesituasjon).mor.dagerFellesperiode;
 };
 
 const getFordelingFelles = (
@@ -785,7 +792,7 @@ export const getFordelingFraKontoer = (
     const erAleneomsorg = getErAleneOmOmsorg(annenForelder);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const erFødsel = søkersituasjon.situasjon === 'fødsel';
+    const familiesituasjon = getFamiliesituasjon(barn);
     const fordelingsinformasjon = [];
     const dagerMødrekvote = getAntallUkerMødrekvote(kontoer) * 5;
     const dagerFedrekvote = getAntallUkerFedrekvote(kontoer) * 5;
@@ -795,7 +802,7 @@ export const getFordelingFraKontoer = (
         uttaksplanAnnenPart,
         kontoer,
         familiehendelsesdato,
-        erFødsel,
+        familiesituasjon,
     );
     const erMor = !erFarEllerMedmor;
     const erMorOgFarHarIkkeKunRettIEØS = erMor && !annenPartHarKunRettIEØS;
@@ -816,7 +823,7 @@ export const getFordelingFraKontoer = (
                   kontoer,
                   erFarEllerMedmor,
                   familiehendelsesdato,
-                  erFødsel,
+                  familiesituasjon,
               );
         const fordelingMor = getFordelingMor(
             kontoer,
@@ -853,7 +860,7 @@ export const getFordelingFraKontoer = (
                   kontoer,
                   erFarEllerMedmor,
                   familiehendelsesdato,
-                  erFødsel,
+                  familiesituasjon,
               )
             : undefined;
         const fordelingFar = getFordelingFedrekvote(
