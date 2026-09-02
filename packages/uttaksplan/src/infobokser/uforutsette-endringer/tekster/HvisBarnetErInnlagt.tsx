@@ -7,7 +7,7 @@ import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 
-export const HvisBarnetErSykt = () => {
+export const HvisBarnetErInnlagt = () => {
     const {
         foreldreInfo: { rettighetType },
     } = useUttaksplanData();
@@ -29,11 +29,11 @@ export const HvisBarnetErSykt = () => {
             </div>
             <div>
                 <Heading size="small" level="4">
-                    <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErSykt" />
+                    <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErInnlagt" />
                 </Heading>
                 <BodyLong>
                     <FormattedMessage
-                        id="UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErSykt.Tekst"
+                        id="UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErInnlagt.Tekst"
                         values={{ erAleneforsørger: kunEnPartSkalHa }}
                     />
                 </BodyLong>

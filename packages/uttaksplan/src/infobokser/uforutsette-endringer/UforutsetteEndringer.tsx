@@ -8,9 +8,9 @@ import { erFødtFørUke33 } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { FødtFørUke33 } from './tekster/FødtFørUke33';
+import { HvisBarnetErInnlagt } from './tekster/HvisBarnetErInnlagt';
 import { HvisBarnetErPrematurInnlagtEtterTermin } from './tekster/HvisBarnetErPrematurInnlagtEtterTermin';
 import { HvisBarnetErPrematurInnlagtFørTermin } from './tekster/HvisBarnetErPrematurInnlagtFørTermin';
-import { HvisBarnetErSykt } from './tekster/HvisBarnetErSykt';
 import { HvisBarnetErSyktEllerInnlagt } from './tekster/HvisBarnetErSyktEllerInnlagt';
 import { HvisDuBlirSyk } from './tekster/HvisDuBlirSyk';
 import { HvisMorBlirSyk } from './tekster/HvisMorBlirSyk';
@@ -79,7 +79,7 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
                                 {/* Her må annen inn: */}
                                 {((erAleneforsørger && !erMorDelAvSøknaden) ||
                                     erFarOgFar ||
-                                    kunFarEllerMedmorHarRett) && <HvisBarnetErSyktEllerInnlagt />}
+                                    kunFarEllerMedmorHarRett) && <HvisBarnetErInnlagt />}
                                 {fødtFørUke33 &&
                                     ((beggeHarRett && !erFarOgFar) ||
                                         kunMorHarRett ||
@@ -94,13 +94,9 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
                                         kunMorHarRett ||
                                         (erAleneforsørger && erMorDelAvSøknaden)) && (
                                         <>
-                                            <HvisBarnetErSyktEllerInnlagt />
+                                            <HvisBarnetErInnlagt />
                                         </>
                                     )}
-
-                                {((erAleneforsørger && erMorDelAvSøknaden) ||
-                                    kunMorHarRett ||
-                                    (beggeHarRett && !erFarOgFar)) && <HvisBarnetErSykt />}
 
                                 <NyttBarnFørTreÅr />
                             </>
