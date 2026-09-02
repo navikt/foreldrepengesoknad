@@ -21,8 +21,6 @@ export type DinPlanKvoteRad = {
 };
 
 // Rekkefølga radene skal visast i «Du har planlagt»-lista i oppsummeringssteget.
-
-// Rekkefølga radene skal visast i «Du har planlagt»-lista i oppsummeringssteget.
 const DIN_PLAN_KVOTE_REKKEFØLGE: KontoTypeUttak[] = [
     'FORELDREPENGER_FØR_FØDSEL',
     'MØDREKVOTE',
@@ -31,17 +29,6 @@ const DIN_PLAN_KVOTE_REKKEFØLGE: KontoTypeUttak[] = [
     'FORELDREPENGER',
     'FELLESPERIODE',
 ];
-
-/**
- * Finn kor mange dagar søkjaren har planlagt å bruke av kvar stønadskonto,
- * samanlikna med kor mange dagar som er tilgjengelege totalt på den kontoen.
- * Brukt til å byggja opp «Du har planlagt»-lista i oppsummeringssteget.
- *
- * Reknar kun med søkjaren sine eigne periodar (ikkje periodar den andre
- * forelderen har lagt inn i den same uttaksplanen), sidan det er søkjaren sin
- * eigen søknad som skal oppsummerast her. Ein konto blir kun teken med dersom
- * søkjaren faktisk har planlagt å bruke noko av han.
- */
 
 /**
  * Finn kor mange dagar søkjaren har planlagt å bruke av kvar stønadskonto,
