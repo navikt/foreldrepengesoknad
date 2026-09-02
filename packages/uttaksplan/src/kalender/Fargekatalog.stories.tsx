@@ -5,7 +5,6 @@ import { ReactNode } from 'react';
 import { BodyShort, VStack } from '@navikt/ds-react';
 
 import {
-    KontoDto,
     UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriodeResultat_fpoversikt,
     UttakPeriode_fpoversikt,
@@ -69,13 +68,6 @@ const PLEIEPENGE_AVSLAG: UttakPeriodeResultat_fpoversikt = {
     årsak: 'AVSLAG_FRATREKK_PLEIEPENGER',
 };
 
-// Standard BFHR-kontoar (100 % dekningsgrad): 50 aktivitetsfrie stønadsdagar
-// etter ftrl. § 14-14 tredje ledd, resten med aktivitetskrav.
-const KATALOG_KONTOER: KontoDto[] = [
-    { konto: 'AKTIVITETSFRI_KVOTE', dager: 50 },
-    { konto: 'FORELDREPENGER', dager: 150 },
-];
-
 // ---------------------------------------------------------------------------
 // Spesifikasjon — hver rad definerer mock-input, resten blir utledet
 // ---------------------------------------------------------------------------
@@ -87,8 +79,6 @@ type FargeSpec = {
     /** Mock-periode for kalender (getKalenderFargeForPeriode + getLegendLabelFromPeriode) */
     kalenderPeriode?: UttaksplanperiodeMedKunTapteDager;
     kalenderErFarEllerMedmor?: boolean;
-    /** Stønadskontoar som klassifiseringa av BFHR-periodar skal gjerast mot */
-    kalenderKontoer?: KontoDto[];
     /** Statisk kalender-verdi for ting som ikke kan utledes (ikon-markører, interaksjonsfarger) */
     kalenderStatisk?: { fargekode: CalendarPeriodColor | null; ikon?: ReactNode; legendLabel: string };
     /** Mock-perioder for liste (finnBakgrunnsfarge + getBorderFarge + getIkon) */
@@ -116,18 +106,11 @@ const beregnEntry = (s: FargeSpec): FargeEntry => ({
     beskrivelse: s.beskrivelse,
     kalender: s.kalenderPeriode
         ? {
-              fargekode: getKalenderFargeForPeriode(
+              fargekode: getKalenderFargeForPeriode(s.kalenderPeriode, s.kalenderErFarEllerMedmor ?? false, [
                   s.kalenderPeriode,
-                  s.kalenderErFarEllerMedmor ?? false,
-                  [s.kalenderPeriode],
-                  s.kalenderKontoer ?? KATALOG_KONTOER,
-              ),
+              ]),
               legendLabel:
-                  getLegendLabelFromPeriode(
-                      s.kalenderPeriode,
-                      s.kalenderErFarEllerMedmor ?? false,
-                      s.kalenderKontoer ?? KATALOG_KONTOER,
-                  ) ?? '(ingen)',
+                  getLegendLabelFromPeriode(s.kalenderPeriode, s.kalenderErFarEllerMedmor ?? false) ?? '(ingen)',
           }
         : (s.kalenderStatisk ?? { fargekode: null, legendLabel: '—' }),
     liste: s.listePerioder

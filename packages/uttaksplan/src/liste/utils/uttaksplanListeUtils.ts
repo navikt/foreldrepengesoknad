@@ -94,11 +94,6 @@ export const getStønadskvoteNavn = (intl: IntlShape, options: GetStønadskvoteN
     // aktivitetskrav-tekst basert på mors aktivitet. Gjelder kun fars egne perioder
     // (ikke EØS, avslåtte eller aleneomsorg), slik at mors fellesperiode ikke
     // feilmerkes når far ser oversikten sin.
-    //
-    // TFP-6973: Kvoteregnskapet klassifiserer vedtatte perioder på
-    // resultat.trekkerMinsterett (se getUttaksKontoType). Her held vi på
-    // morsAktivitet fordi avslåtte perioder allereie er ekskluderte via erAvslått,
-    // og det er nettopp dei som kan avvike mellom dei to signala.
     const erBareFarHarRettForeldrepenger =
         !erAvslått &&
         !erEøsPeriode &&
