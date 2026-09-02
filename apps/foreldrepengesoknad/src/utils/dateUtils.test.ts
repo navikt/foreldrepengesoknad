@@ -165,6 +165,50 @@ describe('dateUtils', () => {
             expect(endringstidspunkt).toBe(undefined);
         });
 
+        it('Skal returnere undefined for en uendret gradert periode etter mellomlagring', () => {
+            const gradertPlan: UttakPeriode_fpoversikt[] = [
+                {
+                    fom: '2019-09-10',
+                    tom: '2019-09-30',
+                    flerbarnsdager: false,
+                    forelder: 'MOR',
+                    gradering: {
+                        arbeidstidprosent: 50,
+                        aktivitet: {
+                            type: 'ORDINÆRT_ARBEID',
+                            arbeidsgiver: { id: '123456789', type: 'ORGANISASJON' },
+                        },
+                    },
+                },
+            ];
+            const mellomlagretPlan = structuredClone(gradertPlan);
+
+            expect(mellomlagretPlan[0]!.gradering).not.toBe(gradertPlan[0]!.gradering);
+            expect(getEndringstidspunktNy(gradertPlan, mellomlagretPlan)).toBeUndefined();
+        });
+
+        it('Skal oppdage at arbeidsgiveren i en gradert periode er endret', () => {
+            const opprinneligGradertPeriode: UttakPeriode_fpoversikt = {
+                fom: '2019-09-10',
+                tom: '2019-09-30',
+                flerbarnsdager: false,
+                forelder: 'MOR',
+                gradering: {
+                    arbeidstidprosent: 50,
+                    aktivitet: {
+                        type: 'ORDINÆRT_ARBEID',
+                        arbeidsgiver: { id: '123456789', type: 'ORGANISASJON' },
+                    },
+                },
+            };
+            const endretGradertPeriode = structuredClone(opprinneligGradertPeriode);
+            endretGradertPeriode.gradering!.aktivitet!.arbeidsgiver!.id = '987654321';
+
+            expect(getEndringstidspunktNy([opprinneligGradertPeriode], [endretGradertPeriode])).toBe(
+                opprinneligGradertPeriode.fom,
+            );
+        });
+
         it('Skal finne endringstidspunkt gitt at det er ny periode i slutten', () => {
             const gradertPeriode: UttakPeriode_fpoversikt = {
                 fom: '2019-05-04',

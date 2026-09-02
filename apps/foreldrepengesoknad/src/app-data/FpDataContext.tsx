@@ -34,10 +34,16 @@ export enum ContextDataType {
     PERIODE_MED_FORELDREPENGER = 'PERIODE_MED_FORELDREPENGER',
     FORDELING = 'FORDELING',
     UTTAKSPLAN = 'UTTAKSPLAN',
+    OPPRINNELIG_UTTAKSPLAN = 'OPPRINNELIG_UTTAKSPLAN',
     HAR_JUSTERT_UTTAK_VED_FØDSEL = 'HAR_JUSTERT_UTTAK_VED_FØDSEL',
     VEDLEGG = 'VEDLEGG',
     KOMMER_FRA_PLANLEGGER = 'KOMMER_FRA_PLANLEGGER',
 }
+
+export type OpprinneligUttaksplan = {
+    saksnummer: string;
+    perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+};
 
 export type ContextDataMap = {
     [ContextDataType.APP_ROUTE]?: SøknadRoutes;
@@ -55,6 +61,7 @@ export type ContextDataMap = {
     [ContextDataType.PERIODE_MED_FORELDREPENGER]?: Dekningsgrad;
     [ContextDataType.FORDELING]?: Fordeling;
     [ContextDataType.UTTAKSPLAN]?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    [ContextDataType.OPPRINNELIG_UTTAKSPLAN]?: OpprinneligUttaksplan;
     [ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL]?: boolean;
     [ContextDataType.VEDLEGG]?: VedleggDataType;
     [ContextDataType.KOMMER_FRA_PLANLEGGER]?: boolean;

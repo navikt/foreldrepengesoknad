@@ -122,8 +122,12 @@ export const UttaksplanSteg = ({
     const annenPartVedtakQuery = useQuery({
         ...annenPartVedtakOptionsWrapped,
     });
+    const erAnnenPartVedtakAvklart = annenPartVedtakQuery.isSuccess || annenPartVedtakOptionsWrapped.enabled === false;
 
-    const uttaksplanForEksisterendeSak = useUttaksplanForEksisterendeSak(annenPartVedtakQuery.data?.perioder);
+    const uttaksplanForEksisterendeSak = useUttaksplanForEksisterendeSak(
+        annenPartVedtakQuery.data?.perioder,
+        erAnnenPartVedtakAvklart,
+    );
 
     const valgteStønadskvoter = tilgjengeligeStønadskvoterQuery.data;
 

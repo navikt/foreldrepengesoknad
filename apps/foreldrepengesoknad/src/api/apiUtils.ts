@@ -1,4 +1,4 @@
-import { ContextDataMap, ContextDataType } from 'appData/FpDataContext';
+import { ContextDataMap, ContextDataType, OpprinneligUttaksplan } from 'appData/FpDataContext';
 import dayjs from 'dayjs';
 import { AnnenForelder, isAnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
@@ -178,11 +178,11 @@ export const getSøknadsdataForInnsending = (
 ): ForeldrepengesøknadDto | EndringssøknadForeldrepengerDto => {
     const valgtEksisterendeSaksnr = hentData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
 
-    const eksisterendeSak = foreldrepengerSaker.find((sak) => sak.saksnummer === valgtEksisterendeSaksnr);
+    if (erEndringssøknad && foreldrepengerSaker.every((sak) => sak.saksnummer !== valgtEksisterendeSaksnr)) {
+        throw new Error('Finner ikke valgt sak for endringssøknad');
+    }
 
-    return erEndringssøknad
-        ? mapTilEndringssøknadDto(hentData, søkerinfo, eksisterendeSak)
-        : mapTilSøknadDto(hentData, søkerinfo);
+    return erEndringssøknad ? mapTilEndringssøknadDto(hentData, søkerinfo) : mapTilSøknadDto(hentData, søkerinfo);
 };
 
 export const mapTilSøknadDto = (
@@ -241,27 +241,22 @@ const mapSøkerInfoTilSøknadDto = (søkerinfo: FpPersonopplysningerDto_fpoversi
 export const mapTilEndringssøknadDto = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     søkerinfo: FpPersonopplysningerDto_fpoversikt,
-    eksisterendeSak?: FpSak_fpoversikt,
 ): EndringssøknadForeldrepengerDto => {
     const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
     const valgtEksisterendeSaksnr = notEmpty(hentData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR));
     const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN));
+    const opprinneligUttaksplan = hentData(ContextDataType.OPPRINNELIG_UTTAKSPLAN);
     const ønskerJustertUttakVedFødsel = hentData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
     const vedlegg = hentData(ContextDataType.VEDLEGG);
 
     const søkersNyePerioder = filtrerUtAnnenPartsPerioder(uttaksplan, søkersituasjon.rolle);
-    const eksisterendePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> = [];
 
-    if (eksisterendeSak?.gjeldendeVedtak?.perioder !== undefined) {
-        eksisterendePerioder.push(...eksisterendeSak.gjeldendeVedtak.perioder);
-    }
-    if (eksisterendeSak?.gjeldendeVedtak?.perioderAnnenpartEøs !== undefined) {
-        eksisterendePerioder.push(...eksisterendeSak.gjeldendeVedtak.perioderAnnenpartEøs);
-    }
-
-    const søkersEksisterendePerioder = filtrerUtAnnenPartsPerioder(eksisterendePerioder, søkersituasjon.rolle);
+    const søkersEksisterendePerioder = filtrerUtAnnenPartsPerioder(
+        finnOpprinneligPlan(opprinneligUttaksplan, valgtEksisterendeSaksnr),
+        søkersituasjon.rolle,
+    );
 
     const endringstidspunkt = getEndringstidspunktNy(søkersEksisterendePerioder, søkersNyePerioder);
 
@@ -295,6 +290,19 @@ export const mapTilEndringssøknadDto = (
             ønskerJustertUttakVedFødsel,
         },
     };
+};
+
+const finnOpprinneligPlan = (
+    opprinneligUttaksplan: OpprinneligUttaksplan | undefined,
+    valgtEksisterendeSaksnr: string,
+): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
+    if (opprinneligUttaksplan === undefined) {
+        throw new Error('Mangler opprinnelig uttaksplan for endringssøknad');
+    }
+    if (opprinneligUttaksplan.saksnummer !== valgtEksisterendeSaksnr) {
+        throw new Error('Opprinnelig uttaksplan tilhører ikke valgt sak');
+    }
+    return opprinneligUttaksplan.perioder;
 };
 
 const filtrerPerioderFraOgMedEndringstidspunkt = (
