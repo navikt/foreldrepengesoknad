@@ -1,5 +1,4 @@
 // Representasjon i søknadene
-import { CountryCode } from './genererteTyper';
 
 export type Utenlandsopphold = {
     harBoddUtenforNorgeSiste12Mnd: boolean;
@@ -9,5 +8,5 @@ export type Utenlandsopphold = {
 export type UtenlandsoppholdPeriode = {
     fom: string;
     tom: string;
-    landkode: CountryCode;
+    landkode: string;
 };

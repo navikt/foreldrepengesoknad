@@ -33,7 +33,7 @@ describe('<ArbeidIUtlandetSteg>', () => {
         expect(await screen.findByText('Hvilket land har du jobbet i?')).toBeInTheDocument();
 
         const hvilkeLandInput = screen.getByLabelText('Hvilket land har du jobbet i?');
-        await userEvent.selectOptions(hvilkeLandInput, 'UA');
+        await userEvent.selectOptions(hvilkeLandInput, 'UKR');
         await userEvent.tab();
 
         expect(screen.getByText('Hva er navnet på arbeidsgiveren din?')).toBeInTheDocument();
@@ -69,7 +69,7 @@ describe('<ArbeidIUtlandetSteg>', () => {
                     {
                         type: 'JOBB_I_UTLANDET',
                         arbeidsgiverNavn: 'Arbeidsgiver',
-                        land: 'UA',
+                        land: 'UKR',
                         pågående: false,
                         fom: '2022-12-30',
                         tom: '2023-12-30',

@@ -53,14 +53,14 @@ const TIDLIGERE_UTENLANDSOPPHOLD: UtenlandsoppholdPeriode[] = [
     {
         fom: '2023-01-01',
         tom: '2023-10-01',
-        landkode: 'SE',
+        landkode: 'SWE',
     },
 ];
 const SENERE_UTENLANDSOPPHOLD: UtenlandsoppholdPeriode[] = [
     {
         fom: '2025-01-01',
         tom: '2025-10-01',
-        landkode: 'SE',
+        landkode: 'SWE',
     },
 ];
 

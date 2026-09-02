@@ -9,7 +9,9 @@ import { FpSoknadProblemDetails, SvpPersonopplysningerDto_fpoversikt } from '@na
 
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './SvpDataContext';
 
-export const VERSJON_MELLOMLAGRING = 9;
+// Bumpet fra 9 til 10: landkoder i skjemaet gikk fra alpha-2 til alpha-3 (ISO 3166-1),
+// så eldre mellomlagret data må forkastes for å unngå at gamle 2-bokstavskoder blir sendt inn.
+export const VERSJON_MELLOMLAGRING = 10;
 
 export type SvpMellomlagretData = {
     version: number;

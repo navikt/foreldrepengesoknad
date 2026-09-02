@@ -182,19 +182,19 @@ export const HarTidligereOgFremtidigeUtenlandsopphold: Story = {
             {
                 fom: dayjs().format(ISO_DATE_FORMAT),
                 tom: dayjs().add(100, 'day').format(ISO_DATE_FORMAT),
-                landkode: 'SE',
+                landkode: 'SWE',
             },
             {
                 fom: dayjs().add(101, 'day').format(ISO_DATE_FORMAT),
                 tom: dayjs().add(200, 'day').format(ISO_DATE_FORMAT),
-                landkode: 'DK',
+                landkode: 'DNK',
             },
         ],
         tidligereUtenlandsopphold: [
             {
                 fom: dayjs().subtract(100, 'day').format(ISO_DATE_FORMAT),
                 tom: dayjs().format(ISO_DATE_FORMAT),
-                landkode: 'IS',
+                landkode: 'ISL',
             },
         ],
         mellomlagreOgNaviger: promiseAction(),

@@ -351,7 +351,7 @@ describe('<AnnenForelderSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                bostedsland: 'OM',
+                bostedsland: 'OMN',
                 erAleneOmOmsorg: true,
                 etternavn: 'Utvikler',
                 fnr: '05057923424',

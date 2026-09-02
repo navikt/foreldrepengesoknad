@@ -1,11 +1,10 @@
 import dayjs from 'dayjs';
-import * as countries from 'i18n-iso-countries';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { FormSummary } from '@navikt/ds-react';
 
 import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
-import { formatDate } from '@navikt/fp-utils';
+import { formatDate, getCountryName } from '@navikt/fp-utils';
 import { isToday } from '@navikt/fp-validation';
 
 const formaterDato = (dato: string, intl: IntlShape) => {
@@ -29,7 +28,7 @@ export const LandOppsummering = ({ utenlandsoppholdListe }: Props) => {
         <FormSummary.Answers>
             {[...utenlandsoppholdListe].sort(sortOpphold).map((opphold) => (
                 <FormSummary.Answer key={opphold.landkode}>
-                    <FormSummary.Label>{countries.getName(opphold.landkode, 'nb')}</FormSummary.Label>
+                    <FormSummary.Label>{getCountryName(opphold.landkode, intl.locale)}</FormSummary.Label>
                     <FormSummary.Value>
                         <FormattedMessage
                             id="LandOppsummering.periode"

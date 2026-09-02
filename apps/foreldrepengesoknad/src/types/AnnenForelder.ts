@@ -1,12 +1,10 @@
-import { CountryCode } from '@navikt/fp-types';
-
 export interface AnnenForelderOppgitt {
     kanIkkeOppgis: false;
     fornavn: string;
     etternavn: string;
     fnr: string;
     utenlandskFnr?: boolean;
-    bostedsland?: CountryCode;
+    bostedsland?: string;
     harRettPåForeldrepengerINorge?: boolean;
     harOppholdtSegIEØS?: boolean;
     harRettPåForeldrepengerIEØS?: boolean;

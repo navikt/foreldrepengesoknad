@@ -21,6 +21,7 @@ const {
     MorMedUtenlandsopphold,
     FarMedMorSomHarVedtak,
     MorMedArbeidsforholdOgAndreInntekter,
+    MorMedAndreInntekterJobbIUtlandet,
     MorMedAleneOmsorg,
     FarMedAleneOmsorg,
     ErEndringssøknad,
@@ -234,6 +235,18 @@ describe('<Oppsummering>', () => {
                 arbeidsforholdOgInntektDiv.getByText('Har du hatt andre inntektskilder de siste 10 månedene?'),
             ).getByText('Nei'),
         ).toBeInTheDocument();
+    });
+
+    it('Skal vise landnavn og ikke landkode for jobb i utlandet', async () => {
+        render(<MorMedAndreInntekterJobbIUtlandet />);
+
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        await userEvent.click(screen.getAllByText('Andre inntekter')[1]!);
+
+        expect(
+            checkAndGetParentDiv(screen.getByText('Hvilket land har du jobbet i?')).getByText('Sverige'),
+        ).toBeInTheDocument();
+        expect(screen.queryByText('SWE')).not.toBeInTheDocument();
     });
 
     it('Skal vise informasjon om uttaksplan', async () => {

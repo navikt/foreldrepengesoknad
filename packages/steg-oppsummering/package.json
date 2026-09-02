@@ -24,7 +24,6 @@
         "@navikt/fp-utils": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
         "dayjs": "catalog:",
-        "i18n-iso-countries": "catalog:",
         "react": "catalog:",
         "react-dom": "catalog:",
         "react-intl": "catalog:"

@@ -72,7 +72,6 @@ export type { no_nav_foreldrepenger_kontrakter_felles_kodeverk_AktivitetStatus a
 export type { TilkjentYtelsePeriode_fpoversikt } from './fpoversiktDtoGenerert';
 
 // Types from fpsoknadDtoGenerert
-export type { com_neovisionaries_i18n_CountryCode as CountryCode } from './fpsoknadDtoGenerert';
 export type { BrukerRolle } from './fpsoknadDtoGenerert';
 export type { EndringssøknadForeldrepengerDto } from './fpsoknadDtoGenerert';
 export type { Målform } from './fpsoknadDtoGenerert';

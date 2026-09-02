@@ -575,7 +575,7 @@ export const MorMedUtenlandsopphold: Story = {
         },
         utenlandsoppholdSenere: [
             {
-                landkode: 'SE',
+                landkode: 'SWE',
                 fom: dayjs().format(ISO_DATE_FORMAT),
                 tom: dayjs().add(100, 'days').format(ISO_DATE_FORMAT),
             },
@@ -583,7 +583,7 @@ export const MorMedUtenlandsopphold: Story = {
 
         utenlandsoppholdTidligere: [
             {
-                landkode: 'SE',
+                landkode: 'SWE',
                 fom: dayjs().subtract(10, 'months').format(ISO_DATE_FORMAT),
                 tom: dayjs().subtract(1, 'days').format(ISO_DATE_FORMAT),
             },
@@ -667,7 +667,7 @@ export const MorMedSelvstendigNæringsdrivendeUtenDiverse: Story = {
             fom: '2018-01-01',
             tom: '2021-01-01',
             næringstype: 'FISKE',
-            registrertILand: 'SE',
+            registrertILand: 'SWE',
             registrertINorge: false,
             harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
             hattVarigEndringAvNæringsinntektSiste4Kalenderår: false,
@@ -694,7 +694,7 @@ export const MorMedAndreInntekterJobbIUtlandet: Story = {
                 fom: '2018-01-01',
                 tom: '2021-01-01',
                 arbeidsgiverNavn: 'Statoil',
-                land: 'SE',
+                land: 'SWE',
             },
             {
                 type: AnnenInntektType.MILITÆRTJENESTE,
