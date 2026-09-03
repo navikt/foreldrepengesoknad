@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 import { KontoDto, Situasjon, Tidsperiode, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
@@ -114,27 +116,35 @@ const ikkeDeltUttakFødselMor = ({
     famDato,
     foreldrepengerKonto,
     foreldrePengerFørFødselKonto,
+    startdato,
 }: {
     famDato: string;
     foreldrepengerKonto: KontoDto;
-    foreldrePengerFørFødselKonto: KontoDto;
+    foreldrePengerFørFødselKonto: KontoDto | undefined;
+    startdato?: string;
 }): UttakPeriode_fpoversikt[] => {
-    const førsteUttaksdag = Uttaksdagen.denneEllerNeste(famDato).getDato();
+    const førsteUttaksdagEtterFødsel = Uttaksdagen.denneEllerNeste(famDato).getDato();
+    const valgtStartdato = Uttaksdagen.denneEllerNeste(startdato ?? famDato).getDato();
+    // Mor kan velge en oppstartsdato som ligger før fødselsdatoen (t.d. tre uker før termin/fødsel).
+    // Da skal FORELDREPENGER_FØR_FØDSEL dekke perioden fra den valgte startdatoen og frem til fødselen.
+    const starterFørFødsel = dayjs(valgtStartdato).isBefore(førsteUttaksdagEtterFødsel, 'd');
+
     const perioder: UttakPeriode_fpoversikt[] = [];
 
-    if (foreldrePengerFørFødselKonto !== undefined) {
+    if (foreldrePengerFørFødselKonto !== undefined && starterFørFødsel) {
         const periodeFørFødsel: UttakPeriode_fpoversikt = {
             forelder: 'MOR',
             kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-            fom: Uttaksdagen.denne(førsteUttaksdag).getDatoAntallUttaksdagerTidligere(15),
-            tom: Uttaksdagen.forrige(førsteUttaksdag).getDato(),
+            fom: valgtStartdato,
+            tom: Uttaksdagen.forrige(førsteUttaksdagEtterFødsel).getDato(),
             flerbarnsdager: false,
         };
 
         perioder.push(periodeFørFødsel);
     }
 
-    const antallDagerIForeldrepenger = getTidsperiodeString(førsteUttaksdag, foreldrepengerKonto.dager);
+    const foreldrepengerFom = starterFørFødsel ? førsteUttaksdagEtterFødsel : valgtStartdato;
+    const antallDagerIForeldrepenger = getTidsperiodeString(foreldrepengerFom, foreldrepengerKonto.dager);
 
     const foreldrepengerPeriode: UttakPeriode_fpoversikt = {
         forelder: 'MOR',
@@ -252,7 +262,8 @@ const ikkeDeltUttakFødsel = ({
         return ikkeDeltUttakFødselMor({
             famDato,
             foreldrepengerKonto,
-            foreldrePengerFørFødselKonto: foreldrePengerFørFødselKonto!,
+            foreldrePengerFørFødselKonto,
+            startdato,
         });
     }
 };
