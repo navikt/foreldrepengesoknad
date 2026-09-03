@@ -32,7 +32,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
         }).data ?? false;
 
     const formValues = formMethods.watch();
-    if (formValues.kanIkkeOppgis === true) {
+    if (formValues.kanIkkeOppgis) {
         throw new Error('Annen forelder skal alltid være oppgitt her');
     }
 
@@ -69,12 +69,12 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
                     </VStack>
                 </ReadMore>
             </div>
-            {!isFarEllerMedmor(rolle) && formValues.erAleneOmOmsorg === true && (
+            {!isFarEllerMedmor(rolle) && formValues.erAleneOmOmsorg && (
                 <Alert variant="info">
                     <FormattedMessage id="annenForelder.veileder.aleneOmsorg.forBarnet" />
                 </Alert>
             )}
-            {formValues.erAleneOmOmsorg === true && isFarEllerMedmor(rolle) && (
+            {formValues.erAleneOmOmsorg && isFarEllerMedmor(rolle) && (
                 <RhfDatepicker
                     name="datoForAleneomsorg"
                     control={formMethods.control}
@@ -103,7 +103,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
                     ]}
                 />
             )}
-            {formValues.erAleneOmOmsorg !== true && !annenPartHarVedtak && (
+            {!formValues.erAleneOmOmsorg && !annenPartHarVedtak && (
                 <div>
                     <RhfRadioGroup
                         name="harRettPåForeldrepengerINorge"
@@ -144,7 +144,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
                     </ReadMore>
                 </div>
             )}
-            {formValues.erAleneOmOmsorg === false && formValues.harRettPåForeldrepengerINorge === false && (
+            {!formValues.erAleneOmOmsorg && formValues.harRettPåForeldrepengerINorge === false && (
                 <div>
                     <RhfRadioGroup
                         name="harOppholdtSegIEØS"
@@ -170,7 +170,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
                     </ReadMore>
                 </div>
             )}
-            {formValues.erAleneOmOmsorg === false && formValues.harOppholdtSegIEØS === true && (
+            {!formValues.erAleneOmOmsorg && formValues.harOppholdtSegIEØS === true && (
                 <div>
                     <RhfRadioGroup
                         name="harRettPåForeldrepengerIEØS"
@@ -212,7 +212,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
                     </ReadMore>
                 </div>
             )}
-            {formValues.erAleneOmOmsorg !== true && formValues.harRettPåForeldrepengerINorge !== false && (
+            {!formValues.erAleneOmOmsorg && formValues.harRettPåForeldrepengerINorge !== false && (
                 <>
                     <RhfRadioGroup
                         name="erInformertOmSøknaden"
@@ -244,7 +244,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
                     )}
                 </>
             )}
-            {formValues.erAleneOmOmsorg === false &&
+            {!formValues.erAleneOmOmsorg &&
                 formValues.harRettPåForeldrepengerINorge === false &&
                 (formValues.harOppholdtSegIEØS === false || formValues.harRettPåForeldrepengerIEØS === false) &&
                 isFarEllerMedmor(rolle) && (

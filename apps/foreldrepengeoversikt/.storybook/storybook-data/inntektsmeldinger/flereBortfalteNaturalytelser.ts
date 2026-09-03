@@ -5,7 +5,7 @@ export const flereBortfalteNaturalytelser = [
         versjon: 2,
         erAktiv: true,
         stillingsprosent: 80,
-        inntektPrMnd: 40000,
+        inntektPrMnd: 40_000,
         refusjonPrMnd: 4000,
         arbeidsgiverNavn: 'Laksinor',
         arbeidsgiverIdent: '123',

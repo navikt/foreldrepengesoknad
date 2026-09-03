@@ -45,16 +45,12 @@ export const MorInnlagtDokumentasjon = ({
     );
 
     const morErForSykEllerInnlagtFørsteSeksUker = perioderRundtFødsel.some((p) => {
-        if (
+        return (
             Uttaksperioden.erIkkeEøsPeriode(p) &&
             Uttaksperioden.erUttaksperiode(p) &&
             p.kontoType === 'FEDREKVOTE' &&
             !p.samtidigUttak
-        ) {
-            return true;
-        }
-
-        return false;
+        );
     });
 
     return (

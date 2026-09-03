@@ -24,14 +24,17 @@ export const getStønadskvoteNavn = (
     let navn;
 
     switch (konto) {
-        case 'MØDREKVOTE':
+        case 'MØDREKVOTE': {
             navn = navnPåForeldre.mor;
             break;
-        case 'FEDREKVOTE':
+        }
+        case 'FEDREKVOTE': {
             navn = navnPåForeldre.farMedmor;
             break;
-        default:
+        }
+        default: {
             navn = undefined;
+        }
     }
 
     if (navn) {
@@ -41,7 +44,7 @@ export const getStønadskvoteNavn = (
         );
     }
 
-    if (erFarEllerMedmor === true && erAleneOmOmsorg === false) {
+    if (erFarEllerMedmor && erAleneOmOmsorg === false) {
         if (konto === 'FORELDREPENGER' && morsAktivitet === 'IKKE_OPPGITT') {
             return intl.formatMessage({ id: 'uttaksplan.stønadskvotetype.AKTIVITETSFRI_KVOTE_BFHR' });
         }

@@ -26,6 +26,11 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
     const selvstendigNæringQuery = useQuery(selvstendigNæringOptions());
+
+    if (selvstendigNæringQuery.isPending) {
+        return <Spinner />;
+    }
+
     const registrerteNæringer = selvstendigNæringQuery.data ?? [];
 
     const onSubmit = (values: NæringDto) => {
@@ -36,10 +41,6 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
 
         return navigator.goToNextStep();
     };
-
-    if (selvstendigNæringQuery.isPending) {
-        return <Spinner />;
-    }
 
     return (
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>

@@ -62,10 +62,10 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
 
         oppdaterArbeidsforholdOgInntekt(arbeidsforholdOgInntektFp);
 
-        if (arbeidsforholdOgInntektFp.harJobbetSomFrilans === false) {
+        if (!arbeidsforholdOgInntektFp.harJobbetSomFrilans) {
             oppdaterFrilans(undefined);
         }
-        if (arbeidsforholdOgInntektFp.harJobbetSomSelvstendigNæringsdrivende === false) {
+        if (!arbeidsforholdOgInntektFp.harJobbetSomSelvstendigNæringsdrivende) {
             oppdaterEgenNæring(undefined);
         }
 

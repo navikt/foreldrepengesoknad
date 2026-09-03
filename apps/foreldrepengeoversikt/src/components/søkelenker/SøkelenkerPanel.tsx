@@ -32,7 +32,7 @@ export const SøkelenkerPanel = ({ doBleed = false }: Props) => {
                 <LenkePanel
                     tittel={intl.formatMessage({ id: 'SøkelenkerPanel.HarRett' })}
                     undertittel={intl.formatMessage({ id: 'SøkelenkerPanel.VenterBarn' })}
-                    to={links.rettOgPlikt}
+                    to={links.barn}
                 />
                 <LenkePanel
                     tittel={intl.formatMessage({ id: 'SøkelenkerPanel.SokFp' })}

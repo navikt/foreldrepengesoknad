@@ -22,7 +22,9 @@ import { notEmpty } from '@navikt/fp-validation';
 
 const urlPrefiks = import.meta.env.BASE_URL;
 
-/** Backend returnerer null for Optional.orElse(null), som JAX-RS oversetter til 204 No Content */
+/**
+Backend returnerer null for Optional.orElse(null), som JAX-RS oversetter til 204 No Content
+*/
 const jsonEllerNull = async <T>(responsePromise: ResponsePromise) => {
     const response = await responsePromise;
     return response.status === 204 ? null : response.json<T>();
@@ -62,6 +64,7 @@ export const statusOptions = () =>
             return status;
         },
         staleTime: Infinity,
+        refetchOnWindowFocus: 'always',
     });
 
 export const sakerOptions = () =>
@@ -69,13 +72,15 @@ export const sakerOptions = () =>
         queryKey: ['SAKER'],
         queryFn: () => ky.get(API_URLS.saker).json<Saker_fpoversikt>(),
         staleTime: Infinity,
+        refetchOnWindowFocus: 'always',
     });
 
 export const søkerinfoOptions = () =>
     queryOptions({
         queryKey: ['SØKERINFO'],
-        queryFn: () => ky.get(API_URLS.søkerInfo, { timeout: 30000 }).json<FpPersonopplysningerDto_fpoversikt>(),
+        queryFn: () => ky.get(API_URLS.søkerInfo, { timeout: 30_000 }).json<FpPersonopplysningerDto_fpoversikt>(),
         staleTime: Infinity,
+        refetchOnWindowFocus: 'always',
     });
 
 export const mellomlagretInfoOptions = () =>
@@ -84,6 +89,7 @@ export const mellomlagretInfoOptions = () =>
         queryFn: () => jsonEllerNull<FpMellomlagretData>(ky.get(API_URLS.mellomlagring)),
         select: (data) => data ?? undefined,
         staleTime: Infinity,
+        refetchOnWindowFocus: 'always',
     });
 
 const annenPartVedtakOptions = (data?: AnnenPartRequest_fpoversikt) =>
@@ -98,6 +104,7 @@ const tilgjengeligeStønadskvoterOptions = (data: KontoBeregningGrunnlagDto) =>
         queryKey: ['TILGJENGELIGE_STONADSKVOTER', data],
         queryFn: () => ky.post(API_URLS.konto, { json: data }).json<KontoBeregningResultatDto>(),
         staleTime: Infinity,
+        refetchOnWindowFocus: 'always',
     });
 
 export const trengerDokumentereMorsArbeidOptions = (data: MorArbeidRequest_fpoversikt) =>

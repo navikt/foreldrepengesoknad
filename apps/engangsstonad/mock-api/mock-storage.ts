@@ -15,7 +15,7 @@ export const getMellomlagretData = () => {
         const raw = fs.readFileSync(getFilePath(), 'utf8');
         return JSON.parse(raw) as EsMellomlagretData;
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (e) {
+    } catch {
         // file missing or invalid -> return empty structure compatible with EsMellomlagretData
         return {} as EsMellomlagretData;
     }

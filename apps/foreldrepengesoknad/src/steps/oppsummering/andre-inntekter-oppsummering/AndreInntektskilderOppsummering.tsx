@@ -1,10 +1,10 @@
 import { Fragment } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 
 import { FormSummary } from '@navikt/ds-react';
 
-import { formatDate } from '@navikt/fp-utils';
+import { formatDate, getCountryName } from '@navikt/fp-utils';
 
 interface Props {
     onVilEndreSvar: () => void;
@@ -12,6 +12,8 @@ interface Props {
 }
 
 export const AndreInntektskilderOppsummering = ({ andreInntektskilder, onVilEndreSvar }: Props) => {
+    const intl = useIntl();
+
     if (!andreInntektskilder) {
         return null;
     }
@@ -57,7 +59,9 @@ export const AndreInntektskilderOppsummering = ({ andreInntektskilder, onVilEndr
                                                 <FormSummary.Label>
                                                     <FormattedMessage id="JobbIUtlandetPanel.LandDuHarJobbet" />
                                                 </FormSummary.Label>
-                                                <FormSummary.Value>{annenInntektskilde.land}</FormSummary.Value>
+                                                <FormSummary.Value>
+                                                    {getCountryName(annenInntektskilde.land, intl.locale)}
+                                                </FormSummary.Value>
                                             </FormSummary.Answer>
                                             <FormSummary.Answer>
                                                 <FormSummary.Label>

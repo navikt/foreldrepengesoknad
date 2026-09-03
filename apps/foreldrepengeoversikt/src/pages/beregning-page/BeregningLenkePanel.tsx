@@ -10,12 +10,12 @@ export const BeregningLenkePanel = () => {
     const intl = useIntl();
 
     if (gjeldendeSak?.ytelse === 'ENGANGSSTØNAD') {
-        return undefined;
+        return;
     }
     const tilkjentYtelse = gjeldendeSak?.gjeldendeVedtak?.tilkjentYtelse;
 
     if (tilkjentYtelse === undefined) {
-        return undefined;
+        return;
     }
 
     return (

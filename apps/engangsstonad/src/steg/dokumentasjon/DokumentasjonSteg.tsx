@@ -46,10 +46,9 @@ export const DokumentasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
                     : intl.formatMessage({ id: 'DokumentasjonSteg.MinstEttDokumentTermin' }),
             });
             return Promise.resolve();
-        } else {
-            oppdaterDokumentasjon(formValues);
-            return navigator.goToNextDefaultStep();
         }
+        oppdaterDokumentasjon(formValues);
+        return navigator.goToNextDefaultStep();
     };
 
     const updateAttachments = (attachments: Attachment[], hasPendingUploads: boolean) => {

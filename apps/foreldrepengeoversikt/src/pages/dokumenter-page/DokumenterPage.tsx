@@ -74,7 +74,7 @@ const DokumenterPageInner = () => {
         return 0;
     };
 
-    const sortedDokumenter = [...dokumenter].sort((a, b) => {
+    const sortedDokumenter = [...dokumenter].toSorted((a, b) => {
         if (sort) {
             return sort.direction === 'ascending' ? comparator(b.mottatt, a.mottatt) : comparator(a.mottatt, b.mottatt);
         }

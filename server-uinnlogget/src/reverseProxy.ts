@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
-import { serverConfig } from '@navikt/fp-server-utils';
+import { logger, serverConfig } from '@navikt/fp-server-utils';
 
 const proxy = {
     FPGRUNNDATA_API_URL: serverConfig.påkrevMiljøVariabel('FPGRUNNDATA_API_URL'),
@@ -13,7 +13,7 @@ export const configureReverseProxyApi = (router: Router) => {
         createProxyMiddleware({
             target: proxy.FPGRUNNDATA_API_URL,
             changeOrigin: true,
-            logger: console,
+            logger: logger.logger,
         }),
     );
 };

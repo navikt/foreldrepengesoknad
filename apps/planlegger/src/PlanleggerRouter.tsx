@@ -20,9 +20,11 @@ import { Spinner } from '@navikt/fp-ui';
 // stegene rett før i planleggerflyten (sjå FordelingSteg og PlanenDeresSteg), slik at bytene
 // normalt er hentet før brukaren faktisk navigerer dit.
 const PlanenDeresSteg = lazy(() =>
+    // eslint-disable-next-line unicorn/prefer-await
     import('steps/planen-deres/PlanenDeresSteg').then((module) => ({ default: module.PlanenDeresSteg })),
 );
 const OppsummeringSteg = lazy(() =>
+    // eslint-disable-next-line unicorn/prefer-await
     import('steps/oppsummering/OppsummeringSteg').then((module) => ({ default: module.OppsummeringSteg })),
 );
 

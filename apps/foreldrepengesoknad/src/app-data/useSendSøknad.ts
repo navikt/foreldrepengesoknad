@@ -71,7 +71,7 @@ export const useSendSøknad = (
                 const feilmelding = callId
                     ? intl.formatMessage(
                           { id: 'useSendSøknad.FeilVedInnsending.MedCallId' },
-                          { callId: callId.substring(0, 6) },
+                          { callId: callId.slice(0, 6) },
                       )
                     : intl.formatMessage({ id: 'useSendSøknad.FeilVedInnsending.UtenCallId' });
                 throw new ApiError(feilmelding, 'Feil ved innsending av foreldrepengesøknad', jsonResponse);

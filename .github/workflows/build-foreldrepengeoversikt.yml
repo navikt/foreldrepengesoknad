@@ -46,6 +46,7 @@ jobs:
   deploy-dev:
     name: Deploy dev
     permissions:
+      contents: read
       id-token: write
     if: github.ref_name == 'master'
     needs: [build-app, upload-to-CDN]
@@ -60,6 +61,7 @@ jobs:
   deploy-prod:
     name: Deploy prod
     permissions:
+      contents: read
       id-token: write
     if: github.ref_name == 'master'
     needs: [build-app, deploy-dev]

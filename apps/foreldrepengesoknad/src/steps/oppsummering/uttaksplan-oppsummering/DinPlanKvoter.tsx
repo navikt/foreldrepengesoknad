@@ -1,5 +1,6 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { IntlShape, useIntl } from 'react-intl';
+import { getVarighetString } from 'utils/dateUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
@@ -14,27 +15,33 @@ interface Props {
 }
 
 const formaterRad = (intl: IntlShape, rad: DinPlanKvoteRad): string => {
-    const values = { brukt: rad.bruktUker, tilgjengelig: rad.tilgjengeligUker };
+    const values = {
+        brukt: getVarighetString(rad.bruktDager, intl),
+        tilgjengelig: getVarighetString(rad.tilgjengeligDager, intl),
+    };
 
     switch (rad.kontoType) {
-        case 'FORELDREPENGER_FØR_FØDSEL':
+        case 'FORELDREPENGER_FØR_FØDSEL': {
             return intl.formatMessage({ id: 'oppsummering.uttak.dinPlan.rad.førFødsel' }, values);
-        case 'MØDREKVOTE':
+        }
+        case 'MØDREKVOTE': {
             return intl.formatMessage({ id: 'oppsummering.uttak.dinPlan.rad.mødrekvote' }, values);
-        case 'FEDREKVOTE':
+        }
+        case 'FEDREKVOTE': {
             return intl.formatMessage({ id: 'oppsummering.uttak.dinPlan.rad.fedrekvote' }, values);
-        case 'FELLESPERIODE':
+        }
+        case 'FELLESPERIODE': {
             return intl.formatMessage({ id: 'oppsummering.uttak.dinPlan.rad.fellesperiode' }, values);
-        case 'AKTIVITETSFRI_KVOTE':
+        }
+        case 'AKTIVITETSFRI_KVOTE': {
             return intl.formatMessage({ id: 'oppsummering.uttak.dinPlan.rad.aktivitetsfriKvote' }, values);
-        case 'FORELDREPENGER':
+        }
+        case 'FORELDREPENGER': {
             return intl.formatMessage({ id: 'oppsummering.uttak.dinPlan.rad.foreldrepengerMedAktivitetskrav' }, values);
+        }
     }
 };
 
-// Viser kor mange veker søkjaren har planlagt å bruke av kvar stønadskonto,
-// samanlikna med kor mange veker som er tilgjengelege totalt («3 av 3 veker
-// før fødsel», «20 av 20 veker av din kvote (mødrekvoten)» osv.).
 export const DinPlanKvoter = ({ kontoer }: Props) => {
     const intl = useIntl();
 
@@ -64,4 +71,3 @@ export const DinPlanKvoter = ({ kontoer }: Props) => {
         </VStack>
     );
 };
-

@@ -131,6 +131,41 @@ const defaultUttaksplan = [
     },
 ] satisfies UttakPeriode_fpoversikt[];
 
+const defaultUttaksplanFar = [
+    {
+        forelder: 'FAR_MEDMOR',
+        kontoType: 'FEDREKVOTE',
+        fom: '2022-01-26',
+        tom: '2022-03-14',
+        flerbarnsdager: false,
+    },
+    {
+        forelder: 'FAR_MEDMOR',
+        kontoType: 'FELLESPERIODE',
+        fom: '2022-03-15',
+        tom: '2022-06-25',
+        flerbarnsdager: false,
+    },
+] satisfies UttakPeriode_fpoversikt[];
+
+const defaultUttaksplanFarAleneomsorg = [
+    {
+        forelder: 'FAR_MEDMOR',
+        kontoType: 'FORELDREPENGER',
+        fom: '2021-11-24',
+        tom: '2021-12-14',
+        flerbarnsdager: false,
+        morsAktivitet: 'IKKE_OPPGITT',
+    },
+    {
+        forelder: 'FAR_MEDMOR',
+        kontoType: 'FORELDREPENGER',
+        fom: '2021-12-15',
+        tom: '2022-06-07',
+        flerbarnsdager: false,
+    },
+] satisfies UttakPeriode_fpoversikt[];
+
 const defaultArbeidsforholdOgInntekt = {
     harJobbetSomFrilans: false,
     harJobbetSomSelvstendigNæringsdrivende: false,
@@ -411,6 +446,7 @@ export const FarMedAleneOmsorg: Story = {
             antallBarn: 2,
             termindato: '2025-10-01',
         },
+        uttaksplan: defaultUttaksplanFarAleneomsorg,
     },
 };
 
@@ -437,23 +473,7 @@ export const FarMedUførMorUgift: Story = {
             antallBarn: 1,
             termindato: '2025-10-01',
         },
-        uttaksplan: [
-            {
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FORELDREPENGER',
-                fom: '2021-11-24',
-                tom: '2021-12-14',
-                flerbarnsdager: false,
-                morsAktivitet: 'IKKE_OPPGITT',
-            },
-            {
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FORELDREPENGER',
-                fom: '2021-12-15',
-                tom: '2022-06-07',
-                flerbarnsdager: false,
-            },
-        ],
+        uttaksplan: defaultUttaksplanFarAleneomsorg,
     },
 };
 
@@ -474,6 +494,7 @@ export const FarMedMorSomHarRettIEØS: Story = {
         søkerInfo: {
             ...defaultSøkerinfoFar,
         },
+        uttaksplan: defaultUttaksplanFar,
     },
 };
 
@@ -494,6 +515,7 @@ export const FarMedMorSomHarOppholdsSegIEØSMenIkkeHarRettIEØS: Story = {
         søkerInfo: {
             ...defaultSøkerinfoFar,
         },
+        uttaksplan: defaultUttaksplanFar,
     },
 };
 
@@ -512,6 +534,7 @@ export const FarMedMorSomHarRettINorge: Story = {
         søkerInfo: {
             ...defaultSøkerinfoFar,
         },
+        uttaksplan: defaultUttaksplanFar,
     },
 };
 
@@ -551,7 +574,7 @@ export const MorMedUtenlandsopphold: Story = {
         },
         utenlandsoppholdSenere: [
             {
-                landkode: 'SE',
+                landkode: 'SWE',
                 fom: dayjs().format(ISO_DATE_FORMAT),
                 tom: dayjs().add(100, 'days').format(ISO_DATE_FORMAT),
             },
@@ -559,7 +582,7 @@ export const MorMedUtenlandsopphold: Story = {
 
         utenlandsoppholdTidligere: [
             {
-                landkode: 'SE',
+                landkode: 'SWE',
                 fom: dayjs().subtract(10, 'months').format(ISO_DATE_FORMAT),
                 tom: dayjs().subtract(1, 'days').format(ISO_DATE_FORMAT),
             },
@@ -616,7 +639,7 @@ export const MorMedSelvstendigNæringsdrivende: Story = {
             tom: '2021-01-01',
             næringstype: 'FISKE',
             organisasjonsnummer: '123',
-            næringsinntekt: 1000000,
+            næringsinntekt: 1_000_000,
             registrertINorge: true,
             harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: true,
             hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
@@ -640,7 +663,7 @@ export const MorMedSelvstendigNæringsdrivendeUtenDiverse: Story = {
             fom: '2018-01-01',
             tom: '2021-01-01',
             næringstype: 'FISKE',
-            registrertILand: 'SE',
+            registrertILand: 'SWE',
             registrertINorge: false,
             harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
             hattVarigEndringAvNæringsinntektSiste4Kalenderår: false,
@@ -666,7 +689,7 @@ export const MorMedAndreInntekterJobbIUtlandet: Story = {
                 fom: '2018-01-01',
                 tom: '2021-01-01',
                 arbeidsgiverNavn: 'Statoil',
-                land: 'SE',
+                land: 'SWE',
             },
             {
                 type: 'MILITÆR_ELLER_SIVILTJENESTE',
@@ -712,7 +735,7 @@ const FIL_INFO = {
     filesize: 1234,
     url: 'test',
     id: '1',
-    file: new File(['abc'.repeat(100000)], 'Filnavn1.jpg'),
+    file: new File(['abc'.repeat(100_000)], 'Filnavn1.jpg'),
     pending: false,
     uploaded: true,
     innsendingsType: 'LASTET_OPP',
@@ -883,18 +906,16 @@ export const VisSendInnSenereVedlegg: Story = {
     args: {
         ...Default.args,
         vedlegg: {
-            ...(VisAlleVedlegg.args?.vedlegg
-                ? Object.entries(VisAlleVedlegg.args.vedlegg).reduce(
-                      (result, entry) => ({
-                          ...result,
-                          [entry[0]]: entry[1].map((value) => ({
-                              ...value,
-                              innsendingsType: 'SEND_SENERE',
-                          })),
-                      }),
-                      {},
-                  )
-                : {}),
+            ...(VisAlleVedlegg.args?.vedlegg &&
+                Object.fromEntries(
+                    Object.entries(VisAlleVedlegg.args.vedlegg).map((entry) => [
+                        entry[0],
+                        entry[1].map((value) => ({
+                            ...value,
+                            innsendingsType: 'SEND_SENERE',
+                        })),
+                    ]),
+                )),
         },
     },
 };
@@ -927,6 +948,7 @@ export const FarSøkerMorMåIkkeDokumentereArbeid: Story = {
             harJobbetSomFrilans: false,
             harJobbetSomSelvstendigNæringsdrivende: false,
         },
+        uttaksplan: defaultUttaksplanFar,
     },
 
     beforeEach({ msw }) {
@@ -976,6 +998,7 @@ export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story =
             harJobbetSomFrilans: false,
             harJobbetSomSelvstendigNæringsdrivende: false,
         },
+        uttaksplan: defaultUttaksplanFar,
     },
 
     beforeEach({ msw }) {
@@ -1021,6 +1044,7 @@ export const FarSøkerMorMåDokumentereArbeid: Story = {
             harJobbetSomFrilans: false,
             harJobbetSomSelvstendigNæringsdrivende: false,
         },
+        uttaksplan: defaultUttaksplanFar,
     },
 
     beforeEach({ msw }) {
@@ -1078,6 +1102,14 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
             ...defaultUttaksplan.slice(0, 2), // Behold de første periodene
             {
                 forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                fom: '2022-03-30',
+                tom: '2022-06-07',
+                samtidigUttak: 50,
+                flerbarnsdager: false,
+            } satisfies UttakPeriode_fpoversikt,
+            {
+                forelder: 'FAR_MEDMOR',
                 kontoType: 'FELLESPERIODE',
                 fom: '2022-03-30',
                 tom: '2022-06-07',

@@ -20,7 +20,7 @@ export const MilitærEllerSiviltjenesteDokumentasjon = ({
 }: Props) => {
     const intl = useIntl();
 
-    if (!andreInntektskilder || !andreInntektskilder.some((i) => i.type === 'MILITÆR_ELLER_SIVILTJENESTE')) {
+    if (!andreInntektskilder || andreInntektskilder.every((i) => i.type !== 'MILITÆR_ELLER_SIVILTJENESTE')) {
         return null;
     }
 

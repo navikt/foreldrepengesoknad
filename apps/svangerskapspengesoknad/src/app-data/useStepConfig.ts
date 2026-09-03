@@ -125,6 +125,7 @@ const getTilretteleggingLabels = (
 const createStep = (route: SøknadRoute, intl: IntlShape, currentPath: string): ProgressStep<string> => ({
     id: route,
     label: getStepLabels(intl)[route],
+    // eslint-disable-next-line unicorn/no-useless-coercion
     isSelected: currentPath === route.toString(),
 });
 
@@ -165,6 +166,7 @@ const getStepConfig = (
                 arbeidsforholdOgInntekt?.harJobbetSomSelvstendigNæringsdrivende === true,
             harRegistrertNæring,
             egenNæring: getStateData(ContextDataType.EGEN_NÆRING),
+            // eslint-disable-next-line unicorn/no-useless-coercion
             erPåEgenNæringSteg: currentPath === SøknadRoute.NÆRING.toString(),
         })
     ) {
@@ -205,7 +207,7 @@ const getStepConfig = (
                 }),
             );
         }
-    } else if ((harValgtEnTilrettelegging || harKunEttArbeid) && barn && arbeidsforholdOgInntekt) {
+    } else if (barn && arbeidsforholdOgInntekt && (harValgtEnTilrettelegging || harKunEttArbeid)) {
         const tilretteleggingId = harValgtEnTilrettelegging
             ? valgteArbeidsforhold[0]
             : getTilretteleggingId(arbeidsforhold, barn.termindato, arbeidsforholdOgInntekt);

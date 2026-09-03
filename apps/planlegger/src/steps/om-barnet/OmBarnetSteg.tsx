@@ -105,7 +105,7 @@ export const OmBarnetPlanleggerSteg = () => {
                                 <FormattedMessage id="OmBarnetSteg.Adopsjon" />
                             </Radio>
                         </BlueRadioGroup>
-                        {erFødsel !== undefined && erFødsel === true && erFedre && (
+                        {erFødsel !== undefined && erFødsel && erFedre && (
                             <Infobox
                                 header={<FormattedMessage id="OmBarnetSteg.Fødsel.Infoboks" />}
                                 icon={
@@ -180,7 +180,7 @@ export const OmBarnetPlanleggerSteg = () => {
                                 scrollToBottom={scrollToBottom}
                             />
                         )}
-                        {erFødsel === false && antallBarn && (
+                        {!erFødsel && antallBarn && (
                             <Adopsjon
                                 erAlenesøker={erAlenesøker}
                                 erOmBarnetPlanleggerIkkeOppgittFraFør={omBarnet === undefined}

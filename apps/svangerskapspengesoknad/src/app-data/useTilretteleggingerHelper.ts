@@ -3,17 +3,17 @@ import { ContextDataType, useContextGetData, useContextSaveData } from './SvpDat
 const filtrerBort = <T>(
     tilrettelegginger: Record<string, T>,
     tilretteleggingerSomSkalFjernes: string[],
-): Record<string, T> =>
-    Object.keys(tilrettelegginger).reduce(
-        (acc, id) =>
-            tilretteleggingerSomSkalFjernes.includes(id)
-                ? acc
-                : {
-                      ...acc,
-                      [id]: tilrettelegginger[id],
-                  },
-        {},
-    );
+): Record<string, T> => {
+    const filtrerteTilrettelegginger: Record<string, T> = {};
+
+    for (const [id, tilrettelegging] of Object.entries(tilrettelegginger)) {
+        if (!tilretteleggingerSomSkalFjernes.includes(id)) {
+            filtrerteTilrettelegginger[id] = tilrettelegging;
+        }
+    }
+
+    return filtrerteTilrettelegginger;
+};
 
 export const useTilretteleggingerHelper = () => {
     const tilrettelegginger = useContextGetData(ContextDataType.TILRETTELEGGINGER);
@@ -27,22 +27,20 @@ export const useTilretteleggingerHelper = () => {
     const oppdaterFerie = useContextSaveData(ContextDataType.FERIE);
 
     const fjernTilrettelegginger = (tilretteleggingerSomSkalFjernes: string[]) => {
-        if (tilrettelegginger && tilretteleggingerSomSkalFjernes.length > 0) {
-            oppdaterTilrettelegginger(filtrerBort(tilrettelegginger, tilretteleggingerSomSkalFjernes));
-            if (tilretteleggingerVedlegg) {
-                oppdaterTilretteleggingerVedlegg(
-                    filtrerBort(tilretteleggingerVedlegg, tilretteleggingerSomSkalFjernes),
-                );
-            }
-            if (tilretteleggingerPerioder) {
-                oppdaterTilretteleggingerPerioder(
-                    filtrerBort(tilretteleggingerPerioder, tilretteleggingerSomSkalFjernes),
-                );
-            }
+        if (!(tilrettelegginger && tilretteleggingerSomSkalFjernes.length > 0)) {
+            return;
+        }
 
-            if (ferie) {
-                oppdaterFerie(filtrerBort(ferie, tilretteleggingerSomSkalFjernes));
-            }
+        oppdaterTilrettelegginger(filtrerBort(tilrettelegginger, tilretteleggingerSomSkalFjernes));
+        if (tilretteleggingerVedlegg) {
+            oppdaterTilretteleggingerVedlegg(filtrerBort(tilretteleggingerVedlegg, tilretteleggingerSomSkalFjernes));
+        }
+        if (tilretteleggingerPerioder) {
+            oppdaterTilretteleggingerPerioder(filtrerBort(tilretteleggingerPerioder, tilretteleggingerSomSkalFjernes));
+        }
+
+        if (ferie) {
+            oppdaterFerie(filtrerBort(ferie, tilretteleggingerSomSkalFjernes));
         }
     };
 

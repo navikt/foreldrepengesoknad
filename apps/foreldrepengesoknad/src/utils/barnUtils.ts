@@ -60,12 +60,17 @@ export const getDødeBarnetForMerEnn3MånederSiden = (registrerteBarn: FpBarnDto
 };
 
 export const getTekstForAntallBarn = (antallBarn: number, intl: IntlShape): string => {
-    if (antallBarn === 1) {
-        return intl.formatMessage({ id: 'barn' });
-    } else if (antallBarn === 2) {
-        return intl.formatMessage({ id: 'tvillinger' });
-    } else if (antallBarn === 3) {
-        return intl.formatMessage({ id: 'trillinger' });
+    switch (antallBarn) {
+        case 1: {
+            return intl.formatMessage({ id: 'barn' });
+        }
+        case 2: {
+            return intl.formatMessage({ id: 'tvillinger' });
+        }
+        case 3: {
+            return intl.formatMessage({ id: 'trillinger' });
+        }
+        // No default
     }
     return intl.formatMessage({ id: 'flerlinger' });
 };
@@ -102,20 +107,20 @@ export const getTittelBarnNårNavnSkalIkkeVises = (
                 adopsjonsdato: dayjs(omsorgsovertagelsesdato).format(DDMMMMYYY_DATE_FORMAT),
             },
         );
-    } else {
-        const fødselsdatoTekst = formaterFødselsdatoerPåBarn(fødselsdatoer);
-        const barnTekst = getTekstForAntallBarn(antallBarn, intl);
-
-        return fødselsdatoer !== undefined && fødselsdatoer.length > 0
-            ? intl.formatMessage(
-                  { id: 'velkommen.barnVelger.fødtBarn.barn' },
-                  {
-                      barnTekst,
-                      fødselsdato: fødselsdatoTekst,
-                  },
-              )
-            : '';
     }
+
+    const fødselsdatoTekst = formaterFødselsdatoerPåBarn(fødselsdatoer);
+    const barnTekst = getTekstForAntallBarn(antallBarn, intl);
+
+    return fødselsdatoer !== undefined && fødselsdatoer.length > 0
+        ? intl.formatMessage(
+              { id: 'velkommen.barnVelger.fødtBarn.barn' },
+              {
+                  barnTekst,
+                  fødselsdato: fødselsdatoTekst,
+              },
+          )
+        : '';
 };
 
 export const formaterNavnPåBarn = (
@@ -126,7 +131,7 @@ export const formaterNavnPåBarn = (
     antallBarn: number,
     intl: IntlShape,
 ): string => {
-    if (fornavn === undefined || fornavn.length === 0 || !alleBarnaLever) {
+    if (fornavn === undefined || !alleBarnaLever || fornavn.length === 0) {
         return getTittelBarnNårNavnSkalIkkeVises(omsorgsovertagelsesdato, fødselsdatoer, antallBarn, intl);
     }
 
@@ -135,7 +140,7 @@ export const formaterNavnPåBarn = (
         const sisteFornavn = fornavn.at(-1);
         return `${fornavnene} og ${sisteFornavn}`;
     }
-    return `${fornavn[0]}`;
+    return String(fornavn[0]);
 };
 
 export const formaterFødselsdatoerPåBarn = (fødselsdatoer: string[] | undefined): string | undefined => {

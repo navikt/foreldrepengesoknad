@@ -19,7 +19,7 @@ export const HvaLeggerNAVVektPå = () => {
             <Box marginBlock="space-16" asChild>
                 <List>
                     {getPunktTekster(intl).map((punktTekst) => (
-                        <List.Item key={`${punktTekst}`}>{punktTekst}</List.Item>
+                        <List.Item key={punktTekst}>{punktTekst}</List.Item>
                     ))}
                 </List>
             </Box>

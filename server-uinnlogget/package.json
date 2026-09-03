@@ -6,6 +6,8 @@
     "type": "module",
     "scripts": {
         "build": "esbuild ./src/index.ts --bundle --platform=node --format=esm --outfile=dist/index.mjs --banner:js=\"import{createRequire as __createRequire}from'node:module';const require=__createRequire(import.meta.url);\"",
+        "eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
+        "eslint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
         "tsc:watch": "tsc --noEmit --watch",
         "start": "node ./dist/index.mjs",
         "clean": "rm -rf ./dist ./node_modules ./.turbo"
@@ -16,10 +18,13 @@
         "http-proxy-middleware": "catalog:"
     },
     "devDependencies": {
+        "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
         "@types/express": "catalog:",
         "@types/node": "catalog:",
         "esbuild": "catalog:",
+        "eslint": "catalog:",
+        "eslint-plugin-unicorn": "74.0.0",
         "typescript": "catalog:"
     }
 }

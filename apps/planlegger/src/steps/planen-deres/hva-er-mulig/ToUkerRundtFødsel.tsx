@@ -31,16 +31,16 @@ export const ToUkerRundtFødsel = ({ hvemPlanlegger }: Props) => {
                     <FormattedMessage id="HvaErMulig.ToUkerRundtFødsel" />
                 </Heading>
                 <BodyLong>
-                    {hvemPlanlegger.type !== HvemPlanleggerType.FAR_OG_FAR ? (
+                    {hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR ? (
                         <FormattedMessage
-                            id="HvaErMulig.ToUkerRundtFødsel.Tekst"
+                            id="HvaErMulig.ToUkerRundtFødsel.FedreTekst"
                             values={{
                                 hvem: finnSøker2Tekst(intl, hvemPlanlegger),
                             }}
                         />
                     ) : (
                         <FormattedMessage
-                            id="HvaErMulig.ToUkerRundtFødsel.FedreTekst"
+                            id="HvaErMulig.ToUkerRundtFødsel.Tekst"
                             values={{
                                 hvem: finnSøker2Tekst(intl, hvemPlanlegger),
                             }}

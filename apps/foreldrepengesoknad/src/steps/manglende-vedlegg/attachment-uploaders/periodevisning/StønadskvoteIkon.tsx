@@ -40,17 +40,22 @@ const getKontoFarge = (
 ): ComponentProps<typeof Box>['background'] => {
     switch (konto) {
         case 'FEDREKVOTE':
-        case 'AKTIVITETSFRI_KVOTE':
+        case 'AKTIVITETSFRI_KVOTE': {
             return erFarEllerMedmor ? 'success-strong' : 'success-moderate';
+        }
         case 'FORELDREPENGER_FØR_FØDSEL':
-        case 'MØDREKVOTE':
+        case 'MØDREKVOTE': {
             return erFarEllerMedmor ? 'accent-moderate' : 'accent-strong';
-        case 'FORELDREPENGER':
+        }
+        case 'FORELDREPENGER': {
             return erFarEllerMedmor ? 'success-strong' : 'accent-strong';
-        case 'FELLESPERIODE':
+        }
+        case 'FELLESPERIODE': {
             return erFarEllerMedmor ? 'brand-beige-strong' : 'brand-beige-moderate';
-        default:
+        }
+        default: {
             return undefined;
+        }
     }
 };
 
@@ -88,14 +93,17 @@ const getStønadskvoteNavn = (
     let navn;
 
     switch (konto) {
-        case 'MØDREKVOTE':
+        case 'MØDREKVOTE': {
             navn = navnPåForeldre.mor;
             break;
-        case 'FEDREKVOTE':
+        }
+        case 'FEDREKVOTE': {
             navn = navnPåForeldre.farMedmor;
             break;
-        default:
+        }
+        default: {
             navn = undefined;
+        }
     }
 
     if (navn) {
@@ -105,7 +113,7 @@ const getStønadskvoteNavn = (
         );
     }
 
-    if (erFarEllerMedmor === true && erAleneOmOmsorg === false) {
+    if (erFarEllerMedmor && erAleneOmOmsorg === false) {
         if (konto === 'AKTIVITETSFRI_KVOTE') {
             return intl.formatMessage({ id: 'uttaksplan.stønadskvotetype.AKTIVITETSFRI_KVOTE_BFHR' });
         }

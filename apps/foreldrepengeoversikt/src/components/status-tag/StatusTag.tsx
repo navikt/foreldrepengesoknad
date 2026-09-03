@@ -10,51 +10,49 @@ interface Props {
 }
 
 export const StatusTag = ({ sak, harMinstEttArbeidsforhold }: Props) => {
-    if (sak.åpenBehandling) {
-        if (!sak.sakAvsluttet) {
-            if (sak.åpenBehandling.tilstand === 'UNDER_BEHANDLING') {
-                return (
-                    <Tag data-color="warning" variant="moderate" size="xsmall">
-                        <FormattedMessage id="status.underBehandling" />
-                    </Tag>
-                );
-            }
+    if (sak.åpenBehandling && !sak.sakAvsluttet) {
+        if (sak.åpenBehandling.tilstand === 'UNDER_BEHANDLING') {
+            return (
+                <Tag data-color="warning" variant="moderate" size="xsmall">
+                    <FormattedMessage id="status.underBehandling" />
+                </Tag>
+            );
+        }
 
-            if (sak.åpenBehandling.tilstand === 'VENT_INNTEKTSMELDING') {
-                return harMinstEttArbeidsforhold ? (
-                    <Tag data-color="warning" variant="moderate" size="xsmall">
-                        <FormattedMessage id="status.venterPåInntektsmelding" />
-                    </Tag>
-                ) : (
-                    <Tag data-color="info" variant="strong" size="xsmall">
-                        <FormattedMessage id="status.venterPåBehandling" />
-                    </Tag>
-                );
-            }
+        if (sak.åpenBehandling.tilstand === 'VENT_INNTEKTSMELDING') {
+            return harMinstEttArbeidsforhold ? (
+                <Tag data-color="warning" variant="moderate" size="xsmall">
+                    <FormattedMessage id="status.venterPåInntektsmelding" />
+                </Tag>
+            ) : (
+                <Tag data-color="info" variant="strong" size="xsmall">
+                    <FormattedMessage id="status.venterPåBehandling" />
+                </Tag>
+            );
+        }
 
-            if (sak.åpenBehandling.tilstand === 'VENT_DOKUMENTASJON') {
-                return (
-                    <Tag data-color="warning" variant="moderate" size="xsmall">
-                        <FormattedMessage id="status.duMåSendeDokumentasjon" />
-                    </Tag>
-                );
-            }
+        if (sak.åpenBehandling.tilstand === 'VENT_DOKUMENTASJON') {
+            return (
+                <Tag data-color="warning" variant="moderate" size="xsmall">
+                    <FormattedMessage id="status.duMåSendeDokumentasjon" />
+                </Tag>
+            );
+        }
 
-            if (sak.åpenBehandling.tilstand === 'VENT_TIDLIG_SØKNAD') {
-                return (
-                    <Tag data-color="warning" variant="moderate" size="xsmall">
-                        <FormattedMessage id="status.søknaden" />
-                    </Tag>
-                );
-            }
+        if (sak.åpenBehandling.tilstand === 'VENT_TIDLIG_SØKNAD') {
+            return (
+                <Tag data-color="warning" variant="moderate" size="xsmall">
+                    <FormattedMessage id="status.søknaden" />
+                </Tag>
+            );
+        }
 
-            if (sak.åpenBehandling.tilstand === 'VENT_MELDEKORT') {
-                return (
-                    <Tag data-color="warning" variant="moderate" size="xsmall">
-                        <FormattedMessage id="status.duMåSendeMeldekort" />
-                    </Tag>
-                );
-            }
+        if (sak.åpenBehandling.tilstand === 'VENT_MELDEKORT') {
+            return (
+                <Tag data-color="warning" variant="moderate" size="xsmall">
+                    <FormattedMessage id="status.duMåSendeMeldekort" />
+                </Tag>
+            );
         }
     }
 

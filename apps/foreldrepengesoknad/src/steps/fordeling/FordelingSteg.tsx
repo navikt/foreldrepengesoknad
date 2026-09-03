@@ -142,8 +142,8 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
         }
         if (
             erFarEllerMedmor &&
-            isFødtBarn(oppdatertBarn) &&
             saksgrunnlagsTermindato &&
+            isFødtBarn(oppdatertBarn) &&
             oppdatertBarn.termindato !== saksgrunnlagsTermindato
         ) {
             oppdatertBarn = { ...oppdatertBarn, termindato: saksgrunnlagsTermindato };

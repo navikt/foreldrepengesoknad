@@ -110,17 +110,26 @@ const UttaksplanListe = ({
     const erAnnenForelderOppgitt = isAnnenForelderOppgitt(annenForelder);
 
     const erAleneOmOmsorg = erAnnenForelderOppgitt ? annenForelder?.erAleneOmOmsorg : false;
+    const termindato = getTermindato(barn);
 
     const getStønadskvoteNavnFraKvote = (konto: KontoType | undefined, morsAktivitet?: MorsAktivitet) => {
-        return konto === undefined
-            ? ''
-            : getStønadskvoteNavn(intl, konto, navnPåForeldre, søkerErFarEllerMedmor, erAleneOmOmsorg, morsAktivitet);
+        return (
+            (konto !== undefined &&
+                getStønadskvoteNavn(
+                    intl,
+                    konto,
+                    navnPåForeldre,
+                    søkerErFarEllerMedmor,
+                    erAleneOmOmsorg,
+                    morsAktivitet,
+                )) ||
+            ''
+        );
     };
 
     const getUttaksperiodeNavn = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
         const morsAktivitet = Uttaksperioden.erIkkeEøsPeriode(periode) ? periode.morsAktivitet : undefined;
         const tittel = getStønadskvoteNavnFraKvote(periode.kontoType, morsAktivitet);
-        const termindato = getTermindato(barn) ? getTermindato(barn) : undefined;
         return søkersituasjon.situasjon === 'fødsel' &&
             isUttaksperiodeFarMedmorPgaFødsel(periode, familiehendelsesdato, termindato)
             ? tittel + intl.formatMessage({ id: 'rundtFødsel' })
@@ -229,7 +238,7 @@ const UttaksplanListe = ({
                                                 periode,
                                                 navnPåForeldre,
                                                 familiehendelsesdato,
-                                                getTermindato(barn) ? getTermindato(barn) : undefined,
+                                                termindato,
                                                 søkersituasjon.situasjon,
                                                 søkerErFarEllerMedmor,
                                             )}
@@ -251,4 +260,4 @@ const lagKeyFraPeriode = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpa
 
 // TODO (TOR) Denne fjerninga av avslåtte periodar uten trekkdagar bør ligga i backend
 const filtrerBortPerioderUtenTrekkdager = (perioder: UttakPeriode_fpoversikt[]) =>
-    perioder.filter((periode) => !(periode.resultat?.innvilget === false && periode.resultat.trekkerDager === false));
+    perioder.filter((periode) => periode.resultat?.innvilget !== false || periode.resultat.trekkerDager);

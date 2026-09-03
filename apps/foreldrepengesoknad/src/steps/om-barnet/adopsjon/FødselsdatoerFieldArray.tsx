@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
-import { useEffect } from 'react';
-import { useFieldArray, useFormContext } from 'react-hook-form';
+import { FieldArrayWithId, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { VStack } from '@navikt/ds-react';
@@ -24,66 +23,53 @@ const erBarnetUnder15årPåAdopsjonsdato = (i18nText: string, adopsjonsdato?: st
 
 const finnAntallBarnTekst = (antall: number) => {
     switch (antall) {
-        case 1:
+        case 1: {
             return <FormattedMessage id="omBarnet.fødselsdato.adopsjon.1" />;
-        case 2:
+        }
+        case 2: {
             return <FormattedMessage id="omBarnet.fødselsdato.adopsjon.2" />;
-        case 3:
+        }
+        case 3: {
             return <FormattedMessage id="omBarnet.fødselsdato.adopsjon.3" />;
-        case 4:
+        }
+        case 4: {
             return <FormattedMessage id="omBarnet.fødselsdato.adopsjon.4" />;
-        case 5:
+        }
+        case 5: {
             return <FormattedMessage id="omBarnet.fødselsdato.adopsjon.5" />;
-        case 6:
+        }
+        case 6: {
             return <FormattedMessage id="omBarnet.fødselsdato.adopsjon.6" />;
-        case 7:
+        }
+        case 7: {
             return <FormattedMessage id="omBarnet.fødselsdato.adopsjon.7" />;
-        case 8:
+        }
+        case 8: {
             return <FormattedMessage id="omBarnet.fødselsdato.adopsjon.8" />;
-        case 9:
+        }
+        case 9: {
             return <FormattedMessage id="omBarnet.fødselsdato.adopsjon.9" />;
-        default:
+        }
+        default: {
             throw new Error('Antall barn ikke supportert: ' + antall);
+        }
     }
 };
 
-type FormValues = {
+export type FormValues = {
     fødselsdatoer?: Array<{
         dato?: string;
     }>;
 };
 
 interface Props {
-    antallBarn?: number;
-    antallBarnDropDown?: string;
     adopsjonsdato?: string;
+    fields: Array<FieldArrayWithId<FormValues, 'fødselsdatoer', 'id'>>;
 }
 
-export const FødselsdatoerFieldArray = ({ adopsjonsdato, antallBarn, antallBarnDropDown }: Props) => {
+export const FødselsdatoerFieldArray = ({ adopsjonsdato, fields }: Props) => {
     const intl = useIntl();
     const { control } = useFormContext<FormValues>();
-    const { fields, remove, append } = useFieldArray({
-        control,
-        name: 'fødselsdatoer',
-    });
-
-    useEffect(() => {
-        if (!antallBarn || (antallBarn === 3 && !antallBarnDropDown)) {
-            return;
-        }
-        const antall = antallBarn < 3 || !antallBarnDropDown ? antallBarn : Number.parseInt(antallBarnDropDown, 10);
-        const diff = fields.length - antall;
-        if (diff > 0) {
-            Array.from({ length: diff }).forEach((_unused, index) => {
-                remove(fields.length - index - 1);
-            });
-        }
-        if (diff < 0) {
-            Array.from({ length: antall - fields.length }).forEach(() => {
-                append({ dato: undefined });
-            });
-        }
-    }, [antallBarn, antallBarnDropDown, append, fields.length, remove]);
 
     return (
         <VStack gap="space-40">

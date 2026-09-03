@@ -13,13 +13,13 @@ export type EksternArbeidsforholdDto_fpoversikt = {
     tom?: string;
 };
 
-export type Virksomhetstype_fpoversikt = 'ANNEN' | 'JORDBRUK_SKOGBRUK' | 'FISKE' | 'DAGMAMMA';
-
 export type SelvstendigNæringDto_fpoversikt = {
     navn?: string;
     næringstype: Virksomhetstype_fpoversikt;
     organisasjonsnummer: string;
 };
+
+export type Virksomhetstype_fpoversikt = 'ANNEN' | 'JORDBRUK_SKOGBRUK' | 'FISKE' | 'DAGMAMMA';
 
 export type MorArbeidRequest_fpoversikt = {
     annenPartFødselsnummer: string;

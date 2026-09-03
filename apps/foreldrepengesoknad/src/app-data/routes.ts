@@ -51,5 +51,5 @@ export const REQUIRED_APP_STEPS = [
 export const REQUIRED_APP_STEPS_ENDRINGSSØKNAD = [SøknadRoutes.UTTAKSPLAN, SøknadRoutes.OPPSUMMERING];
 
 export const isRouteAvailable = (route: SøknadRoutes, harGodkjentVilkår: boolean): boolean => {
-    return route !== SøknadRoutes.SØKERSITUASJON || harGodkjentVilkår === true;
+    return route !== SøknadRoutes.SØKERSITUASJON || harGodkjentVilkår;
 };

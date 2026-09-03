@@ -29,13 +29,13 @@ const erBarnetAdoptert = (barnet: OmBarnetPlanlegger): barnet is BarnetErAdopter
     (barnet as BarnetErAdoptertPlanlegger).overtakelsesdato !== undefined;
 
 const erBarnetFødt = (barnet: OmBarnetPlanlegger): barnet is BarnetErFødtPlanlegger =>
-    !erBarnetAdoptert(barnet) && (barnet as BarnetErFødtPlanlegger).erBarnetFødt === true;
+    !erBarnetAdoptert(barnet) && (barnet as BarnetErFødtPlanlegger).erBarnetFødt;
 
 const utledRolleForSøker = (kjønn: Kjønn_fpoversikt | undefined): Søkerrolle | undefined =>
     kjønn === 'M' ? 'far' : undefined;
 
 const mapOmBarnetTilBarn = (barnet: OmBarnetPlanlegger): Barn => {
-    const antallBarn = Number.parseInt(barnet.antallBarn, 10);
+    const antallBarn = Number(barnet.antallBarn);
 
     if (erBarnetAdoptert(barnet)) {
         return {

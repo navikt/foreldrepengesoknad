@@ -23,8 +23,6 @@ export const isValidAntallUkerFellesperiode =
     (intl: IntlShape, tilgjengeligeFellesperiodeDager: number, dagerInput: string | undefined) =>
     (value: string | number | undefined) => {
         const ukerValue = typeof value === 'string' ? getNumberFromNumberInputValue(value) : value;
-        const antallDager = getNumberFromNumberInputValue(dagerInput) ?? 0;
-
         if (ukerValue && ukerValue < 0) {
             return intl.formatMessage({ id: 'fordeling.antallUker.forLiten' });
         }
@@ -32,6 +30,8 @@ export const isValidAntallUkerFellesperiode =
         if (ukerValue === undefined && dagerInput === undefined) {
             return intl.formatMessage({ id: 'fordeling.antallUkerDager.måOppgis' });
         }
+
+        const antallDager = getNumberFromNumberInputValue(dagerInput) ?? 0;
 
         if (ukerValue) {
             return validateMaxValueAntallUkerFellesperiode(
@@ -48,8 +48,6 @@ export const isValidAntallDagerFellesperiode =
     (intl: IntlShape, tilgjengeligeFellesperiodeDager: number, ukerInput: string | undefined) =>
     (value: string | number | undefined) => {
         const dagerValue = typeof value === 'string' ? getNumberFromNumberInputValue(value) : value;
-        const antallUker = getNumberFromNumberInputValue(ukerInput) ?? 0;
-
         if (dagerValue && dagerValue < 0) {
             return intl.formatMessage({ id: 'fordeling.antallDager.forLiten' });
         }
@@ -57,6 +55,8 @@ export const isValidAntallDagerFellesperiode =
         if (dagerValue === undefined && ukerInput === undefined) {
             return intl.formatMessage({ id: 'fordeling.antallUkerDager.måOppgis' });
         }
+
+        const antallUker = getNumberFromNumberInputValue(ukerInput) ?? 0;
 
         if (dagerValue) {
             return validateMaxValueAntallUkerFellesperiode(

@@ -104,7 +104,7 @@ export const AdopsjonPanel = ({ kjønn }: Props) => {
                 antallBarn={antallBarn}
                 antallBarnDropDown={antallBarnDropDown}
             />
-            {kjønn === 'M' && adopsjonAvEktefellesBarn === false && (
+            {kjønn === 'M' && !adopsjonAvEktefellesBarn && (
                 <RhfRadioGroup
                     name="søkerAdopsjonAlene"
                     control={control}

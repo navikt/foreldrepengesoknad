@@ -9,7 +9,9 @@ import { EsPersonopplysningerDto_fpoversikt, FpSoknadProblemDetails } from '@nav
 
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './EsDataContext';
 
-export const VERSJON_MELLOMLAGRING = 6;
+// Bumpet fra 6 til 7: landkoder i skjemaet gikk fra alpha-2 til alpha-3 (ISO 3166-1),
+// så eldre mellomlagret data må forkastes for å unngå at gamle 2-bokstavskoder blir sendt inn.
+export const VERSJON_MELLOMLAGRING = 7;
 
 export type EsMellomlagretData = { version: number; personinfo: EsPersonopplysningerDto_fpoversikt } & ContextDataMap;
 
@@ -54,65 +56,72 @@ export const useEsMellomlagring = (
     });
 
     useEffect(() => {
-        if (forespørsel) {
-            const { naviger, medRetry } = forespørsel;
-
-            const lagreEllerSlett = async () => {
-                setForespørsel(null);
-
-                const currentPath = state[ContextDataType.CURRENT_PATH];
-                if (currentPath) {
-                    if (naviger) {
-                        void navigate(currentPath);
-                    }
-
-                    try {
-                        const data = {
-                            version: VERSJON_MELLOMLAGRING,
-                            personinfo,
-                            ...state,
-                        } satisfies EsMellomlagretData;
-                        await ky.post(API_URLS.mellomlagring, {
-                            json: data,
-                            ...(medRetry
-                                ? {
-                                      retry: {
-                                          limit: 2,
-                                          methods: ['post'],
-                                          statusCodes: [408, 429, 500, 502, 503, 504],
-                                      },
-                                  }
-                                : {}),
-                        });
-                    } catch (error: unknown) {
-                        throw tilMellomlagringsFeil(error);
-                    }
-                } else {
-                    // Ved avbryt så set ein Path = undefined og må så rydda opp i data her
-                    slettMellomlagring();
-
-                    setVelkommen(false);
-                    resetState();
-                    void navigate('/');
-                }
-
-                if (promiseRef.current) {
-                    promiseRef.current();
-                }
-            };
-
-            lagreEllerSlett().catch((error: Error) => {
-                if (error instanceof ApiError) {
-                    captureApiError(error.telemetryMessage, error.problemDetails);
-                } else {
-                    captureMessage(error.message);
-                }
-
-                if (promiseRef.current) {
-                    promiseRef.current();
-                }
-            });
+        if (!forespørsel) {
+            return;
         }
+
+        const { naviger, medRetry } = forespørsel;
+
+        const lagreEllerSlett = async () => {
+            setForespørsel(null);
+
+            const currentPath = state[ContextDataType.CURRENT_PATH];
+            if (currentPath) {
+                if (naviger) {
+                    void navigate(currentPath);
+                }
+
+                try {
+                    const data = {
+                        version: VERSJON_MELLOMLAGRING,
+                        personinfo,
+                        ...state,
+                    } satisfies EsMellomlagretData;
+                    await ky.post(API_URLS.mellomlagring, {
+                        json: data,
+                        ...(medRetry && {
+                            retry: {
+                                limit: 2,
+                                methods: ['post'],
+                                statusCodes: [408, 429, 500, 502, 503, 504],
+                            },
+                        }),
+                    });
+                } catch (error: unknown) {
+                    throw tilMellomlagringsFeil(error);
+                }
+            } else {
+                // Ved avbryt så set ein Path = undefined og må så rydda opp i data her
+                slettMellomlagring();
+
+                setVelkommen(false);
+                resetState();
+                void navigate('/');
+            }
+
+            if (promiseRef.current) {
+                promiseRef.current();
+            }
+        };
+
+        const lagreOgHåndterFeil = async () => {
+            try {
+                await lagreEllerSlett();
+            } catch (error: unknown) {
+                const lagringsfeil = error as Error;
+                if (lagringsfeil instanceof ApiError) {
+                    captureApiError(lagringsfeil.telemetryMessage, lagringsfeil.problemDetails);
+                } else {
+                    captureMessage(lagringsfeil.message);
+                }
+
+                if (promiseRef.current) {
+                    promiseRef.current();
+                }
+            }
+        };
+
+        void lagreOgHåndterFeil();
     }, [forespørsel]);
 
     const mellomlagreOgNaviger = useCallback<MellomlagreSøknadFn>((options) => {

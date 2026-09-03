@@ -4,6 +4,7 @@ import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
+import { useMemo } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
@@ -58,7 +59,10 @@ export const OppsummeringSteg = (props: Props) => {
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
 
-    const eksisterendeSak = foreldrepengerSaker?.find((sak) => sak.saksnummer === eksisterendeSaksnummer);
+    const eksisterendeSak = useMemo(
+        () => foreldrepengerSaker?.find((sak) => sak.saksnummer === eksisterendeSaksnummer),
+        [eksisterendeSaksnummer, foreldrepengerSaker],
+    );
 
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad, eksisterendeSak);
     const navigator = useFpNavigator(
@@ -67,8 +71,31 @@ export const OppsummeringSteg = (props: Props) => {
         erEndringssøknad,
         eksisterendeSak,
     );
+    const frilansoppdragQuery = useQuery(mineFrilansoppdragOptions());
+    const selvstendigNæringQuery = useQuery(selvstendigNæringOptions());
+
+    if (uttaksplan === undefined) {
+        return <ManglendeUttaksplanSide onGåTilUttaksplan={() => navigator.goToStep(SøknadRoutes.UTTAKSPLAN)} />;
+    }
+
+    const frilansoppdrag = frilansoppdragQuery.data ?? [];
+    const selvstendigNæring = selvstendigNæringQuery.data ?? [];
 
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
+    const aktiveArbeidsforhold = getAktiveArbeidsforhold(
+        søkerInfo.arbeidsforhold,
+        søkersituasjon.situasjon === 'adopsjon',
+        søkerErFarEllerMedmor,
+        getFamiliehendelsedato(barn),
+    );
+
+    const visInfoboksOmFarskapsportal = skalViseInfoOmFarskapsportal(
+        søkerInfo,
+        søkersituasjon.rolle,
+        annenForelder,
+        isUfødtBarn(barn),
+    );
+
     const navnPåForeldre = getNavnPåForeldre(søkerInfo, annenForelder, søkerErFarEllerMedmor, intl);
     const erEndringssøknadOgAnnenForelderHarRett =
         erEndringssøknad && isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge;
@@ -80,29 +107,6 @@ export const OppsummeringSteg = (props: Props) => {
               },
           )
         : '';
-
-    const visInfoboksOmFarskapsportal = skalViseInfoOmFarskapsportal(
-        søkerInfo,
-        søkersituasjon.rolle,
-        annenForelder,
-        isUfødtBarn(barn),
-    );
-
-    const aktiveArbeidsforhold = getAktiveArbeidsforhold(
-        søkerInfo.arbeidsforhold,
-        søkersituasjon.situasjon === 'adopsjon',
-        søkerErFarEllerMedmor,
-        getFamiliehendelsedato(barn),
-    );
-
-    const frilansoppdragQuery = useQuery(mineFrilansoppdragOptions());
-    const frilansoppdrag = frilansoppdragQuery.data ?? [];
-    const selvstendigNæringQuery = useQuery(selvstendigNæringOptions());
-    const selvstendigNæring = selvstendigNæringQuery.data ?? [];
-
-    if (uttaksplan === undefined) {
-        return <ManglendeUttaksplanSide onGåTilUttaksplan={() => navigator.goToStep(SøknadRoutes.UTTAKSPLAN)} />;
-    }
 
     return (
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>

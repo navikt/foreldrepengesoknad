@@ -52,10 +52,9 @@ type Story = StoryObj<typeof meta>;
 export const SøkerErKvinne: Story = {
     beforeEach({ msw }) {
         msw.use(
-            ...HANDLERS.concat([
-                http.get(API_URLS.personInfo, () => HttpResponse.json(DEFAULT_PERSONINFO)),
-                http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 204 })),
-            ]),
+            ...HANDLERS,
+            http.get(API_URLS.personInfo, () => HttpResponse.json(DEFAULT_PERSONINFO)),
+            http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 204 })),
         );
     },
 };
@@ -63,19 +62,18 @@ export const SøkerErKvinne: Story = {
 export const SøkerErKvinneMedMellomlagretData: Story = {
     beforeEach({ msw }) {
         msw.use(
-            ...HANDLERS.concat([
-                http.get(API_URLS.personInfo, () => HttpResponse.json(DEFAULT_PERSONINFO)),
-                http.get(API_URLS.mellomlagring, () =>
-                    HttpResponse.json({
-                        version: VERSJON_MELLOMLAGRING,
-                        locale: 'nb',
-                        [ContextDataType.SØKERSITUASJON]: {
-                            situasjon: 'fødsel',
-                        },
-                        [ContextDataType.CURRENT_PATH]: Path.SØKERSITUASJON,
-                    }),
-                ),
-            ]),
+            ...HANDLERS,
+            http.get(API_URLS.personInfo, () => HttpResponse.json(DEFAULT_PERSONINFO)),
+            http.get(API_URLS.mellomlagring, () =>
+                HttpResponse.json({
+                    version: VERSJON_MELLOMLAGRING,
+                    locale: 'nb',
+                    [ContextDataType.SØKERSITUASJON]: {
+                        situasjon: 'fødsel',
+                    },
+                    [ContextDataType.CURRENT_PATH]: Path.SØKERSITUASJON,
+                }),
+            ),
         );
     },
 };
@@ -83,20 +81,19 @@ export const SøkerErKvinneMedMellomlagretData: Story = {
 export const SøkerErMann: Story = {
     beforeEach({ msw }) {
         msw.use(
-            ...HANDLERS.concat([
-                http.get(API_URLS.personInfo, () =>
-                    HttpResponse.json({
-                        fnr: '1231111111',
-                        navn: {
-                            fornavn: 'Espen',
-                            etternavn: 'Utvikler',
-                        },
-                        kjønn: 'M',
-                        fødselsdato: '1979-01-28',
-                    }),
-                ),
-                http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 204 })),
-            ]),
+            ...HANDLERS,
+            http.get(API_URLS.personInfo, () =>
+                HttpResponse.json({
+                    fnr: '1231111111',
+                    navn: {
+                        fornavn: 'Espen',
+                        etternavn: 'Utvikler',
+                    },
+                    kjønn: 'M',
+                    fødselsdato: '1979-01-28',
+                }),
+            ),
+            http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 204 })),
         );
     },
 };

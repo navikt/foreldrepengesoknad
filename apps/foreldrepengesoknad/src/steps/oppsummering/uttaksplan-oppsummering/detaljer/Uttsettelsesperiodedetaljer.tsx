@@ -26,23 +26,32 @@ export const Utsettelsesperiodedetaljer = ({ periode }: Props) => {
 
 const getÅrsakTekst = (intl: IntlShape, periode: UttakPeriode_fpoversikt) => {
     switch (periode.utsettelseÅrsak) {
-        case 'ARBEID':
+        case 'ARBEID': {
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.ARBEID' });
-        case 'LOVBESTEMT_FERIE':
+        }
+        case 'LOVBESTEMT_FERIE': {
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.LOVBESTEMT_FERIE' });
-        case 'SØKER_SYKDOM':
+        }
+        case 'SØKER_SYKDOM': {
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.SØKER_SYKDOM' });
-        case 'FRI':
+        }
+        case 'FRI': {
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.FRI' });
-        case 'SØKER_INNLAGT':
+        }
+        case 'SØKER_INNLAGT': {
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.SØKER_INNLAGT' });
-        case 'BARN_INNLAGT':
+        }
+        case 'BARN_INNLAGT': {
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.BARN_INNLAGT' });
-        case 'HV_ØVELSE':
+        }
+        case 'HV_ØVELSE': {
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.HV_ØVELSE' });
-        case 'NAV_TILTAK':
+        }
+        case 'NAV_TILTAK': {
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.NAV_TILTAK' });
-        default:
+        }
+        default: {
             throw new Error(`Ukjent utsettelseÅrsak: ${periode.utsettelseÅrsak}`);
+        }
     }
 };

@@ -3,6 +3,8 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { FormEvent, useState } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Link, useParams, useSearchParams } from 'react-router';
+import { Sak } from 'types/Sak.ts';
+import { SakOppslag } from 'types/SakOppslag.ts';
 
 import {
     Alert,
@@ -29,8 +31,6 @@ import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
-import { Sak } from '../../types/Sak';
-import { SakOppslag } from '../../types/SakOppslag';
 import { getAlleYtelser } from '../../utils/sakerUtils';
 import { getRelevanteSkjemanummer } from '../../utils/skjemanummerUtils';
 
@@ -45,6 +45,16 @@ const mapYtelse = (sakstype: Ytelse) => {
 };
 
 const DEFAULT_OPTION = 'default';
+
+const getSkjemanummerTextMap = (intl: IntlShape, sak: Sak): Record<Skjemanummer, string> => {
+    const skjemanummerTextMap = {} as Record<Skjemanummer, string>;
+
+    for (const skjemanr of getRelevanteSkjemanummer(sak)) {
+        skjemanummerTextMap[skjemanr] = intl.formatMessage({ id: `ettersendelse.${skjemanr}` });
+    }
+
+    return skjemanummerTextMap;
+};
 
 const getAttachmentTypeSelectOptions = (intl: IntlShape, manglendeSkjemanummer: string[], sak: Sak | undefined) => {
     if (!sak) {
@@ -64,7 +74,7 @@ const getAttachmentTypeSelectOptions = (intl: IntlShape, manglendeSkjemanummer: 
                     skjemanummer,
                     text: intl.formatMessage({ id: `ettersendelse.${skjemanummer}` }),
                 }))
-                .sort((selectOption, nextSelectOption) => {
+                .toSorted((selectOption, nextSelectOption) => {
                     if (selectOption.skjemanummer === Skjemanummer.ANNET) {
                         return 1;
                     }
@@ -84,7 +94,8 @@ const konverterSelectVerdi = (selectText: string): Skjemanummer | typeof DEFAULT
         return selectText;
     }
 
-    const snr = Object.values(Skjemanummer).find((value) => String(value) === selectText);
+    // eslint-disable-next-line unicorn/no-useless-coercion
+    const snr = Object.values(Skjemanummer).find((value) => value.toString() === selectText);
     if (snr) {
         return snr;
     }
@@ -130,17 +141,6 @@ const EttersendingPageInner = ({ saker }: Props) => {
         mutationFn: (valuesToSend: EttersendelseDto) => sendEttersending(valuesToSend),
     });
 
-    const onSubmit = (e: FormEvent) => {
-        e.preventDefault();
-
-        mutate({
-            saksnummer: sak!.saksnummer,
-            type: sak!.ytelse,
-            fnr: notEmpty(søkerInfo).fnr,
-            vedlegg,
-        });
-    };
-
     if (isSuccess || isError) {
         return (
             <>
@@ -164,6 +164,17 @@ const EttersendingPageInner = ({ saker }: Props) => {
             </>
         );
     }
+
+    const onSubmit = (e: FormEvent) => {
+        e.preventDefault();
+
+        mutate({
+            saksnummer: sak!.saksnummer,
+            type: sak!.ytelse,
+            fnr: notEmpty(søkerInfo).fnr,
+            vedlegg,
+        });
+    };
 
     return (
         <form onSubmit={onSubmit}>
@@ -194,17 +205,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
                         skjemanummer={type}
                         existingAttachments={vedlegg}
                         uploadPath={mapYtelse(sak!.ytelse)}
-                        skjemanummerTextMap={
-                            sak
-                                ? getRelevanteSkjemanummer(sak).reduce(
-                                      (prev, skjemanr) => ({
-                                          ...prev,
-                                          [skjemanr]: intl.formatMessage({ id: `ettersendelse.${skjemanr}` }),
-                                      }),
-                                      {} as Record<Skjemanummer, string>,
-                                  )
-                                : undefined
-                        }
+                        skjemanummerTextMap={sak ? getSkjemanummerTextMap(intl, sak) : undefined}
                     />
                 )}
                 {vedlegg && vedlegg.length > 0 && vedlegg.length <= 40 && (

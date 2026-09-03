@@ -8,7 +8,7 @@ export const formaterNavn = (fornavn: string, etternavn: string, visEtternavn: b
     if (visEtternavn) {
         return mellomnavn ? `${fornavn} ${mellomnavn} ${etternavn}` : `${fornavn} ${etternavn}`;
     }
-    return mellomnavn ? `${fornavn} ${mellomnavn}` : `${fornavn}`;
+    return mellomnavn ? `${fornavn} ${mellomnavn}` : fornavn;
 };
 
 export const getKjønnFromFnr = (annenForelder: AnnenForelder): Kjønn_fpoversikt | undefined => {
@@ -18,7 +18,7 @@ export const getKjønnFromFnr = (annenForelder: AnnenForelder): Kjønn_fpoversik
         if (fnr.length !== 11) {
             return undefined;
         }
-        return Number.parseInt(fnr.charAt(8), 10) % 2 === 0 ? 'K' : 'M';
+        return Number(fnr.charAt(8)) % 2 === 0 ? 'K' : 'M';
     }
 
     return undefined;
@@ -36,7 +36,7 @@ export const getKjønnFromFnrString = (fnr: string): Kjønn_fpoversikt | undefin
     if (fnr.length !== 11) {
         return undefined;
     }
-    return Number.parseInt(fnr.charAt(8), 10) % 2 === 0 ? 'K' : 'M';
+    return Number(fnr.charAt(8)) % 2 === 0 ? 'K' : 'M';
 };
 
 export const getKunFarHarRett = (
@@ -58,7 +58,7 @@ export const getMorErAleneOmOmsorg = (
     søkerErAleneOmOmsorg: boolean,
     annenForelder: AnnenForelder,
 ) => {
-    return søkerErMor && (søkerErAleneOmOmsorg || annenForelder.kanIkkeOppgis === true);
+    return søkerErMor && (søkerErAleneOmOmsorg || annenForelder.kanIkkeOppgis);
 };
 
 export const getMorHarRettPåForeldrepengerINorgeEllerEØS = (
@@ -66,7 +66,7 @@ export const getMorHarRettPåForeldrepengerINorgeEllerEØS = (
     søkerErFarEllerMedmor: boolean,
     annenForelder: AnnenForelder,
 ) => {
-    if (søkerErFarEllerMedmor === true && isAnnenForelderOppgitt(annenForelder)) {
+    if (søkerErFarEllerMedmor && isAnnenForelderOppgitt(annenForelder)) {
         return (
             annenForelder.harRettPåForeldrepengerINorge === true || annenForelder.harRettPåForeldrepengerIEØS === true
         );
@@ -79,7 +79,7 @@ export const getFarMedmorErAleneOmOmsorg = (
     søkerErAleneOmOmsorg: boolean,
     annenForelder: AnnenForelder,
 ) => {
-    return søkerErFarMedmor && (søkerErAleneOmOmsorg || annenForelder.kanIkkeOppgis === true);
+    return søkerErFarMedmor && (søkerErAleneOmOmsorg || annenForelder.kanIkkeOppgis);
 };
 
 export const getNavnPåForeldre = (

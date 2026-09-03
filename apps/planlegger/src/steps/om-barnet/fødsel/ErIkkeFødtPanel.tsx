@@ -46,10 +46,12 @@ export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetPlanleggerIkkeOppgi
     const erFar = (() => {
         switch (hvemPlanlegger.type) {
             case HvemPlanleggerType.MOR:
-            case HvemPlanleggerType.MOR_OG_MEDMOR:
+            case HvemPlanleggerType.MOR_OG_MEDMOR: {
                 return false;
-            default:
+            }
+            default: {
                 return true;
+            }
         }
     })();
 

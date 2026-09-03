@@ -22,7 +22,7 @@ interface Props {
 export const ForeldrepengerSamtidig = ({ erAdopsjon = false, hvemPlanlegger, arbeidssituasjon, barnet }: Props) => {
     const intl = useIntl();
     const bTag = (msg: ReactNode[]) => <b>{msg}</b>;
-    const erFødsel = barnet.erFødsel === true;
+    const erFødsel = barnet.erFødsel;
     const erFar =
         hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR || hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR;
     const erFedre = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR;
@@ -67,14 +67,14 @@ export const ForeldrepengerSamtidig = ({ erAdopsjon = false, hvemPlanlegger, arb
 
                         {barnet.antallBarn !== '1' && (
                             <BodyLong>
-                                {!erAdopsjon ? (
+                                {erAdopsjon ? (
                                     <FormattedMessage
-                                        id="HvaErMulig.ForeldrepengerSamtidig.Flerbarnsdager"
+                                        id="HvaErMulig.ForeldrepengerSamtidig.Flerbarnsdager.Adopsjon"
                                         values={{ b: bTag }}
                                     />
                                 ) : (
                                     <FormattedMessage
-                                        id="HvaErMulig.ForeldrepengerSamtidig.Flerbarnsdager.Adopsjon"
+                                        id="HvaErMulig.ForeldrepengerSamtidig.Flerbarnsdager"
                                         values={{ b: bTag }}
                                     />
                                 )}{' '}

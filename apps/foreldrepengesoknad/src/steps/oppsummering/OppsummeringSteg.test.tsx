@@ -21,6 +21,7 @@ const {
     MorMedUtenlandsopphold,
     FarMedMorSomHarVedtak,
     MorMedArbeidsforholdOgAndreInntekter,
+    MorMedAndreInntekterJobbIUtlandet,
     MorMedAleneOmsorg,
     FarMedAleneOmsorg,
     ErEndringssøknad,
@@ -33,7 +34,7 @@ const {
 
 describe('<Oppsummering>', () => {
     afterEach(() => {
-        document.body.innerHTML = '';
+        document.body.replaceChildren();
     });
 
     const getCardDiv = (element: HTMLElement) =>
@@ -236,15 +237,31 @@ describe('<Oppsummering>', () => {
         ).toBeInTheDocument();
     });
 
+    it('Skal vise landnavn og ikke landkode for jobb i utlandet', async () => {
+        render(<MorMedAndreInntekterJobbIUtlandet />);
+
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        await userEvent.click(screen.getAllByText('Andre inntekter')[1]!);
+
+        expect(
+            checkAndGetParentDiv(screen.getByText('Hvilket land har du jobbet i?')).getByText('Sverige'),
+        ).toBeInTheDocument();
+        expect(screen.queryByText('SWE')).not.toBeInTheDocument();
+    });
+
     it('Skal vise informasjon om uttaksplan', async () => {
         await FarMedUførMorUgift.run();
 
         const dinPlanDiv = getCardDiv(screen.getByText('Din plan'));
-        await dinPlanDiv.findByText('3 av 10 uker med foreldrepenger uten aktivitetskrav');
+        await dinPlanDiv.findByText('3 uker av 10 uker med foreldrepenger uten aktivitetskrav');
 
         const duHarPlanlagtDiv = checkAndGetParentDiv(dinPlanDiv.getByText('Du har planlagt'));
-        expect(duHarPlanlagtDiv.getByText('3 av 10 uker med foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
-        expect(duHarPlanlagtDiv.getByText('25 av 30 uker med foreldrepenger med aktivitetskrav')).toBeInTheDocument();
+        expect(
+            duHarPlanlagtDiv.getByText('3 uker av 10 uker med foreldrepenger uten aktivitetskrav'),
+        ).toBeInTheDocument();
+        expect(
+            duHarPlanlagtDiv.getByText('25 uker av 30 uker med foreldrepenger med aktivitetskrav'),
+        ).toBeInTheDocument();
         expect(
             checkAndGetParentDiv(dinPlanDiv.getByText('Onsdag 24.11.21 - tirsdag 14.12.21')).getByText(
                 /Foreldrepenger uten aktivitetskrav/,
@@ -262,6 +279,34 @@ describe('<Oppsummering>', () => {
                 ),
             ).getByText('Nei'),
         ).toBeInTheDocument();
+    });
+
+    it('Skal vise «Du har planlagt» med far sine egne perioder når far er søker og har aleneomsorg', async () => {
+        await FarMedAleneOmsorg.run();
+
+        const dinPlanDiv = getCardDiv(screen.getByText('Din plan'));
+        await dinPlanDiv.findByText('3 uker av 10 uker med foreldrepenger uten aktivitetskrav');
+
+        const duHarPlanlagtDiv = checkAndGetParentDiv(dinPlanDiv.getByText('Du har planlagt'));
+        expect(
+            duHarPlanlagtDiv.getByText('3 uker av 10 uker med foreldrepenger uten aktivitetskrav'),
+        ).toBeInTheDocument();
+        expect(
+            duHarPlanlagtDiv.getByText('25 uker av 30 uker med foreldrepenger med aktivitetskrav'),
+        ).toBeInTheDocument();
+    });
+
+    it('Skal vise «Du har planlagt» med far sine egne perioder når mor har rett til foreldrepenger i EØS', async () => {
+        await FarMedMorSomHarRettIEØS.run();
+
+        const dinPlanDiv = getCardDiv(screen.getByText('Din plan'));
+        await dinPlanDiv.findByText('6 uker og 4 dager av 15 uker av din kvote (fedrekvoten)');
+
+        const duHarPlanlagtDiv = checkAndGetParentDiv(dinPlanDiv.getByText('Du har planlagt'));
+        expect(
+            duHarPlanlagtDiv.getByText('6 uker og 4 dager av 15 uker av din kvote (fedrekvoten)'),
+        ).toBeInTheDocument();
+        expect(duHarPlanlagtDiv.getByText('14 uker og 4 dager av 16 uker av fellesperioden')).toBeInTheDocument();
     });
 
     it('skal vise en gjenopprettingsside når uttaksplanen mangler', async () => {
@@ -483,12 +528,14 @@ describe('<Oppsummering>', () => {
 
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
 
+        expect(await screen.findByText('5 uker av 16 uker av fellesperioden')).toBeInTheDocument();
+
         expect(screen.getByText('Navn og fødselsnummer')).toBeInTheDocument();
         expect(screen.getByText('Kari Nordmann, 02520489226')).toBeInTheDocument();
         expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
         expect(screen.getByText('Har den andre forelderen rett til foreldrepenger i Norge?')).toBeInTheDocument();
         expect(screen.getByText('Har du orientert den andre forelderen om søknaden din?')).toBeInTheDocument();
-        expect(screen.getAllByText('Ja')).toHaveLength(5);
+        expect(screen.getAllByText('Ja')).toHaveLength(6);
 
         expect(
             screen.getByText(
@@ -497,9 +544,10 @@ describe('<Oppsummering>', () => {
         ).toBeInTheDocument();
 
         expect(screen.getByText('Periodene med foreldrepenger til den andre forelderen')).toBeInTheDocument();
-        expect(screen.getByText('Fellesperiode', { selector: 'dd' })).toBeInTheDocument();
-        expect(screen.getByText('Vi skal ha samtidig uttak:')).toBeInTheDocument();
-        expect(screen.getByText('Vi skal ha samtidig uttak:').nextSibling).toHaveTextContent('Ja');
+        expect(screen.getAllByText('Fellesperiode', { selector: 'dd' })).toHaveLength(2);
+        const samtidigUttakLabel = screen.getAllByText('Vi skal ha samtidig uttak:')[0]!;
+        expect(samtidigUttakLabel).toBeInTheDocument();
+        expect(samtidigUttakLabel.nextSibling).toHaveTextContent('Ja');
     });
 
     it('Far er hovedsøker - Skal ikke vise krav om dokumentasjon når mor jobber 75% eller mer', async () => {

@@ -59,7 +59,7 @@ const skalViseTermindato = (
         return false;
     }
 
-    let eldsteBarnFødselsdato = undefined;
+    let eldsteBarnFødselsdato;
 
     if (valgteRegistrerteBarn !== undefined && valgteRegistrerteBarn.length > 0) {
         const eldsteBarn = getEldsteRegistrerteBarn(valgteRegistrerteBarn);
@@ -136,9 +136,10 @@ const OmBarnetStegInner = ({
 
     const valgteRegistrerteBarn =
         !søknadGjelderNyttBarn && omBarnet && !isUfødtBarn(omBarnet)
-            ? registrerteBarn
-                  .filter((b) => findBarnetIRegistrerteBarn(b, omBarnet))
-                  .concat(dødfødteUtenFnrMedSammeFødselsdato)
+            ? [
+                  ...registrerteBarn.filter((b) => findBarnetIRegistrerteBarn(b, omBarnet)),
+                  ...dødfødteUtenFnrMedSammeFødselsdato,
+              ]
             : undefined;
 
     const barnSøktOmFørMenIkkeRegistrert =

@@ -69,8 +69,7 @@ export const UttaksplanForm = ({
             (p) =>
                 Uttaksperioden.erIkkeEøsPeriode(p) &&
                 (p.resultat === undefined ||
-                    (opprinneligPlan !== undefined &&
-                        !opprinneligPlan.some((o) => erSammePeriodeInkludertDatoer(p, o)))),
+                    (opprinneligPlan?.every((o) => !erSammePeriodeInkludertDatoer(p, o)) ?? false)),
         ) ?? [];
     const gjeldendeUttaksplan = erEndringssøknad ? uttaksplanMedKunNyePerioder : uttaksplan;
 
@@ -269,9 +268,10 @@ const finnPerioderRundtFødsel = (
 
     const familiehendelsesdato = isFødtBarn(barnet) ? barnet.fødselsdatoer[0]! : barnet.termindato;
 
-    return finnPerioderInnenforIntervalletToUkerFørFamDatoOgFamDato(valgtePerioder, familiehendelsesdato).concat(
-        finnPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(valgtePerioder, familiehendelsesdato),
-    );
+    return [
+        ...finnPerioderInnenforIntervalletToUkerFørFamDatoOgFamDato(valgtePerioder, familiehendelsesdato),
+        ...finnPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato(valgtePerioder, familiehendelsesdato),
+    ];
 };
 
 const finnPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato = (
@@ -331,7 +331,7 @@ export const kanJustereFarsUttakRundtFødsel = (
         return false;
     }
 
-    const sortertePerioder = [...farMedmorPerioder].sort((p1, p2) => dayjs(p1.fom).diff(dayjs(p2.fom)));
+    const sortertePerioder = [...farMedmorPerioder].toSorted((p1, p2) => dayjs(p1.fom).diff(dayjs(p2.fom)));
 
     const termindatoUttaksdag = Uttaksdagen.denneEllerNeste(termindato).getDato();
     const intervallFom = dayjs(termindatoUttaksdag).subtract(2, 'week');

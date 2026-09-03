@@ -12,7 +12,7 @@ export const useFpNavigator = (
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     mellomlagreOgNaviger: MellomlagreSøknadFn,
     erEndringssøknad = false,
-    eksisterendeSak: FpSak_fpoversikt | undefined = undefined,
+    eksisterendeSak?: FpSak_fpoversikt,
 ) => {
     const stepConfig = useStepConfig(arbeidsforhold, erEndringssøknad, eksisterendeSak);
     const oppdaterPath = useContextSaveData(ContextDataType.APP_ROUTE);
@@ -81,7 +81,7 @@ export const useFpNavigator = (
             visFeilTilBruker: true,
             onFerdig: (resultat) => {
                 if (resultat === 'ok') {
-                    globalThis.location.href = 'https://nav.no';
+                    location.assign('https://nav.no');
                 }
             },
         });

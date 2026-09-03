@@ -1,10 +1,26 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import * as stories from './SituasjonSide.stories';
 
 const { Default } = composeStories(stories);
+
+const velgSvar = (spørsmål: string, svar: 'Ja' | 'Nei') => {
+    const radiogruppe = screen.getByText(spørsmål).closest('fieldset');
+    if (!radiogruppe) {
+        throw new Error(`Fant ikke radiogruppe for spørsmålet: ${spørsmål}`);
+    }
+
+    return userEvent.click(within(radiogruppe).getByRole('radio', { name: svar }));
+};
+
+const arbeidEllerNav =
+    'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?';
+const harHattInntekt = 'Har du hatt inntekt 6 av de 10 siste månedene?';
+const borDuINorge = 'Bor du i Norge?';
+const jobberDuINorge = 'Jobber du i Norge?';
+const harAndreInntektskilder = 'Har du andre inntektskilder?';
 
 describe('<SituasjonSide>', () => {
     it('skal ha rett til foreldrepenger når mor er i arbeid, har inntekt over grensen og bor i Norge', async () => {
@@ -21,16 +37,16 @@ describe('<SituasjonSide>', () => {
                 'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
             ),
         ).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Ja'));
+        await velgSvar(arbeidEllerNav, 'Ja');
 
         expect(screen.getByText('Har du hatt inntekt 6 av de 10 siste månedene?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[1]!);
+        await velgSvar(harHattInntekt, 'Ja');
 
         const hvorMye = utils.getByLabelText('Omtrent hvor mye tjener du i måneden før skatt?');
         await userEvent.type(hvorMye, '50000');
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[2]!);
+        await velgSvar(borDuINorge, 'Ja');
 
         await userEvent.click(screen.getByText('Se resultatet'));
 
@@ -59,19 +75,19 @@ describe('<SituasjonSide>', () => {
                 'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
             ),
         ).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Ja'));
+        await velgSvar(arbeidEllerNav, 'Ja');
 
         expect(screen.getByText('Har du hatt inntekt 6 av de 10 siste månedene?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[1]!);
+        await velgSvar(harHattInntekt, 'Ja');
 
         const hvorMye = utils.getByLabelText('Omtrent hvor mye tjener du i måneden før skatt?');
         await userEvent.type(hvorMye, '50000');
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[2]!);
+        await velgSvar(borDuINorge, 'Nei');
 
         expect(screen.getByText('Jobber du i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[3]!);
+        await velgSvar(jobberDuINorge, 'Ja');
 
         await userEvent.click(screen.getByText('Se resultatet'));
 
@@ -100,19 +116,19 @@ describe('<SituasjonSide>', () => {
                 'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
             ),
         ).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Ja'));
+        await velgSvar(arbeidEllerNav, 'Ja');
 
         expect(screen.getByText('Har du hatt inntekt 6 av de 10 siste månedene?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[1]!);
+        await velgSvar(harHattInntekt, 'Ja');
 
         const hvorMye = utils.getByLabelText('Omtrent hvor mye tjener du i måneden før skatt?');
         await userEvent.type(hvorMye, '50000');
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[2]!);
+        await velgSvar(borDuINorge, 'Nei');
 
         expect(screen.getByText('Jobber du i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[3]!);
+        await velgSvar(jobberDuINorge, 'Nei');
 
         expect(
             screen.getByText(
@@ -147,16 +163,16 @@ describe('<SituasjonSide>', () => {
                 'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
             ),
         ).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Ja'));
+        await velgSvar(arbeidEllerNav, 'Ja');
 
         expect(screen.getByText('Har du hatt inntekt 6 av de 10 siste månedene?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[1]!);
+        await velgSvar(harHattInntekt, 'Ja');
 
         const hvorMye = utils.getByLabelText('Omtrent hvor mye tjener du i måneden før skatt?');
         await userEvent.type(hvorMye, '5000');
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[2]!);
+        await velgSvar(borDuINorge, 'Ja');
 
         await userEvent.click(screen.getByText('Se resultatet'));
 
@@ -185,19 +201,19 @@ describe('<SituasjonSide>', () => {
                 'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
             ),
         ).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Ja'));
+        await velgSvar(arbeidEllerNav, 'Ja');
 
         expect(screen.getByText('Har du hatt inntekt 6 av de 10 siste månedene?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[1]!);
+        await velgSvar(harHattInntekt, 'Ja');
 
         const hvorMye = utils.getByLabelText('Omtrent hvor mye tjener du i måneden før skatt?');
         await userEvent.type(hvorMye, '5000');
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[2]!);
+        await velgSvar(borDuINorge, 'Nei');
 
         expect(screen.getByText('Jobber du i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[3]!);
+        await velgSvar(jobberDuINorge, 'Ja');
 
         await userEvent.click(screen.getByText('Se resultatet'));
 
@@ -226,19 +242,19 @@ describe('<SituasjonSide>', () => {
                 'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
             ),
         ).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Ja'));
+        await velgSvar(arbeidEllerNav, 'Ja');
 
         expect(screen.getByText('Har du hatt inntekt 6 av de 10 siste månedene?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[1]!);
+        await velgSvar(harHattInntekt, 'Ja');
 
         const hvorMye = utils.getByLabelText('Omtrent hvor mye tjener du i måneden før skatt?');
         await userEvent.type(hvorMye, '5000');
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[2]!);
+        await velgSvar(borDuINorge, 'Nei');
 
         expect(screen.getByText('Jobber du i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[3]!);
+        await velgSvar(jobberDuINorge, 'Nei');
 
         await userEvent.click(screen.getByText('Se resultatet'));
 
@@ -267,17 +283,17 @@ describe('<SituasjonSide>', () => {
                 'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
             ),
         ).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Ja'));
+        await velgSvar(arbeidEllerNav, 'Ja');
 
         expect(screen.getByText('Har du hatt inntekt 6 av de 10 siste månedene?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[1]!);
+        await velgSvar(harHattInntekt, 'Nei');
 
         expect(
             screen.getByText('For å kunne ha rett til foreldrepenger må man ha jobbet 6 av de 10 siste månedene'),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[2]!);
+        await velgSvar(borDuINorge, 'Ja');
 
         await userEvent.click(screen.getByText('Se resultatet'));
 
@@ -306,23 +322,23 @@ describe('<SituasjonSide>', () => {
                 'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
             ),
         ).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Ja'));
+        await velgSvar(arbeidEllerNav, 'Ja');
 
         expect(screen.getByText('Har du hatt inntekt 6 av de 10 siste månedene?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[1]!);
+        await velgSvar(harHattInntekt, 'Nei');
 
         expect(
             screen.getByText('For å kunne ha rett til foreldrepenger må man ha jobbet 6 av de 10 siste månedene'),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[2]!);
+        await velgSvar(borDuINorge, 'Nei');
 
         expect(screen.getByText('Jobber du i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[3]!);
+        await velgSvar(jobberDuINorge, 'Nei');
 
         expect(screen.getByText(/For å kunne ha rett til foreldrepenger eller engangsstønad/)).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[3]!);
+        await velgSvar(jobberDuINorge, 'Ja');
 
         await userEvent.click(screen.getByText('Se resultatet'));
 
@@ -354,20 +370,20 @@ describe('<SituasjonSide>', () => {
                     'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
                 ),
             ).toBeInTheDocument();
-            await userEvent.click(screen.getByText('Ja'));
+            await velgSvar(arbeidEllerNav, 'Ja');
 
             expect(screen.getByText('Har du hatt inntekt 6 av de 10 siste månedene?')).toBeInTheDocument();
-            await userEvent.click(screen.getAllByText('Nei')[1]!);
+            await velgSvar(harHattInntekt, 'Nei');
 
             expect(
                 screen.getByText('For å kunne ha rett til foreldrepenger må man ha jobbet 6 av de 10 siste månedene'),
             ).toBeInTheDocument();
 
             expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
-            await userEvent.click(screen.getAllByText('Nei')[2]!);
+            await velgSvar(borDuINorge, 'Nei');
 
             expect(screen.getByText('Jobber du i Norge?')).toBeInTheDocument();
-            await userEvent.click(screen.getAllByText('Nei')[3]!);
+            await velgSvar(jobberDuINorge, 'Nei');
 
             expect(screen.getByText(/For å kunne ha rett til foreldrepenger eller engangsstønad/)).toBeInTheDocument();
 
@@ -399,19 +415,19 @@ describe('<SituasjonSide>', () => {
                 'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
             ),
         ).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Nei'));
+        await velgSvar(arbeidEllerNav, 'Nei');
 
         expect(screen.getByText('Har du andre inntektskilder?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[1]!);
+        await velgSvar(harAndreInntektskilder, 'Ja');
 
         expect(screen.getByText('Har du hatt inntekt 6 av de 10 siste månedene?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[2]!);
+        await velgSvar(harHattInntekt, 'Ja');
 
         const hvorMye = utils.getByLabelText('Omtrent hvor mye tjener du i måneden før skatt?');
         await userEvent.type(hvorMye, '50000');
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[3]!);
+        await velgSvar(borDuINorge, 'Ja');
 
         await userEvent.click(screen.getByText('Se resultatet'));
 
@@ -440,13 +456,13 @@ describe('<SituasjonSide>', () => {
                 'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
             ),
         ).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Nei'));
+        await velgSvar(arbeidEllerNav, 'Nei');
 
         expect(screen.getByText('Har du andre inntektskilder?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[1]!);
+        await velgSvar(harAndreInntektskilder, 'Nei');
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[2]!);
+        await velgSvar(borDuINorge, 'Ja');
 
         await userEvent.click(screen.getByText('Se resultatet'));
 
@@ -465,9 +481,9 @@ describe('<SituasjonSide>', () => {
         const setFpEllerEsSituasjon = vi.fn();
         const utils = render(<Default setFpEllerEsSituasjon={setFpEllerEsSituasjon} />);
         await userEvent.click(screen.getByText('Mor'));
-        await userEvent.click(screen.getByText('Ja'));
-        await userEvent.click(screen.getAllByText('Ja')[1]!);
-        await userEvent.click(screen.getAllByText('Ja')[2]!);
+        await velgSvar(arbeidEllerNav, 'Ja');
+        await velgSvar(harHattInntekt, 'Ja');
+        await velgSvar(borDuINorge, 'Ja');
 
         const alertErSynlig = () =>
             expect(

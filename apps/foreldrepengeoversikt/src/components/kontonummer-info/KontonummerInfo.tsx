@@ -59,19 +59,15 @@ interface KontonummerInfoTekstProps {
 
 const KontonummerInfoTekst = ({ harKontonummer, ytelse, harMinstEttArbeidsforhold }: KontonummerInfoTekstProps) => {
     if (ytelse === 'ENGANGSSTØNAD' || !harMinstEttArbeidsforhold) {
-        if (harKontonummer) {
-            return (
-                <BodyLong size="small">
-                    <FormattedMessage id="KontonummerInfo.NavUtbetaling" values={{ ytelse }} />
-                </BodyLong>
-            );
-        } else {
-            return (
-                <BodyLong size="small">
-                    <FormattedMessage id="KontonummerInfo.Mangler" values={{ ytelse }} />
-                </BodyLong>
-            );
-        }
+        return harKontonummer ? (
+            <BodyLong size="small">
+                <FormattedMessage id="KontonummerInfo.NavUtbetaling" values={{ ytelse }} />
+            </BodyLong>
+        ) : (
+            <BodyLong size="small">
+                <FormattedMessage id="KontonummerInfo.Mangler" values={{ ytelse }} />
+            </BodyLong>
+        );
     }
 
     if (ytelse === 'FORELDREPENGER' || ytelse === 'SVANGERSKAPSPENGER') {

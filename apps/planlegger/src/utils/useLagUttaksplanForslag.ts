@@ -22,9 +22,9 @@ export const useLagUttaksplanForslag = (valgtStønadskvote: KontoBeregningDto) =
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
 
     const startdato =
+        hvemHarRett === 'kunSøker2HarRett' &&
         (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR ||
-            hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR) &&
-        hvemHarRett === 'kunSøker2HarRett'
+            hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR)
             ? Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(30)
             : undefined;
 

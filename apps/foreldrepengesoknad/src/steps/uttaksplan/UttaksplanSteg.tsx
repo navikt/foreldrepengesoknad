@@ -98,14 +98,16 @@ export const UttaksplanSteg = ({
 
     const kvoteOppsummeringRef = useRef<HTMLDivElement>(null);
     const scrollToKvoteOppsummering = () => {
-        if (kvoteOppsummeringRef.current) {
-            // Håndter spesielt for å unngå at element en scroller til blir liggende under headeren
-            const elementTop = kvoteOppsummeringRef.current.getBoundingClientRect().top + window.scrollY;
-            window.scrollTo({
-                top: elementTop - 80,
-                behavior: 'smooth',
-            });
+        if (!kvoteOppsummeringRef.current) {
+            return;
         }
+
+        // Håndter spesielt for å unngå at element en scroller til blir liggende under headeren
+        const elementTop = kvoteOppsummeringRef.current.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({
+            top: elementTop - 80,
+            behavior: 'smooth',
+        });
     };
 
     const kontoerOptions = useStønadsKontoerOptions();
@@ -120,8 +122,12 @@ export const UttaksplanSteg = ({
     const annenPartVedtakQuery = useQuery({
         ...annenPartVedtakOptionsWrapped,
     });
+    const erAnnenPartVedtakAvklart = annenPartVedtakQuery.isSuccess || annenPartVedtakOptionsWrapped.enabled === false;
 
-    const uttaksplanForEksisterendeSak = useUttaksplanForEksisterendeSak(annenPartVedtakQuery.data?.perioder);
+    const uttaksplanForEksisterendeSak = useUttaksplanForEksisterendeSak(
+        annenPartVedtakQuery.data?.perioder,
+        erAnnenPartVedtakAvklart,
+    );
 
     const valgteStønadskvoter = tilgjengeligeStønadskvoterQuery.data;
 

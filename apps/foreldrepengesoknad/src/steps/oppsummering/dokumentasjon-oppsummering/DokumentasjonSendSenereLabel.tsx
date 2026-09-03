@@ -101,20 +101,16 @@ export const DokumentasjonSendSenereLabel = ({
     const morErForSykEllerInnlagtFørsteSeksUker = uttaksperioderSomManglerVedlegg
         .filter((p) => isPeriodeMedMorInnleggelse(p, familiehendelsedato))
         .some((p) => {
-            if (
+            return (
                 erUttaksperiode(p) &&
                 'morsAktivitet' in p &&
                 p.morsAktivitet === 'INNLAGT' &&
                 p.kontoType === 'FEDREKVOTE'
-            ) {
-                return true;
-            }
-
-            return false;
+            );
         });
 
     switch (attachment.skjemanummer) {
-        case Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG:
+        case Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG: {
             return (
                 <ManglerDokumentasjon
                     headerLabel={
@@ -126,7 +122,8 @@ export const DokumentasjonSendSenereLabel = ({
                     bodyLabel={<FormattedMessage id="manglendeVedlegg.etterlønn.description" />}
                 />
             );
-        case Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE:
+        }
+        case Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE: {
             return (
                 <ManglerDokumentasjon
                     headerLabel={
@@ -138,21 +135,24 @@ export const DokumentasjonSendSenereLabel = ({
                     bodyLabel={<FormattedMessage id="manglendeVedlegg.militær.description" />}
                 />
             );
-        case Skjemanummer.OMSORGSOVERTAKELSE:
+        }
+        case Skjemanummer.OMSORGSOVERTAKELSE: {
             return (
                 <ManglerDokumentasjon
                     headerLabel={<FormattedMessage id="manglendeVedlegg.omsorgsovertakelse.tittel" />}
                     bodyLabel={<FormattedMessage id="manglendeVedlegg.omsorgsovertakelse.description" />}
                 />
             );
-        case Skjemanummer.DOK_AV_ALENEOMSORG:
+        }
+        case Skjemanummer.DOK_AV_ALENEOMSORG: {
             return (
                 <ManglerDokumentasjon
                     headerLabel={<FormattedMessage id="manglendeVedlegg.aleneomsorg.tittel" />}
                     bodyLabel={<FormattedMessage id="manglendeVedlegg.aleneomsorg.description" />}
                 />
             );
-        case Skjemanummer.TERMINBEKREFTELSE:
+        }
+        case Skjemanummer.TERMINBEKREFTELSE: {
             return (
                 <ManglerDokumentasjon
                     headerLabel={<FormattedMessage id="manglendeVedlegg.terminbekreftelse.tittel" />}
@@ -165,7 +165,8 @@ export const DokumentasjonSendSenereLabel = ({
                     }
                 />
             );
-        case Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET:
+        }
+        case Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET: {
             return (
                 <ManglerDokumentasjon
                     headerLabel={<FormattedMessage id="manglendeVedlegg.introduksjonsprogram.tittel" />}
@@ -177,7 +178,8 @@ export const DokumentasjonSendSenereLabel = ({
                     }
                 />
             );
-        case Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM:
+        }
+        case Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM: {
             return (
                 <ManglerDokumentasjon
                     headerLabel={<FormattedMessage id="manglendeVedlegg.kvalifiseringsprogram.tittel" />}
@@ -189,7 +191,8 @@ export const DokumentasjonSendSenereLabel = ({
                     }
                 />
             );
-        case Skjemanummer.DOK_INNLEGGELSE_MOR:
+        }
+        case Skjemanummer.DOK_INNLEGGELSE_MOR: {
             return (
                 <ManglerDokumentasjon
                     headerLabel={
@@ -220,14 +223,16 @@ export const DokumentasjonSendSenereLabel = ({
                     }
                 />
             );
-        case Skjemanummer.DOK_INNLEGGELSE_BARN:
+        }
+        case Skjemanummer.DOK_INNLEGGELSE_BARN: {
             return (
                 <ManglerDokumentasjon
                     headerLabel={<FormattedMessage id="manglendeVedlegg.barnInnlagt.label" />}
                     bodyLabel={<FormattedMessage id="manglendeVedlegg.barnInnlagt.description" />}
                 />
             );
-        case Skjemanummer.DOK_INNLEGGELSE_FAR:
+        }
+        case Skjemanummer.DOK_INNLEGGELSE_FAR: {
             return (
                 <ManglerDokumentasjon
                     headerLabel={
@@ -244,7 +249,8 @@ export const DokumentasjonSendSenereLabel = ({
                     }
                 />
             );
-        case Skjemanummer.DOK_SYKDOM_MOR:
+        }
+        case Skjemanummer.DOK_SYKDOM_MOR: {
             return (
                 <ManglerDokumentasjon
                     headerLabel={
@@ -261,7 +267,8 @@ export const DokumentasjonSendSenereLabel = ({
                     }
                 />
             );
-        case Skjemanummer.DOK_SYKDOM_FAR:
+        }
+        case Skjemanummer.DOK_SYKDOM_FAR: {
             return (
                 <ManglerDokumentasjon
                     headerLabel={
@@ -278,7 +285,8 @@ export const DokumentasjonSendSenereLabel = ({
                     }
                 />
             );
-        case Skjemanummer.DOK_ARBEID_MOR:
+        }
+        case Skjemanummer.DOK_ARBEID_MOR: {
             return (
                 <ManglerDokumentasjon
                     headerLabel={<FormattedMessage id="manglendeVedlegg.morJobber.label" />}
@@ -290,7 +298,8 @@ export const DokumentasjonSendSenereLabel = ({
                     }
                 />
             );
-        case Skjemanummer.DOK_UTDANNING_MOR:
+        }
+        case Skjemanummer.DOK_UTDANNING_MOR: {
             return (
                 <VStack gap="space-8">
                     <Label>
@@ -331,7 +340,8 @@ export const DokumentasjonSendSenereLabel = ({
                     </div>
                 </VStack>
             );
-        case Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR:
+        }
+        case Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR: {
             return (
                 <VStack gap="space-8">
                     <Label>
@@ -372,7 +382,9 @@ export const DokumentasjonSendSenereLabel = ({
                     </div>
                 </VStack>
             );
-        default:
+        }
+        default: {
             throw new Error('Ingen skjemaverdi for ' + attachment.skjemanummer);
+        }
     }
 };

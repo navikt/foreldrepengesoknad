@@ -20,7 +20,7 @@ export const EtterlønnEllerSluttvederlagDokumentasjon = ({
 }: Props) => {
     const intl = useIntl();
 
-    if (!andreInntektskilder || !andreInntektskilder.some((i) => i.type === 'ETTERLØNN_SLUTTPAKKE')) {
+    if (!andreInntektskilder || andreInntektskilder.every((i) => i.type !== 'ETTERLØNN_SLUTTPAKKE')) {
         return null;
     }
 

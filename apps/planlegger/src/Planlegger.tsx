@@ -130,7 +130,7 @@ export const PlanleggerDataInit = () => {
         // Skyra støtter kun nb og nn
         const isSupportedLocale = intl.locale === 'nb' || intl.locale === 'nn';
 
-        if (locations.pathname.includes('oppsummering') && isSupportedLocale) {
+        if (isSupportedLocale && locations.pathname.includes('oppsummering')) {
             const skyraGlobal = globalThis as typeof globalThis & { skyra?: { reload: () => void } };
             if (typeof skyraGlobal.skyra?.reload === 'function') {
                 skyraGlobal.skyra.reload();

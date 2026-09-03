@@ -12,15 +12,15 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        minÅrslønn: 100000,
-        antattÅrslønn: 500000,
+        minÅrslønn: 100_000,
+        antattÅrslønn: 500_000,
     },
 };
 
 export const VisKrIkon: Story = {
     args: {
-        minÅrslønn: 100000,
-        antattÅrslønn: 500000,
+        minÅrslønn: 100_000,
+        antattÅrslønn: 500_000,
         showKrIcon: true,
     },
 };

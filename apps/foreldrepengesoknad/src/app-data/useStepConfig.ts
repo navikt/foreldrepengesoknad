@@ -138,7 +138,7 @@ const showManglendeDokumentasjonSteg = (
             : [];
 
         const skalHaUttakDok =
-            annenForelder && perioderSomSkalSjekkes.length > 0 && familiehendelsedato
+            familiehendelsedato && annenForelder && perioderSomSkalSjekkes.length > 0
                 ? kreverUttaksplanVedleggNy(
                       perioderSomSkalSjekkes,
                       erFarEllerMedmor,
@@ -176,7 +176,7 @@ const skalViseFordelingSteg = (
 export const useStepConfig = (
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     erEndringssøknad: boolean = false,
-    eksisterendeSak: FpSak_fpoversikt | undefined = undefined,
+    eksisterendeSak?: FpSak_fpoversikt,
 ) => {
     const intl = useIntl();
     const pathToLabelMap = useMemo(() => getPathToLabelMap(intl), [intl]);
@@ -187,6 +187,7 @@ export const useStepConfig = (
     const harRegistrertNæring = (selvstendigNæringQuery.data?.length ?? 0) > 0;
 
     const currentPath = useMemo(
+        // eslint-disable-next-line unicorn/no-useless-coercion
         () => notEmpty(Object.values(SøknadRoutes).find((v) => v.toString() === decodeURIComponent(location.pathname))),
         [location.pathname],
     );

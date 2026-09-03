@@ -44,8 +44,8 @@ export const HarBoddIUtlandetOgFødt: Story = {
         children: (
             <BoIUtlandetOppsummering
                 onVilEndreSvar={() => {}}
-                senereUtenlandsopphold={[{ fom: '2022-10-10', tom: '2023-05-05', landkode: 'SE' }]}
-                tidligereUtenlandsopphold={[{ fom: '2023-06-06', tom: '2023-10-10', landkode: 'DE' }]}
+                senereUtenlandsopphold={[{ fom: '2022-10-10', tom: '2023-05-05', landkode: 'SWE' }]}
+                tidligereUtenlandsopphold={[{ fom: '2023-06-06', tom: '2023-10-10', landkode: 'DEU' }]}
             />
         ),
     },
@@ -105,7 +105,7 @@ export const ArbeidsforholdOgInntektOppsummering: Story = {
                         fom: '2018-01-01',
                         tom: '2021-01-01',
                         næringstype: 'FISKE',
-                        registrertILand: 'SE',
+                        registrertILand: 'SWE',
                         registrertINorge: false,
                         harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
                         hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,

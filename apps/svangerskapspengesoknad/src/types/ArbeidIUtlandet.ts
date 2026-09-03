@@ -1,5 +1,3 @@
-import { CountryCode } from '@navikt/fp-types';
-
 export enum ArbeidIUtlandetType {
     JOBB_I_UTLANDET = 'JOBB_I_UTLANDET',
 }
@@ -10,7 +8,7 @@ interface ArbeidIUtlandetInput {
     tom: string | undefined;
     pågående: boolean;
     arbeidsgiverNavn: string;
-    land: CountryCode;
+    land: string;
 }
 
 export interface ArbeidIUtlandet {

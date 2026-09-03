@@ -56,9 +56,9 @@ describe('finnUttaksdata - delt uttak, fødsel', () => {
         const farsPerioder = uttaksplan.filter((p) => p.forelder === 'FAR_MEDMOR');
 
         const morFørstePeriode = morsPerioder[0]!;
-        const morSistePeriode = morsPerioder[morsPerioder.length - 1]!;
+        const morSistePeriode = morsPerioder.at(-1)!;
         const farFørstePeriode = farsPerioder[0]!;
-        const farSistePeriode = farsPerioder[farsPerioder.length - 1]!;
+        const farSistePeriode = farsPerioder.at(-1)!;
 
         expect(uttaksdata.startdatoPeriode1).toEqual(morFørstePeriode.fom);
         expect(uttaksdata.sluttdatoPeriode1).toEqual(morSistePeriode.tom);
@@ -116,8 +116,8 @@ describe('finnUttaksdata - delt uttak, fødsel', () => {
         const farsPerioder = uttaksplan.filter((p) => p.forelder === 'FAR_MEDMOR');
 
         expect(uttaksdata.startdatoPeriode1).toEqual(morsPerioder[0]!.fom);
-        expect(uttaksdata.sluttdatoPeriode1).toEqual(morsPerioder[morsPerioder.length - 1]!.tom);
+        expect(uttaksdata.sluttdatoPeriode1).toEqual(morsPerioder.at(-1)!.tom);
         expect(uttaksdata.startdatoPeriode2).toEqual(farsPerioder[0]!.fom);
-        expect(uttaksdata.sluttdatoPeriode2).toEqual(farsPerioder[farsPerioder.length - 1]!.tom);
+        expect(uttaksdata.sluttdatoPeriode2).toEqual(farsPerioder.at(-1)!.tom);
     });
 });

@@ -10,6 +10,7 @@ import { VedleggDataType } from 'types/VedleggDataType';
 
 import { AttachmentType, BarnType, Skjemanummer } from '@navikt/fp-constants';
 import {
+    AnnenInntektDto,
     Barn,
     EksternArbeidsforholdDto_fpoversikt,
     EndringssøknadForeldrepengerDto,
@@ -93,14 +94,14 @@ const TIDLIGERE_UTENLANDSOPPHOLD = [
     {
         fom: '2023-01-01',
         tom: '2023-10-01',
-        landkode: 'SE',
+        landkode: 'SWE',
     },
 ] satisfies UtenlandsoppholdPeriode[];
 const SENERE_UTENLANDSOPPHOLD = [
     {
         fom: '2025-01-01',
         tom: '2025-10-01',
-        landkode: 'SE',
+        landkode: 'SWE',
     },
 ] satisfies UtenlandsoppholdPeriode[];
 
@@ -112,12 +113,12 @@ const EGEN_NÆRING = {
     næringstype: 'FISKE',
     fom: '2023-01-01',
     tom: '2023-10-01',
-    næringsinntekt: 100000,
+    næringsinntekt: 100_000,
     navnPåNæringen: 'Fiskeriet',
     registrertINorge: true,
     hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
     varigEndringDato: '2024-01-01',
-    varigEndringInntektEtterEndring: 10000,
+    varigEndringInntektEtterEndring: 10_000,
     varigEndringBeskrivelse: 'Beskrivelse av endring',
 } satisfies NæringDto;
 
@@ -126,6 +127,13 @@ const ANDRE_INNTEKTSKILDER = [
         type: 'ETTERLØNN_SLUTTPAKKE',
         fom: '2023-01-01',
         tom: '2024-01-01',
+    } satisfies AndreInntektskilder,
+    {
+        type: AnnenInntektType.JOBB_I_UTLANDET,
+        fom: '2023-02-01',
+        arbeidsgiverNavn: 'MUFC',
+        land: 'GBR',
+        pågående: true,
     } satisfies AndreInntektskilder,
 ];
 
@@ -260,6 +268,10 @@ const getWrapper =
                             [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: TIDLIGERE_UTENLANDSOPPHOLD,
                             [ContextDataType.UTENLANDSOPPHOLD_SENERE]: SENERE_UTENLANDSOPPHOLD,
                             [ContextDataType.UTTAKSPLAN]: uttaksplan,
+                            [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: {
+                                saksnummer: '1',
+                                perioder: [EKSISTERENDE_PERIODE],
+                            },
                             [ContextDataType.VEDLEGG]: VEDLEGG,
                             [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: '1',
                             [ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL]: true,
@@ -310,6 +322,13 @@ describe('useFpSendSøknad', () => {
                             tom: '2024-01-01',
                             type: 'ETTERLØNN_SLUTTPAKKE',
                         },
+                        {
+                            fom: '2023-02-01',
+                            arbeidsgiverNavn: 'MUFC',
+                            land: 'GBR',
+                            pågående: true,
+                            type: 'JOBB_I_UTLANDET',
+                        } as AnnenInntektDto,
                     ],
                     frilans: {
                         oppstart: '2024-01-01',
@@ -322,7 +341,7 @@ describe('useFpSendSøknad', () => {
                         hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
                         varigEndringDato: '2024-01-01',
                         varigEndringBeskrivelse: 'Beskrivelse av endring',
-                        varigEndringInntektEtterEndring: 10000,
+                        varigEndringInntektEtterEndring: 10_000,
                     },
                     annenForelder: {
                         type: 'norsk',
@@ -345,12 +364,12 @@ describe('useFpSendSøknad', () => {
                     },
                     utenlandsopphold: [
                         {
-                            landkode: 'SE',
+                            landkode: 'SWE',
                             fom: '2023-01-01',
                             tom: '2023-10-01',
                         },
                         {
-                            landkode: 'SE',
+                            landkode: 'SWE',
                             fom: '2025-01-01',
                             tom: '2025-10-01',
                         },

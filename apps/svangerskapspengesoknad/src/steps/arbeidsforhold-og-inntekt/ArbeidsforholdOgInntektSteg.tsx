@@ -104,14 +104,14 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
 
         const tilretteleggingerSomSkalFjernes = [];
 
-        if (values.harHattArbeidIUtlandet === false) {
+        if (!values.harHattArbeidIUtlandet) {
             oppdaterArbeidIUtlandet(undefined);
         }
-        if (values.harJobbetSomFrilans === false) {
+        if (!values.harJobbetSomFrilans) {
             oppdaterFrilans(undefined);
             tilretteleggingerSomSkalFjernes.push(FRILANS_ID);
         }
-        if (values.harJobbetSomSelvstendigNæringsdrivende === false) {
+        if (!values.harJobbetSomSelvstendigNæringsdrivende) {
             oppdaterEgenNæring(undefined);
             tilretteleggingerSomSkalFjernes.push(EGEN_NÆRING_ID);
         }

@@ -1,7 +1,7 @@
-const numberRegExp = RegExp(/^[-]?[0-9,.\s]*$/);
+const numberRegExp = new RegExp(/^[-]?[0-9,.\s]*$/);
 
 const trimNumberValue = (value: string): string => {
-    return value.replace(/,/g, '.').replace(/\s/g, '').replace(/%/g, '');
+    return value.replaceAll(',', '.').replaceAll(/\s/g, '').replaceAll('%', '');
 };
 
 export const getFloatFromString = (value: string | undefined): number | undefined => {
@@ -11,7 +11,7 @@ export const getFloatFromString = (value: string | undefined): number | undefine
         if (numberOfPoints > 1) {
             return undefined;
         }
-        return Number.parseFloat(trimmedValue.replace(',', '.'));
+        return Number(trimmedValue.replace(',', '.'));
     }
     return undefined;
 };

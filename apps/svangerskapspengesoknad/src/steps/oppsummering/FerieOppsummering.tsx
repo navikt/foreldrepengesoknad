@@ -121,13 +121,17 @@ const FlereArbeidsgivereFerieOppsummering = ({
 
 const getArbeidsforholdId = (arbeidsforhold: ArbeidsforholdDto) => {
     switch (arbeidsforhold.type) {
-        case 'frilanser':
+        case 'frilanser': {
             return 'frilanser';
-        case 'selvstendig':
+        }
+        case 'selvstendig': {
             return 'selvstendig';
-        case 'privat':
+        }
+        case 'privat': {
             return arbeidsforhold.id;
-        case 'virksomhet':
+        }
+        case 'virksomhet': {
             return arbeidsforhold.id;
+        }
     }
 };

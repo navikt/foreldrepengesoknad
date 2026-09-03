@@ -84,11 +84,11 @@ export const JobbIUtlandetPanel = ({ index, inntektskilde }: Props) => {
                         ),
                         isBeforeOrSame(
                             intl.formatMessage({ id: 'JobbIUtlandetPanel.FraOgMedDato.FørTilDato' }),
-                            inntektskilde.pågående === false ? inntektskilde.tom : today,
+                            inntektskilde.pågående ? today : inntektskilde.tom,
                         ),
                     ]}
                 />
-                {inntektskilde.pågående === false && (
+                {!inntektskilde.pågående && (
                     <RhfDatepicker
                         name={`andreInntektskilder.${index}.tom`}
                         control={control}

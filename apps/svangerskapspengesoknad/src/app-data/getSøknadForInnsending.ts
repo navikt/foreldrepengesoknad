@@ -35,8 +35,7 @@ const finnTilretteleggingsbehov = (
 ): TilretteleggingbehovDto[] => {
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
 
-    return Object.keys(tilrettelegginger).map((tilretteleggingId) => {
-        const tilrettelegging = tilrettelegginger[tilretteleggingId]!;
+    return Object.entries(tilrettelegginger).map(([tilretteleggingId, tilrettelegging]) => {
         const perioder = tilretteleggingerPerioder?.[tilretteleggingId];
 
         const stillinger = getArbeidsgiverStillingerForTilrettelegging(
@@ -67,8 +66,7 @@ const finnVedlegg = (
     tilretteleggingerVedlegg: Record<string, Attachment[]>,
     alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
 ): VedleggDto[] => {
-    const mappedVedlegg = Object.keys(tilretteleggingerVedlegg).map((tilretteleggingId) => {
-        const alleVedlegg = tilretteleggingerVedlegg[tilretteleggingId]!;
+    const mappedVedlegg = Object.entries(tilretteleggingerVedlegg).map(([tilretteleggingId, alleVedlegg]) => {
         const arbeidsforhold = {
             id: tilretteleggingId,
             type: getTypeArbeidForTilrettelegging(tilretteleggingId, alleArbeidsforhold),
@@ -84,7 +82,9 @@ const finnVedlegg = (
     return mappedVedlegg.flat();
 };
 
-/** Aktivitetene vi hentet fra register og forela søker i søknadsdialogen. Sendes med kun for å dokumenteres i PDF-en. */
+/**
+Aktivitetene vi hentet fra register og forela søker i søknadsdialogen. Sendes med kun for å dokumenteres i PDF-en.
+*/
 type ForelagteAktiviteter = {
     frilansoppdrag?: EksternArbeidsforholdDto_fpoversikt[];
     selvstendigNæring?: SelvstendigNæringDto_fpoversikt[];
@@ -133,7 +133,7 @@ export const getSøknadForInnsending = (
         frilans,
         egenNæring,
         andreInntekterSiste10Mnd: hentData(ContextDataType.ARBEID_I_UTLANDET)?.arbeidIUtlandet,
-        utenlandsopphold: (tidligereUtenlandsopphold ?? []).concat(senereUtenlandsopphold ?? []),
+        utenlandsopphold: [...(tidligereUtenlandsopphold ?? []), ...(senereUtenlandsopphold ?? [])],
         tilretteleggingsbehov: finnTilretteleggingsbehov(
             søkerinfo.arbeidsforhold,
             barn,

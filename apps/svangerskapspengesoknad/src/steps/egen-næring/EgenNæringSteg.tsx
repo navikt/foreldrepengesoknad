@@ -31,6 +31,11 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
 
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
     const selvstendigNæringQuery = useQuery(selvstendigNæringOptions());
+
+    if (selvstendigNæringQuery.isPending) {
+        return <Spinner />;
+    }
+
     const registrerteNæringer = selvstendigNæringQuery.data ?? [];
 
     const onSubmit = (values: NæringDto) => {
@@ -42,10 +47,6 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
         const nextRoute = getRuteSkjemaEllerVelgArbeid(barnet.termindato, arbeidsforhold, arbeidsforholdOgInntekt);
         return navigator.goToStep(nextRoute);
     };
-
-    if (selvstendigNæringQuery.isPending) {
-        return <Spinner />;
-    }
 
     return (
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>

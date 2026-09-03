@@ -11,7 +11,8 @@ import { SkjemaRotLayout } from '@navikt/fp-ui';
 const utledNesteSide = (values: Utenlandsopphold) => {
     if (values.harBoddUtenforNorgeSiste12Mnd) {
         return SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD;
-    } else if (values.skalBoUtenforNorgeNeste12Mnd) {
+    }
+    if (values.skalBoUtenforNorgeNeste12Mnd) {
         return SøknadRoutes.SENERE_UTENLANDSOPPHOLD;
     }
     return SøknadRoutes.ARBEID_OG_INNTEKT;

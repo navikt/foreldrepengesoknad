@@ -15,8 +15,7 @@ interface Props {
 
 export const FellesperiodeValgVisning = ({ fordelingsdager, dagerMedFellesperiode, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
-    const fordelingErValgt =
-        fordelingsdager.length > 0 && !fordelingsdager.every((f) => f.fargekode === FordelingFargekode.IKKE_TILDELT);
+    const fordelingErValgt = fordelingsdager.some((f) => f.fargekode !== FordelingFargekode.IKKE_TILDELT);
     return (
         <VStack gap="space-4" aria-hidden={true}>
             <DelGraf fordelingsdager={fordelingsdager} sumDager={dagerMedFellesperiode} />

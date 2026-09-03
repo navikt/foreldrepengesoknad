@@ -9,6 +9,7 @@ export const links = {
     papirsøknad: 'https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad',
     papirsøknadSvp: 'https://www.nav.no/start/soknad-svangerskapspenger?stegvalg=1',
     arbeidsforholdMineSider: 'https://www.nav.no/person/personopplysninger/nb/#arbeidsforhold',
+    personvern: 'https://www.nav.no/personvern',
     personvernerklæringOm: 'https://www.nav.no/personvernerklaering#om',
     plikter: 'https://www.nav.no/endringer',
     veiviser: 'https://www.nav.no/foreldrepenger/foreldrepenger-eller-engangsstonad/',

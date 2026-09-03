@@ -9,16 +9,15 @@ export type UkerOgDager = {
 };
 
 export const getAntallUkerOgDager = (stønadskvoter: KontoBeregningDto): UttakUkerOgDager => {
-    return Object.values(stønadskvoter.kontoer).reduce(
-        (sum: UttakUkerOgDager, konto) => {
-            const ukerOgDager = getUkerOgDager(konto.dager);
-            return {
-                uker: sum.uker + ukerOgDager.uker,
-                dager: sum.dager + ukerOgDager.dager,
-            };
-        },
-        { uker: 0, dager: 0 },
-    );
+    const sum: UttakUkerOgDager = { uker: 0, dager: 0 };
+
+    for (const konto of Object.values(stønadskvoter.kontoer)) {
+        const ukerOgDager = getUkerOgDager(konto.dager);
+        sum.uker += ukerOgDager.uker;
+        sum.dager += ukerOgDager.dager;
+    }
+
+    return sum;
 };
 
 export const getUkerOgDager = (totaltAntallDager: number) => {
