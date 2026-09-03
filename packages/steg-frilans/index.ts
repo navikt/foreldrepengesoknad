@@ -9,3 +9,4 @@ export const frilansMessages = {
 };
 
 export { FrilansPanel } from './src/FrilansPanel';
+export { getForhåndsutfyltOppstart } from './src/getForhåndsutfyltOppstart';

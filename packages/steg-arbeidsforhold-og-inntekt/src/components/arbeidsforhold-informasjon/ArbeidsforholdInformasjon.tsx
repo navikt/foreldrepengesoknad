@@ -151,24 +151,26 @@ export const ArbeidsforholdInformasjon = ({
             {appOrigin === 'foreldrepengesoknad' && <ArbeidsforholdDefinisjoner appOrigin={appOrigin} />}
             <HarIkkeArbeidsforhold harArbeidsforhold={harArbeidsforhold} />
             <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={arbeidsforhold} />
+            {harArbeidsforhold && (
+                <ReadMore
+                    variant="moderate"
+                    header={
+                        <FormattedMessage
+                            id="inntektsinformasjon.inntektsmelding.header"
+                            values={{ antall: arbeidsforhold.length }}
+                        />
+                    }
+                >
+                    <FormattedMessage
+                        id="inntektsinformasjon.inntektsmelding.body"
+                        values={{ antall: arbeidsforhold.length }}
+                    />
+                </ReadMore>
+            )}
             <FrilansOppdrag frilansoppdrag={frilansoppdrag} />
             <SelvstendigNæring selvstendigNæring={selvstendigNæring} />
             <ManueltLagtTilNæring egenNæring={egenNæring} onRemove={onRemoveEgenNæring} />
             <AndreInntektskilderBox andreInntektskilder={andreInntektskilder} onRemove={onRemoveAndreInntekt} />
-            <ReadMore
-                variant="moderate"
-                header={
-                    <FormattedMessage
-                        id="inntektsinformasjon.inntektsmelding.header"
-                        values={{ antall: arbeidsforhold.length }}
-                    />
-                }
-            >
-                <FormattedMessage
-                    id="inntektsinformasjon.inntektsmelding.body"
-                    values={{ antall: arbeidsforhold.length }}
-                />
-            </ReadMore>
             <ReadMore
                 variant="moderate"
                 onOpenChange={(open) =>

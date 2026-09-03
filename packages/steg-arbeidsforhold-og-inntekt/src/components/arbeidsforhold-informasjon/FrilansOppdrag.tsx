@@ -115,7 +115,7 @@ export const FrilansOppdrag = ({ frilansoppdrag }: Props) => {
                     </ReadMore>
                     <InfoCard data-color="warning">
                         <InfoCard.Message icon={<ExclamationmarkTriangleIcon aria-hidden />}>
-                            Vi må vite om du fortsatt er frilanser. Dette kan du svare på i neste steg.
+                            <FormattedMessage id="inntektsinformasjon.frilansoppdrag.nesteSteg" />
                         </InfoCard.Message>
                     </InfoCard>
                 </VStack>

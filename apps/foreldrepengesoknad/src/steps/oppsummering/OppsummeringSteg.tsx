@@ -151,7 +151,11 @@ export const OppsummeringSteg = (props: Props) => {
                 <SelvstendigNæringsdrivendeOppsummering
                     egenNæring={egenNæring}
                     selvstendigNæring={selvstendigNæring}
-                    onVilEndreSvar={() => navigator.goToStep(SøknadRoutes.EGEN_NÆRING)}
+                    onVilEndreSvar={() =>
+                        navigator.goToStep(
+                            selvstendigNæring.length > 0 ? SøknadRoutes.EGEN_NÆRING : SøknadRoutes.ARBEID_OG_INNTEKT,
+                        )
+                    }
                 />
                 <AndreInntektskilderOppsummering
                     andreInntektskilder={andreInntektskilder}

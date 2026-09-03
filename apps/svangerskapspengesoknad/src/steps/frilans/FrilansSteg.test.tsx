@@ -12,6 +12,24 @@ import * as stories from './FrilansSteg.stories';
 const { Default } = composeStories(stories);
 
 describe('<FrilansSteg>', () => {
+    it('skal forhåndsutfylle startdato fra registeroppdrag', async () => {
+        render(
+            <Default
+                frilansoppdrag={[
+                    {
+                        arbeidsgiverId: '998877665',
+                        arbeidsgiverIdType: 'orgnr',
+                        arbeidsgiverNavn: 'Oppdragsgiver',
+                        fom: '2023-11-15T00:00:00.000Z',
+                        stillingsprosent: 0,
+                    },
+                ]}
+            />,
+        );
+
+        expect(await screen.findByLabelText('Når startet du som frilanser?')).toHaveValue('15.11.2023');
+    });
+
     it('skal gå til neste steg når informasjon er korrekt', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();

@@ -11,7 +11,7 @@ import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { getRuteVelgArbeidEllerSkjema } from 'utils/tilretteleggingUtils';
 
 import { AndreInntektskilder, ArbeidsforholdOgInntektPanel } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
-import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
+import { EGEN_NÆRING_ID, skalViseEgenNæringSteg } from '@navikt/fp-steg-egen-naering';
 import {
     ArbeidsforholdOgInntekt,
     ArbeidsforholdOgInntektSvp,
@@ -26,11 +26,12 @@ const getNextRoute = (
     termindato: string,
     aktiveArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     values: ArbeidsforholdOgInntektSvp,
+    skalViseNæringSteg: boolean,
 ): SøknadRoute | string => {
     if (values.harJobbetSomFrilans) {
         return SøknadRoute.FRILANS;
     }
-    if (values.harJobbetSomSelvstendigNæringsdrivende) {
+    if (skalViseNæringSteg) {
         return SøknadRoute.NÆRING;
     }
     return getRuteVelgArbeidEllerSkjema(termindato, aktiveArbeidsforhold, values);
@@ -119,7 +120,18 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
             fjernTilrettelegginger(tilretteleggingerSomSkalFjernes);
         }
 
-        return navigator.goToStep(getNextRoute(termindato, aktiveArbeidsforhold, values));
+        return navigator.goToStep(
+            getNextRoute(
+                termindato,
+                aktiveArbeidsforhold,
+                values,
+                skalViseEgenNæringSteg({
+                    harJobbetSomSelvstendigNæringsdrivende: values.harJobbetSomSelvstendigNæringsdrivende,
+                    harRegistrertNæring: selvstendigNæring.length > 0,
+                    egenNæring,
+                }),
+            ),
+        );
     };
 
     return (

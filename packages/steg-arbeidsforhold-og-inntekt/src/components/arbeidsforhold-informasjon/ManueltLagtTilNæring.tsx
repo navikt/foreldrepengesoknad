@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 import { BodyShort, Box, Button, HStack, Heading, Label, Tag, VStack } from '@navikt/ds-react';
 
 import { NæringDto } from '@navikt/fp-types';
-import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
+import { capitalizeFirstLetterInEveryWordOnly, formatDate, getCountryName } from '@navikt/fp-utils';
 
 import { useScrollIntoViewWhenAdded } from './useScrollIntoViewWhenAdded';
 
@@ -54,7 +54,7 @@ export const ManueltLagtTilNæring = ({ egenNæring, onRemove }: Props) => {
                     <HStack justify="space-between">
                         <Label>Land</Label>
                         <BodyShort className="text-ax-text-neutral-subtle" size="small">
-                            {egenNæring.registrertILand}
+                            {getCountryName(egenNæring.registrertILand, intl.locale)}
                         </BodyShort>
                     </HStack>
                 )}

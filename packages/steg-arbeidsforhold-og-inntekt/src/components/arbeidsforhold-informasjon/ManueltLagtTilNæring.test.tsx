@@ -71,4 +71,22 @@ describe('<ManueltLagtTilNæring>', () => {
         expect(screen.getByRole('heading', { name: 'Fiskebåten' })).toBeInTheDocument();
         expect(screen.queryByRole('button', { name: 'Fjern Fiskebåten' })).not.toBeInTheDocument();
     });
+
+    it('skal vise landsnavn i stedet for landskode for utenlandsk næring', () => {
+        render(
+            <IntlProvider locale="nb" messages={nbMessages}>
+                <ManueltLagtTilNæring
+                    egenNæring={{
+                        ...egenNæring,
+                        registrertINorge: false,
+                        registrertILand: 'SE',
+                        organisasjonsnummer: undefined,
+                    }}
+                />
+            </IntlProvider>,
+        );
+
+        expect(screen.getByText('Sverige')).toBeInTheDocument();
+        expect(screen.queryByText('SE')).not.toBeInTheDocument();
+    });
 });

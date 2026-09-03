@@ -23,6 +23,7 @@ type FrilansFormValues = {
 
 interface Props<TYPE> {
     frilans?: Frilans;
+    forhåndsutfyltOppstart?: string;
     saveOnNext: (formValues: Frilans) => void;
     onAvsluttOgSlett: () => void;
     onFortsettSenere?: () => void;
@@ -33,6 +34,7 @@ interface Props<TYPE> {
 
 export const FrilansPanel = <TYPE extends string>({
     frilans,
+    forhåndsutfyltOppstart,
     saveOnNext,
     onAvsluttOgSlett,
     onFortsettSenere,
@@ -44,7 +46,7 @@ export const FrilansPanel = <TYPE extends string>({
 
     const formMethods = useForm<FrilansFormValues>({
         defaultValues: {
-            oppstart: frilans?.oppstart,
+            oppstart: frilans?.oppstart ?? forhåndsutfyltOppstart,
             jobberFremdelesSomFrilans: frilans ? !frilans.tom : undefined,
             tom: frilans?.tom,
         },

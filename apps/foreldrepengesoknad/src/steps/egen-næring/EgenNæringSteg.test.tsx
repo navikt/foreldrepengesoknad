@@ -16,17 +16,13 @@ describe('<EgenNæringSteg>', () => {
 
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Hvilken type næring har du hatt?')).toBeInTheDocument();
-        expect(await screen.findByRole('radio', { name: 'Gårdsdrift' })).toBeChecked();
-        await userEvent.click(screen.getByText('Gårdsdrift'));
-
-        const virksomhetsnavnInput = screen.getByLabelText('Hva heter virksomheten?');
-        await userEvent.type(virksomhetsnavnInput, 'Virksomhetsnavn AS');
-
+        expect(await screen.findByText('Opplysninger fra Brønnøysundregistrene')).toBeInTheDocument();
+        expect(screen.getByText('Kari Konsulent')).toBeInTheDocument();
+        expect(screen.getByText('Organisasjonsnummer: 998877665')).toBeInTheDocument();
+        expect(screen.queryByText('Hvilken type næring har du hatt?')).not.toBeInTheDocument();
+        expect(screen.queryByLabelText('Hva heter virksomheten?')).not.toBeInTheDocument();
         expect(screen.queryByText('Er virksomheten registrert i Norge?')).not.toBeInTheDocument();
-
-        const orgnummerInput = screen.getByLabelText('Hva er organisasjonsnummeret?');
-        await userEvent.type(orgnummerInput, '997519485');
+        expect(screen.queryByLabelText('Hva er organisasjonsnummeret?')).not.toBeInTheDocument();
 
         const startdatoInput = screen.getByLabelText('Når startet du virksomheten?');
         await userEvent.type(startdatoInput, dayjs('2023-04-30').format('DD.MM.YYYY'));
@@ -51,10 +47,10 @@ describe('<EgenNæringSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
-                navnPåNæringen: 'Virksomhetsnavn AS',
+                navnPåNæringen: 'Kari Konsulent',
                 næringsinntekt: '1000',
                 næringstype: 'JORDBRUK_SKOGBRUK',
-                organisasjonsnummer: '997519485',
+                organisasjonsnummer: '998877665',
                 registrertINorge: true,
                 fom: '2023-04-30',
             },

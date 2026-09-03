@@ -8,7 +8,7 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 
-import { EksternArbeidsforholdDto_fpoversikt, SelvstendigNæringDto_fpoversikt } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, NæringDto, SelvstendigNæringDto_fpoversikt } from '@navikt/fp-types';
 
 import { ArbeidsforholdOgInntektSteg } from './ArbeidsforholdOgInntektSteg';
 
@@ -86,6 +86,8 @@ const promiseAction = () => () => {
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
     frilansoppdrag?: EksternArbeidsforholdDto_fpoversikt[];
+    egenNæring?: NæringDto;
+    selvstendigNæring?: SelvstendigNæringDto_fpoversikt[];
 } & ComponentProps<typeof ArbeidsforholdOgInntektSteg>;
 
 const meta = {
@@ -96,7 +98,13 @@ const meta = {
             handlers: [http.get(API_URLS.selvstendigNæring, () => HttpResponse.json(DEFAULT_SELVSTENDIG_NÆRING))],
         },
     },
-    render: ({ gåTilNesteSide = action('button-click'), frilansoppdrag = [], ...rest }) => {
+    render: ({
+        gåTilNesteSide = action('button-click'),
+        frilansoppdrag = [],
+        egenNæring,
+        selvstendigNæring = DEFAULT_SELVSTENDIG_NÆRING,
+        ...rest
+    }) => {
         const queryClient = new QueryClient({
             defaultOptions: {
                 queries: {
@@ -104,7 +112,7 @@ const meta = {
                 },
             },
         });
-        queryClient.setQueryData(selvstendigNæringOptions().queryKey, DEFAULT_SELVSTENDIG_NÆRING);
+        queryClient.setQueryData(selvstendigNæringOptions().queryKey, selvstendigNæring);
         queryClient.setQueryData(mineFrilansoppdragOptions().queryKey, frilansoppdrag);
         return (
             <QueryClientProvider client={queryClient}>
@@ -121,6 +129,7 @@ const meta = {
                                 termindato: '2024-02-18',
                                 fødselsdato: '2024-02-18',
                             },
+                            [ContextDataType.EGEN_NÆRING]: egenNæring,
                         }}
                     >
                         <ArbeidsforholdOgInntektSteg {...rest} />

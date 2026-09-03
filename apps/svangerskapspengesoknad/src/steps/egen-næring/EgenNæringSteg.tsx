@@ -6,7 +6,11 @@ import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { FormattedMessage } from 'react-intl';
 import { getRuteVelgArbeidEllerSkjema as getRuteSkjemaEllerVelgArbeid } from 'utils/tilretteleggingUtils';
 
-import { EgenNæringPanel, getForhåndsvalgtNæringstype } from '@navikt/fp-steg-egen-naering';
+import {
+    EgenNæringPanel,
+    getForhåndsvalgtNæringstype,
+    getPrioritertRegistrertNæring,
+} from '@navikt/fp-steg-egen-naering';
 import { EksternArbeidsforholdDto_fpoversikt, NæringDto } from '@navikt/fp-types';
 import { SkjemaRotLayout, Spinner } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -27,6 +31,7 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
 
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
     const selvstendigNæringQuery = useQuery(selvstendigNæringOptions());
+    const registrerteNæringer = selvstendigNæringQuery.data ?? [];
 
     const onSubmit = (values: NæringDto) => {
         oppdaterEgenNæring({
@@ -46,7 +51,9 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <EgenNæringPanel
                 egenNæring={egenNæring}
-                initialNæringstype={getForhåndsvalgtNæringstype(selvstendigNæringQuery.data ?? [])}
+                initialNæringstype={getForhåndsvalgtNæringstype(registrerteNæringer)}
+                registrertNæring={getPrioritertRegistrertNæring(registrerteNæringer)}
+                registrerteNæringer={registrerteNæringer}
                 saveOnNext={onSubmit}
                 onAvsluttOgSlett={avbrytSøknad}
                 onFortsettSenere={navigator.fortsettSøknadSenere}

@@ -10,7 +10,9 @@ const {
     ForSvangerskapspenger,
     ForForeldrepenger,
     ForForeldrepengerMedAndreInntekter,
+    ForForeldrepengerMedFrilansoppdrag,
     ForForeldrepengerMedSelvstendigNæring,
+    HarIngenArbeidsforhold,
 } = composeStories(stories);
 
 const manueltLagtTilNæring = {
@@ -66,6 +68,27 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
         await userEvent.click(toggle);
 
         expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    });
+
+    it('skal vise informasjon om arbeidsgiverkontakt under arbeidsforholdene', async () => {
+        render(<ForForeldrepengerMedFrilansoppdrag />);
+
+        await screen.findAllByText('Arbeidsforhold og inntekt');
+
+        const arbeidsgiverinfo = screen.getByRole('button', { name: 'Dine arbeidsgivere kontaktes av Nav' });
+        const frilansoverskrift = screen.getByRole('heading', { name: 'Mine frilansoppdrag' });
+
+        expect(
+            arbeidsgiverinfo.compareDocumentPosition(frilansoverskrift) & Node.DOCUMENT_POSITION_FOLLOWING,
+        ).toBeTruthy();
+    });
+
+    it('skal ikke vise informasjon om arbeidsgiverkontakt uten arbeidsforhold', async () => {
+        render(<HarIngenArbeidsforhold />);
+
+        await screen.findAllByText('Arbeidsforhold og inntekt');
+
+        expect(screen.queryByText(/arbeidsgiver.*kontaktes av Nav/i)).not.toBeInTheDocument();
     });
 
     it('skal vise andre inntekter som en egen boks i sammendraget', async () => {

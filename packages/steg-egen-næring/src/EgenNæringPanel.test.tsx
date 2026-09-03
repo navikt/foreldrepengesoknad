@@ -70,6 +70,69 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         expect(container.querySelector('input[type="hidden"][name="næringstype"]')).toHaveValue('FISKE');
     });
 
+    it('skal vise og låse navn, organisasjonsnummer og type fra registeret', () => {
+        const { container } = render(
+            <IntlProvider locale="nb" messages={{ ...formHookMessages.nb, ...nbMessages }}>
+                <EgenNæringForm
+                    registrertNæring={{
+                        navn: 'Kari Konsulent',
+                        organisasjonsnummer: '998877665',
+                        næringstype: 'JORDBRUK_SKOGBRUK',
+                    }}
+                    appOrigin="foreldrepengesoknad"
+                    onSubmit={vi.fn()}
+                    withoutFormElement
+                />
+            </IntlProvider>,
+        );
+
+        expect(screen.getByText('Opplysninger fra Brønnøysundregistrene')).toBeInTheDocument();
+        expect(screen.getByText('Kari Konsulent')).toBeInTheDocument();
+        expect(screen.getByText('Organisasjonsnummer: 998877665')).toBeInTheDocument();
+        expect(screen.queryByText('Hvilken type næring har du hatt?')).not.toBeInTheDocument();
+        expect(screen.queryByLabelText('Hva heter virksomheten?')).not.toBeInTheDocument();
+        expect(screen.queryByLabelText('Hva er organisasjonsnummeret?')).not.toBeInTheDocument();
+        expect(container.querySelector('input[type="hidden"][name="næringstype"]')).toHaveValue('JORDBRUK_SKOGBRUK');
+        expect(container.querySelector('input[type="hidden"][name="navnPåNæringen"]')).toHaveValue('Kari Konsulent');
+        expect(container.querySelector('input[type="hidden"][name="organisasjonsnummer"]')).toHaveValue('998877665');
+    });
+
+    it('skal forklare at svarene gjelder samlet når flere næringer er registrert', () => {
+        render(
+            <IntlProvider locale="nb" messages={{ ...formHookMessages.nb, ...nbMessages }}>
+                <EgenNæringForm
+                    registrertNæring={{
+                        navn: 'Prioritert Fiskeri',
+                        organisasjonsnummer: '998877665',
+                        næringstype: 'FISKE',
+                    }}
+                    registrerteNæringer={[
+                        {
+                            navn: 'Prioritert Fiskeri',
+                            organisasjonsnummer: '998877665',
+                            næringstype: 'FISKE',
+                        },
+                        {
+                            navn: 'Gårdsdriften',
+                            organisasjonsnummer: '887766554',
+                            næringstype: 'JORDBRUK_SKOGBRUK',
+                        },
+                    ]}
+                    appOrigin="foreldrepengesoknad"
+                    onSubmit={vi.fn()}
+                    withoutFormElement
+                />
+            </IntlProvider>,
+        );
+
+        expect(
+            screen.getByText(
+                'Svar samlet for alle næringene dine. Svarene blir knyttet til organisasjonsnummer 998877665.',
+            ),
+        ).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Næringene dette gjelder' })).toBeInTheDocument();
+    });
+
     it('skal vise mellomlagret ikke-fiske selv om foreslått type er fiske', () => {
         render(
             <IntlProvider locale="nb" messages={{ ...formHookMessages.nb, ...nbMessages }}>

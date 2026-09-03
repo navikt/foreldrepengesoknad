@@ -1,13 +1,22 @@
 import { composeStories } from '@storybook/react-vite';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
+import { SøknadRoutes } from 'appData/routes';
 
 import * as stories from './ArbeidsforholdOgInntektSteg.stories';
 
 const { Default, BrukerKanSøkeVedKunNeiSvar } = composeStories(stories);
 
 describe('<ArbeidsforholdOgInntektSteg>', () => {
+    const egenNæringFraInntektsstepper = {
+        navnPåNæringen: 'Fiskebåten',
+        næringstype: 'FISKE',
+        fom: '2024-01-01',
+        registrertINorge: true,
+        organisasjonsnummer: '998877665',
+    } as const;
+
     it('skal gå til neste steg når informasjon er korrekt', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
@@ -73,5 +82,30 @@ describe('<ArbeidsforholdOgInntektSteg>', () => {
         expect(screen.queryByText('Du kan dessverre ikke gå videre i søknaden.')).not.toBeInTheDocument();
 
         expect(screen.getByText('Neste steg')).toBeInTheDocument();
+    });
+
+    it('skal hoppe over eget SN-steg når næringen er ferdig utfylt via Legg til inntekt', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        await Default.run({
+            args: {
+                ...Default.args,
+                gåTilNesteSide,
+                mellomlagreSøknadOgNaviger,
+                egenNæring: egenNæringFraInntektsstepper,
+                selvstendigNæring: [],
+            },
+        });
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        await waitFor(() => expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce());
+        expect(gåTilNesteSide).not.toHaveBeenCalledWith(
+            expect.objectContaining({
+                data: SøknadRoutes.EGEN_NÆRING,
+                key: ContextDataType.APP_ROUTE,
+            }),
+        );
     });
 });

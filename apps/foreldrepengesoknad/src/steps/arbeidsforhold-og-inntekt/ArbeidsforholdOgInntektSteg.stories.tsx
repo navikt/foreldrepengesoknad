@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { API_URLS } from 'api/queries';
+import { API_URLS, selvstendigNæringOptions } from 'api/queries';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { HttpResponse, http } from 'msw';
@@ -9,7 +9,7 @@ import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 
 import { BarnType } from '@navikt/fp-constants';
-import { EksternArbeidsforholdDto_fpoversikt, SelvstendigNæringDto_fpoversikt } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, NæringDto, SelvstendigNæringDto_fpoversikt } from '@navikt/fp-types';
 
 import { ArbeidsforholdOgInntektSteg } from './ArbeidsforholdOgInntektSteg';
 
@@ -102,6 +102,8 @@ const promiseAction = () => () => {
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
+    egenNæring?: NæringDto;
+    selvstendigNæring?: SelvstendigNæringDto_fpoversikt[];
 } & ComponentProps<typeof ArbeidsforholdOgInntektSteg>;
 
 const meta = {
@@ -115,7 +117,12 @@ const meta = {
             ],
         },
     },
-    render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
+    render: ({
+        gåTilNesteSide = action('button-click'),
+        egenNæring,
+        selvstendigNæring = DEFAULT_SELVSTENDIG_NÆRING,
+        ...rest
+    }) => {
         const freshQueryClient = new QueryClient({
             defaultOptions: {
                 queries: {
@@ -123,6 +130,7 @@ const meta = {
                 },
             },
         });
+        freshQueryClient.setQueryData(selvstendigNæringOptions().queryKey, selvstendigNæring);
         return (
             <QueryClientProvider client={freshQueryClient}>
                 <MemoryRouter initialEntries={[SøknadRoutes.ARBEID_OG_INNTEKT]}>
@@ -140,6 +148,7 @@ const meta = {
                                 antallBarn: 1,
                             },
                             [ContextDataType.ANDRE_INNTEKTSKILDER]: [],
+                            [ContextDataType.EGEN_NÆRING]: egenNæring,
                         }}
                     >
                         <ArbeidsforholdOgInntektSteg {...rest} />

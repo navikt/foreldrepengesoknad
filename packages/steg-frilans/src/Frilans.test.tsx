@@ -44,6 +44,18 @@ describe('<Arbeid som frilanser>', () => {
         });
     });
 
+    it('skal forhåndsutfylle startdato fra registeret', async () => {
+        render(<Default forhåndsutfyltOppstart="2023-11-15" />);
+
+        expect(await screen.findByLabelText('Når startet du som frilanser?')).toHaveValue('15.11.2023');
+    });
+
+    it('skal prioritere mellomlagret startdato foran registerdato', async () => {
+        render(<Default frilans={{ oppstart: '2024-02-20' }} forhåndsutfyltOppstart="2023-11-15" />);
+
+        expect(await screen.findByLabelText('Når startet du som frilanser?')).toHaveValue('20.02.2024');
+    });
+
     it('validering av dato på feil format', async () => {
         render(<Default />);
 

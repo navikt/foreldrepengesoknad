@@ -119,7 +119,11 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
                 <SelvstendigNæringsdrivendeOppsummering
                     egenNæring={egenNæring}
                     selvstendigNæring={selvstendigNæring}
-                    onVilEndreSvar={() => navigator.goToStep(SøknadRoute.NÆRING)}
+                    onVilEndreSvar={() =>
+                        navigator.goToStep(
+                            selvstendigNæring.length > 0 ? SøknadRoute.NÆRING : SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT,
+                        )
+                    }
                 />
                 <JobbetIUtlandetOppsummering
                     onVilEndreSvar={() => navigator.goToStep(SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT)}

@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router';
 import {
@@ -9,12 +10,13 @@ import {
 import { søkerHarKunEtAktivtArbeid } from 'utils/arbeidsforholdUtils';
 import { getTilretteleggingId, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
 
-import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
+import { EGEN_NÆRING_ID, skalViseEgenNæringSteg } from '@navikt/fp-steg-egen-naering';
 import { EksternArbeidsforholdDto_fpoversikt, FRILANS_ID } from '@navikt/fp-types';
 import { ProgressStep } from '@navikt/fp-ui';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './SvpDataContext';
+import { selvstendigNæringOptions } from './queries';
 import { SøknadRoute, addTilretteleggingIdToRoute } from './routes';
 
 const getStepLabels = (
@@ -131,6 +133,7 @@ const getStepConfig = (
     currentPath: string,
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     getStateData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
+    harRegistrertNæring: boolean,
 ): Array<ProgressStep<string>> => {
     const arbeidsforholdOgInntekt = getStateData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const tilrettelegginger = getStateData(ContextDataType.TILRETTELEGGINGER);
@@ -156,7 +159,15 @@ const getStepConfig = (
         steps.push(createStep(SøknadRoute.FRILANS, intl, currentPath));
     }
 
-    if (arbeidsforholdOgInntekt?.harJobbetSomSelvstendigNæringsdrivende) {
+    if (
+        skalViseEgenNæringSteg({
+            harJobbetSomSelvstendigNæringsdrivende:
+                arbeidsforholdOgInntekt?.harJobbetSomSelvstendigNæringsdrivende === true,
+            harRegistrertNæring,
+            egenNæring: getStateData(ContextDataType.EGEN_NÆRING),
+            erPåEgenNæringSteg: currentPath === SøknadRoute.NÆRING.toString(),
+        })
+    ) {
         steps.push(createStep(SøknadRoute.NÆRING, intl, currentPath));
     }
 
@@ -234,6 +245,13 @@ export const useStepConfig = (arbeidsforhold: EksternArbeidsforholdDto_fpoversik
 
     const location = useLocation();
     const getStateData = useContextGetAnyData();
+    const selvstendigNæringQuery = useQuery(selvstendigNæringOptions());
 
-    return getStepConfig(intl, location.pathname, arbeidsforhold, getStateData);
+    return getStepConfig(
+        intl,
+        location.pathname,
+        arbeidsforhold,
+        getStateData,
+        (selvstendigNæringQuery.data?.length ?? 0) > 0,
+    );
 };

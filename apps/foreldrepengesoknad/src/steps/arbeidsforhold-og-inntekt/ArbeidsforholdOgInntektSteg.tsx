@@ -9,6 +9,7 @@ import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { ArbeidsforholdOgInntektPanel } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
+import { skalViseEgenNæringSteg } from '@navikt/fp-steg-egen-naering';
 import {
     ArbeidsforholdOgInntekt,
     ArbeidsforholdOgInntektFp,
@@ -71,7 +72,14 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
         if (arbeidsforholdOgInntektFp.harJobbetSomFrilans) {
             return navigator.goToStep(SøknadRoutes.FRILANS);
         }
-        if (arbeidsforholdOgInntektFp.harJobbetSomSelvstendigNæringsdrivende) {
+        if (
+            skalViseEgenNæringSteg({
+                harJobbetSomSelvstendigNæringsdrivende:
+                    arbeidsforholdOgInntektFp.harJobbetSomSelvstendigNæringsdrivende,
+                harRegistrertNæring: selvstendigNæring.length > 0,
+                egenNæring,
+            })
+        ) {
             return navigator.goToStep(SøknadRoutes.EGEN_NÆRING);
         }
 

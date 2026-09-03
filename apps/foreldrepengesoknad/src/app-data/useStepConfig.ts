@@ -1,3 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
+import { selvstendigNæringOptions } from 'api/queries';
 import { REQUIRED_APP_STEPS, REQUIRED_APP_STEPS_ENDRINGSSØKNAD, ROUTES_ORDER, SøknadRoutes } from 'appData/routes.ts';
 import { useMemo } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
@@ -10,6 +12,7 @@ import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { finnPerioderSomInngårISøknaden } from 'utils/manglendeVedleggUtils';
 import { kreverUttaksplanVedleggNy } from 'utils/uttaksplanInfoUtils';
 
+import { skalViseEgenNæringSteg } from '@navikt/fp-steg-egen-naering';
 import { EksternArbeidsforholdDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -65,6 +68,7 @@ const showFrilansOgEgenNæring = (
     path: SøknadRoutes,
     currentPath: SøknadRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
+    harRegistrertNæring: boolean,
 ) => {
     if (path === SøknadRoutes.FRILANS) {
         const erValgtOgEtterSteg =
@@ -73,10 +77,17 @@ const showFrilansOgEgenNæring = (
         return erValgtOgEtterSteg || !!getData(ContextDataType.FRILANS);
     }
     if (path === SøknadRoutes.EGEN_NÆRING) {
-        const erValgtOgEtterSteg =
-            getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT)?.harJobbetSomSelvstendigNæringsdrivende === true &&
-            isAfterStep(SøknadRoutes.ARBEID_OG_INNTEKT, currentPath);
-        return erValgtOgEtterSteg || !!getData(ContextDataType.EGEN_NÆRING);
+        const arbeidsforholdOgInntekt = getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
+        const egenNæring = getData(ContextDataType.EGEN_NÆRING);
+        const skalViseSteg = skalViseEgenNæringSteg({
+            harJobbetSomSelvstendigNæringsdrivende:
+                arbeidsforholdOgInntekt?.harJobbetSomSelvstendigNæringsdrivende === true,
+            harRegistrertNæring,
+            egenNæring,
+            erPåEgenNæringSteg: currentPath === SøknadRoutes.EGEN_NÆRING,
+        });
+        const erValgtOgEtterSteg = skalViseSteg && isAfterStep(SøknadRoutes.ARBEID_OG_INNTEKT, currentPath);
+        return erValgtOgEtterSteg || (skalViseSteg && egenNæring !== undefined);
     }
     return false;
 };
@@ -172,6 +183,8 @@ export const useStepConfig = (
 
     const location = useLocation();
     const getStateData = useContextGetAnyData();
+    const selvstendigNæringQuery = useQuery(selvstendigNæringOptions());
+    const harRegistrertNæring = (selvstendigNæringQuery.data?.length ?? 0) > 0;
 
     const currentPath = useMemo(
         () => notEmpty(Object.values(SøknadRoutes).find((v) => v.toString() === decodeURIComponent(location.pathname))),
@@ -185,11 +198,11 @@ export const useStepConfig = (
                 (requiredSteps.includes(path) && skalViseFordelingSteg(path, getStateData)) ||
                 showUtenlandsoppholdStep(path, currentPath, getStateData) ||
                 showManglendeDokumentasjonSteg(path, getStateData, arbeidsforhold, eksisterendeSak) ||
-                showFrilansOgEgenNæring(path, currentPath, getStateData)
+                showFrilansOgEgenNæring(path, currentPath, getStateData, harRegistrertNæring)
                     ? [path]
                     : [],
             ),
-        [requiredSteps, currentPath, getStateData, arbeidsforhold, eksisterendeSak],
+        [requiredSteps, currentPath, getStateData, arbeidsforhold, eksisterendeSak, harRegistrertNæring],
     );
 
     return useMemo(

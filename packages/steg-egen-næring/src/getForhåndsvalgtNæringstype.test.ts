@@ -1,6 +1,6 @@
 import { SelvstendigNæringDto_fpoversikt } from '@navikt/fp-types';
 
-import { getForhåndsvalgtNæringstype } from './getForhåndsvalgtNæringstype';
+import { getForhåndsvalgtNæringstype, getPrioritertRegistrertNæring } from './getForhåndsvalgtNæringstype';
 
 const lagNæring = (
     næringstype: SelvstendigNæringDto_fpoversikt['næringstype'],
@@ -27,11 +27,21 @@ describe('getForhåndsvalgtNæringstype', () => {
         expect(getForhåndsvalgtNæringstype([lagNæring('ANNEN'), lagNæring('ANNEN', '887766554')])).toBe('ANNEN');
     });
 
-    it('skal ikke foreslå type når virksomhetene har ulike typer', () => {
-        expect(getForhåndsvalgtNæringstype([lagNæring('ANNEN'), lagNæring('DAGMAMMA', '887766554')])).toBeUndefined();
+    it('skal prioritere fiske, jordbruk, dagmamma og annen i denne rekkefølgen', () => {
+        expect(
+            getForhåndsvalgtNæringstype([
+                lagNæring('ANNEN'),
+                lagNæring('DAGMAMMA', '887766554'),
+                lagNæring('JORDBRUK_SKOGBRUK', '776655443'),
+                lagNæring('FISKE', '665544332'),
+            ]),
+        ).toBe('FISKE');
     });
 
-    it('skal foreslå fiske når alle virksomhetene er fiske', () => {
-        expect(getForhåndsvalgtNæringstype([lagNæring('FISKE'), lagNæring('FISKE', '887766554')])).toBe('FISKE');
+    it('skal velge laveste organisasjonsnummer deterministisk når typen er lik', () => {
+        expect(
+            getPrioritertRegistrertNæring([lagNæring('FISKE', '998877665'), lagNæring('FISKE', '887766554')])
+                ?.organisasjonsnummer,
+        ).toBe('887766554');
     });
 });

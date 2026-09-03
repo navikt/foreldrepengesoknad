@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
-import { Alert, BodyShort, Radio, ReadMore, VStack, omit } from '@navikt/ds-react';
+import { Alert, BodyShort, Label, List, Radio, ReadMore, VStack, omit } from '@navikt/ds-react';
 
 import { DATE_4_YEARS_AGO, DATE_5_MONTHS_AGO, DATE_20_YEARS_AGO, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
@@ -16,7 +16,7 @@ import {
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
 import { loggUmamiEvent } from '@navikt/fp-observability';
-import { AppName, NæringDto } from '@navikt/fp-types';
+import { AppName, NæringDto, SelvstendigNæringDto_fpoversikt } from '@navikt/fp-types';
 import { ProgressStep, Step } from '@navikt/fp-ui';
 import { femMånederSiden } from '@navikt/fp-utils';
 import {
@@ -69,6 +69,8 @@ const validateEgenNæringNavn = (intl: IntlShape, erValgfri: boolean) => (value:
 interface Props<TYPE> {
     egenNæring?: NæringDto;
     initialNæringstype?: NæringDto['næringstype'];
+    registrertNæring?: SelvstendigNæringDto_fpoversikt;
+    registrerteNæringer?: SelvstendigNæringDto_fpoversikt[];
     saveOnNext: (formValues: NæringDto) => void;
     onAvsluttOgSlett: () => void;
     onFortsettSenere?: () => void;
@@ -81,6 +83,8 @@ interface Props<TYPE> {
 interface EgenNæringFormProps {
     egenNæring?: NæringDto;
     initialNæringstype?: NæringDto['næringstype'];
+    registrertNæring?: SelvstendigNæringDto_fpoversikt;
+    registrerteNæringer?: SelvstendigNæringDto_fpoversikt[];
     fixedNæringstype?: NæringDto['næringstype'];
     fixedRegistrertINorge?: boolean;
     onSubmit: (formValues: NæringDto) => void;
@@ -95,6 +99,8 @@ export const EGEN_NÆRING_ID = 'naering';
 export const EgenNæringForm = ({
     egenNæring,
     initialNæringstype,
+    registrertNæring,
+    registrerteNæringer = [],
     fixedNæringstype,
     fixedRegistrertINorge,
     onSubmit,
@@ -110,15 +116,20 @@ export const EgenNæringForm = ({
      * Hvis egenNæring finnes har bruker gjort et valg, og da vil vi velge false/true for radioknappen
      */
     const egenNæringDefaultValue = egenNæring === undefined ? undefined : !egenNæring.tom;
-    const næringstype = fixedNæringstype ?? egenNæring?.næringstype ?? initialNæringstype;
-    const skjultNæringstype = fixedNæringstype ?? (næringstype === 'FISKE' ? 'FISKE' : undefined);
+    const næringstype =
+        fixedNæringstype ?? registrertNæring?.næringstype ?? egenNæring?.næringstype ?? initialNæringstype;
+    const skjultNæringstype =
+        fixedNæringstype ?? registrertNæring?.næringstype ?? (næringstype === 'FISKE' ? 'FISKE' : undefined);
+    const registrertINorgeDefault = registrertNæring ? true : (fixedRegistrertINorge ?? egenNæring?.registrertINorge);
 
     const formMethods = useForm<NæringFormValues>({
         shouldUnregister: true,
         defaultValues: {
             ...egenNæring,
             næringstype,
-            registrertINorge: fixedRegistrertINorge ?? egenNæring?.registrertINorge,
+            navnPåNæringen: registrertNæring?.navn ?? egenNæring?.navnPåNæringen,
+            organisasjonsnummer: registrertNæring?.organisasjonsnummer ?? egenNæring?.organisasjonsnummer,
+            registrertINorge: registrertINorgeDefault,
             pågående: egenNæringDefaultValue,
         },
     });
@@ -147,6 +158,43 @@ export const EgenNæringForm = ({
     const formContent = (
         <VStack gap="space-40">
             <ErrorSummaryHookForm />
+            {registrertNæring && (
+                <VStack gap="space-8">
+                    <Label as="p">
+                        <FormattedMessage id="egenNæring.registrertNæring.tittel" />
+                    </Label>
+                    {registrertNæring.navn && <BodyShort>{registrertNæring.navn}</BodyShort>}
+                    <BodyShort>
+                        <FormattedMessage
+                            id="egenNæring.registrertNæring.orgnr"
+                            values={{ organisasjonsnummer: registrertNæring.organisasjonsnummer }}
+                        />
+                    </BodyShort>
+                    {registrerteNæringer.length > 1 && (
+                        <>
+                            <ReadMore
+                                variant="moderate"
+                                header={<FormattedMessage id="egenNæring.registrertNæring.flere.liste" />}
+                            >
+                                <List>
+                                    {registrerteNæringer.map((næring) => (
+                                        <List.Item key={næring.organisasjonsnummer}>
+                                            {næring.navn ?? næring.organisasjonsnummer}
+                                            {næring.navn && ` (${næring.organisasjonsnummer})`}
+                                        </List.Item>
+                                    ))}
+                                </List>
+                            </ReadMore>
+                            <Alert variant="info">
+                                <FormattedMessage
+                                    id="egenNæring.registrertNæring.flere"
+                                    values={{ organisasjonsnummer: registrertNæring.organisasjonsnummer }}
+                                />
+                            </Alert>
+                        </>
+                    )}
+                </VStack>
+            )}
             {skjultNæringstype ? (
                 <input type="hidden" {...formMethods.register('næringstype')} />
             ) : (
@@ -167,37 +215,41 @@ export const EgenNæringForm = ({
                     </Radio>
                 </RhfRadioGroup>
             )}
-            <RhfTextField
-                name="navnPåNæringen"
-                control={formMethods.control}
-                label={navnPåNæringLabel}
-                validate={[
-                    validateEgenNæringNavn(intl, næringsType === 'FISKE'),
-                    hasLegalChars((ugyldigeTegn: string) =>
-                        intl.formatMessage(
-                            { id: 'valideringsfeil.fritekst.kanIkkeInneholdeTegn' },
-                            {
-                                feltNavn: navnPåNæringLabel,
-                                ugyldigeTegn: ugyldigeTegn,
-                            },
+            {registrertNæring ? (
+                <input type="hidden" {...formMethods.register('navnPåNæringen')} />
+            ) : (
+                <RhfTextField
+                    name="navnPåNæringen"
+                    control={formMethods.control}
+                    label={navnPåNæringLabel}
+                    validate={[
+                        validateEgenNæringNavn(intl, næringsType === 'FISKE'),
+                        hasLegalChars((ugyldigeTegn: string) =>
+                            intl.formatMessage(
+                                { id: 'valideringsfeil.fritekst.kanIkkeInneholdeTegn' },
+                                {
+                                    feltNavn: navnPåNæringLabel,
+                                    ugyldigeTegn: ugyldigeTegn,
+                                },
+                            ),
                         ),
-                    ),
-                    hasMaxLength(
-                        intl.formatMessage(
-                            { id: 'valideringsfeil.navnPåNæringen.forLang' },
-                            {
-                                feltNavn: navnPåNæringLabel,
-                            },
+                        hasMaxLength(
+                            intl.formatMessage(
+                                { id: 'valideringsfeil.navnPåNæringen.forLang' },
+                                {
+                                    feltNavn: navnPåNæringLabel,
+                                },
+                            ),
+                            100,
                         ),
-                        100,
-                    ),
-                ]}
-                shouldReplaceInvisibleChars
-            />
-            {fixedRegistrertINorge !== undefined ? (
+                    ]}
+                    shouldReplaceInvisibleChars
+                />
+            )}
+            {fixedRegistrertINorge !== undefined || registrertNæring ? (
                 <input
                     type="hidden"
-                    value={String(fixedRegistrertINorge)}
+                    value={String(registrertINorgeDefault)}
                     {...formMethods.register('registrertINorge', {
                         setValueAs: (value) => value === true || value === 'true',
                     })}
@@ -224,7 +276,14 @@ export const EgenNæringForm = ({
                     </Radio>
                 </RhfRadioGroup>
             )}
-            <OrgnummerEllerLand orgNummerErValgfritt={næringsType === 'FISKE'} registrertINorge={registrertINorge} />
+            {registrertNæring ? (
+                <input type="hidden" {...formMethods.register('organisasjonsnummer')} />
+            ) : (
+                <OrgnummerEllerLand
+                    orgNummerErValgfritt={næringsType === 'FISKE'}
+                    registrertINorge={registrertINorge}
+                />
+            )}
             <RhfDatepicker
                 name="fom"
                 control={formMethods.control}
@@ -412,6 +471,8 @@ export const EgenNæringForm = ({
 export const EgenNæringPanel = <TYPE extends string>({
     egenNæring,
     initialNæringstype,
+    registrertNæring,
+    registrerteNæringer,
     saveOnNext,
     onAvsluttOgSlett,
     onFortsettSenere,
@@ -424,6 +485,8 @@ export const EgenNæringPanel = <TYPE extends string>({
         <EgenNæringForm
             egenNæring={egenNæring}
             initialNæringstype={initialNæringstype}
+            registrertNæring={registrertNæring}
+            registrerteNæringer={registrerteNæringer}
             fixedRegistrertINorge
             onSubmit={saveOnNext}
             appOrigin={appOrigin}
