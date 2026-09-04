@@ -446,6 +446,8 @@
     "UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk.TekstKunFarEllerMedmor": "Dei første seks vekene etter fødsel er reserverte for {erMedmor, select, true {mor som føder} other {mor}}, og det er i utgangspunktet ikkje mogleg å nytta foreldrepengar utan aktivitetskrav. Unntaket er viss {erMedmor, select, true {mor som føder} other {mor}} blir sjuke eller innlagde og ikkje kan ta seg av barnet. Då kan du søkja foreldrepengar med aktivitetskrav.",
     "UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErSykt": "Hvis et barn er sykt etter de første seks ukene",
     "UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErSykt.Tekst": "Hvis et barn er innlagt eller sykt med oppfølging fra spesialisthelsetjenesten, kan du ha rett på pleiepenger i stedet for foreldrepenger. Foreldrepengene kan du bruke senere.",
+    "UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErInnlagt": "Viss barnet er innlagd på sjukehus",
+    "UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErInnlagt.Tekst": "Viss barnet blir innlagd på sjukehus, kan du ha rett på pleiepengar i staden for foreldrepengar. Foreldrepengane frå denne perioden kan du bruke seinare.",
     "UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErSyktEllerInnlagt": "Hvis barnet er sykt eller innlagt på sykehuset",
     "UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErSyktEllerInnlagt.Tekst": "Hvis et barn er sykt eller innlagt, kan {erAleneforsørger, select, true {du} other {dere}} ha rett på pleiepenger for pleie av sykt barn.",
     "UforutsetteEndringer.UforutsetteEndringer.PrematurBarnInnlagtFørTermin": "Viss eit barn er innlagd på sjukehus før termindato",
