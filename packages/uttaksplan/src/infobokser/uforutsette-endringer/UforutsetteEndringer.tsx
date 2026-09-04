@@ -90,11 +90,7 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
                                 {!fødtFørUke33 &&
                                     ((beggeHarRett && !erFarOgFar) ||
                                         kunMorHarRett ||
-                                        (erAleneforsørger && erMorDelAvSøknaden)) && (
-                                        <>
-                                            <HvisBarnetErInnlagt />
-                                        </>
-                                    )}
+                                        (erAleneforsørger && erMorDelAvSøknaden)) && <HvisBarnetErInnlagt />}
 
                                 <NyttBarnFørTreÅr />
                             </>
