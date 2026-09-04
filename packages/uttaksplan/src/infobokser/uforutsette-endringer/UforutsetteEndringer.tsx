@@ -66,11 +66,10 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
 
             <ExpansionCard.Content>
                 <VStack gap="space-20">
-                    <>
                         {erFødsel ? (
                             <>
                                 {!erFarOgFarKunMedfarHarRett && <FødtFørUke33 />}
-
+                            
                                 <HvisDuBlirSyk />
 
                                 {erMorDelAvSøknaden && <HvisMorBlirSyk />}
@@ -100,7 +99,7 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
                                 <NyttBarnFørTreÅr />
                             </>
                         )}
-                    </>
+
                 </VStack>
             </ExpansionCard.Content>
         </ExpansionCard>
