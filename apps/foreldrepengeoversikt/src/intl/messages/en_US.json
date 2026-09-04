@@ -147,7 +147,7 @@
     "tidslinje.BARN_TRE_ÅR.fødsel.informasjon": "You must use your parental benefit before {antallBarn, plural, one {the child} other {the children}} turns 3 years old. If you are expecting another child, you must use your parental benefit before the new parental benefit period starts.",
     "tidslinje.BARN_TRE_ÅR.adopsjon.informasjon": "You must use your parental benefit before 3 years have passed since the adoption of {antallBarn, plural, one {the child} other {the children}}.",
     "tidslinje.BARN_TRE_ÅR.linkTittel": "How long can you have parental benefit?",
-    "tidslinje.FREMTIDIG_VEDTAK.informasjon": "Nav usually needs 6 weeks to process the application.",
+    "tidslinje.FREMTIDIG_VEDTAK.informasjon": "Nav usually needs 8 weeks to process the application.",
     "tidslinje.FREMTIDIG_VEDTAK.linkTittel": "Processing times at Nav",
     "BekreftelseSendtSøknad.HuskPå": "REMEMBER",
     "BekreftelseSendtSøknad.SelvInformere": "You must notify and inform your employer yourself about your planned leave.",
