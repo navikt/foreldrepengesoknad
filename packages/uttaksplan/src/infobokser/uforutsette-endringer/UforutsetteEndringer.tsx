@@ -47,8 +47,6 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
 
     const erFarOgFarKunMedfarHarRett = erFarOgFar && rettighetType === 'BARE_SØKER_RETT';
 
-    console.log('er født før uke 33', fødtFørUke33);
-
     return (
         <ExpansionCard aria-label="." onToggle={loggExpansionCardOpen('toggle-uforutsette-endringer')} size="small">
             <ExpansionCard.Header>
