@@ -124,7 +124,12 @@ const ikkeDeltUttakFødselMor = ({
     startdato?: string;
 }): UttakPeriode_fpoversikt[] => {
     const førsteUttaksdagEtterFødsel = Uttaksdagen.denneEllerNeste(famDato).getDato();
-    const valgtStartdato = Uttaksdagen.denneEllerNeste(startdato ?? famDato).getDato();
+    // Når ingen startdato er valgt eksplisitt (t.d. planlegger-appen, som ikke har noe
+    // eget oppstartsvalg-steg), bruker vi samme standard som før: 3 uker (15 uttaksdager)
+    // før fødsel/termin.
+    const standardStartdatoFørFødsel =
+        Uttaksdagen.denne(førsteUttaksdagEtterFødsel).getDatoAntallUttaksdagerTidligere(15);
+    const valgtStartdato = Uttaksdagen.denneEllerNeste(startdato ?? standardStartdatoFørFødsel).getDato();
     // Mor kan velge en oppstartsdato som ligger før fødselsdatoen (t.d. tre uker før termin/fødsel).
     // Da skal FORELDREPENGER_FØR_FØDSEL dekke perioden fra den valgte startdatoen og frem til fødselen.
     const starterFørFødsel = dayjs(valgtStartdato).isBefore(førsteUttaksdagEtterFødsel, 'd');
