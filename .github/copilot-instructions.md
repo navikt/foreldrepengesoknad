@@ -133,3 +133,9 @@ LIGHTGREEN) and special-day markers (barnehage, helg) are static. When you:
 - Apps can be run locally with `pnpm run dev:mock` / `pnpm run dev:lokal` or
   via Vite mode against the dev environment (see README)
 - Types are generated from the backend with `pnpm generate` or `pnpm generate:local`
+
+## Code review-språk
+
+Når Copilot utfører en code review (PR-review, review-kommentarer og
+oppsummeringer) i dette repoet, skal tilbakemeldingen skrives på norsk
+bokmål.
