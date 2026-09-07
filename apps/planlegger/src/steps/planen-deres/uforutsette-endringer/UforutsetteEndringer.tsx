@@ -3,7 +3,6 @@ import { FormattedMessage } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
-import { erFødtFørUke33 } from 'utils/dateUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { loggExpansionCardOpen } from 'utils/umamiUtils';
 
@@ -12,12 +11,10 @@ import { ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
+import { FødtFørUke33 } from './FødtFørUke33';
 import { HvisBarnetErInnlagt } from './HvisBarnetErInnlagt';
 import { HvisDuBlirSyk } from './HvisDuBlirSyk';
 import { HvisMorBlirSyk } from './HvisMorBlirSyk';
-import { FødtFørUke33 } from './FødtFørUke33';
-import { PrematurBarnInnlagtEtterTermin } from './PrematurBarnInnlagtEtterTermin';
-import { PrematurBarnInnlagtFørTermin } from './PrematurBarnInnlagtFørTermin';
 import { NyttBarnFørTreÅr } from './NyttBarnFørTreÅr';
 
 interface Props {
@@ -28,8 +25,6 @@ interface Props {
 
 export const UforutsetteEndringer = ({ hvemPlanlegger, arbeidssituasjon, barnet }: Props) => {
     const erFødsel = barnet.erFødsel;
-    const erPrematurFødsel = erFødtFørUke33(barnet.fødselsdato, barnet.termindato);
-    const visInfoOmPrematurFødsel = erFødsel && !barnet.erBarnetFødt && barnet.termindato !== undefined;
     const erAleneforsørger =
         hvemPlanlegger.type === HvemPlanleggerType.MOR || hvemPlanlegger.type === HvemPlanleggerType.FAR;
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
@@ -37,6 +32,8 @@ export const UforutsetteEndringer = ({ hvemPlanlegger, arbeidssituasjon, barnet 
     const kunMorHarRett = erMorDelAvSøknaden(hvemPlanlegger) && arbeidssituasjon.jobberAnnenPart === false;
     const kunFarEllerMedmorHarRett = hvemHarRett === 'kunSøker2HarRett';
     const erFarOgFar = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR;
+    const erFarOgFarKunMedfarHarRett =
+        hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && kunFarEllerMedmorHarRett;
 
     return (
         <ExpansionCard aria-label="." onToggle={loggExpansionCardOpen('toggle-uforutsette-endringer')} size="small">
@@ -69,27 +66,18 @@ export const UforutsetteEndringer = ({ hvemPlanlegger, arbeidssituasjon, barnet 
                                     />
                                 )}
 
-                                {!erPrematurFødsel &&
-                                    ((erAleneforsørger && !erMorDelAvSøknaden(hvemPlanlegger)) ||
-                                        erFarOgFar ||
-                                        kunFarEllerMedmorHarRett) && (
-                                        <HvisBarnetErInnlagt arbeidssituasjon={arbeidssituasjon} />
-                                    )}
-                                {!erPrematurFødsel &&
-                                    ((beggeHarRett && !erFarOgFar) ||
-                                        kunMorHarRett ||
-                                        (erAleneforsørger && erMorDelAvSøknaden(hvemPlanlegger))) && (
-                                        <HvisBarnetErInnlagt arbeidssituasjon={arbeidssituasjon} />
-                                    )}
-
-                                {erPrematurFødsel && (
-                                    <>
-                                        <PrematurBarnInnlagtFørTermin arbeidssituasjon={arbeidssituasjon} />
-                                        <PrematurBarnInnlagtEtterTermin />
-                                    </>
+                                {((erAleneforsørger && !erMorDelAvSøknaden(hvemPlanlegger)) ||
+                                    erFarOgFar ||
+                                    kunFarEllerMedmorHarRett) && (
+                                    <HvisBarnetErInnlagt arbeidssituasjon={arbeidssituasjon} />
+                                )}
+                                {((beggeHarRett && !erFarOgFar) ||
+                                    kunMorHarRett ||
+                                    (erAleneforsørger && erMorDelAvSøknaden(hvemPlanlegger))) && (
+                                    <HvisBarnetErInnlagt arbeidssituasjon={arbeidssituasjon} />
                                 )}
 
-                                {visInfoOmPrematurFødsel && (
+                                {!erFarOgFarKunMedfarHarRett && (
                                     <FødtFørUke33 arbeidssituasjon={arbeidssituasjon} hvemPlanlegger={hvemPlanlegger} />
                                 )}
 
