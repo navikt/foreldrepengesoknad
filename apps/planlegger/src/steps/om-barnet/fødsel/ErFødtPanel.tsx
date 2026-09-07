@@ -5,7 +5,6 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { erAlenesøker as erAlene, erFarDelAvSøknaden, erFarOgFar, erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
-import { erFødtFørUke33, getAntallVirkedagerFraFødselTilTermin } from 'utils/dateUtils';
 import { getUkerOgDager } from 'utils/stønadskvoterUtils';
 
 import { BodyShort, ReadMore, VStack } from '@navikt/ds-react';
@@ -14,6 +13,7 @@ import { DATE_3_YEARS_AGO, ISO_DATE_REGEX } from '@navikt/fp-constants';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
+import { erFødtFørUke33, getAntallVirkedagerFraFødselTilTermin } from '@navikt/fp-utils';
 import { erI22SvangerskapsukeEllerSenere, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
 const erDatoGyldig = (date: string) => ISO_DATE_REGEX.test(date);
