@@ -134,8 +134,8 @@ LIGHTGREEN) and special-day markers (barnehage, helg) are static. When you:
   via Vite mode against the dev environment (see README)
 - Types are generated from the backend with `pnpm generate` or `pnpm generate:local`
 
-## Code review-språk
+## Code review language
 
-Når Copilot utfører en code review (PR-review, review-kommentarer og
-oppsummeringer) i dette repoet, skal tilbakemeldingen skrives på norsk
-bokmål.
+When Copilot performs a code review (PR reviews, review comments, and
+summaries) in this repo, the feedback should be written in Norwegian
+(bokmål).
