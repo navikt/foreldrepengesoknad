@@ -11,7 +11,6 @@ import { FødtFørUke33 } from './tekster/FødtFørUke33';
 import { HvisBarnetErInnlagt } from './tekster/HvisBarnetErInnlagt';
 import { HvisBarnetErPrematurInnlagtEtterTermin } from './tekster/HvisBarnetErPrematurInnlagtEtterTermin';
 import { HvisBarnetErPrematurInnlagtFørTermin } from './tekster/HvisBarnetErPrematurInnlagtFørTermin';
-import { HvisBarnetErSyktEllerInnlagt } from './tekster/HvisBarnetErSyktEllerInnlagt';
 import { HvisDuBlirSyk } from './tekster/HvisDuBlirSyk';
 import { HvisMorBlirSyk } from './tekster/HvisMorBlirSyk';
 import { NyttBarnFørTreÅr } from './tekster/NyttBarnFørTreÅr';
@@ -95,7 +94,7 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
                         ) : (
                             <>
                                 <HvisDuBlirSyk />
-                                <HvisBarnetErSyktEllerInnlagt />
+                                <HvisBarnetErInnlagt />
                                 <NyttBarnFørTreÅr />
                             </>
                         )}
