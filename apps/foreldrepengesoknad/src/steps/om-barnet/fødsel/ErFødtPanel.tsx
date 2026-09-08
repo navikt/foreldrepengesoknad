@@ -3,11 +3,12 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { erFødtFørUke33, getAntallVirkedagerFraFødselTilTermin, getVarighetString } from 'utils/dateUtils';
+import { getVarighetString } from 'utils/dateUtils';
 
 import { Alert, BodyShort, Heading, ReadMore, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
+import { erFødtFørUke33, getAntallVirkedagerFraFødselTilTermin } from '@navikt/fp-utils';
 import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { FødtBarn } from '../OmBarnetFormValues';
