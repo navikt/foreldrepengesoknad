@@ -5,7 +5,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { TIDENES_ENDE } from '@navikt/fp-constants';
 
 import nbMessages from './intl/messages/nb_NO.json';
-import { periodFormat } from './periodUtils';
+import { periodFormat, formatMånedÅr } from './periodUtils';
 
 const makeIntlMock = (locale: string) =>
     ({
@@ -67,3 +67,27 @@ describe('periodFormat med useShortMonth', () => {
         expect(nbResult).not.toEqual(enResult);
     });
 });
+
+describe('formatMånedÅr', () => {
+    const dato = '2026-12-15';
+
+    it('skal formatere norsk månedsnavn og år for nb-locale', () => {
+        expect(formatMånedÅr(dato, makeIntlMock('nb'))).toEqual('desember 2026');
+    });
+
+    it('skal formatere engelsk månedsnavn og år for en-locale', () => {
+        expect(formatMånedÅr(dato, makeIntlMock('en'))).toEqual('December 2026');
+    });
+
+    it('månedsnavn skal følge intl-locale, ikke global dayjs-locale', () => {
+        dayjs.locale('nb');
+        const nbResult = formatMånedÅr(dato, makeIntlMock('nb'));
+        const enResult = formatMånedÅr(dato, makeIntlMock('en'));
+        expect(nbResult).not.toEqual(enResult);
+    });
+
+    it('skal godta Date-objekt i tillegg til string', () => {
+        expect(formatMånedÅr(new Date(dato), makeIntlMock('en'))).toEqual('December 2026');
+    });
+});
+
