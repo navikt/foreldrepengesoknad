@@ -15,9 +15,10 @@ import { ReactNode, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { shouldApplyStorage } from 'utils/mellomlagringUtils';
 
+import { erIkkeTilgangUmyndigFeil } from '@navikt/fp-app-shell';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { ErrorBoundary, RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
-import { erIkkeTilgangUmyndigFeil, erLikUansettRekkefølge, omitMany, useDocumentTitle } from '@navikt/fp-utils';
+import { erLikUansettRekkefølge, omitMany, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ForeldrepengesøknadRoutes } from './ForeldrepengesøknadRoutes';

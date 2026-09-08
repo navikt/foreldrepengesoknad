@@ -5,8 +5,9 @@ import { VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
 import ky from 'ky';
 import { useIntl } from 'react-intl';
 
+import { erIkkeTilgangUmyndigFeil } from '@navikt/fp-app-shell';
 import { RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
-import { erIkkeTilgangUmyndigFeil, erLikUansettRekkefølge, erMyndig, useDocumentTitle } from '@navikt/fp-utils';
+import { erLikUansettRekkefølge, erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ApiErrorHandler, EngangsstønadRoutes } from './EngangsstønadRoutes';

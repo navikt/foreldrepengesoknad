@@ -8,6 +8,8 @@
         "eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
         "eslint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
         "prettier:fix": "prettier --write src",
+        "test": "vitest --project=jsdom --watch=false",
+        "test:browser": "vitest --project=browser",
         "tsc": "tsc --noEmit",
         "tsc:watch": "tsc --noEmit --watch",
         "clean": "rm -rf ./dist ./node_modules ./.turbo"
@@ -32,10 +34,13 @@
     "devDependencies": {
         "@navikt/fp-config-eslint": "workspace:*",
         "@navikt/fp-config-typescript": "workspace:*",
+        "@navikt/fp-config-vite": "workspace:*",
         "@types/react": "catalog:",
         "@types/react-dom": "catalog:",
         "eslint": "catalog:",
+        "jsdom": "catalog:",
         "typescript": "catalog:",
-        "vite": "catalog:"
+        "vite": "catalog:",
+        "vitest": "catalog:"
     }
 }
