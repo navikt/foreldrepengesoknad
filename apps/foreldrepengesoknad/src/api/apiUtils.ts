@@ -12,14 +12,12 @@ import {
     Barn,
     BarnDto,
     BrukerRolle,
-    EksternArbeidsforholdDto_fpoversikt,
     EndringssøknadForeldrepengerDto,
     ForeldrepengesøknadDto,
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
     Målform,
     Oppholdsårsak,
-    SelvstendigNæringDto_fpoversikt,
     SøkerDto,
     Søkerrolle,
     UtsettelsesÅrsak,
@@ -288,7 +286,7 @@ export const mapTilEndringssøknadDto = (
     );
 
     return {
-        søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo, {}),
+        søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
         saksnummer: valgtEksisterendeSaksnr,
         rolle: konverterRolle(søkersituasjon.rolle),
         språkkode: hentValgtSpråk(),
