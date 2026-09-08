@@ -5,6 +5,7 @@ import { VERSJON_MELLOMLAGRING } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
 import { useIntl } from 'react-intl';
 
+import { SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 import { RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
 import { erLikUansettRekkefølge, erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -50,7 +51,10 @@ export const Svangerskapspengesøknad = () => {
     const mellomlagretState =
         mellomlagretInfo.data?.version === VERSJON_MELLOMLAGRING ? mellomlagretInfo.data : undefined;
 
-    if (mellomlagretState && !erLikUansettRekkefølge(mellomlagretState.søkerInfo, søkerinfo.data)) {
+    if (
+        mellomlagretState &&
+        !erLikUansettRekkefølge(normaliserSøkerInfo(mellomlagretState.søkerInfo, søkerinfo.data), søkerinfo.data)
+    ) {
         return (
             <RegisterdataUtdatert
                 slettMellomlagringOgLastSidePåNytt={slettMellomlagringOgLastSidePåNytt}
@@ -72,3 +76,12 @@ export const Svangerskapspengesøknad = () => {
         </div>
     );
 };
+
+const normaliserSøkerInfo = (
+    lagretSøkerInfo: SvpPersonopplysningerDto_fpoversikt,
+    søkerInfo: SvpPersonopplysningerDto_fpoversikt,
+): SvpPersonopplysningerDto_fpoversikt => ({
+    ...lagretSøkerInfo,
+    frilansoppdrag: lagretSøkerInfo.frilansoppdrag ?? søkerInfo.frilansoppdrag ?? [],
+    selvstendigNæring: lagretSøkerInfo.selvstendigNæring ?? søkerInfo.selvstendigNæring ?? [],
+});

@@ -1,6 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, useContextGetData } from 'appData/SvpDataContext';
-import { mineFrilansoppdragOptions, selvstendigNæringOptions } from 'appData/queries';
 import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
@@ -52,10 +50,8 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
         valgteArbeidsforhold?.includes(arbeidsforhold.arbeidsgiverId),
     );
 
-    const frilansoppdragQuery = useQuery(mineFrilansoppdragOptions());
-    const frilansoppdrag = frilansoppdragQuery.data ?? [];
-    const selvstendigNæringQuery = useQuery(selvstendigNæringOptions());
-    const selvstendigNæring = selvstendigNæringQuery.data ?? [];
+    const frilansoppdrag = søkerInfo.frilansoppdrag ?? [];
+    const selvstendigNæring = søkerInfo.selvstendigNæring ?? [];
 
     const førsteTilretteleggingId = getTilretteleggingId(
         søkerInfo.arbeidsforhold,

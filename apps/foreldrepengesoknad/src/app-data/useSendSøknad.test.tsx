@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { act, renderHook } from '@testing-library/react';
-import { API_URLS, mineFrilansoppdragOptions, selvstendigNæringOptions } from 'api/queries';
+import { API_URLS } from 'api/queries';
 import ky, { ResponsePromise } from 'ky';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
@@ -297,11 +297,14 @@ describe('useFpSendSøknad', () => {
         } as ResponsePromise<void>);
         const deleteMock = vi.spyOn(ky, 'delete').mockReturnValue(undefined as unknown as ResponsePromise<unknown>);
 
-        queryClient.setQueryData(mineFrilansoppdragOptions().queryKey, FORELAGT_FRILANSOPPDRAG);
-        queryClient.setQueryData(selvstendigNæringOptions().queryKey, FORELAGT_SELVSTENDIG_NÆRING);
+        const søkerinfo = {
+            ...DEFAULT_SØKER_INFO,
+            frilansoppdrag: FORELAGT_FRILANSOPPDRAG,
+            selvstendigNæring: FORELAGT_SELVSTENDIG_NÆRING,
+        };
 
         const erEndringssøknad = false;
-        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, erEndringssøknad, saker), {
+        const { result } = renderHook(() => useSendSøknad(søkerinfo, erEndringssøknad, saker), {
             wrapper: getWrapper(),
         });
 

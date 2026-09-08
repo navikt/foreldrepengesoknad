@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { mineFrilansoppdragOptions, selvstendigNæringOptions } from 'api/queries';
+import { søkerinfoOptions } from 'api/queries';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
@@ -26,8 +26,17 @@ const meta = {
     component: FrilansSteg,
     render: ({ gåTilNesteSide = action('button-click'), frilansoppdrag = [], ...rest }) => {
         const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-        queryClient.setQueryData(mineFrilansoppdragOptions().queryKey, frilansoppdrag);
-        queryClient.setQueryData(selvstendigNæringOptions().queryKey, []);
+        queryClient.setQueryData(søkerinfoOptions().queryKey, {
+            arbeidsforhold: [],
+            barn: [],
+            erGift: false,
+            fnr: '12345678901',
+            fødselsdato: '1990-01-01',
+            kjønn: 'K',
+            navn: { fornavn: 'Kari', etternavn: 'Nordmann' },
+            frilansoppdrag,
+            selvstendigNæring: [],
+        });
 
         return (
             <QueryClientProvider client={queryClient}>

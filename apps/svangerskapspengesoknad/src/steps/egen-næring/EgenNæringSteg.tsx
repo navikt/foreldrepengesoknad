@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
-import { selvstendigNæringOptions } from 'appData/queries';
+import { søkerinfoOptions } from 'appData/queries';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { FormattedMessage } from 'react-intl';
@@ -30,13 +30,15 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
-    const selvstendigNæringQuery = useQuery(selvstendigNæringOptions());
+    const søkerinfoQuery = useQuery(søkerinfoOptions());
+    const selvstendigNæring = søkerinfoQuery.data?.selvstendigNæring ?? [];
+    const isPending = søkerinfoQuery.isPending;
 
-    if (selvstendigNæringQuery.isPending) {
+    if (isPending) {
         return <Spinner />;
     }
 
-    const registrerteNæringer = selvstendigNæringQuery.data ?? [];
+    const registrerteNæringer = selvstendigNæring;
 
     const onSubmit = (values: NæringDto) => {
         oppdaterEgenNæring({

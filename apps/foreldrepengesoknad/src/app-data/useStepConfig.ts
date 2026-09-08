@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { selvstendigNæringOptions } from 'api/queries';
+import { søkerinfoOptions } from 'api/queries';
 import { REQUIRED_APP_STEPS, REQUIRED_APP_STEPS_ENDRINGSSØKNAD, ROUTES_ORDER, SøknadRoutes } from 'appData/routes.ts';
 import { useMemo } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
@@ -183,8 +183,9 @@ export const useStepConfig = (
 
     const location = useLocation();
     const getStateData = useContextGetAnyData();
-    const selvstendigNæringQuery = useQuery(selvstendigNæringOptions());
-    const harRegistrertNæring = (selvstendigNæringQuery.data?.length ?? 0) > 0;
+    const søkerinfoQuery = useQuery(søkerinfoOptions());
+    const selvstendigNæring = søkerinfoQuery.data?.selvstendigNæring ?? [];
+    const harRegistrertNæring = selvstendigNæring.length > 0;
 
     const currentPath = useMemo(
         // eslint-disable-next-line unicorn/no-useless-coercion

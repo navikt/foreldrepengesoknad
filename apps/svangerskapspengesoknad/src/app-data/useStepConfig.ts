@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { søkerinfoOptions } from 'appData/queries';
 import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router';
 import {
@@ -16,7 +17,6 @@ import { ProgressStep } from '@navikt/fp-ui';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './SvpDataContext';
-import { selvstendigNæringOptions } from './queries';
 import { SøknadRoute, addTilretteleggingIdToRoute } from './routes';
 
 const getStepLabels = (
@@ -247,13 +247,8 @@ export const useStepConfig = (arbeidsforhold: EksternArbeidsforholdDto_fpoversik
 
     const location = useLocation();
     const getStateData = useContextGetAnyData();
-    const selvstendigNæringQuery = useQuery(selvstendigNæringOptions());
+    const søkerinfoQuery = useQuery(søkerinfoOptions());
+    const selvstendigNæring = søkerinfoQuery.data?.selvstendigNæring ?? [];
 
-    return getStepConfig(
-        intl,
-        location.pathname,
-        arbeidsforhold,
-        getStateData,
-        (selvstendigNæringQuery.data?.length ?? 0) > 0,
-    );
+    return getStepConfig(intl, location.pathname, arbeidsforhold, getStateData, selvstendigNæring.length > 0);
 };

@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
-import { selvstendigNæringOptions } from 'appData/queries';
+import { søkerinfoOptions } from 'appData/queries';
 import { SøknadRoute } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
@@ -39,7 +39,15 @@ const meta = {
                 },
             },
         });
-        queryClient.setQueryData(selvstendigNæringOptions().queryKey, DEFAULT_SELVSTENDIG_NÆRING);
+        queryClient.setQueryData(søkerinfoOptions().queryKey, {
+            arbeidsforhold: [],
+            fnr: '12345678901',
+            fødselsdato: '1990-01-01',
+            kjønn: 'K',
+            navn: { fornavn: 'Kari', etternavn: 'Nordmann' },
+            frilansoppdrag: [],
+            selvstendigNæring: DEFAULT_SELVSTENDIG_NÆRING,
+        });
         return (
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter initialEntries={[SøknadRoute.NÆRING]}>

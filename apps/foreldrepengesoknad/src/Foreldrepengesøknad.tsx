@@ -121,7 +121,10 @@ const RegisterdataSjekk = ({
         annenPartVedtakQuery.isSuccess &&
         !erLikUansettRekkefølge(annenPartVedtakQuery.data, mellomlagretData.annenPartVedtak);
 
-    const søkerInfoErEndret = !erLikUansettRekkefølge(mellomlagretData.søkerInfo, søkerInfo);
+    const søkerInfoErEndret = !erLikUansettRekkefølge(
+        normaliserSøkerInfo(mellomlagretData.søkerInfo, søkerInfo),
+        søkerInfo,
+    );
 
     const sakerErEndret = !erLikUansettRekkefølge(
         relevanteSaker(mellomlagretData.foreldrepengerSaker),
@@ -150,6 +153,15 @@ const RegisterdataSjekk = ({
 
     return <>{children}</>;
 };
+
+const normaliserSøkerInfo = (
+    lagretSøkerInfo: FpPersonopplysningerDto_fpoversikt,
+    søkerInfo: FpPersonopplysningerDto_fpoversikt,
+): FpPersonopplysningerDto_fpoversikt => ({
+    ...lagretSøkerInfo,
+    frilansoppdrag: lagretSøkerInfo.frilansoppdrag ?? søkerInfo.frilansoppdrag ?? [],
+    selvstendigNæring: lagretSøkerInfo.selvstendigNæring ?? søkerInfo.selvstendigNæring ?? [],
+});
 
 // Samanliknar berre felt som faktisk gjer ei mellomlagra søknad ugyldig.
 // Volatile felt frå backend som ikkje seier noko om søknadsgrunnlaget er endra,

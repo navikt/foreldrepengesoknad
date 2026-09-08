@@ -1,9 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { API_URLS, selvstendigNæringOptions } from 'api/queries';
+import { søkerinfoOptions } from 'api/queries';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
-import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
@@ -109,14 +108,6 @@ type StoryArgs = {
 const meta = {
     title: 'steps/ArbeidsforholdOgInntektSteg',
     component: ArbeidsforholdOgInntektSteg,
-    parameters: {
-        msw: {
-            handlers: [
-                http.get(API_URLS.mineFrilansoppdrag, () => HttpResponse.json(DEFAULT_FRILANSOPPDRAG)),
-                http.get(API_URLS.selvstendigNæring, () => HttpResponse.json(DEFAULT_SELVSTENDIG_NÆRING)),
-            ],
-        },
-    },
     render: ({
         gåTilNesteSide = action('button-click'),
         egenNæring,
@@ -130,7 +121,17 @@ const meta = {
                 },
             },
         });
-        freshQueryClient.setQueryData(selvstendigNæringOptions().queryKey, selvstendigNæring);
+        freshQueryClient.setQueryData(søkerinfoOptions().queryKey, {
+            arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
+            barn: [],
+            erGift: false,
+            fnr: '12345678901',
+            fødselsdato: '1990-01-01',
+            kjønn: 'K',
+            navn: { fornavn: 'Kari', etternavn: 'Nordmann' },
+            frilansoppdrag: DEFAULT_FRILANSOPPDRAG,
+            selvstendigNæring,
+        });
         return (
             <QueryClientProvider client={freshQueryClient}>
                 <MemoryRouter initialEntries={[SøknadRoutes.ARBEID_OG_INNTEKT]}>

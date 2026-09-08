@@ -1,5 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
-import { mineFrilansoppdragOptions, selvstendigNæringOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
@@ -71,15 +69,12 @@ export const OppsummeringSteg = (props: Props) => {
         erEndringssøknad,
         eksisterendeSak,
     );
-    const frilansoppdragQuery = useQuery(mineFrilansoppdragOptions());
-    const selvstendigNæringQuery = useQuery(selvstendigNæringOptions());
+    const frilansoppdrag = søkerInfo.frilansoppdrag ?? [];
+    const selvstendigNæring = søkerInfo.selvstendigNæring ?? [];
 
     if (uttaksplan === undefined) {
         return <ManglendeUttaksplanSide onGåTilUttaksplan={() => navigator.goToStep(SøknadRoutes.UTTAKSPLAN)} />;
     }
-
-    const frilansoppdrag = frilansoppdragQuery.data ?? [];
-    const selvstendigNæring = selvstendigNæringQuery.data ?? [];
 
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(

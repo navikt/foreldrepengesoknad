@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
-import { mineFrilansoppdragOptions, selvstendigNæringOptions } from 'appData/queries';
+import { søkerinfoOptions } from 'appData/queries';
 import { SøknadRoute } from 'appData/routes';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
@@ -27,8 +27,9 @@ export const FrilansSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeid
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const frilansoppdragQuery = useQuery(mineFrilansoppdragOptions());
-    const selvstendigNæringQuery = useQuery(selvstendigNæringOptions());
+    const søkerinfoQuery = useQuery(søkerinfoOptions());
+    const frilansoppdrag = søkerinfoQuery.data?.frilansoppdrag ?? [];
+    const selvstendigNæring = søkerinfoQuery.data?.selvstendigNæring ?? [];
 
     const oppdaterFrilans = useContextSaveData(ContextDataType.FRILANS);
 
@@ -37,7 +38,7 @@ export const FrilansSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeid
 
         const nextRoute = skalViseEgenNæringSteg({
             harJobbetSomSelvstendigNæringsdrivende: arbeidsforholdOgInntekt.harJobbetSomSelvstendigNæringsdrivende,
-            harRegistrertNæring: (selvstendigNæringQuery.data?.length ?? 0) > 0,
+            harRegistrertNæring: selvstendigNæring.length > 0,
             egenNæring,
         })
             ? SøknadRoute.NÆRING
@@ -52,7 +53,7 @@ export const FrilansSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeid
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <FrilansPanel
                 frilans={frilans}
-                forhåndsutfyltOppstart={getForhåndsutfyltOppstart(frilansoppdragQuery.data ?? [])}
+                forhåndsutfyltOppstart={getForhåndsutfyltOppstart(frilansoppdrag)}
                 saveOnNext={onSubmit}
                 onAvsluttOgSlett={avbrytSøknad}
                 onFortsettSenere={navigator.fortsettSøknadSenere}

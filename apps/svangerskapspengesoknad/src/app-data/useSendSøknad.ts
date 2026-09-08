@@ -1,5 +1,5 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { API_URLS, mineFrilansoppdragOptions, selvstendigNæringOptions } from 'appData/queries';
+import { useMutation } from '@tanstack/react-query';
+import { API_URLS } from 'appData/queries';
 import { SøknadRoute } from 'appData/routes';
 import ky, { HTTPError } from 'ky';
 import { useMemo } from 'react';
@@ -18,7 +18,6 @@ export const useSendSøknad = (søkerinfo: SvpPersonopplysningerDto_fpoversikt) 
     const intl = useIntl();
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
-    const queryClient = useQueryClient();
 
     const { mutate: slettMellomlagring } = useMutation({
         mutationFn: () => ky.delete(API_URLS.mellomlagring),
@@ -27,8 +26,8 @@ export const useSendSøknad = (søkerinfo: SvpPersonopplysningerDto_fpoversikt) 
     const send = async () => {
         // Leses fra cachen slik at vi sender inn nøyaktig de aktivitetene søker fikk forelagt i søknadsdialogen
         const søknadForInnsending = getSøknadForInnsending(søkerinfo, hentData, {
-            frilansoppdrag: queryClient.getQueryData(mineFrilansoppdragOptions().queryKey),
-            selvstendigNæring: queryClient.getQueryData(selvstendigNæringOptions().queryKey),
+            frilansoppdrag: søkerinfo.frilansoppdrag ?? [],
+            selvstendigNæring: søkerinfo.selvstendigNæring ?? [],
         });
 
         const signal = initAbortSignal();

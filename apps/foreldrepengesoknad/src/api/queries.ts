@@ -8,16 +8,13 @@ import { annenForelderHarNorskFnr, getAnnenPartVedtakParam } from 'utils/annenFo
 import {
     AnnenPartRequest_fpoversikt,
     AnnenPartSak_fpoversikt,
-    EksternArbeidsforholdDto_fpoversikt,
     ForsendelseStatus,
     FpPersonopplysningerDto_fpoversikt,
     KontoBeregningGrunnlagDto,
     KontoBeregningResultatDto,
     MorArbeidRequest_fpoversikt,
     Saker_fpoversikt,
-    SelvstendigNæringDto_fpoversikt,
 } from '@navikt/fp-types';
-import { filtrerForelagteFrilansoppdrag } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 const urlPrefiks = import.meta.env.BASE_URL;
@@ -36,8 +33,6 @@ export const API_URLS = {
     annenPartVedtak: `${urlPrefiks}/fpoversikt/api/annenPart`,
     konto: `${urlPrefiks}/fpgrunndata/api/konto`,
     trengerDokumentereMorsArbeid: `${urlPrefiks}/fpoversikt/api/arbeid/morDokumentasjon`,
-    mineFrilansoppdrag: `${urlPrefiks}/fpoversikt/api/arbeid/mineFrilansoppdrag`,
-    selvstendigNæring: `${urlPrefiks}/fpoversikt/api/arbeid/selvstendigNaering`,
     erOppdatert: `${urlPrefiks}/fpoversikt/api/saker/erOppdatert`,
 
     mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/FORELDREPENGER`,
@@ -112,28 +107,6 @@ export const trengerDokumentereMorsArbeidOptions = (data: MorArbeidRequest_fpove
         queryKey: ['TRENGER_DOKUMENTERER_MORS_ARBEID', data],
         enabled: (data.perioder?.length ?? 0) > 0,
         queryFn: () => ky.post(API_URLS.trengerDokumentereMorsArbeid, { json: data }).json<boolean>(),
-    });
-
-export const mineFrilansoppdragOptions = () =>
-    queryOptions({
-        queryKey: ['MINE_FRILANSOPPDRAG'],
-        queryFn: async () =>
-            filtrerForelagteFrilansoppdrag(
-                await ky.get(API_URLS.mineFrilansoppdrag).json<EksternArbeidsforholdDto_fpoversikt[]>(),
-            ),
-        staleTime: Infinity,
-        // Uendelig gcTime slik at oppdragene søker fikk forelagt ligger i cachen helt fram til innsending,
-        // også når queryen er inaktiv i mer enn default gcTime (5 min) mens søker fyller ut resten av søknaden
-        gcTime: Infinity,
-    });
-
-export const selvstendigNæringOptions = () =>
-    queryOptions({
-        queryKey: ['SELVSTENDIG_NÆRING'],
-        queryFn: () => ky.get(API_URLS.selvstendigNæring).json<SelvstendigNæringDto_fpoversikt[]>(),
-        staleTime: Infinity,
-        // Se kommentar over: næringene skal ikke gc-es bort før søknaden er sendt inn
-        gcTime: Infinity,
     });
 
 export const useStønadsKontoerOptions = () => {

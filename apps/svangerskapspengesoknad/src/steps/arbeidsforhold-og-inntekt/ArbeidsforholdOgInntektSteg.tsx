@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
-import { mineFrilansoppdragOptions, selvstendigNæringOptions } from 'appData/queries';
+import { søkerinfoOptions } from 'appData/queries';
 import { SøknadRoute } from 'appData/routes';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
@@ -58,11 +58,9 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
     const oppdaterArbeidIUtlandet = useContextSaveData(ContextDataType.ARBEID_I_UTLANDET);
 
-    const selvstendigNæringQuery = useQuery(selvstendigNæringOptions());
-    const selvstendigNæring = selvstendigNæringQuery.data ?? [];
-
-    const frilansoppdragQuery = useQuery(mineFrilansoppdragOptions());
-    const frilansoppdrag = frilansoppdragQuery.data ?? [];
+    const søkerinfoQuery = useQuery(søkerinfoOptions());
+    const frilansoppdrag = søkerinfoQuery.data?.frilansoppdrag ?? [];
+    const selvstendigNæring = søkerinfoQuery.data?.selvstendigNæring ?? [];
 
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
     const andreInntektskilder: AndreInntektskilder[] =

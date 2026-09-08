@@ -2,14 +2,7 @@ import { queryOptions } from '@tanstack/react-query';
 import { SvpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import ky, { type ResponsePromise } from 'ky';
 
-import {
-    EksternArbeidsforholdDto_fpoversikt,
-    ForsendelseStatus,
-    Saker_fpoversikt,
-    SelvstendigNæringDto_fpoversikt,
-    SvpPersonopplysningerDto_fpoversikt,
-} from '@navikt/fp-types';
-import { filtrerForelagteFrilansoppdrag } from '@navikt/fp-utils';
+import { ForsendelseStatus, Saker_fpoversikt, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 
 const urlPrefiks = import.meta.env.BASE_URL;
 
@@ -25,8 +18,6 @@ export const API_URLS = {
     søkerInfo: `${urlPrefiks}/fpoversikt/api/personopplysninger/svangerskapspenger`,
     saker: `${urlPrefiks}/fpoversikt/api/saker`,
     erOppdatert: `${urlPrefiks}/fpoversikt/api/saker/erOppdatert`,
-    mineFrilansoppdrag: `${urlPrefiks}/fpoversikt/api/arbeid/mineFrilansoppdrag`,
-    selvstendigNæring: `${urlPrefiks}/fpoversikt/api/arbeid/selvstendigNaering`,
 
     status: `${urlPrefiks}/fpsoknad/api/soknad/status`,
     mellomlagring: `${urlPrefiks}/fpsoknad/api/storage/SVANGERSKAPSPENGER`,
@@ -77,26 +68,4 @@ export const statusOptions = () =>
         },
         staleTime: Infinity,
         refetchOnWindowFocus: 'always',
-    });
-
-export const mineFrilansoppdragOptions = () =>
-    queryOptions({
-        queryKey: ['MINE_FRILANSOPPDRAG'],
-        queryFn: async () =>
-            filtrerForelagteFrilansoppdrag(
-                await ky.get(API_URLS.mineFrilansoppdrag).json<EksternArbeidsforholdDto_fpoversikt[]>(),
-            ),
-        staleTime: Infinity,
-        // Uendelig gcTime slik at oppdragene søker fikk forelagt ligger i cachen helt fram til innsending,
-        // også når queryen er inaktiv i mer enn default gcTime (5 min) mens søker fyller ut resten av søknaden
-        gcTime: Infinity,
-    });
-
-export const selvstendigNæringOptions = () =>
-    queryOptions({
-        queryKey: ['SELVSTENDIG_NÆRING'],
-        queryFn: () => ky.get(API_URLS.selvstendigNæring).json<SelvstendigNæringDto_fpoversikt[]>(),
-        staleTime: Infinity,
-        // Se kommentar over: næringene skal ikke gc-es bort før søknaden er sendt inn
-        gcTime: Infinity,
     });

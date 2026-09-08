@@ -188,10 +188,12 @@ export type FpPersonopplysningerDto_fpoversikt = {
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     barn: FpBarnDto_fpoversikt[];
     erGift: boolean;
+    frilansoppdrag?: EksternArbeidsforholdDto_fpoversikt[];
     fnr: string;
     fødselsdato: string;
     kjønn: Kjønn_fpoversikt;
     navn: Navn_fpoversikt;
+    selvstendigNæring?: SelvstendigNæringDto_fpoversikt[];
 };
 
 export type AnnenForelderDto_fpoversikt = {
@@ -228,10 +230,12 @@ export type OversiktBarnDto_fpoversikt = {
 
 export type SvpPersonopplysningerDto_fpoversikt = {
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    frilansoppdrag?: EksternArbeidsforholdDto_fpoversikt[];
     fnr: string;
     fødselsdato: string;
     kjønn: Kjønn_fpoversikt;
     navn: Navn_fpoversikt;
+    selvstendigNæring?: SelvstendigNæringDto_fpoversikt[];
 };
 
 export type AnnenPartRequest_fpoversikt = {

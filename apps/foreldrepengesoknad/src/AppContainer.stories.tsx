@@ -21,6 +21,22 @@ const søkerinfo = {
     fødselsdato: '1991-09-06',
     barn: [],
     erGift: false,
+    frilansoppdrag: [
+        {
+            arbeidsgiverId: '888777666',
+            arbeidsgiverIdType: 'orgnr',
+            arbeidsgiverNavn: 'Frilans Oppdrag AS',
+            fom: '2024-01-15',
+            stillingsprosent: 0,
+        },
+    ],
+    selvstendigNæring: [
+        {
+            organisasjonsnummer: '991122334',
+            navn: 'Mitt Konsulentfirma AS',
+            næringstype: 'ANNEN',
+        },
+    ],
     arbeidsforhold: [
         {
             arbeidsgiverId: '896929119',
@@ -41,24 +57,6 @@ const søkerinfoKvinne = {
     },
 } satisfies FpPersonopplysningerDto_fpoversikt;
 
-const selvstendigNæring = [
-    {
-        organisasjonsnummer: '991122334',
-        navn: 'Mitt Konsulentfirma AS',
-        næringstype: 'ANNEN',
-    },
-];
-
-const mineFrilansoppdrag = [
-    {
-        arbeidsgiverId: '888777666',
-        arbeidsgiverIdType: 'orgnr',
-        arbeidsgiverNavn: 'Frilans Oppdrag AS',
-        fom: '2024-01-15T00:00:00.000Z',
-        stillingsprosent: 0,
-    },
-];
-
 const meta = {
     component: AppContainer,
 
@@ -66,8 +64,6 @@ const meta = {
         msw.use(
             http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
             http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-            http.get(API_URLS.mineFrilansoppdrag, () => HttpResponse.json(mineFrilansoppdrag)),
-            http.get(API_URLS.selvstendigNæring, () => HttpResponse.json(selvstendigNæring)),
             http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
             http.post(API_URLS.konto, () => HttpResponse.json({ 80: stønadskvoter, 100: stønadskvoter })),
             http.get(API_URLS.sendSøknad, () => HttpResponse.json(kvittering)),
@@ -98,8 +94,6 @@ export const SøkerErKvinne: Story = {
         msw.use(
             http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfoKvinne)),
             http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-            http.get(API_URLS.mineFrilansoppdrag, () => HttpResponse.json(mineFrilansoppdrag)),
-            http.get(API_URLS.selvstendigNæring, () => HttpResponse.json(selvstendigNæring)),
             http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
             http.post(API_URLS.konto, () => HttpResponse.json({ 80: stønadskvoter, 100: stønadskvoter })),
             http.get(API_URLS.sendSøknad, () => HttpResponse.json(kvittering)),
