@@ -1,4 +1,4 @@
-import { AnnenInntektDto, CountryCode } from '@navikt/fp-types';
+import { AnnenInntektDto } from '@navikt/fp-types';
 
 export type AnnenInntektType = 'ETTERLØNN_SLUTTPAKKE' | 'MILITÆR_ELLER_SIVILTJENESTE' | 'JOBB_I_UTLANDET';
 
@@ -23,7 +23,7 @@ export interface MilitærtjenesteInntektUtkast {
 export interface JobbIUtlandetInntektUtkast {
     type: 'JOBB_I_UTLANDET';
     arbeidsgiverNavn?: string;
-    land?: CountryCode;
+    land?: string;
     fom?: string;
     pågående?: boolean;
     tom?: string;
