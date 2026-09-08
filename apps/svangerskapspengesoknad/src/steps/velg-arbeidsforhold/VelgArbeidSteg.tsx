@@ -24,12 +24,18 @@ type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    harRegistrertNæring: boolean;
 };
 
-export const VelgArbeidSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
+export const VelgArbeidSteg = ({
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+    arbeidsforhold,
+    harRegistrertNæring,
+}: Props) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(arbeidsforhold);
-    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
+    const stepConfig = useStepConfig(arbeidsforhold, harRegistrertNæring);
+    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold, harRegistrertNæring);
     const { fjernTilrettelegginger } = useTilretteleggingerHelper();
 
     const valgteArbeidsforhold = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD);

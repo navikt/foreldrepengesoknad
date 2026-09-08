@@ -1,5 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
-import { søkerinfoOptions } from 'appData/queries';
 import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router';
 import {
@@ -173,6 +171,10 @@ const getStepConfig = (
         steps.push(createStep(SøknadRoute.NÆRING, intl, currentPath));
     }
 
+    if (arbeidsforholdOgInntekt?.harHattArbeidIUtlandet) {
+        steps.push(createStep(SøknadRoute.ARBEID_I_UTLANDET, intl, currentPath));
+    }
+
     const harKunEttArbeid = barn?.termindato
         ? søkerHarKunEtAktivtArbeid(
               barn.termindato,
@@ -242,13 +244,14 @@ const getStepConfig = (
     return steps;
 };
 
-export const useStepConfig = (arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[]): Array<ProgressStep<string>> => {
+export const useStepConfig = (
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
+    harRegistrertNæring: boolean,
+): Array<ProgressStep<string>> => {
     const intl = useIntl();
 
     const location = useLocation();
     const getStateData = useContextGetAnyData();
-    const søkerinfoQuery = useQuery(søkerinfoOptions());
-    const selvstendigNæring = søkerinfoQuery.data?.selvstendigNæring ?? [];
 
-    return getStepConfig(intl, location.pathname, arbeidsforhold, getStateData, selvstendigNæring.length > 0);
+    return getStepConfig(intl, location.pathname, arbeidsforhold, getStateData, harRegistrertNæring);
 };

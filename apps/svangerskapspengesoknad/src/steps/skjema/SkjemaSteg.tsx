@@ -41,6 +41,7 @@ interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    harRegistrertNæring: boolean;
     maxAntallVedlegg?: number;
 }
 
@@ -48,11 +49,12 @@ export const SkjemaSteg = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
     arbeidsforhold,
+    harRegistrertNæring,
     maxAntallVedlegg = MAX_ANTALL_VEDLEGG,
 }: Props) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(arbeidsforhold);
-    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
+    const stepConfig = useStepConfig(arbeidsforhold, harRegistrertNæring);
+    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold, harRegistrertNæring);
 
     const params = useParams<RouteParams>();
     const tilretteleggingId = notEmpty(params.tilretteleggingId);

@@ -9,8 +9,9 @@ import { useStepConfig } from './useStepConfig';
 export const useSvpNavigator = (
     mellomlagreOgNaviger: MellomlagreSøknadFn,
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
+    harRegistrertNæring: boolean,
 ) => {
-    const stepConfig = useStepConfig(arbeidsforhold);
+    const stepConfig = useStepConfig(arbeidsforhold, harRegistrertNæring);
     const oppdaterPath = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const goToPreviousDefaultStep = () => {

@@ -100,6 +100,7 @@ export const ForArbeidsforhold: Story = {
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: () => action('button-click'),
         arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
+        harRegistrertNæring: false,
         valgtTilretteleggingId: VALGT_TILRETTELEGGING_ID,
     },
 };

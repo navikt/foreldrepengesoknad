@@ -44,8 +44,6 @@ type Props = {
 };
 
 export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
-    const stepConfig = useStepConfig(arbeidsforhold);
-    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
     const { fjernTilrettelegginger } = useTilretteleggingerHelper();
 
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
@@ -60,6 +58,9 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
     const søkerinfoQuery = useQuery(søkerinfoOptions());
     const frilansoppdrag = søkerinfoQuery.data?.frilansoppdrag ?? [];
     const selvstendigNæring = søkerinfoQuery.data?.selvstendigNæring ?? [];
+
+    const stepConfig = useStepConfig(arbeidsforhold, selvstendigNæring.length > 0);
+    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold, selvstendigNæring.length > 0);
 
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
     const andreInntektskilder: AndreInntektskilder[] =

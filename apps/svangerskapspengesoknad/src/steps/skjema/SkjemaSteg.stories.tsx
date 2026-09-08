@@ -113,6 +113,7 @@ export const SkalIkkeFeileOpplasting: Story = {
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: () => action('button-click'),
         arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
+        harRegistrertNæring: false,
         maxAntallVedlegg: 40,
         valgtTilretteleggingId: ARBEIDSGIVER_ID,
         arbeidsforholdOgInntekt: {

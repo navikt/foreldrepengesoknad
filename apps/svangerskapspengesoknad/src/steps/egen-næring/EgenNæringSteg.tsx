@@ -22,15 +22,19 @@ type Props = {
 };
 
 export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
-    const stepConfig = useStepConfig(arbeidsforhold);
-    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
-
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
     const søkerinfoQuery = useQuery(søkerinfoOptions());
+
+    const stepConfig = useStepConfig(arbeidsforhold, (søkerinfoQuery.data?.selvstendigNæring.length ?? 0) > 0);
+    const navigator = useSvpNavigator(
+        mellomlagreSøknadOgNaviger,
+        arbeidsforhold,
+        (søkerinfoQuery.data?.selvstendigNæring.length ?? 0) > 0,
+    );
 
     if (!søkerinfoQuery.data) {
         return <Spinner />;

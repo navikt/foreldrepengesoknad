@@ -34,6 +34,7 @@ type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    harRegistrertNæring: boolean;
 };
 
 const DEFAULT_FERIE_VALUES = {
@@ -46,11 +47,11 @@ type FerieFormData = {
     feriePerioder: Array<Partial<AvtaltFerieDto>>;
 };
 
-export function FerieSteg({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) {
+export function FerieSteg({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold, harRegistrertNæring }: Props) {
     const intl = useIntl();
     const params = useParams<RouteParams>();
-    const stepConfig = useStepConfig(arbeidsforhold);
-    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
+    const stepConfig = useStepConfig(arbeidsforhold, harRegistrertNæring);
+    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold, harRegistrertNæring);
     const arbeidsgiverId = notEmpty(params.tilretteleggingId);
     const valgteArbeidsforhold = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
     const oppdaterFerie = useContextSaveData(ContextDataType.FERIE);

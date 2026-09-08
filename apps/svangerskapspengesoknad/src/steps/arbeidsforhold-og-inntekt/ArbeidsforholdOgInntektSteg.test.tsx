@@ -9,6 +9,11 @@ import * as stories from './ArbeidsforholdOgInntektSteg.stories';
 const { Default, MedFrilansoppdrag } = composeStories(stories);
 
 describe('<ArbeidsforholdOgInntektSteg>', () => {
+    beforeEach(() => {
+        // jsdom implementerer ikke scrollIntoView, og komponenten kaller denne når ny inntektskilde legges til.
+        HTMLElement.prototype.scrollIntoView = vi.fn();
+    });
+
     const egenNæringFraInntektsstepper = {
         navnPåNæringen: 'Fiskebåten',
         næringstype: 'FISKE',
@@ -39,7 +44,7 @@ describe('<ArbeidsforholdOgInntektSteg>', () => {
 
         await userEvent.click(screen.getByRole('radio', { name: 'Jobb i utlandet' }));
         await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
-        await userEvent.selectOptions(screen.getByLabelText('Hvilket land har du jobbet i?'), 'SE');
+        await userEvent.selectOptions(screen.getByLabelText('Hvilket land har du jobbet i?'), 'SWE');
         await userEvent.type(screen.getByLabelText('Hva er navnet på arbeidsgiveren?'), 'Svensk arbeidsgiver');
         await userEvent.click(
             within(screen.getByRole('radiogroup', { name: 'Jobber du der nå?' })).getByRole('radio', {
@@ -55,7 +60,7 @@ describe('<ArbeidsforholdOgInntektSteg>', () => {
                     {
                         arbeidsgiverNavn: 'Svensk arbeidsgiver',
                         fom: '2024-01-01',
-                        land: 'SE',
+                        land: 'SWE',
                         pågående: true,
                         tom: undefined,
                         type: 'JOBB_I_UTLANDET',
