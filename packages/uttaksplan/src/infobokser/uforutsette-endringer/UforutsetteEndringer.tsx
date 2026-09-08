@@ -65,40 +65,39 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
 
             <ExpansionCard.Content>
                 <VStack gap="space-20">
-                        {erFødsel ? (
-                            <>
-                                {!erFarOgFarKunMedfarHarRett && <FødtFørUke33 />}
-                            
-                                <HvisDuBlirSyk />
+                    {erFødsel ? (
+                        <>
+                            {!erFarOgFarKunMedfarHarRett && <FødtFørUke33 />}
 
-                                {erMorDelAvSøknaden && <HvisMorBlirSyk />}
-                                {((erAleneforsørger && !erMorDelAvSøknaden) ||
-                                    erFarOgFar ||
-                                    kunFarEllerMedmorHarRett) && <HvisBarnetErInnlagt />}
-                                {fødtFørUke33 &&
-                                    ((beggeHarRett && !erFarOgFar) ||
-                                        kunMorHarRett ||
-                                        (erAleneforsørger && erMorDelAvSøknaden)) && (
-                                        <>
-                                            <HvisBarnetErPrematurInnlagtFørTermin />
-                                            <HvisBarnetErPrematurInnlagtEtterTermin />
-                                        </>
-                                    )}
-                                {!fødtFørUke33 &&
-                                    ((beggeHarRett && !erFarOgFar) ||
-                                        kunMorHarRett ||
-                                        (erAleneforsørger && erMorDelAvSøknaden)) && <HvisBarnetErInnlagt />}
+                            <HvisDuBlirSyk />
 
-                                <NyttBarnFørTreÅr />
-                            </>
-                        ) : (
-                            <>
-                                <HvisDuBlirSyk />
+                            {erMorDelAvSøknaden && <HvisMorBlirSyk />}
+                            {((erAleneforsørger && !erMorDelAvSøknaden) || erFarOgFar || kunFarEllerMedmorHarRett) && (
                                 <HvisBarnetErInnlagt />
-                                <NyttBarnFørTreÅr />
-                            </>
-                        )}
+                            )}
+                            {fødtFørUke33 &&
+                                ((beggeHarRett && !erFarOgFar) ||
+                                    kunMorHarRett ||
+                                    (erAleneforsørger && erMorDelAvSøknaden)) && (
+                                    <>
+                                        <HvisBarnetErPrematurInnlagtFørTermin />
+                                        <HvisBarnetErPrematurInnlagtEtterTermin />
+                                    </>
+                                )}
+                            {!fødtFørUke33 &&
+                                ((beggeHarRett && !erFarOgFar) ||
+                                    kunMorHarRett ||
+                                    (erAleneforsørger && erMorDelAvSøknaden)) && <HvisBarnetErInnlagt />}
 
+                            <NyttBarnFørTreÅr />
+                        </>
+                    ) : (
+                        <>
+                            <HvisDuBlirSyk />
+                            <HvisBarnetErInnlagt />
+                            <NyttBarnFørTreÅr />
+                        </>
+                    )}
                 </VStack>
             </ExpansionCard.Content>
         </ExpansionCard>

@@ -81,6 +81,7 @@ describe('<UforutsetteEndringer>', () => {
         expect(screen.getByText('Hvis et barn er innlagt på sykehus før termindato')).toBeInTheDocument();
         expect(screen.getByText('Hvis et barn er innlagt på sykehus etter termindato')).toBeInTheDocument();
         expect(screen.queryByText('Hvis barnet er innlagt på sykehus')).not.toBeInTheDocument();
+        expect(screen.getByText(/Har dere pleiepenger i stedet for foreldrepenger/)).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
 

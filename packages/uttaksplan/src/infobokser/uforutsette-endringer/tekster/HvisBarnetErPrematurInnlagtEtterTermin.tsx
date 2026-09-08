@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
 import { IconCircleWrapper } from '@navikt/fp-ui';
+
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 
 export const HvisBarnetErPrematurInnlagtEtterTermin = () => {
