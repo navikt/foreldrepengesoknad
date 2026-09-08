@@ -27,19 +27,7 @@ export const useSendSøknad = (
     });
 
     const send = async () => {
-        // Leses fra cachen slik at vi sender inn nøyaktig de aktivitetene søker fikk forelagt i søknadsdialogen
-        const forelagteAktiviteter = {
-            frilansoppdrag: søkerinfo.frilansoppdrag,
-            selvstendigNæring: søkerinfo.selvstendigNæring,
-        };
-
-        const cleanedSøknad = getSøknadsdataForInnsending(
-            erEndringssøknad,
-            hentData,
-            søkerinfo,
-            foreldrepengerSaker,
-            forelagteAktiviteter,
-        );
+        const cleanedSøknad = getSøknadsdataForInnsending(erEndringssøknad, hentData, søkerinfo, foreldrepengerSaker);
 
         const abortSignal = initAbortSignal();
 

@@ -14,7 +14,6 @@ import {
     Frilans,
     Målform,
     NæringDto,
-    SelvstendigNæringDto_fpoversikt,
     SvangerskapspengesøknadDto,
     SvpPersonopplysningerDto_fpoversikt,
     TilretteleggingbehovDto,
@@ -82,18 +81,9 @@ const finnVedlegg = (
     return mappedVedlegg.flat();
 };
 
-/**
-Aktivitetene vi hentet fra register og forela søker i søknadsdialogen. Sendes med kun for å dokumenteres i PDF-en.
-*/
-type ForelagteAktiviteter = {
-    frilansoppdrag?: EksternArbeidsforholdDto_fpoversikt[];
-    selvstendigNæring?: SelvstendigNæringDto_fpoversikt[];
-};
-
 export const getSøknadForInnsending = (
     søkerinfo: SvpPersonopplysningerDto_fpoversikt,
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
-    { frilansoppdrag = [], selvstendigNæring = [] }: ForelagteAktiviteter = {},
 ): SvangerskapspengesøknadDto => {
     const senereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const tidligereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
@@ -117,12 +107,12 @@ export const getSøknadForInnsending = (
                 tom: af.tom,
             })),
             // Oppdragsgiver kan være en privatperson, så arbeidsgiverId sendes ikke med (ville vært et fødselsnummer)
-            frilansoppdrag: frilansoppdrag.map((fo) => ({
+            frilansoppdrag: søkerinfo.frilansoppdrag.map((fo) => ({
                 navn: fo.arbeidsgiverNavn,
                 fom: fo.fom,
                 tom: fo.tom,
             })),
-            selvstendigNæring: selvstendigNæring.map((sn) => ({
+            selvstendigNæring: søkerinfo.selvstendigNæring.map((sn) => ({
                 navn: sn.navn,
                 organisasjonsnummer: sn.organisasjonsnummer,
                 næringstype: sn.næringstype,

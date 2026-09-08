@@ -177,7 +177,6 @@ export const getSøknadsdataForInnsending = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     søkerinfo: FpPersonopplysningerDto_fpoversikt,
     foreldrepengerSaker: FpSak_fpoversikt[],
-    forelagteAktiviteter: ForelagteAktiviteter = {},
 ): ForeldrepengesøknadDto | EndringssøknadForeldrepengerDto => {
     const valgtEksisterendeSaksnr = hentData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
 
@@ -185,15 +184,12 @@ export const getSøknadsdataForInnsending = (
         throw new Error('Finner ikke valgt sak for endringssøknad');
     }
 
-    return erEndringssøknad
-        ? mapTilEndringssøknadDto(hentData, søkerinfo)
-        : mapTilSøknadDto(hentData, søkerinfo, forelagteAktiviteter);
+    return erEndringssøknad ? mapTilEndringssøknadDto(hentData, søkerinfo) : mapTilSøknadDto(hentData, søkerinfo);
 };
 
 export const mapTilSøknadDto = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     søkerinfo: FpPersonopplysningerDto_fpoversikt,
-    forelagteAktiviteter: ForelagteAktiviteter = {},
 ): ForeldrepengesøknadDto => {
     const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
@@ -212,7 +208,7 @@ export const mapTilSøknadDto = (
     const søkersPerioder = filtrerUtAnnenPartsPerioder(uttaksplan, søkersituasjon.rolle);
 
     return {
-        søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo, forelagteAktiviteter),
+        søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
         rolle: konverterRolle(søkersituasjon.rolle),
         språkkode: hentValgtSpråk(),
         frilans: frilans,
@@ -230,18 +226,7 @@ export const mapTilSøknadDto = (
     };
 };
 
-/**
-Aktivitetene vi hentet fra register og forela søker i søknadsdialogen. Sendes med kun for å dokumenteres i PDF-en.
-*/
-type ForelagteAktiviteter = {
-    frilansoppdrag?: EksternArbeidsforholdDto_fpoversikt[];
-    selvstendigNæring?: SelvstendigNæringDto_fpoversikt[];
-};
-
-const mapSøkerInfoTilSøknadDto = (
-    søkerinfo: FpPersonopplysningerDto_fpoversikt,
-    { frilansoppdrag = [], selvstendigNæring = [] }: ForelagteAktiviteter,
-): SøkerDto => {
+const mapSøkerInfoTilSøknadDto = (søkerinfo: FpPersonopplysningerDto_fpoversikt): SøkerDto => {
     return {
         fnr: søkerinfo.fnr,
         navn: søkerinfo.navn,
@@ -253,12 +238,12 @@ const mapSøkerInfoTilSøknadDto = (
             tom: af.tom,
         })),
         // Oppdragsgiver kan være en privatperson, så arbeidsgiverId sendes ikke med (ville vært et fødselsnummer)
-        frilansoppdrag: frilansoppdrag.map((fo) => ({
+        frilansoppdrag: søkerinfo.frilansoppdrag.map((fo) => ({
             navn: fo.arbeidsgiverNavn,
             fom: fo.fom,
             tom: fo.tom,
         })),
-        selvstendigNæring: selvstendigNæring.map((sn) => ({
+        selvstendigNæring: søkerinfo.selvstendigNæring.map((sn) => ({
             navn: sn.navn,
             organisasjonsnummer: sn.organisasjonsnummer,
             næringstype: sn.næringstype,
