@@ -33,8 +33,12 @@ import { Oppgaver } from '../../sections/oppgaver/Oppgaver';
 import { Tidslinje } from '../../sections/tidslinje/Tidslinje.tsx';
 import { TidslinjeSkeleton } from '../../sections/tidslinje/TidslinjeSkeleton.tsx';
 import { getNavnPåForeldre } from '../../utils/personUtils';
-import { getNavnAnnenForelder } from '../../utils/sakerUtils';
-import { getRelevantNyTidslinjehendelse } from '../../utils/tidslinjeUtils.ts';
+import { getBarnGrupperingFraSak, getNavnAnnenForelder } from '../../utils/sakerUtils';
+import {
+    finnesDetFremtidigeTidslinjehendelser,
+    getAlleTidslinjehendelser,
+    getRelevantNyTidslinjehendelse,
+} from '../../utils/tidslinjeUtils.ts';
 import { BeregningLenkePanel } from '../beregning-page/BeregningLenkePanel.tsx';
 import { InntektsmeldingLenkePanel } from '../inntektsmelding-page/InntektsmeldingLenkePanel';
 
@@ -124,6 +128,21 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
 
     const harMinstEttArbeidsforhold = søkerinfo.harArbeidsforhold;
 
+    // "Dette skjer i saken" er misvisende når tidslinjen kun består av hendelser tilbake i tid, f.eks. for
+    // saker med dødt barn der vi ikke viser den fremtidige "barnet fyller 3 år"-hendelsen. Vi kan aldri vite
+    // om en avsluttet sak er endelig avsluttet (søker kan gjenåpne den), så vi baserer valget av tittel på om
+    // tidslinjen faktisk inneholder fremtidige hendelser, ikke på sakAvsluttet-status alene.
+    const barnFraSak = getBarnGrupperingFraSak(gjeldendeSak, søkerinfo.barn ?? []);
+    const alleTidslinjeHendelser = getAlleTidslinjehendelser({
+        tidslinjeHendelserBackend: tidslinjeHendelserQuery.data ?? [],
+        sak: gjeldendeSak,
+        barnFraSak,
+        intl,
+    });
+    const tidslinjeHeading = finnesDetFremtidigeTidslinjehendelser(alleTidslinjeHendelser)
+        ? intl.formatMessage({ id: 'saksoversikt.tidslinje' })
+        : intl.formatMessage({ id: 'saksoversikt.tidslinje.harSkjedd' });
+
     return (
         <VStack gap="space-16">
             {visBekreftelsePåSendtSøknad && (
@@ -140,7 +159,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
             <Oppgaver saksnummer={gjeldendeSak.saksnummer} />
             <VStack gap="space-4">
                 <ContentSection
-                    heading={intl.formatMessage({ id: 'saksoversikt.tidslinje' })}
+                    heading={tidslinjeHeading}
                     showSkeleton={tidslinjeHendelserQuery.isPending || manglendeVedleggQuery.isPending}
                     skeleton={<TidslinjeSkeleton ytelse={gjeldendeSak.ytelse} />}
                     className="mb-2"
