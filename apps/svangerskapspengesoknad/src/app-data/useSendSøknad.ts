@@ -26,8 +26,8 @@ export const useSendSøknad = (søkerinfo: SvpPersonopplysningerDto_fpoversikt) 
     const send = async () => {
         // Leses fra cachen slik at vi sender inn nøyaktig de aktivitetene søker fikk forelagt i søknadsdialogen
         const søknadForInnsending = getSøknadForInnsending(søkerinfo, hentData, {
-            frilansoppdrag: søkerinfo.frilansoppdrag ?? [],
-            selvstendigNæring: søkerinfo.selvstendigNæring ?? [],
+            frilansoppdrag: søkerinfo.frilansoppdrag,
+            selvstendigNæring: søkerinfo.selvstendigNæring,
         });
 
         const signal = initAbortSignal();

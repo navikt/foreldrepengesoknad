@@ -69,8 +69,7 @@ export const OppsummeringSteg = (props: Props) => {
         erEndringssøknad,
         eksisterendeSak,
     );
-    const frilansoppdrag = søkerInfo.frilansoppdrag ?? [];
-    const selvstendigNæring = søkerInfo.selvstendigNæring ?? [];
+    const { frilansoppdrag, selvstendigNæring } = søkerInfo;
 
     if (uttaksplan === undefined) {
         return <ManglendeUttaksplanSide onGåTilUttaksplan={() => navigator.goToStep(SøknadRoutes.UTTAKSPLAN)} />;

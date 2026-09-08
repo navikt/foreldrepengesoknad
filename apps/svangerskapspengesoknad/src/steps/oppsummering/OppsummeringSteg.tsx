@@ -50,8 +50,7 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
         valgteArbeidsforhold?.includes(arbeidsforhold.arbeidsgiverId),
     );
 
-    const frilansoppdrag = søkerInfo.frilansoppdrag ?? [];
-    const selvstendigNæring = søkerInfo.selvstendigNæring ?? [];
+    const { frilansoppdrag, selvstendigNæring } = søkerInfo;
 
     const førsteTilretteleggingId = getTilretteleggingId(
         søkerInfo.arbeidsforhold,
