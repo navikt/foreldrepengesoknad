@@ -37,7 +37,7 @@ export const periodFormat = (fom: string, tom: string | undefined, intl: IntlSha
 };
 
 /** Månedsnavn må hentes via intl.formatDate, ikke dayjs().format('MMMM'), siden dayjs-locale er global og
- * mutable — den følger ikke nødvendigvis intl-locale til appen (se periodUtils.test.ts). */
+ * mutable — den følger ikke nødvendigvis intl-locale til appen. */
 export const formatMånedÅr = (date: string | Date, intl: IntlShape): string =>
     intl.formatDate(date, { month: 'long', year: 'numeric' });
 
