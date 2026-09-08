@@ -85,6 +85,7 @@ describe('ikkeDeltUttak - Fødsel - Mor', () => {
             famDato,
             erFarEllerMedmor: false,
             tilgjengeligeStønadskvoter: [foreldrepenger, foreldrepengerFørFødsel],
+            startdato: '2022-07-18',
             erMorUfør: false,
             bareFarMedmorHarRett: false,
             erAleneOmOmsorg: false,
@@ -119,6 +120,49 @@ describe('ikkeDeltUttak - Fødsel - Mor', () => {
         expect(forslag[0]!.forelder).toEqual('MOR');
         expect(forslag[0]!.fom).toEqual('2022-08-08');
         expect(forslag[0]!.tom).toEqual('2022-11-18');
+    });
+
+    it('skal bruke valgt startdato (annen dato) før fødsel til FPFF-perioden, ikke fast 3 uker før fødsel', () => {
+        const valgtStartdato = '2022-07-25';
+        const forslag = ikkeDeltUttak({
+            situasjon: 'fødsel',
+            famDato,
+            erFarEllerMedmor: false,
+            tilgjengeligeStønadskvoter: [foreldrepenger, foreldrepengerFørFødsel],
+            startdato: valgtStartdato,
+            erMorUfør: false,
+            bareFarMedmorHarRett: false,
+            erAleneOmOmsorg: false,
+            farOgFar: false,
+        });
+
+        expect(forslag.length).toEqual(2);
+        expect(forslag[0]!.kontoType).toEqual('FORELDREPENGER_FØR_FØDSEL');
+        expect(forslag[0]!.fom).toEqual(valgtStartdato);
+        expect(forslag[0]!.tom).toEqual('2022-08-05');
+        expect(forslag[1]!.kontoType).toEqual('FORELDREPENGER');
+        expect(forslag[1]!.fom).toEqual('2022-08-08');
+        expect(forslag[1]!.tom).toEqual('2022-11-18');
+    });
+
+    it('skal bruke valgt startdato (annen dato) etter fødsel uten FPFF-periode', () => {
+        const valgtStartdato = '2022-08-22';
+        const forslag = ikkeDeltUttak({
+            situasjon: 'fødsel',
+            famDato,
+            erFarEllerMedmor: false,
+            tilgjengeligeStønadskvoter: [foreldrepenger, foreldrepengerFørFødsel],
+            startdato: valgtStartdato,
+            erMorUfør: false,
+            bareFarMedmorHarRett: false,
+            erAleneOmOmsorg: false,
+            farOgFar: false,
+        });
+
+        expect(forslag.length).toEqual(1);
+        expect(forslag[0]!.kontoType).toEqual('FORELDREPENGER');
+        expect(forslag[0]!.forelder).toEqual('MOR');
+        expect(forslag[0]!.fom).toEqual(valgtStartdato);
     });
 });
 
