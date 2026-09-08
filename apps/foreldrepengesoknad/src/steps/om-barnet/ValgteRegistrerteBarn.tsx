@@ -7,13 +7,13 @@ import { RegistrertePersonalia } from 'pages/registrerte-personalia/RegistrerteP
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { formaterFødselsdatoerPåBarn, getTittelBarnNårNavnSkalIkkeVises } from 'utils/barnUtils';
-import { erFødtFørUke33, getAntallVirkedagerFraFødselTilTermin, getVarighetString } from 'utils/dateUtils';
+import { getVarighetString } from 'utils/dateUtils';
 
 import { Alert, BodyShort, Heading, Label, ReadMore, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { FpBarnDto_fpoversikt } from '@navikt/fp-types';
-import { sorterPersonEtterEldstOgNavn } from '@navikt/fp-utils';
+import { erFødtFørUke33, getAntallVirkedagerFraFødselTilTermin, sorterPersonEtterEldstOgNavn } from '@navikt/fp-utils';
 import { isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { BarnetFormValues } from './OmBarnetFormValues';

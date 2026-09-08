@@ -9,11 +9,12 @@ import {
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getTermindato } from 'utils/barnUtils';
-import { andreAugust2022ReglerGjelder, erFødtFørUke33, førsteOktober2021ReglerGjelder } from 'utils/dateUtils';
+import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from 'utils/dateUtils';
 
 import { BodyShort, ExpansionCard, VStack } from '@navikt/ds-react';
 
 import { loggUmamiEvent } from '@navikt/fp-observability';
+import { erFødtFørUke33 } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import styles from './fordeling-påvirkninger.module.css';

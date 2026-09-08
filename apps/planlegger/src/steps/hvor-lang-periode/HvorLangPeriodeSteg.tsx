@@ -157,9 +157,11 @@ export const HvorLangPeriodeSteg = ({ stønadskvoter }: Props) => {
                                                 id="HvorLangPeriodeSteg.Infoboks.ManFårEnDel"
                                                 values={{
                                                     a: (msg) => (
+                                                        // To fedre har ikke mor i søknaden, så lenken skal peke til
+                                                        // "Far og far har rett"-seksjonen, ikke aktivitetskrav-til-mor-ankeret.
                                                         <Link
                                                             inlineText
-                                                            href={links.godkjentAktivitet}
+                                                            href={links.foreldrepengerFarOgFar}
                                                             rel="noreferrer"
                                                             target="_blank"
                                                         >
