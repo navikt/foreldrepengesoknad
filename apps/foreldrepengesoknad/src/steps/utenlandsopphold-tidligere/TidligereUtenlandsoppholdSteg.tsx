@@ -22,8 +22,12 @@ export const TidligereUtenlandsoppholdSteg = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
 }: Props) => {
-    const stepConfig = useStepConfig(arbeidsforhold, harRegistrertNæring);
-    const navigator = useFpNavigator(arbeidsforhold, harRegistrertNæring, mellomlagreSøknadOgNaviger);
+    const stepConfig = useStepConfig({ arbeidsforhold, harRegistrertNæring });
+    const navigator = useFpNavigator({
+        arbeidsforhold,
+        harRegistrertNæring,
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
+    });
 
     const utenlandsopphold = notEmpty(useContextGetData(ContextDataType.UTENLANDSOPPHOLD));
     const tidligereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);

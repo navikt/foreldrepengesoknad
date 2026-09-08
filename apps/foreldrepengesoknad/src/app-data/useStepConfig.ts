@@ -171,12 +171,19 @@ const skalViseFordelingSteg = (
     return true;
 };
 
-export const useStepConfig = (
-    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
-    harRegistrertNæring: boolean,
-    erEndringssøknad: boolean = false,
-    eksisterendeSak?: FpSak_fpoversikt,
-) => {
+interface UseStepConfigParams {
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    harRegistrertNæring: boolean;
+    erEndringssøknad?: boolean;
+    eksisterendeSak?: FpSak_fpoversikt;
+}
+
+export const useStepConfig = ({
+    arbeidsforhold,
+    harRegistrertNæring,
+    erEndringssøknad = false,
+    eksisterendeSak,
+}: UseStepConfigParams) => {
     const intl = useIntl();
     const pathToLabelMap = useMemo(() => getPathToLabelMap(intl), [intl]);
 

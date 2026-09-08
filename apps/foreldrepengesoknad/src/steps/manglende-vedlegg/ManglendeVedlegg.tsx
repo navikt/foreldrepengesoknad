@@ -89,15 +89,20 @@ export const ManglendeVedlegg = ({
 
     const eksisterendeSak = foreldrepengerSaker?.find((sak) => sak.saksnummer === eksisterendeSaksnummer);
 
-    const navigator = useFpNavigator(
-        søkerInfo.arbeidsforhold,
-        søkerInfo.selvstendigNæring.length > 0,
-        mellomlagreSøknadOgNaviger,
+    const navigator = useFpNavigator({
+        arbeidsforhold: søkerInfo.arbeidsforhold,
+        harRegistrertNæring: søkerInfo.selvstendigNæring.length > 0,
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
         erEndringssøknad,
         eksisterendeSak,
-    );
+    });
 
-    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad, eksisterendeSak);
+    const stepConfig = useStepConfig({
+        arbeidsforhold: søkerInfo.arbeidsforhold,
+        harRegistrertNæring: søkerInfo.selvstendigNæring.length > 0,
+        erEndringssøknad,
+        eksisterendeSak,
+    });
 
     const erFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const perioderSomManglerVedlegg = perioderSomKreverVedlegg(

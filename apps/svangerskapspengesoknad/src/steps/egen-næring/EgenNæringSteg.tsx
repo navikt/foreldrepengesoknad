@@ -29,12 +29,13 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
     const søkerinfoQuery = useQuery(søkerinfoOptions());
 
-    const stepConfig = useStepConfig(arbeidsforhold, (søkerinfoQuery.data?.selvstendigNæring.length ?? 0) > 0);
-    const navigator = useSvpNavigator(
-        mellomlagreSøknadOgNaviger,
+    const harRegistrertNæring = (søkerinfoQuery.data?.selvstendigNæring.length ?? 0) > 0;
+    const stepConfig = useStepConfig({ arbeidsforhold, harRegistrertNæring });
+    const navigator = useSvpNavigator({
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
         arbeidsforhold,
-        (søkerinfoQuery.data?.selvstendigNæring.length ?? 0) > 0,
-    );
+        harRegistrertNæring,
+    });
 
     if (!søkerinfoQuery.data) {
         return <Spinner />;

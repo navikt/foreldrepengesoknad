@@ -99,8 +99,12 @@ export const TilretteleggingSteg = ({
     harRegistrertNæring,
 }: Props) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(arbeidsforhold, harRegistrertNæring);
-    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold, harRegistrertNæring);
+    const stepConfig = useStepConfig({ arbeidsforhold, harRegistrertNæring });
+    const navigator = useSvpNavigator({
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
+        arbeidsforhold,
+        harRegistrertNæring,
+    });
 
     const params = useParams<RouteParams>();
     const valgtTilretteleggingId = notEmpty(params.tilretteleggingId);

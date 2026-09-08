@@ -244,10 +244,15 @@ const getStepConfig = (
     return steps;
 };
 
-export const useStepConfig = (
-    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
-    harRegistrertNæring: boolean,
-): Array<ProgressStep<string>> => {
+interface UseStepConfigParams {
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    harRegistrertNæring: boolean;
+}
+
+export const useStepConfig = ({
+    arbeidsforhold,
+    harRegistrertNæring,
+}: UseStepConfigParams): Array<ProgressStep<string>> => {
     const intl = useIntl();
 
     const location = useLocation();

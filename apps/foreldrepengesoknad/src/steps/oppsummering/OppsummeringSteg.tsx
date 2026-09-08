@@ -62,19 +62,20 @@ export const OppsummeringSteg = (props: Props) => {
         [eksisterendeSaksnummer, foreldrepengerSaker],
     );
 
-    const stepConfig = useStepConfig(
-        søkerInfo.arbeidsforhold,
-        søkerInfo.selvstendigNæring.length > 0,
+    const harRegistrertNæring = søkerInfo.selvstendigNæring.length > 0;
+    const stepConfig = useStepConfig({
+        arbeidsforhold: søkerInfo.arbeidsforhold,
+        harRegistrertNæring,
         erEndringssøknad,
         eksisterendeSak,
-    );
-    const navigator = useFpNavigator(
-        søkerInfo.arbeidsforhold,
-        søkerInfo.selvstendigNæring.length > 0,
-        mellomlagreSøknadOgNaviger,
+    });
+    const navigator = useFpNavigator({
+        arbeidsforhold: søkerInfo.arbeidsforhold,
+        harRegistrertNæring,
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
         erEndringssøknad,
         eksisterendeSak,
-    );
+    });
     const { frilansoppdrag, selvstendigNæring } = søkerInfo;
 
     if (uttaksplan === undefined) {

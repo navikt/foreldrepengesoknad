@@ -30,8 +30,13 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
     const frilansoppdrag = søkerinfoQuery.data?.frilansoppdrag ?? [];
     const selvstendigNæring = søkerinfoQuery.data?.selvstendigNæring ?? [];
 
-    const stepConfig = useStepConfig(arbeidsforhold, selvstendigNæring.length > 0);
-    const navigator = useFpNavigator(arbeidsforhold, selvstendigNæring.length > 0, mellomlagreSøknadOgNaviger);
+    const harRegistrertNæring = selvstendigNæring.length > 0;
+    const stepConfig = useStepConfig({ arbeidsforhold, harRegistrertNæring });
+    const navigator = useFpNavigator({
+        arbeidsforhold,
+        harRegistrertNæring,
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
+    });
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));

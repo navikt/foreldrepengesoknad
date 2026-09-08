@@ -29,8 +29,12 @@ export const ArbeidIUtlandetSteg = ({
     harRegistrertNæring,
 }: Props) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(arbeidsforhold, harRegistrertNæring);
-    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold, harRegistrertNæring);
+    const stepConfig = useStepConfig({ arbeidsforhold, harRegistrertNæring });
+    const navigator = useSvpNavigator({
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
+        arbeidsforhold,
+        harRegistrertNæring,
+    });
 
     const arbeidIUtlandet = useContextGetData(ContextDataType.ARBEID_I_UTLANDET);
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));

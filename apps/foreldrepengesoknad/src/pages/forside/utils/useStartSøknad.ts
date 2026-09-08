@@ -46,11 +46,11 @@ export const useStartSøknad = ({
     mellomlagreSøknadOgNaviger,
 }: Args) => {
     const intl = useIntl();
-    const navigator = useFpNavigator(
-        søkerInfo.arbeidsforhold,
-        søkerInfo.selvstendigNæring.length > 0,
-        mellomlagreSøknadOgNaviger,
-    );
+    const navigator = useFpNavigator({
+        arbeidsforhold: søkerInfo.arbeidsforhold,
+        harRegistrertNæring: søkerInfo.selvstendigNæring.length > 0,
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
+    });
     const oppdaterDataIState = useContextSaveAnyData();
     const { oppdaterSøknadIState } = useSetSøknadsdata();
 

@@ -33,12 +33,13 @@ type Props = {
 };
 
 export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }: Props) => {
-    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, søkerInfo.selvstendigNæring.length > 0);
-    const navigator = useSvpNavigator(
-        mellomlagreSøknadOgNaviger,
-        søkerInfo.arbeidsforhold,
-        søkerInfo.selvstendigNæring.length > 0,
-    );
+    const harRegistrertNæring = søkerInfo.selvstendigNæring.length > 0;
+    const stepConfig = useStepConfig({ arbeidsforhold: søkerInfo.arbeidsforhold, harRegistrertNæring });
+    const navigator = useSvpNavigator({
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
+        arbeidsforhold: søkerInfo.arbeidsforhold,
+        harRegistrertNæring,
+    });
 
     const tilretteleggingerVedlegg = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER_VEDLEGG));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));

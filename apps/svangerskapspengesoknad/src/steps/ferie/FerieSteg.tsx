@@ -50,8 +50,12 @@ type FerieFormData = {
 export function FerieSteg({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold, harRegistrertNæring }: Props) {
     const intl = useIntl();
     const params = useParams<RouteParams>();
-    const stepConfig = useStepConfig(arbeidsforhold, harRegistrertNæring);
-    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold, harRegistrertNæring);
+    const stepConfig = useStepConfig({ arbeidsforhold, harRegistrertNæring });
+    const navigator = useSvpNavigator({
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
+        arbeidsforhold,
+        harRegistrertNæring,
+    });
     const arbeidsgiverId = notEmpty(params.tilretteleggingId);
     const valgteArbeidsforhold = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
     const oppdaterFerie = useContextSaveData(ContextDataType.FERIE);

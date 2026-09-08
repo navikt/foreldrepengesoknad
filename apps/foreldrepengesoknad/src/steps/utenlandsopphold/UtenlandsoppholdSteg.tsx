@@ -31,8 +31,12 @@ export const UtenlandsoppholdSteg = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
 }: Props) => {
-    const stepConfig = useStepConfig(arbeidsforhold, harRegistrertNæring);
-    const navigator = useFpNavigator(arbeidsforhold, harRegistrertNæring, mellomlagreSøknadOgNaviger);
+    const stepConfig = useStepConfig({ arbeidsforhold, harRegistrertNæring });
+    const navigator = useFpNavigator({
+        arbeidsforhold,
+        harRegistrertNæring,
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
+    });
 
     const utenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD);
     const oppdaterUtenlandsopphold = useContextSaveData(ContextDataType.UTENLANDSOPPHOLD);

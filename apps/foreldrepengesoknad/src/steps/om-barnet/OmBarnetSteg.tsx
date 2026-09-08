@@ -112,12 +112,15 @@ const OmBarnetStegInner = ({
 }: Props & { termindato?: string }) => {
     const intl = useIntl();
 
-    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, søkerInfo.selvstendigNæring.length > 0);
-    const navigator = useFpNavigator(
-        søkerInfo.arbeidsforhold,
-        søkerInfo.selvstendigNæring.length > 0,
-        mellomlagreSøknadOgNaviger,
-    );
+    const stepConfig = useStepConfig({
+        arbeidsforhold: søkerInfo.arbeidsforhold,
+        harRegistrertNæring: søkerInfo.selvstendigNæring.length > 0,
+    });
+    const navigator = useFpNavigator({
+        arbeidsforhold: søkerInfo.arbeidsforhold,
+        harRegistrertNæring: søkerInfo.selvstendigNæring.length > 0,
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
+    });
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const omBarnet = useContextGetData(ContextDataType.OM_BARNET);

@@ -23,8 +23,13 @@ export const FrilansSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeid
     const frilansoppdrag = søkerinfoQuery.data?.frilansoppdrag ?? [];
     const selvstendigNæring = søkerinfoQuery.data?.selvstendigNæring ?? [];
 
-    const stepConfig = useStepConfig(arbeidsforhold, selvstendigNæring.length > 0);
-    const navigator = useFpNavigator(arbeidsforhold, selvstendigNæring.length > 0, mellomlagreSøknadOgNaviger);
+    const harRegistrertNæring = selvstendigNæring.length > 0;
+    const stepConfig = useStepConfig({ arbeidsforhold, harRegistrertNæring });
+    const navigator = useFpNavigator({
+        arbeidsforhold,
+        harRegistrertNæring,
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
+    });
 
     const frilans = useContextGetData(ContextDataType.FRILANS);
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
