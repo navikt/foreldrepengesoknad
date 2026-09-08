@@ -68,6 +68,11 @@ export const ValgtDekningsgradInfoboks = ({
         valgtDekningsgrad === '100' ? uttaksdata100.sluttdatoPeriode2 : uttaksdata80.sluttdatoPeriode2;
 
     const erFarOgFarFødsel = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && !erAdopsjon;
+    const erFarOgFarAdopsjon = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && erAdopsjon;
+
+    // To fedre har ikke mor i søknaden, så lenken skal peke til "Far og far har rett"-seksjonen,
+    // ikke aktivitetskrav-til-mor-ankeret.
+    const aktivitetskravLenke = erFarOgFarAdopsjon ? links.foreldrepengerFarOgFar : links.godkjentAktivitet;
 
     return (
         <Infobox
@@ -134,9 +139,7 @@ export const ValgtDekningsgradInfoboks = ({
                 </BodyShort>
             </VStack>
             {((hvemHarRett === 'kunSøker2HarRett' && !erFarOgFarFødsel) ||
-                (hvemHarRett === 'kunSøker1HarRett' &&
-                    hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR &&
-                    erAdopsjon)) && (
+                (hvemHarRett === 'kunSøker1HarRett' && erFarOgFarAdopsjon)) && (
                 <VStack gap="space-8">
                     <BodyShort>
                         <FormattedMessage
@@ -161,7 +164,7 @@ export const ValgtDekningsgradInfoboks = ({
                                 uker2: antallUkerOgDager.uker,
                                 dager2: antallUkerOgDager.dager,
                                 a: (msg) => (
-                                    <Link inlineText href={links.godkjentAktivitet} rel="noreferrer" target="_blank">
+                                    <Link inlineText href={aktivitetskravLenke} rel="noreferrer" target="_blank">
                                         {msg}
                                     </Link>
                                 ),
