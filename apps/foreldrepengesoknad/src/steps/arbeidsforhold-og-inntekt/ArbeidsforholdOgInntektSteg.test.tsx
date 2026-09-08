@@ -6,7 +6,7 @@ import { SøknadRoutes } from 'appData/routes';
 
 import * as stories from './ArbeidsforholdOgInntektSteg.stories';
 
-const { Default, BrukerKanSøkeVedKunNeiSvar } = composeStories(stories);
+const { Default, IngenAktiveArbeidsforhold } = composeStories(stories);
 
 describe('<ArbeidsforholdOgInntektSteg>', () => {
     const egenNæringFraInntektsstepper = {
@@ -17,7 +17,7 @@ describe('<ArbeidsforholdOgInntektSteg>', () => {
         organisasjonsnummer: '998877665',
     } as const;
 
-    it('skal gå til neste steg når informasjon er korrekt', async () => {
+    it('skal gå til neste steg med harJobbetSomFrilans og harJobbetSomSelvstendigNæringsdrivende utleda fra registerdata', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -26,58 +26,35 @@ describe('<ArbeidsforholdOgInntektSteg>', () => {
         });
 
         expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
-        expect(await screen.findByText('Arbeid som selvstendig næringsdrivende')).toBeInTheDocument();
-
-        await userEvent.click(screen.getAllByText('Nei')[0]!);
-
-        await userEvent.click(screen.getAllByText('Nei')[1]!);
 
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                harJobbetSomFrilans: false,
-                harJobbetSomSelvstendigNæringsdrivende: false,
+                harJobbetSomFrilans: true,
+                harJobbetSomSelvstendigNæringsdrivende: true,
             },
             key: ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT,
             type: 'update',
         });
+        // Siden Default-historien har frilansoppdrag og selvstendig næring skal brukeren
+        // videre til Frilans-steget, ikke rett til neste steg i standardrekkefølgen.
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: undefined,
-            key: ContextDataType.FRILANS,
-            type: 'update',
-        });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
-            data: undefined,
-            key: ContextDataType.EGEN_NÆRING,
+            data: SøknadRoutes.FRILANS,
+            key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce();
     });
 
-    it('skal gi valideringsmelding når inputs ikke er utfylt', async () => {
-        await Default.run();
-
-        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Neste steg'));
-
-        expect(screen.getAllByText('Du må oppgi om du har arbeidet som frilanser de siste 4 ukene.')).toHaveLength(2);
-        expect(
-            screen.getAllByText('Du må oppgi om du har hatt inntekt som selvstendig næringsdrivende de siste 4 ukene.'),
-        ).toHaveLength(2);
-    });
-
-    it('skal ikke kunne søke når det er ingen aktive arbeidsforhold og en svarer nei på frilans og selvstendig næringsdrivende', async () => {
-        await BrukerKanSøkeVedKunNeiSvar.run();
+    it('skal fortsatt kunne søke selv om det verken finnes arbeidsforhold, frilansoppdrag eller registrert næring (FP blokkerer ikke, kun SVP gjør det)', async () => {
+        await IngenAktiveArbeidsforhold.run({
+            args: { ...IngenAktiveArbeidsforhold.args, frilansoppdrag: [], selvstendigNæring: [] },
+        });
 
         expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
 
         expect(screen.getByText('Du er ikke registrert med noen arbeidsforhold.')).toBeInTheDocument();
-
-        await userEvent.click(screen.getAllByText('Nei')[0]!);
-
-        await userEvent.click(screen.getAllByText('Nei')[1]!);
 
         expect(screen.queryByText('Du kan dessverre ikke gå videre i søknaden.')).not.toBeInTheDocument();
 

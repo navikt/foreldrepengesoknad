@@ -14,16 +14,23 @@ import { isRequired } from '@navikt/fp-validation';
 
 type Props = {
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    harRegistrertNæring: boolean;
     kjønn: 'M' | 'K' | 'U';
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
-export const SøkersituasjonSteg = ({ arbeidsforhold, kjønn, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
+export const SøkersituasjonSteg = ({
+    arbeidsforhold,
+    harRegistrertNæring,
+    kjønn,
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+}: Props) => {
     const intl = useIntl();
 
-    const stepConfig = useStepConfig(arbeidsforhold);
-    const navigator = useFpNavigator(arbeidsforhold, mellomlagreSøknadOgNaviger);
+    const stepConfig = useStepConfig(arbeidsforhold, harRegistrertNæring);
+    const navigator = useFpNavigator(arbeidsforhold, harRegistrertNæring, mellomlagreSøknadOgNaviger);
 
     const søkersituasjon = useContextGetData(ContextDataType.SØKERSITUASJON);
     const oppdaterSøkersituasjon = useContextSaveData(ContextDataType.SØKERSITUASJON);

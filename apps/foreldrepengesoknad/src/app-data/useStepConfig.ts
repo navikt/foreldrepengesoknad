@@ -1,5 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
-import { søkerinfoOptions } from 'api/queries';
 import { REQUIRED_APP_STEPS, REQUIRED_APP_STEPS_ENDRINGSSØKNAD, ROUTES_ORDER, SøknadRoutes } from 'appData/routes.ts';
 import { useMemo } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
@@ -175,6 +173,7 @@ const skalViseFordelingSteg = (
 
 export const useStepConfig = (
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
+    harRegistrertNæring: boolean,
     erEndringssøknad: boolean = false,
     eksisterendeSak?: FpSak_fpoversikt,
 ) => {
@@ -183,9 +182,6 @@ export const useStepConfig = (
 
     const location = useLocation();
     const getStateData = useContextGetAnyData();
-    const søkerinfoQuery = useQuery(søkerinfoOptions());
-    const selvstendigNæring = søkerinfoQuery.data?.selvstendigNæring ?? [];
-    const harRegistrertNæring = selvstendigNæring.length > 0;
 
     const currentPath = useMemo(
         // eslint-disable-next-line unicorn/no-useless-coercion

@@ -102,6 +102,7 @@ const promiseAction = () => () => {
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
     egenNæring?: NæringDto;
+    frilansoppdrag?: EksternArbeidsforholdDto_fpoversikt[];
     selvstendigNæring?: SelvstendigNæringDto_fpoversikt[];
 } & ComponentProps<typeof ArbeidsforholdOgInntektSteg>;
 
@@ -111,6 +112,7 @@ const meta = {
     render: ({
         gåTilNesteSide = action('button-click'),
         egenNæring,
+        frilansoppdrag = DEFAULT_FRILANSOPPDRAG,
         selvstendigNæring = DEFAULT_SELVSTENDIG_NÆRING,
         ...rest
     }) => {
@@ -129,7 +131,7 @@ const meta = {
             fødselsdato: '1990-01-01',
             kjønn: 'K',
             navn: { fornavn: 'Kari', etternavn: 'Nordmann' },
-            frilansoppdrag: DEFAULT_FRILANSOPPDRAG,
+            frilansoppdrag,
             selvstendigNæring,
         });
         return (
@@ -171,7 +173,7 @@ export const Default: Story = {
     },
 };
 
-export const BrukerKanSøkeVedKunNeiSvar: Story = {
+export const IngenAktiveArbeidsforhold: Story = {
     args: {
         ...Default.args,
         arbeidsforhold: [],

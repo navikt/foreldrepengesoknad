@@ -43,8 +43,12 @@ type Props = {
 export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
     const intl = useIntl();
 
-    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold);
-    const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger);
+    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, søkerInfo.selvstendigNæring.length > 0);
+    const navigator = useFpNavigator(
+        søkerInfo.arbeidsforhold,
+        søkerInfo.selvstendigNæring.length > 0,
+        mellomlagreSøknadOgNaviger,
+    );
 
     const { rolle } = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));

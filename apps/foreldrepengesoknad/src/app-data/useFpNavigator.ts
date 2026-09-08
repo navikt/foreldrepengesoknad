@@ -10,11 +10,12 @@ import { useStepConfig } from './useStepConfig';
 
 export const useFpNavigator = (
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
+    harRegistrertNæring: boolean,
     mellomlagreOgNaviger: MellomlagreSøknadFn,
     erEndringssøknad = false,
     eksisterendeSak?: FpSak_fpoversikt,
 ) => {
-    const stepConfig = useStepConfig(arbeidsforhold, erEndringssøknad, eksisterendeSak);
+    const stepConfig = useStepConfig(arbeidsforhold, harRegistrertNæring, erEndringssøknad, eksisterendeSak);
     const oppdaterPath = useContextSaveData(ContextDataType.APP_ROUTE);
 
     // Vi kan ikkje rekne ut next/previous path synkront frå closure-fanga `stepConfig`,

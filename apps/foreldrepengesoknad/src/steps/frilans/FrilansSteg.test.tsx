@@ -41,13 +41,13 @@ describe('<FrilansSteg>', () => {
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
         expect(await screen.findByText('Når startet du som frilanser?')).toBeInTheDocument();
-        expect(screen.getByText('Jobber du fortsatt som frilanser?')).toBeInTheDocument();
+        expect(screen.getByText('Er du fortsatt frilanser?')).toBeInTheDocument();
 
         const frilansStartdatoInput = screen.getByLabelText('Når startet du som frilanser?');
         await userEvent.type(frilansStartdatoInput, dayjs('2023-12-30').format('DD.MM.YYYY'));
         await userEvent.tab();
 
-        expect(screen.getByText('Jobber du fortsatt som frilanser?')).toBeInTheDocument();
+        expect(screen.getByText('Er du fortsatt frilanser?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
         await userEvent.click(screen.getByText('Neste steg'));
 

@@ -62,9 +62,15 @@ export const OppsummeringSteg = (props: Props) => {
         [eksisterendeSaksnummer, foreldrepengerSaker],
     );
 
-    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad, eksisterendeSak);
+    const stepConfig = useStepConfig(
+        søkerInfo.arbeidsforhold,
+        søkerInfo.selvstendigNæring.length > 0,
+        erEndringssøknad,
+        eksisterendeSak,
+    );
     const navigator = useFpNavigator(
         søkerInfo.arbeidsforhold,
+        søkerInfo.selvstendigNæring.length > 0,
         mellomlagreSøknadOgNaviger,
         erEndringssøknad,
         eksisterendeSak,

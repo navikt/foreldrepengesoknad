@@ -100,6 +100,7 @@ const uttaksperiode = {
 
 const fellesProps = {
     arbeidsforhold: [],
+    harRegistrertNæring: false,
     mellomlagreSøknadOgNaviger: promiseAction(),
     avbrytSøknad: action('button-click'),
 };

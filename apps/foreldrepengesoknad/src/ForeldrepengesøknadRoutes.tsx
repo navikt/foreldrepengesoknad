@@ -112,6 +112,7 @@ const renderSøknadRoutes = ({
                 element={
                     <SøkersituasjonSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
+                        harRegistrertNæring={søkerInfo.selvstendigNæring.length > 0}
                         kjønn={søkerInfo.kjønn}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
@@ -144,6 +145,7 @@ const renderSøknadRoutes = ({
                 element={
                     <PeriodeMedForeldrepengerSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
+                        harRegistrertNæring={søkerInfo.selvstendigNæring.length > 0}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -189,6 +191,7 @@ const renderSøknadRoutes = ({
                 element={
                     <UtenlandsoppholdSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
+                        harRegistrertNæring={søkerInfo.selvstendigNæring.length > 0}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -199,6 +202,7 @@ const renderSøknadRoutes = ({
                 element={
                     <TidligereUtenlandsoppholdSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
+                        harRegistrertNæring={søkerInfo.selvstendigNæring.length > 0}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -209,6 +213,7 @@ const renderSøknadRoutes = ({
                 element={
                     <SenereUtenlandsoppholdSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
+                        harRegistrertNæring={søkerInfo.selvstendigNæring.length > 0}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />

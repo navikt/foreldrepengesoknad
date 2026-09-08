@@ -21,22 +21,11 @@ const søkerinfo = {
     fødselsdato: '1991-09-06',
     barn: [],
     erGift: false,
-    frilansoppdrag: [
-        {
-            arbeidsgiverId: '888777666',
-            arbeidsgiverIdType: 'orgnr',
-            arbeidsgiverNavn: 'Frilans Oppdrag AS',
-            fom: '2024-01-15',
-            stillingsprosent: 0,
-        },
-    ],
-    selvstendigNæring: [
-        {
-            organisasjonsnummer: '991122334',
-            navn: 'Mitt Konsulentfirma AS',
-            næringstype: 'ANNEN',
-        },
-    ],
+    // Tom liste med hensikt: disse testene går "raskeste vei" gjennom søknaden og skal derfor
+    // hoppe over Frilans- og EgenNæring-steget (som kun vises når brukeren har registrerte
+    // frilansoppdrag/selvstendig næring).
+    frilansoppdrag: [],
+    selvstendigNæring: [],
     arbeidsforhold: [
         {
             arbeidsgiverId: '896929119',

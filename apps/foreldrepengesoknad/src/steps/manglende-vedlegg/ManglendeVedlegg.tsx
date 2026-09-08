@@ -91,6 +91,7 @@ export const ManglendeVedlegg = ({
 
     const navigator = useFpNavigator(
         søkerInfo.arbeidsforhold,
+        søkerInfo.selvstendigNæring.length > 0,
         mellomlagreSøknadOgNaviger,
         erEndringssøknad,
         eksisterendeSak,

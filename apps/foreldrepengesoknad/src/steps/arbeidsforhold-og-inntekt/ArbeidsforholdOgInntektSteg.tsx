@@ -26,17 +26,17 @@ type Props = {
 };
 
 export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
-    const stepConfig = useStepConfig(arbeidsforhold);
-    const navigator = useFpNavigator(arbeidsforhold, mellomlagreSøknadOgNaviger);
+    const søkerinfoQuery = useQuery(søkerinfoOptions());
+    const frilansoppdrag = søkerinfoQuery.data?.frilansoppdrag ?? [];
+    const selvstendigNæring = søkerinfoQuery.data?.selvstendigNæring ?? [];
+
+    const stepConfig = useStepConfig(arbeidsforhold, selvstendigNæring.length > 0);
+    const navigator = useFpNavigator(arbeidsforhold, selvstendigNæring.length > 0, mellomlagreSøknadOgNaviger);
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const andreInntektskilder = useContextGetData(ContextDataType.ANDRE_INNTEKTSKILDER) ?? [];
-
-    const søkerinfoQuery = useQuery(søkerinfoOptions());
-    const frilansoppdrag = søkerinfoQuery.data?.frilansoppdrag ?? [];
-    const selvstendigNæring = søkerinfoQuery.data?.selvstendigNæring ?? [];
 
     const oppdaterArbeidsforholdOgInntekt = useContextSaveData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const oppdaterFrilans = useContextSaveData(ContextDataType.FRILANS);

@@ -49,8 +49,8 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
         void import('steps/uttaksplan/UttaksplanSteg');
     }, []);
 
-    const stepConfig = useStepConfig(arbeidsforhold);
-    const navigator = useFpNavigator(arbeidsforhold, mellomlagreSøknadOgNaviger);
+    const stepConfig = useStepConfig(arbeidsforhold, person.selvstendigNæring.length > 0);
+    const navigator = useFpNavigator(arbeidsforhold, person.selvstendigNæring.length > 0, mellomlagreSøknadOgNaviger);
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
