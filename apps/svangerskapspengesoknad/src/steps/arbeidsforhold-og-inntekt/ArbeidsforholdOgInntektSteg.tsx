@@ -48,7 +48,6 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
     const { fjernTilrettelegginger } = useTilretteleggingerHelper();
 
-    const arbeidsforholdOgInntekt = useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const arbeidIUtlandet = useContextGetData(ContextDataType.ARBEID_I_UTLANDET);
     const { termindato } = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
@@ -140,7 +139,6 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
                 selvstendigNæring={selvstendigNæring}
                 egenNæring={egenNæring}
                 andreInntektskilder={andreInntektskilder}
-                arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                 saveOnNext={onSubmit}
                 saveAndreInntektskilder={lagreAndreInntektskilder}
                 saveEgenNæring={oppdaterEgenNæring}

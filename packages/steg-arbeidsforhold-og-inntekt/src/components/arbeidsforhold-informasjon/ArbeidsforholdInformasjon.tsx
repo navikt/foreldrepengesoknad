@@ -29,7 +29,6 @@ interface Props {
     andreInntektskilder: AndreInntektskilder[];
     onRemoveAndreInntekt: (index: number) => void;
     onRemoveEgenNæring: () => void;
-    visManglerInfo?: boolean;
     appOrigin: AppName;
 }
 

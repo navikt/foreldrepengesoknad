@@ -39,8 +39,16 @@ const grupperFrilansoppdrag = (frilansoppdrag: EksternArbeidsforholdDto_fpoversi
         }
 
         gruppe.antallOppdrag += 1;
-        gruppe.fom = oppdrag.fom < gruppe.fom ? oppdrag.fom : gruppe.fom;
-        gruppe.tom = gruppe.tom && oppdrag.tom ? (oppdrag.tom > gruppe.tom ? oppdrag.tom : gruppe.tom) : undefined;
+
+        if (oppdrag.fom < gruppe.fom) {
+            gruppe.fom = oppdrag.fom;
+        }
+
+        if (gruppe.tom === undefined || oppdrag.tom === undefined) {
+            gruppe.tom = undefined;
+        } else if (oppdrag.tom > gruppe.tom) {
+            gruppe.tom = oppdrag.tom;
+        }
     }
 
     return [...grupper.values()];

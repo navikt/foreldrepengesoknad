@@ -22,7 +22,6 @@ import { InfoOmFørstegangstjeneste } from './components/info-om-førstegangstje
 import { AndreInntektskilder, AndreInntektskilderUtkast, erFerdigUtfylt } from './types/AndreInntektskilder';
 
 interface Props<TYPE> {
-    arbeidsforholdOgInntekt?: ArbeidsforholdOgInntekt;
     aktiveArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     frilansoppdrag: EksternArbeidsforholdDto_fpoversikt[];
     selvstendigNæring: SelvstendigNæringDto_fpoversikt[];

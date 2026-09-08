@@ -72,6 +72,8 @@ const DEFAULT_SØKER_INFO = {
         etternavn: 'Oravakangas',
         fornavn: 'Erlinga-Mask',
     },
+    frilansoppdrag: [],
+    selvstendigNæring: [],
 } satisfies SvpPersonopplysningerDto_fpoversikt;
 
 const BARNET = {
