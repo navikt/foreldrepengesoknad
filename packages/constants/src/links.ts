@@ -42,7 +42,7 @@ export const links = {
     fleksibeltuttak: 'https://www.nav.no/foreldrepenger#samtidig',
     farskapsportal: 'https://farskapsportal.nav.no/',
     barnehageloven: 'https://lovdata.no/nav/lov/2005-06-17-64/kapIV/%C2%A716',
-    godkjentAktivitet: 'https://www.nav.no/foreldrepenger#hvor-lenge',
+    godkjentAktivitet: 'https://www.nav.no/foreldrepenger#aktivitetskrav',
     søknadForeldrepenger: 'https://www.nav.no/start/soknad-foreldrepenger',
     søknadEngangsstønad: 'https://www.nav.no/start/soknad-engangsstonad',
     grunnbeløpet: 'https://www.nav.no/grunnbelopet',

@@ -72,8 +72,9 @@ export {
 
 export { Uttaksdagen, erUttaksdag } from './src/uttak/Uttaksdagen';
 export { Uttaksperioden } from './src/uttak/Uttaksperioden';
+export { erFødtFørUke33, getAntallVirkedagerFraFødselTilTermin } from './src/uttak/prematurUtils';
 export { Tidsperioden } from './src/Tidsperioden';
 export * from './src/cookieUtils';
-export { periodFormat } from './src/periodUtils';
+export { formatMånedÅr, periodFormat } from './src/periodUtils';
 export { vedleggNedlastingsnavn } from './src/vedleggUtils';
 export { barnehagestartDato, beregnBarnehagestartDato } from './src/barnehagestartUtils';

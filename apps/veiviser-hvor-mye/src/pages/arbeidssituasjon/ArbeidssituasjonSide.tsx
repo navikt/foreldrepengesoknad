@@ -12,7 +12,7 @@ import { links } from '@navikt/fp-constants';
 import { RhfCheckbox, RhfForm, RhfFormattertTallTextField } from '@navikt/fp-form-hooks';
 import { Satser } from '@navikt/fp-types';
 import { BluePanel, Infobox, VeiviserPage } from '@navikt/fp-ui';
-import { capitalizeFirstLetter, formatCurrencyWithKr, useScrollBehaviour } from '@navikt/fp-utils';
+import { capitalizeFirstLetter, formatCurrencyWithKr, formatMånedÅr, useScrollBehaviour } from '@navikt/fp-utils';
 import { isValidNumber, isValidNumberForm } from '@navikt/fp-validation';
 
 import { HarIkkeRettTilFpInfobox } from '../felles/HarIkkeRettTilFpInfobox';
@@ -175,7 +175,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                                 name="lønnMåned1"
                                                 control={formMethods.control}
                                                 label={capitalizeFirstLetter(
-                                                    forrigeMåned.subtract(2, 'month').format('MMMM YYYY'),
+                                                    formatMånedÅr(forrigeMåned.subtract(2, 'month').toDate(), intl),
                                                 )}
                                                 className="w-[300px]"
                                                 validate={[
@@ -188,7 +188,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                                 name="lønnMåned2"
                                                 control={formMethods.control}
                                                 label={capitalizeFirstLetter(
-                                                    forrigeMåned.subtract(1, 'month').format('MMMM YYYY'),
+                                                    formatMånedÅr(forrigeMåned.subtract(1, 'month').toDate(), intl),
                                                 )}
                                                 className="w-[300px]"
                                                 validate={[
@@ -200,7 +200,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                             <RhfFormattertTallTextField
                                                 name="lønnMåned3"
                                                 control={formMethods.control}
-                                                label={capitalizeFirstLetter(forrigeMåned.format('MMMM YYYY'))}
+                                                label={capitalizeFirstLetter(formatMånedÅr(forrigeMåned.toDate(), intl))}
                                                 className="w-[300px]"
                                                 validate={[
                                                     isValidNumberForm(
