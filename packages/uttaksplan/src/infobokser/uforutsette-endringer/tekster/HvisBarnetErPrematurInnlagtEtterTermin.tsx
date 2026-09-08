@@ -4,8 +4,15 @@ import { FormattedMessage } from 'react-intl';
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
 import { IconCircleWrapper } from '@navikt/fp-ui';
+import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 
 export const HvisBarnetErPrematurInnlagtEtterTermin = () => {
+    const {
+        foreldreInfo: { rettighetType },
+    } = useUttaksplanData();
+
+    const erAleneforsørger = rettighetType !== 'BEGGE_RETT';
+
     return (
         <HStack gap="space-20" wrap={false}>
             <div>
@@ -24,7 +31,10 @@ export const HvisBarnetErPrematurInnlagtEtterTermin = () => {
                     <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.PrematurBarnInnlagtEtterTermin" />
                 </Heading>
                 <BodyLong>
-                    <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.PrematurBarnInnlagtEtterTermin.Tekst" />
+                    <FormattedMessage
+                        id="UforutsetteEndringer.UforutsetteEndringer.PrematurBarnInnlagtEtterTermin.Tekst"
+                        values={{ erAleneforsørger }}
+                    />
                 </BodyLong>
             </div>
         </HStack>

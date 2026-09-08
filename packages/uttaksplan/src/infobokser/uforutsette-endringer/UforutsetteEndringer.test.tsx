@@ -7,6 +7,7 @@ const {
     AdopsjonMorOgFarBeggeHarRett,
     AdopsjonMorOgFarKunMorHarRett,
     FødselMorOgFarKunFarHarRett,
+    FødselMorOgFarPrematur,
     FødselFarAleneomsorg,
     FødselFarOgFarBeggeHarRett,
     FødselFarOgFarKunFarHarRett,
@@ -69,6 +70,17 @@ describe('<UforutsetteEndringer>', () => {
         expect(screen.queryByText('Hvis et barn er sykt etter de første seks ukene')).not.toBeInTheDocument();
         expect(screen.getByText('Hvis barnet er innlagt på sykehus')).toBeInTheDocument();
         expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
+        expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
+    });
+
+    it('mor og far fødsel hvor barnet er født prematurt', async () => {
+        render(<FødselMorOgFarPrematur />);
+
+        expect(await screen.findByText('Uforutsette endringer')).toBeInTheDocument();
+        expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
+        expect(screen.getByText('Hvis et barn er innlagt på sykehus før termindato')).toBeInTheDocument();
+        expect(screen.getByText('Hvis et barn er innlagt på sykehus etter termindato')).toBeInTheDocument();
+        expect(screen.queryByText('Hvis barnet er innlagt på sykehus')).not.toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
 

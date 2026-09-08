@@ -119,6 +119,19 @@ export const FødselMorOgFarBeggeHarRett: Story = {
     },
 };
 
+export const FødselMorOgFarPrematur: Story = {
+    args: {
+        ...FødselMorOgFarBeggeHarRett.args,
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2021-01-01'],
+            termindato: '2021-03-01',
+            fnr: ['12345678901'],
+            antallBarn: 1,
+        },
+    },
+};
+
 export const FødselMorOgFarKunMorHarRett: Story = {
     args: {
         foreldreInfo: {
