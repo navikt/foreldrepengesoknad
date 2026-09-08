@@ -6,7 +6,7 @@ import ky from 'ky';
 import { useIntl } from 'react-intl';
 
 import { RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
-import { erLikUansettRekkefølge, erMyndig, useDocumentTitle } from '@navikt/fp-utils';
+import { erIkkeTilgangUmyndigFeil, erLikUansettRekkefølge, erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ApiErrorHandler, EngangsstønadRoutes } from './EngangsstønadRoutes';
@@ -28,6 +28,10 @@ export const Engangsstønad = () => {
     const personinfo = useQuery(personOptions());
 
     const mellomlagretInfo = useQuery(mellomlagretInfoOptions());
+
+    if (erIkkeTilgangUmyndigFeil(personinfo.error)) {
+        return <Umyndig appName="engangsstonad" />;
+    }
 
     if (personinfo.error || mellomlagretInfo.error) {
         return <ApiErrorHandler error={notEmpty(personinfo.error ?? mellomlagretInfo.error)} />;
