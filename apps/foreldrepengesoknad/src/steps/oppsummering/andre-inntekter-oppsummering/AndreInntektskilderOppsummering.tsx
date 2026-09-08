@@ -60,7 +60,9 @@ export const AndreInntektskilderOppsummering = ({ andreInntektskilder, onVilEndr
                                                     <FormattedMessage id="JobbIUtlandetPanel.LandDuHarJobbet" />
                                                 </FormSummary.Label>
                                                 <FormSummary.Value>
-                                                    {getCountryName(annenInntektskilde.land, intl.locale)}
+                                                    {annenInntektskilde.land
+                                                        ? getCountryName(annenInntektskilde.land, intl.locale)
+                                                        : null}
                                                 </FormSummary.Value>
                                             </FormSummary.Answer>
                                             <FormSummary.Answer>

@@ -63,6 +63,8 @@ const defaultSøkerinfoMor = {
             stillingsprosent: 50,
         },
     ],
+    frilansoppdrag: [],
+    selvstendigNæring: [],
 } satisfies FpPersonopplysningerDto_fpoversikt;
 
 const defaultSøkerinfoFar = {
@@ -85,6 +87,8 @@ const defaultSøkerinfoFar = {
         },
     ],
     arbeidsforhold: [],
+    frilansoppdrag: [],
+    selvstendigNæring: [],
 } satisfies FpPersonopplysningerDto_fpoversikt;
 
 const defaultBarn = {

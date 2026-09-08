@@ -74,6 +74,8 @@ const defaultSøkerinfo = {
         },
     ],
     arbeidsforhold: [],
+    frilansoppdrag: [],
+    selvstendigNæring: [],
 } satisfies FpPersonopplysningerDto_fpoversikt;
 
 const defaultAnnenForelder = {
@@ -115,6 +117,8 @@ const defaultSøkerinfoFar = {
         },
     ],
     arbeidsforhold: [],
+    frilansoppdrag: [],
+    selvstendigNæring: [],
 } satisfies FpPersonopplysningerDto_fpoversikt;
 
 type StoryArgs = {

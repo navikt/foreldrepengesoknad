@@ -74,6 +74,8 @@ const defaultSøkerinfo = {
         },
     ],
     arbeidsforhold: [],
+    frilansoppdrag: [],
+    selvstendigNæring: [],
 } satisfies FpPersonopplysningerDto_fpoversikt;
 
 type StoryArgs = {
@@ -293,6 +295,8 @@ export const RegistrertBarnTrillingerDerEnErDød: Story = {
                     fom: '2017-03-24',
                 },
             ],
+            frilansoppdrag: [],
+            selvstendigNæring: [],
         },
     },
 };

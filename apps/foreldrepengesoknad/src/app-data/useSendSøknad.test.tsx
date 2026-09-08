@@ -60,11 +60,13 @@ const DEFAULT_SØKER_INFO = {
     erGift: false,
     fnr: '02343434',
     fødselsdato: '1989-08-30',
+    frilansoppdrag: [],
     kjønn: 'K',
     navn: {
         etternavn: 'Oravakangas',
         fornavn: 'Erlinga-Mask',
     },
+    selvstendigNæring: [],
 } satisfies FpPersonopplysningerDto_fpoversikt;
 
 const MESSAGES_GROUPED_BY_LOCALE = {
@@ -129,7 +131,7 @@ const ANDRE_INNTEKTSKILDER = [
         tom: '2024-01-01',
     } satisfies AndreInntektskilder,
     {
-        type: AnnenInntektType.JOBB_I_UTLANDET,
+        type: 'JOBB_I_UTLANDET',
         fom: '2023-02-01',
         arbeidsgiverNavn: 'MUFC',
         land: 'GBR',

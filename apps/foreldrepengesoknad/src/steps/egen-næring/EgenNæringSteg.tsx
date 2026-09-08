@@ -26,14 +26,12 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
     const søkerinfoQuery = useQuery(søkerinfoOptions());
-    const selvstendigNæring = søkerinfoQuery.data?.selvstendigNæring ?? [];
-    const isPending = søkerinfoQuery.isPending;
 
-    if (isPending) {
+    if (!søkerinfoQuery.data) {
         return <Spinner />;
     }
 
-    const registrerteNæringer = selvstendigNæring;
+    const registrerteNæringer = søkerinfoQuery.data.selvstendigNæring;
 
     const onSubmit = (values: NæringDto) => {
         oppdaterEgenNæring({

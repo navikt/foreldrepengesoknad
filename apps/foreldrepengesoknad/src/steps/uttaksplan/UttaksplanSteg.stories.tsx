@@ -48,6 +48,8 @@ const søkerInfoKvinne = {
     erGift: false,
     barn: [],
     arbeidsforhold: [],
+    frilansoppdrag: [],
+    selvstendigNæring: [],
 } satisfies FpPersonopplysningerDto_fpoversikt;
 
 const søkerInfoMann = {
@@ -61,6 +63,8 @@ const søkerInfoMann = {
     erGift: false,
     barn: [],
     arbeidsforhold: [],
+    frilansoppdrag: [],
+    selvstendigNæring: [],
 } satisfies FpPersonopplysningerDto_fpoversikt;
 
 const promiseAction = () => () => {
