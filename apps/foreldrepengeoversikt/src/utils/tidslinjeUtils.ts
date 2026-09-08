@@ -298,7 +298,8 @@ export const getTidligstBehandlingsDatoForTidligSøknad = (sak: Sak): string | u
 };
 
 export const finnesDetFremtidigeTidslinjehendelser = (alleSorterteHendelser: Tidslinjehendelse2[]): boolean => {
-    return alleSorterteHendelser.some((hendelse) => dayjs(hendelse.opprettet).isAfter(dayjs(), 'd'));
+    const nå = dayjs();
+    return alleSorterteHendelser.some((hendelse) => dayjs(hendelse.opprettet).isAfter(nå, 'd'));
 };
 
 export const finnIndex = (hendelserForVisning: Tidslinjehendelse2[]): number => {
