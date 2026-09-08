@@ -12,7 +12,7 @@ import { links } from '@navikt/fp-constants';
 import { loggUmamiEvent } from '@navikt/fp-observability';
 import { KontoBeregningDto, Satser } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper, Infobox, VeiviserPage } from '@navikt/fp-ui';
-import { capitalizeFirstLetter, formatCurrencyWithKr, useScrollBehaviour } from '@navikt/fp-utils';
+import { capitalizeFirstLetter, formatCurrencyWithKr, formatMånedÅr, useScrollBehaviour } from '@navikt/fp-utils';
 import { isValidNumber, notEmpty } from '@navikt/fp-validation';
 
 import { Arbeidssituasjon, finnGjennomsnittsMånedslønn } from '../arbeidssituasjon/ArbeidssituasjonSide';
@@ -218,7 +218,10 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskvoter, satser }: P
                                                 </Heading>
                                                 <Heading size="xsmall" level="5">
                                                     {capitalizeFirstLetter(
-                                                        forrigeMåned.subtract(2, 'month').format('MMMM YYYY'),
+                                                        formatMånedÅr(
+                                                            forrigeMåned.subtract(2, 'month').toDate(),
+                                                            intl,
+                                                        ),
                                                     )}
                                                 </Heading>
                                                 <BodyShort>
@@ -232,7 +235,10 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskvoter, satser }: P
                                             <div>
                                                 <Heading size="xsmall" level="5">
                                                     {capitalizeFirstLetter(
-                                                        forrigeMåned.subtract(1, 'month').format('MMMM YYYY'),
+                                                        formatMånedÅr(
+                                                            forrigeMåned.subtract(1, 'month').toDate(),
+                                                            intl,
+                                                        ),
                                                     )}
                                                 </Heading>
                                                 <BodyShort>
@@ -245,7 +251,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskvoter, satser }: P
                                             </div>
                                             <div>
                                                 <Heading size="xsmall" level="5">
-                                                    {capitalizeFirstLetter(forrigeMåned.format('MMMM YYYY'))}
+                                                    {capitalizeFirstLetter(formatMånedÅr(forrigeMåned.toDate(), intl))}
                                                 </Heading>
                                                 <BodyShort>
                                                     {formatCurrencyWithKr(
