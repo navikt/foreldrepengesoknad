@@ -203,6 +203,12 @@ importers:
       '@navikt/fp-observability':
         specifier: workspace:*
         version: link:../../packages/observability
+      '@navikt/fp-steg-arbeidsforhold-og-inntekt':
+        specifier: workspace:*
+        version: link:../../packages/steg-arbeidsforhold-og-inntekt
+      '@navikt/fp-steg-egen-naering':
+        specifier: workspace:*
+        version: link:../../packages/steg-egen-næring
       '@navikt/fp-steg-kvittering':
         specifier: workspace:*
         version: link:../../packages/steg-kvittering

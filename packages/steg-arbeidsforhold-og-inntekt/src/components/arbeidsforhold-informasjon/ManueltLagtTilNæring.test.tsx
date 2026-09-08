@@ -79,7 +79,7 @@ describe('<ManueltLagtTilNæring>', () => {
                     egenNæring={{
                         ...egenNæring,
                         registrertINorge: false,
-                        registrertILand: 'SE',
+                        registrertILand: 'SWE',
                         organisasjonsnummer: undefined,
                     }}
                 />
@@ -87,6 +87,6 @@ describe('<ManueltLagtTilNæring>', () => {
         );
 
         expect(screen.getByText('Sverige')).toBeInTheDocument();
-        expect(screen.queryByText('SE')).not.toBeInTheDocument();
+        expect(screen.queryByText('SWE')).not.toBeInTheDocument();
     });
 });

@@ -198,7 +198,7 @@ describe('<LeggTilAndreInntekterWizard>', () => {
 
         await userEvent.click(screen.getByRole('radio', { name: 'Annet' }));
         await userEvent.type(screen.getByLabelText('Hva heter virksomheten?'), 'Svensk virksomhet');
-        await userEvent.selectOptions(screen.getByLabelText('I hvilket land er virksomheten din registrert i?'), 'SE');
+        await userEvent.selectOptions(screen.getByLabelText('I hvilket land er virksomheten din registrert i?'), 'SWE');
         await userEvent.type(screen.getByLabelText('Når startet du virksomheten?'), '30.04.2023');
         await userEvent.click(
             within(screen.getByRole('radiogroup', { name: 'Jobber du der fortsatt?' })).getByRole('radio', {
@@ -222,7 +222,7 @@ describe('<LeggTilAndreInntekterWizard>', () => {
             expect.objectContaining({
                 næringstype: 'ANNEN',
                 registrertINorge: false,
-                registrertILand: 'SE',
+                registrertILand: 'SWE',
             }),
         );
         expect(screen.getByRole('button', { name: 'Legg til inntekt' })).toBeInTheDocument();

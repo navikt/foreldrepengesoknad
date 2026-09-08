@@ -26,6 +26,11 @@ const manueltLagtTilNæring = {
 } satisfies NæringDto;
 
 describe('<ArbeidsforholdOgInntektPanel>', () => {
+    beforeEach(() => {
+        // jsdom implementerer ikke scrollIntoView, og komponenten kaller denne når ny inntektskilde legges til.
+        HTMLElement.prototype.scrollIntoView = vi.fn();
+    });
+
     it('skal vise inntektswizard i stedet for spørsmål om arbeid i utlandet for svangerskapspenger', async () => {
         render(<ForSvangerskapspenger />);
 
@@ -40,9 +45,6 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
 
         expect(await screen.findAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
         expect(screen.getByText('Legg til inntekt')).toBeInTheDocument();
-
-        await userEvent.click(screen.getAllByText('Nei')[0]!);
-        await userEvent.click(screen.getAllByText('Nei')[1]!);
 
         await userEvent.click(screen.getByText('Legg til inntekt'));
 
@@ -123,6 +125,7 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
         await userEvent.click(screen.getByRole('radio', { name: /Annen pensjonsgivende inntekt/ }));
         await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
         await userEvent.click(screen.getByRole('radio', { name: 'Etterlønn eller sluttvederlag' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
         await userEvent.type(screen.getByLabelText('Perioden den gjelder fra'), '01.01.2024');
         await userEvent.type(screen.getByLabelText('Til'), '31.01.2024');
         await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
@@ -141,8 +144,8 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
         render(<ForForeldrepengerMedSelvstendigNæring />);
 
         expect(await screen.findAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
-        expect(screen.getByText('Arbeid som selvstendig næringsdrivende')).toBeInTheDocument();
-        expect(screen.getByText('Kari Konsulent')).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: 'Kari Konsulent' })).toBeInTheDocument();
+        expect(screen.getByText('Selvstendig næringsdrivende')).toBeInTheDocument();
         expect(screen.queryByRole('button', { name: /Fjern Kari Konsulent/ })).not.toBeInTheDocument();
     });
 
