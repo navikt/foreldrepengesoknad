@@ -111,8 +111,8 @@ export const isDateWithinRange =
 export const isPeriodNotOverlappingOthers =
     (
         i18nText: string,
-        otherDateInfo: { date: string; isStartDate: boolean },
-        otherPeriods: Array<{ fom: string; tom: string }>,
+        otherDateInfo: { date: string; isStartDate: true } | { date?: string; isStartDate: false },
+        otherPeriods: Array<{ fom: string; tom?: string }>,
     ) =>
     (date: string): FormValidationResult => {
         const dateRanges = otherPeriods

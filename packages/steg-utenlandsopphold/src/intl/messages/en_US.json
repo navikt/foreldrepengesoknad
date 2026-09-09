@@ -57,5 +57,6 @@
     "SenereUtenlandsoppholdSteg.DateOutsideRangeFom": "As of and including date of stay abroad must be between {min} and {max}",
     "SenereUtenlandsoppholdSteg.DateOutsideRangeTom": "Even and including date of stay abroad must be between {min} and {max}",
     "SenereUtenlandsoppholdSteg.Utenlandsopphold.FørTilDato": "The date has to before the to date",
-    "SenereUtenlandsoppholdSteg.Utenlandsopphold.EtterFraDato": "The date has to be after the from date"
+    "SenereUtenlandsoppholdSteg.Utenlandsopphold.EtterFraDato": "The date has to be after the from date",
+    "SenereUtenlandsoppholdSteg.VetIkkeNårTilbake": "I don't know when I will return to Norway"
 }
