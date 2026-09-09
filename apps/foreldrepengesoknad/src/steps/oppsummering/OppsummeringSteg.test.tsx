@@ -15,6 +15,7 @@ const {
     Default,
     MorMedAnnenForelderUgift,
     FarMedUførMorUgift,
+    FarMedUførMorUgiftMedTaptPeriode,
     FarMedMorSomHarRettIEØS,
     FarMedMorSomHarRettINorge,
     MorMedAdoptertBarn,
@@ -339,6 +340,17 @@ describe('<Oppsummering>', () => {
             ).getByText('Nei'),
         ).toBeInTheDocument();
         expect(checkAndGetParentDiv(periodeRow).getByText(/Foreldrepenger uten aktivitetskrav/)).toBeInTheDocument();
+    });
+
+    it('Skal ikke vise tapt periode (avslått uten trekkdager) som uttak når far ikke har søkt om pause', async () => {
+        render(<FarMedUførMorUgiftMedTaptPeriode />);
+
+        const dinPlanDiv = getCardDiv(screen.getByText('Din plan'));
+        await dinPlanDiv.findByText('Onsdag 24.11.21 - tirsdag 14.12.21');
+
+        // Den tapte perioden (2022-06-08 - 2022-06-21) skal ikke dukke opp i planen i det hele tatt,
+        // verken som «Foreldrepenger med aktivitetskrav» eller noen annen periodetype.
+        expect(dinPlanDiv.queryByText(/Onsdag 08.06.22 - tirsdag 21.06.22/)).not.toBeInTheDocument();
     });
 
     it('Skal vise informasjon om at mor har rett til foreldrepenger i EØS', async () => {

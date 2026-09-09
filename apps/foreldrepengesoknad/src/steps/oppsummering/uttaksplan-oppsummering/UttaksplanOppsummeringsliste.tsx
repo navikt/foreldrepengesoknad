@@ -41,12 +41,13 @@ export const UttaksplanOppsummeringsliste = ({ navnPåForeldre, registrerteArbei
 
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
 
-    const søkersPerioder = uttaksplan.filter((periode) => {
-        return (
-            Uttaksperioden.erIkkeEøsPeriode(periode) &&
-            periode.forelder === (søkerErFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR')
-        );
-    });
+    const søkersPerioder = filtrerBortPerioderUtenTrekkdager(
+        uttaksplan
+            .filter((periode) => Uttaksperioden.erIkkeEøsPeriode(periode))
+            .filter((periode) => {
+                return periode.forelder === (søkerErFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR');
+            }),
+    );
 
     const annenPartsPerioder = filtrerBortPerioderUtenTrekkdager(
         uttaksplan
