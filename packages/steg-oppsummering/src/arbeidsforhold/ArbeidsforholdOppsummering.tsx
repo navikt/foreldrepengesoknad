@@ -9,7 +9,6 @@ import {
     Frilans,
     NæringDto,
     SelvstendigNæringDto_fpoversikt,
-    isArbeidsforholdOgInntektFp,
 } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatCurrencyWithKr, formatDate } from '@navikt/fp-utils';
 
@@ -18,7 +17,6 @@ import { JaNeiTekst } from '../OppsummeringPanel';
 interface ArbeidsforholdOppsummeringProps {
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntekt;
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
-    frilansoppdrag: EksternArbeidsforholdDto_fpoversikt[];
     onVilEndreSvar: () => void;
     skalViseAlertOmIM: boolean;
 }
@@ -26,15 +24,12 @@ interface ArbeidsforholdOppsummeringProps {
 export const ArbeidsforholdOppsummering = ({
     arbeidsforholdOgInntekt,
     arbeidsforhold,
-    frilansoppdrag,
     onVilEndreSvar,
     skalViseAlertOmIM,
 }: ArbeidsforholdOppsummeringProps) => {
     if (!arbeidsforholdOgInntekt) {
         return null;
     }
-
-    const erForeldrepenger = isArbeidsforholdOgInntektFp(arbeidsforholdOgInntekt);
 
     return (
         <FormSummary>
@@ -73,37 +68,6 @@ export const ArbeidsforholdOppsummering = ({
                         )}
                     </FormSummary.Value>
                 </FormSummary.Answer>
-                {!erForeldrepenger && frilansoppdrag.length === 0 && (
-                    <FormSummary.Answer>
-                        <FormSummary.Label>
-                            <FormattedMessage id="ArbeidsforholdOppsummering.HarDuJobbetSomFrilans" />
-                        </FormSummary.Label>
-                        <FormSummary.Value>
-                            <JaNeiTekst ja={arbeidsforholdOgInntekt.harJobbetSomFrilans} />
-                        </FormSummary.Value>
-                    </FormSummary.Answer>
-                )}
-
-                {!erForeldrepenger && (
-                    <FormSummary.Answer>
-                        <FormSummary.Label>
-                            <FormattedMessage id="ArbeidsforholdOppsummering.HarJobbetSomSelvstendigNæringsdrivende" />
-                        </FormSummary.Label>
-                        <FormSummary.Value>
-                            <JaNeiTekst ja={arbeidsforholdOgInntekt.harJobbetSomSelvstendigNæringsdrivende} />
-                        </FormSummary.Value>
-                    </FormSummary.Answer>
-                )}
-                {!erForeldrepenger && (
-                    <FormSummary.Answer>
-                        <FormSummary.Label>
-                            <FormattedMessage id="ArbeidsforholdOppsummering.HarHattArbeidIUtlandet" />
-                        </FormSummary.Label>
-                        <FormSummary.Value>
-                            <JaNeiTekst ja={arbeidsforholdOgInntekt.harHattArbeidIUtlandet} />
-                        </FormSummary.Value>
-                    </FormSummary.Answer>
-                )}
             </FormSummary.Answers>
             <FormSummary.Footer>
                 <FormSummary.EditLink onClick={onVilEndreSvar}>

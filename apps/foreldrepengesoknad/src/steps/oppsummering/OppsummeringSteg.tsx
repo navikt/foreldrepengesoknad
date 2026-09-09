@@ -76,7 +76,7 @@ export const OppsummeringSteg = (props: Props) => {
         erEndringssøknad,
         eksisterendeSak,
     });
-    const { frilansoppdrag, selvstendigNæring } = søkerInfo;
+    const { selvstendigNæring } = søkerInfo;
 
     if (uttaksplan === undefined) {
         return <ManglendeUttaksplanSide onGåTilUttaksplan={() => navigator.goToStep(SøknadRoutes.UTTAKSPLAN)} />;
@@ -146,7 +146,6 @@ export const OppsummeringSteg = (props: Props) => {
                     skalViseAlertOmIM={aktiveArbeidsforhold.length > 0}
                     arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                     arbeidsforhold={aktiveArbeidsforhold}
-                    frilansoppdrag={frilansoppdrag}
                     onVilEndreSvar={() => navigator.goToStep(SøknadRoutes.ARBEID_OG_INNTEKT)}
                 />
                 <FrilansOppsummering

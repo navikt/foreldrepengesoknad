@@ -84,7 +84,6 @@ export const ArbeidsforholdOgInntektOppsummering: Story = {
             <>
                 <ArbeidsforholdOppsummering
                     arbeidsforhold={[]}
-                    frilansoppdrag={[]}
                     skalViseAlertOmIM={false}
                     arbeidsforholdOgInntekt={{
                         harJobbetSomFrilans: true,
@@ -117,6 +116,25 @@ export const ArbeidsforholdOgInntektOppsummering: Story = {
                 />
                 <FrilansOppsummering frilans={{ oppstart: '2019-01-01' }} onVilEndreSvar={() => {}} />
             </>
+        ),
+    },
+};
+
+export const ArbeidsforholdOgInntektSvpOppsummering: Story = {
+    args: {
+        ...ArbeidsforholdOgInntektOppsummering.args,
+        appName: 'Svangerskapspenger',
+        children: (
+            <ArbeidsforholdOppsummering
+                arbeidsforhold={[]}
+                skalViseAlertOmIM={false}
+                arbeidsforholdOgInntekt={{
+                    harJobbetSomFrilans: true,
+                    harJobbetSomSelvstendigNæringsdrivende: true,
+                    harHattArbeidIUtlandet: true,
+                }}
+                onVilEndreSvar={() => {}}
+            />
         ),
     },
 };

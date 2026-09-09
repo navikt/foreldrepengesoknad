@@ -55,7 +55,7 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
         valgteArbeidsforhold?.includes(arbeidsforhold.arbeidsgiverId),
     );
 
-    const { frilansoppdrag, selvstendigNæring } = søkerInfo;
+    const { selvstendigNæring } = søkerInfo;
 
     const førsteTilretteleggingId = getTilretteleggingId(
         søkerInfo.arbeidsforhold,
@@ -112,7 +112,6 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
                     skalViseAlertOmIM={skalViseAlertOmIM}
                     arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                     arbeidsforhold={aktiveArbeidsforhold}
-                    frilansoppdrag={frilansoppdrag}
                     onVilEndreSvar={() => navigator.goToStep(SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT)}
                 />
                 <FrilansOppsummering frilans={frilans} onVilEndreSvar={() => navigator.goToStep(SøknadRoute.FRILANS)} />
