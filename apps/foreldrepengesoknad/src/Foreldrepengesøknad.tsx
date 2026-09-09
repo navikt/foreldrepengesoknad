@@ -15,8 +15,9 @@ import { ReactNode, useEffect } from 'react';
 import { useIntl } from 'react-intl';
 import { shouldApplyStorage } from 'utils/mellomlagringUtils';
 
+import { erUmyndigFeil } from '@navikt/fp-app-shell';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
-import { ErrorBoundary, RegisterdataUtdatert, Spinner } from '@navikt/fp-ui';
+import { ErrorBoundary, RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
 import { erLikUansettRekkefølge, omitMany, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -46,14 +47,20 @@ export const Foreldrepengesøknad = () => {
 
     const planleggerData = usePlanleggerDataFromUrl(søkerinfoQuery.data?.kjønn);
 
+    const harUmyndigFeil = erUmyndigFeil(søkerinfoQuery.error) || erUmyndigFeil(sakerQuery.error);
+
     useEffect(() => {
-        if (!(søkerinfoQuery.error || sakerQuery.error)) {
+        if (harUmyndigFeil || !(søkerinfoQuery.error || sakerQuery.error)) {
             return;
         }
 
         const error = new Error(intl.formatMessage({ id: 'Foreldrepengesøknad.FeilVedHentingAvInformasjon' }));
         throw error;
-    }, [søkerinfoQuery.error, sakerQuery.error, intl]);
+    }, [søkerinfoQuery.error, sakerQuery.error, harUmyndigFeil, intl]);
+
+    if (harUmyndigFeil) {
+        return <Umyndig appName="foreldrepengesoknad" />;
+    }
 
     if (!sakerQuery.data || !søkerinfoQuery.data || mellomlagretInfoQuery.isPending) {
         return <Spinner />;
