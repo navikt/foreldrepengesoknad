@@ -51,7 +51,7 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
         expect(screen.getByText('Hvilken type inntekt har du hatt?')).toBeInTheDocument();
     });
 
-    it('skal vise definisjoner av arbeidsforhold og inntekt i et åpent kort', async () => {
+    it('skal vise definisjoner av arbeidsforhold og inntekt i et lukket kort', async () => {
         render(<ForForeldrepenger />);
 
         await screen.findAllByText('Arbeidsforhold og inntekt');
@@ -60,6 +60,10 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
             name: 'Hvordan defineres ulike typer arbeidsforhold og inntekt?',
         });
         const toggle = within(card).getByRole('button', { name: 'Vis mer' });
+
+        expect(toggle).toHaveAttribute('aria-expanded', 'false');
+
+        await userEvent.click(toggle);
 
         expect(toggle).toHaveAttribute('aria-expanded', 'true');
         expect(screen.getByText('Hva er selvstendig næring?')).toBeVisible();

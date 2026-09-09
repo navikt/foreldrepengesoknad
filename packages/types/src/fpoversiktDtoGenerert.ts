@@ -13,14 +13,6 @@ export type EksternArbeidsforholdDto_fpoversikt = {
     tom?: string;
 };
 
-export type SelvstendigNæringDto_fpoversikt = {
-    navn?: string;
-    næringstype: Virksomhetstype_fpoversikt;
-    organisasjonsnummer: string;
-};
-
-export type Virksomhetstype_fpoversikt = 'ANNEN' | 'JORDBRUK_SKOGBRUK' | 'FISKE' | 'DAGMAMMA';
-
 export type MorArbeidRequest_fpoversikt = {
     annenPartFødselsnummer: string;
     barnFødselsnummer?: string;
@@ -184,12 +176,20 @@ export type Navn_fpoversikt = {
     etternavn: string;
 };
 
+export type SelvstendigNæringDto_fpoversikt = {
+    navn?: string;
+    næringstype: Virksomhetstype_fpoversikt;
+    organisasjonsnummer: string;
+};
+
+export type Virksomhetstype_fpoversikt = 'ANNEN' | 'JORDBRUK_SKOGBRUK' | 'FISKE' | 'DAGMAMMA';
+
 export type FpPersonopplysningerDto_fpoversikt = {
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     barn: FpBarnDto_fpoversikt[];
     erGift: boolean;
-    frilansoppdrag: EksternArbeidsforholdDto_fpoversikt[];
     fnr: string;
+    frilansoppdrag: EksternArbeidsforholdDto_fpoversikt[];
     fødselsdato: string;
     kjønn: Kjønn_fpoversikt;
     navn: Navn_fpoversikt;
@@ -230,8 +230,8 @@ export type OversiktBarnDto_fpoversikt = {
 
 export type SvpPersonopplysningerDto_fpoversikt = {
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
-    frilansoppdrag: EksternArbeidsforholdDto_fpoversikt[];
     fnr: string;
+    frilansoppdrag: EksternArbeidsforholdDto_fpoversikt[];
     fødselsdato: string;
     kjønn: Kjønn_fpoversikt;
     navn: Navn_fpoversikt;

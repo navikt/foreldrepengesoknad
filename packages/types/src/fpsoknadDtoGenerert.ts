@@ -54,21 +54,21 @@ export type Arbeidsforhold = {
 };
 
 export type Frilansoppdrag = {
-    fom?: string;
+    fom: string;
     navn?: string;
     tom?: string;
-};
-
-export type SelvstendigNæring = {
-    navn?: string;
-    næringstype?: Virksomhetstype;
-    organisasjonsnummer?: string;
 };
 
 export type Navn = {
     etternavn: string;
     fornavn: string;
     mellomnavn?: string;
+};
+
+export type SelvstendigNæring = {
+    navn?: string;
+    næringstype?: Virksomhetstype;
+    organisasjonsnummer?: string;
 };
 
 export type AdopsjonDto = {
@@ -229,6 +229,8 @@ export type Uttaksplanperiode = (
 ) & {
     type: string;
 };
+
+export type Virksomhetstype = 'ANNEN' | 'JORDBRUK_SKOGBRUK' | 'FISKE' | 'DAGMAMMA';
 
 export type ArbeidsforholdDto = (
     | ({
@@ -407,8 +409,6 @@ export type NæringDto = {
     varigEndringDato?: string;
     varigEndringInntektEtterEndring?: number;
 };
-
-export type Virksomhetstype = 'ANNEN' | 'JORDBRUK_SKOGBRUK' | 'FISKE' | 'DAGMAMMA';
 
 export type SvangerskapspengesøknadDto = {
     andreInntekterSiste10Mnd?: AnnenInntektDto[];
