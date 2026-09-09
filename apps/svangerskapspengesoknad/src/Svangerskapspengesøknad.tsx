@@ -5,6 +5,7 @@ import { VERSJON_MELLOMLAGRING } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
 import { useIntl } from 'react-intl';
 
+import { erUmyndigFeil } from '@navikt/fp-app-shell';
 import { SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 import { RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
 import { erLikUansettRekkefølge, erMyndig, useDocumentTitle } from '@navikt/fp-utils';
@@ -31,6 +32,10 @@ export const Svangerskapspengesøknad = () => {
     const søkerinfo = useQuery(søkerinfoOptions());
 
     const mellomlagretInfo = useQuery(mellomlagretInfoOptions());
+
+    if (erUmyndigFeil(søkerinfo.error)) {
+        return <Umyndig appName="svangerskapspengesoknad" />;
+    }
 
     if (søkerinfo.error || mellomlagretInfo.error) {
         return <ApiErrorHandler error={notEmpty(søkerinfo.error ?? mellomlagretInfo.error)} />;

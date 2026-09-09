@@ -5,6 +5,7 @@ import { VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
 import ky from 'ky';
 import { useIntl } from 'react-intl';
 
+import { erUmyndigFeil } from '@navikt/fp-app-shell';
 import { RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
 import { erLikUansettRekkefølge, erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -28,6 +29,10 @@ export const Engangsstønad = () => {
     const personinfo = useQuery(personOptions());
 
     const mellomlagretInfo = useQuery(mellomlagretInfoOptions());
+
+    if (erUmyndigFeil(personinfo.error)) {
+        return <Umyndig appName="engangsstonad" />;
+    }
 
     if (personinfo.error || mellomlagretInfo.error) {
         return <ApiErrorHandler error={notEmpty(personinfo.error ?? mellomlagretInfo.error)} />;
