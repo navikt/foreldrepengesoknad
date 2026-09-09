@@ -55,6 +55,7 @@
     "EtterlønnEllerSluttvederlagPanel.Validering.Required.Tom": "Du må oppgi til dato",
     "EtterlønnEllerSluttvederlagPanel.Validering.Valid.Tom": "Du må oppgi ein gyldig til dato",
     "EtterlønnEllerSluttvederlagPanel.Vedlegg": "Seinare i søknaden vil du bli bedt om å laste opp dokumentasjon frå arbeidsgivaren din. Den må vise inntekta og perioden den gjeld for.",
+    "EtterlønnEllerSluttvederlagPanel.Tittel": "Inntekta må dokumenterast",
     "EtterlønnEllerSluttvederlagPanel.FraOgMedDato.ErIFremtiden": "Perioden den gjeld frå må vere før eller lik dagens dato",
     "EtterlønnEllerSluttvederlagPanel.FraOgMedDato.FørTilDato": "Du må legge inn ein frå og med dato som er før til og med datoen.",
     "FørstegangstjenestePanel.IFørstegangstjenesteNå": "Er du i førstegongsteneste no?",
@@ -68,11 +69,17 @@
     "FørstegangstjenestePanel.Validering.Required.Tom": "Du må oppgi til dato",
     "FørstegangstjenestePanel.Validering.Valid.Tom": "Du må oppgi ein gyldig til dato",
     "FørstegangstjenestePanel.Vedlegg": "Seinare i søknaden vil du bli bedt om å laste opp dokumentasjon på perioden frå tenestestaden din.",
+    "FørstegangstjenestePanel.Tittel": "Inntekta må dokumenterast",
     "FørstegangstjenestePanel.FraOgMedDato.ErIFremtiden": "Frå og med dato må vere før eller lik dagens dato",
     "FørstegangstjenestePanel.FraOgMedDato.FørTilDato": "Du må legge inn ein frå og med dato som er før til og med datoen.",
     "FørstegangstjenestePanel.TilOgMedDato.ErIFremtiden": "Til og med dato må vere før eller lik dagens dato",
     "InfoOmArbeidIUtlandet.apneLabel": "Korleis kan dette påverke svangerskapspengane?",
     "InfoOmArbeidIUtlandet.innhold": "For å vurdera om du har rett til svangerskapspengar tel me med arbeid i andre EØS-land enn Noreg i dei siste fire vekene.",
     "HarArbeidsforhold.arbeidsgiver": "Privat arbeidsgivar",
-    "HarArbeidsforhold.pågående": "Pågåande"
+    "HarArbeidsforhold.pågående": "Pågåande",
+    "LeggTilAndreInntekterButton.Spørsmål": "Manglar du ei inntektskjelde?",
+    "LeggTilAndreInntekterButton.Knapp": "Legg til inntekt",
+    "AndreInntektskilderBox.Dato": "Dato:",
+    "AndreInntektskilderBox.AnnenInntekt": "Anna inntekt",
+    "AndreInntektskilderBox.Fjern": "Fjern"
 }

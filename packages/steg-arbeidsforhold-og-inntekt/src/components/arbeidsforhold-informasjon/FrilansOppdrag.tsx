@@ -19,41 +19,6 @@ type FrilansoppdragGruppe = {
     antallOppdrag: number;
 };
 
-const grupperFrilansoppdrag = (frilansoppdrag: EksternArbeidsforholdDto_fpoversikt[]): FrilansoppdragGruppe[] => {
-    const grupper = new Map<string, FrilansoppdragGruppe>();
-
-    for (const oppdrag of frilansoppdrag) {
-        const gruppeId = `${oppdrag.arbeidsgiverIdType}-${oppdrag.arbeidsgiverId}`;
-        const gruppe = grupper.get(gruppeId);
-
-        if (!gruppe) {
-            grupper.set(gruppeId, {
-                arbeidsgiverId: oppdrag.arbeidsgiverId,
-                arbeidsgiverIdType: oppdrag.arbeidsgiverIdType,
-                arbeidsgiverNavn: oppdrag.arbeidsgiverNavn,
-                fom: oppdrag.fom,
-                tom: oppdrag.tom,
-                antallOppdrag: 1,
-            });
-            continue;
-        }
-
-        gruppe.antallOppdrag += 1;
-
-        if (oppdrag.fom < gruppe.fom) {
-            gruppe.fom = oppdrag.fom;
-        }
-
-        if (gruppe.tom === undefined || oppdrag.tom === undefined) {
-            gruppe.tom = undefined;
-        } else if (oppdrag.tom > gruppe.tom) {
-            gruppe.tom = oppdrag.tom;
-        }
-    }
-
-    return [...grupper.values()];
-};
-
 export const FrilansOppdrag = ({ frilansoppdrag }: Props) => {
     const intl = useIntl();
     const grupperteFrilansoppdrag = grupperFrilansoppdrag(frilansoppdrag);
@@ -130,4 +95,39 @@ export const FrilansOppdrag = ({ frilansoppdrag }: Props) => {
             </Box>
         </VStack>
     );
+};
+
+const grupperFrilansoppdrag = (frilansoppdrag: EksternArbeidsforholdDto_fpoversikt[]): FrilansoppdragGruppe[] => {
+    const grupper = new Map<string, FrilansoppdragGruppe>();
+
+    for (const oppdrag of frilansoppdrag) {
+        const gruppeId = `${oppdrag.arbeidsgiverIdType}-${oppdrag.arbeidsgiverId}`;
+        const gruppe = grupper.get(gruppeId);
+
+        if (!gruppe) {
+            grupper.set(gruppeId, {
+                arbeidsgiverId: oppdrag.arbeidsgiverId,
+                arbeidsgiverIdType: oppdrag.arbeidsgiverIdType,
+                arbeidsgiverNavn: oppdrag.arbeidsgiverNavn,
+                fom: oppdrag.fom,
+                tom: oppdrag.tom,
+                antallOppdrag: 1,
+            });
+            continue;
+        }
+
+        gruppe.antallOppdrag += 1;
+
+        if (oppdrag.fom < gruppe.fom) {
+            gruppe.fom = oppdrag.fom;
+        }
+
+        if (gruppe.tom === undefined || oppdrag.tom === undefined) {
+            gruppe.tom = undefined;
+        } else if (oppdrag.tom > gruppe.tom) {
+            gruppe.tom = oppdrag.tom;
+        }
+    }
+
+    return [...grupper.values()];
 };

@@ -49,7 +49,7 @@ describe('<ArbeidsforholdOgInntektSteg>', () => {
 
     it('skal fortsatt kunne søke selv om det verken finnes arbeidsforhold, frilansoppdrag eller registrert næring (FP blokkerer ikke, kun SVP gjør det)', async () => {
         await IngenAktiveArbeidsforhold.run({
-            args: { ...IngenAktiveArbeidsforhold.args, frilansoppdrag: [], selvstendigNæring: [] },
+            args: { ...IngenAktiveArbeidsforhold.args, arbeidsforhold: [], frilansoppdrag: [], selvstendigNæring: [] },
         });
 
         expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();

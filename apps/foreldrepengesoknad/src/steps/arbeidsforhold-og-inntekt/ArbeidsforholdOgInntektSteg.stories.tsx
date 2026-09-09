@@ -1,6 +1,4 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { søkerinfoOptions } from 'api/queries';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
@@ -8,7 +6,12 @@ import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 
 import { BarnType } from '@navikt/fp-constants';
-import { EksternArbeidsforholdDto_fpoversikt, NæringDto, SelvstendigNæringDto_fpoversikt } from '@navikt/fp-types';
+import {
+    EksternArbeidsforholdDto_fpoversikt,
+    FpPersonopplysningerDto_fpoversikt,
+    NæringDto,
+    SelvstendigNæringDto_fpoversikt,
+} from '@navikt/fp-types';
 
 import { ArbeidsforholdOgInntektSteg } from './ArbeidsforholdOgInntektSteg';
 
@@ -102,6 +105,7 @@ const promiseAction = () => () => {
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
     egenNæring?: NæringDto;
+    arbeidsforhold?: EksternArbeidsforholdDto_fpoversikt[];
     frilansoppdrag?: EksternArbeidsforholdDto_fpoversikt[];
     selvstendigNæring?: SelvstendigNæringDto_fpoversikt[];
 } & ComponentProps<typeof ArbeidsforholdOgInntektSteg>;
@@ -112,19 +116,14 @@ const meta = {
     render: ({
         gåTilNesteSide = action('button-click'),
         egenNæring,
+        arbeidsforhold = DEFAULT_ARBEIDSFORHOLD,
         frilansoppdrag = DEFAULT_FRILANSOPPDRAG,
         selvstendigNæring = DEFAULT_SELVSTENDIG_NÆRING,
+        søkerInfo: _søkerInfo,
         ...rest
     }) => {
-        const freshQueryClient = new QueryClient({
-            defaultOptions: {
-                queries: {
-                    retry: false,
-                },
-            },
-        });
-        freshQueryClient.setQueryData(søkerinfoOptions().queryKey, {
-            arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
+        const søkerInfo: FpPersonopplysningerDto_fpoversikt = {
+            arbeidsforhold,
             barn: [],
             erGift: false,
             fnr: '12345678901',
@@ -133,31 +132,29 @@ const meta = {
             navn: { fornavn: 'Kari', etternavn: 'Nordmann' },
             frilansoppdrag,
             selvstendigNæring,
-        });
+        };
         return (
-            <QueryClientProvider client={freshQueryClient}>
-                <MemoryRouter initialEntries={[SøknadRoutes.ARBEID_OG_INNTEKT]}>
-                    <FpDataContext
-                        onDispatch={gåTilNesteSide}
-                        initialState={{
-                            [ContextDataType.SØKERSITUASJON]: {
-                                rolle: 'mor',
-                                situasjon: 'fødsel',
-                            },
-                            [ContextDataType.OM_BARNET]: {
-                                termindato: '2024-02-18',
-                                type: BarnType.FØDT,
-                                fødselsdatoer: ['2024-02-18'],
-                                antallBarn: 1,
-                            },
-                            [ContextDataType.ANDRE_INNTEKTSKILDER]: [],
-                            [ContextDataType.EGEN_NÆRING]: egenNæring,
-                        }}
-                    >
-                        <ArbeidsforholdOgInntektSteg {...rest} />
-                    </FpDataContext>
-                </MemoryRouter>
-            </QueryClientProvider>
+            <MemoryRouter initialEntries={[SøknadRoutes.ARBEID_OG_INNTEKT]}>
+                <FpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.SØKERSITUASJON]: {
+                            rolle: 'mor',
+                            situasjon: 'fødsel',
+                        },
+                        [ContextDataType.OM_BARNET]: {
+                            termindato: '2024-02-18',
+                            type: BarnType.FØDT,
+                            fødselsdatoer: ['2024-02-18'],
+                            antallBarn: 1,
+                        },
+                        [ContextDataType.ANDRE_INNTEKTSKILDER]: [],
+                        [ContextDataType.EGEN_NÆRING]: egenNæring,
+                    }}
+                >
+                    <ArbeidsforholdOgInntektSteg søkerInfo={søkerInfo} {...rest} />
+                </FpDataContext>
+            </MemoryRouter>
         );
     },
 } satisfies Meta<StoryArgs>;
@@ -169,7 +166,7 @@ export const Default: Story = {
     args: {
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: () => action('button-click'),
-        arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
+        søkerInfo: {} as FpPersonopplysningerDto_fpoversikt,
     },
 };
 

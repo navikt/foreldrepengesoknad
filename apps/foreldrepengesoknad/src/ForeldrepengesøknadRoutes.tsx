@@ -223,7 +223,7 @@ const renderSøknadRoutes = ({
                 path={SøknadRoutes.ARBEID_OG_INNTEKT}
                 element={
                     <ArbeidsforholdOgInntektSteg
-                        arbeidsforhold={søkerInfo.arbeidsforhold}
+                        søkerInfo={søkerInfo}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -233,7 +233,7 @@ const renderSøknadRoutes = ({
                 path={SøknadRoutes.EGEN_NÆRING}
                 element={
                     <EgenNæringSteg
-                        arbeidsforhold={søkerInfo.arbeidsforhold}
+                        søkerInfo={søkerInfo}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -243,7 +243,7 @@ const renderSøknadRoutes = ({
                 path={SøknadRoutes.FRILANS}
                 element={
                     <FrilansSteg
-                        arbeidsforhold={søkerInfo.arbeidsforhold}
+                        søkerInfo={søkerInfo}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />

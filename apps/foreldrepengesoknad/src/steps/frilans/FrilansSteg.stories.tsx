@@ -1,13 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { søkerinfoOptions } from 'api/queries';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 
-import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, FpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 
 import { FrilansSteg } from './FrilansSteg';
 
@@ -24,9 +22,8 @@ type StoryArgs = {
 const meta = {
     title: 'steps/FrilansSteg',
     component: FrilansSteg,
-    render: ({ gåTilNesteSide = action('button-click'), frilansoppdrag = [], ...rest }) => {
-        const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-        queryClient.setQueryData(søkerinfoOptions().queryKey, {
+    render: ({ gåTilNesteSide = action('button-click'), frilansoppdrag = [], søkerInfo: _søkerInfo, ...rest }) => {
+        const søkerInfo: FpPersonopplysningerDto_fpoversikt = {
             arbeidsforhold: [],
             barn: [],
             erGift: false,
@@ -36,24 +33,22 @@ const meta = {
             navn: { fornavn: 'Kari', etternavn: 'Nordmann' },
             frilansoppdrag,
             selvstendigNæring: [],
-        });
+        };
 
         return (
-            <QueryClientProvider client={queryClient}>
-                <MemoryRouter initialEntries={[SøknadRoutes.FRILANS]}>
-                    <FpDataContext
-                        onDispatch={gåTilNesteSide}
-                        initialState={{
-                            [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
-                                harJobbetSomFrilans: true,
-                                harJobbetSomSelvstendigNæringsdrivende: false,
-                            },
-                        }}
-                    >
-                        <FrilansSteg {...rest} />
-                    </FpDataContext>
-                </MemoryRouter>
-            </QueryClientProvider>
+            <MemoryRouter initialEntries={[SøknadRoutes.FRILANS]}>
+                <FpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
+                            harJobbetSomFrilans: true,
+                            harJobbetSomSelvstendigNæringsdrivende: false,
+                        },
+                    }}
+                >
+                    <FrilansSteg søkerInfo={søkerInfo} {...rest} />
+                </FpDataContext>
+            </MemoryRouter>
         );
     },
 } satisfies Meta<StoryArgs>;
@@ -65,6 +60,6 @@ export const Default: Story = {
     args: {
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: () => action('button-click'),
-        arbeidsforhold: [],
+        søkerInfo: {} as FpPersonopplysningerDto_fpoversikt,
     },
 };

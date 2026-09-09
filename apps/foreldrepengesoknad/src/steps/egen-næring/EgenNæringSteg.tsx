@@ -1,5 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
-import { søkerinfoOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
@@ -10,18 +8,18 @@ import {
     getForhåndsvalgtNæringstype,
     getPrioritertRegistrertNæring,
 } from '@navikt/fp-steg-egen-naering';
-import { EksternArbeidsforholdDto_fpoversikt, NæringDto } from '@navikt/fp-types';
-import { SkjemaRotLayout, Spinner } from '@navikt/fp-ui';
+import { FpPersonopplysningerDto_fpoversikt, NæringDto } from '@navikt/fp-types';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
-    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    søkerInfo: FpPersonopplysningerDto_fpoversikt;
 };
 
-export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
-    const søkerinfoQuery = useQuery(søkerinfoOptions());
-    const harRegistrertNæring = (søkerinfoQuery.data?.selvstendigNæring.length ?? 0) > 0;
+export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }: Props) => {
+    const { arbeidsforhold, selvstendigNæring: registrerteNæringer } = søkerInfo;
+    const harRegistrertNæring = registrerteNæringer.length > 0;
 
     const stepConfig = useStepConfig({ arbeidsforhold, harRegistrertNæring });
     const navigator = useFpNavigator({
@@ -32,12 +30,6 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
 
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
-
-    if (!søkerinfoQuery.data) {
-        return <Spinner />;
-    }
-
-    const registrerteNæringer = søkerinfoQuery.data.selvstendigNæring;
 
     const onSubmit = (values: NæringDto) => {
         oppdaterEgenNæring({

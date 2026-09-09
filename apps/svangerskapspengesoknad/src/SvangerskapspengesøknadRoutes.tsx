@@ -96,7 +96,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT}
                 element={
                     <ArbeidsforholdOgInntektSteg
-                        arbeidsforhold={søkerInfo.arbeidsforhold}
+                        søkerInfo={søkerInfo}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -106,7 +106,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoute.FRILANS}
                 element={
                     <FrilansSteg
-                        arbeidsforhold={søkerInfo.arbeidsforhold}
+                        søkerInfo={søkerInfo}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -116,7 +116,7 @@ const renderSøknadRoutes = (
                 path={SøknadRoute.NÆRING}
                 element={
                     <EgenNæringSteg
-                        arbeidsforhold={søkerInfo.arbeidsforhold}
+                        søkerInfo={søkerInfo}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />

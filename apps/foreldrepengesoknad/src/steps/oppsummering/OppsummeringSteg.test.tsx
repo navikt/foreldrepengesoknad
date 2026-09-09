@@ -213,12 +213,6 @@ describe('<Oppsummering>', () => {
                 'Org nr: 1, 01.01.2015 - Pågående',
             ),
         ).toBeInTheDocument();
-
-        // Frilans og selvstendig næring blir ikke lenger spurt om med Ja/Nei i oppsummeringen for FP:
-        // dette utledes nå direkte fra registrerte frilansoppdrag/selvstendig næring i søkerinfo, og
-        // vises kun som egne oppsummeringspanel dersom brukeren faktisk har fylt ut Frilans- eller
-        // EgenNæring-steget. "Andre inntektskilder" vises nå kun som egen liste (AndreInntektskilderOppsummering)
-        // dersom brukeren faktisk har registrert slike, ikke som Ja/Nei-spørsmål her.
     });
 
     it('Skal vise landnavn og ikke landkode for jobb i utlandet', async () => {

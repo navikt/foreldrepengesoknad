@@ -1,11 +1,12 @@
-import { render, screen, within } from '@testing-library/react';
+import { composeStories } from '@storybook/react-vite';
+import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { IntlProvider } from 'react-intl';
 
 import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
-import nbMessages from '../../intl/messages/nb_NO.json';
-import { FrilansOppdrag } from './FrilansOppdrag';
+import * as stories from './FrilansOppdrag.stories';
+
+const { Default } = composeStories(stories);
 
 const lagOppdrag = ({
     arbeidsgiverId = '123456789',
@@ -28,11 +29,7 @@ const lagOppdrag = ({
     }) satisfies EksternArbeidsforholdDto_fpoversikt;
 
 const renderOppdrag = async (frilansoppdrag: EksternArbeidsforholdDto_fpoversikt[]) => {
-    render(
-        <IntlProvider locale="nb" messages={nbMessages}>
-            <FrilansOppdrag frilansoppdrag={frilansoppdrag} />
-        </IntlProvider>,
-    );
+    await Default.run({ args: { frilansoppdrag } });
     await userEvent.click(screen.getByRole('button', { name: 'Vis mine oppdrag' }));
 };
 

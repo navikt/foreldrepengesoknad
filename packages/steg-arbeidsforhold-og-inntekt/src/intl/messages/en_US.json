@@ -55,6 +55,7 @@
     "EtterlønnEllerSluttvederlagPanel.Validering.Required.Tom": "You must specify a to date",
     "EtterlønnEllerSluttvederlagPanel.Validering.Valid.Tom": "You must specify a valid to date",
     "EtterlønnEllerSluttvederlagPanel.Vedlegg": "Later in the application you will be asked to upload documentation from your employer. It must show the income and the period it applies to.",
+    "EtterlønnEllerSluttvederlagPanel.Tittel": "The income must be documented",
     "EtterlønnEllerSluttvederlagPanel.FraOgMedDato.ErIFremtiden": "The period start must be before or equal to today",
     "EtterlønnEllerSluttvederlagPanel.FraOgMedDato.FørTilDato": "You must enter a from date that is before the to date.",
     "FørstegangstjenestePanel.IFørstegangstjenesteNå": "Are you currently in military service?",
@@ -68,11 +69,17 @@
     "FørstegangstjenestePanel.Validering.Required.Tom": "You must specify a to date",
     "FørstegangstjenestePanel.Validering.Valid.Tom": "You must specify a valid to date",
     "FørstegangstjenestePanel.Vedlegg": "Later in the application you will be asked to upload documentation for the period from your service location.",
+    "FørstegangstjenestePanel.Tittel": "The income must be documented",
     "FørstegangstjenestePanel.FraOgMedDato.ErIFremtiden": "The from date must be before or equal to today",
     "FørstegangstjenestePanel.FraOgMedDato.FørTilDato": "You must enter a from date that is before the to date.",
     "FørstegangstjenestePanel.TilOgMedDato.ErIFremtiden": "The to date must be before or equal to today",
     "InfoOmArbeidIUtlandet.apneLabel": "How can this affect maternity benefits?",
     "InfoOmArbeidIUtlandet.innhold": "To assess whether you are eligible for maternity benefits, we also consider work in another EEA country besides Norway in the last four weeks.",
     "HarArbeidsforhold.arbeidsgiver": "Private employer",
-    "HarArbeidsforhold.pågående": "Ongoing"
+    "HarArbeidsforhold.pågående": "Ongoing",
+    "LeggTilAndreInntekterButton.Spørsmål": "Missing an income source?",
+    "LeggTilAndreInntekterButton.Knapp": "Add income",
+    "AndreInntektskilderBox.Dato": "Date:",
+    "AndreInntektskilderBox.AnnenInntekt": "Other income",
+    "AndreInntektskilderBox.Fjern": "Remove"
 }

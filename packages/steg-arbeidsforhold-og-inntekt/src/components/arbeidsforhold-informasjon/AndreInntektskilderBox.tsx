@@ -48,7 +48,7 @@ const Inntektsdetaljer = ({ inntekt }: { inntekt: AndreInntektskilder }) => {
                     </DetaljRad>
                 </>
             )}
-            <DetaljRad label="Dato:">
+            <DetaljRad label={<FormattedMessage id="AndreInntektskilderBox.Dato" />}>
                 <FormattedMessage
                     id="inntektsinformasjon.arbeidsforhold.periode"
                     values={{
@@ -89,7 +89,7 @@ export const AndreInntektskilderBox = ({ andreInntektskilder, onRemove }: Props)
                             icon={<BankNoteIcon aria-hidden />}
                             variant="info"
                         >
-                            Annen inntekt
+                            {intl.formatMessage({ id: 'AndreInntektskilderBox.AnnenInntekt' })}
                         </Tag>
                         <Inntektsdetaljer inntekt={inntekt} />
                         <Button
@@ -102,7 +102,7 @@ export const AndreInntektskilderBox = ({ andreInntektskilder, onRemove }: Props)
                             aria-label={`Fjern ${getTittel(intl, inntekt.type)}`}
                             onClick={() => onRemove(index)}
                         >
-                            Fjern
+                            {intl.formatMessage({ id: 'AndreInntektskilderBox.Fjern' })}
                         </Button>
                     </VStack>
                 </Box>

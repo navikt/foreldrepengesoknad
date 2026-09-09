@@ -1,5 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
-import { søkerinfoOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
@@ -13,7 +11,7 @@ import { skalViseEgenNæringSteg } from '@navikt/fp-steg-egen-naering';
 import {
     ArbeidsforholdOgInntekt,
     ArbeidsforholdOgInntektFp,
-    EksternArbeidsforholdDto_fpoversikt,
+    FpPersonopplysningerDto_fpoversikt,
 } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
@@ -22,13 +20,11 @@ import { notEmpty } from '@navikt/fp-validation';
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
-    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    søkerInfo: FpPersonopplysningerDto_fpoversikt;
 };
 
-export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
-    const søkerinfoQuery = useQuery(søkerinfoOptions());
-    const frilansoppdrag = søkerinfoQuery.data?.frilansoppdrag ?? [];
-    const selvstendigNæring = søkerinfoQuery.data?.selvstendigNæring ?? [];
+export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }: Props) => {
+    const { arbeidsforhold, frilansoppdrag, selvstendigNæring } = søkerInfo;
 
     const harRegistrertNæring = selvstendigNæring.length > 0;
     const stepConfig = useStepConfig({ arbeidsforhold, harRegistrertNæring });

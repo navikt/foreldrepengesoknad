@@ -1,13 +1,16 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
-import { søkerinfoOptions } from 'appData/queries';
 import { SøknadRoute } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 
-import { EksternArbeidsforholdDto_fpoversikt, NæringDto, SelvstendigNæringDto_fpoversikt } from '@navikt/fp-types';
+import {
+    EksternArbeidsforholdDto_fpoversikt,
+    NæringDto,
+    SelvstendigNæringDto_fpoversikt,
+    SvpPersonopplysningerDto_fpoversikt,
+} from '@navikt/fp-types';
 
 import { ArbeidsforholdOgInntektSteg } from './ArbeidsforholdOgInntektSteg';
 
@@ -84,6 +87,7 @@ const promiseAction = () => () => {
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
+    arbeidsforhold?: EksternArbeidsforholdDto_fpoversikt[];
     frilansoppdrag?: EksternArbeidsforholdDto_fpoversikt[];
     egenNæring?: NæringDto;
     selvstendigNæring?: SelvstendigNæringDto_fpoversikt[];
@@ -94,49 +98,42 @@ const meta = {
     component: ArbeidsforholdOgInntektSteg,
     render: ({
         gåTilNesteSide = action('button-click'),
+        arbeidsforhold = DEFAULT_ARBEIDSFORHOLD,
         frilansoppdrag = [],
         egenNæring,
         selvstendigNæring = DEFAULT_SELVSTENDIG_NÆRING,
+        søkerInfo: _søkerInfo,
         ...rest
     }) => {
-        const queryClient = new QueryClient({
-            defaultOptions: {
-                queries: {
-                    retry: false,
-                },
-            },
-        });
-        queryClient.setQueryData(søkerinfoOptions().queryKey, {
-            arbeidsforhold: rest.arbeidsforhold,
+        const søkerInfo: SvpPersonopplysningerDto_fpoversikt = {
+            arbeidsforhold,
             fnr: '12345678901',
             fødselsdato: '1990-01-01',
             kjønn: 'K',
             navn: { fornavn: 'Kari', etternavn: 'Nordmann' },
             frilansoppdrag,
             selvstendigNæring,
-        });
+        };
         return (
-            <QueryClientProvider client={queryClient}>
-                <MemoryRouter initialEntries={[SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT]}>
-                    <SvpDataContext
-                        onDispatch={gåTilNesteSide}
-                        initialState={{
-                            [ContextDataType.UTENLANDSOPPHOLD]: {
-                                harBoddUtenforNorgeSiste12Mnd: false,
-                                skalBoUtenforNorgeNeste12Mnd: false,
-                            },
-                            [ContextDataType.OM_BARNET]: {
-                                erBarnetFødt: false,
-                                termindato: '2024-02-18',
-                                fødselsdato: '2024-02-18',
-                            },
-                            [ContextDataType.EGEN_NÆRING]: egenNæring,
-                        }}
-                    >
-                        <ArbeidsforholdOgInntektSteg {...rest} />
-                    </SvpDataContext>
-                </MemoryRouter>
-            </QueryClientProvider>
+            <MemoryRouter initialEntries={[SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT]}>
+                <SvpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.UTENLANDSOPPHOLD]: {
+                            harBoddUtenforNorgeSiste12Mnd: false,
+                            skalBoUtenforNorgeNeste12Mnd: false,
+                        },
+                        [ContextDataType.OM_BARNET]: {
+                            erBarnetFødt: false,
+                            termindato: '2024-02-18',
+                            fødselsdato: '2024-02-18',
+                        },
+                        [ContextDataType.EGEN_NÆRING]: egenNæring,
+                    }}
+                >
+                    <ArbeidsforholdOgInntektSteg søkerInfo={søkerInfo} {...rest} />
+                </SvpDataContext>
+            </MemoryRouter>
         );
     },
 } satisfies Meta<StoryArgs>;
@@ -148,7 +145,7 @@ export const Default: Story = {
     args: {
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: () => action('button-click'),
-        arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
+        søkerInfo: {} as SvpPersonopplysningerDto_fpoversikt,
     },
 };
 

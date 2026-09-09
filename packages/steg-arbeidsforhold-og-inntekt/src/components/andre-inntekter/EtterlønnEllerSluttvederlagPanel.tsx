@@ -52,7 +52,9 @@ export const EtterlønnEllerSluttvederlagPanel = ({ index, inntektskilde }: Prop
 
             <InfoCard data-color="info">
                 <InfoCard.Header icon={<FileIcon aria-hidden />}>
-                    <InfoCard.Title>Inntekten må dokumenteres</InfoCard.Title>
+                    <InfoCard.Title>
+                        <FormattedMessage id="EtterlønnEllerSluttvederlagPanel.Tittel" />
+                    </InfoCard.Title>
                 </InfoCard.Header>
                 <InfoCard.Content>
                     <FormattedMessage id="EtterlønnEllerSluttvederlagPanel.Vedlegg" />

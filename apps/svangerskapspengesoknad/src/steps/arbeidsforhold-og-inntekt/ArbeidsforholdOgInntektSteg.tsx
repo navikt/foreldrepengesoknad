@@ -1,6 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
-import { søkerinfoOptions } from 'appData/queries';
 import { SøknadRoute } from 'appData/routes';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
@@ -17,6 +15,7 @@ import {
     ArbeidsforholdOgInntektSvp,
     EksternArbeidsforholdDto_fpoversikt,
     FRILANS_ID,
+    SvpPersonopplysningerDto_fpoversikt,
     isArbeidsforholdOgInntektSvp,
 } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
@@ -40,10 +39,10 @@ const getNextRoute = (
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
-    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    søkerInfo: SvpPersonopplysningerDto_fpoversikt;
 };
 
-export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
+export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }: Props) => {
     const { fjernTilrettelegginger } = useTilretteleggingerHelper();
 
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
@@ -55,9 +54,7 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
     const oppdaterArbeidIUtlandet = useContextSaveData(ContextDataType.ARBEID_I_UTLANDET);
 
-    const søkerinfoQuery = useQuery(søkerinfoOptions());
-    const frilansoppdrag = søkerinfoQuery.data?.frilansoppdrag ?? [];
-    const selvstendigNæring = søkerinfoQuery.data?.selvstendigNæring ?? [];
+    const { arbeidsforhold, frilansoppdrag, selvstendigNæring } = søkerInfo;
 
     const harRegistrertNæring = selvstendigNæring.length > 0;
     const stepConfig = useStepConfig({ arbeidsforhold, harRegistrertNæring });

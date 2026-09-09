@@ -1,6 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
-import { søkerinfoOptions } from 'appData/queries';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { FormattedMessage } from 'react-intl';
@@ -11,37 +9,32 @@ import {
     getForhåndsvalgtNæringstype,
     getPrioritertRegistrertNæring,
 } from '@navikt/fp-steg-egen-naering';
-import { EksternArbeidsforholdDto_fpoversikt, NæringDto } from '@navikt/fp-types';
-import { SkjemaRotLayout, Spinner } from '@navikt/fp-ui';
+import { NæringDto, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
+import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
-    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    søkerInfo: SvpPersonopplysningerDto_fpoversikt;
 };
 
-export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
+export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }: Props) => {
+    const { arbeidsforhold, selvstendigNæring: registrerteNæringer } = søkerInfo;
+
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
-    const søkerinfoQuery = useQuery(søkerinfoOptions());
 
-    const harRegistrertNæring = (søkerinfoQuery.data?.selvstendigNæring.length ?? 0) > 0;
+    const harRegistrertNæring = registrerteNæringer.length > 0;
     const stepConfig = useStepConfig({ arbeidsforhold, harRegistrertNæring });
     const navigator = useSvpNavigator({
         mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
         arbeidsforhold,
         harRegistrertNæring,
     });
-
-    if (!søkerinfoQuery.data) {
-        return <Spinner />;
-    }
-
-    const registrerteNæringer = søkerinfoQuery.data.selvstendigNæring;
 
     const onSubmit = (values: NæringDto) => {
         oppdaterEgenNæring({

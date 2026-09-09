@@ -2,7 +2,6 @@ import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
-import { useMemo } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
@@ -57,10 +56,7 @@ export const OppsummeringSteg = (props: Props) => {
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
 
-    const eksisterendeSak = useMemo(
-        () => foreldrepengerSaker?.find((sak) => sak.saksnummer === eksisterendeSaksnummer),
-        [eksisterendeSaksnummer, foreldrepengerSaker],
-    );
+    const eksisterendeSak = foreldrepengerSaker?.find((sak) => sak.saksnummer === eksisterendeSaksnummer);
 
     const harRegistrertNæring = søkerInfo.selvstendigNæring.length > 0;
     const stepConfig = useStepConfig({
