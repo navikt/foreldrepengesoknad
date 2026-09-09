@@ -4,4 +4,4 @@ export { bootstrapApp } from './src/bootstrapApp';
 export type { BootstrapAppOptions } from './src/bootstrapApp';
 export { createDefaultQueryClient } from './src/createDefaultQueryClient';
 export type { CreateDefaultQueryClientOptions } from './src/createDefaultQueryClient';
-export { erIkkeTilgangUmyndigFeil } from './src/apiErrorUtils';
+export { erUmyndigFeil } from './src/apiErrorUtils';

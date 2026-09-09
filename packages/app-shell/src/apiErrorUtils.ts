@@ -7,7 +7,7 @@ import type { ProblemDetails } from '@navikt/fp-types';
  * under 18 år. Dette skal gi ei forklarande Umyndig-side i staden for ei
  * generisk teknisk feilmelding.
  */
-export const erIkkeTilgangUmyndigFeil = (error: unknown): boolean => {
+export const erUmyndigFeil = (error: unknown): boolean => {
     if (!(error instanceof HTTPError) || error.response.status !== 403) {
         return false;
     }
