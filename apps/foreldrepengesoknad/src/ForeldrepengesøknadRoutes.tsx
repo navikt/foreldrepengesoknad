@@ -105,6 +105,8 @@ const renderSøknadRoutes = ({
         );
     }
 
+    const harRegistrertNæring = søkerInfo.selvstendigNæring.length > 0;
+
     return (
         <>
             <Route
@@ -112,7 +114,7 @@ const renderSøknadRoutes = ({
                 element={
                     <SøkersituasjonSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
-                        harRegistrertNæring={søkerInfo.selvstendigNæring.length > 0}
+                        harRegistrertNæring={harRegistrertNæring}
                         kjønn={søkerInfo.kjønn}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
@@ -145,7 +147,7 @@ const renderSøknadRoutes = ({
                 element={
                     <PeriodeMedForeldrepengerSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
-                        harRegistrertNæring={søkerInfo.selvstendigNæring.length > 0}
+                        harRegistrertNæring={harRegistrertNæring}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -191,7 +193,7 @@ const renderSøknadRoutes = ({
                 element={
                     <UtenlandsoppholdSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
-                        harRegistrertNæring={søkerInfo.selvstendigNæring.length > 0}
+                        harRegistrertNæring={harRegistrertNæring}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -202,7 +204,7 @@ const renderSøknadRoutes = ({
                 element={
                     <TidligereUtenlandsoppholdSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
-                        harRegistrertNæring={søkerInfo.selvstendigNæring.length > 0}
+                        harRegistrertNæring={harRegistrertNæring}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -213,7 +215,7 @@ const renderSøknadRoutes = ({
                 element={
                     <SenereUtenlandsoppholdSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
-                        harRegistrertNæring={søkerInfo.selvstendigNæring.length > 0}
+                        harRegistrertNæring={harRegistrertNæring}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />

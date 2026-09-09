@@ -56,10 +56,16 @@ export const Svangerskapspengesøknad = () => {
     const mellomlagretState =
         mellomlagretInfo.data?.version === VERSJON_MELLOMLAGRING ? mellomlagretInfo.data : undefined;
 
-    if (
-        mellomlagretState &&
-        !erLikUansettRekkefølge(normaliserSøkerInfo(mellomlagretState.søkerInfo, søkerinfo.data), søkerinfo.data)
-    ) {
+    // frilansoppdrag/selvstendigNæring kan mangle på lagret søkerInfo dersom mellomlagringa vart gjort
+    // før desse felta fanst i kontrakten. Då fell vi tilbake på fersk data i staden for å be brukaren
+    // starte på nytt berre fordi den lagra søknaden manglar felt ho aldri fekk moglegheit til å ha.
+    const normalisertLagretSøkerInfo: SvpPersonopplysningerDto_fpoversikt | undefined = mellomlagretState && {
+        ...mellomlagretState.søkerInfo,
+        frilansoppdrag: mellomlagretState.søkerInfo.frilansoppdrag ?? søkerinfo.data.frilansoppdrag ?? [],
+        selvstendigNæring: mellomlagretState.søkerInfo.selvstendigNæring ?? søkerinfo.data.selvstendigNæring ?? [],
+    };
+
+    if (normalisertLagretSøkerInfo && !erLikUansettRekkefølge(normalisertLagretSøkerInfo, søkerinfo.data)) {
         return (
             <RegisterdataUtdatert
                 slettMellomlagringOgLastSidePåNytt={slettMellomlagringOgLastSidePåNytt}
@@ -81,12 +87,3 @@ export const Svangerskapspengesøknad = () => {
         </div>
     );
 };
-
-const normaliserSøkerInfo = (
-    lagretSøkerInfo: SvpPersonopplysningerDto_fpoversikt,
-    søkerInfo: SvpPersonopplysningerDto_fpoversikt,
-): SvpPersonopplysningerDto_fpoversikt => ({
-    ...lagretSøkerInfo,
-    frilansoppdrag: lagretSøkerInfo.frilansoppdrag ?? søkerInfo.frilansoppdrag ?? [],
-    selvstendigNæring: lagretSøkerInfo.selvstendigNæring ?? søkerInfo.selvstendigNæring ?? [],
-});

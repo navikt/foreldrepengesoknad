@@ -39,7 +39,7 @@ export const HarArbeidsforhold = ({ arbeidsforhold, harArbeidsforhold }: Props) 
                             icon={<BriefcaseClockIcon aria-hidden />}
                             variant="info"
                         >
-                            Arbeidstaker{' '}
+                            <FormattedMessage id="HarArbeidsforhold.Arbeidstaker" />{' '}
                             <FormattedMessage
                                 id="inntektsinformasjon.arbeidsforhold.stillingsprosent"
                                 values={{
@@ -49,14 +49,18 @@ export const HarArbeidsforhold = ({ arbeidsforhold, harArbeidsforhold }: Props) 
                         </Tag>
                         {arbforhold.arbeidsgiverIdType === 'orgnr' && (
                             <HStack justify="space-between">
-                                <Label>Org.nummer</Label>
+                                <Label>
+                                    <FormattedMessage id="HarArbeidsforhold.OrgNummer" />
+                                </Label>
                                 <BodyShort className="text-ax-text-neutral-subtle" size="small">
                                     {arbforhold.arbeidsgiverId}
                                 </BodyShort>
                             </HStack>
                         )}
                         <HStack justify="space-between">
-                            <Label>Dato:</Label>
+                            <Label>
+                                <FormattedMessage id="HarArbeidsforhold.Dato" />
+                            </Label>
                             <BodyShort className="text-ax-text-neutral-subtle" size="small">
                                 <FormattedMessage
                                     id="inntektsinformasjon.arbeidsforhold.periode"

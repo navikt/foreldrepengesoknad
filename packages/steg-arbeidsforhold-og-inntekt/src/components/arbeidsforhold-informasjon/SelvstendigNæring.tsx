@@ -1,5 +1,5 @@
 import { ExclamationmarkTriangleIcon, PersonEnvelopeIcon } from '@navikt/aksel-icons';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Box, HStack, Heading, InfoCard, Label, List, ReadMore, Tag, VStack } from '@navikt/ds-react';
 
@@ -19,7 +19,7 @@ const getNæringNavn = (næring: SelvstendigNæringDto_fpoversikt, fallback: str
 const ManglerOpplysninger = () => (
     <InfoCard data-color="warning">
         <InfoCard.Message icon={<ExclamationmarkTriangleIcon aria-hidden />}>
-            Vi mangler opplysninger om næringen. Dette kan du legge til i neste steg.
+            <FormattedMessage id="SelvstendigNæring.ManglerOpplysninger" />
         </InfoCard.Message>
     </InfoCard>
 );
@@ -42,21 +42,29 @@ export const SelvstendigNæring = ({ selvstendigNæring, visManglerOpplysninger 
                 >
                     <VStack gap="space-16">
                         <Heading size="xsmall" level="3">
-                            Mine næringer
+                            <FormattedMessage id="SelvstendigNæring.MineNæringer" />
                         </Heading>
                         <Tag
                             className="inline-flex w-max items-center gap-0.5 px-1.5 py-0.5"
                             icon={<PersonEnvelopeIcon aria-hidden />}
                             variant="info"
                         >
-                            Selvstendig næringsdrivende
+                            <FormattedMessage id="SelvstendigNæringDrivende.Tag" />
                         </Tag>
-                        <ReadMore variant="moderate" header="Dine næringer">
+                        <ReadMore
+                            variant="moderate"
+                            header={intl.formatMessage({ id: 'SelvstendigNæring.DineNæringer' })}
+                        >
                             <List>
                                 {selvstendigNæring.map((næring) => (
                                     <List.Item key={getNæringKey(næring)} title={getNæringNavn(næring, fallbackNavn)}>
                                         <VStack gap="space-4">
-                                            <BodyShort size="small">Org.nummer: {næring.organisasjonsnummer}</BodyShort>
+                                            <BodyShort size="small">
+                                                <FormattedMessage
+                                                    id="SelvstendigNæringDrivende.OrgNummerMedVerdi"
+                                                    values={{ orgnummer: næring.organisasjonsnummer }}
+                                                />
+                                            </BodyShort>
                                         </VStack>
                                     </List.Item>
                                 ))}
@@ -86,10 +94,12 @@ export const SelvstendigNæring = ({ selvstendigNæring, visManglerOpplysninger 
                         icon={<PersonEnvelopeIcon aria-hidden />}
                         variant="info"
                     >
-                        Selvstendig næringsdrivende
+                        <FormattedMessage id="SelvstendigNæringDrivende.Tag" />
                     </Tag>
                     <HStack justify="space-between">
-                        <Label>Org.nummer</Label>
+                        <Label>
+                            <FormattedMessage id="SelvstendigNæringDrivende.OrgNummer" />
+                        </Label>
                         <BodyShort className="text-ax-text-neutral-subtle" size="small">
                             {næring.organisasjonsnummer}
                         </BodyShort>

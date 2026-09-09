@@ -1,5 +1,5 @@
 import { PersonEnvelopeIcon, TrashIcon } from '@navikt/aksel-icons';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Box, Button, HStack, Heading, Label, Tag, VStack } from '@navikt/ds-react';
 
@@ -40,11 +40,13 @@ export const ManueltLagtTilNæring = ({ egenNæring, onRemove }: Props) => {
                     icon={<PersonEnvelopeIcon aria-hidden />}
                     variant="info"
                 >
-                    Selvstendig næringsdrivende
+                    <FormattedMessage id="SelvstendigNæringDrivende.Tag" />
                 </Tag>
                 {egenNæring.registrertINorge && egenNæring.organisasjonsnummer && (
                     <HStack justify="space-between">
-                        <Label>Org.nummer</Label>
+                        <Label>
+                            <FormattedMessage id="SelvstendigNæringDrivende.OrgNummer" />
+                        </Label>
                         <BodyShort className="text-ax-text-neutral-subtle" size="small">
                             {egenNæring.organisasjonsnummer}
                         </BodyShort>
@@ -52,14 +54,18 @@ export const ManueltLagtTilNæring = ({ egenNæring, onRemove }: Props) => {
                 )}
                 {!egenNæring.registrertINorge && egenNæring.registrertILand && (
                     <HStack justify="space-between">
-                        <Label>Land</Label>
+                        <Label>
+                            <FormattedMessage id="SelvstendigNæringDrivende.Land" />
+                        </Label>
                         <BodyShort className="text-ax-text-neutral-subtle" size="small">
                             {getCountryName(egenNæring.registrertILand, intl.locale)}
                         </BodyShort>
                     </HStack>
                 )}
                 <HStack justify="space-between">
-                    <Label>Dato:</Label>
+                    <Label>
+                        <FormattedMessage id="SelvstendigNæringDrivende.Dato" />
+                    </Label>
                     <BodyShort className="text-ax-text-neutral-subtle" size="small">
                         {formatDate(egenNæring.fom)} -{' '}
                         {egenNæring.tom
@@ -75,10 +81,10 @@ export const ManueltLagtTilNæring = ({ egenNæring, onRemove }: Props) => {
                         data-color="danger"
                         icon={<TrashIcon aria-hidden />}
                         className="self-start"
-                        aria-label={`Fjern ${navn}`}
+                        aria-label={intl.formatMessage({ id: 'ManueltLagtTilNæring.FjernAriaLabel' }, { navn })}
                         onClick={onRemove}
                     >
-                        Fjern
+                        <FormattedMessage id="ManueltLagtTilNæring.Fjern" />
                     </Button>
                 )}
             </VStack>

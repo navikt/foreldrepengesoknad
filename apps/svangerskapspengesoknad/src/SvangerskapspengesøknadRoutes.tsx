@@ -46,6 +46,9 @@ const renderSøknadRoutes = (
     if (!harGodkjentVilkår) {
         return <Route path="*" element={<Navigate to={SøknadRoute.FORSIDE} />} />;
     }
+
+    const harRegistrertNæring = søkerInfo.selvstendigNæring.length > 0;
+
     return (
         <>
             <Route
@@ -53,7 +56,7 @@ const renderSøknadRoutes = (
                 element={
                     <BarnetSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
-                        harRegistrertNæring={søkerInfo.selvstendigNæring.length > 0}
+                        harRegistrertNæring={harRegistrertNæring}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -64,7 +67,7 @@ const renderSøknadRoutes = (
                 element={
                     <UtenlandsoppholdSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
-                        harRegistrertNæring={søkerInfo.selvstendigNæring.length > 0}
+                        harRegistrertNæring={harRegistrertNæring}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -75,7 +78,7 @@ const renderSøknadRoutes = (
                 element={
                     <TidligereUtenlandsoppholdSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
-                        harRegistrertNæring={søkerInfo.selvstendigNæring.length > 0}
+                        harRegistrertNæring={harRegistrertNæring}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -86,7 +89,7 @@ const renderSøknadRoutes = (
                 element={
                     <SenereUtenlandsoppholdSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
-                        harRegistrertNæring={søkerInfo.selvstendigNæring.length > 0}
+                        harRegistrertNæring={harRegistrertNæring}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -127,7 +130,7 @@ const renderSøknadRoutes = (
                 element={
                     <ArbeidIUtlandetSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
-                        harRegistrertNæring={søkerInfo.selvstendigNæring.length > 0}
+                        harRegistrertNæring={harRegistrertNæring}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -138,7 +141,7 @@ const renderSøknadRoutes = (
                 element={
                     <VelgArbeidSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
-                        harRegistrertNæring={søkerInfo.selvstendigNæring.length > 0}
+                        harRegistrertNæring={harRegistrertNæring}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -149,7 +152,7 @@ const renderSøknadRoutes = (
                 element={
                     <SkjemaSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
-                        harRegistrertNæring={søkerInfo.selvstendigNæring.length > 0}
+                        harRegistrertNæring={harRegistrertNæring}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -160,7 +163,7 @@ const renderSøknadRoutes = (
                 element={
                     <TilretteleggingSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
-                        harRegistrertNæring={søkerInfo.selvstendigNæring.length > 0}
+                        harRegistrertNæring={harRegistrertNæring}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -171,7 +174,7 @@ const renderSøknadRoutes = (
                 element={
                     <PerioderSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
-                        harRegistrertNæring={søkerInfo.selvstendigNæring.length > 0}
+                        harRegistrertNæring={harRegistrertNæring}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -182,7 +185,7 @@ const renderSøknadRoutes = (
                 element={
                     <FerieSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
-                        harRegistrertNæring={søkerInfo.selvstendigNæring.length > 0}
+                        harRegistrertNæring={harRegistrertNæring}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />

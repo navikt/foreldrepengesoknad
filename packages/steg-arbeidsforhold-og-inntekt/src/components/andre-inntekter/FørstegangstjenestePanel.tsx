@@ -1,5 +1,5 @@
 import { FileIcon } from '@navikt/aksel-icons';
-import { useState } from 'react';
+import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -17,7 +17,6 @@ interface Props {
 
 export const FørstegangstjenestePanel = ({ index, inntektskilde }: Props) => {
     const intl = useIntl();
-    const [today] = useState(() => new Date().toISOString().slice(0, 10));
 
     const { control } = useFormContext<AndreInntekterFormValues>();
 
@@ -49,7 +48,7 @@ export const FørstegangstjenestePanel = ({ index, inntektskilde }: Props) => {
                     name={`andreInntektskilder.${index}.fom`}
                     control={control}
                     label={intl.formatMessage({ id: 'FørstegangstjenestePanel.Fom' })}
-                    maxDate={today}
+                    maxDate={dayjs()}
                     validate={[
                         isRequired(intl.formatMessage({ id: 'FørstegangstjenestePanel.Validering.Required.Fom' })),
                         isValidDate(intl.formatMessage({ id: 'FørstegangstjenestePanel.Validering.Valid.Fom' })),
@@ -58,7 +57,7 @@ export const FørstegangstjenestePanel = ({ index, inntektskilde }: Props) => {
                         ),
                         isBeforeOrSame(
                             intl.formatMessage({ id: 'FørstegangstjenestePanel.FraOgMedDato.FørTilDato' }),
-                            inntektskilde.pågående ? today : inntektskilde.tom,
+                            inntektskilde.pågående ? dayjs() : inntektskilde.tom,
                         ),
                     ]}
                 />
@@ -67,7 +66,7 @@ export const FørstegangstjenestePanel = ({ index, inntektskilde }: Props) => {
                         name={`andreInntektskilder.${index}.tom`}
                         control={control}
                         label={intl.formatMessage({ id: 'FørstegangstjenestePanel.Tom' })}
-                        maxDate={today}
+                        maxDate={dayjs()}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'FørstegangstjenestePanel.Validering.Required.Tom' })),
                             isValidDate(intl.formatMessage({ id: 'FørstegangstjenestePanel.Validering.Valid.Tom' })),

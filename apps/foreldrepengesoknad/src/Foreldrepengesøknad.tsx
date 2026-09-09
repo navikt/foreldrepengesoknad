@@ -129,7 +129,14 @@ const RegisterdataSjekk = ({
         !erLikUansettRekkefølge(annenPartVedtakQuery.data, mellomlagretData.annenPartVedtak);
 
     const søkerInfoErEndret = !erLikUansettRekkefølge(
-        normaliserSøkerInfo(mellomlagretData.søkerInfo, søkerInfo),
+        // frilansoppdrag/selvstendigNæring kan mangle på lagret søkerInfo dersom mellomlagringa vart gjort
+        // før desse felta fanst i kontrakten. Då fell vi tilbake på fersk data i staden for å be brukaren
+        // starte på nytt berre fordi den lagra søknaden manglar felt ho aldri fekk moglegheit til å ha.
+        {
+            ...mellomlagretData.søkerInfo,
+            frilansoppdrag: mellomlagretData.søkerInfo.frilansoppdrag ?? søkerInfo.frilansoppdrag ?? [],
+            selvstendigNæring: mellomlagretData.søkerInfo.selvstendigNæring ?? søkerInfo.selvstendigNæring ?? [],
+        },
         søkerInfo,
     );
 
@@ -160,15 +167,6 @@ const RegisterdataSjekk = ({
 
     return <>{children}</>;
 };
-
-const normaliserSøkerInfo = (
-    lagretSøkerInfo: FpPersonopplysningerDto_fpoversikt,
-    søkerInfo: FpPersonopplysningerDto_fpoversikt,
-): FpPersonopplysningerDto_fpoversikt => ({
-    ...lagretSøkerInfo,
-    frilansoppdrag: lagretSøkerInfo.frilansoppdrag ?? søkerInfo.frilansoppdrag ?? [],
-    selvstendigNæring: lagretSøkerInfo.selvstendigNæring ?? søkerInfo.selvstendigNæring ?? [],
-});
 
 // Samanliknar berre felt som faktisk gjer ei mellomlagra søknad ugyldig.
 // Volatile felt frå backend som ikkje seier noko om søknadsgrunnlaget er endra,
