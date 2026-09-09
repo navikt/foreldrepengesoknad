@@ -20,6 +20,7 @@
     "error.hentingInformasjon": "Vi klarte ikke å hente informasjon om deg. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.",
     "saksoversikt.oppgaver": "Oppgaver",
     "saksoversikt.tidslinje": "Dette skjer i saken",
+    "saksoversikt.tidslinje.harSkjedd": "Dette har skjedd i saken",
     "saksoversikt.snarveier": "Snarveier",
     "saksoversikt.kontaktOss": "Finner du ikke det du leter etter? Ta kontakt med oss.",
     "saksoversikt.dinPlan.vedtatt": "Din plan",
