@@ -25,10 +25,10 @@ const næringer = [
     },
 ] satisfies SelvstendigNæringDto_fpoversikt[];
 
-const renderNæringer = (selvstendigNæring: SelvstendigNæringDto_fpoversikt[]) =>
+const renderNæringer = (registrerteNæringer: SelvstendigNæringDto_fpoversikt[]) =>
     render(
         <IntlProvider locale="nb" messages={nbMessages}>
-            <SelvstendigNæring selvstendigNæring={selvstendigNæring} />
+            <SelvstendigNæring registrerteNæringer={registrerteNæringer} />
         </IntlProvider>,
     );
 

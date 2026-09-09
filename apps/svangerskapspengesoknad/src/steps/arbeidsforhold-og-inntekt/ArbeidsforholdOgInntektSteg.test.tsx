@@ -106,7 +106,7 @@ describe('<ArbeidsforholdOgInntektSteg>', () => {
                 gåTilNesteSide,
                 mellomlagreSøknadOgNaviger,
                 egenNæring: egenNæringFraInntektsstepper,
-                selvstendigNæring: [],
+                registrerteNæringer: [],
             },
         });
 

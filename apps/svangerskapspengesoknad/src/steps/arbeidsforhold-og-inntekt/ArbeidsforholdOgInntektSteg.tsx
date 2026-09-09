@@ -54,9 +54,9 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
     const oppdaterArbeidIUtlandet = useContextSaveData(ContextDataType.ARBEID_I_UTLANDET);
 
-    const { arbeidsforhold, frilansoppdrag, selvstendigNæring } = søkerInfo;
+    const { arbeidsforhold, frilansoppdrag, selvstendigNæring: registrerteNæringer } = søkerInfo;
 
-    const harRegistrertNæring = selvstendigNæring.length > 0;
+    const harRegistrertNæring = registrerteNæringer.length > 0;
     const stepConfig = useStepConfig({ arbeidsforhold, harRegistrertNæring });
     const navigator = useSvpNavigator({
         mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
@@ -127,7 +127,7 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
                 values,
                 skalViseEgenNæringSteg({
                     harJobbetSomSelvstendigNæringsdrivende: values.harJobbetSomSelvstendigNæringsdrivende,
-                    harRegistrertNæring: selvstendigNæring.length > 0,
+                    harRegistrertNæring: registrerteNæringer.length > 0,
                     egenNæring,
                 }),
             ),
@@ -139,7 +139,7 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
             <ArbeidsforholdOgInntektPanel
                 aktiveArbeidsforhold={aktiveArbeidsforhold}
                 frilansoppdrag={frilansoppdrag}
-                selvstendigNæring={selvstendigNæring}
+                registrerteNæringer={registrerteNæringer}
                 egenNæring={egenNæring}
                 andreInntektskilder={andreInntektskilder}
                 saveOnNext={onSubmit}

@@ -91,7 +91,7 @@ export const ForSvangerskapspenger: Story = {
     args: {
         aktiveArbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
         frilansoppdrag: [],
-        selvstendigNæring: [],
+        registrerteNæringer: [],
         andreInntektskilder: [],
         saveOnNext: action('button-click'),
         saveAndreInntektskilder: action('button-click'),
@@ -139,7 +139,7 @@ export const ForForeldrepengerMedFrilansoppdrag: Story = {
 export const ForForeldrepengerMedSelvstendigNæring: Story = {
     args: {
         ...ForForeldrepenger.args,
-        selvstendigNæring: DEFAULT_SELVSTENDIG_NÆRING,
+        registrerteNæringer: DEFAULT_SELVSTENDIG_NÆRING,
     },
 };
 

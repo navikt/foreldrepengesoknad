@@ -7,7 +7,7 @@ import { SelvstendigNæringDto_fpoversikt } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
 interface Props {
-    selvstendigNæring: SelvstendigNæringDto_fpoversikt[];
+    registrerteNæringer: SelvstendigNæringDto_fpoversikt[];
     visManglerOpplysninger?: boolean;
 }
 
@@ -24,16 +24,16 @@ const ManglerOpplysninger = () => (
     </InfoCard>
 );
 
-export const SelvstendigNæring = ({ selvstendigNæring, visManglerOpplysninger = true }: Props) => {
+export const SelvstendigNæring = ({ registrerteNæringer, visManglerOpplysninger = true }: Props) => {
     const intl = useIntl();
 
-    if (selvstendigNæring.length === 0) {
+    if (registrerteNæringer.length === 0) {
         return null;
     }
 
     const fallbackNavn = intl.formatMessage({ id: 'inntektsinformasjon.egenNæring.label' });
 
-    if (selvstendigNæring.length > 1) {
+    if (registrerteNæringer.length > 1) {
         return (
             <VStack gap="space-8">
                 <Box
@@ -56,7 +56,7 @@ export const SelvstendigNæring = ({ selvstendigNæring, visManglerOpplysninger 
                             header={intl.formatMessage({ id: 'SelvstendigNæring.DineNæringer' })}
                         >
                             <List>
-                                {selvstendigNæring.map((næring) => (
+                                {registrerteNæringer.map((næring) => (
                                     <List.Item key={getNæringKey(næring)} title={getNæringNavn(næring, fallbackNavn)}>
                                         <VStack gap="space-4">
                                             <BodyShort size="small">
@@ -77,7 +77,7 @@ export const SelvstendigNæring = ({ selvstendigNæring, visManglerOpplysninger 
         );
     }
 
-    const næring = selvstendigNæring[0]!;
+    const næring = registrerteNæringer[0]!;
 
     return (
         <VStack gap="space-8">

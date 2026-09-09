@@ -107,7 +107,7 @@ type StoryArgs = {
     egenNæring?: NæringDto;
     arbeidsforhold?: EksternArbeidsforholdDto_fpoversikt[];
     frilansoppdrag?: EksternArbeidsforholdDto_fpoversikt[];
-    selvstendigNæring?: SelvstendigNæringDto_fpoversikt[];
+    registrerteNæringer?: SelvstendigNæringDto_fpoversikt[];
 } & ComponentProps<typeof ArbeidsforholdOgInntektSteg>;
 
 const meta = {
@@ -118,7 +118,7 @@ const meta = {
         egenNæring,
         arbeidsforhold = DEFAULT_ARBEIDSFORHOLD,
         frilansoppdrag = DEFAULT_FRILANSOPPDRAG,
-        selvstendigNæring = DEFAULT_SELVSTENDIG_NÆRING,
+        registrerteNæringer = DEFAULT_SELVSTENDIG_NÆRING,
         søkerInfo: _søkerInfo,
         ...rest
     }) => {
@@ -131,7 +131,7 @@ const meta = {
             kjønn: 'K',
             navn: { fornavn: 'Kari', etternavn: 'Nordmann' },
             frilansoppdrag,
-            selvstendigNæring,
+            selvstendigNæring: registrerteNæringer,
         };
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.ARBEID_OG_INNTEKT]}>

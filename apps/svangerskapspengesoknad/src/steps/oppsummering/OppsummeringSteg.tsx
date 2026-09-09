@@ -55,7 +55,7 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
         valgteArbeidsforhold?.includes(arbeidsforhold.arbeidsgiverId),
     );
 
-    const { selvstendigNæring } = søkerInfo;
+    const { selvstendigNæring: registrerteNæringer } = søkerInfo;
 
     const førsteTilretteleggingId = getTilretteleggingId(
         søkerInfo.arbeidsforhold,
@@ -117,10 +117,10 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
                 <FrilansOppsummering frilans={frilans} onVilEndreSvar={() => navigator.goToStep(SøknadRoute.FRILANS)} />
                 <SelvstendigNæringsdrivendeOppsummering
                     egenNæring={egenNæring}
-                    selvstendigNæring={selvstendigNæring}
+                    registrerteNæringer={registrerteNæringer}
                     onVilEndreSvar={() =>
                         navigator.goToStep(
-                            selvstendigNæring.length > 0 ? SøknadRoute.NÆRING : SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT,
+                            registrerteNæringer.length > 0 ? SøknadRoute.NÆRING : SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT,
                         )
                     }
                 />

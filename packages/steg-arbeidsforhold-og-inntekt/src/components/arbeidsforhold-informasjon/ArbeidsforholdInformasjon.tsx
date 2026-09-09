@@ -24,7 +24,7 @@ import { SelvstendigNæring } from './SelvstendigNæring.tsx';
 interface Props {
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     frilansoppdrag: EksternArbeidsforholdDto_fpoversikt[];
-    selvstendigNæring: SelvstendigNæringDto_fpoversikt[];
+    registrerteNæringer: SelvstendigNæringDto_fpoversikt[];
     egenNæring?: NæringDto;
     andreInntektskilder: AndreInntektskilder[];
     onRemoveAndreInntekt: (index: number) => void;
@@ -134,7 +134,7 @@ export const ArbeidsforholdInformasjon = ({
     appOrigin,
     arbeidsforhold,
     frilansoppdrag,
-    selvstendigNæring,
+    registrerteNæringer,
     egenNæring,
     andreInntektskilder,
     onRemoveAndreInntekt,
@@ -168,7 +168,7 @@ export const ArbeidsforholdInformasjon = ({
                 </ReadMore>
             )}
             <FrilansOppdrag frilansoppdrag={frilansoppdrag} />
-            <SelvstendigNæring selvstendigNæring={selvstendigNæring} />
+            <SelvstendigNæring registrerteNæringer={registrerteNæringer} />
             <ManueltLagtTilNæring egenNæring={egenNæring} onRemove={onRemoveEgenNæring} />
             <AndreInntektskilderBox andreInntektskilder={andreInntektskilder} onRemove={onRemoveAndreInntekt} />
             <ReadMore

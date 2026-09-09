@@ -199,17 +199,17 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
 
     it('skal lagre selvstendig næringsdrivende når registerdata lastes etter første render', async () => {
         const saveOnNext = vi.fn();
-        const selvstendigNæring = [
+        const registrerteNæringer = [
             {
                 organisasjonsnummer: '998877665',
                 navn: 'Kari Konsulent',
                 næringstype: 'ANNEN',
             },
         ] as const;
-        const { rerender } = render(<ForForeldrepenger selvstendigNæring={[]} saveOnNext={saveOnNext} />);
+        const { rerender } = render(<ForForeldrepenger registrerteNæringer={[]} saveOnNext={saveOnNext} />);
 
         await screen.findAllByText('Arbeidsforhold og inntekt');
-        rerender(<ForForeldrepenger selvstendigNæring={[...selvstendigNæring]} saveOnNext={saveOnNext} />);
+        rerender(<ForForeldrepenger registrerteNæringer={[...registrerteNæringer]} saveOnNext={saveOnNext} />);
         await screen.findByText('Kari Konsulent');
         await userEvent.click(screen.getByRole('button', { name: 'Neste steg' }));
 

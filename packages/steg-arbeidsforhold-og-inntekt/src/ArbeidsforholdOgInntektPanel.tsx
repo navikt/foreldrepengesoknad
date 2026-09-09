@@ -24,7 +24,7 @@ import { AndreInntektskilder, AndreInntektskilderUtkast, erFerdigUtfylt } from '
 interface Props<TYPE> {
     aktiveArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     frilansoppdrag: EksternArbeidsforholdDto_fpoversikt[];
-    selvstendigNæring: SelvstendigNæringDto_fpoversikt[];
+    registrerteNæringer: SelvstendigNæringDto_fpoversikt[];
     egenNæring?: NæringDto;
     andreInntektskilder: AndreInntektskilderUtkast[];
     saveOnNext: (formValues: ArbeidsforholdOgInntekt) => void;
@@ -41,7 +41,7 @@ interface Props<TYPE> {
 export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
     aktiveArbeidsforhold,
     frilansoppdrag,
-    selvstendigNæring,
+    registrerteNæringer,
     egenNæring,
     andreInntektskilder,
     saveOnNext,
@@ -61,7 +61,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
     const ferdigeAndreInntektskilder = andreInntektskilder.filter(erFerdigUtfylt);
 
     const hattInntektSomFrilans = frilansoppdrag.length > 0;
-    const hattInntektSomNæringsdrivende = selvstendigNæring.length > 0 || egenNæring !== undefined;
+    const hattInntektSomNæringsdrivende = registrerteNæringer.length > 0 || egenNæring !== undefined;
     const harAnnenInntekt = ferdigeAndreInntektskilder.length > 0;
     const kanIkkeSøke =
         aktiveArbeidsforhold.length === 0 &&
@@ -103,8 +103,8 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                             appOrigin={appOrigin}
                             arbeidsforhold={aktiveArbeidsforhold}
                             frilansoppdrag={frilansoppdrag}
-                            selvstendigNæring={selvstendigNæring}
-                            egenNæring={selvstendigNæring.length === 0 ? egenNæring : undefined}
+                            registrerteNæringer={registrerteNæringer}
+                            egenNæring={registrerteNæringer.length === 0 ? egenNæring : undefined}
                             andreInntektskilder={ferdigeAndreInntektskilder}
                             onRemoveAndreInntekt={(index) =>
                                 saveAndreInntektskilder(
@@ -117,7 +117,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                     <VStack gap="space-4">
                         <LeggTilAndreInntekterWizard
                             appOrigin={appOrigin}
-                            harRegistrertNæring={selvstendigNæring.length > 0}
+                            harRegistrertNæring={registrerteNæringer.length > 0}
                             harEgenNæring={egenNæring !== undefined}
                             onSaveEgenNæring={saveEgenNæring}
                             onSaveAndreInntekt={(annenInntekt) =>

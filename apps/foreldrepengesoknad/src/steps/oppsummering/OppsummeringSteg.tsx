@@ -72,7 +72,7 @@ export const OppsummeringSteg = (props: Props) => {
         erEndringssøknad,
         eksisterendeSak,
     });
-    const { selvstendigNæring } = søkerInfo;
+    const { selvstendigNæring: registrerteNæringer } = søkerInfo;
 
     if (uttaksplan === undefined) {
         return <ManglendeUttaksplanSide onGåTilUttaksplan={() => navigator.goToStep(SøknadRoutes.UTTAKSPLAN)} />;
@@ -150,10 +150,10 @@ export const OppsummeringSteg = (props: Props) => {
                 />
                 <SelvstendigNæringsdrivendeOppsummering
                     egenNæring={egenNæring}
-                    selvstendigNæring={selvstendigNæring}
+                    registrerteNæringer={registrerteNæringer}
                     onVilEndreSvar={() =>
                         navigator.goToStep(
-                            selvstendigNæring.length > 0 ? SøknadRoutes.EGEN_NÆRING : SøknadRoutes.ARBEID_OG_INNTEKT,
+                            registrerteNæringer.length > 0 ? SøknadRoutes.EGEN_NÆRING : SøknadRoutes.ARBEID_OG_INNTEKT,
                         )
                     }
                 />

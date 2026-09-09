@@ -110,13 +110,13 @@ const ArbeidsforholdFormSummaryValue = ({
 type SelvstendigNæringsdrivendeOppsummeringProps = {
     onVilEndreSvar: () => void;
     egenNæring?: NæringDto;
-    selvstendigNæring?: SelvstendigNæringDto_fpoversikt[];
+    registrerteNæringer?: SelvstendigNæringDto_fpoversikt[];
 };
 
 export const SelvstendigNæringsdrivendeOppsummering = ({
     onVilEndreSvar,
     egenNæring,
-    selvstendigNæring = [],
+    registrerteNæringer = [],
 }: SelvstendigNæringsdrivendeOppsummeringProps) => {
     if (!egenNæring) {
         return null;
@@ -139,8 +139,11 @@ export const SelvstendigNæringsdrivendeOppsummering = ({
                         <FormattedMessage id="ArbeidsforholdOppsummering.næringsvirksomhet" />
                     </FormSummary.Label>
                     <FormSummary.Value>
-                        {selvstendigNæring.length > 0 ? (
-                            <SelvstendigNæring selvstendigNæring={selvstendigNæring} visManglerOpplysninger={false} />
+                        {registrerteNæringer.length > 0 ? (
+                            <SelvstendigNæring
+                                registrerteNæringer={registrerteNæringer}
+                                visManglerOpplysninger={false}
+                            />
                         ) : (
                             <ManueltLagtTilNæring egenNæring={egenNæring} />
                         )}

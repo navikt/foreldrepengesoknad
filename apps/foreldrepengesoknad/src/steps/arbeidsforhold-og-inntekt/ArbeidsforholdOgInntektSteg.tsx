@@ -24,9 +24,9 @@ type Props = {
 };
 
 export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }: Props) => {
-    const { arbeidsforhold, frilansoppdrag, selvstendigNæring } = søkerInfo;
+    const { arbeidsforhold, frilansoppdrag, selvstendigNæring: registrerteNæringer } = søkerInfo;
 
-    const harRegistrertNæring = selvstendigNæring.length > 0;
+    const harRegistrertNæring = registrerteNæringer.length > 0;
     const stepConfig = useStepConfig({ arbeidsforhold, harRegistrertNæring });
     const navigator = useFpNavigator({
         arbeidsforhold,
@@ -74,7 +74,7 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
             skalViseEgenNæringSteg({
                 harJobbetSomSelvstendigNæringsdrivende:
                     arbeidsforholdOgInntektFp.harJobbetSomSelvstendigNæringsdrivende,
-                harRegistrertNæring: selvstendigNæring.length > 0,
+                harRegistrertNæring: registrerteNæringer.length > 0,
                 egenNæring,
             })
         ) {
@@ -89,7 +89,7 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
             <ArbeidsforholdOgInntektPanel
                 aktiveArbeidsforhold={aktiveArbeidsforhold}
                 frilansoppdrag={frilansoppdrag}
-                selvstendigNæring={selvstendigNæring}
+                registrerteNæringer={registrerteNæringer}
                 egenNæring={egenNæring}
                 andreInntektskilder={andreInntektskilder}
                 saveOnNext={onSubmit}
