@@ -34,6 +34,7 @@ import {
 
 import { OrgnummerEllerLand } from './components/OrgnummerEllerLand';
 import { VarigEndringSpørsmål } from './components/VarigEndringSpørsmål';
+import { getPrioritertRegistrertNæring } from './getForhåndsvalgtNæringstype';
 import { NæringFormValues } from './types/NæringFormValues';
 
 dayjs.extend(minMax);
@@ -68,8 +69,6 @@ const validateEgenNæringNavn = (intl: IntlShape, erValgfri: boolean) => (value:
 
 interface Props<TYPE> {
     egenNæring?: NæringDto;
-    initialNæringstype?: NæringDto['næringstype'];
-    registrertNæring?: SelvstendigNæringDto_fpoversikt;
     registrerteNæringer?: SelvstendigNæringDto_fpoversikt[];
     saveOnNext: (formValues: NæringDto) => void;
     onAvsluttOgSlett: () => void;
@@ -82,8 +81,6 @@ interface Props<TYPE> {
 
 interface EgenNæringFormProps {
     egenNæring?: NæringDto;
-    initialNæringstype?: NæringDto['næringstype'];
-    registrertNæring?: SelvstendigNæringDto_fpoversikt;
     registrerteNæringer?: SelvstendigNæringDto_fpoversikt[];
     fixedNæringstype?: NæringDto['næringstype'];
     fixedRegistrertINorge?: boolean;
@@ -98,8 +95,6 @@ export const EGEN_NÆRING_ID = 'naering';
 
 export const EgenNæringForm = ({
     egenNæring,
-    initialNæringstype,
-    registrertNæring,
     registrerteNæringer = [],
     fixedNæringstype,
     fixedRegistrertINorge,
@@ -116,8 +111,8 @@ export const EgenNæringForm = ({
      * Hvis egenNæring finnes har bruker gjort et valg, og da vil vi velge false/true for radioknappen
      */
     const egenNæringDefaultValue = egenNæring === undefined ? undefined : !egenNæring.tom;
-    const næringstype =
-        fixedNæringstype ?? registrertNæring?.næringstype ?? egenNæring?.næringstype ?? initialNæringstype;
+    const registrertNæring = getPrioritertRegistrertNæring(registrerteNæringer);
+    const næringstype = fixedNæringstype ?? registrertNæring?.næringstype ?? egenNæring?.næringstype;
     const skjultNæringstype =
         fixedNæringstype ?? registrertNæring?.næringstype ?? (næringstype === 'FISKE' ? 'FISKE' : undefined);
     const registrertINorgeDefault = registrertNæring ? true : (fixedRegistrertINorge ?? egenNæring?.registrertINorge);
@@ -470,8 +465,6 @@ export const EgenNæringForm = ({
 
 export const EgenNæringPanel = <TYPE extends string>({
     egenNæring,
-    initialNæringstype,
-    registrertNæring,
     registrerteNæringer,
     saveOnNext,
     onAvsluttOgSlett,
@@ -484,8 +477,6 @@ export const EgenNæringPanel = <TYPE extends string>({
     <Step steps={stepConfig} onStepChange={onStepChange} someFieldsOptional>
         <EgenNæringForm
             egenNæring={egenNæring}
-            initialNæringstype={initialNæringstype}
-            registrertNæring={registrertNæring}
             registrerteNæringer={registrerteNæringer}
             fixedRegistrertINorge
             onSubmit={saveOnNext}

@@ -1,6 +1,7 @@
 import { ExclamationmarkTriangleIcon, InformationSquareIcon, PersonEnvelopeIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Heading, InfoCard, Label, Radio, RadioGroup, ReadMore, VStack } from '@navikt/ds-react';
 
@@ -58,7 +59,7 @@ const EgenNæringWizardForm = ({ appOrigin, onSubmit, onAbort, onBack }: EgenNæ
     return (
         <>
             <Heading level="2" size="small">
-                Legg til inntektskilde
+                <FormattedMessage id="LeggTilAndreInntekterWizard.tittel" />
             </Heading>
             <EgenNæringForm
                 appOrigin={appOrigin}
@@ -80,6 +81,7 @@ const LeggTilAndreInntekterWizardInner = ({
     onSaveEgenNæring,
     onSaveAndreInntekt,
 }: Props) => {
+    const intl = useIntl();
     const [step, setStep] = useState<WizardStep>('START');
     const [inntektstype, setInntektstype] = useState<Inntektstype>();
 
@@ -100,21 +102,33 @@ const LeggTilAndreInntekterWizardInner = ({
         return (
             <VStack gap="space-40">
                 <Heading level="2" size="small">
-                    Legg til inntektskilde
+                    <FormattedMessage id="LeggTilAndreInntekterWizard.tittel" />
                 </Heading>
                 <RadioGroup
-                    legend="Hvilken type inntekt har du hatt?"
-                    description="Oppgi kun aktiv inntekt de siste 10 månedene"
+                    legend={intl.formatMessage({ id: 'LeggTilAndreInntekterWizard.velgInntektstype.legend' })}
+                    description={intl.formatMessage({
+                        id: 'LeggTilAndreInntekterWizard.velgInntektstype.description',
+                    })}
                     value={inntektstype ?? ''}
                     onChange={setInntektstype}
                 >
                     {!harEgenNæring && (
                         <>
-                            <Radio value="EGEN_NÆRING" description="Jobbet i ektefelles virksomhet (ENK).">
-                                Jeg har jobbet i min ektefelles næring hvor vi har fordelt inntekt
+                            <Radio
+                                value="EGEN_NÆRING"
+                                description={intl.formatMessage({
+                                    id: 'LeggTilAndreInntekterWizard.egenNæring.description',
+                                })}
+                            >
+                                <FormattedMessage id="LeggTilAndreInntekterWizard.egenNæring.label" />
                             </Radio>
-                            <Radio value="FISKER" description="Hyre og/eller lott, eller egen båt">
-                                Jeg er fisker eller mannskap på båt
+                            <Radio
+                                value="FISKER"
+                                description={intl.formatMessage({
+                                    id: 'LeggTilAndreInntekterWizard.fisker.description',
+                                })}
+                            >
+                                <FormattedMessage id="LeggTilAndreInntekterWizard.fisker.label" />
                             </Radio>
                         </>
                     )}
@@ -122,24 +136,28 @@ const LeggTilAndreInntekterWizardInner = ({
                         value="ANNEN_INNTEKT"
                         description={
                             appOrigin === 'svangerskapspengesoknad'
-                                ? 'Arbeid i utlandet'
-                                : 'Førstegangstjeneste, sluttpakke, etterlønn, eller arbeid i utlandet'
+                                ? intl.formatMessage({ id: 'LeggTilAndreInntekterWizard.annenInntekt.descriptionSvp' })
+                                : intl.formatMessage({ id: 'LeggTilAndreInntekterWizard.annenInntekt.descriptionFp' })
                         }
                     >
-                        Annen pensjonsgivende inntekt
+                        <FormattedMessage id="LeggTilAndreInntekterWizard.annenInntekt.label" />
                     </Radio>
                 </RadioGroup>
                 <VStack gap="space-12">
-                    <ReadMore variant="moderate" header="Hva er aktiv inntekt?">
+                    <ReadMore
+                        variant="moderate"
+                        header={intl.formatMessage({ id: 'LeggTilAndreInntekterWizard.aktivInntekt.header' })}
+                    >
                         <BodyShort>
-                            Aktiv inntekt er inntekt fra arbeid eller oppdrag du selv har utført i perioden.
+                            <FormattedMessage id="LeggTilAndreInntekterWizard.aktivInntekt.content" />
                         </BodyShort>
                     </ReadMore>
-                    <ReadMore variant="moderate" header="Savner du en inntekt i oversikten?">
+                    <ReadMore
+                        variant="moderate"
+                        header={intl.formatMessage({ id: 'LeggTilAndreInntekterWizard.savnerInntekt.header' })}
+                    >
                         <BodyShort>
-                            Hvis du oppdager feil eller manglende opplysninger, må du be arbeidsgiveren din om å
-                            registrere riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret. Vi henter
-                            opplysningene derfra.
+                            <FormattedMessage id="LeggTilAndreInntekterWizard.savnerInntekt.content" />
                         </BodyShort>
                     </ReadMore>
                 </VStack>
@@ -232,6 +250,7 @@ type FiskerValg = 'lott' | 'hyre' | 'lott_og_hyre' | 'egen_båt';
 type FiskerStep = 'VELG_ORDNING' | 'VIS_INFORMASJON';
 
 const FiskerForm = ({ appOrigin, onAbort, onBack, onComplete, onSaveEgenNæring }: FiskerFormProps) => {
+    const intl = useIntl();
     const [fiskerValg, setFiskerValg] = useState<FiskerValg>();
     const [step, setStep] = useState<FiskerStep>('VELG_ORDNING');
 
@@ -239,24 +258,33 @@ const FiskerForm = ({ appOrigin, onAbort, onBack, onComplete, onSaveEgenNæring 
         return (
             <VStack gap="space-40">
                 <Heading level="2" size="small">
-                    Legg til inntektskilde
+                    <FormattedMessage id="LeggTilAndreInntekterWizard.tittel" />
                 </Heading>
-                <Label>Inntekt som fisker eller mannskap</Label>
+                <Label>
+                    <FormattedMessage id="LeggTilAndreInntekterWizard.fiskerForm.label" />
+                </Label>
                 <InfoCard data-color="meta-lime">
                     <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
-                        Vi trenger riktig informasjon om arbeidssituasjonen din for å beregne foreldrepengene dine.
-                        Opplysningene dine vil også sendes til Skatteetaten.
+                        <FormattedMessage id="LeggTilAndreInntekterWizard.fiskerForm.infoMessage" />
                     </InfoCard.Message>
                 </InfoCard>
                 <RadioGroup
-                    legend="Hvilken ordning har du som fisker eller mannskap?"
+                    legend={intl.formatMessage({ id: 'LeggTilAndreInntekterWizard.fiskerForm.legend' })}
                     value={fiskerValg ?? ''}
                     onChange={setFiskerValg}
                 >
-                    <Radio value="lott">Lott</Radio>
-                    <Radio value="hyre">Hyre</Radio>
-                    <Radio value="lott_og_hyre">Lott og hyre</Radio>
-                    <Radio value="egen_båt">Egen båt</Radio>
+                    <Radio value="lott">
+                        <FormattedMessage id="LeggTilAndreInntekterWizard.fiskerForm.lott" />
+                    </Radio>
+                    <Radio value="hyre">
+                        <FormattedMessage id="LeggTilAndreInntekterWizard.fiskerForm.hyre" />
+                    </Radio>
+                    <Radio value="lott_og_hyre">
+                        <FormattedMessage id="LeggTilAndreInntekterWizard.fiskerForm.lottOgHyre" />
+                    </Radio>
+                    <Radio value="egen_båt">
+                        <FormattedMessage id="LeggTilAndreInntekterWizard.fiskerForm.egenBåt" />
+                    </Radio>
                 </RadioGroup>
                 <WizardNavigator
                     isLastStep={false}
@@ -273,7 +301,7 @@ const FiskerForm = ({ appOrigin, onAbort, onBack, onComplete, onSaveEgenNæring 
         return (
             <VStack gap="space-40">
                 <Heading level="2" size="small">
-                    Legg til inntektskilde
+                    <FormattedMessage id="LeggTilAndreInntekterWizard.tittel" />
                 </Heading>
                 <HyreInntekt />
                 <WizardNavigator
@@ -300,7 +328,7 @@ const FiskerForm = ({ appOrigin, onAbort, onBack, onComplete, onSaveEgenNæring 
     return (
         <VStack gap="space-40">
             <Heading level="2" size="small">
-                Legg til inntektskilde
+                <FormattedMessage id="LeggTilAndreInntekterWizard.tittel" />
             </Heading>
             {fiskerValg === 'lott' && <LottInntekt {...fiskerNæringProps} />}
             {fiskerValg === 'lott_og_hyre' && <LottOgHyreInntekt {...fiskerNæringProps} />}
@@ -325,14 +353,17 @@ const FiskerEgenNæringForm = ({ appOrigin, onSubmit, onAbort, onBack }: FiskerN
 const LottInntekt = (props: FiskerNæringProps) => {
     return (
         <>
-            <Label>Inntekt fra lott</Label>
+            <Label>
+                <FormattedMessage id="LeggTilAndreInntekterWizard.lott.label" />
+            </Label>
             <InfoCard data-color="info">
                 <InfoCard.Header icon={<PersonEnvelopeIcon aria-hidden />}>
-                    <InfoCard.Title>Du er selvstendig næringsdrivende</InfoCard.Title>
+                    <InfoCard.Title>
+                        <FormattedMessage id="LeggTilAndreInntekterWizard.duErSelvstendigNæringsdrivende.title" />
+                    </InfoCard.Title>
                 </InfoCard.Header>
                 <InfoCard.Content>
-                    Lott regnes som næringsinntekt, fordi du får en andel av fangstverdien, og ikke fast lønn. Derfor
-                    behandles inntekten som selvstendig næringsdrivende, og vi trenger opplysninger om virksomheten din.
+                    <FormattedMessage id="LeggTilAndreInntekterWizard.lott.content" />
                 </InfoCard.Content>
             </InfoCard>
             <FiskerEgenNæringForm {...props} />
@@ -344,13 +375,12 @@ const HyreInntekt = () => {
     return (
         <InfoCard data-color="warning">
             <InfoCard.Header icon={<ExclamationmarkTriangleIcon aria-hidden />}>
-                <InfoCard.Title>Du må be arbeidsgiver må registrere deg som arbeidstaker</InfoCard.Title>
+                <InfoCard.Title>
+                    <FormattedMessage id="LeggTilAndreInntekterWizard.hyre.title" />
+                </InfoCard.Title>
             </InfoCard.Header>
             <InfoCard.Content>
-                Du regnes som arbeidstaker når du som fisker eller mannskap får hyre (lønn). Hvis arbeidsforholdet ditt
-                ikke vises i oversikten, betyr det at arbeidsgiver ikke har meldt det inn i Arbeidsgiver- og
-                arbeidstakerregisteret. Det er ikke lovpålagt, men det må gjøres for at du skal kunne få foreldrepenger.
-                Arbeidsgiver må også sende inntektsmelding før du kan få utbetalt foreldrepenger.
+                <FormattedMessage id="LeggTilAndreInntekterWizard.hyre.content" />
             </InfoCard.Content>
         </InfoCard>
     );
@@ -359,18 +389,17 @@ const HyreInntekt = () => {
 const LottOgHyreInntekt = (props: FiskerNæringProps) => {
     return (
         <>
-            <Label>Inntekt fra lott og hyre</Label>
+            <Label>
+                <FormattedMessage id="LeggTilAndreInntekterWizard.lottOgHyre.label" />
+            </Label>
             <InfoCard data-color="info">
                 <InfoCard.Header icon={<PersonEnvelopeIcon aria-hidden />}>
-                    <InfoCard.Title>Du er både selvstendig næringsdrivende og arbeidstaker</InfoCard.Title>
+                    <InfoCard.Title>
+                        <FormattedMessage id="LeggTilAndreInntekterWizard.lottOgHyre.title" />
+                    </InfoCard.Title>
                 </InfoCard.Header>
                 <InfoCard.Content>
-                    Lott regnes som næringsinntekt, fordi du får en andel av fangstverdien, og ikke fast lønn. Derfor
-                    regnes du som selvstendig næringsdrivende, og vi trenger opplysninger om virksomheten din. Du regnes
-                    som arbeidstaker når du som fisker eller mannskap får hyre (lønn). Hvis arbeidsforholdet ditt ikke
-                    vises i oversikten, betyr det at arbeidsgiver ikke har meldt det inn i Arbeidsgiver- og
-                    arbeidstakerregisteret. Det er ikke lovpålagt, men det må gjøres for at du skal kunne få
-                    foreldrepenger.
+                    <FormattedMessage id="LeggTilAndreInntekterWizard.lottOgHyre.content" />
                 </InfoCard.Content>
             </InfoCard>
             <FiskerEgenNæringForm {...props} />
@@ -381,14 +410,17 @@ const LottOgHyreInntekt = (props: FiskerNæringProps) => {
 const EgenBåtInntekt = (props: FiskerNæringProps) => {
     return (
         <>
-            <Label>Fiske med egen båt</Label>
+            <Label>
+                <FormattedMessage id="LeggTilAndreInntekterWizard.egenBåt.label" />
+            </Label>
             <InfoCard data-color="info">
                 <InfoCard.Header icon={<PersonEnvelopeIcon aria-hidden />}>
-                    <InfoCard.Title>Du er selvstendig næringsdrivende</InfoCard.Title>
+                    <InfoCard.Title>
+                        <FormattedMessage id="LeggTilAndreInntekterWizard.duErSelvstendigNæringsdrivende.title" />
+                    </InfoCard.Title>
                 </InfoCard.Header>
                 <InfoCard.Content>
-                    Hvis du er fisker med egen båt, er du selvstendig næringsdrivende. Spørsmålene du får i søknaden er
-                    tilpasset din situasjon og du får veiledning og informasjon underveis.
+                    <FormattedMessage id="LeggTilAndreInntekterWizard.egenBåt.content" />
                 </InfoCard.Content>
             </InfoCard>
             <FiskerEgenNæringForm {...props} />
@@ -418,6 +450,7 @@ const AnnenInntektForm = ({
     onSubmit,
     onSubmitEgenNæring,
 }: AnnenInntektFormProps) => {
+    const intl = useIntl();
     const [valgtInntektstype, setValgtInntektstype] = useState<AnnenInntektValg>();
     const [step, setStep] = useState<AnnenInntektStep>('VELG_INNTEKTSTYPE');
     const formMethods = useForm<AndreInntekterFormValues>({
@@ -442,19 +475,29 @@ const AnnenInntektForm = ({
         return (
             <VStack gap="space-40">
                 <Heading level="2" size="small">
-                    Legg til inntektskilde
+                    <FormattedMessage id="LeggTilAndreInntekterWizard.tittel" />
                 </Heading>
                 <RadioGroup
-                    legend="Hvilken annen type pensjonsgivende inntekt har du hatt de siste 10 månedene?"
+                    legend={intl.formatMessage({ id: 'LeggTilAndreInntekterWizard.annenInntektForm.legend' })}
                     value={valgtInntektstype ?? ''}
                     onChange={velgInntektstype}
                 >
-                    <Radio value="JOBB_I_UTLANDET">Jobb i utlandet</Radio>
-                    {!harNæring && <Radio value="NÆRING_I_UTLANDET">Næring i utlandet</Radio>}
+                    <Radio value="JOBB_I_UTLANDET">
+                        <FormattedMessage id="LeggTilAndreInntekterWizard.jobbIUtlandet.label" />
+                    </Radio>
+                    {!harNæring && (
+                        <Radio value="NÆRING_I_UTLANDET">
+                            <FormattedMessage id="LeggTilAndreInntekterWizard.næringIUtlandet.label" />
+                        </Radio>
+                    )}
                     {appOrigin !== 'svangerskapspengesoknad' && (
                         <>
-                            <Radio value="ETTERLØNN_SLUTTPAKKE">Etterlønn eller sluttvederlag</Radio>
-                            <Radio value="MILITÆR_ELLER_SIVILTJENESTE">Førstegangstjeneste</Radio>
+                            <Radio value="ETTERLØNN_SLUTTPAKKE">
+                                <FormattedMessage id="LeggTilAndreInntekterWizard.etterlønn.label" />
+                            </Radio>
+                            <Radio value="MILITÆR_ELLER_SIVILTJENESTE">
+                                <FormattedMessage id="LeggTilAndreInntekterWizard.førstegangstjeneste.label" />
+                            </Radio>
                         </>
                     )}
                 </RadioGroup>
@@ -473,7 +516,7 @@ const AnnenInntektForm = ({
         <FormProvider {...formMethods}>
             <VStack gap="space-40">
                 <Heading level="2" size="small">
-                    Legg til inntektskilde
+                    <FormattedMessage id="LeggTilAndreInntekterWizard.tittel" />
                 </Heading>
                 <ErrorSummaryHookForm />
                 {valgtInntektstype === 'NÆRING_I_UTLANDET' && (

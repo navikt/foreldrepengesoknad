@@ -56,9 +56,9 @@ export const Svangerskapspengesøknad = () => {
     const mellomlagretState =
         mellomlagretInfo.data?.version === VERSJON_MELLOMLAGRING ? mellomlagretInfo.data : undefined;
 
-    // frilansoppdrag/selvstendigNæring kan mangle på lagret søkerInfo dersom mellomlagringa vart gjort
-    // før desse felta fanst i kontrakten. Då fell vi tilbake på fersk data i staden for å be brukaren
-    // starte på nytt berre fordi den lagra søknaden manglar felt ho aldri fekk moglegheit til å ha.
+    // frilansoppdrag/selvstendigNæring kan mangle på lagret søkerInfo dersom mellomlagringen ble gjort
+    // før disse feltene fantes i kontrakten. Da faller vi tilbake på ferske data i stedet for å be brukeren
+    // starte på nytt bare fordi den lagrede søknaden mangler felt hun aldri fikk mulighet til å ha.
     const normalisertLagretSøkerInfo: SvpPersonopplysningerDto_fpoversikt | undefined = mellomlagretState && {
         ...mellomlagretState.søkerInfo,
         frilansoppdrag: mellomlagretState.søkerInfo.frilansoppdrag ?? søkerinfo.data.frilansoppdrag ?? [],

@@ -15,70 +15,17 @@ import nbMessages from './intl/messages/nb_NO.json';
 const { Default } = composeStories(stories);
 
 describe('<Arbeid som selvstendig næringsdrivende>', () => {
-    it('skal forhåndsvelge en redigerbar næringstype', async () => {
-        render(
-            <IntlProvider locale="nb" messages={{ ...formHookMessages.nb, ...nbMessages }}>
-                <EgenNæringForm
-                    initialNæringstype="ANNEN"
-                    appOrigin="foreldrepengesoknad"
-                    onSubmit={vi.fn()}
-                    withoutFormElement
-                />
-            </IntlProvider>,
-        );
-
-        expect(screen.getByRole('radio', { name: 'Annet' })).toBeChecked();
-
-        await userEvent.click(screen.getByRole('radio', { name: 'Gårdsdrift' }));
-
-        expect(screen.getByRole('radio', { name: 'Gårdsdrift' })).toBeChecked();
-    });
-
-    it('skal prioritere mellomlagret næringstype over foreslått næringstype', () => {
-        render(
-            <IntlProvider locale="nb" messages={{ ...formHookMessages.nb, ...nbMessages }}>
-                <EgenNæringForm
-                    initialNæringstype="ANNEN"
-                    egenNæring={{
-                        fom: '2023-04-30',
-                        næringstype: 'JORDBRUK_SKOGBRUK',
-                        registrertINorge: true,
-                    }}
-                    appOrigin="foreldrepengesoknad"
-                    onSubmit={vi.fn()}
-                    withoutFormElement
-                />
-            </IntlProvider>,
-        );
-
-        expect(screen.getByRole('radio', { name: 'Gårdsdrift' })).toBeChecked();
-    });
-
-    it('skal skjule forhåndsvalgt fiske som virksomhetstype', () => {
-        const { container } = render(
-            <IntlProvider locale="nb" messages={{ ...formHookMessages.nb, ...nbMessages }}>
-                <EgenNæringForm
-                    initialNæringstype="FISKE"
-                    appOrigin="foreldrepengesoknad"
-                    onSubmit={vi.fn()}
-                    withoutFormElement
-                />
-            </IntlProvider>,
-        );
-
-        expect(screen.queryByRole('radiogroup', { name: 'Hvilken type næring har du hatt?' })).not.toBeInTheDocument();
-        expect(container.querySelector('input[type="hidden"][name="næringstype"]')).toHaveValue('FISKE');
-    });
-
     it('skal vise og låse navn, organisasjonsnummer og type fra registeret', () => {
         const { container } = render(
             <IntlProvider locale="nb" messages={{ ...formHookMessages.nb, ...nbMessages }}>
                 <EgenNæringForm
-                    registrertNæring={{
-                        navn: 'Kari Konsulent',
-                        organisasjonsnummer: '998877665',
-                        næringstype: 'JORDBRUK_SKOGBRUK',
-                    }}
+                    registrerteNæringer={[
+                        {
+                            navn: 'Kari Konsulent',
+                            organisasjonsnummer: '998877665',
+                            næringstype: 'JORDBRUK_SKOGBRUK',
+                        },
+                    ]}
                     appOrigin="foreldrepengesoknad"
                     onSubmit={vi.fn()}
                     withoutFormElement
@@ -101,11 +48,6 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         render(
             <IntlProvider locale="nb" messages={{ ...formHookMessages.nb, ...nbMessages }}>
                 <EgenNæringForm
-                    registrertNæring={{
-                        navn: 'Prioritert Fiskeri',
-                        organisasjonsnummer: '998877665',
-                        næringstype: 'FISKE',
-                    }}
                     registrerteNæringer={[
                         {
                             navn: 'Prioritert Fiskeri',
@@ -131,26 +73,6 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
             ),
         ).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Næringene dette gjelder' })).toBeInTheDocument();
-    });
-
-    it('skal vise mellomlagret ikke-fiske selv om foreslått type er fiske', () => {
-        render(
-            <IntlProvider locale="nb" messages={{ ...formHookMessages.nb, ...nbMessages }}>
-                <EgenNæringForm
-                    initialNæringstype="FISKE"
-                    egenNæring={{
-                        fom: '2023-04-30',
-                        næringstype: 'ANNEN',
-                        registrertINorge: true,
-                    }}
-                    appOrigin="foreldrepengesoknad"
-                    onSubmit={vi.fn()}
-                    withoutFormElement
-                />
-            </IntlProvider>,
-        );
-
-        expect(screen.getByRole('radio', { name: 'Annet' })).toBeChecked();
     });
 
     it('skal låse næringstype til fiske i plugin-varianten', async () => {

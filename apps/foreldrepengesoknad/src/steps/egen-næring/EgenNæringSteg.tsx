@@ -3,11 +3,7 @@ import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { FormattedMessage } from 'react-intl';
 
-import {
-    EgenNæringPanel,
-    getForhåndsvalgtNæringstype,
-    getPrioritertRegistrertNæring,
-} from '@navikt/fp-steg-egen-naering';
+import { EgenNæringPanel } from '@navikt/fp-steg-egen-naering';
 import { FpPersonopplysningerDto_fpoversikt, NæringDto } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 
@@ -44,8 +40,6 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s�
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <EgenNæringPanel
                 egenNæring={egenNæring}
-                initialNæringstype={getForhåndsvalgtNæringstype(registrerteNæringer)}
-                registrertNæring={getPrioritertRegistrertNæring(registrerteNæringer)}
                 registrerteNæringer={registrerteNæringer}
                 saveOnNext={onSubmit}
                 onAvsluttOgSlett={avbrytSøknad}

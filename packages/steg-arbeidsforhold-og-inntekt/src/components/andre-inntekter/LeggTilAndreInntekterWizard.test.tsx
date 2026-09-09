@@ -79,7 +79,7 @@ describe('<LeggTilAndreInntekterWizard>', () => {
 
     it.each([
         ['Lott', 'Inntekt fra lott', true],
-        ['Hyre', 'Du må be arbeidsgiver må registrere deg som arbeidstaker', false],
+        ['Hyre', 'Du må be arbeidsgiver registrere deg som arbeidstaker', false],
         ['Lott og hyre', 'Inntekt fra lott og hyre', true],
         ['Egen båt', 'Fiske med egen båt', true],
     ])('skal vise riktig informasjonssteg for %s', async (radioLabel, expectedText, skalViseEgenNæring) => {

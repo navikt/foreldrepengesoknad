@@ -4,11 +4,7 @@ import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { FormattedMessage } from 'react-intl';
 import { getRuteVelgArbeidEllerSkjema as getRuteSkjemaEllerVelgArbeid } from 'utils/tilretteleggingUtils';
 
-import {
-    EgenNæringPanel,
-    getForhåndsvalgtNæringstype,
-    getPrioritertRegistrertNæring,
-} from '@navikt/fp-steg-egen-naering';
+import { EgenNæringPanel } from '@navikt/fp-steg-egen-naering';
 import { NæringDto, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -50,8 +46,6 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s�
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <EgenNæringPanel
                 egenNæring={egenNæring}
-                initialNæringstype={getForhåndsvalgtNæringstype(registrerteNæringer)}
-                registrertNæring={getPrioritertRegistrertNæring(registrerteNæringer)}
                 registrerteNæringer={registrerteNæringer}
                 saveOnNext={onSubmit}
                 onAvsluttOgSlett={avbrytSøknad}
