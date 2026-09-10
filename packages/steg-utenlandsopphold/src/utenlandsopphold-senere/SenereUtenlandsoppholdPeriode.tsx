@@ -35,6 +35,7 @@ export const SenereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props) =>
         control,
         watch,
         trigger,
+        setValue,
         formState: { isSubmitted },
     } = useFormContext<{ utenlandsoppholdNeste12Mnd: SenereUtenlandsoppholdSkjemaPeriode[] }>();
 
@@ -112,6 +113,21 @@ export const SenereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props) =>
                 ]}
                 onChange={() => isSubmitted && void trigger()}
             />
+            <RhfCheckbox
+                name={`utenlandsoppholdNeste12Mnd.${index}.tomUkjent`}
+                control={control}
+                label={
+                    <FormattedMessage id="SenereUtenlandsoppholdSteg.VetIkkeNårTilbake" />
+                }
+                onChange={(erKryssetAv) => {
+                    if (erKryssetAv) {
+                        setValue(`utenlandsoppholdNeste12Mnd.${index}.tom`, undefined);
+                    }
+                    if (isSubmitted) {
+                        void trigger();
+                    }
+                }}
+            />
             {!tomUkjent && (
                 <RhfDatepicker
                     name={`utenlandsoppholdNeste12Mnd.${index}.tom`}
@@ -154,14 +170,6 @@ export const SenereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props) =>
                     defaultMonth={fom}
                 />
             )}
-            <RhfCheckbox
-                name={`utenlandsoppholdNeste12Mnd.${index}.tomUkjent`}
-                control={control}
-                label={
-                    <FormattedMessage id="SenereUtenlandsoppholdSteg.VetIkkeNårTilbake" />
-                }
-                onChange={() => isSubmitted && void trigger()}
-            />
             {index > 0 && (
                 <Button
                     type="button"
