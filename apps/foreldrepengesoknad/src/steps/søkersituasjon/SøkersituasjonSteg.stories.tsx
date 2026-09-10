@@ -45,6 +45,7 @@ export const Mor: Story = {
     args: {
         kjønn: 'K',
         arbeidsforhold: [],
+        harRegistrertNæring: false,
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
     },

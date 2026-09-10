@@ -4,22 +4,31 @@ import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { FormattedMessage } from 'react-intl';
 
-import { FrilansPanel } from '@navikt/fp-steg-frilans';
-import { EksternArbeidsforholdDto_fpoversikt, Frilans } from '@navikt/fp-types';
+import { skalViseEgenNæringSteg } from '@navikt/fp-steg-egen-naering';
+import { FrilansPanel, getForhåndsutfyltOppstart } from '@navikt/fp-steg-frilans';
+import { FpPersonopplysningerDto_fpoversikt, Frilans } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
-    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    søkerInfo: FpPersonopplysningerDto_fpoversikt;
 };
 
-export const FrilansSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
-    const stepConfig = useStepConfig(arbeidsforhold);
-    const navigator = useFpNavigator(arbeidsforhold, mellomlagreSøknadOgNaviger);
+export const FrilansSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }: Props) => {
+    const { arbeidsforhold, frilansoppdrag, selvstendigNæring } = søkerInfo;
+
+    const harRegistrertNæring = selvstendigNæring.length > 0;
+    const stepConfig = useStepConfig({ arbeidsforhold, harRegistrertNæring });
+    const navigator = useFpNavigator({
+        arbeidsforhold,
+        harRegistrertNæring,
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
+    });
 
     const frilans = useContextGetData(ContextDataType.FRILANS);
+    const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
 
     const oppdaterFrilans = useContextSaveData(ContextDataType.FRILANS);
@@ -27,13 +36,15 @@ export const FrilansSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeid
     const onSubmit = (values: Frilans) => {
         oppdaterFrilans(values);
 
-        if (arbeidsforholdOgInntekt.harJobbetSomSelvstendigNæringsdrivende) {
+        if (
+            skalViseEgenNæringSteg({
+                harJobbetSomSelvstendigNæringsdrivende: arbeidsforholdOgInntekt.harJobbetSomSelvstendigNæringsdrivende,
+                harRegistrertNæring: selvstendigNæring.length > 0,
+                egenNæring,
+            })
+        ) {
             return navigator.goToStep(SøknadRoutes.EGEN_NÆRING);
         }
-        if (arbeidsforholdOgInntekt.harHattAndreInntektskilder) {
-            return navigator.goToStep(SøknadRoutes.ANDRE_INNTEKTER);
-        }
-
         return navigator.goToNextStep();
     };
 
@@ -41,6 +52,7 @@ export const FrilansSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeid
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <FrilansPanel
                 frilans={frilans}
+                forhåndsutfyltOppstart={getForhåndsutfyltOppstart(frilansoppdrag)}
                 saveOnNext={onSubmit}
                 onAvsluttOgSlett={avbrytSøknad}
                 onFortsettSenere={navigator.fortsettSøknadSenere}

@@ -51,5 +51,6 @@ export const Default: Story = {
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: action('button-click'),
         arbeidsforhold: [],
+        harRegistrertNæring: false,
     },
 };

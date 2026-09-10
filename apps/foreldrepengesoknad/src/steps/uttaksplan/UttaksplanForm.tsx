@@ -73,12 +73,13 @@ export const UttaksplanForm = ({
         ) ?? [];
     const gjeldendeUttaksplan = erEndringssøknad ? uttaksplanMedKunNyePerioder : uttaksplan;
 
-    const navigator = useFpNavigator(
-        søkerInfo.arbeidsforhold,
-        mellomlagreSøknadOgNaviger,
+    const navigator = useFpNavigator({
+        arbeidsforhold: søkerInfo.arbeidsforhold,
+        harRegistrertNæring: søkerInfo.selvstendigNæring.length > 0,
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
         erEndringssøknad,
         eksisterendeSak,
-    );
+    });
 
     const formMethods = useForm<FormValues>({
         defaultValues: {

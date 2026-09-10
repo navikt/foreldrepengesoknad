@@ -5,32 +5,46 @@ import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { FormattedMessage } from 'react-intl';
 import { getRuteVelgArbeidEllerSkjema } from 'utils/tilretteleggingUtils';
 
-import { FrilansPanel } from '@navikt/fp-steg-frilans';
-import { EksternArbeidsforholdDto_fpoversikt, Frilans } from '@navikt/fp-types';
+import { skalViseEgenNæringSteg } from '@navikt/fp-steg-egen-naering';
+import { FrilansPanel, getForhåndsutfyltOppstart } from '@navikt/fp-steg-frilans';
+import { Frilans, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
-    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    søkerInfo: SvpPersonopplysningerDto_fpoversikt;
 };
 
-export const FrilansSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
-    const stepConfig = useStepConfig(arbeidsforhold);
-    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
+export const FrilansSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }: Props) => {
+    const { arbeidsforhold, frilansoppdrag, selvstendigNæring } = søkerInfo;
 
     const frilans = useContextGetData(ContextDataType.FRILANS);
+    const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+
+    const harRegistrertNæring = selvstendigNæring.length > 0;
+    const stepConfig = useStepConfig({ arbeidsforhold, harRegistrertNæring });
+    const navigator = useSvpNavigator({
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
+        arbeidsforhold,
+        harRegistrertNæring,
+    });
 
     const oppdaterFrilans = useContextSaveData(ContextDataType.FRILANS);
 
     const onSubmit = (values: Frilans) => {
         oppdaterFrilans(values);
 
-        const route = arbeidsforholdOgInntekt.harHattArbeidIUtlandet ? SøknadRoute.ARBEID_I_UTLANDET : undefined;
-        const nextRoute = arbeidsforholdOgInntekt.harJobbetSomSelvstendigNæringsdrivende ? SøknadRoute.NÆRING : route;
+        const nextRoute = skalViseEgenNæringSteg({
+            harJobbetSomSelvstendigNæringsdrivende: arbeidsforholdOgInntekt.harJobbetSomSelvstendigNæringsdrivende,
+            harRegistrertNæring: selvstendigNæring.length > 0,
+            egenNæring,
+        })
+            ? SøknadRoute.NÆRING
+            : undefined;
 
         return navigator.goToStep(
             nextRoute ?? getRuteVelgArbeidEllerSkjema(barnet.termindato, arbeidsforhold, arbeidsforholdOgInntekt),
@@ -41,6 +55,7 @@ export const FrilansSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeid
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <FrilansPanel
                 frilans={frilans}
+                forhåndsutfyltOppstart={getForhåndsutfyltOppstart(frilansoppdrag)}
                 saveOnNext={onSubmit}
                 onAvsluttOgSlett={avbrytSøknad}
                 onFortsettSenere={navigator.fortsettSøknadSenere}

@@ -2,19 +2,17 @@ import { FileIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
 
-import { BodyShort, HStack, Radio, VStack } from '@navikt/ds-react';
+import { HStack, InfoCard, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfRadioGroup } from '@navikt/fp-form-hooks';
-import { BluePanel } from '@navikt/fp-ui';
 import { isBeforeOrSame, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
-import { AndreInntekterFormValues } from '../types/AndreInntekterFormValues';
+import { AndreInntekterFormValues, MilitærtjenesteInntektUtkast } from '../../types/AndreInntektskilder';
 
 interface Props {
     index: number;
-    inntektskilde: AndreInntektskilder;
+    inntektskilde: MilitærtjenesteInntektUtkast;
 }
 
 export const FørstegangstjenestePanel = ({ index, inntektskilde }: Props) => {
@@ -22,7 +20,7 @@ export const FørstegangstjenestePanel = ({ index, inntektskilde }: Props) => {
 
     const { control } = useFormContext<AndreInntekterFormValues>();
 
-    if (inntektskilde.type !== AnnenInntektType.MILITÆRTJENESTE) {
+    if (inntektskilde.type !== 'MILITÆR_ELLER_SIVILTJENESTE') {
         throw new Error('Inntektskilde ikke av type MILITÆRTJENESTE');
     }
 
@@ -79,16 +77,16 @@ export const FørstegangstjenestePanel = ({ index, inntektskilde }: Props) => {
                     />
                 )}
             </HStack>
-            <BluePanel isDarkBlue>
-                <HStack gap="space-8" wrap={false}>
-                    <div>
-                        <FileIcon fontSize="1.5rem" />
-                    </div>
-                    <BodyShort>
-                        <FormattedMessage id="FørstegangstjenestePanel.Vedlegg" />
-                    </BodyShort>
-                </HStack>
-            </BluePanel>
+            <InfoCard data-color="info">
+                <InfoCard.Header icon={<FileIcon aria-hidden />}>
+                    <InfoCard.Title>
+                        <FormattedMessage id="FørstegangstjenestePanel.Tittel" />
+                    </InfoCard.Title>
+                </InfoCard.Header>
+                <InfoCard.Content>
+                    <FormattedMessage id="FørstegangstjenestePanel.Vedlegg" />
+                </InfoCard.Content>
+            </InfoCard>
         </VStack>
     );
 };

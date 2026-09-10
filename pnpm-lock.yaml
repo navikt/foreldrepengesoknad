@@ -304,6 +304,12 @@ importers:
       '@navikt/fp-observability':
         specifier: workspace:*
         version: link:../../packages/observability
+      '@navikt/fp-steg-arbeidsforhold-og-inntekt':
+        specifier: workspace:*
+        version: link:../../packages/steg-arbeidsforhold-og-inntekt
+      '@navikt/fp-steg-egen-naering':
+        specifier: workspace:*
+        version: link:../../packages/steg-egen-næring
       '@navikt/fp-steg-kvittering':
         specifier: workspace:*
         version: link:../../packages/steg-kvittering
@@ -1826,6 +1832,9 @@ importers:
 
   packages/steg-arbeidsforhold-og-inntekt:
     dependencies:
+      '@navikt/aksel-icons':
+        specifier: 'catalog:'
+        version: 8.16.2
       '@navikt/ds-css':
         specifier: 'catalog:'
         version: 8.16.2
@@ -1841,6 +1850,9 @@ importers:
       '@navikt/fp-observability':
         specifier: workspace:*
         version: link:../observability
+      '@navikt/fp-steg-egen-naering':
+        specifier: workspace:*
+        version: link:../steg-egen-næring
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
@@ -1853,6 +1865,9 @@ importers:
       '@navikt/fp-validation':
         specifier: workspace:*
         version: link:../validation
+      dayjs:
+        specifier: 'catalog:'
+        version: 1.11.23
       react:
         specifier: 'catalog:'
         version: 19.2.8
@@ -2226,6 +2241,9 @@ importers:
       '@navikt/ds-react':
         specifier: 'catalog:'
         version: 8.16.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@navikt/fp-steg-arbeidsforhold-og-inntekt':
+        specifier: workspace:*
+        version: link:../steg-arbeidsforhold-og-inntekt
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types

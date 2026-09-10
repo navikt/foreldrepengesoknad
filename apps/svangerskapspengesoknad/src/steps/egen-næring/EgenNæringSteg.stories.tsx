@@ -5,7 +5,17 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 
+import { SelvstendigNæringDto_fpoversikt, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
+
 import { EgenNæringSteg } from './EgenNæringSteg';
+
+const DEFAULT_SELVSTENDIG_NÆRING = [
+    {
+        organisasjonsnummer: '998877665',
+        navn: 'Kari Konsulent',
+        næringstype: 'JORDBRUK_SKOGBRUK',
+    },
+] satisfies SelvstendigNæringDto_fpoversikt[];
 
 const promiseAction = () => () => {
     action('button-click')();
@@ -19,7 +29,16 @@ type StoryArgs = {
 const meta = {
     title: 'steps/EgenNæringSteg',
     component: EgenNæringSteg,
-    render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
+    render: ({ gåTilNesteSide = action('button-click'), søkerInfo: _søkerInfo, ...rest }) => {
+        const søkerInfo: SvpPersonopplysningerDto_fpoversikt = {
+            arbeidsforhold: [],
+            fnr: '12345678901',
+            fødselsdato: '1990-01-01',
+            kjønn: 'K',
+            navn: { fornavn: 'Kari', etternavn: 'Nordmann' },
+            frilansoppdrag: [],
+            selvstendigNæring: DEFAULT_SELVSTENDIG_NÆRING,
+        };
         return (
             <MemoryRouter initialEntries={[SøknadRoute.NÆRING]}>
                 <SvpDataContext
@@ -37,7 +56,7 @@ const meta = {
                         },
                     }}
                 >
-                    <EgenNæringSteg {...rest} />
+                    <EgenNæringSteg søkerInfo={søkerInfo} {...rest} />
                 </SvpDataContext>
             </MemoryRouter>
         );
@@ -49,8 +68,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: () => action('button-click'),
+        søkerInfo: {} as SvpPersonopplysningerDto_fpoversikt,
     },
 };

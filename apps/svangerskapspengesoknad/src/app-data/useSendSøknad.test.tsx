@@ -19,8 +19,10 @@ import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
 import {
     Attachment,
     AvtaltFerieDto,
+    EksternArbeidsforholdDto_fpoversikt,
     FRILANS_ID,
     NæringDto,
+    SelvstendigNæringDto_fpoversikt,
     SvangerskapspengesøknadDto,
     SvpPersonopplysningerDto_fpoversikt,
     UtenlandsoppholdPeriode,
@@ -70,6 +72,8 @@ const DEFAULT_SØKER_INFO = {
         etternavn: 'Oravakangas',
         fornavn: 'Erlinga-Mask',
     },
+    frilansoppdrag: [],
+    selvstendigNæring: [],
 } satisfies SvpPersonopplysningerDto_fpoversikt;
 
 const BARNET = {
@@ -134,6 +138,24 @@ const ARBEID_I_UTLANDET = {
     ],
 } satisfies ArbeidIUtlandet;
 
+const FORELAGT_FRILANSOPPDRAG = [
+    {
+        arbeidsgiverId: '12345678910',
+        arbeidsgiverIdType: 'fnr',
+        arbeidsgiverNavn: 'Ola Nordmann',
+        fom: '2024-03-01',
+        stillingsprosent: 0,
+    },
+] satisfies EksternArbeidsforholdDto_fpoversikt[];
+
+const FORELAGT_SELVSTENDIG_NÆRING = [
+    {
+        navn: 'Sagene Fiskeri',
+        organisasjonsnummer: '974760673',
+        næringstype: 'FISKE',
+    },
+] satisfies SelvstendigNæringDto_fpoversikt[];
+
 const getWrapper =
     (
         tilrettelegginger: Record<string, DelvisTilrettelegging | IngenTilrettelegging>,
@@ -170,6 +192,7 @@ describe('useSendSøknad', () => {
     afterEach(() => {
         vi.restoreAllMocks();
         vi.clearAllMocks();
+        queryClient.clear();
     });
 
     it('skal sende inn tilrettelegging for to arbeidsforhold', async () => {
@@ -238,6 +261,8 @@ describe('useSendSøknad', () => {
                             stillingsprosent: af.stillingsprosent,
                             fom: af.fom,
                         })),
+                        frilansoppdrag: [],
+                        selvstendigNæring: [],
                     },
                     språkkode: 'NB',
                     barn: BARNET,
@@ -324,6 +349,12 @@ describe('useSendSøknad', () => {
         } as ResponsePromise<void>);
         const deleteMock = vi.spyOn(ky, 'delete').mockReturnValue(undefined as unknown as ResponsePromise<unknown>);
 
+        const søkerinfo = {
+            ...DEFAULT_SØKER_INFO,
+            frilansoppdrag: FORELAGT_FRILANSOPPDRAG,
+            selvstendigNæring: FORELAGT_SELVSTENDIG_NÆRING,
+        };
+
         const tilrettelegginger = {
             [EGEN_NÆRING_ID]: {
                 behovForTilretteleggingFom: '2024-05-10',
@@ -348,7 +379,7 @@ describe('useSendSøknad', () => {
             [FRILANS_ID]: [VEDLEGG],
         };
 
-        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO), {
+        const { result } = renderHook(() => useSendSøknad(søkerinfo), {
             wrapper: getWrapper(tilrettelegginger, tilretteleggingerVedlegg),
         });
 
@@ -368,6 +399,15 @@ describe('useSendSøknad', () => {
                             orgnummer: af.arbeidsgiverId,
                             stillingsprosent: af.stillingsprosent,
                             fom: af.fom,
+                        })),
+                        frilansoppdrag: FORELAGT_FRILANSOPPDRAG.map((fo) => ({
+                            navn: fo.arbeidsgiverNavn,
+                            fom: fo.fom,
+                        })),
+                        selvstendigNæring: FORELAGT_SELVSTENDIG_NÆRING.map((sn) => ({
+                            navn: sn.navn,
+                            organisasjonsnummer: sn.organisasjonsnummer,
+                            næringstype: sn.næringstype,
                         })),
                     },
                     språkkode: 'NB',
@@ -505,6 +545,8 @@ describe('useSendSøknad', () => {
                             stillingsprosent: af.stillingsprosent,
                             fom: af.fom,
                         })),
+                        frilansoppdrag: [],
+                        selvstendigNæring: [],
                     },
                     språkkode: 'NB',
                     barn: BARNET,

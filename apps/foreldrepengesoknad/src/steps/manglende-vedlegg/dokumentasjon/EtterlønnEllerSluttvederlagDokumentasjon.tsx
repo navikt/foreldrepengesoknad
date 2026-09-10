@@ -1,36 +1,30 @@
 import { useIntl } from 'react-intl';
-import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
+import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { ArbeidsforholdOgInntektFp, Attachment } from '@navikt/fp-types';
+import { Attachment } from '@navikt/fp-types';
 
 import { VedleggUploader, formaterPerioderForVisning } from '../attachment-uploaders/VedleggUploader';
 
 interface Props {
     attachments: Attachment[];
     updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
-    arbeidsforholdOgInntekt: ArbeidsforholdOgInntektFp | undefined;
     andreInntektskilder?: AndreInntektskilder[];
 }
 
 export const EtterlønnEllerSluttvederlagDokumentasjon = ({
     attachments,
     updateAttachments,
-    arbeidsforholdOgInntekt,
     andreInntektskilder,
 }: Props) => {
     const intl = useIntl();
 
-    if (
-        !andreInntektskilder ||
-        arbeidsforholdOgInntekt?.harHattAndreInntektskilder !== true ||
-        andreInntektskilder.every((i) => i.type !== AnnenInntektType.SLUTTPAKKE)
-    ) {
+    if (!andreInntektskilder || andreInntektskilder.every((i) => i.type !== 'ETTERLØNN_SLUTTPAKKE')) {
         return null;
     }
 
-    const perioder = andreInntektskilder.filter((i) => i.type === AnnenInntektType.SLUTTPAKKE);
+    const perioder = andreInntektskilder.filter((i) => i.type === 'ETTERLØNN_SLUTTPAKKE');
 
     return (
         <VedleggUploader

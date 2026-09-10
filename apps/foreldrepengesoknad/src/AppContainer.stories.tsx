@@ -21,6 +21,11 @@ const søkerinfo = {
     fødselsdato: '1991-09-06',
     barn: [],
     erGift: false,
+    // Tom liste med hensikt: disse testene går "raskeste vei" gjennom søknaden og skal derfor
+    // hoppe over Frilans- og EgenNæring-steget (som kun vises når brukeren har registrerte
+    // frilansoppdrag/selvstendig næring).
+    frilansoppdrag: [],
+    selvstendigNæring: [],
     arbeidsforhold: [
         {
             arbeidsgiverId: '896929119',

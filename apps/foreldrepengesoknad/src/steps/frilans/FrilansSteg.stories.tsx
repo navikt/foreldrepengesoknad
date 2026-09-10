@@ -5,6 +5,8 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 
+import { EksternArbeidsforholdDto_fpoversikt, FpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
+
 import { FrilansSteg } from './FrilansSteg';
 
 const promiseAction = () => () => {
@@ -14,12 +16,25 @@ const promiseAction = () => () => {
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
+    frilansoppdrag?: EksternArbeidsforholdDto_fpoversikt[];
 } & ComponentProps<typeof FrilansSteg>;
 
 const meta = {
     title: 'steps/FrilansSteg',
     component: FrilansSteg,
-    render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
+    render: ({ gåTilNesteSide = action('button-click'), frilansoppdrag = [], søkerInfo: _søkerInfo, ...rest }) => {
+        const søkerInfo: FpPersonopplysningerDto_fpoversikt = {
+            arbeidsforhold: [],
+            barn: [],
+            erGift: false,
+            fnr: '12345678901',
+            fødselsdato: '1990-01-01',
+            kjønn: 'K',
+            navn: { fornavn: 'Kari', etternavn: 'Nordmann' },
+            frilansoppdrag,
+            selvstendigNæring: [],
+        };
+
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.FRILANS]}>
                 <FpDataContext
@@ -28,11 +43,10 @@ const meta = {
                         [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
                             harJobbetSomFrilans: true,
                             harJobbetSomSelvstendigNæringsdrivende: false,
-                            harHattAndreInntektskilder: false,
                         },
                     }}
                 >
-                    <FrilansSteg {...rest} />
+                    <FrilansSteg søkerInfo={søkerInfo} {...rest} />
                 </FpDataContext>
             </MemoryRouter>
         );
@@ -46,6 +60,6 @@ export const Default: Story = {
     args: {
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: () => action('button-click'),
-        arbeidsforhold: [],
+        søkerInfo: {} as FpPersonopplysningerDto_fpoversikt,
     },
 };

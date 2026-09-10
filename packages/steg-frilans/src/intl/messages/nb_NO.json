@@ -1,6 +1,8 @@
 {
     "FrilansPanel.Oppstart": "Når startet du som frilanser?",
-    "FrilansPanel.JobberFremdelesSomFrilans": "Jobber du fortsatt som frilanser?",
+    "FrilansPanel.JobberFremdelesSomFrilans": "Er du fortsatt frilanser?",
+    "FrilansPanel.JobberFremdelesSomFrilans.ReadMore.Tittel": "Hvorfor må vi vite om du fortsatt er frilanser?",
+    "FrilansPanel.JobberFremdelesSomFrilans.ReadMore.Tekst": "Om du fortsatt er aktiv som frilanser, eller ikke, påvirker hvordan foreldrepengene beregnes. Dersom du er aktiv frilanser i ett eller flere oppdrag nå skal du svare «Ja» her. Hvis ikke må du oppgi siste dag du var frilanser.",
     "FrilansPanel.JobberFremdelesSomFrilans.Ja": "Ja",
     "FrilansPanel.JobberFremdelesSomFrilans.Nei": "Nei",
     "FrilansPanel.SluttetDato": "Når sluttet du som frilanser?",
@@ -11,5 +13,5 @@
     "FrilansPanel.Valideringsfeil.TilOgMedDato.GyldigDato": "Sluttdatoen må være en gyldig dato på formatet dd.mm.åååå.",
     "FrilansPanel.Valideringsfeil.TilOgMedDato.ErIFremtiden": "Sluttdatoen må være før eller lik dagens dato.",
     "FrilansPanel.Valideringsfeil.TilOgMedDato.FørStartdato": "Sluttdatoen kan ikke være før startdatoen.",
-    "FrilansPanel.Valideringsfeil.JobberFremdelesSomFrilans.Påkrevd": "Du må oppgi om du fortsatt jobber som frilanser."
+    "FrilansPanel.Valideringsfeil.JobberFremdelesSomFrilans.Påkrevd": "Du må oppgi om du fortsatt er frilanser."
 }

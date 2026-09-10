@@ -40,7 +40,9 @@ export type Målform = 'NB' | 'NN' | 'EN' | 'E';
 export type SøkerDto = {
     arbeidsforhold?: Arbeidsforhold[];
     fnr: string;
+    frilansoppdrag?: Frilansoppdrag[];
     navn: Navn;
+    selvstendigNæring?: SelvstendigNæring[];
 };
 
 export type Arbeidsforhold = {
@@ -51,10 +53,22 @@ export type Arbeidsforhold = {
     tom?: string;
 };
 
+export type Frilansoppdrag = {
+    fom: string;
+    navn?: string;
+    tom?: string;
+};
+
 export type Navn = {
     etternavn: string;
     fornavn: string;
     mellomnavn?: string;
+};
+
+export type SelvstendigNæring = {
+    navn?: string;
+    næringstype?: Virksomhetstype;
+    organisasjonsnummer?: string;
 };
 
 export type AdopsjonDto = {
@@ -215,6 +229,8 @@ export type Uttaksplanperiode = (
 ) & {
     type: string;
 };
+
+export type Virksomhetstype = 'ANNEN' | 'JORDBRUK_SKOGBRUK' | 'FISKE' | 'DAGMAMMA';
 
 export type ArbeidsforholdDto = (
     | ({
@@ -393,8 +409,6 @@ export type NæringDto = {
     varigEndringDato?: string;
     varigEndringInntektEtterEndring?: number;
 };
-
-export type Virksomhetstype = 'ANNEN' | 'JORDBRUK_SKOGBRUK' | 'FISKE' | 'DAGMAMMA';
 
 export type SvangerskapspengesøknadDto = {
     andreInntekterSiste10Mnd?: AnnenInntektDto[];

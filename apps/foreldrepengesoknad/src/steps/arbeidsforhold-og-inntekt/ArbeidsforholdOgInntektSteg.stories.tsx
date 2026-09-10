@@ -6,7 +6,12 @@ import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 
 import { BarnType } from '@navikt/fp-constants';
-import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import {
+    EksternArbeidsforholdDto_fpoversikt,
+    FpPersonopplysningerDto_fpoversikt,
+    NæringDto,
+    SelvstendigNæringDto_fpoversikt,
+} from '@navikt/fp-types';
 
 import { ArbeidsforholdOgInntektSteg } from './ArbeidsforholdOgInntektSteg';
 
@@ -58,6 +63,40 @@ const DEFAULT_ARBEIDSFORHOLD = [
     },
 ] satisfies EksternArbeidsforholdDto_fpoversikt[];
 
+const DEFAULT_FRILANSOPPDRAG = [
+    {
+        arbeidsgiverId: '888777666',
+        arbeidsgiverIdType: 'orgnr',
+        arbeidsgiverNavn: 'Frilans Oppdrag AS',
+        fom: '2024-01-15T00:00:00.000Z',
+        stillingsprosent: 0,
+    },
+    {
+        arbeidsgiverId: '888777667',
+        arbeidsgiverIdType: 'orgnr',
+        arbeidsgiverNavn: 'Frilans Media AS',
+        fom: '2022-03-01T00:00:00.000Z',
+        stillingsprosent: 0,
+        tom: '2023-12-31T00:00:00.000Z',
+    },
+    {
+        arbeidsgiverId: '888777668',
+        arbeidsgiverIdType: 'orgnr',
+        arbeidsgiverNavn: 'Frilans Kultur AS',
+        fom: '2020-06-01T00:00:00.000Z',
+        stillingsprosent: 0,
+        tom: '2021-09-30T00:00:00.000Z',
+    },
+] satisfies EksternArbeidsforholdDto_fpoversikt[];
+
+const DEFAULT_SELVSTENDIG_NÆRING = [
+    {
+        organisasjonsnummer: '991122334',
+        navn: 'Mitt Konsulentfirma AS',
+        næringstype: 'ANNEN',
+    },
+] satisfies SelvstendigNæringDto_fpoversikt[];
+
 const promiseAction = () => () => {
     action('button-click')();
     return Promise.resolve();
@@ -65,12 +104,35 @@ const promiseAction = () => () => {
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
+    egenNæring?: NæringDto;
+    arbeidsforhold?: EksternArbeidsforholdDto_fpoversikt[];
+    frilansoppdrag?: EksternArbeidsforholdDto_fpoversikt[];
+    registrerteNæringer?: SelvstendigNæringDto_fpoversikt[];
 } & ComponentProps<typeof ArbeidsforholdOgInntektSteg>;
 
 const meta = {
     title: 'steps/ArbeidsforholdOgInntektSteg',
     component: ArbeidsforholdOgInntektSteg,
-    render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
+    render: ({
+        gåTilNesteSide = action('button-click'),
+        egenNæring,
+        arbeidsforhold = DEFAULT_ARBEIDSFORHOLD,
+        frilansoppdrag = DEFAULT_FRILANSOPPDRAG,
+        registrerteNæringer = DEFAULT_SELVSTENDIG_NÆRING,
+        søkerInfo: _søkerInfo,
+        ...rest
+    }) => {
+        const søkerInfo: FpPersonopplysningerDto_fpoversikt = {
+            arbeidsforhold,
+            barn: [],
+            erGift: false,
+            fnr: '12345678901',
+            fødselsdato: '1990-01-01',
+            kjønn: 'K',
+            navn: { fornavn: 'Kari', etternavn: 'Nordmann' },
+            frilansoppdrag,
+            selvstendigNæring: registrerteNæringer,
+        };
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.ARBEID_OG_INNTEKT]}>
                 <FpDataContext
@@ -86,9 +148,11 @@ const meta = {
                             fødselsdatoer: ['2024-02-18'],
                             antallBarn: 1,
                         },
+                        [ContextDataType.ANDRE_INNTEKTSKILDER]: [],
+                        [ContextDataType.EGEN_NÆRING]: egenNæring,
                     }}
                 >
-                    <ArbeidsforholdOgInntektSteg {...rest} />
+                    <ArbeidsforholdOgInntektSteg søkerInfo={søkerInfo} {...rest} />
                 </FpDataContext>
             </MemoryRouter>
         );
@@ -102,11 +166,11 @@ export const Default: Story = {
     args: {
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: () => action('button-click'),
-        arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
+        søkerInfo: {} as FpPersonopplysningerDto_fpoversikt,
     },
 };
 
-export const BrukerKanSøkeVedKunNeiSvar: Story = {
+export const IngenAktiveArbeidsforhold: Story = {
     args: {
         ...Default.args,
         arbeidsforhold: [],

@@ -6,11 +6,18 @@ import { SøknadRoute } from './routes';
 import { MellomlagreSøknadFn } from './useMellomlagreSøknad';
 import { useStepConfig } from './useStepConfig';
 
-export const useSvpNavigator = (
-    mellomlagreOgNaviger: MellomlagreSøknadFn,
-    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
-) => {
-    const stepConfig = useStepConfig(arbeidsforhold);
+interface UseSvpNavigatorParams {
+    mellomlagreOgNaviger: MellomlagreSøknadFn;
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    harRegistrertNæring: boolean;
+}
+
+export const useSvpNavigator = ({
+    mellomlagreOgNaviger,
+    arbeidsforhold,
+    harRegistrertNæring,
+}: UseSvpNavigatorParams) => {
+    const stepConfig = useStepConfig({ arbeidsforhold, harRegistrertNæring });
     const oppdaterPath = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const goToPreviousDefaultStep = () => {

@@ -88,11 +88,17 @@ export const ArbeidsforholdOgInntektOppsummering: Story = {
                     arbeidsforholdOgInntekt={{
                         harJobbetSomFrilans: true,
                         harJobbetSomSelvstendigNæringsdrivende: true,
-                        harHattAndreInntektskilder: false,
                     }}
                     onVilEndreSvar={() => {}}
                 />
                 <SelvstendigNæringsdrivendeOppsummering
+                    registrerteNæringer={[
+                        {
+                            navn: 'Fiskebåten',
+                            organisasjonsnummer: '998877665',
+                            næringstype: 'FISKE',
+                        },
+                    ]}
                     egenNæring={{
                         navnPåNæringen: 'Fiske',
                         fom: '2018-01-01',
@@ -110,6 +116,25 @@ export const ArbeidsforholdOgInntektOppsummering: Story = {
                 />
                 <FrilansOppsummering frilans={{ oppstart: '2019-01-01' }} onVilEndreSvar={() => {}} />
             </>
+        ),
+    },
+};
+
+export const ArbeidsforholdOgInntektSvpOppsummering: Story = {
+    args: {
+        ...ArbeidsforholdOgInntektOppsummering.args,
+        appName: 'Svangerskapspenger',
+        children: (
+            <ArbeidsforholdOppsummering
+                arbeidsforhold={[]}
+                skalViseAlertOmIM={false}
+                arbeidsforholdOgInntekt={{
+                    harJobbetSomFrilans: true,
+                    harJobbetSomSelvstendigNæringsdrivende: true,
+                    harHattArbeidIUtlandet: true,
+                }}
+                onVilEndreSvar={() => {}}
+            />
         ),
     },
 };

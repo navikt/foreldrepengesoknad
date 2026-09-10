@@ -31,12 +31,22 @@ interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    harRegistrertNæring: boolean;
 }
 
-export const PerioderSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
+export const PerioderSteg = ({
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+    arbeidsforhold,
+    harRegistrertNæring,
+}: Props) => {
     const intl = useIntl();
-    const stepConfig = useStepConfig(arbeidsforhold);
-    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
+    const stepConfig = useStepConfig({ arbeidsforhold, harRegistrertNæring });
+    const navigator = useSvpNavigator({
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
+        arbeidsforhold,
+        harRegistrertNæring,
+    });
 
     const params = useParams<RouteParams>();
     const valgtTilretteleggingId = notEmpty(params.tilretteleggingId);

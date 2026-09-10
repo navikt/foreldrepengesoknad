@@ -1,24 +1,22 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
-import { SøknadRoute } from 'appData/routes';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { FormattedMessage } from 'react-intl';
 import { getRuteVelgArbeidEllerSkjema as getRuteSkjemaEllerVelgArbeid } from 'utils/tilretteleggingUtils';
 
 import { EgenNæringPanel } from '@navikt/fp-steg-egen-naering';
-import { EksternArbeidsforholdDto_fpoversikt, NæringDto } from '@navikt/fp-types';
+import { NæringDto, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
-    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    søkerInfo: SvpPersonopplysningerDto_fpoversikt;
 };
 
-export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
-    const stepConfig = useStepConfig(arbeidsforhold);
-    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
+export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }: Props) => {
+    const { arbeidsforhold, selvstendigNæring: registrerteNæringer } = søkerInfo;
 
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
@@ -26,15 +24,21 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
 
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
 
+    const harRegistrertNæring = registrerteNæringer.length > 0;
+    const stepConfig = useStepConfig({ arbeidsforhold, harRegistrertNæring });
+    const navigator = useSvpNavigator({
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
+        arbeidsforhold,
+        harRegistrertNæring,
+    });
+
     const onSubmit = (values: NæringDto) => {
         oppdaterEgenNæring({
             ...values,
             organisasjonsnummer: values.organisasjonsnummer === '' ? undefined : values.organisasjonsnummer,
         });
 
-        const route = arbeidsforholdOgInntekt.harHattArbeidIUtlandet ? SøknadRoute.ARBEID_I_UTLANDET : undefined;
-        const nextRoute =
-            route ?? getRuteSkjemaEllerVelgArbeid(barnet.termindato, arbeidsforhold, arbeidsforholdOgInntekt);
+        const nextRoute = getRuteSkjemaEllerVelgArbeid(barnet.termindato, arbeidsforhold, arbeidsforholdOgInntekt);
         return navigator.goToStep(nextRoute);
     };
 
@@ -42,6 +46,7 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <EgenNæringPanel
                 egenNæring={egenNæring}
+                registrerteNæringer={registrerteNæringer}
                 saveOnNext={onSubmit}
                 onAvsluttOgSlett={avbrytSøknad}
                 onFortsettSenere={navigator.fortsettSøknadSenere}

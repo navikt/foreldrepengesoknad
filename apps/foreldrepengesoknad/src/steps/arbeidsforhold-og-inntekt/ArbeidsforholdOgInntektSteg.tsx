@@ -7,10 +7,11 @@ import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { ArbeidsforholdOgInntektPanel } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
+import { skalViseEgenNæringSteg } from '@navikt/fp-steg-egen-naering';
 import {
     ArbeidsforholdOgInntekt,
-    EksternArbeidsforholdDto_fpoversikt,
-    isArbeidsforholdOgInntektFp,
+    ArbeidsforholdOgInntektFp,
+    FpPersonopplysningerDto_fpoversikt,
 } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
@@ -19,16 +20,24 @@ import { notEmpty } from '@navikt/fp-validation';
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
-    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    søkerInfo: FpPersonopplysningerDto_fpoversikt;
 };
 
-export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
-    const stepConfig = useStepConfig(arbeidsforhold);
-    const navigator = useFpNavigator(arbeidsforhold, mellomlagreSøknadOgNaviger);
+export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }: Props) => {
+    const { arbeidsforhold, frilansoppdrag, selvstendigNæring: registrerteNæringer } = søkerInfo;
+
+    const harRegistrertNæring = registrerteNæringer.length > 0;
+    const stepConfig = useStepConfig({ arbeidsforhold, harRegistrertNæring });
+    const navigator = useFpNavigator({
+        arbeidsforhold,
+        harRegistrertNæring,
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
+    });
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const arbeidsforholdOgInntekt = useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
+    const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
+    const andreInntektskilder = useContextGetData(ContextDataType.ANDRE_INNTEKTSKILDER) ?? [];
 
     const oppdaterArbeidsforholdOgInntekt = useContextSaveData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const oppdaterFrilans = useContextSaveData(ContextDataType.FRILANS);
@@ -44,30 +53,32 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
     );
 
     const onSubmit = (values: ArbeidsforholdOgInntekt) => {
-        if (!isArbeidsforholdOgInntektFp(values)) {
-            throw new Error('values er på feil format');
-        }
+        const arbeidsforholdOgInntektFp: ArbeidsforholdOgInntektFp = {
+            harJobbetSomFrilans: values.harJobbetSomFrilans,
+            harJobbetSomSelvstendigNæringsdrivende: values.harJobbetSomSelvstendigNæringsdrivende,
+        };
 
-        oppdaterArbeidsforholdOgInntekt(values);
+        oppdaterArbeidsforholdOgInntekt(arbeidsforholdOgInntektFp);
 
-        if (!values.harHattAndreInntektskilder) {
-            oppdaterAndreInntektskilder(undefined);
-        }
-        if (!values.harJobbetSomFrilans) {
+        if (!arbeidsforholdOgInntektFp.harJobbetSomFrilans) {
             oppdaterFrilans(undefined);
         }
-        if (!values.harJobbetSomSelvstendigNæringsdrivende) {
+        if (!arbeidsforholdOgInntektFp.harJobbetSomSelvstendigNæringsdrivende) {
             oppdaterEgenNæring(undefined);
         }
 
-        if (values.harJobbetSomFrilans) {
+        if (arbeidsforholdOgInntektFp.harJobbetSomFrilans) {
             return navigator.goToStep(SøknadRoutes.FRILANS);
         }
-        if (values.harJobbetSomSelvstendigNæringsdrivende) {
+        if (
+            skalViseEgenNæringSteg({
+                harJobbetSomSelvstendigNæringsdrivende:
+                    arbeidsforholdOgInntektFp.harJobbetSomSelvstendigNæringsdrivende,
+                harRegistrertNæring: registrerteNæringer.length > 0,
+                egenNæring,
+            })
+        ) {
             return navigator.goToStep(SøknadRoutes.EGEN_NÆRING);
-        }
-        if (values.harHattAndreInntektskilder) {
-            return navigator.goToStep(SøknadRoutes.ANDRE_INNTEKTER);
         }
 
         return navigator.goToNextStep();
@@ -77,8 +88,13 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <ArbeidsforholdOgInntektPanel
                 aktiveArbeidsforhold={aktiveArbeidsforhold}
-                arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
+                frilansoppdrag={frilansoppdrag}
+                registrerteNæringer={registrerteNæringer}
+                egenNæring={egenNæring}
+                andreInntektskilder={andreInntektskilder}
                 saveOnNext={onSubmit}
+                saveAndreInntektskilder={oppdaterAndreInntektskilder}
+                saveEgenNæring={oppdaterEgenNæring}
                 onAvsluttOgSlett={avbrytSøknad}
                 onFortsettSenere={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}

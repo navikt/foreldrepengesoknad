@@ -5,7 +5,12 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 
-import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import {
+    EksternArbeidsforholdDto_fpoversikt,
+    NæringDto,
+    SelvstendigNæringDto_fpoversikt,
+    SvpPersonopplysningerDto_fpoversikt,
+} from '@navikt/fp-types';
 
 import { ArbeidsforholdOgInntektSteg } from './ArbeidsforholdOgInntektSteg';
 
@@ -57,6 +62,24 @@ const DEFAULT_ARBEIDSFORHOLD = [
     },
 ] satisfies EksternArbeidsforholdDto_fpoversikt[];
 
+const DEFAULT_SELVSTENDIG_NÆRING = [
+    {
+        organisasjonsnummer: '991122334',
+        navn: 'Mitt Konsulentfirma AS',
+        næringstype: 'ANNEN',
+    },
+] satisfies SelvstendigNæringDto_fpoversikt[];
+
+const DEFAULT_FRILANSOPPDRAG = [
+    {
+        arbeidsgiverId: '999999999',
+        arbeidsgiverIdType: 'orgnr',
+        arbeidsgiverNavn: 'Frilans Oppdrag AS',
+        fom: '2024-01-15T00:00:00.000Z',
+        stillingsprosent: 0,
+    },
+] satisfies EksternArbeidsforholdDto_fpoversikt[];
+
 const promiseAction = () => () => {
     action('button-click')();
     return Promise.resolve();
@@ -64,12 +87,33 @@ const promiseAction = () => () => {
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
+    arbeidsforhold?: EksternArbeidsforholdDto_fpoversikt[];
+    frilansoppdrag?: EksternArbeidsforholdDto_fpoversikt[];
+    egenNæring?: NæringDto;
+    registrerteNæringer?: SelvstendigNæringDto_fpoversikt[];
 } & ComponentProps<typeof ArbeidsforholdOgInntektSteg>;
 
 const meta = {
     title: 'steps/ArbeidsforholdOgInntektSteg',
     component: ArbeidsforholdOgInntektSteg,
-    render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
+    render: ({
+        gåTilNesteSide = action('button-click'),
+        arbeidsforhold = DEFAULT_ARBEIDSFORHOLD,
+        frilansoppdrag = [],
+        egenNæring,
+        registrerteNæringer = DEFAULT_SELVSTENDIG_NÆRING,
+        søkerInfo: _søkerInfo,
+        ...rest
+    }) => {
+        const søkerInfo: SvpPersonopplysningerDto_fpoversikt = {
+            arbeidsforhold,
+            fnr: '12345678901',
+            fødselsdato: '1990-01-01',
+            kjønn: 'K',
+            navn: { fornavn: 'Kari', etternavn: 'Nordmann' },
+            frilansoppdrag,
+            selvstendigNæring: registrerteNæringer,
+        };
         return (
             <MemoryRouter initialEntries={[SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT]}>
                 <SvpDataContext
@@ -84,9 +128,10 @@ const meta = {
                             termindato: '2024-02-18',
                             fødselsdato: '2024-02-18',
                         },
+                        [ContextDataType.EGEN_NÆRING]: egenNæring,
                     }}
                 >
-                    <ArbeidsforholdOgInntektSteg {...rest} />
+                    <ArbeidsforholdOgInntektSteg søkerInfo={søkerInfo} {...rest} />
                 </SvpDataContext>
             </MemoryRouter>
         );
@@ -100,7 +145,7 @@ export const Default: Story = {
     args: {
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: () => action('button-click'),
-        arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
+        søkerInfo: {} as SvpPersonopplysningerDto_fpoversikt,
     },
 };
 
@@ -108,5 +153,12 @@ export const BrukerKanIkkeSøke: Story = {
     args: {
         ...Default.args,
         arbeidsforhold: [],
+    },
+};
+
+export const MedFrilansoppdrag: Story = {
+    args: {
+        ...Default.args,
+        frilansoppdrag: DEFAULT_FRILANSOPPDRAG,
     },
 };

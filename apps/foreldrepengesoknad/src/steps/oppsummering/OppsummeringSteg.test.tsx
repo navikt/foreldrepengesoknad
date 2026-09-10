@@ -214,28 +214,6 @@ describe('<Oppsummering>', () => {
                 'Org nr: 1, 01.01.2015 - Pågående',
             ),
         ).toBeInTheDocument();
-
-        expect(
-            checkAndGetParentDiv(
-                arbeidsforholdOgInntektDiv.getByText(
-                    'Har du jobbet og hatt inntekt som frilanser de siste 10 månedene?',
-                ),
-            ).getByText('Ja'),
-        ).toBeInTheDocument();
-
-        expect(
-            checkAndGetParentDiv(
-                arbeidsforholdOgInntektDiv.getByText(
-                    'Har du jobbet og hatt inntekt som selvstendig næringsdrivende de siste 10 månedene?',
-                ),
-            ).getByText('Nei'),
-        ).toBeInTheDocument();
-
-        expect(
-            checkAndGetParentDiv(
-                arbeidsforholdOgInntektDiv.getByText('Har du hatt andre inntektskilder de siste 10 månedene?'),
-            ).getByText('Nei'),
-        ).toBeInTheDocument();
     });
 
     it('Skal vise landnavn og ikke landkode for jobb i utlandet', async () => {

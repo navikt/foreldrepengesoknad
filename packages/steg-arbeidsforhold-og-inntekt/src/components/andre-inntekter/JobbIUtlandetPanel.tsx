@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
 
 import { HStack, Radio, VStack } from '@navikt/ds-react';
 
@@ -9,11 +8,11 @@ import { RhfDatepicker, RhfRadioGroup, RhfSelect, RhfTextField } from '@navikt/f
 import { createCountryOptions } from '@navikt/fp-utils';
 import { hasMaxLength, isBeforeOrSame, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
-import { AndreInntekterFormValues } from '../types/AndreInntekterFormValues';
+import { AndreInntekterFormValues, JobbIUtlandetInntektUtkast } from '../../types/AndreInntektskilder';
 
 interface Props {
     index: number;
-    inntektskilde: AndreInntektskilder;
+    inntektskilde: JobbIUtlandetInntektUtkast;
 }
 
 export const JobbIUtlandetPanel = ({ index, inntektskilde }: Props) => {
@@ -21,7 +20,7 @@ export const JobbIUtlandetPanel = ({ index, inntektskilde }: Props) => {
 
     const { control } = useFormContext<AndreInntekterFormValues>();
 
-    if (inntektskilde.type !== AnnenInntektType.JOBB_I_UTLANDET) {
+    if (inntektskilde.type !== 'JOBB_I_UTLANDET') {
         throw new Error('Inntektskilde ikke av type JOBB_I_UTLANDET');
     }
 

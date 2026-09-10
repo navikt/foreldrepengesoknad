@@ -36,11 +36,13 @@ const DEFAULT_SØKER_INFO = {
     erGift: false,
     fnr: '02343434',
     fødselsdato: '1989-08-30',
+    frilansoppdrag: [],
     kjønn: 'K',
     navn: {
         etternavn: 'Oravakangas',
         fornavn: 'Erlinga-Mask',
     },
+    selvstendigNæring: [],
 } satisfies FpPersonopplysningerDto_fpoversikt;
 
 const getAnnenForelderUførMock = (

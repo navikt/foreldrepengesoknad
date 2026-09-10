@@ -8,4 +8,6 @@ export const egenNæringMessages = {
     en: enMessages,
 };
 
-export { EgenNæringPanel, EGEN_NÆRING_ID } from './src/EgenNæringPanel';
+export { EgenNæringForm, EgenNæringPanel, EGEN_NÆRING_ID } from './src/EgenNæringPanel';
+export { getForhåndsvalgtNæringstype, getPrioritertRegistrertNæring } from './src/getForhåndsvalgtNæringstype';
+export { skalViseEgenNæringSteg } from './src/skalViseEgenNæringSteg';

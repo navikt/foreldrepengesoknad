@@ -1,16 +1,16 @@
 import { FileIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { AndreInntektskilder } from 'types/AndreInntektskilder';
 
-import { BodyShort, HStack, VStack } from '@navikt/ds-react';
+import { HStack, InfoCard, VStack } from '@navikt/ds-react';
 
 import { RhfDateRangepicker } from '@navikt/fp-form-hooks';
-import { BluePanel } from '@navikt/fp-ui';
 import { isBeforeOrSame, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
+
+import { SluttpakkeInntektUtkast } from '../../types/AndreInntektskilder';
 
 interface Props {
     index: number;
-    inntektskilde: AndreInntektskilder;
+    inntektskilde: SluttpakkeInntektUtkast;
 }
 
 export const EtterlønnEllerSluttvederlagPanel = ({ index, inntektskilde }: Props) => {
@@ -49,16 +49,17 @@ export const EtterlønnEllerSluttvederlagPanel = ({ index, inntektskilde }: Prop
                     ]}
                 />
             </HStack>
-            <BluePanel isDarkBlue>
-                <HStack gap="space-8" wrap={false}>
-                    <div>
-                        <FileIcon fontSize="1.5rem" />
-                    </div>
-                    <BodyShort>
-                        <FormattedMessage id="EtterlønnEllerSluttvederlagPanel.Vedlegg" />
-                    </BodyShort>
-                </HStack>
-            </BluePanel>
+
+            <InfoCard data-color="info">
+                <InfoCard.Header icon={<FileIcon aria-hidden />}>
+                    <InfoCard.Title>
+                        <FormattedMessage id="EtterlønnEllerSluttvederlagPanel.Tittel" />
+                    </InfoCard.Title>
+                </InfoCard.Header>
+                <InfoCard.Content>
+                    <FormattedMessage id="EtterlønnEllerSluttvederlagPanel.Vedlegg" />
+                </InfoCard.Content>
+            </InfoCard>
         </VStack>
     );
 };

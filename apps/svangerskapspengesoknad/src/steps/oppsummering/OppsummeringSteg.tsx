@@ -33,8 +33,13 @@ type Props = {
 };
 
 export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }: Props) => {
-    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold);
-    const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, søkerInfo.arbeidsforhold);
+    const harRegistrertNæring = søkerInfo.selvstendigNæring.length > 0;
+    const stepConfig = useStepConfig({ arbeidsforhold: søkerInfo.arbeidsforhold, harRegistrertNæring });
+    const navigator = useSvpNavigator({
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
+        arbeidsforhold: søkerInfo.arbeidsforhold,
+        harRegistrertNæring,
+    });
 
     const tilretteleggingerVedlegg = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER_VEDLEGG));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
@@ -49,6 +54,8 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
     const skalViseAlertOmIM = aktiveArbeidsforhold.some((arbeidsforhold) =>
         valgteArbeidsforhold?.includes(arbeidsforhold.arbeidsgiverId),
     );
+
+    const { selvstendigNæring: registrerteNæringer } = søkerInfo;
 
     const førsteTilretteleggingId = getTilretteleggingId(
         søkerInfo.arbeidsforhold,
@@ -110,9 +117,16 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
                 <FrilansOppsummering frilans={frilans} onVilEndreSvar={() => navigator.goToStep(SøknadRoute.FRILANS)} />
                 <SelvstendigNæringsdrivendeOppsummering
                     egenNæring={egenNæring}
-                    onVilEndreSvar={() => navigator.goToStep(SøknadRoute.NÆRING)}
+                    registrerteNæringer={registrerteNæringer}
+                    onVilEndreSvar={() =>
+                        navigator.goToStep(
+                            registrerteNæringer.length > 0 ? SøknadRoute.NÆRING : SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT,
+                        )
+                    }
                 />
-                <JobbetIUtlandetOppsummering onVilEndreSvar={() => navigator.goToStep(SøknadRoute.ARBEID_I_UTLANDET)} />
+                <JobbetIUtlandetOppsummering
+                    onVilEndreSvar={() => navigator.goToStep(SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT)}
+                />
                 <DokumentasjonOppsummering
                     tilretteleggingerVedlegg={tilretteleggingerVedlegg}
                     alleArbeidsforhold={søkerInfo.arbeidsforhold}

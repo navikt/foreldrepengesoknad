@@ -20,13 +20,23 @@ const utledNesteSide = (values: Utenlandsopphold) => {
 
 type Props = {
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    harRegistrertNæring: boolean;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
-export const UtenlandsoppholdSteg = ({ arbeidsforhold, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
-    const stepConfig = useStepConfig(arbeidsforhold);
-    const navigator = useFpNavigator(arbeidsforhold, mellomlagreSøknadOgNaviger);
+export const UtenlandsoppholdSteg = ({
+    arbeidsforhold,
+    harRegistrertNæring,
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+}: Props) => {
+    const stepConfig = useStepConfig({ arbeidsforhold, harRegistrertNæring });
+    const navigator = useFpNavigator({
+        arbeidsforhold,
+        harRegistrertNæring,
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
+    });
 
     const utenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD);
     const oppdaterUtenlandsopphold = useContextSaveData(ContextDataType.UTENLANDSOPPHOLD);

@@ -1,56 +1,123 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
 import { SøknadRoute } from 'appData/routes';
 
 import * as stories from './ArbeidsforholdOgInntektSteg.stories';
 
-const { Default } = composeStories(stories);
+const { Default, MedFrilansoppdrag } = composeStories(stories);
 
 describe('<ArbeidsforholdOgInntektSteg>', () => {
+    beforeEach(() => {
+        // jsdom implementerer ikke scrollIntoView, og komponenten kaller denne når ny inntektskilde legges til.
+        HTMLElement.prototype.scrollIntoView = vi.fn();
+    });
+
+    const egenNæringFraInntektsstepper = {
+        navnPåNæringen: 'Fiskebåten',
+        næringstype: 'FISKE',
+        fom: '2024-01-01',
+        registrertINorge: true,
+        organisasjonsnummer: '998877665',
+    } as const;
+
+    it('skal vise frilansoppdrag', async () => {
+        await MedFrilansoppdrag.run();
+
+        expect(await screen.findByText('Mine frilansoppdrag')).toBeInTheDocument();
+    });
+
     it('skal gå til neste steg når informasjon er korrekt', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+        await Default.run({
+            args: { ...Default.args, gåTilNesteSide, mellomlagreSøknadOgNaviger },
+        });
 
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
 
-        await userEvent.click(screen.getAllByText('Nei')[0]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
+        expect(screen.queryByRole('radio', { name: 'Etterlønn eller sluttvederlag' })).not.toBeInTheDocument();
+        expect(screen.queryByRole('radio', { name: 'Førstegangstjeneste' })).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getAllByText('Nei')[1]!);
-
-        await userEvent.click(screen.getAllByText('Ja')[2]!);
-        expect(screen.getByText('Neste steg')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Neste steg'));
+        await userEvent.click(screen.getByRole('radio', { name: 'Jobb i utlandet' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
+        await userEvent.selectOptions(screen.getByLabelText('Hvilket land har du jobbet i?'), 'SWE');
+        await userEvent.type(screen.getByLabelText('Hva er navnet på arbeidsgiveren?'), 'Svensk arbeidsgiver');
+        await userEvent.click(
+            within(screen.getByRole('radiogroup', { name: 'Jobber du der nå?' })).getByRole('radio', {
+                name: 'Ja',
+            }),
+        );
+        await userEvent.type(screen.getByLabelText('Fra'), '01.01.2024');
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
+                arbeidIUtlandet: [
+                    {
+                        arbeidsgiverNavn: 'Svensk arbeidsgiver',
+                        fom: '2024-01-01',
+                        land: 'SWE',
+                        pågående: true,
+                        tom: undefined,
+                        type: 'JOBB_I_UTLANDET',
+                    },
+                ],
+            },
+            key: ContextDataType.ARBEID_I_UTLANDET,
+            type: 'update',
+        });
+
+        await userEvent.click(screen.getByRole('button', { name: 'Neste steg' }));
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: {
                 harHattArbeidIUtlandet: true,
                 harJobbetSomFrilans: false,
-                harJobbetSomSelvstendigNæringsdrivende: false,
+                harJobbetSomSelvstendigNæringsdrivende: true,
             },
             key: ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT,
             type: 'update',
         });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
             data: undefined,
             key: ContextDataType.FRILANS,
             type: 'update',
         });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
-            data: undefined,
-            key: ContextDataType.EGEN_NÆRING,
-            type: 'update',
-        });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(4, {
-            data: SøknadRoute.ARBEID_I_UTLANDET,
+            data: SøknadRoute.NÆRING,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce();
+    });
+
+    it('skal hoppe over eget SN-steg når næringen er ferdig utfylt via Legg til inntekt', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        await Default.run({
+            args: {
+                ...Default.args,
+                gåTilNesteSide,
+                mellomlagreSøknadOgNaviger,
+                egenNæring: egenNæringFraInntektsstepper,
+                registrerteNæringer: [],
+            },
+        });
+
+        await userEvent.click(screen.getByRole('button', { name: 'Neste steg' }));
+
+        await waitFor(() => expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce());
+        expect(gåTilNesteSide).not.toHaveBeenCalledWith(
+            expect.objectContaining({
+                data: SøknadRoute.NÆRING,
+                key: ContextDataType.APP_ROUTE,
+            }),
+        );
     });
 });

@@ -6,6 +6,7 @@ import ky from 'ky';
 import { useIntl } from 'react-intl';
 
 import { erUmyndigFeil } from '@navikt/fp-app-shell';
+import { SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 import { RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
 import { erLikUansettRekkefølge, erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -55,7 +56,16 @@ export const Svangerskapspengesøknad = () => {
     const mellomlagretState =
         mellomlagretInfo.data?.version === VERSJON_MELLOMLAGRING ? mellomlagretInfo.data : undefined;
 
-    if (mellomlagretState && !erLikUansettRekkefølge(mellomlagretState.søkerInfo, søkerinfo.data)) {
+    // frilansoppdrag/selvstendigNæring kan mangle på lagret søkerInfo dersom mellomlagringen ble gjort
+    // før disse feltene fantes i kontrakten. Da faller vi tilbake på ferske data i stedet for å be brukeren
+    // starte på nytt bare fordi den lagrede søknaden mangler felt hun aldri fikk mulighet til å ha.
+    const normalisertLagretSøkerInfo: SvpPersonopplysningerDto_fpoversikt | undefined = mellomlagretState && {
+        ...mellomlagretState.søkerInfo,
+        frilansoppdrag: mellomlagretState.søkerInfo.frilansoppdrag ?? søkerinfo.data.frilansoppdrag ?? [],
+        selvstendigNæring: mellomlagretState.søkerInfo.selvstendigNæring ?? søkerinfo.data.selvstendigNæring ?? [],
+    };
+
+    if (normalisertLagretSøkerInfo && !erLikUansettRekkefølge(normalisertLagretSøkerInfo, søkerinfo.data)) {
         return (
             <RegisterdataUtdatert
                 slettMellomlagringOgLastSidePåNytt={slettMellomlagringOgLastSidePåNytt}
