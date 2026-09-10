@@ -304,6 +304,24 @@ describe('<TilretteleggingSteg>', () => {
         );
     });
 
+    it('forhåndsutfyller ikke når behovsdatoen er ufullstendig', async () => {
+        render(<ForArbeidsforhold />);
+
+        const behovFomInput = await screen.findByLabelText(
+            'Fra hvilken dato har du behov for tilrettelegging eller omplassering?',
+        );
+        await user.type(behovFomInput, '12.1');
+
+        await user.click(screen.getByText('Jeg kan jobbe redusert'));
+        await user.click(screen.getByText('Ja'));
+
+        expect(screen.getByLabelText('Fra hvilken dato skal du jobbe redusert?')).toHaveValue('');
+
+        await user.click(screen.getByText('Neste steg'));
+
+        expect(screen.getAllByText('Du må oppgi fra hvilken dato du skal jobbe redusert.')[0]).toBeInTheDocument();
+    });
+
     it('forhåndsutfylt fra-dato kan endres av søkeren', async () => {
         const gåTilNesteSide = vi.fn();
 

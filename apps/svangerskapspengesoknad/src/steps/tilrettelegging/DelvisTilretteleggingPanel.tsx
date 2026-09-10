@@ -16,7 +16,7 @@ import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfRadioGroup, RhfTextField } from '@navikt/fp-form-hooks';
 import { loggUmamiEvent } from '@navikt/fp-observability';
-import { tiMånederSidenDato } from '@navikt/fp-utils';
+import { isISODateString, tiMånederSidenDato } from '@navikt/fp-utils';
 import { isRequired, isValidDate } from '@navikt/fp-validation';
 
 import {
@@ -68,6 +68,10 @@ export const DelvisTilretteleggingPanel = ({
 
     const visEnPeriodeFom =
         delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN;
+
+    // Datovelgeren lagrer rå input i skjemaverdien mens søkeren skriver, så vi forhåndsutfyller
+    // bare når datoen faktisk er ferdig utfylt.
+    const forhåndsutfyltFom = isISODateString(behovForTilretteleggingFom) ? behovForTilretteleggingFom : undefined;
 
     return (
         <>
@@ -133,7 +137,7 @@ export const DelvisTilretteleggingPanel = ({
                 <RhfDatepicker
                     name="enPeriodeMedTilretteleggingFom"
                     control={formMethods.control}
-                    defaultValue={behovForTilretteleggingFom}
+                    defaultValue={forhåndsutfyltFom}
                     label={intl.formatMessage({
                         id: 'tilrettelegging.sammePeriodeFremTilTerminFom.label.delvis',
                     })}
@@ -166,7 +170,7 @@ export const DelvisTilretteleggingPanel = ({
                         ),
                     ]}
                     defaultMonth={
-                        behovForTilretteleggingFom ??
+                        forhåndsutfyltFom ??
                         (minDatoBehovFom ? getDefaultMonth(minDatoBehovFom, maxDatoBehovFom) : undefined)
                     }
                 />
