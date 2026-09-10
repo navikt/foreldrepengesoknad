@@ -66,7 +66,7 @@ export const DelvisTilretteleggingPanel = ({
         ? dayjs(enPeriodeMedTilretteleggingFom).add(1, 'day')
         : behovForTilretteleggingFom;
 
-    const visEnPeriodeFom =
+    const harSammePeriodeFremTilTermin =
         delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN;
 
     // Datovelgeren lagrer rå input i skjemaverdien mens søkeren skriver, så vi forhåndsutfyller
@@ -93,7 +93,7 @@ export const DelvisTilretteleggingPanel = ({
                     <FormattedMessage id="tilrettelegging.tilretteleggingPeriodetype.variert" />
                 </Radio>
             </RhfRadioGroup>
-            {visEnPeriodeFom && (
+            {harSammePeriodeFremTilTermin && (
                 <div>
                     <RhfTextField
                         name="enPeriodeMedTilretteleggingStillingsprosent"
@@ -133,7 +133,7 @@ export const DelvisTilretteleggingPanel = ({
                     </ReadMore>
                 </div>
             )}
-            {visEnPeriodeFom && (
+            {harSammePeriodeFremTilTermin && (
                 <RhfDatepicker
                     name="enPeriodeMedTilretteleggingFom"
                     control={formMethods.control}
@@ -175,7 +175,7 @@ export const DelvisTilretteleggingPanel = ({
                     }
                 />
             )}
-            {visEnPeriodeFom && (
+            {harSammePeriodeFremTilTermin && (
                 <RhfRadioGroup
                     name="enPeriodeMedTilretteleggingTomType"
                     control={formMethods.control}
@@ -196,7 +196,7 @@ export const DelvisTilretteleggingPanel = ({
                     </Radio>
                 </RhfRadioGroup>
             )}
-            {visEnPeriodeFom && enPeriodeMedTilretteleggingTomType === TilOgMedDatoType.VALGFRI_DATO && (
+            {harSammePeriodeFremTilTermin && enPeriodeMedTilretteleggingTomType === TilOgMedDatoType.VALGFRI_DATO && (
                 <RhfDatepicker
                     name="enPeriodeMedTilretteleggingTilbakeIJobbDato"
                     control={formMethods.control}
