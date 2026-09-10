@@ -178,7 +178,7 @@ const defaultUttaksplanFarAleneomsorgMedTaptPeriode = [
         flerbarnsdager: false,
         resultat: {
             innvilget: false,
-            trekkerDager: false,
+            trekkerDager: true,
             trekkerMinsterett: false,
             årsak: 'AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER',
         },

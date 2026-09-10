@@ -177,6 +177,21 @@ const UttaksplanListe = ({
                     )}
                     <FormSummary.Answers>
                         {uttaksplan.map((periode) => {
+                            // Ein avslått periode som framleis trekkjer dagar er ikkje eit uttak, men
+                            // dagar brukaren mister. Han skal difor merkast «Trekte dager», slik han
+                            // òg blir i listevisninga og kalenderen, ikkje med namnet på stønadskontoen.
+                            if (erAvslåttPeriodeSomTrekkerDager(periode)) {
+                                return (
+                                    <FormSummary.Answer key={lagKeyFraPeriode(periode)}>
+                                        <FormSummary.Label>
+                                            {formatTidsperiode(periode.fom, periode.tom)}
+                                        </FormSummary.Label>
+                                        <FormSummary.Value>
+                                            <FormattedMessage id="oppsummering.uttak.trekteDager" />
+                                        </FormSummary.Value>
+                                    </FormSummary.Answer>
+                                );
+                            }
                             if (Uttaksperioden.erIkkeEøsPeriode(periode) && Uttaksperioden.erUttaksperiode(periode)) {
                                 const tidsperiode = formatTidsperiode(periode.fom, periode.tom);
                                 return (
@@ -258,6 +273,17 @@ const UttaksplanListe = ({
 
 const lagKeyFraPeriode = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) =>
     periode.kontoType + periode.fom + periode.tom;
+
+// Speglar erAlleUttaksplanperioderAvslått i listevisninga: pleiepenger-fratrekk er ikkje trekte
+// dagar, men prematurveker, og har si eiga handsaming.
+const erAvslåttPeriodeSomTrekkerDager = (
+    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+): boolean =>
+    !!(
+        Uttaksperioden.erIkkeEøsPeriode(periode) &&
+        Uttaksperioden.erAvslåttPeriode(periode) &&
+        periode.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER'
+    );
 
 // TODO (TOR) Denne fjerninga av avslåtte periodar uten trekkdagar bør ligga i backend
 const filtrerBortPerioderUtenTrekkdager = (perioder: UttakPeriode_fpoversikt[]) =>
