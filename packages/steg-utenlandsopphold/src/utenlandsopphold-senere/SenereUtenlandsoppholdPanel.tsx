@@ -48,10 +48,14 @@ export const SenereUtenlandsoppholdPanel = <TYPE extends string>({
     const formMethods = useForm<FormType>({
         shouldUnregister: true,
         defaultValues: {
-            utenlandsoppholdNeste12Mnd: (senereUtenlandsopphold.length === 0
-                ? [DEFAULT_PERIODE]
-                : senereUtenlandsopphold
-            ).map((periode) => ({ ...periode, tomUkjent: periode.tom === undefined })),
+            utenlandsoppholdNeste12Mnd:
+                senereUtenlandsopphold.length === 0
+                    ? [{ ...DEFAULT_PERIODE, tomUkjent: false }]
+                    : senereUtenlandsopphold.map((periode) => ({
+                          ...periode,
+                          tom: periode.tom || undefined,
+                          tomUkjent: !periode.tom,
+                      })),
         },
     });
     const { fields, append, remove } = useFieldArray({

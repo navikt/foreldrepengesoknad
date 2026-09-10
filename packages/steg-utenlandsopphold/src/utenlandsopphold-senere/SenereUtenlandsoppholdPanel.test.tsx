@@ -151,6 +151,27 @@ describe('<SenereUtenlandsoppholdPanel>', () => {
         ]);
     });
 
+    it('skal krysse av og skjule til og med når en lagret periode har tom som tom streng', async () => {
+        const fom = dayjs().add(1, 'day').format(ISO_DATE_FORMAT);
+
+        render(
+            <Default
+                senereUtenlandsopphold={[
+                    {
+                        landkode: 'CAN',
+                        fom,
+                        tom: '',
+                    },
+                ]}
+            />,
+        );
+
+        expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
+
+        expect(screen.getByLabelText('Jeg vet ikke når jeg kommer tilbake til Norge')).toBeChecked();
+        expect(screen.queryByLabelText('Til og med')).not.toBeInTheDocument();
+    });
+
     it('skal legge til periode og så fjerne den', async () => {
         render(<Default />);
 
