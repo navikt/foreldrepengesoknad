@@ -96,7 +96,7 @@ export const SelvstendigNæring = ({ registrerteNæringer, visManglerOpplysninge
                     >
                         <FormattedMessage id="SelvstendigNæringDrivende.Tag" />
                     </Tag>
-                    <HStack justify="space-between">
+                    <HStack gap={{ md: 'space-8' }} justify={{ xs: 'space-between', md: 'start' }}>
                         <Label>
                             <FormattedMessage id="SelvstendigNæringDrivende.OrgNummer" />
                         </Label>
