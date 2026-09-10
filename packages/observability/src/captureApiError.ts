@@ -7,6 +7,7 @@ export const captureApiError = (message: string, apiError?: ProblemDetails) => {
         context: {
             ...(apiError?.feilkode && { feilkode: apiError.feilkode }),
             ...(apiError?.callId && { callId: apiError.callId }),
+            testKey: 'testValue',
         },
     });
 };
