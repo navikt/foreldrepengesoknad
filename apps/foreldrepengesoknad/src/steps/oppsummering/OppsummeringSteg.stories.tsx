@@ -167,7 +167,8 @@ const defaultUttaksplanFarAleneomsorg = [
 ] satisfies UttakPeriode_fpoversikt[];
 
 // «Bare far har rett»-scenario der far ikkje har søkt om pause i ein periode mor ikkje har rett:
-// perioden gir eit hol i planen (avslått, trekkjer ikkje dagar) og skal ikkje visast som uttak.
+// perioden blir avslått, men trekkjer likevel dagar frå kvoten, og skal difor visast som
+// «Trekte dager» — ikkje med namnet på stønadskontoen.
 const defaultUttaksplanFarAleneomsorgMedTaptPeriode = [
     ...defaultUttaksplanFarAleneomsorg,
     {

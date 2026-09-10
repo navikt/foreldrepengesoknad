@@ -281,8 +281,9 @@ const erAvslåttPeriodeSomTrekkerDager = (
 ): boolean =>
     !!(
         Uttaksperioden.erIkkeEøsPeriode(periode) &&
-        Uttaksperioden.erAvslåttPeriode(periode) &&
-        periode.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER'
+        periode.resultat?.innvilget === false &&
+        periode.resultat.trekkerDager &&
+        periode.resultat.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER'
     );
 
 // TODO (TOR) Denne fjerninga av avslåtte periodar uten trekkdagar bør ligga i backend
