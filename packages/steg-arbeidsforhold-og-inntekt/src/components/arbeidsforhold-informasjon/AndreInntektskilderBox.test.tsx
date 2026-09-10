@@ -9,7 +9,7 @@ import { AndreInntektskilderBox } from './AndreInntektskilderBox';
 const inntektskilder = [
     {
         type: 'JOBB_I_UTLANDET',
-        land: 'DK',
+        land: 'DNK',
         arbeidsgiverNavn: 'Københavns kommune',
         pågående: true,
         fom: '2024-01-01',
@@ -59,6 +59,7 @@ describe('<AndreInntektskilderBox>', () => {
         expect(screen.getAllByText('Annen inntekt')).toHaveLength(3);
 
         expect(screen.getByRole('heading', { name: 'Jobb i utlandet' })).toBeInTheDocument();
+        expect(screen.getByText('Danmark')).toBeInTheDocument();
         expect(screen.getByText('Københavns Kommune')).toBeInTheDocument();
         expect(screen.getByText('01.01.2024 - Pågående')).toBeInTheDocument();
 

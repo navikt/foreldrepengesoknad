@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Box, Button, HStack, Heading, Label, Tag, VStack } from '@navikt/ds-react';
 
-import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
+import { capitalizeFirstLetterInEveryWordOnly, formatDate, getCountryName } from '@navikt/fp-utils';
 
 import { type AndreInntektskilder } from '../../types/AndreInntektskilder';
 import { useScrollIntoViewWhenAdded } from './useScrollIntoViewWhenAdded';
@@ -25,7 +25,7 @@ const getTittel = (intl: ReturnType<typeof useIntl>, type: AndreInntektskilder['
 };
 
 const DetaljRad = ({ label, children }: { label: React.ReactNode; children: React.ReactNode }) => (
-    <HStack justify="space-between">
+    <HStack gap={{ md: 'space-8' }} justify={{ xs: 'space-between', md: 'start' }}>
         <Label>{label}</Label>
         <BodyShort className="text-ax-text-neutral-subtle" size="small">
             {children}
@@ -41,7 +41,7 @@ const Inntektsdetaljer = ({ inntekt }: { inntekt: AndreInntektskilder }) => {
             {inntekt.type === 'JOBB_I_UTLANDET' && (
                 <>
                     <DetaljRad label={<FormattedMessage id="JobbIUtlandetPanel.LandDuHarJobbet" />}>
-                        {inntekt.land}
+                        {inntekt.land ? getCountryName(inntekt.land, intl.locale) : inntekt.land}
                     </DetaljRad>
                     <DetaljRad label={<FormattedMessage id="JobbIUtlandetPanel.NavnPåArbeidsgiver" />}>
                         {capitalizeFirstLetterInEveryWordOnly(inntekt.arbeidsgiverNavn)}
