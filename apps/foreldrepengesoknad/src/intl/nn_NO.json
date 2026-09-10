@@ -277,6 +277,7 @@
     "oppsummering.uttak.årsak": "Årsak",
     "oppsummering.uttak.dekningsgrad.label": "Du har planlagt",
     "oppsummering.uttak.dine.perioder": "Dine periodar med foreldrepengar",
+    "oppsummering.uttak.trekteDager": "Trekte dager",
     "oppsummering.uttak.dine.perioder.annenpart": "Periodane med foreldrepengar til den andre forelderen",
     "oppsummering.uttak.ønskerAutomatiskJustering.label": "Ønsker du at vi endrer perioden som starter ved termin til å starte frå fødselsdato når {antallBarn, plural, one {barnet} other {barna}} blir født?",
     "oppsummering.uttak.periodenBlirAutomatiskJustert": "(Justeres ved fødsel) ",

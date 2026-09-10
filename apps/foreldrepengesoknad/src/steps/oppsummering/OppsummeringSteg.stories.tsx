@@ -166,6 +166,26 @@ const defaultUttaksplanFarAleneomsorg = [
     },
 ] satisfies UttakPeriode_fpoversikt[];
 
+// «Bare far har rett»-scenario der far ikkje har søkt om pause i ein periode mor ikkje har rett:
+// perioden blir avslått, men trekkjer likevel dagar frå kvoten, og skal difor visast som
+// «Trekte dager» — ikkje med namnet på stønadskontoen.
+const defaultUttaksplanFarAleneomsorgMedTaptPeriode = [
+    ...defaultUttaksplanFarAleneomsorg,
+    {
+        forelder: 'FAR_MEDMOR',
+        kontoType: 'FORELDREPENGER',
+        fom: '2022-06-08',
+        tom: '2022-06-21',
+        flerbarnsdager: false,
+        resultat: {
+            innvilget: false,
+            trekkerDager: true,
+            trekkerMinsterett: false,
+            årsak: 'AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER',
+        },
+    },
+] satisfies UttakPeriode_fpoversikt[];
+
 const defaultArbeidsforholdOgInntekt = {
     harHattAndreInntektskilder: false,
     harJobbetSomFrilans: false,
@@ -475,6 +495,13 @@ export const FarMedUførMorUgift: Story = {
             termindato: '2025-10-01',
         },
         uttaksplan: defaultUttaksplanFarAleneomsorg,
+    },
+};
+
+export const FarMedUførMorUgiftMedTaptPeriode: Story = {
+    args: {
+        ...FarMedUførMorUgift.args,
+        uttaksplan: defaultUttaksplanFarAleneomsorgMedTaptPeriode,
     },
 };
 
