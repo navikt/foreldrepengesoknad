@@ -1,19 +1,18 @@
 import { StethoscopeIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
-import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
-interface Props {
-    arbeidssituasjon: Arbeidssituasjon;
-}
+import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 
-export const HvisBarnetErSyktEllerInnlagt = ({ arbeidssituasjon }: Props) => {
-    const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
-    const kunEnPartSkalHa = hvemHarRett !== 'beggeHarRett';
+export const HvisBarnetErPrematurInnlagtEtterTermin = () => {
+    const {
+        foreldreInfo: { rettighetType },
+    } = useUttaksplanData();
+
+    const erAleneforsørger = rettighetType !== 'BEGGE_RETT';
 
     return (
         <HStack gap="space-20" wrap={false}>
@@ -30,12 +29,12 @@ export const HvisBarnetErSyktEllerInnlagt = ({ arbeidssituasjon }: Props) => {
             </div>
             <div>
                 <Heading size="small" level="4">
-                    <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErSyktEllerInnlagt" />
+                    <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.PrematurBarnInnlagtEtterTermin" />
                 </Heading>
                 <BodyLong>
                     <FormattedMessage
-                        id="UforutsetteEndringer.UforutsetteEndringer.HvisBarnetErSyktEllerInnlagt.Tekst"
-                        values={{ erAleneforsørger: kunEnPartSkalHa }}
+                        id="UforutsetteEndringer.UforutsetteEndringer.PrematurBarnInnlagtEtterTermin.Tekst"
+                        values={{ erAleneforsørger }}
                     />
                 </BodyLong>
             </div>

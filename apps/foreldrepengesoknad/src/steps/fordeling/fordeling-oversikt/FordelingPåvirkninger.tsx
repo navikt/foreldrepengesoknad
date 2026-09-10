@@ -66,7 +66,9 @@ export const FordelingPåvirkninger = ({
     const visInfoFørFørsteOkt2021 = deltUttak && !førsteOkt2021Gjelder;
     const termindato = getTermindato(barn);
     const fødtFørUke33 = erFødtFørUke33(familiehendelsesdato, termindato);
-    const visInfoBarnInnlagtFørTermin = !erAdopsjon && førsteOkt2021Gjelder && fødtFørUke33 && !erFarOgFar;
+    const visInfoInnleggelseVedPrematurFødsel = !erAdopsjon && førsteOkt2021Gjelder && fødtFørUke33 && !erFarOgFar;
+    const visInfoBarnSyktFørsteSeksUker = !erAdopsjon && førsteOkt2021Gjelder && !fødtFørUke33 && !erFarOgFar;
+
 
     return (
         <div className={styles.fordelingPåvirkninger}>
@@ -88,7 +90,7 @@ export const FordelingPåvirkninger = ({
                     <ExpansionCard.Title className={styles.heading}>{heading}</ExpansionCard.Title>
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
-                    {visInfoBarnInnlagtFørTermin && (
+                    {visInfoInnleggelseVedPrematurFødsel && (
                         <>
                             <div className={styles.påvirkning}>
                                 <div className={styles.ikonFrame}>
@@ -97,12 +99,12 @@ export const FordelingPåvirkninger = ({
                                 <VStack>
                                     <BodyShort className={styles.undertittel}>
                                         <FormattedMessage
-                                            id="fordeling.påvirkninger.barnInnlagtFørTermin.tittel"
+                                            id="fordeling.påvirkninger.prematur.barnInnlagtFørTermin.tittel"
                                             values={{ antallBarn: barn.antallBarn }}
                                         />
                                     </BodyShort>
                                     <FormattedMessage
-                                        id="fordeling.påvirkninger.barnInnlagtFørTermin.info"
+                                        id="fordeling.påvirkninger.prematur.barnInnlagtFørTermin.info"
                                         values={{ antallBarn: barn.antallBarn }}
                                     />
                                 </VStack>
@@ -114,12 +116,12 @@ export const FordelingPåvirkninger = ({
                                 <VStack>
                                     <BodyShort className={styles.undertittel}>
                                         <FormattedMessage
-                                            id="fordeling.påvirkninger.barnInnlagtEtterTermin.tittel"
+                                            id="fordeling.påvirkninger.prematur.barnInnlagtEtterTermin.tittel"
                                             values={{ antallBarn: barn.antallBarn }}
                                         />
                                     </BodyShort>
                                     <FormattedMessage
-                                        id="fordeling.påvirkninger.barnInnlagtEtterTermin.info"
+                                        id="fordeling.påvirkninger.prematur.barnInnlagtEtterTermin.info"
                                         values={{ antallBarn: barn.antallBarn }}
                                     />
                                 </VStack>
@@ -129,23 +131,6 @@ export const FordelingPåvirkninger = ({
 
                     {visInfoMorSykFørsteSeksUker && (
                         <>
-                            <div className={styles.påvirkning}>
-                                <div className={styles.ikonFrame}>
-                                    <StethoscopeIcon className={styles.ikon} aria-hidden={true} />
-                                </div>
-                                <VStack>
-                                    <BodyShort className={styles.undertittel}>
-                                        <FormattedMessage
-                                            id="fordeling.påvirkninger.barnSyk.tittel"
-                                            values={{ antallBarn: barn.antallBarn }}
-                                        />
-                                    </BodyShort>
-                                    <FormattedMessage
-                                        id="fordeling.påvirkninger.barnSyk.info"
-                                        values={{ morTekst, antallBarn: barn.antallBarn }}
-                                    />
-                                </VStack>
-                            </div>
                             <div className={styles.påvirkning}>
                                 <div className={styles.ikonFrame}>
                                     <StethoscopeIcon className={styles.ikon} aria-hidden={true} />
@@ -170,6 +155,25 @@ export const FordelingPåvirkninger = ({
                                 </VStack>
                             </div>
                         </>
+                    )}
+                    {visInfoBarnSyktFørsteSeksUker && (
+                        <div className={styles.påvirkning}>
+                            <div className={styles.ikonFrame}>
+                                <StethoscopeIcon className={styles.ikon} aria-hidden={true} />
+                            </div>
+                            <VStack>
+                                <BodyShort className={styles.undertittel}>
+                                    <FormattedMessage
+                                        id="fordeling.påvirkninger.barnSyk.tittel"
+                                        values={{ antallBarn: barn.antallBarn }}
+                                    />
+                                </BodyShort>
+                                <FormattedMessage
+                                    id="fordeling.påvirkninger.barnSyk.info"
+                                    values={{ morTekst, antallBarn: barn.antallBarn }}
+                                />
+                            </VStack>
+                        </div>
                     )}
                     {visInfoMorSykISinPeriode && (
                         <div className={styles.påvirkning}>
