@@ -5,6 +5,12 @@ import dayjs from 'dayjs';
 import { ComponentProps } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { action } from 'storybook/actions';
+import {
+    DelivisTilretteleggingPeriodeType,
+    DelvisTilrettelegging,
+    IngenTilrettelegging,
+    TilOgMedDatoType,
+} from 'types/Tilrettelegging';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
@@ -45,6 +51,7 @@ type StoryArgs = {
     egenNæring?: NæringDto;
     valgteArbeidsforhold?: string[];
     valgtTilretteleggingId: string;
+    tilrettelegginger?: Record<string, DelvisTilrettelegging | IngenTilrettelegging>;
 } & ComponentProps<typeof TilretteleggingSteg>;
 
 const meta = {
@@ -56,6 +63,7 @@ const meta = {
         egenNæring,
         valgteArbeidsforhold,
         valgtTilretteleggingId,
+        tilrettelegginger,
         ...rest
     }) => {
         return (
@@ -68,6 +76,7 @@ const meta = {
                         [ContextDataType.FRILANS]: frilans,
                         [ContextDataType.EGEN_NÆRING]: egenNæring,
                         [ContextDataType.VALGTE_ARBEIDSFORHOLD]: valgteArbeidsforhold,
+                        [ContextDataType.TILRETTELEGGINGER]: tilrettelegginger,
                         [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
                             harHattArbeidIUtlandet: false,
                             harJobbetSomFrilans: !!frilans,
@@ -108,6 +117,22 @@ export const ForArbeidsforholdMedFlereTilrettelegginger: Story = {
     args: {
         ...ForArbeidsforhold.args,
         valgteArbeidsforhold: [VALGT_TILRETTELEGGING_ID, ANNEN_TILRETTELEGGING_ID],
+    },
+};
+
+export const ForArbeidsforholdMedUtfyltTilrettelegging: Story = {
+    args: {
+        ...ForArbeidsforhold.args,
+        tilrettelegginger: {
+            [VALGT_TILRETTELEGGING_ID]: {
+                type: 'delvis',
+                delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN,
+                behovForTilretteleggingFom: dayjs().format(ISO_DATE_FORMAT),
+                enPeriodeMedTilretteleggingFom: dayjs().add(10, 'days').format(ISO_DATE_FORMAT),
+                enPeriodeMedTilretteleggingStillingsprosent: '50',
+                enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
+            } satisfies DelvisTilrettelegging,
+        },
     },
 };
 

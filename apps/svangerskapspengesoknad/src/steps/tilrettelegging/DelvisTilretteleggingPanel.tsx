@@ -66,6 +66,9 @@ export const DelvisTilretteleggingPanel = ({
         ? dayjs(enPeriodeMedTilretteleggingFom).add(1, 'day')
         : behovForTilretteleggingFom;
 
+    const visEnPeriodeFom =
+        delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN;
+
     return (
         <>
             <RhfRadioGroup
@@ -86,7 +89,7 @@ export const DelvisTilretteleggingPanel = ({
                     <FormattedMessage id="tilrettelegging.tilretteleggingPeriodetype.variert" />
                 </Radio>
             </RhfRadioGroup>
-            {delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN && (
+            {visEnPeriodeFom && (
                 <div>
                     <RhfTextField
                         name="enPeriodeMedTilretteleggingStillingsprosent"
@@ -126,10 +129,11 @@ export const DelvisTilretteleggingPanel = ({
                     </ReadMore>
                 </div>
             )}
-            {delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN && (
+            {visEnPeriodeFom && (
                 <RhfDatepicker
                     name="enPeriodeMedTilretteleggingFom"
                     control={formMethods.control}
+                    defaultValue={behovForTilretteleggingFom}
                     label={intl.formatMessage({
                         id: 'tilrettelegging.sammePeriodeFremTilTerminFom.label.delvis',
                     })}
@@ -161,10 +165,13 @@ export const DelvisTilretteleggingPanel = ({
                             kanHaSVPFremTilTreUkerFørTermin,
                         ),
                     ]}
-                    defaultMonth={minDatoPeriodeFom ? getDefaultMonth(minDatoPeriodeFom, maxDatoBehovFom) : undefined}
+                    defaultMonth={
+                        behovForTilretteleggingFom ??
+                        (minDatoBehovFom ? getDefaultMonth(minDatoBehovFom, maxDatoBehovFom) : undefined)
+                    }
                 />
             )}
-            {delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN && (
+            {visEnPeriodeFom && (
                 <RhfRadioGroup
                     name="enPeriodeMedTilretteleggingTomType"
                     control={formMethods.control}
@@ -185,41 +192,40 @@ export const DelvisTilretteleggingPanel = ({
                     </Radio>
                 </RhfRadioGroup>
             )}
-            {delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN &&
-                enPeriodeMedTilretteleggingTomType === TilOgMedDatoType.VALGFRI_DATO && (
-                    <RhfDatepicker
-                        name="enPeriodeMedTilretteleggingTilbakeIJobbDato"
-                        control={formMethods.control}
-                        label={intl.formatMessage({
-                            id: 'tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato.label.delvis',
-                        })}
-                        minDate={minDatoTilbakeIJobb}
-                        maxDate={maxDatoBehovFom}
-                        validate={[
-                            isRequired(
-                                intl.formatMessage({
-                                    id: 'valideringsfeil.sammePeriodeFremTilTerminTom.påkrevd.delvis',
-                                }),
-                            ),
-                            isValidDate(
-                                intl.formatMessage({
-                                    id: 'valideringsfeil.sammePeriodeFremTilTerminTom.gyldigDato.delvis',
-                                }),
-                            ),
-                            validateSammePeriodeFremTilTerminTilbakeIJobbDato(
-                                intl,
-                                behovForTilretteleggingFom,
-                                sisteDagForSvangerskapspenger,
-                                enPeriodeMedTilretteleggingFom,
-                                'delvis',
-                                arbeidsforholdNavn || '',
-                                sluttdatoArbeid,
-                                kanHaSVPFremTilTreUkerFørTermin,
-                            ),
-                        ]}
-                        defaultMonth={getDefaultMonth(minDatoTilbakeIJobb, maxDatoBehovFom)}
-                    />
-                )}
+            {visEnPeriodeFom && enPeriodeMedTilretteleggingTomType === TilOgMedDatoType.VALGFRI_DATO && (
+                <RhfDatepicker
+                    name="enPeriodeMedTilretteleggingTilbakeIJobbDato"
+                    control={formMethods.control}
+                    label={intl.formatMessage({
+                        id: 'tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato.label.delvis',
+                    })}
+                    minDate={minDatoTilbakeIJobb}
+                    maxDate={maxDatoBehovFom}
+                    validate={[
+                        isRequired(
+                            intl.formatMessage({
+                                id: 'valideringsfeil.sammePeriodeFremTilTerminTom.påkrevd.delvis',
+                            }),
+                        ),
+                        isValidDate(
+                            intl.formatMessage({
+                                id: 'valideringsfeil.sammePeriodeFremTilTerminTom.gyldigDato.delvis',
+                            }),
+                        ),
+                        validateSammePeriodeFremTilTerminTilbakeIJobbDato(
+                            intl,
+                            behovForTilretteleggingFom,
+                            sisteDagForSvangerskapspenger,
+                            enPeriodeMedTilretteleggingFom,
+                            'delvis',
+                            arbeidsforholdNavn || '',
+                            sluttdatoArbeid,
+                            kanHaSVPFremTilTreUkerFørTermin,
+                        ),
+                    ]}
+                    defaultMonth={getDefaultMonth(minDatoTilbakeIJobb, maxDatoBehovFom)}
+                />
+            )}
         </>
     );
 };

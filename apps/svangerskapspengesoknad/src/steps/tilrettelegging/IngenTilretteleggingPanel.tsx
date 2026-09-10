@@ -60,6 +60,7 @@ export const IngenTilretteleggingPanel = ({
             <RhfDatepicker
                 name="enPeriodeMedTilretteleggingFom"
                 control={formMethods.control}
+                defaultValue={behovForTilretteleggingFom}
                 label={intl.formatMessage({
                     id: 'tilrettelegging.sammePeriodeFremTilTerminFom.label.ingen',
                 })}
@@ -89,7 +90,10 @@ export const IngenTilretteleggingPanel = ({
                         kanHaSVPFremTilTreUkerFørTermin,
                     ),
                 ]}
-                defaultMonth={minDatoPeriodeFom ? getDefaultMonth(minDatoPeriodeFom, maxDatoBehovFom) : undefined}
+                defaultMonth={
+                    behovForTilretteleggingFom ??
+                    (minDatoBehovFom ? getDefaultMonth(minDatoBehovFom, maxDatoBehovFom) : undefined)
+                }
             />
             <RhfRadioGroup
                 name="enPeriodeMedTilretteleggingTomType"
