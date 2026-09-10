@@ -38,6 +38,7 @@ describe('<ManueltLagtTilNæring>', () => {
         );
 
         expect(screen.getByRole('heading', { name: 'Fiskebåten' })).toBeInTheDocument();
+        expect(screen.getByText('Fiske')).toBeInTheDocument();
         expect(screen.getByText('998877665')).toBeInTheDocument();
 
         await userEvent.click(screen.getByRole('button', { name: 'Fjern Fiskebåten' }));

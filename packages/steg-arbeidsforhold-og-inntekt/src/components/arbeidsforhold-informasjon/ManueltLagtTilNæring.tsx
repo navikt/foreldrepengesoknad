@@ -13,6 +13,21 @@ interface Props {
     onRemove?: () => void;
 }
 
+const næringstypeTekst = (næringstype: NæringDto['næringstype']) => {
+    switch (næringstype) {
+        case 'FISKE':
+            return <FormattedMessage id="SelvstendigNæringDrivende.næringstype.fiske" />;
+        case 'DAGMAMMA':
+            return <FormattedMessage id="SelvstendigNæringDrivende.næringstype.dagmamma" />;
+        case 'JORDBRUK_SKOGBRUK':
+            return <FormattedMessage id="SelvstendigNæringDrivende.næringstype.jordbrukSkogbruk" />;
+        case 'ANNEN':
+            return <FormattedMessage id="SelvstendigNæringDrivende.næringstype.annen" />;
+        default:
+            return undefined;
+    }
+};
+
 export const ManueltLagtTilNæring = ({ egenNæring, onRemove }: Props) => {
     const intl = useIntl();
     const næringRef = useScrollIntoViewWhenAdded(egenNæring && onRemove ? 1 : 0);
@@ -24,6 +39,8 @@ export const ManueltLagtTilNæring = ({ egenNæring, onRemove }: Props) => {
     const navn = egenNæring.navnPåNæringen
         ? capitalizeFirstLetterInEveryWordOnly(egenNæring.navnPåNæringen)
         : intl.formatMessage({ id: 'inntektsinformasjon.egenNæring.label' });
+
+    const næringstype = næringstypeTekst(egenNæring.næringstype);
 
     return (
         <Box
@@ -42,8 +59,18 @@ export const ManueltLagtTilNæring = ({ egenNæring, onRemove }: Props) => {
                 >
                     <FormattedMessage id="SelvstendigNæringDrivende.Tag" />
                 </Tag>
+                {næringstype && (
+                    <HStack gap={{ md: 'space-8' }} justify={{ xs: 'space-between', md: 'start' }}>
+                        <Label>
+                            <FormattedMessage id="SelvstendigNæringDrivende.Næringstype" />
+                        </Label>
+                        <BodyShort className="text-ax-text-neutral-subtle" size="small">
+                            {næringstype}
+                        </BodyShort>
+                    </HStack>
+                )}
                 {egenNæring.registrertINorge && egenNæring.organisasjonsnummer && (
-                    <HStack justify="space-between">
+                    <HStack gap={{ md: 'space-8' }} justify={{ xs: 'space-between', md: 'start' }}>
                         <Label>
                             <FormattedMessage id="SelvstendigNæringDrivende.OrgNummer" />
                         </Label>
@@ -53,7 +80,7 @@ export const ManueltLagtTilNæring = ({ egenNæring, onRemove }: Props) => {
                     </HStack>
                 )}
                 {!egenNæring.registrertINorge && egenNæring.registrertILand && (
-                    <HStack justify="space-between">
+                    <HStack gap={{ md: 'space-8' }} justify={{ xs: 'space-between', md: 'start' }}>
                         <Label>
                             <FormattedMessage id="SelvstendigNæringDrivende.Land" />
                         </Label>
@@ -62,7 +89,7 @@ export const ManueltLagtTilNæring = ({ egenNæring, onRemove }: Props) => {
                         </BodyShort>
                     </HStack>
                 )}
-                <HStack justify="space-between">
+                <HStack gap={{ md: 'space-8' }} justify={{ xs: 'space-between', md: 'start' }}>
                     <Label>
                         <FormattedMessage id="SelvstendigNæringDrivende.Dato" />
                     </Label>
