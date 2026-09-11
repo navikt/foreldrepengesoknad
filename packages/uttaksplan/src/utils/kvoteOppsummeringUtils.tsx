@@ -1,8 +1,8 @@
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
-import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
 import {
     filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger,
     finnAntallDagerDerKunEnHarForeldrepenger,
+    finnOverførteDagerFraAktivitetsfriKvote,
     getUttaksKontoType,
     summerDagerIPerioder,
     tellDagerIUttaksPeriodene,
@@ -36,6 +36,20 @@ export const useErAntallDagerOvertrukketIUttaksplan = () => {
     );
 };
 
+/** Talet på dagar som er omfordelte frå kvoten med aktivitetskrav til den aktivitetsfrie kvoten. */
+export const useOverførteDagerFraAktivitetsfriKvote = () => {
+    const { uttakPerioder, familiesituasjon, valgtStønadskvote, familiehendelsedato } = useUttaksplanData();
+
+    const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
+
+    return finnOverførteDagerFraAktivitetsfriKvote(
+        filtrertePerioder,
+        valgtStønadskvote.kontoer,
+        familiesituasjon,
+        familiehendelsedato,
+    );
+};
+
 export const useTellDagerIUttaksPeriodene = () => {
     const { uttakPerioder, familiesituasjon, valgtStønadskvote, familiehendelsedato } = useUttaksplanData();
 
@@ -48,20 +62,22 @@ export const useUbrukteDagerPerKontoKunEnHarRett = () => {
     const { uttakPerioder, familiesituasjon, valgtStønadskvote, familiehendelsedato } = useUttaksplanData();
     const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
 
-    const aktivitetsfriKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
-    const foreldrepengerKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FORELDREPENGER');
-    const førFødselKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
+    const kontoer = valgtStønadskvote.kontoer;
+    const aktivitetsfriKonto = kontoer.find((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
+    const foreldrepengerKonto = kontoer.find((k) => k.konto === 'FORELDREPENGER');
+    const førFødselKonto = kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
+
+    const overførteDager = finnOverførteDagerFraAktivitetsfriKvote(
+        filtrertePerioder,
+        kontoer,
+        familiesituasjon,
+        familiehendelsedato,
+    );
 
     const bruktAktivitetsfri = aktivitetsfriKonto
         ? summerDagerIPerioder(
-              filtrertePerioder.filter((p) => {
-                  const erAktivitetsfriPeriode =
-                      erVanligUttakPeriode(p) &&
-                      getUttaksKontoType(p) === 'FORELDREPENGER' &&
-                      p.morsAktivitet === 'IKKE_OPPGITT';
-                  return erAktivitetsfriPeriode || getUttaksKontoType(p) === 'AKTIVITETSFRI_KVOTE';
-              }),
-              valgtStønadskvote.kontoer,
+              filtrertePerioder.filter((p) => getUttaksKontoType(p, kontoer) === 'AKTIVITETSFRI_KVOTE'),
+              kontoer,
               familiesituasjon,
               familiehendelsedato,
           )
@@ -69,17 +85,8 @@ export const useUbrukteDagerPerKontoKunEnHarRett = () => {
 
     const bruktMedAktivitetskrav = foreldrepengerKonto
         ? summerDagerIPerioder(
-              filtrertePerioder.filter((p) => {
-                  const erAktivitetsfriPeriode =
-                      erVanligUttakPeriode(p) &&
-                      getUttaksKontoType(p) === 'FORELDREPENGER' &&
-                      p.morsAktivitet === 'IKKE_OPPGITT';
-                  if (erAktivitetsfriPeriode) {
-                      return false;
-                  }
-                  return getUttaksKontoType(p) === 'FORELDREPENGER';
-              }),
-              valgtStønadskvote.kontoer,
+              filtrertePerioder.filter((p) => getUttaksKontoType(p, kontoer) === 'FORELDREPENGER'),
+              kontoer,
               familiesituasjon,
               familiehendelsedato,
           )
@@ -87,8 +94,8 @@ export const useUbrukteDagerPerKontoKunEnHarRett = () => {
 
     const bruktFørFødsel = førFødselKonto
         ? summerDagerIPerioder(
-              filtrertePerioder.filter((p) => getUttaksKontoType(p) === 'FORELDREPENGER_FØR_FØDSEL'),
-              valgtStønadskvote.kontoer,
+              filtrertePerioder.filter((p) => getUttaksKontoType(p, kontoer) === 'FORELDREPENGER_FØR_FØDSEL'),
+              kontoer,
               familiesituasjon,
               familiehendelsedato,
           )
@@ -97,9 +104,9 @@ export const useUbrukteDagerPerKontoKunEnHarRett = () => {
     const ubrukteFørFødselDager =
         førFødselKonto && familiesituasjon !== 'fødsel' ? Math.max(0, førFødselKonto.dager - bruktFørFødsel) : 0;
 
-    const aktivitetsfriDiff = aktivitetsfriKonto ? aktivitetsfriKonto.dager - bruktAktivitetsfri : 0;
+    const aktivitetsfriDiff = aktivitetsfriKonto ? aktivitetsfriKonto.dager + overførteDager - bruktAktivitetsfri : 0;
     const medAktivitetskravDiff = foreldrepengerKonto
-        ? foreldrepengerKonto.dager - bruktMedAktivitetskrav + ubrukteFørFødselDager
+        ? foreldrepengerKonto.dager - overførteDager - bruktMedAktivitetskrav + ubrukteFørFødselDager
         : 0;
 
     return {

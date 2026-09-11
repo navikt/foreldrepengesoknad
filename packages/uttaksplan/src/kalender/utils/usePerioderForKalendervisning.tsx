@@ -5,6 +5,7 @@ import { IntlShape, useIntl } from 'react-intl';
 import {
     Barn,
     BrukerRolleSak_fpoversikt,
+    KontoDto,
     NavnPåForeldre,
     RettighetType_fpoversikt,
     UttakPeriodeAnnenpartEøs_fpoversikt,
@@ -29,6 +30,7 @@ import {
     erTapteDagerHull,
     erVanligUttakPeriode,
 } from '../../types/UttaksplanPeriode';
+import { getUttaksKontoType } from '../../utils/kvoteBeregning';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
 import {
     erAvslåttPeriode,
@@ -50,6 +52,7 @@ export const usePerioderForKalendervisning = (
         familiehendelsedato,
         uttakPerioder,
         kanVelgeArbeidsgiver,
+        valgtStønadskvote,
     } = useUttaksplanData();
 
     const saksperioderInkludertTapteDager = useAlleUttakPerioderInklTapteDager();
@@ -59,7 +62,12 @@ export const usePerioderForKalendervisning = (
     const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(saksperioderInkludertTapteDager, erFarEllerMedmor);
 
     const kalenderPerioder = unikePerioder.reduce<CalendarPeriod[]>((acc, periode) => {
-        const color = getKalenderFargeForPeriode(periode, erFarEllerMedmor, saksperioderInkludertTapteDager);
+        const color = getKalenderFargeForPeriode(
+            periode,
+            erFarEllerMedmor,
+            saksperioderInkludertTapteDager,
+            valgtStønadskvote.kontoer,
+        );
         const isUpdated = endredePerioder.some((p) => p.fom === periode.fom && p.tom === periode.tom);
 
         const perioder = lagBarnehageOgfamiliehendelsePeriode(
@@ -177,6 +185,7 @@ export const getKalenderFargeForPeriode = (
     periode: UttaksplanperiodeMedKunTapteDager,
     erFarEllerMedmor: boolean,
     allePerioder: UttaksplanperiodeMedKunTapteDager[],
+    kontoer: KontoDto[],
 ): CalendarPeriodColor => {
     if (erAvslåttPeriode(periode)) {
         if (erVanligUttakPeriode(periode) && periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
@@ -222,7 +231,7 @@ export const getKalenderFargeForPeriode = (
         if (periode.gradering && periode.gradering.arbeidstidprosent > 0) {
             return 'GREENSTRIPED';
         }
-        if (periode.kontoType === 'FORELDREPENGER' && periode.morsAktivitet === 'IKKE_OPPGITT') {
+        if (erVanligUttakPeriode(periode) && getUttaksKontoType(periode, kontoer) === 'AKTIVITETSFRI_KVOTE') {
             return 'GREENOUTLINE';
         }
 

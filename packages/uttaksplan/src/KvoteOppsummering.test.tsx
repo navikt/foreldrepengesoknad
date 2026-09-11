@@ -171,7 +171,13 @@ describe('<KvoteOppsummering >', () => {
         const expandButton = screen.getByRole('button', { expanded: false });
         await userEvent.click(expandButton);
 
-        expect(screen.getByText('8 uker og 1 dag er lagt til, 21 uker og 4 dager gjenstår')).toBeInTheDocument();
+        // TFP-6973: Den avslåtte perioden (13 dagar) har trekkerMinsterett=true og
+        // trekker difor av den aktivitetsfrie kvoten, ikkje av kvoten med
+        // aktivitetskrav – sjølv om morsAktivitet er UTDANNING. Aktivitetsfri kvote
+        // er dermed 50 + 13 = 63 dagar brukt, og dei 13 overskytande dagane er
+        // omfordelte frå kvoten med aktivitetskrav (150 - 13 = 137 tilgjengelege).
+        expect(screen.getByText('12 uker og 3 dager er lagt til')).toBeInTheDocument();
+        expect(screen.getByText('5 uker og 3 dager er lagt til, 21 uker og 4 dager gjenstår')).toBeInTheDocument();
     });
 
     it('TFP-6964: Fri utsettelse frå annen part (pleiepenger) skal ikkje teljast som brukte dagar', async () => {

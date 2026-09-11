@@ -54,6 +54,7 @@ export const UttaksplanLegend = ({
         foreldreInfo: { søker },
         barn,
         familiehendelsedato,
+        valgtStønadskvote,
     } = useUttaksplanData();
 
     const saksperioderInkludertHull = useAlleUttakPerioderInklTapteDager();
@@ -61,7 +62,7 @@ export const UttaksplanLegend = ({
     const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(saksperioderInkludertHull, søker === 'FAR_MEDMOR');
 
     const unikePeriodeLabelsMedFarge = unikePerioder.reduce<UttaksplanKalenderLegendInfo[]>((acc, periode) => {
-        const label = getLegendLabelFromPeriode(periode, søker === 'FAR_MEDMOR');
+        const label = getLegendLabelFromPeriode(periode, søker === 'FAR_MEDMOR', valgtStønadskvote.kontoer);
 
         if (!label) {
             return acc;
