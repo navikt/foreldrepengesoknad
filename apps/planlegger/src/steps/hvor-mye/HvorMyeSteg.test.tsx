@@ -7,7 +7,7 @@ import { formatCurrencyWithKr } from '@navikt/fp-utils';
 
 import * as stories from './HvorMyeSteg.stories';
 
-const { FlereForsørgere, AleneforsørgerMor } = composeStories(stories);
+const { FlereForsørgere, AleneforsørgerMor, FarOgFarKunFar2HarRett } = composeStories(stories);
 
 describe('<HvorMyeSteg>', () => {
     it('skal vises inputfelt for både mor og far', async () => {
@@ -35,6 +35,19 @@ describe('<HvorMyeSteg>', () => {
         expect(await screen.findAllByText('Hvor mye')).toHaveLength(2);
         expect(screen.getByText('Hva tjener du ca. i måneden? (valgfritt)')).toBeInTheDocument();
         expect(screen.queryByText('Hva tjener Espen ca. i måneden? (valgfritt)')).not.toBeInTheDocument();
+    });
+
+    it('skal vise full utregning for far2 når kun far2 har rett (far/far)', async () => {
+        render(<FarOgFarKunFar2HarRett />);
+
+        expect(await screen.findAllByText('Hvor mye')).toHaveLength(2);
+
+        const far2Lønn = screen.getByLabelText('Hva tjener Ola ca. i måneden? (valgfritt)');
+        expect(screen.queryByLabelText('Hva tjener Espen ca. i måneden? (valgfritt)')).not.toBeInTheDocument();
+
+        await userEvent.type(far2Lønn, '30000');
+
+        expect(await screen.findByText(/Ola vil få rundt/)).toBeInTheDocument();
     });
 
     it('skal vise infoboks om at man ikke har rett til foreldrepenger når årslønn er under 1/2 G', async () => {
