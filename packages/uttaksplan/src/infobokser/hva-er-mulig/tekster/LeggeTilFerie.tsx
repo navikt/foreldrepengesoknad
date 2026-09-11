@@ -16,7 +16,7 @@ export const LeggeTilFerie = () => {
     } = useUttaksplanData();
 
     const erAlenesøker = rettighetType === 'ALENEOMSORG';
-    const kunEnSøkerHarRett = rettighetType !== 'BEGGE_RETT';
+    const kunSøker2SkalHa = rettighetType !== 'BEGGE_RETT' && søker === 'FAR_MEDMOR';
 
     return (
         <HStack gap="space-20" wrap={false}>
@@ -41,7 +41,7 @@ export const LeggeTilFerie = () => {
                         values={{
                             hvem: finnTekstForMedmorEllerFar(intl, søker, rettighetType, erMedmorDelAvSøknaden),
                             erAlenesøker,
-                            kunSøker2HarRett: kunEnSøkerHarRett,
+                            kunSøker2HarRett: kunSøker2SkalHa,
                             erMedmor: erMedmorDelAvSøknaden,
                         }}
                     />

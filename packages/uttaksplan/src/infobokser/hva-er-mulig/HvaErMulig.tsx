@@ -14,6 +14,7 @@ import { FpMedKrav } from './tekster/FpMedKrav';
 import { FpUtenKrav } from './tekster/FpUtenKrav';
 import { JobbeSamtidig } from './tekster/JobbeSamtidig';
 import { LeggeTilFerie } from './tekster/LeggeTilFerie';
+import { LeggeTilPause } from './tekster/LeggeTilPause';
 import { Omsorgspermisjon } from './tekster/Omsorgspermisjon';
 import { ToUkerRundtFødsel } from './tekster/ToUkerRundtFødsel';
 
@@ -61,22 +62,30 @@ export const HvaErMulig = ({ loggExpansionCardOpen, erFarOgFar }: Props) => {
                     </Heading>
                     {familiesituasjon !== 'adopsjon' && (
                         <>
-                            {!(erFarOgFar || kunSøker2SkalHa) && <DetteKanIkkeEndres erFarOgFar={erFarOgFar} />}
-
-                            {(kunSøker2SkalHa || erFarOgFar) && <ToUkerRundtFødsel erFarOgFar={erFarOgFar} />}
-                            {erFarOgFar && !kunEnPartSkalHa && <AktivitetskravFar />}
-
-                            <LeggeTilFerie />
-
-                            {!kunEnPartSkalHa && !erFarOgFar && <FarFellesperiode erFarOgFar={erFarOgFar} />}
-
-                            {!kunSøker2SkalHa && <JobbeSamtidig />}
-
-                            {!erAlene && !kunEnPartSkalHa && <ForeldrepengerSamtidig erFarOgFar={erFarOgFar} />}
-                            {kunSøker2SkalHa && (
+                            {kunSøker2SkalHa ? (
                                 <>
                                     <FpUtenKrav />
                                     <FpMedKrav />
+                                    <LeggeTilPause />
+                                    <LeggeTilFerie />
+                                    <ToUkerRundtFødsel erFarOgFar={erFarOgFar} />
+                                    <JobbeSamtidig />
+                                </>
+                            ) : (
+                                <>
+                                    {!erFarOgFar && <DetteKanIkkeEndres erFarOgFar={erFarOgFar} />}
+                                    {erFarOgFar && <ToUkerRundtFødsel erFarOgFar={erFarOgFar} />}
+                                    {erFarOgFar && !kunEnPartSkalHa && <AktivitetskravFar />}
+
+                                    <LeggeTilFerie />
+
+                                    {!kunEnPartSkalHa && !erFarOgFar && <FarFellesperiode erFarOgFar={erFarOgFar} />}
+
+                                    <JobbeSamtidig />
+
+                                    {!erAlene && !kunEnPartSkalHa && (
+                                        <ForeldrepengerSamtidig erFarOgFar={erFarOgFar} />
+                                    )}
                                 </>
                             )}
                         </>

@@ -11,6 +11,7 @@ const {
     FødselFarOgFarKunFar1HarRett,
     FødselFarOgFarBeggeHarRett,
     FødselAleneforsørgerMor,
+    FødselAleneforsørgerFar,
     FødselMorOgMedmorKunMedmorHarRett,
     FødselMorOgMedmorKunMorHarRett,
     AdopsjonMorOgFarBeggeHarRett,
@@ -67,13 +68,14 @@ describe('<HvaErMulig>', () => {
         expect(screen.getByText('To uker rundt fødsel')).toBeInTheDocument();
 
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText('Legg til pause')).toBeInTheDocument();
 
         expect(screen.getByText('Foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.queryByText(/mor som føder er i aktivitet/)).not.toBeInTheDocument();
         expect(screen.getByText('Foreldrepenger med aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText(/Mor må være i/)).toBeInTheDocument();
+        expect(screen.getByText(/Perioden med aktivitetskrav starter/)).toBeInTheDocument();
 
-        expect(screen.queryByText('Jobbe samtidig')).not.toBeInTheDocument();
+        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
         expect(screen.queryByText('Foreldrepenger samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('2 uker rundt fødsel:')).not.toBeInTheDocument();
         expect(screen.queryByText('Opptil 100 %:')).not.toBeInTheDocument();
@@ -150,12 +152,13 @@ describe('<HvaErMulig>', () => {
         expect(screen.getByText('To uker rundt fødsel')).toBeInTheDocument();
 
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText('Legg til pause')).toBeInTheDocument();
         expect(screen.getByText('Foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText(/mor som føder er i aktivitet/)).toBeInTheDocument();
         expect(screen.getByText('Foreldrepenger med aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText(/Mor som føder/)).toBeInTheDocument();
+        expect(screen.getByText(/Perioden med aktivitetskrav starter/)).toBeInTheDocument();
 
-        expect(screen.queryByText('Jobbe samtidig')).not.toBeInTheDocument();
+        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
         expect(screen.queryByText('Foreldrepenger samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('2 uker rundt fødsel:')).not.toBeInTheDocument();
         expect(screen.queryByText('Opptil 100 %:')).not.toBeInTheDocument();
@@ -222,6 +225,34 @@ describe('<HvaErMulig>', () => {
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
         expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 
+        expect(screen.queryByText('Foreldrepenger samtidig')).not.toBeInTheDocument();
+        expect(screen.queryByText('2 uker rundt fødsel:')).not.toBeInTheDocument();
+        expect(screen.queryByText('Opptil 100 %:')).not.toBeInTheDocument();
+        expect(screen.queryByText('Til sammen 100 %:')).not.toBeInTheDocument();
+        expect(screen.queryByText('Opptil 150 %:')).not.toBeInTheDocument();
+        expect(screen.queryByText('Når far tar fellesperiode')).not.toBeInTheDocument();
+    });
+
+    it('skal vise info for aleneforsørger far fødsel', async () => {
+        render(<FødselAleneforsørgerFar />);
+
+        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
+
+        expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
+
+        expect(screen.queryByText('Dette kan du ikke endre:')).not.toBeInTheDocument();
+        expect(screen.queryByText('Tre uker før termin:')).not.toBeInTheDocument();
+        expect(screen.queryByText('Seks uker etter fødsel:')).not.toBeInTheDocument();
+
+        expect(screen.getByText('To uker rundt fødsel')).toBeInTheDocument();
+
+        expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText('Legg til pause')).toBeInTheDocument();
+
+        expect(screen.getByText('Foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Foreldrepenger med aktivitetskrav')).toBeInTheDocument();
+
+        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
         expect(screen.queryByText('Foreldrepenger samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('2 uker rundt fødsel:')).not.toBeInTheDocument();
         expect(screen.queryByText('Opptil 100 %:')).not.toBeInTheDocument();
