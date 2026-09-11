@@ -36,7 +36,7 @@ describe('<HvaErMulig>', () => {
         expect(screen.getByText('Opptil 150 %:')).toBeInTheDocument();
     });
 
-    it.todo('skal vise info for mor og far fødsel hvor kun mor har rett', async () => {
+    it('skal vise info for mor og far fødsel hvor kun mor har rett', async () => {
         render(<FødselMorOgFarKunMorHarRett />);
         expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
 
@@ -54,7 +54,7 @@ describe('<HvaErMulig>', () => {
         expect(screen.queryByText('Når far tar fellesperiode')).not.toBeInTheDocument();
     });
 
-    it.todo('skal vise info for mor og far fødsel hvor kun far har rett', async () => {
+    it('skal vise info for mor og far fødsel hvor kun far har rett', async () => {
         render(<FødselMorOgFarKunFarHarRett />);
         expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
 
@@ -119,7 +119,7 @@ describe('<HvaErMulig>', () => {
         expect(screen.getByText('Opptil 150 %:')).toBeInTheDocument();
     });
 
-    it.todo('skal vise info for mor og medmor fødsel hvor kun mor har rett', async () => {
+    it('skal vise info for mor og medmor fødsel hvor kun mor har rett', async () => {
         render(<FødselMorOgMedmorKunMorHarRett />);
         expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
 
@@ -137,7 +137,7 @@ describe('<HvaErMulig>', () => {
         expect(screen.queryByText('Når medmor tar fellesperiode')).not.toBeInTheDocument();
     });
 
-    it.todo('skal vise info for mor og medmor fødsel hvor kun medmor har rett', async () => {
+    it('skal vise info for mor og medmor fødsel hvor kun medmor har rett', async () => {
         render(<FødselMorOgMedmorKunMedmorHarRett />);
         expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
 

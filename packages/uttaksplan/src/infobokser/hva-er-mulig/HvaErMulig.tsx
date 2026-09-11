@@ -25,15 +25,13 @@ interface Props {
 export const HvaErMulig = ({ loggExpansionCardOpen, erFarOgFar }: Props) => {
     const {
         familiesituasjon,
-        foreldreInfo: { rettighetType, søker, erMedmorDelAvSøknaden },
+        foreldreInfo: { rettighetType, søker },
     } = useUttaksplanData();
 
     const erAlene = rettighetType === 'ALENEOMSORG';
-    const erFarAlene = erAlene && søker === 'FAR_MEDMOR' && !erMedmorDelAvSøknaden;
 
     const kunEnPartSkalHa = rettighetType !== 'BEGGE_RETT';
 
-    const kunFarSøker2EllerMedmorHarRett = erAlene && søker === 'FAR_MEDMOR';
     const kunSøker2SkalHa = kunEnPartSkalHa && søker === 'FAR_MEDMOR';
 
     return (
@@ -63,13 +61,9 @@ export const HvaErMulig = ({ loggExpansionCardOpen, erFarOgFar }: Props) => {
                     </Heading>
                     {familiesituasjon !== 'adopsjon' && (
                         <>
-                            {!(erFarAlene || erFarOgFar || kunFarSøker2EllerMedmorHarRett) && (
-                                <DetteKanIkkeEndres erFarOgFar={erFarOgFar} />
-                            )}
+                            {!(erFarOgFar || kunSøker2SkalHa) && <DetteKanIkkeEndres erFarOgFar={erFarOgFar} />}
 
-                            {(kunFarSøker2EllerMedmorHarRett || erFarOgFar) && (
-                                <ToUkerRundtFødsel erFarOgFar={erFarOgFar} />
-                            )}
+                            {(kunSøker2SkalHa || erFarOgFar) && <ToUkerRundtFødsel erFarOgFar={erFarOgFar} />}
                             {erFarOgFar && !kunEnPartSkalHa && <AktivitetskravFar />}
 
                             <LeggeTilFerie />
@@ -79,7 +73,7 @@ export const HvaErMulig = ({ loggExpansionCardOpen, erFarOgFar }: Props) => {
                             {!kunSøker2SkalHa && <JobbeSamtidig />}
 
                             {!erAlene && !kunEnPartSkalHa && <ForeldrepengerSamtidig erFarOgFar={erFarOgFar} />}
-                            {kunFarSøker2EllerMedmorHarRett && (
+                            {kunSøker2SkalHa && (
                                 <>
                                     <FpUtenKrav />
                                     <FpMedKrav />
