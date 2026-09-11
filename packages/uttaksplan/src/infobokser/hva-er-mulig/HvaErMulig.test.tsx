@@ -66,8 +66,12 @@ describe('<HvaErMulig>', () => {
         expect(screen.queryByText('Seks uker etter fødsel:')).not.toBeInTheDocument();
 
         expect(screen.getByText('To uker rundt fødsel')).toBeInTheDocument();
+        expect(screen.getByText(/Far får ofte permisjon dekket de første to ukene ved fødsel/)).toBeInTheDocument();
 
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText(/må du enten:/)).toBeInTheDocument();
+        expect(screen.getByText(/legge til pause om mor fyller aktivitetskravet/)).toBeInTheDocument();
+        expect(screen.getByText(/la planen stå tom når du har ferie/)).toBeInTheDocument();
         expect(screen.getByText('Legg til pause')).toBeInTheDocument();
 
         expect(screen.getByText('Foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
@@ -150,8 +154,12 @@ describe('<HvaErMulig>', () => {
         expect(screen.queryByText('Seks uker etter fødsel:')).not.toBeInTheDocument();
 
         expect(screen.getByText('To uker rundt fødsel')).toBeInTheDocument();
+        expect(screen.getByText(/Medmor får ofte permisjon dekket de første to ukene ved fødsel/)).toBeInTheDocument();
 
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText(/må du enten:/)).toBeInTheDocument();
+        expect(screen.getByText(/legge til pause om mor som føder fyller aktivitetskravet/)).toBeInTheDocument();
+        expect(screen.getByText(/la planen stå tom når du har ferie/)).toBeInTheDocument();
         expect(screen.getByText('Legg til pause')).toBeInTheDocument();
         expect(screen.getByText('Foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText(/mor som føder er i aktivitet/)).toBeInTheDocument();
@@ -245,8 +253,12 @@ describe('<HvaErMulig>', () => {
         expect(screen.queryByText('Seks uker etter fødsel:')).not.toBeInTheDocument();
 
         expect(screen.getByText('To uker rundt fødsel')).toBeInTheDocument();
+        expect(screen.getByText(/Far får ofte permisjon dekket de første to ukene ved fødsel/)).toBeInTheDocument();
 
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText(/må du enten:/)).toBeInTheDocument();
+        expect(screen.getByText(/legge til pause om mor fyller aktivitetskravet/)).toBeInTheDocument();
+        expect(screen.getByText(/la planen stå tom når du har ferie/)).toBeInTheDocument();
         expect(screen.getByText('Legg til pause')).toBeInTheDocument();
 
         expect(screen.getByText('Foreldrepenger uten aktivitetskrav')).toBeInTheDocument();

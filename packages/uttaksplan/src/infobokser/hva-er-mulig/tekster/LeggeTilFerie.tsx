@@ -1,7 +1,7 @@
 import { ParasolBeachIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyLong, HStack, Heading } from '@navikt/ds-react';
+import { BodyLong, HStack, Heading, List } from '@navikt/ds-react';
 
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
@@ -35,17 +35,34 @@ export const LeggeTilFerie = () => {
                 <Heading size="small">
                     <FormattedMessage id="HvaErMulig.LeggeTilFerie" />
                 </Heading>
-                <BodyLong>
-                    <FormattedMessage
-                        id="HvaErMulig.LeggeTilFerie.Tekst"
-                        values={{
-                            hvem: finnTekstForMedmorEllerFar(intl, søker, rettighetType, erMedmorDelAvSøknaden),
-                            erAlenesøker,
-                            kunSøker2HarRett: kunSøker2SkalHa,
-                            erMedmor: erMedmorDelAvSøknaden,
-                        }}
-                    />
-                </BodyLong>
+                {kunSøker2SkalHa ? (
+                    <>
+                        <BodyLong>
+                            <FormattedMessage id="HvaErMulig.LeggeTilFerie.Intro" />
+                        </BodyLong>
+                        <List>
+                            <List.Item>
+                                <FormattedMessage
+                                    id="HvaErMulig.LeggeTilFerie.Punkt1"
+                                    values={{ erMedmor: erMedmorDelAvSøknaden }}
+                                />
+                            </List.Item>
+                            <List.Item>
+                                <FormattedMessage id="HvaErMulig.LeggeTilFerie.Punkt2" />
+                            </List.Item>
+                        </List>
+                    </>
+                ) : (
+                    <BodyLong>
+                        <FormattedMessage
+                            id="HvaErMulig.LeggeTilFerie.Tekst"
+                            values={{
+                                hvem: finnTekstForMedmorEllerFar(intl, søker, rettighetType, erMedmorDelAvSøknaden),
+                                erAlenesøker,
+                            }}
+                        />
+                    </BodyLong>
+                )}
             </div>
         </HStack>
     );
