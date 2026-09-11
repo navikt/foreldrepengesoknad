@@ -12,6 +12,8 @@ import * as stories from './AnnenForelderSteg.stories';
 
 const {
     AnnenForelderFraOppgittBarn,
+    AnnenForelderFraDødtBarnMatchetPåFødselsdato,
+    VisPdlInfoboksSelvOmLagretFnrPåAnnenForelderErUlikt,
     SkalOppgiPersonalia,
     ForFar,
     MorUfødtBarn,
@@ -90,6 +92,30 @@ describe('<AnnenForelderSteg>', () => {
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
+    });
+
+    it('skal vise PDL-opplysninger som infoboks når dødt barn matches på fødselsdato', async () => {
+        render(<AnnenForelderFraDødtBarnMatchetPåFødselsdato />);
+
+        expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
+        expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
+        expect(screen.queryByLabelText('Fornavnet til den andre forelderen')).not.toBeInTheDocument();
+        expect(screen.queryByLabelText('Etternavnet til den andre forelderen')).not.toBeInTheDocument();
+        expect(
+            screen.queryByLabelText('Fødselsnummer eller D-nummer til den andre forelderen'),
+        ).not.toBeInTheDocument();
+    });
+
+    it('skal vise PDL-opplysninger som infoboks selv om lagret annen forelder har et annet fødselsnummer', async () => {
+        render(<VisPdlInfoboksSelvOmLagretFnrPåAnnenForelderErUlikt />);
+
+        expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
+        expect(screen.getByText('Fødselsnummer: 999999999')).toBeInTheDocument();
+        expect(screen.queryByLabelText('Fornavnet til den andre forelderen')).not.toBeInTheDocument();
+        expect(screen.queryByLabelText('Etternavnet til den andre forelderen')).not.toBeInTheDocument();
+        expect(
+            screen.queryByLabelText('Fødselsnummer eller D-nummer til den andre forelderen'),
+        ).not.toBeInTheDocument();
     });
 
     it('skal fylle ut at en ikke har aleneomsorg for barnet og ikke rett til foreldrepenger i Norge og ikke hatt opphold i EØS', async () => {

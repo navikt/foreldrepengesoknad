@@ -62,11 +62,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
             select: (vedtak) => vedtak?.perioder.some((p) => p.resultat?.innvilget),
         }).data ?? false;
 
-    const oppgittFnrErUlikRegistrertBarn =
-        annenForelder !== undefined &&
-        isAnnenForelderOppgitt(annenForelder) &&
-        annenForelder.fnr !== annenForelderFraRegistrertBarn?.fnr;
-    const skalOppgiPersonalia = annenForelderFraRegistrertBarn === undefined || oppgittFnrErUlikRegistrertBarn;
+    const skalOppgiPersonalia = annenForelderFraRegistrertBarn === undefined;
 
     const onSubmit = (values: AnnenForelder) => {
         if (values.kanIkkeOppgis) {

@@ -134,7 +134,36 @@ export const SkalOppgiPersonalia: Story = {
     },
 };
 
-export const SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike: Story = {
+export const AnnenForelderFraDødtBarnMatchetPåFødselsdato: Story = {
+    args: {
+        ...SkalOppgiPersonalia.args,
+        søkerInfo: {
+            ...defaultSøker,
+            barn: [
+                {
+                    fnr: '21091981146',
+                    fødselsdato: '2021-03-15',
+                    dødsdato: '2022-12-07',
+                    annenPart: {
+                        fnr: '12038517080',
+                        fødselsdato: '1985-03-12',
+                        navn: {
+                            fornavn: 'LEALAUS',
+                            etternavn: 'BÆREPOSE',
+                        },
+                    },
+                    navn: {
+                        fornavn: 'KLØKTIG',
+                        etternavn: 'MIDTPUNKT',
+                    },
+                    kjønn: 'M',
+                },
+            ],
+        },
+    },
+};
+
+export const VisPdlInfoboksSelvOmLagretFnrPåAnnenForelderErUlikt: Story = {
     args: {
         ...SkalOppgiPersonalia.args,
         søkerInfo: {
