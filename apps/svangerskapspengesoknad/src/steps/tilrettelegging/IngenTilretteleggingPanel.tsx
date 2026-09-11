@@ -8,7 +8,7 @@ import { getDefaultMonth, getKanHaSvpFremTilTreUkerFørTermin, getSisteDagForSva
 import { Radio } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfRadioGroup } from '@navikt/fp-form-hooks';
-import { tiMånederSidenDato } from '@navikt/fp-utils';
+import { isISODateString, tiMånederSidenDato } from '@navikt/fp-utils';
 import { isRequired, isValidDate } from '@navikt/fp-validation';
 
 import {
@@ -55,11 +55,16 @@ export const IngenTilretteleggingPanel = ({
         ? dayjs(enPeriodeMedTilretteleggingFom).add(1, 'day')
         : behovForTilretteleggingFom;
 
+    // Datovelgeren lagrer rå input i skjemaverdien mens søkeren skriver, så vi forhåndsutfyller
+    // bare når datoen faktisk er ferdig utfylt.
+    const forhåndsutfyltFom = isISODateString(behovForTilretteleggingFom) ? behovForTilretteleggingFom : undefined;
+
     return (
         <>
             <RhfDatepicker
                 name="enPeriodeMedTilretteleggingFom"
                 control={formMethods.control}
+                defaultValue={forhåndsutfyltFom}
                 label={intl.formatMessage({
                     id: 'tilrettelegging.sammePeriodeFremTilTerminFom.label.ingen',
                 })}
@@ -89,7 +94,10 @@ export const IngenTilretteleggingPanel = ({
                         kanHaSVPFremTilTreUkerFørTermin,
                     ),
                 ]}
-                defaultMonth={minDatoPeriodeFom ? getDefaultMonth(minDatoPeriodeFom, maxDatoBehovFom) : undefined}
+                defaultMonth={
+                    forhåndsutfyltFom ??
+                    (minDatoBehovFom ? getDefaultMonth(minDatoBehovFom, maxDatoBehovFom) : undefined)
+                }
             />
             <RhfRadioGroup
                 name="enPeriodeMedTilretteleggingTomType"
