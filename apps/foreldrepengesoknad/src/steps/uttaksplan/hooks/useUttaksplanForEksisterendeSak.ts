@@ -3,15 +3,24 @@ import { sakerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useEffect } from 'react';
 
-import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { prosesserPerioderForVisning } from '@navikt/fp-uttaksplan';
+import { PeriodeDto_fpoversikt, UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
+import { mapAnnenPartsPeriodeTilPeriodeDto, mapSøkersPeriodeTilPeriodeDto, slåSammenPeriodeDtoerPåIntervall } from './gammelPeriodeMapping';
 import { useLoggOverlappIVedtak } from './useLoggOverlappIVedtak';
+
+const mapEøsTilPeriodeDto = (periode: UttakPeriodeAnnenpartEøs_fpoversikt): PeriodeDto_fpoversikt => ({
+    fom: periode.fom,
+    tom: periode.tom,
+    annenPartEøs: {
+        kontoType: periode.kontoType,
+        trekkdager: periode.trekkdager,
+    },
+});
 
 export const useUttaksplanForEksisterendeSak = (
     perioderAnnenPart: UttakPeriode_fpoversikt[] | undefined,
     erAnnenPartVedtakAvklart = true,
-): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined => {
+): PeriodeDto_fpoversikt[] | undefined => {
     const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
     const opprinneligUttaksplan = useContextGetData(ContextDataType.OPPRINNELIG_UTTAKSPLAN);
     const oppdaterOpprinneligUttaksplan = useContextSaveData(ContextDataType.OPPRINNELIG_UTTAKSPLAN);
@@ -22,12 +31,12 @@ export const useUttaksplanForEksisterendeSak = (
     const gjeldendeVedtak = valgtSak?.gjeldendeVedtak;
     const perioderFraBackend = gjeldendeVedtak?.perioder;
 
-    const uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined = gjeldendeVedtak
-        ? prosesserPerioderForVisning(
-              perioderFraBackend ?? [],
-              perioderAnnenPart ?? [],
-              gjeldendeVedtak.perioderAnnenpartEøs,
-          )
+    const uttaksplan: PeriodeDto_fpoversikt[] | undefined = gjeldendeVedtak
+        ? slåSammenPeriodeDtoerPåIntervall([
+              ...(perioderFraBackend ?? []).map(mapSøkersPeriodeTilPeriodeDto),
+              ...(perioderAnnenPart ?? []).map(mapAnnenPartsPeriodeTilPeriodeDto),
+              ...(gjeldendeVedtak.perioderAnnenpartEøs ?? []).map(mapEøsTilPeriodeDto),
+          ]).sort((a, b) => a.fom.localeCompare(b.fom))
         : undefined;
 
     useLoggOverlappIVedtak(uttaksplan, perioderFraBackend, perioderAnnenPart);

@@ -12,8 +12,7 @@ import { AnnenForelder } from 'types/AnnenForelder';
 import {
     Barn,
     FpBarnDto_fpoversikt,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
+    PeriodeDto_fpoversikt,
     isAdoptertBarn,
     isFødtBarn,
 } from '@navikt/fp-types';
@@ -98,8 +97,8 @@ export const førsteJuli2024ReglerGjelder = (barn: Barn): boolean => {
 };
 
 export const getEndringstidspunktNy = (
-    søkerensOpprinneligePlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-    søkerensUpdatedPlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    søkerensOpprinneligePlan: PeriodeDto_fpoversikt[],
+    søkerensUpdatedPlan: PeriodeDto_fpoversikt[],
 ): string | undefined => {
     let endringstidspunktNyPlan: string | undefined;
     let endringstidspunktOpprinneligPlan: string | undefined;

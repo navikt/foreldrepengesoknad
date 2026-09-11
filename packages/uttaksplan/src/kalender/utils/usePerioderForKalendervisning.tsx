@@ -5,38 +5,51 @@ import { IntlShape, useIntl } from 'react-intl';
 import {
     Barn,
     BrukerRolleSak_fpoversikt,
+    EøsUttakDto_fpoversikt,
     NavnPåForeldre,
+    PeriodeDto_fpoversikt,
     RettighetType_fpoversikt,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
+    UttakDto_fpoversikt,
     isAdoptertBarn,
     isFødtBarn,
 } from '@navikt/fp-types';
 import { CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
-import {
-    Tidsperioden,
-    Uttaksdagen,
-    Uttaksperioden,
-    formaterDatoUtenDag,
-    getFamiliehendelsedato,
-} from '@navikt/fp-utils';
+import { Tidsperioden, Uttaksdagen, formaterDatoUtenDag, getFamiliehendelsedato } from '@navikt/fp-utils';
 import { assertUnreachable } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import {
-    UttaksplanperiodeMedKunTapteDager,
-    erEøsUttakPeriode,
-    erTapteDagerHull,
-    erVanligUttakPeriode,
-} from '../../types/UttaksplanPeriode';
+import { UttaksplanperiodeMedKunTapteDager, erPeriodeDto, erTapteDagerHull } from '../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
 import {
     erAvslåttPeriode,
     erUttaksperiode,
+    finnSideForForelder,
     harPeriodeDerMorsAktivitetIkkeErValgt,
     harPeriodeMedUkjentGraderingsaktivitet,
 } from '../../utils/periodeUtils';
-import { filtrerBortAnnenPartsIdentiskePerioder } from './uttaksplanKalenderUtils';
+
+// Éin merga periode kan ha inntil tre sider (søker/annenPart/annenPartEøs) samtidig – t.d. ved
+// samtidig uttak (begge sider har eit uttak) eller opphald (kun annenPart har eit uttak). Denne
+// hjelparen vel ut kva EIN side som skal styra tekst/farge når vi ikkje treng begge samtidig,
+// med prioritet søker > annenPart > annenPartEøs (matchar tidlegare deduplisering som alltid
+// beheldt søkjar sin flate rad når to rader fanst for same intervall).
+type VisningsSide = { type: 'UTTAK'; side: UttakDto_fpoversikt } | { type: 'EØS'; side: EøsUttakDto_fpoversikt };
+
+const finnVisningsSide = (periode: UttaksplanperiodeMedKunTapteDager): VisningsSide | undefined => {
+    if (!erPeriodeDto(periode)) {
+        return undefined;
+    }
+    if (periode.søker) {
+        return { type: 'UTTAK', side: periode.søker };
+    }
+    if (periode.annenPart) {
+        return { type: 'UTTAK', side: periode.annenPart };
+    }
+    if (periode.annenPartEøs) {
+        return { type: 'EØS', side: periode.annenPartEøs };
+    }
+    return undefined;
+};
 
 export const usePerioderForKalendervisning = (
     endredePerioder: Array<{ fom: string; tom: string }>,
@@ -48,7 +61,7 @@ export const usePerioderForKalendervisning = (
         barn,
         foreldreInfo: { søker, navnPåForeldre, rettighetType, erIkkeSøkerSpesifisert, erFarOgFar },
         familiehendelsedato,
-        uttakPerioder,
+        perioder,
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
 
@@ -56,13 +69,11 @@ export const usePerioderForKalendervisning = (
 
     const erFarEllerMedmor = søker === 'FAR_MEDMOR';
 
-    const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(saksperioderInkludertTapteDager, erFarEllerMedmor);
-
-    const kalenderPerioder = unikePerioder.reduce<CalendarPeriod[]>((acc, periode) => {
-        const color = getKalenderFargeForPeriode(periode, erFarEllerMedmor, saksperioderInkludertTapteDager);
+    const kalenderPerioder = saksperioderInkludertTapteDager.reduce<CalendarPeriod[]>((acc, periode) => {
+        const color = getKalenderFargeForPeriode(periode, erFarEllerMedmor);
         const isUpdated = endredePerioder.some((p) => p.fom === periode.fom && p.tom === periode.tom);
 
-        const perioder = lagBarnehageOgfamiliehendelsePeriode(
+        const perioderMedBarnehageOgFamiliehendelse = lagBarnehageOgfamiliehendelsePeriode(
             intl,
             barn,
             color,
@@ -74,7 +85,7 @@ export const usePerioderForKalendervisning = (
         if (dayjs(familiehendelsedato).isBetween(periode.fom, periode.tom, 'day', '[]')) {
             return [
                 ...acc,
-                ...perioder,
+                ...perioderMedBarnehageOgFamiliehendelse,
                 ...splittPeriodeITo(
                     periode,
                     familiehendelsedato,
@@ -83,7 +94,7 @@ export const usePerioderForKalendervisning = (
                     intl,
                     isUpdated,
                     rettighetType,
-                    uttakPerioder,
+                    perioder,
                     kanVelgeArbeidsgiver,
                     søker,
                     erIkkeSøkerSpesifisert ?? false,
@@ -98,7 +109,7 @@ export const usePerioderForKalendervisning = (
         ) {
             return [
                 ...acc,
-                ...perioder,
+                ...perioderMedBarnehageOgFamiliehendelse,
                 ...splittPeriodeITo(
                     periode,
                     barnehagestartdato,
@@ -107,7 +118,7 @@ export const usePerioderForKalendervisning = (
                     intl,
                     isUpdated,
                     rettighetType,
-                    uttakPerioder,
+                    perioder,
                     kanVelgeArbeidsgiver,
                     søker,
                     erIkkeSøkerSpesifisert ?? false,
@@ -118,7 +129,7 @@ export const usePerioderForKalendervisning = (
 
         return [
             ...acc,
-            ...perioder,
+            ...perioderMedBarnehageOgFamiliehendelse,
             {
                 fom: periode.fom,
                 tom: periode.tom,
@@ -128,7 +139,7 @@ export const usePerioderForKalendervisning = (
                 ...leggTilVarselikonVedManglendeObligatoriskeValg(
                     rettighetType,
                     periode,
-                    uttakPerioder,
+                    perioder,
                     kanVelgeArbeidsgiver,
                     søker,
                     erIkkeSøkerSpesifisert ?? false,
@@ -138,12 +149,12 @@ export const usePerioderForKalendervisning = (
         ];
     }, []);
 
-    if (!unikePerioder.some((p) => Tidsperioden.forPeriode(p).inneholderDato(familiehendelsedato))) {
+    if (!saksperioderInkludertTapteDager.some((p) => Tidsperioden.forPeriode(p).inneholderDato(familiehendelsedato))) {
         kalenderPerioder.push(lagFamiliehendelseDato(familiehendelsedato, 'NONE', barn, intl));
     }
     if (
         barnehagestartdato &&
-        !unikePerioder.some((p) => Tidsperioden.forPeriode(p).inneholderDato(barnehagestartdato))
+        !saksperioderInkludertTapteDager.some((p) => Tidsperioden.forPeriode(p).inneholderDato(barnehagestartdato))
     ) {
         kalenderPerioder.push(lagBarnehagedatoPeriode(barnehagestartdato, 'NONE', intl));
     }
@@ -176,53 +187,60 @@ const lagBarnehageOgfamiliehendelsePeriode = (
 export const getKalenderFargeForPeriode = (
     periode: UttaksplanperiodeMedKunTapteDager,
     erFarEllerMedmor: boolean,
-    allePerioder: UttaksplanperiodeMedKunTapteDager[],
 ): CalendarPeriodColor => {
+    if (erTapteDagerHull(periode)) {
+        return 'BLACK';
+    }
+
+    if (!erPeriodeDto(periode)) {
+        return 'NONE';
+    }
+
     if (erAvslåttPeriode(periode)) {
-        if (erVanligUttakPeriode(periode) && periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
+        const avslåttSide = periode.søker ?? periode.annenPart;
+        if (avslåttSide?.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
             return 'DARKGRAY';
         }
         return 'BLACKOUTLINE';
     }
 
-    const annenForelderSamtidigUttaksperiode = erUttaksperiode(periode)
-        ? getAnnenForelderSamtidigUttakPeriode(periode, allePerioder)
-        : undefined;
-
-    const samtidigUttaksprosent =
-        erVanligUttakPeriode(periode) && erUttaksperiode(periode) ? periode.samtidigUttak : undefined;
-    if (annenForelderSamtidigUttaksperiode || (samtidigUttaksprosent && samtidigUttaksprosent > 0)) {
+    // Samtidig uttak kjem no ferdig utfylt på begge sider frå backend, ingen kryss-oppslag mot
+    // andre rader trengst lenger (jf. Uttaksperioden.erSamtidigUttak).
+    if (erUttaksperiode(periode) && (periode.søker?.samtidigUttak !== undefined || periode.annenPart?.samtidigUttak !== undefined)) {
         return erFarEllerMedmor ? 'LIGHTBLUEGREEN' : 'LIGHTGREENBLUE';
     }
 
-    if (erTapteDagerHull(periode)) {
-        return 'BLACK';
-    }
-
-    if (Uttaksperioden.erEøsPeriode(periode)) {
+    if (periode.annenPartEøs) {
         return erFarEllerMedmor ? 'BLUE_WITH_BLACK_OUTLINE' : 'GREEN_WITH_BLACK_OUTLINE';
     }
 
-    if (periode.utsettelseÅrsak) {
-        if (periode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
+    // Opphald (kun annenPart har uttak, søkjar har «pause») treng ingen eigen fargelogikk her –
+    // annenPart sin eigen farge (under) blir brukt akkurat som om det var søkjar sin periode.
+    const side = periode.søker ?? periode.annenPart;
+    if (!side) {
+        return 'NONE';
+    }
+
+    if (side.utsettelseÅrsak) {
+        if (side.utsettelseÅrsak === 'FERIE') {
             return 'BLUEOUTLINE';
         }
         return 'BEIGEOUTLINE';
     }
 
-    if (periode.forelder === 'MOR') {
-        if (periode.gradering && periode.gradering.arbeidstidprosent > 0) {
+    if (side.forelder === 'MOR') {
+        if (side.gradering && side.gradering.arbeidstidprosent > 0) {
             return 'BLUESTRIPED';
         }
 
         return 'BLUE';
     }
 
-    if (periode.forelder === 'FAR_MEDMOR') {
-        if (periode.gradering && periode.gradering.arbeidstidprosent > 0) {
+    if (side.forelder === 'FAR_MEDMOR') {
+        if (side.gradering && side.gradering.arbeidstidprosent > 0) {
             return 'GREENSTRIPED';
         }
-        if (periode.kontoType === 'FORELDREPENGER' && periode.morsAktivitet === 'IKKE_OPPGITT') {
+        if (side.kontoType === 'FORELDREPENGER' && side.morsAktivitet === 'IKKE_OPPGITT') {
             return 'GREENOUTLINE';
         }
 
@@ -271,13 +289,20 @@ const getKalenderSkjermleserPeriodetekst = (
     navnPåForeldre: NavnPåForeldre,
     intl: IntlShape,
 ): string => {
+    const visning = finnVisningsSide(periode);
+    const erEøs = visning?.type === 'EØS';
+
+    // NB: EØS-sida har ikkje noko eige `forelder`-felt i DTO-en (ho gjeld alltid annenPart, men
+    // ikkje kva rolle annenPart har) – held difor same forenkling som før migreringa og syner
+    // farMedmor sitt namn for EØS-periodar. Sjå oppsummeringa for meir kontekst.
     const navn =
-        erEøsUttakPeriode(periode) || periode.forelder === 'FAR_MEDMOR' ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
+        erEøs || visning?.side.forelder === 'FAR_MEDMOR' ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
 
     const periodenTilhører = intl.formatMessage({ id: 'kalender.srText.PeriodenTil' }, { navn });
 
     if (erAvslåttPeriode(periode)) {
-        if (erVanligUttakPeriode(periode) && periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
+        const avslåttSide = visning?.type === 'UTTAK' ? visning.side : undefined;
+        if (avslåttSide?.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
             return periodenTilhører + intl.formatMessage({ id: 'kalender.avslagFratrekkPleiepenger' });
         }
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.AvslåttPeriode' });
@@ -287,8 +312,9 @@ const getKalenderSkjermleserPeriodetekst = (
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.TapteDager' });
     }
 
-    if (periode.kontoType) {
-        switch (periode.kontoType) {
+    const kontoType = visning?.side.kontoType;
+    if (kontoType) {
+        switch (kontoType) {
             case 'FORELDREPENGER_FØR_FØDSEL':
                 return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.ForeldrepengerFørFødsel' });
             case 'MØDREKVOTE':
@@ -298,13 +324,13 @@ const getKalenderSkjermleserPeriodetekst = (
             case 'FELLESPERIODE':
                 return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.Fellesperiode' });
             case 'FORELDREPENGER':
-                return finnSkjermleserTekstForKvoteForeldrepenger(periode, periodenTilhører, intl);
+                return finnSkjermleserTekstForKvoteForeldrepenger(visning!, periodenTilhører, intl);
             default:
                 return assertUnreachable('Error: ukjent kontoType i getKalenderSkjermleserPeriodetekst');
         }
     }
 
-    if (periode.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
+    if (erPeriodeDto(periode) && periode.søker?.utsettelseÅrsak === 'FERIE') {
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.LovbestemtFerie' });
     }
 
@@ -312,53 +338,33 @@ const getKalenderSkjermleserPeriodetekst = (
 };
 
 const finnSkjermleserTekstForKvoteForeldrepenger = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    visning: VisningsSide,
     periodenTilhører: string,
     intl: IntlShape,
 ): string => {
-    if (Uttaksperioden.erEøsPeriode(periode)) {
+    if (visning.type === 'EØS') {
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.ForeldrepengerIkkeGradert' });
     }
 
-    if (periode.morsAktivitet === 'IKKE_OPPGITT') {
-        if (periode.gradering?.arbeidstidprosent) {
+    const { side } = visning;
+
+    if (side.morsAktivitet === 'IKKE_OPPGITT') {
+        if (side.gradering?.arbeidstidprosent) {
             return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.AktivitetsfrieDelGradert' });
         }
 
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.AktivitetsfrieIkkeGradert' });
     }
 
-    if (periode.samtidigUttak && periode.samtidigUttak > 0) {
+    if (side.samtidigUttak && side.samtidigUttak > 0) {
         return intl.formatMessage({ id: 'kalender.srText.SamtidigUttaksperiode' });
     }
 
-    if (periode.gradering?.arbeidstidprosent) {
+    if (side.gradering?.arbeidstidprosent) {
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.ForeldrepengerGradert' });
     }
 
     return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.ForeldrepengerIkkeGradert' });
-};
-
-const getAnnenForelderSamtidigUttakPeriode = (
-    periode: UttaksplanperiodeMedKunTapteDager,
-    perioder: UttaksplanperiodeMedKunTapteDager[],
-): UttaksplanperiodeMedKunTapteDager | undefined => {
-    if (erUttaksperiode(periode)) {
-        const samtidigUttak = perioder
-            .filter(
-                (p) =>
-                    erVanligUttakPeriode(p) &&
-                    erVanligUttakPeriode(periode) &&
-                    p.forelder !== periode.forelder &&
-                    !!p.samtidigUttak &&
-                    !!periode.samtidigUttak,
-            )
-            .find((p) => dayjs(periode.fom).isSame(p.fom));
-
-        return samtidigUttak;
-    }
-
-    return undefined;
 };
 
 const splittPeriodeITo = (
@@ -369,7 +375,7 @@ const splittPeriodeITo = (
     intl: IntlShape,
     isUpdated: boolean,
     rettighetType: RettighetType_fpoversikt,
-    allePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    allePerioder: PeriodeDto_fpoversikt[],
     kanVelgeArbeidsgiver: boolean,
     søker: BrukerRolleSak_fpoversikt,
     erIkkeSøkerSpesifisert: boolean,
@@ -410,15 +416,21 @@ const splittPeriodeITo = (
 const leggTilVarselikonVedManglendeObligatoriskeValg = (
     rettighetType: RettighetType_fpoversikt,
     periode: UttaksplanperiodeMedKunTapteDager,
-    allePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    allePerioder: PeriodeDto_fpoversikt[],
     kanVelgeArbeidsgiver: boolean,
     søker: BrukerRolleSak_fpoversikt,
     erIkkeSøkerSpesifisert: boolean,
     erFarOgFar?: boolean,
 ) => {
-    const morsPerioder = allePerioder.filter(
-        (p): p is UttakPeriode_fpoversikt => erVanligUttakPeriode(p) && p.forelder === 'MOR',
-    );
+    // Byggjer syntetiske periodar med KUN mors side, slik at den delte sjekk-funksjonen ikkje
+    // ved eit uhell finn far/medmor sine data frå ei anna, urelatert (t.d. samtidig uttak-)rad.
+    const morsPerioder: PeriodeDto_fpoversikt[] = allePerioder
+        .map((p) => {
+            const morsSide = finnSideForForelder(p, 'MOR');
+            return morsSide ? { fom: p.fom, tom: p.tom, søker: morsSide } : undefined;
+        })
+        .filter((p): p is PeriodeDto_fpoversikt => p !== undefined);
+
     if (
         harPeriodeDerMorsAktivitetIkkeErValgt(
             rettighetType,

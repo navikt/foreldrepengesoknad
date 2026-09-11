@@ -98,6 +98,7 @@ export const PeriodeListeHeader = ({ uttaksplanperioder, isOpen }: Props) => {
                         `ax-md:m-0 ax-md:h-auto ax-md:w-full ax-md:rounded-xl ax-md:px-4 ax-md:py-2` +
                         ` m-2 flex h-12 w-12 justify-between rounded-2xl ${finnBakgrunnsfarge(
                             uttaksplanperioder,
+                            søker,
                             harValideringsfeil,
                             erFamiliehendelse,
                         )}`
@@ -115,7 +116,7 @@ export const PeriodeListeHeader = ({ uttaksplanperioder, isOpen }: Props) => {
                                 <Show above="md">
                                     <BodyShort>{tekst}</BodyShort>
                                 </Show>
-                                <div>{getIkon(uttaksplanperioder, familiehendelsedato)}</div>
+                                <div>{getIkon(uttaksplanperioder, familiehendelsedato, søker)}</div>
                             </>
                         )}
                         {harValideringsfeil && (

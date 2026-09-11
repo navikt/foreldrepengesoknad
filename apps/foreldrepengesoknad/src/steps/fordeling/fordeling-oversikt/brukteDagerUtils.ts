@@ -5,16 +5,12 @@ import {
     Familiesituasjon,
     KontoBeregningDto,
     KontoDto,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
+    PeriodeDto_fpoversikt,
 } from '@navikt/fp-types';
-import { Uttaksperioden } from '@navikt/fp-utils';
 import {
     filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger,
     summerDagerIPerioder,
 } from '@navikt/fp-uttaksplan/periode-utils';
-
-type Periode = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
 
 interface ForeldersBrukteDager {
     førTermin: KontoDto[];
@@ -31,14 +27,6 @@ interface BrukteDager {
     farMedmor: ForeldersBrukteDager;
     alle: KontoDto[];
 }
-
-const isMorsPeriode = (periode: Periode): boolean => {
-    return Uttaksperioden.erIkkeEøsPeriode(periode) && periode.forelder === 'MOR';
-};
-
-const isFarsPeriode = (periode: Periode): boolean => {
-    return Uttaksperioden.erIkkeEøsPeriode(periode) && periode.forelder === 'FAR_MEDMOR';
-};
 
 const isFellesperiodeKvote = (uttak: KontoDto): boolean => uttak.konto === 'FELLESPERIODE';
 
@@ -58,9 +46,14 @@ const isFarMedmorsKvote = (uttak: KontoDto): boolean => {
     return uttak.konto === 'FEDREKVOTE';
 };
 
+const summerBrukteUttaksdager = (uttak: KontoDto[]) => {
+    return uttak.reduce((dager, u) => dager + u.dager, 0);
+};
+
+/** Summerer trekkdagar per konto (uavhengig av kven som har uttak). */
 const beregnBrukteUttaksdager = (
     tilgjengeligeStønadskvoter: KontoBeregningDto,
-    perioder: Periode[],
+    perioder: PeriodeDto_fpoversikt[],
     familiesituasjon: Familiesituasjon,
     familiehendelsesdato: string,
 ): KontoDto[] => {
@@ -72,40 +65,81 @@ const beregnBrukteUttaksdager = (
         .filter((k) => k.dager > 0);
 };
 
-const getPerioderFørFamiliehendelse = (perioder: Periode[], familiehendelsesdato: string): Periode[] => {
+/**
+ * Behold kun den sida (søker/annenPart) av perioden som gjeld den aktuelle forelderen. EØS-sida
+ * blir alltid fjerna her, sidan ho aldri representerer den norske forelderen sine eigne dagar.
+ */
+const taKunSideForForelder = (
+    periode: PeriodeDto_fpoversikt,
+    forelder: BrukerRolleSak_fpoversikt,
+): PeriodeDto_fpoversikt => ({
+    fom: periode.fom,
+    tom: periode.tom,
+    søker: periode.søker?.forelder === forelder ? periode.søker : undefined,
+    annenPart: periode.annenPart?.forelder === forelder ? periode.annenPart : undefined,
+});
+
+/** Summerer trekkdagar per konto, avgrensa til éin forelder si eiga side av kvar periode. */
+const beregnBrukteUttaksdagerForForelder = (
+    tilgjengeligeStønadskvoter: KontoBeregningDto,
+    perioder: PeriodeDto_fpoversikt[],
+    forelder: BrukerRolleSak_fpoversikt,
+    familiesituasjon: Familiesituasjon,
+    familiehendelsesdato: string,
+): KontoDto[] => {
+    const perioderForForelder = perioder.map((p) => taKunSideForForelder(p, forelder));
+    return tilgjengeligeStønadskvoter.kontoer
+        .map((konto) => {
+            const dager = summerDagerIPerioder(perioderForForelder, [konto], familiesituasjon, familiehendelsesdato);
+            return { konto: konto.konto, dager };
+        })
+        .filter((k) => k.dager > 0);
+};
+
+const getPerioderFørFamiliehendelse = (
+    perioder: PeriodeDto_fpoversikt[],
+    familiehendelsesdato: string,
+): PeriodeDto_fpoversikt[] => {
     return perioder.filter((p) => dayjs(p.tom).isBefore(familiehendelsesdato, 'day'));
 };
 
-const getPerioderEtterFamiliehendelse = (perioder: Periode[], familiehendelsesdato: string): Periode[] => {
+const getPerioderEtterFamiliehendelse = (
+    perioder: PeriodeDto_fpoversikt[],
+    familiehendelsesdato: string,
+): PeriodeDto_fpoversikt[] => {
     return perioder.filter((p) => !dayjs(p.tom).isBefore(familiehendelsesdato, 'day'));
-};
-
-const summerBrukteUttaksdager = (uttak: KontoDto[]) => {
-    return uttak.reduce((dager, u) => dager + u.dager, 0);
 };
 
 const getBrukteDagerForForelder = (
     tilgjengeligeStønadskvoter: KontoBeregningDto,
-    perioder: Periode[],
+    perioder: PeriodeDto_fpoversikt[],
     familiehendelsesdato: string,
     forelder: BrukerRolleSak_fpoversikt,
     familiesituasjon: Familiesituasjon,
 ): ForeldersBrukteDager => {
     const perioderFørTermin = getPerioderFørFamiliehendelse(perioder, familiehendelsesdato);
     const perioderEtterTermin = getPerioderEtterFamiliehendelse(perioder, familiehendelsesdato);
-    const førTermin = beregnBrukteUttaksdager(
+    const førTermin = beregnBrukteUttaksdagerForForelder(
         tilgjengeligeStønadskvoter,
         perioderFørTermin,
+        forelder,
         familiesituasjon,
         familiehendelsesdato,
     );
-    const etterTermin = beregnBrukteUttaksdager(
+    const etterTermin = beregnBrukteUttaksdagerForForelder(
         tilgjengeligeStønadskvoter,
         perioderEtterTermin,
+        forelder,
         familiesituasjon,
         familiehendelsesdato,
     );
-    const alle = beregnBrukteUttaksdager(tilgjengeligeStønadskvoter, perioder, familiesituasjon, familiehendelsesdato);
+    const alle = beregnBrukteUttaksdagerForForelder(
+        tilgjengeligeStønadskvoter,
+        perioder,
+        forelder,
+        familiesituasjon,
+        familiehendelsesdato,
+    );
     const dagerTotalt = summerBrukteUttaksdager(alle);
 
     const isMor = forelder === 'MOR';
@@ -126,22 +160,22 @@ const getBrukteDagerForForelder = (
 
 export const getBrukteDager = (
     tilgjengeligeStønadskvoter: KontoBeregningDto,
-    perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
+    perioder: PeriodeDto_fpoversikt[] | undefined,
     familiehendelsesdato: string,
     familiesituasjon: Familiesituasjon,
 ): BrukteDager => {
-    const perioderMedUttak = (perioder ?? []).filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
+    const perioderMedUttak = (perioder ?? []).map(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
     return {
         mor: getBrukteDagerForForelder(
             tilgjengeligeStønadskvoter,
-            perioderMedUttak.filter(isMorsPeriode),
+            perioderMedUttak,
             familiehendelsesdato,
             'MOR',
             familiesituasjon,
         ),
         farMedmor: getBrukteDagerForForelder(
             tilgjengeligeStønadskvoter,
-            perioderMedUttak.filter(isFarsPeriode),
+            perioderMedUttak,
             familiehendelsesdato,
             'FAR_MEDMOR',
             familiesituasjon,

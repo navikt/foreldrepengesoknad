@@ -7,7 +7,7 @@ import {
     no_nav_foreldrepenger_kontrakter_felles_kodeverk_KontoType,
     no_nav_foreldrepenger_kontrakter_felles_kodeverk_MorsAktivitet,
     no_nav_foreldrepenger_kontrakter_felles_kodeverk_Overføringsårsak,
-} from '@navikt/fp-types';
+} from './fpoversiktDtoGenerert';
 
 export type FellesUttaksplanDto_fpoversikt = {
     antallBarn: number;

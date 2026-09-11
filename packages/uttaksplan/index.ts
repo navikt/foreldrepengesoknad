@@ -30,9 +30,9 @@ export { skalBesvareFlerbarnsdager } from './src/utils/flerbarnsdager';
 export {
     harPeriodeDerMorsAktivitetIkkeErValgt,
     harPeriodeMedUkjentGraderingsaktivitet,
-    finnAntallTidelerÅTrekke,
+    finnAntallTidelerÅTrekkeForSide,
+    finnAntallTidelerÅTrekkeForEøs,
     erPerioderEkslFomTomLike,
 } from './src/utils/periodeUtils';
-export { prosesserPerioderForVisning } from './src/utils/prosesserPerioderForVisning';
 export { deltUttak } from './src/utils/forslag/deltUttak';
 export { ikkeDeltUttak } from './src/utils/forslag/ikkeDeltUttak';

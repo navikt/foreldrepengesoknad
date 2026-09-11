@@ -101,7 +101,7 @@ export const ManglendeVedlegg = ({
 
     const erFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const perioderSomManglerVedlegg = perioderSomKreverVedlegg(
-        finnPerioderSomInngårISøknaden(uttaksplan, erFarEllerMedmor, !!eksisterendeSak),
+        finnPerioderSomInngårISøknaden(uttaksplan, !!eksisterendeSak),
         erFarEllerMedmor,
         annenForelder,
         familiehendelsedato,

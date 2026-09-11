@@ -4,11 +4,11 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Detail, Heading, VStack } from '@navikt/ds-react';
 
 import { RhfSelect } from '@navikt/fp-form-hooks';
-import { UttakUtsettelseÅrsak_fpoversikt } from '@navikt/fp-types';
+import { UtsettelseÅrsak_fpoversikt } from '@navikt/fp-types';
 import { isRequired } from '@navikt/fp-validation';
 
 export type FormValues = {
-    utsettelseÅrsak?: UttakUtsettelseÅrsak_fpoversikt;
+    utsettelseÅrsak?: UtsettelseÅrsak_fpoversikt;
 };
 
 interface Props {
@@ -39,13 +39,13 @@ export const LeggTilUtsettelseForm = ({ visTittel = false }: Props) => {
                 label={intl.formatMessage({ id: 'LeggTilUtsettelsePanel.VelgÅrsak' })}
                 validate={[isRequired(intl.formatMessage({ id: 'LeggTilUtsettelsePanel.VelgÅrsak.Required' }))]}
             >
-                <option value={'SØKER_SYKDOM' satisfies UttakUtsettelseÅrsak_fpoversikt}>
+                <option value={'SØKER_SYKDOM' satisfies UtsettelseÅrsak_fpoversikt}>
                     <FormattedMessage id="LeggTilUtsettelsePanel.SøkerSykdom" />
                 </option>
-                <option value={'SØKER_INNLAGT' satisfies UttakUtsettelseÅrsak_fpoversikt}>
+                <option value={'SØKER_INNLAGT' satisfies UtsettelseÅrsak_fpoversikt}>
                     <FormattedMessage id="LeggTilUtsettelsePanel.SøkerInnlagt" />
                 </option>
-                <option value={'BARN_INNLAGT' satisfies UttakUtsettelseÅrsak_fpoversikt}>
+                <option value={'BARN_INNLAGT' satisfies UtsettelseÅrsak_fpoversikt}>
                     <FormattedMessage id="LeggTilUtsettelsePanel.BarnInnlagt" />
                 </option>
             </RhfSelect>

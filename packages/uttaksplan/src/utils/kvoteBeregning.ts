@@ -2,17 +2,16 @@ import { sum, sumBy } from 'es-toolkit';
 
 import {
     BrukerRolleSak_fpoversikt,
+    EøsUttakDto_fpoversikt,
     Familiesituasjon,
     KontoBeregningDto,
     KontoDto,
     KontoTypeUttak,
-    UttakOppholdÅrsak_fpoversikt,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
+    PeriodeDto_fpoversikt,
+    UttakDto_fpoversikt,
 } from '@navikt/fp-types';
 
-import { erEøsUttakPeriode, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
-import { finnAntallTidelerÅTrekke } from './periodeUtils';
+import { finnAntallTidelerÅTrekkeForEøs, finnAntallTidelerÅTrekkeForSide } from './periodeUtils';
 
 export type DinPlanKvoteRad = {
     kontoType: KontoTypeUttak;
@@ -30,6 +29,23 @@ const DIN_PLAN_KVOTE_REKKEFØLGE: KontoTypeUttak[] = [
     'FELLESPERIODE',
 ];
 
+type NorgeSide = { fom: string; tom: string; side: UttakDto_fpoversikt };
+type EøsSide = { fom: string; tom: string; eøs: EøsUttakDto_fpoversikt };
+
+// Flatar dei to sidene (søker/annenPart) ein periode kan ha uttak for, saman med tidsrommet
+// deira, slik at dagsteljingane under kan handsame søkjar og annan part sine periodar likt –
+// uavhengig av kven av dei som faktisk har uttak i det aktuelle tidsrommet.
+const finnNorgeSider = (perioder: PeriodeDto_fpoversikt[]): NorgeSide[] =>
+    perioder.flatMap((p) =>
+        [
+            p.søker && { fom: p.fom, tom: p.tom, side: p.søker },
+            p.annenPart && { fom: p.fom, tom: p.tom, side: p.annenPart },
+        ].filter((s): s is NorgeSide => s !== undefined),
+    );
+
+const finnEøsSider = (perioder: PeriodeDto_fpoversikt[]): EøsSide[] =>
+    perioder.flatMap((p) => (p.annenPartEøs ? [{ fom: p.fom, tom: p.tom, eøs: p.annenPartEøs }] : []));
+
 /**
  * Finn kor mange dagar søkjaren har planlagt å bruke av kvar stønadskonto,
  * samanlikna med kor mange dagar som er tilgjengelege totalt på den kontoen.
@@ -41,17 +57,16 @@ const DIN_PLAN_KVOTE_REKKEFØLGE: KontoTypeUttak[] = [
  * søkjaren faktisk har planlagt å bruke noko av han.
  */
 export const finnDinPlanKvoteRader = (
-    uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    uttakPerioder: PeriodeDto_fpoversikt[],
     søkerRolle: BrukerRolleSak_fpoversikt,
     kontoer: KontoDto[],
     familiesituasjon: Familiesituasjon,
     familiehendelsedato: string,
 ): DinPlanKvoteRad[] => {
-    const søkersPerioder = uttakPerioder
-        .filter(
-            (periode): periode is UttakPeriode_fpoversikt => 'forelder' in periode && periode.forelder === søkerRolle,
-        )
-        .filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
+    const søkersSider = uttakPerioder
+        .map(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger)
+        .filter((periode) => periode.søker?.forelder === søkerRolle)
+        .map((periode): NorgeSide => ({ fom: periode.fom, tom: periode.tom, side: periode.søker! }));
 
     return DIN_PLAN_KVOTE_REKKEFØLGE.map((kontoType): DinPlanKvoteRad | undefined => {
         const konto = kontoer.find((k) => k.konto === kontoType);
@@ -59,8 +74,8 @@ export const finnDinPlanKvoteRader = (
             return undefined;
         }
 
-        const relevantePerioder = søkersPerioder.filter((p) => getUttaksKontoType(p) === kontoType);
-        const bruktDager = summerDagerIPerioder(relevantePerioder, [konto], familiesituasjon, familiehendelsedato);
+        const relevanteSider = søkersSider.filter(({ side }) => getUttaksKontoType(side) === kontoType);
+        const bruktDager = summerDagerForNorgeSider(relevanteSider, [konto], familiesituasjon, familiehendelsedato);
 
         if (bruktDager <= 0) {
             return undefined;
@@ -75,11 +90,13 @@ export const finnDinPlanKvoteRader = (
 };
 
 export const finnAntallDagerDerKunEnHarForeldrepenger = (
-    uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    uttakPerioder: PeriodeDto_fpoversikt[],
     familiesituasjon: Familiesituasjon,
     valgtStønadskvote: KontoBeregningDto,
     familiehendelsedato: string,
 ) => {
+    const norgeSider = finnNorgeSider(uttakPerioder);
+
     const kvoter = ['FORELDREPENGER_FØR_FØDSEL', 'FORELDREPENGER', 'AKTIVITETSFRI_KVOTE'].map((kontoType) => {
         const aktuellKonto = valgtStønadskvote.kontoer.find((k) => k.konto === kontoType);
         if (!aktuellKonto) {
@@ -87,27 +104,25 @@ export const finnAntallDagerDerKunEnHarForeldrepenger = (
         }
 
         const ubrukteDagerSkalTrekkes = kontoType === 'FORELDREPENGER_FØR_FØDSEL' && familiesituasjon === 'fødsel';
-        const brukteDager = summerDagerIPerioder(
-            uttakPerioder.filter((p) => {
-                const harMatchendePeriode =
-                    erVanligUttakPeriode(p) &&
-                    getUttaksKontoType(p) === 'FORELDREPENGER' &&
-                    p.morsAktivitet === 'IKKE_OPPGITT';
+        const brukteDager = summerDagerForNorgeSider(
+            norgeSider.filter(({ side }) => {
+                const harMatchendeSide =
+                    getUttaksKontoType(side) === 'FORELDREPENGER' && side.morsAktivitet === 'IKKE_OPPGITT';
                 // Aktivitetsfri kvote har spesialhåndtering
                 if (kontoType === 'AKTIVITETSFRI_KVOTE') {
                     // I planlegger og søknad brukes denne kontoen på periodene.
-                    const harMatchendeKonto = getUttaksKontoType(p) === 'AKTIVITETSFRI_KVOTE';
+                    const harMatchendeKonto = getUttaksKontoType(side) === 'AKTIVITETSFRI_KVOTE';
 
                     // Perioder som kommer fra søknad i innsyn ligger på foreldrepengerkontoen av en eller annen grunn.
-                    return harMatchendePeriode || harMatchendeKonto;
+                    return harMatchendeSide || harMatchendeKonto;
                 }
 
-                // Disse periodene skal kun telles for aktivitetsfri kvoter
-                if (harMatchendePeriode) {
+                // Disse sidene skal kun telles for aktivitetsfri kvoter
+                if (harMatchendeSide) {
                     return false;
                 }
 
-                return kontoType === getUttaksKontoType(p);
+                return kontoType === getUttaksKontoType(side);
             }),
             valgtStønadskvote.kontoer,
             familiesituasjon,
@@ -144,60 +159,55 @@ export const finnAntallDagerDerKunEnHarForeldrepenger = (
     };
 };
 
-export const filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-) => {
-    if (erEøsUttakPeriode(periode)) {
-        return true;
-    }
-
+const sideTrekkerDager = (side: UttakDto_fpoversikt): boolean => {
     // Utsettelseperiodar trekker ikkje dagar frå kvoten og skal ikkje reknast med.
-    if (periode.utsettelseÅrsak !== undefined && periode.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER') {
+    if (side.utsettelseÅrsak !== undefined && side.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER') {
         return false;
     }
 
-    return periode.resultat?.trekkerDager ?? true;
+    return side.resultat?.trekkerDager ?? true;
 };
 
+/** Fjernar søker/annenPart-sider som er utsettelsar eller avslag utan trekkdagar (behold pleiepenger). */
+export const filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger = (
+    periode: PeriodeDto_fpoversikt,
+): PeriodeDto_fpoversikt => ({
+    ...periode,
+    søker: periode.søker && sideTrekkerDager(periode.søker) ? periode.søker : undefined,
+    annenPart: periode.annenPart && sideTrekkerDager(periode.annenPart) ? periode.annenPart : undefined,
+});
+
 export const tellDagerIUttaksPeriodene = (
-    uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    uttakPerioder: PeriodeDto_fpoversikt[],
     familiesituasjon: Familiesituasjon,
     valgtStønadskvote: KontoBeregningDto,
     familiehendelsedato: string,
 ) => {
-    const dagerBruktAvMorFørFødsel = summerDagerIPerioder(
-        uttakPerioder.filter((p) => getUttaksKontoType(p) === 'FORELDREPENGER_FØR_FØDSEL'),
+    const norgeSider = finnNorgeSider(uttakPerioder);
+
+    const dagerBruktAvMorFørFødsel = summerDagerForNorgeSider(
+        norgeSider.filter(({ side }) => getUttaksKontoType(side) === 'FORELDREPENGER_FØR_FØDSEL'),
         valgtStønadskvote.kontoer,
         familiesituasjon,
         familiehendelsedato,
     );
-    const dagerBruktAvMor = summerDagerIPerioder(
-        uttakPerioder.filter(
-            (p) =>
-                getUttaksKontoType(p) === 'FORELDREPENGER_FØR_FØDSEL' ||
-                getUttaksKontoType(p) === 'MØDREKVOTE' ||
-                (erVanligUttakPeriode(p) && p.oppholdÅrsak === 'MØDREKVOTE_ANNEN_FORELDER'),
+    const dagerBruktAvMor = summerDagerForNorgeSider(
+        norgeSider.filter(
+            ({ side }) =>
+                getUttaksKontoType(side) === 'FORELDREPENGER_FØR_FØDSEL' || getUttaksKontoType(side) === 'MØDREKVOTE',
         ),
         valgtStønadskvote.kontoer,
         familiesituasjon,
         familiehendelsedato,
     );
-    const dagerBruktAvFar = summerDagerIPerioder(
-        uttakPerioder.filter(
-            (p) =>
-                getUttaksKontoType(p) === 'FEDREKVOTE' ||
-                (erVanligUttakPeriode(p) && p.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER'),
-        ),
+    const dagerBruktAvFar = summerDagerForNorgeSider(
+        norgeSider.filter(({ side }) => getUttaksKontoType(side) === 'FEDREKVOTE'),
         valgtStønadskvote.kontoer,
         familiesituasjon,
         familiehendelsedato,
     );
-    const dagerFellesBrukt = summerDagerIPerioder(
-        uttakPerioder.filter(
-            (p) =>
-                getUttaksKontoType(p) === 'FELLESPERIODE' ||
-                (erVanligUttakPeriode(p) && p.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER'),
-        ),
+    const dagerFellesBrukt = summerDagerForNorgeSider(
+        norgeSider.filter(({ side }) => getUttaksKontoType(side) === 'FELLESPERIODE'),
         valgtStønadskvote.kontoer,
         familiesituasjon,
         familiehendelsedato,
@@ -233,30 +243,71 @@ export const tellDagerIUttaksPeriodene = (
     };
 };
 
+/** Summerer trekkdagar (i heile dagar) for eit sett av norske uttakssider mot ein konto. */
+const summerDagerForNorgeSider = (
+    norgeSider: NorgeSide[],
+    konto: KontoDto[],
+    familiesituasjon: Familiesituasjon,
+    familiehendelsedato: string,
+): number => {
+    const erFødsel = familiesituasjon === 'fødsel';
+
+    const aktuelleKontotyper = new Set(norgeSider.map(({ side }) => getUttaksKontoType(side)));
+
+    let tidelerTotalt = 0;
+
+    for (const aktuellKontoType of aktuelleKontotyper) {
+        const gjeldendeKonto = konto.find((k) => k.konto === aktuellKontoType);
+
+        if (!gjeldendeKonto || !aktuellKontoType) {
+            continue;
+        }
+
+        const tideler = sum(
+            norgeSider
+                .filter(({ side }) => getUttaksKontoType(side) === aktuellKontoType)
+                .map(({ fom, tom, side }) => finnAntallTidelerÅTrekkeForSide({ fom, tom }, side, erFødsel, familiehendelsedato)),
+        );
+        tidelerTotalt += tideler;
+    }
+
+    return Math.floor(tidelerTotalt / 10);
+};
+
+/** Summerer trekkdagar (i heile dagar) mot ein konto, avgrensa til éin forelder si side av kvar periode. */
+export const summerDagerForForelder = (
+    perioder: PeriodeDto_fpoversikt[],
+    forelder: BrukerRolleSak_fpoversikt,
+    konto: KontoDto[],
+    familiesituasjon: Familiesituasjon,
+    familiehendelsedato: string,
+): number => {
+    const norgeSider = finnNorgeSider(perioder).filter(({ side }) => side.forelder === forelder);
+    return summerDagerForNorgeSider(norgeSider, konto, familiesituasjon, familiehendelsedato);
+};
+
+/**
+ * Summerer trekkdagar (i heile dagar) for norske uttakssider OG eventuelle EØS-sider mot ein
+ * konto, avgrensa til maks tal dagar kontoen har igjen for EØS-delen (matchar tidlegare åtferd).
+ */
 export const summerDagerIPerioder = (
-    perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    perioder: PeriodeDto_fpoversikt[],
     konto: KontoDto[],
     familiesituasjon: Familiesituasjon,
     familiehendelsedato: string,
 ) => {
-    const aktuelleKontotyper = new Set(
-        perioder.map((p) => {
-            if (!('trekkdager' in p) && p.oppholdÅrsak) {
-                return getStønadskvoteTypeFromOppholdÅrsakType(p.oppholdÅrsak);
-            }
+    const norgeSider = finnNorgeSider(perioder);
+    const eøsSider = finnEøsSider(perioder);
 
-            return getUttaksKontoType(p);
-        }),
-    );
-
-    if (aktuelleKontotyper === undefined) {
-        return 0;
-    }
+    const aktuelleKontotyper = new Set([
+        ...norgeSider.map(({ side }) => getUttaksKontoType(side)),
+        ...eøsSider.map(({ eøs }) => eøs.kontoType),
+    ]);
 
     const erFødsel = familiesituasjon === 'fødsel';
 
     // Trekkdagar summerast i tideler (heiltal) for å unngå flyttalsfeil; sjå
-    // finnAntallTidelerÅTrekke. Resultatet golvast til heile dagar heilt til slutt.
+    // finnAntallTidelerÅTrekkeForSide. Resultatet golvast til heile dagar heilt til slutt.
     let tidelerTotalt = 0;
 
     for (const aktuellKontoType of aktuelleKontotyper) {
@@ -268,20 +319,16 @@ export const summerDagerIPerioder = (
 
         const tidelerEøs = Math.min(
             sum(
-                perioder
-                    .filter((p) => 'trekkdager' in p && getUttaksKontoType(p) === aktuellKontoType)
-                    .map((p) => finnAntallTidelerÅTrekke(p, erFødsel, familiehendelsedato)),
+                eøsSider
+                    .filter(({ eøs }) => eøs.kontoType === aktuellKontoType)
+                    .map(({ eøs }) => finnAntallTidelerÅTrekkeForEøs(eøs)),
             ),
             gjeldendeKonto.dager * 10,
         );
         const tidelerNorge = sum(
-            perioder
-                .filter(
-                    (p) =>
-                        (!('trekkdager' in p) && getUttaksKontoType(p) === aktuellKontoType) ||
-                        harOppholdÅrsakLikKontoType(aktuellKontoType, p),
-                )
-                .map((p) => finnAntallTidelerÅTrekke(p, erFødsel, familiehendelsedato)),
+            norgeSider
+                .filter(({ side }) => getUttaksKontoType(side) === aktuellKontoType)
+                .map(({ fom, tom, side }) => finnAntallTidelerÅTrekkeForSide({ fom, tom }, side, erFødsel, familiehendelsedato)),
         );
         tidelerTotalt += tidelerEøs + tidelerNorge;
     }
@@ -289,39 +336,10 @@ export const summerDagerIPerioder = (
     return Math.floor(tidelerTotalt / 10);
 };
 
-export const getUttaksKontoType = (
-    p: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-): KontoTypeUttak | undefined => {
-    if (!('trekkdager' in p) && p.kontoType === 'FORELDREPENGER' && p.morsAktivitet === 'IKKE_OPPGITT') {
+export const getUttaksKontoType = (side: UttakDto_fpoversikt): KontoTypeUttak | undefined => {
+    if (side.kontoType === 'FORELDREPENGER' && side.morsAktivitet === 'IKKE_OPPGITT') {
         return 'AKTIVITETSFRI_KVOTE';
     }
 
-    return p.kontoType;
-};
-
-const harOppholdÅrsakLikKontoType = (
-    kontoType: KontoTypeUttak,
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-): boolean => {
-    if (erEøsUttakPeriode(periode) || !periode.oppholdÅrsak) {
-        return false;
-    }
-
-    const stønadskontoType = getStønadskvoteTypeFromOppholdÅrsakType(periode.oppholdÅrsak);
-    return stønadskontoType === kontoType;
-};
-
-const getStønadskvoteTypeFromOppholdÅrsakType = (årsak: UttakOppholdÅrsak_fpoversikt): KontoTypeUttak | undefined => {
-    switch (årsak) {
-        case 'FEDREKVOTE_ANNEN_FORELDER':
-            return 'FEDREKVOTE';
-        case 'FELLESPERIODE_ANNEN_FORELDER':
-            return 'FELLESPERIODE';
-        case 'MØDREKVOTE_ANNEN_FORELDER':
-            return 'MØDREKVOTE';
-        case 'FORELDREPENGER_ANNEN_FORELDER':
-            return 'FORELDREPENGER';
-        default:
-            return undefined;
-    }
+    return side.kontoType;
 };

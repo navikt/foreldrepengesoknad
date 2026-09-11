@@ -1,13 +1,19 @@
 import dayjs from 'dayjs';
 
-import { Uttaksplanperiode, erUttaksplanHull, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
+import { Uttaksplanperiode, erPeriodeDto, erUttaksplanHull } from '../../types/UttaksplanPeriode';
 import { erAvslåttPeriode, erPrematuruker, erUtsettelsesperiode } from '../../utils/periodeUtils';
+
+// Ein periode der både søker og annenPart har uttak (samtidig uttak) representerer allereie
+// éi sammanslått rad i den nye modellen – han skal difor stå åleine, akkurat som
+// hull/prematuruker/utsettelse, og ikkje forsøkast slått saman med naboradene.
+const erSamtidigUttak = (periode: Uttaksplanperiode): boolean =>
+    erPeriodeDto(periode) && !!periode.søker && !!periode.annenPart;
 
 export const mapUttaksplanperioderTilRaderIListe = (
     saksperioderInkludertHull: Uttaksplanperiode[],
     familiehendelsesdato: string,
 ): Uttaksplanperiode[][] => {
-    const radIListeMap = new Map<string, Uttaksplanperiode[]>();
+    const rader: Uttaksplanperiode[][] = [];
     let aktivRad: Uttaksplanperiode[] | undefined;
 
     const avsluttAktivRad = () => {
@@ -15,9 +21,7 @@ export const mapUttaksplanperioderTilRaderIListe = (
             return;
         }
 
-        const fom = aktivRad[0]!.fom;
-        const tom = aktivRad.at(-1)!.tom;
-        radIListeMap.set(periodeKey(fom, tom), aktivRad);
+        rader.push(aktivRad);
         aktivRad = undefined;
     };
 
@@ -26,21 +30,16 @@ export const mapUttaksplanperioderTilRaderIListe = (
     while (index < saksperioderInkludertHull.length) {
         const periode = saksperioderInkludertHull[index]!;
 
-        // Hull / Prematuruker / Utsettelse -> alltid egen rad
-        if (erUttaksplanHull(periode) || erPrematuruker(periode) || erUtsettelsesperiode(periode)) {
+        // Hull / Prematuruker / Utsettelse / samtidig uttak -> alltid egen rad
+        if (
+            erUttaksplanHull(periode) ||
+            erPrematuruker(periode) ||
+            erUtsettelsesperiode(periode) ||
+            erSamtidigUttak(periode)
+        ) {
             avsluttAktivRad();
-            radIListeMap.set(periodeKey(periode.fom, periode.tom), [periode]);
+            rader.push([periode]);
             index += 1;
-            continue;
-        }
-
-        const nestePeriode = saksperioderInkludertHull[index + 1];
-
-        // Samtidig uttak -> En rad for to perioder
-        if (nestePeriode && erSamtidigUttak(periode, nestePeriode)) {
-            avsluttAktivRad();
-            radIListeMap.set(periodeKey(periode.fom, periode.tom), [periode, nestePeriode]);
-            index += 2; // Hopper over neste periode
             continue;
         }
 
@@ -67,16 +66,23 @@ export const mapUttaksplanperioderTilRaderIListe = (
 
     avsluttAktivRad();
 
-    return Array.from(radIListeMap.values());
+    return rader;
 };
 
-const periodeKey = (fom: string, tom: string) => `${fom}–${tom}`;
-
-const erSamtidigUttak = (a: Uttaksplanperiode, b: Uttaksplanperiode): boolean =>
-    !erUttaksplanHull(a) && !erUttaksplanHull(b) && a.fom === b.fom && a.tom === b.tom;
+/**
+ * Representant-forelder for grupperingsformål – den sida som finst på perioden. Sidan
+ * samtidig uttak-radar allereie er filtrert bort før dette kallast (sjå erSamtidigUttak over),
+ * er det aldri tvitydig kva side som gjeld her.
+ */
+const finnRepresentantForelder = (periode: Uttaksplanperiode) => {
+    if (!erPeriodeDto(periode)) {
+        return undefined;
+    }
+    return (periode.søker ?? periode.annenPart)?.forelder;
+};
 
 const harSammeForelder = (a: Uttaksplanperiode, b: Uttaksplanperiode): boolean =>
-    'forelder' in a && 'forelder' in b && a.forelder === b.forelder;
+    finnRepresentantForelder(a) === finnRepresentantForelder(b);
 
 const kanGrupperesPåSammeRad = (
     forrige: Uttaksplanperiode,
@@ -89,11 +95,8 @@ const kanGrupperesPåSammeRad = (
     harSammeAvslåttStatus(forrige, nestePeriode) &&
     beggePerioderFørEllerEtterFamiliehendelsedato(forrige, nestePeriode, familiehendelsesdato);
 
-const harSammeAvslåttStatus = (a: Uttaksplanperiode, b: Uttaksplanperiode): boolean => {
-    const aErAvslått = erVanligUttakPeriode(a) && erAvslåttPeriode(a);
-    const bErAvslått = erVanligUttakPeriode(b) && erAvslåttPeriode(b);
-    return aErAvslått === bErAvslått;
-};
+const harSammeAvslåttStatus = (a: Uttaksplanperiode, b: Uttaksplanperiode): boolean =>
+    erAvslåttPeriode(a) === erAvslåttPeriode(b);
 
 const beggePerioderFørEllerEtterFamiliehendelsedato = (
     uttaksplanperiode: Uttaksplanperiode | undefined,

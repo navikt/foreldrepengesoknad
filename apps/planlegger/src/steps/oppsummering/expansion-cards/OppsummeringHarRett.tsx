@@ -262,7 +262,7 @@ export const OppsummeringHarRett = ({
                             }}
                             valgtStønadskvote={valgtStønadskvote}
                             harAktivitetskravIPeriodeUtenUttak={false}
-                            uttakPerioder={uttaksplan ?? [...planforslag.søker1, ...planforslag.søker2]}
+                            perioder={uttaksplan ?? [...planforslag.søker1, ...planforslag.søker2]}
                             erPeriodeneTilAnnenPartLåst={false}
                             erEndringssøknad={false}
                         >

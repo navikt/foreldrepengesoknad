@@ -11,12 +11,7 @@ import { BodyLong } from '@navikt/ds-react';
 
 import { AttachmentType } from '@navikt/fp-constants';
 import { FileUploader } from '@navikt/fp-filopplaster';
-import {
-    Attachment,
-    NavnPåForeldre,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
-} from '@navikt/fp-types';
+import { Attachment, NavnPåForeldre, PeriodeDto_fpoversikt } from '@navikt/fp-types';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -26,7 +21,7 @@ import { PeriodeVisning } from './periodevisning/PeriodeVisning';
 interface Props {
     attachments: Attachment[];
     updateAttachments: (attachments: Attachment[]) => void;
-    perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    perioder: PeriodeDto_fpoversikt[];
     navnPåForeldre: NavnPåForeldre;
     skjemanummer: GyldigeSkjemanummer;
     labelText: string;
@@ -84,7 +79,7 @@ export const UttakUploader = ({
                     {renderedDescription}
                     {perioder.map((p) => {
                         return (
-                            <div key={p.fom + p.tom + p.kontoType} className="my-4">
+                            <div key={p.fom + p.tom + p.søker?.kontoType} className="my-4">
                                 <PeriodeVisning
                                     periode={p}
                                     erAleneOmOmsorg={erAleneomsorg}

@@ -6,15 +6,9 @@ import { Foreldrepengesak } from 'types/Sak';
 
 import { Button, HStack, ToggleGroup, VStack } from '@navikt/ds-react';
 
-import { BrukerRolleSak_fpoversikt, NavnPåForeldre, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { NavnPåForeldre } from '@navikt/fp-types';
 import { useMedia } from '@navikt/fp-utils';
-import {
-    KvoteOppsummering,
-    UttaksplanDataProvider,
-    UttaksplanKalender,
-    UttaksplanListe,
-    prosesserPerioderForVisning,
-} from '@navikt/fp-uttaksplan';
+import { KvoteOppsummering, UttaksplanDataProvider, UttaksplanKalender, UttaksplanListe } from '@navikt/fp-uttaksplan';
 
 import { hentUttakskvoteOptions } from '../../api/queries';
 import { useUttaksplan } from '../../hooks/useUttaksplan';
@@ -23,10 +17,9 @@ import { getBarnFraSak } from '../../utils/sakerUtils';
 interface Props {
     sak: Foreldrepengesak;
     navnPåForeldre: NavnPåForeldre;
-    annenPartsPerioder: UttakPeriode_fpoversikt[];
 }
 
-export const DinPlan = ({ annenPartsPerioder, navnPåForeldre, sak }: Props) => {
+export const DinPlan = ({ navnPåForeldre, sak }: Props) => {
     const isDesktop = useMedia('screen and (min-width: 768px)');
 
     const [visKalender, setVisKalender] = useState(false);
@@ -45,44 +38,29 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre, sak }: Props) => 
     );
     const konto = sak.dekningsgrad === 'HUNDRE' ? kontoQuery.data?.['100'] : kontoQuery.data?.['80'];
 
-    // Prototype: byggjer opp ny datakjelde frå fp-oversikt sitt /uttaksplan-endepunkt ved sida
-    // av dagens løysing. Sjå useUttaksplan for kvifor han ikkje gjer reelle kall enno.
-    useUttaksplan(sak);
+    // Prototype: /uttaksplan-endepunktet i fp-oversikt er enno ikkje utrulla (sjå useUttaksplan),
+    // så `uttaksplanQuery.data` vil i praksis vera undefined heilt til det skjer. Me viser difor
+    // ingenting for denne seksjonen inntil då.
+    const uttaksplanQuery = useUttaksplan(sak);
 
-    if (!konto) {
+    if (!konto || !uttaksplanQuery.data) {
         return null;
     }
 
-    const søkersPerioder = sak.gjeldendeVedtak?.perioder;
-    const perioderSomErSøktOm = sak.åpenBehandling?.søknadsperioder;
     const familiehendelse = sak.familiehendelse;
     const sakTilhørerMor = sak.sakTilhørerMor;
     const gjelderAdopsjon = sak.gjelderAdopsjon;
     const rettighetType = sak.rettighetType;
     const sakAvsluttet = sak.sakAvsluttet;
-    const erEndringssøknad =
-        søkersPerioder !== undefined && søkersPerioder.some((periode) => periode.resultat !== undefined);
+    const erEndringssøknad = uttaksplanQuery.data.perioder.some(
+        (periode) => periode.søker?.resultat !== undefined || periode.annenPart?.resultat !== undefined,
+    );
 
-    const relevantePerioder = søkersPerioder ?? perioderSomErSøktOm ?? [];
     const erDeltUttak = rettighetType === 'BEGGE_RETT';
     const morHarRett = sakTilhørerMor && (rettighetType === 'BEGGE_RETT' || rettighetType === 'BARE_SØKER_RETT');
     const søkerErAleneOmOmsorg = rettighetType === 'ALENEOMSORG';
     const harAktivitetskravIPeriodeUtenUttak = !erDeltUttak && !morHarRett && !søkerErAleneOmOmsorg;
     const barn = getBarnFraSak(familiehendelse, gjelderAdopsjon);
-
-    const perioderAnnenPartEØS = sak.gjeldendeVedtak?.perioderAnnenpartEøs;
-
-    const søkerPerioderMedForelder = leggTilForelderOmMangler(relevantePerioder, sakTilhørerMor ? 'MOR' : 'FAR_MEDMOR');
-    const annenPartPerioderMedForelder = leggTilForelderOmMangler(
-        annenPartsPerioder,
-        sakTilhørerMor ? 'FAR_MEDMOR' : 'MOR',
-    );
-
-    const uttakPerioder = prosesserPerioderForVisning(
-        søkerPerioderMedForelder,
-        annenPartPerioderMedForelder,
-        perioderAnnenPartEØS,
-    );
 
     return (
         <VStack gap="space-40">
@@ -117,7 +95,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre, sak }: Props) => 
                     />
                 </ToggleGroup>
                 <UttaksplanDataProvider
-                    uttakPerioder={uttakPerioder}
+                    perioder={uttaksplanQuery.data.perioder}
                     barn={barn}
                     foreldreInfo={{
                         søker: sakTilhørerMor ? 'MOR' : 'FAR_MEDMOR',
@@ -138,48 +116,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre, sak }: Props) => 
                     )}
                     {visKalender && <UttaksplanKalender readOnly={true} />}
                 </UttaksplanDataProvider>
-
-                {/*
-                Prototype: same visning basert på den nye /uttaksplan-tenesta i staden for
-                dagens sak/annenPart-kombinasjon. UttaksplanDataProvider må tilpassast til å ta
-                imot ein FellesUttaksplanDto_fpoversikt direkte før dette kan skruast på.
-                <UttaksplanDataProvider
-                    uttaksplan={useUttaksplan(sak).data}
-                    barn={barn}
-                    foreldreInfo={{
-                        søker: sakTilhørerMor ? 'MOR' : 'FAR_MEDMOR',
-                        navnPåForeldre: navnPåForeldre,
-                        erMedmorDelAvSøknaden: false,
-                        rettighetType,
-                    }}
-                    erPeriodeneTilAnnenPartLåst={false}
-                >
-                    {!visKalender && (
-                        <>
-                            <UttaksplanListe isReadOnly />
-                            <KvoteOppsummering erInnsyn visStatusIkoner={false} />
-                        </>
-                    )}
-                    {visKalender && <UttaksplanKalender readOnly={true} />}
-                </UttaksplanDataProvider>
-                */}
             </VStack>
         </VStack>
     );
-};
-
-// TODO (TOR) Burde kunne setta forelder backend og så fjerna denne koden
-const leggTilForelderOmMangler = (
-    perioder: UttakPeriode_fpoversikt[],
-    forelder: BrukerRolleSak_fpoversikt,
-): UttakPeriode_fpoversikt[] => {
-    return perioder.map((periode) => {
-        if (periode.forelder !== undefined) {
-            return periode;
-        }
-        return {
-            ...periode,
-            forelder,
-        };
-    });
 };

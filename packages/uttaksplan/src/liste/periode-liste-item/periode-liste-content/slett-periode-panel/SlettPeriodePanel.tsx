@@ -11,7 +11,7 @@ import { isRequired } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../../context/UttaksplanRedigeringContext';
-import { Uttaksplanperiode, erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
+import { Uttaksplanperiode, erPeriodeDto } from '../../../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../../../utils/UttakPeriodeBuilder';
 import { erAvslåttPeriode } from '../../../../utils/periodeUtils';
 import { genererPeriodeKey, getStønadskvoteNavn } from '../../../utils/uttaksplanListeUtils';
@@ -32,7 +32,7 @@ interface FormValues {
 export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForeldre, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
 
-    const { uttakPerioder, foreldreInfo } = useUttaksplanData();
+    const { perioder, foreldreInfo } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
@@ -53,7 +53,7 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
     };
 
     const slettPerioder = (perioderSomSkalSlettes: Uttaksplanperiode[]) => {
-        const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder, 'liste')
+        const nyeUttakPerioder = new UttakPeriodeBuilder(perioder, 'liste')
             .fjernUttakPerioder(perioderSomSkalSlettes, false)
             .getUttakPerioder();
         uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
@@ -84,8 +84,9 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
                             label={intl.formatMessage({ id: 'uttaksplan.perioder' })}
                         >
                             {uttaksplanperioder.map((p, index) => {
-                                const morsAktivitet =
-                                    erVanligUttakPeriode(p) && p.morsAktivitet ? p.morsAktivitet : undefined;
+                                const side = erPeriodeDto(p) ? (p.søker ?? p.annenPart) : undefined;
+                                const morsAktivitet = side?.morsAktivitet;
+                                const eøsSide = erPeriodeDto(p) ? p.annenPartEøs : undefined;
 
                                 return (
                                     <Checkbox key={genererPeriodeKey(p)} value={index} autoFocus={index === 0}>
@@ -93,9 +94,9 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
                                     ${getStønadskvoteNavn(intl, {
                                         navnPåForeldre,
                                         erFarEllerMedmor,
-                                        erEøsPeriode: erEøsUttakPeriode(p),
+                                        erEøsPeriode: !!eøsSide && !side,
                                         morsAktivitet,
-                                        konto: erVanligUttakPeriode(p) ? p.kontoType : undefined,
+                                        konto: side?.kontoType ?? eøsSide?.kontoType,
                                         erAleneOmOmsorg: foreldreInfo.rettighetType === 'ALENEOMSORG',
                                         erAvslått: erAvslåttPeriode(p),
                                     })}`}

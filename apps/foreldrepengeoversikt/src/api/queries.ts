@@ -17,7 +17,7 @@ import {
 } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
-import { FellesUttaksplanDto_fpoversikt, FellesUttaksplanRequest_fpoversikt } from '../types/Uttaksplan';
+import { FellesUttaksplanDto_fpoversikt, FellesUttaksplanRequest_fpoversikt } from '@navikt/fp-types';
 
 export const urlPrefiks = import.meta.env.BASE_URL;
 

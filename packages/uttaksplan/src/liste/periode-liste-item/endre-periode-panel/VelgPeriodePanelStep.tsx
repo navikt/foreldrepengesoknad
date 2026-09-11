@@ -5,12 +5,11 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Button, HStack, Heading, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { genererPeriodeKey, getStønadskvoteNavn } from '../../../liste/utils/uttaksplanListeUtils';
-import { Uttaksplanperiode, erEøsUttakPeriode, erVanligUttakPeriode } from '../../../types/UttaksplanPeriode';
+import { Uttaksplanperiode, erPeriodeDto } from '../../../types/UttaksplanPeriode';
 import {
     erAvslåttPeriode,
     harPeriodeDerMorsAktivitetIkkeErValgt,
@@ -32,7 +31,6 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
 
     const {
         foreldreInfo: { søker, navnPåForeldre, rettighetType, erIkkeSøkerSpesifisert, erFarOgFar },
-        uttakPerioder,
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
 
@@ -41,10 +39,6 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
     const onSubmit = (values: FormValues) => {
         setValgtPeriodeIndex(values.periodeIndex);
     };
-
-    const morsPerioder = uttakPerioder.filter(
-        (mp): mp is UttakPeriode_fpoversikt => !erEøsUttakPeriode(mp) && mp.forelder === 'MOR',
-    );
 
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
@@ -64,7 +58,9 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
                     ]}
                 >
                     {perioder.map((p, index) => {
-                        const morsAktivitet = erVanligUttakPeriode(p) && p.morsAktivitet ? p.morsAktivitet : undefined;
+                        const side = erPeriodeDto(p) ? (p.søker ?? p.annenPart) : undefined;
+                        const morsAktivitet = side?.morsAktivitet;
+                        const eøsSide = erPeriodeDto(p) ? p.annenPartEøs : undefined;
                         return (
                             <Radio key={genererPeriodeKey(p)} value={index} autoFocus={index === 0}>
                                 <HStack gap="space-4">
@@ -72,7 +68,7 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
                                         rettighetType,
                                         søker,
                                         erIkkeSøkerSpesifisert ?? false,
-                                        [p, ...morsPerioder],
+                                        [p],
                                         erFarOgFar,
                                     ) && (
                                         <ExclamationmarkTriangleFillIcon
@@ -96,9 +92,9 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
                                         `${getStønadskvoteNavn(intl, {
                                             navnPåForeldre,
                                             erFarEllerMedmor: søker === 'FAR_MEDMOR',
-                                            erEøsPeriode: erEøsUttakPeriode(p),
+                                            erEøsPeriode: !!eøsSide && !side,
                                             morsAktivitet,
-                                            konto: erVanligUttakPeriode(p) ? p.kontoType : undefined,
+                                            konto: side?.kontoType ?? eøsSide?.kontoType,
                                             erAleneOmOmsorg: rettighetType === 'ALENEOMSORG',
                                             erAvslått: erAvslåttPeriode(p),
                                         })}`}

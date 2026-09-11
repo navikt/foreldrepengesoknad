@@ -17,7 +17,7 @@ import { Alert, BodyLong, Tabs } from '@navikt/ds-react';
 import { loggUmamiEvent } from '@navikt/fp-observability';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, RettighetType_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
-import { Uttaksperioden, barnehagestartDato, getFamiliehendelsedato } from '@navikt/fp-utils';
+import { barnehagestartDato, getFamiliehendelsedato } from '@navikt/fp-utils';
 import {
     FjernAltIUttaksplanModal,
     HvaErMulig,
@@ -32,6 +32,7 @@ import {
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanForm } from './UttaksplanForm';
+import { mapAnnenPartsPeriodeTilPeriodeDto } from './hooks/gammelPeriodeMapping';
 import { useUttaksplanForEksisterendeSak } from './hooks/useUttaksplanForEksisterendeSak';
 import { useUttaksplanForslag } from './hooks/useUttaksplanForslag';
 
@@ -131,16 +132,14 @@ export const UttaksplanSteg = ({
 
     const valgteStønadskvoter = tilgjengeligeStønadskvoterQuery.data;
 
-    // Filtrerer ut periodane til annen part midlertidig fram til me får på plass lagring av desse periodane
+    // Filtrerer ut periodane til annen part midlertidig fram til me får på plass lagring av desse
+    // periodane. Forslagsmotoren (deltUttak/ikkeDeltUttak) plasserer alltid søkjars eigne periodar
+    // på .søker, uavhengig av forelderrolle, så det er nok å filtrere på at .søker finst.
     const nyttUttaksplanForslag = useUttaksplanForslag(
         valgteStønadskvoter,
         annenPartVedtakQuery.data?.perioder,
         annenPartVedtakQuery.isLoading,
-    ).filter(
-        (periode) =>
-            Uttaksperioden.erIkkeEøsPeriode(periode) &&
-            periode.forelder === (erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'),
-    );
+    ).filter((periode) => periode.søker !== undefined);
 
     if (!valgteStønadskvoter || annenPartVedtakQuery.isLoading) {
         return null;
@@ -148,7 +147,7 @@ export const UttaksplanSteg = ({
 
     const annenPartsPerioderEllerUndefined =
         annenPartVedtakQuery.data?.perioder && annenPartVedtakQuery.data?.perioder?.length > 0
-            ? annenPartVedtakQuery.data.perioder
+            ? annenPartVedtakQuery.data.perioder.map(mapAnnenPartsPeriodeTilPeriodeDto)
             : undefined;
     const tidligereUttaksperioder = uttaksplanForEksisterendeSak ?? annenPartsPerioderEllerUndefined;
     const defaultUttaksperioder = opprinneligPlanleggerplan ?? tidligereUttaksperioder ?? nyttUttaksplanForslag;
@@ -189,7 +188,7 @@ export const UttaksplanSteg = ({
                     }}
                     valgtStønadskvote={valgteStønadskvoter}
                     harAktivitetskravIPeriodeUtenUttak={false}
-                    uttakPerioder={uttaksplan || defaultUttaksperioder}
+                    perioder={uttaksplan || defaultUttaksperioder}
                     erPeriodeneTilAnnenPartLåst={!!tidligereUttaksperioder}
                     aktiveArbeidsforhold={aktiveArbeidsforhold}
                     erEndringssøknad={erEndringssøknad}

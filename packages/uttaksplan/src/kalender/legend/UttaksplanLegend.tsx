@@ -12,9 +12,8 @@ import { CalendarLabel, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-u
 import { notEmpty } from '@navikt/fp-validation';
 
 import { LegendLabel } from '../../types/LegendLabel';
-import { UttaksplanperiodeMedKunTapteDager, erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
+import { UttaksplanperiodeMedKunTapteDager, erPeriodeDto } from '../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
-import { filtrerBortAnnenPartsIdentiskePerioder } from '../utils/uttaksplanKalenderUtils';
 import { useUttaksplanData } from './../../context/UttaksplanDataContext';
 import {
     UttaksplanKalenderLegendInfo,
@@ -58,9 +57,7 @@ export const UttaksplanLegend = ({
 
     const saksperioderInkludertHull = useAlleUttakPerioderInklTapteDager();
 
-    const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(saksperioderInkludertHull, søker === 'FAR_MEDMOR');
-
-    const unikePeriodeLabelsMedFarge = unikePerioder.reduce<UttaksplanKalenderLegendInfo[]>((acc, periode) => {
+    const unikePeriodeLabelsMedFarge = saksperioderInkludertHull.reduce<UttaksplanKalenderLegendInfo[]>((acc, periode) => {
         const label = getLegendLabelFromPeriode(periode, søker === 'FAR_MEDMOR');
 
         if (!label) {
@@ -158,10 +155,17 @@ export const UttaksplanLegend = ({
 };
 
 const utledForelder = (periode: UttaksplanperiodeMedKunTapteDager, søker: BrukerRolleSak_fpoversikt) => {
-    if (erEøsUttakPeriode(periode)) {
+    if (!erPeriodeDto(periode)) {
+        return undefined;
+    }
+    const side = periode.søker ?? periode.annenPart;
+    if (!side) {
+        // Rein EØS-periode – EøsUttakDto har ikkje noko eige forelder-felt (sjå
+        // uttaksplanLegendUtils), så vi fell tilbake til den same forenklinga som elles: EØS
+        // gjeld alltid annenPart, derav søkjar sin eigen rolle her (matchar getLegendLabelFromPeriode).
         return søker;
     }
-    return periode.forelder;
+    return side.forelder;
 };
 
 const HStackEllerVStack = ({

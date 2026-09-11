@@ -6,19 +6,15 @@ import { IntlShape } from 'react-intl';
 
 import {
     BrukerRolleSak_fpoversikt,
+    EøsUttakDto_fpoversikt,
     MorsAktivitet,
+    PeriodeDto_fpoversikt,
     RettighetType_fpoversikt,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
+    UttakDto_fpoversikt,
 } from '@navikt/fp-types';
 import { Tidsperioden, Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
 
-import {
-    Uttaksplanperiode,
-    UttaksplanperiodeMedKunTapteDager,
-    erEøsUttakPeriode,
-    erVanligUttakPeriode,
-} from '../types/UttaksplanPeriode';
+import { Uttaksplanperiode, erPeriodeDto } from '../types/UttaksplanPeriode';
 import { ANTALL_UTTAKSDAGER_SEKS_UKER, ANTALL_UTTAKSDAGER_TRE_UKER } from './uttaksdagerKonstanter';
 
 dayjs.extend(isSameOrAfter);
@@ -80,7 +76,7 @@ const tidelerNedrundet = (dager: number, prosent: number): number => {
 };
 
 /**
- * Reknar talet på trekkdagar for ein periode i *tideler* (heiltal).
+ * Reknar talet på trekkdagar for søkjar/annenPart si side av ein periode, i *tideler* (heiltal).
  *
  * Trekkdagar summerast i heiltal (tideler) i staden for desimaltal for å unngå
  * flyttalsfeil. Eit døme: ti graderte dagar à 0,6 dag gir i flyttal
@@ -91,67 +87,70 @@ const tidelerNedrundet = (dager: number, prosent: number): number => {
  * / `Trekkdager`): trekkdagar = virkedagar × utbetalingsgrad / 100, runda *ned*
  * til 1 desimal (RoundingMode.DOWN) per periode.
  */
-export const finnAntallTidelerÅTrekke = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+export const finnAntallTidelerÅTrekkeForSide = (
+    periode: { fom: string; tom: string },
+    side: UttakDto_fpoversikt,
     erFødsel: boolean,
     familiehendelsedato: string,
 ): number => {
-    if (erEøsUttakPeriode(periode)) {
-        // EØS-trekkdagar kjem ferdig utrekna (maks 1 desimal) frå fp-sak.
-        return Math.round(periode.trekkdager * 10);
-    }
-
-    const arbeidstidprosent = periode.gradering?.arbeidstidprosent;
-    const samtidigUttak = periode.samtidigUttak;
+    const arbeidstidprosent = side.gradering?.arbeidstidprosent;
+    const samtidigUttak = side.samtidigUttak;
     const dager = Uttaksperioden.getAntallUttaksdager(periode);
 
     if (arbeidstidprosent) {
         const utbetalingsgrad = 100 - arbeidstidprosent;
         // Mor sin gradering i tidsrommet 3 veker før / 6 veker etter familiehendinga
         // gir ikkje forlenging av stønadsperioden – dagane i vinduet trekkjast som heile.
-        if (erFødsel && periode.forelder === 'MOR') {
+        if (erFødsel && side.forelder === 'MOR') {
             const dagerIVindu = getAntallUttaksdagerIVinduRundtFødsel(periode.fom, periode.tom, familiehendelsedato);
             const dagerUtenforVindu = dager - dagerIVindu;
             return dagerIVindu * 10 + tidelerNedrundet(dagerUtenforVindu, utbetalingsgrad);
         }
         return tidelerNedrundet(dager, utbetalingsgrad);
     }
-    if (samtidigUttak) {
+    if (samtidigUttak !== undefined) {
         return tidelerNedrundet(dager, samtidigUttak);
     }
     return dager * 10;
 };
 
-export const erUttaksperiode = (periode: Uttaksplanperiode) => {
-    return erVanligUttakPeriode(periode) && periode.utsettelseÅrsak === undefined;
-};
+// EØS-trekkdagar kjem ferdig utrekna (maks 1 desimal) frå fp-sak.
+export const finnAntallTidelerÅTrekkeForEøs = (eøs: EøsUttakDto_fpoversikt): number => Math.round(eøs.trekkdager * 10);
 
-export const erPrematuruker = (periode: Uttaksplanperiode) => {
-    return (
-        erVanligUttakPeriode(periode) &&
-        periode.kontoType !== undefined &&
-        periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER'
-    );
-};
+export const erUttaksperiode = (periode: Uttaksplanperiode) =>
+    erPeriodeDto(periode) && finnSider(periode).some((side) => Uttaksperioden.erUttaksperiode(side));
 
-export const erUtsettelsesperiode = (periode: Uttaksplanperiode) => {
-    return (
-        erVanligUttakPeriode(periode) &&
-        periode.utsettelseÅrsak !== undefined &&
-        periode.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER'
-    );
-};
+export const erPrematuruker = (periode: Uttaksplanperiode) =>
+    erPeriodeDto(periode) && finnSider(periode).some((side) => Uttaksperioden.erPrematuruker(side));
 
-export const erOverføringsperiode = (periode: Uttaksplanperiode) => {
-    return erVanligUttakPeriode(periode) && periode.overføringÅrsak !== undefined;
-};
+export const erUtsettelsesperiode = (periode: Uttaksplanperiode) =>
+    erPeriodeDto(periode) && finnSider(periode).some((side) => Uttaksperioden.erUtsettelsesperiode(side));
 
-export const erOppholdsperiode = (periode: Uttaksplanperiode) => {
-    return erVanligUttakPeriode(periode) && periode.oppholdÅrsak !== undefined;
-};
+export const erOverføringsperiode = (periode: Uttaksplanperiode) =>
+    erPeriodeDto(periode) && finnSider(periode).some((side) => Uttaksperioden.erOverføringsperiode(side));
 
-export const erAvslåttPeriode = (periode: Uttaksplanperiode) => {
-    return 'resultat' in periode && periode.resultat && periode.resultat.innvilget !== true;
+export const erOppholdsperiode = (periode: Uttaksplanperiode) =>
+    erPeriodeDto(periode) && Uttaksperioden.erOppholdsperiode(periode);
+
+export const erAvslåttPeriode = (periode: Uttaksplanperiode) =>
+    erPeriodeDto(periode) && finnSider(periode).some((side) => Uttaksperioden.erAvslåttPeriode(side));
+
+// Dei to sidene (søker/annenPart) ein periode kan ha uttak for. EØS-sida er ikkje ei
+// UttakDto_fpoversikt-side og handterast difor separat der det trengst (t.d. kvoteBeregning).
+export const finnSider = (periode: PeriodeDto_fpoversikt): UttakDto_fpoversikt[] =>
+    [periode.søker, periode.annenPart].filter((side): side is UttakDto_fpoversikt => side !== undefined);
+
+export const finnSideForForelder = (
+    periode: PeriodeDto_fpoversikt,
+    forelder: BrukerRolleSak_fpoversikt,
+): UttakDto_fpoversikt | undefined => {
+    if (periode.søker?.forelder === forelder) {
+        return periode.søker;
+    }
+    if (periode.annenPart?.forelder === forelder) {
+        return periode.annenPart;
+    }
+    return undefined;
 };
 
 export const sorterPerioder = (a: { fom: string; tom: string }, b: { fom: string; tom: string }): number => {
@@ -178,10 +177,7 @@ export const sorterPerioder = (a: { fom: string; tom: string }, b: { fom: string
     return 0;
 };
 
-export const sorterUttakPerioder = (
-    p1: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-    p2: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-) => {
+export const sorterUttakPerioder = (p1: PeriodeDto_fpoversikt, p2: PeriodeDto_fpoversikt) => {
     const tidsperiode1 = { fom: p1.fom, tom: p1.tom };
     const tidsperiode2 = { fom: p2.fom, tom: p2.tom };
 
@@ -206,42 +202,48 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
     rettighetType: RettighetType_fpoversikt,
     søker: BrukerRolleSak_fpoversikt,
     erIkkeSøkerSpesifisert: boolean,
-    perioder?: ReadonlyArray<UttaksplanperiodeMedKunTapteDager | Uttaksplanperiode>,
+    perioder?: ReadonlyArray<Uttaksplanperiode>,
     erFarOgFar?: boolean,
 ) => {
     if (erFarOgFar || rettighetType === 'ALENEOMSORG' || (søker === 'MOR' && !erIkkeSøkerSpesifisert) || !perioder) {
         return false;
     }
 
-    const morHar100ProsentUttakOgGradering = (farPeriode: UttakPeriode_fpoversikt) =>
-        perioder.some((morPeriode) => {
-            if (!erVanligUttakPeriode(morPeriode) || morPeriode.forelder !== 'MOR') {
+    const morHar100ProsentUttakOgGradering = (farPeriode: { fom: string; tom: string }) =>
+        perioder.some((p) => {
+            if (!erPeriodeDto(p)) {
+                return false;
+            }
+            const morsSide = finnSideForForelder(p, 'MOR');
+            if (!morsSide) {
                 return false;
             }
 
             const overlapper = Tidsperioden.forPeriode({ fom: farPeriode.fom, tom: farPeriode.tom }).overlapper({
-                fom: morPeriode.fom,
-                tom: morPeriode.tom,
+                fom: p.fom,
+                tom: p.tom,
             });
 
-            const morsTotalprosent = (morPeriode.samtidigUttak ?? 0) + (morPeriode.gradering?.arbeidstidprosent ?? 0);
+            const morsTotalprosent = (morsSide.samtidigUttak ?? 0) + (morsSide.gradering?.arbeidstidprosent ?? 0);
 
             return overlapper && morsTotalprosent === 100;
         });
 
     return perioder.some((periode) => {
-        if (!erVanligUttakPeriode(periode)) {
+        if (!erPeriodeDto(periode)) {
+            return false;
+        }
+        const farsSide = finnSideForForelder(periode, 'FAR_MEDMOR');
+        if (!farsSide) {
             return false;
         }
 
-        const erFarMedmorsKvote =
-            periode.forelder === 'FAR_MEDMOR' &&
-            (periode.kontoType === 'FELLESPERIODE' || periode.kontoType === 'FORELDREPENGER');
+        const erFarMedmorsKvote = farsSide.kontoType === 'FELLESPERIODE' || farsSide.kontoType === 'FORELDREPENGER';
 
         const erInnvilgetUtenMorsAktivitet =
-            periode.resultat?.innvilget !== false &&
-            periode.morsAktivitet === undefined &&
-            periode.flerbarnsdager === false;
+            farsSide.resultat?.innvilget !== false &&
+            farsSide.morsAktivitet === undefined &&
+            farsSide.flerbarnsdager === false;
 
         return erFarMedmorsKvote && erInnvilgetUtenMorsAktivitet && !morHar100ProsentUttakOgGradering(periode);
     });
@@ -257,14 +259,15 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
  * oppgi aktivitet for i skjema, og dei skal difor ikkje blokkere innsending.
  */
 export const harPeriodeMedUkjentGraderingsaktivitet = (
-    perioder: ReadonlyArray<UttaksplanperiodeMedKunTapteDager | Uttaksplanperiode>,
+    perioder: ReadonlyArray<Uttaksplanperiode>,
     søker: BrukerRolleSak_fpoversikt,
 ) => {
     return perioder.some((periode) => {
-        if (!erVanligUttakPeriode(periode) || periode.forelder !== søker) {
+        if (!erPeriodeDto(periode)) {
             return false;
         }
-        const aktivitet = periode.gradering?.aktivitet;
+        const søkersSide = finnSideForForelder(periode, søker);
+        const aktivitet = søkersSide?.gradering?.aktivitet;
         if (!aktivitet) {
             return false;
         }
@@ -280,45 +283,41 @@ export const harPeriodeMedUkjentGraderingsaktivitet = (
     });
 };
 
-export const erPerioderEkslFomTomLike = (
-    periode1: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-    periode2: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-) => {
-    if (
-        (erEøsUttakPeriode(periode1) && !erEøsUttakPeriode(periode2)) ||
-        (!erEøsUttakPeriode(periode1) && erEøsUttakPeriode(periode2))
-    ) {
-        return false;
+const erSiderLike = (a: UttakDto_fpoversikt | undefined, b: UttakDto_fpoversikt | undefined): boolean => {
+    if (!a || !b) {
+        return a === b;
     }
-
-    if (erEøsUttakPeriode(periode1) && erEøsUttakPeriode(periode2)) {
-        return periode1.kontoType === periode2.kontoType && periode1.trekkdager === periode2.trekkdager;
-    }
-
-    if (erVanligUttakPeriode(periode1) && erVanligUttakPeriode(periode2)) {
-        return (
-            periode1.flerbarnsdager === periode2.flerbarnsdager &&
-            periode1.kontoType === periode2.kontoType &&
-            periode1.forelder === periode2.forelder &&
-            periode1.gradering?.arbeidstidprosent === periode2.gradering?.arbeidstidprosent &&
-            periode1.gradering?.aktivitet === periode2.gradering?.aktivitet &&
-            periode1.morsAktivitet === periode2.morsAktivitet &&
-            periode1.oppholdÅrsak === periode2.oppholdÅrsak &&
-            periode1.utsettelseÅrsak === periode2.utsettelseÅrsak &&
-            periode1.overføringÅrsak === periode2.overføringÅrsak &&
-            periode1.resultat?.innvilget === periode2.resultat?.innvilget &&
-            periode1.resultat?.trekkerDager === periode2.resultat?.trekkerDager &&
-            periode1.resultat?.trekkerMinsterett === periode2.resultat?.trekkerMinsterett &&
-            periode1.resultat?.årsak === periode2.resultat?.årsak &&
-            periode1.samtidigUttak === periode2.samtidigUttak
-        );
-    }
-
-    return false;
+    return (
+        a.flerbarnsdager === b.flerbarnsdager &&
+        a.kontoType === b.kontoType &&
+        a.forelder === b.forelder &&
+        a.gradering?.arbeidstidprosent === b.gradering?.arbeidstidprosent &&
+        a.gradering?.aktivitet === b.gradering?.aktivitet &&
+        a.morsAktivitet === b.morsAktivitet &&
+        a.utsettelseÅrsak === b.utsettelseÅrsak &&
+        a.overføringÅrsak === b.overføringÅrsak &&
+        a.resultat?.innvilget === b.resultat?.innvilget &&
+        a.resultat?.trekkerDager === b.resultat?.trekkerDager &&
+        a.resultat?.trekkerMinsterett === b.resultat?.trekkerMinsterett &&
+        a.resultat?.årsak === b.resultat?.årsak &&
+        a.samtidigUttak === b.samtidigUttak
+    );
 };
 
+const erEøsSiderLike = (a: EøsUttakDto_fpoversikt | undefined, b: EøsUttakDto_fpoversikt | undefined): boolean => {
+    if (!a || !b) {
+        return a === b;
+    }
+    return a.kontoType === b.kontoType && a.trekkdager === b.trekkdager;
+};
+
+export const erPerioderEkslFomTomLike = (periode1: PeriodeDto_fpoversikt, periode2: PeriodeDto_fpoversikt) =>
+    erSiderLike(periode1.søker, periode2.søker) &&
+    erSiderLike(periode1.annenPart, periode2.annenPart) &&
+    erEøsSiderLike(periode1.annenPartEøs, periode2.annenPartEøs);
+
 export const erDetEksisterendePerioderEtterValgtePerioder = (
-    allePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    allePerioder: PeriodeDto_fpoversikt[],
     valgtePerioder: Array<{ fom: string; tom: string }>,
 ) => {
     const sisteValgteDag = dayjs.max(valgtePerioder.map((p) => dayjs(p.tom)));
@@ -327,7 +326,7 @@ export const erDetEksisterendePerioderEtterValgtePerioder = (
 };
 
 export const erDetReadonlyPerioderEtterValgtePerioder = (
-    allePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    allePerioder: PeriodeDto_fpoversikt[],
     valgtePerioder: Array<{ fom: string; tom: string }>,
     forelderSomHarLåstePerioder: BrukerRolleSak_fpoversikt | undefined,
 ) => {
@@ -335,10 +334,17 @@ export const erDetReadonlyPerioderEtterValgtePerioder = (
     const perioderEtterValgte = allePerioder.filter((p) => dayjs(p.tom).isAfter(sisteValgteDag));
 
     const harEøsEllerPleiepenger = perioderEtterValgte.some(
-        (p) => erEøsUttakPeriode(p) || (erVanligUttakPeriode(p) && p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER'),
+        (p) =>
+            !!p.annenPartEøs ||
+            p.søker?.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER' ||
+            p.annenPart?.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER',
     );
     const harAnnenPartSomErLåst = forelderSomHarLåstePerioder
-        ? perioderEtterValgte.some((p) => erVanligUttakPeriode(p) && p.forelder === forelderSomHarLåstePerioder)
+        ? perioderEtterValgte.some(
+              (p) =>
+                  p.søker?.forelder === forelderSomHarLåstePerioder ||
+                  p.annenPart?.forelder === forelderSomHarLåstePerioder,
+          )
         : false;
 
     return harEøsEllerPleiepenger || harAnnenPartSomErLåst;

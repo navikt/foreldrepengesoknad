@@ -1,14 +1,11 @@
 import { VedleggDataType } from 'types/VedleggDataType';
 
 import { Skjemanummer } from '@navikt/fp-constants';
-import { Attachment, UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { Attachment, PeriodeDto_fpoversikt } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
 import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan/validators';
 
-export const isPeriodeMedMorInnleggelse = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-    familiehendelsedato: string,
-) => {
+export const isPeriodeMedMorInnleggelse = (periode: PeriodeDto_fpoversikt, familiehendelsedato: string) => {
     return (
         isOverføringMorInnlagt(periode) ||
         isUttakAvFedrekvoteMorForSyk(periode, familiehendelsedato) ||
@@ -19,76 +16,61 @@ export const isPeriodeMedMorInnleggelse = (
     );
 };
 
-export const isUtsettelseBarnInnlagt = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
-    return Uttaksperioden.erIkkeEøsPeriode(periode) && periode.utsettelseÅrsak === 'BARN_INNLAGT';
+export const isUtsettelseBarnInnlagt = (periode: PeriodeDto_fpoversikt) => {
+    return periode.søker?.utsettelseÅrsak === 'BARN_INNLAGT';
 };
 
-const isPeriodeUtenUttakMorInnlagt = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
+const isPeriodeUtenUttakMorInnlagt = (periode: PeriodeDto_fpoversikt) => {
+    const side = periode.søker;
+    return side?.utsettelseÅrsak === 'FRI' && side.morsAktivitet === 'INNLAGT';
+};
+
+const isUtsettelseMorInnlagt = (periode: PeriodeDto_fpoversikt) => {
+    return periode.søker?.utsettelseÅrsak === 'SØKER_INNLAGT';
+};
+
+const isForeldrepengerMedAktivitetskravMorInnlagt = (periode: PeriodeDto_fpoversikt) => {
+    const side = periode.søker;
     return (
-        Uttaksperioden.erIkkeEøsPeriode(periode) &&
-        periode.utsettelseÅrsak === 'FRI' &&
-        periode.morsAktivitet === 'INNLAGT'
+        !!side &&
+        Uttaksperioden.erUttaksperiode(side) &&
+        side.kontoType === 'FORELDREPENGER' &&
+        side.morsAktivitet === 'INNLAGT'
     );
 };
 
-const isUtsettelseMorInnlagt = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
-    return Uttaksperioden.erIkkeEøsPeriode(periode) && periode.utsettelseÅrsak === 'SØKER_INNLAGT';
+export const isPeriodeMedFarInnleggelse = (periode: PeriodeDto_fpoversikt) => {
+    const side = periode.søker;
+    return side?.overføringÅrsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' && side.forelder === 'MOR';
 };
 
-const isForeldrepengerMedAktivitetskravMorInnlagt = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-) => {
+const isOverføringMorInnlagt = (periode: PeriodeDto_fpoversikt) => {
+    const side = periode.søker;
+    return side?.overføringÅrsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' && side.forelder === 'FAR_MEDMOR';
+};
+
+const isFellesperiodeMorInnlagt = (periode: PeriodeDto_fpoversikt) => {
+    const side = periode.søker;
     return (
-        Uttaksperioden.erIkkeEøsPeriode(periode) &&
-        Uttaksperioden.erUttaksperiode(periode) &&
-        periode.kontoType === 'FORELDREPENGER' &&
-        periode.morsAktivitet === 'INNLAGT'
+        !!side &&
+        Uttaksperioden.erUttaksperiode(side) &&
+        side.kontoType === 'FELLESPERIODE' &&
+        side.morsAktivitet === 'INNLAGT'
     );
 };
 
-export const isPeriodeMedFarInnleggelse = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
-    return (
-        Uttaksperioden.erIkkeEøsPeriode(periode) &&
-        periode.overføringÅrsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' &&
-        periode.forelder === 'MOR'
-    );
+export const isOverføringFarForSyk = (periode: PeriodeDto_fpoversikt) => {
+    const side = periode.søker;
+    return side?.forelder === 'MOR' && side.overføringÅrsak === 'SYKDOM_ANNEN_FORELDER';
 };
 
-const isOverføringMorInnlagt = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
+const isUttakAvFedrekvoteMorForSyk = (periode: PeriodeDto_fpoversikt, familiehendelsedato: string): boolean => {
+    const side = periode.søker;
     return (
-        Uttaksperioden.erIkkeEøsPeriode(periode) &&
-        periode.overføringÅrsak &&
-        periode.overføringÅrsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' &&
-        periode.forelder === 'FAR_MEDMOR'
-    );
-};
-
-const isFellesperiodeMorInnlagt = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
-    return (
-        Uttaksperioden.erIkkeEøsPeriode(periode) &&
-        Uttaksperioden.erUttaksperiode(periode) &&
-        periode.kontoType === 'FELLESPERIODE' &&
-        periode.morsAktivitet === 'INNLAGT'
-    );
-};
-
-export const isOverføringFarForSyk = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
-    return (
-        Uttaksperioden.erIkkeEøsPeriode(periode) &&
-        periode.forelder === 'MOR' &&
-        periode.overføringÅrsak === 'SYKDOM_ANNEN_FORELDER'
-    );
-};
-
-const isUttakAvFedrekvoteMorForSyk = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-    familiehendelsedato: string,
-): boolean => {
-    return (
-        Uttaksperioden.erIkkeEøsPeriode(periode) &&
-        Uttaksperioden.erUttaksperiode(periode) &&
-        periode.kontoType === 'FEDREKVOTE' &&
-        !periode.samtidigUttak &&
+        !!side &&
+        Uttaksperioden.erUttaksperiode(side) &&
+        side.kontoType === 'FEDREKVOTE' &&
+        !side.samtidigUttak &&
         UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
             periode,
             familiehendelsedato,
@@ -97,7 +79,7 @@ const isUttakAvFedrekvoteMorForSyk = (
     );
 };
 
-export const isPeriodeMedMorForSyk = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
+export const isPeriodeMedMorForSyk = (periode: PeriodeDto_fpoversikt) => {
     return (
         isFellesperiodeMorForSyk(periode) ||
         isUtsettelseMorForSyk(periode) ||
@@ -107,148 +89,108 @@ export const isPeriodeMedMorForSyk = (periode: UttakPeriode_fpoversikt | UttakPe
     );
 };
 
-const isFellesperiodeMorForSyk = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
+const isFellesperiodeMorForSyk = (periode: PeriodeDto_fpoversikt) => {
+    const side = periode.søker;
     return (
-        Uttaksperioden.erIkkeEøsPeriode(periode) &&
-        Uttaksperioden.erUttaksperiode(periode) &&
-        periode.kontoType === 'FELLESPERIODE' &&
-        periode.morsAktivitet === 'TRENGER_HJELP'
+        !!side &&
+        Uttaksperioden.erUttaksperiode(side) &&
+        side.kontoType === 'FELLESPERIODE' &&
+        side.morsAktivitet === 'TRENGER_HJELP'
     );
 };
 
-export const isPeriodeMedMorJobber = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
+export const isPeriodeMedMorJobber = (periode: PeriodeDto_fpoversikt) => {
     return isMorJobber(periode) || isPeriodeUtenUttakMorJobber(periode);
 };
 
-const isMorJobber = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
+const isMorJobber = (periode: PeriodeDto_fpoversikt) => {
+    const side = periode.søker;
+    return !!side && Uttaksperioden.erUttaksperiode(side) && side.morsAktivitet === 'ARBEID';
+};
+
+const isPeriodeUtenUttakMorJobber = (periode: PeriodeDto_fpoversikt) => {
+    const side = periode.søker;
+    return side?.utsettelseÅrsak === 'FRI' && side.morsAktivitet === 'ARBEID';
+};
+
+const isForeldrepengerMedAktivitetskravMorForSyk = (periode: PeriodeDto_fpoversikt) => {
+    const side = periode.søker;
     return (
-        Uttaksperioden.erIkkeEøsPeriode(periode) &&
-        Uttaksperioden.erUttaksperiode(periode) &&
-        periode.morsAktivitet === 'ARBEID'
+        !!side &&
+        Uttaksperioden.erUttaksperiode(side) &&
+        side.kontoType === 'FORELDREPENGER' &&
+        side.morsAktivitet === 'TRENGER_HJELP'
     );
 };
 
-const isPeriodeUtenUttakMorJobber = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
-    return (
-        Uttaksperioden.erIkkeEøsPeriode(periode) &&
-        periode.utsettelseÅrsak === 'FRI' &&
-        periode.morsAktivitet === 'ARBEID'
-    );
+const isPeriodeUtenUttakMorForSyk = (periode: PeriodeDto_fpoversikt) => {
+    const side = periode.søker;
+    return side?.utsettelseÅrsak === 'FRI' && side.morsAktivitet === 'TRENGER_HJELP';
 };
 
-const isForeldrepengerMedAktivitetskravMorForSyk = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-) => {
-    return (
-        Uttaksperioden.erIkkeEøsPeriode(periode) &&
-        Uttaksperioden.erUttaksperiode(periode) &&
-        periode.kontoType === 'FORELDREPENGER' &&
-        periode.morsAktivitet === 'TRENGER_HJELP'
-    );
+const isOverføringMorForSyk = (periode: PeriodeDto_fpoversikt) => {
+    const side = periode.søker;
+    return side?.forelder === 'FAR_MEDMOR' && side.overføringÅrsak === 'SYKDOM_ANNEN_FORELDER';
 };
 
-const isPeriodeUtenUttakMorForSyk = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
-    return (
-        Uttaksperioden.erIkkeEøsPeriode(periode) &&
-        periode.utsettelseÅrsak === 'FRI' &&
-        periode.morsAktivitet === 'TRENGER_HJELP'
-    );
+const isUtsettelseMorForSyk = (periode: PeriodeDto_fpoversikt) => {
+    return periode.søker?.utsettelseÅrsak === 'SØKER_SYKDOM';
 };
 
-const isOverføringMorForSyk = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
-    return (
-        Uttaksperioden.erIkkeEøsPeriode(periode) &&
-        periode.forelder === 'FAR_MEDMOR' &&
-        periode.overføringÅrsak === 'SYKDOM_ANNEN_FORELDER'
-    );
-};
-
-const isUtsettelseMorForSyk = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
-    return Uttaksperioden.erIkkeEøsPeriode(periode) && periode.utsettelseÅrsak === 'SØKER_SYKDOM';
-};
-
-export const isPeriodeMedMorIntroprogram = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
+export const isPeriodeMedMorIntroprogram = (periode: PeriodeDto_fpoversikt) => {
     return isMorIntroprogram(periode) || isPeriodeUtenUttakMorIntroprogram(periode);
 };
 
-const isMorIntroprogram = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
-    return (
-        Uttaksperioden.erIkkeEøsPeriode(periode) &&
-        Uttaksperioden.erUttaksperiode(periode) &&
-        periode.morsAktivitet === 'INTROPROG'
-    );
+const isMorIntroprogram = (periode: PeriodeDto_fpoversikt) => {
+    const side = periode.søker;
+    return !!side && Uttaksperioden.erUttaksperiode(side) && side.morsAktivitet === 'INTROPROG';
 };
 
-const isPeriodeUtenUttakMorIntroprogram = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
-    return (
-        Uttaksperioden.erIkkeEøsPeriode(periode) &&
-        periode.utsettelseÅrsak === 'FRI' &&
-        periode.morsAktivitet === 'INTROPROG'
-    );
+const isPeriodeUtenUttakMorIntroprogram = (periode: PeriodeDto_fpoversikt) => {
+    const side = periode.søker;
+    return side?.utsettelseÅrsak === 'FRI' && side.morsAktivitet === 'INTROPROG';
 };
 
-export const isPeriodeMedMorJobberOgStuderer = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-) => {
+export const isPeriodeMedMorJobberOgStuderer = (periode: PeriodeDto_fpoversikt) => {
     return isMorJobberOgStuderer(periode) || isPeriodeUtenUttakMorJobberOgStuderer(periode);
 };
 
-const isPeriodeUtenUttakMorJobberOgStuderer = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-) => {
-    return (
-        Uttaksperioden.erIkkeEøsPeriode(periode) &&
-        periode.morsAktivitet === 'ARBEID_OG_UTDANNING' &&
-        periode.utsettelseÅrsak === 'FRI'
-    );
+const isPeriodeUtenUttakMorJobberOgStuderer = (periode: PeriodeDto_fpoversikt) => {
+    const side = periode.søker;
+    return side?.morsAktivitet === 'ARBEID_OG_UTDANNING' && side.utsettelseÅrsak === 'FRI';
 };
 
-const isMorJobberOgStuderer = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
-    return (
-        Uttaksperioden.erIkkeEøsPeriode(periode) &&
-        Uttaksperioden.erUttaksperiode(periode) &&
-        periode.morsAktivitet === 'ARBEID_OG_UTDANNING'
-    );
+const isMorJobberOgStuderer = (periode: PeriodeDto_fpoversikt) => {
+    const side = periode.søker;
+    return !!side && Uttaksperioden.erUttaksperiode(side) && side.morsAktivitet === 'ARBEID_OG_UTDANNING';
 };
 
-export const isPeriodeMedMorKvalprogram = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
+export const isPeriodeMedMorKvalprogram = (periode: PeriodeDto_fpoversikt) => {
     return isMorKvalprogram(periode) || isPeriodeUtenUttakMorKvalprogram(periode);
 };
 
-const isMorKvalprogram = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
-    return (
-        Uttaksperioden.erIkkeEøsPeriode(periode) &&
-        Uttaksperioden.erUttaksperiode(periode) &&
-        periode.morsAktivitet === 'KVALPROG'
-    );
+const isMorKvalprogram = (periode: PeriodeDto_fpoversikt) => {
+    const side = periode.søker;
+    return !!side && Uttaksperioden.erUttaksperiode(side) && side.morsAktivitet === 'KVALPROG';
 };
 
-const isPeriodeUtenUttakMorKvalprogram = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
-    return (
-        Uttaksperioden.erIkkeEøsPeriode(periode) &&
-        periode.utsettelseÅrsak === 'FRI' &&
-        periode.morsAktivitet === 'KVALPROG'
-    );
+const isPeriodeUtenUttakMorKvalprogram = (periode: PeriodeDto_fpoversikt) => {
+    const side = periode.søker;
+    return side?.utsettelseÅrsak === 'FRI' && side.morsAktivitet === 'KVALPROG';
 };
 
-export const isPeriodeMedMorStuderer = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
+export const isPeriodeMedMorStuderer = (periode: PeriodeDto_fpoversikt) => {
     return isMorStuderer(periode) || isPeriodeUtenUttakMorStuderer(periode);
 };
 
-const isPeriodeUtenUttakMorStuderer = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
-    return (
-        Uttaksperioden.erIkkeEøsPeriode(periode) &&
-        periode.utsettelseÅrsak === 'FRI' &&
-        periode.morsAktivitet === 'UTDANNING'
-    );
+const isPeriodeUtenUttakMorStuderer = (periode: PeriodeDto_fpoversikt) => {
+    const side = periode.søker;
+    return side?.utsettelseÅrsak === 'FRI' && side.morsAktivitet === 'UTDANNING';
 };
 
-const isMorStuderer = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) => {
-    return (
-        Uttaksperioden.erIkkeEøsPeriode(periode) &&
-        Uttaksperioden.erUttaksperiode(periode) &&
-        periode.morsAktivitet === 'UTDANNING'
-    );
+const isMorStuderer = (periode: PeriodeDto_fpoversikt) => {
+    const side = periode.søker;
+    return !!side && Uttaksperioden.erUttaksperiode(side) && side.morsAktivitet === 'UTDANNING';
 };
 
 export const getOmsorgsovertakelseVedlegg = (vedlegg: VedleggDataType) => {

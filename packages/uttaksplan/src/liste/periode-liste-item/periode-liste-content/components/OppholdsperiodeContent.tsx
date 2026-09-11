@@ -3,15 +3,15 @@ import { IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { NavnPåForeldre } from '@navikt/fp-types';
 import { Uttaksdagen, formatDateExtended } from '@navikt/fp-utils';
 
-import { erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
+import { Uttaksplanperiode, erPeriodeDto } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
 import { getOppholdskontoNavn } from '../../../utils/uttaksplanListeUtils';
 
 interface Props {
-    periode: UttakPeriode_fpoversikt;
+    periode: Uttaksplanperiode;
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
     inneholderKunEnPeriode: boolean;
@@ -26,6 +26,7 @@ export const OppholdsPeriodeContent = ({
     const intl = useIntl();
 
     const navnPåAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+    const annenPartsKontoType = erPeriodeDto(periode) ? periode.annenPart?.kontoType : undefined;
 
     return (
         <HStack gap="space-8">
@@ -42,9 +43,9 @@ export const OppholdsPeriodeContent = ({
                         )}
                     </BodyShort>
                 </HStack>
-                {erVanligUttakPeriode(periode) && periode.oppholdÅrsak && (
+                {annenPartsKontoType && (
                     <BodyShort>
-                        {getOppholdskontoNavn(intl, periode.oppholdÅrsak, navnPåAnnenForelder, !erFarEllerMedmor)}
+                        {getOppholdskontoNavn(intl, annenPartsKontoType, navnPåAnnenForelder, !erFarEllerMedmor)}
                     </BodyShort>
                 )}
             </VStack>
@@ -52,7 +53,7 @@ export const OppholdsPeriodeContent = ({
     );
 };
 
-const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, periode: UttakPeriode_fpoversikt) => {
+const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, periode: Uttaksplanperiode) => {
     if (inneholderKunEnPeriode) {
         return intl.formatMessage({ id: 'uttaksplan.varighet.helePerioden' });
     }
