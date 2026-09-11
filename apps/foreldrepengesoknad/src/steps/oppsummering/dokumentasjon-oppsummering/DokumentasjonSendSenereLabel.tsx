@@ -4,13 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { BodyShort, Box, Label, List, VStack } from '@navikt/ds-react';
 
 import { Skjemanummer } from '@navikt/fp-constants';
-import {
-    Attachment,
-    AttachmentMetadataTidsperiode,
-    NavnPåForeldre,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
-} from '@navikt/fp-types';
+import { Attachment, AttachmentMetadataTidsperiode, NavnPåForeldre, PeriodeDto_fpoversikt } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
 import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan/validators';
 import { notEmpty } from '@navikt/fp-validation';
@@ -38,22 +32,20 @@ const ManglerDokumentasjon = ({ headerLabel, bodyLabel }: ManglerDokumentasjonPr
     </VStack>
 );
 
-const isPeriodeMedMorInnleggelse = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-    familiehendelsedato: string,
-) => {
-    if (Uttaksperioden.erEøsPeriode(periode)) {
+const isPeriodeMedMorInnleggelse = (periode: PeriodeDto_fpoversikt, familiehendelsedato: string) => {
+    const side = periode.søker;
+    if (!side) {
         return false;
     }
 
-    if (periode.overføringÅrsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' && periode.forelder === 'FAR_MEDMOR') {
+    if (side.overføringÅrsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' && side.forelder === 'FAR_MEDMOR') {
         return true;
     }
 
     if (
-        erUttaksperiode(periode) &&
-        periode.kontoType === 'FEDREKVOTE' &&
-        !periode.samtidigUttak &&
+        Uttaksperioden.erUttaksperiode(side) &&
+        side.kontoType === 'FEDREKVOTE' &&
+        !side.samtidigUttak &&
         UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
             periode,
             familiehendelsedato,
@@ -64,28 +56,24 @@ const isPeriodeMedMorInnleggelse = (
     }
 
     if (
-        (periode.kontoType === 'FELLESPERIODE' || periode.kontoType === 'FORELDREPENGER') &&
-        periode.morsAktivitet === 'INNLAGT'
+        (side.kontoType === 'FELLESPERIODE' || side.kontoType === 'FORELDREPENGER') &&
+        side.morsAktivitet === 'INNLAGT'
     ) {
         return true;
     }
 
-    if (periode.utsettelseÅrsak === 'SØKER_INNLAGT') {
+    if (side.utsettelseÅrsak === 'SØKER_INNLAGT') {
         return true;
     }
 
     return false;
 };
 
-const erUttaksperiode = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt): boolean => {
-    return !('trekkdager' in periode) && !periode.oppholdÅrsak && !periode.overføringÅrsak && !periode.utsettelseÅrsak;
-};
-
 interface Props {
     attachment: Attachment;
     erFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
-    uttaksperioderSomManglerVedlegg: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    uttaksperioderSomManglerVedlegg: PeriodeDto_fpoversikt[];
     familiehendelsedato: string;
 }
 
@@ -101,11 +89,12 @@ export const DokumentasjonSendSenereLabel = ({
     const morErForSykEllerInnlagtFørsteSeksUker = uttaksperioderSomManglerVedlegg
         .filter((p) => isPeriodeMedMorInnleggelse(p, familiehendelsedato))
         .some((p) => {
+            const side = p.søker;
             return (
-                erUttaksperiode(p) &&
-                'morsAktivitet' in p &&
-                p.morsAktivitet === 'INNLAGT' &&
-                p.kontoType === 'FEDREKVOTE'
+                !!side &&
+                Uttaksperioden.erUttaksperiode(side) &&
+                side.morsAktivitet === 'INNLAGT' &&
+                side.kontoType === 'FEDREKVOTE'
             );
         });
 

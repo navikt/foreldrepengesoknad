@@ -1,16 +1,8 @@
 import dayjs from 'dayjs';
 
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
-
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { kanMisteDagerVedEndringTilFerie } from '../../felles/uttaksplanValidatorer';
-import { ForeldreInfo } from '../../types/ForeldreInfo';
-import {
-    Uttaksplanperiode,
-    UttaksplanperiodeMedKunTapteDager,
-    erEøsUttakPeriode,
-    erVanligUttakPeriode,
-} from '../../types/UttaksplanPeriode';
+import { Uttaksplanperiode, UttaksplanperiodeMedKunTapteDager, erPeriodeDto } from '../../types/UttaksplanPeriode';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { erDetReadonlyPerioderEtterValgtePerioder } from '../../utils/periodeUtils';
 import { Periode } from '../types';
@@ -78,13 +70,8 @@ export const useEksisterendeValgtePeriodeAlerts = (): ((
 ) => { morsAktivitetIkkeValgt?: AktivAlertMetadata; graderingsaktivitetIkkeValgt?: AktivAlertMetadata }) => {
     const {
         foreldreInfo: { rettighetType, søker, erIkkeSøkerSpesifisert, erFarOgFar },
-        uttakPerioder,
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
-
-    const morsUttakPerioder = uttakPerioder.filter(
-        (p): p is UttakPeriode_fpoversikt => !erEøsUttakPeriode(p) && p.forelder === 'MOR',
-    );
 
     return (periode) => ({
         morsAktivitetIkkeValgt: tilAktiv(MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE, {
@@ -93,10 +80,9 @@ export const useEksisterendeValgtePeriodeAlerts = (): ((
             erIkkeSøkerSpesifisert: erIkkeSøkerSpesifisert ?? false,
             erFarOgFar,
             periode,
-            morsUttakPerioder,
         }),
         graderingsaktivitetIkkeValgt:
-            kanVelgeArbeidsgiver && erSøkersIkkeEøsPeriode(periode, søker)
+            kanVelgeArbeidsgiver && erSøkersIkkeEøsPeriode(periode)
                 ? tilAktiv(GRADERINGSAKTIVITET_IKKE_VALGT_EKSISTERENDE, { periode, søker })
                 : undefined,
     });
@@ -120,7 +106,7 @@ export const useUttaksplanListeAlerts = (
         }),
         manglerGraderingsaktivitetAlert: kanVelgeArbeidsgiver
             ? tilAktiv(MANGLER_GRADERINGSAKTIVITET_LISTE, {
-                  perioder: filtrerSøkersIkkeEøsPerioder(perioder, søker),
+                  perioder: filtrerSøkersIkkeEøsPerioder(perioder),
                   søker,
               })
             : undefined,
@@ -145,7 +131,7 @@ export const useUttaksplanKalenderAlerts = (
         }),
         manglerGraderingsaktivitetAlert: kanVelgeArbeidsgiver
             ? tilAktiv(MANGLER_GRADERINGSAKTIVITET_KALENDER, {
-                  perioder: filtrerSøkersIkkeEøsPerioder(perioder, søker),
+                  perioder: filtrerSøkersIkkeEøsPerioder(perioder),
                   søker,
               })
             : undefined,
@@ -184,12 +170,10 @@ export const usePeriodeDetaljerAlerts = (input: {
     const harPeriodeFørFamiliehendelsedato = input.sammenslåtteValgtePerioder.some((p) =>
         dayjs(p.fom).isBefore(familiehendelsedato),
     );
-    const harPeriodeMedPleiepenger = input.eksisterendePerioderSomErValgt.some(
-        (p) =>
-            erVanligUttakPeriode(p) &&
-            p.resultat?.innvilget === false &&
-            p.resultat.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER',
-    );
+    const harPeriodeMedPleiepenger = input.eksisterendePerioderSomErValgt.some((p) => {
+        const side = erPeriodeDto(p) ? (p.søker ?? p.annenPart) : undefined;
+        return side?.resultat?.innvilget === false && side.resultat.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
+    });
 
     const ctx: PeriodeDetaljerKontekst = {
         søker,
@@ -219,7 +203,7 @@ const useForskyvEllerErstattAlerts = (input: {
     const {
         familiesituasjon,
         familiehendelsedato,
-        uttakPerioder,
+        perioder,
         erPeriodeneTilAnnenPartLåst,
         foreldreInfo: { søker },
     } = useUttaksplanData();
@@ -238,7 +222,7 @@ const useForskyvEllerErstattAlerts = (input: {
     const annenPart = søker === 'MOR' ? 'FAR_MEDMOR' : 'MOR';
     const forelderSomHarLåstePerioder = erPeriodeneTilAnnenPartLåst ? annenPart : undefined;
     const harSenerePerioderSomErReadonly = erDetReadonlyPerioderEtterValgtePerioder(
-        uttakPerioder,
+        perioder,
         [...input.valgtePerioder],
         forelderSomHarLåstePerioder,
     );
@@ -278,15 +262,11 @@ export const useKanKunErstatte = (input: {
 const tilAktiv = <T,>(regel: Alertregel<T>, ctx: T): AktivAlertMetadata | undefined =>
     regel.skalVises(ctx) ? { melding: regel.getMelding(ctx), variant: regel.variant } : undefined;
 
-const erSøkersIkkeEøsPeriode = (
-    periode: Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager,
-    søker: ForeldreInfo['søker'],
-): boolean => erVanligUttakPeriode(periode) && periode.forelder === søker;
+const erSøkersIkkeEøsPeriode = (periode: Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager): boolean =>
+    erPeriodeDto(periode) && !!periode.søker;
 
-const filtrerSøkersIkkeEøsPerioder = (
-    perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>,
-    søker: ForeldreInfo['søker'],
-) => perioder.filter((p) => erSøkersIkkeEøsPeriode(p, søker));
+const filtrerSøkersIkkeEøsPerioder = (perioder: ReadonlyArray<Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager>) =>
+    perioder.filter((p) => erSøkersIkkeEøsPeriode(p));
 
 /**
  * Bygg ein AktivAlertMetadata kun fra metadataen på regelen — uten å evaluere

@@ -209,7 +209,6 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                             <Suspense fallback={<Skeleton height="210px" variant="rounded" />}>
                                 <DinPlan
                                     sak={gjeldendeSak}
-                                    annenPartsPerioder={annenPartsVedtakQuery.data?.perioder ?? []}
                                     navnPåForeldre={getNavnPåForeldre(
                                         gjeldendeSak,
                                         søkerinfo.navn.fornavn,

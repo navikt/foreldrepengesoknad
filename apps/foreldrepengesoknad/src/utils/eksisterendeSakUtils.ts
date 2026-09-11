@@ -12,20 +12,20 @@ import {
     AnnenForelderDto_fpoversikt,
     AnnenPartSak_fpoversikt,
     Barn,
+    EøsUttakDto_fpoversikt,
     FpBarnDto_fpoversikt,
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
     Gradering_fpoversikt,
+    PeriodeDto_fpoversikt,
     Person_fpoversikt,
     Situasjon,
     Søkerrolle,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
+    UttakDto_fpoversikt,
     isAdoptertBarn,
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-types';
-import { Uttaksperioden } from '@navikt/fp-utils';
 
 import { getErDatoInnenEnDagFraAnnenDato, getRelevantFamiliehendelseDato, sorterDatoEtterEldst } from './dateUtils';
 import { getFamiliehendelseType } from './familiehendelseUtils';
@@ -444,47 +444,44 @@ export const lagEndringsSøknad = (
 };
 
 export const erPeriodeIOpprinneligPlan = (
-    eksisterendePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-    nyPeriode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    eksisterendePerioder: PeriodeDto_fpoversikt[],
+    nyPeriode: PeriodeDto_fpoversikt,
 ): boolean => {
-    return eksisterendePerioder.some((p) => {
-        if (
-            (Uttaksperioden.erEøsPeriode(nyPeriode) && !Uttaksperioden.erEøsPeriode(p)) ||
-            (!Uttaksperioden.erEøsPeriode(nyPeriode) && Uttaksperioden.erEøsPeriode(p))
-        ) {
-            return false;
-        }
-        if (Uttaksperioden.erEøsPeriode(nyPeriode) && Uttaksperioden.erEøsPeriode(p)) {
-            return (
-                nyPeriode.trekkdager === p.trekkdager &&
-                nyPeriode.fom === p.fom &&
-                nyPeriode.tom === p.tom &&
-                nyPeriode.kontoType === p.kontoType
-            );
-        }
+    return eksisterendePerioder.some((p) => erLikPeriode(nyPeriode, p));
+};
 
-        if (Uttaksperioden.erEøsPeriode(nyPeriode) || Uttaksperioden.erEøsPeriode(p)) {
-            throw new Error('Ingen perioder bør være eøs-perioder her');
-        }
+const erLikPeriode = (a: PeriodeDto_fpoversikt, b: PeriodeDto_fpoversikt): boolean =>
+    a.fom === b.fom &&
+    a.tom === b.tom &&
+    erLikUttakDto(a.søker, b.søker) &&
+    erLikUttakDto(a.annenPart, b.annenPart) &&
+    erLikEøsUttakDto(a.annenPartEøs, b.annenPartEøs);
 
-        return (
-            nyPeriode.fom === p.fom &&
-            nyPeriode.tom === p.tom &&
-            nyPeriode.kontoType === p.kontoType &&
-            nyPeriode.flerbarnsdager === p.flerbarnsdager &&
-            nyPeriode.forelder === p.forelder &&
-            erLikGradering(nyPeriode.gradering, p.gradering) &&
-            nyPeriode.utsettelseÅrsak === p.utsettelseÅrsak &&
-            nyPeriode.samtidigUttak === p.samtidigUttak &&
-            nyPeriode.resultat?.innvilget === p.resultat?.innvilget &&
-            nyPeriode.resultat?.trekkerDager === p.resultat?.trekkerDager &&
-            nyPeriode.resultat?.trekkerMinsterett === p.resultat?.trekkerMinsterett &&
-            nyPeriode.resultat?.årsak === p.resultat?.årsak &&
-            nyPeriode.oppholdÅrsak === p.oppholdÅrsak &&
-            nyPeriode.overføringÅrsak === p.overføringÅrsak &&
-            nyPeriode.morsAktivitet === p.morsAktivitet
-        );
-    });
+const erLikUttakDto = (a: UttakDto_fpoversikt | undefined, b: UttakDto_fpoversikt | undefined): boolean => {
+    if (!a || !b) {
+        return a === b;
+    }
+    return (
+        a.forelder === b.forelder &&
+        a.kontoType === b.kontoType &&
+        a.flerbarnsdager === b.flerbarnsdager &&
+        erLikGradering(a.gradering, b.gradering) &&
+        a.utsettelseÅrsak === b.utsettelseÅrsak &&
+        a.samtidigUttak === b.samtidigUttak &&
+        a.resultat?.innvilget === b.resultat?.innvilget &&
+        a.resultat?.trekkerDager === b.resultat?.trekkerDager &&
+        a.resultat?.trekkerMinsterett === b.resultat?.trekkerMinsterett &&
+        a.resultat?.årsak === b.resultat?.årsak &&
+        a.overføringÅrsak === b.overføringÅrsak &&
+        a.morsAktivitet === b.morsAktivitet
+    );
+};
+
+const erLikEøsUttakDto = (a: EøsUttakDto_fpoversikt | undefined, b: EøsUttakDto_fpoversikt | undefined): boolean => {
+    if (!a || !b) {
+        return a === b;
+    }
+    return a.kontoType === b.kontoType && a.trekkdager === b.trekkdager;
 };
 
 const erLikGradering = (a: Gradering_fpoversikt | undefined, b: Gradering_fpoversikt | undefined): boolean =>

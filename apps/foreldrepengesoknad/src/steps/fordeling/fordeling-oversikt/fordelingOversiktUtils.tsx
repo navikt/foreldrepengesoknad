@@ -25,20 +25,13 @@ import {
     KontoBeregningDto,
     Minsteretter,
     NavnPåForeldre,
+    PeriodeDto_fpoversikt,
     SøkersituasjonFp,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
     isAdoptertBarn,
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-types';
-import {
-    Uttaksdagen,
-    Uttaksperioden,
-    capitalizeFirstLetter,
-    getFamiliesituasjon,
-    getNavnGenitivEierform,
-} from '@navikt/fp-utils';
+import { Uttaksdagen, capitalizeFirstLetter, getFamiliesituasjon, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 import { getBrukteDager } from './brukteDagerUtils';
 
@@ -273,7 +266,7 @@ const getFellesInfoTekst = (
 };
 
 const getAntallDagerSøkerensKvoteBruktAvAnnenPart = (
-    uttaksplanAnnenPart: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
+    uttaksplanAnnenPart: PeriodeDto_fpoversikt[] | undefined,
     kontoer: KontoBeregningDto,
     erFarEllerMedmor: boolean,
     familiehendelsesdato: string,
@@ -288,7 +281,7 @@ const getAntallDagerSøkerensKvoteBruktAvAnnenPart = (
 };
 
 const getAntallDagerFellesperiodeBruktAvAnnenPart = (
-    uttaksplanAnnenPart: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
+    uttaksplanAnnenPart: PeriodeDto_fpoversikt[] | undefined,
     kontoer: KontoBeregningDto,
     familiehendelsesdato: string,
     familiesituasjon: Familiesituasjon,
@@ -784,7 +777,7 @@ export const getFordelingFraKontoer = (
     navnPåForeldre: NavnPåForeldre,
     annenForelder: AnnenForelder,
     intl: IntlShape,
-    uttaksplanAnnenPart?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    uttaksplanAnnenPart?: PeriodeDto_fpoversikt[],
 ): DelInformasjon[] => {
     const navnMor = navnPåForeldre.mor;
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
@@ -932,20 +925,26 @@ export const getBeggeHarRettGrafFordeling = (
 export const getSisteUttaksdagAnnenForelder = (
     erFarEllerMedmor: boolean,
     deltUttak: boolean,
-    perioderAnnenPart: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
+    perioderAnnenPart: PeriodeDto_fpoversikt[] | undefined,
 ): string | undefined => {
     if (!deltUttak || !perioderAnnenPart || perioderAnnenPart.length === 0) {
         return undefined;
     }
     const annenPartForelder = erFarEllerMedmor ? 'MOR' : 'FAR_MEDMOR';
+    // EØS-periodar høyrer per definisjon alltid til annan part (annanPartEøs), same om
+    // periodane elles ikkje er sortert konsekvent for annan part si side.
     const annenForeldersFiltrertePerioder = perioderAnnenPart.filter(
-        (p) => Uttaksperioden.erEøsPeriode(p) || p.forelder === annenPartForelder,
+        (p) => p.annenPart?.forelder === annenPartForelder || p.annenPartEøs !== undefined,
     );
 
-    const sistePeriodeAnnenForelder = annenForeldersFiltrertePerioder.at(-1);
-    const sisteDagAnnenForelder =
-        annenForeldersFiltrertePerioder && sistePeriodeAnnenForelder
-            ? Uttaksdagen.denneEllerForrige(sistePeriodeAnnenForelder.tom).getDato()
-            : undefined;
-    return sisteDagAnnenForelder;
+    if (annenForeldersFiltrertePerioder.length === 0) {
+        return undefined;
+    }
+
+    const sisteTomAnnenForelder = annenForeldersFiltrertePerioder.reduce(
+        (senesteTom, periode) => (dayjs(periode.tom).isAfter(senesteTom) ? periode.tom : senesteTom),
+        annenForeldersFiltrertePerioder[0].tom,
+    );
+
+    return Uttaksdagen.denneEllerForrige(sisteTomAnnenForelder).getDato();
 };

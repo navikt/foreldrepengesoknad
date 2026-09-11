@@ -1,12 +1,12 @@
 import { IntlShape, useIntl } from 'react-intl';
 
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { UttakDto_fpoversikt } from '@navikt/fp-types';
 
 import { Feltoppsummering } from './Feltoppsummering';
 import { MorsAktivitetDetaljer } from './MorsaktiviteterDetaljer';
 
 interface Props {
-    periode: UttakPeriode_fpoversikt;
+    periode: UttakDto_fpoversikt;
 }
 
 export const Utsettelsesperiodedetaljer = ({ periode }: Props) => {
@@ -24,12 +24,12 @@ export const Utsettelsesperiodedetaljer = ({ periode }: Props) => {
     );
 };
 
-const getÅrsakTekst = (intl: IntlShape, periode: UttakPeriode_fpoversikt) => {
+const getÅrsakTekst = (intl: IntlShape, periode: UttakDto_fpoversikt) => {
     switch (periode.utsettelseÅrsak) {
         case 'ARBEID': {
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.ARBEID' });
         }
-        case 'LOVBESTEMT_FERIE': {
+        case 'FERIE': {
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.LOVBESTEMT_FERIE' });
         }
         case 'SØKER_SYKDOM': {

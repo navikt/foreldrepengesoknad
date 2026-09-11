@@ -10,6 +10,7 @@ import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
+import { mapAnnenPartsPeriodeTilPeriodeDto } from 'steps/uttaksplan/hooks/gammelPeriodeMapping';
 import { kanGenerereUttaksplanForslag } from 'steps/uttaksplan/hooks/useUttaksplanForslag';
 import { getIsDeltUttak } from 'utils/annenForelderUtils';
 import { getTermindato } from 'utils/barnUtils';
@@ -71,7 +72,10 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
     });
     const eksisterendeVedtakAnnenPart = annenPartsVedtakQuery.data;
 
-    const uttaksplanAnnenPart = annenPartsVedtakQuery.data?.perioder;
+    // /annenPart-endepunktet er ikkje migrert og returnerer framleis den gamle, flate
+    // periodemodellen. Mappar difor kvar rad om til eit eige PeriodeDto_fpoversikt-intervall
+    // (sjå gammelPeriodeMapping.ts for kjende forenklingar ved denne mappinga).
+    const uttaksplanAnnenPart = annenPartsVedtakQuery.data?.perioder.map(mapAnnenPartsPeriodeTilPeriodeDto);
 
     const kontoerOptions = useStønadsKontoerOptions();
     const valgtStønadskvote = useQuery({

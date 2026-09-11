@@ -5,11 +5,10 @@ import {
     EksternArbeidsforholdDto_fpoversikt,
     Familiesituasjon,
     KontoBeregningDto,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
+    PeriodeDto_fpoversikt,
     isFødtBarn,
 } from '@navikt/fp-types';
-import { Uttaksperioden, getFamiliehendelsedato, getFamiliesituasjon } from '@navikt/fp-utils';
+import { getFamiliehendelsedato, getFamiliesituasjon } from '@navikt/fp-utils';
 
 import { ForeldreInfo } from '../types/ForeldreInfo';
 import { sorterPerioder } from '../utils/periodeUtils';
@@ -20,7 +19,7 @@ type Props = {
     valgtStønadskvote: KontoBeregningDto;
     harAktivitetskravIPeriodeUtenUttak: boolean;
     erPeriodeneTilAnnenPartLåst: boolean;
-    uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    perioder: PeriodeDto_fpoversikt[];
     aktiveArbeidsforhold?: EksternArbeidsforholdDto_fpoversikt[];
     children: React.ReactNode;
     erEndringssøknad: boolean;
@@ -50,14 +49,14 @@ export const UttaksplanDataProvider = (props: Props) => {
         const familiesituasjon = getFamiliesituasjon(otherProps.barn);
         const termindato = isFødtBarn(otherProps.barn) ? otherProps.barn.termindato : undefined;
 
-        const sortertePerioder = filtrerBortPerioderUtenTrekkdager(otherProps.uttakPerioder).sort(sorterPerioder);
+        const sortertePerioder = filtrerBortSiderUtenTrekkdager(otherProps.perioder).sort(sorterPerioder);
 
         return {
             ...otherProps,
             familiehendelsedato,
             familiesituasjon,
             termindato,
-            uttakPerioder: sortertePerioder,
+            perioder: sortertePerioder,
             kanVelgeArbeidsgiver: otherProps.aktiveArbeidsforhold !== undefined,
         };
     }, [otherProps]);
@@ -74,11 +73,14 @@ export const useUttaksplanData = () => {
 };
 
 // TODO (TOR) Denne fjerninga av avslåtte periodar uten trekkdagar bør ligga i backend
-const filtrerBortPerioderUtenTrekkdager = (
-    perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-) =>
-    perioder.filter(
-        (periode) =>
-            Uttaksperioden.erEøsPeriode(periode) ||
-            !(periode.resultat?.innvilget === false && periode.resultat.trekkerDager === false),
-    );
+const harTrekkdager = (side: PeriodeDto_fpoversikt['søker']): boolean =>
+    !side || !(side.resultat?.innvilget === false && side.resultat.trekkerDager === false);
+
+const filtrerBortSiderUtenTrekkdager = (perioder: PeriodeDto_fpoversikt[]): PeriodeDto_fpoversikt[] =>
+    perioder
+        .map((periode) => ({
+            ...periode,
+            søker: harTrekkdager(periode.søker) ? periode.søker : undefined,
+            annenPart: harTrekkdager(periode.annenPart) ? periode.annenPart : undefined,
+        }))
+        .filter((periode) => periode.søker !== undefined || periode.annenPart !== undefined || periode.annenPartEøs);

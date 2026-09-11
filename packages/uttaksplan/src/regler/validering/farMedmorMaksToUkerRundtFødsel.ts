@@ -4,9 +4,10 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import minMax from 'dayjs/plugin/minMax';
 import { IntlShape } from 'react-intl';
 
+import { UttakDto_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
-import { erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
+import { finnSideForForelder } from '../../utils/periodeUtils';
 import { UttakPeriodeBuilder } from '../../utils/UttakPeriodeBuilder';
 import { ANTALL_UTTAKSDAGER_SEKS_UKER, ANTALL_UTTAKSDAGER_TO_UKER } from '../../utils/uttaksdagerKonstanter';
 import { Periode, ValideringInput, Valideringsområde, Valideringsregel } from './types';
@@ -51,6 +52,10 @@ const tellArbeidsdagerInnenfor = (fom: string, tom: string, førsteDag: string, 
     }
     return dager;
 };
+
+// Overført mødrekvote til far/medmor teller ikke mot far/medmor sitt eget 2-ukers-tak.
+const erFarMedmorsOverførteMødrekvote = (side: UttakDto_fpoversikt | undefined): boolean =>
+    side?.forelder === 'FAR_MEDMOR' && side.kontoType === 'MØDREKVOTE';
 
 const lagRegler = (intl: IntlShape): ReadonlyArray<Valideringsregel<FarMedmorMaks2UkerKontekst>> => [
     {
@@ -128,20 +133,24 @@ const byggKontekst = (input: ValideringInput): FarMedmorMaks2UkerKontekst | null
             0,
         ) * uttaksfaktor;
 
-    const uttakPerioderUtenOverførtMødrekvote = uttakPerioder.filter(
-        (p) => !(erVanligUttakPeriode(p) && p.forelder === 'FAR_MEDMOR' && p.kontoType === 'MØDREKVOTE'),
-    );
+    const uttakPerioderUtenOverførtMødrekvote = uttakPerioder.map((p) => ({
+        ...p,
+        søker: erFarMedmorsOverførteMødrekvote(p.søker) ? undefined : p.søker,
+        annenPart: erFarMedmorsOverførteMødrekvote(p.annenPart) ? undefined : p.annenPart,
+    }));
 
     const eksisterendeFarMedmorPerioder = new UttakPeriodeBuilder(uttakPerioderUtenOverførtMødrekvote, 'validator')
         .fjernUttakPerioder(perioder, false)
         .getUttakPerioder()
-        .filter((p) => erVanligUttakPeriode(p) && p.forelder === 'FAR_MEDMOR');
+        .flatMap((p) => {
+            const side = finnSideForForelder(p, 'FAR_MEDMOR');
+            return side ? [{ fom: p.fom, tom: p.tom, side }] : [];
+        });
 
-    const dagerEksisterendePerioder = eksisterendeFarMedmorPerioder.reduce((sum, p) => {
-        const dager = tellArbeidsdagerInnenfor(p.fom, p.tom, førsteDag, sisteDag);
+    const dagerEksisterendePerioder = eksisterendeFarMedmorPerioder.reduce((sum, { fom, tom, side }) => {
+        const dager = tellArbeidsdagerInnenfor(fom, tom, førsteDag, sisteDag);
         // Ingen gradering => arbeidstid 0 % => heile dagen blir trekt frå kvoten.
-        const arbeidstidprosent =
-            erVanligUttakPeriode(p) && p.gradering?.arbeidstidprosent !== undefined ? p.gradering.arbeidstidprosent : 0;
+        const arbeidstidprosent = side.gradering?.arbeidstidprosent ?? 0;
         return sum + dager * ((100 - arbeidstidprosent) / 100);
     }, 0);
 

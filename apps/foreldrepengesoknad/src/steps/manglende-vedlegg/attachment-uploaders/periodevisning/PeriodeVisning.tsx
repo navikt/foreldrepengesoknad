@@ -1,24 +1,13 @@
 import dayjs from 'dayjs';
 import { JSX } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
-import { getForelderNavn } from 'utils/isFarEllerMedmor';
 import { getStønadskvoteNavn } from 'utils/stønadskvoterUtils';
-import {
-    getUttaksprosentFromStillingsprosent,
-    isUttaksperiodeFarMedmorMedValgForUttakRundtFødsel,
-    prettifyProsent,
-} from 'utils/uttaksplanInfoUtils';
+import { getUttaksprosentFromStillingsprosent, prettifyProsent } from 'utils/uttaksplanInfoUtils';
 
 import { BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
 
-import {
-    NavnPåForeldre,
-    Situasjon,
-    UttakOppholdÅrsak_fpoversikt,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
-} from '@navikt/fp-types';
-import { Uttaksdagen, Uttaksperioden, capitalizeFirstLetter } from '@navikt/fp-utils';
+import { NavnPåForeldre, PeriodeDto_fpoversikt, Situasjon, UttakDto_fpoversikt } from '@navikt/fp-types';
+import { Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
 import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan/validators';
 
 import { StønadskvoteIkon } from './StønadskvoteIkon';
@@ -26,7 +15,7 @@ import { UtsettelseIkon } from './UtsettelseIkon';
 import UttaksplanAdvarselIkon from './UttaksplanAdvarselIkon';
 
 interface Props {
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
+    periode: PeriodeDto_fpoversikt;
     navnPåForeldre: NavnPåForeldre;
     familiehendelsesdato: string;
     termindato: string | undefined;
@@ -83,51 +72,45 @@ const PeriodeIkon = ({
     navnPåForeldre,
     erFarEllerMedmor,
 }: {
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
+    periode: PeriodeDto_fpoversikt;
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
 }): React.ReactNode | null => {
-    const erUttak = Uttaksperioden.erIkkeEøsPeriode(periode) && Uttaksperioden.erUttaksperiode(periode);
+    const side = periode.søker;
+    if (!side) {
+        return null;
+    }
+
+    const erUttak = Uttaksperioden.erUttaksperiode(side);
     if (erUttak) {
-        if (periode.resultat?.årsak === 'INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID') {
+        if (side.resultat?.årsak === 'INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID') {
             return <UttaksplanAdvarselIkon />;
         }
 
         return (
             <StønadskvoteIkon
-                konto={periode.kontoType}
-                forelder={periode.forelder}
-                gradert={!!periode.gradering}
+                konto={side.kontoType}
+                forelder={side.forelder}
+                gradert={!!side.gradering}
                 navnPåForeldre={navnPåForeldre}
                 erFarEllerMedmor={erFarEllerMedmor}
             />
         );
     }
 
-    if (Uttaksperioden.erIkkeEøsPeriode(periode) && periode.overføringÅrsak) {
+    if (side.overføringÅrsak) {
         return (
             <StønadskvoteIkon
-                konto={periode.kontoType}
-                forelder={periode.forelder}
+                konto={side.kontoType}
+                forelder={side.forelder}
                 navnPåForeldre={navnPåForeldre}
                 erFarEllerMedmor={erFarEllerMedmor}
             />
         );
     }
 
-    if (Uttaksperioden.erIkkeEøsPeriode(periode) && periode.utsettelseÅrsak && periode.forelder) {
-        return <UtsettelseIkon årsak={periode.utsettelseÅrsak} forelder={periode.forelder} />;
-    }
-
-    if (Uttaksperioden.erIkkeEøsPeriode(periode) && periode.oppholdÅrsak) {
-        return (
-            <StønadskvoteIkon
-                konto={'FORELDREPENGER'}
-                forelder={periode.forelder}
-                navnPåForeldre={navnPåForeldre}
-                erFarEllerMedmor={erFarEllerMedmor}
-            />
-        );
+    if (side.utsettelseÅrsak) {
+        return <UtsettelseIkon årsak={side.utsettelseÅrsak} forelder={side.forelder} />;
     }
 
     return null;
@@ -194,7 +177,7 @@ const PeriodeTittel = ({
     erFarEllerMedmor,
     erAleneOmOmsorg,
 }: {
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
+    periode: PeriodeDto_fpoversikt;
     navnPåForeldre: NavnPåForeldre;
     familiehendelsesdato: string;
     termindato: string | undefined;
@@ -204,7 +187,12 @@ const PeriodeTittel = ({
 }) => {
     const intl = useIntl();
 
-    const erUttak = Uttaksperioden.erIkkeEøsPeriode(periode) && Uttaksperioden.erUttaksperiode(periode);
+    const side = periode.søker;
+    if (!side) {
+        return '';
+    }
+
+    const erUttak = Uttaksperioden.erUttaksperiode(side);
     if (erUttak) {
         return getPeriodeTittelUttaksPeriode(
             intl,
@@ -217,81 +205,23 @@ const PeriodeTittel = ({
             erAleneOmOmsorg,
         );
     }
-    if (Uttaksperioden.erIkkeEøsPeriode(periode) && periode.overføringÅrsak) {
-        return getStønadskvoteNavn(intl, periode.kontoType, navnPåForeldre, erFarEllerMedmor);
+    if (side.overføringÅrsak) {
+        return getStønadskvoteNavn(intl, side.kontoType, navnPåForeldre, erFarEllerMedmor);
     }
-    if (Uttaksperioden.erIkkeEøsPeriode(periode) && periode.utsettelseÅrsak) {
+    if (side.utsettelseÅrsak) {
         return intl.formatMessage(
             { id: 'uttaksplan.periodeliste.utsettelsesårsak' },
             {
-                årsak: intl.formatMessage({ id: `uttaksplan.utsettelsesårsak.${periode.utsettelseÅrsak}` }),
+                årsak: intl.formatMessage({ id: `uttaksplan.utsettelsesårsak.${side.utsettelseÅrsak}` }),
             },
-        );
-    }
-    if (Uttaksperioden.erIkkeEøsPeriode(periode) && periode.oppholdÅrsak) {
-        return getOppholdskontoNavn(
-            intl,
-            periode.oppholdÅrsak,
-            getForelderNavn(periode.forelder, navnPåForeldre),
-            periode.forelder === 'MOR',
         );
     }
     return '';
 };
 
-const getOppholdskontoNavn = (
-    intl: IntlShape,
-    årsak: UttakOppholdÅrsak_fpoversikt,
-    foreldernavn: string,
-    erMor: boolean,
-) => {
-    const navn = capitalizeFirstLetter(foreldernavn);
-    if (erMor) {
-        if (årsak === 'FEDREKVOTE_ANNEN_FORELDER') {
-            return intl.formatMessage(
-                { id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.FEDREKVOTE_ANNEN_FORELDER` },
-                { foreldernavn: navn },
-            );
-        }
-        if (årsak === 'FELLESPERIODE_ANNEN_FORELDER') {
-            return intl.formatMessage(
-                { id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.FELLESPERIODE_ANNEN_FORELDER` },
-                { foreldernavn: navn },
-            );
-        }
-        if (årsak === 'MØDREKVOTE_ANNEN_FORELDER') {
-            return intl.formatMessage(
-                { id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.MØDREKVOTE_ANNEN_FORELDER` },
-                { foreldernavn: navn },
-            );
-        }
-    }
-
-    if (årsak === 'MØDREKVOTE_ANNEN_FORELDER') {
-        return intl.formatMessage(
-            { id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.MØDREKVOTE_ANNEN_FORELDER` },
-            { foreldernavn: navn },
-        );
-    }
-    if (årsak === 'FEDREKVOTE_ANNEN_FORELDER') {
-        return intl.formatMessage(
-            { id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.FEDREKVOTE_ANNEN_FORELDER` },
-            { foreldernavn: navn },
-        );
-    }
-    if (årsak === 'FELLESPERIODE_ANNEN_FORELDER') {
-        return intl.formatMessage(
-            { id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.FELLESPERIODE_ANNEN_FORELDER` },
-            { foreldernavn: navn },
-        );
-    }
-
-    throw new Error(`Ukjent oppholdsårsak: ${årsak}`);
-};
-
 const getPeriodeTittelUttaksPeriode = (
     intl: IntlShape,
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    periode: PeriodeDto_fpoversikt,
     navnPåForeldre: NavnPåForeldre,
     familiehendelsesdato: string,
     termindato: string | undefined,
@@ -299,9 +229,14 @@ const getPeriodeTittelUttaksPeriode = (
     erFarEllerMedmor: boolean,
     erAleneOmOmsorg?: boolean,
 ) => {
+    const side = periode.søker;
+    if (!side) {
+        return '';
+    }
+
     const tittelMedNavn = getStønadskvoteNavn(
         intl,
-        periode.kontoType,
+        side.kontoType,
         navnPåForeldre,
         erFarEllerMedmor,
         erAleneOmOmsorg,
@@ -314,13 +249,13 @@ const getPeriodeTittelUttaksPeriode = (
         familiehendelsesdato,
         termindato,
     );
-    if (Uttaksperioden.erIkkeEøsPeriode(periode) && (periode.gradering || periode.samtidigUttak)) {
+    if (side.gradering || side.samtidigUttak) {
         return `${tittel} ${intl.formatMessage(
             { id: 'gradering.prosent' },
             {
                 stillingsprosent: getUttaksprosentFromStillingsprosent(
-                    prettifyProsent(periode.gradering?.arbeidstidprosent),
-                    periode.samtidigUttak ? prettifyProsent(periode.samtidigUttak) : undefined,
+                    prettifyProsent(side.gradering?.arbeidstidprosent),
+                    side.samtidigUttak ? prettifyProsent(side.samtidigUttak) : undefined,
                 ),
             },
         )}`;
@@ -331,7 +266,7 @@ const getPeriodeTittelUttaksPeriode = (
 const appendPeriodeNavnHvisUttakRundtFødselFarMedmor = (
     intl: IntlShape,
     periodeNavn: string,
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    periode: PeriodeDto_fpoversikt,
     situasjon: Situasjon,
     familiehendelsesdato: string,
     termindato: string | undefined,
@@ -342,12 +277,14 @@ const appendPeriodeNavnHvisUttakRundtFødselFarMedmor = (
 };
 
 const isUttaksperiodeFarMedmorPgaFødsel = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    periode: PeriodeDto_fpoversikt,
     familiehendelsesdato: string,
     termindato: string | undefined,
 ): boolean => {
+    const side = periode.søker;
     return (
-        isUttaksperiodeFarMedmorMedValgForUttakRundtFødsel(periode) &&
+        !!side &&
+        erFarMedmorMedValgForUttakRundtFødsel(side) &&
         UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
             periode,
             familiehendelsesdato,
@@ -355,3 +292,18 @@ const isUttaksperiodeFarMedmorPgaFødsel = (
         )
     );
 };
+
+// Far/medmor kan velje å ta fedrekvote samtidig med mor sitt uttak rundt fødsel – då skal
+// perioden merkast som "rundt fødsel" i visninga, uavhengig av om ho faktisk ligg i det lovpålagte
+// tidsromet (det sjekkast separat i erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel).
+const erFarMedmorMedValgForUttakRundtFødsel = (side: UttakDto_fpoversikt): boolean => {
+    return (
+        Uttaksperioden.erUttaksperiode(side) &&
+        side.forelder === 'FAR_MEDMOR' &&
+        side.kontoType === 'FEDREKVOTE' &&
+        side.morsAktivitet === undefined &&
+        !side.flerbarnsdager &&
+        !!side.samtidigUttak
+    );
+};
+

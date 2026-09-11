@@ -1,65 +1,48 @@
-import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { PeriodeDto_fpoversikt, UttakDto_fpoversikt } from '@navikt/fp-types';
 
 import { Uttaksdagen } from './Uttaksdagen';
 
-type UttakPeriode = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
-
-// Kun for funksjoner som kun sjekker på UttakPeriode. Validatorer med andre input kan legges i UttaksperiodeValidatorer
+// Kun for funksjoner som kun sjekker på UttakDto_fpoversikt (éi side av eit periodeintervall)
+// eller PeriodeDto_fpoversikt (heile intervallet). Validatorer med andre input kan legges i
+// UttaksperiodeValidatorer.
 
 export const Uttaksperioden = {
-    erEøsPeriode(periode: UttakPeriode): periode is UttakPeriodeAnnenpartEøs_fpoversikt {
-        return 'trekkdager' in periode;
+    erAvslåttPeriode(side: UttakDto_fpoversikt) {
+        return side.resultat !== undefined && side.resultat.innvilget !== true;
     },
 
-    erIkkeEøsPeriode(periode: UttakPeriode): periode is UttakPeriode_fpoversikt {
-        return !Uttaksperioden.erEøsPeriode(periode) && 'flerbarnsdager' in periode && 'forelder' in periode;
+    erUttaksperiode(side: UttakDto_fpoversikt) {
+        return !side.overføringÅrsak && !side.utsettelseÅrsak;
     },
 
-    erAvslåttPeriode(periode: UttakPeriode) {
-        return 'resultat' in periode && periode.resultat && periode.resultat.innvilget !== true;
+    erOverføringsperiode(side: UttakDto_fpoversikt) {
+        return !!side.overføringÅrsak;
     },
 
-    erUttaksperiode(periode: UttakPeriode) {
-        if (!Uttaksperioden.erIkkeEøsPeriode(periode)) {
-            return false;
-        }
-
-        return !periode.oppholdÅrsak && !periode.overføringÅrsak && !periode.utsettelseÅrsak;
+    // Opphold har ikkje lenger noko eige oppholdÅrsak-felt frå backend – det er strukturelt
+    // ein periode der søkjar ikkje har uttak medan annan part har det. Årsaka til oppholdet er
+    // då direkte annan part sin kontoType.
+    erOppholdsperiode(periode: PeriodeDto_fpoversikt) {
+        return !periode.søker && !!periode.annenPart;
     },
 
-    erOverføringsperiode(periode: UttakPeriode) {
-        return Uttaksperioden.erIkkeEøsPeriode(periode) && !!periode.overføringÅrsak;
+    erUtsettelsesperiode(side: UttakDto_fpoversikt) {
+        return side.utsettelseÅrsak !== undefined && side.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER';
     },
 
-    erOppholdsperiode(periode: UttakPeriode) {
-        return Uttaksperioden.erIkkeEøsPeriode(periode) && !!periode.oppholdÅrsak;
+    erSamtidigUttak(side: UttakDto_fpoversikt) {
+        return side.samtidigUttak !== undefined;
     },
 
-    erUtsettelsesperiode(periode: UttakPeriode) {
-        return (
-            Uttaksperioden.erIkkeEøsPeriode(periode) &&
-            periode.utsettelseÅrsak !== undefined &&
-            periode.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER'
-        );
+    erPrematuruker(side: UttakDto_fpoversikt) {
+        return side.kontoType !== undefined && side.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
     },
 
-    erSamtidigUttak(periode: UttakPeriode) {
-        return Uttaksperioden.erIkkeEøsPeriode(periode) && !!periode.samtidigUttak;
+    erFlerbarnsdager(side: UttakDto_fpoversikt) {
+        return !!side.flerbarnsdager;
     },
 
-    erPrematuruker(periode: UttakPeriode) {
-        return (
-            Uttaksperioden.erIkkeEøsPeriode(periode) &&
-            periode.kontoType !== undefined &&
-            periode.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER'
-        );
-    },
-
-    erFlerbarnsdager(periode: UttakPeriode) {
-        return Uttaksperioden.erIkkeEøsPeriode(periode) && !!periode.flerbarnsdager;
-    },
-
-    getAntallUttaksdager(periode: UttakPeriode) {
+    getAntallUttaksdager(periode: { fom: string; tom: string }) {
         return Uttaksdagen.denneEllerNeste(periode.fom).getUttaksdagerFremTilOgMedDato(periode.tom);
     },
 };

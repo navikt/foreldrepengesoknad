@@ -1,17 +1,16 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 
+import { NavnPåForeldre, UttakOverføringÅrsak_fpoversikt } from '@navikt/fp-types';
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
-
-import { NavnPåForeldre, UttakOverføringÅrsak_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen, formatDateExtended } from '@navikt/fp-utils';
 
-import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
+import { Uttaksplanperiode, erPeriodeDto } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
 import { getStønadskvoteNavn } from '../../../utils/uttaksplanListeUtils';
 
 interface Props {
-    periode: UttakPeriode_fpoversikt;
+    periode: Uttaksplanperiode;
     inneholderKunEnPeriode: boolean;
     navnPåForeldre: NavnPåForeldre;
 }
@@ -19,15 +18,20 @@ interface Props {
 export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre }: Props) => {
     const intl = useIntl();
 
-    const morsAktivitet = erVanligUttakPeriode(periode) && periode.morsAktivitet ? periode.morsAktivitet : undefined;
+    const side = erPeriodeDto(periode) ? (periode.søker ?? periode.annenPart) : undefined;
+    if (!side) {
+        return null;
+    }
+
+    const morsAktivitet = side.morsAktivitet;
     const stønadskvoteNavn = getStønadskvoteNavn(intl, {
         navnPåForeldre,
-        erFarEllerMedmor: periode.forelder === 'FAR_MEDMOR',
-        erEøsPeriode: erEøsUttakPeriode(periode),
+        erFarEllerMedmor: side.forelder === 'FAR_MEDMOR',
+        erEøsPeriode: false,
         morsAktivitet,
-        konto: periode.kontoType,
+        konto: side.kontoType,
     });
-    const navnPåAnnenForelder = periode.forelder === 'FAR_MEDMOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+    const navnPåAnnenForelder = side.forelder === 'FAR_MEDMOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
     return (
         <HStack gap="space-8">
@@ -52,15 +56,15 @@ export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, na
                 </HStack>
                 <HStack gap="space-8">
                     <BodyShort>
-                        {getOverføringsTekst(stønadskvoteNavn, navnPåAnnenForelder, periode.overføringÅrsak)}
+                        {getOverføringsTekst(stønadskvoteNavn, navnPåAnnenForelder, side.overføringÅrsak)}
                     </BodyShort>
-                    {periode.gradering !== undefined && (
+                    {side.gradering !== undefined && (
                         <BodyShort>
                             <FormattedMessage
                                 id="uttaksplan.periodeListeContent.arbeid"
                                 values={{
-                                    arbeidstidprosent: periode.gradering.arbeidstidprosent,
-                                    uttaksprosent: 100 - periode.gradering.arbeidstidprosent,
+                                    arbeidstidprosent: side.gradering.arbeidstidprosent,
+                                    uttaksprosent: 100 - side.gradering.arbeidstidprosent,
                                 }}
                             />
                         </BodyShort>

@@ -3,18 +3,12 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
-import {
-    BrukerRolleSak_fpoversikt,
-    MorsAktivitet,
-    NavnPåForeldre,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
-} from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, MorsAktivitet, NavnPåForeldre } from '@navikt/fp-types';
 import { Uttaksdagen, capitalizeFirstLetter, formatDateExtended } from '@navikt/fp-utils';
 import { assertUnreachable } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
-import { Uttaksplanperiode, erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
+import { Uttaksplanperiode, erPeriodeDto } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
 import {
     erAvslåttPeriode,
@@ -24,7 +18,7 @@ import {
 import { getStønadskvoteNavn } from '../../../utils/uttaksplanListeUtils';
 
 interface Props {
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
+    periode: Uttaksplanperiode;
     inneholderKunEnPeriode: boolean;
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
@@ -34,25 +28,27 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
     const intl = useIntl();
     const {
         foreldreInfo: { rettighetType, søker, erIkkeSøkerSpesifisert, erFarOgFar },
-        uttakPerioder,
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
+
+    // Vel søkjar si eiga side når ho finst, elles annan part si side – berre éi av dei kan i
+    // praksis vera relevant her sidan denne komponenten ikkje viser opphald/EØS (dei har eigne
+    // content-komponentar), men samtidig uttak (begge sider) prioriterer søkjar sitt uttak.
+    const side = erPeriodeDto(periode) ? (periode.søker ?? periode.annenPart) : undefined;
+    const erEøsPeriode = erPeriodeDto(periode) && !!periode.annenPartEøs && !side;
+
     const erAvslått = erAvslåttPeriode(periode);
-    const morsAktivitet = erVanligUttakPeriode(periode) && periode.morsAktivitet ? periode.morsAktivitet : undefined;
+    const morsAktivitet = side?.morsAktivitet;
 
     const stønadskvoteNavn = getStønadskvoteNavn(intl, {
         navnPåForeldre,
         erFarEllerMedmor,
-        erEøsPeriode: erEøsUttakPeriode(periode),
+        erEøsPeriode,
         morsAktivitet,
-        konto: periode.kontoType,
+        konto: side?.kontoType ?? (erPeriodeDto(periode) ? periode.annenPartEøs?.kontoType : undefined),
         erAleneOmOmsorg: rettighetType === 'ALENEOMSORG',
         erAvslått,
     });
-
-    const morsPerioder = uttakPerioder.filter(
-        (p): p is UttakPeriode_fpoversikt => !erEøsUttakPeriode(p) && p.forelder === 'MOR',
-    );
 
     return (
         <HStack gap="space-8">
@@ -60,7 +56,7 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
                 rettighetType,
                 søker,
                 erIkkeSøkerSpesifisert ?? false,
-                [periode, ...morsPerioder],
+                [periode],
                 erFarOgFar,
             ) && (
                 <ExclamationmarkTriangleFillIcon
@@ -94,7 +90,7 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
                     {!erAvslått && morsAktivitet !== undefined && (
                         <BodyShort>{getMorsAktivitetTekst(intl, morsAktivitet)}</BodyShort>
                     )}
-                    {erEøsUttakPeriode(periode) && periode.trekkdager !== undefined ? (
+                    {erEøsPeriode ? (
                         <BodyShort>
                             <FormattedMessage id="uttaksplan.periodeListeContent.eøs" />
                         </BodyShort>
@@ -147,23 +143,26 @@ const getTekstForArbeidOgSamtidigUttak = (
     erFarEllerMedmor: boolean,
     navnPåForeldre: NavnPåForeldre,
 ) => {
-    if (erVanligUttakPeriode(periode)) {
-        if (
-            (periode.gradering !== undefined && periode.samtidigUttak !== undefined) ||
-            periode.gradering !== undefined
-        ) {
-            const uttaksprosent = Math.round((100 - periode.gradering.arbeidstidprosent) * 100) / 100;
-            return (
-                <FormattedMessage
-                    id="uttaksplan.periodeListeContent.arbeid"
-                    values={{ arbeidstidprosent: periode.gradering.arbeidstidprosent, uttaksprosent }}
-                />
-            );
-        }
+    if (!erPeriodeDto(periode)) {
+        return undefined;
+    }
+    const side = periode.søker ?? periode.annenPart;
+    if (!side) {
+        return undefined;
+    }
 
-        if (periode.samtidigUttak !== undefined) {
-            return getSamtidigUttakTekst(periode.samtidigUttak, periode.forelder, erFarEllerMedmor, navnPåForeldre);
-        }
+    if (side.gradering !== undefined) {
+        const uttaksprosent = Math.round((100 - side.gradering.arbeidstidprosent) * 100) / 100;
+        return (
+            <FormattedMessage
+                id="uttaksplan.periodeListeContent.arbeid"
+                values={{ arbeidstidprosent: side.gradering.arbeidstidprosent, uttaksprosent }}
+            />
+        );
+    }
+
+    if (side.samtidigUttak !== undefined) {
+        return getSamtidigUttakTekst(side.samtidigUttak, side.forelder, erFarEllerMedmor, navnPåForeldre);
     }
 
     return undefined;

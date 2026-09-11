@@ -6,12 +6,7 @@ import { getLocaleFromSessionStorage, getNavnGenitivEierform } from '@navikt/fp-
 import { assertUnreachable } from '@navikt/fp-validation';
 
 import { LegendLabel } from '../../types/LegendLabel';
-import {
-    UttaksplanperiodeMedKunTapteDager,
-    erEøsUttakPeriode,
-    erTapteDagerHull,
-    erVanligUttakPeriode,
-} from '../../types/UttaksplanPeriode';
+import { UttaksplanperiodeMedKunTapteDager, erPeriodeDto, erTapteDagerHull } from '../../types/UttaksplanPeriode';
 import { erAvslåttPeriode } from '../../utils/periodeUtils';
 
 export type UttaksplanKalenderLegendInfo = {
@@ -446,55 +441,64 @@ export const getLegendLabelFromPeriode = (
     erFarEllerMedmor: boolean,
 ): LegendLabel | undefined => {
     if (erAvslåttPeriode(p)) {
-        if (erVanligUttakPeriode(p) && p.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
+        const avslåttSide = erPeriodeDto(p) ? (p.søker ?? p.annenPart) : undefined;
+        if (avslåttSide?.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
             return 'PLEIEPENGER';
         }
         return 'AVSLAG';
     }
 
-    if ((erVanligUttakPeriode(p) || erEøsUttakPeriode(p)) && p.kontoType) {
-        switch (p.kontoType) {
-            case 'FORELDREPENGER_FØR_FØDSEL':
-                return 'MORS_DEL';
-            case 'MØDREKVOTE':
-            case 'FEDREKVOTE':
-            case 'FELLESPERIODE':
-            case 'FORELDREPENGER':
-                if (erEøsUttakPeriode(p)) {
-                    return erFarEllerMedmor ? 'MORS_DEL_EØS' : 'FARS_DEL_EØS';
-                }
+    if (erPeriodeDto(p)) {
+        // Søker/annenPart sin eigen kontoType styrer teksten, både for vanlege periodar og for
+        // opphald (kun annenPart har uttak) – ingen eige oppholdÅrsak-uttrykk trengst lenger.
+        const side = p.søker ?? p.annenPart;
+        const erEøs = !side && !!p.annenPartEøs;
+        const kontoType = side?.kontoType ?? p.annenPartEøs?.kontoType;
 
-                if (p.morsAktivitet === 'IKKE_OPPGITT') {
-                    if (p.gradering?.arbeidstidprosent) {
-                        return 'FARS_DEL_AKTIVITETSFRI_GRADERT';
+        if (kontoType) {
+            switch (kontoType) {
+                case 'FORELDREPENGER_FØR_FØDSEL':
+                    return 'MORS_DEL';
+                case 'MØDREKVOTE':
+                case 'FEDREKVOTE':
+                case 'FELLESPERIODE':
+                case 'FORELDREPENGER':
+                    if (erEøs) {
+                        return erFarEllerMedmor ? 'MORS_DEL_EØS' : 'FARS_DEL_EØS';
                     }
 
-                    return 'FARS_DEL_AKTIVITETSFRI';
-                }
+                    if (side?.morsAktivitet === 'IKKE_OPPGITT') {
+                        if (side.gradering?.arbeidstidprosent) {
+                            return 'FARS_DEL_AKTIVITETSFRI_GRADERT';
+                        }
 
-                if (p.forelder === 'FAR_MEDMOR') {
-                    if (p.samtidigUttak && p.samtidigUttak > 0) {
+                        return 'FARS_DEL_AKTIVITETSFRI';
+                    }
+
+                    if (side?.forelder === 'FAR_MEDMOR') {
+                        if (side.samtidigUttak && side.samtidigUttak > 0) {
+                            return 'SAMTIDIG_UTTAK';
+                        }
+
+                        if (side.gradering?.arbeidstidprosent) {
+                            return 'FARS_DEL_GRADERT';
+                        }
+
+                        return 'FARS_DEL';
+                    }
+
+                    if (side?.samtidigUttak && side.samtidigUttak > 0) {
                         return 'SAMTIDIG_UTTAK';
                     }
 
-                    if (p.gradering?.arbeidstidprosent) {
-                        return 'FARS_DEL_GRADERT';
+                    if (side?.gradering?.arbeidstidprosent) {
+                        return 'MORS_DEL_GRADERT';
                     }
 
-                    return 'FARS_DEL';
-                }
-
-                if (p.samtidigUttak && p.samtidigUttak > 0) {
-                    return 'SAMTIDIG_UTTAK';
-                }
-
-                if (p.gradering?.arbeidstidprosent) {
-                    return 'MORS_DEL_GRADERT';
-                }
-
-                return 'MORS_DEL';
-            default:
-                return assertUnreachable('Error: ukjent kontoType i getLegendLabelFromPeriode');
+                    return 'MORS_DEL';
+                default:
+                    return assertUnreachable('Error: ukjent kontoType i getLegendLabelFromPeriode');
+            }
         }
     }
 
@@ -502,7 +506,7 @@ export const getLegendLabelFromPeriode = (
         return 'TAPTE_DAGER';
     }
 
-    if (p.utsettelseÅrsak && p.utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
+    if (erPeriodeDto(p) && p.søker?.utsettelseÅrsak === 'FERIE') {
         return 'FERIE';
     }
 

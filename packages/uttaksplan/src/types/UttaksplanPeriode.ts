@@ -1,7 +1,8 @@
 import {
     BrukerRolleSak_fpoversikt,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
+    EøsUttakDto_fpoversikt,
+    PeriodeDto_fpoversikt,
+    UttakDto_fpoversikt,
 } from '@navikt/fp-types';
 
 export type TapteDagerHull = {
@@ -23,28 +24,16 @@ export type FamiliehendelseDato = {
     tom: string;
 };
 
-// Denne blir brukt av listevisning som viser alle typar periodar
-export type Uttaksplanperiode =
-    | UttakPeriode_fpoversikt
-    | UttakPeriodeAnnenpartEøs_fpoversikt
-    | TapteDagerHull
-    | PerioderUtenUttakHull
-    | FamiliehendelseDato;
+// Denne blir brukt av listevisning som viser alle typar periodar. Éin PeriodeDto_fpoversikt
+// dekker no eitt tidsintervall og kan innehalde søkjar sitt uttak, annan part sitt uttak og/eller
+// annan part sitt EØS-uttak samtidig (jf. samtidig uttak / opphald / EØS – sjå Uttaksperioden).
+export type Uttaksplanperiode = PeriodeDto_fpoversikt | TapteDagerHull | PerioderUtenUttakHull | FamiliehendelseDato;
 
 // Denne blir brukt av kalendervisninga som kun viser tapte dagar
 // (Kalender viser i tillegg familiehendelsesdato, men denne blir utleda i kalender-typen, mogleg ein bør endra på det)
-export type UttaksplanperiodeMedKunTapteDager =
-    UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt | TapteDagerHull;
+export type UttaksplanperiodeMedKunTapteDager = PeriodeDto_fpoversikt | TapteDagerHull;
 
-export const erVanligUttakPeriode = (periode: Uttaksplanperiode): periode is UttakPeriode_fpoversikt =>
-    !erEøsUttakPeriode(periode) &&
-    'forelder' in periode &&
-    'flerbarnsdager' in periode &&
-    !erUttaksplanHull(periode) &&
-    !erFamiliehendelseDato(periode);
-
-export const erEøsUttakPeriode = (periode: Uttaksplanperiode): periode is UttakPeriodeAnnenpartEøs_fpoversikt =>
-    'trekkdager' in periode;
+export const erPeriodeDto = (periode: Uttaksplanperiode): periode is PeriodeDto_fpoversikt => !('type' in periode);
 
 export const erUttaksplanHull = (periode: Uttaksplanperiode): periode is TapteDagerHull | PerioderUtenUttakHull =>
     'type' in periode && (periode.type === 'TAPTE_DAGER' || periode.type === 'PERIODE_UTEN_UTTAK');
@@ -57,3 +46,18 @@ export const erPeriodeUtenUttakHull = (periode: Uttaksplanperiode): periode is P
 
 export const erFamiliehendelseDato = (periode: Uttaksplanperiode): periode is FamiliehendelseDato =>
     'type' in periode && periode.type === 'FAMILIEHENDELSE';
+
+// Éin Uttaksplanperiode kan ha opptil tre sider samtidig: søkjar sitt uttak, annan part sitt
+// (norske) uttak, og/eller annan part sitt EØS-uttak. Desse hjelparane hentar ut kvar side utan
+// at kvar kallstad treng gjenta `erPeriodeDto(p) && p.søker`-mønsteret sjølv. Erstattar dei gamle
+// `erVanligUttakPeriode`/`erEøsUttakPeriode`-type-guardene frå den flate periodemodellen – slot-
+// plasseringa (`.søker`/`.annenPart`/`.annenPartEøs`) fortel no strukturelt kva sida gjeld, i
+// staden for at ein må sjekka `forelder`/`'trekkdager' in p` i etterkant.
+export const getSøkersSide = (periode: Uttaksplanperiode): UttakDto_fpoversikt | undefined =>
+    erPeriodeDto(periode) ? periode.søker : undefined;
+
+export const getAnnenPartsSide = (periode: Uttaksplanperiode): UttakDto_fpoversikt | undefined =>
+    erPeriodeDto(periode) ? periode.annenPart : undefined;
+
+export const getAnnenPartsEøsSide = (periode: Uttaksplanperiode): EøsUttakDto_fpoversikt | undefined =>
+    erPeriodeDto(periode) ? periode.annenPartEøs : undefined;

@@ -2,12 +2,7 @@ import { useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import {
-    Attachment,
-    NavnPåForeldre,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
-} from '@navikt/fp-types';
+import { Attachment, NavnPåForeldre, PeriodeDto_fpoversikt } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
 import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan/validators';
 
@@ -16,7 +11,7 @@ import { UttakUploader } from '../attachment-uploaders/UttakUploader';
 interface Props {
     attachments: Attachment[];
     updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
-    perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    perioder: PeriodeDto_fpoversikt[];
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
     familiehendelsedato: string;
@@ -45,11 +40,9 @@ export const MorInnlagtDokumentasjon = ({
     );
 
     const morErForSykEllerInnlagtFørsteSeksUker = perioderRundtFødsel.some((p) => {
+        const side = p.søker;
         return (
-            Uttaksperioden.erIkkeEøsPeriode(p) &&
-            Uttaksperioden.erUttaksperiode(p) &&
-            p.kontoType === 'FEDREKVOTE' &&
-            !p.samtidigUttak
+            !!side && Uttaksperioden.erUttaksperiode(side) && side.kontoType === 'FEDREKVOTE' && !side.samtidigUttak
         );
     });
 

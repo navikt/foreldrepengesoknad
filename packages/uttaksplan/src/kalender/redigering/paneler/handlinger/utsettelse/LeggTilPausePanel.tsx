@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { Button, HStack, VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { PeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../../../../context/UttaksplanDataContext';
 import { FormValues, LeggTilPauseForm } from '../../../../../felles/utsettelse/LeggTilPauseForm';
@@ -31,13 +31,15 @@ export const LeggTilPausePanel = ({ setVisPausePanel }: Props) => {
             sammenslåtteValgtePerioder.map(
                 (p) =>
                     ({
-                        forelder: søker,
                         fom: p.fom,
                         tom: p.tom,
-                        utsettelseÅrsak: 'FRI',
-                        flerbarnsdager: false,
-                        morsAktivitet: formValues.morsAktivitet || undefined,
-                    }) satisfies UttakPeriode_fpoversikt,
+                        søker: {
+                            forelder: søker,
+                            utsettelseÅrsak: 'FRI',
+                            flerbarnsdager: false,
+                            morsAktivitet: formValues.morsAktivitet || undefined,
+                        },
+                    }) satisfies PeriodeDto_fpoversikt,
             ),
             false,
         );

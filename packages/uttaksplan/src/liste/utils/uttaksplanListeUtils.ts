@@ -6,15 +6,15 @@ import {
     KontoTypeUttak,
     MorsAktivitet,
     NavnPåForeldre,
-    UttakOppholdÅrsak_fpoversikt,
-    UttakUtsettelseÅrsak_fpoversikt,
+    UttakDto_fpoversikt,
+    UtsettelseÅrsak_fpoversikt,
 } from '@navikt/fp-types';
 import { capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 import {
     Uttaksplanperiode,
-    erEøsUttakPeriode,
     erFamiliehendelseDato,
+    erPeriodeDto,
     erPeriodeUtenUttakHull,
     erTapteDagerHull,
 } from '../../types/UttaksplanPeriode';
@@ -111,22 +111,19 @@ export const getStønadskvoteNavn = (intl: IntlShape, options: GetStønadskvoteN
     return intl.formatMessage({ id: `uttaksplan.stønadskvotetype.${konto}` });
 };
 
-export const getOppholdskontoNavn = (
-    intl: IntlShape,
-    årsak: UttakOppholdÅrsak_fpoversikt,
-    foreldernavn: string,
-    erMor: boolean,
-) => {
+// Opphald har ikkje lenger noko eige oppholdÅrsak-felt – årsaka er no direkte annan part sin
+// kontoType (FELLESPERIODE/MØDREKVOTE/FEDREKVOTE/FORELDREPENGER/FORELDREPENGER_FØR_FØDSEL).
+export const getOppholdskontoNavn = (intl: IntlShape, kontoType: KontoType, foreldernavn: string, erMor: boolean) => {
     const navn = capitalizeFirstLetter(foreldernavn);
 
     if (erMor) {
-        if (årsak === 'FELLESPERIODE_ANNEN_FORELDER') {
+        if (kontoType === 'FELLESPERIODE') {
             return intl.formatMessage(
                 { id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.FELLESPERIODE_ANNEN_FORELDER` },
                 { foreldernavn: navn },
             );
         }
-        if (årsak === 'FEDREKVOTE_ANNEN_FORELDER') {
+        if (kontoType === 'FEDREKVOTE') {
             return intl.formatMessage(
                 { id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.FEDREKVOTE_ANNEN_FORELDER` },
                 { foreldernavn: navn },
@@ -139,13 +136,13 @@ export const getOppholdskontoNavn = (
         );
     }
 
-    if (årsak === 'FELLESPERIODE_ANNEN_FORELDER') {
+    if (kontoType === 'FELLESPERIODE') {
         return intl.formatMessage(
             { id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.FELLESPERIODE_ANNEN_FORELDER` },
             { foreldernavn: navn },
         );
     }
-    if (årsak === 'FEDREKVOTE_ANNEN_FORELDER') {
+    if (kontoType === 'FEDREKVOTE') {
         return intl.formatMessage(
             { id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.FEDREKVOTE_ANNEN_FORELDER` },
             { foreldernavn: navn },
@@ -158,11 +155,11 @@ export const getOppholdskontoNavn = (
     );
 };
 
-export const finnTekstForUtsettelseÅrsak = (intl: IntlShape, utsettelseÅrsak: UttakUtsettelseÅrsak_fpoversikt) => {
+export const finnTekstForUtsettelseÅrsak = (intl: IntlShape, utsettelseÅrsak: UtsettelseÅrsak_fpoversikt) => {
     switch (utsettelseÅrsak) {
         case 'ARBEID':
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.ARBEID' });
-        case 'LOVBESTEMT_FERIE':
+        case 'FERIE':
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.LOVBESTEMT_FERIE' });
         case 'FRI':
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.FRI' });
@@ -179,15 +176,16 @@ export const finnTekstForUtsettelseÅrsak = (intl: IntlShape, utsettelseÅrsak: 
     }
 };
 
+const sideNøkkel = (side?: UttakDto_fpoversikt): string =>
+    side
+        ? `${side.forelder}-${side.kontoType}-${side.flerbarnsdager}-${side.utsettelseÅrsak}-${side.overføringÅrsak}`
+        : '';
+
 export const genererPeriodeKey = (saksperiode?: Uttaksplanperiode): string | undefined => {
     if (!saksperiode) {
         return undefined;
     }
 
-    if (erEøsUttakPeriode(saksperiode)) {
-        const { fom, tom, kontoType, trekkdager } = saksperiode;
-        return `erAnnenPartEøs - ${fom} - ${tom} - ${kontoType} - ${trekkdager}`;
-    }
     if (erTapteDagerHull(saksperiode)) {
         const { fom, tom, forelder } = saksperiode;
         return `tapteDagerHull - ${fom} - ${tom} - ${forelder}`;
@@ -200,8 +198,11 @@ export const genererPeriodeKey = (saksperiode?: Uttaksplanperiode): string | und
         const { fom, tom } = saksperiode;
         return `familiehendelseDato - ${fom} - ${tom}`;
     }
+    if (!erPeriodeDto(saksperiode)) {
+        return undefined;
+    }
 
-    const { fom, tom, kontoType, flerbarnsdager, utsettelseÅrsak, forelder, oppholdÅrsak, overføringÅrsak } =
-        saksperiode;
-    return `${fom} - ${tom} - ${kontoType} - ${flerbarnsdager} - ${utsettelseÅrsak} - ${forelder} - ${oppholdÅrsak} - ${overføringÅrsak}`;
+    const { fom, tom, søker, annenPart, annenPartEøs } = saksperiode;
+    const eøsNøkkel = annenPartEøs ? `eøs-${annenPartEøs.kontoType}-${annenPartEøs.trekkdager}` : '';
+    return `${fom} - ${tom} - ${sideNøkkel(søker)} - ${sideNøkkel(annenPart)} - ${eøsNøkkel}`;
 };

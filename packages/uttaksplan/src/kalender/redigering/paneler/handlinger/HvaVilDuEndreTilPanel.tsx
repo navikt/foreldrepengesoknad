@@ -5,14 +5,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Box, Button, Chips, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { PeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { useKanKunErstatte } from '../../../../regler/alert/informasjonsAlertHooks';
 import { useKnapperIRedigeringspanelSynlighet } from '../../../../regler/synlighet/knapperIRedigeringspanel';
-import { erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
@@ -32,7 +31,7 @@ interface Props {
 export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) => {
     const {
         foreldreInfo: { søker },
-        uttakPerioder,
+        perioder,
     } = useUttaksplanData();
 
     const { sammenslåtteValgtePerioder, setValgtePerioder, leggTilUttaksplanPerioder, setEndredePerioder } =
@@ -58,15 +57,13 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
         uttakPerioderInkludertTapteDager,
     );
 
-    const harPeriodeMedPleiepenger = eksisterendePerioderSomErValgt.some(
-        (p) =>
-            erVanligUttakPeriode(p) &&
-            p.resultat?.innvilget === false &&
-            p.resultat.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER',
-    );
+    const harPeriodeMedPleiepenger = eksisterendePerioderSomErValgt.some((p) => {
+        const side = p.søker ?? p.annenPart;
+        return side?.resultat?.innvilget === false && side.resultat.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
+    });
 
     const erEksisterendePerioderEtterValgteDager = erDetEksisterendePerioderEtterValgtePerioder(
-        uttakPerioder,
+        perioder,
         sammenslåtteValgtePerioder,
     );
 
@@ -87,12 +84,14 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
             sammenslåtteValgtePerioder.map(
                 (p) =>
                     ({
-                        forelder: søker,
                         fom: p.fom,
                         tom: p.tom,
-                        utsettelseÅrsak: 'LOVBESTEMT_FERIE',
-                        flerbarnsdager: false,
-                    }) satisfies UttakPeriode_fpoversikt,
+                        søker: {
+                            forelder: søker,
+                            utsettelseÅrsak: 'FERIE',
+                            flerbarnsdager: false,
+                        },
+                    }) satisfies PeriodeDto_fpoversikt,
             ),
             skalForskyve,
         );

@@ -7,8 +7,8 @@ import {
     Barn,
     KontoBeregningDto,
     KontoDto,
+    PeriodeDto_fpoversikt,
     Tidsperiode,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
     UttakPeriode_fpoversikt,
     isAdoptertAnnetBarn,
 } from '@navikt/fp-types';
@@ -43,62 +43,67 @@ const lagDeltUttakForFarMedmor = (
     helgejustertFamDato: string,
     stønadskvoter: KontoDto[],
     startdato: string,
-): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
+): PeriodeDto_fpoversikt[] => {
     const farStartdato = Uttaksdagen.denneEllerNeste(startdato).getDato();
     const harFødselspermisjon = helgejustertFamDato === farStartdato;
-    const forslag: UttakPeriode_fpoversikt[] = [];
+    const forslag: PeriodeDto_fpoversikt[] = [];
 
     const foreldrepengerFørFødsel = stønadskvoter.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
     const mødrekvote = stønadskvoter.find((k) => k.konto === 'MØDREKVOTE');
     const fedrekvote = stønadskvoter.find((k) => k.konto === 'FEDREKVOTE');
     const fellesperiode = stønadskvoter.find((k) => k.konto === 'FELLESPERIODE');
 
-    // Mors perioder er alltid ankret til helgejustertFamDato
+    // Søkjar er far/medmor i denne grenen, så mors periodar hamnar på annenPart og søkjars
+    // eigne periodar på søker. Mors perioder er alltid ankret til helgejustertFamDato.
     let tidsperiode = getTidsperiodeString(
         Uttaksdagen.denne(helgejustertFamDato).getDatoAntallUttaksdagerTidligere(15),
         foreldrepengerFørFødsel ? foreldrepengerFørFødsel.dager : 15,
     );
 
     forslag.push({
-        forelder: 'MOR',
-        kontoType: 'FORELDREPENGER_FØR_FØDSEL',
         fom: tidsperiode.fom,
         tom: tidsperiode.tom,
-        flerbarnsdager: false,
+        annenPart: {
+            forelder: 'MOR',
+            kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+            flerbarnsdager: false,
+        },
     });
 
     if (harFødselspermisjon) {
         tidsperiode = getTidsperiodeString(helgejustertFamDato, 10);
 
-        forslag.push(
-            {
-                forelder: 'MOR',
-                kontoType: 'MØDREKVOTE',
-                fom: tidsperiode.fom,
-                tom: tidsperiode.tom,
-                flerbarnsdager: false,
-                samtidigUttak: 100,
-            },
-            {
+        // Samtidig uttak: mor og far/medmor har uttak i same tidsrom rundt fødselen, uttrykt
+        // som éin periode med begge sider sett.
+        forslag.push({
+            fom: tidsperiode.fom,
+            tom: tidsperiode.tom,
+            søker: {
                 forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
-                fom: tidsperiode.fom,
-                tom: tidsperiode.tom,
                 flerbarnsdager: false,
                 samtidigUttak: 100,
             },
-        );
+            annenPart: {
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                flerbarnsdager: false,
+                samtidigUttak: 100,
+            },
+        });
 
         let currentFomDate = Uttaksdagen.neste(tidsperiode.tom).getDato();
 
         tidsperiode = getTidsperiodeString(currentFomDate, mødrekvote ? mødrekvote.dager - 10 : 0);
 
         forslag.push({
-            forelder: 'MOR',
-            kontoType: 'MØDREKVOTE',
             fom: tidsperiode.fom,
             tom: tidsperiode.tom,
-            flerbarnsdager: false,
+            annenPart: {
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                flerbarnsdager: false,
+            },
         });
 
         currentFomDate = Uttaksdagen.neste(tidsperiode.tom).getDato();
@@ -106,11 +111,13 @@ const lagDeltUttakForFarMedmor = (
         tidsperiode = getTidsperiodeString(currentFomDate, fellesperiode ? fellesperiode.dager : 0);
 
         forslag.push({
-            forelder: 'MOR',
-            kontoType: 'FELLESPERIODE',
             fom: tidsperiode.fom,
             tom: tidsperiode.tom,
-            flerbarnsdager: false,
+            annenPart: {
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                flerbarnsdager: false,
+            },
         });
     } else {
         // Far starter etter familiehendelsesdato: generer mors perioder fra helgejustertFamDato,
@@ -120,11 +127,13 @@ const lagDeltUttakForFarMedmor = (
         tidsperiode = getTidsperiodeString(currentMorFomDate, mødrekvote ? mødrekvote.dager : 0);
 
         forslag.push({
-            forelder: 'MOR',
-            kontoType: 'MØDREKVOTE',
             fom: tidsperiode.fom,
             tom: tidsperiode.tom,
-            flerbarnsdager: false,
+            annenPart: {
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                flerbarnsdager: false,
+            },
         });
 
         currentMorFomDate = Uttaksdagen.neste(tidsperiode.tom).getDato();
@@ -132,21 +141,25 @@ const lagDeltUttakForFarMedmor = (
         tidsperiode = getTidsperiodeString(currentMorFomDate, fellesperiode ? fellesperiode.dager : 0);
 
         forslag.push({
-            forelder: 'MOR',
-            kontoType: 'FELLESPERIODE',
             fom: tidsperiode.fom,
             tom: tidsperiode.tom,
-            flerbarnsdager: false,
+            annenPart: {
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                flerbarnsdager: false,
+            },
         });
 
         tidsperiode = getTidsperiodeString(farStartdato, fedrekvote ? fedrekvote.dager : 0);
 
         forslag.push({
-            forelder: 'FAR_MEDMOR',
-            kontoType: 'FEDREKVOTE',
             fom: tidsperiode.fom,
             tom: tidsperiode.tom,
-            flerbarnsdager: false,
+            søker: {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                flerbarnsdager: false,
+            },
         });
     }
 
@@ -160,14 +173,17 @@ const lagDeltUttakForFarMedmor = (
  * slik at ein kan unngå å spørje brukaren om ein startdato som uansett ikkje
  * vil bli brukt.
  */
-export const kanGenerereUttaksplanForslag = (annenPartsPerioder?: UttakPeriode_fpoversikt[]): boolean =>
+// Sjekkar berre om annan part har nokon periodar i det heile, uavhengig av kva periodemodell
+// dei kjem i (gamal flat form frå /annenPart eller ny PeriodeDto_fpoversikt), difor er
+// parametertypen forma-agnostisk.
+export const kanGenerereUttaksplanForslag = (annenPartsPerioder?: unknown[]): boolean =>
     annenPartsPerioder === undefined || annenPartsPerioder.length === 0;
 
 export const useUttaksplanForslag = (
     valgtStønadskvote?: KontoBeregningDto,
     annenPartsPerioder?: UttakPeriode_fpoversikt[],
     annenPartsPerioderLaster = false,
-): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
+): PeriodeDto_fpoversikt[] => {
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
