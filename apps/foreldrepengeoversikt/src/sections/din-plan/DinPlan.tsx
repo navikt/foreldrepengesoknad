@@ -17,6 +17,7 @@ import {
 } from '@navikt/fp-uttaksplan';
 
 import { hentUttakskvoteOptions } from '../../api/queries';
+import { useUttaksplan } from '../../hooks/useUttaksplan';
 import { getBarnFraSak } from '../../utils/sakerUtils';
 
 interface Props {
@@ -43,6 +44,10 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre, sak }: Props) => 
         }),
     );
     const konto = sak.dekningsgrad === 'HUNDRE' ? kontoQuery.data?.['100'] : kontoQuery.data?.['80'];
+
+    // Prototype: byggjer opp ny datakjelde frå fp-oversikt sitt /uttaksplan-endepunkt ved sida
+    // av dagens løysing. Sjå useUttaksplan for kvifor han ikkje gjer reelle kall enno.
+    useUttaksplan(sak);
 
     if (!konto) {
         return null;
@@ -133,6 +138,31 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre, sak }: Props) => 
                     )}
                     {visKalender && <UttaksplanKalender readOnly={true} />}
                 </UttaksplanDataProvider>
+
+                {/*
+                Prototype: same visning basert på den nye /uttaksplan-tenesta i staden for
+                dagens sak/annenPart-kombinasjon. UttaksplanDataProvider må tilpassast til å ta
+                imot ein FellesUttaksplanDto_fpoversikt direkte før dette kan skruast på.
+                <UttaksplanDataProvider
+                    uttaksplan={useUttaksplan(sak).data}
+                    barn={barn}
+                    foreldreInfo={{
+                        søker: sakTilhørerMor ? 'MOR' : 'FAR_MEDMOR',
+                        navnPåForeldre: navnPåForeldre,
+                        erMedmorDelAvSøknaden: false,
+                        rettighetType,
+                    }}
+                    erPeriodeneTilAnnenPartLåst={false}
+                >
+                    {!visKalender && (
+                        <>
+                            <UttaksplanListe isReadOnly />
+                            <KvoteOppsummering erInnsyn visStatusIkoner={false} />
+                        </>
+                    )}
+                    {visKalender && <UttaksplanKalender readOnly={true} />}
+                </UttaksplanDataProvider>
+                */}
             </VStack>
         </VStack>
     );
