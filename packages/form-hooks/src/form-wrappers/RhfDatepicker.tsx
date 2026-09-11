@@ -47,7 +47,7 @@ export const RhfDatepicker = <T extends FieldValues>({
     useStrategyAbsolute = false,
     ...controllerProps
 }: Props<T>): JSX.Element => {
-    const { name, control } = controllerProps;
+    const { name, control, defaultValue } = controllerProps;
 
     const intl = useIntl();
     const {
@@ -57,6 +57,7 @@ export const RhfDatepicker = <T extends FieldValues>({
     const { field } = useController({
         name,
         control,
+        defaultValue,
         rules: {
             validate: useMemo(() => getValidationRules(validate), [validate]),
         },
