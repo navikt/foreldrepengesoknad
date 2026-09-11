@@ -111,22 +111,24 @@ export const isDateWithinRange =
 export const isPeriodNotOverlappingOthers =
     (
         i18nText: string,
-        otherDateInfo: { date: string; isStartDate: boolean },
-        otherPeriods: Array<{ fom: string; tom: string }>,
+        otherDateInfo: { date: string; isStartDate: true } | { date?: string; isStartDate: false },
+        otherPeriods: Array<{ fom: string; tom?: string }>,
     ) =>
     (date: string): FormValidationResult => {
+        const normaliserTilDato = (tom?: string): string => (tom ? tom : TIDENES_ENDE);
+
         const dateRanges = otherPeriods
             .filter((u) => u.fom)
             .map((u) => ({
                 from: u.fom,
-                to: u.tom ?? TIDENES_ENDE,
+                to: normaliserTilDato(u.tom),
             }));
 
         const toDate = otherDateInfo.isStartDate ? date : otherDateInfo.date;
 
         const allDateRanges = dateRanges.concat({
             from: otherDateInfo.isStartDate ? otherDateInfo.date : date,
-            to: toDate ?? TIDENES_ENDE,
+            to: normaliserTilDato(toDate),
         });
 
         return isDateRangesOverlapping(allDateRanges) ? i18nText : null;

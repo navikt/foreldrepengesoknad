@@ -118,6 +118,60 @@ describe('<SenereUtenlandsoppholdPanel>', () => {
         expect(screen.getAllByText('Det kan ikke være flere utenlandsopphold i samme periode')).toHaveLength(5);
     });
 
+    it('skal skjule og nullstille til og med når en krysser av at en ikke vet når en kommer tilbake', async () => {
+        const saveOnNext = vi.fn();
+
+        const utils = render(<Default saveOnNext={saveOnNext} />);
+
+        expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
+
+        await userEvent.selectOptions(utils.getByLabelText('Hvilket land skal du bo i?'), 'CAN');
+
+        const fraOgMed = utils.getByLabelText('Fra og med');
+        await userEvent.type(fraOgMed, dayjs().add(1, 'day').format(DDMMYYYY_DATE_FORMAT));
+        fireEvent.blur(fraOgMed);
+
+        const tilOgMed = utils.getByLabelText('Til og med');
+        await userEvent.type(tilOgMed, dayjs().add(20, 'day').format(DDMMYYYY_DATE_FORMAT));
+        fireEvent.blur(tilOgMed);
+
+        await userEvent.click(utils.getByLabelText('Jeg vet ikke når jeg kommer tilbake til Norge'));
+
+        expect(screen.queryByLabelText('Til og med')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(saveOnNext).toHaveBeenCalledTimes(1);
+        expect(saveOnNext).toHaveBeenNthCalledWith(1, [
+            {
+                landkode: 'CAN',
+                fom: dayjs().add(1, 'day').format(ISO_DATE_FORMAT),
+                tom: undefined,
+            },
+        ]);
+    });
+
+    it('skal krysse av og skjule til og med når en lagret periode har tom som tom streng', async () => {
+        const fom = dayjs().add(1, 'day').format(ISO_DATE_FORMAT);
+
+        render(
+            <Default
+                senereUtenlandsopphold={[
+                    {
+                        landkode: 'CAN',
+                        fom,
+                        tom: '',
+                    },
+                ]}
+            />,
+        );
+
+        expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
+
+        expect(screen.getByLabelText('Jeg vet ikke når jeg kommer tilbake til Norge')).toBeChecked();
+        expect(screen.queryByLabelText('Til og med')).not.toBeInTheDocument();
+    });
+
     it('skal legge til periode og så fjerne den', async () => {
         render(<Default />);
 

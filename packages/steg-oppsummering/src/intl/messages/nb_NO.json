@@ -50,6 +50,7 @@
     "ArbeidsforholdOppsummering.varigEndringBeskrivelse.label": "Hva har endret seg i virksomheten eller arbeidssituasjonen din?",
     "ArbeidsforholdOppsummering.inntektsmelding": "{antall, plural, one {Arbeidsgiveren din} other {Arbeidsgiverene dine}} blir kontaktet av Nav for å sende opplysninger om din inntekt. Dette vil skje fire uker før du skal starte permisjonen.",
     "LandOppsummering.IDag": "i dag",
+    "LandOppsummering.TomIkkeOppgitt": "Ikke oppgitt",
     "LandOppsummering.periode": "Fra {fra} til {til}",
     "EndreSvar": "Endre svar",
     "ArbeidsforholdFormSummaryValue.arbeidsforhold.periode": "{fom} - {tom}"

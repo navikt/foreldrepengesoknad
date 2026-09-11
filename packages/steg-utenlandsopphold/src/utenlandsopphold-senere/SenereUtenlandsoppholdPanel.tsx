@@ -9,10 +9,10 @@ import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-f
 import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { HorizontalLine, ProgressStep, Step } from '@navikt/fp-ui';
 
-import { SenereUtenlandsoppholdPeriode } from './SenereUtenlandsoppholdPeriode';
+import { SenereUtenlandsoppholdPeriode, SenereUtenlandsoppholdSkjemaPeriode } from './SenereUtenlandsoppholdPeriode';
 
 type FormType = {
-    utenlandsoppholdNeste12Mnd: UtenlandsoppholdPeriode[];
+    utenlandsoppholdNeste12Mnd: SenereUtenlandsoppholdSkjemaPeriode[];
 };
 
 const DEFAULT_PERIODE: UtenlandsoppholdPeriode = {
@@ -20,6 +20,9 @@ const DEFAULT_PERIODE: UtenlandsoppholdPeriode = {
     tom: '',
     landkode: '',
 };
+
+const fjernTomUkjentFraPerioder = (perioder: SenereUtenlandsoppholdSkjemaPeriode[]): UtenlandsoppholdPeriode[] =>
+    perioder.map(({ tomUkjent, ...periode }) => periode);
 
 interface Props<TYPE> {
     senereUtenlandsopphold: UtenlandsoppholdPeriode[];
@@ -43,9 +46,16 @@ export const SenereUtenlandsoppholdPanel = <TYPE extends string>({
     stepConfig,
 }: Props<TYPE>) => {
     const formMethods = useForm<FormType>({
+        shouldUnregister: true,
         defaultValues: {
             utenlandsoppholdNeste12Mnd:
-                senereUtenlandsopphold.length === 0 ? [DEFAULT_PERIODE] : senereUtenlandsopphold,
+                senereUtenlandsopphold.length === 0
+                    ? [{ ...DEFAULT_PERIODE, tomUkjent: false }]
+                    : senereUtenlandsopphold.map((periode) => ({
+                          ...periode,
+                          tom: periode.tom || undefined,
+                          tomUkjent: !periode.tom,
+                      })),
         },
     });
     const { fields, append, remove } = useFieldArray({
@@ -59,7 +69,10 @@ export const SenereUtenlandsoppholdPanel = <TYPE extends string>({
 
     return (
         <Step steps={stepConfig} onStepChange={onStepChange}>
-            <RhfForm formMethods={formMethods} onSubmit={(values) => saveOnNext(values.utenlandsoppholdNeste12Mnd)}>
+            <RhfForm
+                formMethods={formMethods}
+                onSubmit={(values) => saveOnNext(fjernTomUkjentFraPerioder(values.utenlandsoppholdNeste12Mnd))}
+            >
                 <VStack gap="space-40">
                     <ErrorSummaryHookForm />
                     <VStack gap="space-40" align="start">
@@ -84,7 +97,10 @@ export const SenereUtenlandsoppholdPanel = <TYPE extends string>({
                         onFortsettSenere={onFortsettSenere}
                         goToPreviousStep={goToPreviousStep}
                         saveDataOnPreviousClick={
-                            saveOnPrevious ? (values) => saveOnPrevious(values.utenlandsoppholdNeste12Mnd) : undefined
+                            saveOnPrevious
+                                ? (values) =>
+                                      saveOnPrevious(fjernTomUkjentFraPerioder(values.utenlandsoppholdNeste12Mnd))
+                                : undefined
                         }
                     />
                 </VStack>
