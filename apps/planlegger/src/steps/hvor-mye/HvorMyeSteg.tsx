@@ -70,7 +70,6 @@ export const HvorMyeSteg = ({ satser }: Props) => {
     const harSøker1IkkeRettTilFp = årslønnSøker1 < minÅrslønn;
     const harSøker2IkkeRettTilFp = årslønnSøker2 < minÅrslønn;
 
-    // Når kun søker2 har rett er det søker2 som vises i det første (og eneste) panelet.
     const lønnFørstePanel = kunSøker2HarRett ? lønnSøker2 : lønnSøker1;
     const lønnFørstePanelValid = kunSøker2HarRett ? lønnSøker2Valid : lønnSøker1Valid;
     const harFørstePanelIkkeRettTilFp = kunSøker2HarRett ? harSøker2IkkeRettTilFp : harSøker1IkkeRettTilFp;
