@@ -100,6 +100,18 @@ export const FødselMorOgFarKunMorHarRett: Story = {
         },
     },
 };
+export const FødselMorOgFarPrematur: Story = {
+    args: {
+        ...FødselMorOgFarBeggeHarRett.args,
+        barnet: {
+            antallBarn: '1',
+            termindato: '2021-03-01',
+            fødselsdato: '2021-01-01',
+            erFødsel: true,
+            erBarnetFødt: true,
+        },
+    },
+};
 export const FødselMorOgFarKunFarHarRett: Story = {
     args: {
         hvemPlanlegger: {
@@ -175,6 +187,18 @@ export const FødselMorOgMedmorKunMedmorHarRett: Story = {
             antallBarn: '1',
             termindato: '2022-01-01',
             fødselsdato: '2022-01-01',
+            erFødsel: true,
+            erBarnetFødt: true,
+        },
+    },
+};
+export const FødselMorOgMedmorKunMedmorHarRettPrematur: Story = {
+    args: {
+        ...FødselMorOgMedmorKunMedmorHarRett.args,
+        barnet: {
+            antallBarn: '1',
+            termindato: '2021-03-01',
+            fødselsdato: '2021-01-01',
             erFødsel: true,
             erBarnetFødt: true,
         },
