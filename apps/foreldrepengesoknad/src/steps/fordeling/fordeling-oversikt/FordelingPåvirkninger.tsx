@@ -67,7 +67,7 @@ export const FordelingPåvirkninger = ({
     const termindato = getTermindato(barn);
     const fødtFørUke33 = erFødtFørUke33(familiehendelsesdato, termindato);
     const visInfoInnleggelseVedPrematurFødsel = !erAdopsjon && førsteOkt2021Gjelder && fødtFørUke33 && !erFarOgFar;
-    const visInfoBarnSyktFørsteSeksUker = !erAdopsjon && førsteOkt2021Gjelder && !fødtFørUke33 && !erFarOgFar;
+    const visInfoBarnInnlagt = !erAdopsjon && førsteOkt2021Gjelder && !fødtFørUke33 && !erFarOgFar;
     return (
         <div className={styles.fordelingPåvirkninger}>
             <ExpansionCard
@@ -152,7 +152,7 @@ export const FordelingPåvirkninger = ({
                             </VStack>
                         </div>
                     )}
-                    {visInfoBarnSyktFørsteSeksUker && (
+                    {visInfoBarnInnlagt && (
                         <div className={styles.påvirkning}>
                             <div className={styles.ikonFrame}>
                                 <StethoscopeIcon className={styles.ikon} aria-hidden={true} />
@@ -160,13 +160,13 @@ export const FordelingPåvirkninger = ({
                             <VStack>
                                 <BodyShort className={styles.undertittel}>
                                     <FormattedMessage
-                                        id="fordeling.påvirkninger.barnSyk.tittel"
+                                        id="fordeling.påvirkninger.barnInnlagt.tittel"
                                         values={{ antallBarn: barn.antallBarn }}
                                     />
                                 </BodyShort>
                                 <FormattedMessage
-                                    id="fordeling.påvirkninger.barnSyk.info"
-                                    values={{ morTekst, antallBarn: barn.antallBarn }}
+                                    id="fordeling.påvirkninger.barnInnlagt.info"
+                                    values={{ duEllerDere, antallBarn: barn.antallBarn }}
                                 />
                             </VStack>
                         </div>

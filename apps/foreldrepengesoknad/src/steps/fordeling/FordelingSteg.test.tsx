@@ -906,7 +906,10 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
         expect(screen.getByText('2 av disse ukene')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
-        expect(screen.getByText('Hvis barnet blir innlagt på sykehus de første 6 ukene etter fødsel.')).toBeInTheDocument();
+        expect(screen.getByText('Hvis barnet er innlagt på sykehus')).toBeInTheDocument();
+        expect(
+            screen.queryByText('Hvis barnet blir innlagt på sykehus de første 6 ukene etter fødsel.'),
+        ).not.toBeInTheDocument();
         expect(screen.getByText('Hvis du blir syk de første seks ukene med foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Hvis du blir syk eller innlagt på helseinstitusjon')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
@@ -1031,8 +1034,8 @@ describe('Fordeling - MorDeltUttakTvillingerFødt', () => {
         expect(screen.getAllByText('brukes når som helst før barna fyller 3 år.', { exact: false })).toHaveLength(3);
 
         await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
-        expect(screen.getByText('Hvis barna blir innlagt på sykehus de første 6 ukene etter fødsel.')).toBeInTheDocument();
-        
+        expect(screen.getByText('Hvis barna er innlagt på sykehus')).toBeInTheDocument();
+
         expect(
             screen.getByText(
                 'Dere kan velge om dere vil ha foreldrepenger samtidig i opp til 17 uker fordi dere har fått tvillinger.',
