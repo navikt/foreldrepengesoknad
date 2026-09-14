@@ -9,7 +9,7 @@ import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './TilretteleggingSteg.stories';
 
-const { ForArbeidsforhold } = composeStories(stories);
+const { ForArbeidsforhold, ForArbeidsforholdMedUtfyltTilrettelegging } = composeStories(stories);
 
 describe('<TilretteleggingSteg>', () => {
     const user = userEvent.setup();
@@ -261,5 +261,86 @@ describe('<TilretteleggingSteg>', () => {
                 'Datoen du skal tilbake til din opprinnelige stillingsprosent må være på formatet dd.mm.åååå.',
             )[0],
         ).toBeInTheDocument();
+    });
+
+    it('fra-dato for redusert jobb blir forhåndsutfylt med datoen for behov for tilrettelegging', async () => {
+        render(<ForArbeidsforhold />);
+
+        const behovFomInput = await screen.findByLabelText(
+            'Fra hvilken dato har du behov for tilrettelegging eller omplassering?',
+        );
+        await user.type(behovFomInput, dayjs().format('DD.MM.YYYY'));
+        await user.tab();
+
+        await user.click(screen.getByText('Jeg kan jobbe redusert'));
+        await user.click(screen.getByText('Ja'));
+
+        expect(screen.getByLabelText('Fra hvilken dato skal du jobbe redusert?')).toHaveValue(
+            dayjs().format('DD.MM.YYYY'),
+        );
+    });
+
+    it('fra-dato for å være borte fra jobb blir forhåndsutfylt med datoen for behov for tilrettelegging', async () => {
+        render(<ForArbeidsforhold />);
+
+        const behovFomInput = await screen.findByLabelText(
+            'Fra hvilken dato har du behov for tilrettelegging eller omplassering?',
+        );
+        await user.type(behovFomInput, dayjs().format('DD.MM.YYYY'));
+        await user.tab();
+
+        await user.click(screen.getByText('Jeg kan ikke jobbe'));
+
+        expect(screen.getByLabelText('Fra hvilken dato skal du være borte fra jobb?')).toHaveValue(
+            dayjs().format('DD.MM.YYYY'),
+        );
+    });
+
+    it('forhåndsutfylling overskriver ikke datoen søkeren allerede har oppgitt', async () => {
+        render(<ForArbeidsforholdMedUtfyltTilrettelegging />);
+
+        expect(await screen.findByLabelText('Fra hvilken dato skal du jobbe redusert?')).toHaveValue(
+            dayjs().add(10, 'days').format('DD.MM.YYYY'),
+        );
+    });
+
+    it('forhåndsutfyller ikke når behovsdatoen er ufullstendig', async () => {
+        render(<ForArbeidsforhold />);
+
+        const behovFomInput = await screen.findByLabelText(
+            'Fra hvilken dato har du behov for tilrettelegging eller omplassering?',
+        );
+        await user.type(behovFomInput, '12.1');
+
+        await user.click(screen.getByText('Jeg kan jobbe redusert'));
+        await user.click(screen.getByText('Ja'));
+
+        expect(screen.getByLabelText('Fra hvilken dato skal du jobbe redusert?')).toHaveValue('');
+
+        await user.click(screen.getByText('Neste steg'));
+
+        expect(screen.getAllByText('Du må oppgi fra hvilken dato du skal jobbe redusert.')[0]).toBeInTheDocument();
+    });
+
+    it('forhåndsutfylt fra-dato kan endres av søkeren', async () => {
+        const gåTilNesteSide = vi.fn();
+
+        render(<ForArbeidsforhold gåTilNesteSide={gåTilNesteSide} />);
+
+        const behovFomInput = await screen.findByLabelText(
+            'Fra hvilken dato har du behov for tilrettelegging eller omplassering?',
+        );
+        await user.type(behovFomInput, dayjs().format('DD.MM.YYYY'));
+        await user.tab();
+
+        await user.click(screen.getByText('Jeg kan jobbe redusert'));
+        await user.click(screen.getByText('Ja'));
+
+        const fraDatoRedusertInput = screen.getByLabelText('Fra hvilken dato skal du jobbe redusert?');
+        await user.clear(fraDatoRedusertInput);
+        await user.type(fraDatoRedusertInput, dayjs().add(5, 'days').format('DD.MM.YYYY'));
+        await user.tab();
+
+        expect(fraDatoRedusertInput).toHaveValue(dayjs().add(5, 'days').format('DD.MM.YYYY'));
     });
 });
