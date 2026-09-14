@@ -68,8 +68,6 @@ export const FordelingPåvirkninger = ({
     const fødtFørUke33 = erFødtFørUke33(familiehendelsesdato, termindato);
     const visInfoInnleggelseVedPrematurFødsel = !erAdopsjon && førsteOkt2021Gjelder && fødtFørUke33 && !erFarOgFar;
     const visInfoBarnSyktFørsteSeksUker = !erAdopsjon && førsteOkt2021Gjelder && !fødtFørUke33 && !erFarOgFar;
-
-
     return (
         <div className={styles.fordelingPåvirkninger}>
             <ExpansionCard
@@ -130,31 +128,29 @@ export const FordelingPåvirkninger = ({
                     )}
 
                     {visInfoMorSykFørsteSeksUker && (
-                        <>
-                            <div className={styles.påvirkning}>
-                                <div className={styles.ikonFrame}>
-                                    <StethoscopeIcon className={styles.ikon} aria-hidden={true} />
-                                </div>
-                                <VStack>
-                                    <BodyShort className={styles.undertittel}>
-                                        <FormattedMessage
-                                            id="fordeling.påvirkninger.morSykFørste6Uker.tittel"
-                                            values={{ morTekst }}
-                                        />
-                                    </BodyShort>
-                                    <FormattedMessage
-                                        id="fordeling.påvirkninger.morSykFørste6Uker.info"
-                                        values={{
-                                            morTekst,
-                                            farTekst,
-                                            degEllerSeg,
-                                            degEllerMor,
-                                            antallBarn: barn.antallBarn,
-                                        }}
-                                    />
-                                </VStack>
+                        <div className={styles.påvirkning}>
+                            <div className={styles.ikonFrame}>
+                                <StethoscopeIcon className={styles.ikon} aria-hidden={true} />
                             </div>
-                        </>
+                            <VStack>
+                                <BodyShort className={styles.undertittel}>
+                                    <FormattedMessage
+                                        id="fordeling.påvirkninger.morSykFørste6Uker.tittel"
+                                        values={{ morTekst }}
+                                    />
+                                </BodyShort>
+                                <FormattedMessage
+                                    id="fordeling.påvirkninger.morSykFørste6Uker.info"
+                                    values={{
+                                        morTekst,
+                                        farTekst,
+                                        degEllerSeg,
+                                        degEllerMor,
+                                        antallBarn: barn.antallBarn,
+                                    }}
+                                />
+                            </VStack>
+                        </div>
                     )}
                     {visInfoBarnSyktFørsteSeksUker && (
                         <div className={styles.påvirkning}>
