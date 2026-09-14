@@ -133,8 +133,8 @@ export const UttaksplanSteg = ({
     const valgteStønadskvoter = tilgjengeligeStønadskvoterQuery.data;
 
     // Filtrerer ut periodane til annen part midlertidig fram til me får på plass lagring av desse
-    // periodane. Forslagsmotoren (deltUttak/ikkeDeltUttak) plasserer alltid søkjars eigne periodar
-    // på .søker, uavhengig av forelderrolle, så det er nok å filtrere på at .søker finst.
+    // periodane. useUttaksplanForslag sørger for at .søker alltid betyr søkjars eigne periodar
+    // (uavhengig av forelderrolle), så det er nok å filtrere på at .søker finst.
     const nyttUttaksplanForslag = useUttaksplanForslag(
         valgteStønadskvoter,
         annenPartVedtakQuery.data?.perioder,

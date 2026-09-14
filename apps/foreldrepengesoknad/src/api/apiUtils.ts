@@ -352,57 +352,57 @@ const midlertidigMappingAvUttaksplan = (
             };
         }
 
-        // Ei uttaksperiode/utsettelse/overføring har alltid ei .søker-side her, sidan periodar
+        // Ei uttaksperiode/utsettelse/overføring har alltid ein .søker her, sidan periodar
         // utan .søker allereie er filtrert bort med mindre dei er oppholdsperiodar (over).
-        const side = notEmpty(periode.søker);
+        const søker = notEmpty(periode.søker);
 
         const skalViseFlerbarnsdager = skalBesvareFlerbarnsdager(
             barn.antallBarn,
-            side.forelder,
-            side.kontoType,
-            side.samtidigUttak,
+            søker.forelder,
+            søker.kontoType,
+            søker.samtidigUttak,
         );
 
-        if (side.overføringÅrsak) {
+        if (søker.overføringÅrsak) {
             return {
                 type: 'overføring',
                 fom: periode.fom,
                 tom: periode.tom,
-                konto: notEmpty(side.kontoType),
-                årsak: side.overføringÅrsak,
+                konto: notEmpty(søker.kontoType),
+                årsak: søker.overføringÅrsak,
             };
         }
-        if (side.utsettelseÅrsak) {
+        if (søker.utsettelseÅrsak) {
             return {
                 type: 'utsettelse',
                 fom: periode.fom,
                 tom: periode.tom,
                 erArbeidstaker: false,
-                morsAktivitetIPerioden: side.morsAktivitet,
-                årsak: midlertidigMappingAvUtsettelseÅrsak(side.utsettelseÅrsak),
+                morsAktivitetIPerioden: søker.morsAktivitet,
+                årsak: midlertidigMappingAvUtsettelseÅrsak(søker.utsettelseÅrsak),
             };
         }
         return {
             type: 'uttak',
             fom: periode.fom,
             tom: periode.tom,
-            gradering: side.gradering
+            gradering: søker.gradering
                 ? {
-                      erArbeidstaker: side.gradering.aktivitet?.type === 'ORDINÆRT_ARBEID',
-                      erFrilanser: side.gradering.aktivitet?.type === 'FRILANS',
-                      erSelvstendig: side.gradering.aktivitet?.type === 'SELVSTENDIG_NÆRINGSDRIVENDE',
-                      orgnumre: side.gradering.aktivitet?.arbeidsgiver?.id
-                          ? [side.gradering.aktivitet.arbeidsgiver.id]
+                      erArbeidstaker: søker.gradering.aktivitet?.type === 'ORDINÆRT_ARBEID',
+                      erFrilanser: søker.gradering.aktivitet?.type === 'FRILANS',
+                      erSelvstendig: søker.gradering.aktivitet?.type === 'SELVSTENDIG_NÆRINGSDRIVENDE',
+                      orgnumre: søker.gradering.aktivitet?.arbeidsgiver?.id
+                          ? [søker.gradering.aktivitet.arbeidsgiver.id]
                           : [],
-                      stillingsprosent: side.gradering?.arbeidstidprosent,
+                      stillingsprosent: søker.gradering?.arbeidstidprosent,
                   }
                 : undefined,
-            konto: notEmpty(side.kontoType),
-            morsAktivitetIPerioden: side.morsAktivitet,
-            samtidigUttakProsent: side.samtidigUttak,
-            ønskerFlerbarnsdager: skalViseFlerbarnsdager ? side.flerbarnsdager : undefined,
-            ønskerGradering: side.gradering !== undefined,
-            ønskerSamtidigUttak: erDeltUttak ? side.samtidigUttak !== undefined : undefined,
+            konto: notEmpty(søker.kontoType),
+            morsAktivitetIPerioden: søker.morsAktivitet,
+            samtidigUttakProsent: søker.samtidigUttak,
+            ønskerFlerbarnsdager: skalViseFlerbarnsdager ? søker.flerbarnsdager : undefined,
+            ønskerGradering: søker.gradering !== undefined,
+            ønskerSamtidigUttak: erDeltUttak ? søker.samtidigUttak !== undefined : undefined,
         };
     });
 };

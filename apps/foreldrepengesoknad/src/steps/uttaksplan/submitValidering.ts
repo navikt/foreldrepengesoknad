@@ -155,8 +155,8 @@ export const harKunPerioderForAnnenForelder = (erAleneOmOmsorg: boolean, periode
 // reelt uttak av foreldrepengar, og er ein gyldig søknad åleine på lik linje med ein uttaksperiode.
 export const harMinstEnUttaksEllerOverføringsperiode = (perioder: UttaksplanPerioder) =>
     perioder.some((periode) => {
-        const side = periode.søker;
-        return !!side && (Uttaksperioden.erUttaksperiode(side) || Uttaksperioden.erOverføringsperiode(side));
+        const søker = periode.søker;
+        return !!søker && (Uttaksperioden.erUttaksperiode(søker) || Uttaksperioden.erOverføringsperiode(søker));
     });
 
 export const erKunUtsettelser = (perioder: UttaksplanPerioder) => {

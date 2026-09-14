@@ -402,15 +402,15 @@ const leggTilDatoOgHvaVilDuGjøre = (
     periode?: LeggTilEllerEndrePeriodeFormFormValues,
 ): FormValues | undefined => {
     if (erPeriodeDto(uttaksplanperiode) && uttaksplanperiode.søker?.utsettelseÅrsak) {
-        const side = uttaksplanperiode.søker;
+        const søker = uttaksplanperiode.søker;
         const hvaVilDuGjøre =
-            side.utsettelseÅrsak === 'FRI' && side.morsAktivitet ? 'LEGG_TIL_PAUSE' : 'LEGG_TIL_UTSETTELSE';
+            søker.utsettelseÅrsak === 'FRI' && søker.morsAktivitet ? 'LEGG_TIL_PAUSE' : 'LEGG_TIL_UTSETTELSE';
         return {
             fom: uttaksplanperiode.fom,
             tom: uttaksplanperiode.tom,
-            hvaVilDuGjøre: side.utsettelseÅrsak === 'FERIE' ? 'LEGG_TIL_FERIE' : hvaVilDuGjøre,
-            utsettelseÅrsak: side.utsettelseÅrsak !== 'FERIE' ? side.utsettelseÅrsak : undefined,
-            morsAktivitet: side.morsAktivitet,
+            hvaVilDuGjøre: søker.utsettelseÅrsak === 'FERIE' ? 'LEGG_TIL_FERIE' : hvaVilDuGjøre,
+            utsettelseÅrsak: søker.utsettelseÅrsak !== 'FERIE' ? søker.utsettelseÅrsak : undefined,
+            morsAktivitet: søker.morsAktivitet,
         };
     }
 

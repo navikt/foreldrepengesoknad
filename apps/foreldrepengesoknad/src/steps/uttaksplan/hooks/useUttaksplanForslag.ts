@@ -8,6 +8,7 @@ import {
     KontoBeregningDto,
     KontoDto,
     PeriodeDto_fpoversikt,
+    Rolle_fpoversikt,
     Tidsperiode,
     UttakPeriode_fpoversikt,
     isAdoptertAnnetBarn,
@@ -167,6 +168,25 @@ const lagDeltUttakForFarMedmor = (
 };
 
 /**
+ * deltUttak() frå @navikt/fp-uttaksplan kjenner ikkje søker-/annenPart-fordelinga for saka –
+ * han legg alle genererte periodar (for BÅDE mor og far/medmor) på .søker, skilt kun ved
+ * periode.søker.forelder. Denne funksjonen flytter periodane som eigentleg gjeld den andre
+ * forelderen over til .annenPart, slik at forslaget kan brukast som ein vanleg
+ * PeriodeDto_fpoversikt[] der .søker faktisk betyr «den innlogga søkjaren».
+ */
+const fordelPerioderEtterSøkerrolle = (
+    perioder: PeriodeDto_fpoversikt[],
+    søkersRolle: Rolle_fpoversikt,
+): PeriodeDto_fpoversikt[] =>
+    perioder.map((periode) => {
+        if (periode.søker && periode.søker.forelder !== søkersRolle) {
+            const { søker, ...periodeUtenSøker } = periode;
+            return { ...periodeUtenSøker, annenPart: søker };
+        }
+        return periode;
+    });
+
+/**
  * Om annen part allerede har uttaksperioder (t.d. eit vedtak), klarer ikkje
  * useUttaksplanForslag å lage eit fornuftig forslag – uansett kva startdato
  * brukaren ville ha valgt. Denne funksjonen let ein sjekke dette på førehand,
@@ -243,12 +263,19 @@ export const useUttaksplanForslag = (
             : 0;
         const { fellesperiodeDagerMor } = getFellesperioderDagerFordeling(fordeling, fellesperiodeDagerTilgjengelig);
 
-        return deltUttak({
-            famDato: familiehendelsedato,
-            tilgjengeligeStønadskvoter: valgtStønadskvote.kontoer,
-            fellesperiodeDagerFørsteForelder: fellesperiodeDagerMor,
-            startdato: oppstartsdato,
-        });
+        // deltUttak() kjenner ikke søker-/annenPart-fordelingen for denne saken – alle genererte
+        // perioder (for BÅDE mor og far/medmor) legges på .søker, skilt kun ved periode.søker.forelder.
+        // Søkjar her er MOR, så periodane som eigentleg gjeld far/medmor må flyttast til .annenPart
+        // før forslaget blir brukt som (utgangspunkt for) søkjar sin eigen uttaksplan.
+        return fordelPerioderEtterSøkerrolle(
+            deltUttak({
+                famDato: familiehendelsedato,
+                tilgjengeligeStønadskvoter: valgtStønadskvote.kontoer,
+                fellesperiodeDagerFørsteForelder: fellesperiodeDagerMor,
+                startdato: oppstartsdato,
+            }),
+            'MOR',
+        );
     }
 
     const erFarOgFar = getErFarOgFar(søkersituasjon.rolle, annenForelder);

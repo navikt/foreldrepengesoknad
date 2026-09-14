@@ -40,9 +40,9 @@ export const MorInnlagtDokumentasjon = ({
     );
 
     const morErForSykEllerInnlagtFørsteSeksUker = perioderRundtFødsel.some((p) => {
-        const side = p.søker;
+        const søker = p.søker;
         return (
-            !!side && Uttaksperioden.erUttaksperiode(side) && side.kontoType === 'FEDREKVOTE' && !side.samtidigUttak
+            !!søker && Uttaksperioden.erUttaksperiode(søker) && søker.kontoType === 'FEDREKVOTE' && !søker.samtidigUttak
         );
     });
 

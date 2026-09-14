@@ -33,19 +33,19 @@ const ManglerDokumentasjon = ({ headerLabel, bodyLabel }: ManglerDokumentasjonPr
 );
 
 const isPeriodeMedMorInnleggelse = (periode: PeriodeDto_fpoversikt, familiehendelsedato: string) => {
-    const side = periode.søker;
-    if (!side) {
+    const søker = periode.søker;
+    if (!søker) {
         return false;
     }
 
-    if (side.overføringÅrsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' && side.forelder === 'FAR_MEDMOR') {
+    if (søker.overføringÅrsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' && søker.forelder === 'FAR_MEDMOR') {
         return true;
     }
 
     if (
-        Uttaksperioden.erUttaksperiode(side) &&
-        side.kontoType === 'FEDREKVOTE' &&
-        !side.samtidigUttak &&
+        Uttaksperioden.erUttaksperiode(søker) &&
+        søker.kontoType === 'FEDREKVOTE' &&
+        !søker.samtidigUttak &&
         UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
             periode,
             familiehendelsedato,
@@ -56,13 +56,13 @@ const isPeriodeMedMorInnleggelse = (periode: PeriodeDto_fpoversikt, familiehende
     }
 
     if (
-        (side.kontoType === 'FELLESPERIODE' || side.kontoType === 'FORELDREPENGER') &&
-        side.morsAktivitet === 'INNLAGT'
+        (søker.kontoType === 'FELLESPERIODE' || søker.kontoType === 'FORELDREPENGER') &&
+        søker.morsAktivitet === 'INNLAGT'
     ) {
         return true;
     }
 
-    if (side.utsettelseÅrsak === 'SØKER_INNLAGT') {
+    if (søker.utsettelseÅrsak === 'SØKER_INNLAGT') {
         return true;
     }
 
@@ -89,12 +89,12 @@ export const DokumentasjonSendSenereLabel = ({
     const morErForSykEllerInnlagtFørsteSeksUker = uttaksperioderSomManglerVedlegg
         .filter((p) => isPeriodeMedMorInnleggelse(p, familiehendelsedato))
         .some((p) => {
-            const side = p.søker;
+            const søker = p.søker;
             return (
-                !!side &&
-                Uttaksperioden.erUttaksperiode(side) &&
-                side.morsAktivitet === 'INNLAGT' &&
-                side.kontoType === 'FEDREKVOTE'
+                !!søker &&
+                Uttaksperioden.erUttaksperiode(søker) &&
+                søker.morsAktivitet === 'INNLAGT' &&
+                søker.kontoType === 'FEDREKVOTE'
             );
         });
 

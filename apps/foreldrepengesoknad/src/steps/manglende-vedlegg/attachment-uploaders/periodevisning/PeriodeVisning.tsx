@@ -76,41 +76,41 @@ const PeriodeIkon = ({
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
 }): React.ReactNode | null => {
-    const side = periode.søker;
-    if (!side) {
+    const søker = periode.søker;
+    if (!søker) {
         return null;
     }
 
-    const erUttak = Uttaksperioden.erUttaksperiode(side);
+    const erUttak = Uttaksperioden.erUttaksperiode(søker);
     if (erUttak) {
-        if (side.resultat?.årsak === 'INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID') {
+        if (søker.resultat?.årsak === 'INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID') {
             return <UttaksplanAdvarselIkon />;
         }
 
         return (
             <StønadskvoteIkon
-                konto={side.kontoType}
-                forelder={side.forelder}
-                gradert={!!side.gradering}
+                konto={søker.kontoType}
+                forelder={søker.forelder}
+                gradert={!!søker.gradering}
                 navnPåForeldre={navnPåForeldre}
                 erFarEllerMedmor={erFarEllerMedmor}
             />
         );
     }
 
-    if (side.overføringÅrsak) {
+    if (søker.overføringÅrsak) {
         return (
             <StønadskvoteIkon
-                konto={side.kontoType}
-                forelder={side.forelder}
+                konto={søker.kontoType}
+                forelder={søker.forelder}
                 navnPåForeldre={navnPåForeldre}
                 erFarEllerMedmor={erFarEllerMedmor}
             />
         );
     }
 
-    if (side.utsettelseÅrsak) {
-        return <UtsettelseIkon årsak={side.utsettelseÅrsak} forelder={side.forelder} />;
+    if (søker.utsettelseÅrsak) {
+        return <UtsettelseIkon årsak={søker.utsettelseÅrsak} forelder={søker.forelder} />;
     }
 
     return null;
@@ -187,12 +187,12 @@ const PeriodeTittel = ({
 }) => {
     const intl = useIntl();
 
-    const side = periode.søker;
-    if (!side) {
+    const søker = periode.søker;
+    if (!søker) {
         return '';
     }
 
-    const erUttak = Uttaksperioden.erUttaksperiode(side);
+    const erUttak = Uttaksperioden.erUttaksperiode(søker);
     if (erUttak) {
         return getPeriodeTittelUttaksPeriode(
             intl,
@@ -205,14 +205,14 @@ const PeriodeTittel = ({
             erAleneOmOmsorg,
         );
     }
-    if (side.overføringÅrsak) {
-        return getStønadskvoteNavn(intl, side.kontoType, navnPåForeldre, erFarEllerMedmor);
+    if (søker.overføringÅrsak) {
+        return getStønadskvoteNavn(intl, søker.kontoType, navnPåForeldre, erFarEllerMedmor);
     }
-    if (side.utsettelseÅrsak) {
+    if (søker.utsettelseÅrsak) {
         return intl.formatMessage(
             { id: 'uttaksplan.periodeliste.utsettelsesårsak' },
             {
-                årsak: intl.formatMessage({ id: `uttaksplan.utsettelsesårsak.${side.utsettelseÅrsak}` }),
+                årsak: intl.formatMessage({ id: `uttaksplan.utsettelsesårsak.${søker.utsettelseÅrsak}` }),
             },
         );
     }
@@ -229,14 +229,14 @@ const getPeriodeTittelUttaksPeriode = (
     erFarEllerMedmor: boolean,
     erAleneOmOmsorg?: boolean,
 ) => {
-    const side = periode.søker;
-    if (!side) {
+    const søker = periode.søker;
+    if (!søker) {
         return '';
     }
 
     const tittelMedNavn = getStønadskvoteNavn(
         intl,
-        side.kontoType,
+        søker.kontoType,
         navnPåForeldre,
         erFarEllerMedmor,
         erAleneOmOmsorg,
@@ -249,13 +249,13 @@ const getPeriodeTittelUttaksPeriode = (
         familiehendelsesdato,
         termindato,
     );
-    if (side.gradering || side.samtidigUttak) {
+    if (søker.gradering || søker.samtidigUttak) {
         return `${tittel} ${intl.formatMessage(
             { id: 'gradering.prosent' },
             {
                 stillingsprosent: getUttaksprosentFromStillingsprosent(
-                    prettifyProsent(side.gradering?.arbeidstidprosent),
-                    side.samtidigUttak ? prettifyProsent(side.samtidigUttak) : undefined,
+                    prettifyProsent(søker.gradering?.arbeidstidprosent),
+                    søker.samtidigUttak ? prettifyProsent(søker.samtidigUttak) : undefined,
                 ),
             },
         )}`;
@@ -281,10 +281,10 @@ const isUttaksperiodeFarMedmorPgaFødsel = (
     familiehendelsesdato: string,
     termindato: string | undefined,
 ): boolean => {
-    const side = periode.søker;
+    const søker = periode.søker;
     return (
-        !!side &&
-        erFarMedmorMedValgForUttakRundtFødsel(side) &&
+        !!søker &&
+        erFarMedmorMedValgForUttakRundtFødsel(søker) &&
         UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
             periode,
             familiehendelsesdato,
@@ -296,14 +296,14 @@ const isUttaksperiodeFarMedmorPgaFødsel = (
 // Far/medmor kan velje å ta fedrekvote samtidig med mor sitt uttak rundt fødsel – då skal
 // perioden merkast som "rundt fødsel" i visninga, uavhengig av om ho faktisk ligg i det lovpålagte
 // tidsromet (det sjekkast separat i erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel).
-const erFarMedmorMedValgForUttakRundtFødsel = (side: UttakDto_fpoversikt): boolean => {
+const erFarMedmorMedValgForUttakRundtFødsel = (søker: UttakDto_fpoversikt): boolean => {
     return (
-        Uttaksperioden.erUttaksperiode(side) &&
-        side.forelder === 'FAR_MEDMOR' &&
-        side.kontoType === 'FEDREKVOTE' &&
-        side.morsAktivitet === undefined &&
-        !side.flerbarnsdager &&
-        !!side.samtidigUttak
+        Uttaksperioden.erUttaksperiode(søker) &&
+        søker.forelder === 'FAR_MEDMOR' &&
+        søker.kontoType === 'FEDREKVOTE' &&
+        søker.morsAktivitet === undefined &&
+        !søker.flerbarnsdager &&
+        !!søker.samtidigUttak
     );
 };
 

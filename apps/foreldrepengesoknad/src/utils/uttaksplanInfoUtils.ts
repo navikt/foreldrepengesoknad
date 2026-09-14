@@ -37,15 +37,15 @@ export const getUttaksprosentFromStillingsprosent = (
 };
 
 export const isUttaksperiodeFarMedmorMedValgForUttakRundtFødsel = (periode: PeriodeDto_fpoversikt): boolean => {
-    const side = periode.søker;
+    const søker = periode.søker;
     return (
-        !!side &&
-        Uttaksperioden.erUttaksperiode(side) &&
-        side.forelder === 'FAR_MEDMOR' &&
-        side.kontoType === 'FEDREKVOTE' &&
-        side.morsAktivitet === undefined &&
-        !side.flerbarnsdager &&
-        !!side.samtidigUttak
+        !!søker &&
+        Uttaksperioden.erUttaksperiode(søker) &&
+        søker.forelder === 'FAR_MEDMOR' &&
+        søker.kontoType === 'FEDREKVOTE' &&
+        søker.morsAktivitet === undefined &&
+        !søker.flerbarnsdager &&
+        !!søker.samtidigUttak
     );
 };
 
