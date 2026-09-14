@@ -15,7 +15,6 @@ import {
     PeriodeDto_fpoversikt,
     Situasjon,
     UttakDto_fpoversikt,
-    UttakOppholdÅrsak_fpoversikt,
     no_nav_foreldrepenger_kontrakter_felles_kodeverk_KontoType,
 } from '@navikt/fp-types';
 import { Uttaksperioden, capitalizeFirstLetter } from '@navikt/fp-utils';
@@ -111,35 +110,13 @@ export const getPeriodeTittel = (
     if (Uttaksperioden.erOppholdsperiode(periode)) {
         return getOppholdskontoNavn(
             intl,
-            kontoTypeTilOppholdÅrsak(periode.annenPart?.kontoType),
+            periode.annenPart?.kontoType,
             getForelderNavn(erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR', navnPåForeldre),
             !erFarEllerMedmor,
         );
     }
 
     return '';
-};
-
-const kontoTypeTilOppholdÅrsak = (
-    kontoType: no_nav_foreldrepenger_kontrakter_felles_kodeverk_KontoType | undefined,
-): UttakOppholdÅrsak_fpoversikt => {
-    switch (kontoType) {
-        case 'MØDREKVOTE': {
-            return 'MØDREKVOTE_ANNEN_FORELDER';
-        }
-        case 'FEDREKVOTE': {
-            return 'FEDREKVOTE_ANNEN_FORELDER';
-        }
-        case 'FELLESPERIODE': {
-            return 'FELLESPERIODE_ANNEN_FORELDER';
-        }
-        case 'FORELDREPENGER': {
-            return 'FORELDREPENGER_ANNEN_FORELDER';
-        }
-        default: {
-            throw new Error('Ukjent kontotype for oppholdsperiode');
-        }
-    }
 };
 
 const getPeriodeTittelUttaksPeriode = (
@@ -182,25 +159,25 @@ const getPeriodeTittelUttaksPeriode = (
 
 const getOppholdskontoNavn = (
     intl: IntlShape,
-    årsak: UttakOppholdÅrsak_fpoversikt,
+    kontoType: no_nav_foreldrepenger_kontrakter_felles_kodeverk_KontoType | undefined,
     foreldernavn: string,
     erMor: boolean,
 ) => {
     const navn = capitalizeFirstLetter(foreldernavn);
     if (erMor) {
-        if (årsak === 'FEDREKVOTE_ANNEN_FORELDER') {
+        if (kontoType === 'FEDREKVOTE') {
             return intl.formatMessage(
                 { id: 'uttaksplan.oppholdsårsaktype.foreldernavn.far.FEDREKVOTE_ANNEN_FORELDER' },
                 { foreldernavn: navn },
             );
         }
-        if (årsak === 'FELLESPERIODE_ANNEN_FORELDER') {
+        if (kontoType === 'FELLESPERIODE') {
             return intl.formatMessage(
                 { id: 'uttaksplan.oppholdsårsaktype.foreldernavn.far.FELLESPERIODE_ANNEN_FORELDER' },
                 { foreldernavn: navn },
             );
         }
-        if (årsak === 'MØDREKVOTE_ANNEN_FORELDER') {
+        if (kontoType === 'MØDREKVOTE') {
             return intl.formatMessage(
                 { id: 'uttaksplan.oppholdsårsaktype.foreldernavn.far.MØDREKVOTE_ANNEN_FORELDER' },
                 { foreldernavn: navn },
@@ -208,14 +185,14 @@ const getOppholdskontoNavn = (
         }
     }
 
-    if (årsak === 'FEDREKVOTE_ANNEN_FORELDER') {
+    if (kontoType === 'FEDREKVOTE') {
         return intl.formatMessage(
             { id: 'uttaksplan.oppholdsårsaktype.foreldernavn.mor.FEDREKVOTE_ANNEN_FORELDER' },
             { foreldernavn: navn },
         );
     }
 
-    if (årsak === 'FELLESPERIODE_ANNEN_FORELDER') {
+    if (kontoType === 'FELLESPERIODE') {
         return intl.formatMessage(
             { id: 'uttaksplan.oppholdsårsaktype.foreldernavn.mor.FELLESPERIODE_ANNEN_FORELDER' },
             { foreldernavn: navn },

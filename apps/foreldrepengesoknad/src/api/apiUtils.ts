@@ -22,7 +22,6 @@ import {
     PeriodeDto_fpoversikt,
     SøkerDto,
     Søkerrolle,
-    UttakOppholdÅrsak_fpoversikt,
     Uttaksplanperiode,
     UtsettelseÅrsak_fpoversikt,
     UtsettelsesÅrsak,
@@ -349,7 +348,7 @@ const midlertidigMappingAvUttaksplan = (
                 type: 'opphold',
                 fom: periode.fom,
                 tom: periode.tom,
-                årsak: midlertidigMappingAvOppholdÅrsak(kontoTypeTilOppholdÅrsak(periode.annenPart?.kontoType)),
+                årsak: kontoTypeTilOppholdsårsak(periode.annenPart?.kontoType),
             };
         }
 
@@ -410,44 +409,24 @@ const midlertidigMappingAvUttaksplan = (
 
 // Opphaldsårsaka kom tidlegare direkte frå backend som eit eige felt. No er ho strukturell:
 // årsaka til at søkjar har eit hol i planen sin er kontotypen til annan part sitt uttak der.
-const kontoTypeTilOppholdÅrsak = (
+const kontoTypeTilOppholdsårsak = (
     kontoType: no_nav_foreldrepenger_kontrakter_felles_kodeverk_KontoType | undefined,
-): UttakOppholdÅrsak_fpoversikt => {
+): Oppholdsårsak => {
     switch (kontoType) {
         case 'MØDREKVOTE': {
-            return 'MØDREKVOTE_ANNEN_FORELDER';
+            return 'UTTAK_MØDREKVOTE_ANNEN_FORELDER';
         }
         case 'FEDREKVOTE': {
-            return 'FEDREKVOTE_ANNEN_FORELDER';
+            return 'UTTAK_FEDREKVOTE_ANNEN_FORELDER';
         }
         case 'FELLESPERIODE': {
-            return 'FELLESPERIODE_ANNEN_FORELDER';
+            return 'UTTAK_FELLESP_ANNEN_FORELDER';
         }
         case 'FORELDREPENGER': {
-            return 'FORELDREPENGER_ANNEN_FORELDER';
+            return 'UTTAK_FORELDREPENGER_ANNEN_FORELDER';
         }
         default: {
             throw new Error('Ukjent kontotype for oppholdsperiode');
-        }
-    }
-};
-
-const midlertidigMappingAvOppholdÅrsak = (årsak: UttakOppholdÅrsak_fpoversikt): Oppholdsårsak => {
-    switch (årsak) {
-        case 'FEDREKVOTE_ANNEN_FORELDER': {
-            return 'UTTAK_FEDREKVOTE_ANNEN_FORELDER';
-        }
-        case 'FELLESPERIODE_ANNEN_FORELDER': {
-            return 'UTTAK_FELLESP_ANNEN_FORELDER';
-        }
-        case 'FORELDREPENGER_ANNEN_FORELDER': {
-            return 'UTTAK_FORELDREPENGER_ANNEN_FORELDER';
-        }
-        case 'MØDREKVOTE_ANNEN_FORELDER': {
-            return 'UTTAK_MØDREKVOTE_ANNEN_FORELDER';
-        }
-        default: {
-            throw new Error('Ukjent oppholdsårsak');
         }
     }
 };
