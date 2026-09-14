@@ -7,6 +7,7 @@ import {
     StethoscopeIcon,
 } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
+import { ComponentProps, ComponentType, SVGProps } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getTermindato } from 'utils/barnUtils';
 import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from 'utils/dateUtils';
@@ -22,6 +23,28 @@ import styles from './fordeling-påvirkninger.module.css';
 const ANTALL_UKER_MINSTERETT_MOR_TO_TETTE_FØDSEL = 22;
 const ANTALL_UKER_MINSTERETT_MOR_TO_TETTE_ADOPSJON = 8;
 const ANTALL_UKER_MINSTERETT_FAR_TO_TETTE = 8;
+
+type PåvirkningProps = {
+    icon: ComponentType<SVGProps<SVGSVGElement>>;
+    tittelId: ComponentProps<typeof FormattedMessage>['id'];
+    infoId: ComponentProps<typeof FormattedMessage>['id'];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    values?: Record<string, any>;
+};
+
+const Påvirkning = ({ icon: Icon, tittelId, infoId, values }: PåvirkningProps) => (
+    <div className={styles.påvirkning}>
+        <div className={styles.ikonFrame}>
+            <Icon className={styles.ikon} aria-hidden={true} />
+        </div>
+        <VStack>
+            <BodyShort className={styles.undertittel}>
+                <FormattedMessage id={tittelId} values={values} />
+            </BodyShort>
+            <FormattedMessage id={infoId} values={values} />
+        </VStack>
+    </div>
+);
 
 interface Props {
     deltUttak: boolean;
@@ -90,121 +113,58 @@ export const FordelingPåvirkninger = ({
                 <ExpansionCard.Content>
                     {visInfoInnleggelseVedPrematurFødsel && (
                         <>
-                            <div className={styles.påvirkning}>
-                                <div className={styles.ikonFrame}>
-                                    <HospitalIcon className={styles.ikon} aria-hidden={true} />
-                                </div>
-                                <VStack>
-                                    <BodyShort className={styles.undertittel}>
-                                        <FormattedMessage
-                                            id="fordeling.påvirkninger.prematur.barnInnlagtFørTermin.tittel"
-                                            values={{ antallBarn: barn.antallBarn }}
-                                        />
-                                    </BodyShort>
-                                    <FormattedMessage
-                                        id="fordeling.påvirkninger.prematur.barnInnlagtFørTermin.info"
-                                        values={{ antallBarn: barn.antallBarn }}
-                                    />
-                                </VStack>
-                            </div>
-                            <div className={styles.påvirkning}>
-                                <div className={styles.ikonFrame}>
-                                    <HospitalIcon className={styles.ikon} aria-hidden={true} />
-                                </div>
-                                <VStack>
-                                    <BodyShort className={styles.undertittel}>
-                                        <FormattedMessage
-                                            id="fordeling.påvirkninger.prematur.barnInnlagtEtterTermin.tittel"
-                                            values={{ antallBarn: barn.antallBarn }}
-                                        />
-                                    </BodyShort>
-                                    <FormattedMessage
-                                        id="fordeling.påvirkninger.prematur.barnInnlagtEtterTermin.info"
-                                        values={{ antallBarn: barn.antallBarn }}
-                                    />
-                                </VStack>
-                            </div>
+                            <Påvirkning
+                                icon={HospitalIcon}
+                                tittelId="fordeling.påvirkninger.prematur.barnInnlagtFørTermin.tittel"
+                                infoId="fordeling.påvirkninger.prematur.barnInnlagtFørTermin.info"
+                                values={{ antallBarn: barn.antallBarn }}
+                            />
+                            <Påvirkning
+                                icon={HospitalIcon}
+                                tittelId="fordeling.påvirkninger.prematur.barnInnlagtEtterTermin.tittel"
+                                infoId="fordeling.påvirkninger.prematur.barnInnlagtEtterTermin.info"
+                                values={{ antallBarn: barn.antallBarn }}
+                            />
                         </>
                     )}
 
                     {visInfoMorSykFørsteSeksUker && (
-                        <div className={styles.påvirkning}>
-                            <div className={styles.ikonFrame}>
-                                <StethoscopeIcon className={styles.ikon} aria-hidden={true} />
-                            </div>
-                            <VStack>
-                                <BodyShort className={styles.undertittel}>
-                                    <FormattedMessage
-                                        id="fordeling.påvirkninger.morSykFørste6Uker.tittel"
-                                        values={{ morTekst }}
-                                    />
-                                </BodyShort>
-                                <FormattedMessage
-                                    id="fordeling.påvirkninger.morSykFørste6Uker.info"
-                                    values={{
-                                        morTekst,
-                                        farTekst,
-                                        degEllerSeg,
-                                        degEllerMor,
-                                        antallBarn: barn.antallBarn,
-                                    }}
-                                />
-                            </VStack>
-                        </div>
+                        <Påvirkning
+                            icon={StethoscopeIcon}
+                            tittelId="fordeling.påvirkninger.morSykFørste6Uker.tittel"
+                            infoId="fordeling.påvirkninger.morSykFørste6Uker.info"
+                            values={{
+                                morTekst,
+                                farTekst,
+                                degEllerSeg,
+                                degEllerMor,
+                                antallBarn: barn.antallBarn,
+                            }}
+                        />
                     )}
                     {visInfoBarnInnlagt && (
-                        <div className={styles.påvirkning}>
-                            <div className={styles.ikonFrame}>
-                                <StethoscopeIcon className={styles.ikon} aria-hidden={true} />
-                            </div>
-                            <VStack>
-                                <BodyShort className={styles.undertittel}>
-                                    <FormattedMessage
-                                        id="fordeling.påvirkninger.barnInnlagt.tittel"
-                                        values={{ antallBarn: barn.antallBarn }}
-                                    />
-                                </BodyShort>
-                                <FormattedMessage
-                                    id="fordeling.påvirkninger.barnInnlagt.info"
-                                    values={{ duEllerDere, antallBarn: barn.antallBarn }}
-                                />
-                            </VStack>
-                        </div>
+                        <Påvirkning
+                            icon={StethoscopeIcon}
+                            tittelId="fordeling.påvirkninger.barnInnlagt.tittel"
+                            infoId="fordeling.påvirkninger.barnInnlagt.info"
+                            values={{ duEllerDere, antallBarn: barn.antallBarn }}
+                        />
                     )}
                     {visInfoMorSykISinPeriode && (
-                        <div className={styles.påvirkning}>
-                            <div className={styles.ikonFrame}>
-                                <StethoscopeIcon className={styles.ikon} aria-hidden={true} />
-                            </div>
-                            <VStack>
-                                <BodyShort className={styles.undertittel}>
-                                    <FormattedMessage id="fordeling.påvirkninger.morSykISinPeriode.tittel" />
-                                </BodyShort>
-                                <FormattedMessage
-                                    id="fordeling.påvirkninger.morSykISinPeriode.info"
-                                    values={{ navnAnnenForelder }}
-                                />
-                            </VStack>
-                        </div>
+                        <Påvirkning
+                            icon={StethoscopeIcon}
+                            tittelId="fordeling.påvirkninger.morSykISinPeriode.tittel"
+                            infoId="fordeling.påvirkninger.morSykISinPeriode.info"
+                            values={{ navnAnnenForelder }}
+                        />
                     )}
                     {visInfoFørFørsteOkt2021 && (
-                        <div className={styles.påvirkning}>
-                            <div className={styles.ikonFrame}>
-                                <StethoscopeIcon className={styles.ikon} aria-hidden={true} />
-                            </div>
-                            <VStack>
-                                <BodyShort className={styles.undertittel}>
-                                    <FormattedMessage
-                                        id="fordeling.påvirkninger.utsettelse.tittel"
-                                        values={{ antallBarn: barn.antallBarn }}
-                                    />
-                                </BodyShort>
-                                <FormattedMessage
-                                    id="fordeling.påvirkninger.utsettelse.info"
-                                    values={{ navnAnnenForelder }}
-                                />
-                            </VStack>
-                        </div>
+                        <Påvirkning
+                            icon={StethoscopeIcon}
+                            tittelId="fordeling.påvirkninger.utsettelse.tittel"
+                            infoId="fordeling.påvirkninger.utsettelse.info"
+                            values={{ navnAnnenForelder, antallBarn: barn.antallBarn }}
+                        />
                     )}
                     <div className={styles.påvirkning}>
                         <div className={styles.ikonFrame}>
@@ -245,48 +205,25 @@ export const FordelingPåvirkninger = ({
                             )}
                         </VStack>
                     </div>
-                    <div className={styles.påvirkning}>
-                        <div className={styles.ikonFrame}>
-                            <BriefcaseIcon className={styles.ikon} aria-hidden={true} />
-                        </div>
-                        <VStack>
-                            <BodyShort className={styles.undertittel}>
-                                <FormattedMessage id="fordeling.påvirkninger.jobb.tittel" />
-                            </BodyShort>
-                            <FormattedMessage id="fordeling.påvirkninger.jobb.info" />
-                        </VStack>
-                    </div>
+                    <Påvirkning
+                        icon={BriefcaseIcon}
+                        tittelId="fordeling.påvirkninger.jobb.tittel"
+                        infoId="fordeling.påvirkninger.jobb.info"
+                    />
                     {deltUttak && !annenForelderHarKunRettIEØS && (
-                        <div className={styles.påvirkning}>
-                            <div className={styles.ikonFrame}>
-                                <PersonGroupIcon className={styles.ikon} aria-hidden={true} />
-                            </div>
-                            <VStack>
-                                <BodyShort className={styles.undertittel}>
-                                    <FormattedMessage id="fordeling.påvirkninger.samtidigUttak.tittel" />
-                                </BodyShort>
-                                <FormattedMessage id="fordeling.påvirkninger.samtidigUttak.info" />
-                            </VStack>
-                        </div>
+                        <Påvirkning
+                            icon={PersonGroupIcon}
+                            tittelId="fordeling.påvirkninger.samtidigUttak.tittel"
+                            infoId="fordeling.påvirkninger.samtidigUttak.info"
+                        />
                     )}
                     {erIkkeFødtBarn && (
-                        <div className={styles.påvirkning}>
-                            <div className={styles.ikonFrame}>
-                                <BabyWrappedIcon className={styles.ikon} aria-hidden={true} />
-                            </div>
-                            <VStack>
-                                <BodyShort className={styles.undertittel}>
-                                    <FormattedMessage
-                                        id="fordeling.påvirkninger.prematur.tittel"
-                                        values={{ antallBarn: barn.antallBarn }}
-                                    />
-                                </BodyShort>
-                                <FormattedMessage
-                                    id="fordeling.påvirkninger.prematur.info"
-                                    values={{ antallBarn: barn.antallBarn, duEllerDere }}
-                                />
-                            </VStack>
-                        </div>
+                        <Påvirkning
+                            icon={BabyWrappedIcon}
+                            tittelId="fordeling.påvirkninger.prematur.tittel"
+                            infoId="fordeling.påvirkninger.prematur.info"
+                            values={{ antallBarn: barn.antallBarn, duEllerDere }}
+                        />
                     )}
                 </ExpansionCard.Content>
             </ExpansionCard>
