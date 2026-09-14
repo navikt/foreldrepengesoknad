@@ -7,7 +7,7 @@ import {
     StethoscopeIcon,
 } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
-import { ComponentProps, ComponentType, SVGProps } from 'react';
+import { ComponentType, ReactNode, SVGProps } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getTermindato } from 'utils/barnUtils';
 import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from 'utils/dateUtils';
@@ -26,22 +26,18 @@ const ANTALL_UKER_MINSTERETT_FAR_TO_TETTE = 8;
 
 type PåvirkningProps = {
     icon: ComponentType<SVGProps<SVGSVGElement>>;
-    tittelId: ComponentProps<typeof FormattedMessage>['id'];
-    infoId: ComponentProps<typeof FormattedMessage>['id'];
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    values?: Record<string, any>;
+    tittel: ReactNode;
+    info: ReactNode;
 };
 
-const Påvirkning = ({ icon: Icon, tittelId, infoId, values }: PåvirkningProps) => (
+const Påvirkning = ({ icon: Icon, tittel, info }: PåvirkningProps) => (
     <div className={styles.påvirkning}>
         <div className={styles.ikonFrame}>
             <Icon className={styles.ikon} aria-hidden={true} />
         </div>
         <VStack>
-            <BodyShort className={styles.undertittel}>
-                <FormattedMessage id={tittelId} values={values} />
-            </BodyShort>
-            <FormattedMessage id={infoId} values={values} />
+            <BodyShort className={styles.undertittel}>{tittel}</BodyShort>
+            {info}
         </VStack>
     </div>
 );
@@ -115,15 +111,33 @@ export const FordelingPåvirkninger = ({
                         <>
                             <Påvirkning
                                 icon={HospitalIcon}
-                                tittelId="fordeling.påvirkninger.prematur.barnInnlagtFørTermin.tittel"
-                                infoId="fordeling.påvirkninger.prematur.barnInnlagtFørTermin.info"
-                                values={{ antallBarn: barn.antallBarn }}
+                                tittel={
+                                    <FormattedMessage
+                                        id="fordeling.påvirkninger.prematur.barnInnlagtFørTermin.tittel"
+                                        values={{ antallBarn: barn.antallBarn }}
+                                    />
+                                }
+                                info={
+                                    <FormattedMessage
+                                        id="fordeling.påvirkninger.prematur.barnInnlagtFørTermin.info"
+                                        values={{ antallBarn: barn.antallBarn }}
+                                    />
+                                }
                             />
                             <Påvirkning
                                 icon={HospitalIcon}
-                                tittelId="fordeling.påvirkninger.prematur.barnInnlagtEtterTermin.tittel"
-                                infoId="fordeling.påvirkninger.prematur.barnInnlagtEtterTermin.info"
-                                values={{ antallBarn: barn.antallBarn }}
+                                tittel={
+                                    <FormattedMessage
+                                        id="fordeling.påvirkninger.prematur.barnInnlagtEtterTermin.tittel"
+                                        values={{ antallBarn: barn.antallBarn }}
+                                    />
+                                }
+                                info={
+                                    <FormattedMessage
+                                        id="fordeling.påvirkninger.prematur.barnInnlagtEtterTermin.info"
+                                        values={{ antallBarn: barn.antallBarn }}
+                                    />
+                                }
                             />
                         </>
                     )}
@@ -131,39 +145,70 @@ export const FordelingPåvirkninger = ({
                     {visInfoMorSykFørsteSeksUker && (
                         <Påvirkning
                             icon={StethoscopeIcon}
-                            tittelId="fordeling.påvirkninger.morSykFørste6Uker.tittel"
-                            infoId="fordeling.påvirkninger.morSykFørste6Uker.info"
-                            values={{
-                                morTekst,
-                                farTekst,
-                                degEllerSeg,
-                                degEllerMor,
-                                antallBarn: barn.antallBarn,
-                            }}
+                            tittel={
+                                <FormattedMessage
+                                    id="fordeling.påvirkninger.morSykFørste6Uker.tittel"
+                                    values={{ morTekst }}
+                                />
+                            }
+                            info={
+                                <FormattedMessage
+                                    id="fordeling.påvirkninger.morSykFørste6Uker.info"
+                                    values={{
+                                        morTekst,
+                                        farTekst,
+                                        degEllerSeg,
+                                        degEllerMor,
+                                        antallBarn: barn.antallBarn,
+                                    }}
+                                />
+                            }
                         />
                     )}
                     {visInfoBarnInnlagt && (
                         <Påvirkning
                             icon={StethoscopeIcon}
-                            tittelId="fordeling.påvirkninger.barnInnlagt.tittel"
-                            infoId="fordeling.påvirkninger.barnInnlagt.info"
-                            values={{ duEllerDere, antallBarn: barn.antallBarn }}
+                            tittel={
+                                <FormattedMessage
+                                    id="fordeling.påvirkninger.barnInnlagt.tittel"
+                                    values={{ antallBarn: barn.antallBarn }}
+                                />
+                            }
+                            info={
+                                <FormattedMessage
+                                    id="fordeling.påvirkninger.barnInnlagt.info"
+                                    values={{ duEllerDere, antallBarn: barn.antallBarn }}
+                                />
+                            }
                         />
                     )}
                     {visInfoMorSykISinPeriode && (
                         <Påvirkning
                             icon={StethoscopeIcon}
-                            tittelId="fordeling.påvirkninger.morSykISinPeriode.tittel"
-                            infoId="fordeling.påvirkninger.morSykISinPeriode.info"
-                            values={{ navnAnnenForelder }}
+                            tittel={<FormattedMessage id="fordeling.påvirkninger.morSykISinPeriode.tittel" />}
+                            info={
+                                <FormattedMessage
+                                    id="fordeling.påvirkninger.morSykISinPeriode.info"
+                                    values={{ navnAnnenForelder }}
+                                />
+                            }
                         />
                     )}
                     {visInfoFørFørsteOkt2021 && (
                         <Påvirkning
                             icon={StethoscopeIcon}
-                            tittelId="fordeling.påvirkninger.utsettelse.tittel"
-                            infoId="fordeling.påvirkninger.utsettelse.info"
-                            values={{ navnAnnenForelder, antallBarn: barn.antallBarn }}
+                            tittel={
+                                <FormattedMessage
+                                    id="fordeling.påvirkninger.utsettelse.tittel"
+                                    values={{ antallBarn: barn.antallBarn }}
+                                />
+                            }
+                            info={
+                                <FormattedMessage
+                                    id="fordeling.påvirkninger.utsettelse.info"
+                                    values={{ navnAnnenForelder }}
+                                />
+                            }
                         />
                     )}
                     <div className={styles.påvirkning}>
@@ -207,22 +252,31 @@ export const FordelingPåvirkninger = ({
                     </div>
                     <Påvirkning
                         icon={BriefcaseIcon}
-                        tittelId="fordeling.påvirkninger.jobb.tittel"
-                        infoId="fordeling.påvirkninger.jobb.info"
+                        tittel={<FormattedMessage id="fordeling.påvirkninger.jobb.tittel" />}
+                        info={<FormattedMessage id="fordeling.påvirkninger.jobb.info" />}
                     />
                     {deltUttak && !annenForelderHarKunRettIEØS && (
                         <Påvirkning
                             icon={PersonGroupIcon}
-                            tittelId="fordeling.påvirkninger.samtidigUttak.tittel"
-                            infoId="fordeling.påvirkninger.samtidigUttak.info"
+                            tittel={<FormattedMessage id="fordeling.påvirkninger.samtidigUttak.tittel" />}
+                            info={<FormattedMessage id="fordeling.påvirkninger.samtidigUttak.info" />}
                         />
                     )}
                     {erIkkeFødtBarn && (
                         <Påvirkning
                             icon={BabyWrappedIcon}
-                            tittelId="fordeling.påvirkninger.prematur.tittel"
-                            infoId="fordeling.påvirkninger.prematur.info"
-                            values={{ antallBarn: barn.antallBarn, duEllerDere }}
+                            tittel={
+                                <FormattedMessage
+                                    id="fordeling.påvirkninger.prematur.tittel"
+                                    values={{ antallBarn: barn.antallBarn }}
+                                />
+                            }
+                            info={
+                                <FormattedMessage
+                                    id="fordeling.påvirkninger.prematur.info"
+                                    values={{ antallBarn: barn.antallBarn, duEllerDere }}
+                                />
+                            }
                         />
                     )}
                 </ExpansionCard.Content>
