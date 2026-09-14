@@ -55,9 +55,11 @@ beforeAll(async () => {
     }));
 
     const { configureReverseProxyApi } = await import('./reverseProxy.js');
+    const { rewriteHtmlAmpersandsInQueryString } = await import('./rewriteHtmlAmpersandsInQueryString.js');
     app = express();
     const router = Router();
     configureReverseProxyApi(router);
+    app.use(rewriteHtmlAmpersandsInQueryString);
     app.use(router);
 });
 
@@ -81,6 +83,11 @@ test('forwards fpgrunndata request (no auth)', async () => {
 test('forwards query string', async () => {
     await supertest(app).get('/fpoversikt/api/saker?page=1').set('Authorization', 'Bearer t').expect(200);
     expect(lastRequest.path).toBe('/fpoversikt/api/saker?page=1');
+});
+
+test('rewrites html-encoded ampersands before proxying', async () => {
+    await supertest(app).get('/fpoversikt/api/dokument?journalpostId=1&amp;dokumentId=2').set('Authorization', 'Bearer t').expect(200);
+    expect(lastRequest.path).toBe('/fpoversikt/api/dokument?journalpostId=1&dokumentId=2');
 });
 
 test('sets OBO token as Authorization header', async () => {
