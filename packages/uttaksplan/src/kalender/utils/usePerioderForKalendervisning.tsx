@@ -23,30 +23,30 @@ import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder'
 import {
     erAvslåttPeriode,
     erUttaksperiode,
-    finnSideForForelder,
+    finnPartForForelder,
     harPeriodeDerMorsAktivitetIkkeErValgt,
     harPeriodeMedUkjentGraderingsaktivitet,
 } from '../../utils/periodeUtils';
 
-// Éin merga periode kan ha inntil tre sider (søker/annenPart/annenPartEøs) samtidig – t.d. ved
-// samtidig uttak (begge sider har eit uttak) eller opphald (kun annenPart har eit uttak). Denne
-// hjelparen vel ut kva EIN side som skal styra tekst/farge når vi ikkje treng begge samtidig,
+// Éin merga periode kan ha inntil tre partar (søker/annenPart/annenPartEøs) samtidig – t.d. ved
+// samtidig uttak (begge partar har eit uttak) eller opphald (kun annenPart har eit uttak). Denne
+// hjelparen vel ut kva EIN part som skal styra tekst/farge når vi ikkje treng begge samtidig,
 // med prioritet søker > annenPart > annenPartEøs (matchar tidlegare deduplisering som alltid
 // beheldt søkjar sin flate rad når to rader fanst for same intervall).
-type VisningsSide = { type: 'UTTAK'; side: UttakDto_fpoversikt } | { type: 'EØS'; side: EøsUttakDto_fpoversikt };
+type VisningsPart = { type: 'UTTAK'; part: UttakDto_fpoversikt } | { type: 'EØS'; part: EøsUttakDto_fpoversikt };
 
-const finnVisningsSide = (periode: UttaksplanperiodeMedKunTapteDager): VisningsSide | undefined => {
+const finnVisningsPart = (periode: UttaksplanperiodeMedKunTapteDager): VisningsPart | undefined => {
     if (!erPeriodeDto(periode)) {
         return undefined;
     }
     if (periode.søker) {
-        return { type: 'UTTAK', side: periode.søker };
+        return { type: 'UTTAK', part: periode.søker };
     }
     if (periode.annenPart) {
-        return { type: 'UTTAK', side: periode.annenPart };
+        return { type: 'UTTAK', part: periode.annenPart };
     }
     if (periode.annenPartEøs) {
-        return { type: 'EØS', side: periode.annenPartEøs };
+        return { type: 'EØS', part: periode.annenPartEøs };
     }
     return undefined;
 };
@@ -197,14 +197,14 @@ export const getKalenderFargeForPeriode = (
     }
 
     if (erAvslåttPeriode(periode)) {
-        const avslåttSide = periode.søker ?? periode.annenPart;
-        if (avslåttSide?.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
+        const avslåttPart = periode.søker ?? periode.annenPart;
+        if (avslåttPart?.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
             return 'DARKGRAY';
         }
         return 'BLACKOUTLINE';
     }
 
-    // Samtidig uttak kjem no ferdig utfylt på begge sider frå backend, ingen kryss-oppslag mot
+    // Samtidig uttak kjem no ferdig utfylt på begge partar frå backend, ingen kryss-oppslag mot
     // andre rader trengst lenger (jf. Uttaksperioden.erSamtidigUttak).
     if (erUttaksperiode(periode) && (periode.søker?.samtidigUttak !== undefined || periode.annenPart?.samtidigUttak !== undefined)) {
         return erFarEllerMedmor ? 'LIGHTBLUEGREEN' : 'LIGHTGREENBLUE';
@@ -216,31 +216,31 @@ export const getKalenderFargeForPeriode = (
 
     // Opphald (kun annenPart har uttak, søkjar har «pause») treng ingen eigen fargelogikk her –
     // annenPart sin eigen farge (under) blir brukt akkurat som om det var søkjar sin periode.
-    const side = periode.søker ?? periode.annenPart;
-    if (!side) {
+    const part = periode.søker ?? periode.annenPart;
+    if (!part) {
         return 'NONE';
     }
 
-    if (side.utsettelseÅrsak) {
-        if (side.utsettelseÅrsak === 'FERIE') {
+    if (part.utsettelseÅrsak) {
+        if (part.utsettelseÅrsak === 'FERIE') {
             return 'BLUEOUTLINE';
         }
         return 'BEIGEOUTLINE';
     }
 
-    if (side.forelder === 'MOR') {
-        if (side.gradering && side.gradering.arbeidstidprosent > 0) {
+    if (part.forelder === 'MOR') {
+        if (part.gradering && part.gradering.arbeidstidprosent > 0) {
             return 'BLUESTRIPED';
         }
 
         return 'BLUE';
     }
 
-    if (side.forelder === 'FAR_MEDMOR') {
-        if (side.gradering && side.gradering.arbeidstidprosent > 0) {
+    if (part.forelder === 'FAR_MEDMOR') {
+        if (part.gradering && part.gradering.arbeidstidprosent > 0) {
             return 'GREENSTRIPED';
         }
-        if (side.kontoType === 'FORELDREPENGER' && side.morsAktivitet === 'IKKE_OPPGITT') {
+        if (part.kontoType === 'FORELDREPENGER' && part.morsAktivitet === 'IKKE_OPPGITT') {
             return 'GREENOUTLINE';
         }
 
@@ -289,20 +289,20 @@ const getKalenderSkjermleserPeriodetekst = (
     navnPåForeldre: NavnPåForeldre,
     intl: IntlShape,
 ): string => {
-    const visning = finnVisningsSide(periode);
+    const visning = finnVisningsPart(periode);
     const erEøs = visning?.type === 'EØS';
 
     // NB: EØS-sida har ikkje noko eige `forelder`-felt i DTO-en (ho gjeld alltid annenPart, men
     // ikkje kva rolle annenPart har) – held difor same forenkling som før migreringa og syner
     // farMedmor sitt namn for EØS-periodar. Sjå oppsummeringa for meir kontekst.
     const navn =
-        erEøs || visning?.side.forelder === 'FAR_MEDMOR' ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
+        erEøs || visning?.part.forelder === 'FAR_MEDMOR' ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
 
     const periodenTilhører = intl.formatMessage({ id: 'kalender.srText.PeriodenTil' }, { navn });
 
     if (erAvslåttPeriode(periode)) {
-        const avslåttSide = visning?.type === 'UTTAK' ? visning.side : undefined;
-        if (avslåttSide?.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
+        const avslåttPart = visning?.type === 'UTTAK' ? visning.part : undefined;
+        if (avslåttPart?.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
             return periodenTilhører + intl.formatMessage({ id: 'kalender.avslagFratrekkPleiepenger' });
         }
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.AvslåttPeriode' });
@@ -312,7 +312,7 @@ const getKalenderSkjermleserPeriodetekst = (
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.TapteDager' });
     }
 
-    const kontoType = visning?.side.kontoType;
+    const kontoType = visning?.part.kontoType;
     if (kontoType) {
         switch (kontoType) {
             case 'FORELDREPENGER_FØR_FØDSEL':
@@ -338,7 +338,7 @@ const getKalenderSkjermleserPeriodetekst = (
 };
 
 const finnSkjermleserTekstForKvoteForeldrepenger = (
-    visning: VisningsSide,
+    visning: VisningsPart,
     periodenTilhører: string,
     intl: IntlShape,
 ): string => {
@@ -346,21 +346,21 @@ const finnSkjermleserTekstForKvoteForeldrepenger = (
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.ForeldrepengerIkkeGradert' });
     }
 
-    const { side } = visning;
+    const { part } = visning;
 
-    if (side.morsAktivitet === 'IKKE_OPPGITT') {
-        if (side.gradering?.arbeidstidprosent) {
+    if (part.morsAktivitet === 'IKKE_OPPGITT') {
+        if (part.gradering?.arbeidstidprosent) {
             return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.AktivitetsfrieDelGradert' });
         }
 
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.AktivitetsfrieIkkeGradert' });
     }
 
-    if (side.samtidigUttak && side.samtidigUttak > 0) {
+    if (part.samtidigUttak && part.samtidigUttak > 0) {
         return intl.formatMessage({ id: 'kalender.srText.SamtidigUttaksperiode' });
     }
 
-    if (side.gradering?.arbeidstidprosent) {
+    if (part.gradering?.arbeidstidprosent) {
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.ForeldrepengerGradert' });
     }
 
@@ -422,12 +422,12 @@ const leggTilVarselikonVedManglendeObligatoriskeValg = (
     erIkkeSøkerSpesifisert: boolean,
     erFarOgFar?: boolean,
 ) => {
-    // Byggjer syntetiske periodar med KUN mors side, slik at den delte sjekk-funksjonen ikkje
+    // Byggjer syntetiske periodar med KUN mors part, slik at den delte sjekk-funksjonen ikkje
     // ved eit uhell finn far/medmor sine data frå ei anna, urelatert (t.d. samtidig uttak-)rad.
     const morsPerioder: PeriodeDto_fpoversikt[] = allePerioder
         .map((p) => {
-            const morsSide = finnSideForForelder(p, 'MOR');
-            return morsSide ? { fom: p.fom, tom: p.tom, søker: morsSide } : undefined;
+            const morsPart = finnPartForForelder(p, 'MOR');
+            return morsPart ? { fom: p.fom, tom: p.tom, søker: morsPart } : undefined;
         })
         .filter((p): p is PeriodeDto_fpoversikt => p !== undefined);
 

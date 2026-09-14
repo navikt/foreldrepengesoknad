@@ -58,8 +58,8 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
     );
 
     const harPeriodeMedPleiepenger = eksisterendePerioderSomErValgt.some((p) => {
-        const side = p.søker ?? p.annenPart;
-        return side?.resultat?.innvilget === false && side.resultat.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
+        const part = p.søker ?? p.annenPart;
+        return part?.resultat?.innvilget === false && part.resultat.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
     });
 
     const erEksisterendePerioderEtterValgteDager = erDetEksisterendePerioderEtterValgtePerioder(

@@ -7,7 +7,7 @@ import { IntlShape } from 'react-intl';
 import { UttakDto_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
-import { finnSideForForelder } from '../../utils/periodeUtils';
+import { finnPartForForelder } from '../../utils/periodeUtils';
 import { UttakPeriodeBuilder } from '../../utils/UttakPeriodeBuilder';
 import { ANTALL_UTTAKSDAGER_SEKS_UKER, ANTALL_UTTAKSDAGER_TO_UKER } from '../../utils/uttaksdagerKonstanter';
 import { Periode, ValideringInput, Valideringsområde, Valideringsregel } from './types';
@@ -54,8 +54,8 @@ const tellArbeidsdagerInnenfor = (fom: string, tom: string, førsteDag: string, 
 };
 
 // Overført mødrekvote til far/medmor teller ikke mot far/medmor sitt eget 2-ukers-tak.
-const erFarMedmorsOverførteMødrekvote = (side: UttakDto_fpoversikt | undefined): boolean =>
-    side?.forelder === 'FAR_MEDMOR' && side.kontoType === 'MØDREKVOTE';
+const erFarMedmorsOverførteMødrekvote = (part: UttakDto_fpoversikt | undefined): boolean =>
+    part?.forelder === 'FAR_MEDMOR' && part.kontoType === 'MØDREKVOTE';
 
 const lagRegler = (intl: IntlShape): ReadonlyArray<Valideringsregel<FarMedmorMaks2UkerKontekst>> => [
     {
@@ -143,14 +143,14 @@ const byggKontekst = (input: ValideringInput): FarMedmorMaks2UkerKontekst | null
         .fjernUttakPerioder(perioder, false)
         .getUttakPerioder()
         .flatMap((p) => {
-            const side = finnSideForForelder(p, 'FAR_MEDMOR');
-            return side ? [{ fom: p.fom, tom: p.tom, side }] : [];
+            const part = finnPartForForelder(p, 'FAR_MEDMOR');
+            return part ? [{ fom: p.fom, tom: p.tom, part }] : [];
         });
 
-    const dagerEksisterendePerioder = eksisterendeFarMedmorPerioder.reduce((sum, { fom, tom, side }) => {
+    const dagerEksisterendePerioder = eksisterendeFarMedmorPerioder.reduce((sum, { fom, tom, part }) => {
         const dager = tellArbeidsdagerInnenfor(fom, tom, førsteDag, sisteDag);
         // Ingen gradering => arbeidstid 0 % => heile dagen blir trekt frå kvoten.
-        const arbeidstidprosent = side.gradering?.arbeidstidprosent ?? 0;
+        const arbeidstidprosent = part.gradering?.arbeidstidprosent ?? 0;
         return sum + dager * ((100 - arbeidstidprosent) / 100);
     }, 0);
 

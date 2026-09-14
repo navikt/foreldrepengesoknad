@@ -18,20 +18,20 @@ interface Props {
 export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre }: Props) => {
     const intl = useIntl();
 
-    const side = erPeriodeDto(periode) ? (periode.søker ?? periode.annenPart) : undefined;
-    if (!side) {
+    const part = erPeriodeDto(periode) ? (periode.søker ?? periode.annenPart) : undefined;
+    if (!part) {
         return null;
     }
 
-    const morsAktivitet = side.morsAktivitet;
+    const morsAktivitet = part.morsAktivitet;
     const stønadskvoteNavn = getStønadskvoteNavn(intl, {
         navnPåForeldre,
-        erFarEllerMedmor: side.forelder === 'FAR_MEDMOR',
+        erFarEllerMedmor: part.forelder === 'FAR_MEDMOR',
         erEøsPeriode: false,
         morsAktivitet,
-        konto: side.kontoType,
+        konto: part.kontoType,
     });
-    const navnPåAnnenForelder = side.forelder === 'FAR_MEDMOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+    const navnPåAnnenForelder = part.forelder === 'FAR_MEDMOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
     return (
         <HStack gap="space-8">
@@ -56,15 +56,15 @@ export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, na
                 </HStack>
                 <HStack gap="space-8">
                     <BodyShort>
-                        {getOverføringsTekst(stønadskvoteNavn, navnPåAnnenForelder, side.overføringÅrsak)}
+                        {getOverføringsTekst(stønadskvoteNavn, navnPåAnnenForelder, part.overføringÅrsak)}
                     </BodyShort>
-                    {side.gradering !== undefined && (
+                    {part.gradering !== undefined && (
                         <BodyShort>
                             <FormattedMessage
                                 id="uttaksplan.periodeListeContent.arbeid"
                                 values={{
-                                    arbeidstidprosent: side.gradering.arbeidstidprosent,
-                                    uttaksprosent: 100 - side.gradering.arbeidstidprosent,
+                                    arbeidstidprosent: part.gradering.arbeidstidprosent,
+                                    uttaksprosent: 100 - part.gradering.arbeidstidprosent,
                                 }}
                             />
                         </BodyShort>

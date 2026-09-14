@@ -22,7 +22,7 @@ import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerE
 import { useFormSubmitValidator } from '../../../../felles/uttaksplanValidatorer';
 import { useKanKunErstatte, useLeggTilEndreSkjemaInfoAlerts } from '../../../../regler/alert/informasjonsAlertHooks';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
-import { erDetEksisterendePerioderEtterValgtePerioder, finnSideForForelder } from '../../../../utils/periodeUtils';
+import { erDetEksisterendePerioderEtterValgtePerioder, finnPartForForelder } from '../../../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from '../../context/KalenderRedigeringContext';
 import { finnValgtePerioder } from '../../utils/kalenderPeriodeUtils';
 
@@ -96,12 +96,12 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
                 dayjs(vp.tom).isAfter(eksisterendePerioderSomErValgt.at(0)!.tom),
         );
 
-    // Byggjer syntetiske periodar med KUN mors side, slik at den delte sjekk-funksjonen ikkje
+    // Byggjer syntetiske periodar med KUN mors part, slik at den delte sjekk-funksjonen ikkje
     // ved eit uhell finn far/medmor sine data frå ei anna, urelatert (t.d. samtidig uttak-)rad.
     const morsPerioder: PeriodeDto_fpoversikt[] = perioder
         .map((p) => {
-            const morsSide = finnSideForForelder(p, 'MOR');
-            return morsSide ? { fom: p.fom, tom: p.tom, søker: morsSide } : undefined;
+            const morsPart = finnPartForForelder(p, 'MOR');
+            return morsPart ? { fom: p.fom, tom: p.tom, søker: morsPart } : undefined;
         })
         .filter((p): p is PeriodeDto_fpoversikt => p !== undefined);
 

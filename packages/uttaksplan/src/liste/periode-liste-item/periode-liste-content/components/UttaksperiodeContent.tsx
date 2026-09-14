@@ -31,21 +31,21 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
 
-    // Vel søkjar si eiga side når ho finst, elles annan part si side – berre éi av dei kan i
+    // Vel søkjars eigen part når han finst, elles annan parts – berre éin av dei kan i
     // praksis vera relevant her sidan denne komponenten ikkje viser opphald/EØS (dei har eigne
-    // content-komponentar), men samtidig uttak (begge sider) prioriterer søkjar sitt uttak.
-    const side = erPeriodeDto(periode) ? (periode.søker ?? periode.annenPart) : undefined;
-    const erEøsPeriode = erPeriodeDto(periode) && !!periode.annenPartEøs && !side;
+    // content-komponentar), men samtidig uttak (begge parter) prioriterer søkjar sitt uttak.
+    const part = erPeriodeDto(periode) ? (periode.søker ?? periode.annenPart) : undefined;
+    const erEøsPeriode = erPeriodeDto(periode) && !!periode.annenPartEøs && !part;
 
     const erAvslått = erAvslåttPeriode(periode);
-    const morsAktivitet = side?.morsAktivitet;
+    const morsAktivitet = part?.morsAktivitet;
 
     const stønadskvoteNavn = getStønadskvoteNavn(intl, {
         navnPåForeldre,
         erFarEllerMedmor,
         erEøsPeriode,
         morsAktivitet,
-        konto: side?.kontoType ?? (erPeriodeDto(periode) ? periode.annenPartEøs?.kontoType : undefined),
+        konto: part?.kontoType ?? (erPeriodeDto(periode) ? periode.annenPartEøs?.kontoType : undefined),
         erAleneOmOmsorg: rettighetType === 'ALENEOMSORG',
         erAvslått,
     });
@@ -146,23 +146,23 @@ const getTekstForArbeidOgSamtidigUttak = (
     if (!erPeriodeDto(periode)) {
         return undefined;
     }
-    const side = periode.søker ?? periode.annenPart;
-    if (!side) {
+    const part = periode.søker ?? periode.annenPart;
+    if (!part) {
         return undefined;
     }
 
-    if (side.gradering !== undefined) {
-        const uttaksprosent = Math.round((100 - side.gradering.arbeidstidprosent) * 100) / 100;
+    if (part.gradering !== undefined) {
+        const uttaksprosent = Math.round((100 - part.gradering.arbeidstidprosent) * 100) / 100;
         return (
             <FormattedMessage
                 id="uttaksplan.periodeListeContent.arbeid"
-                values={{ arbeidstidprosent: side.gradering.arbeidstidprosent, uttaksprosent }}
+                values={{ arbeidstidprosent: part.gradering.arbeidstidprosent, uttaksprosent }}
             />
         );
     }
 
-    if (side.samtidigUttak !== undefined) {
-        return getSamtidigUttakTekst(side.samtidigUttak, side.forelder, erFarEllerMedmor, navnPåForeldre);
+    if (part.samtidigUttak !== undefined) {
+        return getSamtidigUttakTekst(part.samtidigUttak, part.forelder, erFarEllerMedmor, navnPåForeldre);
     }
 
     return undefined;

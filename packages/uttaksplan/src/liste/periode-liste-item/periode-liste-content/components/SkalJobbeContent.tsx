@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { BodyShort, HStack } from '@navikt/ds-react';
 
 import { Uttaksplanperiode, erPeriodeDto } from '../../../../types/UttaksplanPeriode';
-import { finnSider } from '../../../../utils/periodeUtils';
+import { finnParter } from '../../../../utils/periodeUtils';
 import {
     erUttaksplanperiodeEøs,
     erUttaksplanperiodeSamtidigUttak,
@@ -28,7 +28,7 @@ export const SkalJobbeContent = ({ uttaksplanperioder }: Props) => {
     const erHull = erUttaksplanperiodeTapteDager(uttaksplanperioder);
     const erPrematuruker = harUttaksplanperiodePrematuruker(uttaksplanperioder);
     const skalJobbeIPermisjonsperioden = uttaksplanperioder.some(
-        (p) => erPeriodeDto(p) && finnSider(p).some((side) => side.gradering !== undefined),
+        (p) => erPeriodeDto(p) && finnParter(p).some((part) => part.gradering !== undefined),
     );
 
     if (

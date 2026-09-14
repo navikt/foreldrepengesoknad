@@ -70,9 +70,9 @@ export const mapUttaksplanperioderTilRaderIListe = (
 };
 
 /**
- * Representant-forelder for grupperingsformål – den sida som finst på perioden. Sidan
+ * Representant-forelder for grupperingsformål – den parten som finst på perioden. Sidan
  * samtidig uttak-radar allereie er filtrert bort før dette kallast (sjå erSamtidigUttak over),
- * er det aldri tvitydig kva side som gjeld her.
+ * er det aldri tvitydig kva part som gjeld her.
  */
 const finnRepresentantForelder = (periode: Uttaksplanperiode) => {
     if (!erPeriodeDto(periode)) {

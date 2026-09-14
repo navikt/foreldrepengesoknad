@@ -441,8 +441,8 @@ export const getLegendLabelFromPeriode = (
     erFarEllerMedmor: boolean,
 ): LegendLabel | undefined => {
     if (erAvslåttPeriode(p)) {
-        const avslåttSide = erPeriodeDto(p) ? (p.søker ?? p.annenPart) : undefined;
-        if (avslåttSide?.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
+        const avslåttPart = erPeriodeDto(p) ? (p.søker ?? p.annenPart) : undefined;
+        if (avslåttPart?.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
             return 'PLEIEPENGER';
         }
         return 'AVSLAG';
@@ -451,9 +451,9 @@ export const getLegendLabelFromPeriode = (
     if (erPeriodeDto(p)) {
         // Søker/annenPart sin eigen kontoType styrer teksten, både for vanlege periodar og for
         // opphald (kun annenPart har uttak) – ingen eige oppholdÅrsak-uttrykk trengst lenger.
-        const side = p.søker ?? p.annenPart;
-        const erEøs = !side && !!p.annenPartEøs;
-        const kontoType = side?.kontoType ?? p.annenPartEøs?.kontoType;
+        const part = p.søker ?? p.annenPart;
+        const erEøs = !part && !!p.annenPartEøs;
+        const kontoType = part?.kontoType ?? p.annenPartEøs?.kontoType;
 
         if (kontoType) {
             switch (kontoType) {
@@ -467,31 +467,31 @@ export const getLegendLabelFromPeriode = (
                         return erFarEllerMedmor ? 'MORS_DEL_EØS' : 'FARS_DEL_EØS';
                     }
 
-                    if (side?.morsAktivitet === 'IKKE_OPPGITT') {
-                        if (side.gradering?.arbeidstidprosent) {
+                    if (part?.morsAktivitet === 'IKKE_OPPGITT') {
+                        if (part.gradering?.arbeidstidprosent) {
                             return 'FARS_DEL_AKTIVITETSFRI_GRADERT';
                         }
 
                         return 'FARS_DEL_AKTIVITETSFRI';
                     }
 
-                    if (side?.forelder === 'FAR_MEDMOR') {
-                        if (side.samtidigUttak && side.samtidigUttak > 0) {
+                    if (part?.forelder === 'FAR_MEDMOR') {
+                        if (part.samtidigUttak && part.samtidigUttak > 0) {
                             return 'SAMTIDIG_UTTAK';
                         }
 
-                        if (side.gradering?.arbeidstidprosent) {
+                        if (part.gradering?.arbeidstidprosent) {
                             return 'FARS_DEL_GRADERT';
                         }
 
                         return 'FARS_DEL';
                     }
 
-                    if (side?.samtidigUttak && side.samtidigUttak > 0) {
+                    if (part?.samtidigUttak && part.samtidigUttak > 0) {
                         return 'SAMTIDIG_UTTAK';
                     }
 
-                    if (side?.gradering?.arbeidstidprosent) {
+                    if (part?.gradering?.arbeidstidprosent) {
                         return 'MORS_DEL_GRADERT';
                     }
 

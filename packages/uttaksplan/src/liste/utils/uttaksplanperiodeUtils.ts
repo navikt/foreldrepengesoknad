@@ -7,7 +7,7 @@ import {
     erPeriodeUtenUttakHull,
     erTapteDagerHull,
 } from '../../types/UttaksplanPeriode';
-import { erAvslåttPeriode, erOppholdsperiode, erPrematuruker, finnSider } from '../../utils/periodeUtils';
+import { erAvslåttPeriode, erOppholdsperiode, erPrematuruker, finnParter } from '../../utils/periodeUtils';
 
 export const getFørsteUttaksplanperiodeFom = (uttaksplanperioder: Uttaksplanperiode[]) => {
     return uttaksplanperioder.at(0)!.fom;
@@ -54,7 +54,7 @@ export const erAlleUttaksplanperioderAvslått = (uttaksplanperioder: Uttaksplanp
             (p) =>
                 erPeriodeDto(p) &&
                 erAvslåttPeriode(p) &&
-                finnSider(p).every((side) => side.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER'),
+                finnParter(p).every((part) => part.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER'),
         )
     );
 };
@@ -85,7 +85,7 @@ export const erUttaksplanperiodeUtsettelse = (uttaksplanperioder: Uttaksplanperi
 /**
  * Kva forelder ei rad i lista "tilhøyrer", brukt for tekst/fargevalg. For ei vanleg periode er
  * det forelderen på den sida som finst. For opphald (søkjar manglar uttak, annenPart har det)
- * finst det ingen søkjar-side å lese av – opphald var i den gamle modellen alltid registrert
+ * finst det ingen søkjar-part å lese av – opphald var i den gamle modellen alltid registrert
  * som ein periode for søkjar sjølv (berre med ei anna årsak), så vi fell då tilbake på den
  * innlogga brukaren sin eigen rolle.
  */

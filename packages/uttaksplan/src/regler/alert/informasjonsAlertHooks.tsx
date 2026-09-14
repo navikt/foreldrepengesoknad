@@ -171,8 +171,8 @@ export const usePeriodeDetaljerAlerts = (input: {
         dayjs(p.fom).isBefore(familiehendelsedato),
     );
     const harPeriodeMedPleiepenger = input.eksisterendePerioderSomErValgt.some((p) => {
-        const side = erPeriodeDto(p) ? (p.søker ?? p.annenPart) : undefined;
-        return side?.resultat?.innvilget === false && side.resultat.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
+        const part = erPeriodeDto(p) ? (p.søker ?? p.annenPart) : undefined;
+        return part?.resultat?.innvilget === false && part.resultat.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
     });
 
     const ctx: PeriodeDetaljerKontekst = {

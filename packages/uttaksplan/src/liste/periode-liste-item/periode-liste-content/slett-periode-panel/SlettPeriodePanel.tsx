@@ -84,9 +84,9 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
                             label={intl.formatMessage({ id: 'uttaksplan.perioder' })}
                         >
                             {uttaksplanperioder.map((p, index) => {
-                                const side = erPeriodeDto(p) ? (p.søker ?? p.annenPart) : undefined;
-                                const morsAktivitet = side?.morsAktivitet;
-                                const eøsSide = erPeriodeDto(p) ? p.annenPartEøs : undefined;
+                                const part = erPeriodeDto(p) ? (p.søker ?? p.annenPart) : undefined;
+                                const morsAktivitet = part?.morsAktivitet;
+                                const eøsPart = erPeriodeDto(p) ? p.annenPartEøs : undefined;
 
                                 return (
                                     <Checkbox key={genererPeriodeKey(p)} value={index} autoFocus={index === 0}>
@@ -94,9 +94,9 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
                                     ${getStønadskvoteNavn(intl, {
                                         navnPåForeldre,
                                         erFarEllerMedmor,
-                                        erEøsPeriode: !!eøsSide && !side,
+                                        erEøsPeriode: !!eøsPart && !part,
                                         morsAktivitet,
-                                        konto: side?.kontoType ?? eøsSide?.kontoType,
+                                        konto: part?.kontoType ?? eøsPart?.kontoType,
                                         erAleneOmOmsorg: foreldreInfo.rettighetType === 'ALENEOMSORG',
                                         erAvslått: erAvslåttPeriode(p),
                                     })}`}

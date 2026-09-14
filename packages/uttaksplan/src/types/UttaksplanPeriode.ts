@@ -47,17 +47,17 @@ export const erPeriodeUtenUttakHull = (periode: Uttaksplanperiode): periode is P
 export const erFamiliehendelseDato = (periode: Uttaksplanperiode): periode is FamiliehendelseDato =>
     'type' in periode && periode.type === 'FAMILIEHENDELSE';
 
-// Éin Uttaksplanperiode kan ha opptil tre sider samtidig: søkjar sitt uttak, annan part sitt
-// (norske) uttak, og/eller annan part sitt EØS-uttak. Desse hjelparane hentar ut kvar side utan
+// Éin Uttaksplanperiode kan ha opptil tre parter samtidig: søkjar sitt uttak, annan part sitt
+// (norske) uttak, og/eller annan part sitt EØS-uttak. Desse hjelparane hentar ut kvar part utan
 // at kvar kallstad treng gjenta `erPeriodeDto(p) && p.søker`-mønsteret sjølv. Erstattar dei gamle
 // `erVanligUttakPeriode`/`erEøsUttakPeriode`-type-guardene frå den flate periodemodellen – slot-
-// plasseringa (`.søker`/`.annenPart`/`.annenPartEøs`) fortel no strukturelt kva sida gjeld, i
+// plasseringa (`.søker`/`.annenPart`/`.annenPartEøs`) fortel no strukturelt kva parten gjeld, i
 // staden for at ein må sjekka `forelder`/`'trekkdager' in p` i etterkant.
-export const getSøkersSide = (periode: Uttaksplanperiode): UttakDto_fpoversikt | undefined =>
+export const getSøkersPart = (periode: Uttaksplanperiode): UttakDto_fpoversikt | undefined =>
     erPeriodeDto(periode) ? periode.søker : undefined;
 
-export const getAnnenPartsSide = (periode: Uttaksplanperiode): UttakDto_fpoversikt | undefined =>
+export const getAnnenPartsPart = (periode: Uttaksplanperiode): UttakDto_fpoversikt | undefined =>
     erPeriodeDto(periode) ? periode.annenPart : undefined;
 
-export const getAnnenPartsEøsSide = (periode: Uttaksplanperiode): EøsUttakDto_fpoversikt | undefined =>
+export const getAnnenPartsEøsPart = (periode: Uttaksplanperiode): EøsUttakDto_fpoversikt | undefined =>
     erPeriodeDto(periode) ? periode.annenPartEøs : undefined;

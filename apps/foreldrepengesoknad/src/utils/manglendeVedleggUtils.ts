@@ -44,13 +44,13 @@ const shouldPeriodeHaveAttachment = (
     annenForelder: AnnenForelder,
     familiehendelsedato: string,
 ): boolean => {
-    const søkersSide = periode.søker;
-    if (!søkersSide) {
+    const søker = periode.søker;
+    if (!søker) {
         return false;
     }
 
-    if (søkersSide.utsettelseÅrsak) {
-        const årsak = søkersSide.utsettelseÅrsak;
+    if (søker.utsettelseÅrsak) {
+        const årsak = søker.utsettelseÅrsak;
         return (
             skalBesvaresVedUtsettelse(søkerErFarEllerMedmor, annenForelder) ||
             erÅrsakSykdomEllerInstitusjonsopphold(årsak) ||
@@ -58,17 +58,17 @@ const shouldPeriodeHaveAttachment = (
             årsak === 'NAV_TILTAK'
         );
     }
-    if (søkersSide.overføringÅrsak) {
+    if (søker.overføringÅrsak) {
         return (
-            søkersSide.overføringÅrsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' ||
-            søkersSide.overføringÅrsak === 'SYKDOM_ANNEN_FORELDER' ||
-            ((søkerErFarEllerMedmor || søkersSide.overføringÅrsak !== 'ALENEOMSORG') &&
-                søkersSide.overføringÅrsak !== 'IKKE_RETT_ANNEN_FORELDER')
+            søker.overføringÅrsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' ||
+            søker.overføringÅrsak === 'SYKDOM_ANNEN_FORELDER' ||
+            ((søkerErFarEllerMedmor || søker.overføringÅrsak !== 'ALENEOMSORG') &&
+                søker.overføringÅrsak !== 'IKKE_RETT_ANNEN_FORELDER')
         );
     }
 
-    if (Uttaksperioden.erUttaksperiode(søkersSide)) {
-        return dokumentasjonBehøvesForUttaksperiode(periode, søkersSide, søkerErFarEllerMedmor, familiehendelsedato);
+    if (Uttaksperioden.erUttaksperiode(søker)) {
+        return dokumentasjonBehøvesForUttaksperiode(periode, søker, søkerErFarEllerMedmor, familiehendelsedato);
     }
 
     return false;
@@ -87,12 +87,12 @@ const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UttakUtsettelseÅrsak_fp
 
 const dokumentasjonBehøvesForUttaksperiode = (
     periode: PeriodeDto_fpoversikt,
-    søkersSide: UttakDto_fpoversikt,
+    søker: UttakDto_fpoversikt,
     søkerErFarEllerMedmor: boolean,
     familiehendelsedato: string,
 ): boolean => {
     const harIkkeAktivitetskrav =
-        søkersSide.kontoType === 'FORELDREPENGER' && søkersSide.morsAktivitet === 'IKKE_OPPGITT';
+        søker.kontoType === 'FORELDREPENGER' && søker.morsAktivitet === 'IKKE_OPPGITT';
     if (harIkkeAktivitetskrav) {
         return false;
     }
@@ -103,14 +103,14 @@ const dokumentasjonBehøvesForUttaksperiode = (
             familiehendelsedato,
             undefined,
         ) &&
-        søkersSide.kontoType === 'FEDREKVOTE' &&
-        !søkersSide.samtidigUttak;
+        søker.kontoType === 'FEDREKVOTE' &&
+        !søker.samtidigUttak;
 
     // Dokumentasjon av mors aktivitet ("hva skal mor gjøre i denne perioden") skal kun kreves i
     // far/medmor sin søknad. I mors egen søknad skal det aldri kreves dokumentasjon for mors
     // aktivitet, uansett hvilken aktivitet hun velger.
     const krevesDokumentasjonAvMorsAktivitet =
-        søkerErFarEllerMedmor && søkersSide.morsAktivitet !== undefined && søkersSide.morsAktivitet !== 'UFØRE';
+        søkerErFarEllerMedmor && søker.morsAktivitet !== undefined && søker.morsAktivitet !== 'UFØRE';
 
     return krevesDokumentasjonAvMorsAktivitet || erPeriodeMedFedrekvoteIFødselspermTidsrommet;
 };

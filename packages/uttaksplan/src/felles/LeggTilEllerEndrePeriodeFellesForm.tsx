@@ -901,7 +901,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
 
 /**
  * Byggjer éin sammanslått {@link PeriodeDto_fpoversikt} frå skjemaverdiane – ikkje éin rad per
- * forelder slik det var i den gamle flate modellen. Kva side («søker»/«annenPart») kvar
+ * forelder slik det var i den gamle flate modellen. Kva part («søker»/«annenPart») kvar
  * forelder sine felt hamnar på, er styrt av kven som er innlogga søkjar (parameteren `søker`):
  * MOR-felta hamnar på `.søker` når søkjar er mor, elles på `.annenPart`, og tilsvarande motsett
  * for FAR_MEDMOR-felta.
@@ -989,7 +989,7 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
     );
 
     // Skjemaet handterer kun éin sammanslått periode om gongen (éin PeriodeDto, ev. med
-    // både søker- og annenPart-side ved samtidig uttak) – fleire tidsintervall samtidig
+    // både ein søker- og ein annenPart-part ved samtidig uttak) – fleire tidsintervall samtidig
     // (t.d. periode som overlappar med to naboperiodar) er ikkje eit understøtta case her.
     if (eksisterendePerioder.length !== 1) {
         return undefined;
@@ -1007,70 +1007,70 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
         return undefined;
     }
 
-    const morsSide = periode.søker.forelder === 'MOR' ? periode.søker : periode.annenPart;
-    const farMedmorSide = periode.søker.forelder === 'FAR_MEDMOR' ? periode.søker : periode.annenPart;
+    const morsPart = periode.søker.forelder === 'MOR' ? periode.søker : periode.annenPart;
+    const farMedmorPart = periode.søker.forelder === 'FAR_MEDMOR' ? periode.søker : periode.annenPart;
 
-    if (morsSide?.utsettelseÅrsak === 'FERIE' || farMedmorSide?.utsettelseÅrsak === 'FERIE') {
+    if (morsPart?.utsettelseÅrsak === 'FERIE' || farMedmorPart?.utsettelseÅrsak === 'FERIE') {
         return undefined;
     }
 
-    if (morsSide && farMedmorSide) {
-        if (!morsSide.samtidigUttak || !farMedmorSide.samtidigUttak) {
-            throw new Error('Forventer samtidig uttak på begge sider når søker og annenPart er valgt samtidig.');
+    if (morsPart && farMedmorPart) {
+        if (!morsPart.samtidigUttak || !farMedmorPart.samtidigUttak) {
+            throw new Error('Forventer samtidig uttak på begge partar når søker og annenPart er valgt samtidig.');
         }
 
-        const søkersSide = søker === 'MOR' ? morsSide : farMedmorSide;
+        const søkersPart = søker === 'MOR' ? morsPart : farMedmorPart;
 
         return {
             forelder: 'BEGGE',
             kontoTypeMor:
-                morsSide.kontoType === 'FORELDREPENGER' && morsSide.morsAktivitet === 'IKKE_OPPGITT'
+                morsPart.kontoType === 'FORELDREPENGER' && morsPart.morsAktivitet === 'IKKE_OPPGITT'
                     ? 'AKTIVITETSFRI_KVOTE'
-                    : morsSide.kontoType,
+                    : morsPart.kontoType,
             kontoTypeFarMedmor:
-                farMedmorSide.kontoType === 'FORELDREPENGER' && farMedmorSide.morsAktivitet === 'IKKE_OPPGITT'
+                farMedmorPart.kontoType === 'FORELDREPENGER' && farMedmorPart.morsAktivitet === 'IKKE_OPPGITT'
                     ? 'AKTIVITETSFRI_KVOTE'
-                    : farMedmorSide.kontoType,
-            samtidigUttaksprosentMor: morsSide.samtidigUttak?.toString(),
-            samtidigUttaksprosentFarMedmor: farMedmorSide.samtidigUttak?.toString(),
-            skalDuKombinereArbeidOgUttakMor: !!morsSide.gradering,
-            skalDuKombinereArbeidOgUttakFarMedmor: !!farMedmorSide.gradering,
-            stillingsprosentMor: morsSide.gradering?.arbeidstidprosent.toString(),
-            stillingsprosentFarMedmor: farMedmorSide.gradering?.arbeidstidprosent.toString(),
-            morsAktivitet: morsSide.morsAktivitet,
+                    : farMedmorPart.kontoType,
+            samtidigUttaksprosentMor: morsPart.samtidigUttak?.toString(),
+            samtidigUttaksprosentFarMedmor: farMedmorPart.samtidigUttak?.toString(),
+            skalDuKombinereArbeidOgUttakMor: !!morsPart.gradering,
+            skalDuKombinereArbeidOgUttakFarMedmor: !!farMedmorPart.gradering,
+            stillingsprosentMor: morsPart.gradering?.arbeidstidprosent.toString(),
+            stillingsprosentFarMedmor: farMedmorPart.gradering?.arbeidstidprosent.toString(),
+            morsAktivitet: morsPart.morsAktivitet,
             hvorSkalDuJobbe:
-                søkersSide.gradering?.aktivitet?.arbeidsgiver?.id ?? søkersSide.gradering?.aktivitet?.type,
-            ønskerFlerbarnsdager: morsSide.flerbarnsdager || farMedmorSide.flerbarnsdager,
+                søkersPart.gradering?.aktivitet?.arbeidsgiver?.id ?? søkersPart.gradering?.aktivitet?.type,
+            ønskerFlerbarnsdager: morsPart.flerbarnsdager || farMedmorPart.flerbarnsdager,
         };
     }
 
-    const eneSide = periode.søker;
+    const enePart = periode.søker;
 
-    if (eneSide.forelder === 'FAR_MEDMOR') {
+    if (enePart.forelder === 'FAR_MEDMOR') {
         return {
             forelder: 'FAR_MEDMOR',
             kontoTypeFarMedmor:
-                eneSide.kontoType === 'FORELDREPENGER' && eneSide.morsAktivitet === 'IKKE_OPPGITT'
+                enePart.kontoType === 'FORELDREPENGER' && enePart.morsAktivitet === 'IKKE_OPPGITT'
                     ? 'AKTIVITETSFRI_KVOTE'
-                    : eneSide.kontoType,
-            skalDuKombinereArbeidOgUttakFarMedmor: !!eneSide.gradering,
-            stillingsprosentFarMedmor: eneSide.gradering?.arbeidstidprosent.toString(),
-            hvorSkalDuJobbe: eneSide.gradering?.aktivitet?.arbeidsgiver?.id ?? eneSide.gradering?.aktivitet?.type,
-            morsAktivitet: eneSide.morsAktivitet,
-            overføringsårsak: eneSide.overføringÅrsak,
-            ønskerFlerbarnsdager: eneSide.flerbarnsdager,
+                    : enePart.kontoType,
+            skalDuKombinereArbeidOgUttakFarMedmor: !!enePart.gradering,
+            stillingsprosentFarMedmor: enePart.gradering?.arbeidstidprosent.toString(),
+            hvorSkalDuJobbe: enePart.gradering?.aktivitet?.arbeidsgiver?.id ?? enePart.gradering?.aktivitet?.type,
+            morsAktivitet: enePart.morsAktivitet,
+            overføringsårsak: enePart.overføringÅrsak,
+            ønskerFlerbarnsdager: enePart.flerbarnsdager,
         };
     }
 
     return {
         forelder: 'MOR',
-        kontoTypeMor: eneSide.kontoType,
-        samtidigUttaksprosentMor: eneSide.samtidigUttak?.toString(),
-        skalDuKombinereArbeidOgUttakMor: !!eneSide.gradering,
-        stillingsprosentMor: eneSide.gradering?.arbeidstidprosent.toString(),
-        hvorSkalDuJobbe: eneSide.gradering?.aktivitet?.arbeidsgiver?.id ?? eneSide.gradering?.aktivitet?.type,
-        overføringsårsak: eneSide.overføringÅrsak,
-        ønskerFlerbarnsdager: eneSide.flerbarnsdager,
+        kontoTypeMor: enePart.kontoType,
+        samtidigUttaksprosentMor: enePart.samtidigUttak?.toString(),
+        skalDuKombinereArbeidOgUttakMor: !!enePart.gradering,
+        stillingsprosentMor: enePart.gradering?.arbeidstidprosent.toString(),
+        hvorSkalDuJobbe: enePart.gradering?.aktivitet?.arbeidsgiver?.id ?? enePart.gradering?.aktivitet?.type,
+        overføringsårsak: enePart.overføringÅrsak,
+        ønskerFlerbarnsdager: enePart.flerbarnsdager,
     };
 };
 
