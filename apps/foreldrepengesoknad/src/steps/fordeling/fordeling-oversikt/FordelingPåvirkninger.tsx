@@ -85,7 +85,9 @@ export const FordelingPåvirkninger = ({
     const visInfoFørFørsteOkt2021 = deltUttak && !førsteOkt2021Gjelder;
     const termindato = getTermindato(barn);
     const fødtFørUke33 = erFødtFørUke33(familiehendelsesdato, termindato);
-    const visInfoInnleggelseVedPrematurFødsel = !erAdopsjon && førsteOkt2021Gjelder && fødtFørUke33 && !erFarOgFar;
+    const kunFarEllerMedmorHarRett = erFarEllerMedmor && !deltUttak;
+    const visInfoInnleggelseVedPrematurFødsel =
+        !erAdopsjon && førsteOkt2021Gjelder && fødtFørUke33 && !erFarOgFar && !kunFarEllerMedmorHarRett;
     const visInfoBarnInnlagt = !erAdopsjon && førsteOkt2021Gjelder && !fødtFørUke33 && !erFarOgFar;
     return (
         <div className={styles.fordelingPåvirkninger}>

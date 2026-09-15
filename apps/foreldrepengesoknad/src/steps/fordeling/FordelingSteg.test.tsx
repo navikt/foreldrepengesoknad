@@ -531,6 +531,10 @@ describe('Fordeling - FarMedmorAleneomsorgPrematurtFødtBarn', () => {
             screen.getByText('er lagt til fordi barnet ble født før svangerskapsuke 33.', { exact: false }),
         ).toBeInTheDocument();
 
+        await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
+        expect(screen.queryByText('Hvis barnet er innlagt på sykehus før termindato')).not.toBeInTheDocument();
+        expect(screen.queryByText('Hvis barnet er innlagt på sykehus etter termindato')).not.toBeInTheDocument();
+
         expect(
             screen.queryByText(
                 'Siden du har fått barn før 1. oktober 2021, må du bruke foreldrepengeperioden din sammenhengende eller søke om utsettelse.',
