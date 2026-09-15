@@ -163,6 +163,23 @@ export const FordelingPåvirkninger = ({
                         </>
                     )}
 
+                    {visInfoBarnInnlagt && (
+                        <Påvirkning
+                            icon={StethoscopeIcon}
+                            tittel={
+                                <FormattedMessage
+                                    id="fordeling.påvirkninger.barnInnlagt.tittel"
+                                    values={{ antallBarn: barn.antallBarn }}
+                                />
+                            }
+                            info={
+                                <FormattedMessage
+                                    id="fordeling.påvirkninger.barnInnlagt.info"
+                                    values={{ duEllerDere, antallBarn: barn.antallBarn }}
+                                />
+                            }
+                        />
+                    )}
                     {visInfoMorSykFørsteSeksUker && (
                         <Påvirkning
                             icon={StethoscopeIcon}
@@ -182,23 +199,6 @@ export const FordelingPåvirkninger = ({
                                         degEllerMor,
                                         antallBarn: barn.antallBarn,
                                     }}
-                                />
-                            }
-                        />
-                    )}
-                    {visInfoBarnInnlagt && (
-                        <Påvirkning
-                            icon={StethoscopeIcon}
-                            tittel={
-                                <FormattedMessage
-                                    id="fordeling.påvirkninger.barnInnlagt.tittel"
-                                    values={{ antallBarn: barn.antallBarn }}
-                                />
-                            }
-                            info={
-                                <FormattedMessage
-                                    id="fordeling.påvirkninger.barnInnlagt.info"
-                                    values={{ duEllerDere, antallBarn: barn.antallBarn }}
                                 />
                             }
                         />
@@ -237,6 +237,13 @@ export const FordelingPåvirkninger = ({
                         tittel={<FormattedMessage id="fordeling.påvirkninger.jobb.tittel" />}
                         info={<FormattedMessage id="fordeling.påvirkninger.jobb.info" />}
                     />
+                    {deltUttak && !annenForelderHarKunRettIEØS && (
+                        <Påvirkning
+                            icon={PersonGroupIcon}
+                            tittel={<FormattedMessage id="fordeling.påvirkninger.samtidigUttak.tittel" />}
+                            info={<FormattedMessage id="fordeling.påvirkninger.samtidigUttak.info" />}
+                        />
+                    )}
                     <div className={styles.påvirkning}>
                         <div className={styles.ikonFrame}>
                             <PersonPregnantIcon className={styles.ikon} aria-hidden={true} />
@@ -276,13 +283,6 @@ export const FordelingPåvirkninger = ({
                             )}
                         </VStack>
                     </div>
-                    {deltUttak && !annenForelderHarKunRettIEØS && (
-                        <Påvirkning
-                            icon={PersonGroupIcon}
-                            tittel={<FormattedMessage id="fordeling.påvirkninger.samtidigUttak.tittel" />}
-                            info={<FormattedMessage id="fordeling.påvirkninger.samtidigUttak.info" />}
-                        />
-                    )}
                 </ExpansionCard.Content>
             </ExpansionCard>
         </div>

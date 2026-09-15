@@ -41,9 +41,6 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
 
     const kunMorHarRett = søker === 'MOR' && (rettighetType === 'BARE_SØKER_RETT' || erAleneforsørger);
 
-    const kunFarEllerMedmorHarRett =
-        søker === 'FAR_MEDMOR' && (erAleneforsørger || rettighetType === 'BARE_SØKER_RETT');
-
     const erFarOgFarKunMedfarHarRett = erFarOgFar && rettighetType === 'BARE_SØKER_RETT';
 
     return (
@@ -69,13 +66,9 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
                         <>
                             {!erFarOgFarKunMedfarHarRett && <FødtFørUke33 />}
 
-                            <HvisDuBlirSyk />
-
-                            {erMorDelAvSøknaden && <HvisMorBlirSyk />}
                             {!fødtFørUke33 &&
                                 ((erAleneforsørger && !erMorDelAvSøknaden) ||
-                                    erFarOgFar ||
-                                    kunFarEllerMedmorHarRett) && <HvisBarnetErInnlagt />}
+                                    erFarOgFar) && <HvisBarnetErInnlagt />}
                             {fødtFørUke33 &&
                                 ((beggeHarRett && !erFarOgFar) ||
                                     kunMorHarRett ||
@@ -89,6 +82,9 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
                                 ((beggeHarRett && !erFarOgFar) ||
                                     kunMorHarRett ||
                                     (erAleneforsørger && erMorDelAvSøknaden)) && <HvisBarnetErInnlagt />}
+
+                            {erMorDelAvSøknaden && <HvisMorBlirSyk />}
+                            <HvisDuBlirSyk />
 
                             <NyttBarnFørTreÅr />
                         </>
