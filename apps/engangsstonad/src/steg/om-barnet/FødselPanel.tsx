@@ -3,12 +3,12 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Fødsel } from 'types/OmBarnet';
 
-import { Radio } from '@navikt/ds-react';
+import { Alert, Radio } from '@navikt/ds-react';
 
+import { SIX_MONTHS_AGO } from '@navikt/fp-constants';
 import { RhfDatepicker, RhfRadioGroup, RhfSelect } from '@navikt/fp-form-hooks';
 import {
     erI22SvangerskapsukeEllerSenere,
-    isAfterOrSameAsSixMonthsAgo,
     isBeforeTodayOrToday,
     isLessThanThreeWeeksBeforeFødsel,
     isRequired,
@@ -63,23 +63,26 @@ export const FødselPanel = () => {
                 ]}
             />
             {erBarnetFødt && (
-                <RhfDatepicker
-                    name="fødselsdato"
-                    control={control}
-                    label={<FormattedMessage id="FødselPanel.Fødselsdato" />}
-                    minDate={dayjs().subtract(6, 'month')}
-                    maxDate={dayjs()}
-                    validate={[
-                        isRequired(intl.formatMessage({ id: 'FødselPanel.Fødselsdato.DuMåOppgi' })),
-                        isValidDate(intl.formatMessage({ id: 'FødselPanel.Fødselsdato.Gyldig' })),
-                        isBeforeTodayOrToday(
-                            intl.formatMessage({ id: 'FødselPanel.Fodselsdato.MåVæreIdagEllerTidligere' }),
-                        ),
-                        isAfterOrSameAsSixMonthsAgo(
-                            intl.formatMessage({ id: 'FødselPanel.Fodselsdato.IkkeMerEnn6MånederTilbake' }),
-                        ),
-                    ]}
-                />
+                <>
+                    <RhfDatepicker
+                        name="fødselsdato"
+                        control={control}
+                        label={<FormattedMessage id="FødselPanel.Fødselsdato" />}
+                        maxDate={dayjs()}
+                        validate={[
+                            isRequired(intl.formatMessage({ id: 'FødselPanel.Fødselsdato.DuMåOppgi' })),
+                            isValidDate(intl.formatMessage({ id: 'FødselPanel.Fødselsdato.Gyldig' })),
+                            isBeforeTodayOrToday(
+                                intl.formatMessage({ id: 'FødselPanel.Fodselsdato.MåVæreIdagEllerTidligere' }),
+                            ),
+                        ]}
+                    />
+                    {fødselsdato && dayjs(fødselsdato).isBefore(SIX_MONTHS_AGO) && (
+                        <Alert variant="warning">
+                            <FormattedMessage id="FødselPanel.Fodselsdato.Advarsel.MerEnn6MånederTilbake" />
+                        </Alert>
+                    )}
+                </>
             )}
             <RhfRadioGroup
                 name="antallBarn"
