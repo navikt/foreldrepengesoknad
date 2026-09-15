@@ -253,23 +253,27 @@ describe('ikkeDeltUttak - Adopsjon', () => {
         expect(forslag[0]!.tom).toEqual('2022-11-18');
     });
 
-    it('skal gi far foreldrepenger uten aktivitetskrav (aktivitetsfri kvote) når bare far har rett ved adopsjon, og holde foreldrepenger med aktivitetskrav i reserve', () => {
-        const forslag = ikkeDeltUttak({
-            situasjon: 'adopsjon',
-            famDato,
-            erFarEllerMedmor: true,
-            tilgjengeligeStønadskvoter: [foreldrepenger, aktivitetsfriKonto],
-            erMorUfør: false,
-            bareFarMedmorHarRett: true,
-            erAleneOmOmsorg: false,
-            farOgFar: false,
-        });
+    it(
+        'skal gi far foreldrepenger uten aktivitetskrav (aktivitetsfri kvote) når bare far har rett ved adopsjon, ' +
+            'og holde foreldrepenger med aktivitetskrav i reserve',
+        () => {
+            const forslag = ikkeDeltUttak({
+                situasjon: 'adopsjon',
+                famDato,
+                erFarEllerMedmor: true,
+                tilgjengeligeStønadskvoter: [foreldrepenger, aktivitetsfriKonto],
+                erMorUfør: false,
+                bareFarMedmorHarRett: true,
+                erAleneOmOmsorg: false,
+                farOgFar: false,
+            });
 
-        expect(forslag.length).toEqual(1);
-        expect(forslag[0]!.kontoType).toEqual('FORELDREPENGER');
-        expect(forslag[0]!.forelder).toEqual('FAR_MEDMOR');
-        expect(forslag[0]!.morsAktivitet).toEqual('IKKE_OPPGITT');
-        expect(forslag[0]!.fom).toEqual('2022-08-08');
-        expect(forslag[0]!.tom).toEqual('2022-09-30');
-    });
+            expect(forslag.length).toEqual(1);
+            expect(forslag[0]!.kontoType).toEqual('FORELDREPENGER');
+            expect(forslag[0]!.forelder).toEqual('FAR_MEDMOR');
+            expect(forslag[0]!.morsAktivitet).toEqual('IKKE_OPPGITT');
+            expect(forslag[0]!.fom).toEqual('2022-08-08');
+            expect(forslag[0]!.tom).toEqual('2022-09-30');
+        },
+    );
 });
