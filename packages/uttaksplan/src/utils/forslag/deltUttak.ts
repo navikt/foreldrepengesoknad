@@ -1,4 +1,4 @@
-import { KontoDto, Tidsperiode, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { KontoDto, PeriodeDto_fpoversikt, Tidsperiode } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { sorterUttakPerioder } from '../periodeUtils';
@@ -27,16 +27,16 @@ interface ForelderKonfig {
     andreForelderKvote: KontoDto | undefined;
     førsteForelderKontoType: 'MØDREKVOTE' | 'FEDREKVOTE';
     andreForelderKontoType: 'MØDREKVOTE' | 'FEDREKVOTE';
-    førsteForelderPerioder: UttakPeriode_fpoversikt[];
-    andreForelderPerioder: UttakPeriode_fpoversikt[];
+    førsteForelderPerioder: PeriodeDto_fpoversikt[];
+    andreForelderPerioder: PeriodeDto_fpoversikt[];
 }
 
 const getForelderKonfig = (
     starterForelder: Forelder,
     mødrekvote: KontoDto | undefined,
     fedrekvote: KontoDto | undefined,
-    morsPerioder: UttakPeriode_fpoversikt[],
-    farsPerioder: UttakPeriode_fpoversikt[],
+    morsPerioder: PeriodeDto_fpoversikt[],
+    farsPerioder: PeriodeDto_fpoversikt[],
 ): ForelderKonfig => {
     const starterMor = starterForelder === 'MOR';
     return {
@@ -51,6 +51,25 @@ const getForelderKonfig = (
     };
 };
 
+// Forslagsmotoren kjenner ikke saken sin faktiske søker-/annenPart-fordeling – alle genererte
+// periodar blir difor lagt på `.søker`, uavhengig av om dei gjeld MOR eller FAR_MEDMOR. Appane
+// som forbrukar forslaget (planlegger/søknad) fordeler periodane til rett person ved å sjå på
+// `periode.søker!.forelder`.
+const lagPeriode = (
+    forelder: Forelder,
+    kontoType: 'MØDREKVOTE' | 'FEDREKVOTE' | 'FELLESPERIODE' | 'FORELDREPENGER_FØR_FØDSEL',
+    fom: string,
+    tom: string,
+): PeriodeDto_fpoversikt => ({
+    fom,
+    tom,
+    søker: {
+        forelder,
+        kontoType,
+        flerbarnsdager: false,
+    },
+});
+
 /**
  * Generates a suggested parental leave plan for delt uttak (shared parental leave).
  *
@@ -59,7 +78,8 @@ const getForelderKonfig = (
  * When `startdato` is provided explicitly (e.g., the same day as `famDato`) the plan starts there
  * with no foreldrepenger-før-fødsel period.
  *
- * Returns a single `UttakPeriode_fpoversikt[]` with the suggested periods for delt uttak.
+ * Returns et sett `PeriodeDto_fpoversikt` med dei føreslegne periodane for delt uttak, alle lagt
+ * på `.søker` (sjå lagPeriode).
  */
 export const deltUttak = ({
     famDato,
@@ -67,7 +87,7 @@ export const deltUttak = ({
     fellesperiodeDagerFørsteForelder,
     starterForelder = 'MOR',
     startdato,
-}: DeltUttakParams): UttakPeriode_fpoversikt[] => {
+}: DeltUttakParams): PeriodeDto_fpoversikt[] => {
     if (fellesperiodeDagerFørsteForelder === undefined) {
         return [];
     }
@@ -97,8 +117,8 @@ export const deltUttak = ({
         (fellesperiode?.dager ?? 0) - dagerMedFellesperiodeFørFødsel - fellesperiodeDagerFørsteForelder,
     );
 
-    const morsPerioder: UttakPeriode_fpoversikt[] = [];
-    const farsPerioder: UttakPeriode_fpoversikt[] = [];
+    const morsPerioder: PeriodeDto_fpoversikt[] = [];
+    const farsPerioder: PeriodeDto_fpoversikt[] = [];
     let currentFomDate = effectiveStartdato;
     let tidsperiode: Tidsperiode;
 
@@ -112,13 +132,7 @@ export const deltUttak = ({
             dagerMedForeldrepengerFørFødsel,
         );
 
-        morsPerioder.push({
-            forelder: 'MOR',
-            kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-            fom: tidsperiode.fom,
-            tom: tidsperiode.tom,
-            flerbarnsdager: false,
-        });
+        morsPerioder.push(lagPeriode('MOR', 'FORELDREPENGER_FØR_FØDSEL', tidsperiode.fom, tidsperiode.tom));
 
         currentFomDate = Uttaksdagen.neste(tidsperiode.tom).getDato();
     }
@@ -126,25 +140,13 @@ export const deltUttak = ({
     if (dagerMellomFamDatoOgStartdato > 15) {
         tidsperiode = getTidsperiodeString(Uttaksdagen.denne(currentFomDate).getDato(), dagerMedFellesperiodeFørFødsel);
 
-        morsPerioder.push({
-            forelder: 'MOR',
-            kontoType: 'FELLESPERIODE',
-            fom: tidsperiode.fom,
-            tom: tidsperiode.tom,
-            flerbarnsdager: false,
-        });
+        morsPerioder.push(lagPeriode('MOR', 'FELLESPERIODE', tidsperiode.fom, tidsperiode.tom));
 
         currentFomDate = Uttaksdagen.neste(tidsperiode.tom).getDato();
 
         tidsperiode = getTidsperiodeString(currentFomDate, 15);
 
-        morsPerioder.push({
-            forelder: 'MOR',
-            kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-            fom: tidsperiode.fom,
-            tom: tidsperiode.tom,
-            flerbarnsdager: false,
-        });
+        morsPerioder.push(lagPeriode('MOR', 'FORELDREPENGER_FØR_FØDSEL', tidsperiode.fom, tidsperiode.tom));
 
         currentFomDate = Uttaksdagen.denne(helgejustertFamDato).getDato();
     }
@@ -162,52 +164,28 @@ export const deltUttak = ({
 
     tidsperiode = getTidsperiodeString(currentFomDate, førsteForelderKvote ? førsteForelderKvote.dager : 0);
 
-    førsteForelderPerioder.push({
-        forelder: førsteForelder,
-        kontoType: førsteForelderKontoType,
-        fom: tidsperiode.fom,
-        tom: tidsperiode.tom,
-        flerbarnsdager: false,
-    });
+    førsteForelderPerioder.push(lagPeriode(førsteForelder, førsteForelderKontoType, tidsperiode.fom, tidsperiode.tom));
 
     currentFomDate = Uttaksdagen.neste(tidsperiode.tom).getDato();
 
     if (fellesperiodeDagerFørsteForelder !== 0) {
         tidsperiode = getTidsperiodeString(currentFomDate, fellesperiodeDagerFørsteForelder);
 
-        førsteForelderPerioder.push({
-            forelder: førsteForelder,
-            kontoType: 'FELLESPERIODE',
-            fom: tidsperiode.fom,
-            tom: tidsperiode.tom,
-            flerbarnsdager: false,
-        });
+        førsteForelderPerioder.push(lagPeriode(førsteForelder, 'FELLESPERIODE', tidsperiode.fom, tidsperiode.tom));
 
         currentFomDate = Uttaksdagen.neste(tidsperiode.tom).getDato();
     }
 
     tidsperiode = getTidsperiodeString(currentFomDate, andreForelderKvote ? andreForelderKvote.dager : 0);
 
-    andreForelderPerioder.push({
-        forelder: andreForelder,
-        kontoType: andreForelderKontoType,
-        fom: tidsperiode.fom,
-        tom: tidsperiode.tom,
-        flerbarnsdager: false,
-    });
+    andreForelderPerioder.push(lagPeriode(andreForelder, andreForelderKontoType, tidsperiode.fom, tidsperiode.tom));
 
     currentFomDate = Uttaksdagen.neste(tidsperiode.tom).getDato();
 
     if (fellesperiodeDagerAndreForelder !== 0) {
         tidsperiode = getTidsperiodeString(currentFomDate, fellesperiodeDagerAndreForelder);
 
-        andreForelderPerioder.push({
-            forelder: andreForelder,
-            kontoType: 'FELLESPERIODE',
-            fom: tidsperiode.fom,
-            tom: tidsperiode.tom,
-            flerbarnsdager: false,
-        });
+        andreForelderPerioder.push(lagPeriode(andreForelder, 'FELLESPERIODE', tidsperiode.fom, tidsperiode.tom));
     }
 
     return [...morsPerioder, ...farsPerioder].sort(sorterUttakPerioder);

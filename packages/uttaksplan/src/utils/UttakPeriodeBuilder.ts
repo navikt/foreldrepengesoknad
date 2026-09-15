@@ -2,69 +2,48 @@ import dayjs, { Dayjs } from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
 import { captureException } from '@navikt/fp-observability';
-import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { PeriodeDto_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { erPerioderEkslFomTomLike } from './periodeUtils';
 
 dayjs.extend(utc);
 
-type AlleUttakPerioder = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
-
 type Builderkilde = 'liste' | 'kalender' | 'validator' | 'ukjent';
 
 export class UttakPeriodeBuilder {
-    private alleUttakPerioder: AlleUttakPerioder[];
-    private readonly opprinneligPerioder: AlleUttakPerioder[];
+    private allePerioder: PeriodeDto_fpoversikt[];
+    private readonly opprinneligPerioder: PeriodeDto_fpoversikt[];
     private readonly kilde: Builderkilde;
     private readonly operasjonsLogg: Array<{
         operasjon: string;
-        nyePerioder?: AlleUttakPerioder[];
+        nyePerioder?: PeriodeDto_fpoversikt[];
         perioderSomSkalFjernes?: Array<{ fom: string; tom: string }>;
         forskyvPerioder: boolean;
     }> = [];
 
-    constructor(alleUttakPerioder: AlleUttakPerioder[], kilde: Builderkilde = 'ukjent') {
-        this.alleUttakPerioder = [...alleUttakPerioder].sort(sorterUttakPerioder);
-        this.opprinneligPerioder = [...this.alleUttakPerioder];
+    constructor(allePerioder: PeriodeDto_fpoversikt[], kilde: Builderkilde = 'ukjent') {
+        this.allePerioder = [...allePerioder].sort(sorterPerioder);
+        this.opprinneligPerioder = [...this.allePerioder];
         this.kilde = kilde;
     }
 
-    leggTilUttakPerioder(nyeUttakPerioder: AlleUttakPerioder[], forskyvPerioder: boolean): this {
-        this.operasjonsLogg.push({ operasjon: 'leggTilUttakPerioder', nyePerioder: nyeUttakPerioder, forskyvPerioder });
-        // Grupper for å håndtera at ein legg til to periodar når ein har samtidig uttak.
-        // Bruk ein av dei nye periodane for å justera andre periodar, og legg så til den andre på slutten
-        const grupperPerFomTom = new Map<string, AlleUttakPerioder[]>();
+    /**
+     * Ein ny periode dekker ALT som skal gjelde for tidsrommet sitt (søker, annenPart,
+     * annenPartEøs kan settast samtidig for t.d. samtidig uttak). Det trengst difor ikkje
+     * lenger nokon gruppering av fleire innkomande periodar med same fom/tom slik den flate
+     * modellen krevde – kvar periode erstattar heile det overlappande tidsrommet sitt.
+     */
+    leggTilUttakPerioder(nyePerioder: PeriodeDto_fpoversikt[], forskyvPerioder: boolean): this {
+        this.operasjonsLogg.push({ operasjon: 'leggTilUttakPerioder', nyePerioder, forskyvPerioder });
 
-        for (const periode of nyeUttakPerioder) {
-            const key = `${periode.fom}-${periode.tom}`;
-            const eksisterende = grupperPerFomTom.get(key);
-            if (eksisterende) {
-                eksisterende.push(periode);
-            } else {
-                grupperPerFomTom.set(key, [periode]);
-            }
+        for (const nyPeriode of nyePerioder) {
+            this.allePerioder = forskyvPerioder
+                ? forskyvEksisterendePerioder(this.allePerioder, nyPeriode)
+                : erstattEksisterendePerioder(this.allePerioder, nyPeriode);
         }
 
-        if (forskyvPerioder) {
-            for (const [, gruppe] of grupperPerFomTom) {
-                this.alleUttakPerioder = forskyvEksisterendePerioder(this.alleUttakPerioder, gruppe[0]!);
-
-                for (let i = 1; i < gruppe.length; i++) {
-                    this.alleUttakPerioder.push(gruppe[i]!);
-                }
-            }
-        } else {
-            for (const [, gruppe] of grupperPerFomTom) {
-                this.alleUttakPerioder = erstattEksisterendeUttakPerioder(this.alleUttakPerioder, gruppe[0]!);
-
-                for (let i = 1; i < gruppe.length; i++) {
-                    this.alleUttakPerioder.push(gruppe[i]!);
-                }
-            }
-        }
-
-        this.alleUttakPerioder.sort(sorterUttakPerioder);
+        this.allePerioder.sort(sorterPerioder);
 
         return this;
     }
@@ -73,19 +52,16 @@ export class UttakPeriodeBuilder {
         this.operasjonsLogg.push({ operasjon: 'fjernUttakPerioder', perioderSomSkalFjernes, forskyvPerioder });
         if (forskyvPerioder) {
             for (const periodeSomSkalFjernes of perioderSomSkalFjernes) {
-                this.alleUttakPerioder = fjernOgForskyvUttakPerioderBakover(
-                    this.alleUttakPerioder,
-                    periodeSomSkalFjernes,
-                );
+                this.allePerioder = fjernOgForskyvPerioderBakover(this.allePerioder, periodeSomSkalFjernes);
             }
         } else {
             for (const periodeSomSkalFjernes of perioderSomSkalFjernes) {
                 const nFom = toDay(periodeSomSkalFjernes.fom);
                 const nTom = toDay(periodeSomSkalFjernes.tom);
 
-                const nyeUttakPerioder: AlleUttakPerioder[] = [];
+                const nyePerioder: PeriodeDto_fpoversikt[] = [];
 
-                for (const eksisterendePeriode of this.alleUttakPerioder) {
+                for (const eksisterendePeriode of this.allePerioder) {
                     const eFom = toDay(eksisterendePeriode.fom);
                     const eTom = toDay(eksisterendePeriode.tom);
 
@@ -94,7 +70,7 @@ export class UttakPeriodeBuilder {
 
                         // Overlappende, behold del før sletta periode
                         if (eFom.isBefore(nFom)) {
-                            nyeUttakPerioder.push({
+                            nyePerioder.push({
                                 ...eksisterendePeriode,
                                 tom: Uttaksdagen.forrige(periodeSomSkalFjernes.fom).getDato(),
                             });
@@ -102,28 +78,28 @@ export class UttakPeriodeBuilder {
 
                         // Overlappende, behold del etter sletta periode
                         if (eTom.isAfter(nTom)) {
-                            nyeUttakPerioder.push({
+                            nyePerioder.push({
                                 ...eksisterendePeriode,
                                 fom: Uttaksdagen.neste(periodeSomSkalFjernes.tom).getDato(),
                             });
                         }
                     } else {
                         // Ingen overlapp, behold eksisterande periode
-                        nyeUttakPerioder.push(eksisterendePeriode);
+                        nyePerioder.push(eksisterendePeriode);
                     }
                 }
 
-                this.alleUttakPerioder = nyeUttakPerioder;
+                this.allePerioder = nyePerioder;
             }
         }
 
-        this.alleUttakPerioder.sort(sorterUttakPerioder);
+        this.allePerioder.sort(sorterPerioder);
 
         return this;
     }
 
-    getUttakPerioder(): AlleUttakPerioder[] {
-        const resultat = slåSammenLikeTilstøtendePerioder(this.alleUttakPerioder);
+    getUttakPerioder(): PeriodeDto_fpoversikt[] {
+        const resultat = slåSammenLikeTilstøtendePerioder(this.allePerioder);
         validerOgLoggOverlapp(resultat, this.opprinneligPerioder, this.operasjonsLogg, this.kilde);
         return resultat;
     }
@@ -132,15 +108,20 @@ export class UttakPeriodeBuilder {
 const erOverlappendeIDato = (a: { fom: string; tom: string }, b: { fom: string; tom: string }): boolean =>
     dayjs(a.fom).isSameOrBefore(b.tom, 'day') && dayjs(b.fom).isSameOrBefore(a.tom, 'day');
 
-const erEøsPeriode = (p: AlleUttakPerioder): p is UttakPeriodeAnnenpartEøs_fpoversikt => 'trekkdager' in p;
-
-export const finnUgyldigeOverlapp = (perioder: AlleUttakPerioder[]): Array<[AlleUttakPerioder, AlleUttakPerioder]> => {
-    const ugyldigeOverlapp: Array<[AlleUttakPerioder, AlleUttakPerioder]> = [];
+/**
+ * Med den nye periodemodellen dekker éin periode heile tidsrommet sitt (søker og annenPart
+ * kan begge liggja på same periode ved samtidig uttak). To ULIKE periodar i lista skal difor
+ * aldri overlappa i tid – gjer dei det, er det alltid ein feil i korleis planen er bygd opp.
+ */
+export const finnUgyldigeOverlapp = (
+    perioder: PeriodeDto_fpoversikt[],
+): Array<[PeriodeDto_fpoversikt, PeriodeDto_fpoversikt]> => {
+    const ugyldigeOverlapp: Array<[PeriodeDto_fpoversikt, PeriodeDto_fpoversikt]> = [];
     for (let i = 0; i < perioder.length; i++) {
         for (let j = i + 1; j < perioder.length; j++) {
             const a = perioder[i]!;
             const b = perioder[j]!;
-            if (erOverlappendeIDato(a, b) && !erGyldigSamtidigUttak(a, b)) {
+            if (erOverlappendeIDato(a, b)) {
                 ugyldigeOverlapp.push([a, b]);
             }
         }
@@ -148,45 +129,32 @@ export const finnUgyldigeOverlapp = (perioder: AlleUttakPerioder[]): Array<[Alle
     return ugyldigeOverlapp;
 };
 
-export const periodeTilLoggObjekt = (p: AlleUttakPerioder) => {
-    if (erEøsPeriode(p)) {
-        return { fom: p.fom, tom: p.tom, eøs: true, kontoType: p.kontoType };
-    }
-    return {
-        fom: p.fom,
-        tom: p.tom,
-        forelder: p.forelder,
-        kontoType: p.kontoType,
-        utsettelseÅrsak: p.utsettelseÅrsak,
-        oppholdÅrsak: p.oppholdÅrsak,
-        overføringÅrsak: p.overføringÅrsak,
-        samtidigUttak: p.samtidigUttak,
-    };
-};
-
-const erGyldigSamtidigUttak = (a: AlleUttakPerioder, b: AlleUttakPerioder): boolean => {
-    if (erEøsPeriode(a) || erEøsPeriode(b)) {
-        // EØS-periodar er annen-part og kan eksistere parallelt med søkers periodar
-        return true;
-    }
-    // Periodar på ulik forelder kan gå parallelt (samtidig uttak). Dette gjeld òg samtidig uttak
-    // rundt fødsel, der far/medmor og mor har overlappande periodar utan at `samtidigUttak` er sett.
-    // Utsetjing og opphald kan derimot aldri skje samtidig med ein annan periode.
-    return (
-        a.utsettelseÅrsak === undefined &&
-        b.utsettelseÅrsak === undefined &&
-        a.oppholdÅrsak === undefined &&
-        b.oppholdÅrsak === undefined &&
-        a.forelder !== b.forelder
-    );
-};
+export const periodeTilLoggObjekt = (p: PeriodeDto_fpoversikt) => ({
+    fom: p.fom,
+    tom: p.tom,
+    søker: p.søker && {
+        forelder: p.søker.forelder,
+        kontoType: p.søker.kontoType,
+        utsettelseÅrsak: p.søker.utsettelseÅrsak,
+        overføringÅrsak: p.søker.overføringÅrsak,
+        samtidigUttak: p.søker.samtidigUttak,
+    },
+    annenPart: p.annenPart && {
+        forelder: p.annenPart.forelder,
+        kontoType: p.annenPart.kontoType,
+        utsettelseÅrsak: p.annenPart.utsettelseÅrsak,
+        overføringÅrsak: p.annenPart.overføringÅrsak,
+        samtidigUttak: p.annenPart.samtidigUttak,
+    },
+    annenPartEøs: p.annenPartEøs && { kontoType: p.annenPartEøs.kontoType },
+});
 
 const validerOgLoggOverlapp = (
-    resultat: AlleUttakPerioder[],
-    opprinneligPerioder: AlleUttakPerioder[],
+    resultat: PeriodeDto_fpoversikt[],
+    opprinneligPerioder: PeriodeDto_fpoversikt[],
     operasjonsLogg: Array<{
         operasjon: string;
-        nyePerioder?: AlleUttakPerioder[];
+        nyePerioder?: PeriodeDto_fpoversikt[];
         perioderSomSkalFjernes?: Array<{ fom: string; tom: string }>;
         forskyvPerioder: boolean;
     }>,
@@ -219,17 +187,17 @@ const validerOgLoggOverlapp = (
     });
 };
 
-const fjernOgForskyvUttakPerioderBakover = (
-    alleUttakPerioder: AlleUttakPerioder[],
+const fjernOgForskyvPerioderBakover = (
+    allePerioder: PeriodeDto_fpoversikt[],
     periodeSomSkalFjernes: { fom: string; tom: string },
-): AlleUttakPerioder[] => {
+): PeriodeDto_fpoversikt[] => {
     const nFom = toDay(periodeSomSkalFjernes.fom);
     const nTom = toDay(periodeSomSkalFjernes.tom);
     const antallUkedager = finnLengdeIUkedager(nFom, nTom);
 
-    const nyeUttakPerioder: AlleUttakPerioder[] = [];
+    const nyePerioder: PeriodeDto_fpoversikt[] = [];
 
-    for (const eksisterendePeriode of alleUttakPerioder) {
+    for (const eksisterendePeriode of allePerioder) {
         const eFom = toDay(eksisterendePeriode.fom);
         const eTom = toDay(eksisterendePeriode.tom);
 
@@ -237,7 +205,7 @@ const fjernOgForskyvUttakPerioderBakover = (
         if (erOverlappende(eFom, eTom, nFom, nTom)) {
             // Del før slettet periode
             if (eFom.isBefore(nFom)) {
-                nyeUttakPerioder.push({
+                nyePerioder.push({
                     ...eksisterendePeriode,
                     tom: Uttaksdagen.forrige(periodeSomSkalFjernes.fom).getDato(),
                 });
@@ -253,7 +221,7 @@ const fjernOgForskyvUttakPerioderBakover = (
                     antallUkedager,
                 );
 
-                nyeUttakPerioder.push({
+                nyePerioder.push({
                     ...eksisterendePeriode,
                     fom: nyFom,
                     tom: nyTom,
@@ -265,7 +233,7 @@ const fjernOgForskyvUttakPerioderBakover = (
 
         // Periode helt etter slettet periode
         if (eFom.isAfter(nTom)) {
-            nyeUttakPerioder.push({
+            nyePerioder.push({
                 ...eksisterendePeriode,
                 fom: Uttaksdagen.denne(eksisterendePeriode.fom).getDatoAntallUttaksdagerTidligere(antallUkedager),
                 tom: Uttaksdagen.denne(eksisterendePeriode.tom).getDatoAntallUttaksdagerTidligere(antallUkedager),
@@ -274,60 +242,60 @@ const fjernOgForskyvUttakPerioderBakover = (
         }
 
         // Periode før slettet periode -> behold uendret
-        nyeUttakPerioder.push(eksisterendePeriode);
+        nyePerioder.push(eksisterendePeriode);
     }
 
-    return nyeUttakPerioder.sort(sorterUttakPerioder);
+    return nyePerioder.sort(sorterPerioder);
 };
 
-const erstattEksisterendeUttakPerioder = (
-    eksisterendeUttakPerioder: AlleUttakPerioder[],
-    nyUttakPeriode: AlleUttakPerioder,
-): AlleUttakPerioder[] => {
-    const nFom = toDay(nyUttakPeriode.fom);
-    const nTom = toDay(nyUttakPeriode.tom);
+const erstattEksisterendePerioder = (
+    eksisterendePerioder: PeriodeDto_fpoversikt[],
+    nyPeriode: PeriodeDto_fpoversikt,
+): PeriodeDto_fpoversikt[] => {
+    const nFom = toDay(nyPeriode.fom);
+    const nTom = toDay(nyPeriode.tom);
 
-    const nyeUttakPerioder: AlleUttakPerioder[] = [];
+    const nyePerioder: PeriodeDto_fpoversikt[] = [];
 
-    for (const eksisterendeUttakPeriode of eksisterendeUttakPerioder) {
-        const eFom = toDay(eksisterendeUttakPeriode.fom);
-        const eTom = toDay(eksisterendeUttakPeriode.tom);
+    for (const eksisterendePeriode of eksisterendePerioder) {
+        const eFom = toDay(eksisterendePeriode.fom);
+        const eTom = toDay(eksisterendePeriode.tom);
 
         if (erOverlappende(eFom, eTom, nFom, nTom)) {
             // Starter eksisterende periode før overlappende ny periode
             if (eFom.isBefore(nFom)) {
-                nyeUttakPerioder.push({
-                    ...eksisterendeUttakPeriode,
-                    tom: Uttaksdagen.forrige(nyUttakPeriode.fom).getDato(),
+                nyePerioder.push({
+                    ...eksisterendePeriode,
+                    tom: Uttaksdagen.forrige(nyPeriode.fom).getDato(),
                 });
             }
 
             // Starter eksisterende periode etter overlappende ny periode
             if (eTom.isAfter(nTom)) {
-                nyeUttakPerioder.push({
-                    ...eksisterendeUttakPeriode,
-                    fom: Uttaksdagen.neste(nyUttakPeriode.tom).getDato(),
+                nyePerioder.push({
+                    ...eksisterendePeriode,
+                    fom: Uttaksdagen.neste(nyPeriode.tom).getDato(),
                 });
             }
         } else {
-            nyeUttakPerioder.push(eksisterendeUttakPeriode);
+            nyePerioder.push(eksisterendePeriode);
         }
     }
 
-    nyeUttakPerioder.push(nyUttakPeriode);
+    nyePerioder.push(nyPeriode);
 
-    return nyeUttakPerioder;
+    return nyePerioder;
 };
 
 const forskyvEksisterendePerioder = (
-    eksisterendePerioder: AlleUttakPerioder[],
-    nyUttakPeriode: AlleUttakPerioder,
-): AlleUttakPerioder[] => {
-    const nFom = toDay(nyUttakPeriode.fom);
-    const nTom = toDay(nyUttakPeriode.tom);
+    eksisterendePerioder: PeriodeDto_fpoversikt[],
+    nyPeriode: PeriodeDto_fpoversikt,
+): PeriodeDto_fpoversikt[] => {
+    const nFom = toDay(nyPeriode.fom);
+    const nTom = toDay(nyPeriode.tom);
     const antallUkedager = finnLengdeIUkedager(nFom, nTom);
 
-    const nyeUttakPerioder: AlleUttakPerioder[] = [];
+    const nyePerioder: PeriodeDto_fpoversikt[] = [];
 
     for (const eksisterendePeriode of eksisterendePerioder) {
         const eFom = toDay(eksisterendePeriode.fom);
@@ -335,7 +303,7 @@ const forskyvEksisterendePerioder = (
 
         // Eksisterende periode ligg før ny periode => Ta vare på hele perioden
         if (eTom.isBefore(nFom)) {
-            nyeUttakPerioder.push(eksisterendePeriode);
+            nyePerioder.push(eksisterendePeriode);
             continue;
         }
 
@@ -349,7 +317,7 @@ const forskyvEksisterendePerioder = (
             nyPeriodeStarterSamtidigOgSlutterEtterEksisterende ||
             eksisterendeErHeltInniNy
         ) {
-            nyeUttakPerioder.push({
+            nyePerioder.push({
                 ...eksisterendePeriode,
                 fom: Uttaksdagen.denne(eksisterendePeriode.fom).getDatoAntallUttaksdagerSenere(antallUkedager),
                 tom: Uttaksdagen.denne(eksisterendePeriode.tom).getDatoAntallUttaksdagerSenere(antallUkedager),
@@ -359,30 +327,30 @@ const forskyvEksisterendePerioder = (
 
         // Legg til evt del av eksistrande periode som ligg før den nye
         if (eFom.isBefore(nFom)) {
-            nyeUttakPerioder.push({
+            nyePerioder.push({
                 ...eksisterendePeriode,
-                tom: Uttaksdagen.forrige(nyUttakPeriode.fom).getDato(),
+                tom: Uttaksdagen.forrige(nyPeriode.fom).getDato(),
             });
         }
 
-        nyeUttakPerioder.push({
+        nyePerioder.push({
             ...eksisterendePeriode,
-            fom: Uttaksdagen.neste(nyUttakPeriode.tom).getDato(),
+            fom: Uttaksdagen.neste(nyPeriode.tom).getDato(),
             tom: Uttaksdagen.denne(eksisterendePeriode.tom).getDatoAntallUttaksdagerSenere(antallUkedager),
         });
     }
 
-    nyeUttakPerioder.push(nyUttakPeriode);
+    nyePerioder.push(nyPeriode);
 
-    return nyeUttakPerioder.sort(sorterUttakPerioder);
+    return nyePerioder.sort(sorterPerioder);
 };
 
-const slåSammenLikeTilstøtendePerioder = (sortertePerioder: AlleUttakPerioder[]): AlleUttakPerioder[] => {
+const slåSammenLikeTilstøtendePerioder = (sortertePerioder: PeriodeDto_fpoversikt[]): PeriodeDto_fpoversikt[] => {
     if (sortertePerioder.length === 0) {
         return [];
     }
 
-    return sortertePerioder.reduce<AlleUttakPerioder[]>((acc, periode) => {
+    return sortertePerioder.reduce<PeriodeDto_fpoversikt[]>((acc, periode) => {
         if (acc.length === 0) {
             return acc.concat(periode);
         }
@@ -422,7 +390,7 @@ const finnLengdeIUkedager = (fom: Dayjs, tom: Dayjs): number => {
     return count;
 };
 
-const sorterUttakPerioder = (a: AlleUttakPerioder, b: AlleUttakPerioder): number => {
+const sorterPerioder = (a: PeriodeDto_fpoversikt, b: PeriodeDto_fpoversikt): number => {
     const aFom = toDay(a.fom);
     const bFom = toDay(b.fom);
 

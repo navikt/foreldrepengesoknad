@@ -74,13 +74,13 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
         [],
     );
 
-    const { uttakPerioder } = useUttaksplanData();
+    const { perioder } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
     const perioderForKalendervisning = usePerioderForKalendervisning(endredePerioder, barnehagestartdato);
 
-    const { manglerMorsAktivitetAlert, manglerGraderingsaktivitetAlert } = useUttaksplanKalenderAlerts(uttakPerioder);
+    const { manglerMorsAktivitetAlert, manglerGraderingsaktivitetAlert } = useUttaksplanKalenderAlerts(perioder);
 
     const {
         førsteDatoIKalender,

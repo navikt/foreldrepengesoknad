@@ -17,6 +17,8 @@ import {
 } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
+import { FellesUttaksplanDto_fpoversikt, FellesUttaksplanRequest_fpoversikt } from '@navikt/fp-types';
+
 export const urlPrefiks = import.meta.env.BASE_URL;
 
 /**
@@ -31,6 +33,8 @@ export const API_URLS = {
     søkerInfo: `${urlPrefiks}/fpoversikt/api/personopplysninger/oversikt`,
     saker: `${urlPrefiks}/fpoversikt/api/saker`,
     annenPartVedtak: `${urlPrefiks}/fpoversikt/api/annenPart`,
+    // Nytt endepunkt (feature/uttaksplan i fp-oversikt, ikkje merga/deploya enno).
+    uttaksplan: `${urlPrefiks}/fpoversikt/api/uttaksplan`,
     minidialog: `${urlPrefiks}/fpoversikt/api/oppgaver/tilbakekrevingsuttalelse`,
     dokumenter: `${urlPrefiks}/fpoversikt/api/dokument/alle`,
     hentDokument: (journalpostId: string, dokumentId: string) => {
@@ -103,6 +107,12 @@ export const hentAnnenPartsVedtakOptions = (body: AnnenPartRequest_fpoversikt) =
         queryKey: ['ANNEN_PARTS_VEDTAK', body],
         queryFn: () => jsonEllerNull<AnnenPartSak_fpoversikt>(ky.post(API_URLS.annenPartVedtak, { json: body })),
         select: (data) => data ?? undefined,
+    });
+
+export const hentUttaksplanOptions = (body: FellesUttaksplanRequest_fpoversikt) =>
+    queryOptions({
+        queryKey: ['UTTAKSPLAN', body],
+        queryFn: () => ky.post(API_URLS.uttaksplan, { json: body }).json<FellesUttaksplanDto_fpoversikt>(),
     });
 
 export const hentTidslinjehendelserOptions = (saksnummer: string) =>

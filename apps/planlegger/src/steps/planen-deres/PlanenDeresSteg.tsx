@@ -34,11 +34,10 @@ import {
     Dekningsgrad,
     FordelingPlanlegger,
     KontoBeregningResultatDto,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
+    PeriodeDto_fpoversikt,
 } from '@navikt/fp-types';
 import { BluePanel, Infobox, StepButtons } from '@navikt/fp-ui';
-import { Uttaksperioden, compressToUrl, useMedia, useScrollBehaviour } from '@navikt/fp-utils';
+import { compressToUrl, useMedia, useScrollBehaviour } from '@navikt/fp-utils';
 import {
     FjernAltIUttaksplanModal,
     KvoteOppsummering,
@@ -107,10 +106,11 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
         intl,
     );
 
-    const lagreUttaksplanOgOppdaterUrl = (
-        oppdatertUttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
-    ) => {
-        lagreUttaksplan(oppdatertUttaksplan?.filter((p) => Uttaksperioden.erIkkeEøsPeriode(p)));
+    const lagreUttaksplanOgOppdaterUrl = (oppdatertUttaksplan: PeriodeDto_fpoversikt[] | undefined) => {
+        // I planleggeren finst det ingen ekte EØS-integrasjon, så periodane som blir laga/redigert her
+        // har aldri berre `annenPartEøs` – det er difor ikkje lenger nødvendig å filtrera bort ein
+        // eigen "EØS-periode"-kategori før lagring slik det var med den flate periodemodellen.
+        lagreUttaksplan(oppdatertUttaksplan);
 
         const contextData = {
             ...completeAppContext,
@@ -166,7 +166,7 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
                     }}
                     valgtStønadskvote={valgtStønadskvote}
                     harAktivitetskravIPeriodeUtenUttak={false}
-                    uttakPerioder={uttaksplan ?? kombinertForslag}
+                    perioder={uttaksplan ?? kombinertForslag}
                     erPeriodeneTilAnnenPartLåst={false}
                     erEndringssøknad={false}
                 >
@@ -310,7 +310,7 @@ const AntallUkerVelger = ({
 }: {
     stønadskvoter: KontoBeregningResultatDto;
     hvemHarRett: HvemHarRett;
-    lagreUttaksplanOgOppdaterUrl: (oppdatertUttaksplan: UttakPeriode_fpoversikt[] | undefined) => void;
+    lagreUttaksplanOgOppdaterUrl: (oppdatertUttaksplan: PeriodeDto_fpoversikt[] | undefined) => void;
 }) => {
     const intl = useIntl();
 

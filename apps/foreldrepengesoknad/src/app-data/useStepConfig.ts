@@ -130,9 +130,7 @@ const showManglendeDokumentasjonSteg = (
         });
         const skalHaAdopsjonDokumentasjon = skalViseOmsorgsovertakelseDokumentasjon(søkersituasjon);
 
-        const perioderSomSkalSjekkes = uttaksplan
-            ? finnPerioderSomInngårISøknaden(uttaksplan, erFarEllerMedmor, !!eksisterendeSak)
-            : [];
+        const perioderSomSkalSjekkes = uttaksplan ? finnPerioderSomInngårISøknaden(uttaksplan, !!eksisterendeSak) : [];
 
         const skalHaUttakDok =
             familiehendelsedato && annenForelder && perioderSomSkalSjekkes.length > 0

@@ -3,7 +3,7 @@ import isoWeek from 'dayjs/plugin/isoWeek';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { KontoBeregningDto, KontoDto, OmBarnetPlanlegger, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { KontoBeregningDto, KontoDto, OmBarnetPlanlegger, PeriodeDto_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen, treUkerSiden } from '@navikt/fp-utils';
 import { deltUttak, ikkeDeltUttak } from '@navikt/fp-uttaksplan/delt-uttak';
 
@@ -21,8 +21,8 @@ import {
 } from './stønadskvoterUtils';
 
 export interface PlanForslag {
-    søker1: UttakPeriode_fpoversikt[];
-    søker2: UttakPeriode_fpoversikt[];
+    søker1: PeriodeDto_fpoversikt[];
+    søker2: PeriodeDto_fpoversikt[];
 }
 
 dayjs.extend(isoWeek);
@@ -382,8 +382,8 @@ export const lagForslagTilPlan = ({
         const søker1Forelder = starterForelder ?? 'MOR';
         const søker2Forelder = søker1Forelder === 'MOR' ? 'FAR_MEDMOR' : 'MOR';
         return {
-            søker1: perioder.filter((p) => p.forelder === søker1Forelder),
-            søker2: perioder.filter((p) => p.forelder === søker2Forelder),
+            søker1: perioder.filter((p) => p.søker?.forelder === søker1Forelder),
+            søker2: perioder.filter((p) => p.søker?.forelder === søker2Forelder),
         };
     }
 
@@ -401,23 +401,36 @@ export const lagForslagTilPlan = ({
     return { søker1: perioder, søker2: [] };
 };
 
+// Ein periode er no eit tidsintervall som kan ha både `søker` og `annenPart` samtidig (i staden for
+// éin flat rad per person), så vi kan ikkje lenger anta at eit periode-objekt "tilhøyrer" éin forelder.
+// Funksjonane returnerer difor framleis fulle periodar (med `fom`/`tom` for visning), filtrert til dei
+// som har den aktuelle forelderen på minst éi side (uansett om forslagsmotoren/redigeringa har lagt
+// forelderen på `.søker` eller `.annenPart`).
 export const getSøkersPerioder = (
     erDeltUttak: boolean,
-    gjeldendeUttaksplan: UttakPeriode_fpoversikt[],
+    gjeldendeUttaksplan: PeriodeDto_fpoversikt[],
     erFarEllerMedmor: boolean,
     starterForelder?: 'MOR' | 'FAR_MEDMOR',
 ) => {
     const søkersForelder = starterForelder ?? (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR');
-    return erDeltUttak ? gjeldendeUttaksplan.filter((p) => p.forelder === søkersForelder) : gjeldendeUttaksplan;
+    return erDeltUttak
+        ? gjeldendeUttaksplan.filter(
+              (p) => p.søker?.forelder === søkersForelder || p.annenPart?.forelder === søkersForelder,
+          )
+        : gjeldendeUttaksplan;
 };
 
 export const getAnnenpartsPerioder = (
     erDeltUttak: boolean,
-    gjeldendeUttaksplan: UttakPeriode_fpoversikt[],
+    gjeldendeUttaksplan: PeriodeDto_fpoversikt[],
     erFarEllerMedmor: boolean,
     starterForelder?: 'MOR' | 'FAR_MEDMOR',
 ) => {
     const søkersForelder = starterForelder ?? (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR');
     const annenpartsForelder = søkersForelder === 'MOR' ? 'FAR_MEDMOR' : 'MOR';
-    return erDeltUttak ? gjeldendeUttaksplan.filter((p) => p.forelder === annenpartsForelder) : [];
+    return erDeltUttak
+        ? gjeldendeUttaksplan.filter(
+              (p) => p.søker?.forelder === annenpartsForelder || p.annenPart?.forelder === annenpartsForelder,
+          )
+        : [];
 };
