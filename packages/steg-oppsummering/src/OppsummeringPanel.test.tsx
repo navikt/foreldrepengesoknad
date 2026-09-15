@@ -4,8 +4,12 @@ import userEvent from '@testing-library/user-event';
 
 import * as stories from './OppsummeringPanel.stories';
 
-const { HarBoddIUtlandetOgFødt, HarIkkeBoddIUtlandetOgIkkeFødt, ArbeidsforholdOgInntektOppsummering } =
-    composeStories(stories);
+const {
+    HarBoddIUtlandetOgFødt,
+    HarIkkeBoddIUtlandetOgIkkeFødt,
+    ArbeidsforholdOgInntektOppsummering,
+    ArbeidsforholdOgInntektSvpOppsummering,
+} = composeStories(stories);
 
 describe('<OppsummeringSteg>', () => {
     it('skal ha hatt utenlandsopphold for ES og så sende søknad', async () => {
@@ -75,6 +79,31 @@ describe('<OppsummeringSteg>', () => {
         expect(await screen.findByText('Arbeidsforhold og inntekt')).toBeInTheDocument();
         expect(screen.getByText('Du er ikke registrert med noen arbeidsforhold.')).toBeInTheDocument();
         expect(screen.getByText('Arbeid som selvstendig næringsdrivende')).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: 'Fiskebåten' })).toBeInTheDocument();
+        expect(screen.getByText('998877665')).toBeInTheDocument();
+        expect(screen.queryByText('Hvilken type virksomhet har du?')).not.toBeInTheDocument();
+        expect(
+            screen.queryByText('Vi mangler opplysninger om næringen. Dette kan du legge til i neste steg.'),
+        ).not.toBeInTheDocument();
         expect(screen.getByText('Arbeid som frilanser')).toBeInTheDocument();
+        expect(
+            screen.queryByText('Har du jobbet og hatt inntekt som frilanser de siste 10 månedene?'),
+        ).not.toBeInTheDocument();
+        expect(
+            screen.queryByText('Har du jobbet og hatt inntekt som selvstendig næringsdrivende de siste 10 månedene?'),
+        ).not.toBeInTheDocument();
+    });
+
+    it('skal ikke vise legacy Ja/Nei-spørsmål for svangerskapspenger', async () => {
+        render(<ArbeidsforholdOgInntektSvpOppsummering />);
+
+        expect(await screen.findByText('Arbeidsforhold og inntekt')).toBeInTheDocument();
+        expect(
+            screen.queryByText('Har du jobbet og hatt inntekt som frilanser de siste 4 ukene?'),
+        ).not.toBeInTheDocument();
+        expect(
+            screen.queryByText('Har du jobbet og hatt inntekt som selvstendig næringsdrivende de siste 4 ukene?'),
+        ).not.toBeInTheDocument();
+        expect(screen.queryByText('Har du jobbet i utlandet de siste 4 ukene?')).not.toBeInTheDocument();
     });
 });

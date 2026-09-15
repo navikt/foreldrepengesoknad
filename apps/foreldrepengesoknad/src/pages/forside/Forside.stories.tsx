@@ -30,6 +30,8 @@ const defaultPerson = {
     erGift: false,
     barn: [],
     arbeidsforhold: [],
+    frilansoppdrag: [],
+    selvstendigNæring: [],
 } satisfies FpPersonopplysningerDto_fpoversikt;
 
 interface SakInfo {

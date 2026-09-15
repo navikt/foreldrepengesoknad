@@ -82,7 +82,6 @@ export const ManglendeVedlegg = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG) || {};
-    const arbeidsforholdOgInntekt = useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const andreInntektskilder = useContextGetData(ContextDataType.ANDRE_INNTEKTSKILDER);
     const eksisterendeSaksnummer = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
     const saveVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
@@ -90,14 +89,20 @@ export const ManglendeVedlegg = ({
 
     const eksisterendeSak = foreldrepengerSaker?.find((sak) => sak.saksnummer === eksisterendeSaksnummer);
 
-    const navigator = useFpNavigator(
-        søkerInfo.arbeidsforhold,
-        mellomlagreSøknadOgNaviger,
+    const navigator = useFpNavigator({
+        arbeidsforhold: søkerInfo.arbeidsforhold,
+        harRegistrertNæring: søkerInfo.selvstendigNæring.length > 0,
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
         erEndringssøknad,
         eksisterendeSak,
-    );
+    });
 
-    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad, eksisterendeSak);
+    const stepConfig = useStepConfig({
+        arbeidsforhold: søkerInfo.arbeidsforhold,
+        harRegistrertNæring: søkerInfo.selvstendigNæring.length > 0,
+        erEndringssøknad,
+        eksisterendeSak,
+    });
 
     const erFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const perioderSomManglerVedlegg = perioderSomKreverVedlegg(
@@ -301,13 +306,11 @@ export const ManglendeVedlegg = ({
                         <EtterlønnEllerSluttvederlagDokumentasjon
                             attachments={etterlønnEllerSluttvederlagVedlegg}
                             updateAttachments={updateAttachments}
-                            arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                             andreInntektskilder={andreInntektskilder}
                         />
                         <MilitærEllerSiviltjenesteDokumentasjon
                             attachments={militærEllerSiviltjenesteVedlegg}
                             updateAttachments={updateAttachments}
-                            arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                             andreInntektskilder={andreInntektskilder}
                         />
 

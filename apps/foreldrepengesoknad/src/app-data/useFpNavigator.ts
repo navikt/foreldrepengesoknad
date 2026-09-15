@@ -8,13 +8,22 @@ import { ContextDataType, useContextSaveData } from './FpDataContext';
 import { MellomlagreSøknadFn } from './useMellomlagreSøknad';
 import { useStepConfig } from './useStepConfig';
 
-export const useFpNavigator = (
-    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
-    mellomlagreOgNaviger: MellomlagreSøknadFn,
+interface UseFpNavigatorParams {
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    harRegistrertNæring: boolean;
+    mellomlagreOgNaviger: MellomlagreSøknadFn;
+    erEndringssøknad?: boolean;
+    eksisterendeSak?: FpSak_fpoversikt;
+}
+
+export const useFpNavigator = ({
+    arbeidsforhold,
+    harRegistrertNæring,
+    mellomlagreOgNaviger,
     erEndringssøknad = false,
-    eksisterendeSak?: FpSak_fpoversikt,
-) => {
-    const stepConfig = useStepConfig(arbeidsforhold, erEndringssøknad, eksisterendeSak);
+    eksisterendeSak,
+}: UseFpNavigatorParams) => {
+    const stepConfig = useStepConfig({ arbeidsforhold, harRegistrertNæring, erEndringssøknad, eksisterendeSak });
     const oppdaterPath = useContextSaveData(ContextDataType.APP_ROUTE);
 
     // Vi kan ikkje rekne ut next/previous path synkront frå closure-fanga `stepConfig`,

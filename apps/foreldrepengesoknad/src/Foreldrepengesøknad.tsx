@@ -128,7 +128,17 @@ const RegisterdataSjekk = ({
         annenPartVedtakQuery.isSuccess &&
         !erLikUansettRekkefølge(annenPartVedtakQuery.data, mellomlagretData.annenPartVedtak);
 
-    const søkerInfoErEndret = !erLikUansettRekkefølge(mellomlagretData.søkerInfo, søkerInfo);
+    const søkerInfoErEndret = !erLikUansettRekkefølge(
+        // frilansoppdrag/selvstendigNæring kan mangle på lagret søkerInfo dersom mellomlagringen ble gjort
+        // før disse feltene fantes i kontrakten. Da faller vi tilbake på ferske data i stedet for å be brukeren
+        // starte på nytt bare fordi den lagrede søknaden mangler felt hun aldri fikk mulighet til å ha.
+        {
+            ...mellomlagretData.søkerInfo,
+            frilansoppdrag: mellomlagretData.søkerInfo.frilansoppdrag ?? søkerInfo.frilansoppdrag ?? [],
+            selvstendigNæring: mellomlagretData.søkerInfo.selvstendigNæring ?? søkerInfo.selvstendigNæring ?? [],
+        },
+        søkerInfo,
+    );
 
     const sakerErEndret = !erLikUansettRekkefølge(
         relevanteSaker(mellomlagretData.foreldrepengerSaker),

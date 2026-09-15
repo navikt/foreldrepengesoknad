@@ -9,13 +9,23 @@ import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 type Props = {
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    harRegistrertNæring: boolean;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 };
 
-export const SenereUtenlandsoppholdSteg = ({ arbeidsforhold, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
-    const stepConfig = useStepConfig(arbeidsforhold);
-    const navigator = useFpNavigator(arbeidsforhold, mellomlagreSøknadOgNaviger);
+export const SenereUtenlandsoppholdSteg = ({
+    arbeidsforhold,
+    harRegistrertNæring,
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+}: Props) => {
+    const stepConfig = useStepConfig({ arbeidsforhold, harRegistrertNæring });
+    const navigator = useFpNavigator({
+        arbeidsforhold,
+        harRegistrertNæring,
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
+    });
 
     const senereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
 

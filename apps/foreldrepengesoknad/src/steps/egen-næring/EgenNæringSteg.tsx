@@ -1,27 +1,30 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
-import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { FormattedMessage } from 'react-intl';
 
 import { EgenNæringPanel } from '@navikt/fp-steg-egen-naering';
-import { EksternArbeidsforholdDto_fpoversikt, NæringDto } from '@navikt/fp-types';
+import { FpPersonopplysningerDto_fpoversikt, NæringDto } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
-import { notEmpty } from '@navikt/fp-validation';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
-    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    søkerInfo: FpPersonopplysningerDto_fpoversikt;
 };
 
-export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
-    const stepConfig = useStepConfig(arbeidsforhold);
-    const navigator = useFpNavigator(arbeidsforhold, mellomlagreSøknadOgNaviger);
+export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }: Props) => {
+    const { arbeidsforhold, selvstendigNæring: registrerteNæringer } = søkerInfo;
+    const harRegistrertNæring = registrerteNæringer.length > 0;
+
+    const stepConfig = useStepConfig({ arbeidsforhold, harRegistrertNæring });
+    const navigator = useFpNavigator({
+        arbeidsforhold,
+        harRegistrertNæring,
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
+    });
 
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
-    const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
-
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
 
     const onSubmit = (values: NæringDto) => {
@@ -30,10 +33,6 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
             organisasjonsnummer: values.organisasjonsnummer === '' ? undefined : values.organisasjonsnummer,
         });
 
-        if (arbeidsforholdOgInntekt.harHattAndreInntektskilder) {
-            return navigator.goToStep(SøknadRoutes.ANDRE_INNTEKTER);
-        }
-
         return navigator.goToNextStep();
     };
 
@@ -41,6 +40,7 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
             <EgenNæringPanel
                 egenNæring={egenNæring}
+                registrerteNæringer={registrerteNæringer}
                 saveOnNext={onSubmit}
                 onAvsluttOgSlett={avbrytSøknad}
                 onFortsettSenere={navigator.fortsettSøknadSenere}

@@ -4,13 +4,13 @@ import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router';
 import { skalViseOmsorgsovertakelseDokumentasjon } from 'steps/manglende-vedlegg/dokumentasjon/OmsorgsovertakelseDokumentasjon.tsx';
 import { skalViseTerminbekreftelseDokumentasjon } from 'steps/manglende-vedlegg/dokumentasjon/TerminbekreftelseDokumentasjon.tsx';
-import { AnnenInntektType } from 'types/AndreInntektskilder';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { VedleggDataType } from 'types/VedleggDataType';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { finnPerioderSomInngårISøknaden } from 'utils/manglendeVedleggUtils';
 import { kreverUttaksplanVedleggNy } from 'utils/uttaksplanInfoUtils';
 
+import { skalViseEgenNæringSteg } from '@navikt/fp-steg-egen-naering';
 import { EksternArbeidsforholdDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -27,7 +27,6 @@ const getPathToLabelMap = (intl: IntlShape) =>
         [SøknadRoutes.ARBEID_OG_INNTEKT]: intl.formatMessage({ id: 'steps.label.inntektsinformasjon' }),
         [SøknadRoutes.FRILANS]: intl.formatMessage({ id: 'steps.label.frilans' }),
         [SøknadRoutes.EGEN_NÆRING]: intl.formatMessage({ id: 'steps.label.egenNæring' }),
-        [SøknadRoutes.ANDRE_INNTEKTER]: intl.formatMessage({ id: 'steps.label.andreInntekter' }),
         [SøknadRoutes.ANNEN_FORELDER]: intl.formatMessage({ id: 'steps.label.annenForelder' }),
         [SøknadRoutes.PERIODE_MED_FORELDREPENGER]: intl.formatMessage({ id: 'steps.label.periodeMedForeldrepenger' }),
         [SøknadRoutes.FORDELING]: intl.formatMessage({ id: 'steps.label.fordeling' }),
@@ -63,10 +62,11 @@ const showUtenlandsoppholdStep = (
     return false;
 };
 
-const showFrilansOgEgenNæringOgAndreInntekter = (
+const showFrilansOgEgenNæring = (
     path: SøknadRoutes,
     currentPath: SøknadRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
+    harRegistrertNæring: boolean,
 ) => {
     if (path === SøknadRoutes.FRILANS) {
         const erValgtOgEtterSteg =
@@ -75,16 +75,17 @@ const showFrilansOgEgenNæringOgAndreInntekter = (
         return erValgtOgEtterSteg || !!getData(ContextDataType.FRILANS);
     }
     if (path === SøknadRoutes.EGEN_NÆRING) {
-        const erValgtOgEtterSteg =
-            getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT)?.harJobbetSomSelvstendigNæringsdrivende === true &&
-            isAfterStep(SøknadRoutes.ARBEID_OG_INNTEKT, currentPath);
-        return erValgtOgEtterSteg || !!getData(ContextDataType.EGEN_NÆRING);
-    }
-    if (path === SøknadRoutes.ANDRE_INNTEKTER) {
-        const erValgtOgEtterSteg =
-            getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT)?.harHattAndreInntektskilder === true &&
-            isAfterStep(SøknadRoutes.ARBEID_OG_INNTEKT, currentPath);
-        return erValgtOgEtterSteg || !!getData(ContextDataType.ANDRE_INNTEKTSKILDER);
+        const arbeidsforholdOgInntekt = getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
+        const egenNæring = getData(ContextDataType.EGEN_NÆRING);
+        const skalViseSteg = skalViseEgenNæringSteg({
+            harJobbetSomSelvstendigNæringsdrivende:
+                arbeidsforholdOgInntekt?.harJobbetSomSelvstendigNæringsdrivende === true,
+            harRegistrertNæring,
+            egenNæring,
+            erPåEgenNæringSteg: currentPath === SøknadRoutes.EGEN_NÆRING,
+        });
+        const erValgtOgEtterSteg = skalViseSteg && isAfterStep(SøknadRoutes.ARBEID_OG_INNTEKT, currentPath);
+        return erValgtOgEtterSteg || (skalViseSteg && egenNæring !== undefined);
     }
     return false;
 };
@@ -145,7 +146,7 @@ const showManglendeDokumentasjonSteg = (
                 : false;
 
         const skalHaAndreInntekterDok = andreInntektskilder?.some(
-            (i) => i.type === AnnenInntektType.MILITÆRTJENESTE || i.type === AnnenInntektType.SLUTTPAKKE,
+            (i) => i.type === 'MILITÆR_ELLER_SIVILTJENESTE' || i.type === 'ETTERLØNN_SLUTTPAKKE',
         );
 
         return (
@@ -170,11 +171,19 @@ const skalViseFordelingSteg = (
     return true;
 };
 
-export const useStepConfig = (
-    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
-    erEndringssøknad: boolean = false,
-    eksisterendeSak?: FpSak_fpoversikt,
-) => {
+interface UseStepConfigParams {
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    harRegistrertNæring: boolean;
+    erEndringssøknad?: boolean;
+    eksisterendeSak?: FpSak_fpoversikt;
+}
+
+export const useStepConfig = ({
+    arbeidsforhold,
+    harRegistrertNæring,
+    erEndringssøknad = false,
+    eksisterendeSak,
+}: UseStepConfigParams) => {
     const intl = useIntl();
     const pathToLabelMap = useMemo(() => getPathToLabelMap(intl), [intl]);
 
@@ -194,11 +203,11 @@ export const useStepConfig = (
                 (requiredSteps.includes(path) && skalViseFordelingSteg(path, getStateData)) ||
                 showUtenlandsoppholdStep(path, currentPath, getStateData) ||
                 showManglendeDokumentasjonSteg(path, getStateData, arbeidsforhold, eksisterendeSak) ||
-                showFrilansOgEgenNæringOgAndreInntekter(path, currentPath, getStateData)
+                showFrilansOgEgenNæring(path, currentPath, getStateData, harRegistrertNæring)
                     ? [path]
                     : [],
             ),
-        [requiredSteps, currentPath, getStateData, arbeidsforhold, eksisterendeSak],
+        [requiredSteps, currentPath, getStateData, arbeidsforhold, eksisterendeSak, harRegistrertNæring],
     );
 
     return useMemo(
