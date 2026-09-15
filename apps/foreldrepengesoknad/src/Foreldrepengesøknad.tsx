@@ -42,7 +42,7 @@ export const Foreldrepengesøknad = () => {
         <ErrorBoundary
             appName="foreldrepengesoknad"
             retryCallback={() => void slettMellomlagringOgLastSidePåNytt()}
-            getErrorPage={(error) => <ForeldrepengesøknadErrorPage error={error} />}
+            getErrorPage={getForeldrepengesøknadErrorPage}
         >
             <Suspense fallback={<Spinner />}>
                 <ForeldrepengesøknadInnhold />
@@ -66,6 +66,8 @@ const ForeldrepengesøknadErrorPage = ({ error }: { error: Error }) => {
         />
     );
 };
+
+const getForeldrepengesøknadErrorPage = (error: Error) => <ForeldrepengesøknadErrorPage error={error} />;
 
 // useSuspenseQueries i staden for to useSuspenseQuery-kall, for å unngå at kalla blir sekvensielle.
 // mellomlagretInfo held fram som useQuery: ein feil her skal ikkje kaste heile appen til feilsida.
