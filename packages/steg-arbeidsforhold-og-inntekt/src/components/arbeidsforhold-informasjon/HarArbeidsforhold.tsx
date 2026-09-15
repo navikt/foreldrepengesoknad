@@ -48,7 +48,7 @@ export const HarArbeidsforhold = ({ arbeidsforhold, harArbeidsforhold }: Props) 
                             />
                         </Tag>
                         {arbforhold.arbeidsgiverIdType === 'orgnr' && (
-                            <HStack justify="space-between">
+                            <HStack gap={{ md: 'space-8' }} justify={{ xs: 'space-between', md: 'start' }}>
                                 <Label>
                                     <FormattedMessage id="HarArbeidsforhold.OrgNummer" />
                                 </Label>
@@ -57,7 +57,7 @@ export const HarArbeidsforhold = ({ arbeidsforhold, harArbeidsforhold }: Props) 
                                 </BodyShort>
                             </HStack>
                         )}
-                        <HStack justify="space-between">
+                        <HStack gap={{ md: 'space-8' }} justify={{ xs: 'space-between', md: 'start' }}>
                             <Label>
                                 <FormattedMessage id="HarArbeidsforhold.Dato" />
                             </Label>
