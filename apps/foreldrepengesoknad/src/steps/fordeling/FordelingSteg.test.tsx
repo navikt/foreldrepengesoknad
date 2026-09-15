@@ -533,6 +533,7 @@ describe('Fordeling - FarMedmorAleneomsorgPrematurtFødtBarn', () => {
 
         await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
         expect(screen.getByText('Hvis barnet blir født før svangerskapsuke 33')).toBeInTheDocument();
+        expect(screen.getByText('Hvis du blir syk eller innlagt på helseinstitusjon')).toBeInTheDocument();
         expect(screen.queryByText('Hvis barnet er innlagt på sykehus før termindato')).not.toBeInTheDocument();
         expect(screen.queryByText('Hvis barnet er innlagt på sykehus etter termindato')).not.toBeInTheDocument();
 

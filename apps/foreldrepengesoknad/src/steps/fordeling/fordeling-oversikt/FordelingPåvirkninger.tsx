@@ -82,8 +82,7 @@ export const FordelingPåvirkninger = ({
     const førsteOkt2021Gjelder = førsteOktober2021ReglerGjelder(familiehendelsesdato);
     const kunFarEllerMedmorHarRett = erFarEllerMedmor && !deltUttak;
     const visInfoMorSykFørsteSeksUker = deltUttak && !erAdopsjon && førsteOkt2021Gjelder;
-    const visInfoMorSykISinPeriode =
-        førsteOkt2021Gjelder && (deltUttak || (kunFarEllerMedmorHarRett && erIkkeFødtBarn));
+    const visInfoMorSykISinPeriode = førsteOkt2021Gjelder && (deltUttak || kunFarEllerMedmorHarRett);
     const visInfoFørFørsteOkt2021 = deltUttak && !førsteOkt2021Gjelder;
     const termindato = getTermindato(barn);
     const fødtFørUke33 = erFødtFørUke33(familiehendelsesdato, termindato);
