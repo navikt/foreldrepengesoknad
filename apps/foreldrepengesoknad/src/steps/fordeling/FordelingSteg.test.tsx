@@ -1585,6 +1585,17 @@ describe('Fordeling - BareFarHarRettOgMorErIkkeUførFødtBarn', () => {
         expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
         expect(screen.getByText('Da barnet ble født')).toBeInTheDocument();
         expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
+        const prematurInfo = screen.getByText('Hvis barnet blir født før svangerskapsuke 33');
+        const sykInfo = screen.getByText('Hvis du blir syk eller innlagt på helseinstitusjon');
+        const jobbInfo = screen.getByText('Hvis du jobber samtidig som du har foreldrepenger');
+        const nyttBarnInfo = screen.getByText('Hvis du får et nytt barn før det har gått tre år');
+
+        expect(prematurInfo.compareDocumentPosition(sykInfo)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+        expect(sykInfo.compareDocumentPosition(jobbInfo)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+        expect(jobbInfo.compareDocumentPosition(nyttBarnInfo)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+        expect(screen.queryByText('Hvis barnet er innlagt på sykehus')).not.toBeInTheDocument();
     });
     it('kan ikke starte tidligere enn 2 uker før fødsel', async () => {
         MockDate.set(new Date('2024-02-21'));
