@@ -42,22 +42,28 @@ export const Foreldrepengesøknad = () => {
         <ErrorBoundary
             appName="foreldrepengesoknad"
             retryCallback={() => void slettMellomlagringOgLastSidePåNytt()}
-            getErrorPage={(error) =>
-                erUmyndigFeil(error) ? (
-                    <Umyndig appName="foreldrepengesoknad" />
-                ) : (
-                    <ErrorPage
-                        appName="foreldrepengesoknad"
-                        errorMessage={intl.formatMessage({ id: 'Foreldrepengesøknad.FeilVedHentingAvInformasjon' })}
-                        retryCallback={() => void slettMellomlagringOgLastSidePåNytt()}
-                    />
-                )
-            }
+            getErrorPage={(error) => <ForeldrepengesøknadErrorPage error={error} />}
         >
             <Suspense fallback={<Spinner />}>
                 <ForeldrepengesøknadInnhold />
             </Suspense>
         </ErrorBoundary>
+    );
+};
+
+const ForeldrepengesøknadErrorPage = ({ error }: { error: Error }) => {
+    const intl = useIntl();
+
+    if (erUmyndigFeil(error)) {
+        return <Umyndig appName="foreldrepengesoknad" />;
+    }
+
+    return (
+        <ErrorPage
+            appName="foreldrepengesoknad"
+            errorMessage={intl.formatMessage({ id: 'Foreldrepengesøknad.FeilVedHentingAvInformasjon' })}
+            retryCallback={() => void slettMellomlagringOgLastSidePåNytt()}
+        />
     );
 };
 
