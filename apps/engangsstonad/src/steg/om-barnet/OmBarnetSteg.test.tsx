@@ -288,6 +288,27 @@ describe('<OmBarnetSteg>', () => {
         expect(mellomlagreOgNaviger).toHaveBeenCalledOnce();
     });
 
+    it('skal blokkere innsending når fødselsdato er tidligere enn 01.01.2020', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreOgNaviger = vi.fn();
+
+        const utils = render(
+            <VisSideForFodsel gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />,
+        );
+        expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Ja'));
+
+        const fødselsdato = utils.getByLabelText('Fødselsdato');
+        await userEvent.type(fødselsdato, '31.12.2019');
+        fireEvent.blur(fødselsdato);
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(await screen.findByText('Fødselsdato kan ikke være tidligere enn 01.01.2020')).toBeInTheDocument();
+        expect(gåTilNesteSide).not.toHaveBeenCalled();
+    });
+
     it('skal søke for ufødt barn', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreOgNaviger = vi.fn();
