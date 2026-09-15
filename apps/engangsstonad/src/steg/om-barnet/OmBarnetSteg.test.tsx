@@ -305,7 +305,7 @@ describe('<OmBarnetSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.findByText('Fødselsdato kan ikke være tidligere enn 01.01.2020')).toBeInTheDocument();
+        expect(await screen.findAllByText('Fødselsdato kan ikke være tidligere enn 01.01.2020')).toHaveLength(2);
         expect(gåTilNesteSide).not.toHaveBeenCalled();
     });
 
