@@ -14,6 +14,7 @@ import { FpMedKrav } from './tekster/FpMedKrav';
 import { FpUtenKrav } from './tekster/FpUtenKrav';
 import { JobbeSamtidig } from './tekster/JobbeSamtidig';
 import { LeggeTilFerie } from './tekster/LeggeTilFerie';
+import { LeggeTilPause } from './tekster/LeggeTilPause';
 import { Omsorgspermisjon } from './tekster/Omsorgspermisjon';
 import { ToUkerRundtFødsel } from './tekster/ToUkerRundtFødsel';
 
@@ -25,15 +26,13 @@ interface Props {
 export const HvaErMulig = ({ loggExpansionCardOpen, erFarOgFar }: Props) => {
     const {
         familiesituasjon,
-        foreldreInfo: { rettighetType, søker, erMedmorDelAvSøknaden },
+        foreldreInfo: { rettighetType, søker },
     } = useUttaksplanData();
 
     const erAlene = rettighetType === 'ALENEOMSORG';
-    const erFarAlene = erAlene && søker === 'FAR_MEDMOR' && !erMedmorDelAvSøknaden;
 
     const kunEnPartSkalHa = rettighetType !== 'BEGGE_RETT';
 
-    const kunFarSøker2EllerMedmorHarRett = erAlene && søker === 'FAR_MEDMOR';
     const kunSøker2SkalHa = kunEnPartSkalHa && søker === 'FAR_MEDMOR';
 
     return (
@@ -63,26 +62,30 @@ export const HvaErMulig = ({ loggExpansionCardOpen, erFarOgFar }: Props) => {
                     </Heading>
                     {familiesituasjon !== 'adopsjon' && (
                         <>
-                            {!(erFarAlene || erFarOgFar || kunFarSøker2EllerMedmorHarRett) && (
-                                <DetteKanIkkeEndres erFarOgFar={erFarOgFar} />
-                            )}
-
-                            {(kunFarSøker2EllerMedmorHarRett || erFarOgFar) && (
-                                <ToUkerRundtFødsel erFarOgFar={erFarOgFar} />
-                            )}
-                            {erFarOgFar && !kunEnPartSkalHa && <AktivitetskravFar />}
-
-                            <LeggeTilFerie />
-
-                            {!kunEnPartSkalHa && !erFarOgFar && <FarFellesperiode erFarOgFar={erFarOgFar} />}
-
-                            {!kunSøker2SkalHa && <JobbeSamtidig />}
-
-                            {!erAlene && !kunEnPartSkalHa && <ForeldrepengerSamtidig erFarOgFar={erFarOgFar} />}
-                            {kunFarSøker2EllerMedmorHarRett && (
+                            {kunSøker2SkalHa ? (
                                 <>
                                     <FpUtenKrav />
                                     <FpMedKrav />
+                                    <LeggeTilPause />
+                                    <LeggeTilFerie />
+                                    <ToUkerRundtFødsel erFarOgFar={erFarOgFar} />
+                                    <JobbeSamtidig />
+                                </>
+                            ) : (
+                                <>
+                                    {!erFarOgFar && <DetteKanIkkeEndres erFarOgFar={erFarOgFar} />}
+                                    {erFarOgFar && <ToUkerRundtFødsel erFarOgFar={erFarOgFar} />}
+                                    {erFarOgFar && !kunEnPartSkalHa && <AktivitetskravFar />}
+
+                                    <LeggeTilFerie />
+
+                                    {!kunEnPartSkalHa && !erFarOgFar && <FarFellesperiode erFarOgFar={erFarOgFar} />}
+
+                                    <JobbeSamtidig />
+
+                                    {!erAlene && !kunEnPartSkalHa && (
+                                        <ForeldrepengerSamtidig erFarOgFar={erFarOgFar} />
+                                    )}
                                 </>
                             )}
                         </>
