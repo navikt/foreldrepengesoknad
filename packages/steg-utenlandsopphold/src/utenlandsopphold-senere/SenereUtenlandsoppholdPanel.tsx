@@ -15,10 +15,11 @@ type FormType = {
     utenlandsoppholdNeste12Mnd: SenereUtenlandsoppholdSkjemaPeriode[];
 };
 
-const DEFAULT_PERIODE: UtenlandsoppholdPeriode = {
+const DEFAULT_PERIODE: SenereUtenlandsoppholdSkjemaPeriode = {
     fom: '',
     tom: '',
     landkode: '',
+    tomUkjent: false,
 };
 
 const fjernTomUkjentFraPerioder = (perioder: SenereUtenlandsoppholdSkjemaPeriode[]): UtenlandsoppholdPeriode[] =>
@@ -50,7 +51,7 @@ export const SenereUtenlandsoppholdPanel = <TYPE extends string>({
         defaultValues: {
             utenlandsoppholdNeste12Mnd:
                 senereUtenlandsopphold.length === 0
-                    ? [{ ...DEFAULT_PERIODE, tomUkjent: false }]
+                    ? [DEFAULT_PERIODE]
                     : senereUtenlandsopphold.map((periode) => ({
                           ...periode,
                           tom: periode.tom || undefined,
