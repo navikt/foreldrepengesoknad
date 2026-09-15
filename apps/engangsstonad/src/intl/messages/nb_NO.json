@@ -69,7 +69,7 @@
     "FødselPanel.Fødselsdato.Gyldig": "Fødseldato må være en gyldig dato på formatet dd.mm.åååå",
     "FødselPanel.Fodselsdato.MåVæreIdagEllerTidligere": "Fødselsdato må være i dag eller tidligere",
     "FødselPanel.Fodselsdato.TidligsteGyldigeDato": "Fødselsdato kan ikke være tidligere enn 01.01.2020",
-    "FødselPanel.Fodselsdato.Advarsel.MerEnn6MånederTilbake": "Du har oppgitt en fødselsdato som er mer enn seks måneder tilbake i tid. Dobbeltsjekk at datoen er riktig – søknader om engangsstønad som leveres mer enn seks måneder etter fødselen kan bli avslått.",
+    "FødselPanel.Fodselsdato.Advarsel.MerEnn6MånederTilbake": "Du har oppgitt en fødselsdato som er mer enn seks måneder tilbake i tid. Er datoen riktig? Søknader om engangsstønad som leveres mer enn seks måneder etter fødselen kan bli avslått.",
     "FødselPanel.TermindatoFodselsdato.beskrivelse": "Du kan tidligst søke i 22 svangerskapsuke og senest 6 mnd etter at barnet er født.",
     "FødselPanel.Termindato": "Termindato",
     "FødselPanel.Termindato.DuMåOppgi": "Du må oppgi termindato",

@@ -262,7 +262,7 @@ describe('<OmBarnetSteg>', () => {
 
         expect(
             await screen.findByText(
-                'Du har oppgitt en fødselsdato som er mer enn seks måneder tilbake i tid. Dobbeltsjekk at datoen er riktig – søknader om engangsstønad som leveres mer enn seks måneder etter fødselen kan bli avslått.',
+                'Du har oppgitt en fødselsdato som er mer enn seks måneder tilbake i tid. Er datoen riktig? Søknader om engangsstønad som leveres mer enn seks måneder etter fødselen kan bli avslått.',
             ),
         ).toBeInTheDocument();
 
