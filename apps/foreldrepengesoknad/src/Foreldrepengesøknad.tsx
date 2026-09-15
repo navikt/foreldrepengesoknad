@@ -61,13 +61,8 @@ export const Foreldrepengesøknad = () => {
     );
 };
 
-// søkerinfo og saker er alltid påkravd for å vise søknaden, og hentast difor med
-// useSuspenseQuery: ErrorBoundary over fangar feil (sjå getErrorPage). Dei to hentast samla med
-// useSuspenseQueries, sidan fleire useSuspenseQuery-kall etter kvarandre i same komponent hadde
-// gjort kalla sekvensielle: eit kall som ikkje har data enno kastar synkront under rendering, så
-// koden under (og dermed neste useSuspenseQuery-kall) hadde aldri blitt nådd før det første
-// kallet var ferdig. mellomlagretInfo held fram som useQuery fordi ein feil her skal handterast
-// mjukt (søknaden held fram utan mellomlagra data), ikkje kaste heile appen til feilsida.
+// useSuspenseQueries i staden for to useSuspenseQuery-kall, for å unngå at kalla blir sekvensielle.
+// mellomlagretInfo held fram som useQuery: ein feil her skal ikkje kaste heile appen til feilsida.
 const ForeldrepengesøknadInnhold = () => {
     const [søkerinfoQuery, sakerQuery] = useSuspenseQueries({
         queries: [søkerinfoOptions(), sakerOptions()],
