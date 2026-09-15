@@ -5,7 +5,7 @@ import { Fødsel } from 'types/OmBarnet';
 
 import { Alert, Radio } from '@navikt/ds-react';
 
-import { SIX_MONTHS_AGO } from '@navikt/fp-constants';
+import { ISO_DATE_REGEX, SIX_MONTHS_AGO } from '@navikt/fp-constants';
 import { RhfDatepicker, RhfRadioGroup, RhfSelect } from '@navikt/fp-form-hooks';
 import {
     erI22SvangerskapsukeEllerSenere,
@@ -77,7 +77,7 @@ export const FødselPanel = () => {
                             ),
                         ]}
                     />
-                    {fødselsdato && dayjs(fødselsdato).isBefore(SIX_MONTHS_AGO) && (
+                    {fødselsdato && ISO_DATE_REGEX.test(fødselsdato) && dayjs(fødselsdato).isBefore(SIX_MONTHS_AGO) && (
                         <Alert variant="warning">
                             <FormattedMessage id="FødselPanel.Fodselsdato.Advarsel.MerEnn6MånederTilbake" />
                         </Alert>

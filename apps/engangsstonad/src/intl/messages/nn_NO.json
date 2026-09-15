@@ -68,7 +68,7 @@
     "FødselPanel.Fødselsdato.DuMåOppgi": "Du må oppgje fødselsdato",
     "FødselPanel.Fødselsdato.Gyldig": "Fødselsdato må vera ein gyldig dato på formatet dd.mm.åååå",
     "FødselPanel.Fodselsdato.MåVæreIdagEllerTidligere": "Fødselsdato må vere i dag eller tidlegare",
-    "FødselPanel.Fodselsdato.Advarsel.MerEnn6MånederTilbake": "Du har oppgitt ein fødselsdato som er meir enn seks månader tilbake i tid. Dobbeltsjekk at datoen er rett – søknadar om eingongsstønad som blir levert meir enn seks månader etter fødselen kan bli avslått.",
+    "FødselPanel.Fodselsdato.Advarsel.MerEnn6MånederTilbake": "Du har oppgitt ein fødselsdato som er meir enn seks månader tilbake i tid. Dobbeltsjekk at datoen er rett – søknadar om eingongsstønad som blir leverte meir enn seks månader etter fødselen kan bli avslått.",
     "FødselPanel.TermindatoFodselsdato.beskrivelse": "Du kan tidlegast søka i 22 svangerskapsveke og seinast 6 mnd etter at barnet er født.",
     "FødselPanel.Termindato": "Termindato",
     "FødselPanel.Termindato.DuMåOppgi": "Du må gi opp termindato",
