@@ -7,7 +7,10 @@ import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { formatDate, getCountryName } from '@navikt/fp-utils';
 import { isToday } from '@navikt/fp-validation';
 
-const formaterDato = (dato: string, intl: IntlShape) => {
+const formaterDato = (dato: string | undefined, intl: IntlShape) => {
+    if (!dato) {
+        return intl.formatMessage({ id: 'LandOppsummering.TomIkkeOppgitt' });
+    }
     if (isToday(dato)) {
         return intl.formatMessage({ id: 'LandOppsummering.IDag' });
     }

@@ -332,7 +332,9 @@ export type EngangsstønadDto = {
 export type UtenlandsoppholdsperiodeDto = {
     fom: string;
     landkode: string;
-    tom: string;
+    // TFP-5511: midlertidig gjort valgfri i påvente av at typen regenereres
+    // fra fp-soknad sin OpenAPI-spesifikasjon (se navikt/fp-soknad#187).
+    tom?: string;
 };
 
 export type ForeldrepengesøknadDto = {
