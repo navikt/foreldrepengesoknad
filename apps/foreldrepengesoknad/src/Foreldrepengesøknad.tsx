@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQueries } from '@tanstack/react-query';
 import {
     API_URLS,
     mellomlagretInfoOptions,
@@ -11,13 +11,13 @@ import { SøknadRoutes } from 'appData/routes';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import { usePlanleggerDataFromUrl } from 'appData/usePlanleggerDataFromUrl';
 import ky from 'ky';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, Suspense } from 'react';
 import { useIntl } from 'react-intl';
 import { shouldApplyStorage } from 'utils/mellomlagringUtils';
 
 import { erUmyndigFeil } from '@navikt/fp-app-shell';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
-import { ErrorBoundary, RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
+import { ErrorBoundary, ErrorPage, RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
 import { erLikUansettRekkefølge, omitMany, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -38,31 +38,50 @@ export const Foreldrepengesøknad = () => {
 
     useDocumentTitle(intl.formatMessage({ id: 'søknad.pagetitle' }));
 
-    const søkerinfoQuery = useQuery(søkerinfoOptions());
+    return (
+        <ErrorBoundary
+            appName="foreldrepengesoknad"
+            retryCallback={() => void slettMellomlagringOgLastSidePåNytt()}
+            getErrorPage={getForeldrepengesøknadErrorPage}
+        >
+            <Suspense fallback={<Spinner />}>
+                <ForeldrepengesøknadInnhold />
+            </Suspense>
+        </ErrorBoundary>
+    );
+};
 
-    const sakerQuery = useQuery(sakerOptions());
+const ForeldrepengesøknadErrorPage = ({ error }: { error: Error }) => {
+    const intl = useIntl();
+
+    if (erUmyndigFeil(error)) {
+        return <Umyndig appName="foreldrepengesoknad" />;
+    }
+
+    return (
+        <ErrorPage
+            appName="foreldrepengesoknad"
+            errorMessage={intl.formatMessage({ id: 'Foreldrepengesøknad.FeilVedHentingAvInformasjon' })}
+            retryCallback={() => void slettMellomlagringOgLastSidePåNytt()}
+        />
+    );
+};
+
+const getForeldrepengesøknadErrorPage = (error: Error) => <ForeldrepengesøknadErrorPage error={error} />;
+
+// useSuspenseQueries i staden for to useSuspenseQuery-kall, for å unngå at kalla blir sekvensielle.
+// mellomlagretInfo held fram som useQuery: ein feil her skal ikkje kaste heile appen til feilsida.
+const ForeldrepengesøknadInnhold = () => {
+    const [søkerinfoQuery, sakerQuery] = useSuspenseQueries({
+        queries: [søkerinfoOptions(), sakerOptions()],
+    });
 
     const mellomlagretInfoQuery = useQuery(mellomlagretInfoOptions());
     const mellomlagretInfoData = mellomlagretInfoQuery.data;
 
     const planleggerData = usePlanleggerDataFromUrl(søkerinfoQuery.data?.kjønn);
 
-    const harUmyndigFeil = erUmyndigFeil(søkerinfoQuery.error) || erUmyndigFeil(sakerQuery.error);
-
-    useEffect(() => {
-        if (harUmyndigFeil || !(søkerinfoQuery.error || sakerQuery.error)) {
-            return;
-        }
-
-        const error = new Error(intl.formatMessage({ id: 'Foreldrepengesøknad.FeilVedHentingAvInformasjon' }));
-        throw error;
-    }, [søkerinfoQuery.error, sakerQuery.error, harUmyndigFeil, intl]);
-
-    if (harUmyndigFeil) {
-        return <Umyndig appName="foreldrepengesoknad" />;
-    }
-
-    if (!sakerQuery.data || !søkerinfoQuery.data || mellomlagretInfoQuery.isPending) {
+    if (mellomlagretInfoQuery.isPending) {
         return <Spinner />;
     }
 
@@ -75,24 +94,22 @@ export const Foreldrepengesøknad = () => {
         : mellomlagretData;
 
     return (
-        <ErrorBoundary appName="foreldrepengesoknad" retryCallback={() => void slettMellomlagringOgLastSidePåNytt()}>
-            <FpDataContext initialState={initialState}>
-                <RegisterdataSjekk
-                    mellomlagretData={mellomlagretData}
+        <FpDataContext initialState={initialState}>
+            <RegisterdataSjekk
+                mellomlagretData={mellomlagretData}
+                søkerInfo={søkerinfoQuery.data}
+                foreldrepengerSaker={sakerQuery.data.foreldrepenger}
+            >
+                <ForeldrepengesøknadRoutes
                     søkerInfo={søkerinfoQuery.data}
                     foreldrepengerSaker={sakerQuery.data.foreldrepenger}
-                >
-                    <ForeldrepengesøknadRoutes
-                        søkerInfo={søkerinfoQuery.data}
-                        foreldrepengerSaker={sakerQuery.data.foreldrepenger}
-                        currentRoute={skalBrukeMellomlagretData ? notEmpty(lagretAppRoute) : SøknadRoutes.VELKOMMEN}
-                        lagretErEndringssøknad={mellomlagretData?.erEndringssøknad ?? false}
-                        lagretHarGodkjentVilkår={!!lagretAppRoute}
-                        lagretSøknadGjelderNyttBarn={mellomlagretData?.søknadGjelderEtNyttBarn ?? false}
-                    />
-                </RegisterdataSjekk>
-            </FpDataContext>
-        </ErrorBoundary>
+                    currentRoute={skalBrukeMellomlagretData ? notEmpty(lagretAppRoute) : SøknadRoutes.VELKOMMEN}
+                    lagretErEndringssøknad={mellomlagretData?.erEndringssøknad ?? false}
+                    lagretHarGodkjentVilkår={!!lagretAppRoute}
+                    lagretSøknadGjelderNyttBarn={mellomlagretData?.søknadGjelderEtNyttBarn ?? false}
+                />
+            </RegisterdataSjekk>
+        </FpDataContext>
     );
 };
 
