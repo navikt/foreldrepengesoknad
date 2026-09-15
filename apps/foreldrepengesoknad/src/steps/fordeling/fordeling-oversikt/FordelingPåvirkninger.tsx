@@ -80,15 +80,21 @@ export const FordelingPåvirkninger = ({
     const søkerensMinsterettToTette = erFarEllerMedmor ? farMinsterettUkerToTette : morMinsterettUkerToTette;
     const wlbReglerGjelder = andreAugust2022ReglerGjelder(familiehendelsesdato);
     const førsteOkt2021Gjelder = førsteOktober2021ReglerGjelder(familiehendelsesdato);
+    const kunFarEllerMedmorHarRett = erFarEllerMedmor && !deltUttak;
     const visInfoMorSykFørsteSeksUker = deltUttak && !erAdopsjon && førsteOkt2021Gjelder;
-    const visInfoMorSykISinPeriode = deltUttak && førsteOkt2021Gjelder;
+    const visInfoMorSykISinPeriode =
+        førsteOkt2021Gjelder && (deltUttak || (kunFarEllerMedmorHarRett && erIkkeFødtBarn));
     const visInfoFørFørsteOkt2021 = deltUttak && !førsteOkt2021Gjelder;
     const termindato = getTermindato(barn);
     const fødtFørUke33 = erFødtFørUke33(familiehendelsesdato, termindato);
-    const kunFarEllerMedmorHarRett = erFarEllerMedmor && !deltUttak;
     const visInfoInnleggelseVedPrematurFødsel =
         !erAdopsjon && førsteOkt2021Gjelder && fødtFørUke33 && !erFarOgFar && !kunFarEllerMedmorHarRett;
-    const visInfoBarnInnlagt = !erAdopsjon && førsteOkt2021Gjelder && !fødtFørUke33 && !erFarOgFar;
+    const visInfoBarnInnlagt =
+        !erAdopsjon &&
+        førsteOkt2021Gjelder &&
+        !fødtFørUke33 &&
+        !erFarOgFar &&
+        !(kunFarEllerMedmorHarRett && erIkkeFødtBarn);
     return (
         <div className={styles.fordelingPåvirkninger}>
             <ExpansionCard
@@ -109,6 +115,23 @@ export const FordelingPåvirkninger = ({
                     <ExpansionCard.Title className={styles.heading}>{heading}</ExpansionCard.Title>
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
+                    {erIkkeFødtBarn && (
+                        <Påvirkning
+                            icon={BabyWrappedIcon}
+                            tittel={
+                                <FormattedMessage
+                                    id="fordeling.påvirkninger.prematur.tittel"
+                                    values={{ antallBarn: barn.antallBarn }}
+                                />
+                            }
+                            info={
+                                <FormattedMessage
+                                    id="fordeling.påvirkninger.prematur.info"
+                                    values={{ antallBarn: barn.antallBarn, duEllerDere }}
+                                />
+                            }
+                        />
+                    )}
                     {visInfoInnleggelseVedPrematurFødsel && (
                         <>
                             <Påvirkning
@@ -213,6 +236,11 @@ export const FordelingPåvirkninger = ({
                             }
                         />
                     )}
+                    <Påvirkning
+                        icon={BriefcaseIcon}
+                        tittel={<FormattedMessage id="fordeling.påvirkninger.jobb.tittel" />}
+                        info={<FormattedMessage id="fordeling.påvirkninger.jobb.info" />}
+                    />
                     <div className={styles.påvirkning}>
                         <div className={styles.ikonFrame}>
                             <PersonPregnantIcon className={styles.ikon} aria-hidden={true} />
@@ -252,33 +280,11 @@ export const FordelingPåvirkninger = ({
                             )}
                         </VStack>
                     </div>
-                    <Påvirkning
-                        icon={BriefcaseIcon}
-                        tittel={<FormattedMessage id="fordeling.påvirkninger.jobb.tittel" />}
-                        info={<FormattedMessage id="fordeling.påvirkninger.jobb.info" />}
-                    />
                     {deltUttak && !annenForelderHarKunRettIEØS && (
                         <Påvirkning
                             icon={PersonGroupIcon}
                             tittel={<FormattedMessage id="fordeling.påvirkninger.samtidigUttak.tittel" />}
                             info={<FormattedMessage id="fordeling.påvirkninger.samtidigUttak.info" />}
-                        />
-                    )}
-                    {erIkkeFødtBarn && (
-                        <Påvirkning
-                            icon={BabyWrappedIcon}
-                            tittel={
-                                <FormattedMessage
-                                    id="fordeling.påvirkninger.prematur.tittel"
-                                    values={{ antallBarn: barn.antallBarn }}
-                                />
-                            }
-                            info={
-                                <FormattedMessage
-                                    id="fordeling.påvirkninger.prematur.info"
-                                    values={{ antallBarn: barn.antallBarn, duEllerDere }}
-                                />
-                            }
                         />
                     )}
                 </ExpansionCard.Content>
