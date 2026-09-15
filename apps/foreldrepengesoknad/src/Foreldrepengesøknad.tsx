@@ -1,4 +1,4 @@
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQueries } from '@tanstack/react-query';
 import {
     API_URLS,
     mellomlagretInfoOptions,
@@ -62,13 +62,16 @@ export const Foreldrepengesøknad = () => {
 };
 
 // søkerinfo og saker er alltid påkravd for å vise søknaden, og hentast difor med
-// useSuspenseQuery: ErrorBoundary over fangar feil (sjå getErrorPage). mellomlagretInfo held
-// fram som useQuery fordi ein feil her skal handterast mjukt (søknaden held fram utan
-// mellomlagra data), ikkje kaste heile appen til feilsida.
+// useSuspenseQuery: ErrorBoundary over fangar feil (sjå getErrorPage). Dei to hentast samla med
+// useSuspenseQueries, sidan fleire useSuspenseQuery-kall etter kvarandre i same komponent hadde
+// gjort kalla sekvensielle: eit kall som ikkje har data enno kastar synkront under rendering, så
+// koden under (og dermed neste useSuspenseQuery-kall) hadde aldri blitt nådd før det første
+// kallet var ferdig. mellomlagretInfo held fram som useQuery fordi ein feil her skal handterast
+// mjukt (søknaden held fram utan mellomlagra data), ikkje kaste heile appen til feilsida.
 const ForeldrepengesøknadInnhold = () => {
-    const søkerinfoQuery = useSuspenseQuery(søkerinfoOptions());
-
-    const sakerQuery = useSuspenseQuery(sakerOptions());
+    const [søkerinfoQuery, sakerQuery] = useSuspenseQueries({
+        queries: [søkerinfoOptions(), sakerOptions()],
+    });
 
     const mellomlagretInfoQuery = useQuery(mellomlagretInfoOptions());
     const mellomlagretInfoData = mellomlagretInfoQuery.data;
