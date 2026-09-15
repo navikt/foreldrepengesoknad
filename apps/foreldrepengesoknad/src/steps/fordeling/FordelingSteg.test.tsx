@@ -621,13 +621,14 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
         expect(screen.getByText('2 av disse ukene')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
-        expect(screen.getByText('Hvis barnet er innlagt på sykehus før termindato')).toBeInTheDocument();
+        const prematurInfo = screen.getByText('Hvis barnet blir født før svangerskapsuke 33');
+        const innleggelseFørTermin = screen.getByText('Hvis barnet er innlagt på sykehus før termindato');
         expect(screen.getByText('Hvis du blir syk de første seks ukene med foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Hvis du blir syk eller innlagt på helseinstitusjon')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
         expect(screen.getByText('Hvis du jobber samtidig som du har foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere har foreldrepenger samtidig')).toBeInTheDocument();
-        expect(screen.queryByText('Hvis barnet blir født før svangerskapsuke 33')).not.toBeInTheDocument();
+        expect(prematurInfo.compareDocumentPosition(innleggelseFørTermin)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
 
         expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
         expect(screen.getByText('Jeg vil ha hele fellesperioden')).toBeInTheDocument();
