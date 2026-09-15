@@ -8,6 +8,7 @@ const {
     AdopsjonMorOgFarKunMorHarRett,
     FødselMorOgFarKunFarHarRett,
     FødselMorOgFarPrematur,
+    FødselMorOgFarKunFarHarRettPrematur,
     FødselFarAleneomsorg,
     FødselFarOgFarBeggeHarRett,
     FødselFarOgFarKunFarHarRett,
@@ -17,6 +18,7 @@ const {
     FødselMorOgFarKunMorHarRett,
     FødselMorOgMedmorBeggeHarRett,
     FødselMorOgMedmorKunMedmorHarRett,
+    FødselMorOgMedmorKunMedmorHarRettPrematur,
     FødselMorOgMedmorKunMorHarRett,
 } = composeStories(stories);
 
@@ -117,6 +119,15 @@ describe('<UforutsetteEndringer>', () => {
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
     });
 
+    it('mor og far fødsel hvor kun far har rett og barnet er født prematurt', async () => {
+        render(<FødselMorOgFarKunFarHarRettPrematur />);
+
+        expect(await screen.findByText('Uforutsette endringer')).toBeInTheDocument();
+        expect(screen.queryByText('Hvis barnet er innlagt på sykehus')).not.toBeInTheDocument();
+        expect(screen.queryByText('Hvis et barn er innlagt på sykehus før termindato')).not.toBeInTheDocument();
+        expect(screen.queryByText('Hvis et barn er innlagt på sykehus etter termindato')).not.toBeInTheDocument();
+    });
+
     // Mor og medmor
     it('mor og medmor fødsel hvor begge har rett', async () => {
         render(<FødselMorOgMedmorBeggeHarRett />);
@@ -162,6 +173,15 @@ describe('<UforutsetteEndringer>', () => {
         ).not.toBeInTheDocument();
         expect(screen.getByText('Barnet blir født før 33. svangerskapsuke')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
+    });
+
+    it('mor og medmor fødsel hvor kun medmor har rett og barnet er født prematurt', async () => {
+        render(<FødselMorOgMedmorKunMedmorHarRettPrematur />);
+
+        expect(await screen.findByText('Uforutsette endringer')).toBeInTheDocument();
+        expect(screen.queryByText('Hvis barnet er innlagt på sykehus')).not.toBeInTheDocument();
+        expect(screen.queryByText('Hvis et barn er innlagt på sykehus før termindato')).not.toBeInTheDocument();
+        expect(screen.queryByText('Hvis et barn er innlagt på sykehus etter termindato')).not.toBeInTheDocument();
     });
 
     // Far og far
