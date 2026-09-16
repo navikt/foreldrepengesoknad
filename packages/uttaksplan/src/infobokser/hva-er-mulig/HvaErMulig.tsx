@@ -35,6 +35,8 @@ export const HvaErMulig = ({ loggExpansionCardOpen, erFarOgFar }: Props) => {
 
     const kunSøker2SkalHa = kunEnPartSkalHa && søker === 'FAR_MEDMOR';
 
+    const kunFarMedmorBareRett = rettighetType === 'BARE_SØKER_RETT' && søker === 'FAR_MEDMOR';
+
     return (
         <ExpansionCard
             aria-label="Expansion card"
@@ -66,7 +68,7 @@ export const HvaErMulig = ({ loggExpansionCardOpen, erFarOgFar }: Props) => {
                                 <>
                                     <FpUtenKrav />
                                     <FpMedKrav />
-                                    <LeggeTilPause />
+                                    {kunFarMedmorBareRett && <LeggeTilPause />}
                                     <LeggeTilFerie />
                                     <ToUkerRundtFødsel erFarOgFar={erFarOgFar} />
                                     <JobbeSamtidig />

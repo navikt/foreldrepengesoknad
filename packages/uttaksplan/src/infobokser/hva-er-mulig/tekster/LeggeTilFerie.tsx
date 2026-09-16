@@ -16,7 +16,7 @@ export const LeggeTilFerie = () => {
     } = useUttaksplanData();
 
     const erAlenesøker = rettighetType === 'ALENEOMSORG';
-    const kunSøker2SkalHa = rettighetType !== 'BEGGE_RETT' && søker === 'FAR_MEDMOR';
+    const kunFarMedmorBareRett = rettighetType === 'BARE_SØKER_RETT' && søker === 'FAR_MEDMOR';
 
     return (
         <HStack gap="space-20" wrap={false}>
@@ -35,7 +35,7 @@ export const LeggeTilFerie = () => {
                 <Heading size="small">
                     <FormattedMessage id="HvaErMulig.LeggeTilFerie" />
                 </Heading>
-                {kunSøker2SkalHa ? (
+                {kunFarMedmorBareRett ? (
                     <>
                         <BodyLong>
                             <FormattedMessage id="HvaErMulig.LeggeTilFerie.Intro" />
