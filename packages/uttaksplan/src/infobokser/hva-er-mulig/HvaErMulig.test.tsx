@@ -9,6 +9,7 @@ const {
     FødselMorOgFarKunMorHarRett,
     FødselMorOgFarKunFarHarRett,
     FødselFarOgFarKunFar1HarRett,
+    FødselFarOgFarKunEnAvDemHarRettSøkerErFarMedmor,
     FødselFarOgFarBeggeHarRett,
     FødselAleneforsørgerMor,
     FødselAleneforsørgerFar,
@@ -220,6 +221,31 @@ describe('<HvaErMulig>', () => {
         expect(screen.queryByText('Opptil 100 %:')).not.toBeInTheDocument();
         expect(screen.queryByText('Til sammen 100 %:')).not.toBeInTheDocument();
         expect(screen.queryByText('Opptil 150 %:')).not.toBeInTheDocument();
+    });
+
+    // Regresjonstest for den reelle produksjonskombinasjonen (UttaksplanSteg.tsx):
+    // søker settes til 'FAR_MEDMOR' basert på innlogget parts rolle, uavhengig av
+    // erFarOgFar. Denne skal gi samme innhold som far1-testen over, IKKE
+    // mor-spesifikt innhold (Legg til pause, aktivitetskrav-tekster o.l.).
+    it('skal vise info for far og far fødsel hvor kun én har rett og søker er FAR_MEDMOR', async () => {
+        render(<FødselFarOgFarKunEnAvDemHarRettSøkerErFarMedmor />);
+
+        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
+
+        expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
+        expect(screen.getByText('To uker rundt fødsel')).toBeInTheDocument();
+        expect(screen.getByText(/Fedre får ofte permisjon/)).toBeInTheDocument();
+        expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
+
+        expect(screen.queryByText('Legg til pause')).not.toBeInTheDocument();
+        expect(screen.queryByText('Foreldrepenger uten aktivitetskrav')).not.toBeInTheDocument();
+        expect(screen.queryByText('Foreldrepenger med aktivitetskrav')).not.toBeInTheDocument();
+        expect(screen.queryByText('Foreldrepenger samtidig')).not.toBeInTheDocument();
+        expect(screen.queryByText('Dette kan du ikke endre:')).not.toBeInTheDocument();
+        expect(screen.queryByText('Tre uker før termin:')).not.toBeInTheDocument();
+        expect(screen.queryByText('Seks uker etter fødsel:')).not.toBeInTheDocument();
+        expect(screen.queryByText('Når medmor tar fellesperiode')).not.toBeInTheDocument();
     });
 
     it('skal vise info for aleneforsørger mor fødsel', async () => {
