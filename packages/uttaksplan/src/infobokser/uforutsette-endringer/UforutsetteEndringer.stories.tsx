@@ -119,6 +119,19 @@ export const FødselMorOgFarBeggeHarRett: Story = {
     },
 };
 
+export const FødselMorOgFarPrematur: Story = {
+    args: {
+        ...FødselMorOgFarBeggeHarRett.args,
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2021-01-01'],
+            termindato: '2021-03-01',
+            fnr: ['12345678901'],
+            antallBarn: 1,
+        },
+    },
+};
+
 export const FødselMorOgFarKunMorHarRett: Story = {
     args: {
         foreldreInfo: {
@@ -137,6 +150,19 @@ export const FødselMorOgFarKunFarHarRett: Story = {
             rettighetType: 'BARE_SØKER_RETT',
         },
         erEndringssøknad: false,
+    },
+};
+
+export const FødselMorOgFarKunFarHarRettPrematur: Story = {
+    args: {
+        ...FødselMorOgFarKunFarHarRett.args,
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2021-01-01'],
+            termindato: '2021-03-01',
+            fnr: ['12345678901'],
+            antallBarn: 1,
+        },
     },
 };
 
@@ -182,6 +208,19 @@ export const FødselMorOgMedmorKunMedmorHarRett: Story = {
             søker: 'FAR_MEDMOR',
         },
         erEndringssøknad: false,
+    },
+};
+
+export const FødselMorOgMedmorKunMedmorHarRettPrematur: Story = {
+    args: {
+        ...FødselMorOgMedmorKunMedmorHarRett.args,
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2021-01-01'],
+            termindato: '2021-03-01',
+            fnr: ['12345678901'],
+            antallBarn: 1,
+        },
     },
 };
 
