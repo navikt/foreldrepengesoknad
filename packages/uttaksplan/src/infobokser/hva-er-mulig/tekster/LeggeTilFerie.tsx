@@ -12,11 +12,11 @@ export const LeggeTilFerie = () => {
     const intl = useIntl();
 
     const {
-        foreldreInfo: { rettighetType, søker, erMedmorDelAvSøknaden, erFarOgFar },
+        foreldreInfo: { rettighetType, søker, erMedmorDelAvSøknaden },
     } = useUttaksplanData();
 
     const erAlenesøker = rettighetType === 'ALENEOMSORG';
-    const kunFarMedmorBareRett = !erFarOgFar && rettighetType === 'BARE_SØKER_RETT' && søker === 'FAR_MEDMOR';
+    const kunFarMedmorBareRett = rettighetType === 'BARE_SØKER_RETT' && søker === 'FAR_MEDMOR';
 
     return (
         <HStack gap="space-20" wrap={false}>

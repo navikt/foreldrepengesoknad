@@ -33,9 +33,9 @@ export const HvaErMulig = ({ loggExpansionCardOpen, erFarOgFar }: Props) => {
 
     const kunEnPartSkalHa = rettighetType !== 'BEGGE_RETT';
 
-    const kunSøker2SkalHa = !erFarOgFar && kunEnPartSkalHa && søker === 'FAR_MEDMOR';
+    const kunSøker2SkalHa = kunEnPartSkalHa && søker === 'FAR_MEDMOR';
 
-    const kunFarMedmorBareRett = !erFarOgFar && rettighetType === 'BARE_SØKER_RETT' && søker === 'FAR_MEDMOR';
+    const kunFarMedmorBareRett = rettighetType === 'BARE_SØKER_RETT' && søker === 'FAR_MEDMOR';
 
     return (
         <ExpansionCard
