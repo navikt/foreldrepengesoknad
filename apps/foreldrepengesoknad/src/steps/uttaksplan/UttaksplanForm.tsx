@@ -14,8 +14,7 @@ import {
     Barn,
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
+    PeriodeDto_fpoversikt,
     isAdoptertBarn,
     isFødtBarn,
     isIkkeUtfyltTypeBarn,
@@ -33,13 +32,13 @@ type FormValues = {
 
 interface UttaksplanFormProps {
     søkerInfo: FpPersonopplysningerDto_fpoversikt;
-    defaultUttaksperioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    defaultUttaksperioder: PeriodeDto_fpoversikt[];
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
     setFeilmelding: (melding: ReactNode) => void;
     scrollToKvoteOppsummering: () => void;
     eksisterendeSak: FpSak_fpoversikt | undefined;
-    opprinneligPlan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined;
+    opprinneligPlan: PeriodeDto_fpoversikt[] | undefined;
     erEndringssøknad: boolean;
 }
 
@@ -67,9 +66,8 @@ export const UttaksplanForm = ({
     const uttaksplanMedKunNyePerioder =
         uttaksplan?.filter(
             (p) =>
-                Uttaksperioden.erIkkeEøsPeriode(p) &&
-                (p.resultat === undefined ||
-                    (opprinneligPlan?.every((o) => !erSammePeriodeInkludertDatoer(p, o)) ?? false)),
+                p.søker?.resultat === undefined ||
+                (opprinneligPlan?.every((o) => !erSammePeriodeInkludertDatoer(p, o)) ?? false),
         ) ?? [];
     const gjeldendeUttaksplan = erEndringssøknad ? uttaksplanMedKunNyePerioder : uttaksplan;
 
@@ -97,9 +95,7 @@ export const UttaksplanForm = ({
     // at spørsmålet om automatisk justering står fast med ein gong, utan at brukaren må tukle med planen.
     const planForVisning = gjeldendeUttaksplan ?? defaultUttaksperioder;
 
-    const farMedmorPerioder = planForVisning
-        .filter((p): p is UttakPeriode_fpoversikt => Uttaksperioden.erIkkeEøsPeriode(p))
-        .filter((p) => p.forelder === 'FAR_MEDMOR');
+    const farMedmorPerioder = planForVisning.filter((p) => p.søker?.forelder === 'FAR_MEDMOR');
 
     const visAutomatiskJustering =
         erFødselssituasjonForFar &&
@@ -190,7 +186,7 @@ const AutomatiskJusteringInfotekst = ({
     uttaksplan,
 }: {
     harSvartJaPåAutoJustering: boolean;
-    uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    uttaksplan: PeriodeDto_fpoversikt[];
 }) => {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
@@ -212,10 +208,13 @@ const AutomatiskJusteringInfotekst = ({
 
     const harSvartJaOgHarEnPeriodeRundtFødsel = harSvartJaPåAutoJustering && perioderMedUttakRundtFødsel.length === 1;
 
+    const periodeRundtFødsel = perioderMedUttakRundtFødsel[0];
+    const sideRundtFødsel = periodeRundtFødsel?.søker;
+
     const harSvartJaOgStarterIkkeLengerPåTermin =
         harSvartJaOgHarEnPeriodeRundtFødsel &&
         uttaksdagPåEllerEtterTermin &&
-        !dayjs(perioderMedUttakRundtFødsel[0]!.fom).isSame(uttaksdagPåEllerEtterTermin, 'day');
+        !dayjs(periodeRundtFødsel!.fom).isSame(uttaksdagPåEllerEtterTermin, 'day');
 
     if (harSvartJaOgStarterIkkeLengerPåTermin) {
         return (
@@ -227,10 +226,10 @@ const AutomatiskJusteringInfotekst = ({
 
     const harSvartJaOgEndretPeriodenPåTermin =
         harSvartJaOgHarEnPeriodeRundtFødsel &&
-        dayjs(perioderMedUttakRundtFødsel[0]!.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
-        ((Uttaksperioden.erUttaksperiode(perioderMedUttakRundtFødsel[0]!) &&
-            !erJusterbartUttakRundtTermin(perioderMedUttakRundtFødsel[0]!)) ||
-            Uttaksperioden.erOverføringsperiode(perioderMedUttakRundtFødsel[0]!));
+        dayjs(periodeRundtFødsel!.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
+        !!sideRundtFødsel &&
+        ((Uttaksperioden.erUttaksperiode(sideRundtFødsel) && !erJusterbartUttakRundtTermin(periodeRundtFødsel!)) ||
+            Uttaksperioden.erOverføringsperiode(sideRundtFødsel));
 
     if (harSvartJaOgEndretPeriodenPåTermin) {
         return (
@@ -242,10 +241,11 @@ const AutomatiskJusteringInfotekst = ({
 
     const harSvartJaOgEndretPeriodenTilØnskerFlerbarnsdager =
         harSvartJaOgHarEnPeriodeRundtFødsel &&
-        dayjs(perioderMedUttakRundtFødsel[0]!.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
-        Uttaksperioden.erUttaksperiode(perioderMedUttakRundtFødsel[0]!) &&
-        perioderMedUttakRundtFødsel[0]!.kontoType === 'FEDREKVOTE' &&
-        Uttaksperioden.erFlerbarnsdager(perioderMedUttakRundtFødsel[0]!);
+        dayjs(periodeRundtFødsel!.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
+        !!sideRundtFødsel &&
+        Uttaksperioden.erUttaksperiode(sideRundtFødsel) &&
+        sideRundtFødsel.kontoType === 'FEDREKVOTE' &&
+        Uttaksperioden.erFlerbarnsdager(sideRundtFødsel);
 
     if (harSvartJaOgEndretPeriodenTilØnskerFlerbarnsdager) {
         return (
@@ -258,10 +258,7 @@ const AutomatiskJusteringInfotekst = ({
     return null;
 };
 
-const finnPerioderRundtFødsel = (
-    valgtePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-    barnet: Barn,
-) => {
+const finnPerioderRundtFødsel = (valgtePerioder: PeriodeDto_fpoversikt[], barnet: Barn) => {
     if (isAdoptertBarn(barnet) || isIkkeUtfyltTypeBarn(barnet)) {
         return [];
     }
@@ -275,7 +272,7 @@ const finnPerioderRundtFødsel = (
 };
 
 const finnPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato = (
-    valgtePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    valgtePerioder: PeriodeDto_fpoversikt[],
     familiehendelsedato: string,
 ) => {
     const førsteDag = Uttaksdagen.denneEllerNeste(familiehendelsedato).getDato();
@@ -289,7 +286,7 @@ const finnPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato = (
 };
 
 const finnPerioderInnenforIntervalletToUkerFørFamDatoOgFamDato = (
-    valgtePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    valgtePerioder: PeriodeDto_fpoversikt[],
     familiehendelsedato: string,
 ) => {
     const førsteDag = Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(15);
@@ -302,11 +299,10 @@ const finnPerioderInnenforIntervalletToUkerFørFamDatoOgFamDato = (
     });
 };
 
-const erJusterbartUttakRundtTermin = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-): boolean =>
-    periode.kontoType === 'FORELDREPENGER' ||
-    (periode.kontoType === 'FEDREKVOTE' && 'samtidigUttak' in periode && periode.samtidigUttak !== undefined);
+// Les frå .søker sidan farMedmorPerioder alltid er søkjaren sine eigne periodar her.
+const erJusterbartUttakRundtTermin = (periode: PeriodeDto_fpoversikt): boolean =>
+    periode.søker?.kontoType === 'FORELDREPENGER' ||
+    (periode.søker?.kontoType === 'FEDREKVOTE' && periode.søker.samtidigUttak !== undefined);
 
 /**
  * Speilar backend-regelen `FarsJustering.skalJustere` i fpsak. Far/medmor sitt uttak rundt fødsel kan
@@ -324,7 +320,7 @@ const erJusterbartUttakRundtTermin = (
  * fødsel. Selv om bruker har søkt om justering!".
  */
 export const kanJustereFarsUttakRundtFødsel = (
-    farMedmorPerioder: UttakPeriode_fpoversikt[],
+    farMedmorPerioder: PeriodeDto_fpoversikt[],
     termindato: string,
 ): boolean => {
     if (farMedmorPerioder.length === 0) {
@@ -337,7 +333,7 @@ export const kanJustereFarsUttakRundtFødsel = (
     const intervallFom = dayjs(termindatoUttaksdag).subtract(2, 'week');
     const intervallTom = dayjs(termindatoUttaksdag).add(6, 'week').subtract(1, 'day');
 
-    const liggerHeiltInnanforIntervallet = (periode: UttakPeriode_fpoversikt) =>
+    const liggerHeiltInnanforIntervallet = (periode: PeriodeDto_fpoversikt) =>
         dayjs(periode.fom).isSameOrAfter(intervallFom, 'day') && dayjs(periode.tom).isSameOrBefore(intervallTom, 'day');
 
     const førstePeriode = sortertePerioder[0]!;
@@ -348,7 +344,8 @@ export const kanJustereFarsUttakRundtFødsel = (
     );
 
     const førstePeriodeErJusterbar =
-        Uttaksperioden.erUttaksperiode(førstePeriode) &&
+        !!førstePeriode.søker &&
+        Uttaksperioden.erUttaksperiode(førstePeriode.søker) &&
         erJusterbartUttakRundtTermin(førstePeriode) &&
         liggerHeiltInnanforIntervallet(førstePeriode) &&
         førstePeriodeStarterPåTermin;

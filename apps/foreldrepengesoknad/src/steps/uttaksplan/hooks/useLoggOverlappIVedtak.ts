@@ -3,12 +3,19 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { useEffect, useRef } from 'react';
 
 import { captureException } from '@navikt/fp-observability';
-import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { PeriodeDto_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 dayjs.extend(isSameOrBefore);
 
+/**
+ * I den nye, intervall-baserte periodemodellen skal to ULIKE PeriodeDto_fpoversikt-element i
+ * uttaksplanen aldri overlappa i tid – samtidig uttak/opphald blir no uttrykt som éin periode med
+ * både søker og annenPart (og evt. annenPartEøs) sett, ikkje som to overlappande periodar slik
+ * som i den gamle, flate modellen. Denne hooken loggar til Sentry dersom det likevel oppstår
+ * overlapp, t.d. som følgje av den forenkla samanslåinga i useUttaksplanForEksisterendeSak.
+ */
 export const useLoggOverlappIVedtak = (
-    uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
+    uttaksplan: PeriodeDto_fpoversikt[] | undefined,
     perioderFraBackend: UttakPeriode_fpoversikt[] | undefined,
     perioderAnnenPartFraBackend: UttakPeriode_fpoversikt[] | undefined,
 ): void => {
@@ -25,7 +32,7 @@ export const useLoggOverlappIVedtak = (
         }
         lastCheckedFingerprintRef.current = fingerprint;
 
-        const { perioderUttaksplan, ugyldigeOverlapp } = finnUgyldigeOverlappIUttaksplan(uttaksplan);
+        const ugyldigeOverlapp = finnUgyldigeOverlapp(uttaksplan);
         if (ugyldigeOverlapp.length > 0) {
             captureException(new Error('Uttaksplan har ugyldig overlappande periodar etter transformasjon'), {
                 context: {
@@ -35,56 +42,24 @@ export const useLoggOverlappIVedtak = (
                         a: periodeTilLoggObjekt(a),
                         b: periodeTilLoggObjekt(b),
                     })),
-                    uttaksplan: perioderUttaksplan.map(periodeTilLoggObjekt),
-                    perioderFraBackend: perioderFraBackend?.map(periodeTilLoggObjekt),
-                    perioderAnnenPartFraBackend: perioderAnnenPartFraBackend?.map(periodeTilLoggObjekt),
+                    uttaksplan: uttaksplan.map(periodeTilLoggObjekt),
+                    perioderFraBackend: perioderFraBackend?.map(gammalPeriodeTilLoggObjekt),
+                    perioderAnnenPartFraBackend: perioderAnnenPartFraBackend?.map(gammalPeriodeTilLoggObjekt),
                 },
             });
         }
     }, [uttaksplan, perioderFraBackend, perioderAnnenPartFraBackend]);
 };
 
-export const finnUgyldigeOverlappIUttaksplan = (
-    uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
-): {
-    perioderUttaksplan: UttakPeriode_fpoversikt[];
-    ugyldigeOverlapp: Array<[UttakPeriode_fpoversikt, UttakPeriode_fpoversikt]>;
-} => {
-    const perioderUttaksplan = (uttaksplan ?? [])
-        .filter((p): p is UttakPeriode_fpoversikt => 'forelder' in p)
-        .filter(okkupererTid);
-    return { perioderUttaksplan, ugyldigeOverlapp: finnUgyldigeOverlapp(perioderUttaksplan) };
-};
-
-const erOverlappande = (a: UttakPeriode_fpoversikt, b: UttakPeriode_fpoversikt): boolean =>
-    dayjs(a.fom).isSameOrBefore(b.tom, 'day') && dayjs(b.fom).isSameOrBefore(a.tom, 'day');
-
-// Avslåtte periodar utan trekkdagar okkuperer ikkje tid i planen og blir filtrert vekk før visning
-// (sjå filtrerBortPerioderUtenTrekkdager i UttaksplanDataContext). Dei skal difor ikkje reknast som
-// ugyldige overlapp her, sjølv om dei overlappar annen part sin reelle periode i mellomresultatet.
-const okkupererTid = (periode: UttakPeriode_fpoversikt): boolean =>
-    periode.resultat?.innvilget !== false || periode.resultat?.trekkerDager;
-
-const finnUgyldigeOverlapp = (
-    perioder: UttakPeriode_fpoversikt[],
-): Array<[UttakPeriode_fpoversikt, UttakPeriode_fpoversikt]> => {
-    const ugyldigeOverlapp: Array<[UttakPeriode_fpoversikt, UttakPeriode_fpoversikt]> = [];
+export const finnUgyldigeOverlapp = (
+    perioder: PeriodeDto_fpoversikt[],
+): Array<[PeriodeDto_fpoversikt, PeriodeDto_fpoversikt]> => {
+    const ugyldigeOverlapp: Array<[PeriodeDto_fpoversikt, PeriodeDto_fpoversikt]> = [];
     for (let i = 0; i < perioder.length; i++) {
         for (let j = i + 1; j < perioder.length; j++) {
             const a = perioder[i]!;
             const b = perioder[j]!;
-            if (
-                erOverlappande(a, b) &&
-                (!(
-                    a.utsettelseÅrsak === undefined &&
-                    b.utsettelseÅrsak === undefined &&
-                    a.oppholdÅrsak === undefined &&
-                    b.oppholdÅrsak === undefined
-                ) ||
-                    a.samtidigUttak === undefined ||
-                    b.samtidigUttak === undefined ||
-                    a.forelder === b.forelder)
-            ) {
+            if (erOverlappande(a, b)) {
                 ugyldigeOverlapp.push([a, b]);
             }
         }
@@ -92,7 +67,30 @@ const finnUgyldigeOverlapp = (
     return ugyldigeOverlapp;
 };
 
-const periodeTilLoggObjekt = (p: UttakPeriode_fpoversikt) => ({
+const erOverlappande = (a: { fom: string; tom: string }, b: { fom: string; tom: string }): boolean =>
+    dayjs(a.fom).isSameOrBefore(b.tom, 'day') && dayjs(b.fom).isSameOrBefore(a.tom, 'day');
+
+const periodeTilLoggObjekt = (p: PeriodeDto_fpoversikt) => ({
+    fom: p.fom,
+    tom: p.tom,
+    søker: p.søker && {
+        forelder: p.søker.forelder,
+        kontoType: p.søker.kontoType,
+        utsettelseÅrsak: p.søker.utsettelseÅrsak,
+        overføringÅrsak: p.søker.overføringÅrsak,
+        samtidigUttak: p.søker.samtidigUttak,
+    },
+    annenPart: p.annenPart && {
+        forelder: p.annenPart.forelder,
+        kontoType: p.annenPart.kontoType,
+        utsettelseÅrsak: p.annenPart.utsettelseÅrsak,
+        overføringÅrsak: p.annenPart.overføringÅrsak,
+        samtidigUttak: p.annenPart.samtidigUttak,
+    },
+    annenPartEøs: p.annenPartEøs && { kontoType: p.annenPartEøs.kontoType },
+});
+
+const gammalPeriodeTilLoggObjekt = (p: UttakPeriode_fpoversikt) => ({
     fom: p.fom,
     tom: p.tom,
     forelder: p.forelder,

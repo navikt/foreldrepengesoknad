@@ -56,3 +56,5 @@ export type { Familiesituasjon } from './src/Familiesituasjon';
 export * from './src/Ytelse';
 
 export * from './src/genererteTyper';
+
+export * from './src/uttaksplanDtoMidlertidig';
