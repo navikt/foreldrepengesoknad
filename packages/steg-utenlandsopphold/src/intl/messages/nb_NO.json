@@ -57,5 +57,6 @@
     "SenereUtenlandsoppholdSteg.DateOutsideRangeFom": "Fra og med dato for utenlandsopphold må være mellom {min} og {max}",
     "SenereUtenlandsoppholdSteg.DateOutsideRangeTom": "Til og med dato for utenlandsopphold må være mellom {min} og {max}",
     "SenereUtenlandsoppholdSteg.Utenlandsopphold.FørTilDato": "Fra og med dato kan ikke være etter til og med dato",
-    "SenereUtenlandsoppholdSteg.Utenlandsopphold.EtterFraDato": "Til og med dato kan ikke være før fra og med dato"
+    "SenereUtenlandsoppholdSteg.Utenlandsopphold.EtterFraDato": "Til og med dato kan ikke være før fra og med dato",
+    "SenereUtenlandsoppholdSteg.VetIkkeNårTilbake": "Jeg vet ikke når jeg kommer tilbake til Norge"
 }

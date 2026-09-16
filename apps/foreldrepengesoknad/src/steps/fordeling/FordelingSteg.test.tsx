@@ -531,6 +531,12 @@ describe('Fordeling - FarMedmorAleneomsorgPrematurtFødtBarn', () => {
             screen.getByText('er lagt til fordi barnet ble født før svangerskapsuke 33.', { exact: false }),
         ).toBeInTheDocument();
 
+        await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
+        expect(screen.getByText('Hvis barnet blir født før svangerskapsuke 33')).toBeInTheDocument();
+        expect(screen.getByText('Hvis du blir syk eller innlagt på helseinstitusjon')).toBeInTheDocument();
+        expect(screen.queryByText('Hvis barnet er innlagt på sykehus før termindato')).not.toBeInTheDocument();
+        expect(screen.queryByText('Hvis barnet er innlagt på sykehus etter termindato')).not.toBeInTheDocument();
+
         expect(
             screen.queryByText(
                 'Siden du har fått barn før 1. oktober 2021, må du bruke foreldrepengeperioden din sammenhengende eller søke om utsettelse.',
@@ -615,13 +621,14 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
         expect(screen.getByText('2 av disse ukene')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
-        expect(screen.getByText('Hvis barnet er innlagt på sykehus før termindato')).toBeInTheDocument();
+        const prematurInfo = screen.getByText('Hvis barnet blir født før svangerskapsuke 33');
+        const innleggelseFørTermin = screen.getByText('Hvis barnet er innlagt på sykehus før termindato');
         expect(screen.getByText('Hvis du blir syk de første seks ukene med foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Hvis du blir syk eller innlagt på helseinstitusjon')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
         expect(screen.getByText('Hvis du jobber samtidig som du har foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere har foreldrepenger samtidig')).toBeInTheDocument();
-        expect(screen.queryByText('Hvis barnet blir født før svangerskapsuke 33')).not.toBeInTheDocument();
+        expect(prematurInfo.compareDocumentPosition(innleggelseFørTermin)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
 
         expect(screen.getByText(/Hvordan vil dere fordele fellesperioden på/)).toBeInTheDocument();
         expect(screen.getByText('Jeg vil ha hele fellesperioden')).toBeInTheDocument();
@@ -906,7 +913,10 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
         expect(screen.getByText('2 av disse ukene')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
-        expect(screen.getByText('Hvis barnet blir innlagt på sykehus de første 6 ukene etter fødsel.')).toBeInTheDocument();
+        expect(screen.getByText('Hvis barnet er innlagt på sykehus')).toBeInTheDocument();
+        expect(
+            screen.queryByText('Hvis barnet blir innlagt på sykehus de første 6 ukene etter fødsel.'),
+        ).not.toBeInTheDocument();
         expect(screen.getByText('Hvis du blir syk de første seks ukene med foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Hvis du blir syk eller innlagt på helseinstitusjon')).toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
@@ -1031,8 +1041,8 @@ describe('Fordeling - MorDeltUttakTvillingerFødt', () => {
         expect(screen.getAllByText('brukes når som helst før barna fyller 3 år.', { exact: false })).toHaveLength(3);
 
         await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
-        expect(screen.getByText('Hvis barna blir innlagt på sykehus de første 6 ukene etter fødsel.')).toBeInTheDocument();
-        
+        expect(screen.getByText('Hvis barna er innlagt på sykehus')).toBeInTheDocument();
+
         expect(
             screen.getByText(
                 'Dere kan velge om dere vil ha foreldrepenger samtidig i opp til 17 uker fordi dere har fått tvillinger.',
@@ -1120,7 +1130,9 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021', () => {
         expect(screen.queryByText('På fødselsdato')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
-        expect(screen.queryByText('Hvis barnet blir innlagt på sykehus de første 6 ukene etter fødsel.')).not.toBeInTheDocument();
+        expect(
+            screen.queryByText('Hvis barnet blir innlagt på sykehus de første 6 ukene etter fødsel.'),
+        ).not.toBeInTheDocument();
         expect(screen.queryByText('Hvis du blir syk de første seks ukene med foreldrepenger')).not.toBeInTheDocument();
         expect(screen.queryByText('Hvis du blir syk eller innlagt på helseinstitusjon')).not.toBeInTheDocument();
         expect(screen.getByText('Hvis dere får et nytt barn før det har gått tre år')).toBeInTheDocument();
@@ -1523,12 +1535,16 @@ describe('Fordeling - BareFarHarRettOgMorErUførTermin4Barn', () => {
         expect(screen.getByText('Fra termindato')).toBeInTheDocument();
         expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
-        expect(screen.getByText('Hvis du får et nytt barn før det har gått tre år')).toBeInTheDocument();
-        expect(screen.getByText('Hvis du jobber samtidig som du har foreldrepenger')).toBeInTheDocument();
-        expect(screen.getByText('Hvis barna blir født før svangerskapsuke 33')).toBeInTheDocument();
+        const prematurInfo = screen.getByText('Hvis barna blir født før svangerskapsuke 33');
+        const sykInfo = screen.getByText('Hvis du blir syk eller innlagt på helseinstitusjon');
+        const jobbInfo = screen.getByText('Hvis du jobber samtidig som du har foreldrepenger');
+        const nyttBarnInfo = screen.getByText('Hvis du får et nytt barn før det har gått tre år');
+
+        expect(prematurInfo.compareDocumentPosition(sykInfo)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+        expect(sykInfo.compareDocumentPosition(jobbInfo)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+        expect(jobbInfo.compareDocumentPosition(nyttBarnInfo)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
         expect(screen.queryByText('Hvis barnet er innlagt på sykehus før termindato')).not.toBeInTheDocument();
         expect(screen.queryByText('Hvis du blir syk de første seks ukene med foreldrepenger')).not.toBeInTheDocument();
-        expect(screen.queryByText('Hvis du blir syk eller innlagt på helseinstitusjon')).not.toBeInTheDocument();
         expect(screen.queryByText('Hvis dere har foreldrepenger samtidig')).not.toBeInTheDocument();
         expect(
             screen.queryByText('Hvis du blir syk, eller hvis du eller barnet blir innlagt på helseinstitusjon'),
@@ -1570,6 +1586,17 @@ describe('Fordeling - BareFarHarRettOgMorErIkkeUførFødtBarn', () => {
         expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
         expect(screen.getByText('Da barnet ble født')).toBeInTheDocument();
         expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
+        const prematurInfo = screen.getByText('Hvis barnet blir født før svangerskapsuke 33');
+        const sykInfo = screen.getByText('Hvis du blir syk eller innlagt på helseinstitusjon');
+        const jobbInfo = screen.getByText('Hvis du jobber samtidig som du har foreldrepenger');
+        const nyttBarnInfo = screen.getByText('Hvis du får et nytt barn før det har gått tre år');
+
+        expect(prematurInfo.compareDocumentPosition(sykInfo)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+        expect(sykInfo.compareDocumentPosition(jobbInfo)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+        expect(jobbInfo.compareDocumentPosition(nyttBarnInfo)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+        expect(screen.queryByText('Hvis barnet er innlagt på sykehus')).not.toBeInTheDocument();
     });
     it('kan ikke starte tidligere enn 2 uker før fødsel', async () => {
         MockDate.set(new Date('2024-02-21'));
