@@ -1,15 +1,14 @@
-import { useAtomValue, useSetAtom } from 'jotai';
 import { useEffect } from 'react';
 
-import { backgroundColorAtom } from '../atoms/backgroundColorAtom';
+import { useOversiktState } from '../context/OversiktStateContext';
 
 export const useGetBackgroundColor = () => {
-    const backgroundColor = useAtomValue(backgroundColorAtom);
+    const { backgroundColor } = useOversiktState();
     return backgroundColor;
 };
 
 export const useSetBackgroundColor = (color: 'blue' | 'white') => {
-    const setBackgroundColor = useSetAtom(backgroundColorAtom);
+    const { setBackgroundColor } = useOversiktState();
 
     useEffect(() => {
         setBackgroundColor(color);

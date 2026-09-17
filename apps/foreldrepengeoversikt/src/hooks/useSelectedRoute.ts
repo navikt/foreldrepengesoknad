@@ -1,16 +1,15 @@
-import { useAtomValue, useSetAtom } from 'jotai';
 import { useEffect } from 'react';
 
-import { selectedRouteAtom } from './../atoms/selectedRouteAtom';
+import { useOversiktState } from './../context/OversiktStateContext';
 import { OversiktRoutes } from './../routes/routes';
 
 export const useGetSelectedRoute = () => {
-    const selectedRoute = useAtomValue(selectedRouteAtom);
+    const { selectedRoute } = useOversiktState();
     return selectedRoute;
 };
 
 export const useSetSelectedRoute = (route: OversiktRoutes) => {
-    const setSelectedRoute = useSetAtom(selectedRouteAtom);
+    const { setSelectedRoute } = useOversiktState();
 
     useEffect(() => {
         setSelectedRoute(route);

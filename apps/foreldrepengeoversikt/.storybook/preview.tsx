@@ -13,6 +13,7 @@ import { utilsMessages } from '@navikt/fp-utils';
 import { getIntlDecorator, withThemeDecorator } from '@navikt/fp-utils-test';
 import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan';
 
+import { OversiktStateProvider } from '../src/context/OversiktStateContext';
 import '../src/index.css';
 import enMessages from '../src/intl/messages/en_US.json';
 import nbMessages from '../src/intl/messages/nb_NO.json';
@@ -95,6 +96,11 @@ const preview: Preview = {
             <main id="app">
                 <Story />
             </main>
+        ),
+        (Story) => (
+            <OversiktStateProvider>
+                <Story />
+            </OversiktStateProvider>
         ),
     ],
     loaders: [

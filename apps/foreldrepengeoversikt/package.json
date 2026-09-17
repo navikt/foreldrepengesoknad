@@ -42,7 +42,6 @@
         "classnames": "catalog:",
         "dayjs": "catalog:",
         "es-toolkit": "catalog:",
-        "jotai": "2.20.3",
         "ky": "catalog:",
         "react": "catalog:",
         "react-dom": "catalog:",
