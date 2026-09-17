@@ -59,3 +59,4 @@ export type {
     KvoteRingSize,
     KvoteProgresjonRingSplitInfo,
 } from './src/kvote-progresjon-ring/KvoteProgresjonRing';
+export { InfoboksMedIkon } from './src/infoboks-med-ikon/InfoboksMedIkon';

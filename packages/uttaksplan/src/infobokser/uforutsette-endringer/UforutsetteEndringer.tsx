@@ -4,11 +4,13 @@ import { FormattedMessage } from 'react-intl';
 import { ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
 import { IconCircleWrapper } from '@navikt/fp-ui';
+import { erFødtFørUke33 } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { FødtFørUke33 } from './tekster/FødtFørUke33';
 import { HvisBarnetErInnlagt } from './tekster/HvisBarnetErInnlagt';
-import { HvisBarnetErSyktEllerInnlagt } from './tekster/HvisBarnetErSyktEllerInnlagt';
+import { HvisBarnetErPrematurInnlagtEtterTermin } from './tekster/HvisBarnetErPrematurInnlagtEtterTermin';
+import { HvisBarnetErPrematurInnlagtFørTermin } from './tekster/HvisBarnetErPrematurInnlagtFørTermin';
 import { HvisDuBlirSyk } from './tekster/HvisDuBlirSyk';
 import { HvisMorBlirSyk } from './tekster/HvisMorBlirSyk';
 import { NyttBarnFørTreÅr } from './tekster/NyttBarnFørTreÅr';
@@ -21,8 +23,12 @@ interface Props {
 export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Props) => {
     const {
         familiesituasjon,
+        familiehendelsedato,
+        termindato,
         foreldreInfo: { rettighetType, søker },
     } = useUttaksplanData();
+
+    const fødtFørUke33 = erFødtFørUke33(familiehendelsedato, termindato);
 
     const erFødsel = familiesituasjon === 'fødsel';
 
@@ -34,9 +40,6 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
     const erMorDelAvSøknaden = !erFarOgFar && (søker === 'MOR' || rettighetType === 'BEGGE_RETT');
 
     const kunMorHarRett = søker === 'MOR' && (rettighetType === 'BARE_SØKER_RETT' || erAleneforsørger);
-
-    const kunFarEllerMedmorHarRett =
-        søker === 'FAR_MEDMOR' && (erAleneforsørger || rettighetType === 'BARE_SØKER_RETT');
 
     const erFarOgFarKunMedfarHarRett = erFarOgFar && rettighetType === 'BARE_SØKER_RETT';
 
@@ -59,29 +62,39 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
 
             <ExpansionCard.Content>
                 <VStack gap="space-20">
-                    <>
-                        {erFødsel ? (
-                            <>
-                                {!erFarOgFarKunMedfarHarRett && <FødtFørUke33 />}
-                                {((erAleneforsørger && !erMorDelAvSøknaden) ||
-                                    erFarOgFar ||
-                                    kunFarEllerMedmorHarRett) && <HvisBarnetErSyktEllerInnlagt />}
-                                {((beggeHarRett && !erFarOgFar) ||
+                    {erFødsel ? (
+                        <>
+                            {!erFarOgFarKunMedfarHarRett && <FødtFørUke33 />}
+
+                            {!fødtFørUke33 &&
+                                ((erAleneforsørger && !erMorDelAvSøknaden) ||
+                                    erFarOgFar) && <HvisBarnetErInnlagt />}
+                            {fødtFørUke33 &&
+                                ((beggeHarRett && !erFarOgFar) ||
+                                    kunMorHarRett ||
+                                    (erAleneforsørger && erMorDelAvSøknaden)) && (
+                                    <>
+                                        <HvisBarnetErPrematurInnlagtFørTermin />
+                                        <HvisBarnetErPrematurInnlagtEtterTermin />
+                                    </>
+                                )}
+                            {!fødtFørUke33 &&
+                                ((beggeHarRett && !erFarOgFar) ||
                                     kunMorHarRett ||
                                     (erAleneforsørger && erMorDelAvSøknaden)) && <HvisBarnetErInnlagt />}
-                                {erMorDelAvSøknaden && <HvisMorBlirSyk />}
 
-                                <HvisDuBlirSyk />
-                                <NyttBarnFørTreÅr />
-                            </>
-                        ) : (
-                            <>
-                                <HvisBarnetErSyktEllerInnlagt />
-                                <HvisDuBlirSyk />
-                                <NyttBarnFørTreÅr />
-                            </>
-                        )}
-                    </>
+                            {erMorDelAvSøknaden && <HvisMorBlirSyk />}
+                            <HvisDuBlirSyk />
+
+                            <NyttBarnFørTreÅr />
+                        </>
+                    ) : (
+                        <>
+                            <HvisDuBlirSyk />
+                            <HvisBarnetErInnlagt />
+                            <NyttBarnFørTreÅr />
+                        </>
+                    )}
                 </VStack>
             </ExpansionCard.Content>
         </ExpansionCard>
