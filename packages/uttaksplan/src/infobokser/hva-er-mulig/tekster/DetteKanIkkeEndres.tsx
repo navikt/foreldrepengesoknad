@@ -29,7 +29,7 @@ export const DetteKanIkkeEndres = ({ erFarOgFar }: Props) => {
 
     const hvem = finnTekstForMedmorEllerFar(intl, søker, rettighetType, erMedmorDelAvSøknaden);
 
-    const kunMorSøker = søker === 'MOR' && erAleneforsørger;
+    const kunMorSøker = søker === 'MOR' && rettighetType !== 'BEGGE_RETT';
 
     const morHarRett = harBeggeRett || kunMorSøker;
 

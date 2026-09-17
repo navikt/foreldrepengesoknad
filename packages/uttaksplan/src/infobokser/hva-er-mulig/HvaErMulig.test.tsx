@@ -9,8 +9,10 @@ const {
     FødselMorOgFarKunMorHarRett,
     FødselMorOgFarKunFarHarRett,
     FødselFarOgFarKunFar1HarRett,
+    FødselFarOgFarKunEnAvDemHarRettSøkerErFarMedmor,
     FødselFarOgFarBeggeHarRett,
     FødselAleneforsørgerMor,
+    FødselAleneforsørgerFar,
     FødselMorOgMedmorKunMedmorHarRett,
     FødselMorOgMedmorKunMorHarRett,
     AdopsjonMorOgFarBeggeHarRett,
@@ -36,7 +38,7 @@ describe('<HvaErMulig>', () => {
         expect(screen.getByText('Opptil 150 %:')).toBeInTheDocument();
     });
 
-    it.todo('skal vise info for mor og far fødsel hvor kun mor har rett', async () => {
+    it('skal vise info for mor og far fødsel hvor kun mor har rett', async () => {
         render(<FødselMorOgFarKunMorHarRett />);
         expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
 
@@ -54,7 +56,7 @@ describe('<HvaErMulig>', () => {
         expect(screen.queryByText('Når far tar fellesperiode')).not.toBeInTheDocument();
     });
 
-    it.todo('skal vise info for mor og far fødsel hvor kun far har rett', async () => {
+    it('skal vise info for mor og far fødsel hvor kun far har rett', async () => {
         render(<FødselMorOgFarKunFarHarRett />);
         expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
 
@@ -65,15 +67,20 @@ describe('<HvaErMulig>', () => {
         expect(screen.queryByText('Seks uker etter fødsel:')).not.toBeInTheDocument();
 
         expect(screen.getByText('To uker rundt fødsel')).toBeInTheDocument();
+        expect(screen.getByText(/Far får ofte permisjon dekket de første to ukene ved fødsel/)).toBeInTheDocument();
 
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText(/må du enten:/)).toBeInTheDocument();
+        expect(screen.getByText(/legge til pause om mor fyller aktivitetskravet/)).toBeInTheDocument();
+        expect(screen.getByText(/la planen stå tom når du har ferie/)).toBeInTheDocument();
+        expect(screen.getByText('Legg til pause')).toBeInTheDocument();
 
         expect(screen.getByText('Foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.queryByText(/mor som føder er i aktivitet/)).not.toBeInTheDocument();
         expect(screen.getByText('Foreldrepenger med aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText(/Mor må være i/)).toBeInTheDocument();
+        expect(screen.getByText(/Perioden med aktivitetskrav starter/)).toBeInTheDocument();
 
-        expect(screen.queryByText('Jobbe samtidig')).not.toBeInTheDocument();
+        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
         expect(screen.queryByText('Foreldrepenger samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('2 uker rundt fødsel:')).not.toBeInTheDocument();
         expect(screen.queryByText('Opptil 100 %:')).not.toBeInTheDocument();
@@ -119,7 +126,7 @@ describe('<HvaErMulig>', () => {
         expect(screen.getByText('Opptil 150 %:')).toBeInTheDocument();
     });
 
-    it.todo('skal vise info for mor og medmor fødsel hvor kun mor har rett', async () => {
+    it('skal vise info for mor og medmor fødsel hvor kun mor har rett', async () => {
         render(<FødselMorOgMedmorKunMorHarRett />);
         expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
 
@@ -137,7 +144,7 @@ describe('<HvaErMulig>', () => {
         expect(screen.queryByText('Når medmor tar fellesperiode')).not.toBeInTheDocument();
     });
 
-    it.todo('skal vise info for mor og medmor fødsel hvor kun medmor har rett', async () => {
+    it('skal vise info for mor og medmor fødsel hvor kun medmor har rett', async () => {
         render(<FødselMorOgMedmorKunMedmorHarRett />);
         expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
 
@@ -148,14 +155,19 @@ describe('<HvaErMulig>', () => {
         expect(screen.queryByText('Seks uker etter fødsel:')).not.toBeInTheDocument();
 
         expect(screen.getByText('To uker rundt fødsel')).toBeInTheDocument();
+        expect(screen.getByText(/Medmor får ofte permisjon dekket de første to ukene ved fødsel/)).toBeInTheDocument();
 
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText(/må du enten:/)).toBeInTheDocument();
+        expect(screen.getByText(/legge til pause om mor som føder fyller aktivitetskravet/)).toBeInTheDocument();
+        expect(screen.getByText(/la planen stå tom når du har ferie/)).toBeInTheDocument();
+        expect(screen.getByText('Legg til pause')).toBeInTheDocument();
         expect(screen.getByText('Foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText(/mor som føder er i aktivitet/)).toBeInTheDocument();
         expect(screen.getByText('Foreldrepenger med aktivitetskrav')).toBeInTheDocument();
-        expect(screen.getByText(/Mor som føder/)).toBeInTheDocument();
+        expect(screen.getByText(/Perioden med aktivitetskrav starter/)).toBeInTheDocument();
 
-        expect(screen.queryByText('Jobbe samtidig')).not.toBeInTheDocument();
+        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
         expect(screen.queryByText('Foreldrepenger samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('2 uker rundt fødsel:')).not.toBeInTheDocument();
         expect(screen.queryByText('Opptil 100 %:')).not.toBeInTheDocument();
@@ -199,6 +211,7 @@ describe('<HvaErMulig>', () => {
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
         expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 
+        expect(screen.queryByText('Legg til pause')).not.toBeInTheDocument();
         expect(screen.queryByText('Foreldrepenger samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('Dette kan du ikke endre:')).not.toBeInTheDocument();
         expect(screen.queryByText('Tre uker før termin:')).not.toBeInTheDocument();
@@ -208,6 +221,31 @@ describe('<HvaErMulig>', () => {
         expect(screen.queryByText('Opptil 100 %:')).not.toBeInTheDocument();
         expect(screen.queryByText('Til sammen 100 %:')).not.toBeInTheDocument();
         expect(screen.queryByText('Opptil 150 %:')).not.toBeInTheDocument();
+    });
+
+    // Regresjonstest for den reelle produksjonskombinasjonen (UttaksplanSteg.tsx):
+    // søker settes til 'FAR_MEDMOR' basert på innlogget parts rolle, uavhengig av
+    // erFarOgFar. Denne skal gi samme innhold som far1-testen over, IKKE
+    // mor-spesifikt innhold (Legg til pause, aktivitetskrav-tekster o.l.).
+    it('skal vise info for far og far fødsel hvor kun én har rett og søker er FAR_MEDMOR', async () => {
+        render(<FødselFarOgFarKunEnAvDemHarRettSøkerErFarMedmor />);
+
+        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
+
+        expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
+        expect(screen.getByText('To uker rundt fødsel')).toBeInTheDocument();
+        expect(screen.getByText(/Fedre får ofte permisjon/)).toBeInTheDocument();
+        expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
+
+        expect(screen.queryByText('Legg til pause')).not.toBeInTheDocument();
+        expect(screen.queryByText('Foreldrepenger uten aktivitetskrav')).not.toBeInTheDocument();
+        expect(screen.queryByText('Foreldrepenger med aktivitetskrav')).not.toBeInTheDocument();
+        expect(screen.queryByText('Foreldrepenger samtidig')).not.toBeInTheDocument();
+        expect(screen.queryByText('Dette kan du ikke endre:')).not.toBeInTheDocument();
+        expect(screen.queryByText('Tre uker før termin:')).not.toBeInTheDocument();
+        expect(screen.queryByText('Seks uker etter fødsel:')).not.toBeInTheDocument();
+        expect(screen.queryByText('Når medmor tar fellesperiode')).not.toBeInTheDocument();
     });
 
     it('skal vise info for aleneforsørger mor fødsel', async () => {
@@ -222,6 +260,38 @@ describe('<HvaErMulig>', () => {
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
         expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 
+        expect(screen.queryByText('Foreldrepenger samtidig')).not.toBeInTheDocument();
+        expect(screen.queryByText('2 uker rundt fødsel:')).not.toBeInTheDocument();
+        expect(screen.queryByText('Opptil 100 %:')).not.toBeInTheDocument();
+        expect(screen.queryByText('Til sammen 100 %:')).not.toBeInTheDocument();
+        expect(screen.queryByText('Opptil 150 %:')).not.toBeInTheDocument();
+        expect(screen.queryByText('Når far tar fellesperiode')).not.toBeInTheDocument();
+    });
+
+    it('skal vise info for aleneforsørger far fødsel', async () => {
+        render(<FødselAleneforsørgerFar />);
+
+        expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
+
+        expect(screen.getByText('Det er mye du kan endre på i planen')).toBeInTheDocument();
+
+        expect(screen.queryByText('Dette kan du ikke endre:')).not.toBeInTheDocument();
+        expect(screen.queryByText('Tre uker før termin:')).not.toBeInTheDocument();
+        expect(screen.queryByText('Seks uker etter fødsel:')).not.toBeInTheDocument();
+
+        expect(screen.getByText('To uker rundt fødsel')).toBeInTheDocument();
+        expect(screen.getByText(/Far får ofte permisjon dekket de første to ukene ved fødsel/)).toBeInTheDocument();
+
+        expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
+        expect(screen.queryByText(/må du enten:/)).not.toBeInTheDocument();
+        expect(screen.queryByText(/legge til pause om mor fyller aktivitetskravet/)).not.toBeInTheDocument();
+        expect(screen.getByText(/Hvis du vil ha ferie i stedet for foreldrepenger/)).toBeInTheDocument();
+        expect(screen.queryByText('Legg til pause')).not.toBeInTheDocument();
+
+        expect(screen.getByText('Foreldrepenger uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Foreldrepenger med aktivitetskrav')).toBeInTheDocument();
+
+        expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
         expect(screen.queryByText('Foreldrepenger samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('2 uker rundt fødsel:')).not.toBeInTheDocument();
         expect(screen.queryByText('Opptil 100 %:')).not.toBeInTheDocument();
