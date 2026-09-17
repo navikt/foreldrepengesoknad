@@ -974,6 +974,7 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
             },
         });
         expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
+        await userEvent.click(screen.getByText('Jeg vil ha hele fellesperioden'));
         await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
         const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
         await userEvent.type(oppstart, '30.05.2024');
