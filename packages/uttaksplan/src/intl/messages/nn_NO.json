@@ -464,7 +464,7 @@
     "HvaErMulig.LeggeTilFerie.Tekst": "Viss {erAlenesøker, select, true {du} other {de}} vil ha ferie i staden for foreldrepengar, legg {erAlenesøker, select, true {du} other {dykk}} inn ferie i planen. Perioden med foreldrepengar vil då vara lengre.",
     "HvaErMulig.LeggeTilFerie.Intro": "Sidan ferie kan påverke retten din til foreldrepengar med aktivitetskrav, må du anten:",
     "HvaErMulig.LeggeTilFerie.Punkt1": "leggje til pause viss {erMedmor, select, true {mor som føder} other {mor}} fyller aktivitetskravet når du har ferie, eller",
-    "HvaErMulig.LeggeTilFerie.Punkt2": "la planen stå tom når du har ferie. Dette er dagar du kan miste, og det vil trekkje frå talet på dagar du kan ha foreldrepengar med aktivitetskrav.",
+    "HvaErMulig.LeggeTilFerie.Punkt2": "la planen stå tom når du har ferie. Dette er dagar du kan miste, og vil trekkje frå talet på dagar du kan ha foreldrepengar med aktivitetskrav.",
     "HvaErMulig.ForeldrepengerUtenAktivitetskrav": "Foreldrepengar utan aktivitetskrav",
     "HvaErMulig.ForeldrepengerUtenAktivitetskrav.Tekst": "Dette er veker utan krav til at {erMedmor, select, true {mor som føder} other {mor}} er i aktivitet. Du kan ta ut vekene når som helst før barnet fyller tre år, eller før de startar ein ny foreldrepengeperiode for eit nytt barn. Du kan tidlegast starta to veker før termin.",
     "HvaErMulig.ForeldrepengerMedAktivitetskrav": "Foreldrepengar med aktivitetskrav",
