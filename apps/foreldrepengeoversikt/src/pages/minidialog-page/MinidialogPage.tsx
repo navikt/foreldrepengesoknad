@@ -11,8 +11,6 @@ import { minidialogOptions, sendEttersending } from '../../api/queries.ts';
 import { ContentSection } from '../../components/content-section/ContentSection';
 import { DinSakHeader } from '../../components/header/Header';
 import { MinidialogSkjema } from '../../components/minidialog-skjema/MinidialogSkjema';
-import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
-import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
@@ -30,8 +28,6 @@ export const MinidialogPage = () => {
     useDocumentTitle(
         `${intl.formatMessage({ id: 'oppgaver.tittel.tilbakebetaling' })} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
     );
-    useSetSelectedRoute(OversiktRoutes.OPPGAVER);
-    useSetBackgroundColor('blue');
 
     const { mutate, isPending, isError, isSuccess } = useMutation({
         mutationFn: (ettersendelse: EttersendelseDto) => sendEttersending(ettersendelse),

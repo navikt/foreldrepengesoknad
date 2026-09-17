@@ -24,8 +24,6 @@ import { DinSakHeader, getSaksoversiktHeading } from '../../components/header/He
 import { LenkePanel } from '../../components/lenke-panel/LenkePanel';
 import { Svangerskapspenger } from '../../components/svangerskapspenger/Svangerskapspenger';
 import { useAnnenPartsVedtak } from '../../hooks/useAnnenPartsVedtak';
-import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
-import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
@@ -90,9 +88,6 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
 
     // Gjør denne dataen klar i cachen slik at bruker slipper loader senere.
     useQuery(hentDokumenterOptions(params.saksnummer!));
-
-    useSetBackgroundColor('blue');
-    useSetSelectedRoute(OversiktRoutes.SAKSOVERSIKT);
 
     const gjeldendeSak = useGetSelectedSak();
 

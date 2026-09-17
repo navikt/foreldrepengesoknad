@@ -13,17 +13,12 @@ import { formatDateExtended, useDocumentTitle } from '@navikt/fp-utils';
 import { hentDokumenterOptions } from '../../api/queries.ts';
 import { DokumenterHeader } from '../../components/header/Header';
 import { NoeGikkGalt } from '../../components/noe-gikk-galt/NoeGikkGalt';
-import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
-import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
 import { DokumentAvsender } from './components/DokumentAvsender';
 import { DokumentLenke } from './components/DokumentLenke';
 
 export const DokumenterPage = () => {
-    useSetBackgroundColor('white');
-    useSetSelectedRoute(OversiktRoutes.DOKUMENTER);
-
     const intl = useIntl();
     const title = intl.formatMessage({ id: 'dokumenter' });
     useDocumentTitle(`${title} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`);
