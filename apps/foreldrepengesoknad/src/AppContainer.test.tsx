@@ -9,14 +9,15 @@ import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { AppContainer, queryClient } from './AppContainer';
 import * as stories from './AppContainer.stories';
 
+vi.mock('@navikt/nav-dekoratoren-moduler', () => ({
+    setAvailableLanguages: vi.fn(),
+    onLanguageSelect: vi.fn(),
+}));
+
 const { SøkerErMann, SøkerErKvinne } = composeStories(stories);
 
 describe('<AppContainer>', () => {
     beforeEach(() => {
-        vi.mock('@navikt/nav-dekoratoren-moduler', () => ({
-            setAvailableLanguages: vi.fn(),
-            onLanguageSelect: vi.fn(),
-        }));
         queryClient.clear();
     });
 
