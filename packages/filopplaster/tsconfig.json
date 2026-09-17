@@ -2,7 +2,7 @@
     "extends": "@navikt/fp-config-typescript/tsconfig.json",
     "compilerOptions": {
         "jsx": "react-jsx",
-        "types": ["@testing-library/jest-dom", "vitest/globals", "vite/client"],
+        "types": ["@testing-library/jest-dom/vitest", "vitest/globals", "vite/client"],
         "esModuleInterop": true
     },
     "include": ["src", "vitest", "../../@types"],

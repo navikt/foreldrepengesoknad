@@ -2,8 +2,34 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { playwright } from '@vitest/browser-playwright';
+import fs from 'node:fs';
+import path from 'node:path';
 import { defineConfig, mergeConfig } from 'vite';
 import compression from 'vite-plugin-compression2';
+
+// Storybook sin `staticDirs` gjer at mockServiceWorker.js vert servert av Storybook sin eigen
+// dev-/build-server, men den gjeld ikkje for Vitest sin browser-mode-server (som brukar
+// app/pakke sin vanlege vite.config). Utan denne plugin-en 404-ar `./mockServiceWorker.js` der,
+// og MSW-workeren i .storybook/preview.tsx (brukt via setProjectAnnotations i setupTests.ts)
+// klarer ikkje å registrere seg. `apply: 'serve'` sikrar at dette berre skjer i dev/test og
+// aldri lek inn i `vite build`.
+const mockServiceWorkerPlugin = () => ({
+    name: 'serve-mock-service-worker',
+    apply: 'serve',
+    configureServer(server) {
+        const filePath = path.resolve(import.meta.dirname, '../../scripts/mock-service-worker/mockServiceWorker.js');
+
+        server.middlewares.use((req, res, next) => {
+            if (req.url !== '/mockServiceWorker.js') {
+                next();
+                return;
+            }
+
+            res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+            res.end(fs.readFileSync(filePath));
+        });
+    },
+});
 
 export const createSharedConfigWithCrossorgin = (setupFileDirName) =>
     mergeConfig(createSharedAppConfig(setupFileDirName), {
@@ -57,6 +83,7 @@ const createConfig = (setupFileDirName) => {
             react({
                 include: '**/*.{jsx,tsx}',
             }),
+            mockServiceWorkerPlugin(),
         ],
         css: {
             preprocessorOptions: {

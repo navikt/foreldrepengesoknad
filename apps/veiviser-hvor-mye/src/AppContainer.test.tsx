@@ -7,16 +7,14 @@ import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import * as stories from './AppContainer.stories';
 
+vi.mock('@navikt/nav-dekoratoren-moduler', () => ({
+    setAvailableLanguages: vi.fn(),
+    onLanguageSelect: vi.fn(),
+}));
+
 const { HvorMyeVeiviserMockaStønadskvoterOgSatser } = composeStories(stories);
 
 describe('<AppContainer>', () => {
-    beforeEach(() => {
-        vi.mock('@navikt/nav-dekoratoren-moduler', () => ({
-            setAvailableLanguages: vi.fn(),
-            onLanguageSelect: vi.fn(),
-        }));
-    });
-
     it('Hvor Mye veiviser: skal gå gjennom app og så tilbake', async () => {
         await HvorMyeVeiviserMockaStønadskvoterOgSatser.run();
 
@@ -41,8 +39,7 @@ describe('<AppContainer>', () => {
         await userEvent.type(måned3, '10000');
 
         await userEvent.click(screen.getByText('Se resultatet'));
-        await expect(screen.findByText('Oppsummering')).resolves.toBeInTheDocument();
-        // expect(screen.getByText('Oppsummering')).toBeInTheDocument();
+        expect(await screen.findByText('Oppsummering')).toBeInTheDocument();
         expect(screen.getByText('Gjennomsnittlig utbetaling med 100 % foreldrepenger i 49 uker')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Tilbake til spørsmålene'));
 
