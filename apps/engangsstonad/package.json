@@ -32,6 +32,8 @@
         "@navikt/fp-filopplaster": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
         "@navikt/fp-observability": "workspace:*",
+        "@navikt/fp-steg-arbeidsforhold-og-inntekt": "workspace:*",
+        "@navikt/fp-steg-egen-naering": "workspace:*",
         "@navikt/fp-steg-kvittering": "workspace:*",
         "@navikt/fp-steg-oppsummering": "workspace:*",
         "@navikt/fp-steg-utenlandsopphold": "workspace:*",

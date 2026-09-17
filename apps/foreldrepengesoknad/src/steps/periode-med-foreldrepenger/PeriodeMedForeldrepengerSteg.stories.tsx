@@ -100,6 +100,7 @@ const uttaksperiode = {
 
 const fellesProps = {
     arbeidsforhold: [],
+    harRegistrertNæring: false,
     mellomlagreSøknadOgNaviger: promiseAction(),
     avbrytSøknad: action('button-click'),
 };
@@ -124,7 +125,6 @@ const meta = {
                         [ContextDataType.SØKERSITUASJON]: søkersituasjon,
                         [ContextDataType.OM_BARNET]: barnet,
                         [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
-                            harHattAndreInntektskilder: false,
                             harJobbetSomFrilans: false,
                             harJobbetSomSelvstendigNæringsdrivende: false,
                         },

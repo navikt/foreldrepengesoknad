@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
+import { AndreInntektskilder } from 'types/AndreInntektskilder';
 
 import { FormSummary } from '@navikt/ds-react';
 
@@ -42,25 +42,27 @@ export const AndreInntektskilderOppsummering = ({ andreInntektskilder, onVilEndr
                                             <FormattedMessage id="AndreInntektskilderStep.HvilkenTypeAnnenInntekskilder" />
                                         </FormSummary.Label>
                                         <FormSummary.Value>
-                                            {annenInntektskilde.type === AnnenInntektType.JOBB_I_UTLANDET && (
+                                            {annenInntektskilde.type === 'JOBB_I_UTLANDET' && (
                                                 <FormattedMessage id="AndreInntektskilderStep.RadioButton.Utlandet" />
                                             )}
-                                            {annenInntektskilde.type === AnnenInntektType.SLUTTPAKKE && (
+                                            {annenInntektskilde.type === 'ETTERLØNN_SLUTTPAKKE' && (
                                                 <FormattedMessage id="AndreInntektskilderStep.RadioButton.Etterlønn" />
                                             )}
-                                            {annenInntektskilde.type === AnnenInntektType.MILITÆRTJENESTE && (
+                                            {annenInntektskilde.type === 'MILITÆR_ELLER_SIVILTJENESTE' && (
                                                 <FormattedMessage id="AndreInntektskilderStep.RadioButton.Førstegangstjeneste" />
                                             )}
                                         </FormSummary.Value>
                                     </FormSummary.Answer>
-                                    {annenInntektskilde.type === AnnenInntektType.JOBB_I_UTLANDET && (
+                                    {annenInntektskilde.type === 'JOBB_I_UTLANDET' && (
                                         <>
                                             <FormSummary.Answer>
                                                 <FormSummary.Label>
                                                     <FormattedMessage id="JobbIUtlandetPanel.LandDuHarJobbet" />
                                                 </FormSummary.Label>
                                                 <FormSummary.Value>
-                                                    {getCountryName(annenInntektskilde.land, intl.locale)}
+                                                    {annenInntektskilde.land
+                                                        ? getCountryName(annenInntektskilde.land, intl.locale)
+                                                        : null}
                                                 </FormSummary.Value>
                                             </FormSummary.Answer>
                                             <FormSummary.Answer>
@@ -95,13 +97,13 @@ export const AndreInntektskilderOppsummering = ({ andreInntektskilder, onVilEndr
                                                         <FormattedMessage id="JobbIUtlandetPanel.Tom" />
                                                     </FormSummary.Label>
                                                     <FormSummary.Value>
-                                                        {formatDate(annenInntektskilde.tom)}
+                                                        {annenInntektskilde.tom && formatDate(annenInntektskilde.tom)}
                                                     </FormSummary.Value>
                                                 </FormSummary.Answer>
                                             )}
                                         </>
                                     )}
-                                    {annenInntektskilde.type === AnnenInntektType.SLUTTPAKKE && (
+                                    {annenInntektskilde.type === 'ETTERLØNN_SLUTTPAKKE' && (
                                         <>
                                             <FormSummary.Answer>
                                                 <FormSummary.Label>
@@ -116,12 +118,12 @@ export const AndreInntektskilderOppsummering = ({ andreInntektskilder, onVilEndr
                                                     <FormattedMessage id="EtterlønnEllerSluttvederlagPanel.Tom" />
                                                 </FormSummary.Label>
                                                 <FormSummary.Value>
-                                                    {formatDate(annenInntektskilde.tom)}
+                                                    {annenInntektskilde.tom && formatDate(annenInntektskilde.tom)}
                                                 </FormSummary.Value>
                                             </FormSummary.Answer>
                                         </>
                                     )}
-                                    {annenInntektskilde.type === AnnenInntektType.MILITÆRTJENESTE && (
+                                    {annenInntektskilde.type === 'MILITÆR_ELLER_SIVILTJENESTE' && (
                                         <>
                                             {annenInntektskilde.pågående && (
                                                 <FormSummary.Answer>
@@ -147,7 +149,7 @@ export const AndreInntektskilderOppsummering = ({ andreInntektskilder, onVilEndr
                                                         <FormattedMessage id="JobbIUtlandetPanel.Tom" />
                                                     </FormSummary.Label>
                                                     <FormSummary.Value>
-                                                        {formatDate(annenInntektskilde.tom)}
+                                                        {annenInntektskilde.tom && formatDate(annenInntektskilde.tom)}
                                                     </FormSummary.Value>
                                                 </FormSummary.Answer>
                                             )}

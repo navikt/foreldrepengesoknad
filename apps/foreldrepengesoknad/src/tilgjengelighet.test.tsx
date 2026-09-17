@@ -4,7 +4,6 @@ import { screen } from '@testing-library/react';
 import { forventIngenUuFeil } from '@navikt/fp-utils-test/a11y';
 
 import * as forsideStories from './pages/forside/Forside.stories';
-import * as andreInntektskilderStories from './steps/andre-inntektskilder/AndreInntektskilderSteg.stories';
 import * as annenForelderStories from './steps/annen-forelder/AnnenForelderSteg.stories';
 import * as arbeidsforholdOgInntektStories from './steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg.stories';
 import * as egenNæringStories from './steps/egen-næring/EgenNæringSteg.stories';
@@ -41,7 +40,6 @@ const SIDER: Array<[string, KøyrbarStory]> = [
     ['Arbeidsforhold og inntekt', composeStories(arbeidsforholdOgInntektStories).Default],
     ['Frilans', composeStories(frilansStories).Default],
     ['Egen næring', composeStories(egenNæringStories).Default],
-    ['Andre inntektskilder', composeStories(andreInntektskilderStories).Default],
     ['Oppsummering', composeStories(oppsummeringStories).Default],
 ];
 

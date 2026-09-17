@@ -58,13 +58,21 @@ export const OppsummeringSteg = (props: Props) => {
 
     const eksisterendeSak = foreldrepengerSaker?.find((sak) => sak.saksnummer === eksisterendeSaksnummer);
 
-    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad, eksisterendeSak);
-    const navigator = useFpNavigator(
-        søkerInfo.arbeidsforhold,
-        mellomlagreSøknadOgNaviger,
+    const harRegistrertNæring = søkerInfo.selvstendigNæring.length > 0;
+    const stepConfig = useStepConfig({
+        arbeidsforhold: søkerInfo.arbeidsforhold,
+        harRegistrertNæring,
         erEndringssøknad,
         eksisterendeSak,
-    );
+    });
+    const navigator = useFpNavigator({
+        arbeidsforhold: søkerInfo.arbeidsforhold,
+        harRegistrertNæring,
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
+        erEndringssøknad,
+        eksisterendeSak,
+    });
+    const { selvstendigNæring: registrerteNæringer } = søkerInfo;
 
     if (uttaksplan === undefined) {
         return <ManglendeUttaksplanSide onGåTilUttaksplan={() => navigator.goToStep(SøknadRoutes.UTTAKSPLAN)} />;
@@ -142,11 +150,16 @@ export const OppsummeringSteg = (props: Props) => {
                 />
                 <SelvstendigNæringsdrivendeOppsummering
                     egenNæring={egenNæring}
-                    onVilEndreSvar={() => navigator.goToStep(SøknadRoutes.EGEN_NÆRING)}
+                    registrerteNæringer={registrerteNæringer}
+                    onVilEndreSvar={() =>
+                        navigator.goToStep(
+                            registrerteNæringer.length > 0 ? SøknadRoutes.EGEN_NÆRING : SøknadRoutes.ARBEID_OG_INNTEKT,
+                        )
+                    }
                 />
                 <AndreInntektskilderOppsummering
                     andreInntektskilder={andreInntektskilder}
-                    onVilEndreSvar={() => navigator.goToStep(SøknadRoutes.ANDRE_INNTEKTER)}
+                    onVilEndreSvar={() => navigator.goToStep(SøknadRoutes.ARBEID_OG_INNTEKT)}
                 />
                 {!erEndringssøknad && (
                     <PeriodeMedForeldrepengerOppsummering

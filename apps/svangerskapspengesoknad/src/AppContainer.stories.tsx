@@ -15,6 +15,8 @@ const defaultSøkerinfo = {
     },
     kjønn: 'K',
     fødselsdato: '1989-08-30',
+    frilansoppdrag: [],
+    selvstendigNæring: [],
     arbeidsforhold: [
         {
             arbeidsgiverId: '975326209',
