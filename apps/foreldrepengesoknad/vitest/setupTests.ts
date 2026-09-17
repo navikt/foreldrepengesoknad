@@ -1,17 +1,14 @@
 import { setProjectAnnotations } from '@storybook/react-vite';
 import { configure } from '@testing-library/dom';
-import * as matchers from '@testing-library/jest-dom/matchers';
+import '@testing-library/jest-dom/vitest';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import { expect } from 'vitest';
 
 import * as globalStorybookConfig from '../.storybook/preview';
 
 setProjectAnnotations(globalStorybookConfig);
 
 dayjs.extend(isSameOrAfter);
-
-expect.extend(matchers);
 
 // Browser-modus er tregare enn jsdom; auk Testing Library sin standard findBy*/waitFor-timeout.
 if (import.meta.env['TEST_MODE'] === 'browser-mode') {

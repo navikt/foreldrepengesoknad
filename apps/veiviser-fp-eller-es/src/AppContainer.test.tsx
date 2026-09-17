@@ -4,19 +4,17 @@ import userEvent from '@testing-library/user-event';
 
 import * as stories from './AppContainer.stories';
 
+vi.mock('@navikt/nav-dekoratoren-moduler', () => ({
+    setAvailableLanguages: vi.fn(),
+    onLanguageSelect: vi.fn(),
+}));
+
 const { FpEllerEsVeiviserMockaStønadskvoterOgSatser } = composeStories(stories);
 
 const velgSvar = (spørsmål: string, svar: 'Ja' | 'Nei') =>
     userEvent.click(within(screen.getByRole('radiogroup', { name: spørsmål })).getByRole('radio', { name: svar }));
 
 describe('<AppContainer>', () => {
-    beforeEach(() => {
-        vi.mock('@navikt/nav-dekoratoren-moduler', () => ({
-            setAvailableLanguages: vi.fn(),
-            onLanguageSelect: vi.fn(),
-        }));
-    });
-
     it('FP eller ES veiviser: skal gå gjennom app og så tilbake', async () => {
         await FpEllerEsVeiviserMockaStønadskvoterOgSatser.run();
 

@@ -7,16 +7,14 @@ import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './AppContainer.stories';
 
+vi.mock('@navikt/nav-dekoratoren-moduler', () => ({
+    setAvailableLanguages: vi.fn(),
+    onLanguageSelect: vi.fn(),
+}));
+
 const { SøkerErKvinne } = composeStories(stories);
 
 describe('<AppContainer>', () => {
-    beforeEach(() => {
-        vi.mock('@navikt/nav-dekoratoren-moduler', () => ({
-            setAvailableLanguages: vi.fn(),
-            onLanguageSelect: vi.fn(),
-        }));
-    });
-
     it('skal gå raskeste vei gjennom applikasjonen og så tilbake', async () => {
         await SøkerErKvinne.run();
 
