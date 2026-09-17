@@ -4,12 +4,12 @@ import { Outlet, useNavigate } from 'react-router';
 
 import { assertUnreachable } from '@navikt/fp-validation';
 
-import { useGetSelectedRoute } from './../../hooks/useSelectedRoute';
 import { useGetSelectedSak } from './../../hooks/useSelectedSak';
 import { OversiktRoutes } from './../../routes/routes';
+import { useSelectedOversiktRoute } from './../../routes/useSelectedOversiktRoute';
 
 export const Breadcrumb = () => {
-    const selectedRoute = useGetSelectedRoute();
+    const selectedRoute = useSelectedOversiktRoute();
     const navigate = useNavigate();
     const sak = useGetSelectedSak();
     const intl = useIntl();

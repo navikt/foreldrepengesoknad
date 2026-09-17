@@ -6,9 +6,7 @@ import { HarIkkeSaker } from '../../components/har-ikke-saker/HarIkkeSaker';
 import { HarSaker } from '../../components/har-saker/HarSaker';
 import { ForsideHeader } from '../../components/header/Header';
 import { SakLink } from '../../components/sak-link/SakLink';
-import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
-import { OversiktRoutes } from '../../routes/routes';
 import { SakOppslag } from '../../types/SakOppslag';
 import { getAlleYtelser, grupperSakerPåBarn } from '../../utils/sakerUtils';
 import './forside.css';
@@ -19,8 +17,6 @@ interface Props {
 }
 
 export const Forside = ({ saker, søkerinfo }: Props) => {
-    useSetSelectedRoute(OversiktRoutes.HOVEDSIDE);
-
     const grupperteSaker = grupperSakerPåBarn(søkerinfo.barn ?? [], saker);
     const alleYtelser = getAlleYtelser(saker);
 

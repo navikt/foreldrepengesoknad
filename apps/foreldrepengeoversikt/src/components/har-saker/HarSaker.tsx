@@ -6,7 +6,6 @@ import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { SakLink } from '../sak-link/SakLink';
 import { SøkelenkerPanel } from '../søkelenker/SøkelenkerPanel';
-import { useSetBackgroundColor } from './../../hooks/useBackgroundColor';
 import { GruppertSak } from './../../types/GruppertSak';
 import { guid } from './../../utils/guid';
 import { getSakTittel } from './../../utils/sakerUtils';
@@ -18,7 +17,6 @@ interface Props {
 
 export const HarSaker = ({ grupperteSaker, harMinstEttArbeidsforhold }: Props) => {
     const intl = useIntl();
-    useSetBackgroundColor('blue');
 
     return (
         <>

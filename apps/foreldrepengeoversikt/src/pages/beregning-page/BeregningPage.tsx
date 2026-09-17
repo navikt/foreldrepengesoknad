@@ -36,8 +36,6 @@ import {
 
 import { API_URLS, hentDokumenterOptions, hentInntektsmelding } from '../../api/queries';
 import { DinSakHeader } from '../../components/header/Header';
-import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
-import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
@@ -48,8 +46,6 @@ dayjs.locale(getDecoratorLanguageCookie('decorator-language'));
 
 export const BeregningPage = () => {
     const gjeldendeSak = useGetSelectedSak();
-    useSetBackgroundColor('blue');
-    useSetSelectedRoute(OversiktRoutes.BEREGNING);
     if (!gjeldendeSak || gjeldendeSak.ytelse === 'ENGANGSSTØNAD') {
         return;
     }

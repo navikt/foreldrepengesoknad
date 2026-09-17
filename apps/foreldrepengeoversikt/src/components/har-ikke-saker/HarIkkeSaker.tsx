@@ -2,7 +2,6 @@ import { FormattedMessage } from 'react-intl';
 
 import { Alert, Heading, VStack } from '@navikt/ds-react';
 
-import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import { SøkelenkerPanel } from '../søkelenker/SøkelenkerPanel';
 
 interface Props {
@@ -10,8 +9,6 @@ interface Props {
 }
 
 export const HarIkkeSaker = ({ harOppdatertSak }: Props) => {
-    useSetBackgroundColor('blue');
-
     return (
         <VStack gap="space-32">
             {harOppdatertSak && (
