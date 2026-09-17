@@ -7,7 +7,7 @@
     "inntektsinformasjon.arbeidsforhold.info": "Er det feil eller mangler i oversikten?",
     "inntektsinformasjon.arbeidsforhold.tekst": "Hvis du oppdager feil eller manglende opplysninger, må du be arbeidsgiveren din om å registrere riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret. Vi henter opplysningene derfra.",
     "inntektsinformasjon.arbeidsforhold.utbetalingerFraNAV": "Hvis du får utbetalinger fra Nav, henter vi opplysningene automatisk. Du trenger derfor ikke å oppgi dette i søknaden.",
-    "inntektsinformasjon.arbeidsforhold.ingenRegistrerteArbeidsforhold": "Du er ikke registrert med noen arbeidsforhold.",
+    "inntektsinformasjon.arbeidsforhold.ingenRegistrerteArbeidsforhold": "Du er ikke registrert som ansatt i Arbeidsgiver- og arbeidstakerregisteret.",
     "inntektsinformasjon.arbeidsforhold.stillingsprosent": "{stillingsprosent}%",
     "inntektsinformasjon.arbeidsforhold.periode": "{fom} - {tom}",
     "inntektsinformasjon.inntektsmelding.header": "{antall, plural, one {Din arbeidsgiver kontaktes av Nav} other {Dine arbeidsgivere kontaktes av Nav}}",
