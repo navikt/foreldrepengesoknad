@@ -53,7 +53,7 @@ describe('<SelvstendigNæring>', () => {
         expect(screen.getByRole('heading', { name: 'Mine næringer' })).toBeInTheDocument();
         expect(screen.getAllByText('Selvstendig næringsdrivende')).toHaveLength(1);
         expect(
-            screen.getAllByText('Vi mangler opplysninger om næringen. Dette kan du legge til i neste steg.'),
+            screen.getAllByText('Vi trenger flere opplysninger om næringen din. Dette svarer du på i neste steg.'),
         ).toHaveLength(1);
 
         await userEvent.click(screen.getByRole('button', { name: 'Dine næringer' }));

@@ -77,13 +77,15 @@ describe('<OppsummeringSteg>', () => {
         render(<ArbeidsforholdOgInntektOppsummering />);
 
         expect(await screen.findByText('Arbeidsforhold og inntekt')).toBeInTheDocument();
-        expect(screen.getByText('Du er ikke registrert med noen arbeidsforhold.')).toBeInTheDocument();
+        expect(
+            screen.getByText('Du er ikke registrert som ansatt i Arbeidsgiver- og arbeidstakerregisteret.'),
+        ).toBeInTheDocument();
         expect(screen.getByText('Arbeid som selvstendig næringsdrivende')).toBeInTheDocument();
         expect(screen.getByRole('heading', { name: 'Fiskebåten' })).toBeInTheDocument();
         expect(screen.getByText('998877665')).toBeInTheDocument();
         expect(screen.queryByText('Hvilken type virksomhet har du?')).not.toBeInTheDocument();
         expect(
-            screen.queryByText('Vi mangler opplysninger om næringen. Dette kan du legge til i neste steg.'),
+            screen.queryByText('Vi trenger flere opplysninger om næringen din. Dette svarer du på i neste steg.'),
         ).not.toBeInTheDocument();
         expect(screen.getByText('Arbeid som frilanser')).toBeInTheDocument();
         expect(

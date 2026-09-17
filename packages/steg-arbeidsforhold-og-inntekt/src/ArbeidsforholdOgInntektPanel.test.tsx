@@ -67,7 +67,8 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
 
         expect(toggle).toHaveAttribute('aria-expanded', 'true');
         expect(screen.getByText('Hva er selvstendig næring?')).toBeVisible();
-        expect(screen.getByText('Hvordan defineres frilans?')).toBeVisible();
+        expect(screen.getByText('Hva er frilans?')).toBeVisible();
+        expect(screen.getByText('Hva er et ordinært arbeidsforhold?')).toBeVisible();
         expect(screen.getByText('Er du fisker eller mannskap på båt?')).toBeVisible();
         expect(screen.getByText('Har du hatt annen pensjonsgivende inntekt?')).toBeVisible();
 

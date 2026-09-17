@@ -59,7 +59,9 @@ describe('<ArbeidsforholdOgInntektSteg>', () => {
 
         expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
 
-        expect(screen.getByText('Du er ikke registrert med noen arbeidsforhold.')).toBeInTheDocument();
+        expect(
+            screen.getByText('Du er ikke registrert som ansatt i Arbeidsgiver- og arbeidstakerregisteret.'),
+        ).toBeInTheDocument();
 
         expect(screen.queryByText('Du kan dessverre ikke gå videre i søknaden.')).not.toBeInTheDocument();
 
