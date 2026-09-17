@@ -380,7 +380,14 @@ const HyreInntekt = () => {
                 </InfoCard.Title>
             </InfoCard.Header>
             <InfoCard.Content>
-                <FormattedMessage id="LeggTilAndreInntekterWizard.hyre.content" />
+                <VStack gap="space-16">
+                    <BodyShort>
+                        <FormattedMessage id="LeggTilAndreInntekterWizard.hyre.content1" />
+                    </BodyShort>
+                    <BodyShort>
+                        <FormattedMessage id="LeggTilAndreInntekterWizard.hyre.content2" />
+                    </BodyShort>
+                </VStack>
             </InfoCard.Content>
         </InfoCard>
     );
