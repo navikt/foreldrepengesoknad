@@ -78,13 +78,20 @@ export const UttaksplanSteg = ({
         [oppdaterUttaksplan],
     );
 
-    const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad, eksisterendeSak);
-    const navigator = useFpNavigator(
-        søkerInfo.arbeidsforhold,
-        mellomlagreSøknadOgNaviger,
+    const harRegistrertNæring = søkerInfo.selvstendigNæring.length > 0;
+    const stepConfig = useStepConfig({
+        arbeidsforhold: søkerInfo.arbeidsforhold,
+        harRegistrertNæring,
         erEndringssøknad,
         eksisterendeSak,
-    );
+    });
+    const navigator = useFpNavigator({
+        arbeidsforhold: søkerInfo.arbeidsforhold,
+        harRegistrertNæring,
+        mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
+        erEndringssøknad,
+        eksisterendeSak,
+    });
 
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const erAleneOmOmsorg = oppgittAnnenForelder ? oppgittAnnenForelder.erAleneOmOmsorg : true;

@@ -10,7 +10,6 @@ import { KvitteringPage } from 'pages/kvittering/KvitteringPage';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router';
-import { AndreInntektskilderSteg } from 'steps/andre-inntektskilder/AndreInntektskilderSteg';
 import { AnnenForelderSteg } from 'steps/annen-forelder/AnnenForelderSteg';
 import { ArbeidsforholdOgInntektSteg } from 'steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg';
 import { EgenNæringSteg } from 'steps/egen-næring/EgenNæringSteg';
@@ -106,6 +105,8 @@ const renderSøknadRoutes = ({
         );
     }
 
+    const harRegistrertNæring = søkerInfo.selvstendigNæring.length > 0;
+
     return (
         <>
             <Route
@@ -113,6 +114,7 @@ const renderSøknadRoutes = ({
                 element={
                     <SøkersituasjonSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
+                        harRegistrertNæring={harRegistrertNæring}
                         kjønn={søkerInfo.kjønn}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
@@ -145,6 +147,7 @@ const renderSøknadRoutes = ({
                 element={
                     <PeriodeMedForeldrepengerSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
+                        harRegistrertNæring={harRegistrertNæring}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -190,6 +193,7 @@ const renderSøknadRoutes = ({
                 element={
                     <UtenlandsoppholdSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
+                        harRegistrertNæring={harRegistrertNæring}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -200,6 +204,7 @@ const renderSøknadRoutes = ({
                 element={
                     <TidligereUtenlandsoppholdSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
+                        harRegistrertNæring={harRegistrertNæring}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -210,6 +215,7 @@ const renderSøknadRoutes = ({
                 element={
                     <SenereUtenlandsoppholdSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
+                        harRegistrertNæring={harRegistrertNæring}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -219,7 +225,7 @@ const renderSøknadRoutes = ({
                 path={SøknadRoutes.ARBEID_OG_INNTEKT}
                 element={
                     <ArbeidsforholdOgInntektSteg
-                        arbeidsforhold={søkerInfo.arbeidsforhold}
+                        søkerInfo={søkerInfo}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -229,7 +235,7 @@ const renderSøknadRoutes = ({
                 path={SøknadRoutes.EGEN_NÆRING}
                 element={
                     <EgenNæringSteg
-                        arbeidsforhold={søkerInfo.arbeidsforhold}
+                        søkerInfo={søkerInfo}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />
@@ -239,17 +245,7 @@ const renderSøknadRoutes = ({
                 path={SøknadRoutes.FRILANS}
                 element={
                     <FrilansSteg
-                        arbeidsforhold={søkerInfo.arbeidsforhold}
-                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                        avbrytSøknad={avbrytSøknad}
-                    />
-                }
-            />
-            <Route
-                path={SøknadRoutes.ANDRE_INNTEKTER}
-                element={
-                    <AndreInntektskilderSteg
-                        arbeidsforhold={søkerInfo.arbeidsforhold}
+                        søkerInfo={søkerInfo}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                     />

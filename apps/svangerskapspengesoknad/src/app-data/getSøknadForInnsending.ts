@@ -106,6 +106,17 @@ export const getSøknadForInnsending = (
                 fom: af.fom,
                 tom: af.tom,
             })),
+            // Oppdragsgiver kan være en privatperson, så arbeidsgiverId sendes ikke med (ville vært et fødselsnummer)
+            frilansoppdrag: søkerinfo.frilansoppdrag.map((fo) => ({
+                navn: fo.arbeidsgiverNavn,
+                fom: fo.fom,
+                tom: fo.tom,
+            })),
+            selvstendigNæring: søkerinfo.selvstendigNæring.map((sn) => ({
+                navn: sn.navn,
+                organisasjonsnummer: sn.organisasjonsnummer,
+                næringstype: sn.næringstype,
+            })),
         },
         språkkode: getDecoratorLanguageCookie('decorator-language').toUpperCase() as Målform,
         barn,

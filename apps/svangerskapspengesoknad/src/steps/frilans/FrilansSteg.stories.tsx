@@ -5,6 +5,8 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 
+import { EksternArbeidsforholdDto_fpoversikt, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
+
 import { FrilansSteg } from './FrilansSteg';
 
 const promiseAction = () => () => {
@@ -14,12 +16,23 @@ const promiseAction = () => () => {
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
+    frilansoppdrag?: EksternArbeidsforholdDto_fpoversikt[];
 } & ComponentProps<typeof FrilansSteg>;
 
 const meta = {
     title: 'steps/FrilansSteg',
     component: FrilansSteg,
-    render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
+    render: ({ gåTilNesteSide = action('button-click'), frilansoppdrag = [], søkerInfo: _søkerInfo, ...rest }) => {
+        const søkerInfo: SvpPersonopplysningerDto_fpoversikt = {
+            arbeidsforhold: [],
+            fnr: '12345678901',
+            fødselsdato: '1990-01-01',
+            kjønn: 'K',
+            navn: { fornavn: 'Kari', etternavn: 'Nordmann' },
+            frilansoppdrag,
+            selvstendigNæring: [],
+        };
+
         return (
             <MemoryRouter initialEntries={[SøknadRoute.FRILANS]}>
                 <SvpDataContext
@@ -38,7 +51,7 @@ const meta = {
                         },
                     }}
                 >
-                    <FrilansSteg {...rest} />
+                    <FrilansSteg søkerInfo={søkerInfo} {...rest} />
                 </SvpDataContext>
             </MemoryRouter>
         );
@@ -50,8 +63,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: () => action('button-click'),
+        søkerInfo: {} as SvpPersonopplysningerDto_fpoversikt,
     },
 };

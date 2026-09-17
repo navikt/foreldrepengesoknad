@@ -35,6 +35,7 @@ export const links = {
         'type-arbeidsforhold/frilanser-oppdragstaker-og-personer-som-mottar-honorarer/',
     næringsdrivendeInfoBoks:
         'https://www.skatteetaten.no/bedrift-og-organisasjon/starte-og-drive/er-jeg-naringsdrivende/',
+    arbeidsforholdSkatteetaten: 'https://www.skatteetaten.no/skjema/mine-inntekter-og-arbeidsforhold/',
     selvstendigNæringsdrivendeHvorMye: 'https://www.nav.no/foreldrepenger#hvor-mye',
     hvordanSendeInntektsmelding:
         'https://www.nav.no/no/bedrift/tjenester-og-skjemaer/nav-og-altinn-tjenester/foreldrepenger-og-svangerskapspenger2',

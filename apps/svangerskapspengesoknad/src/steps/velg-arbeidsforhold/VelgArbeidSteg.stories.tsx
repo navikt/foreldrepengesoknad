@@ -116,6 +116,7 @@ export const Default: Story = {
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: () => action('button-click'),
         arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
+        harRegistrertNæring: false,
         arbeidsforholdOgInntekt: {
             harHattArbeidIUtlandet: false,
             harJobbetSomFrilans: false,

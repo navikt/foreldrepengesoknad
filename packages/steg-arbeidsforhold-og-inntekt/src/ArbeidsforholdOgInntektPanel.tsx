@@ -1,27 +1,35 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
-import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
+import { InlineMessage, VStack } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
-import { loggUmamiEvent } from '@navikt/fp-observability';
-import { AppName, ArbeidsforholdOgInntekt, EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { ErrorSummaryHookForm, RhfForm } from '@navikt/fp-form-hooks';
+import {
+    AppName,
+    ArbeidsforholdOgInntekt,
+    EksternArbeidsforholdDto_fpoversikt,
+    NæringDto,
+    SelvstendigNæringDto_fpoversikt,
+} from '@navikt/fp-types';
 import { ProgressStep, Step, StepButtons } from '@navikt/fp-ui';
-import { isRequired } from '@navikt/fp-validation';
 
+import { LeggTilAndreInntekterWizard } from './components/andre-inntekter/LeggTilAndreInntekterWizard.tsx';
 import { ArbeidsforholdInformasjon } from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import { BrukerKanIkkeSøke } from './components/bruker-kan-ikke-søke/BrukerKanIkkeSøke';
-import { HvemKanDriveMedEgenNæring } from './components/hvem-kan-drive-egen-næring/HvemKanDriveMedEgenNæring';
-import { HvemKanVæreFrilanser } from './components/hvem-kan-være-frilanser/HvemKanVæreFrilanser';
 import { InfoOmArbeidIUtlandet } from './components/info-om-arbeid-i-utlandet/InfoOmArbeidIUtlandet';
 import { InfoOmFørstegangstjeneste } from './components/info-om-førstegangstjeneste/InfoOmFørstegangstjeneste';
-import { InfoTilFiskere } from './components/info-til-fiskere/InfoTilFiskere';
+import { AndreInntektskilder, AndreInntektskilderUtkast, erFerdigUtfylt } from './types/AndreInntektskilder';
 
 interface Props<TYPE> {
-    arbeidsforholdOgInntekt?: ArbeidsforholdOgInntekt;
     aktiveArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    frilansoppdrag: EksternArbeidsforholdDto_fpoversikt[];
+    registrerteNæringer: SelvstendigNæringDto_fpoversikt[];
+    egenNæring?: NæringDto;
+    andreInntektskilder: AndreInntektskilderUtkast[];
     saveOnNext: (formValues: ArbeidsforholdOgInntekt) => void;
+    saveAndreInntektskilder: (values: AndreInntektskilder[]) => void;
+    saveEgenNæring?: (value?: NæringDto) => void;
     onAvsluttOgSlett: () => void;
     onFortsettSenere?: () => void;
     onStepChange?: (id: TYPE) => void;
@@ -31,9 +39,14 @@ interface Props<TYPE> {
 }
 
 export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
-    arbeidsforholdOgInntekt,
     aktiveArbeidsforhold,
+    frilansoppdrag,
+    registrerteNæringer,
+    egenNæring,
+    andreInntektskilder,
     saveOnNext,
+    saveAndreInntektskilder,
+    saveEgenNæring,
     onAvsluttOgSlett,
     onFortsettSenere,
     onStepChange,
@@ -41,19 +54,20 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
     stepConfig,
     appOrigin,
 }: Props<TYPE>) => {
-    const intl = useIntl();
-
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const formMethods = useForm<ArbeidsforholdOgInntekt>({
-        defaultValues: arbeidsforholdOgInntekt,
-    });
+    const formMethods = useForm();
 
-    const hattInntektSomFrilans = formMethods.watch('harJobbetSomFrilans');
-    const hattInntektSomNæringsdrivende = formMethods.watch('harJobbetSomSelvstendigNæringsdrivende');
+    const ferdigeAndreInntektskilder = andreInntektskilder.filter(erFerdigUtfylt);
 
+    const hattInntektSomFrilans = frilansoppdrag.length > 0;
+    const hattInntektSomNæringsdrivende = registrerteNæringer.length > 0 || egenNæring !== undefined;
+    const harAnnenInntekt = ferdigeAndreInntektskilder.length > 0;
     const kanIkkeSøke =
-        aktiveArbeidsforhold.length === 0 && hattInntektSomFrilans === false && hattInntektSomNæringsdrivende === false;
+        aktiveArbeidsforhold.length === 0 &&
+        !hattInntektSomFrilans &&
+        !hattInntektSomNæringsdrivende &&
+        !harAnnenInntekt;
 
     const erSvp = appOrigin === 'svangerskapspengesoknad';
 
@@ -61,156 +75,58 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
         <Step steps={stepConfig} onStepChange={onStepChange}>
             <RhfForm
                 formMethods={formMethods}
-                onSubmit={(values) => {
+                onSubmit={() => {
                     setIsSubmitting(true);
-                    saveOnNext(values);
+                    const registrerteArbeidsforhold = {
+                        harJobbetSomFrilans: hattInntektSomFrilans,
+                        harJobbetSomSelvstendigNæringsdrivende: hattInntektSomNæringsdrivende,
+                    };
+                    saveOnNext(
+                        erSvp
+                            ? {
+                                  ...registrerteArbeidsforhold,
+                                  harHattArbeidIUtlandet: ferdigeAndreInntektskilder.some(
+                                      (inntekt) => inntekt.type === 'JOBB_I_UTLANDET',
+                                  ),
+                              }
+                            : registrerteArbeidsforhold,
+                    );
                 }}
             >
                 <VStack gap="space-40">
                     <ErrorSummaryHookForm />
-                    <BodyShort>
+                    <InlineMessage status="info">
                         <FormattedMessage id="inntektsinformasjon.arbeidsforhold.utbetalingerFraNAV" />
-                    </BodyShort>
+                    </InlineMessage>
                     <VStack gap="space-8">
-                        <BodyShort style={{ fontWeight: 'bold' }}>
-                            <FormattedMessage id="inntektsinformasjon.arbeidsforhold.label" />
-                        </BodyShort>
-                        <ArbeidsforholdInformasjon appOrigin={appOrigin} arbeidsforhold={aktiveArbeidsforhold} />
-                        <ReadMore
-                            header={
-                                <FormattedMessage
-                                    id="inntektsinformasjon.inntektsmelding.header"
-                                    values={{ antall: aktiveArbeidsforhold.length }}
-                                />
+                        <ArbeidsforholdInformasjon
+                            appOrigin={appOrigin}
+                            arbeidsforhold={aktiveArbeidsforhold}
+                            frilansoppdrag={frilansoppdrag}
+                            registrerteNæringer={registrerteNæringer}
+                            egenNæring={registrerteNæringer.length === 0 ? egenNæring : undefined}
+                            andreInntektskilder={ferdigeAndreInntektskilder}
+                            onRemoveAndreInntekt={(index) =>
+                                saveAndreInntektskilder(
+                                    ferdigeAndreInntektskilder.filter((_, currentIndex) => currentIndex !== index),
+                                )
                             }
-                        >
-                            <FormattedMessage
-                                id="inntektsinformasjon.inntektsmelding.body"
-                                values={{ antall: aktiveArbeidsforhold.length }}
-                            />
-                        </ReadMore>
+                            onRemoveEgenNæring={() => saveEgenNæring?.(undefined)}
+                        />
                     </VStack>
                     <VStack gap="space-4">
-                        <RhfRadioGroup
-                            name="harJobbetSomFrilans"
-                            control={formMethods.control}
-                            label={intl.formatMessage({ id: 'inntektsinformasjon.harDuJobbetSomFrilans' }, { erSvp })}
-                            validate={[isRequired(intl.formatMessage({ id: 'valideringsfeil.frilans.påkrevd' }))]}
-                            description={
-                                erSvp &&
-                                intl.formatMessage({
-                                    id: 'inntektsinformasjon.beskrivelse',
-                                })
+                        <LeggTilAndreInntekterWizard
+                            appOrigin={appOrigin}
+                            harRegistrertNæring={registrerteNæringer.length > 0}
+                            harEgenNæring={egenNæring !== undefined}
+                            onSaveEgenNæring={saveEgenNæring}
+                            onSaveAndreInntekt={(annenInntekt) =>
+                                saveAndreInntektskilder([...ferdigeAndreInntektskilder, annenInntekt])
                             }
-                        >
-                            <Radio value={false}>
-                                <FormattedMessage id="inntektsinformasjon.nei" />
-                            </Radio>
-                            <Radio value={true}>
-                                <FormattedMessage id="inntektsinformasjon.ja" />
-                            </Radio>
-                        </RhfRadioGroup>
-                        <HvemKanVæreFrilanser appOrigin={appOrigin} />
+                        />
+                        {erSvp && <InfoOmArbeidIUtlandet />}
                     </VStack>
-                    <VStack gap="space-4">
-                        <RhfRadioGroup
-                            name="harJobbetSomSelvstendigNæringsdrivende"
-                            control={formMethods.control}
-                            label={intl.formatMessage(
-                                {
-                                    id: 'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende',
-                                },
-                                { erSvp },
-                            )}
-                            validate={[
-                                isRequired(
-                                    intl.formatMessage({ id: 'valideringsfeil.hattInntektSomNæringsdrivende.påkrevd' }),
-                                ),
-                            ]}
-                            description={
-                                erSvp &&
-                                intl.formatMessage({
-                                    id: 'inntektsinformasjon.beskrivelse',
-                                })
-                            }
-                        >
-                            <Radio value={false}>
-                                <FormattedMessage id="inntektsinformasjon.nei" />
-                            </Radio>
-                            <Radio value={true}>
-                                <FormattedMessage id="inntektsinformasjon.ja" />
-                            </Radio>
-                        </RhfRadioGroup>
-                        <HvemKanDriveMedEgenNæring />
-                    </VStack>
-                    {erSvp && (
-                        <VStack gap="space-4">
-                            <RhfRadioGroup
-                                name="harHattArbeidIUtlandet"
-                                control={formMethods.control}
-                                label={intl.formatMessage({ id: 'inntektsinformasjon.hattArbeidIUtlandet' })}
-                                validate={[
-                                    isRequired(
-                                        intl.formatMessage({ id: 'valideringsfeil.hattArbeidIUtlandet.påkrevd' }),
-                                    ),
-                                ]}
-                                description={intl.formatMessage({
-                                    id: 'inntektsinformasjon.beskrivelse',
-                                })}
-                            >
-                                <Radio value={false}>
-                                    <FormattedMessage id="inntektsinformasjon.nei" />
-                                </Radio>
-                                <Radio value={true}>
-                                    <FormattedMessage id="inntektsinformasjon.ja" />
-                                </Radio>
-                            </RhfRadioGroup>
-                            <InfoOmArbeidIUtlandet />
-                        </VStack>
-                    )}
-                    {!erSvp && (
-                        <VStack gap="space-4">
-                            <RhfRadioGroup
-                                name="harHattAndreInntektskilder"
-                                control={formMethods.control}
-                                label={intl.formatMessage({ id: 'inntektsinformasjon.hattAndreInntektskilder' })}
-                                validate={[
-                                    isRequired(
-                                        intl.formatMessage({ id: 'valideringsfeil.hattAndreInntektskilder.påkrevd' }),
-                                    ),
-                                ]}
-                            >
-                                <Radio value={false}>
-                                    <FormattedMessage id="inntektsinformasjon.nei" />
-                                </Radio>
-                                <Radio value={true}>
-                                    <FormattedMessage id="inntektsinformasjon.ja" />
-                                </Radio>
-                            </RhfRadioGroup>
-                            <ReadMore
-                                onOpenChange={(open) =>
-                                    loggUmamiEvent({
-                                        origin: appOrigin,
-                                        eventName: open ? 'readmore åpnet' : 'readmore lukket',
-                                        eventData: {
-                                            tittel: 'ArbeidsforholdOgInntektPanel.ReadMore.Header.AndreInntektskilder',
-                                        },
-                                    })
-                                }
-                                header={intl.formatMessage({
-                                    id: 'ArbeidsforholdOgInntektPanel.ReadMore.Header.AndreInntektskilder',
-                                })}
-                            >
-                                <BodyShort>
-                                    <FormattedMessage id="ArbeidsforholdOgInntektPanel.ReadMore.Body.AndreInntektskilder" />
-                                </BodyShort>
-                            </ReadMore>
-                        </VStack>
-                    )}
-                    <VStack gap="space-16">
-                        {erSvp && <InfoOmFørstegangstjeneste />}
-                        <InfoTilFiskere erSvp={erSvp} />
-                    </VStack>
+                    <VStack gap="space-16">{erSvp && <InfoOmFørstegangstjeneste />}</VStack>
                     {erSvp && kanIkkeSøke && <BrukerKanIkkeSøke />}
                     <StepButtons
                         onFortsettSenere={onFortsettSenere}

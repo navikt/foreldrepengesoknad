@@ -1,9 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { useState } from 'react';
 import { action } from 'storybook/actions';
 
-import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, SelvstendigNæringDto_fpoversikt } from '@navikt/fp-types';
 
 import { ArbeidsforholdOgInntektPanel } from './ArbeidsforholdOgInntektPanel';
+import { type AndreInntektskilder } from './types/AndreInntektskilder';
 
 const DEFAULT_ARBEIDSFORHOLD = [
     {
@@ -29,8 +31,57 @@ const DEFAULT_ARBEIDSFORHOLD = [
     },
 ] satisfies EksternArbeidsforholdDto_fpoversikt[];
 
+const DEFAULT_FRILANSOPPDRAG = [
+    {
+        arbeidsgiverId: '999999999',
+        arbeidsgiverIdType: 'orgnr',
+        arbeidsgiverNavn: 'Frilans Oppdrag AS',
+        fom: '2024-01-15T00:00:00.000Z',
+        stillingsprosent: 0,
+    },
+] satisfies EksternArbeidsforholdDto_fpoversikt[];
+
+const DEFAULT_SELVSTENDIG_NÆRING = [
+    {
+        organisasjonsnummer: '998877665',
+        navn: 'Kari Konsulent',
+        næringstype: 'ANNEN',
+    },
+] satisfies SelvstendigNæringDto_fpoversikt[];
+
+const DEFAULT_ANDRE_INNTEKTSKILDER = [
+    {
+        type: 'JOBB_I_UTLANDET',
+        land: 'DK',
+        arbeidsgiverNavn: 'Københavns Kommune',
+        pågående: false,
+        fom: '2024-01-01T00:00:00.000Z',
+        tom: '2024-03-31T00:00:00.000Z',
+    },
+] satisfies AndreInntektskilder[];
+
 const meta = {
     component: ArbeidsforholdOgInntektPanel,
+    render: (args) => {
+        const [andreInntektskilder, setAndreInntektskilder] = useState(args.andreInntektskilder);
+        const [egenNæring, setEgenNæring] = useState(args.egenNæring);
+
+        return (
+            <ArbeidsforholdOgInntektPanel
+                {...args}
+                andreInntektskilder={andreInntektskilder}
+                egenNæring={egenNæring}
+                saveAndreInntektskilder={(values) => {
+                    setAndreInntektskilder(values);
+                    args.saveAndreInntektskilder(values);
+                }}
+                saveEgenNæring={(value) => {
+                    setEgenNæring(value);
+                    args.saveEgenNæring?.(value);
+                }}
+            />
+        );
+    },
 } satisfies Meta<typeof ArbeidsforholdOgInntektPanel>;
 export default meta;
 
@@ -39,7 +90,11 @@ type Story = StoryObj<typeof meta>;
 export const ForSvangerskapspenger: Story = {
     args: {
         aktiveArbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
+        frilansoppdrag: [],
+        registrerteNæringer: [],
+        andreInntektskilder: [],
         saveOnNext: action('button-click'),
+        saveAndreInntektskilder: action('button-click'),
         onAvsluttOgSlett: action('button-click'),
         goToPreviousStep: action('button-click'),
         onStepChange: action('button-click'),
@@ -71,5 +126,26 @@ export const HarIngenArbeidsforhold: Story = {
         ...ForSvangerskapspenger.args,
         appOrigin: 'foreldrepengesoknad',
         aktiveArbeidsforhold: [],
+    },
+};
+
+export const ForForeldrepengerMedFrilansoppdrag: Story = {
+    args: {
+        ...ForForeldrepenger.args,
+        frilansoppdrag: DEFAULT_FRILANSOPPDRAG,
+    },
+};
+
+export const ForForeldrepengerMedSelvstendigNæring: Story = {
+    args: {
+        ...ForForeldrepenger.args,
+        registrerteNæringer: DEFAULT_SELVSTENDIG_NÆRING,
+    },
+};
+
+export const ForForeldrepengerMedAndreInntekter: Story = {
+    args: {
+        ...ForForeldrepenger.args,
+        andreInntektskilder: DEFAULT_ANDRE_INNTEKTSKILDER,
     },
 };
