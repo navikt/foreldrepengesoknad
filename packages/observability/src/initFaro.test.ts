@@ -197,6 +197,27 @@ describe('initFaro', () => {
             expect(resultat).toBeNull();
         });
 
+        it.each([
+            'Non-Error promise rejection captured with value: Request timeout isPredictionAvailable',
+            'Non-Error promise rejection captured with value: Request timeout isMathOcrAvailable',
+            'Non-Error promise rejection captured with value: Request timeout getDictionariesByLanguageId',
+            'Non-Error promise rejection captured with value: Request timeout isDictateAvailable',
+            'Non-Error promise rejection captured with value: Request timeout DefineExpirationForLanguagePacks.getValue',
+        ])('filtrerer bort "Request timeout"-feil fra Microsoft Editor-tillegget: %s', (value) => {
+            vi.stubGlobal('location', { href: 'https://www.nav.no/foreldrepenger/soknad' });
+            initFaro();
+
+            const beforeSend = hentBeforeSend();
+
+            const exceptionItem = lagExceptionItem({
+                type: 'UnhandledRejection',
+                value,
+            });
+
+            const resultat = beforeSend(exceptionItem);
+            expect(resultat).toBeNull();
+        });
+
         it('beholder vanlige feil', () => {
             vi.stubGlobal('location', { href: 'https://www.nav.no/foreldrepenger/soknad' });
             initFaro();

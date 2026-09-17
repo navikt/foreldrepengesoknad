@@ -1,10 +1,10 @@
 import { init } from '@nais/apm';
 
 import {
-    DISTRIBUTOR_PATTERN,
+    BROWSER_EXTENSION_TIMEOUT_PATTERN,
     DOM_OVERSETTELSE_FEIL,
     type StackFrame,
-    harDistributorStacktrace,
+    harBrowserExtensionTimeoutStacktrace,
     harUtenforstaendeKodeOpprinnelse,
 } from './filterUtils';
 
@@ -101,17 +101,22 @@ const feilUtenOpprinnelseIVårKode = (item: ExceptionItem): boolean => {
 };
 
 /**
- * Nettleserutvidelser som f.eks. taleassistenter (Speech Assist) genererer mange "Request timeout ...Distributor.getValue"-feil.
+ * Nettleserutvidelser (f.eks. taleassistenter og Microsoft Editor-tillegget i Edge) genererer mange
+ * "Request timeout ..."-feil, som "...Distributor.getValue", "isPredictionAvailable", "isMathOcrAvailable",
+ * "isDictateAvailable", "getDictionariesByLanguageId" og "DefineExpirationForLanguagePacks.getValue".
  * Disse er ikke våre feil, og vi vil ikke ha dem i @nais/apm/Faro.
  */
 const feilFraBrowserExtensions = (item: ExceptionItem): boolean => {
     const { type, value, stacktrace } = item.payload;
 
-    if ((type && DISTRIBUTOR_PATTERN.test(type)) || (value && DISTRIBUTOR_PATTERN.test(value))) {
+    if (
+        (type && BROWSER_EXTENSION_TIMEOUT_PATTERN.test(type)) ||
+        (value && BROWSER_EXTENSION_TIMEOUT_PATTERN.test(value))
+    ) {
         return true;
     }
 
-    return stacktrace?.frames ? harDistributorStacktrace(stacktrace.frames) : false;
+    return stacktrace?.frames ? harBrowserExtensionTimeoutStacktrace(stacktrace.frames) : false;
 };
 
 const feilFraDomOversettelse = (item: ExceptionItem): boolean => {

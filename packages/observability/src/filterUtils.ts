@@ -10,7 +10,14 @@
 
 const FEIL_VI_VIL_LUKE_BORT = ['personbruker/decorator-next', 'personbruker/nav-dekoratoren'];
 
-export const DISTRIBUTOR_PATTERN = /Request timeout \S*Distributor\.\S+/;
+/**
+ * Fanger opp "Request timeout ..."-feil fra nettleserutvidelser generelt, ikke bare
+ * taleassistenter (Distributor.getValue). Microsoft Editor (stavekontroll/redigering-tillegget
+ * i Edge) genererer f.eks. "Request timeout isPredictionAvailable", "Request timeout isMathOcrAvailable",
+ * "Request timeout isDictateAvailable", "Request timeout getDictionariesByLanguageId" og
+ * "Request timeout DefineExpirationForLanguagePacks.getValue".
+ */
+export const BROWSER_EXTENSION_TIMEOUT_PATTERN = /Request timeout \S+/;
 
 export const DOM_OVERSETTELSE_FEIL = /(removeChild|insertBefore)[\s\S]*not a child of this node/i;
 
@@ -45,12 +52,12 @@ export const harUtenforstaendeKodeOpprinnelse = (frames: StackFrame[]): boolean 
 };
 
 /**
- * Sjekker om stackframes inneholder Distributor-mønster fra taleassistent-utvidelser.
+ * Sjekker om stackframes inneholder "Request timeout ..."-mønster fra nettleserutvidelser.
  */
-export const harDistributorStacktrace = (frames: StackFrame[]): boolean => {
+export const harBrowserExtensionTimeoutStacktrace = (frames: StackFrame[]): boolean => {
     return frames.some(
         (frame) =>
-            (frame.filename && DISTRIBUTOR_PATTERN.test(frame.filename)) ||
-            (frame.function && DISTRIBUTOR_PATTERN.test(frame.function)),
+            (frame.filename && BROWSER_EXTENSION_TIMEOUT_PATTERN.test(frame.filename)) ||
+            (frame.function && BROWSER_EXTENSION_TIMEOUT_PATTERN.test(frame.function)),
     );
 };
