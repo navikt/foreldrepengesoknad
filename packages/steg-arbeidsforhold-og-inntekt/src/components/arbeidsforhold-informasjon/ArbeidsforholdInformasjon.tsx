@@ -1,4 +1,4 @@
-import { BankNoteIcon, BoatIcon, PersonEnvelopeIcon, TasklistIcon } from '@navikt/aksel-icons';
+import { BankNoteIcon, BoatIcon, BriefcaseIcon, PersonEnvelopeIcon, TasklistIcon } from '@navikt/aksel-icons';
 import { type ReactNode, useId } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -103,17 +103,30 @@ const ArbeidsforholdDefinisjoner = ({ appOrigin }: { appOrigin: AppName }) => {
                         </BodyShort>
                     </Definisjon>
                     <Definisjon
+                        icon={<BriefcaseIcon aria-hidden fontSize="1.5rem" />}
+                        tittel={<FormattedMessage id="ArbeidsforholdOgInntektPanel.Definisjoner.Ordinaer.Tittel" />}
+                    >
+                        <BodyShort size="small">
+                            <FormattedMessage
+                                id="ArbeidsforholdOgInntektPanel.Definisjoner.Ordinaer.Beskrivelse"
+                                values={{
+                                    a: (tekst) => (
+                                        <Link href={links.arbeidsforholdSkatteetaten} target="_blank" rel="noreferrer">
+                                            {tekst}
+                                        </Link>
+                                    ),
+                                }}
+                            />
+                        </BodyShort>
+                    </Definisjon>
+                    <Definisjon
                         icon={<BoatIcon aria-hidden fontSize="1.5rem" />}
                         tittel={<FormattedMessage id="ArbeidsforholdOgInntektPanel.Definisjoner.Fisker.Tittel" />}
                     >
-                        <VStack gap="space-20">
-                            <BodyShort size="small">
-                                <FormattedMessage id="ArbeidsforholdOgInntektPanel.Definisjoner.Fisker.Beskrivelse1" />
-                            </BodyShort>
-                            <BodyShort size="small">
-                                <FormattedMessage id="ArbeidsforholdOgInntektPanel.Definisjoner.Fisker.Beskrivelse2" />
-                            </BodyShort>
-                        </VStack>
+                        <BodyShort size="small">
+                            <FormattedMessage id="ArbeidsforholdOgInntektPanel.Definisjoner.Fisker.Beskrivelse1" />{' '}
+                            <FormattedMessage id="ArbeidsforholdOgInntektPanel.Definisjoner.Fisker.Beskrivelse2" />
+                        </BodyShort>
                     </Definisjon>
                     <Definisjon
                         icon={<BankNoteIcon aria-hidden fontSize="1.5rem" />}
