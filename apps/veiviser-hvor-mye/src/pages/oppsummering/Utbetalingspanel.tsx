@@ -53,7 +53,7 @@ export const Utbetalingspanel = ({ dekningsgrad, gjennomsnittslønn, stønadskvo
     const monthlyPayment = Math.round(Math.min(gjennomsnittslønn * decimal, monthlyMax * decimal));
     const dailyPayment = Math.round(getDailyPayment(monthlyPayment));
 
-    const totalt = erDekningsgrad100 ? dailyPayment * 5 * 25 : dailyPayment * 5 * 30;
+    const totalt = erDekningsgrad100 ? dailyPayment * 5 * 15 : dailyPayment * 5 * 19;
 
     return (
         <Infobox

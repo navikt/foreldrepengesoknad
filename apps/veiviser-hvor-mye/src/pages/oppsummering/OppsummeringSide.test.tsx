@@ -24,13 +24,13 @@ describe('<OppsummeringSide>', () => {
         expect(screen.getAllByText('Daglig før skatt')).toHaveLength(2);
         expect(screen.getByText('923 kr')).toBeInTheDocument();
         expect(screen.getByText('738 kr')).toBeInTheDocument();
-        expect(screen.getByText('Totalt for 25 uker før skatt')).toBeInTheDocument();
-        expect(screen.getByText('115 375 kr')).toBeInTheDocument();
-        expect(screen.getByText('Totalt for 30 uker før skatt')).toBeInTheDocument();
-        expect(screen.getByText('110 700 kr')).toBeInTheDocument();
+        expect(screen.getByText('Totalt for 15 uker før skatt')).toBeInTheDocument();
+        expect(screen.getByText('69 225 kr')).toBeInTheDocument();
+        expect(screen.getByText('Totalt for 19 uker før skatt')).toBeInTheDocument();
+        expect(screen.getByText('70 110 kr')).toBeInTheDocument();
 
         expect(
-            screen.getByText('Mange får lønn utbetalt som vanlig fra arbeidsgiveren sin mens man har permisjon'),
+            screen.getByText('Mange får utbetalt lønn som vanlig fra arbeidsgiveren sin mens de har permisjon'),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Nåværende arbeidssituasjon')).toBeInTheDocument();
@@ -52,13 +52,13 @@ describe('<OppsummeringSide>', () => {
         expect(screen.getAllByText('Daglig før skatt')).toHaveLength(2);
         expect(screen.getByText('3 151 kr')).toBeInTheDocument();
         expect(screen.getByText('2 521 kr')).toBeInTheDocument();
-        expect(screen.getByText('Totalt for 25 uker før skatt')).toBeInTheDocument();
-        expect(screen.getByText('393 875 kr')).toBeInTheDocument();
-        expect(screen.getByText('Totalt for 30 uker før skatt')).toBeInTheDocument();
-        expect(screen.getByText('378 150 kr')).toBeInTheDocument();
+        expect(screen.getByText('Totalt for 15 uker før skatt')).toBeInTheDocument();
+        expect(screen.getByText('236 325 kr')).toBeInTheDocument();
+        expect(screen.getByText('Totalt for 19 uker før skatt')).toBeInTheDocument();
+        expect(screen.getByText('239 495 kr')).toBeInTheDocument();
 
         expect(
-            screen.getByText('Mange får lønn utbetalt som vanlig fra arbeidsgiveren sin mens man har permisjon'),
+            screen.getByText('Mange får utbetalt lønn som vanlig fra arbeidsgiveren sin mens de har permisjon'),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Nåværende arbeidssituasjon')).toBeInTheDocument();
@@ -93,16 +93,16 @@ describe('<OppsummeringSide>', () => {
         expect(screen.getAllByText('Daglig før skatt')).toHaveLength(2);
         expect(screen.getByText('462 kr')).toBeInTheDocument();
         expect(screen.getByText('369 kr')).toBeInTheDocument();
-        expect(screen.getByText('Totalt for 25 uker før skatt')).toBeInTheDocument();
-        expect(screen.getByText('57 750 kr')).toBeInTheDocument();
-        expect(screen.getByText('Totalt for 30 uker før skatt')).toBeInTheDocument();
-        expect(screen.getByText('55 350 kr')).toBeInTheDocument();
+        expect(screen.getByText('Totalt for 15 uker før skatt')).toBeInTheDocument();
+        expect(screen.getByText('34 650 kr')).toBeInTheDocument();
+        expect(screen.getByText('Totalt for 19 uker før skatt')).toBeInTheDocument();
+        expect(screen.getByText('35 055 kr')).toBeInTheDocument();
 
         expect(
             screen.getByText('Det kan være lurt for deg å sammenligne foreldrepenger og engangsstønad'),
         ).toBeInTheDocument();
         expect(
-            screen.getByText('Mange får lønn utbetalt som vanlig fra arbeidsgiveren sin mens man har permisjon'),
+            screen.getByText('Mange får utbetalt lønn som vanlig fra arbeidsgiveren sin mens de har permisjon'),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Nåværende arbeidssituasjon')).toBeInTheDocument();
