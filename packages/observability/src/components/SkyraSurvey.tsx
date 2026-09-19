@@ -6,10 +6,7 @@ import { BodyShort, ExpansionCard, HStack, Skeleton, VStack } from '@navikt/ds-r
 
 import './SkyraSurvey.css';
 
-type SkyraEvent =
-    | { type: 'surveyStarted'; slug: string }
-    | { type: 'surveyCompleted'; slug: string }
-    | { type: 'surveyRejected'; slug: string };
+type SkyraEvent = { type: 'surveyCompleted'; slug: string };
 
 declare global {
     var skyra:
@@ -30,7 +27,8 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
     const resolvedTitle = intl.formatMessage({ id: 'SkyraSurvey.Tittel' });
     const surveyKey = `skyra-survey-${slug}-completed`;
     const [isLoaded, setIsLoaded] = useState(false);
-    const [hasFailed, setHasFailed] = useState(false);
+    const [hasLoadError, setHasLoadError] = useState(false);
+    const [isUnavailable, setIsUnavailable] = useState(false);
     const [hasCompletedSurvey, setHasCompletedSurvey] = useState(() => sessionStorage.getItem(surveyKey) === 'true');
     const [isOpen, setIsOpen] = useState(true);
 
@@ -38,15 +36,6 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
         if (sessionStorage.getItem(surveyKey) === 'true') {
             return;
         }
-
-        let hasLoaded = false;
-
-        const unsubscribeSurveyStarted = globalThis.skyra?.on('surveyStarted', (event) => {
-            if (event.slug === slug) {
-                hasLoaded = true;
-                setIsLoaded(true);
-            }
-        });
 
         const unsubscribeSurveyCompleted = globalThis.skyra?.on('surveyCompleted', (event) => {
             if (event.slug === slug) {
@@ -56,23 +45,8 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
             }
         });
 
-        const unsubscribeSurveyRejected = globalThis.skyra?.on('surveyRejected', (event) => {
-            if (event.slug === slug) {
-                setHasFailed(true);
-            }
-        });
-
-        const timeout = setTimeout(() => {
-            if (!hasLoaded) {
-                setHasFailed(true);
-            }
-        }, 30000);
-
         return () => {
-            unsubscribeSurveyStarted?.();
             unsubscribeSurveyCompleted?.();
-            unsubscribeSurveyRejected?.();
-            clearTimeout(timeout);
         };
     }, [slug]);
 
@@ -80,7 +54,8 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
         return null;
     }
 
-    if (hasFailed) {
+    // Visningsreglene til Skyra matcher ikke bruker/side, eller undersøkelsen finnes ikke – vis ingenting.
+    if (isUnavailable) {
         return null;
     }
 
@@ -89,6 +64,12 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
         surveyContent = (
             <BodyShort>
                 <FormattedMessage id="SkyraSurvey.Takk" />
+            </BodyShort>
+        );
+    } else if (hasLoadError) {
+        surveyContent = (
+            <BodyShort>
+                <FormattedMessage id="SkyraSurvey.Feil" />
             </BodyShort>
         );
     } else if (isLoaded) {
@@ -124,7 +105,7 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
             <ExpansionCard.Content>
                 <div>
                     {surveyContent}
-                    {!hasCompletedSurvey && (
+                    {!hasCompletedSurvey && !hasLoadError && (
                         // @ts-expect-error skyra-survey er et custom element
                         <skyra-survey
                             style={{
@@ -133,6 +114,10 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
                                 pointerEvents: isLoaded ? 'auto' : 'none',
                             }}
                             slug={slug}
+                            inline
+                            onReady={() => setIsLoaded(true)}
+                            onError={() => setHasLoadError(true)}
+                            onUnavailable={() => setIsUnavailable(true)}
                         />
                     )}
                 </div>
