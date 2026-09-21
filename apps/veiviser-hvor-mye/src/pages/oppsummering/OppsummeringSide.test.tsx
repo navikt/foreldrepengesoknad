@@ -17,20 +17,20 @@ describe('<OppsummeringSide>', () => {
         expect(await screen.findByText('Oppsummering')).toBeInTheDocument();
 
         expect(screen.getByText('Gjennomsnittlig utbetaling med 100 % foreldrepenger i 49 uker')).toBeInTheDocument();
-        expect(screen.getByText('Gjennomsnittlig utbetaling med 80 % foreldrepenger i 59 uker')).toBeInTheDocument();
+        expect(screen.getByText('Gjennomsnittlig utbetaling med 80 % foreldrepenger i 61 uker og 1 dag')).toBeInTheDocument();
         expect(screen.getAllByText('Månedlig før skatt')).toHaveLength(2);
         expect(screen.getAllByText('20 000 kr')).toHaveLength(4);
         expect(screen.getByText('16 000 kr')).toBeInTheDocument();
         expect(screen.getAllByText('Daglig før skatt')).toHaveLength(2);
         expect(screen.getByText('923 kr')).toBeInTheDocument();
         expect(screen.getByText('738 kr')).toBeInTheDocument();
-        expect(screen.getByText('Totalt for 25 uker før skatt')).toBeInTheDocument();
-        expect(screen.getByText('115 375 kr')).toBeInTheDocument();
-        expect(screen.getByText('Totalt for 30 uker før skatt')).toBeInTheDocument();
-        expect(screen.getByText('110 700 kr')).toBeInTheDocument();
+        expect(screen.getByText('Totalt for 15 uker før skatt')).toBeInTheDocument();
+        expect(screen.getByText('69 225 kr')).toBeInTheDocument();
+        expect(screen.getByText('Totalt for 19 uker før skatt')).toBeInTheDocument();
+        expect(screen.getByText('70 110 kr')).toBeInTheDocument();
 
         expect(
-            screen.getByText('Mange får lønn utbetalt som vanlig fra arbeidsgiveren sin mens man har permisjon'),
+            screen.getByText('Mange får utbetalt lønn som vanlig fra arbeidsgiveren sin mens de har permisjon'),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Nåværende arbeidssituasjon')).toBeInTheDocument();
@@ -45,20 +45,20 @@ describe('<OppsummeringSide>', () => {
         expect(screen.getByText('Du får dekket opptil 819 294 kr av din inntekt')).toBeInTheDocument();
 
         expect(screen.getByText('Gjennomsnittlig utbetaling med 100 % foreldrepenger i 49 uker')).toBeInTheDocument();
-        expect(screen.getByText('Gjennomsnittlig utbetaling med 80 % foreldrepenger i 59 uker')).toBeInTheDocument();
+        expect(screen.getByText('Gjennomsnittlig utbetaling med 80 % foreldrepenger i 61 uker og 1 dag')).toBeInTheDocument();
         expect(screen.getAllByText('Månedlig før skatt')).toHaveLength(2);
         expect(screen.getByText('68 275 kr')).toBeInTheDocument();
         expect(screen.getByText('54 620 kr')).toBeInTheDocument();
         expect(screen.getAllByText('Daglig før skatt')).toHaveLength(2);
         expect(screen.getByText('3 151 kr')).toBeInTheDocument();
         expect(screen.getByText('2 521 kr')).toBeInTheDocument();
-        expect(screen.getByText('Totalt for 25 uker før skatt')).toBeInTheDocument();
-        expect(screen.getByText('393 875 kr')).toBeInTheDocument();
-        expect(screen.getByText('Totalt for 30 uker før skatt')).toBeInTheDocument();
-        expect(screen.getByText('378 150 kr')).toBeInTheDocument();
+        expect(screen.getByText('Totalt for 15 uker før skatt')).toBeInTheDocument();
+        expect(screen.getByText('236 325 kr')).toBeInTheDocument();
+        expect(screen.getByText('Totalt for 19 uker før skatt')).toBeInTheDocument();
+        expect(screen.getByText('239 495 kr')).toBeInTheDocument();
 
         expect(
-            screen.getByText('Mange får lønn utbetalt som vanlig fra arbeidsgiveren sin mens man har permisjon'),
+            screen.getByText('Mange får utbetalt lønn som vanlig fra arbeidsgiveren sin mens de har permisjon'),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Nåværende arbeidssituasjon')).toBeInTheDocument();
@@ -86,23 +86,23 @@ describe('<OppsummeringSide>', () => {
         expect(screen.queryByText('Du får dekket opptil 780 960 kr av din inntekt')).not.toBeInTheDocument();
 
         expect(screen.getByText('Gjennomsnittlig utbetaling med 100 % foreldrepenger i 49 uker')).toBeInTheDocument();
-        expect(screen.getByText('Gjennomsnittlig utbetaling med 80 % foreldrepenger i 59 uker')).toBeInTheDocument();
+        expect(screen.getByText('Gjennomsnittlig utbetaling med 80 % foreldrepenger i 61 uker og 1 dag')).toBeInTheDocument();
         expect(screen.getAllByText('Månedlig før skatt')).toHaveLength(2);
         expect(screen.getAllByText('10 000 kr')).toHaveLength(4);
         expect(screen.getByText('8 000 kr')).toBeInTheDocument();
         expect(screen.getAllByText('Daglig før skatt')).toHaveLength(2);
         expect(screen.getByText('462 kr')).toBeInTheDocument();
         expect(screen.getByText('369 kr')).toBeInTheDocument();
-        expect(screen.getByText('Totalt for 25 uker før skatt')).toBeInTheDocument();
-        expect(screen.getByText('57 750 kr')).toBeInTheDocument();
-        expect(screen.getByText('Totalt for 30 uker før skatt')).toBeInTheDocument();
-        expect(screen.getByText('55 350 kr')).toBeInTheDocument();
+        expect(screen.getByText('Totalt for 15 uker før skatt')).toBeInTheDocument();
+        expect(screen.getByText('34 650 kr')).toBeInTheDocument();
+        expect(screen.getByText('Totalt for 19 uker før skatt')).toBeInTheDocument();
+        expect(screen.getByText('35 055 kr')).toBeInTheDocument();
 
         expect(
             screen.getByText('Det kan være lurt for deg å sammenligne foreldrepenger og engangsstønad'),
         ).toBeInTheDocument();
         expect(
-            screen.getByText('Mange får lønn utbetalt som vanlig fra arbeidsgiveren sin mens man har permisjon'),
+            screen.getByText('Mange får utbetalt lønn som vanlig fra arbeidsgiveren sin mens de har permisjon'),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Nåværende arbeidssituasjon')).toBeInTheDocument();
