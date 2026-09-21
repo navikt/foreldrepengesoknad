@@ -137,6 +137,14 @@ const getAntallBarn = (erFlereEnnToBarn: boolean, barn: Barn): number => (erFler
 const getAntallBarnSelect = (erFlereEnnToBarn: boolean, barn: Barn): string | undefined =>
     erFlereEnnToBarn ? barn.antallBarn.toString() : undefined;
 
+// Sikrer at skjemaet aldri får et tomt fødselsdatoer-array som defaultValue. Et tomt array er
+// truthy i JS, så konsumenter som gjør `fødselsdatoer ? fødselsdatoer[0].dato : undefined`
+// (OmBarnetSteg/ErFødtPanel) vil ellers krasje på `fødselsdatoer[0]` som er `undefined`.
+// Dette kan skje for eksempel ved endringssøknad på en adopsjon/stebarn-sak der verken saken
+// eller PDL har en kjent fødselsdato for barnet.
+const mapFødselsdatoer = (fødselsdatoer: string[]): Array<{ dato?: string }> =>
+    fødselsdatoer.length > 0 ? fødselsdatoer.map((f) => ({ dato: f })) : [{ dato: undefined }];
+
 export const getOmBarnetInitialValues = (
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     søkersituasjon: SøkersituasjonFp,
@@ -154,9 +162,7 @@ export const getOmBarnetInitialValues = (
             erBarnetFødt: true,
             antallBarn: getAntallBarn(erFlereEnnToBarn, barn),
             antallBarnSelect: getAntallBarnSelect(erFlereEnnToBarn, barn),
-            fødselsdatoer: barn.fødselsdatoer.map((f) => ({
-                dato: f,
-            })),
+            fødselsdatoer: mapFødselsdatoer(barn.fødselsdatoer),
             termindato: termindatoFraVedtak || barn.termindato,
         };
     }
@@ -192,9 +198,7 @@ export const getOmBarnetInitialValues = (
             adopsjonsdato: barn.adopsjonsdato,
             antallBarn: getAntallBarn(erFlereEnnToBarn, barn),
             antallBarnSelect: getAntallBarnSelect(erFlereEnnToBarn, barn),
-            fødselsdatoer: barn.fødselsdatoer.map((f) => ({
-                dato: f,
-            })),
+            fødselsdatoer: mapFødselsdatoer(barn.fødselsdatoer),
             adoptertIUtlandet: barn.adoptertIUtlandet,
             ankomstdato: barn.ankomstdato,
         };
@@ -206,9 +210,7 @@ export const getOmBarnetInitialValues = (
             adopsjonsdato: barn.adopsjonsdato,
             antallBarn: getAntallBarn(erFlereEnnToBarn, barn),
             antallBarnSelect: getAntallBarnSelect(erFlereEnnToBarn, barn),
-            fødselsdatoer: barn.fødselsdatoer.map((f) => ({
-                dato: f,
-            })),
+            fødselsdatoer: mapFødselsdatoer(barn.fødselsdatoer),
         };
     }
 
