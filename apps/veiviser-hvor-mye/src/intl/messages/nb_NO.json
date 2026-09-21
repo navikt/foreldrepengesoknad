@@ -32,7 +32,7 @@
     "OppsummeringSide.DagligFørSkatt": "Daglig før skatt",
     "OppsummeringSide.Totalt": "Totalt for {erDekningsgrad100, select, true {15} other {19}} uker før skatt",
     "OppsummeringSide.HvorforAntallUker": "Hvorfor {erDekningsgrad100, select, true {15} other {19}} uker?",
-    "OppsummeringSide.AntallUkerInfo": "Når begge foreldre har rett på foreldrepenger, har hver forelder {erDekningsgrad100, select, true {15} other {19}} uker med egen kvote. I tillegg har dere {erDekningsgrad100, select, true {16 uker} other {20 uker og 1 dag}} fellesperiode som kan deles. {erDekningsgrad100, select, true {15} other {19}} uker er en pekepinn på hvor mye du kan få når du har kvoten din, selv om du kan ha rett på mer eller mindre enn dette.",
+    "OppsummeringSide.AntallUkerInfo": "Når begge foreldre har rett på foreldrepenger, har hver forelder {erDekningsgrad100, select, true {15} other {19}} uker med egen kvote. I tillegg har dere {erDekningsgrad100, select, true {16 uker} other {20 uker og 1 dag}} fellesperiode som kan deles. {erDekningsgrad100, select, true {15} other {19}} uker er en pekepinn på hvor mye du kan få når du tar ut kvoten din, selv om du kan ha rett på mer eller mindre enn dette.",
     "OppsummeringSide.UtbetaltSomVanlig": "Mange får utbetalt lønn som vanlig fra arbeidsgiveren sin mens de har permisjon",
     "OppsummeringSide.ArbeidsgiverFraNav": "Hvis dette gjelder deg, vil arbeidsgiveren din få utbetalt foreldrepenger fra Nav og du får lønn som normalt. Dette må du kontakte arbeidsgiveren din for å få vite mer om.",
     "OppsummeringSide.DetteSvarteDu": "Dette svarte du",

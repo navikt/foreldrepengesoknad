@@ -17,7 +17,7 @@ describe('<OppsummeringSide>', () => {
         expect(await screen.findByText('Oppsummering')).toBeInTheDocument();
 
         expect(screen.getByText('Gjennomsnittlig utbetaling med 100 % foreldrepenger i 49 uker')).toBeInTheDocument();
-        expect(screen.getByText('Gjennomsnittlig utbetaling med 80 % foreldrepenger i 59 uker')).toBeInTheDocument();
+        expect(screen.getByText('Gjennomsnittlig utbetaling med 80 % foreldrepenger i 61 uker og 1 dag')).toBeInTheDocument();
         expect(screen.getAllByText('Månedlig før skatt')).toHaveLength(2);
         expect(screen.getAllByText('20 000 kr')).toHaveLength(4);
         expect(screen.getByText('16 000 kr')).toBeInTheDocument();
@@ -45,7 +45,7 @@ describe('<OppsummeringSide>', () => {
         expect(screen.getByText('Du får dekket opptil 819 294 kr av din inntekt')).toBeInTheDocument();
 
         expect(screen.getByText('Gjennomsnittlig utbetaling med 100 % foreldrepenger i 49 uker')).toBeInTheDocument();
-        expect(screen.getByText('Gjennomsnittlig utbetaling med 80 % foreldrepenger i 59 uker')).toBeInTheDocument();
+        expect(screen.getByText('Gjennomsnittlig utbetaling med 80 % foreldrepenger i 61 uker og 1 dag')).toBeInTheDocument();
         expect(screen.getAllByText('Månedlig før skatt')).toHaveLength(2);
         expect(screen.getByText('68 275 kr')).toBeInTheDocument();
         expect(screen.getByText('54 620 kr')).toBeInTheDocument();
@@ -86,7 +86,7 @@ describe('<OppsummeringSide>', () => {
         expect(screen.queryByText('Du får dekket opptil 780 960 kr av din inntekt')).not.toBeInTheDocument();
 
         expect(screen.getByText('Gjennomsnittlig utbetaling med 100 % foreldrepenger i 49 uker')).toBeInTheDocument();
-        expect(screen.getByText('Gjennomsnittlig utbetaling med 80 % foreldrepenger i 59 uker')).toBeInTheDocument();
+        expect(screen.getByText('Gjennomsnittlig utbetaling med 80 % foreldrepenger i 61 uker og 1 dag')).toBeInTheDocument();
         expect(screen.getAllByText('Månedlig før skatt')).toHaveLength(2);
         expect(screen.getAllByText('10 000 kr')).toHaveLength(4);
         expect(screen.getByText('8 000 kr')).toBeInTheDocument();
