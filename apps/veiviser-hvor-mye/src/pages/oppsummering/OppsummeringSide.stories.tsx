@@ -45,7 +45,7 @@ const STØNADSKVOTER = {
             },
             {
                 konto: 'FELLESPERIODE',
-                dager: 90,
+                dager: 101,
             },
             {
                 konto: 'FORELDREPENGER_FØR_FØDSEL',

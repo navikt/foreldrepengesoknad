@@ -24,7 +24,7 @@ export const ErFødtPanel = () => {
 
     const intlIdFødsel = antallBarn > 1 ? 'omBarnet.fødselsdato.flereBarn' : 'omBarnet.fødselsdato';
 
-    const fødselsdato = fødselsdatoer ? fødselsdatoer[0]!.dato : undefined;
+    const fødselsdato = fødselsdatoer && fødselsdatoer.length > 0 ? fødselsdatoer[0]!.dato : undefined;
 
     const visInfoOmForlengetPeriode = erFødtFørUke33(fødselsdato, termindato);
 
