@@ -23,6 +23,8 @@ export type { OversiktPersonopplysningerDto_fpoversikt } from './fpoversiktDtoGe
 export type { OversiktBarnDto_fpoversikt } from './fpoversiktDtoGenerert';
 export type { SvpPersonopplysningerDto_fpoversikt } from './fpoversiktDtoGenerert';
 export type { AnnenPartRequest_fpoversikt } from './fpoversiktDtoGenerert';
+export type { FellesUttaksplanDto_fpoversikt } from './fpoversiktDtoGenerert';
+export type { FellesUttaksplanRequest_fpoversikt } from './fpoversiktDtoGenerert';
 export type { no_nav_foreldrepenger_kontrakter_felles_kodeverk_KontoType as KontoType } from './fpoversiktDtoGenerert';
 export type { no_nav_foreldrepenger_kontrakter_felles_kodeverk_MorsAktivitet as MorsAktivitet } from './fpoversiktDtoGenerert';
 export type { no_nav_foreldrepenger_kontrakter_felles_kodeverk_Overføringsårsak as UttakOverføringÅrsak_fpoversikt } from './fpoversiktDtoGenerert';

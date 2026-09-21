@@ -1,6 +1,6 @@
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 
-import { AnnenPartRequest_fpoversikt, Barn, isFødtBarn } from '@navikt/fp-types';
+import { AnnenPartRequest_fpoversikt, Barn, FellesUttaksplanRequest_fpoversikt, isFødtBarn } from '@navikt/fp-types';
 
 import { getFamiliehendelsedato } from './barnUtils';
 
@@ -20,6 +20,21 @@ export const getAnnenPartVedtakParam = (annenForelder: AnnenForelder, barn: Barn
         annenPartFødselsnummer: isAnnenForelderOppgitt(annenForelder) ? (annenForelder.fnr ?? '') : '',
         barnFødselsnummer,
         familiehendelse: getFamiliehendelsedato(barn),
+    };
+};
+
+// Bruka til å hente mors (annen parts) periodar frå den nye felles uttaksplanen,
+// slik at dei kan visast i planen til far/medmor allereie når han/ho søkjer.
+export const getUttaksplanParam = (annenForelder: AnnenForelder, barn: Barn): FellesUttaksplanRequest_fpoversikt => {
+    const barnFødselsnummer =
+        isFødtBarn(barn) && barn.fnr !== undefined && barn.fnr?.length > 0 ? barn.fnr[0] : undefined;
+    return {
+        // Funksjonen blir berre kalla når annenForelderHarNorskFnr er true, så fnr er alltid satt
+        annenPartFødselsnummer: isAnnenForelderOppgitt(annenForelder) ? (annenForelder.fnr ?? '') : '',
+        barnIdentifikator: {
+            fødselsnummer: barnFødselsnummer,
+            familiehendelse: getFamiliehendelsedato(barn),
+        },
     };
 };
 

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAnnenPartVedtakOptions } from 'api/queries';
+import { useAnnenPartVedtakOptions, useUttaksplanOptions } from 'api/queries';
 import { SøknadRoutes, isRouteAvailable } from 'appData/routes';
 import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
 import { useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
@@ -313,6 +313,12 @@ export const ForeldrepengesøknadRoutes = ({
     // Dette trengs ikke før i OmBarnet. Men om vi legger et query på rot for å prefetche så tidlig som mulig.
     const annenPartVedtakOptions = useAnnenPartVedtakOptions();
     useQuery(annenPartVedtakOptions);
+
+    // Caset er der annen part (typisk mor) allereie har søkt: då kan vi prefetche den nye,
+    // felles uttaksplanen slik at hennar periodar er tilgjengelege så tidlig som mulig når
+    // far/medmor søkjer, og seinare kan visast i planen hans/hennar.
+    const uttaksplanOptions = useUttaksplanOptions();
+    useQuery(uttaksplanOptions);
 
     useEffect(() => {
         if (!(
