@@ -17,6 +17,7 @@ type MellomlagretDataForValidering = Pick<FpMellomlagretData, 'version'> &
 const isEndringssøknadRoute = (route: SøknadRoutes): boolean => {
     switch (route) {
         case SøknadRoutes.UTTAKSPLAN:
+        case SøknadRoutes.DOKUMENTASJON:
         case SøknadRoutes.OPPSUMMERING: {
             return true;
         }
