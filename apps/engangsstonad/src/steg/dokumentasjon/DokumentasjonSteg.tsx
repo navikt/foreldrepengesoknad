@@ -2,13 +2,12 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { useEsNavigator } from 'appData/useEsNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { Dokumentasjon } from 'types/Dokumentasjon';
 
 import { VStack } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm, useFormMedUtkast } from '@navikt/fp-form-hooks';
 import { Attachment } from '@navikt/fp-types';
 import { ScanDocumentInfo, SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -34,7 +33,7 @@ export const DokumentasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
     const erBarnetAdoptert = barn.type === 'adopsjon';
     const harTermindato = barn.type === 'termin';
 
-    const formMethods = useForm<Dokumentasjon>({
+    const formMethods = useFormMedUtkast<Dokumentasjon>('DokumentasjonSteg', {
         defaultValues: dokumentasjon,
     });
 
@@ -47,6 +46,7 @@ export const DokumentasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
             });
             return Promise.resolve();
         }
+        formMethods.slettUtkast();
         oppdaterDokumentasjon(formValues);
         return navigator.goToNextDefaultStep();
     };
@@ -65,13 +65,13 @@ export const DokumentasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
                         <ErrorSummaryHookForm />
                         {erBarnetAdoptert && (
                             <AdopsjonDokPanel
-                                attachments={dokumentasjon?.vedlegg}
+                                attachments={formMethods.watch('vedlegg')}
                                 updateAttachments={updateAttachments}
                             />
                         )}
                         {harTermindato && (
                             <TerminDokPanel
-                                attachments={dokumentasjon?.vedlegg}
+                                attachments={formMethods.watch('vedlegg')}
                                 updateAttachments={updateAttachments}
                                 termindato={barn.type === 'termin' ? barn.termindato : ''}
                             />

@@ -1,11 +1,12 @@
 import { composeStories } from '@storybook/react-vite';
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ContextDataType } from 'appData/EsDataContext';
+import { Action, ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import dayjs from 'dayjs';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { Skjemautkast } from '@navikt/fp-form-hooks';
 
 import * as stories from './OmBarnetSteg.stories';
 
@@ -15,6 +16,34 @@ const velgSvar = (spørsmål: string, svar: 'Ja' | 'Nei') =>
     userEvent.click(within(screen.getByRole('radiogroup', { name: spørsmål })).getByRole('radio', { name: svar }));
 
 describe('<OmBarnetSteg>', () => {
+    it('gjenoppretter ufullstendige fødselsdatoer ved adopsjon uten å lagre dem som søknadsdata', async () => {
+        let skjemautkast: Skjemautkast | undefined;
+        const gåTilNesteSide = vi.fn((action: Action) => {
+            if (action.type === 'update' && action.data && typeof action.data === 'object' && 'skjema' in action.data) {
+                skjemautkast = action.data;
+            }
+        });
+        const mellomlagreOgNaviger = vi.fn(() => new Promise<void>(() => {}));
+        const visning = render(
+            <VisSideForAdopsjonKvinne gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />,
+        );
+        await userEvent.click(screen.getByText('Ja'));
+        await userEvent.click(screen.getByText('Ett barn'));
+        await userEvent.type(screen.getByLabelText('Fødselsdato'), '12.0');
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett senere' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Ok' }));
+
+        expect(skjemautkast?.verdier).toMatchObject({ fødselsdatoer: [{ dato: '12.0' }] });
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
+        expect(mellomlagreOgNaviger).toHaveBeenCalledWith({ naviger: false, medRetry: true });
+        visning.unmount();
+
+        render(<VisSideForAdopsjonKvinne skjemautkast={skjemautkast} />);
+        expect(screen.getByLabelText('Fødselsdato')).toHaveValue('12.0');
+        await userEvent.click(screen.getByRole('button', { name: 'Neste steg' }));
+        expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+    });
+
     it('skal vise side for adopsjon for kvinne', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreOgNaviger = vi.fn();

@@ -2,12 +2,17 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useStepConfig } from 'appData/useStepConfig';
-import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Radio, VStack } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import {
+    ErrorSummaryHookForm,
+    RhfForm,
+    RhfRadioGroup,
+    StepButtonsHookForm,
+    useFormMedUtkast,
+} from '@navikt/fp-form-hooks';
 import { EksternArbeidsforholdDto_fpoversikt, SøkersituasjonFp, isAdoptertBarn } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
@@ -45,11 +50,12 @@ export const SøkersituasjonSteg = ({
     const situasjonFraBarn = barn && isAdoptertBarn(barn) ? 'adopsjon' : 'fødsel';
     const defaultSituasjon = kommerFraPlanlegger && barn && !søkersituasjon?.situasjon ? situasjonFraBarn : undefined;
 
-    const formMethods = useForm<SøkersituasjonFp>({
+    const formMethods = useFormMedUtkast<SøkersituasjonFp>('SøkersituasjonSteg', {
         defaultValues: søkersituasjon ?? (defaultSituasjon ? { situasjon: defaultSituasjon } : undefined),
     });
 
     const onSubmit = (values: SøkersituasjonFp) => {
+        formMethods.slettUtkast();
         const nySøkersituasjon = {
             situasjon: values.situasjon,
             rolle: values.rolle ?? 'far',

@@ -6,7 +6,6 @@ import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useStepConfig } from 'appData/useStepConfig';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
-import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
 import {
@@ -18,7 +17,7 @@ import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { VStack } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm, useFormMedUtkast } from '@navikt/fp-form-hooks';
 import {
     Barn,
     FpBarnDto_fpoversikt,
@@ -153,6 +152,7 @@ const OmBarnetStegInner = ({
         !søknadGjelderNyttBarn && (valgteRegistrerteBarn === undefined || valgteRegistrerteBarn.length === 0);
 
     const onSubmit = (values: BarnetFormValues) => {
+        formMethods.slettUtkast();
         const valgtBarn = !søknadGjelderNyttBarn && !barnSøktOmFørMenIkkeRegistrert ? omBarnet : undefined;
 
         const oppdatertBarn = mapOmBarnetFormDataToState(
@@ -182,7 +182,7 @@ const OmBarnetStegInner = ({
         () => getOmBarnetInitialValues(arbeidsforhold, søkersituasjon, omBarnet, termindato),
         [arbeidsforhold, omBarnet, termindato],
     );
-    const formMethods = useForm<BarnetFormValues>({
+    const formMethods = useFormMedUtkast<BarnetFormValues>('OmBarnetSteg', {
         shouldUnregister: true,
         defaultValues,
     });

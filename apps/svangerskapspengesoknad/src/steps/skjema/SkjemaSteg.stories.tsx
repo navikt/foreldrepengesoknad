@@ -8,6 +8,7 @@ import { MemoryRouter, Route, Routes } from 'react-router';
 import { action } from 'storybook/actions';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Skjemautkast } from '@navikt/fp-form-hooks';
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
 import {
     ArbeidsforholdOgInntektSvp,
@@ -48,6 +49,7 @@ const promiseAction = () => () => {
 };
 
 type StoryArgs = {
+    skjemautkast?: Skjemautkast;
     gåTilNesteSide?: (action: Action) => void;
     vedlegg?: Record<string, Attachment[]>;
     valgteArbeidsforhold?: string[];
@@ -61,6 +63,7 @@ const meta = {
     render: ({
         gåTilNesteSide = action('button-click'),
         vedlegg,
+        skjemautkast,
         valgteArbeidsforhold,
         valgtTilretteleggingId,
         arbeidsforholdOgInntekt,
@@ -71,6 +74,7 @@ const meta = {
                 <SvpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{
+                        [ContextDataType.SKJEMAUTKAST]: skjemautkast,
                         [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
                         [ContextDataType.TILRETTELEGGINGER_VEDLEGG]: vedlegg,
                         [ContextDataType.VALGTE_ARBEIDSFORHOLD]: valgteArbeidsforhold,

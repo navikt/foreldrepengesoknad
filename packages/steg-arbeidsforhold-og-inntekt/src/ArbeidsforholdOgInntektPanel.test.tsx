@@ -1,7 +1,9 @@
 import { composeStories } from '@storybook/react-vite';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { type ComponentProps, useState } from 'react';
 
+import { type Skjemautkast, SkjemautkastProvider } from '@navikt/fp-form-hooks';
 import type { NæringDto } from '@navikt/fp-types';
 
 import * as stories from './ArbeidsforholdOgInntektPanel.stories';
@@ -25,10 +27,164 @@ const manueltLagtTilNæring = {
     harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
 } satisfies NæringDto;
 
+const renderMedUtkast = (props: ComponentProps<typeof ForForeldrepenger> = {}, lagretUtkast?: Skjemautkast) => {
+    let mellomlagretUtkast = lagretUtkast;
+    const onFortsettSenere = vi.fn();
+    const innhold = <ForForeldrepenger {...props} onFortsettSenere={onFortsettSenere} />;
+    const Side = () => {
+        const [utkast, setUtkast] = useState(lagretUtkast);
+        return (
+            <SkjemautkastProvider
+                route="/arbeidsforhold"
+                utkast={utkast}
+                lagre={(verdi) => {
+                    mellomlagretUtkast = verdi ? JSON.parse(JSON.stringify(verdi)) : undefined;
+                    setUtkast(verdi);
+                }}
+            >
+                {innhold}
+            </SkjemautkastProvider>
+        );
+    };
+    return { ...render(<Side />), hentUtkast: () => mellomlagretUtkast, onFortsettSenere };
+};
+
 describe('<ArbeidsforholdOgInntektPanel>', () => {
     beforeEach(() => {
         // jsdom implementerer ikke scrollIntoView, og komponenten kaller denne når ny inntektskilde legges til.
         HTMLElement.prototype.scrollIntoView = vi.fn();
+    });
+
+    it.each(['foreldrepengesoknad', 'svangerskapspengesoknad'] as const)(
+        'skal lagre og gjenåpne ufullført jobb i utlandet fra sideknappen i %s',
+        async (appOrigin) => {
+            const saveOnNext = vi.fn();
+            const saveAndreInntektskilder = vi.fn();
+            const props = { appOrigin, saveOnNext, saveAndreInntektskilder };
+            const side = renderMedUtkast(props);
+            await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
+            await userEvent.click(screen.getByRole('radio', { name: /Annen pensjonsgivende inntekt/ }));
+            await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
+            await userEvent.click(screen.getByRole('radio', { name: 'Jobb i utlandet' }));
+            await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
+            await userEvent.type(screen.getByLabelText('Hva er navnet på arbeidsgiveren?'), 'Ufullført arbeidsgiver');
+            await userEvent.type(screen.getByLabelText('Fra'), '12.');
+            await userEvent.click(screen.getByRole('button', { name: 'Fortsett senere' }));
+            await userEvent.click(screen.getByRole('button', { name: 'Ok' }));
+
+            expect(side.onFortsettSenere).toHaveBeenCalledOnce();
+            expect(saveAndreInntektskilder).not.toHaveBeenCalled();
+            expect(saveOnNext).not.toHaveBeenCalled();
+            const utkast = side.hentUtkast();
+            side.unmount();
+            renderMedUtkast(props, utkast);
+
+            expect(screen.getByLabelText('Hva er navnet på arbeidsgiveren?')).toHaveValue('Ufullført arbeidsgiver');
+            expect(screen.getByLabelText('Fra')).toHaveValue('12.');
+            expect(document.querySelectorAll('form')).toHaveLength(1);
+            await userEvent.click(screen.getByRole('button', { name: 'Neste steg' }));
+            expect(saveOnNext).not.toHaveBeenCalled();
+            await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
+            expect(saveAndreInntektskilder).not.toHaveBeenCalled();
+            expect(screen.getAllByText('Du må oppgi hvilket land du har jobbet i').length).toBeGreaterThan(0);
+        },
+    );
+
+    it.each(['egen næring', 'fisker', 'næring i utlandet'] as const)(
+        'skal gjenåpne ufullført %s og slette utkastet ved avbrudd',
+        async (gren) => {
+            const saveEgenNæring = vi.fn();
+            const saveOnNext = vi.fn();
+            const props = { saveEgenNæring, saveOnNext };
+            const side = renderMedUtkast(props);
+            await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
+            const valg = {
+                'egen næring': /Jeg har jobbet i min ektefelles næring/,
+                fisker: /Jeg er fisker eller mannskap på båt/,
+                'næring i utlandet': /Annen pensjonsgivende inntekt/,
+            };
+            await userEvent.click(screen.getByRole('radio', { name: valg[gren] }));
+            await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
+            if (gren !== 'egen næring') {
+                await userEvent.click(
+                    screen.getByRole('radio', { name: gren === 'fisker' ? 'Lott' : 'Næring i utlandet' }),
+                );
+                await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
+            }
+            await userEvent.type(screen.getByRole('textbox', { name: /Hva heter virksomheten/ }), 'Ufullført næring');
+            await userEvent.type(screen.getByLabelText('Når startet du virksomheten?'), '3.');
+            await userEvent.click(screen.getByRole('button', { name: 'Fortsett senere' }));
+            await userEvent.click(screen.getByRole('button', { name: 'Ok' }));
+            const utkast = side.hentUtkast();
+            side.unmount();
+            const gjenåpnetSide = renderMedUtkast(props, utkast);
+
+            expect(screen.getByRole('textbox', { name: /Hva heter virksomheten/ })).toHaveValue('Ufullført næring');
+            expect(screen.getByLabelText('Når startet du virksomheten?')).toHaveValue('3.');
+            expect(document.querySelectorAll('form')).toHaveLength(1);
+            await userEvent.click(screen.getByRole('button', { name: 'Neste steg' }));
+            await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
+            expect(saveEgenNæring).not.toHaveBeenCalled();
+            expect(saveOnNext).not.toHaveBeenCalled();
+            await userEvent.click(screen.getByRole('button', { name: 'Avbryt' }));
+            expect(gjenåpnetSide.hentUtkast()).toBeUndefined();
+            await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
+            await userEvent.click(screen.getByRole('radio', { name: /Jeg har jobbet i min ektefelles næring/ }));
+            await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
+            expect(screen.getByRole('textbox', { name: /Hva heter virksomheten/ })).toHaveValue('');
+        },
+    );
+
+    it('skal gjenåpne valgt fiskerordning før skjemasteget', async () => {
+        const side = renderMedUtkast();
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
+        await userEvent.click(screen.getByRole('radio', { name: /Jeg er fisker eller mannskap på båt/ }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
+        await userEvent.click(screen.getByRole('radio', { name: 'Lott og hyre' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett senere' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Ok' }));
+        const utkast = side.hentUtkast();
+        side.unmount();
+        renderMedUtkast({}, utkast);
+
+        expect(screen.getByRole('radio', { name: 'Lott og hyre' })).toBeChecked();
+        expect(screen.queryByRole('textbox', { name: /Hva heter virksomheten/ })).not.toBeInTheDocument();
+    });
+
+    it('skal fullføre et gjenåpnet utkast og kunne fjerne inntekten uten å gjenopprette utkastet', async () => {
+        const saveAndreInntektskilder = vi.fn();
+        const saveOnNext = vi.fn();
+        const props = { saveAndreInntektskilder, saveOnNext };
+        const side = renderMedUtkast(props);
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
+        await userEvent.click(screen.getByRole('radio', { name: /Annen pensjonsgivende inntekt/ }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
+        await userEvent.click(screen.getByRole('radio', { name: 'Etterlønn eller sluttvederlag' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
+        await userEvent.type(screen.getByLabelText('Perioden den gjelder fra'), '01.01.2024');
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett senere' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Ok' }));
+        const utkast = side.hentUtkast();
+        side.unmount();
+        const gjenåpnetSide = renderMedUtkast(props, utkast);
+
+        expect(screen.getByLabelText('Perioden den gjelder fra')).toHaveValue('01.01.2024');
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
+        expect(saveAndreInntektskilder).not.toHaveBeenCalled();
+        expect(gjenåpnetSide.hentUtkast()).toEqual(utkast);
+        await userEvent.type(screen.getByLabelText('Til'), '31.01.2024');
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
+        expect(saveAndreInntektskilder).toHaveBeenCalledWith([
+            { type: 'ETTERLØNN_SLUTTPAKKE', fom: '2024-01-01', tom: '2024-01-31' },
+        ]);
+        expect(gjenåpnetSide.hentUtkast()).toBeUndefined();
+        await userEvent.click(screen.getByRole('button', { name: /Fjern Etterlønn/ }));
+        expect(saveAndreInntektskilder).toHaveBeenLastCalledWith([]);
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett senere' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Ok' }));
+        expect(gjenåpnetSide.hentUtkast()).toBeUndefined();
+        await userEvent.click(screen.getByRole('button', { name: 'Neste steg' }));
+        expect(saveOnNext).toHaveBeenCalledOnce();
     });
 
     it('skal vise inntektswizard i stedet for spørsmål om arbeid i utlandet for svangerskapspenger', async () => {

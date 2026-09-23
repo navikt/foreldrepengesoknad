@@ -3,6 +3,8 @@ import nbMessages from './src/intl/messages/nb_NO.json';
 import nnMessages from './src/intl/messages/nn_NO.json';
 
 export { RhfForm } from './src/form-wrappers/RhfForm';
+export { SkjemautkastProvider, useFormMedUtkast } from './src/skjemautkast/Skjemautkast';
+export type { Skjemautkast } from './src/skjemautkast/Skjemautkast';
 export { RhfCheckbox } from './src/form-wrappers/RhfCheckbox';
 export { RhfCheckboxGroup } from './src/form-wrappers/RhfCheckboxGroup';
 export { RhfDatepicker } from './src/form-wrappers/RhfDatepicker';

@@ -4,7 +4,6 @@ import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
 import dayjs from 'dayjs';
 import { omit } from 'es-toolkit';
-import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { useParams } from 'react-router';
 import {
@@ -31,6 +30,7 @@ import {
     RhfRadioGroup,
     RhfTextarea,
     StepButtonsHookForm,
+    useFormMedUtkast,
 } from '@navikt/fp-form-hooks';
 import { loggUmamiEvent } from '@navikt/fp-observability';
 import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
@@ -155,6 +155,7 @@ export const TilretteleggingSteg = ({
     const kanHaSVPFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barnet);
 
     const onSubmit = (values: DelvisTilrettelegging | IngenTilrettelegging) => {
+        formMethods.slettUtkast();
         oppdaterTilrettelegginger({ ...tilrettelegginger, [valgtTilretteleggingId]: values });
 
         const typeArbeidsgiver = getTypeArbeidForTilrettelegging(valgtTilretteleggingId, arbeidsforhold);
@@ -184,7 +185,7 @@ export const TilretteleggingSteg = ({
         );
     };
 
-    const formMethods = useForm<DelvisTilrettelegging | IngenTilrettelegging>({
+    const formMethods = useFormMedUtkast<DelvisTilrettelegging | IngenTilrettelegging>('TilretteleggingSteg', {
         shouldUnregister: true,
         defaultValues: tilrettelegging,
     });

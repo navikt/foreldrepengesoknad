@@ -27,7 +27,6 @@
         "dayjs": "catalog:",
         "react": "catalog:",
         "react-dom": "catalog:",
-        "react-hook-form": "catalog:",
         "react-intl": "catalog:"
     },
     "devDependencies": {

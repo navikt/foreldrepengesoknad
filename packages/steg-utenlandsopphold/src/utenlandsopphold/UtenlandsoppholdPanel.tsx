@@ -1,9 +1,14 @@
-import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Radio, VStack } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import {
+    ErrorSummaryHookForm,
+    RhfForm,
+    RhfRadioGroup,
+    StepButtonsHookForm,
+    useFormMedUtkast,
+} from '@navikt/fp-form-hooks';
 import { Utenlandsopphold } from '@navikt/fp-types';
 import { ProgressStep, Step } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
@@ -36,13 +41,19 @@ export const UtenlandsoppholdPanel = <TYPE extends string>({
 }: Props<TYPE>) => {
     const intl = useIntl();
 
-    const formMethods = useForm<Utenlandsopphold>({
+    const formMethods = useFormMedUtkast<Utenlandsopphold>('UtenlandsoppholdPanel', {
         defaultValues: utenlandsopphold,
     });
 
     return (
         <Step steps={stepConfig} onStepChange={onStepChange}>
-            <RhfForm formMethods={formMethods} onSubmit={saveOnNext}>
+            <RhfForm
+                formMethods={formMethods}
+                onSubmit={(values) => {
+                    formMethods.slettUtkast();
+                    saveOnNext(values);
+                }}
+            >
                 <VStack gap="space-40">
                     <ErrorSummaryHookForm />
                     <RhfRadioGroup

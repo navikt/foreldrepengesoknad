@@ -1,7 +1,6 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
-import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { finnPerioderSomInngårISøknaden, perioderSomKreverVedlegg } from 'utils/manglendeVedleggUtils';
@@ -10,7 +9,7 @@ import { getErSøkerFarEllerMedmor, getNavnPåForeldre } from 'utils/personUtils
 import { Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
 
 import { Skjemanummer } from '@navikt/fp-constants';
-import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { RhfForm, StepButtonsHookForm, useFormMedUtkast } from '@navikt/fp-form-hooks';
 import { Attachment, FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
@@ -170,12 +169,13 @@ export const ManglendeVedlegg = ({
             [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]: formValues[Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG] || [],
         };
 
+        formMethods.slettUtkast();
         saveVedlegg(alleVedlegg);
 
         return navigator.goToNextStep();
     };
 
-    const formMethods = useForm<ManglendeVedleggFormData>({
+    const formMethods = useFormMedUtkast<ManglendeVedleggFormData>('ManglendeVedlegg', {
         defaultValues: {
             [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: morKvalprogramVedlegg,
             [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]: morIntroprogramVedlegg,
@@ -219,7 +219,7 @@ export const ManglendeVedlegg = ({
                 <RhfForm formMethods={formMethods} onSubmit={lagre}>
                     <VStack gap="space-40">
                         <MorInnlagtDokumentasjon
-                            attachments={morInnlagtVedlegg}
+                            attachments={formMethods.watch(Skjemanummer.DOK_INNLEGGELSE_MOR)}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morInnlagtPerioder}
                             updateAttachments={updateAttachments}
@@ -227,70 +227,70 @@ export const ManglendeVedlegg = ({
                             familiehendelsedato={familiehendelsedato}
                         />
                         <MorForSykDokumentasjon
-                            attachments={morForSykVedlegg}
+                            attachments={formMethods.watch(Skjemanummer.DOK_SYKDOM_MOR)}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morForSykPerioder}
                             updateAttachments={updateAttachments}
                             erFarEllerMedmor={erFarEllerMedmor}
                         />
                         <FarInnlagtDokumentasjon
-                            attachments={farInnlagtVedlegg}
+                            attachments={formMethods.watch(Skjemanummer.DOK_INNLEGGELSE_FAR)}
                             navnPåForeldre={navnPåForeldre}
                             perioder={farInnlagtPerioder}
                             updateAttachments={updateAttachments}
                             erFarEllerMedmor={erFarEllerMedmor}
                         />
                         <FarForSykDokumentasjon
-                            attachments={farForSykvedlegg}
+                            attachments={formMethods.watch(Skjemanummer.DOK_SYKDOM_FAR)}
                             navnPåForeldre={navnPåForeldre}
                             perioder={farForSykPerioder}
                             updateAttachments={updateAttachments}
                             erFarEllerMedmor={erFarEllerMedmor}
                         />
                         <BarnInnlagtDokumentasjon
-                            attachments={barnInnlagtVedlegg}
+                            attachments={formMethods.watch(Skjemanummer.DOK_INNLEGGELSE_BARN)}
                             navnPåForeldre={navnPåForeldre}
                             perioder={barnInnlagtPerioder}
                             updateAttachments={updateAttachments}
                         />
                         <MorStudererDokumentasjon
-                            attachments={morStudererVedlegg}
+                            attachments={formMethods.watch(Skjemanummer.DOK_UTDANNING_MOR)}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morStudererPerioder}
                             updateAttachments={updateAttachments}
                         />
                         <MorJobberDokumentasjon
-                            attachments={morJobberVedlegg}
+                            attachments={formMethods.watch(Skjemanummer.DOK_ARBEID_MOR)}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morJobberPerioder}
                             erFarEllerMedmor={erFarEllerMedmor}
                             updateAttachments={updateAttachments}
                         />
                         <MorJobberOgStudererDokumentasjon
-                            attachments={morJobberOgStudererVedlegg}
+                            attachments={formMethods.watch(Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR)}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morJobberOgStudererPerioder}
                             updateAttachments={updateAttachments}
                         />
                         <MorIntroduksjonsprogrammetDokumentasjon
-                            attachments={morIntroprogramVedlegg}
+                            attachments={formMethods.watch(Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET)}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morIntroPerioder}
                             updateAttachments={updateAttachments}
                         />
                         <MorKvalifiseringsprogrammetDokumentasjon
-                            attachments={morKvalprogramVedlegg}
+                            attachments={formMethods.watch(Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM)}
                             navnPåForeldre={navnPåForeldre}
                             perioder={morKvalPerioder}
                             updateAttachments={updateAttachments}
                         />
                         <AleneomsorgDokumentasjon
-                            attachments={aleneomsorgVedlegg}
+                            attachments={formMethods.watch(Skjemanummer.DOK_AV_ALENEOMSORG)}
                             updateAttachments={updateAttachments}
                             annenForelder={annenForelder}
                         />
                         <TerminbekreftelseDokumentasjon
-                            attachments={terminbekreftelseVedlegg}
+                            attachments={formMethods.watch(Skjemanummer.TERMINBEKREFTELSE)}
                             updateAttachments={updateAttachments}
                             barn={barn}
                             annenForelder={annenForelder}
@@ -299,17 +299,17 @@ export const ManglendeVedlegg = ({
                             erFarEllerMedmor={erFarEllerMedmor}
                         />
                         <OmsorgsovertakelseDokumentasjon
-                            attachments={adopsjonVedlegg}
+                            attachments={formMethods.watch(Skjemanummer.OMSORGSOVERTAKELSE)}
                             updateAttachments={updateAttachments}
                             søkersituasjon={søkersituasjon}
                         />
                         <EtterlønnEllerSluttvederlagDokumentasjon
-                            attachments={etterlønnEllerSluttvederlagVedlegg}
+                            attachments={formMethods.watch(Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG)}
                             updateAttachments={updateAttachments}
                             andreInntektskilder={andreInntektskilder}
                         />
                         <MilitærEllerSiviltjenesteDokumentasjon
-                            attachments={militærEllerSiviltjenesteVedlegg}
+                            attachments={formMethods.watch(Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE)}
                             updateAttachments={updateAttachments}
                             andreInntektskilder={andreInntektskilder}
                         />

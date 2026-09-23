@@ -3,6 +3,7 @@ import { Action, SvpDataContext } from 'appData/SvpDataContext';
 import { API_URLS } from 'appData/queries';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
+import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 import { ingenSaker, saker } from 'storybookData/saker/saker';
 
@@ -25,9 +26,11 @@ const meta = {
     decorators: [withQueryClient],
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
         return (
-            <SvpDataContext onDispatch={gåTilNesteSide}>
-                <Forside {...rest} />
-            </SvpDataContext>
+            <MemoryRouter>
+                <SvpDataContext onDispatch={gåTilNesteSide}>
+                    <Forside {...rest} />
+                </SvpDataContext>
+            </MemoryRouter>
         );
     },
 } satisfies Meta<StoryArgs>;

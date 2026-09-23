@@ -5,6 +5,7 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 
+import { Skjemautkast } from '@navikt/fp-form-hooks';
 import { EksternArbeidsforholdDto_fpoversikt, FpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 
 import { FrilansSteg } from './FrilansSteg';
@@ -15,6 +16,7 @@ const promiseAction = () => () => {
 };
 
 type StoryArgs = {
+    skjemautkast?: Skjemautkast;
     gåTilNesteSide?: (action: Action) => void;
     frilansoppdrag?: EksternArbeidsforholdDto_fpoversikt[];
 } & ComponentProps<typeof FrilansSteg>;
@@ -22,7 +24,13 @@ type StoryArgs = {
 const meta = {
     title: 'steps/FrilansSteg',
     component: FrilansSteg,
-    render: ({ gåTilNesteSide = action('button-click'), frilansoppdrag = [], søkerInfo: _søkerInfo, ...rest }) => {
+    render: ({
+        gåTilNesteSide = action('button-click'),
+        frilansoppdrag = [],
+        søkerInfo: _søkerInfo,
+        skjemautkast,
+        ...rest
+    }) => {
         const søkerInfo: FpPersonopplysningerDto_fpoversikt = {
             arbeidsforhold: [],
             barn: [],
@@ -40,6 +48,7 @@ const meta = {
                 <FpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{
+                        [ContextDataType.SKJEMAUTKAST]: skjemautkast,
                         [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
                             harJobbetSomFrilans: true,
                             harJobbetSomSelvstendigNæringsdrivende: false,

@@ -1,10 +1,11 @@
 import { composeStories } from '@storybook/react-vite';
-import { screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ContextDataType } from 'appData/SvpDataContext';
+import { Action, ContextDataType } from 'appData/SvpDataContext';
 import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Skjemautkast } from '@navikt/fp-form-hooks';
 import { Attachment } from '@navikt/fp-types';
 
 import * as stories from './SkjemaSteg.stories';
@@ -13,6 +14,38 @@ const { SkalIkkeFeileOpplasting, MedVedlegg, MedToTilrettelegginger, ErTypeFrila
     composeStories(stories);
 
 describe('<SkjemaSteg>', () => {
+    it('gjenoppretter et nytt vedlegg på riktig arbeidsforhold etter fortsett senere', async () => {
+        let skjemautkast: Skjemautkast | undefined;
+        const gåTilNesteSide = vi.fn((action: Action) => {
+            if (action.type === 'update' && action.key === ContextDataType.SKJEMAUTKAST) {
+                skjemautkast = action.data as Skjemautkast;
+            }
+        });
+        await SkalIkkeFeileOpplasting.run({
+            args: {
+                ...SkalIkkeFeileOpplasting.args,
+                gåTilNesteSide,
+                mellomlagreSøknadOgNaviger: () => new Promise<void>(() => {}),
+            },
+        });
+        await userEvent.upload(
+            screen.getByLabelText('Last opp skjema for risiko og tilrettelegging i svangerskapet'),
+            new File(['innhold'], 'tilrettelegging.png', { type: 'image/png' }),
+        );
+        await waitFor(() => expect(screen.queryByText('Laster opp...')).not.toBeInTheDocument());
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett senere' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Ok' }));
+        expect(skjemautkast).toMatchObject({
+            route: addTilretteleggingIdToRoute(SøknadRoute.SKJEMA, '990322244'),
+            verdier: { vedlegg: [expect.objectContaining({ uuid: 'uuid-test', uploaded: true })] },
+        });
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
+
+        const lagretJson = JSON.stringify(skjemautkast);
+        const gjenåpnet = render(<SkalIkkeFeileOpplasting skjemautkast={JSON.parse(lagretJson) as Skjemautkast} />);
+        expect(within(gjenåpnet.container).getByText('tilrettelegging.png')).toBeInTheDocument();
+    });
+
     it('skal vise feilmelding når en ikke har lastet opp minst ett vedlegg', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();

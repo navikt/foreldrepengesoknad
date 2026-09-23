@@ -1,9 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { Action, SvpDataContext } from 'appData/SvpDataContext';
+import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
 import { SøknadRoute } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
+
+import { Skjemautkast } from '@navikt/fp-form-hooks';
 
 import { BarnetSteg } from './BarnetSteg';
 
@@ -13,16 +15,20 @@ const promiseAction = () => () => {
 };
 
 type StoryArgs = {
+    skjemautkast?: Skjemautkast;
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof BarnetSteg>;
 
 const meta = {
     title: 'steps/BarnetSteg',
     component: BarnetSteg,
-    render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
+    render: ({ gåTilNesteSide = action('button-click'), skjemautkast, ...rest }) => {
         return (
             <MemoryRouter initialEntries={[SøknadRoute.BARNET]}>
-                <SvpDataContext onDispatch={gåTilNesteSide}>
+                <SvpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{ [ContextDataType.SKJEMAUTKAST]: skjemautkast }}
+                >
                     <BarnetSteg {...rest} />
                 </SvpDataContext>
             </MemoryRouter>

@@ -1,11 +1,12 @@
 import { composeStories } from '@storybook/react-vite';
-import { screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ContextDataType } from 'appData/FpDataContext';
+import { Action, ContextDataType } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { expect } from 'vitest';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Skjemautkast } from '@navikt/fp-form-hooks';
 import { Attachment } from '@navikt/fp-types';
 
 import * as stories from './ManglendeVedlegg.stories';
@@ -21,6 +22,33 @@ const {
 } = composeStories(stories);
 
 describe('<ManglendeVedlegg>', () => {
+    it('gjenoppretter et nytt vedlegg fra utkastet uten å erstatte det med send senere', async () => {
+        let skjemautkast: Skjemautkast | undefined;
+        const gåTilNesteSide = vi.fn((action: Action) => {
+            if (action.type === 'update' && action.data && typeof action.data === 'object' && 'skjema' in action.data) {
+                skjemautkast = action.data;
+            }
+        });
+        await Termindatodokumentasjon.run({
+            args: { ...Termindatodokumentasjon.args, gåTilNesteSide },
+        });
+        await userEvent.upload(
+            screen.getByLabelText('Dokumentasjon av termindato'),
+            new File(['innhold'], 'bekreftelse.png', { type: 'image/png' }),
+        );
+        await waitFor(() => expect(screen.queryByText('Laster opp...')).not.toBeInTheDocument());
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett senere' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Ok' }));
+        expect(skjemautkast?.verdier[Skjemanummer.TERMINBEKREFTELSE]).toEqual([
+            expect.objectContaining({ uuid: 'uuid-test', filename: 'bekreftelse.png', uploaded: true }),
+        ]);
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
+
+        const lagretJson = JSON.stringify(skjemautkast);
+        const gjenåpnet = render(<Termindatodokumentasjon skjemautkast={JSON.parse(lagretJson) as Skjemautkast} />);
+        expect(within(gjenåpnet.container).getByText('bekreftelse.png')).toBeInTheDocument();
+    });
+
     it('skal lage "send inn senere" vedlegg for terminbekreftelse', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();

@@ -2,7 +2,6 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
 import dayjs, { Dayjs } from 'dayjs';
-import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Barn } from 'types/Barn';
 
@@ -14,6 +13,7 @@ import {
     RhfForm,
     RhfRadioGroup,
     StepButtonsHookForm,
+    useFormMedUtkast,
 } from '@navikt/fp-form-hooks';
 import { loggUmamiEvent } from '@navikt/fp-observability';
 import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
@@ -72,11 +72,12 @@ export const BarnetSteg = ({
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
 
     const onSubmit = (values: Barn) => {
+        formMethods.slettUtkast();
         oppdaterOmBarnet(values);
         return navigator.goToNextDefaultStep();
     };
 
-    const formMethods = useForm<Barn>({
+    const formMethods = useFormMedUtkast<Barn>('BarnetSteg', {
         shouldUnregister: true,
         defaultValues: barnet,
     });

@@ -1,4 +1,3 @@
-import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
@@ -10,6 +9,7 @@ import {
     RhfForm,
     RhfRadioGroup,
     StepButtonsHookForm,
+    useFormMedUtkast,
 } from '@navikt/fp-form-hooks';
 import { Frilans } from '@navikt/fp-types';
 import { ProgressStep, Step } from '@navikt/fp-ui';
@@ -44,7 +44,7 @@ export const FrilansPanel = <TYPE extends string>({
 }: Props<TYPE>) => {
     const intl = useIntl();
 
-    const formMethods = useForm<FrilansFormValues>({
+    const formMethods = useFormMedUtkast<FrilansFormValues>('FrilansPanel', {
         defaultValues: {
             oppstart: frilans?.oppstart ?? forhåndsutfyltOppstart,
             jobberFremdelesSomFrilans: frilans ? !frilans.tom : undefined,
@@ -56,6 +56,7 @@ export const FrilansPanel = <TYPE extends string>({
     const oppstart = formMethods.watch('oppstart');
 
     const onSubmit = (values: FrilansFormValues) => {
+        formMethods.slettUtkast();
         saveOnNext({
             oppstart: values.oppstart,
             tom: values.jobberFremdelesSomFrilans ? undefined : values.tom,

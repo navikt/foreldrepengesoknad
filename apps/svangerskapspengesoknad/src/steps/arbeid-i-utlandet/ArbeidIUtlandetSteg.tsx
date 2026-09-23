@@ -1,14 +1,13 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
-import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { ArbeidIUtlandet, ArbeidIUtlandetType } from 'types/ArbeidIUtlandet';
 import { getRuteVelgArbeidEllerSkjema } from 'utils/tilretteleggingUtils';
 
 import { VStack } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm, useFormMedUtkast } from '@navikt/fp-form-hooks';
 import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -43,6 +42,7 @@ export const ArbeidIUtlandetSteg = ({
     const oppdaterArbeidIUtlandet = useContextSaveData(ContextDataType.ARBEID_I_UTLANDET);
 
     const onSubmit = (values: ArbeidIUtlandet) => {
+        formMethods.slettUtkast();
         oppdaterArbeidIUtlandet({
             arbeidIUtlandet: values.arbeidIUtlandet.map((v) => ({
                 ...v,
@@ -55,7 +55,7 @@ export const ArbeidIUtlandetSteg = ({
         );
     };
 
-    const formMethods = useForm<ArbeidIUtlandet>({
+    const formMethods = useFormMedUtkast<ArbeidIUtlandet>('ArbeidIUtlandetSteg', {
         shouldUnregister: true,
         defaultValues: arbeidIUtlandet || {
             arbeidIUtlandet: [NEW_ARBEID_I_UTLANDET],

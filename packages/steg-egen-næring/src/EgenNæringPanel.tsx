@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import minMax from 'dayjs/plugin/minMax';
-import type { ReactNode } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { type ReactNode, type Ref, useImperativeHandle } from 'react';
+import { FormProvider } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Label, List, Radio, ReadMore, VStack, omit } from '@navikt/ds-react';
@@ -14,6 +14,7 @@ import {
     RhfRadioGroup,
     RhfTextField,
     StepButtonsHookForm,
+    useFormMedUtkast,
 } from '@navikt/fp-form-hooks';
 import { loggUmamiEvent } from '@navikt/fp-observability';
 import { AppName, NæringDto, SelvstendigNæringDto_fpoversikt } from '@navikt/fp-types';
@@ -89,6 +90,11 @@ interface EgenNæringFormProps {
     children?: ReactNode;
     renderActions?: (submitForm: () => Promise<void>) => ReactNode;
     withoutFormElement?: boolean;
+    utkast?: NæringFormValues;
+    utkastRef?: Ref<{
+        hentVerdier: () => NæringFormValues;
+        valider: () => Promise<boolean>;
+    }>;
 }
 
 export const EGEN_NÆRING_ID = 'naering';
@@ -103,6 +109,8 @@ export const EgenNæringForm = ({
     children,
     renderActions,
     withoutFormElement = false,
+    utkast,
+    utkastRef,
 }: EgenNæringFormProps) => {
     const intl = useIntl();
 
@@ -117,7 +125,7 @@ export const EgenNæringForm = ({
         fixedNæringstype ?? registrertNæring?.næringstype ?? (næringstype === 'FISKE' ? 'FISKE' : undefined);
     const registrertINorgeDefault = registrertNæring ? true : (fixedRegistrertINorge ?? egenNæring?.registrertINorge);
 
-    const formMethods = useForm<NæringFormValues>({
+    const formMethods = useFormMedUtkast<NæringFormValues>('EgenNæringPanel', {
         shouldUnregister: true,
         defaultValues: {
             ...egenNæring,
@@ -126,8 +134,14 @@ export const EgenNæringForm = ({
             organisasjonsnummer: registrertNæring?.organisasjonsnummer ?? egenNæring?.organisasjonsnummer,
             registrertINorge: registrertINorgeDefault,
             pågående: egenNæringDefaultValue,
+            ...utkast,
         },
     });
+
+    useImperativeHandle(utkastRef, () => ({
+        hentVerdier: formMethods.getValues,
+        valider: () => formMethods.trigger(),
+    }));
 
     const navnPåNæringSpm = intl.formatMessage({ id: 'egenNæring.navnPåNæring' });
 
@@ -147,6 +161,7 @@ export const EgenNæringForm = ({
 
     const handleSubmit = (values: NæringFormValues) => {
         const valuesUtenPågående = omit(values, ['pågående']);
+        formMethods.slettUtkast();
         onSubmit(valuesUtenPågående);
     };
 

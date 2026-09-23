@@ -1,10 +1,12 @@
 import { SøknadRoutes } from 'appData/routes';
 import { JSX, ReactNode, createContext, use, useCallback, useEffect, useReducer, useRef } from 'react';
+import { useLocation } from 'react-router';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { AnnenForelder } from 'types/AnnenForelder';
 import { Fordeling } from 'types/Fordeling';
 import { VedleggDataType } from 'types/VedleggDataType';
 
+import { Skjemautkast, SkjemautkastProvider } from '@navikt/fp-form-hooks';
 import {
     ArbeidsforholdOgInntektFp,
     Barn,
@@ -19,6 +21,7 @@ import {
 } from '@navikt/fp-types';
 
 export enum ContextDataType {
+    SKJEMAUTKAST = 'SKJEMAUTKAST',
     APP_ROUTE = 'APP_ROUTE',
     VALGT_EKSISTERENDE_SAKSNR = 'VALGT_EKSISTERENDE_SAKSNR',
     SØKERSITUASJON = 'SØKERSITUASJON',
@@ -46,6 +49,7 @@ export type OpprinneligUttaksplan = {
 };
 
 export type ContextDataMap = {
+    [ContextDataType.SKJEMAUTKAST]?: Skjemautkast;
     [ContextDataType.APP_ROUTE]?: SøknadRoutes;
     [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]?: string;
     [ContextDataType.SØKERSITUASJON]?: SøkersituasjonFp;
@@ -83,6 +87,7 @@ interface Props {
 }
 
 export const FpDataContext = ({ children, initialState, onDispatch }: Props): JSX.Element => {
+    const { pathname } = useLocation();
     const [state, dispatch] = useReducer((oldState: ContextDataMap, action: Action) => {
         switch (action.type) {
             case 'update': {
@@ -115,7 +120,15 @@ export const FpDataContext = ({ children, initialState, onDispatch }: Props): JS
 
     return (
         <FpStateContext value={state}>
-            <FpDispatchContext value={dispatchWrapper}>{children}</FpDispatchContext>
+            <FpDispatchContext value={dispatchWrapper}>
+                <SkjemautkastProvider
+                    route={pathname}
+                    utkast={state[ContextDataType.SKJEMAUTKAST]}
+                    lagre={(data) => dispatchWrapper({ type: 'update', key: ContextDataType.SKJEMAUTKAST, data })}
+                >
+                    {children}
+                </SkjemautkastProvider>
+            </FpDispatchContext>
         </FpStateContext>
     );
 };

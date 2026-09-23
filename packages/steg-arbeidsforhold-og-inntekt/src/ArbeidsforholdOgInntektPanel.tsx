@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
@@ -14,7 +14,10 @@ import {
 } from '@navikt/fp-types';
 import { ProgressStep, Step, StepButtons } from '@navikt/fp-ui';
 
-import { LeggTilAndreInntekterWizard } from './components/andre-inntekter/LeggTilAndreInntekterWizard.tsx';
+import {
+    type InntektswizardHandlinger,
+    LeggTilAndreInntekterWizard,
+} from './components/andre-inntekter/LeggTilAndreInntekterWizard.tsx';
 import { ArbeidsforholdInformasjon } from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import { BrukerKanIkkeSøke } from './components/bruker-kan-ikke-søke/BrukerKanIkkeSøke';
 import { InfoOmArbeidIUtlandet } from './components/info-om-arbeid-i-utlandet/InfoOmArbeidIUtlandet';
@@ -57,6 +60,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const formMethods = useForm();
+    const inntektswizardRef = useRef<InntektswizardHandlinger>(null);
 
     const ferdigeAndreInntektskilder = andreInntektskilder.filter(erFerdigUtfylt);
 
@@ -75,7 +79,11 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
         <Step steps={stepConfig} onStepChange={onStepChange}>
             <RhfForm
                 formMethods={formMethods}
-                onSubmit={() => {
+                onSubmit={async () => {
+                    if (inntektswizardRef.current?.erÅpen) {
+                        await inntektswizardRef.current.valider();
+                        return;
+                    }
                     setIsSubmitting(true);
                     const registrerteArbeidsforhold = {
                         harJobbetSomFrilans: hattInntektSomFrilans,
@@ -116,6 +124,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                     </VStack>
                     <VStack gap="space-4">
                         <LeggTilAndreInntekterWizard
+                            utkastRef={inntektswizardRef}
                             appOrigin={appOrigin}
                             harRegistrertNæring={registrerteNæringer.length > 0}
                             harEgenNæring={egenNæring !== undefined}
@@ -129,11 +138,21 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                     <VStack gap="space-16">{erSvp && <InfoOmFørstegangstjeneste />}</VStack>
                     {erSvp && kanIkkeSøke && <BrukerKanIkkeSøke />}
                     <StepButtons
-                        onFortsettSenere={onFortsettSenere}
+                        onFortsettSenere={
+                            onFortsettSenere
+                                ? () => {
+                                      inntektswizardRef.current?.lagreUtkast();
+                                      onFortsettSenere();
+                                  }
+                                : undefined
+                        }
                         onAvsluttOgSlett={onAvsluttOgSlett}
                         isNextButtonVisible={!erSvp || (erSvp && !kanIkkeSøke)}
                         isDisabledAndLoading={isSubmitting}
-                        goToPreviousStep={goToPreviousStep}
+                        goToPreviousStep={() => {
+                            inntektswizardRef.current?.oppdaterUtkast();
+                            goToPreviousStep();
+                        }}
                     />
                 </VStack>
             </RhfForm>

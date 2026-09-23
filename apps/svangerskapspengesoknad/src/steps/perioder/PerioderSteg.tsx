@@ -2,7 +2,6 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { RouteParams, SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
-import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router';
 import { PeriodeMedVariasjon } from 'types/Tilrettelegging';
@@ -15,7 +14,7 @@ import {
 
 import { BodyShort, Heading, VStack } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm, useFormMedUtkast } from '@navikt/fp-form-hooks';
 import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -67,6 +66,7 @@ export const PerioderSteg = ({
     const valgtTilrettelegging = tilrettelegginger[valgtTilretteleggingId]!;
 
     const onSubmit = (values: TilretteleggingPerioderFormValues) => {
+        formMethods.slettUtkast();
         oppdaterTilretteleggingerPerioder({
             ...tilretteleggingerPerioder,
             [valgtTilretteleggingId]: values.varierendePerioder,
@@ -86,7 +86,7 @@ export const PerioderSteg = ({
         );
     };
 
-    const formMethods = useForm<TilretteleggingPerioderFormValues>({
+    const formMethods = useFormMedUtkast<TilretteleggingPerioderFormValues>('PerioderSteg', {
         defaultValues: { varierendePerioder: tilretteleggingerPerioder?.[valgtTilretteleggingId] ?? [NEW_PERIODE] },
     });
 

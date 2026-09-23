@@ -5,6 +5,7 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 
+import { Skjemautkast } from '@navikt/fp-form-hooks';
 import { Situasjon } from '@navikt/fp-types';
 
 import { OmBarnetSteg } from './OmBarnetSteg';
@@ -15,6 +16,7 @@ const promiseAction = () => (): Promise<void> => {
 };
 
 type StoryArgs = {
+    skjemautkast?: Skjemautkast;
     søkersituasjon: Situasjon;
     gåTilNesteSide: (action: Action) => void;
 } & ComponentProps<typeof OmBarnetSteg>;
@@ -22,11 +24,14 @@ type StoryArgs = {
 const meta = {
     title: 'steg/OmBarnetSteg',
     component: OmBarnetSteg,
-    render: ({ søkersituasjon, kjønn, gåTilNesteSide, mellomlagreOgNaviger }) => {
+    render: ({ søkersituasjon, kjønn, gåTilNesteSide, mellomlagreOgNaviger, skjemautkast }) => {
         return (
             <MemoryRouter initialEntries={[Path.OM_BARNET]}>
                 <EsDataContext
-                    initialState={{ [ContextDataType.SØKERSITUASJON]: { situasjon: søkersituasjon } }}
+                    initialState={{
+                        [ContextDataType.SØKERSITUASJON]: { situasjon: søkersituasjon },
+                        [ContextDataType.SKJEMAUTKAST]: skjemautkast,
+                    }}
                     onDispatch={gåTilNesteSide}
                 >
                     <OmBarnetSteg kjønn={kjønn} mellomlagreOgNaviger={mellomlagreOgNaviger} />

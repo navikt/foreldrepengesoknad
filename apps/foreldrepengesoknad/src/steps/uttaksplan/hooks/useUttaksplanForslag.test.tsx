@@ -1,6 +1,7 @@
 import { renderHook } from '@testing-library/react';
 import { ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { ReactNode } from 'react';
+import { MemoryRouter } from 'react-router';
 import { OppstartValg } from 'types/Fordeling';
 
 import { BarnType } from '@navikt/fp-constants';
@@ -18,7 +19,11 @@ const STØNADSKVOTE: KontoBeregningDto = {
 
 const getWrapper =
     (initialState: ConstructorParameters<typeof Object>[0]) =>
-    ({ children }: { children: ReactNode }) => <FpDataContext initialState={initialState}>{children}</FpDataContext>;
+    ({ children }: { children: ReactNode }) => (
+        <MemoryRouter>
+            <FpDataContext initialState={initialState}>{children}</FpDataContext>
+        </MemoryRouter>
+    );
 
 const baseFarDeltUttakContext = {
     [ContextDataType.SØKERSITUASJON]: { situasjon: 'fødsel' as const, rolle: 'far' as const },

@@ -7,6 +7,7 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 
+import { Skjemautkast } from '@navikt/fp-form-hooks';
 import { Utenlandsopphold } from '@navikt/fp-types';
 
 import { SenereUtenlandsoppholdSteg } from './SenereUtenlandsoppholdSteg';
@@ -22,6 +23,7 @@ const defaultUtenlandsopphold = {
 };
 
 type StoryArgs = {
+    skjemautkast?: Skjemautkast;
     utenlandsopphold?: Utenlandsopphold;
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof SenereUtenlandsoppholdSteg>;
@@ -40,12 +42,18 @@ const meta = {
         );
     },
 
-    render: ({ gåTilNesteSide = action('button-click'), utenlandsopphold = defaultUtenlandsopphold, ...rest }) => {
+    render: ({
+        gåTilNesteSide = action('button-click'),
+        utenlandsopphold = defaultUtenlandsopphold,
+        skjemautkast,
+        ...rest
+    }) => {
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.SENERE_UTENLANDSOPPHOLD]}>
                 <FpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{
+                        [ContextDataType.SKJEMAUTKAST]: skjemautkast,
                         [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
                     }}
                 >

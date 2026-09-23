@@ -1,11 +1,12 @@
 import { composeStories } from '@storybook/react-vite';
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ContextDataType } from 'appData/EsDataContext';
+import { Action, ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import dayjs from 'dayjs';
 
 import { AttachmentType, DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
+import { Skjemautkast } from '@navikt/fp-form-hooks';
 import { Attachment } from '@navikt/fp-types';
 
 import * as stories from './DokumentasjonSteg.stories';
@@ -13,6 +14,64 @@ import * as stories from './DokumentasjonSteg.stories';
 const { Terminbekreftelse, Adopsjonsbekreftelse } = composeStories(stories);
 
 describe('<DokumentasjonSteg>', () => {
+    it('beholder utkastet ved manglende vedlegg og når brukeren går tilbake', async () => {
+        const skjemautkast: Skjemautkast = {
+            route: Path.TERMINBEKREFTELSE,
+            skjema: 'DokumentasjonSteg',
+            verdier: { terminbekreftelsedato: dayjs().format(ISO_DATE_FORMAT), vedlegg: [] },
+        };
+        let lagretUtkast = skjemautkast;
+        const gåTilNesteSide = vi.fn((action: Action) => {
+            if (action.type === 'update' && action.data && typeof action.data === 'object' && 'skjema' in action.data) {
+                lagretUtkast = action.data;
+            }
+        });
+        const visning = render(<Terminbekreftelse skjemautkast={skjemautkast} gåTilNesteSide={gåTilNesteSide} />);
+        await userEvent.click(screen.getByRole('button', { name: 'Neste steg' }));
+        expect(await screen.findByText('Du må laste opp bekreftelse på termindato')).toBeInTheDocument();
+        expect(gåTilNesteSide).not.toHaveBeenCalled();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Forrige steg' }));
+        expect(gåTilNesteSide).toHaveBeenCalledWith({
+            type: 'update',
+            key: ContextDataType.SKJEMAUTKAST,
+            data: skjemautkast,
+        });
+        visning.unmount();
+        render(<Terminbekreftelse skjemautkast={lagretUtkast} />);
+        expect(screen.getByLabelText('Når fikk du terminbekreftelsen?')).toHaveValue(
+            dayjs().format(DDMMYYYY_DATE_FORMAT),
+        );
+    });
+
+    it('beholder et nytt vedlegg selv om terminbekreftelsesdatoen mangler', async () => {
+        let skjemautkast: Skjemautkast | undefined;
+        const gåTilNesteSide = vi.fn((action: Action) => {
+            if (action.type === 'update' && action.data && typeof action.data === 'object' && 'skjema' in action.data) {
+                skjemautkast = action.data;
+            }
+        });
+        const mellomlagreOgNaviger = vi.fn(() => new Promise<void>(() => {}));
+        await Terminbekreftelse.run({ args: { ...Terminbekreftelse.args, gåTilNesteSide, mellomlagreOgNaviger } });
+        await userEvent.upload(
+            screen.getByLabelText('Last opp bekreftelse på termindato'),
+            new File(['filinnhold-som-ikke-skal-mellomlagres'], 'bekreftelse.png', { type: 'image/png' }),
+        );
+        await waitFor(() => expect(screen.queryByText('Laster opp...')).not.toBeInTheDocument());
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett senere' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Ok' }));
+
+        expect(skjemautkast?.verdier).toMatchObject({
+            vedlegg: [expect.objectContaining({ uuid: 'uuid-test', uploaded: true, filename: 'bekreftelse.png' })],
+        });
+        const serialisert = JSON.stringify(skjemautkast);
+        expect(serialisert).not.toContain('filinnhold-som-ikke-skal-mellomlagres');
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
+        const gjenåpnet = render(<Terminbekreftelse skjemautkast={JSON.parse(serialisert) as Skjemautkast} />);
+        expect(within(gjenåpnet.container).getByText('bekreftelse.png')).toBeInTheDocument();
+        expect(within(gjenåpnet.container).getByLabelText('Når fikk du terminbekreftelsen?')).toHaveValue('');
+    });
+
     it('skal laste opp terminbekreftelse', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreOgNaviger = vi.fn();

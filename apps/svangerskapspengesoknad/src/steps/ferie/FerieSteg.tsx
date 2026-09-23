@@ -4,7 +4,7 @@ import { RouteParams, SøknadRoute, addTilretteleggingIdToRoute } from 'appData/
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
 import dayjs from 'dayjs';
-import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router';
 import { getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
@@ -18,6 +18,7 @@ import {
     RhfForm,
     RhfRadioGroup,
     StepButtonsHookForm,
+    useFormMedUtkast,
 } from '@navikt/fp-form-hooks';
 import { AvtaltFerieDto, EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { HorizontalLine, SkjemaRotLayout, Step } from '@navikt/fp-ui';
@@ -62,12 +63,13 @@ export function FerieSteg({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
     const ferie = useContextGetData(ContextDataType.FERIE);
     const eksisterendeSkjemaVerdier = ferie?.[arbeidsgiverId];
 
-    const formMethods = useForm<FerieFormData>({
+    const formMethods = useFormMedUtkast<FerieFormData>('FerieSteg', {
         mode: 'onSubmit',
         defaultValues: eksisterendeSkjemaVerdier || DEFAULT_FERIE_VALUES,
     });
 
     const onSubmit = (values: FerieFormData) => {
+        formMethods.slettUtkast();
         const feriePerioderFraSubmit = values.skalHaFerie ? (values.feriePerioder as AvtaltFerieDto[]) : [];
         const nyeAvtaltFeriePerioder = feriePerioderFraSubmit.map((feriePeriode) => ({
             ...feriePeriode,

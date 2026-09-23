@@ -6,14 +6,13 @@ import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useStepConfig } from 'appData/useStepConfig';
 import { isEqual } from 'es-toolkit';
 import { RegistrertePersonalia } from 'pages/registrerte-personalia/RegistrertePersonalia';
-import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getRegistrerteBarnOmDeFinnes } from 'utils/barnUtils';
 
 import { VStack } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm, useFormMedUtkast } from '@navikt/fp-form-hooks';
 import { Barn, FpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-utils';
@@ -76,6 +75,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
     const skalOppgiPersonalia = annenForelderFraRegistrertBarn === undefined || oppgittFnrErUlikRegistrertBarn;
 
     const onSubmit = (values: AnnenForelder) => {
+        formMethods.slettUtkast();
         if (values.kanIkkeOppgis) {
             const nyttGrunnlag = { kanIkkeOppgis: true as const };
             const gjeldendeGrunnlag = annenForelder
@@ -135,7 +135,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
         return navigator.goToNextStep();
     };
 
-    const formMethods = useForm<AnnenForelder>({
+    const formMethods = useFormMedUtkast<AnnenForelder>('AnnenForelderSteg', {
         shouldUnregister: true,
         defaultValues:
             annenForelder &&

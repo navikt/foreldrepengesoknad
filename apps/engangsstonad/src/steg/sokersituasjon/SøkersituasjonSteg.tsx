@@ -1,12 +1,17 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
 import { useEsNavigator } from 'appData/useEsNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
-import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Radio, VStack } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import {
+    ErrorSummaryHookForm,
+    RhfForm,
+    RhfRadioGroup,
+    StepButtonsHookForm,
+    useFormMedUtkast,
+} from '@navikt/fp-form-hooks';
 import { Søkersituasjon } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
@@ -25,11 +30,12 @@ export const SøkersituasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
     const oppdaterSøkersituasjon = useContextSaveData(ContextDataType.SØKERSITUASJON);
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
 
-    const formMethods = useForm<Søkersituasjon>({
+    const formMethods = useFormMedUtkast<Søkersituasjon>('SøkersituasjonSteg', {
         defaultValues: søkersituasjon,
     });
 
     const lagre = (formValues: Søkersituasjon) => {
+        formMethods.slettUtkast();
         oppdaterSøkersituasjon(formValues);
         if (søkersituasjon && søkersituasjon.situasjon !== formValues.situasjon) {
             oppdaterOmBarnet(undefined);

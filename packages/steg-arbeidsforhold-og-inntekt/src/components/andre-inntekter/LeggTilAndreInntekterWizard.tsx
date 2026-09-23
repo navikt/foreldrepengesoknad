@@ -1,11 +1,11 @@
 import { ExclamationmarkTriangleIcon, InformationSquareIcon, PersonEnvelopeIcon } from '@navikt/aksel-icons';
-import { useState } from 'react';
+import { type ComponentProps, type Ref, useImperativeHandle, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Heading, InfoCard, Label, Radio, RadioGroup, ReadMore, VStack } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, useFormMedUtkast } from '@navikt/fp-form-hooks';
 import { EgenNæringForm } from '@navikt/fp-steg-egen-naering';
 import type { AppName, NæringDto } from '@navikt/fp-types';
 
@@ -20,12 +20,36 @@ type WizardStep = 'START' | 'VELG_INNTEKTSTYPE' | 'EGEN_NÆRING' | 'FISKER' | 'A
 
 type Inntektstype = 'EGEN_NÆRING' | 'FISKER' | 'ANNEN_INNTEKT';
 
+type Næringsutkast = ComponentProps<typeof EgenNæringForm>['utkast'];
+type NæringsutkastRef = ComponentProps<typeof EgenNæringForm>['utkastRef'];
+type NæringsutkastHandlinger = {
+    hentVerdier: () => NonNullable<Næringsutkast>;
+    valider: () => Promise<boolean>;
+};
+type GrenRef<T> = { hentUtkast: () => T; valider: () => Promise<boolean> };
+
+type InntektswizardUtkast = {
+    step: WizardStep;
+    inntektstype?: Inntektstype;
+    næring?: Næringsutkast;
+    fisker?: FiskerUtkast;
+    annenInntekt?: AnnenInntektUtkast;
+};
+
+export type InntektswizardHandlinger = {
+    lagreUtkast: () => void;
+    oppdaterUtkast: () => void;
+    erÅpen: boolean;
+    valider: () => Promise<boolean>;
+};
+
 interface Props {
     appOrigin: AppName;
     harRegistrertNæring?: boolean;
     harEgenNæring?: boolean;
     onSaveEgenNæring?: (egenNæring: NæringDto) => void;
     onSaveAndreInntekt?: (annenInntekt: AndreInntektskilder) => void;
+    utkastRef?: Ref<InntektswizardHandlinger>;
 }
 
 interface EgenNæringWizardFormProps {
@@ -33,6 +57,8 @@ interface EgenNæringWizardFormProps {
     onSubmit: (egenNæring: NæringDto) => void;
     onAbort: () => void;
     onBack: () => void;
+    utkast?: Næringsutkast;
+    utkastRef?: NæringsutkastRef;
 }
 
 export const LeggTilAndreInntekterWizard = ({
@@ -41,6 +67,7 @@ export const LeggTilAndreInntekterWizard = ({
     harEgenNæring = false,
     onSaveEgenNæring,
     onSaveAndreInntekt,
+    utkastRef,
 }: Props) => {
     return (
         <div className="rounded-xl border border-dashed border-ax-border-neutral bg-ax-bg-input py-4 px-5">
@@ -50,12 +77,20 @@ export const LeggTilAndreInntekterWizard = ({
                 harEgenNæring={harEgenNæring}
                 onSaveEgenNæring={onSaveEgenNæring}
                 onSaveAndreInntekt={onSaveAndreInntekt}
+                utkastRef={utkastRef}
             />
         </div>
     );
 };
 
-const EgenNæringWizardForm = ({ appOrigin, onSubmit, onAbort, onBack }: EgenNæringWizardFormProps) => {
+const EgenNæringWizardForm = ({
+    appOrigin,
+    onSubmit,
+    onAbort,
+    onBack,
+    utkast,
+    utkastRef,
+}: EgenNæringWizardFormProps) => {
     return (
         <>
             <Heading level="2" size="small">
@@ -66,6 +101,8 @@ const EgenNæringWizardForm = ({ appOrigin, onSubmit, onAbort, onBack }: EgenNæ
                 fixedRegistrertINorge
                 onSubmit={onSubmit}
                 withoutFormElement
+                utkast={utkast}
+                utkastRef={utkastRef}
                 renderActions={(submitForm) => (
                     <WizardNavigator isLastStep onCancel={onAbort} onBack={onBack} onNext={() => submitForm()} />
                 )}
@@ -80,14 +117,56 @@ const LeggTilAndreInntekterWizardInner = ({
     harEgenNæring = false,
     onSaveEgenNæring,
     onSaveAndreInntekt,
+    utkastRef,
 }: Props) => {
     const intl = useIntl();
-    const [step, setStep] = useState<WizardStep>('START');
-    const [inntektstype, setInntektstype] = useState<Inntektstype>();
+    const form = useFormMedUtkast<InntektswizardUtkast>('LeggTilAndreInntekterWizard', {
+        defaultValues: { step: 'START' },
+    });
+    const [step, setStep] = useState(form.getValues('step'));
+    const [inntektstype, setInntektstype] = useState(form.getValues('inntektstype'));
+    const næringRef = useRef<NæringsutkastHandlinger>(null);
+    const fiskerRef = useRef<GrenRef<FiskerUtkast>>(null);
+    const annenInntektRef = useRef<GrenRef<AnnenInntektUtkast>>(null);
+
+    const hentUtkast = () => {
+        form.setValue('step', step);
+        form.setValue('inntektstype', inntektstype);
+        form.setValue('næring', næringRef.current?.hentVerdier());
+        form.setValue('fisker', fiskerRef.current?.hentUtkast());
+        form.setValue('annenInntekt', annenInntektRef.current?.hentUtkast());
+    };
+
+    useImperativeHandle(utkastRef, () => ({
+        lagreUtkast: () => {
+            if (step === 'START') {
+                form.slettUtkast();
+                return;
+            }
+            hentUtkast();
+            form.lagreUtkast?.();
+        },
+        oppdaterUtkast: () => {
+            hentUtkast();
+            form.oppdaterUtkast?.();
+        },
+        erÅpen: step !== 'START',
+        valider: () =>
+            næringRef.current?.valider() ??
+            fiskerRef.current?.valider() ??
+            annenInntektRef.current?.valider() ??
+            Promise.resolve(false),
+    }));
 
     const avsluttWizard = () => {
+        form.reset({ step: 'START' });
         setInntektstype(undefined);
         setStep('START');
+    };
+
+    const tilbakeTilInntektstype = () => {
+        form.reset({ step: 'VELG_INNTEKTSTYPE', inntektstype });
+        setStep('VELG_INNTEKTSTYPE');
     };
 
     if (step === 'START') {
@@ -184,9 +263,11 @@ const LeggTilAndreInntekterWizardInner = ({
             <FiskerForm
                 appOrigin={appOrigin}
                 onAbort={avsluttWizard}
-                onBack={() => setStep('VELG_INNTEKTSTYPE')}
+                onBack={tilbakeTilInntektstype}
                 onComplete={avsluttWizard}
                 onSaveEgenNæring={onSaveEgenNæring}
+                utkast={form.getValues('fisker')}
+                utkastRef={fiskerRef}
             />
         );
     }
@@ -197,7 +278,9 @@ const LeggTilAndreInntekterWizardInner = ({
                 appOrigin={appOrigin}
                 harNæring={harRegistrertNæring || harEgenNæring}
                 onAbort={avsluttWizard}
-                onBack={harRegistrertNæring ? undefined : () => setStep('VELG_INNTEKTSTYPE')}
+                onBack={harRegistrertNæring ? undefined : tilbakeTilInntektstype}
+                utkast={form.getValues('annenInntekt')}
+                utkastRef={annenInntektRef}
                 onSubmit={(annenInntekt) => {
                     onSaveAndreInntekt?.(annenInntekt);
                     avsluttWizard();
@@ -219,7 +302,9 @@ const LeggTilAndreInntekterWizardInner = ({
                     avsluttWizard();
                 }}
                 onAbort={avsluttWizard}
-                onBack={() => setStep('VELG_INNTEKTSTYPE')}
+                onBack={tilbakeTilInntektstype}
+                utkast={form.getValues('næring')}
+                utkastRef={næringRef}
             />
         );
     }
@@ -236,6 +321,8 @@ interface WizardBranchFormProps {
 interface FiskerFormProps extends WizardBranchFormProps {
     appOrigin: AppName;
     onSaveEgenNæring?: (egenNæring: NæringDto) => void;
+    utkast?: FiskerUtkast;
+    utkastRef?: Ref<GrenRef<FiskerUtkast>>;
 }
 
 interface FiskerNæringProps {
@@ -243,16 +330,34 @@ interface FiskerNæringProps {
     onAbort: () => void;
     onBack: () => void;
     onSubmit: (egenNæring: NæringDto) => void;
+    utkast?: Næringsutkast;
+    utkastRef?: NæringsutkastRef;
 }
 
 type FiskerValg = 'lott' | 'hyre' | 'lott_og_hyre' | 'egen_båt';
 
 type FiskerStep = 'VELG_ORDNING' | 'VIS_INFORMASJON';
 
-const FiskerForm = ({ appOrigin, onAbort, onBack, onComplete, onSaveEgenNæring }: FiskerFormProps) => {
+type FiskerUtkast = { valg?: FiskerValg; step: FiskerStep; næring?: Næringsutkast };
+
+const FiskerForm = ({
+    appOrigin,
+    onAbort,
+    onBack,
+    onComplete,
+    onSaveEgenNæring,
+    utkast,
+    utkastRef,
+}: FiskerFormProps) => {
     const intl = useIntl();
-    const [fiskerValg, setFiskerValg] = useState<FiskerValg>();
-    const [step, setStep] = useState<FiskerStep>('VELG_ORDNING');
+    const [fiskerValg, setFiskerValg] = useState(utkast?.valg);
+    const [step, setStep] = useState<FiskerStep>(utkast?.step ?? 'VELG_ORDNING');
+    const [næringsutkast, setNæringsutkast] = useState(utkast?.næring);
+    const næringRef = useRef<NæringsutkastHandlinger>(null);
+    useImperativeHandle(utkastRef, () => ({
+        hentUtkast: () => ({ valg: fiskerValg, step, næring: næringRef.current?.hentVerdier() }),
+        valider: () => næringRef.current?.valider() ?? Promise.resolve(false),
+    }));
 
     if (step === 'VELG_ORDNING') {
         return (
@@ -318,7 +423,12 @@ const FiskerForm = ({ appOrigin, onAbort, onBack, onComplete, onSaveEgenNæring 
     const fiskerNæringProps: FiskerNæringProps = {
         appOrigin,
         onAbort,
-        onBack: () => setStep('VELG_ORDNING'),
+        onBack: () => {
+            setNæringsutkast(undefined);
+            setStep('VELG_ORDNING');
+        },
+        utkast: næringsutkast,
+        utkastRef: næringRef,
         onSubmit: (egenNæring) => {
             onSaveEgenNæring?.(egenNæring);
             onComplete();
@@ -337,13 +447,15 @@ const FiskerForm = ({ appOrigin, onAbort, onBack, onComplete, onSaveEgenNæring 
     );
 };
 
-const FiskerEgenNæringForm = ({ appOrigin, onSubmit, onAbort, onBack }: FiskerNæringProps) => (
+const FiskerEgenNæringForm = ({ appOrigin, onSubmit, onAbort, onBack, utkast, utkastRef }: FiskerNæringProps) => (
     <EgenNæringForm
         fixedNæringstype="FISKE"
         fixedRegistrertINorge
         appOrigin={appOrigin}
         onSubmit={onSubmit}
         withoutFormElement
+        utkast={utkast}
+        utkastRef={utkastRef}
         renderActions={(submitForm) => (
             <WizardNavigator isLastStep onCancel={onAbort} onBack={onBack} onNext={() => submitForm()} />
         )}
@@ -442,12 +554,21 @@ interface AnnenInntektFormProps {
     onBack?: () => void;
     onSubmit: (annenInntekt: AndreInntektskilder) => void;
     onSubmitEgenNæring: (egenNæring: NæringDto) => void;
+    utkast?: AnnenInntektUtkast;
+    utkastRef?: Ref<GrenRef<AnnenInntektUtkast>>;
 }
 
 type AnnenInntektValg =
     'JOBB_I_UTLANDET' | 'NÆRING_I_UTLANDET' | 'ETTERLØNN_SLUTTPAKKE' | 'MILITÆR_ELLER_SIVILTJENESTE';
 
 type AnnenInntektStep = 'VELG_INNTEKTSTYPE' | 'FYLL_UT_INNTEKT';
+
+type AnnenInntektUtkast = {
+    valg?: AnnenInntektValg;
+    step: AnnenInntektStep;
+    verdier: AndreInntekterFormValues;
+    næring?: Næringsutkast;
+};
 
 const AnnenInntektForm = ({
     appOrigin,
@@ -456,14 +577,27 @@ const AnnenInntektForm = ({
     onBack,
     onSubmit,
     onSubmitEgenNæring,
+    utkast,
+    utkastRef,
 }: AnnenInntektFormProps) => {
     const intl = useIntl();
-    const [valgtInntektstype, setValgtInntektstype] = useState<AnnenInntektValg>();
-    const [step, setStep] = useState<AnnenInntektStep>('VELG_INNTEKTSTYPE');
+    const [valgtInntektstype, setValgtInntektstype] = useState(utkast?.valg);
+    const [step, setStep] = useState<AnnenInntektStep>(utkast?.step ?? 'VELG_INNTEKTSTYPE');
+    const [næringsutkast, setNæringsutkast] = useState(utkast?.næring);
+    const næringRef = useRef<NæringsutkastHandlinger>(null);
     const formMethods = useForm<AndreInntekterFormValues>({
-        defaultValues: { andreInntektskilder: [{ type: undefined }] },
+        defaultValues: utkast?.verdier ?? { andreInntektskilder: [{ type: undefined }] },
         shouldUnregister: true,
     });
+    useImperativeHandle(utkastRef, () => ({
+        hentUtkast: () => ({
+            valg: valgtInntektstype,
+            step,
+            verdier: formMethods.getValues(),
+            næring: næringRef.current?.hentVerdier(),
+        }),
+        valider: () => næringRef.current?.valider() ?? formMethods.trigger(),
+    }));
     const inntektskilde = formMethods.watch('andreInntektskilder.0') ?? { type: undefined };
 
     const velgInntektstype = (type: AnnenInntektValg) => {
@@ -521,6 +655,9 @@ const AnnenInntektForm = ({
 
     return (
         <FormProvider {...formMethods}>
+            {valgtInntektstype !== 'NÆRING_I_UTLANDET' && (
+                <input type="hidden" {...formMethods.register('andreInntektskilder.0.type')} />
+            )}
             <VStack gap="space-40">
                 <Heading level="2" size="small">
                     <FormattedMessage id="LeggTilAndreInntekterWizard.tittel" />
@@ -532,11 +669,16 @@ const AnnenInntektForm = ({
                         fixedRegistrertINorge={false}
                         onSubmit={onSubmitEgenNæring}
                         withoutFormElement
+                        utkast={næringsutkast}
+                        utkastRef={næringRef}
                         renderActions={(submitEgenNæring) => (
                             <WizardNavigator
                                 isLastStep
                                 onCancel={onAbort}
-                                onBack={() => setStep('VELG_INNTEKTSTYPE')}
+                                onBack={() => {
+                                    setNæringsutkast(undefined);
+                                    setStep('VELG_INNTEKTSTYPE');
+                                }}
                                 onNext={() => submitEgenNæring()}
                             />
                         )}

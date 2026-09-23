@@ -6,12 +6,45 @@ import { SøknadRoute } from 'appData/routes';
 import dayjs from 'dayjs';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { Skjemautkast } from '@navikt/fp-form-hooks';
 
 import * as stories from './BarnetSteg.stories';
 
 const { Default } = composeStories(stories);
 
 describe('<BarnetSteg>', () => {
+    it('gjenoppretter dato og dynamiske felt når et ufullstendig steg lagres', async () => {
+        const skjemautkast: Skjemautkast = {
+            route: SøknadRoute.BARNET,
+            skjema: 'BarnetSteg',
+            verdier: { erBarnetFødt: true, termindato: '2026-09-22', fødselsdato: undefined },
+        };
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn(() => new Promise<void>(() => {}));
+        const visning = render(
+            <Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />,
+        );
+        await userEvent.click(screen.getByText('Ja'));
+        await userEvent.type(screen.getByLabelText('Termindato'), '22.09.2026');
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett senere' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Ok' }));
+
+        expect(gåTilNesteSide).toHaveBeenCalledWith({
+            type: 'update',
+            key: ContextDataType.SKJEMAUTKAST,
+            data: skjemautkast,
+        });
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledWith({ naviger: false, medRetry: true });
+        visning.unmount();
+
+        render(<Default skjemautkast={skjemautkast} />);
+        expect(screen.getByLabelText('Termindato')).toHaveValue('22.09.2026');
+        expect(screen.getByLabelText('Fødselsdato')).toHaveValue('');
+        await userEvent.click(screen.getByRole('button', { name: 'Neste steg' }));
+        expect(screen.getAllByText('Du må oppgi fødselsdato.')).toHaveLength(2);
+    });
+
     it('skal ikke måtte oppgi fødselsdato om barnet ikke er født', async () => {
         render(<Default />);
 

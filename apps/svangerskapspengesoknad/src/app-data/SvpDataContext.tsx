@@ -1,9 +1,11 @@
 import { JSX, ReactNode, createContext, use, useReducer } from 'react';
+import { useLocation } from 'react-router';
 import { ArbeidIUtlandet } from 'types/ArbeidIUtlandet';
 import { AvtaltFeriePerArbeidsgiver } from 'types/AvtaltFerie';
 import { Barn } from 'types/Barn';
 import { DelvisTilrettelegging, IngenTilrettelegging, PeriodeMedVariasjon } from 'types/Tilrettelegging';
 
+import { Skjemautkast, SkjemautkastProvider } from '@navikt/fp-form-hooks';
 import {
     ArbeidsforholdOgInntektSvp,
     Attachment,
@@ -16,6 +18,7 @@ import {
 import { SøknadRoute } from './routes';
 
 export enum ContextDataType {
+    SKJEMAUTKAST = 'SKJEMAUTKAST',
     APP_ROUTE = 'APP_ROUTE',
     OM_BARNET = 'OM_BARNET',
     UTENLANDSOPPHOLD = 'UTENLANDSOPPHOLD',
@@ -33,6 +36,7 @@ export enum ContextDataType {
 }
 
 export type ContextDataMap = {
+    [ContextDataType.SKJEMAUTKAST]?: Skjemautkast;
     [ContextDataType.APP_ROUTE]?: SøknadRoute | string;
     [ContextDataType.OM_BARNET]?: Barn;
     [ContextDataType.UTENLANDSOPPHOLD]?: Utenlandsopphold;
@@ -49,7 +53,7 @@ export type ContextDataMap = {
     [ContextDataType.TILRETTELEGGINGER_PERIODER]?: Record<string, PeriodeMedVariasjon[]>;
 };
 
-const defaultInitialState = {} satisfies ContextDataMap;
+const defaultInitialState: ContextDataMap = {};
 
 export type Action =
     { type: 'update'; key: ContextDataType; data: ContextDataMap[keyof ContextDataMap] } | { type: 'reset' };
@@ -65,6 +69,7 @@ interface Props {
 }
 
 export const SvpDataContext = ({ children, initialState, onDispatch }: Props): JSX.Element => {
+    const { pathname } = useLocation();
     const [state, dispatch] = useReducer((oldState: ContextDataMap, action: Action) => {
         switch (action.type) {
             case 'update': {
@@ -91,7 +96,15 @@ export const SvpDataContext = ({ children, initialState, onDispatch }: Props): J
 
     return (
         <SvpStateContext value={state}>
-            <SvpDispatchContext value={dispatchWrapper}>{children}</SvpDispatchContext>
+            <SvpDispatchContext value={dispatchWrapper}>
+                <SkjemautkastProvider
+                    route={pathname}
+                    utkast={state[ContextDataType.SKJEMAUTKAST]}
+                    lagre={(data) => dispatchWrapper({ type: 'update', key: ContextDataType.SKJEMAUTKAST, data })}
+                >
+                    {children}
+                </SkjemautkastProvider>
+            </SvpDispatchContext>
         </SvpStateContext>
     );
 };

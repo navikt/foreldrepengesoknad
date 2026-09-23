@@ -1,14 +1,43 @@
 import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ContextDataType } from 'appData/FpDataContext';
+import { Action, ContextDataType } from 'appData/FpDataContext';
 import dayjs from 'dayjs';
+
+import { Skjemautkast } from '@navikt/fp-form-hooks';
 
 import * as stories from './FrilansSteg.stories';
 
 const { Default } = composeStories(stories);
 
 describe('<FrilansSteg>', () => {
+    it('lagrer og gjenoppretter en ufullstendig dato uten å validere eller gå videre', async () => {
+        let skjemautkast: Skjemautkast | undefined;
+        const gåTilNesteSide = vi.fn((action: Action) => {
+            if (action.type === 'update' && action.data && typeof action.data === 'object' && 'skjema' in action.data) {
+                skjemautkast = action.data;
+            }
+        });
+        const mellomlagreSøknadOgNaviger = vi.fn(() => new Promise<void>(() => {}));
+        const visning = render(
+            <Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />,
+        );
+        await userEvent.type(screen.getByLabelText('Når startet du som frilanser?'), '12.0');
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett senere' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Ok' }));
+
+        expect(skjemautkast?.verdier).toMatchObject({ oppstart: '12.0' });
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
+        expect(screen.queryByText('Du må rette opp i følgende feil:')).not.toBeInTheDocument();
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce();
+        visning.unmount();
+
+        render(<Default skjemautkast={skjemautkast} />);
+        expect(screen.getByLabelText('Når startet du som frilanser?')).toHaveValue('12.0');
+        await userEvent.click(screen.getByRole('button', { name: 'Neste steg' }));
+        expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+    });
+
     it('skal forhåndsutfylle tidligste startdato fra oppdragene', async () => {
         render(
             <Default

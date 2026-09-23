@@ -1,11 +1,14 @@
 import { JSX, ReactNode, createContext, use, useCallback, useReducer } from 'react';
+import { useLocation } from 'react-router';
 import { Dokumentasjon } from 'types/Dokumentasjon';
 
+import { Skjemautkast, SkjemautkastProvider } from '@navikt/fp-form-hooks';
 import { BarnDto, Søkersituasjon, Utenlandsopphold, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 
 import { Path } from './paths';
 
 export enum ContextDataType {
+    SKJEMAUTKAST = 'SKJEMAUTKAST',
     CURRENT_PATH = 'CURRENT_PATH',
     SØKERSITUASJON = 'SØKERSITUASJON',
     OM_BARNET = 'OM_BARNET',
@@ -16,6 +19,7 @@ export enum ContextDataType {
 }
 
 export type ContextDataMap = {
+    [ContextDataType.SKJEMAUTKAST]?: Skjemautkast;
     [ContextDataType.CURRENT_PATH]?: Path;
     [ContextDataType.SØKERSITUASJON]?: Søkersituasjon;
     [ContextDataType.OM_BARNET]?: BarnDto;
@@ -41,6 +45,7 @@ interface Props {
 }
 
 export const EsDataContext = ({ children, initialState, onDispatch }: Props): JSX.Element => {
+    const { pathname } = useLocation();
     const [state, dispatch] = useReducer((oldState: ContextDataMap, action: Action) => {
         switch (action.type) {
             case 'update': {
@@ -70,7 +75,15 @@ export const EsDataContext = ({ children, initialState, onDispatch }: Props): JS
 
     return (
         <EsStateContext value={state}>
-            <EsDispatchContext value={dispatchWrapper}>{children}</EsDispatchContext>
+            <EsDispatchContext value={dispatchWrapper}>
+                <SkjemautkastProvider
+                    route={pathname}
+                    utkast={state[ContextDataType.SKJEMAUTKAST]}
+                    lagre={(data) => dispatchWrapper({ type: 'update', key: ContextDataType.SKJEMAUTKAST, data })}
+                >
+                    {children}
+                </SkjemautkastProvider>
+            </EsDispatchContext>
         </EsStateContext>
     );
 };

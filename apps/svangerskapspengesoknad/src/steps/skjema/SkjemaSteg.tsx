@@ -4,7 +4,6 @@ import { RouteParams } from 'appData/routes';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { useParams } from 'react-router';
 import { getArbeidsgiverNavnForTilrettelegging, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
@@ -13,7 +12,7 @@ import { Link, VStack } from '@navikt/ds-react';
 
 import { AttachmentType, Skjemanummer, links } from '@navikt/fp-constants';
 import { FileUploader } from '@navikt/fp-filopplaster';
-import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm, useFormMedUtkast } from '@navikt/fp-form-hooks';
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
 import { Attachment, EksternArbeidsforholdDto_fpoversikt, FRILANS_ID } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
@@ -93,6 +92,7 @@ export const SkjemaSteg = ({
             });
             return Promise.resolve();
         }
+        formMethods.slettUtkast();
         oppdaterTilretteleggingerVedlegg({ ...tilretteleggingerVedlegg, [tilretteleggingId]: values.vedlegg });
 
         return navigator.goToNextDefaultStep();
@@ -102,7 +102,7 @@ export const SkjemaSteg = ({
         vedlegg: tilretteleggingerVedlegg ? tilretteleggingerVedlegg[tilretteleggingId] : undefined,
     };
 
-    const formMethods = useForm<SkjemaFormData>({
+    const formMethods = useFormMedUtkast<SkjemaFormData>('SkjemaSteg', {
         defaultValues: defaultValues,
     });
 
@@ -154,7 +154,7 @@ export const SkjemaSteg = ({
                                 }
                                 attachmentType={AttachmentType.TILRETTELEGGING}
                                 skjemanummer={Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING}
-                                existingAttachments={defaultValues?.vedlegg}
+                                existingAttachments={formMethods.watch('vedlegg')}
                                 updateAttachments={updateAttachments}
                                 uploadPath={API_URLS.sendVedlegg}
                             />

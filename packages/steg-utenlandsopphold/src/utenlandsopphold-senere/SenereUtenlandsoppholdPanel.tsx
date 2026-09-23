@@ -1,11 +1,11 @@
 import { PlusIcon } from '@navikt/aksel-icons';
 import { Fragment, useCallback } from 'react';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { useFieldArray } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
 import { Button, VStack } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm, useFormMedUtkast } from '@navikt/fp-form-hooks';
 import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { HorizontalLine, ProgressStep, Step } from '@navikt/fp-ui';
 
@@ -46,7 +46,7 @@ export const SenereUtenlandsoppholdPanel = <TYPE extends string>({
     senereUtenlandsopphold,
     stepConfig,
 }: Props<TYPE>) => {
-    const formMethods = useForm<FormType>({
+    const formMethods = useFormMedUtkast<FormType>('SenereUtenlandsoppholdPanel', {
         shouldUnregister: true,
         defaultValues: {
             utenlandsoppholdNeste12Mnd:
@@ -72,7 +72,10 @@ export const SenereUtenlandsoppholdPanel = <TYPE extends string>({
         <Step steps={stepConfig} onStepChange={onStepChange}>
             <RhfForm
                 formMethods={formMethods}
-                onSubmit={(values) => saveOnNext(fjernTomUkjentFraPerioder(values.utenlandsoppholdNeste12Mnd))}
+                onSubmit={(values) => {
+                    formMethods.slettUtkast();
+                    saveOnNext(fjernTomUkjentFraPerioder(values.utenlandsoppholdNeste12Mnd));
+                }}
             >
                 <VStack gap="space-40">
                     <ErrorSummaryHookForm />

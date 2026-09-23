@@ -12,6 +12,7 @@ import { AnnenForelder } from 'types/AnnenForelder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
 import { AttachmentType, BarnType, Skjemanummer } from '@navikt/fp-constants';
+import { Skjemautkast } from '@navikt/fp-form-hooks';
 import {
     ArbeidsforholdOgInntektFp,
     Barn,
@@ -122,6 +123,7 @@ const defaultSøkerinfoFar = {
 } satisfies FpPersonopplysningerDto_fpoversikt;
 
 type StoryArgs = {
+    skjemautkast?: Skjemautkast;
     rolle?: 'mor' | 'far' | 'medmor';
     situasjon?: Situasjon;
     annenForelder?: AnnenForelder;
@@ -159,6 +161,7 @@ const meta = {
         arbeidsforholdOgInntekt = defaultArbeidsforholdOgInntekt,
         annenInntekt,
         vedlegg,
+        skjemautkast,
         gåTilNesteSide = action('button-click'),
         ...rest
     }) => {
@@ -167,6 +170,7 @@ const meta = {
                 <FpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{
+                        [ContextDataType.SKJEMAUTKAST]: skjemautkast,
                         [ContextDataType.UTTAKSPLAN]: uttaksplan,
                         [ContextDataType.ANNEN_FORELDER]: annenForelder,
                         [ContextDataType.OM_BARNET]: barn,

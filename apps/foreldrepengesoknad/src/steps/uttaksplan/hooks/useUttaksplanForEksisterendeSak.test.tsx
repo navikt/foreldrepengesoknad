@@ -3,6 +3,7 @@ import { renderHook, waitFor } from '@testing-library/react';
 import { sakerOptions } from 'api/queries';
 import { Action, ContextDataMap, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { ReactNode } from 'react';
+import { MemoryRouter } from 'react-router';
 
 import { Saker_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
@@ -20,12 +21,14 @@ const getWrapper = (saker: Saker_fpoversikt, initialState?: ContextDataMap, onDi
 
     return ({ children }: { children: ReactNode }) => (
         <QueryClientProvider client={queryClient}>
-            <FpDataContext
-                initialState={{ [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER, ...initialState }}
-                onDispatch={onDispatch}
-            >
-                {children}
-            </FpDataContext>
+            <MemoryRouter>
+                <FpDataContext
+                    initialState={{ [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER, ...initialState }}
+                    onDispatch={onDispatch}
+                >
+                    {children}
+                </FpDataContext>
+            </MemoryRouter>
         </QueryClientProvider>
     );
 };

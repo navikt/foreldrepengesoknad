@@ -64,7 +64,9 @@ export const RhfDatepicker = <T extends FieldValues>({
     });
 
     const defaultDate = field.value ? dayjs(field.value, ISO_DATE_FORMAT, true).format(DDMMYYYY_DATE_FORMAT) : '';
-    const [fieldValue, setFieldValue] = useState<string>(() => (isValidDateString(defaultDate) ? defaultDate : ''));
+    const [fieldValue, setFieldValue] = useState<string>(() =>
+        isValidDateString(defaultDate) ? defaultDate : String(field.value ?? ''),
+    );
 
     const { datepickerProps, inputProps } = useDatepicker({
         onDateChange: (date) => {

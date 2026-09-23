@@ -2,7 +2,6 @@ import { ExternalLinkIcon, FeedingBottleIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import dayjs from 'dayjs';
-import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getFødselsdato, getTermindato } from 'utils/barnUtils';
@@ -12,7 +11,13 @@ import { getAntallUkerFraStønadskvoter } from 'utils/stønadskvoterUtils';
 import { BodyShort, Link, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import {
+    ErrorSummaryHookForm,
+    RhfForm,
+    RhfRadioGroup,
+    StepButtonsHookForm,
+    useFormMedUtkast,
+} from '@navikt/fp-form-hooks';
 import { Barn, Dekningsgrad, KontoBeregningDto, SøkersituasjonFp, isAdoptertBarn } from '@navikt/fp-types';
 import { DekningsgradUtbetalingEksempel, Infobox } from '@navikt/fp-ui';
 import { Uttaksdagen, capitalizeFirstLetter } from '@navikt/fp-utils';
@@ -96,11 +101,12 @@ export const DekningsgradForm = ({
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const oppdaterPeriodeMedForeldrepenger = useContextSaveData(ContextDataType.PERIODE_MED_FORELDREPENGER);
     const resetUttaksplanData = useResetUttaksplanData();
-    const formMethods = useForm<{ dekningsgrad: Dekningsgrad }>({
+    const formMethods = useFormMedUtkast<{ dekningsgrad: Dekningsgrad }>('DekningsgradForm', {
         defaultValues: { dekningsgrad: periodeMedForeldrepenger },
     });
 
     const onSubmit = (values: { dekningsgrad: Dekningsgrad }) => {
+        formMethods.slettUtkast();
         if (periodeMedForeldrepenger !== undefined && values.dekningsgrad !== periodeMedForeldrepenger) {
             resetUttaksplanData();
         }

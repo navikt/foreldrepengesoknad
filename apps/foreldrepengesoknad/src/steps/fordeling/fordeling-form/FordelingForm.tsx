@@ -1,7 +1,6 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { isEqual } from 'es-toolkit';
-import { useForm } from 'react-hook-form';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { Fordeling } from 'types/Fordeling';
 import { getDatoForAleneomsorg } from 'utils/annenForelderUtils';
@@ -9,7 +8,7 @@ import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { VStack } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm, useFormMedUtkast } from '@navikt/fp-form-hooks';
 import { NavnPåForeldre } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -51,7 +50,7 @@ export const FordelingForm = ({
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const datoForAleneomsorg = getDatoForAleneomsorg(annenForelder);
 
-    const formMethods = useForm<Fordeling>({
+    const formMethods = useFormMedUtkast<Fordeling>('FordelingForm', {
         defaultValues: fordelingAvForeldrepenger,
         shouldUnregister: true,
     });
@@ -71,6 +70,7 @@ export const FordelingForm = ({
     );
 
     const onSubmit = (values: Fordeling) => {
+        formMethods.slettUtkast();
         if (fordelingAvForeldrepenger !== undefined && !isEqual(fordelingAvForeldrepenger, values)) {
             resetUttaksplanData();
         }

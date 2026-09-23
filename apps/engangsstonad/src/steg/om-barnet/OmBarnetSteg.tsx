@@ -1,13 +1,12 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
 import { useEsNavigator } from 'appData/useEsNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
-import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { Adopsjon, Fødsel } from 'types/OmBarnet';
 
 import { VStack } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm, useFormMedUtkast } from '@navikt/fp-form-hooks';
 import { BarnDto, Kjønn_fpoversikt, Søkersituasjon } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -37,6 +36,7 @@ export const OmBarnetSteg = ({ kjønn, mellomlagreOgNaviger }: Props) => {
         oppdaterOmBarnet(mapBarnFraFormTilDto(formValues, søkersituasjon.situasjon));
 
     const onSubmit = (formValues: FormValues) => {
+        formMethods.slettUtkast();
         mapOgLagreOmBarnet(formValues);
         if (formValues.erBarnetFødt) {
             oppdaterDokumentasjon(undefined);
@@ -44,7 +44,7 @@ export const OmBarnetSteg = ({ kjønn, mellomlagreOgNaviger }: Props) => {
         return navigator.goToNextDefaultStep();
     };
 
-    const formMethods = useForm<FormValues>({
+    const formMethods = useFormMedUtkast<FormValues>('OmBarnetSteg', {
         defaultValues: barn ? mapBarnFraDtoTilForm(barn) : {},
     });
 

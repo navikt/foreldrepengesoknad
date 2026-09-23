@@ -2,14 +2,13 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { useFpNavigator } from 'appData/useFpNavigator';
 import dayjs from 'dayjs';
 import { ReactNode, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getTermindato } from 'utils/barnUtils';
 import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 
 import { Alert, Radio, VStack } from '@navikt/ds-react';
 
-import { RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { RhfForm, RhfRadioGroup, StepButtonsHookForm, useFormMedUtkast } from '@navikt/fp-form-hooks';
 import {
     Barn,
     FpPersonopplysningerDto_fpoversikt,
@@ -81,7 +80,7 @@ export const UttaksplanForm = ({
         eksisterendeSak,
     });
 
-    const formMethods = useForm<FormValues>({
+    const formMethods = useFormMedUtkast<FormValues>('UttaksplanForm', {
         defaultValues: {
             ønskerJustertUttakVedFødsel: harJustertUttakVedFødsel,
         },
@@ -121,6 +120,7 @@ export const UttaksplanForm = ({
             return;
         }
 
+        formMethods.slettUtkast();
         oppdaterHarJustertUttakVedFødsel(visAutomatiskJustering ? formValues.ønskerJustertUttakVedFødsel : undefined);
 
         if (!gjeldendeUttaksplan) {

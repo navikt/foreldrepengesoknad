@@ -1,8 +1,10 @@
 import { ReactNode } from 'react';
-import { FieldValues, FormProvider, SubmitHandler, UseFormReturn } from 'react-hook-form';
+import { FieldValues, FormProvider, SubmitHandler } from 'react-hook-form';
+
+import { FormMethodsMedUtkast, LagreSkjemautkastContext } from '../skjemautkast/Skjemautkast';
 
 interface Props<FormValues extends FieldValues> {
-    formMethods: UseFormReturn<FormValues>;
+    formMethods: FormMethodsMedUtkast<FormValues>;
     children: ReactNode;
     onSubmit?: SubmitHandler<FormValues>;
     className?: string;
@@ -21,16 +23,20 @@ export const RhfForm = <FormValues extends FieldValues>({
     const { handleSubmit } = formMethods;
 
     return (
-        <FormProvider {...formMethods}>
-            <form
-                style={shouldUseFlexbox ? { display: 'flex', flexDirection: 'column', flex: '1' } : undefined}
-                className={className}
-                // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                onSubmit={onSubmit ? handleSubmit((values) => onSubmit(values)) : undefined}
-                id={id}
-            >
-                {children}
-            </form>
-        </FormProvider>
+        <LagreSkjemautkastContext
+            value={{ lagreUtkast: formMethods.lagreUtkast, oppdaterUtkast: formMethods.oppdaterUtkast }}
+        >
+            <FormProvider {...formMethods}>
+                <form
+                    style={shouldUseFlexbox ? { display: 'flex', flexDirection: 'column', flex: '1' } : undefined}
+                    className={className}
+                    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                    onSubmit={onSubmit ? handleSubmit((values) => onSubmit(values)) : undefined}
+                    id={id}
+                >
+                    {children}
+                </form>
+            </FormProvider>
+        </LagreSkjemautkastContext>
     );
 };

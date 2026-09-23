@@ -3,12 +3,17 @@ import { SøknadRoute } from 'appData/routes';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { useTilretteleggingerHelper } from 'appData/useTilretteleggingerHelper';
-import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
 import { Checkbox, VStack } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm, RhfCheckboxGroup, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import {
+    ErrorSummaryHookForm,
+    RhfCheckboxGroup,
+    RhfForm,
+    StepButtonsHookForm,
+    useFormMedUtkast,
+} from '@navikt/fp-form-hooks';
 import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -61,6 +66,7 @@ export const VelgArbeidSteg = ({
     );
 
     const onSubmit = (formValues: VelgArbeidForm) => {
+        formMethods.slettUtkast();
         const sorterteArbeidsforholdIder = arbeidsforholdOptions
             .filter((a) => formValues.arbeidMedTilrettelegging.includes(a.id))
             .map((a) => a.id);
@@ -76,7 +82,7 @@ export const VelgArbeidSteg = ({
         return navigator.goToStep(SøknadRoute.SKJEMA + '/' + sorterteArbeidsforholdIder[0]);
     };
 
-    const formMethods = useForm<VelgArbeidForm>({
+    const formMethods = useFormMedUtkast<VelgArbeidForm>('VelgArbeidSteg', {
         defaultValues: valgteArbeidsforhold ? { arbeidMedTilrettelegging: valgteArbeidsforhold } : undefined,
     });
 
