@@ -5,7 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Heading, InfoCard, Label, Radio, RadioGroup, ReadMore, VStack } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, trimStringValues } from '@navikt/fp-form-hooks';
 import { EgenNæringForm } from '@navikt/fp-steg-egen-naering';
 import type { AppName, NæringDto } from '@navikt/fp-types';
 
@@ -472,7 +472,7 @@ const AnnenInntektForm = ({
     };
 
     const submitForm = formMethods.handleSubmit((values) => {
-        const ferdigInntektskilde = values.andreInntektskilder.find(erFerdigUtfylt);
+        const ferdigInntektskilde = trimStringValues(values).andreInntektskilder.find(erFerdigUtfylt);
         if (ferdigInntektskilde) {
             onSubmit(ferdigInntektskilde);
         }

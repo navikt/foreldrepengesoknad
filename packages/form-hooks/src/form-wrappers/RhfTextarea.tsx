@@ -49,6 +49,20 @@ export const RhfTextarea = <T extends FieldValues>({
         [field],
     );
 
+    const onBlur = useCallback(
+        (event: ChangeEvent<HTMLTextAreaElement>) => {
+            const value = event.currentTarget.value;
+            const trimmetVerdi = value.trim();
+
+            if (trimmetVerdi !== value) {
+                field.onChange(trimmetVerdi === '' ? null : trimmetVerdi);
+            }
+
+            field.onBlur();
+        },
+        [field],
+    );
+
     return (
         <Textarea
             label={label}
@@ -58,6 +72,7 @@ export const RhfTextarea = <T extends FieldValues>({
             {...field}
             value={field.value ?? ''}
             onChange={onChange}
+            onBlur={onBlur}
             error={getError(errors, name)}
             maxLength={maxLength}
             minLength={minLength}

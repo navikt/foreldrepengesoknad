@@ -11,6 +11,34 @@ export const getValidationRules = <T>(validate: Array<(value: T) => ValidationRe
         {},
     );
 
+const erVanligObjekt = (value: object): boolean => {
+    const prototype: unknown = Object.getPrototypeOf(value);
+    return prototype === Object.prototype || prototype === null;
+};
+
+/**
+ * Fjerner whitespace i start og slutt av alle tekstverdier i skjemaet.
+ * Valideringen ignorerer slik whitespace, så verdiene som sendes videre må gjøre det samme.
+ * Verdier som ikke er vanlige objekt/lister (Date, File, dayjs og liknende) blir ikke rørt.
+ */
+export const trimStringValues = <T>(values: T): T => {
+    if (typeof values === 'string') {
+        return values.trim() as T;
+    }
+
+    if (Array.isArray(values)) {
+        return values.map(trimStringValues) as T;
+    }
+
+    if (values !== null && typeof values === 'object' && erVanligObjekt(values)) {
+        return Object.fromEntries(
+            Object.entries(values).map(([key, value]) => [key, trimStringValues(value)]),
+        ) as unknown as T;
+    }
+
+    return values;
+};
+
 export const getError = <T extends FieldValues>(
     errors: FieldErrors<T>,
     name: (string | undefined) & Path<T>,

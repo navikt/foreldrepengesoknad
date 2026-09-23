@@ -120,11 +120,13 @@ export const MinidialogSkjema = ({
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
 
+        const trimmetTilbakemelding = tilbakemelding?.trim();
+
         const feilmelding = brukerØnskerÅUttaleSeg
             ? validateFritekstFelt(
                   intl,
                   intl.formatMessage({ id: 'minidialog.tilbakekreving.tilbakekreving.label' }).replace(':', ''),
-                  tilbakemelding,
+                  trimmetTilbakemelding,
               )
             : undefined;
 
@@ -142,8 +144,8 @@ export const MinidialogSkjema = ({
                 brukerTekst: {
                     dokumentType: Skjemanummer.TILBAKEBETALING,
                     tekst:
-                        brukerØnskerÅUttaleSeg && tilbakemelding !== undefined && tilbakemelding !== null
-                            ? (replaceInvisibleCharsWithSpace(tilbakemelding) ?? '')
+                        brukerØnskerÅUttaleSeg && trimmetTilbakemelding
+                            ? (replaceInvisibleCharsWithSpace(trimmetTilbakemelding)?.trim() ?? '')
                             : 'Jeg ønsker ikke å uttale meg. Saken vil bli behandlet med de opplysningene som Nav har tilgjengelig.',
                 },
             } satisfies EttersendelseDto;
