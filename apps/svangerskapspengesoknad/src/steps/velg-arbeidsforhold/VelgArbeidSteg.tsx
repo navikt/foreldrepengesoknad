@@ -66,9 +66,9 @@ export const VelgArbeidSteg = ({
             .map((a) => a.id);
         oppdaterValgteArbeidsforhold(sorterteArbeidsforholdIder);
 
-        if (valgteArbeidsforhold && tilrettelegginger) {
-            const valgSomSkalFjernes = valgteArbeidsforhold.filter(
-                (x) => !formValues.arbeidMedTilrettelegging.includes(x),
+        if (tilrettelegginger) {
+            const valgSomSkalFjernes = Object.keys(tilrettelegginger).filter(
+                (id) => !sorterteArbeidsforholdIder.includes(id),
             );
             fjernTilrettelegginger(valgSomSkalFjernes);
         }
