@@ -10,6 +10,48 @@ import * as stories from './MinidialogSkjema.stories';
 const { SkalIkkeFeileOpplasting } = composeStories(stories);
 
 describe('<MinidialogSkjema>', () => {
+    it('skal vise og sende samme uttalelse etter at brukeren velger ja, nei og ja igjen', async () => {
+        const send = vi.fn();
+        const uttalelse = 'Dette er uttalelsen jeg ønsker å sende til Nav.';
+        await SkalIkkeFeileOpplasting.run({ args: { ...SkalIkkeFeileOpplasting.args, onSubmit: send } });
+
+        await userEvent.click(screen.getByRole('radio', { name: 'Ja' }));
+        await userEvent.type(screen.getByRole('textbox', { name: 'Svar på tilbakebetalingen:' }), uttalelse);
+        await userEvent.click(screen.getByRole('radio', { name: 'Nei' }));
+        expect(screen.queryByRole('textbox', { name: 'Svar på tilbakebetalingen:' })).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByRole('radio', { name: 'Ja' }));
+        expect(screen.getByRole('textbox', { name: 'Svar på tilbakebetalingen:' })).toHaveValue(uttalelse);
+
+        await userEvent.click(screen.getByRole('button', { name: 'Send' }));
+        expect(send).toHaveBeenCalledExactlyOnceWith(
+            expect.objectContaining({
+                brukerTekst: {
+                    dokumentType: Skjemanummer.TILBAKEBETALING,
+                    tekst: uttalelse,
+                },
+            }),
+        );
+    });
+
+    it('skal ikke sende den gamle uttalelsen når brukeren tømmer feltet etter å ha valgt ja igjen', async () => {
+        const send = vi.fn();
+        await SkalIkkeFeileOpplasting.run({ args: { ...SkalIkkeFeileOpplasting.args, onSubmit: send } });
+
+        await userEvent.click(screen.getByRole('radio', { name: 'Ja' }));
+        await userEvent.type(
+            screen.getByRole('textbox', { name: 'Svar på tilbakebetalingen:' }),
+            'Dette er en uttalelse som brukeren vil fjerne.',
+        );
+        await userEvent.click(screen.getByRole('radio', { name: 'Nei' }));
+        await userEvent.click(screen.getByRole('radio', { name: 'Ja' }));
+        await userEvent.clear(screen.getByRole('textbox', { name: 'Svar på tilbakebetalingen:' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Send' }));
+
+        expect(send).not.toHaveBeenCalled();
+        expect(screen.getAllByText('Feltet "Svar på tilbakebetalingen " må inneholde minst 25 tegn.')).toHaveLength(2);
+    });
+
     it('skal velge at en ikke ønsker å uttale seg og så sende inn', async () => {
         const send = vi.fn();
         await SkalIkkeFeileOpplasting.run({ args: { ...SkalIkkeFeileOpplasting.args, onSubmit: send } });

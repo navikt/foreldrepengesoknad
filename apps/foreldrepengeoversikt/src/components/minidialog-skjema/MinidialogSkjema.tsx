@@ -184,6 +184,7 @@ export const MinidialogSkjema = ({
                                 label={intl.formatMessage({
                                     id: 'minidialog.tilbakekreving.tilbakekreving.label',
                                 })}
+                                value={tilbakemelding ?? ''}
                                 onChange={(e) => setTilbakemelding(e.target.value)}
                                 error={tilbakemeldingValideringsfeil}
                             />
