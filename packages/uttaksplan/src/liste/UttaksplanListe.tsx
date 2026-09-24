@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { Alert, BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
-import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { PeriodeDto_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
@@ -26,11 +26,11 @@ interface Props {
 export const UttaksplanListe = ({ isReadOnly }: Props) => {
     const [isLeggTilPeriodePanelOpen, setIsLeggTilPeriodePanelOpen] = useState(false);
 
-    const { uttakPerioder, familiehendelsedato } = useUttaksplanData();
+    const { perioder, familiehendelsedato } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
-    const uttakPerioderJustertForFamiliehendelsesdato = uttakPerioder.flatMap((periode) =>
+    const uttakPerioderJustertForFamiliehendelsesdato = perioder.flatMap((periode) =>
         splittPeriodePåFamiliehendelsesdato(periode, familiehendelsedato),
     );
 
@@ -65,7 +65,7 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
                     {manglerGraderingsaktivitetAlert.melding}
                 </Alert>
             )}
-            {uttakPerioder.length > 0 && (
+            {perioder.length > 0 && (
                 <div>
                     {alleRader.map((uttaksplanperioderForRad) => {
                         return (
@@ -79,7 +79,7 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
                     })}
                 </div>
             )}
-            {uttakPerioder.length === 0 && (
+            {perioder.length === 0 && (
                 <HStack gap="space-12">
                     <NotePencilDashIcon fontSize={24} />
                     <VStack gap="space-8">
@@ -158,9 +158,9 @@ const leggTilPeriodeForFamiliehendelsedato = (
 };
 
 const splittPeriodePåFamiliehendelsesdato = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    periode: PeriodeDto_fpoversikt,
     familiehendelsesdato: string,
-): Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> => {
+): PeriodeDto_fpoversikt[] => {
     const fom = dayjs(periode.fom);
     const tom = dayjs(periode.tom);
     const famdato = dayjs(familiehendelsesdato);
@@ -171,7 +171,7 @@ const splittPeriodePåFamiliehendelsesdato = (
         return [periode];
     }
 
-    const resultat: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> = [];
+    const resultat: PeriodeDto_fpoversikt[] = [];
 
     if (fom.isBefore(famdato)) {
         resultat.push({

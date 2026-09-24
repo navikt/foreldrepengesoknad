@@ -41,8 +41,8 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
         expect(forslag.length).toEqual(1);
         expect(forslag[0]!.fom).toEqual(startdato);
         expect(forslag[0]!.tom).toEqual('2022-09-30');
-        expect(forslag[0]!.kontoType).toEqual('FORELDREPENGER');
-        expect(forslag[0]!.morsAktivitet).toEqual('IKKE_OPPGITT');
+        expect(forslag[0]!.søker!.kontoType).toEqual('FORELDREPENGER');
+        expect(forslag[0]!.søker!.morsAktivitet).toEqual('IKKE_OPPGITT');
     });
 
     it('skal legge til en periode på 8 uker etter fødsel hvis WLB gjelder og situasjon er fødsel og startdato blir satt til lørdag rett før fødsel', () => {
@@ -63,8 +63,8 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
         expect(forslag.length).toEqual(1);
         expect(forslag[0]!.fom).toEqual(famDato);
         expect(forslag[0]!.tom).toEqual('2022-09-30');
-        expect(forslag[0]!.kontoType).toEqual('FORELDREPENGER');
-        expect(forslag[0]!.morsAktivitet).toEqual('IKKE_OPPGITT');
+        expect(forslag[0]!.søker!.kontoType).toEqual('FORELDREPENGER');
+        expect(forslag[0]!.søker!.morsAktivitet).toEqual('IKKE_OPPGITT');
     });
 });
 
@@ -95,12 +95,12 @@ describe('ikkeDeltUttak - Fødsel - Mor', () => {
         });
 
         expect(forslag.length).toEqual(2);
-        expect(forslag[0]!.kontoType).toEqual('FORELDREPENGER_FØR_FØDSEL');
-        expect(forslag[0]!.forelder).toEqual('MOR');
+        expect(forslag[0]!.søker!.kontoType).toEqual('FORELDREPENGER_FØR_FØDSEL');
+        expect(forslag[0]!.søker!.forelder).toEqual('MOR');
         expect(forslag[0]!.fom).toEqual('2022-07-18');
         expect(forslag[0]!.tom).toEqual('2022-08-05');
-        expect(forslag[1]!.kontoType).toEqual('FORELDREPENGER');
-        expect(forslag[1]!.forelder).toEqual('MOR');
+        expect(forslag[1]!.søker!.kontoType).toEqual('FORELDREPENGER');
+        expect(forslag[1]!.søker!.forelder).toEqual('MOR');
         expect(forslag[1]!.fom).toEqual('2022-08-08');
         expect(forslag[1]!.tom).toEqual('2022-11-18');
     });
@@ -118,8 +118,8 @@ describe('ikkeDeltUttak - Fødsel - Mor', () => {
         });
 
         expect(forslag.length).toEqual(1);
-        expect(forslag[0]!.kontoType).toEqual('FORELDREPENGER');
-        expect(forslag[0]!.forelder).toEqual('MOR');
+        expect(forslag[0]!.søker!.kontoType).toEqual('FORELDREPENGER');
+        expect(forslag[0]!.søker!.forelder).toEqual('MOR');
         expect(forslag[0]!.fom).toEqual('2022-08-08');
         expect(forslag[0]!.tom).toEqual('2022-11-18');
     });
@@ -139,10 +139,10 @@ describe('ikkeDeltUttak - Fødsel - Mor', () => {
         });
 
         expect(forslag.length).toEqual(2);
-        expect(forslag[0]!.kontoType).toEqual('FORELDREPENGER_FØR_FØDSEL');
+        expect(forslag[0]!.søker!.kontoType).toEqual('FORELDREPENGER_FØR_FØDSEL');
         expect(forslag[0]!.fom).toEqual(valgtStartdato);
         expect(forslag[0]!.tom).toEqual('2022-08-05');
-        expect(forslag[1]!.kontoType).toEqual('FORELDREPENGER');
+        expect(forslag[1]!.søker!.kontoType).toEqual('FORELDREPENGER');
         expect(forslag[1]!.fom).toEqual('2022-08-08');
         expect(forslag[1]!.tom).toEqual('2022-11-18');
     });
@@ -162,8 +162,8 @@ describe('ikkeDeltUttak - Fødsel - Mor', () => {
         });
 
         expect(forslag.length).toEqual(1);
-        expect(forslag[0]!.kontoType).toEqual('FORELDREPENGER');
-        expect(forslag[0]!.forelder).toEqual('MOR');
+        expect(forslag[0]!.søker!.kontoType).toEqual('FORELDREPENGER');
+        expect(forslag[0]!.søker!.forelder).toEqual('MOR');
         expect(forslag[0]!.fom).toEqual(valgtStartdato);
     });
 });
@@ -193,8 +193,8 @@ describe('ikkeDeltUttak - Fødsel - Far aleneOmOmsorg', () => {
         });
 
         expect(forslag.length).toEqual(1);
-        expect(forslag[0]!.kontoType).toEqual('FORELDREPENGER');
-        expect(forslag[0]!.forelder).toEqual('FAR_MEDMOR');
+        expect(forslag[0]!.søker!.kontoType).toEqual('FORELDREPENGER');
+        expect(forslag[0]!.søker!.forelder).toEqual('FAR_MEDMOR');
         expect(forslag[0]!.fom).toEqual('2022-08-08');
         expect(forslag[0]!.tom).toEqual('2022-11-18');
     });
@@ -213,9 +213,9 @@ describe('ikkeDeltUttak - Fødsel - Far aleneOmOmsorg', () => {
         });
 
         expect(forslag.length).toEqual(1);
-        expect(forslag[0]!.kontoType).toEqual('FORELDREPENGER');
-        expect(forslag[0]!.morsAktivitet).toEqual('IKKE_OPPGITT');
-        expect(forslag[0]!.forelder).toEqual('FAR_MEDMOR');
+        expect(forslag[0]!.søker!.kontoType).toEqual('FORELDREPENGER');
+        expect(forslag[0]!.søker!.morsAktivitet).toEqual('IKKE_OPPGITT');
+        expect(forslag[0]!.søker!.forelder).toEqual('FAR_MEDMOR');
         expect(forslag[0]!.fom).toEqual('2022-08-08');
         expect(forslag[0]!.tom).toEqual('2022-09-30');
     });
@@ -247,8 +247,8 @@ describe('ikkeDeltUttak - Adopsjon', () => {
         });
 
         expect(forslag.length).toEqual(1);
-        expect(forslag[0]!.kontoType).toEqual('FORELDREPENGER');
-        expect(forslag[0]!.forelder).toEqual('MOR');
+        expect(forslag[0]!.søker!.kontoType).toEqual('FORELDREPENGER');
+        expect(forslag[0]!.søker!.forelder).toEqual('MOR');
         expect(forslag[0]!.fom).toEqual('2022-08-08');
         expect(forslag[0]!.tom).toEqual('2022-11-18');
     });
@@ -269,9 +269,9 @@ describe('ikkeDeltUttak - Adopsjon', () => {
             });
 
             expect(forslag.length).toEqual(1);
-            expect(forslag[0]!.kontoType).toEqual('FORELDREPENGER');
-            expect(forslag[0]!.forelder).toEqual('FAR_MEDMOR');
-            expect(forslag[0]!.morsAktivitet).toEqual('IKKE_OPPGITT');
+            expect(forslag[0]!.søker!.kontoType).toEqual('FORELDREPENGER');
+            expect(forslag[0]!.søker!.forelder).toEqual('FAR_MEDMOR');
+            expect(forslag[0]!.søker!.morsAktivitet).toEqual('IKKE_OPPGITT');
             expect(forslag[0]!.fom).toEqual('2022-08-08');
             expect(forslag[0]!.tom).toEqual('2022-09-30');
         },

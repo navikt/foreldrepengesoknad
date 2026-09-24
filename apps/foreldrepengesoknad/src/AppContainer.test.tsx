@@ -5,11 +5,12 @@ import { API_URLS, mellomlagretInfoOptions } from 'api/queries';
 import { SøknadRoutes } from 'appData/routes';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import dayjs from 'dayjs';
+import ky from 'ky';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter } from 'react-router';
 
 import { BarnType, DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { PeriodeDto_fpoversikt } from '@navikt/fp-types';
 import { compressToUrl } from '@navikt/fp-utils';
 
 import { AppContainer, queryClient } from './AppContainer';
@@ -22,13 +23,18 @@ vi.mock('@navikt/nav-dekoratoren-moduler', () => ({
 
 const { SøkerErMann, SøkerErKvinne } = composeStories(stories);
 
-const importertPlan: UttakPeriode_fpoversikt[] = [
+const PLANLEGGER_DATA =
+    'eyJPTV9CQVJORVQiOnsiZXJGw7hkc2VsIjp0cnVlLCJhbnRhbGxCYXJuIjoiMSIsImVyQmFybmV0RsO4ZHQiOnRydWUsImbDuGRzZWxzZGF0byI6IjIwMjYtMDUtMDUiLCJ0ZXJtaW5kYXRvIjoiMjAyNi0wNS0wMiJ9LCJIVk9SX0xBTkdfUEVSSU9ERSI6eyJkZWtuaW5nc2dyYWQiOiIxMDAifSwiRk9SREVMSU5HIjp7ImFudGFsbERhZ2VyU8O4a2VyMSI6NjB9LCJVVFRBS1NQTEFOIjpbeyJmb20iOiIyMDI2LTA0LTE0IiwidG9tIjoiMjAyNi0wNS0wNCIsInPDuGtlciI6eyJmb3JlbGRlciI6Ik1PUiIsImtvbnRvVHlwZSI6IkZPUkVMRFJFUEVOR0VSX0bDmFJfRsOYRFNFTCIsImZsZXJiYXJuc2RhZ2VyIjpmYWxzZX19LHsiZm9tIjoiMjAyNi0wNS0wNSIsInRvbSI6IjIwMjYtMDgtMTciLCJzw7hrZXIiOnsiZm9yZWxkZXIiOiJNT1IiLCJrb250b1R5cGUiOiJNw5hEUkVLVk9URSIsImZsZXJiYXJuc2RhZ2VyIjpmYWxzZX19LHsiZm9tIjoiMjAyNi0wOC0xOCIsInRvbSI6IjIwMjYtMTEtMDkiLCJzw7hrZXIiOnsiZm9yZWxkZXIiOiJNT1IiLCJrb250b1R5cGUiOiJGRUxMRVNQRVJJT0RFIiwiZmxlcmJhcm5zZGFnZXIiOmZhbHNlfX0seyJmb20iOiIyMDI2LTExLTEwIiwidG9tIjoiMjAyNi0xMS0xMyIsInPDuGtlciI6eyJmb3JlbGRlciI6IkZBUl9NRURNT1IiLCJrb250b1R5cGUiOiJGRURSRUtWT1RFIiwiZmxlcmJhcm5zZGFnZXIiOmZhbHNlfX0seyJmb20iOiIyMDI2LTExLTE2IiwidG9tIjoiMjAyNi0xMS0yNyIsInPDuGtlciI6eyJmb3JlbGRlciI6Ik1PUiIsInV0c2V0dGVsc2XDhXJzYWsiOiJGRVJJRSIsImZsZXJiYXJuc2RhZ2VyIjpmYWxzZX19LHsiZm9tIjoiMjAyNi0xMS0zMCIsInRvbSI6IjIwMjctMDItMjIiLCJzw7hrZXIiOnsiZm9yZWxkZXIiOiJGQVJfTUVETU9SIiwia29udG9UeXBlIjoiRkVEUkVLVk9URSIsImZsZXJiYXJuc2RhZ2VyIjpmYWxzZX19LHsiZm9tIjoiMjAyNy0wMi0yMyIsInRvbSI6IjIwMjctMDMtMjIiLCJzw7hrZXIiOnsia29udG9UeXBlIjoiRkVMTEVTUEVSSU9ERSIsIm1vcnNBa3Rpdml0ZXQiOiJUUkVOR0VSX0hKRUxQIiwiZm9yZWxkZXIiOiJGQVJfTUVETU9SIiwiZmxlcmJhcm5zZGFnZXIiOmZhbHNlfX1dfQ==';
+
+const importertPlan: PeriodeDto_fpoversikt[] = [
     {
         fom: '2026-05-05',
         tom: '2026-05-15',
-        kontoType: 'FORELDREPENGER',
-        forelder: 'FAR_MEDMOR',
-        flerbarnsdager: false,
+        søker: {
+            kontoType: 'FORELDREPENGER',
+            forelder: 'FAR_MEDMOR',
+            flerbarnsdager: false,
+        },
     },
 ];
 
@@ -338,9 +344,7 @@ describe('<AppContainer>', () => {
     });
 
     it('skal gå gjennom applikasjonen med forhåndsutfylte data fra planleggeren', async () => {
-        const planleggerData =
-            // eslint-disable-next-line max-len
-            'eyJPTV9CQVJORVQiOnsiZXJGw7hkc2VsIjp0cnVlLCJhbnRhbGxCYXJuIjoiMSIsImVyQmFybmV0RsO4ZHQiOnRydWUsImbDuGRzZWxzZGF0byI6IjIwMjYtMDUtMDUiLCJ0ZXJtaW5kYXRvIjoiMjAyNi0wNS0wMiJ9LCJIVk9SX0xBTkdfUEVSSU9ERSI6eyJkZWtuaW5nc2dyYWQiOiIxMDAifSwiRk9SREVMSU5HIjp7ImFudGFsbERhZ2VyU8O4a2VyMSI6NjB9LCJVVFRBS1NQTEFOIjpbeyJmb3JlbGRlciI6Ik1PUiIsImtvbnRvVHlwZSI6IkZPUkVMRFJFUEVOR0VSX0bDmFJfRsOYRFNFTCIsImZvbSI6IjIwMjYtMDQtMTQiLCJ0b20iOiIyMDI2LTA1LTA0IiwiZmxlcmJhcm5zZGFnZXIiOmZhbHNlfSx7ImZvcmVsZGVyIjoiTU9SIiwia29udG9UeXBlIjoiTcOYRFJFS1ZPVEUiLCJmb20iOiIyMDI2LTA1LTA1IiwidG9tIjoiMjAyNi0wOC0xNyIsImZsZXJiYXJuc2RhZ2VyIjpmYWxzZX0seyJmb3JlbGRlciI6Ik1PUiIsImtvbnRvVHlwZSI6IkZFTExFU1BFUklPREUiLCJmb20iOiIyMDI2LTA4LTE4IiwidG9tIjoiMjAyNi0xMS0wOSIsImZsZXJiYXJuc2RhZ2VyIjpmYWxzZX0seyJmb3JlbGRlciI6IkZBUl9NRURNT1IiLCJrb250b1R5cGUiOiJGRURSRUtWT1RFIiwiZm9tIjoiMjAyNi0xMS0xMCIsInRvbSI6IjIwMjYtMTEtMTMiLCJmbGVyYmFybnNkYWdlciI6ZmFsc2V9LHsiZm9yZWxkZXIiOiJNT1IiLCJmb20iOiIyMDI2LTExLTE2IiwidG9tIjoiMjAyNi0xMS0yNyIsInV0c2V0dGVsc2XDhXJzYWsiOiJMT1ZCRVNURU1UX0ZFUklFIiwiZmxlcmJhcm5zZGFnZXIiOmZhbHNlfSx7ImZvcmVsZGVyIjoiRkFSX01FRE1PUiIsImtvbnRvVHlwZSI6IkZFRFJFS1ZPVEUiLCJmb20iOiIyMDI2LTExLTMwIiwidG9tIjoiMjAyNy0wMi0yMiIsImZsZXJiYXJuc2RhZ2VyIjpmYWxzZX0seyJmb20iOiIyMDI3LTAyLTIzIiwidG9tIjoiMjAyNy0wMy0yMiIsImtvbnRvVHlwZSI6IkZFTExFU1BFUklPREUiLCJtb3JzQWt0aXZpdGV0IjoiVFJFTkdFUl9ISkVMUCIsImZvcmVsZGVyIjoiRkFSX01FRE1PUiIsImZsZXJiYXJuc2RhZ2VyIjpmYWxzZX1dfQ==';
+        const planleggerData = PLANLEGGER_DATA;
 
         const SøkerErKvinneMedPlanleggerData = composeStory(
             { ...stories.SøkerErKvinne },
@@ -449,5 +453,98 @@ describe('<AppContainer>', () => {
         // Step 8: OPPSUMMERING
         await waitFor(() => expect(screen.getAllByText('Oppsummering')).toHaveLength(2));
         expect(screen.getByText('Steg 8 av 8')).toBeInTheDocument();
+    });
+
+    it('skal fordele periodene fra planleggeren etter søkers forelder når far søker', async () => {
+        const SøkerErMannMedPlanleggerData = composeStory(
+            {
+                ...stories.SøkerErMann,
+                beforeEach({ msw }) {
+                    msw.use(
+                        http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+                        http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
+                    );
+                },
+            },
+            {
+                ...stories.default,
+                render: () => (
+                    <MemoryRouter initialEntries={[`/?planleggerData=${PLANLEGGER_DATA}`]}>
+                        <AppContainer />
+                    </MemoryRouter>
+                ),
+            },
+        );
+        const kyPost = vi.spyOn(ky, 'post');
+
+        await SøkerErMannMedPlanleggerData.run();
+
+        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Det planlagte barnet fra planleggeren'));
+        await userEvent.click(screen.getByText('Jeg bekrefter at jeg har lest og forstått'));
+        await userEvent.click(screen.getByText('Start søknaden'));
+
+        await waitFor(() => expect(screen.getAllByText('Din situasjon')).toHaveLength(2));
+        await userEvent.click(screen.getByText('Fødsel'));
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        await waitFor(() => expect(screen.getAllByText('Barnet')).toHaveLength(2));
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        await waitFor(() => expect(screen.getAllByText('Bo i utlandet')).toHaveLength(2));
+        await userEvent.click(screen.getByText('Jeg har bodd i Norge'));
+        await userEvent.click(screen.getByText('Jeg skal bo i Norge'));
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        await waitFor(() => expect(screen.getAllByText('Arbeidsforhold og inntekt')).toHaveLength(2));
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        await waitFor(() => expect(screen.getAllByText('Den andre forelderen')).toHaveLength(2));
+        await userEvent.type(screen.getByLabelText('Fornavnet til den andre forelderen'), 'Hanne');
+        await userEvent.type(screen.getByLabelText('Etternavnet til den andre forelderen'), 'Mygg');
+        await userEvent.type(
+            screen.getByLabelText('Fødselsnummer eller D-nummer til den andre forelderen'),
+            '02520489226',
+        );
+        await waitFor(() => expect(screen.getAllByText('Ja')).toHaveLength(3));
+        const jaRadios = screen.getAllByText('Ja');
+        await userEvent.click(jaRadios[0]!);
+        await userEvent.click(jaRadios[1]!);
+        await userEvent.click(jaRadios[2]!);
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        await waitFor(() => expect(screen.getAllByText('Periode med foreldrepenger')).toHaveLength(2));
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        await waitFor(() => expect(screen.getAllByText('Din plan med foreldrepenger')).toHaveLength(2));
+        await userEvent.click(screen.getByRole('tab', { name: 'Liste' }));
+
+        expect(
+            within(screen.getByTestId('2026-04-14 - 2026-05-04')).getAllByText('Hanne har foreldrepenger'),
+        ).not.toHaveLength(0);
+        expect(
+            within(screen.getByTestId('2026-05-05 - 2026-11-09')).getAllByText('Hanne har foreldrepenger'),
+        ).not.toHaveLength(0);
+        expect(
+            within(screen.getByTestId('2026-11-10 - 2026-11-13')).getAllByText('Tapper har foreldrepenger'),
+        ).not.toHaveLength(0);
+        expect(
+            within(screen.getByTestId('2026-11-30 - 2027-03-22')).getAllByText('Tapper har foreldrepenger'),
+        ).not.toHaveLength(0);
+
+        const sisteMellomlagretUttaksplan = kyPost.mock.calls
+            .filter(([url]) => url === API_URLS.mellomlagring)
+            .map(([, options]) => (options?.json as { UTTAKSPLAN?: PeriodeDto_fpoversikt[] }).UTTAKSPLAN)
+            .at(-1);
+
+        expect(sisteMellomlagretUttaksplan?.map((p) => [p.fom, p.søker?.forelder, p.annenPart?.forelder])).toEqual([
+            ['2026-04-14', undefined, 'MOR'],
+            ['2026-05-05', undefined, 'MOR'],
+            ['2026-08-18', undefined, 'MOR'],
+            ['2026-11-10', 'FAR_MEDMOR', undefined],
+            ['2026-11-16', undefined, 'MOR'],
+            ['2026-11-30', 'FAR_MEDMOR', undefined],
+            ['2027-02-23', 'FAR_MEDMOR', undefined],
+        ]);
     });
 });

@@ -20,7 +20,7 @@ const meta = {
     },
     render: (args) => {
         return (
-            <UttaksplanDataProvider {...args} uttakPerioder={args.uttakPerioder ?? []}>
+            <UttaksplanDataProvider {...args} perioder={args.perioder ?? []}>
                 <UttaksplanListe isReadOnly={args.isReadOnly} />
             </UttaksplanDataProvider>
         );
@@ -49,45 +49,51 @@ export const MorAleneOmOmsorg: Story = {
             antallBarn: 1,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
-        uttakPerioder: [
+        perioder: [
             {
                 fom: '2025-09-16',
                 tom: '2025-09-29',
-                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-                resultat: {
-                    innvilget: true,
-                    trekkerMinsterett: true,
-                    trekkerDager: true,
-                    årsak: 'ANNET',
+                søker: {
+                    kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                    resultat: {
+                        innvilget: true,
+                        trekkerMinsterett: true,
+                        trekkerDager: true,
+                        årsak: 'ANNET',
+                    },
+                    flerbarnsdager: false,
+                    forelder: 'MOR',
                 },
-                flerbarnsdager: false,
-                forelder: 'MOR',
             },
             {
                 fom: '2025-09-30',
                 tom: '2026-01-19',
-                kontoType: 'FORELDREPENGER',
-                resultat: {
-                    innvilget: true,
-                    trekkerMinsterett: true,
-                    trekkerDager: true,
-                    årsak: 'ANNET',
+                søker: {
+                    kontoType: 'FORELDREPENGER',
+                    resultat: {
+                        innvilget: true,
+                        trekkerMinsterett: true,
+                        trekkerDager: true,
+                        årsak: 'ANNET',
+                    },
+                    flerbarnsdager: false,
+                    forelder: 'MOR',
                 },
-                flerbarnsdager: false,
-                forelder: 'MOR',
             },
             {
                 fom: '2026-02-24',
                 tom: '2026-06-15',
-                kontoType: 'FORELDREPENGER',
-                resultat: {
-                    innvilget: true,
-                    trekkerMinsterett: true,
-                    trekkerDager: true,
-                    årsak: 'ANNET',
+                søker: {
+                    kontoType: 'FORELDREPENGER',
+                    resultat: {
+                        innvilget: true,
+                        trekkerMinsterett: true,
+                        trekkerDager: true,
+                        årsak: 'ANNET',
+                    },
+                    flerbarnsdager: false,
+                    forelder: 'MOR',
                 },
-                flerbarnsdager: false,
-                forelder: 'MOR',
             },
         ],
         valgtStønadskvote: {
@@ -121,33 +127,37 @@ export const PrematurUker: Story = {
             antallBarn: 1,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
-        uttakPerioder: [
+        perioder: [
             {
                 fom: '2025-08-13',
                 tom: '2025-10-10',
-                kontoType: 'FELLESPERIODE',
-                resultat: {
-                    innvilget: false,
-                    trekkerMinsterett: true,
-                    trekkerDager: true,
-                    årsak: 'AVSLAG_FRATREKK_PLEIEPENGER',
+                søker: {
+                    kontoType: 'FELLESPERIODE',
+                    resultat: {
+                        innvilget: false,
+                        trekkerMinsterett: true,
+                        trekkerDager: true,
+                        årsak: 'AVSLAG_FRATREKK_PLEIEPENGER',
+                    },
+                    utsettelseÅrsak: 'BARN_INNLAGT',
+                    flerbarnsdager: false,
+                    forelder: 'MOR',
                 },
-                utsettelseÅrsak: 'BARN_INNLAGT',
-                flerbarnsdager: false,
-                forelder: 'MOR',
             },
             {
                 fom: '2025-10-11',
                 tom: '2025-11-25',
-                kontoType: 'MØDREKVOTE',
-                resultat: {
-                    innvilget: true,
-                    trekkerMinsterett: true,
-                    trekkerDager: true,
-                    årsak: 'ANNET',
+                søker: {
+                    kontoType: 'MØDREKVOTE',
+                    resultat: {
+                        innvilget: true,
+                        trekkerMinsterett: true,
+                        trekkerDager: true,
+                        årsak: 'ANNET',
+                    },
+                    flerbarnsdager: false,
+                    forelder: 'MOR',
                 },
-                flerbarnsdager: false,
-                forelder: 'MOR',
             },
         ],
         valgtStønadskvote: {
@@ -183,45 +193,51 @@ export const AvslåttePerioder: Story = {
             antallBarn: 1,
         },
         harAktivitetskravIPeriodeUtenUttak: false,
-        uttakPerioder: [
+        perioder: [
             {
                 fom: '2025-09-01',
                 tom: '2025-10-10',
-                kontoType: 'MØDREKVOTE',
-                resultat: {
-                    innvilget: true,
-                    trekkerMinsterett: false,
-                    trekkerDager: true,
-                    årsak: 'ANNET',
+                søker: {
+                    kontoType: 'MØDREKVOTE',
+                    resultat: {
+                        innvilget: true,
+                        trekkerMinsterett: false,
+                        trekkerDager: true,
+                        årsak: 'ANNET',
+                    },
+                    flerbarnsdager: false,
+                    forelder: 'MOR',
                 },
-                flerbarnsdager: false,
-                forelder: 'MOR',
             },
             {
                 fom: '2025-10-13',
                 tom: '2025-11-21',
-                kontoType: 'FELLESPERIODE',
-                resultat: {
-                    innvilget: false,
-                    trekkerMinsterett: false,
-                    trekkerDager: true,
-                    årsak: 'AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER',
+                søker: {
+                    kontoType: 'FELLESPERIODE',
+                    resultat: {
+                        innvilget: false,
+                        trekkerMinsterett: false,
+                        trekkerDager: true,
+                        årsak: 'AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER',
+                    },
+                    flerbarnsdager: false,
+                    forelder: 'MOR',
                 },
-                flerbarnsdager: false,
-                forelder: 'MOR',
             },
             {
                 fom: '2025-11-24',
                 tom: '2026-01-02',
-                kontoType: 'FELLESPERIODE',
-                resultat: {
-                    innvilget: true,
-                    trekkerMinsterett: false,
-                    trekkerDager: true,
-                    årsak: 'ANNET',
+                søker: {
+                    kontoType: 'FELLESPERIODE',
+                    resultat: {
+                        innvilget: true,
+                        trekkerMinsterett: false,
+                        trekkerDager: true,
+                        årsak: 'ANNET',
+                    },
+                    flerbarnsdager: false,
+                    forelder: 'MOR',
                 },
-                flerbarnsdager: false,
-                forelder: 'MOR',
             },
         ],
         valgtStønadskvote: {

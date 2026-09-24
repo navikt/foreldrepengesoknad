@@ -23,8 +23,8 @@ import { ContentSection } from '../../components/content-section/ContentSection'
 import { DinSakHeader, getSaksoversiktHeading } from '../../components/header/Header';
 import { LenkePanel } from '../../components/lenke-panel/LenkePanel';
 import { Svangerskapspenger } from '../../components/svangerskapspenger/Svangerskapspenger';
-import { useAnnenPartsVedtak } from '../../hooks/useAnnenPartsVedtak';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
+import { useUttaksplan } from '../../hooks/useUttaksplan';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
 import { Oppgaver } from '../../sections/oppgaver/Oppgaver';
@@ -102,7 +102,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
 
     const ENGANGSTØNAD = finnEngangstønadForSøknadstidspunkt(DEFAULT_SATSER, søknadstidspunkt);
 
-    const annenPartsVedtakQuery = useAnnenPartsVedtak(gjeldendeSak);
+    const uttaksplanQuery = useUttaksplan(gjeldendeSak);
 
     const relevantNyTidslinjehendelse = getRelevantNyTidslinjehendelse(tidslinjeHendelserQuery.data ?? []);
 
@@ -196,15 +196,14 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                                     ? intl.formatMessage({ id: 'saksoversikt.dinPlan.vedtatt' })
                                     : intl.formatMessage({ id: 'saksoversikt.dinPlan.søktOm' })
                             }
-                            // Fordi annenPartsVedtakQuery kan være et disabled query må man bruke isLoading heller enn isPending:
+                            // Fordi uttaksplanQuery kan være et disabled query må man bruke isLoading heller enn isPending:
                             // https://tanstack.com/query/latest/docs/framework/react/guides/disabling-queries/#isloading-previously-isinitialloading
-                            showSkeleton={annenPartsVedtakQuery.isLoading}
+                            showSkeleton={uttaksplanQuery.isLoading}
                             skeletonProps={{ height: '210px', variant: 'rounded' }}
                         >
                             <Suspense fallback={<Skeleton height="210px" variant="rounded" />}>
                                 <DinPlan
                                     sak={gjeldendeSak}
-                                    annenPartsPerioder={annenPartsVedtakQuery.data?.perioder ?? []}
                                     navnPåForeldre={getNavnPåForeldre(
                                         gjeldendeSak,
                                         søkerinfo.navn.fornavn,

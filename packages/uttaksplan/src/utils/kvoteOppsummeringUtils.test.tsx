@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
 import { BarnType } from '@navikt/fp-constants';
-import { KontoBeregningDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { KontoBeregningDto, PeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import { UttaksplanDataProvider } from '../context/UttaksplanDataContext';
 import { ForeldreInfo } from '../types/ForeldreInfo';
@@ -22,13 +22,15 @@ const KONTOER: KontoBeregningDto = {
     tillegg: { flerbarn: 0, prematur: 0 },
 };
 
-const lagMorsMødrekvotePeriode = (fom: string, tom: string, arbeidstidprosent?: number): UttakPeriode_fpoversikt => ({
+const lagMorsMødrekvotePeriode = (fom: string, tom: string, arbeidstidprosent?: number): PeriodeDto_fpoversikt => ({
     fom,
     tom,
-    forelder: 'MOR',
-    kontoType: 'MØDREKVOTE',
-    flerbarnsdager: false,
-    gradering: arbeidstidprosent ? { arbeidstidprosent, aktivitet: { type: 'ORDINÆRT_ARBEID' } } : undefined,
+    søker: {
+        forelder: 'MOR',
+        kontoType: 'MØDREKVOTE',
+        flerbarnsdager: false,
+        gradering: arbeidstidprosent ? { arbeidstidprosent, aktivitet: { type: 'ORDINÆRT_ARBEID' } } : undefined,
+    },
 });
 
 describe('summerDagerIPerioder – mors gradering i 3v før / 6v etter familiehendelse', () => {
@@ -41,13 +43,15 @@ describe('summerDagerIPerioder – mors gradering i 3v før / 6v etter familiehe
     });
 
     it('skal trekke 15 fulle dager (3 uker) når mor jobbar 50 % heile treukersperioden før fødsel på FORELDREPENGER_FØR_FØDSEL', () => {
-        const treUkerFørFødsel: UttakPeriode_fpoversikt = {
+        const treUkerFørFødsel: PeriodeDto_fpoversikt = {
             fom: '2024-03-11',
             tom: '2024-03-29',
-            forelder: 'MOR',
-            kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-            flerbarnsdager: false,
-            gradering: { arbeidstidprosent: 50, aktivitet: { type: 'ORDINÆRT_ARBEID' } },
+            søker: {
+                forelder: 'MOR',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                flerbarnsdager: false,
+                gradering: { arbeidstidprosent: 50, aktivitet: { type: 'ORDINÆRT_ARBEID' } },
+            },
         };
 
         const dager = summerDagerIPerioder([treUkerFørFødsel], KONTOER.kontoer, 'fødsel', FAMILIEHENDELSESDATO);
@@ -84,13 +88,15 @@ describe('summerDagerIPerioder – mors gradering i 3v før / 6v etter familiehe
     });
 
     it('skal IKKJE bruka spesialregel for far/medmor sin gradering', () => {
-        const farsPeriode: UttakPeriode_fpoversikt = {
+        const farsPeriode: PeriodeDto_fpoversikt = {
             fom: '2024-04-01',
             tom: '2024-05-10',
-            forelder: 'FAR_MEDMOR',
-            kontoType: 'MØDREKVOTE',
-            flerbarnsdager: false,
-            gradering: { arbeidstidprosent: 50, aktivitet: { type: 'ORDINÆRT_ARBEID' } },
+            søker: {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'MØDREKVOTE',
+                flerbarnsdager: false,
+                gradering: { arbeidstidprosent: 50, aktivitet: { type: 'ORDINÆRT_ARBEID' } },
+            },
         };
 
         const dager = summerDagerIPerioder([farsPeriode], KONTOER.kontoer, 'fødsel', FAMILIEHENDELSESDATO);
@@ -100,13 +106,15 @@ describe('summerDagerIPerioder – mors gradering i 3v før / 6v etter familiehe
 });
 
 describe('summerDagerIPerioder – summering av graderte dagar (ingen flyttalsfeil)', () => {
-    const lagFellesperiodeEndag = (dato: string): UttakPeriode_fpoversikt => ({
+    const lagFellesperiodeEndag = (dato: string): PeriodeDto_fpoversikt => ({
         fom: dato,
         tom: dato,
-        forelder: 'MOR',
-        kontoType: 'FELLESPERIODE',
-        flerbarnsdager: false,
-        gradering: { arbeidstidprosent: 40, aktivitet: { type: 'ORDINÆRT_ARBEID' } },
+        søker: {
+            forelder: 'MOR',
+            kontoType: 'FELLESPERIODE',
+            flerbarnsdager: false,
+            gradering: { arbeidstidprosent: 40, aktivitet: { type: 'ORDINÆRT_ARBEID' } },
+        },
     });
 
     it('skal telje 6 dagar (ikkje 5) for ti graderte endagsperiodar à 0,6 dag', () => {
@@ -142,7 +150,7 @@ describe('useUbrukteDagerPerKontoKunEnHarRett – overtrekk når kun far/medmor 
     };
 
     const lagWrapper =
-        (valgtStønadskvote: KontoBeregningDto, uttakPerioder: UttakPeriode_fpoversikt[], termindato = '2025-05-06') =>
+        (valgtStønadskvote: KontoBeregningDto, perioder: PeriodeDto_fpoversikt[], termindato = '2025-05-06') =>
         ({ children }: { children: React.ReactNode }) => (
             <UttaksplanDataProvider
                 barn={{ type: BarnType.UFØDT, termindato, antallBarn: 1 }}
@@ -150,7 +158,7 @@ describe('useUbrukteDagerPerKontoKunEnHarRett – overtrekk når kun far/medmor 
                 valgtStønadskvote={valgtStønadskvote}
                 harAktivitetskravIPeriodeUtenUttak
                 erPeriodeneTilAnnenPartLåst={false}
-                uttakPerioder={uttakPerioder}
+                perioder={perioder}
                 erEndringssøknad={false}
             >
                 {children}
@@ -163,20 +171,22 @@ describe('useUbrukteDagerPerKontoKunEnHarRett – overtrekk når kun far/medmor 
             minsteretter: { farRundtFødsel: 0, toTette: 0 },
             tillegg: { flerbarn: 0, prematur: 0 },
         };
-        const uttakPerioder: UttakPeriode_fpoversikt[] = [
+        const perioder: PeriodeDto_fpoversikt[] = [
             {
                 fom: '2025-05-06',
-                tom: '2025-06-13', // 6 uker, mer enn dei 10 dagane kontoen har
-                kontoType: 'FORELDREPENGER',
-                morsAktivitet: 'IKKE_OPPGITT',
-                flerbarnsdager: false,
-                forelder: 'FAR_MEDMOR',
+                tom: '2025-06-13',
+                søker: {
+                    kontoType: 'FORELDREPENGER',
+                    morsAktivitet: 'IKKE_OPPGITT',
+                    flerbarnsdager: false,
+                    forelder: 'FAR_MEDMOR',
+                },
             },
         ];
-        const brukteDager = summerDagerIPerioder(uttakPerioder, valgtStønadskvote.kontoer, 'termin', '2025-05-06');
+        const brukteDager = summerDagerIPerioder(perioder, valgtStønadskvote.kontoer, 'termin', '2025-05-06');
 
         const { result } = renderHook(() => useUbrukteDagerPerKontoKunEnHarRett(), {
-            wrapper: lagWrapper(valgtStønadskvote, uttakPerioder),
+            wrapper: lagWrapper(valgtStønadskvote, perioder),
         });
 
         expect(result.current.ubrukteDagerAktivitetsfri).toBe(0);
@@ -189,20 +199,22 @@ describe('useUbrukteDagerPerKontoKunEnHarRett – overtrekk når kun far/medmor 
             minsteretter: { farRundtFødsel: 0, toTette: 0 },
             tillegg: { flerbarn: 0, prematur: 0 },
         };
-        const uttakPerioder: UttakPeriode_fpoversikt[] = [
+        const perioder: PeriodeDto_fpoversikt[] = [
             {
                 fom: '2025-05-06',
-                tom: '2025-06-13', // 6 uker, morsAktivitet ikkje IKKE_OPPGITT
-                kontoType: 'FORELDREPENGER',
-                morsAktivitet: 'ARBEID',
-                flerbarnsdager: false,
-                forelder: 'FAR_MEDMOR',
+                tom: '2025-06-13',
+                søker: {
+                    kontoType: 'FORELDREPENGER',
+                    morsAktivitet: 'ARBEID',
+                    flerbarnsdager: false,
+                    forelder: 'FAR_MEDMOR',
+                },
             },
         ];
-        const brukteDager = summerDagerIPerioder(uttakPerioder, valgtStønadskvote.kontoer, 'termin', '2025-05-06');
+        const brukteDager = summerDagerIPerioder(perioder, valgtStønadskvote.kontoer, 'termin', '2025-05-06');
 
         const { result } = renderHook(() => useUbrukteDagerPerKontoKunEnHarRett(), {
-            wrapper: lagWrapper(valgtStønadskvote, uttakPerioder),
+            wrapper: lagWrapper(valgtStønadskvote, perioder),
         });
 
         expect(result.current.ubrukteDagerMedAktivitetskrav).toBe(0);
@@ -215,20 +227,22 @@ describe('useUbrukteDagerPerKontoKunEnHarRett – overtrekk når kun far/medmor 
             minsteretter: { farRundtFødsel: 0, toTette: 0 },
             tillegg: { flerbarn: 0, prematur: 0 },
         };
-        const uttakPerioder: UttakPeriode_fpoversikt[] = [
+        const perioder: PeriodeDto_fpoversikt[] = [
             {
                 fom: '2025-05-06',
-                tom: '2025-06-13', // langt færre dagar enn dei 50 kontoen har
-                kontoType: 'FORELDREPENGER',
-                morsAktivitet: 'IKKE_OPPGITT',
-                flerbarnsdager: false,
-                forelder: 'FAR_MEDMOR',
+                tom: '2025-06-13',
+                søker: {
+                    kontoType: 'FORELDREPENGER',
+                    morsAktivitet: 'IKKE_OPPGITT',
+                    flerbarnsdager: false,
+                    forelder: 'FAR_MEDMOR',
+                },
             },
         ];
-        const brukteDager = summerDagerIPerioder(uttakPerioder, valgtStønadskvote.kontoer, 'termin', '2025-05-06');
+        const brukteDager = summerDagerIPerioder(perioder, valgtStønadskvote.kontoer, 'termin', '2025-05-06');
 
         const { result } = renderHook(() => useUbrukteDagerPerKontoKunEnHarRett(), {
-            wrapper: lagWrapper(valgtStønadskvote, uttakPerioder),
+            wrapper: lagWrapper(valgtStønadskvote, perioder),
         });
 
         expect(result.current.ubrukteDagerAktivitetsfri).toBe(50 - brukteDager);
@@ -247,20 +261,22 @@ describe('useUbrukteDagerPerKontoKunEnHarRett – overtrekk når kun far/medmor 
         // Barnet er ikkje født enno (familiesituasjon 'termin'), så alle 15 dagane
         // på FORELDREPENGER_FØR_FØDSEL-kontoen er framleis ubrukte og skal leggjast
         // til den ordinære foreldrepengekontoen (5 + 15 = 20) før overtrekket blir rekna ut.
-        const uttakPerioder: UttakPeriode_fpoversikt[] = [
+        const perioder: PeriodeDto_fpoversikt[] = [
             {
                 fom: '2025-05-06',
-                tom: '2025-06-13', // meir enn 20 dagar brukt
-                kontoType: 'FORELDREPENGER',
-                morsAktivitet: 'ARBEID',
-                flerbarnsdager: false,
-                forelder: 'FAR_MEDMOR',
+                tom: '2025-06-13',
+                søker: {
+                    kontoType: 'FORELDREPENGER',
+                    morsAktivitet: 'ARBEID',
+                    flerbarnsdager: false,
+                    forelder: 'FAR_MEDMOR',
+                },
             },
         ];
-        const brukteDager = summerDagerIPerioder(uttakPerioder, valgtStønadskvote.kontoer, 'termin', '2025-05-06');
+        const brukteDager = summerDagerIPerioder(perioder, valgtStønadskvote.kontoer, 'termin', '2025-05-06');
 
         const { result } = renderHook(() => useUbrukteDagerPerKontoKunEnHarRett(), {
-            wrapper: lagWrapper(valgtStønadskvote, uttakPerioder),
+            wrapper: lagWrapper(valgtStønadskvote, perioder),
         });
 
         expect(result.current.ubrukteDagerMedAktivitetskrav).toBe(0);
@@ -270,31 +286,25 @@ describe('useUbrukteDagerPerKontoKunEnHarRett – overtrekk når kun far/medmor 
 
 describe('finnDinPlanKvoteRader', () => {
     it('skal berre ta med rader for konti søkjaren faktisk har planlagt å bruke, i fast rekkefølgje', () => {
-        const uttakPerioder: UttakPeriode_fpoversikt[] = [
+        const perioder: PeriodeDto_fpoversikt[] = [
             {
-                fom: '2024-03-11', // 3 uker før fødsel (fom-tom = 15 dager)
+                fom: '2024-03-11',
                 tom: '2024-03-29',
-                forelder: 'MOR',
-                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', kontoType: 'FORELDREPENGER_FØR_FØDSEL', flerbarnsdager: false },
             },
             {
-                fom: '2024-04-01', // 20 uker mødrekvote (100 dager)
+                fom: '2024-04-01',
                 tom: '2024-08-16',
-                forelder: 'MOR',
-                kontoType: 'MØDREKVOTE',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
             },
             {
-                fom: '2024-08-19', // 10 uker fellesperiode (50 dager)
+                fom: '2024-08-19',
                 tom: '2024-10-25',
-                forelder: 'MOR',
-                kontoType: 'FELLESPERIODE',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false },
             },
         ];
 
-        const rader = finnDinPlanKvoteRader(uttakPerioder, 'MOR', KONTOER.kontoer, 'fødsel', FAMILIEHENDELSESDATO);
+        const rader = finnDinPlanKvoteRader(perioder, 'MOR', KONTOER.kontoer, 'fødsel', FAMILIEHENDELSESDATO);
 
         expect(rader).toEqual([
             { kontoType: 'FORELDREPENGER_FØR_FØDSEL', bruktDager: 15, tilgjengeligDager: 15 },
@@ -306,12 +316,10 @@ describe('finnDinPlanKvoteRader', () => {
     });
 
     it('skal returnere rå dagtal (ikkje avrunda til uker) når søkjaren har planlagt mindre enn ei veke', () => {
-        const toDagarFørFødsel: UttakPeriode_fpoversikt = {
+        const toDagarFørFødsel: PeriodeDto_fpoversikt = {
             fom: '2024-03-28',
-            tom: '2024-03-29', // 2 dager, mindre enn 5 dager (ei veke)
-            forelder: 'MOR',
-            kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-            flerbarnsdager: false,
+            tom: '2024-03-29',
+            søker: { forelder: 'MOR', kontoType: 'FORELDREPENGER_FØR_FØDSEL', flerbarnsdager: false },
         };
 
         const rader = finnDinPlanKvoteRader([toDagarFørFødsel], 'MOR', KONTOER.kontoer, 'fødsel', FAMILIEHENDELSESDATO);
@@ -321,12 +329,10 @@ describe('finnDinPlanKvoteRader', () => {
 
     it('skal ikkje ta med periodar som tilhøyrer den andre forelderen', () => {
         const mødrekvotePeriodeTilMor = lagMorsMødrekvotePeriode('2024-04-01', '2024-05-10');
-        const fedrekvotePeriodeTilFar: UttakPeriode_fpoversikt = {
+        const fedrekvotePeriodeTilFar: PeriodeDto_fpoversikt = {
             fom: '2024-05-13',
             tom: '2024-06-21',
-            forelder: 'FAR_MEDMOR',
-            kontoType: 'FEDREKVOTE',
-            flerbarnsdager: false,
+            annenPart: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
         };
 
         const rader = finnDinPlanKvoteRader(

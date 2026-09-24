@@ -11,10 +11,11 @@ import {
 import {
     Aktivitet_fpoversikt,
     EksternArbeidsforholdDto_fpoversikt,
+    KontoType,
     NavnPåForeldre,
+    PeriodeDto_fpoversikt,
     Situasjon,
-    UttakOppholdÅrsak_fpoversikt,
-    UttakPeriode_fpoversikt,
+    UttakDto_fpoversikt,
 } from '@navikt/fp-types';
 import { Uttaksperioden, capitalizeFirstLetter } from '@navikt/fp-utils';
 
@@ -68,7 +69,8 @@ export const uttaksperiodeKanJusteresVedFødsel = (
 
 export const getPeriodeTittel = (
     intl: IntlShape,
-    periode: UttakPeriode_fpoversikt,
+    periode: PeriodeDto_fpoversikt,
+    part: UttakDto_fpoversikt | undefined,
     navnPåForeldre: NavnPåForeldre,
     familiehendelsesdato: string,
     termindato: string | undefined,
@@ -76,10 +78,11 @@ export const getPeriodeTittel = (
     erFarEllerMedmor: boolean,
     erAleneOmOmsorg?: boolean,
 ): string => {
-    if (Uttaksperioden.erUttaksperiode(periode)) {
+    if (part && Uttaksperioden.erUttaksperiode(part)) {
         return getPeriodeTittelUttaksPeriode(
             intl,
             periode,
+            part,
             navnPåForeldre,
             familiehendelsesdato,
             termindato,
@@ -88,28 +91,28 @@ export const getPeriodeTittel = (
             erAleneOmOmsorg,
         );
     }
-    if (!('trekkdager' in periode) && periode.overføringÅrsak) {
-        return getStønadskvoteNavn(intl, periode.kontoType, navnPåForeldre, erFarEllerMedmor);
+    if (part?.overføringÅrsak) {
+        return getStønadskvoteNavn(intl, part.kontoType, navnPåForeldre, erFarEllerMedmor);
     }
 
-    if (!('trekkdager' in periode) && periode.utsettelseÅrsak) {
-        if (periode.utsettelseÅrsak) {
-            return intl.formatMessage(
-                { id: 'uttaksplan.periodeliste.utsettelsesårsak' },
-                {
-                    årsak: intl.formatMessage({ id: `uttaksplan.utsettelsesårsak.${periode.utsettelseÅrsak}` }),
-                },
-            );
-        }
-        return intl.formatMessage({ id: 'uttaksplan.periodeliste.utsettelsesårsak.ukjent' });
+    if (part?.utsettelseÅrsak) {
+        return intl.formatMessage(
+            { id: 'uttaksplan.periodeliste.utsettelsesårsak' },
+            {
+                årsak: intl.formatMessage({ id: `uttaksplan.utsettelsesårsak.${part.utsettelseÅrsak}` }),
+            },
+        );
     }
 
-    if (!('trekkdager' in periode) && periode.oppholdÅrsak) {
+    // Oppholdsperiodar finst berre i søkjaren sin eigen liste (part er alltid udefinert her, sidan
+    // ei oppholdsperiode strukturelt er «søkjar manglar uttak, annan part har det»). Årsaka til
+    // oppholdet er difor annan part sin kontoType, ikkje eit eige oppholdÅrsak-felt frå backend.
+    if (Uttaksperioden.erOppholdsperiode(periode)) {
         return getOppholdskontoNavn(
             intl,
-            periode.oppholdÅrsak,
-            getForelderNavn(periode.forelder, navnPåForeldre),
-            periode.forelder === 'MOR',
+            periode.annenPart?.kontoType,
+            getForelderNavn(erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR', navnPåForeldre),
+            !erFarEllerMedmor,
         );
     }
 
@@ -118,7 +121,8 @@ export const getPeriodeTittel = (
 
 const getPeriodeTittelUttaksPeriode = (
     intl: IntlShape,
-    periode: UttakPeriode_fpoversikt,
+    periode: PeriodeDto_fpoversikt,
+    part: UttakDto_fpoversikt,
     navnPåForeldre: NavnPåForeldre,
     familiehendelsesdato: string,
     termindato: string | undefined,
@@ -126,28 +130,26 @@ const getPeriodeTittelUttaksPeriode = (
     erFarEllerMedmor: boolean,
     erAleneOmOmsorg?: boolean,
 ) => {
-    const tittelMedNavn = getStønadskvoteNavn(
-        intl,
-        periode.kontoType,
-        navnPåForeldre,
-        erFarEllerMedmor,
-        erAleneOmOmsorg,
-    );
+    const tittelMedNavn = getStønadskvoteNavn(intl, part.kontoType, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg);
+    // isUttaksperiodeFarMedmorPgaFødsel sjekkar alltid .søker-parten av periode. Her kan «parten vi ser
+    // på» vera annenPart (t.d. i annan part si liste), så vi byggjer ei periode der .søker peikar på
+    // rett part før vi kallar han, i staden for å endra den delte sjekk-funksjonen sin kontrakt.
+    const periodeForFødselssjekk: PeriodeDto_fpoversikt = { ...periode, søker: part };
     const tittel = appendPeriodeNavnHvisUttakRundtFødselFarMedmor(
         intl,
         tittelMedNavn,
-        periode,
+        periodeForFødselssjekk,
         situasjon,
         familiehendelsesdato,
         termindato,
     );
-    if (periode.gradering?.arbeidstidprosent || periode.samtidigUttak) {
+    if (part.gradering?.arbeidstidprosent || part.samtidigUttak) {
         return `${tittel} ${intl.formatMessage(
             { id: 'gradering.prosent' },
             {
                 stillingsprosent: getUttaksprosentFromStillingsprosent(
-                    prettifyProsent(periode.gradering?.arbeidstidprosent),
-                    periode.samtidigUttak ? prettifyProsent(periode.samtidigUttak) : undefined,
+                    prettifyProsent(part.gradering?.arbeidstidprosent),
+                    part.samtidigUttak ? prettifyProsent(part.samtidigUttak) : undefined,
                 ),
             },
         )}`;
@@ -157,25 +159,25 @@ const getPeriodeTittelUttaksPeriode = (
 
 const getOppholdskontoNavn = (
     intl: IntlShape,
-    årsak: UttakOppholdÅrsak_fpoversikt,
+    kontoType: KontoType | undefined,
     foreldernavn: string,
     erMor: boolean,
 ) => {
     const navn = capitalizeFirstLetter(foreldernavn);
     if (erMor) {
-        if (årsak === 'FEDREKVOTE_ANNEN_FORELDER') {
+        if (kontoType === 'FEDREKVOTE') {
             return intl.formatMessage(
                 { id: 'uttaksplan.oppholdsårsaktype.foreldernavn.far.FEDREKVOTE_ANNEN_FORELDER' },
                 { foreldernavn: navn },
             );
         }
-        if (årsak === 'FELLESPERIODE_ANNEN_FORELDER') {
+        if (kontoType === 'FELLESPERIODE') {
             return intl.formatMessage(
                 { id: 'uttaksplan.oppholdsårsaktype.foreldernavn.far.FELLESPERIODE_ANNEN_FORELDER' },
                 { foreldernavn: navn },
             );
         }
-        if (årsak === 'MØDREKVOTE_ANNEN_FORELDER') {
+        if (kontoType === 'MØDREKVOTE') {
             return intl.formatMessage(
                 { id: 'uttaksplan.oppholdsårsaktype.foreldernavn.far.MØDREKVOTE_ANNEN_FORELDER' },
                 { foreldernavn: navn },
@@ -183,14 +185,14 @@ const getOppholdskontoNavn = (
         }
     }
 
-    if (årsak === 'FEDREKVOTE_ANNEN_FORELDER') {
+    if (kontoType === 'FEDREKVOTE') {
         return intl.formatMessage(
             { id: 'uttaksplan.oppholdsårsaktype.foreldernavn.mor.FEDREKVOTE_ANNEN_FORELDER' },
             { foreldernavn: navn },
         );
     }
 
-    if (årsak === 'FELLESPERIODE_ANNEN_FORELDER') {
+    if (kontoType === 'FELLESPERIODE') {
         return intl.formatMessage(
             { id: 'uttaksplan.oppholdsårsaktype.foreldernavn.mor.FELLESPERIODE_ANNEN_FORELDER' },
             { foreldernavn: navn },
@@ -206,7 +208,7 @@ const getOppholdskontoNavn = (
 const appendPeriodeNavnHvisUttakRundtFødselFarMedmor = (
     intl: IntlShape,
     periodeNavn: string,
-    periode: UttakPeriode_fpoversikt,
+    periode: PeriodeDto_fpoversikt,
     situasjon: Situasjon,
     familiehendelsesdato: string,
     termindato: string | undefined,

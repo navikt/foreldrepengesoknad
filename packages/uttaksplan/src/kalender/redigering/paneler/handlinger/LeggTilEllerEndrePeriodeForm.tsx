@@ -8,22 +8,21 @@ import { FormattedMessage } from 'react-intl';
 import { Alert, Button, ErrorMessage, HStack, VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
-import type { BrukerRolleSak_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import type { BrukerRolleSak_fpoversikt, PeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import {
     LeggTilEllerEndrePeriodeFellesForm,
     LeggTilEllerEndrePeriodeFormFormValues,
     lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm,
-    mapFraFormValuesTilUttakPeriode,
+    mapFraFormValuesTilPeriodeDto,
 } from '../../../../felles/LeggTilEllerEndrePeriodeFellesForm';
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { useFormSubmitValidator } from '../../../../felles/uttaksplanValidatorer';
 import { useKanKunErstatte, useLeggTilEndreSkjemaInfoAlerts } from '../../../../regler/alert/informasjonsAlertHooks';
-import { erEøsUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
-import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
+import { erDetEksisterendePerioderEtterValgtePerioder, finnPartForForelder } from '../../../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from '../../context/KalenderRedigeringContext';
 import { finnValgtePerioder } from '../../utils/kalenderPeriodeUtils';
 
@@ -36,7 +35,7 @@ interface Props {
 
 export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) => {
     const {
-        uttakPerioder,
+        perioder,
         foreldreInfo: { søker },
         erPeriodeneTilAnnenPartLåst,
         kanVelgeArbeidsgiver,
@@ -51,7 +50,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         useVisForskyvEllerErstattPanel(sammenslåtteValgtePerioder);
 
     const defaultValues = lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
-        uttakPerioder,
+        perioder,
         sammenslåtteValgtePerioder[0]!,
         søker,
         erPeriodeneTilAnnenPartLåst,
@@ -72,7 +71,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
 
         if (forelderVerdi === 'BEGGE' && (erFarMedmorLåst || erMorLåst)) {
             const nyeDefaultVerdier = lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
-                uttakPerioder,
+                perioder,
                 sammenslåtteValgtePerioder[0]!,
                 søker,
                 false,
@@ -97,15 +96,15 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
                 dayjs(vp.tom).isAfter(eksisterendePerioderSomErValgt.at(0)!.tom),
         );
 
+    // Byggjer syntetiske periodar med KUN mors part, slik at den delte sjekk-funksjonen ikkje
+    // ved eit uhell finn far/medmor sine data frå ei anna, urelatert (t.d. samtidig uttak-)rad.
+    const morsPerioder: PeriodeDto_fpoversikt[] = perioder.flatMap((p) => {
+        const morsPart = finnPartForForelder(p, 'MOR');
+        return morsPart ? [{ fom: p.fom, tom: p.tom, søker: morsPart }] : [];
+    });
+
     const { morsAktivitetIkkeOppgittAlert } = useLeggTilEndreSkjemaInfoAlerts(
-        harValgtDagerKunForEnEksisterendePeriode
-            ? [
-                  ...eksisterendePerioderSomErValgt,
-                  ...uttakPerioder.filter(
-                      (mp): mp is UttakPeriode_fpoversikt => !erEøsUttakPeriode(mp) && mp.forelder === 'MOR',
-                  ),
-              ]
-            : [],
+        harValgtDagerKunForEnEksisterendePeriode ? [...eksisterendePerioderSomErValgt, ...morsPerioder] : [],
     );
 
     const erGradertMor = skalDuKombinereArbeidOgUttakMor === true && (forelder === 'MOR' || forelder === 'BEGGE');
@@ -119,7 +118,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
     const harNesteSteg =
         !kanKunErstatte &&
         !morsAktivitetIkkeOppgittAlert &&
-        erDetEksisterendePerioderEtterValgtePerioder(uttakPerioder, sammenslåtteValgtePerioder);
+        erDetEksisterendePerioderEtterValgtePerioder(perioder, sammenslåtteValgtePerioder);
 
     const onSubmit = (values: LeggTilEllerEndrePeriodeFormFormValues) => {
         const submitFeilmelding = formSubmitValidator(sammenslåtteValgtePerioder, values);
@@ -140,7 +139,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
     const leggIKalender = (skalForskyve: boolean) => {
         leggTilUttaksplanPerioder(
             sammenslåtteValgtePerioder.flatMap((periode) =>
-                mapFraFormValuesTilUttakPeriode(formMethods.getValues(), periode, søker, kanVelgeArbeidsgiver),
+                mapFraFormValuesTilPeriodeDto(formMethods.getValues(), periode, søker, kanVelgeArbeidsgiver),
             ),
             skalForskyve,
         );

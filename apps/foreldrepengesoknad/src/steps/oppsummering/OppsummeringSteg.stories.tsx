@@ -22,10 +22,10 @@ import {
     Frilans,
     KontoBeregningDto,
     NæringDto,
+    PeriodeDto_fpoversikt,
     SøkersituasjonFp,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
-    UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 
 import { OppsummeringSteg } from './OppsummeringSteg';
@@ -113,62 +113,52 @@ const defaultUtenlandsopphold = {
 
 const defaultUttaksplan = [
     {
-        forelder: 'MOR',
-        kontoType: 'FORELDREPENGER_FØR_FØDSEL',
         fom: '2021-11-24',
         tom: '2021-12-14',
-        flerbarnsdager: false,
+        søker: { forelder: 'MOR', kontoType: 'FORELDREPENGER_FØR_FØDSEL', flerbarnsdager: false },
     },
     {
-        utsettelseÅrsak: 'SØKER_INNLAGT',
-        forelder: 'MOR',
         fom: '2021-12-15',
         tom: '2022-01-25',
-        flerbarnsdager: false,
+        søker: { utsettelseÅrsak: 'SØKER_INNLAGT', forelder: 'MOR', flerbarnsdager: false },
     },
     {
-        forelder: 'MOR',
-        kontoType: 'FELLESPERIODE',
         fom: '2022-03-30',
         tom: '2022-06-07',
-        flerbarnsdager: false,
+        søker: { forelder: 'MOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false },
     },
-] satisfies UttakPeriode_fpoversikt[];
+] satisfies PeriodeDto_fpoversikt[];
 
 const defaultUttaksplanFar = [
     {
-        forelder: 'FAR_MEDMOR',
-        kontoType: 'FEDREKVOTE',
         fom: '2022-01-26',
         tom: '2022-03-14',
-        flerbarnsdager: false,
+        søker: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
     },
     {
-        forelder: 'FAR_MEDMOR',
-        kontoType: 'FELLESPERIODE',
         fom: '2022-03-15',
         tom: '2022-06-25',
-        flerbarnsdager: false,
+        søker: { forelder: 'FAR_MEDMOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false },
     },
-] satisfies UttakPeriode_fpoversikt[];
+] satisfies PeriodeDto_fpoversikt[];
 
 const defaultUttaksplanFarAleneomsorg = [
     {
-        forelder: 'FAR_MEDMOR',
-        kontoType: 'FORELDREPENGER',
         fom: '2021-11-24',
         tom: '2021-12-14',
-        flerbarnsdager: false,
-        morsAktivitet: 'IKKE_OPPGITT',
+        søker: {
+            forelder: 'FAR_MEDMOR',
+            kontoType: 'FORELDREPENGER',
+            flerbarnsdager: false,
+            morsAktivitet: 'IKKE_OPPGITT',
+        },
     },
     {
-        forelder: 'FAR_MEDMOR',
-        kontoType: 'FORELDREPENGER',
         fom: '2021-12-15',
         tom: '2022-06-07',
-        flerbarnsdager: false,
+        søker: { forelder: 'FAR_MEDMOR', kontoType: 'FORELDREPENGER', flerbarnsdager: false },
     },
-] satisfies UttakPeriode_fpoversikt[];
+] satisfies PeriodeDto_fpoversikt[];
 
 // «Bare far har rett»-scenario der far ikkje har søkt om pause i ein periode mor ikkje har rett:
 // perioden blir avslått, men trekkjer likevel dagar frå kvoten, og skal difor visast som
@@ -176,19 +166,21 @@ const defaultUttaksplanFarAleneomsorg = [
 const defaultUttaksplanFarAleneomsorgMedTaptPeriode = [
     ...defaultUttaksplanFarAleneomsorg,
     {
-        forelder: 'FAR_MEDMOR',
-        kontoType: 'FORELDREPENGER',
         fom: '2022-06-08',
         tom: '2022-06-21',
-        flerbarnsdager: false,
-        resultat: {
-            innvilget: false,
-            trekkerDager: true,
-            trekkerMinsterett: false,
-            årsak: 'AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER',
+        søker: {
+            forelder: 'FAR_MEDMOR',
+            kontoType: 'FORELDREPENGER',
+            flerbarnsdager: false,
+            resultat: {
+                innvilget: false,
+                trekkerDager: true,
+                trekkerMinsterett: false,
+                årsak: 'AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER',
+            },
         },
     },
-] satisfies UttakPeriode_fpoversikt[];
+] satisfies PeriodeDto_fpoversikt[];
 
 const defaultArbeidsforholdOgInntekt = {
     harJobbetSomFrilans: false,
@@ -312,7 +304,7 @@ type StoryArgs = {
     egenNæring?: NæringDto;
     andreInntekter?: AndreInntektskilder[];
     vedlegg?: VedleggDataType;
-    uttaksplan?: UttakPeriode_fpoversikt[];
+    uttaksplan?: PeriodeDto_fpoversikt[];
     manglerUttaksplan?: boolean;
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof OppsummeringSteg>;
@@ -1130,23 +1122,13 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
 
         // Ny uttaksplan med samtidig uttak
         const uttaksplanMedSamtidigUttak = [
-            ...defaultUttaksplan.slice(0, 2), // Behold de første periodene
+            ...defaultUttaksplan.slice(0, 2).map(({ fom, tom, søker }) => ({ fom, tom, annenPart: søker })), // Behold de første periodene
             {
-                forelder: 'MOR',
-                kontoType: 'FELLESPERIODE',
                 fom: '2022-03-30',
                 tom: '2022-06-07',
-                samtidigUttak: 50,
-                flerbarnsdager: false,
-            } satisfies UttakPeriode_fpoversikt,
-            {
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FELLESPERIODE',
-                fom: '2022-03-30',
-                tom: '2022-06-07',
-                samtidigUttak: 50,
-                flerbarnsdager: false,
-            } satisfies UttakPeriode_fpoversikt,
+                søker: { forelder: 'FAR_MEDMOR', kontoType: 'FELLESPERIODE', samtidigUttak: 50, flerbarnsdager: false },
+                annenPart: { forelder: 'MOR', kontoType: 'FELLESPERIODE', samtidigUttak: 50, flerbarnsdager: false },
+            } satisfies PeriodeDto_fpoversikt,
         ];
 
         return (
@@ -1207,29 +1189,29 @@ export const VisGradertPeriode: Story = {
         },
         uttaksplan: [
             {
-                forelder: 'MOR',
-                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 fom: '2021-11-24',
                 tom: '2021-12-14',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', kontoType: 'FORELDREPENGER_FØR_FØDSEL', flerbarnsdager: false },
             },
             {
-                forelder: 'MOR',
-                kontoType: 'MØDREKVOTE',
-                gradering: {
-                    aktivitet: {
-                        type: 'ORDINÆRT_ARBEID',
-                        arbeidsgiver: {
-                            id: '1',
-                        },
-                    },
-                    arbeidstidprosent: 50,
-                },
                 fom: '2021-12-15',
                 tom: '2022-01-25',
-                flerbarnsdager: false,
+                søker: {
+                    forelder: 'MOR',
+                    kontoType: 'MØDREKVOTE',
+                    gradering: {
+                        aktivitet: {
+                            type: 'ORDINÆRT_ARBEID',
+                            arbeidsgiver: {
+                                id: '1',
+                            },
+                        },
+                        arbeidstidprosent: 50,
+                    },
+                    flerbarnsdager: false,
+                },
             },
-        ] satisfies UttakPeriode_fpoversikt[],
+        ] satisfies PeriodeDto_fpoversikt[],
     },
 };
 
@@ -1246,48 +1228,85 @@ export const HarPerioderForBådeMorOgFar: Story = {
         },
         uttaksplan: [
             {
-                forelder: 'MOR',
-                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-                fom: '2021-11-24',
-                tom: '2021-12-14',
-                flerbarnsdager: false,
-            },
-            {
-                forelder: 'MOR',
-                kontoType: 'MØDREKVOTE',
-                gradering: {
-                    aktivitet: {
-                        type: 'ORDINÆRT_ARBEID',
-                        arbeidsgiver: {
-                            id: '1',
-                        },
-                    },
-                    arbeidstidprosent: 50,
-                },
-                fom: '2021-12-15',
-                tom: '2022-01-25',
-                flerbarnsdager: false,
-            },
-            {
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FEDREKVOTE',
                 fom: '2021-01-26',
                 tom: '2021-03-14',
-                flerbarnsdager: false,
+                annenPart: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
             },
             {
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FELLESPERIODE',
-                gradering: {
-                    aktivitet: {
-                        type: 'ANNET',
-                    },
-                    arbeidstidprosent: 50,
-                },
                 fom: '2021-03-15',
-                tom: '2022-03-25',
-                flerbarnsdager: false,
+                tom: '2021-11-23',
+                annenPart: {
+                    forelder: 'FAR_MEDMOR',
+                    kontoType: 'FELLESPERIODE',
+                    gradering: {
+                        aktivitet: {
+                            type: 'ANNET',
+                        },
+                        arbeidstidprosent: 50,
+                    },
+                    flerbarnsdager: false,
+                },
             },
-        ] satisfies UttakPeriode_fpoversikt[],
+            {
+                fom: '2021-11-24',
+                tom: '2021-12-14',
+                søker: { forelder: 'MOR', kontoType: 'FORELDREPENGER_FØR_FØDSEL', flerbarnsdager: false },
+                annenPart: {
+                    forelder: 'FAR_MEDMOR',
+                    kontoType: 'FELLESPERIODE',
+                    gradering: {
+                        aktivitet: {
+                            type: 'ANNET',
+                        },
+                        arbeidstidprosent: 50,
+                    },
+                    flerbarnsdager: false,
+                },
+            },
+            {
+                fom: '2021-12-15',
+                tom: '2022-01-25',
+                søker: {
+                    forelder: 'MOR',
+                    kontoType: 'MØDREKVOTE',
+                    gradering: {
+                        aktivitet: {
+                            type: 'ORDINÆRT_ARBEID',
+                            arbeidsgiver: {
+                                id: '1',
+                            },
+                        },
+                        arbeidstidprosent: 50,
+                    },
+                    flerbarnsdager: false,
+                },
+                annenPart: {
+                    forelder: 'FAR_MEDMOR',
+                    kontoType: 'FELLESPERIODE',
+                    gradering: {
+                        aktivitet: {
+                            type: 'ANNET',
+                        },
+                        arbeidstidprosent: 50,
+                    },
+                    flerbarnsdager: false,
+                },
+            },
+            {
+                fom: '2022-01-26',
+                tom: '2022-03-25',
+                annenPart: {
+                    forelder: 'FAR_MEDMOR',
+                    kontoType: 'FELLESPERIODE',
+                    gradering: {
+                        aktivitet: {
+                            type: 'ANNET',
+                        },
+                        arbeidstidprosent: 50,
+                    },
+                    flerbarnsdager: false,
+                },
+            },
+        ] satisfies PeriodeDto_fpoversikt[],
     },
 };

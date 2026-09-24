@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { Button, HStack, VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { PeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../../../../context/UttaksplanDataContext';
 import { FormValues, LeggTilUtsettelseForm } from '../../../../../felles/utsettelse/LeggTilUtsettelseForm';
@@ -31,12 +31,14 @@ export const LeggTilUtsettelsePanel = ({ setVisUtsettelsePanel }: Props) => {
             sammenslåtteValgtePerioder.map(
                 (p) =>
                     ({
-                        forelder: søker,
                         fom: p.fom,
                         tom: p.tom,
-                        utsettelseÅrsak: formValues.utsettelseÅrsak,
-                        flerbarnsdager: false,
-                    }) satisfies UttakPeriode_fpoversikt,
+                        søker: {
+                            forelder: søker,
+                            utsettelseÅrsak: formValues.utsettelseÅrsak,
+                            flerbarnsdager: false,
+                        },
+                    }) satisfies PeriodeDto_fpoversikt,
             ),
             false,
         );

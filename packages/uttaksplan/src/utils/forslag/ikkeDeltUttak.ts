@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import { KontoDto, Situasjon, Tidsperiode, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { KontoDto, PeriodeDto_fpoversikt, Situasjon, Tidsperiode } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { sorterUttakPerioder } from '../periodeUtils';
@@ -19,22 +19,24 @@ const ikkeDeltUttakAdopsjonFarMedmor = ({
     aktivitetsfriKvote: KontoDto | undefined;
     bareFarMedmorHarRett: boolean;
     farOgFar: boolean;
-}): UttakPeriode_fpoversikt[] => {
+}): PeriodeDto_fpoversikt[] => {
     const førsteUttaksdag = Uttaksdagen.denneEllerNeste(famDato).getDato();
-    const perioder: UttakPeriode_fpoversikt[] = [];
+    const perioder: PeriodeDto_fpoversikt[] = [];
 
     if ((erMorUfør || bareFarMedmorHarRett) && aktivitetsfriKvote) {
         // Mor har ikke rett til foreldrepenger her (hun er enten ufør eller har ingen rett i det hele
         // tatt), så det gir ikke mening å be henne dokumentere aktivitet. Vi foreslår derfor kun den
         // mindre kvoten uten aktivitetskrav (aktivitetsfri kvote), og lar den større kvoten med
         // aktivitetskrav ligge i reserve som brukeren selv kan velge å ta i bruk.
-        const periode: UttakPeriode_fpoversikt = {
-            forelder: 'FAR_MEDMOR',
-            kontoType: 'FORELDREPENGER',
-            morsAktivitet: 'IKKE_OPPGITT',
+        const periode: PeriodeDto_fpoversikt = {
             fom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote.dager).fom,
             tom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote.dager).tom,
-            flerbarnsdager: false,
+            søker: {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FORELDREPENGER',
+                morsAktivitet: 'IKKE_OPPGITT',
+                flerbarnsdager: false,
+            },
         };
 
         perioder.push(periode);
@@ -44,24 +46,28 @@ const ikkeDeltUttakAdopsjonFarMedmor = ({
         // aktivitet kan dokumenteres, så et ordinært aktivitetskrav-basert konto (FORELDREPENGER)
         // gir ikke mening her – se VIS_AKTIVITETSKRAV_FELT i feltSynlighet.ts. Dette er trolig en egen,
         // gyldig forretningsregel og ikke del av «skal ikke foreslå aktivitetsfri kvote automatisk»-fiksen.
-        const periode: UttakPeriode_fpoversikt = {
-            forelder: 'FAR_MEDMOR',
-            kontoType: 'FORELDREPENGER',
-            morsAktivitet: 'IKKE_OPPGITT',
+        const periode: PeriodeDto_fpoversikt = {
             fom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).fom,
             tom: getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote!.dager).tom,
-            flerbarnsdager: false,
+            søker: {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FORELDREPENGER',
+                morsAktivitet: 'IKKE_OPPGITT',
+                flerbarnsdager: false,
+            },
         };
         perioder.push(periode);
     } else {
         // Aktivitetsfri kvote (foreldrepenger uten aktivitetskrav) skal ikke brukes i det foreslåtte forslaget
         // her, siden dette er en kvote brukeren selv bør velge å bruke, ikke noe vi automatisk foreslår.
-        const periode: UttakPeriode_fpoversikt = {
-            forelder: 'FAR_MEDMOR',
-            kontoType: 'FORELDREPENGER',
+        const periode: PeriodeDto_fpoversikt = {
             fom: getTidsperiodeString(førsteUttaksdag, foreldrepengerKonto.dager).fom,
             tom: getTidsperiodeString(førsteUttaksdag, foreldrepengerKonto.dager).tom,
-            flerbarnsdager: false,
+            søker: {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FORELDREPENGER',
+                flerbarnsdager: false,
+            },
         };
 
         perioder.push(periode);
@@ -76,14 +82,16 @@ const ikkeDeltUttakAdopsjonMor = ({
 }: {
     famDato: string;
     foreldrepengerKonto: KontoDto;
-}): UttakPeriode_fpoversikt[] => {
+}): PeriodeDto_fpoversikt[] => {
     const førsteUttaksdag = Uttaksdagen.denneEllerNeste(famDato).getDato();
-    const periode: UttakPeriode_fpoversikt = {
-        forelder: 'MOR',
-        kontoType: 'FORELDREPENGER',
+    const periode: PeriodeDto_fpoversikt = {
         fom: getTidsperiodeString(førsteUttaksdag, foreldrepengerKonto.dager).fom,
         tom: getTidsperiodeString(førsteUttaksdag, foreldrepengerKonto.dager).tom,
-        flerbarnsdager: false,
+        søker: {
+            forelder: 'MOR',
+            kontoType: 'FORELDREPENGER',
+            flerbarnsdager: false,
+        },
     };
 
     return [periode];
@@ -130,7 +138,7 @@ const ikkeDeltUttakFødselMor = ({
     foreldrepengerKonto: KontoDto;
     foreldrePengerFørFødselKonto: KontoDto | undefined;
     startdato?: string;
-}): UttakPeriode_fpoversikt[] => {
+}): PeriodeDto_fpoversikt[] => {
     const førsteUttaksdagEtterFødsel = Uttaksdagen.denneEllerNeste(famDato).getDato();
     // Når ingen startdato er valgt eksplisitt (t.d. planlegger-appen, som ikke har noe
     // eget oppstartsvalg-steg), bruker vi samme standard som før: 3 uker (15 uttaksdager)
@@ -142,15 +150,17 @@ const ikkeDeltUttakFødselMor = ({
     // Da skal FORELDREPENGER_FØR_FØDSEL dekke perioden fra den valgte startdatoen og frem til fødselen.
     const starterFørFødsel = dayjs(valgtStartdato).isBefore(førsteUttaksdagEtterFødsel, 'd');
 
-    const perioder: UttakPeriode_fpoversikt[] = [];
+    const perioder: PeriodeDto_fpoversikt[] = [];
 
     if (foreldrePengerFørFødselKonto !== undefined && starterFørFødsel) {
-        const periodeFørFødsel: UttakPeriode_fpoversikt = {
-            forelder: 'MOR',
-            kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+        const periodeFørFødsel: PeriodeDto_fpoversikt = {
             fom: valgtStartdato,
             tom: Uttaksdagen.forrige(førsteUttaksdagEtterFødsel).getDato(),
-            flerbarnsdager: false,
+            søker: {
+                forelder: 'MOR',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                flerbarnsdager: false,
+            },
         };
 
         perioder.push(periodeFørFødsel);
@@ -159,12 +169,14 @@ const ikkeDeltUttakFødselMor = ({
     const foreldrepengerFom = starterFørFødsel ? førsteUttaksdagEtterFødsel : valgtStartdato;
     const antallDagerIForeldrepenger = getTidsperiodeString(foreldrepengerFom, foreldrepengerKonto.dager);
 
-    const foreldrepengerPeriode: UttakPeriode_fpoversikt = {
-        forelder: 'MOR',
-        kontoType: 'FORELDREPENGER',
+    const foreldrepengerPeriode: PeriodeDto_fpoversikt = {
         fom: antallDagerIForeldrepenger.fom,
         tom: antallDagerIForeldrepenger.tom,
-        flerbarnsdager: false,
+        søker: {
+            forelder: 'MOR',
+            kontoType: 'FORELDREPENGER',
+            flerbarnsdager: false,
+        },
     };
 
     perioder.push(foreldrepengerPeriode);
@@ -190,22 +202,24 @@ const ikkeDeltUttakFødselFarMedmor = ({
     erAleneOmOmsorg: boolean;
     farOgFar: boolean;
     startdato?: string;
-}): UttakPeriode_fpoversikt[] => {
+}): PeriodeDto_fpoversikt[] => {
     const startDato = Uttaksdagen.denneEllerNeste(startdato ?? famDato).getDato();
-    const perioder: UttakPeriode_fpoversikt[] = [];
+    const perioder: PeriodeDto_fpoversikt[] = [];
 
     if ((erMorUfør || bareFarMedmorHarRett) && aktivitetsfriKvote) {
         // Mor har ikke rett til foreldrepenger her (hun er enten ufør eller har ingen rett i det hele
         // tatt), så det gir ikke mening å be henne dokumentere aktivitet. Vi foreslår derfor kun den
         // mindre kvoten uten aktivitetskrav (aktivitetsfri kvote), og lar den større kvoten med
         // aktivitetskrav ligge i reserve som brukeren selv kan velge å ta i bruk.
-        const periode: UttakPeriode_fpoversikt = {
-            forelder: 'FAR_MEDMOR',
-            kontoType: 'FORELDREPENGER',
-            morsAktivitet: 'IKKE_OPPGITT',
+        const periode: PeriodeDto_fpoversikt = {
             fom: getTidsperiodeString(startDato, aktivitetsfriKvote.dager).fom,
             tom: getTidsperiodeString(startDato, aktivitetsfriKvote.dager).tom,
-            flerbarnsdager: false,
+            søker: {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FORELDREPENGER',
+                morsAktivitet: 'IKKE_OPPGITT',
+                flerbarnsdager: false,
+            },
         };
 
         perioder.push(periode);
@@ -216,25 +230,29 @@ const ikkeDeltUttakFødselFarMedmor = ({
             // aktivitet kan dokumenteres, så et ordinært aktivitetskrav-basert konto (FORELDREPENGER)
             // gir ikke mening her – se VIS_AKTIVITETSKRAV_FELT i feltSynlighet.ts. Dette er trolig en egen,
             // gyldig forretningsregel og ikke del av «skal ikke foreslå aktivitetsfri kvote automatisk»-fiksen.
-            const periode: UttakPeriode_fpoversikt = {
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FORELDREPENGER',
-                morsAktivitet: 'IKKE_OPPGITT',
+            const periode: PeriodeDto_fpoversikt = {
                 fom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).fom,
                 tom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).tom,
-                flerbarnsdager: false,
+                søker: {
+                    forelder: 'FAR_MEDMOR',
+                    kontoType: 'FORELDREPENGER',
+                    morsAktivitet: 'IKKE_OPPGITT',
+                    flerbarnsdager: false,
+                },
             };
             perioder.push(periode);
         } else {
             // Aktivitetsfri kvote (foreldrepenger uten aktivitetskrav) skal ikke brukes i det foreslåtte
             // forslaget her, siden dette er en kvote brukeren selv bør velge å bruke, ikke noe vi
             // automatisk foreslår.
-            const periode: UttakPeriode_fpoversikt = {
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FORELDREPENGER',
+            const periode: PeriodeDto_fpoversikt = {
                 fom: getTidsperiodeString(startDato, foreldrepengerKonto.dager).fom,
                 tom: getTidsperiodeString(startDato, foreldrepengerKonto.dager).tom,
-                flerbarnsdager: false,
+                søker: {
+                    forelder: 'FAR_MEDMOR',
+                    kontoType: 'FORELDREPENGER',
+                    flerbarnsdager: false,
+                },
             };
 
             perioder.push(periode);
@@ -310,7 +328,7 @@ export const ikkeDeltUttak = ({
     erAleneOmOmsorg,
     startdato,
     farOgFar,
-}: IkkeDeltUttakParams): UttakPeriode_fpoversikt[] => {
+}: IkkeDeltUttakParams): PeriodeDto_fpoversikt[] => {
     const foreldrepengerKonto = tilgjengeligeStønadskvoter.find((konto) => konto.konto === 'FORELDREPENGER');
     const foreldrePengerFørFødselKonto = tilgjengeligeStønadskvoter.find(
         (konto) => konto.konto === 'FORELDREPENGER_FØR_FØDSEL',

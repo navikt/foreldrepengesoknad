@@ -39,7 +39,7 @@ const DEFAULT_DATA = {
         fødselsdatoer: [FAMILIEHENDELSESDATO],
     },
     harAktivitetskravIPeriodeUtenUttak: false,
-    uttakPerioder: [],
+    perioder: [],
     erPeriodeneTilAnnenPartLåst: false,
     children: [],
     erEndringssøknad: false,

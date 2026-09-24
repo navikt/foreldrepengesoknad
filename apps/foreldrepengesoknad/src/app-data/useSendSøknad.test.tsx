@@ -19,11 +19,11 @@ import {
     FpSak_fpoversikt,
     Frilans,
     NæringDto,
+    PeriodeDto_fpoversikt,
     SelvstendigNæringDto_fpoversikt,
     SøkerDto,
     SøkersituasjonFp,
     UtenlandsoppholdPeriode,
-    UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
@@ -159,10 +159,12 @@ const VEDLEGG = {
 const UTTAKSPLAN_PERIODE = {
     fom: '2024-01-01',
     tom: '2024-10-10',
-    forelder: 'MOR',
-    utsettelseÅrsak: 'FRI',
-    flerbarnsdager: false,
-} satisfies UttakPeriode_fpoversikt;
+    søker: {
+        forelder: 'MOR',
+        utsettelseÅrsak: 'FRI',
+        flerbarnsdager: false,
+    },
+} satisfies PeriodeDto_fpoversikt;
 
 const UTTAKSPLAN_METADATA = {
     ønskerJustertUttakVedFødsel: true,
@@ -172,10 +174,12 @@ const UTTAKSPLAN_METADATA = {
 const EKSISTERENDE_PERIODE = {
     fom: '2024-01-02',
     tom: '2024-01-02',
-    forelder: 'MOR',
-    utsettelseÅrsak: 'FRI',
-    flerbarnsdager: false,
-} satisfies UttakPeriode_fpoversikt;
+    søker: {
+        forelder: 'MOR',
+        utsettelseÅrsak: 'FRI',
+        flerbarnsdager: false,
+    },
+} satisfies PeriodeDto_fpoversikt;
 
 const FORELAGT_FRILANSOPPDRAG = [
     {
@@ -226,7 +230,15 @@ const saker = [
             fødselsdato: '2024-01-01',
             antallBarn: 1,
         },
-        gjeldendeVedtak: { perioder: [EKSISTERENDE_PERIODE] },
+        gjeldendeVedtak: {
+            perioder: [
+                {
+                    fom: EKSISTERENDE_PERIODE.fom,
+                    tom: EKSISTERENDE_PERIODE.tom,
+                    ...EKSISTERENDE_PERIODE.søker,
+                },
+            ],
+        },
         harAnnenForelderTilsvarendeRettEØS: false,
         gjelderAdopsjon: false,
         kanSøkeOmEndring: true,
@@ -245,7 +257,7 @@ const saker = [
 ] satisfies FpSak_fpoversikt[];
 
 const getWrapper =
-    (uttaksplan: UttakPeriode_fpoversikt[] = [UTTAKSPLAN_PERIODE]) =>
+    (uttaksplan: PeriodeDto_fpoversikt[] = [UTTAKSPLAN_PERIODE]) =>
     ({ children }: { children: ReactNode }) => (
         <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
             <QueryClientProvider client={queryClient}>

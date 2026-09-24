@@ -1,16 +1,13 @@
 import dayjs from 'dayjs';
 
-import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { PeriodeDto_fpoversikt } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 
-import {
-    UttaksplanperiodeMedKunTapteDager,
-    erTapteDagerHull,
-    erVanligUttakPeriode,
-} from '../../../types/UttaksplanPeriode';
+import { UttaksplanperiodeMedKunTapteDager, erPeriodeDto } from '../../../types/UttaksplanPeriode';
 import { countWeekdaysBetween } from '../../../utils/dateUtils';
+import { erPerioderEkslFomTomLike } from '../../../utils/periodeUtils';
 
-export type UttakPeriodeMedAntallDager = (UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) & {
+export type UttakPeriodeMedAntallDager = PeriodeDto_fpoversikt & {
     valgteDagerIPeriode: number;
 };
 
@@ -55,7 +52,7 @@ export const finnValgtePerioder = (
     uttaksplan: UttaksplanperiodeMedKunTapteDager[],
 ): UttakPeriodeMedAntallDager[] => {
     return uttaksplan
-        .filter((p) => !erTapteDagerHull(p))
+        .filter(erPeriodeDto)
         .map((p) => {
             const fom2 = dayjs(p.fom);
             const tom2 = dayjs(p.tom);
@@ -78,22 +75,15 @@ export const finnValgtePerioder = (
         })
         .filter((p): p is UttakPeriodeMedAntallDager => p !== null)
         .reduce<UttakPeriodeMedAntallDager[]>((acc, curr) => {
-            const duplikat = acc.find(
-                (p) =>
-                    p.kontoType === curr.kontoType &&
-                    erVanligUttakPeriode(p) &&
-                    erVanligUttakPeriode(curr) &&
-                    p.forelder === curr.forelder &&
-                    p.morsAktivitet === curr.morsAktivitet &&
-                    p.samtidigUttak === curr.samtidigUttak &&
-                    p.gradering?.arbeidstidprosent === curr.gradering?.arbeidstidprosent &&
-                    p.gradering?.aktivitet === curr.gradering?.aktivitet &&
-                    p.utsettelseÅrsak === curr.utsettelseÅrsak,
-            );
+            // Slår saman fleire valde delperiodar av same (uendra) periode – t.d. når brukaren
+            // vel dagar frå to tilstøytande eksisterande periodar med identisk innhald bortsett
+            // frå fom/tom. Nyttar erPerioderEkslFomTomLike, som samanliknar alle tre sidene
+            // (søker/annenPart/annenPartEøs) samla, i staden for berre søkjar sine flate felt.
+            const duplikat = acc.find((p) => erPerioderEkslFomTomLike(p, curr));
 
             if (duplikat) {
                 const index = acc.indexOf(duplikat);
-                const nyPeriode = {
+                const nyPeriode: UttakPeriodeMedAntallDager = {
                     ...duplikat,
                     fom: dayjs(duplikat.fom).isBefore(dayjs(curr.fom)) ? duplikat.fom : curr.fom,
                     tom: dayjs(duplikat.tom).isAfter(dayjs(curr.tom)) ? duplikat.tom : curr.tom,

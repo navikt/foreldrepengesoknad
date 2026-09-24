@@ -16,9 +16,8 @@ import {
     ArbeidsforholdOgInntektFp,
     Barn,
     FpPersonopplysningerDto_fpoversikt,
+    PeriodeDto_fpoversikt,
     Situasjon,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
@@ -126,7 +125,7 @@ type StoryArgs = {
     situasjon?: Situasjon;
     annenForelder?: AnnenForelder;
     barn?: Barn;
-    uttaksplan?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    uttaksplan?: PeriodeDto_fpoversikt[];
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektFp;
     annenInntekt?: AndreInntektskilder[];
     vedlegg?: VedleggDataType;
@@ -310,20 +309,19 @@ export const FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid: Story = 
         avbrytSøknad: action('button-click'),
         uttaksplan: [
             {
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FEDREKVOTE',
                 fom: dayjs().add(10, 'month').startOf('month').add(3, 'day').format('YYYY-MM-DD'),
                 tom: dayjs().add(10, 'month').startOf('month').add(16, 'day').format('YYYY-MM-DD'),
-                samtidigUttak: 100,
-                flerbarnsdager: false,
+                søker: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', samtidigUttak: 100, flerbarnsdager: false },
             },
             {
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FELLESPERIODE',
                 fom: dayjs().add(11, 'month').startOf('month').add(17, 'day').format('YYYY-MM-DD'),
                 tom: dayjs().add(11, 'month').startOf('month').add(24, 'day').format('YYYY-MM-DD'),
-                morsAktivitet: 'ARBEID',
-                flerbarnsdager: false,
+                søker: {
+                    forelder: 'FAR_MEDMOR',
+                    kontoType: 'FELLESPERIODE',
+                    morsAktivitet: 'ARBEID',
+                    flerbarnsdager: false,
+                },
             },
         ],
     },
@@ -361,20 +359,19 @@ export const FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid: Story = {
         avbrytSøknad: action('button-click'),
         uttaksplan: [
             {
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FEDREKVOTE',
                 fom: dayjs().add(10, 'month').startOf('month').add(3, 'day').format('YYYY-MM-DD'),
                 tom: dayjs().add(10, 'month').startOf('month').add(16, 'day').format('YYYY-MM-DD'),
-                samtidigUttak: 100,
-                flerbarnsdager: false,
+                søker: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', samtidigUttak: 100, flerbarnsdager: false },
             },
             {
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FELLESPERIODE',
                 fom: dayjs().add(11, 'month').startOf('month').add(17, 'day').format('YYYY-MM-DD'),
                 tom: dayjs().add(11, 'month').startOf('month').add(24, 'day').format('YYYY-MM-DD'),
-                morsAktivitet: 'ARBEID',
-                flerbarnsdager: false,
+                søker: {
+                    forelder: 'FAR_MEDMOR',
+                    kontoType: 'FELLESPERIODE',
+                    morsAktivitet: 'ARBEID',
+                    flerbarnsdager: false,
+                },
             },
         ],
     },
@@ -404,12 +401,14 @@ export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story =
         avbrytSøknad: action('button-click'),
         uttaksplan: [
             {
-                forelder: 'MOR',
-                kontoType: 'FELLESPERIODE',
                 fom: dayjs().add(11, 'month').startOf('month').add(17, 'day').format('YYYY-MM-DD'),
                 tom: dayjs().add(11, 'month').startOf('month').add(24, 'day').format('YYYY-MM-DD'),
-                morsAktivitet: 'UTDANNING',
-                flerbarnsdager: false,
+                søker: {
+                    forelder: 'FAR_MEDMOR',
+                    kontoType: 'FELLESPERIODE',
+                    morsAktivitet: 'UTDANNING',
+                    flerbarnsdager: false,
+                },
             },
         ],
     },
@@ -440,20 +439,24 @@ export const BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbei
         avbrytSøknad: action('button-click'),
         uttaksplan: [
             {
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FORELDREPENGER',
                 fom: '2025-01-01',
                 tom: '2025-02-01',
-                morsAktivitet: 'ARBEID',
-                flerbarnsdager: false,
+                søker: {
+                    forelder: 'FAR_MEDMOR',
+                    kontoType: 'FORELDREPENGER',
+                    morsAktivitet: 'ARBEID',
+                    flerbarnsdager: false,
+                },
             },
             {
-                forelder: 'FAR_MEDMOR',
                 fom: '2026-01-01',
                 tom: '2026-02-01',
-                utsettelseÅrsak: 'FRI',
-                morsAktivitet: 'ARBEID',
-                flerbarnsdager: false,
+                søker: {
+                    forelder: 'FAR_MEDMOR',
+                    utsettelseÅrsak: 'FRI',
+                    morsAktivitet: 'ARBEID',
+                    flerbarnsdager: false,
+                },
             },
         ],
     },
@@ -485,11 +488,9 @@ export const FarTarUtFedrekvoteFørsteSeksUkerUtenSamtidigMåDokumenterMorsSykdo
         avbrytSøknad: action('button-click'),
         uttaksplan: [
             {
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FEDREKVOTE',
                 fom: '2026-01-28',
                 tom: '2026-01-28',
-                flerbarnsdager: false,
+                søker: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
             },
         ],
     },

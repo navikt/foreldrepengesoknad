@@ -1,4 +1,4 @@
-import { KontoBeregningDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { KontoBeregningDto, PeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import { getBrukteDager } from './brukteDagerUtils';
 
@@ -14,28 +14,30 @@ const KONTOER: KontoBeregningDto = {
 
 describe('getBrukteDager', () => {
     it('teller en oppholdsdag som fedrekvote når mor har utsettelse samme dag', () => {
-        const perioder: UttakPeriode_fpoversikt[] = [
+        const perioder: PeriodeDto_fpoversikt[] = [
             {
                 fom: '2026-01-05',
                 tom: '2026-04-16',
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FEDREKVOTE',
-                flerbarnsdager: false,
+                annenPart: {
+                    forelder: 'FAR_MEDMOR',
+                    kontoType: 'FEDREKVOTE',
+                    flerbarnsdager: false,
+                },
             },
             {
                 fom: '2026-04-17',
                 tom: '2026-04-17',
-                forelder: 'FAR_MEDMOR',
-                oppholdÅrsak: 'FEDREKVOTE_ANNEN_FORELDER',
-                flerbarnsdager: false,
-            },
-            {
-                fom: '2026-04-17',
-                tom: '2026-04-17',
-                forelder: 'MOR',
-                kontoType: 'MØDREKVOTE',
-                utsettelseÅrsak: 'ARBEID',
-                flerbarnsdager: false,
+                søker: {
+                    forelder: 'MOR',
+                    kontoType: 'MØDREKVOTE',
+                    utsettelseÅrsak: 'ARBEID',
+                    flerbarnsdager: false,
+                },
+                annenPart: {
+                    forelder: 'FAR_MEDMOR',
+                    kontoType: 'FEDREKVOTE',
+                    flerbarnsdager: false,
+                },
             },
         ];
 
@@ -46,21 +48,17 @@ describe('getBrukteDager', () => {
     });
 
     it.each([
-        [
-            'MØDREKVOTE_ANNEN_FORELDER' as const,
-            (resultat: ReturnType<typeof getBrukteDager>) => resultat.mor.dagerEgneKvoter,
-        ],
-        [
-            'FELLESPERIODE_ANNEN_FORELDER' as const,
-            (resultat: ReturnType<typeof getBrukteDager>) => resultat.mor.dagerFellesperiode,
-        ],
-    ])('kobler %s til riktig kvote', (oppholdÅrsak, hentResultat) => {
-        const periode: UttakPeriode_fpoversikt = {
+        ['MØDREKVOTE' as const, (resultat: ReturnType<typeof getBrukteDager>) => resultat.mor.dagerEgneKvoter],
+        ['FELLESPERIODE' as const, (resultat: ReturnType<typeof getBrukteDager>) => resultat.mor.dagerFellesperiode],
+    ])('kobler oppholdsperiode med %s til riktig kvote', (kontoType, hentResultat) => {
+        const periode: PeriodeDto_fpoversikt = {
             fom: '2026-04-17',
             tom: '2026-04-17',
-            forelder: 'MOR',
-            oppholdÅrsak,
-            flerbarnsdager: false,
+            annenPart: {
+                forelder: 'MOR',
+                kontoType,
+                flerbarnsdager: false,
+            },
         };
 
         const resultat = getBrukteDager(KONTOER, [periode], '2026-03-16', 'fødsel');

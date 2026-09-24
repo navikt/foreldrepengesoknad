@@ -25,20 +25,13 @@ import {
     KontoBeregningDto,
     Minsteretter,
     NavnPåForeldre,
+    PeriodeDto_fpoversikt,
     SøkersituasjonFp,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
     isAdoptertBarn,
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-types';
-import {
-    Uttaksdagen,
-    Uttaksperioden,
-    capitalizeFirstLetter,
-    getFamiliesituasjon,
-    getNavnGenitivEierform,
-} from '@navikt/fp-utils';
+import { Uttaksdagen, capitalizeFirstLetter, getFamiliesituasjon, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 import { getBrukteDager } from './brukteDagerUtils';
 
@@ -273,7 +266,7 @@ const getFellesInfoTekst = (
 };
 
 const getAntallDagerSøkerensKvoteBruktAvAnnenPart = (
-    uttaksplanAnnenPart: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
+    uttaksplanAnnenPart: PeriodeDto_fpoversikt[] | undefined,
     kontoer: KontoBeregningDto,
     erFarEllerMedmor: boolean,
     familiehendelsesdato: string,
@@ -282,21 +275,22 @@ const getAntallDagerSøkerensKvoteBruktAvAnnenPart = (
     if (uttaksplanAnnenPart === undefined || uttaksplanAnnenPart.length === 0) {
         return 0;
     }
-    return erFarEllerMedmor
-        ? getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato, familiesituasjon).farMedmor.dagerEgneKvoter
-        : getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato, familiesituasjon).mor.dagerEgneKvoter;
+    const brukteDager = getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato, familiesituasjon);
+    return erFarEllerMedmor ? brukteDager.mor.dagerAnnenForeldersKvote : brukteDager.farMedmor.dagerAnnenForeldersKvote;
 };
 
 const getAntallDagerFellesperiodeBruktAvAnnenPart = (
-    uttaksplanAnnenPart: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
+    uttaksplanAnnenPart: PeriodeDto_fpoversikt[] | undefined,
     kontoer: KontoBeregningDto,
+    erFarEllerMedmor: boolean,
     familiehendelsesdato: string,
     familiesituasjon: Familiesituasjon,
 ): number => {
     if (uttaksplanAnnenPart === undefined || uttaksplanAnnenPart.length === 0) {
         return 0;
     }
-    return getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato, familiesituasjon).mor.dagerFellesperiode;
+    const brukteDager = getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato, familiesituasjon);
+    return erFarEllerMedmor ? brukteDager.mor.dagerFellesperiode : brukteDager.farMedmor.dagerFellesperiode;
 };
 
 const getFordelingFelles = (
@@ -784,7 +778,7 @@ export const getFordelingFraKontoer = (
     navnPåForeldre: NavnPåForeldre,
     annenForelder: AnnenForelder,
     intl: IntlShape,
-    uttaksplanAnnenPart?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    uttaksplanAnnenPart?: PeriodeDto_fpoversikt[],
 ): DelInformasjon[] => {
     const navnMor = navnPåForeldre.mor;
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
@@ -801,6 +795,7 @@ export const getFordelingFraKontoer = (
     const dagerFellesperiodeBruktAvAnnenPart = getAntallDagerFellesperiodeBruktAvAnnenPart(
         uttaksplanAnnenPart,
         kontoer,
+        erFarEllerMedmor,
         familiehendelsesdato,
         familiesituasjon,
     );
@@ -932,20 +927,28 @@ export const getBeggeHarRettGrafFordeling = (
 export const getSisteUttaksdagAnnenForelder = (
     erFarEllerMedmor: boolean,
     deltUttak: boolean,
-    perioderAnnenPart: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
+    perioderAnnenPart: PeriodeDto_fpoversikt[] | undefined,
 ): string | undefined => {
     if (!deltUttak || !perioderAnnenPart || perioderAnnenPart.length === 0) {
         return undefined;
     }
     const annenPartForelder = erFarEllerMedmor ? 'MOR' : 'FAR_MEDMOR';
+    // EØS-periodar høyrer alltid til annan part (annenPartEøs).
     const annenForeldersFiltrertePerioder = perioderAnnenPart.filter(
-        (p) => Uttaksperioden.erEøsPeriode(p) || p.forelder === annenPartForelder,
+        (p) => p.annenPart?.forelder === annenPartForelder || p.annenPartEøs !== undefined,
     );
 
-    const sistePeriodeAnnenForelder = annenForeldersFiltrertePerioder.at(-1);
-    const sisteDagAnnenForelder =
-        annenForeldersFiltrertePerioder && sistePeriodeAnnenForelder
-            ? Uttaksdagen.denneEllerForrige(sistePeriodeAnnenForelder.tom).getDato()
-            : undefined;
-    return sisteDagAnnenForelder;
+    const [førstePeriode, ...resten] = annenForeldersFiltrertePerioder;
+    if (!førstePeriode) {
+        return undefined;
+    }
+
+    let sisteTomAnnenForelder = førstePeriode.tom;
+    for (const periode of resten) {
+        if (dayjs(periode.tom).isAfter(sisteTomAnnenForelder)) {
+            sisteTomAnnenForelder = periode.tom;
+        }
+    }
+
+    return Uttaksdagen.denneEllerForrige(sisteTomAnnenForelder).getDato();
 };

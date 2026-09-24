@@ -3,7 +3,7 @@ import {
     getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
     getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'api/getStønadskvoteParams';
-import { useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
+import { useAnnenPartVedtakOptions, useStønadsKontoerOptions, useUttaksplanOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
@@ -76,7 +76,14 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
     });
     const eksisterendeVedtakAnnenPart = annenPartsVedtakQuery.data;
 
-    const uttaksplanAnnenPart = annenPartsVedtakQuery.data?.perioder;
+    const uttaksplanQuery = useQuery(useUttaksplanOptions());
+    const uttaksplanAnnenPart = useMemo(
+        () =>
+            uttaksplanQuery.data?.perioder.flatMap(({ fom, tom, annenPart }) =>
+                annenPart ? [{ fom, tom, annenPart }] : [],
+            ),
+        [uttaksplanQuery.data],
+    );
 
     const kontoerOptions = useStønadsKontoerOptions();
     const valgtStønadskvote = useQuery({
@@ -160,7 +167,7 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
         }
     }, [erFarEllerMedmor, saksgrunnlagsAntallBarn, barn, oppdaterBarn, saksgrunnlagsTermindato, resetUttaksplanData]);
 
-    if (!valgtStønadskvote || annenPartsVedtakQuery.isLoading) {
+    if (!valgtStønadskvote || annenPartsVedtakQuery.isLoading || uttaksplanQuery.isLoading) {
         return <Spinner />;
     }
 

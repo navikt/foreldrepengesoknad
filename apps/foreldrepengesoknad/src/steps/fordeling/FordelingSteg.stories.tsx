@@ -14,6 +14,7 @@ import {
     Barn,
     Dekningsgrad,
     EksternArbeidsforholdDto_fpoversikt,
+    FellesUttaksplanDto_fpoversikt,
     FpPersonopplysningerDto_fpoversikt,
     KontoBeregningDto,
     SøkersituasjonFp,
@@ -88,6 +89,82 @@ const vedtakMor = {
         },
     ] satisfies UttakPeriode_fpoversikt[],
 };
+
+const uttaksplanFar = {
+    antallBarn: 1,
+    dekningsgrad: 'HUNDRE',
+    perioder: [
+        {
+            fom: '2024-02-07',
+            tom: '2024-02-19',
+            annenPart: {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'MØDREKVOTE',
+                overføringÅrsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
+            },
+        },
+        {
+            fom: '2024-06-11',
+            tom: '2024-06-30',
+            annenPart: {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FELLESPERIODE',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
+            },
+        },
+    ],
+} satisfies FellesUttaksplanDto_fpoversikt;
+
+const uttaksplanMor = {
+    antallBarn: 1,
+    dekningsgrad: 'HUNDRE',
+    perioder: [
+        {
+            fom: '2024-07-07',
+            tom: '2024-07-24',
+            annenPart: {
+                forelder: 'MOR',
+                kontoType: 'FEDREKVOTE',
+                overføringÅrsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
+            },
+        },
+        {
+            fom: '2024-08-11',
+            tom: '2024-08-12',
+            annenPart: {
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
+            },
+        },
+    ],
+} satisfies FellesUttaksplanDto_fpoversikt;
 
 const søkerInfoKvinne = {
     fnr: '1',
@@ -922,6 +999,7 @@ export const MorDeltUttakFarSøkteMorsKvoteOgFellesperiode: Story = {
     beforeEach({ msw }) {
         msw.use(
             http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(vedtakFar)),
+            http.post(API_URLS.uttaksplan, () => HttpResponse.json(uttaksplanFar)),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,
@@ -1243,6 +1321,7 @@ export const FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode: Story = {
     beforeEach({ msw }) {
         msw.use(
             http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(vedtakMor)),
+            http.post(API_URLS.uttaksplan, () => HttpResponse.json(uttaksplanMor)),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,

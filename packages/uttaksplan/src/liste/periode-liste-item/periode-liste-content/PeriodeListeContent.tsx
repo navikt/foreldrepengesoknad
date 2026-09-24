@@ -11,10 +11,9 @@ import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
 import {
     Uttaksplanperiode,
-    erEøsUttakPeriode,
+    erPeriodeDto,
     erPeriodeUtenUttakHull,
     erTapteDagerHull,
-    erVanligUttakPeriode,
 } from '../../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../../utils/UttakPeriodeBuilder';
 import { getVarighetString } from '../../../utils/dateUtils';
@@ -60,7 +59,7 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
         foreldreInfo: { navnPåForeldre, søker },
         barn,
         erPeriodeneTilAnnenPartLåst,
-        uttakPerioder,
+        perioder,
     } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
@@ -69,7 +68,7 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
     const erPeriodeForAnnenPartSomErLåst =
         erPeriodeneTilAnnenPartLåst &&
         !erSamtidigUttak &&
-        uttaksplanperioder.some((p) => erVanligUttakPeriode(p) && p.forelder !== søker);
+        uttaksplanperioder.some((p) => erPeriodeDto(p) && !!p.annenPart);
 
     const inneholderKunEnPeriode = uttaksplanperioder.length === 1;
     const erRedigerbar =
@@ -82,7 +81,7 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
 
     const handleSlettClick = () => {
         if (uttaksplanperioder.length === 1) {
-            const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder, 'liste')
+            const nyeUttakPerioder = new UttakPeriodeBuilder(perioder, 'liste')
                 .fjernUttakPerioder(uttaksplanperioder, false)
                 .getUttakPerioder();
             uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
@@ -157,24 +156,24 @@ const Periode = ({
     erFarEllerMedmor: boolean;
     inneholderKunEnPeriode: boolean;
 }) => {
-    if (erVanligUttakPeriode(periode) && erOppholdsperiode(periode)) {
+    if (erOverføringsperiode(periode)) {
+        return (
+            <OverføringsperiodeContent
+                key={genererPeriodeKey(periode)}
+                inneholderKunEnPeriode={inneholderKunEnPeriode}
+                navnPåForeldre={navnPåForeldre}
+                periode={periode}
+            />
+        );
+    }
+
+    if (erOppholdsperiode(periode)) {
         return (
             <OppholdsPeriodeContent
                 key={genererPeriodeKey(periode)}
                 inneholderKunEnPeriode={inneholderKunEnPeriode}
                 navnPåForeldre={navnPåForeldre}
                 erFarEllerMedmor={erFarEllerMedmor}
-                periode={periode}
-            />
-        );
-    }
-
-    if (erVanligUttakPeriode(periode) && erOverføringsperiode(periode)) {
-        return (
-            <OverføringsperiodeContent
-                key={genererPeriodeKey(periode)}
-                inneholderKunEnPeriode={inneholderKunEnPeriode}
-                navnPåForeldre={navnPåForeldre}
                 periode={periode}
             />
         );
@@ -194,15 +193,15 @@ const Periode = ({
         return <PrematurukerContent key={genererPeriodeKey(periode)} />;
     }
 
-    if (erVanligUttakPeriode(periode) && erAvslåttPeriode(periode)) {
+    if (erAvslåttPeriode(periode)) {
         return <AvslåttPeriodeContent key={genererPeriodeKey(periode)} periode={periode} />;
     }
 
-    if (erVanligUttakPeriode(periode) && erUtsettelsesperiode(periode)) {
+    if (erUtsettelsesperiode(periode)) {
         return <UtsettelsesPeriodeContent key={genererPeriodeKey(periode)} periode={periode} />;
     }
 
-    if ((erVanligUttakPeriode(periode) && erUttaksperiode(periode)) || erEøsUttakPeriode(periode)) {
+    if (erUttaksperiode(periode) || (erPeriodeDto(periode) && !!periode.annenPartEøs)) {
         return (
             <UttaksperiodeContent
                 key={genererPeriodeKey(periode)}

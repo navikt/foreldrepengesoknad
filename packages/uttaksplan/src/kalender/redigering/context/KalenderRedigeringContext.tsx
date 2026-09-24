@@ -1,6 +1,6 @@
 import { createContext, use, useCallback, useMemo } from 'react';
 
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { PeriodeDto_fpoversikt } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -18,7 +18,7 @@ type Props = {
 
 type ContextValues = Omit<Props, 'children' | 'valgtePerioder' | 'oppdaterUttaksplan'> & {
     sammenslåtteValgtePerioder: CalendarPeriod[];
-    leggTilUttaksplanPerioder: (perioder: UttakPeriode_fpoversikt[], skalForskyvePeriode: boolean) => void;
+    leggTilUttaksplanPerioder: (perioder: PeriodeDto_fpoversikt[], skalForskyvePeriode: boolean) => void;
     slettUttaksplanPerioder: (perioder: Array<{ fom: string; tom: string }>, skalForskyveBakover: boolean) => void;
 };
 
@@ -30,14 +30,14 @@ export const KalenderRedigeringProvider = ({
     setValgtePerioder,
     setEndredePerioder,
 }: Props) => {
-    const { uttakPerioder } = useUttaksplanData();
+    const { perioder: uttakPerioder } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
     const sammenslåtteValgtePerioder = useMemo(() => slåSammenTilstøtendePerioder(valgtePerioder), [valgtePerioder]);
 
     const leggTilUttaksplanPerioder = useCallback(
-        (perioder: UttakPeriode_fpoversikt[], skalForskyvePeriode: boolean) => {
+        (perioder: PeriodeDto_fpoversikt[], skalForskyvePeriode: boolean) => {
             const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder, 'kalender')
                 .leggTilUttakPerioder(perioder, skalForskyvePeriode)
                 .getUttakPerioder();
