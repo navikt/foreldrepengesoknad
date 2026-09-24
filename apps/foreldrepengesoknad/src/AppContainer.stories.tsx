@@ -1,13 +1,18 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { API_URLS } from 'api/queries';
+import { SøknadRoutes } from 'appData/routes';
+import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter } from 'react-router';
 import { annenPartVedtak } from 'storybookData/annenPartVedtak';
 import { kvittering } from 'storybookData/kvittering';
 import { saker } from 'storybookData/saker';
 import { stønadskvoter } from 'storybookData/stønadskvoter';
+import { VERSJON_MELLOMLAGRING } from 'utils/mellomlagringUtils';
 
+import { BarnType } from '@navikt/fp-constants';
 import { FpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
+import { notEmpty } from '@navikt/fp-validation';
 
 import { AppContainer } from './AppContainer';
 
@@ -91,6 +96,78 @@ export const SøkerErKvinne: Story = {
             http.post(API_URLS.sendSøknad, () => new HttpResponse(null, { status: 200 })),
             http.delete(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
             http.post(API_URLS.sendVedlegg, () => new HttpResponse(null, { status: 200 })),
+        );
+    },
+};
+
+const mellomlagretSøknad = {
+    version: VERSJON_MELLOMLAGRING,
+    søkerInfo: søkerinfo,
+    foreldrepengerSaker: saker.foreldrepenger,
+    erEndringssøknad: false,
+    søknadGjelderEtNyttBarn: true,
+    APP_ROUTE: SøknadRoutes.OM_BARNET,
+    SØKERSITUASJON: { situasjon: 'fødsel', rolle: 'far' },
+    OM_BARNET: {
+        type: BarnType.FØDT,
+        antallBarn: 1,
+        fødselsdatoer: ['2025-05-05'],
+        termindato: '2025-05-02',
+    },
+    ANNEN_FORELDER: { kanIkkeOppgis: true },
+    ARBEIDSFORHOLD_OG_INNTEKT: {
+        harJobbetSomFrilans: false,
+        harJobbetSomSelvstendigNæringsdrivende: false,
+    },
+    UTENLANDSOPPHOLD: {
+        harBoddUtenforNorgeSiste12Mnd: false,
+        skalBoUtenforNorgeNeste12Mnd: false,
+    },
+    PERIODE_MED_FORELDREPENGER: '80',
+    UTTAKSPLAN: [
+        {
+            fom: '2025-05-05',
+            tom: '2025-05-16',
+            kontoType: 'FORELDREPENGER',
+            forelder: 'FAR_MEDMOR',
+            flerbarnsdager: false,
+        },
+    ],
+} satisfies FpMellomlagretData;
+
+const mellomlagretEndringssøknad = {
+    ...mellomlagretSøknad,
+    erEndringssøknad: true,
+    søknadGjelderEtNyttBarn: false,
+    APP_ROUTE: SøknadRoutes.UTTAKSPLAN,
+    VALGT_EKSISTERENDE_SAKSNR: notEmpty(saker.foreldrepenger[0]).saksnummer,
+    OPPRINNELIG_UTTAKSPLAN: {
+        saksnummer: notEmpty(saker.foreldrepenger[0]).saksnummer,
+        perioder: mellomlagretSøknad.UTTAKSPLAN,
+    },
+} satisfies FpMellomlagretData;
+
+export const MedMellomlagretSøknad: Story = {
+    beforeEach({ msw }) {
+        msw.use(http.get(API_URLS.mellomlagring, () => HttpResponse.json(mellomlagretSøknad)));
+    },
+};
+
+export const MedMellomlagretEndringssøknad: Story = {
+    beforeEach({ msw }) {
+        msw.use(http.get(API_URLS.mellomlagring, () => HttpResponse.json(mellomlagretEndringssøknad)));
+    },
+};
+
+export const MedUtdatertEndringssøknad: Story = {
+    beforeEach({ msw }) {
+        msw.use(
+            http.get(API_URLS.mellomlagring, () =>
+                HttpResponse.json({
+                    ...mellomlagretEndringssøknad,
+                    søkerInfo: { ...søkerinfo, erGift: true },
+                }),
+            ),
         );
     },
 };

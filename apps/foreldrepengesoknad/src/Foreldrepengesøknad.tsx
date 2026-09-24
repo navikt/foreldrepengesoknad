@@ -11,7 +11,7 @@ import { SøknadRoutes } from 'appData/routes';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import { usePlanleggerDataFromUrl } from 'appData/usePlanleggerDataFromUrl';
 import ky from 'ky';
-import { ReactNode, Suspense } from 'react';
+import { ReactNode, Suspense, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { shouldApplyStorage } from 'utils/mellomlagringUtils';
 
@@ -79,18 +79,21 @@ const ForeldrepengesøknadInnhold = () => {
     const mellomlagretInfoQuery = useQuery(mellomlagretInfoOptions());
     const mellomlagretInfoData = mellomlagretInfoQuery.data;
 
-    const planleggerData = usePlanleggerDataFromUrl(søkerinfoQuery.data?.kjønn);
+    const planleggerDataFraUrl = usePlanleggerDataFromUrl(søkerinfoQuery.data?.kjønn);
+    // Forsiden fjerner URL-parameteren, men importen skal fortsatt holdes adskilt fra lagret utkast.
+    const [planleggerData] = useState(planleggerDataFraUrl);
 
     if (mellomlagretInfoQuery.isPending) {
         return <Spinner />;
     }
 
-    const skalBrukeMellomlagretData = mellomlagretInfoData !== undefined && shouldApplyStorage(mellomlagretInfoData);
+    const skalBrukeMellomlagretData =
+        !planleggerData && mellomlagretInfoData !== undefined && shouldApplyStorage(mellomlagretInfoData);
     const mellomlagretData = skalBrukeMellomlagretData ? mellomlagretInfoData : undefined;
     const lagretAppRoute = mellomlagretData?.[ContextDataType.APP_ROUTE];
 
     const initialState: ContextDataMap | undefined = planleggerData
-        ? { ...mellomlagretData, ...planleggerData, [ContextDataType.KOMMER_FRA_PLANLEGGER]: true }
+        ? { ...planleggerData, [ContextDataType.KOMMER_FRA_PLANLEGGER]: true }
         : mellomlagretData;
 
     return (
