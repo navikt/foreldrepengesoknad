@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { Dispatch, SetStateAction } from 'react';
 import { useIntl } from 'react-intl';
 import { DelInformasjon, FordelingEier } from 'types/FordelingOversikt';
@@ -56,7 +55,7 @@ export const OversiktPerDel = ({
 
     return (
         <VStack
-            className={classNames(styles.oversiktPerDel, hoverClass)}
+            className={[styles.oversiktPerDel, hoverClass].filter(Boolean).join(' ')}
             gap="space-8"
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}

@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
 import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 import dayjs from 'dayjs';
-import MockDate from 'mockdate';
 
 import * as stories from './ArbeidIUtlandetSteg.stories';
 
@@ -25,7 +24,7 @@ describe('<ArbeidIUtlandetSteg>', () => {
     });
 
     it('skal ikke vise feilmelding, alt er utfylt', async () => {
-        MockDate.set(new Date('2024-03-25'));
+        vi.setSystemTime(new Date('2024-03-25'));
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
@@ -86,7 +85,7 @@ describe('<ArbeidIUtlandetSteg>', () => {
         });
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce();
-        MockDate.reset();
+        vi.useRealTimers();
     });
 
     it('skal vise feilmelding når dato er i feil format', async () => {
