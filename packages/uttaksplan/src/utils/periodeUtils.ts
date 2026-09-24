@@ -188,18 +188,16 @@ export const sorterUttakPerioder = (
     const tidsperiode1String = Tidsperioden.forPeriode(tidsperiode1);
     const tidsperiode2String = Tidsperioden.forPeriode(tidsperiode2);
 
-    if (tidsperiode1String.erGyldig() === false || tidsperiode2String.erGyldig() === false) {
-        return tidsperiode1String.erGyldig() ? 1 : -1;
-    }
-    if (dayjs(tidsperiode1.fom).isSame(tidsperiode2.fom, 'day')) {
-        return 1;
-    }
-
-    if (tidsperiode2String.erOmsluttetAv(tidsperiode1)) {
-        return 1;
+    const erGyldig1 = tidsperiode1String.erGyldig();
+    const erGyldig2 = tidsperiode2String.erGyldig();
+    if (!erGyldig1 || !erGyldig2) {
+        return Number(erGyldig1) - Number(erGyldig2);
     }
 
-    return dayjs(tidsperiode1.fom).isBefore(tidsperiode2.fom, 'day') ? -1 : 1;
+    // Sluttdato først og seneste start ved lik slutt plasserer omsluttede perioder før perioden rundt.
+    return (
+        dayjs(tidsperiode1.tom).diff(tidsperiode2.tom, 'day') || dayjs(tidsperiode2.fom).diff(tidsperiode1.fom, 'day')
+    );
 };
 
 export const harPeriodeDerMorsAktivitetIkkeErValgt = (

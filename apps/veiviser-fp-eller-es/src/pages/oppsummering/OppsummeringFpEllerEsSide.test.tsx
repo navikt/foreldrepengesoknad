@@ -1,6 +1,8 @@
 import { composeStories } from '@storybook/react-vite';
 import { render, screen, within } from '@testing-library/react';
 
+import { DEFAULT_SATSER } from '@navikt/fp-constants';
+
 import * as stories from './OppsummeringFpEllerEsSide.stories';
 
 const {
@@ -13,6 +15,63 @@ const {
 } = composeStories(stories);
 
 describe('<OppsummeringFpEllerEsSide>', () => {
+    it.each([
+        ['4999', false],
+        ['5000', true],
+        ['5001', true],
+    ])(
+        'skal vise riktig inntektsvilkår for månedslønn %s ved en årsgrense på 60 000',
+        async (lønnPerMåned, oppfylt) => {
+            render(
+                <FarKanHaRettTilFp
+                    satser={{ ...DEFAULT_SATSER, grunnbeløp: [{ ...DEFAULT_SATSER.grunnbeløp[0]!, verdi: 120_000 }] }}
+                    fpEllerEsSituasjon={{
+                        situasjon: 'far',
+                        erIArbeid: true,
+                        harHattAndreInntekter: false,
+                        borDuINorge: true,
+                        jobberDuINorge: true,
+                        harHattInntekt: true,
+                        lønnPerMåned,
+                    }}
+                />,
+            );
+
+            expect(await screen.findByText('Resultat')).toBeInTheDocument();
+            const inntektskrav = screen.getAllByTestId(oppfylt ? 'harRettFp' : 'harIkkeRettFp')[1]!;
+            expect(
+                within(inntektskrav).getByText(
+                    oppfylt ? 'Du oppfyller dette kravet' : 'Du oppfyller ikke dette kravet',
+                ),
+            ).toBeInTheDocument();
+            expect(
+                within(inntektskrav).getByText(oppfylt ? /som blir minst/ : /som blir mindre enn/),
+            ).toBeInTheDocument();
+        },
+    );
+
+    it('skal vise inntektsvilkåret som oppfylt på grensen selv om medlemsvilkåret ikke er oppfylt', async () => {
+        render(
+            <FarHarIkkeRett
+                satser={{ ...DEFAULT_SATSER, grunnbeløp: [{ ...DEFAULT_SATSER.grunnbeløp[0]!, verdi: 120_000 }] }}
+                fpEllerEsSituasjon={{
+                    situasjon: 'far',
+                    erIArbeid: true,
+                    harHattAndreInntekter: false,
+                    borDuINorge: false,
+                    jobberDuINorge: false,
+                    harHattInntekt: true,
+                    lønnPerMåned: '5000',
+                }}
+            />,
+        );
+
+        expect(await screen.findByText('Resultat')).toBeInTheDocument();
+        const inntektskrav = screen.getAllByTestId('harIkkeRettFp')[1]!;
+        expect(within(inntektskrav).getByText('Du oppfyller dette kravet')).toBeInTheDocument();
+        expect(within(inntektskrav).getByText(/som blir minst/)).toBeInTheDocument();
+    });
+
     it('skal vise oppsummering for mor som har tjent mer enn 200 000', async () => {
         render(<MorHarTjentMerEnn200000OgHarRettTilFp />);
 
