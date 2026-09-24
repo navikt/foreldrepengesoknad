@@ -1,16 +1,14 @@
-import MockDate from 'mockdate';
-
 import { KontoDto } from '@navikt/fp-types';
 
 import { ikkeDeltUttak } from './ikkeDeltUttak';
 
 describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
     beforeAll(() => {
-        MockDate.set('2022-08-02');
+        vi.setSystemTime('2022-08-02');
     });
 
     afterAll(() => {
-        MockDate.reset();
+        vi.useRealTimers();
     });
     const famDato = '2022-08-08';
     const foreldrepenger = {
@@ -70,11 +68,11 @@ describe('ikkeDeltUttak - Fødsel - Far/Medmor - WLB gjelder', () => {
 
 describe('ikkeDeltUttak - Fødsel - Mor', () => {
     beforeAll(() => {
-        MockDate.set('2022-08-02');
+        vi.setSystemTime('2022-08-02');
     });
 
     afterAll(() => {
-        MockDate.reset();
+        vi.useRealTimers();
     });
 
     const famDato = '2022-08-08';
@@ -170,11 +168,11 @@ describe('ikkeDeltUttak - Fødsel - Mor', () => {
 
 describe('ikkeDeltUttak - Fødsel - Far aleneOmOmsorg', () => {
     beforeAll(() => {
-        MockDate.set('2022-08-02');
+        vi.setSystemTime('2022-08-02');
     });
 
     afterAll(() => {
-        MockDate.reset();
+        vi.useRealTimers();
     });
 
     const famDato = '2022-08-08';
@@ -223,11 +221,11 @@ describe('ikkeDeltUttak - Fødsel - Far aleneOmOmsorg', () => {
 
 describe('ikkeDeltUttak - Adopsjon', () => {
     beforeAll(() => {
-        MockDate.set('2022-08-02');
+        vi.setSystemTime('2022-08-02');
     });
 
     afterAll(() => {
-        MockDate.reset();
+        vi.useRealTimers();
     });
 
     const famDato = '2022-08-08';

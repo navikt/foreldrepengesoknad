@@ -1,16 +1,14 @@
-import MockDate from 'mockdate';
-
 import { KontoDto } from '@navikt/fp-types';
 
 import { deltUttak } from './deltUttak';
 
 describe('deltUttak - Fødsel', () => {
     beforeAll(() => {
-        MockDate.set(new Date('2022-08-02T00:00:00.000Z'));
+        vi.setSystemTime(new Date('2022-08-02T00:00:00.000Z'));
     });
 
     afterAll(() => {
-        MockDate.reset();
+        vi.useRealTimers();
     });
 
     const fedrekvote = { konto: 'FEDREKVOTE', dager: 25 } satisfies KontoDto;
@@ -132,11 +130,11 @@ describe('deltUttak - Fødsel', () => {
 
 describe('deltUttak - Adopsjon', () => {
     beforeAll(() => {
-        MockDate.set(new Date('2022-08-02T00:00:00.000Z'));
+        vi.setSystemTime(new Date('2022-08-02T00:00:00.000Z'));
     });
 
     afterAll(() => {
-        MockDate.reset();
+        vi.useRealTimers();
     });
 
     const fedrekvote = { konto: 'FEDREKVOTE', dager: 25 } satisfies KontoDto;

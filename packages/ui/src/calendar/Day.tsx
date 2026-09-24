@@ -136,7 +136,7 @@ const isPeriodDifferentFromNoneOrGray = (periodeColor: CalendarPeriodColor): boo
 export const isWeekend = (date: Dayjs) => date.isoWeekday() === 6 || date.isoWeekday() === 7;
 
 export const logOnLocalhost = (message: string) => {
-    const isVitest = typeof process !== 'undefined' && process.env.VITEST === 'true';
+    const isVitest = import.meta.env.MODE === 'test';
     if (globalThis.location.hostname === 'localhost' && !isVitest) {
         // eslint-disable-next-line no-console -- Logg rendring av Month og Day på localhost for å enkelt avdekke ytelsesproblem
         console.log(message);

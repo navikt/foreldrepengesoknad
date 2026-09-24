@@ -3,14 +3,8 @@ const express = require('express');
 const server = express();
 server.use(express.json());
 const path = require('node:path');
-const mustacheExpress = require('mustache-express');
 
 server.disable('x-powered-by');
-
-require('dotenv').config();
-server.set('views', `${__dirname}`);
-server.set('view engine', 'mustache');
-server.engine('html', mustacheExpress());
 
 server.use((req, res, next) => {
     res.removeHeader('X-Powered-By');
@@ -22,18 +16,7 @@ server.use((req, res, next) => {
     next();
 });
 
-const renderApp = () =>
-    new Promise((resolve, reject) => {
-        server.render('index.html', (err, html) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(html);
-            }
-        });
-    });
-
-const startServer = async (html) => {
+const startServer = async () => {
     server.get('/health/isAlive', (req, res) => res.sendStatus(200));
     server.get('/health/isReady', (req, res) => res.sendStatus(200));
 
@@ -50,7 +33,12 @@ const startServer = async (html) => {
     );
 
     const fs = require('node:fs');
-    fs.writeFileSync(path.resolve(__dirname, 'index-decorated.html'), html.replaceAll('</link>', ''));
+    const html = fs
+        .readFileSync(path.resolve(__dirname, 'index.html'), 'utf8')
+        .replaceAll('{{{APP_SETTINGS}}}', '')
+        .replaceAll('{{{NAIS_META_TAGS}}}', '')
+        .replaceAll('</link>', '');
+    fs.writeFileSync(path.resolve(__dirname, 'index-decorated.html'), html);
 
     const vite = await require('vite').createServer({
         root: __dirname,
@@ -83,6 +71,4 @@ const startServer = async (html) => {
     });
 };
 
-const logError = (errorMessage, details) => console.log(errorMessage, details);
-
-renderApp().then(startServer, (error) => logError('Failed to render app', error));
+startServer();

@@ -3,7 +3,6 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
-import MockDate from 'mockdate';
 
 import * as stories from './PeriodeMedForeldrepengerSteg.stories';
 
@@ -354,7 +353,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         'skal vise informasjon om utvidet 80% dekningsgrad for far som søker første gang med barn med termin' +
             ' etter 1 juli 2024 og søkedato før 1 juli 2024',
         async () => {
-            MockDate.set(new Date('2024-06-30'));
+            vi.setSystemTime(new Date('2024-06-30'));
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
             await FarMedMorMedTermin1Juli2024.run({
@@ -370,11 +369,11 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                     'Hvis barnet deres blir født etter 1. juli, vil dere få en lengre periode hvis dere velger 80 prosent foreldrepenger',
                 ),
             ).toBeInTheDocument();
-            MockDate.reset();
+            vi.useRealTimers();
         },
     );
     it('skal ikke vise informasjon om utvidet 80% dekningsgrad for far som søker første gang hvis søkedato er etter 1 juli 2024', async () => {
-        MockDate.set(new Date('2024-07-01'));
+        vi.setSystemTime(new Date('2024-07-01'));
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
         await FarMedMorMedTermin1Juli2024.run({
@@ -390,13 +389,13 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 'Hvis barnet deres blir født etter 1. juli, vil dere få en lengre periode hvis dere velger 80 prosent foreldrepenger',
             ),
         ).not.toBeInTheDocument();
-        MockDate.reset();
+        vi.useRealTimers();
     });
     it(
         'skal vise informasjon om utvidet 80% dekningsgrad for mor som søker etter far der far valgte 80% dekning for' +
             ' et barn med termin etter 1 juli 2024 og søkedato før 1 juli 2024',
         async () => {
-            MockDate.set(new Date('2024-06-30'));
+            vi.setSystemTime(new Date('2024-06-30'));
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
             await MorMedTermin1Juli2024OgFarsSøknad.run({
@@ -412,14 +411,14 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                     'Hvis barnet deres blir født etter 1. juli, vil dere få en lengre periode hvis dere velger 80 prosent foreldrepenger',
                 ),
             ).toBeInTheDocument();
-            MockDate.reset();
+            vi.useRealTimers();
         },
     );
     it(
         'skal ikke vise informasjon om utvidet 80% dekningsgrad for mor som søker etter far der far valgte 80% dekning' +
             ' hvis søkedato er etter 1 juli 2024',
         async () => {
-            MockDate.set(new Date('2024-07-01'));
+            vi.setSystemTime(new Date('2024-07-01'));
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
             await MorMedTermin1Juli2024OgFarsSøknad.run({
@@ -435,14 +434,14 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                     'Hvis barnet deres blir født etter 1. juli, vil dere få en lengre periode hvis dere velger 80 prosent foreldrepenger',
                 ),
             ).not.toBeInTheDocument();
-            MockDate.reset();
+            vi.useRealTimers();
         },
     );
 
     it('Skal vise info om forskjell på 80 % og 100 % dekningsgrad for barn født før 1.juli 2024, hvis dato er før 1. juli 2024', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
-        MockDate.set(new Date('2024-06-30'));
+        vi.setSystemTime(new Date('2024-06-30'));
         await MorFødselBeggeHarRettFødselFør1Juli2024.run({
             args: {
                 ...MorFødselBeggeHarRettFødselFør1Juli2024.args,
@@ -459,13 +458,13 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
         expect(screen.getByText('Hva lønner seg for oss?')).toBeInTheDocument();
 
-        MockDate.reset();
+        vi.useRealTimers();
     });
 
     it('Skal vise info om forskjell på 80 % og 100 % dekningsgrad for barn født før 1.juli 2024, hvis dato er etter 1. juli 2024', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
-        MockDate.set(new Date('2024-07-01'));
+        vi.setSystemTime(new Date('2024-07-01'));
         await MorFødselBeggeHarRettFødselFør1Juli2024.run({
             args: {
                 ...MorFødselBeggeHarRettFødselFør1Juli2024.args,
@@ -482,7 +481,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
         expect(screen.getByText('Hva lønner seg for oss?')).toBeInTheDocument();
 
-        MockDate.reset();
+        vi.useRealTimers();
     });
 
     it(
@@ -491,7 +490,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-            MockDate.set(new Date('2024-07-01'));
+            vi.setSystemTime(new Date('2024-07-01'));
             await FarEllerMedmorFødselBeggeHarRettTerminFør1Juli2024.run({
                 args: {
                     ...FarEllerMedmorFødselBeggeHarRettTerminFør1Juli2024.args,
@@ -508,14 +507,14 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
             expect(screen.getByText('Hva lønner seg for oss?')).toBeInTheDocument();
 
-            MockDate.reset();
+            vi.useRealTimers();
         },
     );
 
     it('Skal vise info om forskjell på 80 % og 100 % dekningsgrad for barn med adopsjonsdato etter 1.juli 2024, hvis dato er før 1. juli 2024', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
-        MockDate.set(new Date('2024-06-30'));
+        vi.setSystemTime(new Date('2024-06-30'));
         await MorBeggeHarRettAdopsjonEtter1Juli2024.run({
             args: {
                 ...MorBeggeHarRettAdopsjonEtter1Juli2024.args,
@@ -532,7 +531,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
         expect(screen.getByText('Hva lønner seg for oss?')).toBeInTheDocument();
 
-        MockDate.reset();
+        vi.useRealTimers();
     });
 
     it(
@@ -541,7 +540,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         async () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-            MockDate.set(new Date('2024-07-01'));
+            vi.setSystemTime(new Date('2024-07-01'));
             await MorBeggeHarRettAdopsjonEtter1Juli2024.run({
                 args: {
                     ...MorBeggeHarRettAdopsjonEtter1Juli2024.args,
@@ -561,7 +560,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
             expect(screen.getByText('Hva lønner seg for oss?')).toBeInTheDocument();
 
-            MockDate.reset();
+            vi.useRealTimers();
         },
     );
 });

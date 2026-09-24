@@ -1,6 +1,5 @@
 import { Buildings3Icon, SparklesIcon, WalletIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
-import classNames from 'classnames';
 import { ReactNode } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Navigate, useParams } from 'react-router';
@@ -284,10 +283,12 @@ const InntektsmeldingInfoBlokk = ({
 }) => {
     return (
         <div
-            className={classNames(
+            className={[
                 'bg-ax-bg-brand-blue-soft ax-sm:justify-normal ax-sm:flex-row flex flex-row-reverse justify-between gap-4 rounded-lg p-6',
                 className,
-            )}
+            ]
+                .filter(Boolean)
+                .join(' ')}
         >
             {Ikon && <Ikon className="text-ax-text-info-decoration flex-shrink-0" width={24} height={24} aria-hidden />}
             <VStack gap="space-4">

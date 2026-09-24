@@ -4,14 +4,8 @@ const express = require('express');
 const server = express();
 server.use(express.json());
 const path = require('node:path');
-const mustacheExpress = require('mustache-express');
 
 server.disable('x-powered-by');
-
-require('dotenv').config();
-server.set('views', `${__dirname}`);
-server.set('view engine', 'mustache');
-server.engine('html', mustacheExpress());
 
 server.use((req, res, next) => {
     res.removeHeader('X-Powered-By');
@@ -41,14 +35,12 @@ const startServer = async () => {
 
     const htmlWithDecoratorInjected = await injectDecorator(indexHtmlPath);
 
-    const renderedHtml = htmlWithDecoratorInjected
-        .replaceAll('</link>', '')
-        .replaceAll(
-            '{{{APP_SETTINGS}}}',
-            JSON.stringify({
-                APP_VERSION: 'Lokal utvikling',
-            }),
-        );
+    const renderedHtml = htmlWithDecoratorInjected.replaceAll('</link>', '').replaceAll(
+        '{{{APP_SETTINGS}}}',
+        JSON.stringify({
+            APP_VERSION: 'Lokal utvikling',
+        }),
+    );
 
     server.use(
         '/fpoversikt/api',
