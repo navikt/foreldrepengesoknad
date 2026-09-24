@@ -67,11 +67,11 @@ export const HvorforHarJegIkkeRettPanel = ({ fpEllerEsSituasjon, grunnbeløpet }
                                     values={{
                                         månedslønn: formatCurrencyWithKr(lønnPerMåned),
                                         minstelønn: formatCurrencyWithKr(minstelønn),
-                                        hvorMye: årslønn > minstelønn,
+                                        hvorMye: årslønn >= minstelønn,
                                     }}
                                 />
                             }
-                            erOppfylt={årslønn > minstelønn}
+                            erOppfylt={årslønn >= minstelønn}
                         />
                         <KravinfoBoks
                             testId="harIkkeRettFp"

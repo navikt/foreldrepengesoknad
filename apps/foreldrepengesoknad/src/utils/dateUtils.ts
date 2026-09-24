@@ -201,8 +201,8 @@ export const getErDatoInnenEnDagFraAnnenDato = (dato1: DateType, dato2: DateType
         return false;
     }
     return (
-        dayjs.utc(dato1).isSameOrAfter(dayjs(dato2).subtract(1, 'day'), 'day') &&
-        dayjs.utc(dato1).isSameOrBefore(dayjs(dato2).add(1, 'day'), 'day')
+        dayjs(dato1).isSameOrAfter(dayjs(dato2).subtract(1, 'day'), 'day') &&
+        dayjs(dato1).isSameOrBefore(dayjs(dato2).add(1, 'day'), 'day')
     );
 };
 

@@ -9,6 +9,7 @@ import {
     førsteJuli2024ReglerGjelder,
     getEldsteRegistrerteBarn,
     getEndringstidspunktNy,
+    getErDatoInnenEnDagFraAnnenDato,
     getRelevantFamiliehendelseDato,
     getUkerOgDagerFromDager,
     getVarighetString,
@@ -39,6 +40,29 @@ describe('dateUtils', () => {
 
     afterAll(() => {
         vi.useRealTimers();
+    });
+
+    describe('getErDatoInnenEnDagFraAnnenDato', () => {
+        it.each([
+            ['2024-01-01', '2024-01-01', true],
+            ['2024-01-01', '2024-01-02', true],
+            ['2024-01-01', '2024-01-03', false],
+            ['2024-07-01', '2024-07-03', false],
+            ['2024-03-31', '2024-04-01', true],
+            ['2024-03-30', '2024-04-01', false],
+            ['2024-10-27', '2024-10-28', true],
+            ['2024-10-26', '2024-10-28', false],
+            ['2024-12-31', '2025-01-01', true],
+            ['2024-02-28', '2024-03-01', false],
+        ])('skal sammenligne %s og %s symmetrisk: %s', (dato1, dato2, forventet) => {
+            expect(getErDatoInnenEnDagFraAnnenDato(dato1, dato2)).toBe(forventet);
+            expect(getErDatoInnenEnDagFraAnnenDato(dato2, dato1)).toBe(forventet);
+        });
+
+        it('skal returnere false når en dato mangler', () => {
+            expect(getErDatoInnenEnDagFraAnnenDato(undefined, '2024-01-01')).toBe(false);
+            expect(getErDatoInnenEnDagFraAnnenDato('2024-01-01', undefined)).toBe(false);
+        });
     });
 
     it('skal finne det eldste barnet', () => {
