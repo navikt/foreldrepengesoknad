@@ -3,14 +3,13 @@ import {
     getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
     getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'api/getStønadskvoteParams';
-import { useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
+import { useAnnenPartVedtakOptions, useStønadsKontoerOptions, useUttaksplanOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { mapAnnenPartsPeriodeTilPeriodeDto } from 'steps/uttaksplan/hooks/gammelPeriodeMapping';
 import { kanGenerereUttaksplanForslag } from 'steps/uttaksplan/hooks/useUttaksplanForslag';
 import { getIsDeltUttak } from 'utils/annenForelderUtils';
 import { getTermindato } from 'utils/barnUtils';
@@ -72,10 +71,14 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
     });
     const eksisterendeVedtakAnnenPart = annenPartsVedtakQuery.data;
 
-    // /annenPart-endepunktet er ikkje migrert og returnerer framleis den gamle, flate
-    // periodemodellen. Mappar difor kvar rad om til eit eige PeriodeDto_fpoversikt-intervall
-    // (sjå gammelPeriodeMapping.ts for kjende forenklingar ved denne mappinga).
-    const uttaksplanAnnenPart = annenPartsVedtakQuery.data?.perioder.map(mapAnnenPartsPeriodeTilPeriodeDto);
+    const uttaksplanQuery = useQuery(useUttaksplanOptions());
+    const uttaksplanAnnenPart = useMemo(
+        () =>
+            uttaksplanQuery.data?.perioder.flatMap(({ fom, tom, annenPart }) =>
+                annenPart ? [{ fom, tom, annenPart }] : [],
+            ),
+        [uttaksplanQuery.data],
+    );
 
     const kontoerOptions = useStønadsKontoerOptions();
     const valgtStønadskvote = useQuery({
@@ -159,7 +162,7 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
         }
     }, [erFarEllerMedmor, saksgrunnlagsAntallBarn, barn, oppdaterBarn, saksgrunnlagsTermindato, resetUttaksplanData]);
 
-    if (!valgtStønadskvote || annenPartsVedtakQuery.isLoading) {
+    if (!valgtStønadskvote || annenPartsVedtakQuery.isLoading || uttaksplanQuery.isLoading) {
         return <Spinner />;
     }
 

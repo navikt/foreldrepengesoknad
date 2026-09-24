@@ -5,9 +5,10 @@ import { ReactNode } from 'react';
 import { BodyShort, VStack } from '@navikt/ds-react';
 
 import {
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriodeResultat_fpoversikt,
-    UttakPeriode_fpoversikt,
+    EøsUttakDto_fpoversikt,
+    PeriodeDto_fpoversikt,
+    UttakDto_fpoversikt,
+    VedtattResultat_fpoversikt,
 } from '@navikt/fp-types';
 import { CalendarLabel, CalendarPeriodColor } from '@navikt/fp-ui';
 
@@ -35,33 +36,35 @@ const FOM = '2025-06-01';
 const TOM = '2025-06-14';
 const HISTORISK_DATO = '2025-01-01';
 
-const lagPeriode = (o: Partial<UttakPeriode_fpoversikt> = {}): UttakPeriode_fpoversikt => ({
-    fom: FOM,
-    tom: TOM,
+const lagUttak = (o: Partial<UttakDto_fpoversikt> = {}): UttakDto_fpoversikt => ({
     flerbarnsdager: false,
     forelder: 'MOR',
     ...o,
 });
 
-const lagEøs = (o: Partial<UttakPeriodeAnnenpartEøs_fpoversikt> = {}): UttakPeriodeAnnenpartEøs_fpoversikt => ({
+const lagPeriode = (o: Partial<UttakDto_fpoversikt> = {}): PeriodeDto_fpoversikt => ({
     fom: FOM,
     tom: TOM,
-    kontoType: 'FELLESPERIODE',
-    trekkdager: 15,
-    ...o,
+    søker: lagUttak(o),
+});
+
+const lagEøs = (o: Partial<EøsUttakDto_fpoversikt> = {}): PeriodeDto_fpoversikt => ({
+    fom: FOM,
+    tom: TOM,
+    annenPartEøs: { kontoType: 'FELLESPERIODE', trekkdager: 15, ...o },
 });
 
 const TAPTE: TapteDagerHull = { type: 'TAPTE_DAGER', fom: FOM, tom: TOM, forelder: 'MOR' };
 const UTEN_UTTAK: PerioderUtenUttakHull = { type: 'PERIODE_UTEN_UTTAK', fom: FOM, tom: TOM };
 const FAMHENDELSE: FamiliehendelseDato = { type: 'FAMILIEHENDELSE', fom: FOM, tom: TOM };
 
-const AVSLAG: UttakPeriodeResultat_fpoversikt = {
+const AVSLAG: VedtattResultat_fpoversikt = {
     innvilget: false,
     trekkerDager: false,
     trekkerMinsterett: false,
     årsak: 'ANNET',
 };
-const PLEIEPENGE_AVSLAG: UttakPeriodeResultat_fpoversikt = {
+const PLEIEPENGE_AVSLAG: VedtattResultat_fpoversikt = {
     innvilget: false,
     trekkerDager: false,
     trekkerMinsterett: false,
@@ -78,7 +81,7 @@ type FargeSpec = {
     beskrivelse: string;
     /** Mock-periode for kalender (getKalenderFargeForPeriode + getLegendLabelFromPeriode) */
     kalenderPeriode?: UttaksplanperiodeMedKunTapteDager;
-    kalenderErFarEllerMedmor?: boolean;
+    erFarEllerMedmor?: boolean;
     /** Statisk kalender-verdi for ting som ikke kan utledes (ikon-markører, interaksjonsfarger) */
     kalenderStatisk?: { fargekode: CalendarPeriodColor | null; ikon?: ReactNode; legendLabel: string };
     /** Mock-perioder for liste (finnBakgrunnsfarge + getBorderFarge + getIkon) */
@@ -100,31 +103,30 @@ type FargeEntry = {
     liste: { bakgrunn: string; border: string; ikonElement: ReactNode } | null;
 };
 
-const beregnEntry = (s: FargeSpec): FargeEntry => ({
-    id: s.id,
-    periodetype: s.periodetype,
-    beskrivelse: s.beskrivelse,
-    kalender: s.kalenderPeriode
-        ? {
-              fargekode: getKalenderFargeForPeriode(s.kalenderPeriode, s.kalenderErFarEllerMedmor ?? false, [
-                  s.kalenderPeriode,
-              ]),
-              legendLabel:
-                  getLegendLabelFromPeriode(s.kalenderPeriode, s.kalenderErFarEllerMedmor ?? false) ?? '(ingen)',
-          }
-        : (s.kalenderStatisk ?? { fargekode: null, legendLabel: '—' }),
-    liste: s.listePerioder
-        ? {
-              bakgrunn: finnBakgrunnsfarge(
-                  s.listePerioder,
-                  s.listeHarMorsAktivitetIkkeErValgt ?? false,
-                  s.listeErFamiliehendelse,
-              ),
-              border: getBorderFarge(s.listePerioder),
-              ikonElement: getIkon(s.listePerioder, s.listeFamiliehendelsedato ?? HISTORISK_DATO),
-          }
-        : null,
-});
+const beregnEntry = (s: FargeSpec): FargeEntry => {
+    return {
+        id: s.id,
+        periodetype: s.periodetype,
+        beskrivelse: s.beskrivelse,
+        kalender: s.kalenderPeriode
+            ? {
+                  fargekode: getKalenderFargeForPeriode(s.kalenderPeriode, s.erFarEllerMedmor ?? false),
+                  legendLabel: getLegendLabelFromPeriode(s.kalenderPeriode, s.erFarEllerMedmor ?? false) ?? '(ingen)',
+              }
+            : (s.kalenderStatisk ?? { fargekode: null, legendLabel: '—' }),
+        liste: s.listePerioder
+            ? {
+                  bakgrunn: finnBakgrunnsfarge(
+                      s.listePerioder,
+                      s.listeHarMorsAktivitetIkkeErValgt ?? false,
+                      s.listeErFamiliehendelse,
+                  ),
+                  border: getBorderFarge(s.listePerioder),
+                  ikonElement: getIkon(s.listePerioder, s.listeFamiliehendelsedato ?? HISTORISK_DATO),
+              }
+            : null,
+    };
+};
 
 type FargeOmråde = { id: string; område: string; beskrivelse: string; regler: FargeEntry[] };
 
@@ -178,7 +180,7 @@ const OMRÅDER: FargeOmråde[] = [
                 periodetype: 'Fars uttak',
                 beskrivelse: 'Vanlig uttak — fedrekvote eller fellesperiode.',
                 kalenderPeriode: lagPeriode({ forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE' }),
-                kalenderErFarEllerMedmor: true,
+                erFarEllerMedmor: true,
                 listePerioder: [lagPeriode({ forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE' })],
             }),
             beregnEntry({
@@ -192,7 +194,7 @@ const OMRÅDER: FargeOmråde[] = [
                     kontoType: 'FEDREKVOTE',
                     gradering: { arbeidstidprosent: 50 },
                 }),
-                kalenderErFarEllerMedmor: true,
+                erFarEllerMedmor: true,
                 listePerioder: [
                     lagPeriode({
                         forelder: 'FAR_MEDMOR',
@@ -212,7 +214,7 @@ const OMRÅDER: FargeOmråde[] = [
                     kontoType: 'FORELDREPENGER',
                     morsAktivitet: 'IKKE_OPPGITT',
                 }),
-                kalenderErFarEllerMedmor: true,
+                erFarEllerMedmor: true,
                 listePerioder: [
                     lagPeriode({
                         forelder: 'FAR_MEDMOR',
@@ -230,29 +232,30 @@ const OMRÅDER: FargeOmråde[] = [
             'Når begge foreldrene tar ut foreldrepenger i samme periode. Kalenderen viser splittet ' +
             'farge (retning avhenger av innlogget bruker), listen viser diagonal gradient.',
         regler: (() => {
-            const morSamtidig = lagPeriode({ kontoType: 'FELLESPERIODE', samtidigUttak: 50 });
-            const farSamtidig = lagPeriode({
+            const morsUttak = lagUttak({ kontoType: 'FELLESPERIODE', samtidigUttak: 50 });
+            const farsUttak = lagUttak({
                 forelder: 'FAR_MEDMOR',
                 kontoType: 'FEDREKVOTE',
                 samtidigUttak: 50,
             });
-            const listePerioder: Uttaksplanperiode[] = [morSamtidig, farSamtidig];
+            const morSamtidig: PeriodeDto_fpoversikt = { fom: FOM, tom: TOM, søker: morsUttak, annenPart: farsUttak };
+            const farSamtidig: PeriodeDto_fpoversikt = { fom: FOM, tom: TOM, søker: farsUttak, annenPart: morsUttak };
             return [
                 beregnEntry({
                     id: 'samtidig-mor',
                     periodetype: 'Samtidig uttak (sett fra mor)',
                     beskrivelse: 'Kalender: grønn topp, blå bunn. Liste: diagonal gradient grønn → blå.',
                     kalenderPeriode: morSamtidig,
-                    kalenderErFarEllerMedmor: false,
-                    listePerioder,
+                    erFarEllerMedmor: false,
+                    listePerioder: [morSamtidig],
                 }),
                 beregnEntry({
                     id: 'samtidig-far',
                     periodetype: 'Samtidig uttak (sett fra far)',
                     beskrivelse: 'Kalender: blå topp, grønn bunn. Liste: samme gradient (ikke perspektivavhengig).',
                     kalenderPeriode: farSamtidig,
-                    kalenderErFarEllerMedmor: true,
-                    listePerioder,
+                    erFarEllerMedmor: true,
+                    listePerioder: [farSamtidig],
                 }),
             ];
         })(),
@@ -269,8 +272,8 @@ const OMRÅDER: FargeOmråde[] = [
                 id: 'utsettelse-ferie',
                 periodetype: 'Ferie',
                 beskrivelse: 'Lovbestemt ferie — uttaket er pauset mens familien har ferie.',
-                kalenderPeriode: lagPeriode({ utsettelseÅrsak: 'LOVBESTEMT_FERIE' }),
-                listePerioder: [lagPeriode({ utsettelseÅrsak: 'LOVBESTEMT_FERIE' })],
+                kalenderPeriode: lagPeriode({ utsettelseÅrsak: 'FERIE' }),
+                listePerioder: [lagPeriode({ utsettelseÅrsak: 'FERIE' })],
             }),
             beregnEntry({
                 id: 'utsettelse-arbeid',
@@ -302,7 +305,7 @@ const OMRÅDER: FargeOmråde[] = [
                     'Vises for far/medmor som er innlogget (mor har EØS-foreldrepenger). ' +
                     'Merk: Listen bruker samme blå bakgrunn uavhengig av forelder.',
                 kalenderPeriode: lagEøs(),
-                kalenderErFarEllerMedmor: true,
+                erFarEllerMedmor: true,
                 listePerioder: [lagEøs()],
             }),
             beregnEntry({
@@ -312,7 +315,7 @@ const OMRÅDER: FargeOmråde[] = [
                     'Vises for mor som er innlogget (far/medmor har EØS-foreldrepenger). ' +
                     'Merk: Listen bruker samme blå bakgrunn uavhengig av forelder.',
                 kalenderPeriode: lagEøs(),
-                kalenderErFarEllerMedmor: false,
+                erFarEllerMedmor: false,
                 listePerioder: [lagEøs()],
             }),
         ],
@@ -362,6 +365,7 @@ const OMRÅDER: FargeOmråde[] = [
                     'Rød bakgrunn (danger-200) signaliserer at perioden trenger redigering.',
                 kalenderStatisk: { fargekode: null, legendLabel: '(bare liste)' },
                 listePerioder: [lagPeriode({ forelder: 'FAR_MEDMOR', kontoType: 'FELLESPERIODE' })],
+                erFarEllerMedmor: true,
                 listeHarMorsAktivitetIkkeErValgt: true,
             }),
         ],

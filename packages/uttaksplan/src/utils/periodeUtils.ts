@@ -202,7 +202,7 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
     rettighetType: RettighetType_fpoversikt,
     søker: BrukerRolleSak_fpoversikt,
     erIkkeSøkerSpesifisert: boolean,
-    perioder?: ReadonlyArray<Uttaksplanperiode>,
+    perioder?: readonly Uttaksplanperiode[],
     erFarOgFar?: boolean,
 ) => {
     if (erFarOgFar || rettighetType === 'ALENEOMSORG' || (søker === 'MOR' && !erIkkeSøkerSpesifisert) || !perioder) {
@@ -259,7 +259,7 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
  * oppgi aktivitet for i skjema, og dei skal difor ikkje blokkere innsending.
  */
 export const harPeriodeMedUkjentGraderingsaktivitet = (
-    perioder: ReadonlyArray<Uttaksplanperiode>,
+    perioder: readonly Uttaksplanperiode[],
     søker: BrukerRolleSak_fpoversikt,
 ) => {
     return perioder.some((periode) => {

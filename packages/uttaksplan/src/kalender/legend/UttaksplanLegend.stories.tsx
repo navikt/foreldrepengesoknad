@@ -37,7 +37,7 @@ const meta = {
                 barn={args.barn}
                 valgtStønadskvote={args.valgtStønadskvote}
                 harAktivitetskravIPeriodeUtenUttak={false}
-                uttakPerioder={args.uttakPerioder}
+                perioder={args.perioder}
                 erPeriodeneTilAnnenPartLåst={false}
                 erEndringssøknad={args.erEndringssøknad}
             >
@@ -115,59 +115,48 @@ export const VisAlleMedTekst: Story = {
                 srText: 'Fars del, aktivitetsfri',
             },
         ],
-        uttakPerioder: [
+        perioder: [
             {
                 fom: '2024-04-04',
                 tom: '2024-04-18',
-                forelder: 'MOR',
-                kontoType: 'MØDREKVOTE',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
             },
             {
                 fom: '2024-05-17',
                 tom: '2024-05-23',
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FEDREKVOTE',
-                flerbarnsdager: false,
+                annenPart: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
             },
             {
                 fom: '2024-05-31',
                 tom: '2024-06-13',
-                kontoType: 'FELLESPERIODE',
-                forelder: 'MOR',
-                samtidigUttak: 50,
-                flerbarnsdager: false,
-            },
-            {
-                fom: '2024-05-31',
-                tom: '2024-06-13',
-                kontoType: 'FELLESPERIODE',
-                forelder: 'FAR_MEDMOR',
-                samtidigUttak: 50,
-                flerbarnsdager: false,
+                søker: { kontoType: 'FELLESPERIODE', forelder: 'MOR', samtidigUttak: 50, flerbarnsdager: false },
+                annenPart: {
+                    kontoType: 'FELLESPERIODE',
+                    forelder: 'FAR_MEDMOR',
+                    samtidigUttak: 50,
+                    flerbarnsdager: false,
+                },
             },
             {
                 fom: '2024-06-28',
                 tom: '2024-07-02',
-                forelder: 'MOR',
-                kontoType: 'MØDREKVOTE',
-                gradering: { arbeidstidprosent: 80, aktivitet: { type: 'ANNET' } },
-                flerbarnsdager: false,
-            },
-            {
-                fom: '2024-06-28',
-                tom: '2024-07-02',
-                forelder: 'FAR_MEDMOR',
-                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
-                flerbarnsdager: false,
+                søker: {
+                    forelder: 'MOR',
+                    kontoType: 'MØDREKVOTE',
+                    gradering: { arbeidstidprosent: 80, aktivitet: { type: 'ANNET' } },
+                    flerbarnsdager: false,
+                },
+                annenPart: { forelder: 'FAR_MEDMOR', utsettelseÅrsak: 'FERIE', flerbarnsdager: false },
             },
             {
                 fom: '2024-07-03',
                 tom: '2024-07-15',
-                forelder: 'FAR_MEDMOR',
-                morsAktivitet: 'IKKE_OPPGITT',
-                kontoType: 'FORELDREPENGER',
-                flerbarnsdager: false,
+                annenPart: {
+                    forelder: 'FAR_MEDMOR',
+                    morsAktivitet: 'IKKE_OPPGITT',
+                    kontoType: 'FORELDREPENGER',
+                    flerbarnsdager: false,
+                },
             },
         ],
         barn: {

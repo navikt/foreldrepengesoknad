@@ -3,11 +3,13 @@ import { getStønadskvoteParams } from 'api/getStønadskvoteParams';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import ky, { type ResponsePromise } from 'ky';
-import { annenForelderHarNorskFnr, getAnnenPartVedtakParam } from 'utils/annenForelderUtils';
+import { annenForelderHarNorskFnr, getAnnenPartVedtakParam, getUttaksplanParam } from 'utils/annenForelderUtils';
 
 import {
     AnnenPartRequest_fpoversikt,
     AnnenPartSak_fpoversikt,
+    FellesUttaksplanDto_fpoversikt,
+    FellesUttaksplanRequest_fpoversikt,
     ForsendelseStatus,
     FpPersonopplysningerDto_fpoversikt,
     KontoBeregningGrunnlagDto,
@@ -31,6 +33,7 @@ export const API_URLS = {
     søkerInfo: `${urlPrefiks}/fpoversikt/api/personopplysninger/foreldrepenger`,
     saker: `${urlPrefiks}/fpoversikt/api/saker`,
     annenPartVedtak: `${urlPrefiks}/fpoversikt/api/annenPart`,
+    uttaksplan: `${urlPrefiks}/fpoversikt/api/uttaksplan`,
     konto: `${urlPrefiks}/fpgrunndata/api/konto`,
     trengerDokumentereMorsArbeid: `${urlPrefiks}/fpoversikt/api/arbeid/morDokumentasjon`,
     erOppdatert: `${urlPrefiks}/fpoversikt/api/saker/erOppdatert`,
@@ -141,6 +144,24 @@ export const useAnnenPartVedtakOptions = () => {
     const enabled = !!annenForelder && !!barn && annenForelderHarNorskFnr(annenForelder);
     return queryOptions({
         ...annenPartVedtakOptions(enabled ? getAnnenPartVedtakParam(annenForelder, barn) : undefined),
+        enabled,
+    });
+};
+
+const uttaksplanOptions = (data?: FellesUttaksplanRequest_fpoversikt) =>
+    queryOptions({
+        queryKey: ['UTTAKSPLAN', data],
+        queryFn: () => jsonEllerNull<FellesUttaksplanDto_fpoversikt>(ky.post(API_URLS.uttaksplan, { json: data })),
+        select: (uttaksplan) => uttaksplan ?? undefined,
+    });
+
+export const useUttaksplanOptions = () => {
+    const annenForelder = useContextGetData(ContextDataType.ANNEN_FORELDER);
+    const barn = useContextGetData(ContextDataType.OM_BARNET);
+
+    const enabled = !!annenForelder && !!barn;
+    return queryOptions({
+        ...uttaksplanOptions(enabled ? getUttaksplanParam(annenForelder, barn) : undefined),
         enabled,
     });
 };

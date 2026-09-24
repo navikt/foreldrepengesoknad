@@ -206,7 +206,10 @@ export const getKalenderFargeForPeriode = (
 
     // Samtidig uttak kjem no ferdig utfylt på begge partar frå backend, ingen kryss-oppslag mot
     // andre rader trengst lenger (jf. Uttaksperioden.erSamtidigUttak).
-    if (erUttaksperiode(periode) && (periode.søker?.samtidigUttak !== undefined || periode.annenPart?.samtidigUttak !== undefined)) {
+    if (
+        erUttaksperiode(periode) &&
+        (periode.søker?.samtidigUttak !== undefined || periode.annenPart?.samtidigUttak !== undefined)
+    ) {
         return erFarEllerMedmor ? 'LIGHTBLUEGREEN' : 'LIGHTGREENBLUE';
     }
 
@@ -295,8 +298,7 @@ const getKalenderSkjermleserPeriodetekst = (
     // NB: EØS-sida har ikkje noko eige `forelder`-felt i DTO-en (ho gjeld alltid annenPart, men
     // ikkje kva rolle annenPart har) – held difor same forenkling som før migreringa og syner
     // farMedmor sitt namn for EØS-periodar. Sjå oppsummeringa for meir kontekst.
-    const navn =
-        erEøs || visning?.part.forelder === 'FAR_MEDMOR' ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
+    const navn = erEøs || visning?.part.forelder === 'FAR_MEDMOR' ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
 
     const periodenTilhører = intl.formatMessage({ id: 'kalender.srText.PeriodenTil' }, { navn });
 
@@ -324,7 +326,7 @@ const getKalenderSkjermleserPeriodetekst = (
             case 'FELLESPERIODE':
                 return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.Fellesperiode' });
             case 'FORELDREPENGER':
-                return finnSkjermleserTekstForKvoteForeldrepenger(visning!, periodenTilhører, intl);
+                return finnSkjermleserTekstForKvoteForeldrepenger(visning, periodenTilhører, intl);
             default:
                 return assertUnreachable('Error: ukjent kontoType i getKalenderSkjermleserPeriodetekst');
         }
@@ -424,12 +426,10 @@ const leggTilVarselikonVedManglendeObligatoriskeValg = (
 ) => {
     // Byggjer syntetiske periodar med KUN mors part, slik at den delte sjekk-funksjonen ikkje
     // ved eit uhell finn far/medmor sine data frå ei anna, urelatert (t.d. samtidig uttak-)rad.
-    const morsPerioder: PeriodeDto_fpoversikt[] = allePerioder
-        .map((p) => {
-            const morsPart = finnPartForForelder(p, 'MOR');
-            return morsPart ? { fom: p.fom, tom: p.tom, søker: morsPart } : undefined;
-        })
-        .filter((p): p is PeriodeDto_fpoversikt => p !== undefined);
+    const morsPerioder: PeriodeDto_fpoversikt[] = allePerioder.flatMap((p) => {
+        const morsPart = finnPartForForelder(p, 'MOR');
+        return morsPart ? [{ fom: p.fom, tom: p.tom, søker: morsPart }] : [];
+    });
 
     if (
         harPeriodeDerMorsAktivitetIkkeErValgt(

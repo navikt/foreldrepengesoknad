@@ -1,5 +1,3 @@
-import { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
-
 import {
     Uttaksplanperiode,
     erFamiliehendelseDato,
@@ -89,10 +87,7 @@ export const erUttaksplanperiodeUtsettelse = (uttaksplanperioder: Uttaksplanperi
  * som ein periode for søkjar sjølv (berre med ei anna årsak), så vi fell då tilbake på den
  * innlogga brukaren sin eigen rolle.
  */
-export const getUttaksplanperiodeForelder = (
-    uttaksplanperioder: Uttaksplanperiode[],
-    søker: BrukerRolleSak_fpoversikt,
-) => {
+export const getUttaksplanperiodeForelder = (uttaksplanperioder: Uttaksplanperiode[]) => {
     if (erUttaksplanperiodeSamtidigUttak(uttaksplanperioder)) {
         return undefined;
     }
@@ -104,16 +99,13 @@ export const getUttaksplanperiodeForelder = (
         return periode.søker.forelder;
     }
     if (periode.annenPart) {
-        return søker;
+        return periode.annenPart.forelder;
     }
     return undefined;
 };
 
-export const erUttaksplanperiodeErForelderMor = (
-    uttaksplanperioder: Uttaksplanperiode[],
-    søker: BrukerRolleSak_fpoversikt,
-) => {
-    const forelder = getUttaksplanperiodeForelder(uttaksplanperioder, søker);
+export const erUttaksplanperiodeErForelderMor = (uttaksplanperioder: Uttaksplanperiode[]) => {
+    const forelder = getUttaksplanperiodeForelder(uttaksplanperioder);
     return forelder === 'MOR';
 };
 

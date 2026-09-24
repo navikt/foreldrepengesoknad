@@ -6,8 +6,9 @@ import { annenPartVedtak } from 'storybookData/annenPartVedtak';
 import { kvittering } from 'storybookData/kvittering';
 import { saker } from 'storybookData/saker';
 import { stønadskvoter } from 'storybookData/stønadskvoter';
+import { uttaksplanMedFarSomAnnenPart, uttaksplanMedMorSomAnnenPart } from 'storybookData/uttaksplan';
 
-import { FpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
+import { FellesUttaksplanRequest_fpoversikt, FpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 
 import { AppContainer } from './AppContainer';
 
@@ -49,6 +50,12 @@ const meta = {
             http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
             http.get(API_URLS.saker, () => HttpResponse.json(saker)),
             http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
+            http.post(API_URLS.uttaksplan, async ({ request }) => {
+                const { annenPartFødselsnummer } = (await request.json()) as FellesUttaksplanRequest_fpoversikt;
+                return annenPartFødselsnummer
+                    ? HttpResponse.json(uttaksplanMedMorSomAnnenPart)
+                    : new HttpResponse(null, { status: 204 });
+            }),
             http.post(API_URLS.konto, () => HttpResponse.json({ 80: stønadskvoter, 100: stønadskvoter })),
             http.get(API_URLS.sendSøknad, () => HttpResponse.json(kvittering)),
             http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 204 })),
@@ -79,6 +86,12 @@ export const SøkerErKvinne: Story = {
             http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfoKvinne)),
             http.get(API_URLS.saker, () => HttpResponse.json(saker)),
             http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
+            http.post(API_URLS.uttaksplan, async ({ request }) => {
+                const { annenPartFødselsnummer } = (await request.json()) as FellesUttaksplanRequest_fpoversikt;
+                return annenPartFødselsnummer
+                    ? HttpResponse.json(uttaksplanMedFarSomAnnenPart)
+                    : new HttpResponse(null, { status: 204 });
+            }),
             http.post(API_URLS.konto, () => HttpResponse.json({ 80: stønadskvoter, 100: stønadskvoter })),
             http.get(API_URLS.sendSøknad, () => HttpResponse.json(kvittering)),
             http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 204 })),

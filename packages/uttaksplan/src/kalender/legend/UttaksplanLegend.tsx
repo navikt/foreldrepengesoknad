@@ -57,38 +57,41 @@ export const UttaksplanLegend = ({
 
     const saksperioderInkludertHull = useAlleUttakPerioderInklTapteDager();
 
-    const unikePeriodeLabelsMedFarge = saksperioderInkludertHull.reduce<UttaksplanKalenderLegendInfo[]>((acc, periode) => {
-        const label = getLegendLabelFromPeriode(periode, søker === 'FAR_MEDMOR');
+    const unikePeriodeLabelsMedFarge = saksperioderInkludertHull.reduce<UttaksplanKalenderLegendInfo[]>(
+        (acc, periode) => {
+            const label = getLegendLabelFromPeriode(periode, søker === 'FAR_MEDMOR');
 
-        if (!label) {
-            return acc;
-        }
+            if (!label) {
+                return acc;
+            }
 
-        const periodeForKalendervisning = perioderForKalendervisning.find(
-            (p) =>
-                dayjs(p.fom).isSameOrBefore(periode.tom) &&
-                dayjs(p.tom).isSameOrAfter(periode.fom) &&
-                !erBarnehageplassPeriode(p, barnehagestartdato) &&
-                !erFamiliehendelsePeriode(p, familiehendelsedato),
-        );
+            const periodeForKalendervisning = perioderForKalendervisning.find(
+                (p) =>
+                    dayjs(p.fom).isSameOrBefore(periode.tom) &&
+                    dayjs(p.tom).isSameOrAfter(periode.fom) &&
+                    !erBarnehageplassPeriode(p, barnehagestartdato) &&
+                    !erFamiliehendelsePeriode(p, familiehendelsedato),
+            );
 
-        if (!periodeForKalendervisning) {
-            return acc;
-        }
+            if (!periodeForKalendervisning) {
+                return acc;
+            }
 
-        if (acc.some((item) => item.calendarPeriod.color === periodeForKalendervisning.color)) {
-            return acc;
-        }
+            if (acc.some((item) => item.calendarPeriod.color === periodeForKalendervisning.color)) {
+                return acc;
+            }
 
-        return [
-            ...acc,
-            {
-                label,
-                forelder: utledForelder(periode, søker),
-                calendarPeriod: periodeForKalendervisning,
-            },
-        ];
-    }, []);
+            return [
+                ...acc,
+                {
+                    label,
+                    forelder: utledForelder(periode, søker),
+                    calendarPeriod: periodeForKalendervisning,
+                },
+            ];
+        },
+        [],
+    );
 
     const barnehageplassPeriode = perioderForKalendervisning.find((p) =>
         erBarnehageplassPeriode(p, barnehagestartdato),
@@ -156,7 +159,7 @@ export const UttaksplanLegend = ({
 
 const utledForelder = (periode: UttaksplanperiodeMedKunTapteDager, søker: BrukerRolleSak_fpoversikt) => {
     if (!erPeriodeDto(periode)) {
-        return undefined;
+        return periode.forelder;
     }
     const part = periode.søker ?? periode.annenPart;
     if (!part) {

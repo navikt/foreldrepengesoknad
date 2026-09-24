@@ -228,7 +228,7 @@ const AutomatiskJusteringInfotekst = ({
         harSvartJaOgHarEnPeriodeRundtFødsel &&
         dayjs(periodeRundtFødsel!.fom).isSame(uttaksdagPåEllerEtterTermin, 'day') &&
         !!sideRundtFødsel &&
-        ((Uttaksperioden.erUttaksperiode(sideRundtFødsel) && !erJusterbartUttakRundtTermin(periodeRundtFødsel!)) ||
+        ((Uttaksperioden.erUttaksperiode(sideRundtFødsel) && !erJusterbartUttakRundtTermin(periodeRundtFødsel)) ||
             Uttaksperioden.erOverføringsperiode(sideRundtFødsel));
 
     if (harSvartJaOgEndretPeriodenPåTermin) {

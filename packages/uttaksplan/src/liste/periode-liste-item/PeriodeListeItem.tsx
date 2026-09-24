@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 
 import { VStack } from '@navikt/ds-react';
 
-import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { Uttaksplanperiode } from '../../types/UttaksplanPeriode';
 import { PeriodeListeContent } from './periode-liste-content/PeriodeListeContent';
 import { PeriodeListeHeader } from './periode-liste-header/PeriodeListeHeader';
@@ -17,11 +16,7 @@ interface Props {
 export const PeriodeListeItem = ({ isReadOnly, uttaksplanperioder, isAllAccordionsOpen }: Props) => {
     const [erPeriodeInnholdÅpen, setErPeriodeInnholdÅpen] = useState(false);
 
-    const {
-        foreldreInfo: { søker },
-    } = useUttaksplanData();
-
-    const borderFarge = getBorderFarge(uttaksplanperioder, søker);
+    const borderFarge = getBorderFarge(uttaksplanperioder);
 
     // Sync local state with global accordion state
     useEffect(() => {

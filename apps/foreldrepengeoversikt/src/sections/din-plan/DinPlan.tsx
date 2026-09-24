@@ -38,9 +38,6 @@ export const DinPlan = ({ navnPåForeldre, sak }: Props) => {
     );
     const konto = sak.dekningsgrad === 'HUNDRE' ? kontoQuery.data?.['100'] : kontoQuery.data?.['80'];
 
-    // Prototype: /uttaksplan-endepunktet i fp-oversikt er enno ikkje utrulla (sjå useUttaksplan),
-    // så `uttaksplanQuery.data` vil i praksis vera undefined heilt til det skjer. Me viser difor
-    // ingenting for denne seksjonen inntil då.
     const uttaksplanQuery = useUttaksplan(sak);
 
     if (!konto || !uttaksplanQuery.data) {

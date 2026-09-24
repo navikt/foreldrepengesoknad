@@ -275,21 +275,22 @@ const getAntallDagerSøkerensKvoteBruktAvAnnenPart = (
     if (uttaksplanAnnenPart === undefined || uttaksplanAnnenPart.length === 0) {
         return 0;
     }
-    return erFarEllerMedmor
-        ? getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato, familiesituasjon).farMedmor.dagerEgneKvoter
-        : getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato, familiesituasjon).mor.dagerEgneKvoter;
+    const brukteDager = getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato, familiesituasjon);
+    return erFarEllerMedmor ? brukteDager.mor.dagerAnnenForeldersKvote : brukteDager.farMedmor.dagerAnnenForeldersKvote;
 };
 
 const getAntallDagerFellesperiodeBruktAvAnnenPart = (
     uttaksplanAnnenPart: PeriodeDto_fpoversikt[] | undefined,
     kontoer: KontoBeregningDto,
+    erFarEllerMedmor: boolean,
     familiehendelsesdato: string,
     familiesituasjon: Familiesituasjon,
 ): number => {
     if (uttaksplanAnnenPart === undefined || uttaksplanAnnenPart.length === 0) {
         return 0;
     }
-    return getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato, familiesituasjon).mor.dagerFellesperiode;
+    const brukteDager = getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato, familiesituasjon);
+    return erFarEllerMedmor ? brukteDager.mor.dagerFellesperiode : brukteDager.farMedmor.dagerFellesperiode;
 };
 
 const getFordelingFelles = (
@@ -794,6 +795,7 @@ export const getFordelingFraKontoer = (
     const dagerFellesperiodeBruktAvAnnenPart = getAntallDagerFellesperiodeBruktAvAnnenPart(
         uttaksplanAnnenPart,
         kontoer,
+        erFarEllerMedmor,
         familiehendelsesdato,
         familiesituasjon,
     );
@@ -931,20 +933,22 @@ export const getSisteUttaksdagAnnenForelder = (
         return undefined;
     }
     const annenPartForelder = erFarEllerMedmor ? 'MOR' : 'FAR_MEDMOR';
-    // EØS-periodar høyrer per definisjon alltid til annan part (annanPartEøs), same om
-    // periodane elles ikkje er sortert konsekvent for annan part si side.
+    // EØS-periodar høyrer alltid til annan part (annenPartEøs).
     const annenForeldersFiltrertePerioder = perioderAnnenPart.filter(
         (p) => p.annenPart?.forelder === annenPartForelder || p.annenPartEøs !== undefined,
     );
 
-    if (annenForeldersFiltrertePerioder.length === 0) {
+    const [førstePeriode, ...resten] = annenForeldersFiltrertePerioder;
+    if (!førstePeriode) {
         return undefined;
     }
 
-    const sisteTomAnnenForelder = annenForeldersFiltrertePerioder.reduce(
-        (senesteTom, periode) => (dayjs(periode.tom).isAfter(senesteTom) ? periode.tom : senesteTom),
-        annenForeldersFiltrertePerioder[0].tom,
-    );
+    let sisteTomAnnenForelder = førstePeriode.tom;
+    for (const periode of resten) {
+        if (dayjs(periode.tom).isAfter(sisteTomAnnenForelder)) {
+            sisteTomAnnenForelder = periode.tom;
+        }
+    }
 
     return Uttaksdagen.denneEllerForrige(sisteTomAnnenForelder).getDato();
 };

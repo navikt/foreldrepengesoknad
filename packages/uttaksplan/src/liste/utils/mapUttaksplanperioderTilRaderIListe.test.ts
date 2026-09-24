@@ -1,27 +1,21 @@
-import { Uttaksplanperiode, erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
+import { Uttaksplanperiode, erPeriodeDto } from '../../types/UttaksplanPeriode';
 import { mapUttaksplanperioderTilRaderIListe } from './mapUttaksplanperioderTilRaderIListe';
 
 const perioder1: Uttaksplanperiode[] = [
     {
-        forelder: 'MOR',
-        kontoType: 'FORELDREPENGER_FØR_FØDSEL',
         fom: '2024-04-12',
         tom: '2024-05-02',
-        flerbarnsdager: false,
+        søker: { forelder: 'MOR', kontoType: 'FORELDREPENGER_FØR_FØDSEL', flerbarnsdager: false },
     },
     {
-        forelder: 'MOR',
-        kontoType: 'MØDREKVOTE',
         fom: '2024-05-03',
         tom: '2024-08-15',
-        flerbarnsdager: false,
+        søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
     },
     {
-        forelder: 'MOR',
-        kontoType: 'FELLESPERIODE',
         fom: '2024-08-16',
         tom: '2024-09-26',
-        flerbarnsdager: false,
+        søker: { forelder: 'MOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false },
     },
     {
         fom: '2024-09-27',
@@ -29,11 +23,9 @@ const perioder1: Uttaksplanperiode[] = [
         type: 'PERIODE_UTEN_UTTAK',
     },
     {
-        forelder: 'MOR',
-        kontoType: 'FELLESPERIODE',
         fom: '2024-10-11',
         tom: '2024-10-24',
-        flerbarnsdager: false,
+        søker: { forelder: 'MOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false },
     },
 ];
 
@@ -43,50 +35,48 @@ describe('Skal gruppere perioder på søker og ikke kvote', () => {
 
         expect(uttaksplanperioderPerRadIListe.length).toBe(4);
 
-        const periode1 = erVanligUttakPeriode(uttaksplanperioderPerRadIListe[0]![0]!)
+        const periode1 = erPeriodeDto(uttaksplanperioderPerRadIListe[0]![0]!)
             ? uttaksplanperioderPerRadIListe[0]![0]
             : undefined;
-        expect(periode1?.forelder).toEqual('MOR');
+        expect(periode1?.søker?.forelder).toEqual('MOR');
 
-        const periode2 = erVanligUttakPeriode(uttaksplanperioderPerRadIListe[1]![0]!)
+        const periode2 = erPeriodeDto(uttaksplanperioderPerRadIListe[1]![0]!)
             ? uttaksplanperioderPerRadIListe[1]![0]
             : undefined;
-        expect(periode2?.forelder).toEqual('MOR');
+        expect(periode2?.søker?.forelder).toEqual('MOR');
 
-        const periode3 = erVanligUttakPeriode(uttaksplanperioderPerRadIListe[2]![0]!)
+        const periode3 = erPeriodeDto(uttaksplanperioderPerRadIListe[2]![0]!)
             ? uttaksplanperioderPerRadIListe[2]![0]
             : undefined;
-        expect(periode3?.forelder).toEqual(undefined);
+        expect(periode3?.søker?.forelder).toEqual(undefined);
 
-        const periode4 = erVanligUttakPeriode(uttaksplanperioderPerRadIListe[3]![0]!)
+        const periode4 = erPeriodeDto(uttaksplanperioderPerRadIListe[3]![0]!)
             ? uttaksplanperioderPerRadIListe[3]![0]
             : undefined;
-        expect(periode4?.forelder).toEqual('MOR');
+        expect(periode4?.søker?.forelder).toEqual('MOR');
     });
 
     it('Skal ikke gruppere avslått og innvilget periode på samme rad', () => {
         const perioder: Uttaksplanperiode[] = [
             {
-                forelder: 'MOR',
-                kontoType: 'MØDREKVOTE',
                 fom: '2024-05-03',
                 tom: '2024-05-16',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
             },
             {
-                forelder: 'MOR',
-                kontoType: 'MØDREKVOTE',
                 fom: '2024-05-17',
                 tom: '2024-05-30',
-                flerbarnsdager: false,
-                resultat: { innvilget: false, trekkerMinsterett: false, trekkerDager: false, årsak: 'ANNET' },
+                søker: {
+                    forelder: 'MOR',
+                    kontoType: 'MØDREKVOTE',
+                    flerbarnsdager: false,
+                    resultat: { innvilget: false, trekkerMinsterett: false, trekkerDager: false, årsak: 'ANNET' },
+                },
             },
             {
-                forelder: 'MOR',
-                kontoType: 'MØDREKVOTE',
                 fom: '2024-05-31',
                 tom: '2024-06-13',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
             },
         ];
 

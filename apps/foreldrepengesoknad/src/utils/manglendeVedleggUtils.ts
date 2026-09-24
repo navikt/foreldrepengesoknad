@@ -1,6 +1,6 @@
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 
-import { PeriodeDto_fpoversikt, UttakDto_fpoversikt, UttakUtsettelseÅrsak_fpoversikt } from '@navikt/fp-types';
+import { PeriodeDto_fpoversikt, UtsettelseÅrsak_fpoversikt, UttakDto_fpoversikt } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
 import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan/validators';
 
@@ -82,7 +82,7 @@ const skalBesvaresVedUtsettelse = (søkerErFarEllerMedmor: boolean, annenForelde
     return søkerErFarEllerMedmor && annenForelderHarRett === false;
 };
 
-const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UttakUtsettelseÅrsak_fpoversikt) =>
+const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelseÅrsak_fpoversikt) =>
     ['SØKER_SYKDOM', 'SØKER_INNLAGT', 'BARN_INNLAGT'].includes(årsak);
 
 const dokumentasjonBehøvesForUttaksperiode = (
@@ -91,8 +91,7 @@ const dokumentasjonBehøvesForUttaksperiode = (
     søkerErFarEllerMedmor: boolean,
     familiehendelsedato: string,
 ): boolean => {
-    const harIkkeAktivitetskrav =
-        søker.kontoType === 'FORELDREPENGER' && søker.morsAktivitet === 'IKKE_OPPGITT';
+    const harIkkeAktivitetskrav = søker.kontoType === 'FORELDREPENGER' && søker.morsAktivitet === 'IKKE_OPPGITT';
     if (harIkkeAktivitetskrav) {
         return false;
     }

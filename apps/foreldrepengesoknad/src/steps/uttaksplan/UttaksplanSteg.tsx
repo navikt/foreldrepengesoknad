@@ -1,6 +1,6 @@
 import { BulletListIcon, CalendarIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
-import { useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
+import { useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
@@ -32,8 +32,7 @@ import {
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanForm } from './UttaksplanForm';
-import { mapAnnenPartsPeriodeTilPeriodeDto } from './hooks/gammelPeriodeMapping';
-import { useUttaksplanForEksisterendeSak } from './hooks/useUttaksplanForEksisterendeSak';
+import { useTidligereUttaksplan } from './hooks/useTidligereUttaksplan';
 import { useUttaksplanForslag } from './hooks/useUttaksplanForslag';
 
 interface Props {
@@ -119,16 +118,8 @@ export const UttaksplanSteg = ({
         },
     });
 
-    const annenPartVedtakOptionsWrapped = useAnnenPartVedtakOptions();
-    const annenPartVedtakQuery = useQuery({
-        ...annenPartVedtakOptionsWrapped,
-    });
-    const erAnnenPartVedtakAvklart = annenPartVedtakQuery.isSuccess || annenPartVedtakOptionsWrapped.enabled === false;
-
-    const uttaksplanForEksisterendeSak = useUttaksplanForEksisterendeSak(
-        annenPartVedtakQuery.data?.perioder,
-        erAnnenPartVedtakAvklart,
-    );
+    const tidligereUttaksplan = useTidligereUttaksplan();
+    const tidligereUttaksperioder = tidligereUttaksplan.perioder;
 
     const valgteStønadskvoter = tilgjengeligeStønadskvoterQuery.data;
 
@@ -137,19 +128,14 @@ export const UttaksplanSteg = ({
     // (uavhengig av forelderrolle), så det er nok å filtrere på at .søker finst.
     const nyttUttaksplanForslag = useUttaksplanForslag(
         valgteStønadskvoter,
-        annenPartVedtakQuery.data?.perioder,
-        annenPartVedtakQuery.isLoading,
+        tidligereUttaksperioder,
+        tidligereUttaksplan.isLoading,
     ).filter((periode) => periode.søker !== undefined);
 
-    if (!valgteStønadskvoter || annenPartVedtakQuery.isLoading) {
+    if (!valgteStønadskvoter || tidligereUttaksplan.isLoading) {
         return null;
     }
 
-    const annenPartsPerioderEllerUndefined =
-        annenPartVedtakQuery.data?.perioder && annenPartVedtakQuery.data?.perioder?.length > 0
-            ? annenPartVedtakQuery.data.perioder.map(mapAnnenPartsPeriodeTilPeriodeDto)
-            : undefined;
-    const tidligereUttaksperioder = uttaksplanForEksisterendeSak ?? annenPartsPerioderEllerUndefined;
     const defaultUttaksperioder = opprinneligPlanleggerplan ?? tidligereUttaksperioder ?? nyttUttaksplanForslag;
 
     const erPlanenEndret =
@@ -254,7 +240,7 @@ export const UttaksplanSteg = ({
                         scrollToKvoteOppsummering={scrollToKvoteOppsummering}
                         defaultUttaksperioder={defaultUttaksperioder}
                         eksisterendeSak={eksisterendeSak}
-                        opprinneligPlan={uttaksplanForEksisterendeSak}
+                        opprinneligPlan={eksisterendeSaksnummer ? tidligereUttaksperioder : undefined}
                         erEndringssøknad={erEndringssøknad}
                     />
                 </UttaksplanDataProvider>

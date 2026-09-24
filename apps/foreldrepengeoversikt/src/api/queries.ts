@@ -1,12 +1,12 @@
 import { queryOptions } from '@tanstack/react-query';
-import ky, { type ResponsePromise } from 'ky';
+import ky from 'ky';
 
 import { Skjemanummer } from '@navikt/fp-constants';
 import {
-    AnnenPartRequest_fpoversikt,
-    AnnenPartSak_fpoversikt,
     DokumentDto_fpoversikt,
     EttersendelseDto,
+    FellesUttaksplanDto_fpoversikt,
+    FellesUttaksplanRequest_fpoversikt,
     FpOversiktInntektsmeldingDto_fpoversikt,
     KontoBeregningGrunnlagDto,
     KontoBeregningResultatDto,
@@ -17,23 +17,11 @@ import {
 } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
-import { FellesUttaksplanDto_fpoversikt, FellesUttaksplanRequest_fpoversikt } from '@navikt/fp-types';
-
 export const urlPrefiks = import.meta.env.BASE_URL;
-
-/**
-Backend returnerer null for Optional.orElse(null), som JAX-RS oversetter til 204 No Content
-*/
-const jsonEllerNull = async <T>(responsePromise: ResponsePromise) => {
-    const response = await responsePromise;
-    return response.status === 204 ? null : response.json<T>();
-};
 
 export const API_URLS = {
     søkerInfo: `${urlPrefiks}/fpoversikt/api/personopplysninger/oversikt`,
     saker: `${urlPrefiks}/fpoversikt/api/saker`,
-    annenPartVedtak: `${urlPrefiks}/fpoversikt/api/annenPart`,
-    // Nytt endepunkt (feature/uttaksplan i fp-oversikt, ikkje merga/deploya enno).
     uttaksplan: `${urlPrefiks}/fpoversikt/api/uttaksplan`,
     minidialog: `${urlPrefiks}/fpoversikt/api/oppgaver/tilbakekrevingsuttalelse`,
     dokumenter: `${urlPrefiks}/fpoversikt/api/dokument/alle`,
@@ -100,13 +88,6 @@ export const hentInntektsmelding = (saksnummer: string) =>
                     arbeidsgiverNavn: capitalizeFirstLetterInEveryWordOnly(im.arbeidsgiverNavn) ?? '',
                 }));
         },
-    });
-
-export const hentAnnenPartsVedtakOptions = (body: AnnenPartRequest_fpoversikt) =>
-    queryOptions({
-        queryKey: ['ANNEN_PARTS_VEDTAK', body],
-        queryFn: () => jsonEllerNull<AnnenPartSak_fpoversikt>(ky.post(API_URLS.annenPartVedtak, { json: body })),
-        select: (data) => data ?? undefined,
     });
 
 export const hentUttaksplanOptions = (body: FellesUttaksplanRequest_fpoversikt) =>

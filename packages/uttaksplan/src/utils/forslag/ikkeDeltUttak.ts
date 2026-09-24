@@ -10,25 +10,34 @@ const ikkeDeltUttakAdopsjonFarMedmor = ({
     foreldrepengerKonto,
     erMorUfør,
     aktivitetsfriKvote,
+    bareFarMedmorHarRett,
     farOgFar,
 }: {
     famDato: string;
     foreldrepengerKonto: KontoDto;
     erMorUfør: boolean | undefined;
     aktivitetsfriKvote: KontoDto | undefined;
+    bareFarMedmorHarRett: boolean;
     farOgFar: boolean;
 }): PeriodeDto_fpoversikt[] => {
     const førsteUttaksdag = Uttaksdagen.denneEllerNeste(famDato).getDato();
     const perioder: PeriodeDto_fpoversikt[] = [];
 
-    if (erMorUfør) {
-        // Aktivitetsfri kvote (foreldrepenger uten aktivitetskrav) skal ikke brukes i det foreslåtte forslaget
-        // her, siden dette er en kvote brukeren selv bør velge å bruke, ikke noe vi automatisk foreslår.
-        const tidsperiode = getTidsperiodeString(førsteUttaksdag, foreldrepengerKonto.dager);
+    if ((erMorUfør || bareFarMedmorHarRett) && aktivitetsfriKvote) {
+        // Mor har ikke rett til foreldrepenger her (hun er enten ufør eller har ingen rett i det hele
+        // tatt), så det gir ikke mening å be henne dokumentere aktivitet. Vi foreslår derfor kun den
+        // mindre kvoten uten aktivitetskrav (aktivitetsfri kvote), og lar den større kvoten med
+        // aktivitetskrav ligge i reserve som brukeren selv kan velge å ta i bruk.
+        const tidsperiode = getTidsperiodeString(førsteUttaksdag, aktivitetsfriKvote.dager);
         perioder.push({
             fom: tidsperiode.fom,
             tom: tidsperiode.tom,
-            søker: { forelder: 'FAR_MEDMOR', kontoType: 'FORELDREPENGER', flerbarnsdager: false },
+            søker: {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FORELDREPENGER',
+                morsAktivitet: 'IKKE_OPPGITT',
+                flerbarnsdager: false,
+            },
         });
     } else if (farOgFar) {
         // NB: I motsetning til de andre grenene her bruker vi bevisst aktivitetsfriKvote og
@@ -86,6 +95,7 @@ const ikkeDeltUttakAdopsjon = ({
     foreldrepengerKonto,
     erMorUfør,
     aktivitetsfriKvote,
+    bareFarMedmorHarRett,
     farOgFar,
 }: {
     famDato: string;
@@ -93,6 +103,7 @@ const ikkeDeltUttakAdopsjon = ({
     foreldrepengerKonto: KontoDto;
     erMorUfør: boolean | undefined;
     aktivitetsfriKvote: KontoDto | undefined;
+    bareFarMedmorHarRett: boolean;
     farOgFar: boolean;
 }) => {
     if (erFarEllerMedmor) {
@@ -101,6 +112,7 @@ const ikkeDeltUttakAdopsjon = ({
             foreldrepengerKonto,
             erMorUfør,
             aktivitetsfriKvote,
+            bareFarMedmorHarRett,
             farOgFar,
         });
     } else {
@@ -157,6 +169,7 @@ const ikkeDeltUttakFødselFarMedmor = ({
     foreldrepengerKonto,
     erMorUfør,
     aktivitetsfriKvote,
+    bareFarMedmorHarRett,
     erAleneOmOmsorg,
     farOgFar,
     startdato,
@@ -165,6 +178,7 @@ const ikkeDeltUttakFødselFarMedmor = ({
     foreldrepengerKonto: KontoDto;
     erMorUfør: boolean | undefined;
     aktivitetsfriKvote: KontoDto | undefined;
+    bareFarMedmorHarRett: boolean;
     erAleneOmOmsorg: boolean;
     farOgFar: boolean;
     startdato?: string;
@@ -172,15 +186,21 @@ const ikkeDeltUttakFødselFarMedmor = ({
     const startDato = Uttaksdagen.denneEllerNeste(startdato ?? famDato).getDato();
     const perioder: PeriodeDto_fpoversikt[] = [];
 
-    if (erMorUfør) {
-        // Aktivitetsfri kvote (foreldrepenger uten aktivitetskrav) skal ikke brukes i det foreslåtte
-        // forslaget her, siden dette er en kvote brukeren selv bør velge å bruke, ikke noe vi
-        // automatisk foreslår.
-        const tidsperiode = getTidsperiodeString(startDato, foreldrepengerKonto.dager);
+    if ((erMorUfør || bareFarMedmorHarRett) && aktivitetsfriKvote) {
+        // Mor har ikke rett til foreldrepenger her (hun er enten ufør eller har ingen rett i det hele
+        // tatt), så det gir ikke mening å be henne dokumentere aktivitet. Vi foreslår derfor kun den
+        // mindre kvoten uten aktivitetskrav (aktivitetsfri kvote), og lar den større kvoten med
+        // aktivitetskrav ligge i reserve som brukeren selv kan velge å ta i bruk.
+        const tidsperiode = getTidsperiodeString(startDato, aktivitetsfriKvote.dager);
         perioder.push({
             fom: tidsperiode.fom,
             tom: tidsperiode.tom,
-            søker: { forelder: 'FAR_MEDMOR', kontoType: 'FORELDREPENGER', flerbarnsdager: false },
+            søker: {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FORELDREPENGER',
+                morsAktivitet: 'IKKE_OPPGITT',
+                flerbarnsdager: false,
+            },
         });
     } else {
         if (farOgFar && !erAleneOmOmsorg) {
@@ -223,6 +243,7 @@ const ikkeDeltUttakFødsel = ({
     foreldrePengerFørFødselKonto,
     erMorUfør,
     aktivitetsfriKvote,
+    bareFarMedmorHarRett,
     erAleneOmOmsorg,
     farOgFar,
     startdato,
@@ -233,6 +254,7 @@ const ikkeDeltUttakFødsel = ({
     foreldrePengerFørFødselKonto: KontoDto | undefined;
     erMorUfør: boolean | undefined;
     aktivitetsfriKvote: KontoDto | undefined;
+    bareFarMedmorHarRett: boolean;
     erAleneOmOmsorg: boolean;
     farOgFar: boolean;
     startdato?: string;
@@ -243,6 +265,7 @@ const ikkeDeltUttakFødsel = ({
             foreldrepengerKonto,
             erMorUfør,
             aktivitetsfriKvote,
+            bareFarMedmorHarRett,
             erAleneOmOmsorg,
             farOgFar,
             startdato,
@@ -275,6 +298,7 @@ export const ikkeDeltUttak = ({
     erFarEllerMedmor,
     tilgjengeligeStønadskvoter,
     erMorUfør,
+    bareFarMedmorHarRett,
     erAleneOmOmsorg,
     startdato,
     farOgFar,
@@ -292,6 +316,7 @@ export const ikkeDeltUttak = ({
             foreldrepengerKonto: foreldrepengerKonto!,
             erMorUfør,
             aktivitetsfriKvote,
+            bareFarMedmorHarRett,
             farOgFar,
         });
     }
@@ -302,6 +327,7 @@ export const ikkeDeltUttak = ({
         foreldrePengerFørFødselKonto,
         erMorUfør,
         aktivitetsfriKvote,
+        bareFarMedmorHarRett,
         erAleneOmOmsorg,
         farOgFar,
         startdato,

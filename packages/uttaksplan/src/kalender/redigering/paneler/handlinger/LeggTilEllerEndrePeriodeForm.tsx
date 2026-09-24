@@ -98,12 +98,10 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
 
     // Byggjer syntetiske periodar med KUN mors part, slik at den delte sjekk-funksjonen ikkje
     // ved eit uhell finn far/medmor sine data frå ei anna, urelatert (t.d. samtidig uttak-)rad.
-    const morsPerioder: PeriodeDto_fpoversikt[] = perioder
-        .map((p) => {
-            const morsPart = finnPartForForelder(p, 'MOR');
-            return morsPart ? { fom: p.fom, tom: p.tom, søker: morsPart } : undefined;
-        })
-        .filter((p): p is PeriodeDto_fpoversikt => p !== undefined);
+    const morsPerioder: PeriodeDto_fpoversikt[] = perioder.flatMap((p) => {
+        const morsPart = finnPartForForelder(p, 'MOR');
+        return morsPart ? [{ fom: p.fom, tom: p.tom, søker: morsPart }] : [];
+    });
 
     const { morsAktivitetIkkeOppgittAlert } = useLeggTilEndreSkjemaInfoAlerts(
         harValgtDagerKunForEnEksisterendePeriode ? [...eksisterendePerioderSomErValgt, ...morsPerioder] : [],

@@ -60,7 +60,8 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
 
                 const erAvslåttPeriode = part?.resultat?.innvilget === false;
 
-                const erPleiepengerPeriode = erAvslåttPeriode && part?.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
+                const erPleiepengerPeriode =
+                    erAvslåttPeriode && part?.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
 
                 const {
                     morsAktivitetIkkeValgt: morsAktivitetIkkeValgtAlert,
@@ -328,7 +329,7 @@ const PeriodeIkon = ({
         );
     }
 
-    if (part?.utsettelseÅrsak && part.utsettelseÅrsak !== 'FERIE') {
+    if (part?.utsettelseÅrsak) {
         return (
             <ArrowRightIcon
                 title={intl.formatMessage({ id: 'RedigeringPanel.Utsettelse' })}
@@ -508,23 +509,24 @@ const PeriodeKvoteType = ({
     // «opphald»-uttrykk.
     const part = periode.søker ?? periode.annenPart;
     const utsettelseÅrsak = part?.utsettelseÅrsak;
+    const kontoType = part?.kontoType ?? periode.annenPartEøs?.kontoType;
 
-    const erAktivitetsfri = part?.kontoType === 'FORELDREPENGER' && part?.morsAktivitet === 'IKKE_OPPGITT';
+    const erAktivitetsfri = kontoType === 'FORELDREPENGER' && part?.morsAktivitet === 'IKKE_OPPGITT';
 
     const bareFarMedmorHarRett = søker === 'FAR_MEDMOR' && rettighetType === 'BARE_SØKER_RETT';
     const erSøkersForeldrepengerMedAktivitetskrav =
-        !!periode.søker && part?.kontoType === 'FORELDREPENGER' && !erAktivitetsfri;
+        !!periode.søker && kontoType === 'FORELDREPENGER' && !erAktivitetsfri;
 
-    const erMødrekvote = part?.kontoType === 'MØDREKVOTE';
-    const erFedrekvote = part?.kontoType === 'FEDREKVOTE';
-    const erForeldrepenger = part?.kontoType === 'FORELDREPENGER';
-    const erFellesperiode = part?.kontoType === 'FELLESPERIODE';
+    const erMødrekvote = kontoType === 'MØDREKVOTE';
+    const erFedrekvote = kontoType === 'FEDREKVOTE';
+    const erForeldrepenger = kontoType === 'FORELDREPENGER';
+    const erFellesperiode = kontoType === 'FELLESPERIODE';
     const erAnnenUtsettelseEnnFerie = utsettelseÅrsak !== undefined && utsettelseÅrsak !== 'FERIE';
 
     // Regler i prioritert rekkefølge – første regel som slår til (gjelder === true) avgjør teksten.
     const regler: Array<{ gjelder: boolean; render: () => ReactNode }> = [
         {
-            gjelder: part?.kontoType === 'FORELDREPENGER_FØR_FØDSEL',
+            gjelder: kontoType === 'FORELDREPENGER_FØR_FØDSEL',
             render: () => <FormattedMessage id="RedigeringPanel.MorHarForeldrepengerFørFødsel" />,
         },
         {

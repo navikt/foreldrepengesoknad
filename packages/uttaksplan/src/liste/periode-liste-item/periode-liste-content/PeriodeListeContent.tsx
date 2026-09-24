@@ -9,7 +9,12 @@ import { Uttaksdagen, formatDateExtended } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
-import { Uttaksplanperiode, erPeriodeDto, erPeriodeUtenUttakHull, erTapteDagerHull } from '../../../types/UttaksplanPeriode';
+import {
+    Uttaksplanperiode,
+    erPeriodeDto,
+    erPeriodeUtenUttakHull,
+    erTapteDagerHull,
+} from '../../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../../utils/UttakPeriodeBuilder';
 import { getVarighetString } from '../../../utils/dateUtils';
 import {
@@ -151,6 +156,17 @@ const Periode = ({
     erFarEllerMedmor: boolean;
     inneholderKunEnPeriode: boolean;
 }) => {
+    if (erOverføringsperiode(periode)) {
+        return (
+            <OverføringsperiodeContent
+                key={genererPeriodeKey(periode)}
+                inneholderKunEnPeriode={inneholderKunEnPeriode}
+                navnPåForeldre={navnPåForeldre}
+                periode={periode}
+            />
+        );
+    }
+
     if (erOppholdsperiode(periode)) {
         return (
             <OppholdsPeriodeContent
@@ -158,17 +174,6 @@ const Periode = ({
                 inneholderKunEnPeriode={inneholderKunEnPeriode}
                 navnPåForeldre={navnPåForeldre}
                 erFarEllerMedmor={erFarEllerMedmor}
-                periode={periode}
-            />
-        );
-    }
-
-    if (erOverføringsperiode(periode)) {
-        return (
-            <OverføringsperiodeContent
-                key={genererPeriodeKey(periode)}
-                inneholderKunEnPeriode={inneholderKunEnPeriode}
-                navnPåForeldre={navnPåForeldre}
                 periode={periode}
             />
         );

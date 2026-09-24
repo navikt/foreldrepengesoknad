@@ -266,7 +266,9 @@ const summerDagerForNorgeParter = (
         const tideler = sum(
             norgeParter
                 .filter(({ part }) => getUttaksKontoType(part) === aktuellKontoType)
-                .map(({ fom, tom, part }) => finnAntallTidelerÅTrekkeForPart({ fom, tom }, part, erFødsel, familiehendelsedato)),
+                .map(({ fom, tom, part }) =>
+                    finnAntallTidelerÅTrekkeForPart({ fom, tom }, part, erFødsel, familiehendelsedato),
+                ),
         );
         tidelerTotalt += tideler;
     }
@@ -328,7 +330,9 @@ export const summerDagerIPerioder = (
         const tidelerNorge = sum(
             norgeParter
                 .filter(({ part }) => getUttaksKontoType(part) === aktuellKontoType)
-                .map(({ fom, tom, part }) => finnAntallTidelerÅTrekkeForPart({ fom, tom }, part, erFødsel, familiehendelsedato)),
+                .map(({ fom, tom, part }) =>
+                    finnAntallTidelerÅTrekkeForPart({ fom, tom }, part, erFødsel, familiehendelsedato),
+                ),
         );
         tidelerTotalt += tidelerEøs + tidelerNorge;
     }
@@ -336,7 +340,7 @@ export const summerDagerIPerioder = (
     return Math.floor(tidelerTotalt / 10);
 };
 
-export const getUttaksKontoType = (part: UttakDto_fpoversikt): KontoTypeUttak | undefined => {
+const getUttaksKontoType = (part: UttakDto_fpoversikt): KontoTypeUttak | undefined => {
     if (part.kontoType === 'FORELDREPENGER' && part.morsAktivitet === 'IKKE_OPPGITT') {
         return 'AKTIVITETSFRI_KVOTE';
     }

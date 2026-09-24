@@ -50,7 +50,6 @@ const summerBrukteUttaksdager = (uttak: KontoDto[]) => {
     return uttak.reduce((dager, u) => dager + u.dager, 0);
 };
 
-/** Summerer trekkdagar per konto (uavhengig av kven som har uttak). */
 const beregnBrukteUttaksdager = (
     tilgjengeligeStønadskvoter: KontoBeregningDto,
     perioder: PeriodeDto_fpoversikt[],
@@ -65,11 +64,8 @@ const beregnBrukteUttaksdager = (
         .filter((k) => k.dager > 0);
 };
 
-/**
- * Behold kun den sida (søker/annenPart) av perioden som gjeld den aktuelle forelderen. EØS-sida
- * blir alltid fjerna her, sidan ho aldri representerer den norske forelderen sine eigne dagar.
- */
-const taKunSideForForelder = (
+// EØS-parten blir fjerna, sidan han aldri representerer den norske forelderen sine eigne dagar.
+const taKunPartForForelder = (
     periode: PeriodeDto_fpoversikt,
     forelder: BrukerRolleSak_fpoversikt,
 ): PeriodeDto_fpoversikt => ({
@@ -79,7 +75,6 @@ const taKunSideForForelder = (
     annenPart: periode.annenPart?.forelder === forelder ? periode.annenPart : undefined,
 });
 
-/** Summerer trekkdagar per konto, avgrensa til éin forelder si eiga side av kvar periode. */
 const beregnBrukteUttaksdagerForForelder = (
     tilgjengeligeStønadskvoter: KontoBeregningDto,
     perioder: PeriodeDto_fpoversikt[],
@@ -87,7 +82,7 @@ const beregnBrukteUttaksdagerForForelder = (
     familiesituasjon: Familiesituasjon,
     familiehendelsesdato: string,
 ): KontoDto[] => {
-    const perioderForForelder = perioder.map((p) => taKunSideForForelder(p, forelder));
+    const perioderForForelder = perioder.map((p) => taKunPartForForelder(p, forelder));
     return tilgjengeligeStønadskvoter.kontoer
         .map((konto) => {
             const dager = summerDagerIPerioder(perioderForForelder, [konto], familiesituasjon, familiehendelsesdato);

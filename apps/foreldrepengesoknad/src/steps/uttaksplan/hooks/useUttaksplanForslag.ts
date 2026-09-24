@@ -10,7 +10,6 @@ import {
     PeriodeDto_fpoversikt,
     Rolle_fpoversikt,
     Tidsperiode,
-    UttakPeriode_fpoversikt,
     isAdoptertAnnetBarn,
 } from '@navikt/fp-types';
 import { Uttaksdagen, getFamiliehendelsedato } from '@navikt/fp-utils';
@@ -193,26 +192,23 @@ const fordelPerioderEtterSøkerrolle = (
  * slik at ein kan unngå å spørje brukaren om ein startdato som uansett ikkje
  * vil bli brukt.
  */
-// Sjekkar berre om annan part har nokon periodar i det heile, uavhengig av kva periodemodell
-// dei kjem i (gamal flat form frå /annenPart eller ny PeriodeDto_fpoversikt), difor er
-// parametertypen forma-agnostisk.
-export const kanGenerereUttaksplanForslag = (annenPartsPerioder?: unknown[]): boolean =>
-    annenPartsPerioder === undefined || annenPartsPerioder.length === 0;
+export const kanGenerereUttaksplanForslag = (tidligerePerioder?: PeriodeDto_fpoversikt[]): boolean =>
+    tidligerePerioder === undefined || tidligerePerioder.length === 0;
 
 export const useUttaksplanForslag = (
     valgtStønadskvote?: KontoBeregningDto,
-    annenPartsPerioder?: UttakPeriode_fpoversikt[],
-    annenPartsPerioderLaster = false,
+    tidligerePerioder?: PeriodeDto_fpoversikt[],
+    tidligerePerioderLaster = false,
 ): PeriodeDto_fpoversikt[] => {
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
     if (
-        annenPartsPerioderLaster ||
+        tidligerePerioderLaster ||
         !valgtStønadskvote ||
         !fordeling ||
-        !kanGenerereUttaksplanForslag(annenPartsPerioder)
+        !kanGenerereUttaksplanForslag(tidligerePerioder)
     ) {
         return [];
     }

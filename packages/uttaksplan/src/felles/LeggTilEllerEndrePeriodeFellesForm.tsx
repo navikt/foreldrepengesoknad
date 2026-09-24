@@ -989,7 +989,7 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
     );
 
     // Skjemaet handterer kun éin sammanslått periode om gongen (éin PeriodeDto, ev. med
-    // både ein søker- og ein annenPart-part ved samtidig uttak) – fleire tidsintervall samtidig
+    // uttak for både søkjar og annan part ved samtidig uttak) – fleire tidsintervall samtidig
     // (t.d. periode som overlappar med to naboperiodar) er ikkje eit understøtta case her.
     if (eksisterendePerioder.length !== 1) {
         return undefined;
@@ -1001,14 +1001,14 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
         return undefined;
     }
 
-    if (!!periode.annenPartEøs || !periode.søker) {
-        // EØS-periodar og reine opphaldsperiodar (kun annenPart) kan ikkje redigerast i dette
-        // skjemaet – redigering krev at søkjar sjølv har eit uttak å ta utgangspunkt i.
+    const hovedPart = periode.søker ?? periode.annenPart;
+    if (periode.annenPartEøs || !hovedPart) {
         return undefined;
     }
+    const andrePart = periode.søker ? periode.annenPart : undefined;
 
-    const morsPart = periode.søker.forelder === 'MOR' ? periode.søker : periode.annenPart;
-    const farMedmorPart = periode.søker.forelder === 'FAR_MEDMOR' ? periode.søker : periode.annenPart;
+    const morsPart = hovedPart.forelder === 'MOR' ? hovedPart : andrePart;
+    const farMedmorPart = hovedPart.forelder === 'FAR_MEDMOR' ? hovedPart : andrePart;
 
     if (morsPart?.utsettelseÅrsak === 'FERIE' || farMedmorPart?.utsettelseÅrsak === 'FERIE') {
         return undefined;
@@ -1038,13 +1038,12 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
             stillingsprosentMor: morsPart.gradering?.arbeidstidprosent.toString(),
             stillingsprosentFarMedmor: farMedmorPart.gradering?.arbeidstidprosent.toString(),
             morsAktivitet: morsPart.morsAktivitet,
-            hvorSkalDuJobbe:
-                søkersPart.gradering?.aktivitet?.arbeidsgiver?.id ?? søkersPart.gradering?.aktivitet?.type,
+            hvorSkalDuJobbe: søkersPart.gradering?.aktivitet?.arbeidsgiver?.id ?? søkersPart.gradering?.aktivitet?.type,
             ønskerFlerbarnsdager: morsPart.flerbarnsdager || farMedmorPart.flerbarnsdager,
         };
     }
 
-    const enePart = periode.søker;
+    const enePart = hovedPart;
 
     if (enePart.forelder === 'FAR_MEDMOR') {
         return {

@@ -30,7 +30,7 @@ const getÅrsakTekst = (intl: IntlShape, periode: UttakDto_fpoversikt) => {
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.ARBEID' });
         }
         case 'FERIE': {
-            return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.LOVBESTEMT_FERIE' });
+            return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.FERIE' });
         }
         case 'SØKER_SYKDOM': {
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.SØKER_SYKDOM' });

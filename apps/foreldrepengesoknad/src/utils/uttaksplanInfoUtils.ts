@@ -36,7 +36,7 @@ export const getUttaksprosentFromStillingsprosent = (
     return undefined;
 };
 
-export const isUttaksperiodeFarMedmorMedValgForUttakRundtFødsel = (periode: PeriodeDto_fpoversikt): boolean => {
+const isUttaksperiodeFarMedmorMedValgForUttakRundtFødsel = (periode: PeriodeDto_fpoversikt): boolean => {
     const søker = periode.søker;
     return (
         !!søker &&

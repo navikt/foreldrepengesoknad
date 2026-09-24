@@ -94,6 +94,19 @@ export const getSaker = () => {
     }
 };
 
+export const getUttaksplan = () => {
+    const fileName = getFilePath('uttaksplan.json');
+    if (!fs.existsSync(fileName)) {
+        return null;
+    }
+    try {
+        const data = fs.readFileSync(fileName, 'utf8');
+        return data && data !== '' ? JSON.parse(data) : null;
+    } catch {
+        return null;
+    }
+};
+
 export const getAnnenPartVedtak = () => {
     const fileName = getFilePath('annenPartVedtak.json');
     if (!fs.existsSync(fileName)) {
@@ -155,6 +168,15 @@ router.get('/fpoversikt/api/saker', (_req, res) => {
 
 router.post('/fpoversikt/api/annenPart', (_req, res) => {
     res.send(getAnnenPartVedtak());
+});
+
+router.post('/fpoversikt/api/uttaksplan', (_req, res) => {
+    const uttaksplan = getUttaksplan();
+    if (uttaksplan === null) {
+        res.sendStatus(204);
+        return;
+    }
+    res.send(uttaksplan);
 });
 
 router.post('/fpgrunndata/api/konto', async (req, res) => {

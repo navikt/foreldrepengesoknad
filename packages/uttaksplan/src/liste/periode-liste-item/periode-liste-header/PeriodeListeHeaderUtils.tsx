@@ -11,7 +11,7 @@ import {
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-import { BrukerRolleSak_fpoversikt, Familiesituasjon, NavnPåForeldre } from '@navikt/fp-types';
+import { Familiesituasjon, NavnPåForeldre } from '@navikt/fp-types';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { Uttaksplanperiode, erPeriodeDto } from '../../../types/UttaksplanPeriode';
@@ -32,7 +32,6 @@ import {
 
 export const finnBakgrunnsfarge = (
     uttaksplanperioder: Uttaksplanperiode[],
-    søker: BrukerRolleSak_fpoversikt,
     harMorsAktivitetIkkeErValgt: boolean,
     erFamiliehendelse?: boolean,
 ) => {
@@ -68,18 +67,14 @@ export const finnBakgrunnsfarge = (
         return 'bg-ax-bg-default shadow-[inset_0_0_0_2px_var(--ax-accent-500)]';
     }
 
-    if (erUttaksplanperiodeErForelderMor(uttaksplanperioder, søker)) {
+    if (erUttaksplanperiodeErForelderMor(uttaksplanperioder)) {
         return 'bg-ax-accent-100';
     }
 
     return 'bg-ax-success-200';
 };
 
-const getIkonFarge = (
-    uttaksplanperiode: Uttaksplanperiode[],
-    søker: BrukerRolleSak_fpoversikt,
-    erFamiliehendelse?: boolean,
-) => {
+const getIkonFarge = (uttaksplanperiode: Uttaksplanperiode[], erFamiliehendelse?: boolean) => {
     if (erFamiliehendelse) {
         return 'text-ax-danger-600';
     }
@@ -96,7 +91,7 @@ const getIkonFarge = (
         return 'text-ax-accent-500';
     }
 
-    if (erUttaksplanperiodeErForelderMor(uttaksplanperiode, søker)) {
+    if (erUttaksplanperiodeErForelderMor(uttaksplanperiode)) {
         return 'text-ax-accent-500';
     }
 
@@ -111,10 +106,9 @@ export const getTekst = (
     familiesituasjon: Familiesituasjon,
     erDeltUttak: boolean,
 ) => {
-    const søker: BrukerRolleSak_fpoversikt = erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
     const navnPåAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     const navnPåForelder = erFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
-    const forelder = getUttaksplanperiodeForelder(uttaksplanperioder, søker);
+    const forelder = getUttaksplanperiodeForelder(uttaksplanperioder);
     const erEgenPeriode = erFarEllerMedmor ? forelder === 'FAR_MEDMOR' : forelder === 'MOR';
 
     if (erUttaksplanperiodeEøs(uttaksplanperioder)) {
@@ -182,9 +176,7 @@ export const getTekst = (
             case 'FRI': {
                 const periode = uttaksplanperioder.at(0);
                 const morsAktivitet =
-                    periode && erPeriodeDto(periode)
-                        ? (periode.søker ?? periode.annenPart)?.morsAktivitet
-                        : undefined;
+                    periode && erPeriodeDto(periode) ? (periode.søker ?? periode.annenPart)?.morsAktivitet : undefined;
                 if (morsAktivitet) {
                     return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.pause' });
                 }
@@ -217,15 +209,11 @@ export const getTekst = (
     );
 };
 
-export const getIkon = (
-    uttaksplanperioder: Uttaksplanperiode[],
-    familiehendelsedato: string,
-    søker: BrukerRolleSak_fpoversikt,
-) => {
+export const getIkon = (uttaksplanperioder: Uttaksplanperiode[], familiehendelsedato: string) => {
     const periodeFørTermindato = dayjs(familiehendelsedato).isAfter(getSisteUttaksplanperiodeTom(uttaksplanperioder));
 
     const erFamiliehendelse = erUttaksplanperiodeFamiliehendelseDato(uttaksplanperioder);
-    const ikonfarge = getIkonFarge(uttaksplanperioder, søker, erFamiliehendelse);
+    const ikonfarge = getIkonFarge(uttaksplanperioder, erFamiliehendelse);
 
     if (erFamiliehendelse) {
         return <HeartFillIcon className={ikonfarge} width={24} height={24} />;
@@ -263,7 +251,7 @@ export const getIkon = (
     return <BabyWrappedFillIcon className={ikonfarge} width={24} height={24} />;
 };
 
-export const getBorderFarge = (uttaksplanperioder: Uttaksplanperiode[], søker: BrukerRolleSak_fpoversikt) => {
+export const getBorderFarge = (uttaksplanperioder: Uttaksplanperiode[]) => {
     if (erUttaksplanperiodeEøs(uttaksplanperioder)) {
         return 'border-ax-success-400';
     }
@@ -292,7 +280,7 @@ export const getBorderFarge = (uttaksplanperioder: Uttaksplanperiode[], søker: 
         return 'border-ax-accent-500';
     }
 
-    if (erUttaksplanperiodeErForelderMor(uttaksplanperioder, søker)) {
+    if (erUttaksplanperiodeErForelderMor(uttaksplanperioder)) {
         return 'border-ax-accent-100';
     }
 

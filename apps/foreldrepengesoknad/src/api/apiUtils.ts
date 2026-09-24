@@ -16,15 +16,15 @@ import {
     ForeldrepengesøknadDto,
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
+    KontoType,
     Målform,
-    no_nav_foreldrepenger_kontrakter_felles_kodeverk_KontoType,
     Oppholdsårsak,
     PeriodeDto_fpoversikt,
     SøkerDto,
     Søkerrolle,
-    Uttaksplanperiode,
-    UtsettelseÅrsak_fpoversikt,
     UtsettelsesÅrsak,
+    UtsettelseÅrsak_fpoversikt,
+    Uttaksplanperiode,
     isAdoptertBarn,
     isAdoptertStebarn,
     isFødtBarn,
@@ -202,7 +202,7 @@ export const mapTilSøknadDto = (
 
     const vedlegg = hentData(ContextDataType.VEDLEGG);
 
-    const søkersPerioder = filtrerUtAnnenPartsPerioder(uttaksplan);
+    const søkersPerioder = uttaksplan.filter((periode) => periode.søker !== undefined);
 
     return {
         søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
@@ -325,12 +325,10 @@ const filtrerUtAvslåttePerioder = (perioder: PeriodeDto_fpoversikt[]): PeriodeD
     return perioder.filter((periode) => periode.søker?.resultat?.innvilget !== false);
 };
 
-// Held på søkjaren sine eigne periodar OG oppholdsperiodar i søkjaren sin plan (der annan part tek ut
-// og søkjar dermed har eit "hol"), sidan begge desse historisk var del av søkjaren sin eigen tidslinje.
+// Ved endringssøknad blir annan part sitt uttak sendt som opphald, slik opphaldsradene i søkjaren sitt
+// eige vedtak vart sende før. Førstegongssøknaden sender berre søkjaren sine eigne periodar.
 const filtrerUtAnnenPartsPerioder = (uttaksplan: PeriodeDto_fpoversikt[]): PeriodeDto_fpoversikt[] => {
-    return uttaksplan.filter(
-        (periode) => periode.søker !== undefined || Uttaksperioden.erOppholdsperiode(periode),
-    );
+    return uttaksplan.filter((periode) => periode.søker !== undefined || Uttaksperioden.erOppholdsperiode(periode));
 };
 
 const midlertidigMappingAvUttaksplan = (
@@ -409,9 +407,7 @@ const midlertidigMappingAvUttaksplan = (
 
 // Opphaldsårsaka kom tidlegare direkte frå backend som eit eige felt. No er ho strukturell:
 // årsaka til at søkjar har eit hol i planen sin er kontotypen til annan part sitt uttak der.
-const kontoTypeTilOppholdsårsak = (
-    kontoType: no_nav_foreldrepenger_kontrakter_felles_kodeverk_KontoType | undefined,
-): Oppholdsårsak => {
+const kontoTypeTilOppholdsårsak = (kontoType: KontoType | undefined): Oppholdsårsak => {
     switch (kontoType) {
         case 'MØDREKVOTE': {
             return 'UTTAK_MØDREKVOTE_ANNEN_FORELDER';

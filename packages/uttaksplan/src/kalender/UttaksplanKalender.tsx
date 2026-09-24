@@ -107,9 +107,9 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
     );
 
     const setValgtLegend = (color: CalendarPeriodColor) => {
-        const perioder = perioderForKalendervisning.filter((p) => p.color === color);
+        const perioderMedFarge = perioderForKalendervisning.filter((p) => p.color === color);
         setRedigeringAktivOgValgtePerioder(
-            perioder.map((periode) => ({
+            perioderMedFarge.map((periode) => ({
                 color: 'DARKBLUE',
                 fom: periode?.fom,
                 tom: periode?.tom,

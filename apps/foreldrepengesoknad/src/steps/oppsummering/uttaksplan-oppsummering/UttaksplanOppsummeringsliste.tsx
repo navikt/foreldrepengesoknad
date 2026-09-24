@@ -108,8 +108,8 @@ const UttaksplanListe = ({
     const erAleneOmOmsorg = erAnnenForelderOppgitt ? annenForelder?.erAleneOmOmsorg : false;
     const termindato = getTermindato(barn);
 
-    // Sida denne lista viser periodane til: søkjaren sin eigen (.søker) eller annan part sin (.annenPart).
-    const finnSide = (periode: PeriodeDto_fpoversikt): UttakDto_fpoversikt | undefined =>
+    // Parten denne lista viser periodane til: søkjaren sin eigen (.søker) eller annan part sin (.annenPart).
+    const finnPart = (periode: PeriodeDto_fpoversikt): UttakDto_fpoversikt | undefined =>
         erSøker ? periode.søker : periode.annenPart;
 
     const getStønadskvoteNavnFraKvote = (konto: KontoType | undefined, morsAktivitet?: MorsAktivitet) => {
@@ -127,9 +127,9 @@ const UttaksplanListe = ({
         );
     };
 
-    const getUttaksperiodeNavn = (periode: PeriodeDto_fpoversikt, side: UttakDto_fpoversikt | undefined) => {
-        const tittel = getStønadskvoteNavnFraKvote(side?.kontoType, side?.morsAktivitet);
-        const periodeForFødselssjekk: PeriodeDto_fpoversikt = { ...periode, søker: side };
+    const getUttaksperiodeNavn = (periode: PeriodeDto_fpoversikt, part: UttakDto_fpoversikt | undefined) => {
+        const tittel = getStønadskvoteNavnFraKvote(part?.kontoType, part?.morsAktivitet);
+        const periodeForFødselssjekk: PeriodeDto_fpoversikt = { ...periode, søker: part };
         return søkersituasjon.situasjon === 'fødsel' &&
             isUttaksperiodeFarMedmorPgaFødsel(periodeForFødselssjekk, familiehendelsesdato, termindato)
             ? tittel + intl.formatMessage({ id: 'rundtFødsel' })
@@ -176,14 +176,14 @@ const UttaksplanListe = ({
                     )}
                     <FormSummary.Answers>
                         {uttaksplan.map((periode) => {
-                            const side = finnSide(periode);
+                            const part = finnPart(periode);
 
                             // Ein avslått periode som framleis trekkjer dagar er ikkje eit uttak, men
                             // dagar brukaren mister. Han skal difor merkast «Trekte dager», slik han
                             // òg blir i listevisninga og kalenderen, ikkje med namnet på stønadskontoen.
-                            if (erAvslåttPeriodeSomTrekkerDager(side)) {
+                            if (erAvslåttPeriodeSomTrekkerDager(part)) {
                                 return (
-                                    <FormSummary.Answer key={lagKeyFraPeriode(periode, side)}>
+                                    <FormSummary.Answer key={lagKeyFraPeriode(periode, part)}>
                                         <FormSummary.Label>
                                             {formatTidsperiode(periode.fom, periode.tom)}
                                         </FormSummary.Label>
@@ -193,15 +193,15 @@ const UttaksplanListe = ({
                                     </FormSummary.Answer>
                                 );
                             }
-                            if (side && Uttaksperioden.erUttaksperiode(side)) {
+                            if (part && Uttaksperioden.erUttaksperiode(part)) {
                                 const tidsperiode = formatTidsperiode(periode.fom, periode.tom);
                                 return (
-                                    <FormSummary.Answer key={side.kontoType + tidsperiode}>
+                                    <FormSummary.Answer key={part.kontoType + tidsperiode}>
                                         <FormSummary.Label>{tidsperiode}</FormSummary.Label>
                                         <FormSummary.Value>
-                                            {getUttaksperiodeNavn(periode, side)}
+                                            {getUttaksperiodeNavn(periode, part)}
                                             <Uttaksperiodedetaljer
-                                                periode={side}
+                                                periode={part}
                                                 registrerteArbeidsforhold={registrerteArbeidsforhold}
                                                 annenForelder={annenForelder}
                                                 barn={barn}
@@ -211,32 +211,32 @@ const UttaksplanListe = ({
                                     </FormSummary.Answer>
                                 );
                             }
-                            if (side?.utsettelseÅrsak !== undefined) {
+                            if (part?.utsettelseÅrsak !== undefined) {
                                 return (
-                                    <FormSummary.Answer key={lagKeyFraPeriode(periode, side)}>
+                                    <FormSummary.Answer key={lagKeyFraPeriode(periode, part)}>
                                         <FormSummary.Label>
                                             {formatTidsperiode(periode.fom, periode.tom)}
                                         </FormSummary.Label>
                                         <FormSummary.Value>
                                             <FormattedMessage id="oppsummering.utsettelse.pga" />
-                                            <Utsettelsesperiodedetaljer periode={side} />
+                                            <Utsettelsesperiodedetaljer periode={part} />
                                         </FormSummary.Value>
                                     </FormSummary.Answer>
                                 );
                             }
-                            if (side?.overføringÅrsak !== undefined) {
+                            if (part?.overføringÅrsak !== undefined) {
                                 return (
-                                    <FormSummary.Answer key={lagKeyFraPeriode(periode, side)}>
+                                    <FormSummary.Answer key={lagKeyFraPeriode(periode, part)}>
                                         <FormSummary.Label>
                                             {formatTidsperiode(periode.fom, periode.tom)}
                                         </FormSummary.Label>
                                         <FormSummary.Value>
                                             <FormattedMessage
                                                 id="oppsummering.overtakelse.pga"
-                                                values={{ kvote: getStønadskvoteNavnFraKvote(side.kontoType) }}
+                                                values={{ kvote: getStønadskvoteNavnFraKvote(part.kontoType) }}
                                             />
                                             <Overføringsperiodedetaljer
-                                                periode={side}
+                                                periode={part}
                                                 navnPåForeldre={navnPåForeldre}
                                             />
                                         </FormSummary.Value>
@@ -245,7 +245,7 @@ const UttaksplanListe = ({
                             }
                             if (erSøker && Uttaksperioden.erOppholdsperiode(periode)) {
                                 return (
-                                    <FormSummary.Answer key={lagKeyFraPeriode(periode, side)}>
+                                    <FormSummary.Answer key={lagKeyFraPeriode(periode, part)}>
                                         <FormSummary.Label>
                                             {formatTidsperiode(periode.fom, periode.tom)}
                                         </FormSummary.Label>
@@ -253,7 +253,7 @@ const UttaksplanListe = ({
                                             {getPeriodeTittel(
                                                 intl,
                                                 periode,
-                                                side,
+                                                part,
                                                 navnPåForeldre,
                                                 familiehendelsesdato,
                                                 termindato,
@@ -273,21 +273,21 @@ const UttaksplanListe = ({
     );
 };
 
-const lagKeyFraPeriode = (periode: PeriodeDto_fpoversikt, side: UttakDto_fpoversikt | undefined) =>
-    (side?.kontoType ?? 'opphold') + periode.fom + periode.tom;
+const lagKeyFraPeriode = (periode: PeriodeDto_fpoversikt, part: UttakDto_fpoversikt | undefined) =>
+    (part?.kontoType ?? 'opphold') + periode.fom + periode.tom;
 
 // Speglar erAlleUttaksplanperioderAvslått i listevisninga: pleiepenger-fratrekk er ikkje trekte
 // dagar, men prematurveker, og har si eiga handsaming.
-const erAvslåttPeriodeSomTrekkerDager = (side: UttakDto_fpoversikt | undefined): boolean =>
+const erAvslåttPeriodeSomTrekkerDager = (part: UttakDto_fpoversikt | undefined): boolean =>
     !!(
-        side?.resultat?.innvilget === false &&
-        side.resultat.trekkerDager &&
-        side.resultat.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER'
+        part?.resultat?.innvilget === false &&
+        part.resultat.trekkerDager &&
+        part.resultat.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER'
     );
 
 // TODO (TOR) Denne fjerninga av avslåtte periodar uten trekkdagar bør ligga i backend
 const filtrerBortPerioderUtenTrekkdager = (perioder: PeriodeDto_fpoversikt[], erSøkerListe: boolean) =>
     perioder.filter((periode) => {
-        const side = erSøkerListe ? periode.søker : periode.annenPart;
-        return side === undefined || side.resultat?.innvilget !== false || side.resultat.trekkerDager;
+        const part = erSøkerListe ? periode.søker : periode.annenPart;
+        return part === undefined || part.resultat?.innvilget !== false || part.resultat.trekkerDager;
     });
