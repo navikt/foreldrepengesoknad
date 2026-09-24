@@ -36,13 +36,16 @@ const startServer = async () => {
 
     const htmlWithDecoratorInjected = await injectDecorator(indexHtmlPath);
 
-    const renderedHtml = htmlWithDecoratorInjected.replaceAll('</link>', '').replaceAll(
-        '{{{APP_SETTINGS}}}',
-        JSON.stringify({
-            INNSYN: `${process.env.INNSYN}`,
-            LOG_VALIDATION: `${process.env.LOG_VALIDATION}`,
-        }),
-    );
+    const renderedHtml = htmlWithDecoratorInjected
+        .replaceAll('</link>', '')
+        .replaceAll('{{{NAIS_META_TAGS}}}', '')
+        .replaceAll(
+            '{{{APP_SETTINGS}}}',
+            JSON.stringify({
+                INNSYN: `${process.env.INNSYN}`,
+                LOG_VALIDATION: `${process.env.LOG_VALIDATION}`,
+            }),
+        );
 
     server.use(
         '/fpoversikt/api',

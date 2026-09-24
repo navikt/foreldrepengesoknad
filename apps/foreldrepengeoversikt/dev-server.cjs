@@ -35,12 +35,15 @@ const startServer = async () => {
 
     const htmlWithDecoratorInjected = await injectDecorator(indexHtmlPath);
 
-    const renderedHtml = htmlWithDecoratorInjected.replaceAll('</link>', '').replaceAll(
-        '{{{APP_SETTINGS}}}',
-        JSON.stringify({
-            APP_VERSION: 'Lokal utvikling',
-        }),
-    );
+    const renderedHtml = htmlWithDecoratorInjected
+        .replaceAll('</link>', '')
+        .replaceAll('{{{NAIS_META_TAGS}}}', '')
+        .replaceAll(
+            '{{{APP_SETTINGS}}}',
+            JSON.stringify({
+                APP_VERSION: 'Lokal utvikling',
+            }),
+        );
 
     server.use(
         '/fpoversikt/api',
