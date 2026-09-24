@@ -142,6 +142,7 @@
     "kvote.varighet.forMyeMødrekvote": "{varighet} of Mother's quota",
     "kvote.varighet.forMyeFedrekvote": "{varighet} of Father's quota",
     "kvote.varighet.erLagtTil": "{varighet} has been added",
+    "kvote.varighet.erTrekteDager": "{varighet} deducted",
     "leggTilPeriodePanel.hvaVilDuGjøre.påkrevd": "You must choose what you want to do",
     "leggTilPeriodePanel.stillingsprosent.påkrevd": "You must specify what percentage you will be working",
     "leggTilPeriodePanel.stillingsprosent.måVæreEtTall": "The percentage must be a number",

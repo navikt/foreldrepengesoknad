@@ -23,7 +23,7 @@ import {
     summerDagerIPerioder,
     tellDagerIUttaksPeriodene,
 } from './utils/kvoteBeregning';
-import { useOverførteDagerFraAktivitetsfriKvote } from './utils/kvoteOppsummeringUtils';
+import { useKvoteFordeling } from './utils/kvoteOppsummeringUtils';
 
 interface Props {
     visStatusIkoner: boolean;
@@ -433,20 +433,17 @@ const ForeldrepengerFørFødselKvoter = ({ visStatusIkoner }: { visStatusIkoner:
 };
 
 const KunEnHarForeldrepengeKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
-    const { valgtStønadskvote } = useUttaksplanData();
+    const fordelinger = useKvoteFordeling();
+    const fordeling = fordelinger.find((f) => f.konto.konto === 'FORELDREPENGER');
 
-    const filtrertePerioder = useFiltrertePerioder();
-    const overførteDager = useOverførteDagerFraAktivitetsfriKvote();
-
-    const råKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FORELDREPENGER');
-    // Dagar som er omfordelte til den aktivitetsfrie kvoten er ikkje lenger
-    // tilgjengelege her, jf. finnOverførteDagerFraAktivitetsfriKvote.
-    const relevantKonto = råKonto ? { ...råKonto, dager: råKonto.dager - overførteDager } : undefined;
-    const relevantePerioder = filtrertePerioder.filter(
-        (p) => getUttaksKontoType(p, valgtStønadskvote.kontoer) === 'FORELDREPENGER',
+    return (
+        <StandardVisning
+            perioder={[]}
+            konto={fordeling?.konto}
+            fordeling={fordeling}
+            visStatusIkoner={visStatusIkoner}
+        />
     );
-
-    return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} visStatusIkoner={visStatusIkoner} />;
 };
 
 const FedreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
@@ -465,20 +462,17 @@ const FedreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
 };
 
 const AktivitetsfriKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
-    const { valgtStønadskvote } = useUttaksplanData();
+    const fordelinger = useKvoteFordeling();
+    const fordeling = fordelinger.find((f) => f.konto.konto === 'AKTIVITETSFRI_KVOTE');
 
-    const overførteDager = useOverførteDagerFraAktivitetsfriKvote();
-
-    const råKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
-    const relevantKonto = råKonto ? { ...råKonto, dager: råKonto.dager + overførteDager } : undefined;
-
-    const filtrertePerioder = useFiltrertePerioder();
-
-    const relevantePerioder = filtrertePerioder.filter(
-        (p) => getUttaksKontoType(p, valgtStønadskvote.kontoer) === 'AKTIVITETSFRI_KVOTE',
+    return (
+        <StandardVisning
+            perioder={[]}
+            konto={fordeling?.konto}
+            fordeling={fordeling}
+            visStatusIkoner={visStatusIkoner}
+        />
     );
-
-    return <StandardVisning perioder={relevantePerioder} konto={relevantKonto} visStatusIkoner={visStatusIkoner} />;
 };
 
 const MødreKvoter = ({ visStatusIkoner }: { visStatusIkoner: boolean }) => {
@@ -626,10 +620,12 @@ const StandardVisning = ({
     konto,
     perioder,
     visStatusIkoner,
+    fordeling,
 }: {
     konto?: KontoDto;
     perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     visStatusIkoner: boolean;
+    fordeling?: { brukteDager: number; trekteDager: number };
 }) => {
     const intl = useIntl();
     const {
@@ -647,13 +643,19 @@ const StandardVisning = ({
     // Dersom barnet er født vil ubrukte dager på mor sin "3 uker før fødsel" konto utløpe og ikke kunne brukes.
     const ubrukteDagerErUtløpt = konto.konto === 'FORELDREPENGER_FØR_FØDSEL' && familiesituasjon === 'fødsel';
 
-    const dagerBrukt = summerDagerIPerioder(perioder, [konto], familiesituasjon, familiehendelsedato);
+    const dagerBrukt =
+        fordeling?.brukteDager ?? summerDagerIPerioder(perioder, [konto], familiesituasjon, familiehendelsedato);
+    const trekteDager = fordeling?.trekteDager ?? 0;
+    const ikkeTrekteDagerBrukt = dagerBrukt - trekteDager;
     const ubrukteDager = konto.dager - dagerBrukt;
     const overtrukketDager = ubrukteDager * -1;
-    // konto.dager kan vere 0 når heile kvoten er omfordelt. Då er 0 dagar brukt av 0
-    // tilgjengelege, og vi viser 0 % i staden for NaN.
-    const prosentBruktAvkvote = konto.dager > 0 ? Math.floor((dagerBrukt / konto.dager) * 100) : 0;
-    const prosentOvertrukketKvote = Math.floor((konto.dager / dagerBrukt) * 100);
+    const erOvertrukket = dagerBrukt > konto.dager;
+    const visGjenstårSelvOmNull = trekteDager > 0 && ubrukteDager === 0;
+    const dagerIBar = Math.max(konto.dager, dagerBrukt);
+    const prosentBrukt = dagerIBar > 0 ? Math.floor((Math.min(dagerBrukt, konto.dager) / dagerIBar) * 100) : 0;
+    const prosentTrekt = dagerIBar > 0 ? Math.floor((Math.min(trekteDager, konto.dager) / dagerIBar) * 100) : 0;
+    const prosentFylt = prosentBrukt - prosentTrekt;
+    const prosentResten = 100 - prosentTrekt - prosentFylt;
 
     const finnIkon = () => {
         if (overtrukketDager > 0) {
@@ -682,46 +684,43 @@ const StandardVisning = ({
                 </BodyShort>
             </HStack>
             <VStack gap="space-4" className="ml-4">
-                {overtrukketDager <= 0 ? (
-                    <FordelingsBar
-                        fordelinger={[
-                            {
-                                kontoType: konto.konto,
-                                prosent: prosentBruktAvkvote,
-                            },
-                            {
-                                kontoType: konto.konto,
-                                prosent: 100 - prosentBruktAvkvote,
-                                erFyllt: false,
-                                erUtløpt: ubrukteDagerErUtløpt,
-                            },
-                        ]}
-                    />
-                ) : (
-                    <FordelingsBar
-                        fordelinger={[
-                            {
-                                kontoType: konto.konto,
-                                prosent: prosentOvertrukketKvote,
-                            },
-                            {
-                                kontoType: konto.konto,
-                                prosent: 100 - prosentOvertrukketKvote,
-                                erOvertrukket: true,
-                            },
-                        ]}
-                    />
-                )}
+                <FordelingsBar
+                    fordelinger={[
+                        ...(prosentTrekt > 0 ? [{ kontoType: konto.konto, prosent: prosentTrekt, erTrekt: true }] : []),
+                        {
+                            kontoType: konto.konto,
+                            prosent: prosentFylt,
+                        },
+                        erOvertrukket
+                            ? {
+                                  kontoType: konto.konto,
+                                  prosent: prosentResten,
+                                  erOvertrukket: true,
+                              }
+                            : {
+                                  kontoType: konto.konto,
+                                  prosent: prosentResten,
+                                  erFyllt: false,
+                                  erUtløpt: ubrukteDagerErUtløpt,
+                              },
+                    ]}
+                />
                 <BodyShort>
                     {[
+                        trekteDager > 0
+                            ? intl.formatMessage(
+                                  { id: 'kvote.varighet.erTrekteDager' },
+                                  { varighet: getVarighetString(trekteDager, intl) },
+                              )
+                            : '',
                         intl.formatMessage(
                             { id: 'kvote.varighet.erLagtTil' },
-                            { varighet: getVarighetString(dagerBrukt, intl) },
+                            { varighet: getVarighetString(ikkeTrekteDagerBrukt, intl) },
                         ),
                         ubrukteDager > 0 && ubrukteDagerErUtløpt
                             ? `${getVarighetString(ubrukteDager, intl)} har falt bort`
                             : '',
-                        ubrukteDager > 0 && !ubrukteDagerErUtløpt
+                        (ubrukteDager > 0 || visGjenstårSelvOmNull) && !ubrukteDagerErUtløpt
                             ? intl.formatMessage(
                                   { id: 'kvote.varighet.gjenstår' },
                                   { varighet: getVarighetString(ubrukteDager, intl) },
@@ -816,6 +815,7 @@ type FordelingSegmentProps = {
     erFyllt?: boolean;
     erOvertrukket?: boolean;
     erUtløpt?: boolean;
+    erTrekt?: boolean;
 };
 
 const FordelingSegment = ({
@@ -824,11 +824,20 @@ const FordelingSegment = ({
     erFyllt = true,
     erOvertrukket = false,
     erUtløpt,
+    erTrekt = false,
 }: FordelingSegmentProps) => {
     const { foreldreInfo } = useUttaksplanData();
 
     if (prosent <= 0) {
         return null;
+    }
+
+    if (erTrekt) {
+        return (
+            <div
+                className={`bg-ax-neutral-400 border-ax-neutral-400 h-4 border-2 first:rounded-l-lg last:rounded-r-lg`}
+            />
+        );
     }
 
     if (erOvertrukket) {

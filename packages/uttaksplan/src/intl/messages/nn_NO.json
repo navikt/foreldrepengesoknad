@@ -142,6 +142,7 @@
     "kvote.varighet.gjenstår": "{varighet} gjenstår",
     "kvote.varighet.overtrukket": "{varighet} for mykje",
     "kvote.varighet.erLagtTil": "{varighet} er lagt til",
+    "kvote.varighet.erTrekteDager": "{varighet} er trekte dagar",
     "leggTilPeriodePanel.hvaVilDuGjøre.påkrevd": "Du må velje kva du vil gjere",
     "leggTilPeriodePanel.stillingsprosent.påkrevd": "Du må oppgi stillingsprosenten du skal jobbe",
     "leggTilPeriodePanel.stillingsprosent.måVæreEtTall": "Stillingsprosenten må vere eit tal",

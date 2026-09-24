@@ -12,12 +12,18 @@ import {
 } from '@navikt/fp-types';
 
 import { erEøsUttakPeriode, erVanligUttakPeriode } from '../types/UttaksplanPeriode';
-import { finnAntallTidelerÅTrekke } from './periodeUtils';
+import { erAvslåttPeriode, finnAntallTidelerÅTrekke } from './periodeUtils';
 
 export type DinPlanKvoteRad = {
     kontoType: KontoTypeUttak;
     bruktDager: number;
     tilgjengeligDager: number;
+};
+
+export type KvoteFordeling = {
+    konto: KontoDto;
+    brukteDager: number;
+    trekteDager: number;
 };
 
 // Rekkefølga radene skal visast i «Du har planlagt»-lista i oppsummeringssteget.
@@ -52,24 +58,18 @@ export const finnDinPlanKvoteRader = (
             (periode): periode is UttakPeriode_fpoversikt => 'forelder' in periode && periode.forelder === søkerRolle,
         )
         .filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
+    const kvotefordeling = beregnKvoteFordeling(søkersPerioder, kontoer, familiesituasjon, familiehendelsedato);
 
     return DIN_PLAN_KVOTE_REKKEFØLGE.map((kontoType): DinPlanKvoteRad | undefined => {
-        const konto = kontoer.find((k) => k.konto === kontoType);
-        if (!konto || konto.dager <= 0) {
-            return undefined;
-        }
-
-        const relevantePerioder = søkersPerioder.filter((p) => getUttaksKontoType(p, kontoer) === kontoType);
-        const bruktDager = summerDagerIPerioder(relevantePerioder, [konto], familiesituasjon, familiehendelsedato);
-
-        if (bruktDager <= 0) {
+        const fordeling = kvotefordeling.find((k) => k.konto.konto === kontoType);
+        if (!fordeling || fordeling.konto.dager <= 0 || fordeling.brukteDager <= 0) {
             return undefined;
         }
 
         return {
             kontoType,
-            bruktDager,
-            tilgjengeligDager: konto.dager,
+            bruktDager: fordeling.brukteDager,
+            tilgjengeligDager: fordeling.konto.dager,
         };
     }).filter((rad): rad is DinPlanKvoteRad => rad !== undefined);
 };
@@ -80,50 +80,24 @@ export const finnAntallDagerDerKunEnHarForeldrepenger = (
     valgtStønadskvote: KontoBeregningDto,
     familiehendelsedato: string,
 ) => {
-    const kontoer = valgtStønadskvote.kontoer;
-    const overførteDager = finnOverførteDagerFraAktivitetsfriKvote(
-        uttakPerioder,
-        kontoer,
-        familiesituasjon,
-        familiehendelsedato,
-    );
+    const kvoter = beregnKvoteFordeling(uttakPerioder, valgtStønadskvote.kontoer, familiesituasjon, familiehendelsedato)
+        .filter(({ konto }) =>
+            ['FORELDREPENGER_FØR_FØDSEL', 'FORELDREPENGER', 'AKTIVITETSFRI_KVOTE'].includes(konto.konto),
+        )
+        .map(({ konto, brukteDager }) => {
+            const ubrukteDagerSkalTrekkes =
+                konto.konto === 'FORELDREPENGER_FØR_FØDSEL' && familiesituasjon === 'fødsel';
+            const ubrukteDager = konto.dager - brukteDager;
+            return {
+                brukteDager,
+                ubrukteDager: ubrukteDagerSkalTrekkes ? 0 : Math.max(0, ubrukteDager),
+                overtrukketDager: Math.max(0, -ubrukteDager),
+            };
+        });
 
-    const kvoter = ['FORELDREPENGER_FØR_FØDSEL', 'FORELDREPENGER', 'AKTIVITETSFRI_KVOTE'].map((kontoType) => {
-        const aktuellKonto = kontoer.find((k) => k.konto === kontoType);
-        if (!aktuellKonto) {
-            return null;
-        }
-
-        const ubrukteDagerSkalTrekkes = kontoType === 'FORELDREPENGER_FØR_FØDSEL' && familiesituasjon === 'fødsel';
-        const brukteDager = summerDagerIPerioder(
-            uttakPerioder.filter((p) => kontoType === getUttaksKontoType(p, kontoer)),
-            kontoer,
-            familiesituasjon,
-            familiehendelsedato,
-        );
-        const ubrukteDager = justerKvoteForOverførteDager(kontoType, aktuellKonto.dager, overførteDager) - brukteDager;
-        const overtrukketDager = ubrukteDager * -1;
-
-        return {
-            kontoType,
-            brukteDager,
-            ubrukteDager: ubrukteDagerSkalTrekkes ? 0 : ubrukteDager,
-            overtrukketDager,
-        };
-    });
-
-    const antallOvertrukketDager = sumBy(
-        kvoter.filter((kvote) => (kvote?.overtrukketDager ?? 0) > 0),
-        (kvote) => kvote?.overtrukketDager ?? 0,
-    );
-    const antallUbrukteDager = sumBy(
-        kvoter.filter((kvote) => (kvote?.ubrukteDager ?? 0) > 0),
-        (kvote) => kvote?.ubrukteDager ?? 0,
-    );
-    const antallBrukteDager = sumBy(
-        kvoter.filter((kvote) => (kvote?.brukteDager ?? 0) > 0),
-        (kvote) => kvote?.brukteDager ?? 0,
-    );
+    const antallOvertrukketDager = sumBy(kvoter, (kvote) => kvote.overtrukketDager);
+    const antallUbrukteDager = sumBy(kvoter, (kvote) => kvote.ubrukteDager);
+    const antallBrukteDager = sumBy(kvoter, (kvote) => kvote.brukteDager);
 
     return {
         antallOvertrukketDager,
@@ -132,61 +106,71 @@ export const finnAntallDagerDerKunEnHarForeldrepenger = (
     };
 };
 
-/**
- * Ein vedteken periode er ferdigbehandla av fp-sak og har eit resultat.
- * Planlagde periodar (planlegger og nye periodar i søknad) har det ikkje.
- */
-const erVedtattPeriode = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt) =>
-    erVanligUttakPeriode(periode) && periode.resultat !== undefined;
-
-/**
- * Finn kor mange dagar som er «omfordelte» frå kvoten med aktivitetskrav til den
- * aktivitetsfrie kvoten.
- *
- * Etter ftrl. § 14-14 er retten til uttak utan aktivitetskrav eit tak på 50
- * stønadsdagar inne i éin felles stønadsperiode – ikkje ein eigen pott. Samstundes
- * reduserast stønadsperioden løpande når aktivitetskravet ikkje er oppfylt, slik at
- * samla forbruk utan aktivitetskrav kan bli større enn taket. fp-sak dekker då
- * overskytinga frå resten av stønadsperioden.
- *
- * Vi speglar det ved å la overtrekk frå *vedtekne* periodar redusere kvoten med
- * aktivitetskrav. Planlagde dagar flyt derimot ikkje over: taket i § 14-14 tredje
- * ledd er ei materiell grense, og ein plan som bryt det ville uansett blitt avslegen.
- */
-export const finnOverførteDagerFraAktivitetsfriKvote = (
+export const beregnKvoteFordeling = (
     uttakPerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
     kontoer: KontoDto[],
     familiesituasjon: Familiesituasjon,
     familiehendelsedato: string,
-): number => {
-    const aktivitetsfriKonto = kontoer.find((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
-    const kontoMedAktivitetskrav = kontoer.find((k) => k.konto === 'FORELDREPENGER');
+): KvoteFordeling[] => {
+    const perioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
+    const fordelinger = kontoer.map((konto): KvoteFordeling => {
+        const relevantePerioder = perioder.filter((p) => getUttaksKontoType(p, kontoer) === konto.konto);
+        return {
+            konto,
+            brukteDager: summerDagerIPerioder(relevantePerioder, kontoer, familiesituasjon, familiehendelsedato),
+            trekteDager: summerDagerIPerioder(
+                relevantePerioder.filter(erAvslåttPeriode),
+                kontoer,
+                familiesituasjon,
+                familiehendelsedato,
+            ),
+        };
+    });
+    const aktivitetsfri = fordelinger.find((k) => k.konto.konto === 'AKTIVITETSFRI_KVOTE');
+    const medAktivitetskrav = fordelinger.find((k) => k.konto.konto === 'FORELDREPENGER');
 
-    if (aktivitetsfriKonto === undefined || kontoMedAktivitetskrav === undefined) {
-        return 0;
+    if (!aktivitetsfri || !medAktivitetskrav) {
+        return fordelinger;
     }
 
-    const vedtatteAktivitetsfriDager = summerDagerIPerioder(
-        uttakPerioder.filter((p) => erVedtattPeriode(p) && getUttaksKontoType(p, kontoer) === 'AKTIVITETSFRI_KVOTE'),
+    const vedtatteAktivitetsfrieDager = summerDagerIPerioder(
+        perioder.filter(
+            (p) =>
+                erVanligUttakPeriode(p) &&
+                p.resultat !== undefined &&
+                getUttaksKontoType(p, kontoer) === 'AKTIVITETSFRI_KVOTE',
+        ),
         kontoer,
         familiesituasjon,
         familiehendelsedato,
     );
 
-    // Aldri lån meir enn kvoten med aktivitetskrav faktisk inneheld, slik at ho ikkje
-    // kan bli negativ i visninga.
-    return Math.min(Math.max(0, vedtatteAktivitetsfriDager - aktivitetsfriKonto.dager), kontoMedAktivitetskrav.dager);
-};
+    // Bare vedtatt forbruk kan overstige minsteretten og belaste resten av stønadsperioden.
+    const fraAktivitetsfri = Math.min(
+        Math.max(0, vedtatteAktivitetsfrieDager - aktivitetsfri.konto.dager),
+        medAktivitetskrav.konto.dager,
+    );
+    const trekteFraAktivitetsfri = Math.min(fraAktivitetsfri, aktivitetsfri.trekteDager);
+    aktivitetsfri.brukteDager -= fraAktivitetsfri;
+    aktivitetsfri.trekteDager -= trekteFraAktivitetsfri;
+    medAktivitetskrav.brukteDager += fraAktivitetsfri;
+    medAktivitetskrav.trekteDager += trekteFraAktivitetsfri;
 
-/** Aktivitetsfri kvote lånar dagar frå kvoten med aktivitetskrav, jf. omfordelinga over. */
-const justerKvoteForOverførteDager = (kontoType: string, dager: number, overførteDager: number) => {
-    if (kontoType === 'AKTIVITETSFRI_KVOTE') {
-        return dager + overførteDager;
-    }
-    if (kontoType === 'FORELDREPENGER') {
-        return dager - overførteDager;
-    }
-    return dager;
+    // Uttak med aktivitetskrav kan bruke hele stønadsperioden. Trekte dager vises først på FPMAK.
+    const fraMedAktivitetskrav = Math.min(
+        Math.max(0, medAktivitetskrav.brukteDager - medAktivitetskrav.konto.dager),
+        Math.max(0, aktivitetsfri.konto.dager - aktivitetsfri.brukteDager),
+    );
+    const trekteFraMedAktivitetskrav = Math.max(
+        0,
+        fraMedAktivitetskrav - (medAktivitetskrav.brukteDager - medAktivitetskrav.trekteDager),
+    );
+    medAktivitetskrav.brukteDager -= fraMedAktivitetskrav;
+    medAktivitetskrav.trekteDager -= trekteFraMedAktivitetskrav;
+    aktivitetsfri.brukteDager += fraMedAktivitetskrav;
+    aktivitetsfri.trekteDager += trekteFraMedAktivitetskrav;
+
+    return fordelinger;
 };
 
 export const filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger = (
@@ -334,20 +318,6 @@ export const summerDagerIPerioder = (
     return Math.floor(tidelerTotalt / 10);
 };
 
-/**
- * Avgjer kva stønadskonto ein periode skal bokførast på.
- *
- * Bakgrunn: fp-sak har berre EIN konto for BFHR (FORELDREPENGER), der retten til
- * uttak utan aktivitetskrav etter ftrl. § 14-14 tredje ledd er eit *tak* på 50
- * stønadsdagar inne i den same kontoen – ikkje ein eigen pott. Frontend deler
- * kontoen i to (AKTIVITETSFRI_KVOTE + FORELDREPENGER) som til saman utgjer totalen.
- *
- * For periodar som alt er vedtekne er `resultat.trekkerMinsterett` fasiten frå
- * fp-sak, og den må gå føre den lokale morsAktivitet-heuristikken. Ein avslegen
- * periode som likevel trekker dagar («raud pølse», jf. § 14-14 fjerde ledd om at
- * stønadsperioden reduserast løpande) har typisk morsAktivitet sett til noko anna
- * enn IKKE_OPPGITT, men trekker like fullt av minsteretten.
- */
 export const getUttaksKontoType = (
     p: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
     kontoer: KontoDto[],
@@ -359,10 +329,6 @@ export const getUttaksKontoType = (
     const harAktivitetsfriKvote = kontoer.some((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
     const harKvoteMedAktivitetskrav = kontoer.some((k) => k.konto === 'FORELDREPENGER');
 
-    // Aleneomsorg og begge-rett har inga aktivitetsfri kvote, og far+far ved
-    // fødsel/adopsjon har berre aktivitetsfri kvote. Utan desse vaktene ville
-    // dagar blitt bokførte på ein konto som ikkje finst, og forsvunne ut av
-    // rekneskapet.
     if (!harAktivitetsfriKvote) {
         return 'FORELDREPENGER';
     }
@@ -370,10 +336,7 @@ export const getUttaksKontoType = (
         return 'AKTIVITETSFRI_KVOTE';
     }
 
-    // Vedtekne periodar som trekker dagar: bruk fp-sak sin klassifisering.
-    // Periodar utan trekk får trekkerMinsterett=false frå fp-sak uansett, og må
-    // difor klassifiserast på morsAktivitet for å få rett farge og kvotenamn i
-    // kalender og liste.
+    // Uten trekk setter fp-sak trekkerMinsterett=false uavhengig av mors aktivitet.
     if (p.resultat !== undefined && p.resultat.trekkerDager) {
         return p.resultat.trekkerMinsterett ? 'AKTIVITETSFRI_KVOTE' : 'FORELDREPENGER';
     }
