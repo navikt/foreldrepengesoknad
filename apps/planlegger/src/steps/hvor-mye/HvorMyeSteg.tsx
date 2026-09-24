@@ -37,7 +37,8 @@ export const HvorMyeSteg = ({ satser }: Props) => {
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
 
-    const kunEnAvSøkereneHarRett = hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett';
+    const kunSøker2HarRett = hvemHarRett === 'kunSøker2HarRett';
+    const kunEnAvSøkereneHarRett = hvemHarRett === 'kunSøker1HarRett' || kunSøker2HarRett;
     const erAleneforsørger = erAlenesøker(hvemPlanlegger);
 
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
@@ -69,6 +70,12 @@ export const HvorMyeSteg = ({ satser }: Props) => {
     const harSøker1IkkeRettTilFp = årslønnSøker1 < minÅrslønn;
     const harSøker2IkkeRettTilFp = årslønnSøker2 < minÅrslønn;
 
+    const lønnFørstePanel = kunSøker2HarRett ? lønnSøker2 : lønnSøker1;
+    const lønnFørstePanelValid = kunSøker2HarRett ? lønnSøker2Valid : lønnSøker1Valid;
+    const harFørstePanelIkkeRettTilFp = kunSøker2HarRett ? harSøker2IkkeRettTilFp : harSøker1IkkeRettTilFp;
+    const årslønnFørstePanel = kunSøker2HarRett ? årslønnSøker2 : årslønnSøker1;
+    const fornavnFørstePanel = kunSøker2HarRett ? fornavnSøker2 : fornavnSøker1;
+
     const onSubmit = (formValues: HvorMye) => {
         oppdaterHvorMye(formValues);
         navigator.goToNextStep(PlanleggerRoutes.HVOR_LANG_PERIODE);
@@ -87,14 +94,10 @@ export const HvorMyeSteg = ({ satser }: Props) => {
                         <VStack gap="space-8">
                             <BluePanel isDarkBlue={true}>
                                 <RhfFormattertTallTextField
-                                    name={hvemHarRett === 'kunSøker2HarRett' ? 'lønnSøker2' : 'lønnSøker1'}
+                                    name={kunSøker2HarRett ? 'lønnSøker2' : 'lønnSøker1'}
                                     control={formMethods.control}
                                     label={
-                                        hvemHarRett === 'kunSøker2HarRett' ? (
-                                            <FormattedMessage id="HvorMyeSteg.Lønn" values={{ hvem: fornavnSøker2 }} />
-                                        ) : (
-                                            <FormattedMessage id="HvorMyeSteg.Lønn" values={{ hvem: fornavnSøker1 }} />
-                                        )
+                                        <FormattedMessage id="HvorMyeSteg.Lønn" values={{ hvem: fornavnFørstePanel }} />
                                     }
                                     validate={[
                                         isValidNumberForm(intl.formatMessage({ id: 'HvorMyeSteg.ValidNumber' })),
@@ -102,18 +105,14 @@ export const HvorMyeSteg = ({ satser }: Props) => {
                                     description={intl.formatMessage({ id: 'HvorMyeSteg.LønnBeskrivelse' })}
                                 />
                             </BluePanel>
-                            {lønnSøker1Valid && harSøker1IkkeRettTilFp && (
-                                <HarIkkeRettTilFpInfobox antattÅrslønn={årslønnSøker1} minÅrslønn={minÅrslønn} />
+                            {lønnFørstePanelValid && harFørstePanelIkkeRettTilFp && (
+                                <HarIkkeRettTilFpInfobox antattÅrslønn={årslønnFørstePanel} minÅrslønn={minÅrslønn} />
                             )}
-                            {lønnSøker1Valid && !harSøker1IkkeRettTilFp && (
+                            {lønnFørstePanelValid && !harFørstePanelIkkeRettTilFp && (
                                 <Utbetaling
-                                    lønnSøker={Number(lønnSøker1)}
+                                    lønnSøker={Number(lønnFørstePanel)}
                                     satser={satser}
-                                    fornavn={
-                                        hvemHarRett === 'kunSøker2HarRett'
-                                            ? (fornavnSøker2 ?? '')
-                                            : (fornavnSøker1 ?? '')
-                                    }
+                                    fornavn={fornavnFørstePanel ?? ''}
                                 />
                             )}
                         </VStack>

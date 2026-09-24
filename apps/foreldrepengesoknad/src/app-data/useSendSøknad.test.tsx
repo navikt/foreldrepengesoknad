@@ -4,7 +4,7 @@ import { API_URLS } from 'api/queries';
 import ky, { ResponsePromise } from 'ky';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
-import { AndreInntektskilder, AnnenInntektType, SluttpakkeInntekt } from 'types/AndreInntektskilder';
+import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { AnnenForelder } from 'types/AnnenForelder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
@@ -12,6 +12,7 @@ import { AttachmentType, BarnType, Skjemanummer } from '@navikt/fp-constants';
 import {
     AnnenInntektDto,
     Barn,
+    EksternArbeidsforholdDto_fpoversikt,
     EndringssøknadForeldrepengerDto,
     ForeldrepengesøknadDto,
     FpPersonopplysningerDto_fpoversikt,
@@ -19,6 +20,8 @@ import {
     Frilans,
     NæringDto,
     PeriodeDto_fpoversikt,
+    SelvstendigNæringDto_fpoversikt,
+    SøkerDto,
     SøkersituasjonFp,
     UtenlandsoppholdPeriode,
 } from '@navikt/fp-types';
@@ -57,11 +60,13 @@ const DEFAULT_SØKER_INFO = {
     erGift: false,
     fnr: '02343434',
     fødselsdato: '1989-08-30',
+    frilansoppdrag: [],
     kjønn: 'K',
     navn: {
         etternavn: 'Oravakangas',
         fornavn: 'Erlinga-Mask',
     },
+    selvstendigNæring: [],
 } satisfies FpPersonopplysningerDto_fpoversikt;
 
 const MESSAGES_GROUPED_BY_LOCALE = {
@@ -121,12 +126,12 @@ const EGEN_NÆRING = {
 
 const ANDRE_INNTEKTSKILDER = [
     {
-        type: AnnenInntektType.SLUTTPAKKE,
+        type: 'ETTERLØNN_SLUTTPAKKE',
         fom: '2023-01-01',
         tom: '2024-01-01',
-    } satisfies SluttpakkeInntekt,
+    } satisfies AndreInntektskilder,
     {
-        type: AnnenInntektType.JOBB_I_UTLANDET,
+        type: 'JOBB_I_UTLANDET',
         fom: '2023-02-01',
         arbeidsgiverNavn: 'MUFC',
         land: 'GBR',
@@ -176,6 +181,24 @@ const EKSISTERENDE_PERIODE = {
     },
 } satisfies PeriodeDto_fpoversikt;
 
+const FORELAGT_FRILANSOPPDRAG = [
+    {
+        arbeidsgiverId: '12345678910',
+        arbeidsgiverIdType: 'fnr',
+        arbeidsgiverNavn: 'Ola Nordmann',
+        fom: '2024-03-01',
+        stillingsprosent: 0,
+    },
+] satisfies EksternArbeidsforholdDto_fpoversikt[];
+
+const FORELAGT_SELVSTENDIG_NÆRING = [
+    {
+        navn: 'Sagene Fiskeri',
+        organisasjonsnummer: '974760673',
+        næringstype: 'FISKE',
+    },
+] satisfies SelvstendigNæringDto_fpoversikt[];
+
 const EXPECTED_SØKER_INFO = {
     fnr: DEFAULT_SØKER_INFO.fnr,
     navn: DEFAULT_SØKER_INFO.navn,
@@ -185,7 +208,20 @@ const EXPECTED_SØKER_INFO = {
         stillingsprosent: af.stillingsprosent,
         fom: af.fom,
     })),
-};
+    frilansoppdrag: [],
+    selvstendigNæring: [],
+} satisfies SøkerDto;
+
+// Utledes fra testdataene over slik at forventningen ikke dupliserer dem som strengliteraler
+const EXPECTED_SØKER_INFO_MED_FORELAGTE_AKTIVITETER = {
+    ...EXPECTED_SØKER_INFO,
+    frilansoppdrag: FORELAGT_FRILANSOPPDRAG.map((fo) => ({ navn: fo.arbeidsgiverNavn, fom: fo.fom })),
+    selvstendigNæring: FORELAGT_SELVSTENDIG_NÆRING.map((sn) => ({
+        navn: sn.navn,
+        organisasjonsnummer: sn.organisasjonsnummer,
+        næringstype: sn.næringstype,
+    })),
+} satisfies SøkerDto;
 
 const saker = [
     {
@@ -232,7 +268,6 @@ const getWrapper =
                             [ContextDataType.OM_BARNET]: BARNET,
                             [ContextDataType.ANNEN_FORELDER]: ANNEN_FORELDER,
                             [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
-                                harHattAndreInntektskilder: true,
                                 harJobbetSomFrilans: true,
                                 harJobbetSomSelvstendigNæringsdrivende: true,
                             },
@@ -267,6 +302,7 @@ describe('useFpSendSøknad', () => {
     afterEach(() => {
         vi.restoreAllMocks();
         vi.clearAllMocks();
+        queryClient.clear();
     });
 
     it('skal sende inn korrekt søknad', async () => {
@@ -275,8 +311,14 @@ describe('useFpSendSøknad', () => {
         } as ResponsePromise<void>);
         const deleteMock = vi.spyOn(ky, 'delete').mockReturnValue(undefined as unknown as ResponsePromise<unknown>);
 
+        const søkerinfo = {
+            ...DEFAULT_SØKER_INFO,
+            frilansoppdrag: FORELAGT_FRILANSOPPDRAG,
+            selvstendigNæring: FORELAGT_SELVSTENDIG_NÆRING,
+        };
+
         const erEndringssøknad = false;
-        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, erEndringssøknad, saker), {
+        const { result } = renderHook(() => useSendSøknad(søkerinfo, erEndringssøknad, saker), {
             wrapper: getWrapper(),
         });
 
@@ -288,7 +330,7 @@ describe('useFpSendSøknad', () => {
             API_URLS.sendSøknad,
             expect.objectContaining({
                 json: {
-                    søkerinfo: EXPECTED_SØKER_INFO,
+                    søkerinfo: EXPECTED_SØKER_INFO_MED_FORELAGTE_AKTIVITETER,
                     rolle: 'MOR',
                     språkkode: 'NB',
                     andreInntekterSiste10Mnd: [

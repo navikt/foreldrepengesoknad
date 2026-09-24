@@ -7,16 +7,14 @@ import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './AppContainer.stories';
 
+vi.mock('@navikt/nav-dekoratoren-moduler', () => ({
+    setAvailableLanguages: vi.fn(),
+    onLanguageSelect: vi.fn(),
+}));
+
 const { VisAppKvinneMedArbeid } = composeStories(stories);
 
 describe('<AppContainer>', () => {
-    beforeEach(() => {
-        vi.mock('@navikt/nav-dekoratoren-moduler', () => ({
-            setAvailableLanguages: vi.fn(),
-            onLanguageSelect: vi.fn(),
-        }));
-    });
-
     it('skal gå raskeste vei gjennom applikasjonen og så tilbake', async () => {
         await VisAppKvinneMedArbeid.run();
 
@@ -43,9 +41,6 @@ describe('<AppContainer>', () => {
 
         expect(await screen.findByText('Steg 3 av 8')).toBeInTheDocument();
         expect(await screen.findAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
-        await userEvent.click(screen.getAllByText('Nei')[0]!);
-        await userEvent.click(screen.getAllByText('Nei')[1]!);
-        await userEvent.click(screen.getAllByText('Nei')[2]!);
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(await screen.findByText('Steg 4 av 8')).toBeInTheDocument();

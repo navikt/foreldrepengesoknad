@@ -2,12 +2,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, FormSummary } from '@navikt/ds-react';
 
+import { ManueltLagtTilNæring, SelvstendigNæring } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import {
     ArbeidsforholdOgInntekt,
     EksternArbeidsforholdDto_fpoversikt,
     Frilans,
     NæringDto,
-    isArbeidsforholdOgInntektFp,
+    SelvstendigNæringDto_fpoversikt,
 } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatCurrencyWithKr, formatDate } from '@navikt/fp-utils';
 
@@ -29,8 +30,6 @@ export const ArbeidsforholdOppsummering = ({
     if (!arbeidsforholdOgInntekt) {
         return null;
     }
-
-    const erForeldrepenger = isArbeidsforholdOgInntektFp(arbeidsforholdOgInntekt);
 
     return (
         <FormSummary>
@@ -69,53 +68,6 @@ export const ArbeidsforholdOppsummering = ({
                         )}
                     </FormSummary.Value>
                 </FormSummary.Answer>
-                <FormSummary.Answer>
-                    <FormSummary.Label>
-                        {erForeldrepenger && (
-                            <FormattedMessage id="ArbeidsforholdOppsummering.HarDuJobbetSomFrilansFp" />
-                        )}
-                        {!erForeldrepenger && (
-                            <FormattedMessage id="ArbeidsforholdOppsummering.HarDuJobbetSomFrilans" />
-                        )}
-                    </FormSummary.Label>
-                    <FormSummary.Value>
-                        <JaNeiTekst ja={arbeidsforholdOgInntekt.harJobbetSomFrilans} />
-                    </FormSummary.Value>
-                </FormSummary.Answer>
-
-                <FormSummary.Answer>
-                    <FormSummary.Label>
-                        {erForeldrepenger && (
-                            <FormattedMessage id="ArbeidsforholdOppsummering.HarJobbetSomSelvstendigNæringsdrivendeFp" />
-                        )}
-                        {!erForeldrepenger && (
-                            <FormattedMessage id="ArbeidsforholdOppsummering.HarJobbetSomSelvstendigNæringsdrivende" />
-                        )}
-                    </FormSummary.Label>
-                    <FormSummary.Value>
-                        <JaNeiTekst ja={arbeidsforholdOgInntekt.harJobbetSomSelvstendigNæringsdrivende} />
-                    </FormSummary.Value>
-                </FormSummary.Answer>
-                {!erForeldrepenger && (
-                    <FormSummary.Answer>
-                        <FormSummary.Label>
-                            <FormattedMessage id="ArbeidsforholdOppsummering.HarHattArbeidIUtlandet" />
-                        </FormSummary.Label>
-                        <FormSummary.Value>
-                            <JaNeiTekst ja={arbeidsforholdOgInntekt.harHattArbeidIUtlandet} />
-                        </FormSummary.Value>
-                    </FormSummary.Answer>
-                )}
-                {erForeldrepenger && (
-                    <FormSummary.Answer>
-                        <FormSummary.Label>
-                            <FormattedMessage id="ArbeidsforholdOppsummering.HarHattAndreInntektskilder" />
-                        </FormSummary.Label>
-                        <FormSummary.Value>
-                            <JaNeiTekst ja={arbeidsforholdOgInntekt.harHattAndreInntektskilder} />
-                        </FormSummary.Value>
-                    </FormSummary.Answer>
-                )}
             </FormSummary.Answers>
             <FormSummary.Footer>
                 <FormSummary.EditLink onClick={onVilEndreSvar}>
@@ -158,11 +110,13 @@ const ArbeidsforholdFormSummaryValue = ({
 type SelvstendigNæringsdrivendeOppsummeringProps = {
     onVilEndreSvar: () => void;
     egenNæring?: NæringDto;
+    registrerteNæringer?: SelvstendigNæringDto_fpoversikt[];
 };
 
 export const SelvstendigNæringsdrivendeOppsummering = ({
     onVilEndreSvar,
     egenNæring,
+    registrerteNæringer = [],
 }: SelvstendigNæringsdrivendeOppsummeringProps) => {
     if (!egenNæring) {
         return null;
@@ -182,25 +136,17 @@ export const SelvstendigNæringsdrivendeOppsummering = ({
             <FormSummary.Answers>
                 <FormSummary.Answer>
                     <FormSummary.Label>
-                        <FormattedMessage id="ArbeidsforholdOppsummering.næringstype" />
+                        <FormattedMessage id="ArbeidsforholdOppsummering.næringsvirksomhet" />
                     </FormSummary.Label>
                     <FormSummary.Value>
-                        {(() => {
-                            switch (egenNæring?.næringstype) {
-                                case 'FISKE':
-                                    return <FormattedMessage id="ArbeidsforholdOppsummering.næringstype.fiske" />;
-                                case 'DAGMAMMA':
-                                    return <FormattedMessage id="ArbeidsforholdOppsummering.næringstype.dagmamma" />;
-                                case 'JORDBRUK_SKOGBRUK':
-                                    return (
-                                        <FormattedMessage id="ArbeidsforholdOppsummering.næringstype.jordbrukSkogbruk" />
-                                    );
-                                case 'ANNEN':
-                                    return <FormattedMessage id="ArbeidsforholdOppsummering.næringstype.annen" />;
-                                default:
-                                    return null;
-                            }
-                        })()}
+                        {registrerteNæringer.length > 0 ? (
+                            <SelvstendigNæring
+                                registrerteNæringer={registrerteNæringer}
+                                visManglerOpplysninger={false}
+                            />
+                        ) : (
+                            <ManueltLagtTilNæring egenNæring={egenNæring} />
+                        )}
                     </FormSummary.Value>
                 </FormSummary.Answer>
                 {egenNæring.navnPåNæringen && (
@@ -211,14 +157,6 @@ export const SelvstendigNæringsdrivendeOppsummering = ({
                         <FormSummary.Value>{egenNæring.navnPåNæringen}</FormSummary.Value>
                     </FormSummary.Answer>
                 )}
-                <FormSummary.Answer>
-                    <FormSummary.Label>
-                        <FormattedMessage id="ArbeidsforholdOppsummering.erNæringenRegistrertINorge" />
-                    </FormSummary.Label>
-                    <FormSummary.Value>
-                        <JaNeiTekst ja={egenNæring.registrertINorge} />
-                    </FormSummary.Value>
-                </FormSummary.Answer>
                 {egenNæring.organisasjonsnummer && (
                     <FormSummary.Answer>
                         <FormSummary.Label>

@@ -37,7 +37,7 @@ export const RhfTextField = <T extends FieldValues>({
     customErrorFormatter,
     ...rest
 }: Props<T>) => {
-    const { name, control, disabled } = rest;
+    const { name, control, disabled, onBlur: onBlurProp } = rest;
 
     const {
         formState: { errors },
@@ -67,6 +67,25 @@ export const RhfTextField = <T extends FieldValues>({
         [field, onChange, shouldReplaceInvisibleChars],
     );
 
+    const onBlurFn = useCallback(
+        (evt: React.FocusEvent<HTMLInputElement>) => {
+            const value = evt.currentTarget.value;
+            const trimmetVerdi = value.trim();
+
+            if (trimmetVerdi !== value) {
+                field.onChange(trimmetVerdi);
+
+                if (onChange) {
+                    onChange(trimmetVerdi);
+                }
+            }
+
+            field.onBlur();
+            onBlurProp?.(evt);
+        },
+        [field, onChange, onBlurProp],
+    );
+
     return (
         <TextField
             ref={field.ref}
@@ -82,6 +101,7 @@ export const RhfTextField = <T extends FieldValues>({
             style={style}
             onChange={onChangeFn}
             {...rest}
+            onBlur={onBlurFn}
         />
     );
 };

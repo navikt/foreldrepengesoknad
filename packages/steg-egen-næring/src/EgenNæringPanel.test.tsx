@@ -2,22 +2,169 @@ import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
+import { IntlProvider } from 'react-intl';
 
+import { Button } from '@navikt/ds-react';
+
+import { formHookMessages } from '@navikt/fp-form-hooks';
+
+import { EgenNæringForm } from './EgenNæringPanel';
 import * as stories from './EgenNæringPanel.stories';
+import nbMessages from './intl/messages/nb_NO.json';
 
 const { Default } = composeStories(stories);
 
 describe('<Arbeid som selvstendig næringsdrivende>', () => {
+    it('skal vise og låse navn, organisasjonsnummer og type fra registeret', () => {
+        const { container } = render(
+            <IntlProvider locale="nb" messages={{ ...formHookMessages.nb, ...nbMessages }}>
+                <EgenNæringForm
+                    registrerteNæringer={[
+                        {
+                            navn: 'Kari Konsulent',
+                            organisasjonsnummer: '998877665',
+                            næringstype: 'JORDBRUK_SKOGBRUK',
+                        },
+                    ]}
+                    appOrigin="foreldrepengesoknad"
+                    onSubmit={vi.fn()}
+                    withoutFormElement
+                />
+            </IntlProvider>,
+        );
+
+        expect(screen.getByText('Opplysninger fra Brønnøysundregistrene')).toBeInTheDocument();
+        expect(screen.getByText('Kari Konsulent')).toBeInTheDocument();
+        expect(screen.getByText('Organisasjonsnummer: 998877665')).toBeInTheDocument();
+        expect(screen.queryByText('Hvilken type næring har du hatt?')).not.toBeInTheDocument();
+        expect(screen.queryByLabelText('Hva heter virksomheten?')).not.toBeInTheDocument();
+        expect(screen.queryByLabelText('Hva er organisasjonsnummeret?')).not.toBeInTheDocument();
+        expect(container.querySelector('input[type="hidden"][name="næringstype"]')).toHaveValue('JORDBRUK_SKOGBRUK');
+        expect(container.querySelector('input[type="hidden"][name="navnPåNæringen"]')).toHaveValue('Kari Konsulent');
+        expect(container.querySelector('input[type="hidden"][name="organisasjonsnummer"]')).toHaveValue('998877665');
+    });
+
+    it('skal forklare at svarene gjelder samlet når flere næringer er registrert', () => {
+        render(
+            <IntlProvider locale="nb" messages={{ ...formHookMessages.nb, ...nbMessages }}>
+                <EgenNæringForm
+                    registrerteNæringer={[
+                        {
+                            navn: 'Prioritert Fiskeri',
+                            organisasjonsnummer: '998877665',
+                            næringstype: 'FISKE',
+                        },
+                        {
+                            navn: 'Gårdsdriften',
+                            organisasjonsnummer: '887766554',
+                            næringstype: 'JORDBRUK_SKOGBRUK',
+                        },
+                    ]}
+                    appOrigin="foreldrepengesoknad"
+                    onSubmit={vi.fn()}
+                    withoutFormElement
+                />
+            </IntlProvider>,
+        );
+
+        expect(
+            screen.getByText(
+                'Svar samlet for alle næringene dine. Svarene blir knyttet til organisasjonsnummer 998877665.',
+            ),
+        ).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Næringene dette gjelder' })).toBeInTheDocument();
+    });
+
+    it('skal låse næringstype til fiske i plugin-varianten', async () => {
+        const onSubmit = vi.fn();
+
+        render(
+            <IntlProvider locale="nb" messages={{ ...formHookMessages.nb, ...nbMessages }}>
+                <EgenNæringForm
+                    fixedNæringstype="FISKE"
+                    egenNæring={{
+                        fom: '2023-04-30',
+                        harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
+                        navnPåNæringen: 'Fiskebåten',
+                        næringsinntekt: 1000,
+                        næringstype: 'ANNEN',
+                        organisasjonsnummer: '997519485',
+                        registrertINorge: true,
+                    }}
+                    appOrigin="foreldrepengesoknad"
+                    onSubmit={onSubmit}
+                    withoutFormElement
+                    renderActions={(submitForm) => (
+                        <Button type="button" onClick={() => void submitForm()}>
+                            Legg til
+                        </Button>
+                    )}
+                />
+            </IntlProvider>,
+        );
+
+        expect(screen.queryByText('Hvilken type næring har du hatt?')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
+
+        expect(onSubmit).toHaveBeenCalledWith(
+            expect.objectContaining({
+                næringstype: 'FISKE',
+            }),
+        );
+    });
+
+    it('skal låse registrering til utlandet i plugin-varianten', async () => {
+        const onSubmit = vi.fn();
+
+        render(
+            <IntlProvider locale="nb" messages={{ ...formHookMessages.nb, ...nbMessages }}>
+                <EgenNæringForm
+                    fixedRegistrertINorge={false}
+                    egenNæring={{
+                        fom: '2023-04-30',
+                        harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
+                        navnPåNæringen: 'Utenlandsk virksomhet',
+                        næringsinntekt: 1000,
+                        næringstype: 'ANNEN',
+                        organisasjonsnummer: '997519485',
+                        registrertILand: 'SE',
+                        registrertINorge: true,
+                    }}
+                    appOrigin="foreldrepengesoknad"
+                    onSubmit={onSubmit}
+                    withoutFormElement
+                    renderActions={(submitForm) => (
+                        <Button type="button" onClick={() => void submitForm()}>
+                            Legg til
+                        </Button>
+                    )}
+                />
+            </IntlProvider>,
+        );
+
+        expect(screen.queryByText('Er virksomheten registrert i Norge?')).not.toBeInTheDocument();
+        expect(screen.getByText('I hvilket land er virksomheten din registrert i?')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
+
+        expect(onSubmit).toHaveBeenCalledWith(
+            expect.objectContaining({
+                registrertILand: 'SE',
+                registrertINorge: false,
+            }),
+        );
+    });
+
     it('skal vise feilmelding når ingenting er fylt eller huket av', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Hvilken type virksomhet har du?')).toBeInTheDocument();
+        expect(await screen.findByText('Hvilken type næring har du hatt?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(screen.queryAllByText('Du må oppgi type virksomhet du har.')[0]).toBeInTheDocument();
         expect(screen.queryAllByText('Du må oppgi navnet på virksomheten din')[0]).toBeInTheDocument();
-        expect(screen.queryAllByText('Du må oppgi om virksomheten er registrert i Norge')[0]).toBeInTheDocument();
         expect(screen.queryAllByText('Du må oppgi en startdato.')[0]).toBeInTheDocument();
         expect(screen.queryAllByText('Du må oppgi om virksomheten din er pågående.')[0]).toBeInTheDocument();
         expect(screen.queryAllByText('Du må oppgi næringsresultat de siste 12 månedene.')[0]).toBeInTheDocument();
@@ -31,14 +178,13 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
 
         render(<Default saveOnNext={saveOnNext} />);
 
-        expect(await screen.findByText('Hvilken type virksomhet har du?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Jordbruk'));
+        expect(await screen.findByText('Hvilken type næring har du hatt?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Gårdsdrift'));
 
         const virksomhetsnavnInput = screen.getByLabelText('Hva heter virksomheten?');
         await userEvent.type(virksomhetsnavnInput, 'Virksomhetsnavn AS');
 
-        expect(screen.getByText('Er virksomheten registrert i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[0]!);
+        expect(screen.queryByText('Er virksomheten registrert i Norge?')).not.toBeInTheDocument();
 
         const orgnummerInput = screen.getByLabelText('Hva er organisasjonsnummeret?');
         await userEvent.type(orgnummerInput, '997519485');
@@ -48,17 +194,15 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         await userEvent.tab();
 
         expect(screen.getByText('Jobber du der fortsatt?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[1]!);
+        await userEvent.click(screen.getAllByText('Ja')[0]!);
 
         const næringsresultatInput = screen.getByLabelText(
-            'Hva har du hatt i næringsresultat før skatt de siste 12 månedene?',
+            'Hva var næringsresultatet ditt før skatt de siste 12 månedene?',
         );
         await userEvent.type(næringsresultatInput, '1000');
 
-        expect(
-            screen.getByText('Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?'),
-        ).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[2]!);
+        expect(screen.getByText('Har du vært yrkesaktiv i mindre enn tre år?')).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText('Nei')[1]!);
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -77,40 +221,11 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         });
     });
 
-    it('skal ikke vise feilmelding hvis fisker ikke fyller ut navn eller orgnummer', async () => {
+    it('skal ikke vise fiske som valg for selvstendig næring', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Hvilken type virksomhet har du?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Fiske'));
-
-        expect(screen.getByText('Er virksomheten registrert i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[0]!);
-
-        const startdatoInput = screen.getByLabelText('Når startet du virksomheten?');
-        await userEvent.type(startdatoInput, dayjs('2023-04-30').format('DD.MM.YYYY'));
-        await userEvent.tab();
-
-        expect(screen.getByText('Jobber du der fortsatt?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[1]!);
-
-        expect(
-            screen.getByText('Hva har du hatt i næringsresultat før skatt de siste 12 månedene?'),
-        ).toBeInTheDocument();
-        const næringsresultatInput = screen.getByLabelText(
-            'Hva har du hatt i næringsresultat før skatt de siste 12 månedene?',
-        );
-        await userEvent.type(næringsresultatInput, '1000');
-        await userEvent.tab();
-
-        expect(
-            screen.getByText('Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?'),
-        ).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[0]!);
-
-        await userEvent.click(screen.getByText('Neste steg'));
-
-        expect(screen.queryByText('Du må oppgi organisasjonsnummer.')).not.toBeInTheDocument();
-        expect(screen.queryByText('Du må oppgi næringsresultat de siste 12 månedene.')).not.toBeInTheDocument();
+        expect(await screen.findByText('Hvilken type næring har du hatt?')).toBeInTheDocument();
+        expect(screen.queryByRole('radio', { name: 'Fiske' })).not.toBeInTheDocument();
     });
 
     it('validering av dato på feil format', async () => {
@@ -122,17 +237,15 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         await userEvent.tab();
 
         expect(screen.getByText('Jobber du der fortsatt?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[1]!);
+        await userEvent.click(screen.getAllByText('Nei')[0]!);
 
         expect(screen.getByText('Når avsluttet du virksomheten?')).toBeInTheDocument();
         const sluttdatoInput = screen.getByLabelText('Når avsluttet du virksomheten?');
         await userEvent.type(sluttdatoInput, 'sjnkf');
         await userEvent.tab();
 
-        expect(
-            screen.getByText('Har du begynt å jobbe i løpet av de tre siste ferdigliknede årene?'),
-        ).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[2]!);
+        expect(screen.getByText('Har du vært yrkesaktiv i mindre enn tre år?')).toBeInTheDocument();
+        await userEvent.click(screen.getAllByText('Ja')[1]!);
 
         expect(screen.getByText('Når ble du yrkesaktiv?')).toBeInTheDocument();
         const yrkesaktidDatoInput = screen.getByLabelText('Når ble du yrkesaktiv?');
@@ -149,29 +262,22 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         ).toBeInTheDocument();
     });
 
-    it('skal vise feilmelding når land ikke er utfylt', async () => {
+    it('skal skjule spørsmål om registreringsland i ordinært næringssteg', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Er virksomheten registrert i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[0]!);
-
-        expect(screen.getByText('I hvilket land er virksomheten din registrert i?')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Neste steg'));
-
-        expect(screen.queryAllByText('Du må oppgi hvilket land næringen er registert i.')[0]).toBeInTheDocument();
+        expect(await screen.findByText('Hvilken type næring har du hatt?')).toBeInTheDocument();
+        expect(screen.queryByText('Er virksomheten registrert i Norge?')).not.toBeInTheDocument();
+        expect(screen.queryByText('I hvilket land er virksomheten din registrert i?')).not.toBeInTheDocument();
     });
 
     it('skal vise feilmelding ved desimaltall i næringsinntekt etter varig endring', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Hvilken type virksomhet har du?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Jordbruk'));
+        expect(await screen.findByText('Hvilken type næring har du hatt?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Gårdsdrift'));
 
         const virksomhetsnavnInput = screen.getByLabelText('Hva heter virksomheten?');
         await userEvent.type(virksomhetsnavnInput, 'Gården AS');
-
-        await userEvent.click(screen.getAllByText('Ja')[0]!);
 
         const orgnummerInput = screen.getByLabelText('Hva er organisasjonsnummeret?');
         await userEvent.type(orgnummerInput, '997519485');
@@ -180,14 +286,14 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         await userEvent.type(startdatoInput, dayjs().subtract(5, 'year').format('DD.MM.YYYY'));
         await userEvent.tab();
 
-        await userEvent.click(screen.getAllByText('Ja')[1]!);
+        await userEvent.click(screen.getAllByText('Ja')[0]!);
 
         expect(
             screen.getByText(
                 'Har du hatt en varig endring i virksomheten eller arbeidssituasjonen din de siste 4 årene?',
             ),
         ).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[2]!);
+        await userEvent.click(screen.getAllByText('Ja')[1]!);
 
         const inntektInput = screen.getByLabelText('Hva var næringsinntekten din etter endringen?');
         await userEvent.type(inntektInput, '123.45');
@@ -204,7 +310,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
 
         render(<Default onFortsettSenere={vi.fn()} onAvsluttOgSlett={onAvsluttOgSlett} />);
 
-        expect(await screen.findByText('Er virksomheten registrert i Norge?')).toBeInTheDocument();
+        expect(await screen.findByText('Hvilken type næring har du hatt?')).toBeInTheDocument();
 
         await userEvent.click(screen.getAllByText('Slett søknaden')[0]!);
         await userEvent.click(screen.getAllByText('Slett søknaden')[1]!);

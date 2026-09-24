@@ -6,7 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Button, VStack } from '@navikt/ds-react';
 
 import { DATE_1_YEAR_FROM_NOW, DATE_TODAY, ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { RhfDatepicker, RhfSelect } from '@navikt/fp-form-hooks';
+import { RhfCheckbox, RhfDatepicker, RhfSelect } from '@navikt/fp-form-hooks';
 import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { createCountryOptions, formatDate } from '@navikt/fp-utils';
 import {
@@ -20,6 +20,9 @@ import {
     isValidDate,
 } from '@navikt/fp-validation';
 
+// tomUkjent finst berre i skjematilstanden og blir stripa vekk før innsending, sjå SenereUtenlandsoppholdPanel.
+export type SenereUtenlandsoppholdSkjemaPeriode = UtenlandsoppholdPeriode & { tomUkjent?: boolean };
+
 interface Props {
     index: number;
     fjernOpphold: (index: number) => void;
@@ -32,12 +35,14 @@ export const SenereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props) =>
         control,
         watch,
         trigger,
+        setValue,
         formState: { isSubmitted },
-    } = useFormContext<{ utenlandsoppholdNeste12Mnd: UtenlandsoppholdPeriode[] }>();
+    } = useFormContext<{ utenlandsoppholdNeste12Mnd: SenereUtenlandsoppholdSkjemaPeriode[] }>();
 
     const alleAndreUtenlandsopphold = watch(`utenlandsoppholdNeste12Mnd`).filter((_u, i) => i !== index);
     const fom = watch(`utenlandsoppholdNeste12Mnd.${index}.fom`);
     const tom = watch(`utenlandsoppholdNeste12Mnd.${index}.tom`);
+    const tomUkjent = watch(`utenlandsoppholdNeste12Mnd.${index}.tomUkjent`);
 
     const minDateFom = DATE_TODAY;
     const maxDateFom = tom ? dayjs(tom).subtract(1, 'days').format(ISO_DATE_FORMAT) : DATE_1_YEAR_FROM_NOW;
@@ -108,46 +113,63 @@ export const SenereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props) =>
                 ]}
                 onChange={() => isSubmitted && void trigger()}
             />
-            <RhfDatepicker
-                name={`utenlandsoppholdNeste12Mnd.${index}.tom`}
+            <RhfCheckbox
+                name={`utenlandsoppholdNeste12Mnd.${index}.tomUkjent`}
                 control={control}
-                label={<FormattedMessage id="SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Tilogmed" />}
-                minDate={minDateTom}
-                maxDate={maxDateTom}
-                validate={[
-                    isRequired(
-                        intl.formatMessage({
-                            id: 'SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.LandTomDuSkalBoIPåkreved',
-                        }),
-                    ),
-                    isValidDate(intl.formatMessage({ id: 'SenereUtenlandsoppholdSteg.TilOgMedDato.GyldigDato' })),
-                    isDatesNotTheSame(intl.formatMessage({ id: 'SenereUtenlandsoppholdSteg.TomErLikFom' }), fom),
-                    isAfterOrSame(
-                        intl.formatMessage({ id: 'SenereUtenlandsoppholdSteg.Utenlandsopphold.EtterFraDato' }),
-                        fom,
-                    ),
-                    isDateWithinRange(
-                        intl.formatMessage(
-                            { id: 'SenereUtenlandsoppholdSteg.DateOutsideRangeTom' },
-                            {
-                                min: formatDate(minDateTom),
-                                max: formatDate(maxDateTom),
-                            },
-                        ),
-                        minDateTom,
-                        maxDateTom,
-                    ),
-                    isPeriodNotOverlappingOthers(
-                        intl.formatMessage({
-                            id: 'SenereUtenlandsoppholdSteg.Valideringsfeil.Utenlandsopphold.Overlapp',
-                        }),
-                        { date: fom, isStartDate: true },
-                        alleAndreUtenlandsopphold,
-                    ),
-                ]}
-                onChange={() => isSubmitted && void trigger()}
-                defaultMonth={fom}
+                label={
+                    <FormattedMessage id="SenereUtenlandsoppholdSteg.VetIkkeNårTilbake" />
+                }
+                onChange={(erKryssetAv) => {
+                    if (erKryssetAv) {
+                        setValue(`utenlandsoppholdNeste12Mnd.${index}.tom`, undefined);
+                    }
+                    if (isSubmitted) {
+                        void trigger();
+                    }
+                }}
             />
+            {!tomUkjent && (
+                <RhfDatepicker
+                    name={`utenlandsoppholdNeste12Mnd.${index}.tom`}
+                    control={control}
+                    label={<FormattedMessage id="SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Tilogmed" />}
+                    minDate={minDateTom}
+                    maxDate={maxDateTom}
+                    validate={[
+                        isRequired(
+                            intl.formatMessage({
+                                id: 'SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.LandTomDuSkalBoIPåkreved',
+                            }),
+                        ),
+                        isValidDate(intl.formatMessage({ id: 'SenereUtenlandsoppholdSteg.TilOgMedDato.GyldigDato' })),
+                        isDatesNotTheSame(intl.formatMessage({ id: 'SenereUtenlandsoppholdSteg.TomErLikFom' }), fom),
+                        isAfterOrSame(
+                            intl.formatMessage({ id: 'SenereUtenlandsoppholdSteg.Utenlandsopphold.EtterFraDato' }),
+                            fom,
+                        ),
+                        isDateWithinRange(
+                            intl.formatMessage(
+                                { id: 'SenereUtenlandsoppholdSteg.DateOutsideRangeTom' },
+                                {
+                                    min: formatDate(minDateTom),
+                                    max: formatDate(maxDateTom),
+                                },
+                            ),
+                            minDateTom,
+                            maxDateTom,
+                        ),
+                        isPeriodNotOverlappingOthers(
+                            intl.formatMessage({
+                                id: 'SenereUtenlandsoppholdSteg.Valideringsfeil.Utenlandsopphold.Overlapp',
+                            }),
+                            { date: fom, isStartDate: true },
+                            alleAndreUtenlandsopphold,
+                        ),
+                    ]}
+                    onChange={() => isSubmitted && void trigger()}
+                    defaultMonth={fom}
+                />
+            )}
             {index > 0 && (
                 <Button
                     type="button"

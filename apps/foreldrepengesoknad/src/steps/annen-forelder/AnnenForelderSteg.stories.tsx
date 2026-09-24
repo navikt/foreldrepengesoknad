@@ -49,6 +49,8 @@ const defaultSøker = {
         },
     ],
     arbeidsforhold: [],
+    frilansoppdrag: [],
+    selvstendigNæring: [],
 } satisfies FpPersonopplysningerDto_fpoversikt;
 
 const defaultAnnenForelder = {

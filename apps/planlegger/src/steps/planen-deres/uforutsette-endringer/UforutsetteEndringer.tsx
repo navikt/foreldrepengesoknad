@@ -10,13 +10,15 @@ import { ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
 import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
+import { erFødtFørUke33 } from '@navikt/fp-utils';
 
 import { FødtFørUke33 } from './FødtFørUke33';
 import { HvisBarnetErInnlagt } from './HvisBarnetErInnlagt';
-import { HvisBarnetErSyktEllerInnlagt } from './HvisBarnetErSyktEllerInnlagt';
 import { HvisDuBlirSyk } from './HvisDuBlirSyk';
 import { HvisMorBlirSyk } from './HvisMorBlirSyk';
 import { NyttBarnFørTreÅr } from './NyttBarnFørTreÅr';
+import { PrematurBarnInnlagtEtterTermin } from './PrematurBarnInnlagtEtterTermin';
+import { PrematurBarnInnlagtFørTermin } from './PrematurBarnInnlagtFørTermin';
 
 interface Props {
     hvemPlanlegger: HvemPlanlegger;
@@ -33,6 +35,14 @@ export const UforutsetteEndringer = ({ hvemPlanlegger, arbeidssituasjon, barnet 
     const kunMorHarRett = erMorDelAvSøknaden(hvemPlanlegger) && arbeidssituasjon.jobberAnnenPart === false;
     const kunFarEllerMedmorHarRett = hvemHarRett === 'kunSøker2HarRett';
     const erFarOgFar = hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR;
+    const erPrematurFødsel =
+        barnet.erFødsel &&
+        'fødselsdato' in barnet &&
+        'termindato' in barnet &&
+        erFødtFørUke33(barnet.fødselsdato, barnet.termindato);
+    const visPrematurInnleggelsesinfo =
+        erPrematurFødsel &&
+        ((beggeHarRett && !erFarOgFar) || kunMorHarRett || (erAleneforsørger && erMorDelAvSøknaden(hvemPlanlegger)));
     const erFarOgFarKunMedfarHarRett =
         hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && kunFarEllerMedmorHarRett;
 
@@ -67,15 +77,23 @@ export const UforutsetteEndringer = ({ hvemPlanlegger, arbeidssituasjon, barnet 
                                     />
                                 )}
 
-                                {((erAleneforsørger && !erMorDelAvSøknaden(hvemPlanlegger)) ||
-                                    erFarOgFar ||
-                                    kunFarEllerMedmorHarRett) && (
-                                    <HvisBarnetErSyktEllerInnlagt arbeidssituasjon={arbeidssituasjon} />
-                                )}
-                                {((beggeHarRett && !erFarOgFar) ||
-                                    kunMorHarRett ||
-                                    (erAleneforsørger && erMorDelAvSøknaden(hvemPlanlegger))) && (
-                                    <HvisBarnetErInnlagt arbeidssituasjon={arbeidssituasjon} />
+                                {!visPrematurInnleggelsesinfo &&
+                                    ((erAleneforsørger && !erMorDelAvSøknaden(hvemPlanlegger)) ||
+                                        erFarOgFar ||
+                                        kunFarEllerMedmorHarRett) && (
+                                        <HvisBarnetErInnlagt arbeidssituasjon={arbeidssituasjon} />
+                                    )}
+                                {!visPrematurInnleggelsesinfo &&
+                                    ((beggeHarRett && !erFarOgFar) ||
+                                        kunMorHarRett ||
+                                        (erAleneforsørger && erMorDelAvSøknaden(hvemPlanlegger))) && (
+                                        <HvisBarnetErInnlagt arbeidssituasjon={arbeidssituasjon} />
+                                    )}
+                                {visPrematurInnleggelsesinfo && (
+                                    <>
+                                        <PrematurBarnInnlagtFørTermin arbeidssituasjon={arbeidssituasjon} />
+                                        <PrematurBarnInnlagtEtterTermin erAleneforsørger={!beggeHarRett} />
+                                    </>
                                 )}
 
                                 {!erFarOgFarKunMedfarHarRett && (
@@ -87,7 +105,7 @@ export const UforutsetteEndringer = ({ hvemPlanlegger, arbeidssituasjon, barnet 
                         ) : (
                             <>
                                 <HvisDuBlirSyk arbeidssituasjon={arbeidssituasjon} />
-                                <HvisBarnetErSyktEllerInnlagt arbeidssituasjon={arbeidssituasjon} />
+                                <HvisBarnetErInnlagt arbeidssituasjon={arbeidssituasjon} />
                                 <NyttBarnFørTreÅr arbeidssituasjon={arbeidssituasjon} hvemPlanlegger={hvemPlanlegger} />
                             </>
                         )}

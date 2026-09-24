@@ -2,6 +2,8 @@ import { AppShell, createDefaultQueryClient } from '@navikt/fp-app-shell';
 import { filopplasterMessages } from '@navikt/fp-filopplaster';
 import { formHookMessages } from '@navikt/fp-form-hooks';
 import { observabilityMessages } from '@navikt/fp-observability';
+import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
+import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
 import { kvitteringMessages } from '@navikt/fp-steg-kvittering';
 import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
 import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
@@ -20,6 +22,8 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...utenlandsoppholdMessages.nb,
         ...oppsummeringMessages.nb,
         ...utilsMessages.nb,
+        ...arbeidsforholdOgInntektMessages.nb,
+        ...egenNæringMessages.nb,
         ...formHookMessages.nb,
         ...kvitteringMessages.nb,
         ...filopplasterMessages.nb,
@@ -31,6 +35,8 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...utenlandsoppholdMessages.nn,
         ...oppsummeringMessages.nn,
         ...utilsMessages.nn,
+        ...arbeidsforholdOgInntektMessages.nn,
+        ...egenNæringMessages.nn,
         ...formHookMessages.nn,
         ...kvitteringMessages.nn,
         ...filopplasterMessages.nn,
@@ -42,6 +48,8 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...utenlandsoppholdMessages.en,
         ...oppsummeringMessages.en,
         ...utilsMessages.en,
+        ...arbeidsforholdOgInntektMessages.en,
+        ...egenNæringMessages.en,
         ...formHookMessages.en,
         ...kvitteringMessages.en,
         ...filopplasterMessages.en,

@@ -9,7 +9,7 @@ import {
 import { søkerHarKunEtAktivtArbeid } from 'utils/arbeidsforholdUtils';
 import { getTilretteleggingId, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
 
-import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
+import { EGEN_NÆRING_ID, skalViseEgenNæringSteg } from '@navikt/fp-steg-egen-naering';
 import { EksternArbeidsforholdDto_fpoversikt, FRILANS_ID } from '@navikt/fp-types';
 import { ProgressStep } from '@navikt/fp-ui';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
@@ -132,6 +132,7 @@ const getStepConfig = (
     currentPath: string,
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     getStateData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
+    harRegistrertNæring: boolean,
 ): Array<ProgressStep<string>> => {
     const arbeidsforholdOgInntekt = getStateData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const tilrettelegginger = getStateData(ContextDataType.TILRETTELEGGINGER);
@@ -157,7 +158,16 @@ const getStepConfig = (
         steps.push(createStep(SøknadRoute.FRILANS, intl, currentPath));
     }
 
-    if (arbeidsforholdOgInntekt?.harJobbetSomSelvstendigNæringsdrivende) {
+    if (
+        skalViseEgenNæringSteg({
+            harJobbetSomSelvstendigNæringsdrivende:
+                arbeidsforholdOgInntekt?.harJobbetSomSelvstendigNæringsdrivende === true,
+            harRegistrertNæring,
+            egenNæring: getStateData(ContextDataType.EGEN_NÆRING),
+            // eslint-disable-next-line unicorn/no-useless-coercion
+            erPåEgenNæringSteg: currentPath === SøknadRoute.NÆRING.toString(),
+        })
+    ) {
         steps.push(createStep(SøknadRoute.NÆRING, intl, currentPath));
     }
 
@@ -234,11 +244,19 @@ const getStepConfig = (
     return steps;
 };
 
-export const useStepConfig = (arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[]): Array<ProgressStep<string>> => {
+interface UseStepConfigParams {
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    harRegistrertNæring: boolean;
+}
+
+export const useStepConfig = ({
+    arbeidsforhold,
+    harRegistrertNæring,
+}: UseStepConfigParams): Array<ProgressStep<string>> => {
     const intl = useIntl();
 
     const location = useLocation();
     const getStateData = useContextGetAnyData();
 
-    return getStepConfig(intl, location.pathname, arbeidsforhold, getStateData);
+    return getStepConfig(intl, location.pathname, arbeidsforhold, getStateData, harRegistrertNæring);
 };

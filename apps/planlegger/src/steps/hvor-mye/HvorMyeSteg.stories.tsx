@@ -68,6 +68,25 @@ export const FlereForsørgere: Story = {
     },
 };
 
+export const FarOgFarKunFar2HarRett: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåFar: 'Espen Utvikler',
+            navnPåMedfar: 'Ola Utvikler',
+            type: HvemPlanleggerType.FAR_OG_FAR,
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.INGEN,
+            jobberAnnenPart: true,
+        },
+        satser: DEFAULT_SATSER,
+        hvorMye: {
+            lønnSøker1: undefined,
+            lønnSøker2: undefined,
+        },
+    },
+};
+
 export const AleneforsørgerMor: Story = {
     args: {
         hvemPlanlegger: {

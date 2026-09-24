@@ -26,29 +26,35 @@ describe('Test av mellomlagring', () => {
         expect(result).toBe(true);
     });
 
-    it('Burde ikke bruke endringssøknad uten opprinnelig uttaksplan', () => {
-        const result = shouldApplyStorage({
-            version: VERSJON_MELLOMLAGRING,
-            erEndringssøknad: true,
-            APP_ROUTE: SøknadRoutes.UTTAKSPLAN,
-        });
+    it.each([SøknadRoutes.UTTAKSPLAN, SøknadRoutes.DOKUMENTASJON, SøknadRoutes.OPPSUMMERING])(
+        'skal ikke gjenoppta endringssøknad på %s uten opprinnelig uttaksplan',
+        (route) => {
+            const result = shouldApplyStorage({
+                version: VERSJON_MELLOMLAGRING,
+                erEndringssøknad: true,
+                APP_ROUTE: route,
+            });
 
-        expect(result).toBe(false);
-    });
+            expect(result).toBe(false);
+        },
+    );
 
-    it('Burde bruke endringssøknad med opprinnelig uttaksplan', () => {
-        const result = shouldApplyStorage({
-            version: VERSJON_MELLOMLAGRING,
-            erEndringssøknad: true,
-            APP_ROUTE: SøknadRoutes.OPPSUMMERING,
-            OPPRINNELIG_UTTAKSPLAN: {
-                saksnummer: 'SAK-001',
-                perioder: [],
-            },
-        });
+    it.each([SøknadRoutes.UTTAKSPLAN, SøknadRoutes.DOKUMENTASJON, SøknadRoutes.OPPSUMMERING])(
+        'skal gjenoppta endringssøknad på %s med opprinnelig uttaksplan',
+        (route) => {
+            const result = shouldApplyStorage({
+                version: VERSJON_MELLOMLAGRING,
+                erEndringssøknad: true,
+                APP_ROUTE: route,
+                OPPRINNELIG_UTTAKSPLAN: {
+                    saksnummer: 'SAK-001',
+                    perioder: [],
+                },
+            });
 
-        expect(result).toBe(true);
-    });
+            expect(result).toBe(true);
+        },
+    );
 
     it('Burde ikke bruke mellomlagrede data hvis currentRoute er en rute som ikke finnes for endringssøknad', () => {
         let result = shouldApplyStorage({

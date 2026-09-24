@@ -9,7 +9,7 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 import { annenPartVedtak } from 'storybookData/annenPartVedtak';
-import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
+import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { AnnenForelder } from 'types/AnnenForelder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
@@ -63,6 +63,8 @@ const defaultSøkerinfoMor = {
             stillingsprosent: 50,
         },
     ],
+    frilansoppdrag: [],
+    selvstendigNæring: [],
 } satisfies FpPersonopplysningerDto_fpoversikt;
 
 const defaultSøkerinfoFar = {
@@ -85,6 +87,8 @@ const defaultSøkerinfoFar = {
         },
     ],
     arbeidsforhold: [],
+    frilansoppdrag: [],
+    selvstendigNæring: [],
 } satisfies FpPersonopplysningerDto_fpoversikt;
 
 const defaultBarn = {
@@ -179,7 +183,6 @@ const defaultUttaksplanFarAleneomsorgMedTaptPeriode = [
 ] satisfies PeriodeDto_fpoversikt[];
 
 const defaultArbeidsforholdOgInntekt = {
-    harHattAndreInntektskilder: false,
     harJobbetSomFrilans: false,
     harJobbetSomSelvstendigNæringsdrivende: false,
 } satisfies ArbeidsforholdOgInntektFp;
@@ -615,7 +618,6 @@ export const MorMedArbeidsforholdOgAndreInntekter: Story = {
         ...Default.args,
         arbeidsforholdOgInntekt: {
             harJobbetSomFrilans: true,
-            harHattAndreInntektskilder: false,
             harJobbetSomSelvstendigNæringsdrivende: false,
         },
         frilans: {
@@ -652,7 +654,6 @@ export const MorMedSelvstendigNæringsdrivende: Story = {
         ...Default.args,
         arbeidsforholdOgInntekt: {
             harJobbetSomFrilans: false,
-            harHattAndreInntektskilder: false,
             harJobbetSomSelvstendigNæringsdrivende: true,
         },
         egenNæring: {
@@ -678,7 +679,6 @@ export const MorMedSelvstendigNæringsdrivendeUtenDiverse: Story = {
         ...Default.args,
         arbeidsforholdOgInntekt: {
             harJobbetSomFrilans: false,
-            harHattAndreInntektskilder: false,
             harJobbetSomSelvstendigNæringsdrivende: true,
         },
         egenNæring: {
@@ -703,12 +703,11 @@ export const MorMedAndreInntekterJobbIUtlandet: Story = {
         ...Default.args,
         arbeidsforholdOgInntekt: {
             harJobbetSomFrilans: false,
-            harHattAndreInntektskilder: true,
             harJobbetSomSelvstendigNæringsdrivende: false,
         },
         andreInntekter: [
             {
-                type: AnnenInntektType.JOBB_I_UTLANDET,
+                type: 'JOBB_I_UTLANDET',
                 pågående: false,
                 fom: '2018-01-01',
                 tom: '2021-01-01',
@@ -716,12 +715,12 @@ export const MorMedAndreInntekterJobbIUtlandet: Story = {
                 land: 'SWE',
             },
             {
-                type: AnnenInntektType.MILITÆRTJENESTE,
+                type: 'MILITÆR_ELLER_SIVILTJENESTE',
                 pågående: true,
                 fom: '2022-01-01',
             },
             {
-                type: AnnenInntektType.SLUTTPAKKE,
+                type: 'ETTERLØNN_SLUTTPAKKE',
                 fom: '2022-01-01',
                 tom: '2023-01-01',
             },
@@ -738,12 +737,11 @@ export const MorMedAndreInntekterMilitærtjeneste: Story = {
         ...Default.args,
         arbeidsforholdOgInntekt: {
             harJobbetSomFrilans: false,
-            harHattAndreInntektskilder: true,
             harJobbetSomSelvstendigNæringsdrivende: false,
         },
         andreInntekter: [
             {
-                type: AnnenInntektType.MILITÆRTJENESTE,
+                type: 'MILITÆR_ELLER_SIVILTJENESTE',
                 pågående: false,
                 fom: '2018-01-01',
                 tom: '2021-01-01',
@@ -971,7 +969,6 @@ export const FarSøkerMorMåIkkeDokumentereArbeid: Story = {
         },
         arbeidsforholdOgInntekt: {
             harJobbetSomFrilans: false,
-            harHattAndreInntektskilder: false,
             harJobbetSomSelvstendigNæringsdrivende: false,
         },
         uttaksplan: defaultUttaksplanFar,
@@ -1022,7 +1019,6 @@ export const FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning: Story =
         },
         arbeidsforholdOgInntekt: {
             harJobbetSomFrilans: false,
-            harHattAndreInntektskilder: false,
             harJobbetSomSelvstendigNæringsdrivende: false,
         },
         uttaksplan: defaultUttaksplanFar,
@@ -1069,7 +1065,6 @@ export const FarSøkerMorMåDokumentereArbeid: Story = {
         },
         arbeidsforholdOgInntekt: {
             harJobbetSomFrilans: false,
-            harHattAndreInntektskilder: false,
             harJobbetSomSelvstendigNæringsdrivende: false,
         },
         uttaksplan: defaultUttaksplanFar,
@@ -1111,7 +1106,6 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
         },
         arbeidsforholdOgInntekt: {
             harJobbetSomFrilans: false,
-            harHattAndreInntektskilder: false,
             harJobbetSomSelvstendigNæringsdrivende: false,
         },
     },

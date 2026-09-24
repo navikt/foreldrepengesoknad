@@ -17,8 +17,6 @@ import { formatCurrencyWithKr, formatDate } from '@navikt/fp-utils';
 
 import { hentInntektsmelding, hentSakerOptions } from '../../api/queries.ts';
 import { InntektsmeldingHeader } from '../../components/header/Header';
-import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
-import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
 import { getAlleYtelser, mapSakerDTOToSaker } from '../../utils/sakerUtils';
@@ -37,8 +35,6 @@ const useGetYtelse = () => {
 };
 
 export const InntektsmeldingPage = () => {
-    useSetBackgroundColor('white');
-    useSetSelectedRoute(OversiktRoutes.INNTEKTSMELDING);
     const intl = useIntl();
     // Siden vi er opptatt av om du tjener over 6G så settes G til uendelig om den loader eller ikke er tilgjengelig.
     const GRUNNBELØP = DEFAULT_SATSER.grunnbeløp[0]!.verdi;

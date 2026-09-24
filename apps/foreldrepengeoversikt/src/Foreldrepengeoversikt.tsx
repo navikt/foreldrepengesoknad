@@ -6,13 +6,13 @@ import { Loader } from '@navikt/ds-react';
 import { hentSakerOptions, minidialogOptions, søkerInfoOptions } from './api/queries.ts';
 import { ErrorAlert } from './components/error-boundary/ErrorAlert';
 import { ScrollToTop } from './components/scroll-to-top/ScrollToTop';
-import { useGetBackgroundColor } from './hooks/useBackgroundColor';
 import { ForeldrepengeoversiktRoutes } from './routes/ForeldrepengeoversiktRoutes';
+import { useOversiktBackgroundColor } from './routes/useSelectedOversiktRoute';
 import { SakOppslag } from './types/SakOppslag';
 import { mapSakerDTOToSaker } from './utils/sakerUtils';
 
 export const Foreldrepengeoversikt = () => {
-    const backgroundColor = useGetBackgroundColor();
+    const backgroundColor = useOversiktBackgroundColor();
 
     // Denne trenger vi ikke før senere. Men vi putter den i cache så tidlig som mulig.
     useQuery(minidialogOptions());

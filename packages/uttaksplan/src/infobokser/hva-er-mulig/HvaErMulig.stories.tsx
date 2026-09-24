@@ -210,6 +210,30 @@ export const FødselFarOgFarKunFar1HarRett: Story = {
     },
 };
 
+/**
+ * Modellerer den faktiske kombinasjonen fra produksjon: den innloggede søkeren
+ * er far/medmor (`isFarEllerMedmor`), som alltid gir `søker: 'FAR_MEDMOR'` i
+ * `UttaksplanSteg.tsx` uavhengig av `erFarOgFar`. Denne kombinasjonen skal
+ * behandles likt som `FødselFarOgFarKunFar1HarRett` over (ingen mor-spesifikt
+ * innhold), selv om `søker` her er `FAR_MEDMOR` i stedet for `MOR`.
+ */
+export const FødselFarOgFarKunEnAvDemHarRettSøkerErFarMedmor: Story = {
+    args: {
+        erFarOgFar: true,
+        foreldreInfo: {
+            ...DEFAULT_FORELDREINFO,
+            søker: 'FAR_MEDMOR',
+            erMedmorDelAvSøknaden: true,
+            navnPåForeldre: {
+                mor: 'Espen',
+                farMedmor: 'Jan',
+            },
+            rettighetType: 'BARE_SØKER_RETT',
+        },
+        erEndringssøknad: false,
+    },
+};
+
 export const FødselAleneforsørgerMor: Story = {
     args: {
         foreldreInfo: {

@@ -48,6 +48,8 @@ const søkerInfoKvinne = {
     erGift: false,
     barn: [],
     arbeidsforhold: [],
+    frilansoppdrag: [],
+    selvstendigNæring: [],
 } satisfies FpPersonopplysningerDto_fpoversikt;
 
 const søkerInfoMann = {
@@ -61,6 +63,8 @@ const søkerInfoMann = {
     erGift: false,
     barn: [],
     arbeidsforhold: [],
+    frilansoppdrag: [],
+    selvstendigNæring: [],
 } satisfies FpPersonopplysningerDto_fpoversikt;
 
 const promiseAction = () => () => {
@@ -115,7 +119,6 @@ const meta = {
                         [ContextDataType.SØKERSITUASJON]: søkersituasjon,
                         [ContextDataType.OM_BARNET]: barnet,
                         [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
-                            harHattAndreInntektskilder: false,
                             harJobbetSomFrilans: false,
                             harJobbetSomSelvstendigNæringsdrivende: false,
                         },

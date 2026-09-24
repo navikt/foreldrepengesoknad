@@ -27,10 +27,7 @@ import { notEmpty } from '@navikt/fp-validation';
 import { API_URLS, sendEttersending, søkerInfoOptions } from '../../api/queries.ts';
 import { EttersendingHeader } from '../../components/header/Header';
 import { ScrollToTop } from '../../components/scroll-to-top/ScrollToTop';
-import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
-import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
-import { OversiktRoutes } from '../../routes/routes';
 import { getAlleYtelser } from '../../utils/sakerUtils';
 import { getRelevanteSkjemanummer } from '../../utils/skjemanummerUtils';
 
@@ -109,11 +106,9 @@ type Props = {
 
 const EttersendingPageInner = ({ saker }: Props) => {
     const intl = useIntl();
-    useSetBackgroundColor('white');
     useDocumentTitle(
         `${intl.formatMessage({ id: 'lastOppDokumenter' })} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
     );
-    useSetSelectedRoute(OversiktRoutes.ETTERSEND);
     const params = useParams();
     const søkerInfo = useQuery(søkerInfoOptions()).data;
 
