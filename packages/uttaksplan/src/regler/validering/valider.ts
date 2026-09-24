@@ -3,11 +3,13 @@ import { IntlShape } from 'react-intl';
 import { lagArbeidOgUttakFørsteSeksUkerOmråde } from './arbeidOgUttakDeFørsteSeksUkene';
 import { lagFarMedmorMaksToUkerRundtFødselOmråde } from './farMedmorMaksToUkerRundtFødsel';
 import { lagFarMedmorRundtFødselOmråde } from './farMedmorRundtFødsel';
+import { lagFlerbarnsdagerFørFødselOmråde } from './flerbarnsdagerFørFødsel';
 import { lagSamtidigUttakOmråde } from './samtidigUttak';
 import { ValideringInput, Valideringsområde, førsteBrutteValideringsregel } from './types';
 
 export const lagValideringsområder = (intl: IntlShape) =>
     [
+        lagFlerbarnsdagerFørFødselOmråde(intl),
         lagArbeidOgUttakFørsteSeksUkerOmråde(intl),
         lagSamtidigUttakOmråde(intl),
         lagFarMedmorRundtFødselOmråde(intl),
@@ -29,6 +31,7 @@ const validerOmråde = <TCtx>(område: Valideringsområde<TCtx>, input: Valideri
  */
 export const valider = (input: ValideringInput, intl: IntlShape): string | null => {
     const [
+        flerbarnsdagerFørFødselOmråde,
         arbeidOgUttakFørsteSeksUkerOmråde,
         samtidigUttakOmråde,
         farMedmorRundtFødselOmråde,
@@ -36,6 +39,7 @@ export const valider = (input: ValideringInput, intl: IntlShape): string | null 
     ] = lagValideringsområder(intl);
 
     for (const feilmelding of [
+        validerOmråde(flerbarnsdagerFørFødselOmråde, input),
         validerOmråde(arbeidOgUttakFørsteSeksUkerOmråde, input),
         validerOmråde(samtidigUttakOmråde, input),
         validerOmråde(farMedmorRundtFødselOmråde, input),
