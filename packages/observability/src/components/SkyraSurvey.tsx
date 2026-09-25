@@ -58,23 +58,30 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
         return null;
     }
 
-    const surveyContent = hasCompletedSurvey ? (
-        <BodyShort>
-            <FormattedMessage id="SkyraSurvey.Takk" />
-        </BodyShort>
-    ) : surveyStatus === 'error' ? (
-        <BodyShort>
-            <FormattedMessage id="SkyraSurvey.Feil" />
-        </BodyShort>
-    ) : surveyStatus === 'loading' ? (
-        <VStack gap="space-8">
-            <Skeleton variant="text" />
-            <Skeleton variant="rounded" width="100%" height={30} />
-            <HStack justify="end">
-                <Skeleton variant="rounded" width="30%" height={50} />
-            </HStack>
-        </VStack>
-    ) : null;
+    let surveyContent = null;
+    if (hasCompletedSurvey) {
+        surveyContent = (
+            <BodyShort>
+                <FormattedMessage id="SkyraSurvey.Takk" />
+            </BodyShort>
+        );
+    } else if (surveyStatus === 'error') {
+        surveyContent = (
+            <BodyShort>
+                <FormattedMessage id="SkyraSurvey.Feil" />
+            </BodyShort>
+        );
+    } else if (surveyStatus === 'loading') {
+        surveyContent = (
+            <VStack gap="space-8">
+                <Skeleton variant="text" />
+                <Skeleton variant="rounded" width="100%" height={30} />
+                <HStack justify="end">
+                    <Skeleton variant="rounded" width="30%" height={50} />
+                </HStack>
+            </VStack>
+        );
+    }
 
     return (
         <ExpansionCard
