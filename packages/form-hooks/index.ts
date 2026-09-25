@@ -15,8 +15,8 @@ export { RhfTextarea } from './src/form-wrappers/RhfTextarea';
 export { RhfNumericField } from './src/form-wrappers/RhfNumericField';
 export { RhfConfirmationPanel } from './src/form-wrappers/RhfConfirmationPanel';
 export { StepButtonsHookForm } from './src/StepButtonsHookForm';
-export { ErrorMessageHookForm } from './src/error/ErrorMessageHookForm';
 export { ErrorSummaryHookForm } from './src/error/ErrorSummaryHookForm';
+export { trimStringValues } from './src/form-wrappers/formUtils';
 
 export const formHookMessages = {
     nb: nbMessages,

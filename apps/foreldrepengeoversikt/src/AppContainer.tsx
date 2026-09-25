@@ -65,7 +65,6 @@ export const AppContainer = () => (
         availableLocales={['nb', 'nn', 'en']}
         messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}
         queryClient={queryClient}
-        withByttBrowserModal
         renderErrorBoundary={(children) => <ErrorBoundary>{children}</ErrorBoundary>}
     >
         <Routes>

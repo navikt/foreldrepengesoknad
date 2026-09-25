@@ -4,6 +4,7 @@ import {
     finnAntallTidelerÅTrekke,
     harPeriodeDerMorsAktivitetIkkeErValgt,
     harPeriodeMedUkjentGraderingsaktivitet,
+    sorterUttakPerioder,
 } from './periodeUtils';
 
 const lagFarPeriode = (overrides: Partial<UttakPeriode_fpoversikt> = {}): UttakPeriode_fpoversikt => ({
@@ -23,6 +24,54 @@ const lagMorPeriode = (overrides: Partial<UttakPeriode_fpoversikt> = {}): UttakP
     kontoType: 'MØDREKVOTE',
     flerbarnsdager: false,
     ...overrides,
+});
+
+describe('sorterUttakPerioder', () => {
+    const perioder = [
+        lagFarPeriode({ fom: '2025-06-02', tom: '2025-06-06' }),
+        lagFarPeriode({ fom: '2025-06-04', tom: '2025-06-10' }),
+        lagMorPeriode({ fom: '2025-06-02', tom: '2025-06-10' }),
+        lagMorPeriode({ fom: '2025-06-02', tom: '2025-06-13' }),
+        lagFarPeriode({ fom: '2025-06-16', tom: '2025-06-20' }),
+    ];
+
+    it('skal sortere omsluttede perioder først, også ved lik start eller slutt', () => {
+        expect([...perioder].reverse().sort(sorterUttakPerioder)).toEqual(perioder);
+    });
+
+    it('skal bevare rekkefølgen til perioder med identiske datoer', () => {
+        const mor = lagMorPeriode();
+        const far = lagFarPeriode();
+
+        expect(sorterUttakPerioder(mor, far)).toBe(0);
+        expect(sorterUttakPerioder(mor, mor)).toBe(0);
+        expect([mor, far].sort(sorterUttakPerioder)).toEqual([mor, far]);
+        expect([far, mor].sort(sorterUttakPerioder)).toEqual([far, mor]);
+    });
+
+    it('skal gi motsatt fortegn når argumentene byttes og ha transitiv rekkefølge', () => {
+        for (const a of perioder) {
+            for (const b of perioder) {
+                expect(Math.sign(sorterUttakPerioder(a, b)) + Math.sign(sorterUttakPerioder(b, a))).toBe(0);
+                const etterfølgendePerioder = perioder.filter(
+                    (c) => sorterUttakPerioder(a, b) <= 0 && sorterUttakPerioder(b, c) <= 0,
+                );
+                for (const c of etterfølgendePerioder) {
+                    expect(sorterUttakPerioder(a, c)).toBeLessThanOrEqual(0);
+                }
+            }
+        }
+    });
+
+    it('skal sortere ugyldige perioder først og behandle to ugyldige perioder likt', () => {
+        const ugyldig = lagFarPeriode({ fom: '2025-06-10', tom: '2025-06-02' });
+        const annenUgyldig = lagMorPeriode({ fom: 'ugyldig' });
+        const gyldig = lagMorPeriode();
+
+        expect(sorterUttakPerioder(ugyldig, annenUgyldig)).toBe(0);
+        expect(sorterUttakPerioder(ugyldig, gyldig)).toBeLessThan(0);
+        expect(sorterUttakPerioder(gyldig, ugyldig)).toBeGreaterThan(0);
+    });
 });
 
 describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {

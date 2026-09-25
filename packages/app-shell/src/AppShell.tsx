@@ -9,7 +9,7 @@ import { Provider, Theme } from '@navikt/ds-react';
 import { en, nb, nn } from '@navikt/ds-react/locales';
 
 import type { AppName, LocaleAll } from '@navikt/fp-types';
-import { ByttBrowserModal, ErrorBoundary as FpUiErrorBoundary, IntlProvider } from '@navikt/fp-ui';
+import { ErrorBoundary as FpUiErrorBoundary, IntlProvider } from '@navikt/fp-ui';
 import { getDecoratorLanguageCookie } from '@navikt/fp-utils';
 
 export type AvailableLocale = LocaleAll;
@@ -24,8 +24,6 @@ export interface AppShellProps {
     queryClient: QueryClient;
     /** Vis ReactQueryDevtools (default true). */
     withReactQueryDevtools?: boolean;
-    /** Vis ByttBrowserModal (default false). */
-    withByttBrowserModal?: boolean;
     /** Scroll til topp ved navigasjon (default false). */
     scrollToTopOnNavigation?: boolean;
     /**
@@ -63,7 +61,6 @@ export const AppShell = ({
     messagesGroupedByLocale,
     queryClient,
     withReactQueryDevtools = true,
-    withByttBrowserModal = false,
     scrollToTopOnNavigation = false,
     renderErrorBoundary,
     retryCallback,
@@ -111,7 +108,6 @@ export const AppShell = ({
                     <QueryClientProvider client={queryClient}>
                         {withReactQueryDevtools && <ReactQueryDevtools />}
                         <Provider locale={dsLocaleFor(locale)}>
-                            {withByttBrowserModal && <ByttBrowserModal />}
                             {scrollToTopOnNavigation && <ScrollToTop />}
                             {children}
                         </Provider>

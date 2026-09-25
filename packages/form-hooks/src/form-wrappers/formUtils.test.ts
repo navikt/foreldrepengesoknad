@@ -1,6 +1,6 @@
 import { FieldErrors } from 'react-hook-form';
 
-import { ValidationReturnType, getError, getValidationRules } from './formUtils';
+import { ValidationReturnType, getError, getValidationRules, trimStringValues } from './formUtils';
 
 interface TestForm {
     navn: string;
@@ -79,5 +79,42 @@ describe('getValidationRules', () => {
         const rules = getValidationRules([ikkeTom]) as Record<string, (value: string) => ValidationReturnType | true>;
 
         expect(rules['0']?.('')).toBe('Påkrevd');
+    });
+});
+
+describe('trimStringValues', () => {
+    it('skal fjerne whitespace i start og slutt av en tekstverdi', () => {
+        expect(trimStringValues('  Ola  ')).toBe('Ola');
+    });
+
+    it('skal fjerne whitespace i nøstede objekt og lister', () => {
+        const values = {
+            navn: ' Ola ',
+            adresse: { gate: ' Storgata 1\n' },
+            barn: [{ navn: ' Kari ' }],
+        };
+
+        expect(trimStringValues(values)).toEqual({
+            navn: 'Ola',
+            adresse: { gate: 'Storgata 1' },
+            barn: [{ navn: 'Kari' }],
+        });
+    });
+
+    it('skal ikke endre verdier som ikke er tekst', () => {
+        const values = { antall: 2, erSant: true, ingenting: null, udefinert: undefined };
+
+        expect(trimStringValues(values)).toEqual(values);
+    });
+
+    it('skal la objekt som ikke er vanlige objekt være urørt', () => {
+        const dato = new Date('2024-01-01');
+        const fil = new File([''], 'test.pdf');
+
+        const result = trimStringValues({ dato, vedlegg: [{ file: fil, navn: ' test.pdf ' }] });
+
+        expect(result.dato).toBe(dato);
+        expect(result.vedlegg[0]?.file).toBe(fil);
+        expect(result.vedlegg[0]?.navn).toBe('test.pdf');
     });
 });

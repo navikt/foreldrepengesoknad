@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { ReactNode } from 'react';
 
 type Props = {
@@ -6,5 +5,5 @@ type Props = {
     className?: string;
 };
 export const LayoutWrapper = ({ children, className }: Props) => {
-    return <div className={classNames('ax-md:w-[704px] m-auto w-full', className)}>{children}</div>;
+    return <div className={['ax-md:w-[704px] m-auto w-full', className].filter(Boolean).join(' ')}>{children}</div>;
 };

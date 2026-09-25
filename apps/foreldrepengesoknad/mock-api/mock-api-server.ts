@@ -1,4 +1,3 @@
-import dotenv from 'dotenv';
 import express from 'express';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -107,7 +106,6 @@ export const getAnnenPartVedtak = () => {
     }
 };
 
-dotenv.config();
 const app = express();
 const router = express.Router();
 

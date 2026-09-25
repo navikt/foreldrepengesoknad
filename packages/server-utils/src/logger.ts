@@ -3,7 +3,7 @@ import * as util from 'node:util';
 import winston from 'winston';
 
 const { format } = winston;
-const { combine, json, timestamp } = format;
+const { combine, json, splat, timestamp } = format;
 
 const levels = {
     error: 0,
@@ -38,7 +38,8 @@ const stdoutLogger = winston.createLogger({
     levels,
     transports: [
         new winston.transports.Console({
-            format: combine(timestamp(), uppercaseLevel(), json()),
+            // splat() is required for printf-style messages, e.g. from http-proxy-middleware
+            format: combine(timestamp(), splat(), uppercaseLevel(), json()),
         }),
     ],
 });

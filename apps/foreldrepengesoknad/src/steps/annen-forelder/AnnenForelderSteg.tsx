@@ -126,9 +126,9 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
             ...values,
             harRettPåForeldrepengerINorge,
             kanIkkeOppgis: false, // NOTE: må settes eksplisitt
-            fornavn: replaceInvisibleCharsWithSpace(fornavn) ?? '',
-            etternavn: replaceInvisibleCharsWithSpace(etternavn) ?? '',
-            fnr: replaceInvisibleCharsWithSpace(fnr.trim()) ?? '',
+            fornavn: replaceInvisibleCharsWithSpace(fornavn)?.trim() ?? '',
+            etternavn: replaceInvisibleCharsWithSpace(etternavn)?.trim() ?? '',
+            fnr: replaceInvisibleCharsWithSpace(fnr)?.trim() ?? '',
             harRettPåForeldrepengerIEØS,
         });
 
