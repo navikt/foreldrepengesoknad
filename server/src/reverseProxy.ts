@@ -40,7 +40,7 @@ export function configureReverseProxyApi(router: Router) {
         createProxyMiddleware({
             target: proxy.FPGRUNNDATA_API_URL,
             changeOrigin: true,
-            logger: console,
+            logger: logger.logger,
             on: {
                 proxyReq: (proxyRequest) => {
                     // Strip sesjons-cookien slik at IDporten-sidecar-cookien ikkje lek
