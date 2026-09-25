@@ -644,7 +644,8 @@ const StandardVisning = ({
     const ubrukteDagerErUtløpt = konto.konto === 'FORELDREPENGER_FØR_FØDSEL' && familiesituasjon === 'fødsel';
 
     const dagerBrukt =
-        fordeling?.brukteDager ?? summerDagerIPerioder(perioder, [konto], familiesituasjon, familiehendelsedato);
+        fordeling?.brukteDager ??
+        summerDagerIPerioder(perioder, valgtStønadskvote.kontoer, familiesituasjon, familiehendelsedato, konto.konto);
     const trekteDager = fordeling?.trekteDager ?? 0;
     const ikkeTrekteDagerBrukt = dagerBrukt - trekteDager;
     const ubrukteDager = konto.dager - dagerBrukt;

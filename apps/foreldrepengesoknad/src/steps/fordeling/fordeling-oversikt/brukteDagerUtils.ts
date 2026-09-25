@@ -66,7 +66,13 @@ const beregnBrukteUttaksdager = (
 ): KontoDto[] => {
     return tilgjengeligeStønadskvoter.kontoer
         .map((konto) => {
-            const dager = summerDagerIPerioder(perioder, [konto], familiesituasjon, familiehendelsesdato);
+            const dager = summerDagerIPerioder(
+                perioder,
+                tilgjengeligeStønadskvoter.kontoer,
+                familiesituasjon,
+                familiehendelsesdato,
+                konto.konto,
+            );
             return { konto: konto.konto, dager };
         })
         .filter((k) => k.dager > 0);

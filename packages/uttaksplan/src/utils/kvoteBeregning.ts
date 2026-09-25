@@ -129,46 +129,44 @@ export const beregnKvoteFordeling = (
     const aktivitetsfri = fordelinger.find((k) => k.konto.konto === 'AKTIVITETSFRI_KVOTE');
     const medAktivitetskrav = fordelinger.find((k) => k.konto.konto === 'FORELDREPENGER');
 
-    if (!aktivitetsfri || !medAktivitetskrav) {
-        return fordelinger;
+    if (aktivitetsfri && medAktivitetskrav) {
+        const vedtatteAktivitetsfrieDager = summerDagerIPerioder(
+            perioder.filter(
+                (p) =>
+                    erVanligUttakPeriode(p) &&
+                    p.resultat !== undefined &&
+                    getUttaksKontoType(p, kontoer) === 'AKTIVITETSFRI_KVOTE',
+            ),
+            kontoer,
+            familiesituasjon,
+            familiehendelsedato,
+        );
+
+        // Bare vedtatt forbruk kan overstige minsteretten og belaste resten av stønadsperioden.
+        const fraAktivitetsfri = Math.min(
+            Math.max(0, vedtatteAktivitetsfrieDager - aktivitetsfri.konto.dager),
+            medAktivitetskrav.konto.dager,
+        );
+        const trekteFraAktivitetsfri = Math.min(fraAktivitetsfri, aktivitetsfri.trekteDager);
+        aktivitetsfri.brukteDager -= fraAktivitetsfri;
+        aktivitetsfri.trekteDager -= trekteFraAktivitetsfri;
+        medAktivitetskrav.brukteDager += fraAktivitetsfri;
+        medAktivitetskrav.trekteDager += trekteFraAktivitetsfri;
+
+        // Uttak med aktivitetskrav kan bruke hele stønadsperioden. Trekte dager vises først på FPMAK.
+        const fraMedAktivitetskrav = Math.min(
+            Math.max(0, medAktivitetskrav.brukteDager - medAktivitetskrav.konto.dager),
+            Math.max(0, aktivitetsfri.konto.dager - aktivitetsfri.brukteDager),
+        );
+        const trekteFraMedAktivitetskrav = Math.max(
+            0,
+            fraMedAktivitetskrav - (medAktivitetskrav.brukteDager - medAktivitetskrav.trekteDager),
+        );
+        medAktivitetskrav.brukteDager -= fraMedAktivitetskrav;
+        medAktivitetskrav.trekteDager -= trekteFraMedAktivitetskrav;
+        aktivitetsfri.brukteDager += fraMedAktivitetskrav;
+        aktivitetsfri.trekteDager += trekteFraMedAktivitetskrav;
     }
-
-    const vedtatteAktivitetsfrieDager = summerDagerIPerioder(
-        perioder.filter(
-            (p) =>
-                erVanligUttakPeriode(p) &&
-                p.resultat !== undefined &&
-                getUttaksKontoType(p, kontoer) === 'AKTIVITETSFRI_KVOTE',
-        ),
-        kontoer,
-        familiesituasjon,
-        familiehendelsedato,
-    );
-
-    // Bare vedtatt forbruk kan overstige minsteretten og belaste resten av stønadsperioden.
-    const fraAktivitetsfri = Math.min(
-        Math.max(0, vedtatteAktivitetsfrieDager - aktivitetsfri.konto.dager),
-        medAktivitetskrav.konto.dager,
-    );
-    const trekteFraAktivitetsfri = Math.min(fraAktivitetsfri, aktivitetsfri.trekteDager);
-    aktivitetsfri.brukteDager -= fraAktivitetsfri;
-    aktivitetsfri.trekteDager -= trekteFraAktivitetsfri;
-    medAktivitetskrav.brukteDager += fraAktivitetsfri;
-    medAktivitetskrav.trekteDager += trekteFraAktivitetsfri;
-
-    // Uttak med aktivitetskrav kan bruke hele stønadsperioden. Trekte dager vises først på FPMAK.
-    const fraMedAktivitetskrav = Math.min(
-        Math.max(0, medAktivitetskrav.brukteDager - medAktivitetskrav.konto.dager),
-        Math.max(0, aktivitetsfri.konto.dager - aktivitetsfri.brukteDager),
-    );
-    const trekteFraMedAktivitetskrav = Math.max(
-        0,
-        fraMedAktivitetskrav - (medAktivitetskrav.brukteDager - medAktivitetskrav.trekteDager),
-    );
-    medAktivitetskrav.brukteDager -= fraMedAktivitetskrav;
-    medAktivitetskrav.trekteDager -= trekteFraMedAktivitetskrav;
-    aktivitetsfri.brukteDager += fraMedAktivitetskrav;
-    aktivitetsfri.trekteDager += trekteFraMedAktivitetskrav;
 
     return fordelinger;
 };
@@ -264,23 +262,22 @@ export const tellDagerIUttaksPeriodene = (
 
 export const summerDagerIPerioder = (
     perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-    konto: KontoDto[],
+    kontoer: KontoDto[],
     familiesituasjon: Familiesituasjon,
     familiehendelsedato: string,
+    kontoSomSkalSummeres?: KontoTypeUttak,
 ) => {
-    const aktuelleKontotyper = new Set(
-        perioder.map((p) => {
-            if (!('trekkdager' in p) && p.oppholdÅrsak) {
-                return getStønadskvoteTypeFromOppholdÅrsakType(p.oppholdÅrsak);
-            }
+    const aktuelleKontotyper = kontoSomSkalSummeres
+        ? [kontoSomSkalSummeres]
+        : new Set(
+              perioder.map((p) => {
+                  if (!('trekkdager' in p) && p.oppholdÅrsak) {
+                      return getStønadskvoteTypeFromOppholdÅrsakType(p.oppholdÅrsak);
+                  }
 
-            return getUttaksKontoType(p, konto);
-        }),
-    );
-
-    if (aktuelleKontotyper === undefined) {
-        return 0;
-    }
+                  return getUttaksKontoType(p, kontoer);
+              }),
+          );
 
     const erFødsel = familiesituasjon === 'fødsel';
 
@@ -289,7 +286,7 @@ export const summerDagerIPerioder = (
     let tidelerTotalt = 0;
 
     for (const aktuellKontoType of aktuelleKontotyper) {
-        const gjeldendeKonto = konto.find((k) => k.konto === aktuellKontoType);
+        const gjeldendeKonto = kontoer.find((k) => k.konto === aktuellKontoType);
 
         if (!gjeldendeKonto || !aktuellKontoType) {
             continue;
@@ -298,7 +295,7 @@ export const summerDagerIPerioder = (
         const tidelerEøs = Math.min(
             sum(
                 perioder
-                    .filter((p) => 'trekkdager' in p && getUttaksKontoType(p, konto) === aktuellKontoType)
+                    .filter((p) => 'trekkdager' in p && getUttaksKontoType(p, kontoer) === aktuellKontoType)
                     .map((p) => finnAntallTidelerÅTrekke(p, erFødsel, familiehendelsedato)),
             ),
             gjeldendeKonto.dager * 10,
@@ -307,7 +304,7 @@ export const summerDagerIPerioder = (
             perioder
                 .filter(
                     (p) =>
-                        (!('trekkdager' in p) && getUttaksKontoType(p, konto) === aktuellKontoType) ||
+                        (!('trekkdager' in p) && getUttaksKontoType(p, kontoer) === aktuellKontoType) ||
                         harOppholdÅrsakLikKontoType(aktuellKontoType, p),
                 )
                 .map((p) => finnAntallTidelerÅTrekke(p, erFødsel, familiehendelsedato)),
