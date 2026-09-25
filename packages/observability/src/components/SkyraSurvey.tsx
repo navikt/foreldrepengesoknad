@@ -7,6 +7,7 @@ import { BodyShort, ExpansionCard, HStack, Skeleton, VStack } from '@navikt/ds-r
 import './SkyraSurvey.css';
 
 type SkyraEvent = { type: 'surveyCompleted'; slug: string };
+type SurveyStatus = 'loading' | 'ready' | 'error' | 'unavailable';
 
 declare global {
     var skyra:
@@ -26,9 +27,7 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
     const intl = useIntl();
     const resolvedTitle = intl.formatMessage({ id: 'SkyraSurvey.Tittel' });
     const surveyKey = `skyra-survey-${slug}-completed`;
-    const [isLoaded, setIsLoaded] = useState(false);
-    const [hasLoadError, setHasLoadError] = useState(false);
-    const [isUnavailable, setIsUnavailable] = useState(false);
+    const [surveyStatus, setSurveyStatus] = useState<SurveyStatus>('loading');
     const [hasCompletedSurvey, setHasCompletedSurvey] = useState(() => sessionStorage.getItem(surveyKey) === 'true');
     const [isOpen, setIsOpen] = useState(true);
 
@@ -55,36 +54,27 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
     }
 
     // Visningsreglene til Skyra matcher ikke bruker/side, eller undersøkelsen finnes ikke – vis ingenting.
-    if (isUnavailable) {
+    if (surveyStatus === 'unavailable') {
         return null;
     }
 
-    let surveyContent;
-    if (hasCompletedSurvey) {
-        surveyContent = (
-            <BodyShort>
-                <FormattedMessage id="SkyraSurvey.Takk" />
-            </BodyShort>
-        );
-    } else if (hasLoadError) {
-        surveyContent = (
-            <BodyShort>
-                <FormattedMessage id="SkyraSurvey.Feil" />
-            </BodyShort>
-        );
-    } else if (isLoaded) {
-        surveyContent = null;
-    } else {
-        surveyContent = (
-            <VStack gap="space-8">
-                <Skeleton variant="text" />
-                <Skeleton variant="rounded" width="100%" height={30} />
-                <HStack justify={'end'}>
-                    <Skeleton variant="rounded" width="30%" height={50} />
-                </HStack>
-            </VStack>
-        );
-    }
+    const surveyContent = hasCompletedSurvey ? (
+        <BodyShort>
+            <FormattedMessage id="SkyraSurvey.Takk" />
+        </BodyShort>
+    ) : surveyStatus === 'error' ? (
+        <BodyShort>
+            <FormattedMessage id="SkyraSurvey.Feil" />
+        </BodyShort>
+    ) : surveyStatus === 'loading' ? (
+        <VStack gap="space-8">
+            <Skeleton variant="text" />
+            <Skeleton variant="rounded" width="100%" height={30} />
+            <HStack justify="end">
+                <Skeleton variant="rounded" width="30%" height={50} />
+            </HStack>
+        </VStack>
+    ) : null;
 
     return (
         <ExpansionCard
@@ -105,19 +95,19 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
             <ExpansionCard.Content>
                 <div>
                     {surveyContent}
-                    {!hasCompletedSurvey && !hasLoadError && (
+                    {!hasCompletedSurvey && surveyStatus !== 'error' && (
                         // @ts-expect-error skyra-survey er et custom element
                         <skyra-survey
                             style={{
-                                opacity: isLoaded ? 1 : 0,
-                                position: isLoaded ? 'relative' : 'absolute',
-                                pointerEvents: isLoaded ? 'auto' : 'none',
+                                opacity: surveyStatus === 'ready' ? 1 : 0,
+                                position: surveyStatus === 'ready' ? 'relative' : 'absolute',
+                                pointerEvents: surveyStatus === 'ready' ? 'auto' : 'none',
                             }}
                             slug={slug}
                             inline
-                            onReady={() => setIsLoaded(true)}
-                            onError={() => setHasLoadError(true)}
-                            onUnavailable={() => setIsUnavailable(true)}
+                            onReady={() => setSurveyStatus('ready')}
+                            onError={() => setSurveyStatus('error')}
+                            onUnavailable={() => setSurveyStatus('unavailable')}
                         />
                     )}
                 </div>
