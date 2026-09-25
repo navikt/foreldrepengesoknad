@@ -2,12 +2,19 @@ import { renderHook } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
 import { BarnType } from '@navikt/fp-constants';
-import { KontoBeregningDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { KontoBeregningDto, KontoDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { UttaksplanDataProvider } from '../context/UttaksplanDataContext';
 import { ForeldreInfo } from '../types/ForeldreInfo';
-import { finnDinPlanKvoteRader, summerDagerIPerioder } from './kvoteBeregning';
-import { useUbrukteDagerPerKontoKunEnHarRett } from './kvoteOppsummeringUtils';
+import {
+    beregnKvoteFordeling,
+    finnAntallDagerDerKunEnHarForeldrepenger,
+    finnDinPlanKvoteRader,
+    getUttaksKontoType,
+    summerDagerIPerioder,
+} from './kvoteBeregning';
+import { useErAntallDagerOvertrukketIUttaksplan, useUbrukteDagerPerKontoKunEnHarRett } from './kvoteOppsummeringUtils';
 
 const FAMILIEHENDELSESDATO = '2024-04-01'; // Mandag
 
@@ -349,5 +356,419 @@ describe('finnDinPlanKvoteRader', () => {
         const rader = finnDinPlanKvoteRader([periode], 'MOR', kontoerUtenMødrekvote, 'fødsel', FAMILIEHENDELSESDATO);
 
         expect(rader).toEqual([]);
+    });
+});
+
+describe('getUttaksKontoType – klassifisering av BFHR-periodar', () => {
+    const BFHR_KONTOER: KontoDto[] = [
+        { konto: 'AKTIVITETSFRI_KVOTE', dager: 50 },
+        { konto: 'FORELDREPENGER', dager: 150 },
+    ];
+
+    const lagFarsPeriode = (overstyr: Partial<UttakPeriode_fpoversikt> = {}): UttakPeriode_fpoversikt => ({
+        fom: '2025-05-05',
+        tom: '2025-05-09',
+        kontoType: 'FORELDREPENGER',
+        flerbarnsdager: false,
+        forelder: 'FAR_MEDMOR',
+        ...overstyr,
+    });
+
+    it('skal bruke trekkerMinsterett framfor morsAktivitet for vedtatte periodar som trekker dagar', () => {
+        // «Raud pølse»: avslegen fordi mor ikkje oppfylte aktivitetskravet, men
+        // stønadsperioden reduserast løpande, jf. ftrl. § 14-14 fjerde ledd.
+        const rødPølse = lagFarsPeriode({
+            morsAktivitet: 'ARBEID',
+            resultat: { innvilget: false, trekkerDager: true, trekkerMinsterett: true, årsak: 'ANNET' },
+        });
+
+        expect(getUttaksKontoType(rødPølse, BFHR_KONTOER)).toBe('AKTIVITETSFRI_KVOTE');
+    });
+
+    it('skal klassifisere vedtatt periode med godkjent aktivitet som kvote med aktivitetskrav', () => {
+        const medAktivitetskrav = lagFarsPeriode({
+            morsAktivitet: 'ARBEID',
+            resultat: { innvilget: true, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+        });
+
+        expect(getUttaksKontoType(medAktivitetskrav, BFHR_KONTOER)).toBe('FORELDREPENGER');
+    });
+
+    it('skal falle tilbake på morsAktivitet for planlagde periodar utan resultat', () => {
+        const planlagtAktivitetsfri = lagFarsPeriode({ morsAktivitet: 'IKKE_OPPGITT' });
+        const planlagtMedAktivitetskrav = lagFarsPeriode({ morsAktivitet: 'ARBEID' });
+
+        expect(getUttaksKontoType(planlagtAktivitetsfri, BFHR_KONTOER)).toBe('AKTIVITETSFRI_KVOTE');
+        expect(getUttaksKontoType(planlagtMedAktivitetskrav, BFHR_KONTOER)).toBe('FORELDREPENGER');
+    });
+
+    it('skal falle tilbake på morsAktivitet for vedtatte periodar som ikkje trekker dagar', () => {
+        // fp-sak set alltid trekkerMinsterett=false når perioden ikkje trekker dagar.
+        // Utan tilbakefallet ville ein avslegen aktivitetsfri periode skifta farge i kalenderen.
+        const avslagUtanTrekk = lagFarsPeriode({
+            morsAktivitet: 'IKKE_OPPGITT',
+            resultat: { innvilget: false, trekkerDager: false, trekkerMinsterett: false, årsak: 'ANNET' },
+        });
+
+        expect(getUttaksKontoType(avslagUtanTrekk, BFHR_KONTOER)).toBe('AKTIVITETSFRI_KVOTE');
+    });
+
+    it('skal aldri bruke aktivitetsfri kvote når saka ikkje har ein slik konto (aleneomsorg)', () => {
+        const aleneomsorgKontoer: KontoDto[] = [{ konto: 'FORELDREPENGER', dager: 230 }];
+        const periode = lagFarsPeriode({
+            morsAktivitet: 'IKKE_OPPGITT',
+            resultat: { innvilget: true, trekkerDager: true, trekkerMinsterett: true, årsak: 'ANNET' },
+        });
+
+        expect(getUttaksKontoType(periode, aleneomsorgKontoer)).toBe('FORELDREPENGER');
+    });
+
+    it('skal alltid bruke aktivitetsfri kvote når saka berre har den kontoen (far og far)', () => {
+        const farOgFarKontoer: KontoDto[] = [{ konto: 'AKTIVITETSFRI_KVOTE', dager: 200 }];
+        const periode = lagFarsPeriode({
+            morsAktivitet: 'ARBEID',
+            resultat: { innvilget: true, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+        });
+
+        expect(getUttaksKontoType(periode, farOgFarKontoer)).toBe('AKTIVITETSFRI_KVOTE');
+    });
+
+    it('skal la andre kontotypar stå urørt', () => {
+        const mødrekvote = lagFarsPeriode({ kontoType: 'MØDREKVOTE', forelder: 'MOR' });
+
+        expect(getUttaksKontoType(mødrekvote, BFHR_KONTOER)).toBe('MØDREKVOTE');
+    });
+});
+
+describe('useUbrukteDagerPerKontoKunEnHarRett – omfordeling mellom aktivitetsfri kvote og kvote med aktivitetskrav', () => {
+    const FORELDRE_INFO: ForeldreInfo = {
+        søker: 'FAR_MEDMOR',
+        navnPåForeldre: { mor: 'Helga', farMedmor: 'Espen' },
+        rettighetType: 'BARE_SØKER_RETT',
+        erMedmorDelAvSøknaden: false,
+    };
+
+    // BFHR, 100 % dekningsgrad: 50 aktivitetsfrie stønadsdagar etter ftrl. § 14-14
+    // tredje ledd, 150 dagar med aktivitetskrav. Til saman den eine stønadsperioden
+    // fp-sak opererer med.
+    const BFHR_KVOTE: KontoBeregningDto = {
+        kontoer: [
+            { konto: 'AKTIVITETSFRI_KVOTE', dager: 50 },
+            { konto: 'FORELDREPENGER', dager: 150 },
+        ],
+        minsteretter: { farRundtFødsel: 0, toTette: 0 },
+        tillegg: { flerbarn: 0, prematur: 0 },
+    };
+
+    const lagWrapper =
+        (valgtStønadskvote: KontoBeregningDto, uttakPerioder: UttakPeriode_fpoversikt[]) =>
+        ({ children }: { children: React.ReactNode }) => (
+            <UttaksplanDataProvider
+                barn={{ type: BarnType.UFØDT, termindato: '2025-05-05', antallBarn: 1 }}
+                foreldreInfo={FORELDRE_INFO}
+                valgtStønadskvote={valgtStønadskvote}
+                harAktivitetskravIPeriodeUtenUttak
+                erPeriodeneTilAnnenPartLåst={false}
+                uttakPerioder={uttakPerioder}
+                erEndringssøknad={false}
+            >
+                {children}
+            </UttaksplanDataProvider>
+        );
+
+    // 50 uttaksdagar: måndag 2025-05-05 til fredag 2025-07-11
+    const vedtattAktivitetsfri: UttakPeriode_fpoversikt = {
+        fom: '2025-05-05',
+        tom: '2025-07-11',
+        kontoType: 'FORELDREPENGER',
+        morsAktivitet: 'IKKE_OPPGITT',
+        flerbarnsdager: false,
+        forelder: 'FAR_MEDMOR',
+        resultat: { innvilget: true, trekkerDager: true, trekkerMinsterett: true, årsak: 'ANNET' },
+    };
+
+    // 3 uttaksdagar: måndag 2025-07-14 til onsdag 2025-07-16
+    const vedtattRødPølse: UttakPeriode_fpoversikt = {
+        fom: '2025-07-14',
+        tom: '2025-07-16',
+        kontoType: 'FORELDREPENGER',
+        morsAktivitet: 'ARBEID',
+        flerbarnsdager: false,
+        forelder: 'FAR_MEDMOR',
+        resultat: { innvilget: false, trekkerDager: true, trekkerMinsterett: true, årsak: 'ANNET' },
+    };
+
+    it('skal la vedtatt overtrekk på aktivitetsfri kvote redusere kvoten med aktivitetskrav i staden for å melde overtrekk', () => {
+        const uttakPerioder = [vedtattAktivitetsfri, vedtattRødPølse];
+
+        const { result } = renderHook(() => useUbrukteDagerPerKontoKunEnHarRett(), {
+            wrapper: lagWrapper(BFHR_KVOTE, uttakPerioder),
+        });
+
+        expect(result.current.overtrukketDagerAktivitetsfri).toBe(0);
+        expect(result.current.ubrukteDagerAktivitetsfri).toBe(0);
+        expect(result.current.overtrukketDagerMedAktivitetskrav).toBe(0);
+        expect(result.current.ubrukteDagerMedAktivitetskrav).toBe(147);
+    });
+
+    describe('BFHR-beholdning med felles stønadsperiode', () => {
+        const kontoer: KontoDto[] = [
+            { konto: 'FORELDREPENGER', dager: 150 },
+            { konto: 'AKTIVITETSFRI_KVOTE', dager: 50 },
+        ];
+        const stønadskvote: KontoBeregningDto = { ...KONTOER, kontoer };
+        const lagPeriode = (
+            dager: number,
+            overstyr: Partial<UttakPeriode_fpoversikt> = {},
+            startdag = 0,
+        ): UttakPeriode_fpoversikt => ({
+            fom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(startdag),
+            tom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(startdag + dager - 1),
+            kontoType: 'FORELDREPENGER',
+            morsAktivitet: 'ARBEID',
+            forelder: 'FAR_MEDMOR',
+            flerbarnsdager: false,
+            ...overstyr,
+        });
+        const beregn = (perioder: UttakPeriode_fpoversikt[], aktuelleKontoer = kontoer) =>
+            beregnKvoteFordeling(perioder, aktuelleKontoer, 'fødsel', FAMILIEHENDELSESDATO);
+
+        it.each([false, true])('fordeler forbruk uten å endre perioder eller kontoer (vedtatt: %s)', (vedtatt) => {
+            const perioder = [
+                lagPeriode(168, {
+                    resultat: vedtatt
+                        ? { innvilget: true, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' }
+                        : undefined,
+                }),
+            ];
+            const opprinneligePerioder = structuredClone(perioder);
+            const opprinneligeKontoer = structuredClone(kontoer);
+
+            expect(beregn(perioder)).toEqual([
+                { konto: kontoer[0], brukteDager: 150, trekteDager: 0 },
+                { konto: kontoer[1], brukteDager: 18, trekteDager: 0 },
+            ]);
+            expect(perioder).toEqual(opprinneligePerioder);
+            expect(kontoer).toEqual(opprinneligeKontoer);
+        });
+
+        it.each([
+            { med: 200, uten: 0, fordeltMed: 150, fordeltUten: 50, over: 0, igjen: 0 },
+            { med: 201, uten: 0, fordeltMed: 151, fordeltUten: 50, over: 1, igjen: 0 },
+            { med: 179, uten: 23, fordeltMed: 152, fordeltUten: 50, over: 2, igjen: 0 },
+            { med: 170, uten: 30, fordeltMed: 150, fordeltUten: 50, over: 0, igjen: 0 },
+            { med: 150, uten: 50, fordeltMed: 150, fordeltUten: 50, over: 0, igjen: 0 },
+            { med: 149, uten: 51, fordeltMed: 149, fordeltUten: 51, over: 1, igjen: 1 },
+            { med: 0, uten: 53, fordeltMed: 0, fordeltUten: 53, over: 3, igjen: 150 },
+            { med: 0, uten: 0, fordeltMed: 0, fordeltUten: 0, over: 0, igjen: 200 },
+        ])(
+            'viser riktig beholdning for $med dager med og $uten uten aktivitetskrav',
+            ({ med, uten, fordeltMed, fordeltUten, over, igjen }) => {
+                const perioder = [
+                    ...(med > 0 ? [lagPeriode(med)] : []),
+                    ...(uten > 0 ? [lagPeriode(uten, { morsAktivitet: 'IKKE_OPPGITT' }, med)] : []),
+                ];
+
+                expect(beregn(perioder)).toEqual([
+                    { konto: kontoer[0], brukteDager: fordeltMed, trekteDager: 0 },
+                    { konto: kontoer[1], brukteDager: fordeltUten, trekteDager: 0 },
+                ]);
+                expect(
+                    finnAntallDagerDerKunEnHarForeldrepenger(perioder, 'fødsel', stønadskvote, FAMILIEHENDELSESDATO),
+                ).toEqual({
+                    antallBrukteDager: med + uten,
+                    antallOvertrukketDager: over,
+                    antallUbrukteDager: igjen,
+                });
+            },
+        );
+
+        it('beholder 68 trekte dager på FPMAK og belaster FPUAK med 18 øvrige dager', () => {
+            const perioder = [
+                lagPeriode(68, {
+                    resultat: { innvilget: false, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+                }),
+                lagPeriode(
+                    100,
+                    { resultat: { innvilget: true, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' } },
+                    68,
+                ),
+            ];
+            expect(beregn(perioder)).toEqual([
+                { konto: kontoer[0], brukteDager: 150, trekteDager: 68 },
+                { konto: kontoer[1], brukteDager: 18, trekteDager: 0 },
+            ]);
+        });
+
+        it('omfordeler vedtatte trekte dager over minsteretten uten å øke aktivitetsfri grense', () => {
+            const perioder = [
+                lagPeriode(50, {
+                    resultat: { innvilget: true, trekkerDager: true, trekkerMinsterett: true, årsak: 'ANNET' },
+                }),
+                lagPeriode(
+                    3,
+                    { resultat: { innvilget: false, trekkerDager: true, trekkerMinsterett: true, årsak: 'ANNET' } },
+                    50,
+                ),
+            ];
+            expect(beregn(perioder)).toEqual([
+                { konto: kontoer[0], brukteDager: 3, trekteDager: 3 },
+                { konto: kontoer[1], brukteDager: 50, trekteDager: 0 },
+            ]);
+
+            perioder.push(lagPeriode(1, { morsAktivitet: 'IKKE_OPPGITT' }, 53));
+            expect(
+                finnAntallDagerDerKunEnHarForeldrepenger(perioder, 'fødsel', stønadskvote, FAMILIEHENDELSESDATO)
+                    .antallOvertrukketDager,
+            ).toBe(1);
+        });
+
+        it('skiller trekte dager også når disse overstiger FPMAK-beholdningen', () => {
+            const perioder = [
+                lagPeriode(168, {
+                    resultat: { innvilget: false, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+                }),
+            ];
+            expect(beregn(perioder)).toEqual([
+                { konto: kontoer[0], brukteDager: 150, trekteDager: 150 },
+                { konto: kontoer[1], brukteDager: 18, trekteDager: 18 },
+            ]);
+        });
+
+        it('bruker kontostørrelsene fra API og ikke faste grenser på 150 og 50 dager', () => {
+            const andreKontoer: KontoDto[] = [
+                { konto: 'FORELDREPENGER', dager: 188 },
+                { konto: 'AKTIVITETSFRI_KVOTE', dager: 62 },
+            ];
+            expect(beregn([lagPeriode(200)], andreKontoer)).toEqual([
+                { konto: andreKontoer[0], brukteDager: 188, trekteDager: 0 },
+                { konto: andreKontoer[1], brukteDager: 12, trekteDager: 0 },
+            ]);
+        });
+
+        it('håndterer null dager på FPMAK uten å endre kontostørrelsene', () => {
+            const andreKontoer: KontoDto[] = [
+                { konto: 'FORELDREPENGER', dager: 0 },
+                { konto: 'AKTIVITETSFRI_KVOTE', dager: 50 },
+            ];
+            expect(beregn([lagPeriode(18)], andreKontoer)).toEqual([
+                { konto: andreKontoer[0], brukteDager: 0, trekteDager: 0 },
+                { konto: andreKontoer[1], brukteDager: 18, trekteDager: 0 },
+            ]);
+        });
+
+        it('utelater avslag uten trekk og fri utsettelse fra beholdningen', () => {
+            const perioder = [
+                lagPeriode(168),
+                lagPeriode(
+                    50,
+                    { resultat: { innvilget: false, trekkerDager: false, trekkerMinsterett: false, årsak: 'ANNET' } },
+                    168,
+                ),
+                lagPeriode(50, { utsettelseÅrsak: 'FRI' }, 218),
+            ];
+            expect(beregn(perioder)).toEqual(beregn([lagPeriode(168)]));
+        });
+
+        it('omfordeler graderte uttaksdager fremfor kalenderlengden', () => {
+            const periode = lagPeriode(336, {
+                gradering: { arbeidstidprosent: 50, aktivitet: { type: 'ORDINÆRT_ARBEID' } },
+            });
+            expect(beregn([periode])).toEqual(beregn([lagPeriode(168)]));
+        });
+
+        it('bruker samme fordeling i søknadens oppsummeringssteg', () => {
+            expect(
+                finnDinPlanKvoteRader([lagPeriode(168)], 'FAR_MEDMOR', kontoer, 'fødsel', FAMILIEHENDELSESDATO),
+            ).toEqual([
+                { kontoType: 'AKTIVITETSFRI_KVOTE', bruktDager: 18, tilgjengeligDager: 50 },
+                { kontoType: 'FORELDREPENGER', bruktDager: 150, tilgjengeligDager: 150 },
+            ]);
+        });
+
+        it.each([
+            { med: 168, uten: 0, over: false, medIgjen: 0, utenIgjen: 32, medOver: 0, utenOver: 0 },
+            { med: 179, uten: 23, over: true, medIgjen: 0, utenIgjen: 0, medOver: 2, utenOver: 0 },
+            { med: 0, uten: 53, over: true, medIgjen: 150, utenIgjen: 0, medOver: 0, utenOver: 3 },
+        ])('samordner panel og innsendingsvalidering for $med/$uten dager', (forventet) => {
+            const perioder = [
+                ...(forventet.med > 0 ? [lagPeriode(forventet.med)] : []),
+                ...(forventet.uten > 0
+                    ? [lagPeriode(forventet.uten, { morsAktivitet: 'IKKE_OPPGITT' }, forventet.med)]
+                    : []),
+            ];
+            const { result } = renderHook(
+                () => ({
+                    beholdning: useUbrukteDagerPerKontoKunEnHarRett(),
+                    overtrukket: useErAntallDagerOvertrukketIUttaksplan(),
+                }),
+                {
+                    wrapper: ({ children }) => (
+                        <UttaksplanDataProvider
+                            barn={{ type: BarnType.UFØDT, termindato: FAMILIEHENDELSESDATO, antallBarn: 1 }}
+                            foreldreInfo={{
+                                søker: 'FAR_MEDMOR',
+                                navnPåForeldre: { mor: 'Helga', farMedmor: 'Espen' },
+                                rettighetType: 'BARE_SØKER_RETT',
+                                erMedmorDelAvSøknaden: false,
+                            }}
+                            valgtStønadskvote={stønadskvote}
+                            harAktivitetskravIPeriodeUtenUttak
+                            erPeriodeneTilAnnenPartLåst={false}
+                            uttakPerioder={perioder}
+                            erEndringssøknad={false}
+                        >
+                            {children}
+                        </UttaksplanDataProvider>
+                    ),
+                },
+            );
+            expect(result.current).toEqual({
+                overtrukket: forventet.over,
+                beholdning: {
+                    ubrukteDagerAktivitetsfri: forventet.utenIgjen,
+                    ubrukteDagerMedAktivitetskrav: forventet.medIgjen,
+                    overtrukketDagerAktivitetsfri: forventet.utenOver,
+                    overtrukketDagerMedAktivitetskrav: forventet.medOver,
+                },
+            });
+        });
+    });
+
+    it('skal ikkje melde overtrekk totalt sett når berre aktivitetsfri kvote er overtrukken', () => {
+        const { result } = renderHook(() => useErAntallDagerOvertrukketIUttaksplan(), {
+            wrapper: lagWrapper(BFHR_KVOTE, [vedtattAktivitetsfri, vedtattRødPølse]),
+        });
+
+        expect(result.current).toBe(false);
+    });
+
+    it('skal framleis blokkere når planlagde dagar overstig taket i § 14-14 tredje ledd', () => {
+        // Planlagd periode utan resultat: taket er ei materiell grense og skal
+        // framleis gi «Du har lagt til for mange dager i planen».
+        const planlagtAktivitetsfri: UttakPeriode_fpoversikt = {
+            fom: '2025-07-14',
+            tom: '2025-07-16',
+            kontoType: 'FORELDREPENGER',
+            morsAktivitet: 'IKKE_OPPGITT',
+            flerbarnsdager: false,
+            forelder: 'FAR_MEDMOR',
+        };
+
+        const { result } = renderHook(() => useUbrukteDagerPerKontoKunEnHarRett(), {
+            wrapper: lagWrapper(BFHR_KVOTE, [vedtattAktivitetsfri, planlagtAktivitetsfri]),
+        });
+
+        expect(result.current.overtrukketDagerAktivitetsfri).toBe(3);
+        expect(result.current.ubrukteDagerMedAktivitetskrav).toBe(150);
+    });
+
+    it('skal ikkje omfordele når aktivitetsfri kvote ikkje er overtrukken', () => {
+        const { result } = renderHook(() => useUbrukteDagerPerKontoKunEnHarRett(), {
+            wrapper: lagWrapper(BFHR_KVOTE, [vedtattAktivitetsfri]),
+        });
+
+        expect(result.current.ubrukteDagerAktivitetsfri).toBe(0);
+        expect(result.current.ubrukteDagerMedAktivitetskrav).toBe(150);
     });
 });
