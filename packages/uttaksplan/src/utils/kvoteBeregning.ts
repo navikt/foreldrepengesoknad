@@ -142,9 +142,19 @@ export const beregnKvoteFordeling = (
             familiehendelsedato,
         );
 
+        // Trekte dager belaster kvoten med aktivitetskrav først, uavhengig av trekkerMinsterett.
+        const trekteTilMedAktivitetskrav = Math.min(
+            aktivitetsfri.trekteDager,
+            Math.max(0, medAktivitetskrav.konto.dager - medAktivitetskrav.trekteDager),
+        );
+        aktivitetsfri.brukteDager -= trekteTilMedAktivitetskrav;
+        aktivitetsfri.trekteDager -= trekteTilMedAktivitetskrav;
+        medAktivitetskrav.brukteDager += trekteTilMedAktivitetskrav;
+        medAktivitetskrav.trekteDager += trekteTilMedAktivitetskrav;
+
         // Bare vedtatt forbruk kan overstige minsteretten og belaste resten av stønadsperioden.
         const fraAktivitetsfri = Math.min(
-            Math.max(0, vedtatteAktivitetsfrieDager - aktivitetsfri.konto.dager),
+            Math.max(0, vedtatteAktivitetsfrieDager - trekteTilMedAktivitetskrav - aktivitetsfri.konto.dager),
             medAktivitetskrav.konto.dager,
         );
         const trekteFraAktivitetsfri = Math.min(fraAktivitetsfri, aktivitetsfri.trekteDager);

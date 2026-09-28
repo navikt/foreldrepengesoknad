@@ -600,6 +600,40 @@ describe('useUbrukteDagerPerKontoKunEnHarRett – omfordeling mellom aktivitetsf
             ]);
         });
 
+        it.each([true, false])(
+            'lar 100 trekte dager belaste FPMAK først og 75 planlagte dager gå over i FPUAK (trekkerMinsterett: %s)',
+            (trekkerMinsterett) => {
+                const perioder = [
+                    lagPeriode(100, {
+                        morsAktivitet: trekkerMinsterett ? 'IKKE_OPPGITT' : 'ARBEID',
+                        resultat: { innvilget: false, trekkerDager: true, trekkerMinsterett, årsak: 'ANNET' },
+                    }),
+                    lagPeriode(75, {}, 100),
+                ];
+
+                expect(beregn(perioder)).toEqual([
+                    { konto: kontoer[0], brukteDager: 150, trekteDager: 100 },
+                    { konto: kontoer[1], brukteDager: 25, trekteDager: 0 },
+                ]);
+                expect(
+                    finnAntallDagerDerKunEnHarForeldrepenger(perioder, 'fødsel', stønadskvote, FAMILIEHENDELSESDATO),
+                ).toEqual({ antallBrukteDager: 175, antallUbrukteDager: 25, antallOvertrukketDager: 0 });
+            },
+        );
+
+        it('lar trekte dager over FPMAK-grensen belaste FPUAK', () => {
+            const perioder = [
+                lagPeriode(170, {
+                    resultat: { innvilget: false, trekkerDager: true, trekkerMinsterett: true, årsak: 'ANNET' },
+                }),
+            ];
+
+            expect(beregn(perioder)).toEqual([
+                { konto: kontoer[0], brukteDager: 150, trekteDager: 150 },
+                { konto: kontoer[1], brukteDager: 20, trekteDager: 20 },
+            ]);
+        });
+
         it('omfordeler vedtatte trekte dager over minsteretten uten å øke aktivitetsfri grense', () => {
             const perioder = [
                 lagPeriode(50, {
