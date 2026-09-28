@@ -142,40 +142,36 @@ export const beregnKvoteFordeling = (
             familiehendelsedato,
         );
 
-        // Trekte dager belaster kvoten med aktivitetskrav først, uavhengig av trekkerMinsterett.
-        const trekteTilMedAktivitetskrav = Math.min(
-            aktivitetsfri.trekteDager,
-            Math.max(0, medAktivitetskrav.konto.dager - medAktivitetskrav.trekteDager),
-        );
-        aktivitetsfri.brukteDager -= trekteTilMedAktivitetskrav;
-        aktivitetsfri.trekteDager -= trekteTilMedAktivitetskrav;
-        medAktivitetskrav.brukteDager += trekteTilMedAktivitetskrav;
-        medAktivitetskrav.trekteDager += trekteTilMedAktivitetskrav;
+        const vedtatteAktivitetsfrieDagerUtenAvslag = vedtatteAktivitetsfrieDager - aktivitetsfri.trekteDager;
 
-        // Bare vedtatt forbruk kan overstige minsteretten og belaste resten av stønadsperioden.
+        // Trekte dager fordeles før øvrig forbruk, uavhengig av trekkerMinsterett og planlagte uttak.
+        const trekteDager = medAktivitetskrav.trekteDager + aktivitetsfri.trekteDager;
+        const trekteMedAktivitetskrav = Math.min(trekteDager, medAktivitetskrav.konto.dager);
+        const trekteAktivitetsfrie = trekteDager - trekteMedAktivitetskrav;
+        medAktivitetskrav.brukteDager += trekteMedAktivitetskrav - medAktivitetskrav.trekteDager;
+        aktivitetsfri.brukteDager += trekteAktivitetsfrie - aktivitetsfri.trekteDager;
+        medAktivitetskrav.trekteDager = trekteMedAktivitetskrav;
+        aktivitetsfri.trekteDager = trekteAktivitetsfrie;
+
+        // Bare vedtatt forbruk uten avslag kan omfordeles fra den resterende minsteretten.
         const fraAktivitetsfri = Math.min(
-            Math.max(0, vedtatteAktivitetsfrieDager - trekteTilMedAktivitetskrav - aktivitetsfri.konto.dager),
-            medAktivitetskrav.konto.dager,
+            Math.max(
+                0,
+                vedtatteAktivitetsfrieDagerUtenAvslag -
+                    Math.max(0, aktivitetsfri.konto.dager - aktivitetsfri.trekteDager),
+            ),
+            medAktivitetskrav.konto.dager - medAktivitetskrav.trekteDager,
         );
-        const trekteFraAktivitetsfri = Math.min(fraAktivitetsfri, aktivitetsfri.trekteDager);
         aktivitetsfri.brukteDager -= fraAktivitetsfri;
-        aktivitetsfri.trekteDager -= trekteFraAktivitetsfri;
         medAktivitetskrav.brukteDager += fraAktivitetsfri;
-        medAktivitetskrav.trekteDager += trekteFraAktivitetsfri;
 
-        // Uttak med aktivitetskrav kan bruke hele stønadsperioden. Trekte dager vises først på FPMAK.
+        // Uttak med aktivitetskrav kan bruke hele den resterende stønadsperioden.
         const fraMedAktivitetskrav = Math.min(
             Math.max(0, medAktivitetskrav.brukteDager - medAktivitetskrav.konto.dager),
             Math.max(0, aktivitetsfri.konto.dager - aktivitetsfri.brukteDager),
         );
-        const trekteFraMedAktivitetskrav = Math.max(
-            0,
-            fraMedAktivitetskrav - (medAktivitetskrav.brukteDager - medAktivitetskrav.trekteDager),
-        );
         medAktivitetskrav.brukteDager -= fraMedAktivitetskrav;
-        medAktivitetskrav.trekteDager -= trekteFraMedAktivitetskrav;
         aktivitetsfri.brukteDager += fraMedAktivitetskrav;
-        aktivitetsfri.trekteDager += trekteFraMedAktivitetskrav;
     }
 
     return fordelinger;

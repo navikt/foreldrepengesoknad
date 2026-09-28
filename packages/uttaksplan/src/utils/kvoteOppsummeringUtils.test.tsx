@@ -634,6 +634,120 @@ describe('useUbrukteDagerPerKontoKunEnHarRett – omfordeling mellom aktivitetsf
             ]);
         });
 
+        it.each([
+            { trekteMed: 170, trekteUten: 0 },
+            { trekteMed: 0, trekteUten: 170 },
+            { trekteMed: 100, trekteUten: 70 },
+        ])(
+            'fordeler trekte dager før planlagt FPUAK ($trekteMed med og $trekteUten uten trekkerMinsterett)',
+            ({ trekteMed, trekteUten }) => {
+                const trektePerioder = [
+                    ...(trekteMed > 0
+                        ? [
+                              lagPeriode(trekteMed, {
+                                  resultat: {
+                                      innvilget: false,
+                                      trekkerDager: true,
+                                      trekkerMinsterett: false,
+                                      årsak: 'ANNET',
+                                  },
+                              }),
+                          ]
+                        : []),
+                    ...(trekteUten > 0
+                        ? [
+                              lagPeriode(
+                                  trekteUten,
+                                  {
+                                      resultat: {
+                                          innvilget: false,
+                                          trekkerDager: true,
+                                          trekkerMinsterett: true,
+                                          årsak: 'ANNET',
+                                      },
+                                  },
+                                  trekteMed,
+                              ),
+                          ]
+                        : []),
+                ];
+
+                for (const planlagtUten of [29, 30, 40, 51]) {
+                    const perioder = [
+                        ...trektePerioder,
+                        lagPeriode(planlagtUten, { morsAktivitet: 'IKKE_OPPGITT' }, 170),
+                    ];
+                    expect(beregn(perioder)).toEqual([
+                        { konto: kontoer[0], brukteDager: 150, trekteDager: 150 },
+                        { konto: kontoer[1], brukteDager: 20 + planlagtUten, trekteDager: 20 },
+                    ]);
+
+                    const { result, unmount } = renderHook(
+                        () => ({
+                            beholdning: useUbrukteDagerPerKontoKunEnHarRett(),
+                            overtrukket: useErAntallDagerOvertrukketIUttaksplan(),
+                        }),
+                        { wrapper: lagWrapper(stønadskvote, perioder) },
+                    );
+                    expect(result.current).toEqual({
+                        overtrukket: planlagtUten > 30,
+                        beholdning: {
+                            ubrukteDagerAktivitetsfri: Math.max(0, 30 - planlagtUten),
+                            ubrukteDagerMedAktivitetskrav: 0,
+                            overtrukketDagerAktivitetsfri: Math.max(0, planlagtUten - 30),
+                            overtrukketDagerMedAktivitetskrav: 0,
+                        },
+                    });
+                    unmount();
+                }
+            },
+        );
+
+        it.each([false, true])(
+            'omfordeler øvrig vedtatt forbruk uten å flytte trekte dager på nytt (trekkerMinsterett: %s)',
+            (trekkerMinsterett) => {
+                const perioder = [
+                    lagPeriode(100, {
+                        resultat: { innvilget: false, trekkerDager: true, trekkerMinsterett, årsak: 'ANNET' },
+                    }),
+                    lagPeriode(
+                        60,
+                        {
+                            morsAktivitet: 'IKKE_OPPGITT',
+                            resultat: {
+                                innvilget: true,
+                                trekkerDager: true,
+                                trekkerMinsterett: true,
+                                årsak: 'ANNET',
+                            },
+                        },
+                        100,
+                    ),
+                    lagPeriode(50, {}, 160),
+                ];
+                expect(beregn(perioder)).toEqual([
+                    { konto: kontoer[0], brukteDager: 160, trekteDager: 100 },
+                    { konto: kontoer[1], brukteDager: 50, trekteDager: 0 },
+                ]);
+            },
+        );
+
+        it.each([false, true])(
+            'beholder trekte dager på riktig kvote når samlet trekk overstiger stønadsperioden (trekkerMinsterett: %s)',
+            (trekkerMinsterett) => {
+                expect(
+                    beregn([
+                        lagPeriode(210, {
+                            resultat: { innvilget: false, trekkerDager: true, trekkerMinsterett, årsak: 'ANNET' },
+                        }),
+                    ]),
+                ).toEqual([
+                    { konto: kontoer[0], brukteDager: 150, trekteDager: 150 },
+                    { konto: kontoer[1], brukteDager: 60, trekteDager: 60 },
+                ]);
+            },
+        );
+
         it('omfordeler vedtatte trekte dager over minsteretten uten å øke aktivitetsfri grense', () => {
             const perioder = [
                 lagPeriode(50, {
