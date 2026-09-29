@@ -6,7 +6,7 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Label, List, Radio, ReadMore, VStack, omit } from '@navikt/ds-react';
 
-import { DATE_4_YEARS_AGO, DATE_5_MONTHS_AGO, DATE_20_YEARS_AGO, ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { DATE_5_MONTHS_AGO, DATE_20_YEARS_AGO, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
     ErrorSummaryHookForm,
     RhfDatepicker,
@@ -53,7 +53,10 @@ const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: string | undefined): b
     if (!isStringAValidDate(oppstartsdato)) {
         return true;
     }
-    return !oppstartsdato || dayjs(oppstartsdato).startOf('day').isAfter(DATE_4_YEARS_AGO, 'day');
+    return (
+        !oppstartsdato ||
+        dayjs(oppstartsdato).startOf('day').isAfter(dayjs().subtract(4, 'year').subtract(6, 'month'), 'day')
+    );
 };
 
 const validateEgenNæringNavn = (intl: IntlShape, erValgfri: boolean) => (value: string | undefined) => {
