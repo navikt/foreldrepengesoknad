@@ -148,6 +148,7 @@ type Story = StoryObj<typeof meta>;
 export const FødselMorOgFarBeggeHarRett: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -197,6 +198,7 @@ export const FødselMorOgFarBeggeHarRett: Story = {
 export const FødselMorOgFarKunMorHarRett: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -283,6 +285,7 @@ export const FødselMorOgMedmorKunMorHarRett: Story = {
 export const FødselMorOgMedmorKunMedmorHarRettMorUfør: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -330,6 +333,7 @@ export const FødselMorOgMedmorKunMedmorHarRettMorUfør: Story = {
 export const FødselBareFarSøkerAleneOmOmsorg: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -372,6 +376,7 @@ export const FødselBareFarSøkerAleneOmOmsorg: Story = {
 export const AdopsjonMorOgFarBeggeHarRett: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -421,6 +426,7 @@ export const AdopsjonMorOgFarBeggeHarRett: Story = {
 export const AdopsjonMorOgFarKunMorHarRett: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -467,6 +473,7 @@ export const AdopsjonMorOgFarKunMorHarRett: Story = {
 export const AdopsjonMorOgFarKunFarHarRettMorErUfør: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -600,6 +607,7 @@ export const AdopsjonBareFarSøkerAleneOmOmsorg: Story = {
 export const FødselMorOgFarBeggeHarRettAnnenPartTomtVedtak: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () =>
                 HttpResponse.json({
                     antallBarn: 1,
@@ -633,6 +641,7 @@ export const FødselMorOgFarBeggeHarRettAnnenPartTomtVedtak: Story = {
 export const FødselFarBeggeHarRettStarterPåTermin: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({

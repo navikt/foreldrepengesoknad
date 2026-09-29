@@ -257,6 +257,7 @@ const DEFAULT_STØNADSKONTO = {
 export const MorAleneomsorgDekning80EttBarnFør1Okt2021: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -313,6 +314,7 @@ export const MorAleneomsorgDekning80EttBarnFør1Okt2021: Story = {
 export const MorAleneomsorgEttBarnPrematurFødsel: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -373,6 +375,7 @@ export const MorAleneomsorgEttBarnPrematurFødsel: Story = {
 export const MorAleneomsorgAdopsjonTrillinger: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -420,6 +423,7 @@ export const MorAleneomsorgAdopsjonTrillinger: Story = {
 export const FarMedmorAleneomsorgFødtTvillinger: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -472,6 +476,7 @@ export const FarMedmorAleneomsorgFødtTvillinger: Story = {
 export const FarMedmorAleneomsorgFødtFireBarnFør1Okt2021: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -524,6 +529,7 @@ export const FarMedmorAleneomsorgFødtFireBarnFør1Okt2021: Story = {
 export const FarMedmorAleneomsorgFødtTreBarnFørWLB: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -576,6 +582,7 @@ export const FarMedmorAleneomsorgFødtTreBarnFørWLB: Story = {
 export const FarMedmorAleneomsorgEttBarnTerminEtterWLB: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -627,6 +634,7 @@ export const FarMedmorAleneomsorgEttBarnTerminEtterWLB: Story = {
 export const FarMedmorAleneomsorgPrematurtFødtBarn: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -683,6 +691,7 @@ export const FarMedmorAleneomsorgPrematurtFødtBarn: Story = {
 export const FarMedmorAleneomsorgAdopsjonFireBarn: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -736,6 +745,7 @@ export const FarMedmorAleneomsorgAdopsjonFireBarn: Story = {
 export const MorDeltUttakEttBarnPrematurFødsel: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(undefined, { status: 200 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -803,6 +813,7 @@ export const MorDeltUttakEttBarnPrematurFødsel: Story = {
 export const MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -869,6 +880,7 @@ export const MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning: Story = {
 export const MorDeltUttakEttBarnTermin: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -931,6 +943,7 @@ export const MorDeltUttakEttBarnTermin: Story = {
 export const MorDeltUttakTvillingerFødt: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -1061,6 +1074,7 @@ export const MorDeltUttakFarSøkteMorsKvoteOgFellesperiode: Story = {
 export const FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -1124,6 +1138,7 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021: Story = {
 export const FarMedmorSøkerDeltUttakTrillingerFødtFørWLB: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -1191,6 +1206,7 @@ export const FarMedmorSøkerDeltUttakTrillingerFødtFørWLB: Story = {
 export const FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -1253,6 +1269,7 @@ export const FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB: Story = {
 export const FarMedmorSøkerDeltUttakEttBarnFødtPrematurt: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -1384,6 +1401,7 @@ export const FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode: Story = {
 export const FarSøkerAdopsjonToBarn: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -1443,6 +1461,7 @@ export const FarSøkerAdopsjonToBarn: Story = {
 export const MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -1505,6 +1524,7 @@ export const MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80: Stor
 export const MorSøkerFarHarRettIEØSTerminDekningsgrad80: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -1569,6 +1589,7 @@ export const MorSøkerFarHarRettIEØSTerminDekningsgrad80: Story = {
 export const FarMedmorSøkerMorHarRettIEØSAdopsjon: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -1632,6 +1653,7 @@ export const FarMedmorSøkerMorHarRettIEØSAdopsjon: Story = {
 export const BareMorHarRettTermin: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -1682,6 +1704,7 @@ export const BareMorHarRettTermin: Story = {
 export const BareMorHarRettAdopsjon: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -1733,6 +1756,7 @@ export const BareMorHarRettAdopsjon: Story = {
 export const BareFarHarRettOgMorErUførTermin4Barn: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -1788,6 +1812,7 @@ export const BareFarHarRettOgMorErUførTermin4Barn: Story = {
 export const BareFarHarRettOgMorErIkkeUførFødtBarn: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -1844,6 +1869,7 @@ export const BareFarHarRettOgMorErIkkeUførFødtBarn: Story = {
 export const BareFarHarRettTvillingerFødtFør1Okt2021: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -1896,6 +1922,7 @@ export const BareFarHarRettTvillingerFødtFør1Okt2021: Story = {
 export const BareFarHarRettAdopsjonMorErUfør: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
