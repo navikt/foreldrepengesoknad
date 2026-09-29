@@ -8,9 +8,9 @@ import {
     BrukerRolleSak_fpoversikt,
     EøsUttakDto_fpoversikt,
     MorsAktivitet,
-    PeriodeDto_fpoversikt,
     RettighetType_fpoversikt,
     UttakDto_fpoversikt,
+    UttakPeriodeDto_fpoversikt,
 } from '@navikt/fp-types';
 import { Tidsperioden, Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
 
@@ -137,11 +137,11 @@ export const erAvslåttPeriode = (periode: Uttaksplanperiode) =>
 
 // Dei to partane (søker/annenPart) ein periode kan ha uttak for. EØS-parten er ikkje ein
 // UttakDto_fpoversikt-part og handterast difor separat der det trengst (t.d. kvoteBeregning).
-export const finnParter = (periode: PeriodeDto_fpoversikt): UttakDto_fpoversikt[] =>
+export const finnParter = (periode: UttakPeriodeDto_fpoversikt): UttakDto_fpoversikt[] =>
     [periode.søker, periode.annenPart].filter((part): part is UttakDto_fpoversikt => part !== undefined);
 
 export const finnPartForForelder = (
-    periode: PeriodeDto_fpoversikt,
+    periode: UttakPeriodeDto_fpoversikt,
     forelder: BrukerRolleSak_fpoversikt,
 ): UttakDto_fpoversikt | undefined => {
     if (periode.søker?.forelder === forelder) {
@@ -177,7 +177,7 @@ export const sorterPerioder = (a: { fom: string; tom: string }, b: { fom: string
     return 0;
 };
 
-export const sorterUttakPerioder = (p1: PeriodeDto_fpoversikt, p2: PeriodeDto_fpoversikt) => {
+export const sorterUttakPerioder = (p1: UttakPeriodeDto_fpoversikt, p2: UttakPeriodeDto_fpoversikt) => {
     const tidsperiode1 = { fom: p1.fom, tom: p1.tom };
     const tidsperiode2 = { fom: p2.fom, tom: p2.tom };
 
@@ -311,13 +311,13 @@ const erEøsParterLike = (a: EøsUttakDto_fpoversikt | undefined, b: EøsUttakDt
     return a.kontoType === b.kontoType && a.trekkdager === b.trekkdager;
 };
 
-export const erPerioderEkslFomTomLike = (periode1: PeriodeDto_fpoversikt, periode2: PeriodeDto_fpoversikt) =>
+export const erPerioderEkslFomTomLike = (periode1: UttakPeriodeDto_fpoversikt, periode2: UttakPeriodeDto_fpoversikt) =>
     erParterLike(periode1.søker, periode2.søker) &&
     erParterLike(periode1.annenPart, periode2.annenPart) &&
     erEøsParterLike(periode1.annenPartEøs, periode2.annenPartEøs);
 
 export const erDetEksisterendePerioderEtterValgtePerioder = (
-    allePerioder: PeriodeDto_fpoversikt[],
+    allePerioder: UttakPeriodeDto_fpoversikt[],
     valgtePerioder: Array<{ fom: string; tom: string }>,
 ) => {
     const sisteValgteDag = dayjs.max(valgtePerioder.map((p) => dayjs(p.tom)));
@@ -326,7 +326,7 @@ export const erDetEksisterendePerioderEtterValgtePerioder = (
 };
 
 export const erDetReadonlyPerioderEtterValgtePerioder = (
-    allePerioder: PeriodeDto_fpoversikt[],
+    allePerioder: UttakPeriodeDto_fpoversikt[],
     valgtePerioder: Array<{ fom: string; tom: string }>,
     forelderSomHarLåstePerioder: BrukerRolleSak_fpoversikt | undefined,
 ) => {

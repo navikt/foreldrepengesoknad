@@ -8,7 +8,7 @@ import { FormattedMessage } from 'react-intl';
 import { Alert, Button, ErrorMessage, HStack, VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
-import type { BrukerRolleSak_fpoversikt, PeriodeDto_fpoversikt } from '@navikt/fp-types';
+import type { BrukerRolleSak_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import {
@@ -98,7 +98,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
 
     // Byggjer syntetiske periodar med KUN mors part, slik at den delte sjekk-funksjonen ikkje
     // ved eit uhell finn far/medmor sine data frå ei anna, urelatert (t.d. samtidig uttak-)rad.
-    const morsPerioder: PeriodeDto_fpoversikt[] = perioder.flatMap((p) => {
+    const morsPerioder: UttakPeriodeDto_fpoversikt[] = perioder.flatMap((p) => {
         const morsPart = finnPartForForelder(p, 'MOR');
         return morsPart ? [{ fom: p.fom, tom: p.tom, søker: morsPart }] : [];
     });

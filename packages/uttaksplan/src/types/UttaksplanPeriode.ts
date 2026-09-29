@@ -1,4 +1,4 @@
-import { BrukerRolleSak_fpoversikt, PeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 export type TapteDagerHull = {
     type: 'TAPTE_DAGER';
@@ -19,16 +19,17 @@ export type FamiliehendelseDato = {
     tom: string;
 };
 
-// Denne blir brukt av listevisning som viser alle typar periodar. Éin PeriodeDto_fpoversikt
+// Denne blir brukt av listevisning som viser alle typar periodar. Éin UttakPeriodeDto_fpoversikt
 // dekker no eitt tidsintervall og kan innehalde søkjar sitt uttak, annan part sitt uttak og/eller
 // annan part sitt EØS-uttak samtidig (jf. samtidig uttak / opphald / EØS – sjå Uttaksperioden).
-export type Uttaksplanperiode = PeriodeDto_fpoversikt | TapteDagerHull | PerioderUtenUttakHull | FamiliehendelseDato;
+export type Uttaksplanperiode =
+    UttakPeriodeDto_fpoversikt | TapteDagerHull | PerioderUtenUttakHull | FamiliehendelseDato;
 
 // Denne blir brukt av kalendervisninga som kun viser tapte dagar
 // (Kalender viser i tillegg familiehendelsesdato, men denne blir utleda i kalender-typen, mogleg ein bør endra på det)
-export type UttaksplanperiodeMedKunTapteDager = PeriodeDto_fpoversikt | TapteDagerHull;
+export type UttaksplanperiodeMedKunTapteDager = UttakPeriodeDto_fpoversikt | TapteDagerHull;
 
-export const erPeriodeDto = (periode: Uttaksplanperiode): periode is PeriodeDto_fpoversikt => !('type' in periode);
+export const erPeriodeDto = (periode: Uttaksplanperiode): periode is UttakPeriodeDto_fpoversikt => !('type' in periode);
 
 export const erUttaksplanHull = (periode: Uttaksplanperiode): periode is TapteDagerHull | PerioderUtenUttakHull =>
     'type' in periode && (periode.type === 'TAPTE_DAGER' || periode.type === 'PERIODE_UTEN_UTTAK');

@@ -19,11 +19,11 @@ import {
     KontoType,
     Målform,
     Oppholdsårsak,
-    PeriodeDto_fpoversikt,
     SøkerDto,
     Søkerrolle,
     UtsettelsesÅrsak,
     UtsettelseÅrsak_fpoversikt,
+    UttakPeriodeDto_fpoversikt,
     Uttaksplanperiode,
     isAdoptertBarn,
     isAdoptertStebarn,
@@ -304,7 +304,7 @@ export const mapTilEndringssøknadDto = (
 const finnOpprinneligPlan = (
     opprinneligUttaksplan: OpprinneligUttaksplan | undefined,
     valgtEksisterendeSaksnr: string,
-): PeriodeDto_fpoversikt[] => {
+): UttakPeriodeDto_fpoversikt[] => {
     if (opprinneligUttaksplan === undefined) {
         throw new Error('Mangler opprinnelig uttaksplan for endringssøknad');
     }
@@ -315,9 +315,9 @@ const finnOpprinneligPlan = (
 };
 
 const filtrerPerioderFraOgMedEndringstidspunkt = (
-    perioder: PeriodeDto_fpoversikt[],
+    perioder: UttakPeriodeDto_fpoversikt[],
     endringstidspunkt: string,
-): PeriodeDto_fpoversikt[] => {
+): UttakPeriodeDto_fpoversikt[] => {
     const endring = dayjs(endringstidspunkt);
     return perioder.filter(
         (periode) =>
@@ -326,24 +326,24 @@ const filtrerPerioderFraOgMedEndringstidspunkt = (
     );
 };
 
-const filtrerUtEøsPeriode = (nyUttaksplan: PeriodeDto_fpoversikt[]): PeriodeDto_fpoversikt[] => {
+const filtrerUtEøsPeriode = (nyUttaksplan: UttakPeriodeDto_fpoversikt[]): UttakPeriodeDto_fpoversikt[] => {
     // Ei "eøs-periode" i det gamle flate modellen var ei rein annenPartEøs-rad utan .søker/.annenPart.
     // Slike periodar manglar no både .søker og .annenPart.
     return nyUttaksplan.filter((periode) => periode.søker !== undefined || periode.annenPart !== undefined);
 };
 
-const filtrerUtAvslåttePerioder = (perioder: PeriodeDto_fpoversikt[]): PeriodeDto_fpoversikt[] => {
+const filtrerUtAvslåttePerioder = (perioder: UttakPeriodeDto_fpoversikt[]): UttakPeriodeDto_fpoversikt[] => {
     return perioder.filter((periode) => periode.søker?.resultat?.innvilget !== false);
 };
 
 // Ved endringssøknad blir annan part sitt uttak sendt som opphald, slik opphaldsradene i søkjaren sitt
 // eige vedtak vart sende før. Førstegongssøknaden sender berre søkjaren sine eigne periodar.
-const filtrerUtAnnenPartsPerioder = (uttaksplan: PeriodeDto_fpoversikt[]): PeriodeDto_fpoversikt[] => {
+const filtrerUtAnnenPartsPerioder = (uttaksplan: UttakPeriodeDto_fpoversikt[]): UttakPeriodeDto_fpoversikt[] => {
     return uttaksplan.filter((periode) => periode.søker !== undefined || Uttaksperioden.erOppholdsperiode(periode));
 };
 
 const midlertidigMappingAvUttaksplan = (
-    uttaksplan: PeriodeDto_fpoversikt[],
+    uttaksplan: UttakPeriodeDto_fpoversikt[],
     barn: Barn,
     annenForelder: AnnenForelder,
 ): Uttaksplanperiode[] => {

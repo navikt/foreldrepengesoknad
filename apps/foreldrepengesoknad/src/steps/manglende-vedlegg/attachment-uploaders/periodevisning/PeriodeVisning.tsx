@@ -6,7 +6,7 @@ import { getUttaksprosentFromStillingsprosent, prettifyProsent } from 'utils/utt
 
 import { BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre, PeriodeDto_fpoversikt, Situasjon, UttakDto_fpoversikt } from '@navikt/fp-types';
+import { NavnPåForeldre, Situasjon, UttakDto_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
 import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan/validators';
 
@@ -15,7 +15,7 @@ import { UtsettelseIkon } from './UtsettelseIkon';
 import UttaksplanAdvarselIkon from './UttaksplanAdvarselIkon';
 
 interface Props {
-    periode: PeriodeDto_fpoversikt;
+    periode: UttakPeriodeDto_fpoversikt;
     navnPåForeldre: NavnPåForeldre;
     familiehendelsesdato: string;
     termindato: string | undefined;
@@ -72,7 +72,7 @@ const PeriodeIkon = ({
     navnPåForeldre,
     erFarEllerMedmor,
 }: {
-    periode: PeriodeDto_fpoversikt;
+    periode: UttakPeriodeDto_fpoversikt;
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
 }): React.ReactNode | null => {
@@ -177,7 +177,7 @@ const PeriodeTittel = ({
     erFarEllerMedmor,
     erAleneOmOmsorg,
 }: {
-    periode: PeriodeDto_fpoversikt;
+    periode: UttakPeriodeDto_fpoversikt;
     navnPåForeldre: NavnPåForeldre;
     familiehendelsesdato: string;
     termindato: string | undefined;
@@ -221,7 +221,7 @@ const PeriodeTittel = ({
 
 const getPeriodeTittelUttaksPeriode = (
     intl: IntlShape,
-    periode: PeriodeDto_fpoversikt,
+    periode: UttakPeriodeDto_fpoversikt,
     navnPåForeldre: NavnPåForeldre,
     familiehendelsesdato: string,
     termindato: string | undefined,
@@ -234,13 +234,7 @@ const getPeriodeTittelUttaksPeriode = (
         return '';
     }
 
-    const tittelMedNavn = getStønadskvoteNavn(
-        intl,
-        søker.kontoType,
-        navnPåForeldre,
-        erFarEllerMedmor,
-        erAleneOmOmsorg,
-    );
+    const tittelMedNavn = getStønadskvoteNavn(intl, søker.kontoType, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg);
     const tittel = appendPeriodeNavnHvisUttakRundtFødselFarMedmor(
         intl,
         tittelMedNavn,
@@ -266,7 +260,7 @@ const getPeriodeTittelUttaksPeriode = (
 const appendPeriodeNavnHvisUttakRundtFødselFarMedmor = (
     intl: IntlShape,
     periodeNavn: string,
-    periode: PeriodeDto_fpoversikt,
+    periode: UttakPeriodeDto_fpoversikt,
     situasjon: Situasjon,
     familiehendelsesdato: string,
     termindato: string | undefined,
@@ -277,7 +271,7 @@ const appendPeriodeNavnHvisUttakRundtFødselFarMedmor = (
 };
 
 const isUttaksperiodeFarMedmorPgaFødsel = (
-    periode: PeriodeDto_fpoversikt,
+    periode: UttakPeriodeDto_fpoversikt,
     familiehendelsesdato: string,
     termindato: string | undefined,
 ): boolean => {
@@ -306,4 +300,3 @@ const erFarMedmorMedValgForUttakRundtFødsel = (søker: UttakDto_fpoversikt): bo
         !!søker.samtidigUttak
     );
 };
-

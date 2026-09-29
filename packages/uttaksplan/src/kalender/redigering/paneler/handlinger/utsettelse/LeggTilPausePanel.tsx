@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { Button, HStack, VStack } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
-import { PeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../../../../context/UttaksplanDataContext';
 import { FormValues, LeggTilPauseForm } from '../../../../../felles/utsettelse/LeggTilPauseForm';
@@ -39,7 +39,7 @@ export const LeggTilPausePanel = ({ setVisPausePanel }: Props) => {
                             flerbarnsdager: false,
                             morsAktivitet: formValues.morsAktivitet || undefined,
                         },
-                    }) satisfies PeriodeDto_fpoversikt,
+                    }) satisfies UttakPeriodeDto_fpoversikt,
             ),
             false,
         );

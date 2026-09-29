@@ -3,7 +3,7 @@ import MockDate from 'mockdate';
 import { createIntl, createIntlCache } from 'react-intl';
 
 import { BarnType } from '@navikt/fp-constants';
-import { Barn, FpBarnDto_fpoversikt, PeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { Barn, FpBarnDto_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import messages from '../intl/nb_NO.json';
 import {
@@ -111,13 +111,13 @@ describe('dateUtils', () => {
     });
 
     describe('getEndringstidspunktNy', () => {
-        const opprinneligPlan: PeriodeDto_fpoversikt[] = [
+        const opprinneligPlan: UttakPeriodeDto_fpoversikt[] = [
             { fom: '2019-09-10', tom: '2019-09-30', søker: { flerbarnsdager: false, forelder: 'MOR' } },
             { fom: '2019-10-01', tom: '2020-01-13', søker: { flerbarnsdager: false, forelder: 'MOR' } },
             { fom: '2020-01-14', tom: '2020-05-01', søker: { flerbarnsdager: false, forelder: 'MOR' } },
         ];
 
-        const opprinneligPlanMedHull: PeriodeDto_fpoversikt[] = [
+        const opprinneligPlanMedHull: UttakPeriodeDto_fpoversikt[] = [
             { fom: '2022-09-21', tom: '2022-10-11', søker: { flerbarnsdager: false, forelder: 'MOR' } },
             { fom: '2022-10-12', tom: '2022-12-13', søker: { flerbarnsdager: false, forelder: 'MOR' } },
             { fom: '2022-12-14', tom: '2022-12-27', søker: { flerbarnsdager: false, forelder: 'MOR' } },
@@ -137,7 +137,7 @@ describe('dateUtils', () => {
         });
 
         it('Skal returnere undefined for en uendret gradert periode etter mellomlagring', () => {
-            const gradertPlan: PeriodeDto_fpoversikt[] = [
+            const gradertPlan: UttakPeriodeDto_fpoversikt[] = [
                 {
                     fom: '2019-09-10',
                     tom: '2019-09-30',
@@ -161,7 +161,7 @@ describe('dateUtils', () => {
         });
 
         it('Skal oppdage at arbeidsgiveren i en gradert periode er endret', () => {
-            const opprinneligGradertPeriode: PeriodeDto_fpoversikt = {
+            const opprinneligGradertPeriode: UttakPeriodeDto_fpoversikt = {
                 fom: '2019-09-10',
                 tom: '2019-09-30',
                 søker: {
@@ -185,7 +185,7 @@ describe('dateUtils', () => {
         });
 
         it('Skal finne endringstidspunkt gitt at det er ny periode i slutten', () => {
-            const gradertPeriode: PeriodeDto_fpoversikt = {
+            const gradertPeriode: UttakPeriodeDto_fpoversikt = {
                 fom: '2019-05-04',
                 tom: '2019-05-11',
                 søker: { flerbarnsdager: false, forelder: 'MOR', gradering: { arbeidstidprosent: 50 } },
@@ -197,7 +197,7 @@ describe('dateUtils', () => {
         });
 
         it('Hvis en ny periode legges til i slutten, skal starten på den første nye perioden være endringstidspunktet', () => {
-            const endretPlan: PeriodeDto_fpoversikt[] = [
+            const endretPlan: UttakPeriodeDto_fpoversikt[] = [
                 ...opprinneligPlan,
                 { fom: '2020-05-02', tom: '2020-05-09', søker: { flerbarnsdager: false, forelder: 'MOR' } },
                 { fom: '2020-05-10', tom: '2020-05-17', søker: { flerbarnsdager: false, forelder: 'MOR' } },
@@ -208,7 +208,7 @@ describe('dateUtils', () => {
         });
 
         it('Skal finne endringstidspunkt gitt at en gammel periode er endret', () => {
-            const endretPlan: PeriodeDto_fpoversikt[] = [
+            const endretPlan: UttakPeriodeDto_fpoversikt[] = [
                 opprinneligPlan[0]!,
                 { ...opprinneligPlan[1]!, søker: { ...opprinneligPlan[1]!.søker!, kontoType: 'FEDREKVOTE' } },
                 opprinneligPlan[2]!,
@@ -219,7 +219,7 @@ describe('dateUtils', () => {
         });
 
         it('Skal finne endringstidspunkt gitt at en gammel periode er slettet og erstattet med en annen periode', () => {
-            const endretPlan: PeriodeDto_fpoversikt[] = [
+            const endretPlan: UttakPeriodeDto_fpoversikt[] = [
                 opprinneligPlan[0]!,
                 {
                     fom: opprinneligPlan[1]!.fom,
@@ -234,7 +234,7 @@ describe('dateUtils', () => {
         });
 
         it('Skal finne endringstidspunkt gitt at en gammel periode er slettet og skaper hull', () => {
-            const endretPlan: PeriodeDto_fpoversikt[] = [
+            const endretPlan: UttakPeriodeDto_fpoversikt[] = [
                 opprinneligPlan[0]!,
                 {
                     fom: opprinneligPlan[1]!.fom,
@@ -249,7 +249,7 @@ describe('dateUtils', () => {
         });
 
         it('Skal finne endringstidspunkt gitt at en periode har fått senere sluttdato (blitt lenger)', () => {
-            const endretPlan: PeriodeDto_fpoversikt[] = [
+            const endretPlan: UttakPeriodeDto_fpoversikt[] = [
                 opprinneligPlan[0]!,
                 { ...opprinneligPlan[1]!, tom: '2020-01-14' },
                 { ...opprinneligPlan[2]!, fom: '2020-01-15' },
@@ -260,7 +260,7 @@ describe('dateUtils', () => {
         });
 
         it('Skal finne endringstidspunkt gitt at en periode har fått tidligere sluttdato (blitt kortere)', () => {
-            const endretPlan: PeriodeDto_fpoversikt[] = [
+            const endretPlan: UttakPeriodeDto_fpoversikt[] = [
                 opprinneligPlan[0]!,
                 { ...opprinneligPlan[1]!, tom: '2020-01-12' },
                 { ...opprinneligPlan[2]!, fom: '2020-01-13' },
@@ -271,15 +271,15 @@ describe('dateUtils', () => {
         });
 
         it('Hvis en periode får kortere sluttdato, skal endringstidspunktet være lik starten på den endrede perioden.', () => {
-            const nyPeriode: PeriodeDto_fpoversikt = {
+            const nyPeriode: UttakPeriodeDto_fpoversikt = {
                 ...opprinneligPlanMedHull[2]!,
                 tom: '2022-12-26',
             };
-            const nyNestePeriode: PeriodeDto_fpoversikt = {
+            const nyNestePeriode: UttakPeriodeDto_fpoversikt = {
                 ...opprinneligPlanMedHull[3]!,
                 fom: '2022-12-27',
             };
-            const endretPlanMedHull: PeriodeDto_fpoversikt[] = [
+            const endretPlanMedHull: UttakPeriodeDto_fpoversikt[] = [
                 opprinneligPlanMedHull[0]!,
                 opprinneligPlanMedHull[1]!,
                 nyPeriode,
@@ -293,15 +293,15 @@ describe('dateUtils', () => {
         });
 
         it('Hvis en periode får lengre sluttdato, skal endringstidspunktet være lik starten på den endrede perioden.', () => {
-            const nyPeriode: PeriodeDto_fpoversikt = {
+            const nyPeriode: UttakPeriodeDto_fpoversikt = {
                 ...opprinneligPlanMedHull[2]!,
                 tom: '2022-12-28',
             };
-            const nyNestePeriode: PeriodeDto_fpoversikt = {
+            const nyNestePeriode: UttakPeriodeDto_fpoversikt = {
                 ...opprinneligPlanMedHull[3]!,
                 fom: '2022-12-29',
             };
-            const endretPlanMedHull: PeriodeDto_fpoversikt[] = [
+            const endretPlanMedHull: UttakPeriodeDto_fpoversikt[] = [
                 opprinneligPlanMedHull[0]!,
                 opprinneligPlanMedHull[1]!,
                 nyPeriode,
@@ -315,15 +315,15 @@ describe('dateUtils', () => {
         });
 
         it('Hvis en foregående periode får lengre sluttdato, skal endringstidspunktet være lik starten på den endrede perioden.', () => {
-            const nyPeriodeUttak: PeriodeDto_fpoversikt = {
+            const nyPeriodeUttak: UttakPeriodeDto_fpoversikt = {
                 ...opprinneligPlanMedHull[1]!,
                 tom: '2022-12-14',
             };
-            const nyPeriodeEtter: PeriodeDto_fpoversikt = {
+            const nyPeriodeEtter: UttakPeriodeDto_fpoversikt = {
                 ...opprinneligPlanMedHull[2]!,
                 fom: '2022-12-15',
             };
-            const endretPlanMedHull: PeriodeDto_fpoversikt[] = [
+            const endretPlanMedHull: UttakPeriodeDto_fpoversikt[] = [
                 opprinneligPlanMedHull[0]!,
                 nyPeriodeUttak,
                 nyPeriodeEtter,
@@ -337,7 +337,7 @@ describe('dateUtils', () => {
         });
 
         it('Hvis en periode i slutten av planen har fått tidligere sluttdato, skal starten på perioden være endringstidspunktet.', () => {
-            const endretPlanMedForkortetSistePeriode: PeriodeDto_fpoversikt[] = [
+            const endretPlanMedForkortetSistePeriode: UttakPeriodeDto_fpoversikt[] = [
                 opprinneligPlan[0]!,
                 opprinneligPlan[1]!,
                 { ...opprinneligPlan[2]!, tom: '2020-04-30' },
@@ -348,7 +348,7 @@ describe('dateUtils', () => {
         });
 
         it('Hvis en periode i slutten av planen har fått senere sluttdato, skal starten på perioden være endringstidspunktet.', () => {
-            const endretPlanMedForlengetSistePeriode: PeriodeDto_fpoversikt[] = [
+            const endretPlanMedForlengetSistePeriode: UttakPeriodeDto_fpoversikt[] = [
                 opprinneligPlan[0]!,
                 opprinneligPlan[1]!,
                 { ...opprinneligPlan[2]!, tom: '2020-06-02' },
@@ -359,15 +359,15 @@ describe('dateUtils', () => {
         });
 
         it('Hvis en foregående periode har fått kortere sluttdato, skal endringstidspunktet være lik starten på den endrede perioden.', () => {
-            const nyPeriodeUttak: PeriodeDto_fpoversikt = {
+            const nyPeriodeUttak: UttakPeriodeDto_fpoversikt = {
                 ...opprinneligPlanMedHull[1]!,
                 tom: '2022-12-12',
             };
-            const nyPeriodeEtter: PeriodeDto_fpoversikt = {
+            const nyPeriodeEtter: UttakPeriodeDto_fpoversikt = {
                 ...opprinneligPlanMedHull[2]!,
                 fom: '2022-12-13',
             };
-            const endretPlanMedHull: PeriodeDto_fpoversikt[] = [
+            const endretPlanMedHull: UttakPeriodeDto_fpoversikt[] = [
                 opprinneligPlanMedHull[0]!,
                 nyPeriodeUttak,
                 nyPeriodeEtter,
@@ -381,7 +381,7 @@ describe('dateUtils', () => {
         });
 
         it('Hvis en ny periode settes inn i starten av planen skal det telle som en endring', () => {
-            const nyPeriode: PeriodeDto_fpoversikt = {
+            const nyPeriode: UttakPeriodeDto_fpoversikt = {
                 fom: '2019-09-01',
                 tom: '2019-09-09',
                 søker: { flerbarnsdager: false, forelder: 'MOR' },
@@ -392,17 +392,17 @@ describe('dateUtils', () => {
         });
 
         it('Hvis uttaksplanlogikken deler en periode skal endringstidspunkt være starten av den endrede perioden', () => {
-            const deltPeriodeTidligereDel: PeriodeDto_fpoversikt = {
+            const deltPeriodeTidligereDel: UttakPeriodeDto_fpoversikt = {
                 fom: '2020-01-14',
                 tom: '2020-04-03',
                 søker: { flerbarnsdager: false, forelder: 'MOR' },
             };
-            const periodeSomDeltePeriode: PeriodeDto_fpoversikt = {
+            const periodeSomDeltePeriode: UttakPeriodeDto_fpoversikt = {
                 fom: '2020-04-06',
                 tom: '2020-04-17',
                 søker: { flerbarnsdager: false, forelder: 'MOR', utsettelseÅrsak: 'ARBEID' },
             };
-            const deltPeriodeSenereDel: PeriodeDto_fpoversikt = {
+            const deltPeriodeSenereDel: UttakPeriodeDto_fpoversikt = {
                 fom: '2020-04-20',
                 tom: '2020-05-04',
                 søker: { flerbarnsdager: false, forelder: 'MOR' },
@@ -420,12 +420,12 @@ describe('dateUtils', () => {
         });
 
         it('Bruker legger til en ny periode på slutten, skal endringstidspunktet bli riktig.', () => {
-            const opprinneligPlanMedAnnenPart: PeriodeDto_fpoversikt[] = [
+            const opprinneligPlanMedAnnenPart: UttakPeriodeDto_fpoversikt[] = [
                 { fom: '2019-09-10', tom: '2019-09-30', søker: { flerbarnsdager: false, forelder: 'MOR' } },
                 { fom: '2019-10-01', tom: '2020-01-13', søker: { flerbarnsdager: false, forelder: 'MOR' } },
             ];
 
-            const endretPlanMedAnnenPart: PeriodeDto_fpoversikt[] = [
+            const endretPlanMedAnnenPart: UttakPeriodeDto_fpoversikt[] = [
                 ...opprinneligPlanMedAnnenPart,
                 { fom: '2020-01-14', tom: '2020-05-04', søker: { flerbarnsdager: false, forelder: 'MOR' } },
             ];
@@ -437,11 +437,11 @@ describe('dateUtils', () => {
             'Bruker sletter opprinnelig plan og legger til ny periode,' +
                 ' skal endringsdato være starten på den første perioden i opprinnelig plan.',
             () => {
-                const opprinneligPlanMedAnnenPart: PeriodeDto_fpoversikt[] = [
+                const opprinneligPlanMedAnnenPart: UttakPeriodeDto_fpoversikt[] = [
                     { fom: '2019-10-01', tom: '2020-01-13', søker: { flerbarnsdager: false, forelder: 'MOR' } },
                 ];
 
-                const nyPlan: PeriodeDto_fpoversikt[] = [
+                const nyPlan: UttakPeriodeDto_fpoversikt[] = [
                     { fom: '2020-01-14', tom: '2020-05-04', søker: { flerbarnsdager: false, forelder: 'MOR' } },
                 ];
                 const endringstidspunkt = getEndringstidspunktNy(opprinneligPlanMedAnnenPart, nyPlan);
@@ -450,7 +450,7 @@ describe('dateUtils', () => {
         );
 
         it('Skal finne endringstidspunkt når morsAktivitet endres fra undefined til en verdi (aktivitetskrav legges til)', () => {
-            const opprinneligPlanUtenAktivitetskrav: PeriodeDto_fpoversikt[] = [
+            const opprinneligPlanUtenAktivitetskrav: UttakPeriodeDto_fpoversikt[] = [
                 {
                     fom: '2025-01-06',
                     tom: '2025-02-14',
@@ -463,7 +463,7 @@ describe('dateUtils', () => {
                 },
             ];
 
-            const endretPlanMedAktivitetskrav: PeriodeDto_fpoversikt[] = [
+            const endretPlanMedAktivitetskrav: UttakPeriodeDto_fpoversikt[] = [
                 {
                     fom: '2025-01-06',
                     tom: '2025-02-14',

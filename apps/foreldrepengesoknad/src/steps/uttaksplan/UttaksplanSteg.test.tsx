@@ -3,7 +3,7 @@ import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
 
-import { PeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import * as stories from './UttaksplanSteg.stories';
 
@@ -374,7 +374,7 @@ describe('<UttaksplanSteg>', () => {
         );
         expect(uttaksplanAction).toBeDefined();
 
-        const uttaksplan = uttaksplanAction![0].data as PeriodeDto_fpoversikt[];
+        const uttaksplan = uttaksplanAction![0].data as UttakPeriodeDto_fpoversikt[];
         const farPerioder = uttaksplan.filter((p) => p.søker?.forelder === 'FAR_MEDMOR');
 
         // Forslaget skal kun inneholde de to ukene ved termin (10 uttaksdager), ikke gjenstående fedrekvote i fremtiden

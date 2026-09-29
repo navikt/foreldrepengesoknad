@@ -1,4 +1,4 @@
-import { PeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import { ForeldreInfo } from '../types/ForeldreInfo';
 import { lagPerioderUtenUttak, lagTapteDagerPerioder } from './lagHullPerioder';
@@ -23,7 +23,7 @@ describe('lagHullPerioder', () => {
                 tom: '2025-04-10',
                 søker: { flerbarnsdager: false, forelder: 'MOR' },
             },
-        ] satisfies PeriodeDto_fpoversikt[];
+        ] satisfies UttakPeriodeDto_fpoversikt[];
 
         const perioderMedHull = lagTapteDagerPerioder(perioder, familiehendelsedato, 'fødsel', DEFAULT_FORELDRE_INFO);
 
@@ -51,7 +51,7 @@ describe('lagHullPerioder', () => {
                 tom: '2025-04-18',
                 søker: { flerbarnsdager: false, forelder: 'MOR' },
             },
-        ] satisfies PeriodeDto_fpoversikt[];
+        ] satisfies UttakPeriodeDto_fpoversikt[];
 
         const perioderMedHull = lagTapteDagerPerioder(perioder, familiehendelsedato, 'fødsel', DEFAULT_FORELDRE_INFO);
 
@@ -80,7 +80,7 @@ describe('lagHullPerioder', () => {
                 tom: '2025-04-10',
                 søker: { flerbarnsdager: false, forelder: 'MOR' },
             },
-        ] satisfies PeriodeDto_fpoversikt[];
+        ] satisfies UttakPeriodeDto_fpoversikt[];
 
         const perioderMedHull = lagTapteDagerPerioder(perioder, familiehendelsedato, 'adopsjon', DEFAULT_FORELDRE_INFO);
 
@@ -96,7 +96,7 @@ describe('lagHullPerioder', () => {
                 tom: '2025-06-10',
                 søker: { flerbarnsdager: false, forelder: 'MOR' },
             },
-        ] satisfies PeriodeDto_fpoversikt[];
+        ] satisfies UttakPeriodeDto_fpoversikt[];
 
         const perioderMedHull = lagTapteDagerPerioder(perioder, familiehendelsedato, 'fødsel', DEFAULT_FORELDRE_INFO);
 
@@ -117,7 +117,7 @@ describe('lagHullPerioder', () => {
                 tom: '2025-08-24',
                 annenPart: { flerbarnsdager: false, forelder: 'MOR' },
             },
-        ] satisfies PeriodeDto_fpoversikt[];
+        ] satisfies UttakPeriodeDto_fpoversikt[];
         const foreldreInfo = {
             ...DEFAULT_FORELDRE_INFO,
             søker: 'FAR_MEDMOR',
@@ -145,7 +145,7 @@ describe('lagHullPerioder', () => {
                 tom: '2025-04-08',
                 søker: { flerbarnsdager: false, forelder: 'FAR_MEDMOR' },
             },
-        ] satisfies PeriodeDto_fpoversikt[];
+        ] satisfies UttakPeriodeDto_fpoversikt[];
         const foreldreInfo = {
             ...DEFAULT_FORELDRE_INFO,
             søker: 'FAR_MEDMOR',
@@ -166,7 +166,7 @@ describe('lagHullPerioder', () => {
                 tom: '2025-08-20',
                 annenPart: { flerbarnsdager: false, forelder: 'MOR' },
             },
-        ] satisfies PeriodeDto_fpoversikt[];
+        ] satisfies UttakPeriodeDto_fpoversikt[];
 
         const foreldreInfo = {
             ...DEFAULT_FORELDRE_INFO,
@@ -200,7 +200,7 @@ describe('lagHullPerioder', () => {
                 tom: '2025-08-20',
                 annenPart: { flerbarnsdager: false, forelder: 'MOR' },
             },
-        ] satisfies PeriodeDto_fpoversikt[];
+        ] satisfies UttakPeriodeDto_fpoversikt[];
 
         const foreldreInfo = {
             ...DEFAULT_FORELDRE_INFO,
@@ -234,7 +234,7 @@ describe('lagHullPerioder', () => {
                 tom: '2025-08-20',
                 annenPart: { flerbarnsdager: false, forelder: 'MOR' },
             },
-        ] satisfies PeriodeDto_fpoversikt[];
+        ] satisfies UttakPeriodeDto_fpoversikt[];
 
         const foreldreInfo = {
             ...DEFAULT_FORELDRE_INFO,
@@ -263,7 +263,7 @@ describe('lagHullPerioder', () => {
                 tom: '2026-02-02',
                 søker: { flerbarnsdager: false, forelder: 'MOR' },
             },
-        ] satisfies PeriodeDto_fpoversikt[];
+        ] satisfies UttakPeriodeDto_fpoversikt[];
 
         const perioderUtenUttak = lagTapteDagerPerioder(
             perioder,
@@ -307,7 +307,7 @@ describe('lagHullPerioder', () => {
                 tom: '2025-08-11',
                 søker: { flerbarnsdager: false, forelder: 'MOR' },
             },
-        ] satisfies PeriodeDto_fpoversikt[];
+        ] satisfies UttakPeriodeDto_fpoversikt[];
 
         const perioderUtenUttak = lagPerioderUtenUttak(perioder, familiehendelsedato);
 
@@ -344,7 +344,7 @@ describe('lagHullPerioder', () => {
                 tom: '2025-04-30',
                 søker: { flerbarnsdager: false, forelder: 'MOR' },
             },
-        ] satisfies PeriodeDto_fpoversikt[];
+        ] satisfies UttakPeriodeDto_fpoversikt[];
 
         const perioderUtenUttak = lagPerioderUtenUttak(perioder, familiehendelsedato);
 
@@ -376,7 +376,7 @@ describe('lagHullPerioder', () => {
                 tom: '2025-04-02',
                 søker: { flerbarnsdager: false, forelder: 'MOR' },
             },
-        ] satisfies PeriodeDto_fpoversikt[];
+        ] satisfies UttakPeriodeDto_fpoversikt[];
 
         const perioderUtenUttak = lagPerioderUtenUttak(perioder, familiehendelsedato);
 
@@ -397,7 +397,7 @@ describe('lagHullPerioder', () => {
                 tom: '2026-02-02',
                 søker: { flerbarnsdager: false, forelder: 'MOR' },
             },
-        ] satisfies PeriodeDto_fpoversikt[];
+        ] satisfies UttakPeriodeDto_fpoversikt[];
 
         const perioderUtenUttak = lagPerioderUtenUttak(perioder, familiehendelsedatoLørdag);
 

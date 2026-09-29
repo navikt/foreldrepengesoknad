@@ -1,6 +1,6 @@
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 
-import { PeriodeDto_fpoversikt, UtsettelseÅrsak_fpoversikt, UttakDto_fpoversikt } from '@navikt/fp-types';
+import { UtsettelseÅrsak_fpoversikt, UttakDto_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
 import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan/validators';
 
@@ -14,9 +14,9 @@ import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan/validators';
  * innvilget, selv om han kun endrer/legger til en ny periode.
  */
 export const finnPerioderSomInngårISøknaden = (
-    uttaksplan: PeriodeDto_fpoversikt[],
+    uttaksplan: UttakPeriodeDto_fpoversikt[],
     harEksisterendeSak: boolean,
-): PeriodeDto_fpoversikt[] => {
+): UttakPeriodeDto_fpoversikt[] => {
     return uttaksplan.filter((periode) => {
         if (!periode.søker) {
             return false;
@@ -26,7 +26,7 @@ export const finnPerioderSomInngårISøknaden = (
 };
 
 export const perioderSomKreverVedlegg = (
-    uttaksplan: PeriodeDto_fpoversikt[],
+    uttaksplan: UttakPeriodeDto_fpoversikt[],
     erFarEllerMedmor: boolean,
     annenForelder: AnnenForelder,
     familiehendelsedato: string,
@@ -39,7 +39,7 @@ export const perioderSomKreverVedlegg = (
 };
 
 const shouldPeriodeHaveAttachment = (
-    periode: PeriodeDto_fpoversikt,
+    periode: UttakPeriodeDto_fpoversikt,
     søkerErFarEllerMedmor: boolean,
     annenForelder: AnnenForelder,
     familiehendelsedato: string,
@@ -86,7 +86,7 @@ const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelseÅrsak_fpovers
     ['SØKER_SYKDOM', 'SØKER_INNLAGT', 'BARN_INNLAGT'].includes(årsak);
 
 const dokumentasjonBehøvesForUttaksperiode = (
-    periode: PeriodeDto_fpoversikt,
+    periode: UttakPeriodeDto_fpoversikt,
     søker: UttakDto_fpoversikt,
     søkerErFarEllerMedmor: boolean,
     familiehendelsedato: string,

@@ -15,9 +15,9 @@ import type {
     KontoTypeUttak,
     MorsAktivitet,
     NavnPåForeldre,
-    PeriodeDto_fpoversikt,
     UttakDto_fpoversikt,
     UttakOverføringÅrsak_fpoversikt,
+    UttakPeriodeDto_fpoversikt,
 } from '@navikt/fp-types';
 import { getFloatFromString, getNavnGenitivEierform } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -900,7 +900,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
 };
 
 /**
- * Byggjer éin sammanslått {@link PeriodeDto_fpoversikt} frå skjemaverdiane – ikkje éin rad per
+ * Byggjer éin sammanslått {@link UttakPeriodeDto_fpoversikt} frå skjemaverdiane – ikkje éin rad per
  * forelder slik det var i den gamle flate modellen. Kva part («søker»/«annenPart») kvar
  * forelder sine felt hamnar på, er styrt av kven som er innlogga søkjar (parameteren `søker`):
  * MOR-felta hamnar på `.søker` når søkjar er mor, elles på `.annenPart`, og tilsvarande motsett
@@ -911,7 +911,7 @@ export const mapFraFormValuesTilPeriodeDto = (
     periode: { fom: string; tom: string },
     søker: BrukerRolleSak_fpoversikt,
     kanVelgeArbeidsgiver: boolean,
-): PeriodeDto_fpoversikt[] => {
+): UttakPeriodeDto_fpoversikt[] => {
     if (!values.forelder) {
         return [];
     }
@@ -977,7 +977,7 @@ export const mapFraFormValuesTilPeriodeDto = (
 };
 
 export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
-    uttaksplanperioder: PeriodeDto_fpoversikt[],
+    uttaksplanperioder: UttakPeriodeDto_fpoversikt[],
     valgtPeriode: { fom: string; tom: string },
     søker: BrukerRolleSak_fpoversikt,
     erPeriodeneTilAnnenPartLåst: boolean,

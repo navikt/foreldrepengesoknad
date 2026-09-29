@@ -1,11 +1,11 @@
-import { BrukerRolleSak_fpoversikt, PeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 // Planleggeren veit ikkje kven av foreldra som skal søkje, så partane må fordelast på nytt
 // når søkjaren si rolle er kjend.
 export const fordelPlanleggerPerioderEtterSøker = (
-    perioder: PeriodeDto_fpoversikt[],
+    perioder: UttakPeriodeDto_fpoversikt[],
     søkersForelder: BrukerRolleSak_fpoversikt,
-): PeriodeDto_fpoversikt[] =>
+): UttakPeriodeDto_fpoversikt[] =>
     perioder.map((periode) => {
         if (periode.søker?.forelder === periode.annenPart?.forelder) {
             return periode;

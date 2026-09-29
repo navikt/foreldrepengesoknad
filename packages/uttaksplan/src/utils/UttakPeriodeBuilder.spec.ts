@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { PeriodeDto_fpoversikt, UttakDto_fpoversikt } from '@navikt/fp-types';
+import { UttakDto_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import { UttakPeriodeBuilder } from './UttakPeriodeBuilder';
 
@@ -12,25 +12,29 @@ vi.mock('@navikt/fp-observability', () => ({
 const getContext = () => captureExceptionMock.mock.calls[0]?.[1]?.context;
 
 // Søker (mor) sine periodar er eksisterande, annen part (far/medmor) sine er nye, slik at dei kan skiljast.
-const lagPeriode = (fom: string, tom: string, part: Partial<UttakDto_fpoversikt> = {}): PeriodeDto_fpoversikt => ({
+const lagPeriode = (fom: string, tom: string, part: Partial<UttakDto_fpoversikt> = {}): UttakPeriodeDto_fpoversikt => ({
     fom,
     tom,
     søker: { forelder: 'MOR', flerbarnsdager: false, ...part },
 });
-const lagNyPeriode = (fom: string, tom: string, part: Partial<UttakDto_fpoversikt> = {}): PeriodeDto_fpoversikt => ({
+const lagNyPeriode = (
+    fom: string,
+    tom: string,
+    part: Partial<UttakDto_fpoversikt> = {},
+): UttakPeriodeDto_fpoversikt => ({
     fom,
     tom,
     annenPart: { forelder: 'FAR_MEDMOR', flerbarnsdager: false, ...part },
 });
 
-const lagSamtidigUttakPeriode = (fom: string, tom: string): PeriodeDto_fpoversikt => ({
+const lagSamtidigUttakPeriode = (fom: string, tom: string): UttakPeriodeDto_fpoversikt => ({
     fom,
     tom,
     søker: { forelder: 'MOR', flerbarnsdager: false, samtidigUttak: 50 },
     annenPart: { forelder: 'FAR_MEDMOR', flerbarnsdager: false, samtidigUttak: 50 },
 });
 
-const lagEøsPeriode = (fom: string, tom: string): PeriodeDto_fpoversikt => ({
+const lagEøsPeriode = (fom: string, tom: string): UttakPeriodeDto_fpoversikt => ({
     fom,
     tom,
     annenPartEøs: { kontoType: 'FORELDREPENGER', trekkdager: 5 },

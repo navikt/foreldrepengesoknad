@@ -3,7 +3,7 @@ import { ComponentProps, useState } from 'react';
 import { action } from 'storybook/actions';
 
 import { BarnType } from '@navikt/fp-constants';
-import { PeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import { UttaksplanDataProvider } from '../context/UttaksplanDataContext';
 import { UttaksplanRedigeringProvider } from '../context/UttaksplanRedigeringContext';
@@ -32,9 +32,9 @@ const meta = {
         children: null,
     },
     render: (args) => {
-        const [perioder, setPerioder] = useState<PeriodeDto_fpoversikt[] | undefined>(args.perioder);
+        const [perioder, setPerioder] = useState<UttakPeriodeDto_fpoversikt[] | undefined>(args.perioder);
 
-        const handleOnPlanChange = (oppdatertePerioder: PeriodeDto_fpoversikt[] | undefined) => {
+        const handleOnPlanChange = (oppdatertePerioder: UttakPeriodeDto_fpoversikt[] | undefined) => {
             setPerioder(oppdatertePerioder);
         };
 
@@ -121,7 +121,7 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
                 tom: '2024-07-15',
                 annenPart: { kontoType: 'FEDREKVOTE', forelder: 'FAR_MEDMOR', flerbarnsdager: false },
             },
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2024-04-04'],
@@ -177,7 +177,7 @@ export const SkalHaPeriodeMedFratrekkForPleiepenger: Story = {
                     flerbarnsdager: false,
                 },
             },
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2024-04-04'],
@@ -217,7 +217,7 @@ export const FarSøkerMedTapteDagerOgFerie: Story = {
                 tom: '2021-10-29',
                 søker: { forelder: 'FAR_MEDMOR', kontoType: 'FORELDREPENGER', flerbarnsdager: false },
             },
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2021-05-31'],
@@ -247,7 +247,7 @@ export const MorSøkerMedFlereUtsettelser: Story = {
                 tom: '2021-06-28',
                 søker: { forelder: 'MOR', utsettelseÅrsak: 'FERIE', flerbarnsdager: false },
             },
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2021-05-31'],
@@ -343,7 +343,7 @@ export const UtsettelseMorFerieMedFarsUtsettelse: Story = {
                 tom: '2021-07-28',
                 annenPart: { forelder: 'FAR_MEDMOR', utsettelseÅrsak: 'FERIE', flerbarnsdager: false },
             },
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2021-06-14'],
@@ -388,7 +388,7 @@ export const MorAvslåttPeriodeFørste6UkeneGirTapteDager: Story = {
                 tom: '2024-05-17',
                 søker: { kontoType: 'FORELDREPENGER', forelder: 'MOR', flerbarnsdager: false },
             },
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2023-07-01'],
@@ -433,7 +433,7 @@ export const MorAvslåttPeriodeUtenTapteDager: Story = {
                     flerbarnsdager: false,
                 },
             },
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2023-07-01'],
@@ -458,7 +458,7 @@ export const KortPeriodeMedHelg: Story = {
                 tom: '2024-05-27',
                 søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
             },
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
         barn: {
             type: BarnType.ADOPTERT_ANNET_BARN,
             fødselsdatoer: ['2024-05-23'],
@@ -484,7 +484,7 @@ export const KortPeriodeMedHelgFødsel: Story = {
                 tom: '2024-05-27',
                 søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
             },
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2024-05-23'],
@@ -509,7 +509,7 @@ export const KortPeriodeUtenHelg: Story = {
                 tom: '2024-05-24',
                 annenPart: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
             },
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
         barn: {
             type: BarnType.ADOPTERT_STEBARN,
             fødselsdatoer: ['2024-05-21'],
@@ -545,7 +545,7 @@ export const TreSammenhengendePerioderSlåttSammen: Story = {
                 tom: '2024-06-12',
                 søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
             },
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
         barn: {
             type: BarnType.ADOPTERT_STEBARN,
             fødselsdatoer: ['2024-05-21'],
@@ -571,7 +571,7 @@ export const MorOppgirSamtidigUttakMedFar: Story = {
                 tom: '2024-05-27',
                 søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', samtidigUttak: 50, flerbarnsdager: false },
             },
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
         barn: {
             type: BarnType.ADOPTERT_STEBARN,
             fødselsdatoer: ['2024-05-21'],
@@ -603,7 +603,7 @@ export const MorOppgirSamtidigUttakMedMedmor: Story = {
                     flerbarnsdager: false,
                 },
             },
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
         barn: {
             type: BarnType.ADOPTERT_STEBARN,
             fødselsdatoer: ['2024-05-21'],
@@ -629,7 +629,7 @@ export const FarOppgirSamtidigUttakMedMor: Story = {
                 tom: '2025-05-27',
                 søker: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', samtidigUttak: 70, flerbarnsdager: false },
             },
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
         barn: {
             type: BarnType.ADOPTERT_STEBARN,
             fødselsdatoer: ['2025-05-21'],
@@ -681,7 +681,7 @@ export const FellesPeriodeForMorOgSamtidigUttak: Story = {
                 tom: '2024-07-15',
                 annenPart: { kontoType: 'FELLESPERIODE', forelder: 'FAR_MEDMOR', flerbarnsdager: false },
             },
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2024-04-04'],
@@ -709,7 +709,7 @@ export const HarPeriode11UkerFørFamiliehendelseDato: Story = {
             },
 
             ...MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering.args.perioder,
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
     },
 };
 
@@ -742,7 +742,7 @@ export const VisFarsAktivitetsfriKvote: Story = {
                     flerbarnsdager: false,
                 },
             },
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2024-04-04'],
@@ -886,7 +886,7 @@ export const MorSøkerOgFarHarEøsPeriode: Story = {
                 søker: { forelder: 'MOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false },
             },
             { fom: '2024-07-03', tom: '2024-07-15', annenPartEøs: { kontoType: 'FEDREKVOTE', trekkdager: 10 } },
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2024-04-04'],
@@ -931,7 +931,7 @@ export const FarSøkerOgMorHarEøsPeriode: Story = {
                 tom: '2024-07-15',
                 annenPartEøs: { kontoType: 'FEDREKVOTE', trekkdager: 10 },
             },
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2024-04-04'],
@@ -976,7 +976,7 @@ export const MorSøkerOgMedmorHarEøsPeriode: Story = {
                 tom: '2024-07-15',
                 annenPartEøs: { kontoType: 'FEDREKVOTE', trekkdager: 10 },
             },
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2024-04-04'],
@@ -1021,7 +1021,7 @@ export const MarkerPeriodeNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt: Sto
                 tom: '2024-07-15',
                 søker: { forelder: 'FAR_MEDMOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false },
             },
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2024-04-04'],
@@ -1122,7 +1122,7 @@ export const FarSøkerEtterAtMorHarSøkt: Story = {
                 tom: '2024-07-02',
                 annenPart: { forelder: 'MOR', kontoType: 'FELLESPERIODE', samtidigUttak: 50, flerbarnsdager: false },
             },
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2024-04-04'],
@@ -1420,7 +1420,7 @@ export const KunFarHarRettOgHarPauseperiode: Story = {
                 tom: '2024-06-13',
                 søker: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
             },
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
         erEndringssøknad: false,
     },
 };
@@ -1504,7 +1504,7 @@ export const SkalViseAvslåttPeriodeKorrekt: Story = {
                     forelder: 'FAR_MEDMOR',
                 },
             },
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
         erEndringssøknad: true,
     },
 };
@@ -1645,7 +1645,7 @@ export const SkalViseGradertePeriodeForAnnenPartSomErLåst: Story = {
                     forelder: 'MOR',
                 },
             },
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
         erEndringssøknad: true,
     },
 };
@@ -1728,7 +1728,7 @@ export const MarkerPeriodeNårGraderingsaktivitetMangler: Story = {
                     flerbarnsdager: false,
                 },
             },
-        ] satisfies PeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto_fpoversikt[],
         barn: {
             type: BarnType.FØDT,
             fødselsdatoer: ['2026-12-01'],

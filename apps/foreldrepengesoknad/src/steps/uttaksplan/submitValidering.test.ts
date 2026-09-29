@@ -1,4 +1,4 @@
-import { EøsUttakDto_fpoversikt, PeriodeDto_fpoversikt, UttakDto_fpoversikt } from '@navikt/fp-types';
+import { EøsUttakDto_fpoversikt, UttakDto_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import {
     erSammePeriodeInkludertDatoer,
@@ -17,7 +17,7 @@ const lagPeriode = ({
     fom = '2024-07-01',
     tom = '2024-07-31',
     ...overrides
-}: Partial<UttakDto_fpoversikt> & { fom?: string; tom?: string } = {}): PeriodeDto_fpoversikt => ({
+}: Partial<UttakDto_fpoversikt> & { fom?: string; tom?: string } = {}): UttakPeriodeDto_fpoversikt => ({
     fom,
     tom,
     søker: {
@@ -33,7 +33,7 @@ const lagEøsPeriode = ({
     fom = '2024-10-01',
     tom = '2024-10-31',
     ...overrides
-}: Partial<EøsUttakDto_fpoversikt> & { fom?: string; tom?: string } = {}): PeriodeDto_fpoversikt => ({
+}: Partial<EøsUttakDto_fpoversikt> & { fom?: string; tom?: string } = {}): UttakPeriodeDto_fpoversikt => ({
     fom,
     tom,
     annenPartEøs: {

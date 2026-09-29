@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 
-import { PeriodeDto_fpoversikt, RettighetType_fpoversikt } from '@navikt/fp-types';
+import { RettighetType_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
 import {
     erPerioderEkslFomTomLike,
@@ -13,7 +13,7 @@ import {
 } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
-export type UttaksplanPerioder = PeriodeDto_fpoversikt[];
+export type UttaksplanPerioder = UttakPeriodeDto_fpoversikt[];
 
 type SubmitValideringsregel = {
     gjelder: (planForValidering: UttaksplanPerioder) => boolean;

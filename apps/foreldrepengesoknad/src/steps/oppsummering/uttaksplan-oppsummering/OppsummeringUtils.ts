@@ -13,9 +13,9 @@ import {
     EksternArbeidsforholdDto_fpoversikt,
     KontoType,
     NavnPåForeldre,
-    PeriodeDto_fpoversikt,
     Situasjon,
     UttakDto_fpoversikt,
+    UttakPeriodeDto_fpoversikt,
 } from '@navikt/fp-types';
 import { Uttaksperioden, capitalizeFirstLetter } from '@navikt/fp-utils';
 
@@ -69,7 +69,7 @@ export const uttaksperiodeKanJusteresVedFødsel = (
 
 export const getPeriodeTittel = (
     intl: IntlShape,
-    periode: PeriodeDto_fpoversikt,
+    periode: UttakPeriodeDto_fpoversikt,
     part: UttakDto_fpoversikt | undefined,
     navnPåForeldre: NavnPåForeldre,
     familiehendelsesdato: string,
@@ -121,7 +121,7 @@ export const getPeriodeTittel = (
 
 const getPeriodeTittelUttaksPeriode = (
     intl: IntlShape,
-    periode: PeriodeDto_fpoversikt,
+    periode: UttakPeriodeDto_fpoversikt,
     part: UttakDto_fpoversikt,
     navnPåForeldre: NavnPåForeldre,
     familiehendelsesdato: string,
@@ -134,7 +134,7 @@ const getPeriodeTittelUttaksPeriode = (
     // isUttaksperiodeFarMedmorPgaFødsel sjekkar alltid .søker-parten av periode. Her kan «parten vi ser
     // på» vera annenPart (t.d. i annan part si liste), så vi byggjer ei periode der .søker peikar på
     // rett part før vi kallar han, i staden for å endra den delte sjekk-funksjonen sin kontrakt.
-    const periodeForFødselssjekk: PeriodeDto_fpoversikt = { ...periode, søker: part };
+    const periodeForFødselssjekk: UttakPeriodeDto_fpoversikt = { ...periode, søker: part };
     const tittel = appendPeriodeNavnHvisUttakRundtFødselFarMedmor(
         intl,
         tittelMedNavn,
@@ -208,7 +208,7 @@ const getOppholdskontoNavn = (
 const appendPeriodeNavnHvisUttakRundtFødselFarMedmor = (
     intl: IntlShape,
     periodeNavn: string,
-    periode: PeriodeDto_fpoversikt,
+    periode: UttakPeriodeDto_fpoversikt,
     situasjon: Situasjon,
     familiehendelsesdato: string,
     termindato: string | undefined,

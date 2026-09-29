@@ -1,4 +1,4 @@
-import { KontoBeregningDto, PeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { KontoBeregningDto, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import { getBrukteDager } from './brukteDagerUtils';
 
@@ -14,7 +14,7 @@ const KONTOER: KontoBeregningDto = {
 
 describe('getBrukteDager', () => {
     it('teller en oppholdsdag som fedrekvote når mor har utsettelse samme dag', () => {
-        const perioder: PeriodeDto_fpoversikt[] = [
+        const perioder: UttakPeriodeDto_fpoversikt[] = [
             {
                 fom: '2026-01-05',
                 tom: '2026-04-16',
@@ -51,7 +51,7 @@ describe('getBrukteDager', () => {
         ['MØDREKVOTE' as const, (resultat: ReturnType<typeof getBrukteDager>) => resultat.mor.dagerEgneKvoter],
         ['FELLESPERIODE' as const, (resultat: ReturnType<typeof getBrukteDager>) => resultat.mor.dagerFellesperiode],
     ])('kobler oppholdsperiode med %s til riktig kvote', (kontoType, hentResultat) => {
-        const periode: PeriodeDto_fpoversikt = {
+        const periode: UttakPeriodeDto_fpoversikt = {
             fom: '2026-04-17',
             tom: '2026-04-17',
             annenPart: {

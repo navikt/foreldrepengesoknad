@@ -14,7 +14,7 @@ import {
     Barn,
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
-    PeriodeDto_fpoversikt,
+    UttakPeriodeDto_fpoversikt,
     isAdoptertBarn,
     isFødtBarn,
     isIkkeUtfyltTypeBarn,
@@ -32,13 +32,13 @@ type FormValues = {
 
 interface UttaksplanFormProps {
     søkerInfo: FpPersonopplysningerDto_fpoversikt;
-    defaultUttaksperioder: PeriodeDto_fpoversikt[];
+    defaultUttaksperioder: UttakPeriodeDto_fpoversikt[];
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
     setFeilmelding: (melding: ReactNode) => void;
     scrollToKvoteOppsummering: () => void;
     eksisterendeSak: FpSak_fpoversikt | undefined;
-    opprinneligPlan: PeriodeDto_fpoversikt[] | undefined;
+    opprinneligPlan: UttakPeriodeDto_fpoversikt[] | undefined;
     erEndringssøknad: boolean;
 }
 
@@ -187,7 +187,7 @@ const AutomatiskJusteringInfotekst = ({
     uttaksplan,
 }: {
     harSvartJaPåAutoJustering: boolean;
-    uttaksplan: PeriodeDto_fpoversikt[];
+    uttaksplan: UttakPeriodeDto_fpoversikt[];
 }) => {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
@@ -259,7 +259,7 @@ const AutomatiskJusteringInfotekst = ({
     return null;
 };
 
-const finnPerioderRundtFødsel = (valgtePerioder: PeriodeDto_fpoversikt[], barnet: Barn) => {
+const finnPerioderRundtFødsel = (valgtePerioder: UttakPeriodeDto_fpoversikt[], barnet: Barn) => {
     if (isAdoptertBarn(barnet) || isIkkeUtfyltTypeBarn(barnet)) {
         return [];
     }
@@ -273,7 +273,7 @@ const finnPerioderRundtFødsel = (valgtePerioder: PeriodeDto_fpoversikt[], barne
 };
 
 const finnPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato = (
-    valgtePerioder: PeriodeDto_fpoversikt[],
+    valgtePerioder: UttakPeriodeDto_fpoversikt[],
     familiehendelsedato: string,
 ) => {
     const førsteDag = Uttaksdagen.denneEllerNeste(familiehendelsedato).getDato();
@@ -287,7 +287,7 @@ const finnPerioderInnenforIntervalletFamDatoOgSeksUkerEtterFamDato = (
 };
 
 const finnPerioderInnenforIntervalletToUkerFørFamDatoOgFamDato = (
-    valgtePerioder: PeriodeDto_fpoversikt[],
+    valgtePerioder: UttakPeriodeDto_fpoversikt[],
     familiehendelsedato: string,
 ) => {
     const førsteDag = Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(15);
@@ -301,7 +301,7 @@ const finnPerioderInnenforIntervalletToUkerFørFamDatoOgFamDato = (
 };
 
 // Les frå .søker sidan farMedmorPerioder alltid er søkjaren sine eigne periodar her.
-const erJusterbartUttakRundtTermin = (periode: PeriodeDto_fpoversikt): boolean =>
+const erJusterbartUttakRundtTermin = (periode: UttakPeriodeDto_fpoversikt): boolean =>
     periode.søker?.kontoType === 'FORELDREPENGER' ||
     (periode.søker?.kontoType === 'FEDREKVOTE' && periode.søker.samtidigUttak !== undefined);
 
@@ -321,7 +321,7 @@ const erJusterbartUttakRundtTermin = (periode: PeriodeDto_fpoversikt): boolean =
  * fødsel. Selv om bruker har søkt om justering!".
  */
 export const kanJustereFarsUttakRundtFødsel = (
-    farMedmorPerioder: PeriodeDto_fpoversikt[],
+    farMedmorPerioder: UttakPeriodeDto_fpoversikt[],
     termindato: string,
 ): boolean => {
     if (farMedmorPerioder.length === 0) {
@@ -334,7 +334,7 @@ export const kanJustereFarsUttakRundtFødsel = (
     const intervallFom = dayjs(termindatoUttaksdag).subtract(2, 'week');
     const intervallTom = dayjs(termindatoUttaksdag).add(6, 'week').subtract(1, 'day');
 
-    const liggerHeiltInnanforIntervallet = (periode: PeriodeDto_fpoversikt) =>
+    const liggerHeiltInnanforIntervallet = (periode: UttakPeriodeDto_fpoversikt) =>
         dayjs(periode.fom).isSameOrAfter(intervallFom, 'day') && dayjs(periode.tom).isSameOrBefore(intervallTom, 'day');
 
     const førstePeriode = sortertePerioder[0]!;

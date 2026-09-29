@@ -1,4 +1,4 @@
-import { Familiesituasjon, PeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { Familiesituasjon, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import { LeggTilEllerEndrePeriodeFormFormValues } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
 import { ForeldreInfo } from '../../types/ForeldreInfo';
@@ -13,7 +13,7 @@ export { type Periode } from '../types';
 export type ValideringInput = {
     formValues: LeggTilEllerEndrePeriodeFormFormValues;
     perioder: Periode[];
-    uttakPerioder: PeriodeDto_fpoversikt[];
+    uttakPerioder: UttakPeriodeDto_fpoversikt[];
     familiehendelsedato: string;
     familiesituasjon: Familiesituasjon;
     termindato: string | undefined;

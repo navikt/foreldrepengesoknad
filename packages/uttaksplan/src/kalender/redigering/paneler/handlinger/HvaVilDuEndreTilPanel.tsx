@@ -5,7 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Box, Button, Chips, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
-import { PeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
@@ -91,7 +91,7 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
                             utsettelseÅrsak: 'FERIE',
                             flerbarnsdager: false,
                         },
-                    }) satisfies PeriodeDto_fpoversikt,
+                    }) satisfies UttakPeriodeDto_fpoversikt,
             ),
             skalForskyve,
         );

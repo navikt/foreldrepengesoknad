@@ -1,9 +1,9 @@
-import { PeriodeDto_fpoversikt, UttakDto_fpoversikt } from '@navikt/fp-types';
+import { UttakDto_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import { kanJustereFarsUttakRundtFødsel } from './UttaksplanForm';
 import { erKunUtsettelser, harKunPerioderForAnnenForelder } from './submitValidering';
 
-const utsettelseFar: PeriodeDto_fpoversikt = {
+const utsettelseFar: UttakPeriodeDto_fpoversikt = {
     fom: '2026-06-01',
     tom: '2026-06-05',
     søker: {
@@ -14,7 +14,7 @@ const utsettelseFar: PeriodeDto_fpoversikt = {
     },
 };
 
-const utsettelseArbeidFar: PeriodeDto_fpoversikt = {
+const utsettelseArbeidFar: UttakPeriodeDto_fpoversikt = {
     fom: '2026-06-08',
     tom: '2026-06-12',
     søker: {
@@ -25,7 +25,7 @@ const utsettelseArbeidFar: PeriodeDto_fpoversikt = {
     },
 };
 
-const uttakFar: PeriodeDto_fpoversikt = {
+const uttakFar: UttakPeriodeDto_fpoversikt = {
     fom: '2026-07-01',
     tom: '2026-07-31',
     søker: {
@@ -35,7 +35,7 @@ const uttakFar: PeriodeDto_fpoversikt = {
     },
 };
 
-const uttakMor: PeriodeDto_fpoversikt = {
+const uttakMor: UttakPeriodeDto_fpoversikt = {
     fom: '2026-05-01',
     tom: '2026-05-31',
     annenPart: {
@@ -94,7 +94,7 @@ describe('kanJustereFarsUttakRundtFødsel', () => {
         fom = '2026-07-06',
         tom = '2026-07-10',
         ...overrides
-    }: Partial<UttakDto_fpoversikt> & { fom?: string; tom?: string }): PeriodeDto_fpoversikt => ({
+    }: Partial<UttakDto_fpoversikt> & { fom?: string; tom?: string }): UttakPeriodeDto_fpoversikt => ({
         fom,
         tom,
         søker: {

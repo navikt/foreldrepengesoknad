@@ -13,8 +13,8 @@ import {
     KontoType,
     MorsAktivitet,
     NavnPåForeldre,
-    PeriodeDto_fpoversikt,
     UttakDto_fpoversikt,
+    UttakPeriodeDto_fpoversikt,
 } from '@navikt/fp-types';
 import {
     Uttaksperioden,
@@ -85,7 +85,7 @@ const UttaksplanListe = ({
     visAdvarselOmEgendefinertePerioder,
 }: {
     erSøker: boolean;
-    uttaksplan: PeriodeDto_fpoversikt[];
+    uttaksplan: UttakPeriodeDto_fpoversikt[];
     registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     navnPåForeldre: NavnPåForeldre;
     visAdvarselOmEgendefinertePerioder?: boolean;
@@ -109,7 +109,7 @@ const UttaksplanListe = ({
     const termindato = getTermindato(barn);
 
     // Parten denne lista viser periodane til: søkjaren sin eigen (.søker) eller annan part sin (.annenPart).
-    const finnPart = (periode: PeriodeDto_fpoversikt): UttakDto_fpoversikt | undefined =>
+    const finnPart = (periode: UttakPeriodeDto_fpoversikt): UttakDto_fpoversikt | undefined =>
         erSøker ? periode.søker : periode.annenPart;
 
     const getStønadskvoteNavnFraKvote = (konto: KontoType | undefined, morsAktivitet?: MorsAktivitet) => {
@@ -127,9 +127,9 @@ const UttaksplanListe = ({
         );
     };
 
-    const getUttaksperiodeNavn = (periode: PeriodeDto_fpoversikt, part: UttakDto_fpoversikt | undefined) => {
+    const getUttaksperiodeNavn = (periode: UttakPeriodeDto_fpoversikt, part: UttakDto_fpoversikt | undefined) => {
         const tittel = getStønadskvoteNavnFraKvote(part?.kontoType, part?.morsAktivitet);
-        const periodeForFødselssjekk: PeriodeDto_fpoversikt = { ...periode, søker: part };
+        const periodeForFødselssjekk: UttakPeriodeDto_fpoversikt = { ...periode, søker: part };
         return søkersituasjon.situasjon === 'fødsel' &&
             isUttaksperiodeFarMedmorPgaFødsel(periodeForFødselssjekk, familiehendelsesdato, termindato)
             ? tittel + intl.formatMessage({ id: 'rundtFødsel' })
@@ -273,7 +273,7 @@ const UttaksplanListe = ({
     );
 };
 
-const lagKeyFraPeriode = (periode: PeriodeDto_fpoversikt, part: UttakDto_fpoversikt | undefined) =>
+const lagKeyFraPeriode = (periode: UttakPeriodeDto_fpoversikt, part: UttakDto_fpoversikt | undefined) =>
     (part?.kontoType ?? 'opphold') + periode.fom + periode.tom;
 
 // Speglar erAlleUttaksplanperioderAvslått i listevisninga: pleiepenger-fratrekk er ikkje trekte
@@ -286,7 +286,7 @@ const erAvslåttPeriodeSomTrekkerDager = (part: UttakDto_fpoversikt | undefined)
     );
 
 // TODO (TOR) Denne fjerninga av avslåtte periodar uten trekkdagar bør ligga i backend
-const filtrerBortPerioderUtenTrekkdager = (perioder: PeriodeDto_fpoversikt[], erSøkerListe: boolean) =>
+const filtrerBortPerioderUtenTrekkdager = (perioder: UttakPeriodeDto_fpoversikt[], erSøkerListe: boolean) =>
     perioder.filter((periode) => {
         const part = erSøkerListe ? periode.søker : periode.annenPart;
         return part === undefined || part.resultat?.innvilget !== false || part.resultat.trekkerDager;

@@ -2,7 +2,7 @@ import { useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment, NavnPåForeldre, PeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { Attachment, NavnPåForeldre, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
 import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan/validators';
 
@@ -11,7 +11,7 @@ import { UttakUploader } from '../attachment-uploaders/UttakUploader';
 interface Props {
     attachments: Attachment[];
     updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
-    perioder: PeriodeDto_fpoversikt[];
+    perioder: UttakPeriodeDto_fpoversikt[];
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
     familiehendelsedato: string;

@@ -6,8 +6,8 @@ import { BodyShort, VStack } from '@navikt/ds-react';
 
 import {
     EøsUttakDto_fpoversikt,
-    PeriodeDto_fpoversikt,
     UttakDto_fpoversikt,
+    UttakPeriodeDto_fpoversikt,
     VedtattResultat_fpoversikt,
 } from '@navikt/fp-types';
 import { CalendarLabel, CalendarPeriodColor } from '@navikt/fp-ui';
@@ -42,13 +42,13 @@ const lagUttak = (o: Partial<UttakDto_fpoversikt> = {}): UttakDto_fpoversikt => 
     ...o,
 });
 
-const lagPeriode = (o: Partial<UttakDto_fpoversikt> = {}): PeriodeDto_fpoversikt => ({
+const lagPeriode = (o: Partial<UttakDto_fpoversikt> = {}): UttakPeriodeDto_fpoversikt => ({
     fom: FOM,
     tom: TOM,
     søker: lagUttak(o),
 });
 
-const lagEøs = (o: Partial<EøsUttakDto_fpoversikt> = {}): PeriodeDto_fpoversikt => ({
+const lagEøs = (o: Partial<EøsUttakDto_fpoversikt> = {}): UttakPeriodeDto_fpoversikt => ({
     fom: FOM,
     tom: TOM,
     annenPartEøs: { kontoType: 'FELLESPERIODE', trekkdager: 15, ...o },
@@ -238,8 +238,18 @@ const OMRÅDER: FargeOmråde[] = [
                 kontoType: 'FEDREKVOTE',
                 samtidigUttak: 50,
             });
-            const morSamtidig: PeriodeDto_fpoversikt = { fom: FOM, tom: TOM, søker: morsUttak, annenPart: farsUttak };
-            const farSamtidig: PeriodeDto_fpoversikt = { fom: FOM, tom: TOM, søker: farsUttak, annenPart: morsUttak };
+            const morSamtidig: UttakPeriodeDto_fpoversikt = {
+                fom: FOM,
+                tom: TOM,
+                søker: morsUttak,
+                annenPart: farsUttak,
+            };
+            const farSamtidig: UttakPeriodeDto_fpoversikt = {
+                fom: FOM,
+                tom: TOM,
+                søker: farsUttak,
+                annenPart: morsUttak,
+            };
             return [
                 beregnEntry({
                     id: 'samtidig-mor',

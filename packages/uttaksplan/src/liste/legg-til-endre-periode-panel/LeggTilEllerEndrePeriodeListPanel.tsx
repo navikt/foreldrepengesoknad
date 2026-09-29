@@ -7,7 +7,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, Button, ErrorMessage, HStack, Heading, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
-import { BrukerRolleSak_fpoversikt, PeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 import { Tidsperioden, omitMany } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
@@ -69,14 +69,20 @@ const byggEnkelHandlingPerioder = (
     tom: string,
     søker: BrukerRolleSak_fpoversikt,
     values: FormValues,
-): PeriodeDto_fpoversikt[] | undefined => {
+): UttakPeriodeDto_fpoversikt[] | undefined => {
     switch (hvaVilDuGjøre) {
         case 'LEGG_TIL_FERIE':
             // forelder settes til MOR fordi feltet er påkrevd, men ferie behandles likt for alle
             // foreldre – periodens plassering på .søker (ikkje forelder-verdien) styrer kven han gjeld.
             return [{ fom, tom, søker: { forelder: 'MOR', utsettelseÅrsak: 'FERIE', flerbarnsdager: false } }];
         case 'LEGG_TIL_UTSETTELSE':
-            return [{ fom, tom, søker: { forelder: søker, utsettelseÅrsak: values.utsettelseÅrsak, flerbarnsdager: false } }];
+            return [
+                {
+                    fom,
+                    tom,
+                    søker: { forelder: søker, utsettelseÅrsak: values.utsettelseÅrsak, flerbarnsdager: false },
+                },
+            ];
         case 'LEGG_TIL_PAUSE':
             return [
                 {
@@ -95,13 +101,13 @@ const byggEnkelHandlingPerioder = (
     }
 };
 
-const erOverlappendeMedEøsPerioder = (perioder: PeriodeDto_fpoversikt[], fom: string, tom: string): boolean =>
+const erOverlappendeMedEøsPerioder = (perioder: UttakPeriodeDto_fpoversikt[], fom: string, tom: string): boolean =>
     perioder.some((periode) => !!periode.annenPartEøs && Tidsperioden.forPeriode(periode).overlapper({ fom, tom }));
 
 const skalViseEndreEllerForskyvPanel = (
     harPeriodeDerMorsAktivitetIkkeErValgt: boolean,
     kanKunErstatte: boolean,
-    uttakPerioder: PeriodeDto_fpoversikt[],
+    uttakPerioder: UttakPeriodeDto_fpoversikt[],
     fom: string,
     tom: string,
 ): boolean =>
@@ -166,7 +172,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         erGradert: erGradertMorsUttak(hvaVilDuGjøre, forelder, skalDuKombinereArbeidOgUttakMor),
     });
 
-    const handleAddPeriode = (nyPeriode: PeriodeDto_fpoversikt[], skalForskyve: boolean) => {
+    const handleAddPeriode = (nyPeriode: UttakPeriodeDto_fpoversikt[], skalForskyve: boolean) => {
         const builder = new UttakPeriodeBuilder(allePerioder, 'liste');
         if (uttaksplanperiode) {
             builder.fjernUttakPerioder([uttaksplanperiode], false);

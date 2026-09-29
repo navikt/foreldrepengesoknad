@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 
-import { BrukerRolleSak_fpoversikt, Familiesituasjon, PeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, Familiesituasjon, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
@@ -28,7 +28,7 @@ export const useAlleUttakPerioderInklTapteDager = (): UttaksplanperiodeMedKunTap
 };
 
 export const useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak = (
-    uttakPerioderJustertForFamiliehendelsesdato: PeriodeDto_fpoversikt[],
+    uttakPerioderJustertForFamiliehendelsesdato: UttakPeriodeDto_fpoversikt[],
 ): Uttaksplanperiode[] => {
     const { familiehendelsedato, familiesituasjon, foreldreInfo } = useUttaksplanData();
 
@@ -46,7 +46,7 @@ export const useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak = (
 };
 
 export const lagTapteDagerPerioder = (
-    sortertePerioder: PeriodeDto_fpoversikt[],
+    sortertePerioder: UttakPeriodeDto_fpoversikt[],
     familiehendelsedato: string,
     familiesituasjon: Familiesituasjon,
     foreldreInfo: ForeldreInfo,
@@ -87,7 +87,7 @@ export const lagTapteDagerPerioder = (
 };
 
 const lagTapteDagerHull = (
-    sortertePerioder: PeriodeDto_fpoversikt[],
+    sortertePerioder: UttakPeriodeDto_fpoversikt[],
     forelder: BrukerRolleSak_fpoversikt,
     periodeSomSkalSjekkesForHull: { fom: string; tom: string },
 ): TapteDagerHull[] => {

@@ -1,6 +1,6 @@
 import { AnnenForelder } from 'types/AnnenForelder';
 
-import { PeriodeDto_fpoversikt, VedtattResultat_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriodeDto_fpoversikt, VedtattResultat_fpoversikt } from '@navikt/fp-types';
 
 import { finnPerioderSomInngårISøknaden, perioderSomKreverVedlegg } from './manglendeVedleggUtils';
 
@@ -15,7 +15,7 @@ const annenForelder = {
 
 const familiehendelsedato = '2024-01-01';
 
-const lagFellesperiodeMedMorsAktivitet = (forelder: 'MOR' | 'FAR_MEDMOR'): PeriodeDto_fpoversikt => ({
+const lagFellesperiodeMedMorsAktivitet = (forelder: 'MOR' | 'FAR_MEDMOR'): UttakPeriodeDto_fpoversikt => ({
     fom: '2024-06-01',
     tom: '2024-06-30',
     søker: {
@@ -34,7 +34,7 @@ const innvilgetResultat: VedtattResultat_fpoversikt = {
     årsak: 'ANNET',
 };
 
-const innvilgetFellesperiodeMorSyk: PeriodeDto_fpoversikt = {
+const innvilgetFellesperiodeMorSyk: UttakPeriodeDto_fpoversikt = {
     fom: '2024-01-01',
     tom: '2024-01-31',
     søker: {
@@ -46,7 +46,7 @@ const innvilgetFellesperiodeMorSyk: PeriodeDto_fpoversikt = {
     },
 };
 
-const nyFellesperiodeMorJobber: PeriodeDto_fpoversikt = {
+const nyFellesperiodeMorJobber: UttakPeriodeDto_fpoversikt = {
     fom: '2024-02-01',
     tom: '2024-02-28',
     søker: {
@@ -57,7 +57,7 @@ const nyFellesperiodeMorJobber: PeriodeDto_fpoversikt = {
     },
 };
 
-const morsPeriode: PeriodeDto_fpoversikt = {
+const morsPeriode: UttakPeriodeDto_fpoversikt = {
     fom: '2023-12-01',
     tom: '2023-12-31',
     annenPart: {
@@ -99,7 +99,7 @@ describe('finnPerioderSomInngårISøknaden', () => {
     });
 
     it('beholder alle søkerens perioder i en førstegangssøknad uten eksisterende sak', () => {
-        const periodeUtenResultat: PeriodeDto_fpoversikt = {
+        const periodeUtenResultat: UttakPeriodeDto_fpoversikt = {
             ...nyFellesperiodeMorJobber,
             søker: { ...nyFellesperiodeMorJobber.søker!, morsAktivitet: 'TRENGER_HJELP' },
         };

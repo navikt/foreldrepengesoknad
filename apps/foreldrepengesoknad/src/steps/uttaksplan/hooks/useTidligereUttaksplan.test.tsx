@@ -6,7 +6,7 @@ import { AnnenForelder } from 'types/AnnenForelder';
 import { getUttaksplanParam } from 'utils/annenForelderUtils';
 
 import { BarnType } from '@navikt/fp-constants';
-import { Barn, FellesUttaksplanDto_fpoversikt, PeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { Barn, FellesUttaksplanDto_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import { useTidligereUttaksplan } from './useTidligereUttaksplan';
 
@@ -28,7 +28,7 @@ const ANNEN_FORELDER: AnnenForelder = {
     harRettPåForeldrepengerINorge: true,
 };
 
-const PERIODER: PeriodeDto_fpoversikt[] = [
+const PERIODER: UttakPeriodeDto_fpoversikt[] = [
     {
         fom: '2025-01-01',
         tom: '2025-01-10',
@@ -49,7 +49,7 @@ const PERIODER: PeriodeDto_fpoversikt[] = [
     },
 ];
 
-const lagUttaksplan = (perioder: PeriodeDto_fpoversikt[]): FellesUttaksplanDto_fpoversikt => ({
+const lagUttaksplan = (perioder: UttakPeriodeDto_fpoversikt[]): FellesUttaksplanDto_fpoversikt => ({
     antallBarn: 1,
     dekningsgrad: 'HUNDRE',
     perioder,

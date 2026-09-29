@@ -4,7 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HGrid, HStack, VStack } from '@navikt/ds-react';
 
-import { KontoDto, KontoTypeUttak, NavnPåForeldre, PeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { KontoDto, KontoTypeUttak, NavnPåForeldre, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 import { capitalizeFirstLetter, formatOppramsing, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from './context/UttaksplanDataContext';
@@ -586,7 +586,7 @@ const StandardVisning = ({
     visStatusIkoner,
 }: {
     konto?: KontoDto;
-    perioder: PeriodeDto_fpoversikt[];
+    perioder: UttakPeriodeDto_fpoversikt[];
     visStatusIkoner: boolean;
 }) => {
     const intl = useIntl();

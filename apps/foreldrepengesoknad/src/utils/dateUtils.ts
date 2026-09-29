@@ -9,13 +9,7 @@ import utc from 'dayjs/plugin/utc';
 import { IntlShape } from 'react-intl';
 import { AnnenForelder } from 'types/AnnenForelder';
 
-import {
-    Barn,
-    FpBarnDto_fpoversikt,
-    PeriodeDto_fpoversikt,
-    isAdoptertBarn,
-    isFødtBarn,
-} from '@navikt/fp-types';
+import { Barn, FpBarnDto_fpoversikt, UttakPeriodeDto_fpoversikt, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
 import { Tidsperioden, isISODateString } from '@navikt/fp-utils';
 import { hasValue } from '@navikt/fp-validation';
 
@@ -97,8 +91,8 @@ export const førsteJuli2024ReglerGjelder = (barn: Barn): boolean => {
 };
 
 export const getEndringstidspunktNy = (
-    søkerensOpprinneligePlan: PeriodeDto_fpoversikt[],
-    søkerensUpdatedPlan: PeriodeDto_fpoversikt[],
+    søkerensOpprinneligePlan: UttakPeriodeDto_fpoversikt[],
+    søkerensUpdatedPlan: UttakPeriodeDto_fpoversikt[],
 ): string | undefined => {
     let endringstidspunktNyPlan: string | undefined;
     let endringstidspunktOpprinneligPlan: string | undefined;

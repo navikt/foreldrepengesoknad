@@ -1,4 +1,4 @@
-import { PeriodeDto_fpoversikt, UttakDto_fpoversikt } from '@navikt/fp-types';
+import { UttakDto_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import { getSisteUttaksdagAnnenForelder } from './fordelingOversiktUtils';
 
@@ -7,7 +7,7 @@ const lagUttak = (forelder: 'MOR' | 'FAR_MEDMOR'): UttakDto_fpoversikt => ({
     forelder,
 });
 
-const lagEøs = (fom: string, tom: string): PeriodeDto_fpoversikt => ({
+const lagEøs = (fom: string, tom: string): UttakPeriodeDto_fpoversikt => ({
     fom,
     tom,
     annenPartEøs: {
@@ -31,7 +31,7 @@ describe('getSisteUttaksdagAnnenForelder', () => {
     });
 
     it('bruker MOR sine perioder når søker er far/medmor', () => {
-        const perioder: PeriodeDto_fpoversikt[] = [
+        const perioder: UttakPeriodeDto_fpoversikt[] = [
             { fom: '2025-04-01', tom: '2025-04-10', annenPart: lagUttak('MOR') },
             { fom: '2025-04-11', tom: '2025-04-20', søker: lagUttak('FAR_MEDMOR') },
             { fom: '2025-04-21', tom: '2025-04-30', annenPart: lagUttak('MOR') },
@@ -41,7 +41,7 @@ describe('getSisteUttaksdagAnnenForelder', () => {
     });
 
     it('bruker FAR_MEDMOR sine perioder når søker er mor', () => {
-        const perioder: PeriodeDto_fpoversikt[] = [
+        const perioder: UttakPeriodeDto_fpoversikt[] = [
             { fom: '2025-04-01', tom: '2025-04-15', annenPart: lagUttak('FAR_MEDMOR') },
             { fom: '2025-04-16', tom: '2025-04-20', søker: lagUttak('MOR') },
             { fom: '2025-04-21', tom: '2025-04-24', søker: lagUttak('MOR'), annenPart: lagUttak('FAR_MEDMOR') },
@@ -52,7 +52,7 @@ describe('getSisteUttaksdagAnnenForelder', () => {
     });
 
     it('inkluderer EØS-perioder', () => {
-        const perioder: PeriodeDto_fpoversikt[] = [
+        const perioder: UttakPeriodeDto_fpoversikt[] = [
             { fom: '2025-04-01', tom: '2025-04-10', søker: lagUttak('FAR_MEDMOR') },
             lagEøs('2025-04-21', '2025-04-30'),
         ];

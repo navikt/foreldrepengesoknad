@@ -1,19 +1,19 @@
 import { createContext, use, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { captureException } from '@navikt/fp-observability';
-import { PeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import { finnUgyldigeOverlapp, periodeTilLoggObjekt } from '../utils/UttakPeriodeBuilder';
 import { useUttaksplanData } from './UttaksplanDataContext';
 
 type Props = {
     harEndretPlan: boolean;
-    oppdaterUttaksplan: (uttaksplan: PeriodeDto_fpoversikt[] | undefined) => void;
+    oppdaterUttaksplan: (uttaksplan: UttakPeriodeDto_fpoversikt[] | undefined) => void;
     children: React.ReactNode;
 };
 
 type ContextValues = {
-    uttaksplanVersjoner: PeriodeDto_fpoversikt[][];
+    uttaksplanVersjoner: UttakPeriodeDto_fpoversikt[][];
     visFjernAltModal: boolean;
     visTilbakestillModal: boolean;
     harEndretPlan: boolean;
@@ -21,7 +21,7 @@ type ContextValues = {
     setVisTilbakestillModal: (open: boolean) => void;
     angreSisteEndring: () => void;
     fjernAltIUttaksplan: () => void;
-    oppdaterUttaksplan: (uttaksplan: PeriodeDto_fpoversikt[]) => void;
+    oppdaterUttaksplan: (uttaksplan: UttakPeriodeDto_fpoversikt[]) => void;
     tilbakestillUttaksplan: () => void;
 };
 
@@ -60,10 +60,10 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
         });
     }, [uttakPerioder]);
 
-    const [uttaksplanVersjoner, setUttaksplanVersjoner] = useState<PeriodeDto_fpoversikt[][]>([]);
+    const [uttaksplanVersjoner, setUttaksplanVersjoner] = useState<UttakPeriodeDto_fpoversikt[][]>([]);
 
     const oppdaterUttaksplan = useCallback(
-        (nyUttaksplan: PeriodeDto_fpoversikt[]) => {
+        (nyUttaksplan: UttakPeriodeDto_fpoversikt[]) => {
             setUttaksplanVersjoner((eksisterendeVersjoner) => [...eksisterendeVersjoner, nyUttaksplan]);
             oppdater(nyUttaksplan);
         },
@@ -93,7 +93,11 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
         // Behold kun EØS-sida av kvar periode (søker/annenPart sitt uttak fjernes).
         const kunEøsPerioder = uttakPerioder
             .filter((periode) => periode.annenPartEøs !== undefined)
-            .map((periode): PeriodeDto_fpoversikt => ({ fom: periode.fom, tom: periode.tom, annenPartEøs: periode.annenPartEøs }));
+            .map((periode): UttakPeriodeDto_fpoversikt => ({
+                fom: periode.fom,
+                tom: periode.tom,
+                annenPartEøs: periode.annenPartEøs,
+            }));
         oppdater(kunEøsPerioder);
     }, [oppdater, uttakPerioder]);
 

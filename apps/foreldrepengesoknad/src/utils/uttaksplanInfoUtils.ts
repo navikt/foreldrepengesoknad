@@ -1,6 +1,6 @@
 import { AnnenForelder } from 'types/AnnenForelder';
 
-import { PeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
 import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan/validators';
 
@@ -36,7 +36,7 @@ export const getUttaksprosentFromStillingsprosent = (
     return undefined;
 };
 
-const isUttaksperiodeFarMedmorMedValgForUttakRundtFødsel = (periode: PeriodeDto_fpoversikt): boolean => {
+const isUttaksperiodeFarMedmorMedValgForUttakRundtFødsel = (periode: UttakPeriodeDto_fpoversikt): boolean => {
     const søker = periode.søker;
     return (
         !!søker &&
@@ -50,7 +50,7 @@ const isUttaksperiodeFarMedmorMedValgForUttakRundtFødsel = (periode: PeriodeDto
 };
 
 export const isUttaksperiodeFarMedmorPgaFødsel = (
-    periode: PeriodeDto_fpoversikt,
+    periode: UttakPeriodeDto_fpoversikt,
     familiehendelsesdato: string,
     termindato: string | undefined,
 ): boolean => {
@@ -65,7 +65,7 @@ export const isUttaksperiodeFarMedmorPgaFødsel = (
 };
 
 export const kreverUttaksplanVedleggNy = (
-    uttaksplan: PeriodeDto_fpoversikt[],
+    uttaksplan: UttakPeriodeDto_fpoversikt[],
     erFarEllerMedmor: boolean,
     annenForelder: AnnenForelder,
     familiehendelsedato: string,

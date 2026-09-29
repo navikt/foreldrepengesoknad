@@ -1,4 +1,4 @@
-import { PeriodeDto_fpoversikt, UttakDto_fpoversikt } from '@navikt/fp-types';
+import { UttakDto_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import {
     finnAntallTidelerÅTrekkeForPart,
@@ -25,10 +25,10 @@ const lagMorPart = (overrides: Partial<UttakDto_fpoversikt> = {}): UttakDto_fpov
 });
 
 const lagPeriode = (
-    parter: Pick<PeriodeDto_fpoversikt, 'søker' | 'annenPart'>,
+    parter: Pick<UttakPeriodeDto_fpoversikt, 'søker' | 'annenPart'>,
     fom = FOM,
     tom = TOM,
-): PeriodeDto_fpoversikt => ({ fom, tom, ...parter });
+): UttakPeriodeDto_fpoversikt => ({ fom, tom, ...parter });
 
 const lagFarSøkerPeriode = (overrides: Partial<UttakDto_fpoversikt> = {}) =>
     lagPeriode({ søker: lagFarPart(overrides) });

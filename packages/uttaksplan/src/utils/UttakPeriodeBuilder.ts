@@ -2,7 +2,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
 import { captureException } from '@navikt/fp-observability';
-import { PeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { erPerioderEkslFomTomLike } from './periodeUtils';
@@ -12,17 +12,17 @@ dayjs.extend(utc);
 type Builderkilde = 'liste' | 'kalender' | 'validator' | 'ukjent';
 
 export class UttakPeriodeBuilder {
-    private allePerioder: PeriodeDto_fpoversikt[];
-    private readonly opprinneligPerioder: PeriodeDto_fpoversikt[];
+    private allePerioder: UttakPeriodeDto_fpoversikt[];
+    private readonly opprinneligPerioder: UttakPeriodeDto_fpoversikt[];
     private readonly kilde: Builderkilde;
     private readonly operasjonsLogg: Array<{
         operasjon: string;
-        nyePerioder?: PeriodeDto_fpoversikt[];
+        nyePerioder?: UttakPeriodeDto_fpoversikt[];
         perioderSomSkalFjernes?: Array<{ fom: string; tom: string }>;
         forskyvPerioder: boolean;
     }> = [];
 
-    constructor(allePerioder: PeriodeDto_fpoversikt[], kilde: Builderkilde = 'ukjent') {
+    constructor(allePerioder: UttakPeriodeDto_fpoversikt[], kilde: Builderkilde = 'ukjent') {
         this.allePerioder = [...allePerioder].sort(sorterPerioder);
         this.opprinneligPerioder = [...this.allePerioder];
         this.kilde = kilde;
@@ -34,7 +34,7 @@ export class UttakPeriodeBuilder {
      * lenger nokon gruppering av fleire innkomande periodar med same fom/tom slik den flate
      * modellen krevde – kvar periode erstattar heile det overlappande tidsrommet sitt.
      */
-    leggTilUttakPerioder(nyePerioder: PeriodeDto_fpoversikt[], forskyvPerioder: boolean): this {
+    leggTilUttakPerioder(nyePerioder: UttakPeriodeDto_fpoversikt[], forskyvPerioder: boolean): this {
         this.operasjonsLogg.push({ operasjon: 'leggTilUttakPerioder', nyePerioder, forskyvPerioder });
 
         for (const nyPeriode of nyePerioder) {
@@ -59,7 +59,7 @@ export class UttakPeriodeBuilder {
                 const nFom = toDay(periodeSomSkalFjernes.fom);
                 const nTom = toDay(periodeSomSkalFjernes.tom);
 
-                const nyePerioder: PeriodeDto_fpoversikt[] = [];
+                const nyePerioder: UttakPeriodeDto_fpoversikt[] = [];
 
                 for (const eksisterendePeriode of this.allePerioder) {
                     const eFom = toDay(eksisterendePeriode.fom);
@@ -98,7 +98,7 @@ export class UttakPeriodeBuilder {
         return this;
     }
 
-    getUttakPerioder(): PeriodeDto_fpoversikt[] {
+    getUttakPerioder(): UttakPeriodeDto_fpoversikt[] {
         const resultat = slåSammenLikeTilstøtendePerioder(this.allePerioder);
         validerOgLoggOverlapp(resultat, this.opprinneligPerioder, this.operasjonsLogg, this.kilde);
         return resultat;
@@ -114,9 +114,9 @@ const erOverlappendeIDato = (a: { fom: string; tom: string }, b: { fom: string; 
  * aldri overlappa i tid – gjer dei det, er det alltid ein feil i korleis planen er bygd opp.
  */
 export const finnUgyldigeOverlapp = (
-    perioder: PeriodeDto_fpoversikt[],
-): Array<[PeriodeDto_fpoversikt, PeriodeDto_fpoversikt]> => {
-    const ugyldigeOverlapp: Array<[PeriodeDto_fpoversikt, PeriodeDto_fpoversikt]> = [];
+    perioder: UttakPeriodeDto_fpoversikt[],
+): Array<[UttakPeriodeDto_fpoversikt, UttakPeriodeDto_fpoversikt]> => {
+    const ugyldigeOverlapp: Array<[UttakPeriodeDto_fpoversikt, UttakPeriodeDto_fpoversikt]> = [];
     for (let i = 0; i < perioder.length; i++) {
         for (let j = i + 1; j < perioder.length; j++) {
             const a = perioder[i]!;
@@ -129,7 +129,7 @@ export const finnUgyldigeOverlapp = (
     return ugyldigeOverlapp;
 };
 
-export const periodeTilLoggObjekt = (p: PeriodeDto_fpoversikt) => ({
+export const periodeTilLoggObjekt = (p: UttakPeriodeDto_fpoversikt) => ({
     fom: p.fom,
     tom: p.tom,
     søker: p.søker && {
@@ -150,11 +150,11 @@ export const periodeTilLoggObjekt = (p: PeriodeDto_fpoversikt) => ({
 });
 
 const validerOgLoggOverlapp = (
-    resultat: PeriodeDto_fpoversikt[],
-    opprinneligPerioder: PeriodeDto_fpoversikt[],
+    resultat: UttakPeriodeDto_fpoversikt[],
+    opprinneligPerioder: UttakPeriodeDto_fpoversikt[],
     operasjonsLogg: Array<{
         operasjon: string;
-        nyePerioder?: PeriodeDto_fpoversikt[];
+        nyePerioder?: UttakPeriodeDto_fpoversikt[];
         perioderSomSkalFjernes?: Array<{ fom: string; tom: string }>;
         forskyvPerioder: boolean;
     }>,
@@ -188,14 +188,14 @@ const validerOgLoggOverlapp = (
 };
 
 const fjernOgForskyvPerioderBakover = (
-    allePerioder: PeriodeDto_fpoversikt[],
+    allePerioder: UttakPeriodeDto_fpoversikt[],
     periodeSomSkalFjernes: { fom: string; tom: string },
-): PeriodeDto_fpoversikt[] => {
+): UttakPeriodeDto_fpoversikt[] => {
     const nFom = toDay(periodeSomSkalFjernes.fom);
     const nTom = toDay(periodeSomSkalFjernes.tom);
     const antallUkedager = finnLengdeIUkedager(nFom, nTom);
 
-    const nyePerioder: PeriodeDto_fpoversikt[] = [];
+    const nyePerioder: UttakPeriodeDto_fpoversikt[] = [];
 
     for (const eksisterendePeriode of allePerioder) {
         const eFom = toDay(eksisterendePeriode.fom);
@@ -249,13 +249,13 @@ const fjernOgForskyvPerioderBakover = (
 };
 
 const erstattEksisterendePerioder = (
-    eksisterendePerioder: PeriodeDto_fpoversikt[],
-    nyPeriode: PeriodeDto_fpoversikt,
-): PeriodeDto_fpoversikt[] => {
+    eksisterendePerioder: UttakPeriodeDto_fpoversikt[],
+    nyPeriode: UttakPeriodeDto_fpoversikt,
+): UttakPeriodeDto_fpoversikt[] => {
     const nFom = toDay(nyPeriode.fom);
     const nTom = toDay(nyPeriode.tom);
 
-    const nyePerioder: PeriodeDto_fpoversikt[] = [];
+    const nyePerioder: UttakPeriodeDto_fpoversikt[] = [];
 
     for (const eksisterendePeriode of eksisterendePerioder) {
         const eFom = toDay(eksisterendePeriode.fom);
@@ -288,14 +288,14 @@ const erstattEksisterendePerioder = (
 };
 
 const forskyvEksisterendePerioder = (
-    eksisterendePerioder: PeriodeDto_fpoversikt[],
-    nyPeriode: PeriodeDto_fpoversikt,
-): PeriodeDto_fpoversikt[] => {
+    eksisterendePerioder: UttakPeriodeDto_fpoversikt[],
+    nyPeriode: UttakPeriodeDto_fpoversikt,
+): UttakPeriodeDto_fpoversikt[] => {
     const nFom = toDay(nyPeriode.fom);
     const nTom = toDay(nyPeriode.tom);
     const antallUkedager = finnLengdeIUkedager(nFom, nTom);
 
-    const nyePerioder: PeriodeDto_fpoversikt[] = [];
+    const nyePerioder: UttakPeriodeDto_fpoversikt[] = [];
 
     for (const eksisterendePeriode of eksisterendePerioder) {
         const eFom = toDay(eksisterendePeriode.fom);
@@ -345,12 +345,14 @@ const forskyvEksisterendePerioder = (
     return nyePerioder.sort(sorterPerioder);
 };
 
-const slåSammenLikeTilstøtendePerioder = (sortertePerioder: PeriodeDto_fpoversikt[]): PeriodeDto_fpoversikt[] => {
+const slåSammenLikeTilstøtendePerioder = (
+    sortertePerioder: UttakPeriodeDto_fpoversikt[],
+): UttakPeriodeDto_fpoversikt[] => {
     if (sortertePerioder.length === 0) {
         return [];
     }
 
-    return sortertePerioder.reduce<PeriodeDto_fpoversikt[]>((acc, periode) => {
+    return sortertePerioder.reduce<UttakPeriodeDto_fpoversikt[]>((acc, periode) => {
         if (acc.length === 0) {
             return acc.concat(periode);
         }
@@ -390,7 +392,7 @@ const finnLengdeIUkedager = (fom: Dayjs, tom: Dayjs): number => {
     return count;
 };
 
-const sorterPerioder = (a: PeriodeDto_fpoversikt, b: PeriodeDto_fpoversikt): number => {
+const sorterPerioder = (a: UttakPeriodeDto_fpoversikt, b: UttakPeriodeDto_fpoversikt): number => {
     const aFom = toDay(a.fom);
     const bFom = toDay(b.fom);
 

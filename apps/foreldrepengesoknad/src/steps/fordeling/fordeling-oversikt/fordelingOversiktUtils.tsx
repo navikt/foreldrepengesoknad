@@ -25,8 +25,8 @@ import {
     KontoBeregningDto,
     Minsteretter,
     NavnPåForeldre,
-    PeriodeDto_fpoversikt,
     SøkersituasjonFp,
+    UttakPeriodeDto_fpoversikt,
     isAdoptertBarn,
     isFødtBarn,
     isUfødtBarn,
@@ -266,7 +266,7 @@ const getFellesInfoTekst = (
 };
 
 const getAntallDagerSøkerensKvoteBruktAvAnnenPart = (
-    uttaksplanAnnenPart: PeriodeDto_fpoversikt[] | undefined,
+    uttaksplanAnnenPart: UttakPeriodeDto_fpoversikt[] | undefined,
     kontoer: KontoBeregningDto,
     erFarEllerMedmor: boolean,
     familiehendelsesdato: string,
@@ -280,7 +280,7 @@ const getAntallDagerSøkerensKvoteBruktAvAnnenPart = (
 };
 
 const getAntallDagerFellesperiodeBruktAvAnnenPart = (
-    uttaksplanAnnenPart: PeriodeDto_fpoversikt[] | undefined,
+    uttaksplanAnnenPart: UttakPeriodeDto_fpoversikt[] | undefined,
     kontoer: KontoBeregningDto,
     erFarEllerMedmor: boolean,
     familiehendelsesdato: string,
@@ -778,7 +778,7 @@ export const getFordelingFraKontoer = (
     navnPåForeldre: NavnPåForeldre,
     annenForelder: AnnenForelder,
     intl: IntlShape,
-    uttaksplanAnnenPart?: PeriodeDto_fpoversikt[],
+    uttaksplanAnnenPart?: UttakPeriodeDto_fpoversikt[],
 ): DelInformasjon[] => {
     const navnMor = navnPåForeldre.mor;
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
@@ -927,7 +927,7 @@ export const getBeggeHarRettGrafFordeling = (
 export const getSisteUttaksdagAnnenForelder = (
     erFarEllerMedmor: boolean,
     deltUttak: boolean,
-    perioderAnnenPart: PeriodeDto_fpoversikt[] | undefined,
+    perioderAnnenPart: UttakPeriodeDto_fpoversikt[] | undefined,
 ): string | undefined => {
     if (!deltUttak || !perioderAnnenPart || perioderAnnenPart.length === 0) {
         return undefined;

@@ -1,9 +1,9 @@
-import { PeriodeDto_fpoversikt, UttakDto_fpoversikt } from '@navikt/fp-types';
+import { UttakDto_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import { Uttaksdagen } from './Uttaksdagen';
 
 // Kun for funksjoner som kun sjekker på UttakDto_fpoversikt (éi part av eit periodeintervall)
-// eller PeriodeDto_fpoversikt (heile intervallet). Validatorer med andre input kan legges i
+// eller UttakPeriodeDto_fpoversikt (heile intervallet). Validatorer med andre input kan legges i
 // UttaksperiodeValidatorer.
 
 export const Uttaksperioden = {
@@ -22,7 +22,7 @@ export const Uttaksperioden = {
     // Opphold har ikkje lenger noko eige oppholdÅrsak-felt frå backend – det er strukturelt
     // ein periode der søkjar ikkje har uttak medan annan part har det. Årsaka til oppholdet er
     // då direkte annan part sin kontoType.
-    erOppholdsperiode(periode: PeriodeDto_fpoversikt) {
+    erOppholdsperiode(periode: UttakPeriodeDto_fpoversikt) {
         return !periode.søker && !!periode.annenPart;
     },
 

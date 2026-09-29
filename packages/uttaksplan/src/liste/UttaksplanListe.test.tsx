@@ -3,7 +3,7 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 
-import { PeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import * as stories from './UttaksplanListe.stories';
 
@@ -236,7 +236,7 @@ describe('UttaksplanListe', () => {
         await userEvent.click(screen.getByText('Legg til'));
 
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
-        const lagredePerioder = oppdaterUttaksplan.mock.calls[0]![0] as PeriodeDto_fpoversikt[];
+        const lagredePerioder = oppdaterUttaksplan.mock.calls[0]![0] as UttakPeriodeDto_fpoversikt[];
         const fedrekvotePeriode = lagredePerioder.find(
             (p) =>
                 p.annenPart?.forelder === 'FAR_MEDMOR' &&

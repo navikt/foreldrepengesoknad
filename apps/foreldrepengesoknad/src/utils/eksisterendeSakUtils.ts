@@ -17,11 +17,11 @@ import {
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
     Gradering_fpoversikt,
-    PeriodeDto_fpoversikt,
     Person_fpoversikt,
     Situasjon,
     Søkerrolle,
     UttakDto_fpoversikt,
+    UttakPeriodeDto_fpoversikt,
     isAdoptertBarn,
     isFødtBarn,
     isUfødtBarn,
@@ -444,13 +444,13 @@ export const lagEndringsSøknad = (
 };
 
 export const erPeriodeIOpprinneligPlan = (
-    eksisterendePerioder: PeriodeDto_fpoversikt[],
-    nyPeriode: PeriodeDto_fpoversikt,
+    eksisterendePerioder: UttakPeriodeDto_fpoversikt[],
+    nyPeriode: UttakPeriodeDto_fpoversikt,
 ): boolean => {
     return eksisterendePerioder.some((p) => erLikPeriode(nyPeriode, p));
 };
 
-const erLikPeriode = (a: PeriodeDto_fpoversikt, b: PeriodeDto_fpoversikt): boolean =>
+const erLikPeriode = (a: UttakPeriodeDto_fpoversikt, b: UttakPeriodeDto_fpoversikt): boolean =>
     a.fom === b.fom &&
     a.tom === b.tom &&
     erLikUttakDto(a.søker, b.søker) &&

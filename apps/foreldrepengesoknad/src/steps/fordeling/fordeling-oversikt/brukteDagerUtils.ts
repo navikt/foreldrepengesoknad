@@ -5,7 +5,7 @@ import {
     Familiesituasjon,
     KontoBeregningDto,
     KontoDto,
-    PeriodeDto_fpoversikt,
+    UttakPeriodeDto_fpoversikt,
 } from '@navikt/fp-types';
 import {
     filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger,
@@ -52,7 +52,7 @@ const summerBrukteUttaksdager = (uttak: KontoDto[]) => {
 
 const beregnBrukteUttaksdager = (
     tilgjengeligeStønadskvoter: KontoBeregningDto,
-    perioder: PeriodeDto_fpoversikt[],
+    perioder: UttakPeriodeDto_fpoversikt[],
     familiesituasjon: Familiesituasjon,
     familiehendelsesdato: string,
 ): KontoDto[] => {
@@ -66,9 +66,9 @@ const beregnBrukteUttaksdager = (
 
 // EØS-parten blir fjerna, sidan han aldri representerer den norske forelderen sine eigne dagar.
 const taKunPartForForelder = (
-    periode: PeriodeDto_fpoversikt,
+    periode: UttakPeriodeDto_fpoversikt,
     forelder: BrukerRolleSak_fpoversikt,
-): PeriodeDto_fpoversikt => ({
+): UttakPeriodeDto_fpoversikt => ({
     fom: periode.fom,
     tom: periode.tom,
     søker: periode.søker?.forelder === forelder ? periode.søker : undefined,
@@ -77,7 +77,7 @@ const taKunPartForForelder = (
 
 const beregnBrukteUttaksdagerForForelder = (
     tilgjengeligeStønadskvoter: KontoBeregningDto,
-    perioder: PeriodeDto_fpoversikt[],
+    perioder: UttakPeriodeDto_fpoversikt[],
     forelder: BrukerRolleSak_fpoversikt,
     familiesituasjon: Familiesituasjon,
     familiehendelsesdato: string,
@@ -92,22 +92,22 @@ const beregnBrukteUttaksdagerForForelder = (
 };
 
 const getPerioderFørFamiliehendelse = (
-    perioder: PeriodeDto_fpoversikt[],
+    perioder: UttakPeriodeDto_fpoversikt[],
     familiehendelsesdato: string,
-): PeriodeDto_fpoversikt[] => {
+): UttakPeriodeDto_fpoversikt[] => {
     return perioder.filter((p) => dayjs(p.tom).isBefore(familiehendelsesdato, 'day'));
 };
 
 const getPerioderEtterFamiliehendelse = (
-    perioder: PeriodeDto_fpoversikt[],
+    perioder: UttakPeriodeDto_fpoversikt[],
     familiehendelsesdato: string,
-): PeriodeDto_fpoversikt[] => {
+): UttakPeriodeDto_fpoversikt[] => {
     return perioder.filter((p) => !dayjs(p.tom).isBefore(familiehendelsesdato, 'day'));
 };
 
 const getBrukteDagerForForelder = (
     tilgjengeligeStønadskvoter: KontoBeregningDto,
-    perioder: PeriodeDto_fpoversikt[],
+    perioder: UttakPeriodeDto_fpoversikt[],
     familiehendelsesdato: string,
     forelder: BrukerRolleSak_fpoversikt,
     familiesituasjon: Familiesituasjon,
@@ -155,7 +155,7 @@ const getBrukteDagerForForelder = (
 
 export const getBrukteDager = (
     tilgjengeligeStønadskvoter: KontoBeregningDto,
-    perioder: PeriodeDto_fpoversikt[] | undefined,
+    perioder: UttakPeriodeDto_fpoversikt[] | undefined,
     familiehendelsesdato: string,
     familiesituasjon: Familiesituasjon,
 ): BrukteDager => {

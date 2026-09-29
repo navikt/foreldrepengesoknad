@@ -19,11 +19,11 @@ import {
     FpSak_fpoversikt,
     Frilans,
     NæringDto,
-    PeriodeDto_fpoversikt,
     SelvstendigNæringDto_fpoversikt,
     SøkerDto,
     SøkersituasjonFp,
     UtenlandsoppholdPeriode,
+    UttakPeriodeDto_fpoversikt,
 } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
@@ -164,7 +164,7 @@ const UTTAKSPLAN_PERIODE = {
         utsettelseÅrsak: 'FRI',
         flerbarnsdager: false,
     },
-} satisfies PeriodeDto_fpoversikt;
+} satisfies UttakPeriodeDto_fpoversikt;
 
 const UTTAKSPLAN_METADATA = {
     ønskerJustertUttakVedFødsel: true,
@@ -179,7 +179,7 @@ const EKSISTERENDE_PERIODE = {
         utsettelseÅrsak: 'FRI',
         flerbarnsdager: false,
     },
-} satisfies PeriodeDto_fpoversikt;
+} satisfies UttakPeriodeDto_fpoversikt;
 
 const FORELAGT_FRILANSOPPDRAG = [
     {
@@ -257,7 +257,7 @@ const saker = [
 ] satisfies FpSak_fpoversikt[];
 
 const getWrapper =
-    (uttaksplan: PeriodeDto_fpoversikt[] = [UTTAKSPLAN_PERIODE]) =>
+    (uttaksplan: UttakPeriodeDto_fpoversikt[] = [UTTAKSPLAN_PERIODE]) =>
     ({ children }: { children: ReactNode }) => (
         <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
             <QueryClientProvider client={queryClient}>

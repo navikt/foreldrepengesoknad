@@ -7,9 +7,9 @@ import {
     BrukerRolleSak_fpoversikt,
     EøsUttakDto_fpoversikt,
     NavnPåForeldre,
-    PeriodeDto_fpoversikt,
     RettighetType_fpoversikt,
     UttakDto_fpoversikt,
+    UttakPeriodeDto_fpoversikt,
     isAdoptertBarn,
     isFødtBarn,
 } from '@navikt/fp-types';
@@ -377,7 +377,7 @@ const splittPeriodeITo = (
     intl: IntlShape,
     isUpdated: boolean,
     rettighetType: RettighetType_fpoversikt,
-    allePerioder: PeriodeDto_fpoversikt[],
+    allePerioder: UttakPeriodeDto_fpoversikt[],
     kanVelgeArbeidsgiver: boolean,
     søker: BrukerRolleSak_fpoversikt,
     erIkkeSøkerSpesifisert: boolean,
@@ -418,7 +418,7 @@ const splittPeriodeITo = (
 const leggTilVarselikonVedManglendeObligatoriskeValg = (
     rettighetType: RettighetType_fpoversikt,
     periode: UttaksplanperiodeMedKunTapteDager,
-    allePerioder: PeriodeDto_fpoversikt[],
+    allePerioder: UttakPeriodeDto_fpoversikt[],
     kanVelgeArbeidsgiver: boolean,
     søker: BrukerRolleSak_fpoversikt,
     erIkkeSøkerSpesifisert: boolean,
@@ -426,7 +426,7 @@ const leggTilVarselikonVedManglendeObligatoriskeValg = (
 ) => {
     // Byggjer syntetiske periodar med KUN mors part, slik at den delte sjekk-funksjonen ikkje
     // ved eit uhell finn far/medmor sine data frå ei anna, urelatert (t.d. samtidig uttak-)rad.
-    const morsPerioder: PeriodeDto_fpoversikt[] = allePerioder.flatMap((p) => {
+    const morsPerioder: UttakPeriodeDto_fpoversikt[] = allePerioder.flatMap((p) => {
         const morsPart = finnPartForForelder(p, 'MOR');
         return morsPart ? [{ fom: p.fom, tom: p.tom, søker: morsPart }] : [];
     });
