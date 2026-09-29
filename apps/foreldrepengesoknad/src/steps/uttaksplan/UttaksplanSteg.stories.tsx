@@ -13,10 +13,10 @@ import { BarnType } from '@navikt/fp-constants';
 import {
     Barn,
     Dekningsgrad,
+    FellesUttaksplanDto_fpoversikt,
     FpPersonopplysningerDto_fpoversikt,
     SøkersituasjonFp,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
+    UttakPeriodeDto_fpoversikt,
 } from '@navikt/fp-types';
 import {
     ALENE_OM_OMSORG_80_FARMEDMOR,
@@ -83,7 +83,7 @@ type StoryArgs = {
     dekningsgrad: Dekningsgrad;
     fordeling?: Fordeling;
     valgtEksisterendeSaksnr?: string;
-    uttaksplan?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    uttaksplan?: UttakPeriodeDto_fpoversikt[];
     kommerFraPlanlegger?: boolean;
 } & ComponentProps<typeof UttaksplanSteg>;
 
@@ -148,6 +148,7 @@ type Story = StoryObj<typeof meta>;
 export const FødselMorOgFarBeggeHarRett: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -197,6 +198,7 @@ export const FødselMorOgFarBeggeHarRett: Story = {
 export const FødselMorOgFarKunMorHarRett: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -283,6 +285,7 @@ export const FødselMorOgMedmorKunMorHarRett: Story = {
 export const FødselMorOgMedmorKunMedmorHarRettMorUfør: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -330,6 +333,7 @@ export const FødselMorOgMedmorKunMedmorHarRettMorUfør: Story = {
 export const FødselBareFarSøkerAleneOmOmsorg: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -372,6 +376,7 @@ export const FødselBareFarSøkerAleneOmOmsorg: Story = {
 export const AdopsjonMorOgFarBeggeHarRett: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -421,6 +426,7 @@ export const AdopsjonMorOgFarBeggeHarRett: Story = {
 export const AdopsjonMorOgFarKunMorHarRett: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -467,6 +473,7 @@ export const AdopsjonMorOgFarKunMorHarRett: Story = {
 export const AdopsjonMorOgFarKunFarHarRettMorErUfør: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -600,6 +607,7 @@ export const AdopsjonBareFarSøkerAleneOmOmsorg: Story = {
 export const FødselMorOgFarBeggeHarRettAnnenPartTomtVedtak: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () =>
                 HttpResponse.json({
                     antallBarn: 1,
@@ -633,6 +641,7 @@ export const FødselMorOgFarBeggeHarRettAnnenPartTomtVedtak: Story = {
 export const FødselFarBeggeHarRettStarterPåTermin: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -683,22 +692,26 @@ const INNVILGET_RESULTAT = {
 } as const;
 
 // Plan lastet fra en eksisterende, ikke-vedtatt sak: alle periodene har resultat (kommer fra gjeldende vedtak).
-const INNVILGET_PLAN_FRA_EKSISTERENDE_SAK: UttakPeriode_fpoversikt[] = [
+const INNVILGET_PLAN_FRA_EKSISTERENDE_SAK: UttakPeriodeDto_fpoversikt[] = [
     {
         fom: '2024-06-10',
         tom: '2024-06-28',
-        forelder: 'MOR',
-        kontoType: 'FORELDREPENGER_FØR_FØDSEL',
-        flerbarnsdager: false,
-        resultat: INNVILGET_RESULTAT,
+        søker: {
+            forelder: 'MOR',
+            kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+            flerbarnsdager: false,
+            resultat: INNVILGET_RESULTAT,
+        },
     },
     {
         fom: '2024-07-01',
         tom: '2024-09-20',
-        forelder: 'MOR',
-        kontoType: 'MØDREKVOTE',
-        flerbarnsdager: false,
-        resultat: INNVILGET_RESULTAT,
+        søker: {
+            forelder: 'MOR',
+            kontoType: 'MØDREKVOTE',
+            flerbarnsdager: false,
+            resultat: INNVILGET_RESULTAT,
+        },
     },
 ];
 
@@ -709,7 +722,30 @@ const INNVILGET_PLAN_FRA_EKSISTERENDE_SAK: UttakPeriode_fpoversikt[] = [
  * uten å få feilmeldingen "Du må gjøre en endring for å kunne søke om endring".
  */
 export const NySøknadFørVedtakMedEksisterendeSak: Story = {
-    beforeEach: FødselMorOgFarBeggeHarRett.beforeEach,
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.konto, () =>
+                HttpResponse.json({
+                    '80': {
+                        kontoer: DELT_UTTAK_80,
+                        minsteretter: MINSTERETTER,
+                    },
+                    '100': {
+                        kontoer: DELT_UTTAK_100,
+                        minsteretter: MINSTERETTER,
+                    },
+                }),
+            ),
+            http.post(API_URLS.uttaksplan, () =>
+                HttpResponse.json({
+                    antallBarn: 1,
+                    dekningsgrad: 'HUNDRE',
+                    perioder: INNVILGET_PLAN_FRA_EKSISTERENDE_SAK,
+                } satisfies FellesUttaksplanDto_fpoversikt),
+            ),
+        );
+    },
     args: {
         ...FødselMorOgFarBeggeHarRett.args,
         erEndringssøknad: false,
@@ -723,34 +759,42 @@ export const NySøknadFørVedtakMedEksisterendeSak: Story = {
 // planen igjen etter "Fjern alt".
 const planleggerUttaksplan = [
     {
-        forelder: 'MOR',
-        kontoType: 'FORELDREPENGER_FØR_FØDSEL',
         fom: '2024-06-10',
         tom: '2024-06-28',
-        flerbarnsdager: false,
+        søker: {
+            forelder: 'MOR',
+            kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+            flerbarnsdager: false,
+        },
     },
     {
-        forelder: 'MOR',
-        kontoType: 'MØDREKVOTE',
         fom: '2024-07-01',
         tom: '2024-09-06',
-        flerbarnsdager: false,
+        søker: {
+            forelder: 'MOR',
+            kontoType: 'MØDREKVOTE',
+            flerbarnsdager: false,
+        },
     },
     {
-        forelder: 'MOR',
-        kontoType: 'FELLESPERIODE',
         fom: '2024-09-09',
         tom: '2024-11-15',
-        flerbarnsdager: false,
+        søker: {
+            forelder: 'MOR',
+            kontoType: 'FELLESPERIODE',
+            flerbarnsdager: false,
+        },
     },
     {
-        forelder: 'FAR_MEDMOR',
-        kontoType: 'FEDREKVOTE',
         fom: '2024-11-18',
         tom: '2025-01-24',
-        flerbarnsdager: false,
+        annenPart: {
+            forelder: 'FAR_MEDMOR',
+            kontoType: 'FEDREKVOTE',
+            flerbarnsdager: false,
+        },
     },
-] satisfies UttakPeriode_fpoversikt[];
+] satisfies UttakPeriodeDto_fpoversikt[];
 
 export const FødselMorOgFarBeggeHarRettOverførtFraPlanlegger: Story = {
     beforeEach: FødselMorOgFarBeggeHarRett.beforeEach,
@@ -779,6 +823,8 @@ export const FødselFarAleneOmOmsorgKunAnnenPartsPerioder: Story = {
             harRettPåForeldrepengerIEØS: false,
             harOppholdtSegIEØS: false,
         },
-        uttaksplan: planleggerUttaksplan.filter((periode) => periode.forelder === 'MOR'),
+        uttaksplan: planleggerUttaksplan.flatMap(({ fom, tom, søker }) =>
+            søker ? [{ fom, tom, annenPart: søker }] : [],
+        ),
     },
 };

@@ -41,7 +41,7 @@ const meta = {
         foreldreInfo: DEFAULT_FORELDREINFO,
         barn: DEFAULT_BARN_FØDSEL,
         erFarOgFar: false,
-        uttakPerioder: [],
+        perioder: [],
         erPeriodeneTilAnnenPartLåst: false,
         harAktivitetskravIPeriodeUtenUttak: false,
         aktiveArbeidsforhold: [],
@@ -62,7 +62,7 @@ const meta = {
         foreldreInfo,
         erFarOgFar,
         loggExpansionCardOpen,
-        uttakPerioder,
+        perioder,
         harAktivitetskravIPeriodeUtenUttak,
         erPeriodeneTilAnnenPartLåst,
         aktiveArbeidsforhold,
@@ -75,7 +75,7 @@ const meta = {
                 foreldreInfo={foreldreInfo}
                 valgtStønadskvote={valgtStønadskvote}
                 harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
-                uttakPerioder={uttakPerioder}
+                perioder={perioder}
                 erPeriodeneTilAnnenPartLåst={erPeriodeneTilAnnenPartLåst}
                 aktiveArbeidsforhold={aktiveArbeidsforhold}
                 erEndringssøknad={erEndringssøknad}

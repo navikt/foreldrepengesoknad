@@ -4,19 +4,14 @@ import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { BodyShort, Box, List } from '@navikt/ds-react';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import {
-    Attachment,
-    NavnPåForeldre,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
-} from '@navikt/fp-types';
+import { Attachment, NavnPåForeldre, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import { UttakUploader } from '../attachment-uploaders/UttakUploader';
 
 interface Props {
     attachments: Attachment[];
     updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
-    perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    perioder: UttakPeriodeDto_fpoversikt[];
     navnPåForeldre: NavnPåForeldre;
 }
 

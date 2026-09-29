@@ -8,8 +8,7 @@ import {
     Attachment,
     AttachmentMetadataTidsperiode,
     NavnPåForeldre,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
+    UttakPeriodeDto_fpoversikt,
 } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
 import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan/validators';
@@ -38,22 +37,20 @@ const ManglerDokumentasjon = ({ headerLabel, bodyLabel }: ManglerDokumentasjonPr
     </VStack>
 );
 
-const isPeriodeMedMorInnleggelse = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-    familiehendelsedato: string,
-) => {
-    if (Uttaksperioden.erEøsPeriode(periode)) {
+const isPeriodeMedMorInnleggelse = (periode: UttakPeriodeDto_fpoversikt, familiehendelsedato: string) => {
+    const søker = periode.søker;
+    if (!søker) {
         return false;
     }
 
-    if (periode.overføringÅrsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' && periode.forelder === 'FAR_MEDMOR') {
+    if (søker.overføringÅrsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' && søker.forelder === 'FAR_MEDMOR') {
         return true;
     }
 
     if (
-        erUttaksperiode(periode) &&
-        periode.kontoType === 'FEDREKVOTE' &&
-        !periode.samtidigUttak &&
+        Uttaksperioden.erUttaksperiode(søker) &&
+        søker.kontoType === 'FEDREKVOTE' &&
+        !søker.samtidigUttak &&
         UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
             periode,
             familiehendelsedato,
@@ -64,28 +61,24 @@ const isPeriodeMedMorInnleggelse = (
     }
 
     if (
-        (periode.kontoType === 'FELLESPERIODE' || periode.kontoType === 'FORELDREPENGER') &&
-        periode.morsAktivitet === 'INNLAGT'
+        (søker.kontoType === 'FELLESPERIODE' || søker.kontoType === 'FORELDREPENGER') &&
+        søker.morsAktivitet === 'INNLAGT'
     ) {
         return true;
     }
 
-    if (periode.utsettelseÅrsak === 'SØKER_INNLAGT') {
+    if (søker.utsettelseÅrsak === 'SØKER_INNLAGT') {
         return true;
     }
 
     return false;
 };
 
-const erUttaksperiode = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt): boolean => {
-    return !('trekkdager' in periode) && !periode.oppholdÅrsak && !periode.overføringÅrsak && !periode.utsettelseÅrsak;
-};
-
 interface Props {
     attachment: Attachment;
     erFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
-    uttaksperioderSomManglerVedlegg: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    uttaksperioderSomManglerVedlegg: UttakPeriodeDto_fpoversikt[];
     familiehendelsedato: string;
 }
 
@@ -101,11 +94,12 @@ export const DokumentasjonSendSenereLabel = ({
     const morErForSykEllerInnlagtFørsteSeksUker = uttaksperioderSomManglerVedlegg
         .filter((p) => isPeriodeMedMorInnleggelse(p, familiehendelsedato))
         .some((p) => {
+            const søker = p.søker;
             return (
-                erUttaksperiode(p) &&
-                'morsAktivitet' in p &&
-                p.morsAktivitet === 'INNLAGT' &&
-                p.kontoType === 'FEDREKVOTE'
+                !!søker &&
+                Uttaksperioden.erUttaksperiode(søker) &&
+                søker.morsAktivitet === 'INNLAGT' &&
+                søker.kontoType === 'FEDREKVOTE'
             );
         });
 

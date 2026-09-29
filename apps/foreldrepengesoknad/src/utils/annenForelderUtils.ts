@@ -1,6 +1,6 @@
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 
-import { AnnenPartRequest_fpoversikt, Barn, isFødtBarn } from '@navikt/fp-types';
+import { AnnenPartRequest_fpoversikt, Barn, FellesUttaksplanRequest_fpoversikt, isFødtBarn } from '@navikt/fp-types';
 
 import { getFamiliehendelsedato } from './barnUtils';
 
@@ -28,6 +28,17 @@ export const annenForelderHarNorskFnr = (annenForelder: AnnenForelder) => {
         isAnnenForelderOppgitt(annenForelder) && annenForelder.utenlandskFnr !== true ? annenForelder.fnr : undefined;
     return annenPartFnr !== undefined && annenPartFnr !== '';
 };
+
+export const getUttaksplanParam = (annenForelder: AnnenForelder, barn: Barn): FellesUttaksplanRequest_fpoversikt => ({
+    barnIdentifikator: {
+        fødselsnummer: isFødtBarn(barn) && barn.fnr !== undefined && barn.fnr.length > 0 ? barn.fnr[0] : undefined,
+        familiehendelse: getFamiliehendelsedato(barn),
+    },
+    annenPartFødselsnummer:
+        annenForelderHarNorskFnr(annenForelder) && isAnnenForelderOppgitt(annenForelder)
+            ? annenForelder.fnr
+            : undefined,
+});
 
 export const getIsDeltUttak = (annenForelder: AnnenForelder): boolean => {
     return isAnnenForelderOppgitt(annenForelder)

@@ -53,51 +53,57 @@ describe('useUttaksplanForslag – far med delt uttak', () => {
             const perioder = result.current;
 
             // MOR: FORELDREPENGER_FØR_FØDSEL 15 dager før fødsel
-            expect(perioder[0]).toMatchObject({
-                forelder: 'MOR',
-                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+            expect(perioder[0]).toEqual({
                 fom: '2024-06-10',
                 tom: '2024-06-28',
-                flerbarnsdager: false,
+                annenPart: {
+                    forelder: 'MOR',
+                    kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                    flerbarnsdager: false,
+                },
             });
 
             // MOR og FAR: samtidig uttak fra familiehendelsesdato (10 dager)
             expect(perioder[1]).toMatchObject({
-                forelder: 'MOR',
-                kontoType: 'MØDREKVOTE',
                 fom: FØDSELSDATO,
                 tom: '2024-07-12',
-                samtidigUttak: 100,
-            });
-            expect(perioder[2]).toMatchObject({
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FEDREKVOTE',
-                fom: FØDSELSDATO,
-                tom: '2024-07-12',
-                samtidigUttak: 100,
+                søker: {
+                    forelder: 'FAR_MEDMOR',
+                    kontoType: 'FEDREKVOTE',
+                    samtidigUttak: 100,
+                },
+                annenPart: {
+                    forelder: 'MOR',
+                    kontoType: 'MØDREKVOTE',
+                    samtidigUttak: 100,
+                },
             });
 
             // MOR: resterende MØDREKVOTE (75 - 10 = 65 dager)
-            expect(perioder[3]).toMatchObject({
-                forelder: 'MOR',
-                kontoType: 'MØDREKVOTE',
+            expect(perioder[2]).toEqual({
                 fom: '2024-07-15',
                 tom: '2024-10-11',
-                flerbarnsdager: false,
+                annenPart: {
+                    forelder: 'MOR',
+                    kontoType: 'MØDREKVOTE',
+                    flerbarnsdager: false,
+                },
             });
 
             // MOR: FELLESPERIODE (80 dager)
-            expect(perioder[4]).toMatchObject({
-                forelder: 'MOR',
-                kontoType: 'FELLESPERIODE',
+            expect(perioder[3]).toEqual({
                 fom: '2024-10-14',
                 tom: '2025-01-31',
-                flerbarnsdager: false,
+                annenPart: {
+                    forelder: 'MOR',
+                    kontoType: 'FELLESPERIODE',
+                    flerbarnsdager: false,
+                },
             });
 
             // FAR har ingen separat FEDREKVOTE utover samtidig uttak
-            expect(perioder).toHaveLength(5);
-            expect(perioder.filter((p) => 'forelder' in p && p.forelder === 'FAR_MEDMOR')).toHaveLength(1);
+            expect(perioder).toHaveLength(4);
+            expect(perioder.filter((p) => p.søker?.forelder === 'FAR_MEDMOR')).toHaveLength(1);
         });
     });
 
@@ -122,38 +128,46 @@ describe('useUttaksplanForslag – far med delt uttak', () => {
             // MOR: FORELDREPENGER_FØR_FØDSEL skal fortsatt være ankret til familiehendelsesdato,
             // ikke til fars valgte dato
             expect(perioder[0]).toMatchObject({
-                forelder: 'MOR',
-                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 fom: '2024-06-10',
                 tom: '2024-06-28',
+                annenPart: {
+                    forelder: 'MOR',
+                    kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                },
             });
 
             // MOR: MØDREKVOTE skal starte på familiehendelsesdato, ikke på fars dato (75 dager)
             expect(perioder[1]).toMatchObject({
-                forelder: 'MOR',
-                kontoType: 'MØDREKVOTE',
                 fom: FØDSELSDATO,
                 tom: '2024-10-11',
-                flerbarnsdager: false,
+                annenPart: {
+                    forelder: 'MOR',
+                    kontoType: 'MØDREKVOTE',
+                    flerbarnsdager: false,
+                },
             });
             expect(perioder[1]!.fom).not.toBe(farStartdato);
 
             // MOR: FELLESPERIODE følger etter MØDREKVOTE (80 dager)
             expect(perioder[2]).toMatchObject({
-                forelder: 'MOR',
-                kontoType: 'FELLESPERIODE',
                 fom: '2024-10-14',
                 tom: '2025-01-31',
-                flerbarnsdager: false,
+                annenPart: {
+                    forelder: 'MOR',
+                    kontoType: 'FELLESPERIODE',
+                    flerbarnsdager: false,
+                },
             });
 
             // FAR: FEDREKVOTE skal starte på fars valgte dato (75 dager)
             expect(perioder[3]).toMatchObject({
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FEDREKVOTE',
                 fom: farStartdato,
                 tom: '2025-01-13',
-                flerbarnsdager: false,
+                søker: {
+                    forelder: 'FAR_MEDMOR',
+                    kontoType: 'FEDREKVOTE',
+                    flerbarnsdager: false,
+                },
             });
         });
 
@@ -176,28 +190,36 @@ describe('useUttaksplanForslag – far med delt uttak', () => {
             expect(perioder).toHaveLength(4);
 
             expect(perioder[0]).toMatchObject({
-                forelder: 'MOR',
-                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 fom: '2024-06-10',
                 tom: '2024-06-28',
+                annenPart: {
+                    forelder: 'MOR',
+                    kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                },
             });
             expect(perioder[1]).toMatchObject({
-                forelder: 'MOR',
-                kontoType: 'MØDREKVOTE',
                 fom: FØDSELSDATO,
                 tom: '2024-10-11',
+                annenPart: {
+                    forelder: 'MOR',
+                    kontoType: 'MØDREKVOTE',
+                },
             });
             expect(perioder[2]).toMatchObject({
-                forelder: 'MOR',
-                kontoType: 'FELLESPERIODE',
                 fom: '2024-10-14',
                 tom: '2025-01-31',
+                annenPart: {
+                    forelder: 'MOR',
+                    kontoType: 'FELLESPERIODE',
+                },
             });
             expect(perioder[3]).toMatchObject({
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FEDREKVOTE',
                 fom: farStartdato,
                 tom: '2024-11-13',
+                søker: {
+                    forelder: 'FAR_MEDMOR',
+                    kontoType: 'FEDREKVOTE',
+                },
             });
         });
 
@@ -214,14 +236,16 @@ describe('useUttaksplanForslag – far med delt uttak', () => {
             });
 
             const perioder = result.current;
-            const farPeriode = perioder.find((p) => 'forelder' in p && p.forelder === 'FAR_MEDMOR');
+            const farPeriode = perioder.find((p) => p.søker?.forelder === 'FAR_MEDMOR');
 
             // Uttaksdagen.denneEllerNeste justerer lørdag til mandag
             expect(farPeriode).toMatchObject({
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FEDREKVOTE',
                 fom: '2024-10-07',
                 tom: '2025-01-17',
+                søker: {
+                    forelder: 'FAR_MEDMOR',
+                    kontoType: 'FEDREKVOTE',
+                },
             });
         });
     });
@@ -235,9 +259,11 @@ describe('useUttaksplanForslag – far med delt uttak', () => {
                         {
                             fom: '2024-07-01',
                             tom: '2024-09-01',
-                            forelder: 'MOR',
-                            kontoType: 'MØDREKVOTE',
-                            flerbarnsdager: false,
+                            annenPart: {
+                                forelder: 'MOR',
+                                kontoType: 'MØDREKVOTE',
+                                flerbarnsdager: false,
+                            },
                         },
                     ]),
                 {
@@ -283,9 +309,11 @@ describe('kanGenerereUttaksplanForslag', () => {
                 {
                     fom: '2024-07-01',
                     tom: '2024-09-01',
-                    forelder: 'MOR',
-                    kontoType: 'MØDREKVOTE',
-                    flerbarnsdager: false,
+                    annenPart: {
+                        forelder: 'MOR',
+                        kontoType: 'MØDREKVOTE',
+                        flerbarnsdager: false,
+                    },
                 },
             ]),
         ).toBe(false);

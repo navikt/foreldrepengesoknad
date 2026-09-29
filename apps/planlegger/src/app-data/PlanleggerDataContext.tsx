@@ -7,7 +7,7 @@ import {
     FordelingPlanlegger,
     HvorLangPeriodePlanlegger,
     OmBarnetPlanlegger,
-    UttakPeriode_fpoversikt,
+    UttakPeriodeDto_fpoversikt,
 } from '@navikt/fp-types';
 
 export enum ContextDataType {
@@ -27,7 +27,7 @@ export type ContextDataMap = {
     [ContextDataType.HVOR_MYE]?: HvorMye;
     [ContextDataType.HVOR_LANG_PERIODE]?: HvorLangPeriodePlanlegger;
     [ContextDataType.FORDELING]?: FordelingPlanlegger;
-    [ContextDataType.UTTAKSPLAN]?: UttakPeriode_fpoversikt[];
+    [ContextDataType.UTTAKSPLAN]?: UttakPeriodeDto_fpoversikt[];
 };
 
 const defaultInitialState: ContextDataMap = {};

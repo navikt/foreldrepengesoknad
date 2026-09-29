@@ -12,7 +12,7 @@ import {
     OmBarnetPlanlegger,
     Søkerrolle,
     SøkersituasjonFp,
-    UttakPeriode_fpoversikt,
+    UttakPeriodeDto_fpoversikt,
 } from '@navikt/fp-types';
 import { decompressFromUrl } from '@navikt/fp-utils';
 
@@ -22,7 +22,7 @@ type PlanleggerDataFromUrl = {
     OM_BARNET?: OmBarnetPlanlegger;
     HVOR_LANG_PERIODE?: HvorLangPeriodePlanlegger;
     FORDELING?: FordelingPlanlegger;
-    UTTAKSPLAN?: UttakPeriode_fpoversikt[];
+    UTTAKSPLAN?: UttakPeriodeDto_fpoversikt[];
 };
 
 const erBarnetAdoptert = (barnet: OmBarnetPlanlegger): barnet is BarnetErAdoptertPlanlegger =>

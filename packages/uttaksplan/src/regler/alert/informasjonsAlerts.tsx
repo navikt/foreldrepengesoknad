@@ -7,14 +7,13 @@ import {
     BrukerRolleSak_fpoversikt,
     Familiesituasjon,
     RettighetType_fpoversikt,
-    UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 
 import {
     kanMisteDagerVedEndringTilFerie,
     kanMisteDagerVedFerieIUke7EtterTermin,
 } from '../../felles/uttaksplanValidatorer';
-import { Uttaksplanperiode, UttaksplanperiodeMedKunTapteDager, erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
+import { Uttaksplanperiode, UttaksplanperiodeMedKunTapteDager, erPeriodeDto } from '../../types/UttaksplanPeriode';
 import {
     harPeriodeDerMorsAktivitetIkkeErValgt,
     harPeriodeMedUkjentGraderingsaktivitet,
@@ -41,7 +40,6 @@ type EksisterendeValgtePeriodeKontekst = {
     erIkkeSøkerSpesifisert: boolean;
     erFarOgFar?: boolean;
     periode: Uttaksplanperiode | UttaksplanperiodeMedKunTapteDager;
-    morsUttakPerioder: readonly UttakPeriode_fpoversikt[];
 };
 
 type GraderingsaktivitetListeKontekst = {
@@ -162,7 +160,7 @@ export const MORS_AKTIVITET_IKKE_VALGT_EKSISTERENDE = lagAlertregel<Eksisterende
             ctx.rettighetType,
             ctx.søker,
             ctx.erIkkeSøkerSpesifisert,
-            [ctx.periode, ...ctx.morsUttakPerioder],
+            [ctx.periode],
             ctx.erFarOgFar,
         ),
 });
@@ -236,7 +234,7 @@ export const EØS_UTTAK_KAN_GI_AVSLAG = lagAlertregel<PeriodeDetaljerKontekst>({
     ],
     variant: 'warning',
     type: 'kontekstuell',
-    skalVises: (ctx) => ctx.eksisterendePerioderSomErValgt.some((p) => erEøsUttakPeriode(p)),
+    skalVises: (ctx) => ctx.eksisterendePerioderSomErValgt.some((p) => erPeriodeDto(p) && !!p.annenPartEøs),
 });
 
 export const IKKE_REDIGERBAR_PLEIEPENGER = lagAlertregel<PeriodeDetaljerKontekst>({

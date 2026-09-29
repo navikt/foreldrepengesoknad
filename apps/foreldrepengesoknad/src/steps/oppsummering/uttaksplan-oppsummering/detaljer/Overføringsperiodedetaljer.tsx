@@ -1,11 +1,11 @@
 import { IntlShape, useIntl } from 'react-intl';
 
-import { KontoTypeUttak, NavnPåForeldre, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { KontoTypeUttak, NavnPåForeldre, UttakDto_fpoversikt } from '@navikt/fp-types';
 
 import { Feltoppsummering } from './Feltoppsummering';
 
 interface Props {
-    periode: UttakPeriode_fpoversikt;
+    periode: UttakDto_fpoversikt;
     navnPåForeldre: NavnPåForeldre;
 }
 
@@ -30,7 +30,7 @@ export const Overføringsperiodedetaljer = ({ periode, navnPåForeldre }: Props)
     );
 };
 
-const getÅrsakTekst = (intl: IntlShape, periode: UttakPeriode_fpoversikt, navnAnnenForelder: string) => {
+const getÅrsakTekst = (intl: IntlShape, periode: UttakDto_fpoversikt, navnAnnenForelder: string) => {
     const { overføringÅrsak } = periode;
 
     if (overføringÅrsak === 'ALENEOMSORG') {

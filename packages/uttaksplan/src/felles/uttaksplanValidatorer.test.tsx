@@ -197,7 +197,7 @@ const DEFAULT_DATA = {
         fødselsdatoer: [FAMILIEHENDELSESDATO],
     },
     harAktivitetskravIPeriodeUtenUttak: false,
-    uttakPerioder: [],
+    perioder: [],
     erPeriodeneTilAnnenPartLåst: false,
     children: [],
     erEndringssøknad: false,
@@ -312,13 +312,15 @@ describe('useFormSubmitValidator', () => {
                     erMedmorDelAvSøknaden: false,
                     navnPåForeldre: { farMedmor: 'Far Medmor', mor: 'Mor' },
                 },
-                uttakPerioder: [
+                perioder: [
                     {
                         fom: FAMILIEHENDELSESDATO,
                         tom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(4),
-                        forelder: 'FAR_MEDMOR',
-                        flerbarnsdager: false,
-                        samtidigUttak: 100,
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            flerbarnsdager: false,
+                            samtidigUttak: 100,
+                        },
                     },
                 ],
             }),
@@ -354,12 +356,14 @@ describe('useFormSubmitValidator', () => {
                     erMedmorDelAvSøknaden: false,
                     navnPåForeldre: { farMedmor: 'Far Medmor', mor: 'Mor' },
                 },
-                uttakPerioder: [
+                perioder: [
                     {
                         fom: FAMILIEHENDELSESDATO,
                         tom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(4),
-                        forelder: 'FAR_MEDMOR',
-                        flerbarnsdager: false,
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            flerbarnsdager: false,
+                        },
                     },
                 ],
             }),
@@ -393,22 +397,24 @@ describe('useFormSubmitValidator', () => {
                     erMedmorDelAvSøknaden: false,
                     navnPåForeldre: { farMedmor: 'Far Medmor', mor: 'Mor' },
                 },
-                uttakPerioder: [
+                perioder: [
                     {
                         fom: FAMILIEHENDELSESDATO,
                         tom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(4),
-                        forelder: 'FAR_MEDMOR',
-                        gradering: {
-                            aktivitet: {
-                                type: 'ORDINÆRT_ARBEID',
-                                arbeidsgiver: {
-                                    id: '123456789',
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            gradering: {
+                                aktivitet: {
+                                    type: 'ORDINÆRT_ARBEID',
+                                    arbeidsgiver: {
+                                        id: '123456789',
+                                    },
+                                    arbeidsgiverNavn: 'Test AS',
                                 },
-                                arbeidsgiverNavn: 'Test AS',
+                                arbeidstidprosent: 50,
                             },
-                            arbeidstidprosent: 50,
+                            flerbarnsdager: false,
                         },
-                        flerbarnsdager: false,
                     },
                 ],
             }),
@@ -443,23 +449,25 @@ describe('useFormSubmitValidator', () => {
                     erMedmorDelAvSøknaden: false,
                     navnPåForeldre: { farMedmor: 'Far Medmor', mor: 'Mor' },
                 },
-                uttakPerioder: [
+                perioder: [
                     {
                         fom: FAMILIEHENDELSESDATO,
                         tom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(4),
-                        forelder: 'FAR_MEDMOR',
-                        gradering: {
-                            aktivitet: {
-                                type: 'ORDINÆRT_ARBEID',
-                                arbeidsgiver: {
-                                    id: '123456789',
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            gradering: {
+                                aktivitet: {
+                                    type: 'ORDINÆRT_ARBEID',
+                                    arbeidsgiver: {
+                                        id: '123456789',
+                                    },
+                                    arbeidsgiverNavn: 'Test AS',
                                 },
-                                arbeidsgiverNavn: 'Test AS',
+                                arbeidstidprosent: 50,
                             },
-                            arbeidstidprosent: 50,
+                            flerbarnsdager: false,
+                            samtidigUttak: 50,
                         },
-                        flerbarnsdager: false,
-                        samtidigUttak: 50,
                     },
                 ],
             }),

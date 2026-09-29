@@ -52,8 +52,8 @@ describe('finnUttaksdata - delt uttak, fødsel', () => {
             fellesperiodeDagerFørsteForelder: FELLESPERIODE_DAGER_MOR,
         });
 
-        const morsPerioder = uttaksplan.filter((p) => p.forelder === 'MOR');
-        const farsPerioder = uttaksplan.filter((p) => p.forelder === 'FAR_MEDMOR');
+        const morsPerioder = uttaksplan.filter((p) => p.søker?.forelder === 'MOR');
+        const farsPerioder = uttaksplan.filter((p) => p.søker?.forelder === 'FAR_MEDMOR');
 
         const morFørstePeriode = morsPerioder[0]!;
         const morSistePeriode = morsPerioder.at(-1)!;
@@ -112,8 +112,8 @@ describe('finnUttaksdata - delt uttak, fødsel', () => {
             fellesperiodeDagerFørsteForelder: FELLESPERIODE_DAGER_MOR,
         });
 
-        const morsPerioder = uttaksplan.filter((p) => p.forelder === 'MOR');
-        const farsPerioder = uttaksplan.filter((p) => p.forelder === 'FAR_MEDMOR');
+        const morsPerioder = uttaksplan.filter((p) => p.søker?.forelder === 'MOR');
+        const farsPerioder = uttaksplan.filter((p) => p.søker?.forelder === 'FAR_MEDMOR');
 
         expect(uttaksdata.startdatoPeriode1).toEqual(morsPerioder[0]!.fom);
         expect(uttaksdata.sluttdatoPeriode1).toEqual(morsPerioder.at(-1)!.tom);
