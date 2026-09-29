@@ -6,6 +6,5 @@ import './styles/global.css';
 
 void bootstrapApp({
     availableLocales: ['nb', 'nn', 'en'],
-    withPluralRulesPolyfill: false,
     app: <AppContainer />,
 });

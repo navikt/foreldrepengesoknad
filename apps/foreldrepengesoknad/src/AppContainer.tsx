@@ -69,7 +69,6 @@ export const AppContainer = () => (
         availableLocales={['nb', 'nn']}
         messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}
         queryClient={queryClient}
-        withByttBrowserModal
         scrollToTopOnNavigation
         retryCallback={() => void slettMellomlagringOgLastSidePåNytt()}
     >

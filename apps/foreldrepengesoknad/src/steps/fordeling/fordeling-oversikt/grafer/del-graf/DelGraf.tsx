@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { FordelingDager } from 'types/FordelingOversikt';
 import { guid } from 'utils/guid';
 
@@ -26,7 +25,7 @@ export const DelGraf = ({ fordelingsdager, sumDager }: Props) => {
                 return (
                     <div
                         key={guid()}
-                        className={classNames(styles.delGrafBox, getFargeClass(fordeling.fargekode))}
+                        className={[styles.delGrafBox, getFargeClass(fordeling.fargekode)].filter(Boolean).join(' ')}
                         style={{
                             width: `${width}%`,
                             height: `${rowHeightRem}rem`,

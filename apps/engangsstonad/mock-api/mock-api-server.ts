@@ -1,9 +1,7 @@
-import dotenv from 'dotenv';
 import express from 'express';
 
 import { deleteMellomlagretData, getMellomlagretData, lagreMellomlagretData } from './mock-storage.ts';
 
-dotenv.config();
 const app = express();
 const router = express.Router();
 

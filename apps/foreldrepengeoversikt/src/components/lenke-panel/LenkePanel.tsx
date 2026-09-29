@@ -1,5 +1,4 @@
 import { ArrowRightIcon } from '@navikt/aksel-icons';
-import classNames from 'classnames';
 import { ComponentType, ReactNode, SVGProps } from 'react';
 import { Link } from 'react-router';
 
@@ -17,7 +16,7 @@ type Props = {
 };
 export const LenkePanel = ({ to, tittel, undertittel, Ikon, className, tag }: Props) => {
     return (
-        <Link to={to} className={classNames(styles.LenkePanel, className)}>
+        <Link to={to} className={[styles.LenkePanel, className].filter(Boolean).join(' ')}>
             <HStack gap="space-16" align="center" justify="space-between">
                 <HStack gap="space-16" align="center" wrap={false}>
                     {Ikon && (

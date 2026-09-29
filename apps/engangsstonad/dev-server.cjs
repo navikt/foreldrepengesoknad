@@ -4,14 +4,8 @@ const express = require('express');
 const server = express();
 server.use(express.json());
 const path = require('node:path');
-const mustacheExpress = require('mustache-express');
 
 server.disable('x-powered-by');
-
-require('dotenv').config();
-server.set('views', `${__dirname}`);
-server.set('view engine', 'mustache');
-server.engine('html', mustacheExpress());
 
 server.use((req, res, next) => {
     res.removeHeader('X-Powered-By');
@@ -67,6 +61,7 @@ const startServer = async () => {
 
     const renderedHtml = htmlWithDecoratorInjected
         .replaceAll('</link>', '')
+        .replaceAll('{{{NAIS_META_TAGS}}}', '')
         .replaceAll(
             '{{{APP_SETTINGS}}}',
             JSON.stringify({

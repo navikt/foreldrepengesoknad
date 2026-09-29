@@ -1,4 +1,4 @@
-import html2canvas from 'html2canvas';
+import html2canvas from 'html2canvas-pro';
 import { jsPDF } from 'jspdf';
 
 const A4_BREDDE_MM = 210;
@@ -140,7 +140,7 @@ const høgdeForBredde = (bildeBredde: number, bildeHøgde: number, bredde: numbe
 // og returnerer eit blankt canvas. Vi hoppar difor over dei i staden for å krasje.
 const erGyldigCanvas = (canvas: HTMLCanvasElement): boolean => canvas.width > 0 && canvas.height > 0;
 
-// html2canvas (1.4.1) sentrerer ikkje tekst loddrett slik flexbox/grid gjer –
+// html2canvas sentrerer ikkje tekst loddrett slik flexbox/grid gjer –
 // det plasserer teksten etter line-boksen, og teiknar han difor litt for langt
 // ned. Resultatet er at dagtala sig ned i cellene og legend-teksten hamnar lågt
 // og blir klypt. Vi rettar dette på klonane før fanging: line-height lik høgda

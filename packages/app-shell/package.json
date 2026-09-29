@@ -15,7 +15,6 @@
         "clean": "rm -rf ./dist ./node_modules ./.turbo"
     },
     "dependencies": {
-        "@formatjs/intl-pluralrules": "6.3.15",
         "@navikt/ds-react": "catalog:",
         "@navikt/fp-observability": "workspace:*",
         "@navikt/fp-types": "workspace:*",

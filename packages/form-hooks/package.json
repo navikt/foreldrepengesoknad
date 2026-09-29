@@ -17,7 +17,6 @@
         "clean": "rm -rf ./dist ./node_modules ./.turbo ./.storybook-static-build"
     },
     "dependencies": {
-        "@hookform/error-message": "2.0.1",
         "@navikt/ds-css": "catalog:",
         "@navikt/ds-react": "catalog:",
         "@navikt/fp-constants": "workspace:*",

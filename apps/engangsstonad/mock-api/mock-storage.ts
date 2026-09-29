@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { EsMellomlagretData } from '../src/app-data/useEsMellomlagring';
+import type { EsMellomlagretData } from '../src/app-data/useEsMellomlagring';
 
 const FILE_NAME = 'mellomlagretdata.json';
 

@@ -1,5 +1,3 @@
-import classNames from 'classnames';
-
 import { Heading, Skeleton, SkeletonProps } from '@navikt/ds-react';
 
 interface Props {
@@ -34,7 +32,11 @@ export const ContentSection = ({
                     {heading}
                 </Heading>
             )}
-            <div className={classNames(className, 'bg-ax-bg-default border-ax-brand-blue-200 rounded-lg border-2 p-4')}>
+            <div
+                className={[className, 'bg-ax-bg-default border-ax-brand-blue-200 rounded-lg border-2 p-4']
+                    .filter(Boolean)
+                    .join(' ')}
+            >
                 {showSkeleton && skeletonInnhold ? skeletonInnhold : children}
             </div>
         </section>

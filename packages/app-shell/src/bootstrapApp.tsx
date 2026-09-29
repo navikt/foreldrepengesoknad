@@ -14,8 +14,6 @@ export interface BootstrapAppOptions {
     basename?: string;
     /** Hvilke språk appen støtter. Brukes til å registrere dayjs- og i18n-iso-countries-locales. */
     availableLocales: readonly LocaleAll[];
-    /** Last @formatjs/intl-pluralrules-polyfill (default true). */
-    withPluralRulesPolyfill?: boolean;
     /** Registrer i18n-iso-countries-locales (default true). */
     registerCountryLocales?: boolean;
     /** Default dayjs-locale (default `'nb'`). */
@@ -53,31 +51,14 @@ const loadCountryLocales = async (locales: readonly LocaleAll[]) => {
     }
 };
 
-const loadPluralRulesPolyfill = async (locales: readonly LocaleAll[]) => {
-    await import('@formatjs/intl-pluralrules/polyfill.js');
-    if (locales.includes('nb')) {
-        await import('@formatjs/intl-pluralrules/locale-data/nb.js');
-    }
-    if (locales.includes('nn')) {
-        await import('@formatjs/intl-pluralrules/locale-data/nn.js');
-    }
-    if (locales.includes('en')) {
-        await import('@formatjs/intl-pluralrules/locale-data/en.js');
-    }
-};
-
 export const bootstrapApp = async ({
     containerId = 'app',
     basename,
     availableLocales,
-    withPluralRulesPolyfill = true,
     registerCountryLocales = true,
     defaultDayjsLocale = 'nb',
     app,
 }: BootstrapAppOptions) => {
-    if (withPluralRulesPolyfill) {
-        await loadPluralRulesPolyfill(availableLocales);
-    }
     await loadDayjsLocales(availableLocales);
     if (registerCountryLocales) {
         await loadCountryLocales(availableLocales);

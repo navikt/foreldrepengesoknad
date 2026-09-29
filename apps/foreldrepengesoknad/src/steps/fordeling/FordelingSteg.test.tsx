@@ -1,7 +1,6 @@
 import { composeStories } from '@storybook/react-vite';
 import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import MockDate from 'mockdate';
 
 import * as stories from './FordelingSteg.stories';
 
@@ -483,7 +482,7 @@ describe('Fordeling - FarMedmorAleneomsorgEttBarnTerminEtterWLB', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til far med aleneomsorg med fødte tvillinger', async () => {
-        MockDate.set(new Date('2024-09-12'));
+        vi.setSystemTime(new Date('2024-09-12'));
 
         await FarMedmorAleneomsorgEttBarnTerminEtterWLB.run({
             args: {
@@ -507,7 +506,7 @@ describe('Fordeling - FarMedmorAleneomsorgEttBarnTerminEtterWLB', () => {
         expect(screen.getByText('På datoen jeg blir alene om omsorgen, 21. september 2024')).toBeInTheDocument();
         expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
 
-        MockDate.reset();
+        vi.useRealTimers();
     });
 });
 
@@ -1266,11 +1265,11 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     afterEach(() => {
-        MockDate.reset();
+        vi.useRealTimers();
     });
 
     it('skal vise riktig informasjon til far med delt uttak der barnet er født prematurt', async () => {
-        MockDate.set(new Date('2024-02-25'));
+        vi.setSystemTime(new Date('2024-02-25'));
         await FarMedmorSøkerDeltUttakEttBarnFødtPrematurt.run({
             args: {
                 ...FarMedmorSøkerDeltUttakEttBarnFødtPrematurt.args,
@@ -1310,7 +1309,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
     it('skal ikke kunne begynne uttaket tidligere enn to uker før fødselsdato', async () => {
         // Barnet er født mer enn to uker før termin (prematurt). Far/medmor skal da kunne starte
         // to uker før fødselsdatoen, ikke først fra fødselsdatoen. Se TFP-5892.
-        MockDate.set(new Date('2024-02-25'));
+        vi.setSystemTime(new Date('2024-02-25'));
         await FarMedmorSøkerDeltUttakEttBarnFødtPrematurt.run({
             args: {
                 ...FarMedmorSøkerDeltUttakEttBarnFødtPrematurt.args,
@@ -1333,11 +1332,11 @@ describe('Fordeling - FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode', () => 
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     afterEach(() => {
-        MockDate.reset();
+        vi.useRealTimers();
     });
 
     it('skal vise riktig informasjon til far søker etter mor og mor har tatt ut deler av fellesperiode og hans kvote', async () => {
-        MockDate.set(new Date('2024-02-25'));
+        vi.setSystemTime(new Date('2024-02-25'));
         await FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode.run({
             args: {
                 ...FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode.args,
@@ -1557,11 +1556,11 @@ describe('Fordeling - BareFarHarRettOgMorErIkkeUførFødtBarn', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     afterEach(() => {
-        MockDate.reset();
+        vi.useRealTimers();
     });
 
     it('skal vise riktig informasjon til far søker på fødsel, kun far har rett, mor er ikke ufør, ett barn', async () => {
-        MockDate.set(new Date('2024-02-21'));
+        vi.setSystemTime(new Date('2024-02-21'));
         await BareFarHarRettOgMorErIkkeUførFødtBarn.run({
             args: {
                 ...BareFarHarRettOgMorErIkkeUførFødtBarn.args,
@@ -1598,7 +1597,7 @@ describe('Fordeling - BareFarHarRettOgMorErIkkeUførFødtBarn', () => {
         expect(screen.queryByText('Hvis barnet er innlagt på sykehus')).not.toBeInTheDocument();
     });
     it('kan ikke starte tidligere enn 2 uker før fødsel', async () => {
-        MockDate.set(new Date('2024-02-21'));
+        vi.setSystemTime(new Date('2024-02-21'));
         await BareFarHarRettOgMorErIkkeUførFødtBarn.run({
             args: {
                 ...BareFarHarRettOgMorErIkkeUførFødtBarn.args,
@@ -1623,7 +1622,7 @@ describe('Fordeling - BareFarHarRettTvillingerFødtFør1Okt2021', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     afterEach(() => {
-        MockDate.reset();
+        vi.useRealTimers();
     });
 
     it('skal vise riktig informasjon til far, kun far har rett, tvillinger født før 1 okt 2021', async () => {
@@ -1648,7 +1647,7 @@ describe('Fordeling - BareFarHarRettTvillingerFødtFør1Okt2021', () => {
         expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
     });
     it('kan ikke starte tidligere enn to uker før fødsel', async () => {
-        MockDate.set(new Date('2024-02-20'));
+        vi.setSystemTime(new Date('2024-02-20'));
         await BareFarHarRettOgMorErIkkeUførFødtBarn.run({
             args: {
                 ...BareFarHarRettOgMorErIkkeUførFødtBarn.args,

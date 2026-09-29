@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
-import MockDate from 'mockdate';
 
 import * as stories from './Forside.stories';
 
@@ -238,7 +237,7 @@ describe('<Forside>', () => {
 
     //Ingen saker, og noen av barna er døde.
     it('skal vise ett barn fra PDL når ingen saker', async () => {
-        MockDate.set(new Date('2025-10-25'));
+        vi.setSystemTime(new Date('2025-10-25'));
         render(<HarIngenSakerOgEttBarn />);
 
         expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
@@ -255,7 +254,7 @@ describe('<Forside>', () => {
     });
 
     it('skal vise ett barn fra PDL uten navn når barnet er dødfødt for mindre enn 3 mnd siden', async () => {
-        MockDate.set(new Date('2022-10-25'));
+        vi.setSystemTime(new Date('2022-10-25'));
 
         render(<HarIngenSakerOgEtDødfødtBarn />);
 
@@ -263,11 +262,11 @@ describe('<Forside>', () => {
         expect(screen.getByText('Barn født', { exact: false })).toBeInTheDocument();
         expect(screen.getByText('Et annet barn')).toBeInTheDocument();
 
-        MockDate.reset();
+        vi.useRealTimers();
     });
 
     it('skal ikke vise ett barn fra PDL når barnet er dødfødt for mer enn 3 mnd siden', async () => {
-        MockDate.set(new Date('2023-03-08'));
+        vi.setSystemTime(new Date('2023-03-08'));
 
         render(<HarIngenSakerOgEtDødfødtBarn />);
 
@@ -275,11 +274,11 @@ describe('<Forside>', () => {
         expect(screen.queryByText('Barn født', { exact: false })).not.toBeInTheDocument();
         expect(screen.queryByText('Et annet barn')).not.toBeInTheDocument();
 
-        MockDate.reset();
+        vi.useRealTimers();
     });
 
     it('skal vise ett barn fra PDL uten navn når barnet døde for mindre enn 3 mnd siden', async () => {
-        MockDate.set(new Date('2023-03-06'));
+        vi.setSystemTime(new Date('2023-03-06'));
 
         render(<HarIngenSakerOgEttDødtBarn />);
 
@@ -287,11 +286,11 @@ describe('<Forside>', () => {
         expect(screen.getByText('Barn født', { exact: false })).toBeInTheDocument();
         expect(screen.getByText('Et annet barn')).toBeInTheDocument();
 
-        MockDate.reset();
+        vi.useRealTimers();
     });
 
     it('skal vise tvillinger fra PDL uten navn når begge barna døde for mindre enn 3 mnd siden', async () => {
-        MockDate.set(new Date('2023-03-06'));
+        vi.setSystemTime(new Date('2023-03-06'));
 
         render(<HarIngenSakerOgToDødeTvillinger />);
 
@@ -299,11 +298,11 @@ describe('<Forside>', () => {
         expect(screen.getByText('Tvillinger født', { exact: false })).toBeInTheDocument();
         expect(screen.getByText('Et annet barn')).toBeInTheDocument();
 
-        MockDate.reset();
+        vi.useRealTimers();
     });
 
     it('skal ikke vise tvillinger fra PDL når begge barna døde for mer enn 3 mnd siden', async () => {
-        MockDate.set(new Date('2023-03-08'));
+        vi.setSystemTime(new Date('2023-03-08'));
 
         render(<HarIngenSakerOgToDødeTvillinger />);
 
@@ -311,11 +310,11 @@ describe('<Forside>', () => {
         expect(screen.queryByText('Tvillinger født', { exact: false })).not.toBeInTheDocument();
         expect(screen.queryByText('SEt annet barn')).not.toBeInTheDocument();
 
-        MockDate.reset();
+        vi.useRealTimers();
     });
 
     it('skal vise tvillinger fra PDL uten navn når et av barna døde under fødsel for mindre enn 3 mnd siden', async () => {
-        MockDate.set(new Date('2022-10-25'));
+        vi.setSystemTime(new Date('2022-10-25'));
 
         render(<HarIngenSakerMedEnLevendeOgEnDødfødtTvilling />);
 
@@ -323,11 +322,11 @@ describe('<Forside>', () => {
         expect(screen.getByText('Tvillinger født', { exact: false })).toBeInTheDocument();
         expect(screen.getByText('Et annet barn')).toBeInTheDocument();
 
-        MockDate.reset();
+        vi.useRealTimers();
     });
 
     it('skal ikke vise noen av tvillinger fra PDL hvis den ene døde under fødsel for mer enn 3 mnd siden og det finnes ingen sak på barna', async () => {
-        MockDate.set(new Date('2023-03-25'));
+        vi.setSystemTime(new Date('2023-03-25'));
 
         render(<HarIngenSakerMedEnLevendeOgEnDødfødtTvilling />);
 
@@ -336,10 +335,10 @@ describe('<Forside>', () => {
         expect(screen.queryByText('Tvillinger født', { exact: false })).not.toBeInTheDocument();
         expect(screen.queryByText('Søknaden min gjelder et annet barn')).not.toBeInTheDocument();
 
-        MockDate.reset();
+        vi.useRealTimers();
     });
     it('skal vise tvillinger fra PDL uten navn når et av barna døde for mindre enn 3 mnd siden', async () => {
-        MockDate.set(new Date('2022-02-25'));
+        vi.setSystemTime(new Date('2022-02-25'));
 
         render(<HarIngenSakerMedEnLevendeOgEnDødTvilling />);
 
@@ -347,7 +346,7 @@ describe('<Forside>', () => {
         expect(screen.getByText('Tvillinger født', { exact: false })).toBeInTheDocument();
         expect(screen.getByText('Et annet barn')).toBeInTheDocument();
 
-        MockDate.reset();
+        vi.useRealTimers();
     });
 
     //Har saker der noen av barna er døde.
@@ -361,7 +360,7 @@ describe('<Forside>', () => {
     });
 
     it('skal vise velkommen-side med sak på fødsel der barnet døde for mer enn 3 mnd siden. Navn skal ikke vises', async () => {
-        MockDate.set(new Date('2023-04-01'));
+        vi.setSystemTime(new Date('2023-04-01'));
 
         render(<HarSakMedEtDødtBarn />);
 
@@ -370,11 +369,11 @@ describe('<Forside>', () => {
         expect(screen.getByText('Saksnummer 123456, saken er ferdig behandlet')).toBeInTheDocument();
         expect(screen.getByText('Et annet barn')).toBeInTheDocument();
 
-        MockDate.reset();
+        vi.useRealTimers();
     });
 
     it('skal vise velkommen-side med sak på fødsel der barnet døde for mindre enn 3 mnd siden. Navn skal ikke vises', async () => {
-        MockDate.set(new Date('2022-12-10'));
+        vi.setSystemTime(new Date('2022-12-10'));
 
         render(<HarSakMedEtDødtBarn />);
 
@@ -386,7 +385,7 @@ describe('<Forside>', () => {
         expect(screen.getByText('Et annet barn')).toBeInTheDocument();
         expect(screen.queryByText('Endre søknad')).not.toBeInTheDocument();
 
-        MockDate.reset();
+        vi.useRealTimers();
     });
 
     it('skal vise velkommen-side med sak på adopsjon der barnet døde. Navn skal ikke vises', async () => {

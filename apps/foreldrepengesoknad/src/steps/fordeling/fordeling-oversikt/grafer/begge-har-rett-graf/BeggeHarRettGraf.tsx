@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { Dispatch, SetStateAction } from 'react';
 import { useIntl } from 'react-intl';
 import { FordelingEier, FordelingFargekode } from 'types/FordelingOversikt';
@@ -126,11 +125,9 @@ export const BeggeHarRettGraf = ({
                         <div className={styles.søyle}>
                             <div className={styles.del}>
                                 <div
-                                    className={classNames(
-                                        styles.delBox,
-                                        getFargeClass(fordeling.fargekode),
-                                        shadowClass,
-                                    )}
+                                    className={[styles.delBox, getFargeClass(fordeling.fargekode), shadowClass]
+                                        .filter(Boolean)
+                                        .join(' ')}
                                     onMouseEnter={handleOnMouseEnter}
                                     onMouseLeave={handleOnMouseLeave}
                                     style={{
@@ -140,7 +137,7 @@ export const BeggeHarRettGraf = ({
                                 ></div>
                             </div>
                             <BodyShort
-                                className={classNames(styles.delTekst, rowClass)}
+                                className={[styles.delTekst, rowClass].filter(Boolean).join(' ')}
                                 style={{
                                     height: `${rowHeight}px`,
                                 }}
