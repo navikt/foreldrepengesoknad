@@ -221,6 +221,30 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         });
     });
 
+    it.each([
+        { månederSidenOppstart: 53, spørOmNæringsresultat: true },
+        { månederSidenOppstart: 54, spørOmNæringsresultat: false },
+        { månederSidenOppstart: 55, spørOmNæringsresultat: false },
+    ])(
+        'skal velge riktige inntektsspørsmål når virksomheten startet for $månederSidenOppstart måneder siden',
+        async ({ månederSidenOppstart, spørOmNæringsresultat }) => {
+            render(<Default />);
+
+            const startdatoInput = screen.getByLabelText('Når startet du virksomheten?');
+            await userEvent.type(startdatoInput, dayjs().subtract(månederSidenOppstart, 'month').format('DD.MM.YYYY'));
+            await userEvent.tab();
+
+            expect(
+                screen.queryByLabelText('Hva var næringsresultatet ditt før skatt de siste 12 månedene?') !== null,
+            ).toBe(spørOmNæringsresultat);
+            expect(
+                screen.queryByText(
+                    'Har du hatt en varig endring i virksomheten eller arbeidssituasjonen din de siste 4 årene?',
+                ) !== null,
+            ).toBe(!spørOmNæringsresultat);
+        },
+    );
+
     it('skal ikke vise fiske som valg for selvstendig næring', async () => {
         render(<Default />);
 
