@@ -120,8 +120,8 @@ catalogs:
       specifier: 8.17.2
       version: 8.17.2
     '@navikt/nav-dekoratoren-moduler':
-      specifier: 4.3.0
-      version: 4.3.0
+      specifier: 4.5.0
+      version: 4.5.0
     '@storybook/addon-a11y':
       specifier: 10.6.0
       version: 10.6.0
@@ -319,7 +319,7 @@ importers:
         version: link:../../packages/validation
       '@navikt/nav-dekoratoren-moduler':
         specifier: 'catalog:'
-        version: 4.3.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
+        version: 4.5.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       '@tanstack/react-query':
         specifier: 'catalog:'
         version: 5.102.8(react@19.3.0)
@@ -458,7 +458,7 @@ importers:
         version: link:../../packages/validation
       '@navikt/nav-dekoratoren-moduler':
         specifier: 'catalog:'
-        version: 4.3.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
+        version: 4.5.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       '@tanstack/react-query':
         specifier: 'catalog:'
         version: 5.102.8(react@19.3.0)
@@ -630,7 +630,7 @@ importers:
         version: link:../../packages/validation
       '@navikt/nav-dekoratoren-moduler':
         specifier: 'catalog:'
-        version: 4.3.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
+        version: 4.5.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       '@tanstack/react-query':
         specifier: 'catalog:'
         version: 5.102.8(react@19.3.0)
@@ -772,7 +772,7 @@ importers:
         version: link:../../packages/validation
       '@navikt/nav-dekoratoren-moduler':
         specifier: 'catalog:'
-        version: 4.3.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
+        version: 4.5.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       '@tanstack/react-query':
         specifier: 'catalog:'
         version: 5.102.8(react@19.3.0)
@@ -935,7 +935,7 @@ importers:
         version: link:../../packages/validation
       '@navikt/nav-dekoratoren-moduler':
         specifier: 'catalog:'
-        version: 4.3.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
+        version: 4.5.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       '@tanstack/react-query':
         specifier: 'catalog:'
         version: 5.102.8(react@19.3.0)
@@ -1313,7 +1313,7 @@ importers:
         version: link:../utils
       '@navikt/nav-dekoratoren-moduler':
         specifier: 'catalog:'
-        version: 4.3.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
+        version: 4.5.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       '@tanstack/react-query':
         specifier: 'catalog:'
         version: 5.102.8(react@19.3.0)
@@ -1696,7 +1696,7 @@ importers:
     dependencies:
       '@navikt/nav-dekoratoren-moduler':
         specifier: 'catalog:'
-        version: 4.3.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
+        version: 4.5.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       '@navikt/vite-mode':
         specifier: 1.0.1
         version: 1.0.1(express@5.2.1)
@@ -3508,8 +3508,8 @@ packages:
   '@navikt/fnrvalidator@2.2.1':
     resolution: {integrity: sha512-R6x3MBFC0E/B7oTs+P2jAP+ym7+d6cwSpDsLeMja9IwPpJq3HV/OClFBVWm9fJZPmXfumKRMGy6gqsQPj90ftg==, tarball: https://npm.pkg.github.com/download/@navikt/fnrvalidator/2.2.1/37ed0feb23a7525139ad5512684ff6b0977112c6}
 
-  '@navikt/nav-dekoratoren-moduler@4.3.0':
-    resolution: {integrity: sha512-DpUW0J1pIAncsEh698x6mSt7UsILEIbrYFzKTDuXem0y2bYjG+ki78NV2lhN/nPYXcoVYizsC1eetH72VMEoEw==, tarball: https://npm.pkg.github.com/download/@navikt/nav-dekoratoren-moduler/4.3.0/d2d64c4afd0201f3a1e8ec8fba9651c05fdfb736}
+  '@navikt/nav-dekoratoren-moduler@4.5.0':
+    resolution: {integrity: sha512-0eTtpgk+kOGjxncAA5PT2+yLPIobPdvIMVJzWDVdlZmuKUGG1NMoom8DYtnCPkro3Mw+dZeoFJ0TVY+4F57J5Q==, tarball: https://npm.pkg.github.com/download/@navikt/nav-dekoratoren-moduler/4.5.0/e3c7d8e6e3f2efd2fb46952564e6c9c47ca200ad}
     engines: {node: 24.x}
     peerDependencies:
       html-react-parser: '>=5.x'
@@ -5390,8 +5390,8 @@ packages:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
 
-  csp-header@6.3.1:
-    resolution: {integrity: sha512-ykcqGMOGP/uU7RLXDD83k2Ge5Stgc/N3qgKgSN+dATDlNgLHnIoI1IdZBjOskD5Ev1RSKTabLdIETJ6VzXTmvA==}
+  csp-header@6.4.0:
+    resolution: {integrity: sha512-9YEpW20tPtKzVouyAxNtXqSE4EGaTd4ZiT1n/FbUQ5xhmFkPCjC3Db/gHDbesryQoO/TigBAUCqgKypOHviRgQ==}
     engines: {node: '>=18'}
 
   css-line-break@2.1.0:
@@ -8214,10 +8214,10 @@ snapshots:
 
   '@navikt/fnrvalidator@2.2.1': {}
 
-  '@navikt/nav-dekoratoren-moduler@4.3.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)':
+  '@navikt/nav-dekoratoren-moduler@4.5.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)':
     dependencies:
       '@navikt/analytics-types': 0.0.9
-      csp-header: 6.3.1
+      csp-header: 6.4.0
       html-react-parser: 6.1.1(@types/react@19.3.0)(react@19.3.0)
       js-cookie: 3.0.8
       react: 19.3.0
@@ -9921,7 +9921,7 @@ snapshots:
       shebang-command: 2.0.0
       which: 2.0.2
 
-  csp-header@6.3.1: {}
+  csp-header@6.4.0: {}
 
   css-line-break@2.1.0:
     dependencies:

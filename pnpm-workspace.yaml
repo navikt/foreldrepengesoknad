@@ -9,7 +9,7 @@ catalog:
   '@navikt/ds-css': 8.17.2
   '@navikt/ds-react': 8.17.2
   '@navikt/ds-tailwind': 8.17.2
-  '@navikt/nav-dekoratoren-moduler': 4.3.0
+  '@navikt/nav-dekoratoren-moduler': 4.5.0
   '@storybook/addon-a11y': 10.6.0
   '@storybook/addon-links': 10.6.0
   '@storybook/react-vite': 10.6.0
