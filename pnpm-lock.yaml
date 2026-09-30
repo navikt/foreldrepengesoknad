@@ -180,8 +180,8 @@ catalogs:
       specifier: 7.14.0
       version: 7.14.0
     jsdom:
-      specifier: 30.1.1
-      version: 30.1.1
+      specifier: 30.0.1
+      version: 30.0.1
     ky:
       specifier: 2.1.0
       version: 2.1.0
@@ -395,7 +395,7 @@ importers:
         version: 4.2.0
       jsdom:
         specifier: 'catalog:'
-        version: 30.1.1(@noble/hashes@1.8.0)
+        version: 30.0.1(@noble/hashes@1.8.0)
       storybook:
         specifier: 'catalog:'
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
@@ -410,7 +410,7 @@ importers:
         version: 8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   apps/foreldrepengeoversikt:
     dependencies:
@@ -543,7 +543,7 @@ importers:
         version: 4.2.0
       jsdom:
         specifier: 'catalog:'
-        version: 30.1.1(@noble/hashes@1.8.0)
+        version: 30.0.1(@noble/hashes@1.8.0)
       morgan:
         specifier: 'catalog:'
         version: 1.12.1
@@ -561,7 +561,7 @@ importers:
         version: 8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   apps/foreldrepengesoknad:
     dependencies:
@@ -712,7 +712,7 @@ importers:
         version: 4.2.0
       jsdom:
         specifier: 'catalog:'
-        version: 30.1.1(@noble/hashes@1.8.0)
+        version: 30.0.1(@noble/hashes@1.8.0)
       storybook:
         specifier: 'catalog:'
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
@@ -727,7 +727,7 @@ importers:
         version: 8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   apps/planlegger:
     dependencies:
@@ -857,7 +857,7 @@ importers:
         version: 4.2.0
       jsdom:
         specifier: 'catalog:'
-        version: 30.1.1(@noble/hashes@1.8.0)
+        version: 30.0.1(@noble/hashes@1.8.0)
       storybook:
         specifier: 'catalog:'
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
@@ -872,7 +872,7 @@ importers:
         version: 8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   apps/svangerskapspengesoknad:
     dependencies:
@@ -1014,7 +1014,7 @@ importers:
         version: 4.2.0
       jsdom:
         specifier: 'catalog:'
-        version: 30.1.1(@noble/hashes@1.8.0)
+        version: 30.0.1(@noble/hashes@1.8.0)
       storybook:
         specifier: 'catalog:'
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
@@ -1029,7 +1029,7 @@ importers:
         version: 8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   apps/veiviser-fp-eller-es:
     dependencies:
@@ -1141,7 +1141,7 @@ importers:
         version: 5.2.1
       jsdom:
         specifier: 'catalog:'
-        version: 30.1.1(@noble/hashes@1.8.0)
+        version: 30.0.1(@noble/hashes@1.8.0)
       storybook:
         specifier: 'catalog:'
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
@@ -1156,7 +1156,7 @@ importers:
         version: 8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   apps/veiviser-hvor-mye:
     dependencies:
@@ -1277,7 +1277,7 @@ importers:
         version: 4.2.0
       jsdom:
         specifier: 'catalog:'
-        version: 30.1.1(@noble/hashes@1.8.0)
+        version: 30.0.1(@noble/hashes@1.8.0)
       storybook:
         specifier: 'catalog:'
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
@@ -1292,7 +1292,7 @@ importers:
         version: 8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/app-shell:
     dependencies:
@@ -1359,7 +1359,7 @@ importers:
         version: 10.11.0(jiti@2.7.0)
       jsdom:
         specifier: 'catalog:'
-        version: 30.1.1(@noble/hashes@1.8.0)
+        version: 30.0.1(@noble/hashes@1.8.0)
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1368,7 +1368,7 @@ importers:
         version: 8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/config-eslint:
     devDependencies:
@@ -1529,7 +1529,7 @@ importers:
         version: 10.11.0(jiti@2.7.0)
       jsdom:
         specifier: 'catalog:'
-        version: 30.1.1(@noble/hashes@1.8.0)
+        version: 30.0.1(@noble/hashes@1.8.0)
       storybook:
         specifier: 'catalog:'
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
@@ -1541,7 +1541,7 @@ importers:
         version: 8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/form-hooks:
     dependencies:
@@ -1620,7 +1620,7 @@ importers:
         version: 10.11.0(jiti@2.7.0)
       jsdom:
         specifier: 'catalog:'
-        version: 30.1.1(@noble/hashes@1.8.0)
+        version: 30.0.1(@noble/hashes@1.8.0)
       storybook:
         specifier: 'catalog:'
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
@@ -1638,7 +1638,7 @@ importers:
         version: 8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/observability:
     dependencies:
@@ -1681,7 +1681,7 @@ importers:
         version: 10.11.0(jiti@2.7.0)
       jsdom:
         specifier: 'catalog:'
-        version: 30.1.1(@noble/hashes@1.8.0)
+        version: 30.0.1(@noble/hashes@1.8.0)
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1690,7 +1690,7 @@ importers:
         version: 8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/server-utils:
     dependencies:
@@ -1824,7 +1824,7 @@ importers:
         version: 10.11.0(jiti@2.7.0)
       jsdom:
         specifier: 'catalog:'
-        version: 30.1.1(@noble/hashes@1.8.0)
+        version: 30.0.1(@noble/hashes@1.8.0)
       storybook:
         specifier: 'catalog:'
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
@@ -1842,7 +1842,7 @@ importers:
         version: 8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/steg-egen-næring:
     dependencies:
@@ -1930,7 +1930,7 @@ importers:
         version: 10.11.0(jiti@2.7.0)
       jsdom:
         specifier: 'catalog:'
-        version: 30.1.1(@noble/hashes@1.8.0)
+        version: 30.0.1(@noble/hashes@1.8.0)
       storybook:
         specifier: 'catalog:'
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
@@ -1948,7 +1948,7 @@ importers:
         version: 8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/steg-frilans:
     dependencies:
@@ -2030,7 +2030,7 @@ importers:
         version: 10.11.0(jiti@2.7.0)
       jsdom:
         specifier: 'catalog:'
-        version: 30.1.1(@noble/hashes@1.8.0)
+        version: 30.0.1(@noble/hashes@1.8.0)
       storybook:
         specifier: 'catalog:'
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
@@ -2048,7 +2048,7 @@ importers:
         version: 8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/steg-kvittering:
     dependencies:
@@ -2115,7 +2115,7 @@ importers:
         version: 10.11.0(jiti@2.7.0)
       jsdom:
         specifier: 'catalog:'
-        version: 30.1.1(@noble/hashes@1.8.0)
+        version: 30.0.1(@noble/hashes@1.8.0)
       storybook:
         specifier: 'catalog:'
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
@@ -2133,7 +2133,7 @@ importers:
         version: 8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/steg-oppsummering:
     dependencies:
@@ -2212,7 +2212,7 @@ importers:
         version: 10.11.0(jiti@2.7.0)
       jsdom:
         specifier: 'catalog:'
-        version: 30.1.1(@noble/hashes@1.8.0)
+        version: 30.0.1(@noble/hashes@1.8.0)
       storybook:
         specifier: 'catalog:'
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
@@ -2230,7 +2230,7 @@ importers:
         version: 8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/steg-utenlandsopphold:
     dependencies:
@@ -2318,7 +2318,7 @@ importers:
         version: 10.11.0(jiti@2.7.0)
       jsdom:
         specifier: 'catalog:'
-        version: 30.1.1(@noble/hashes@1.8.0)
+        version: 30.0.1(@noble/hashes@1.8.0)
       storybook:
         specifier: 'catalog:'
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
@@ -2336,7 +2336,7 @@ importers:
         version: 8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/types:
     dependencies:
@@ -2437,7 +2437,7 @@ importers:
         version: 10.11.0(jiti@2.7.0)
       jsdom:
         specifier: 'catalog:'
-        version: 30.1.1(@noble/hashes@1.8.0)
+        version: 30.0.1(@noble/hashes@1.8.0)
       storybook:
         specifier: 'catalog:'
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
@@ -2455,7 +2455,7 @@ importers:
         version: 8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/utils:
     dependencies:
@@ -2507,7 +2507,7 @@ importers:
         version: 10.11.0(jiti@2.7.0)
       jsdom:
         specifier: 'catalog:'
-        version: 30.1.1(@noble/hashes@1.8.0)
+        version: 30.0.1(@noble/hashes@1.8.0)
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -2516,7 +2516,7 @@ importers:
         version: 8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/utils-test:
     dependencies:
@@ -2574,7 +2574,7 @@ importers:
         version: 10.11.0(jiti@2.7.0)
       jsdom:
         specifier: 'catalog:'
-        version: 30.1.1(@noble/hashes@1.8.0)
+        version: 30.0.1(@noble/hashes@1.8.0)
       mockdate:
         specifier: 'catalog:'
         version: 3.0.5
@@ -2586,7 +2586,7 @@ importers:
         version: 8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/uttaksplan:
     dependencies:
@@ -2683,7 +2683,7 @@ importers:
         version: 10.11.0(jiti@2.7.0)
       jsdom:
         specifier: 'catalog:'
-        version: 30.1.1(@noble/hashes@1.8.0)
+        version: 30.0.1(@noble/hashes@1.8.0)
       storybook:
         specifier: 'catalog:'
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
@@ -2701,7 +2701,7 @@ importers:
         version: 8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   packages/validation:
     dependencies:
@@ -2735,7 +2735,7 @@ importers:
         version: 10.11.0(jiti@2.7.0)
       jsdom:
         specifier: 'catalog:'
-        version: 30.1.1(@noble/hashes@1.8.0)
+        version: 30.0.1(@noble/hashes@1.8.0)
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -2744,7 +2744,7 @@ importers:
         version: 8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   server:
     dependencies:
@@ -9346,7 +9346,7 @@ snapshots:
       picocolors: 1.1.1
       redent: 3.0.0
     optionalDependencies:
-      vitest: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+      vitest: 5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
 
   '@testing-library/react@16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.2.5(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
     dependencies:
@@ -9810,7 +9810,7 @@ snapshots:
       '@vitest/mocker': 4.1.11(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       playwright: 1.63.0
       tinyrainbow: 3.1.1
-      vitest: 4.1.11(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@4.1.11)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+      vitest: 4.1.11(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@4.1.11)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
     transitivePeerDependencies:
       - bufferutil
       - msw
@@ -9840,7 +9840,7 @@ snapshots:
       pngjs: 7.0.0
       sirv: 3.0.2
       tinyrainbow: 3.1.1
-      vitest: 4.1.11(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@4.1.11)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+      vitest: 4.1.11(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@4.1.11)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
       ws: 8.21.3
     transitivePeerDependencies:
       - bufferutil
@@ -9875,7 +9875,7 @@ snapshots:
     optionalDependencies:
       '@typescript-eslint/eslint-plugin': 8.68.0(@typescript-eslint/parser@8.70.0(eslint@10.11.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.11.0(jiti@2.7.0))(typescript@6.0.3)
       typescript: 6.0.3
-      vitest: 4.1.11(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@4.1.11)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
+      vitest: 4.1.11(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@4.1.11)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
     transitivePeerDependencies:
       - supports-color
 
@@ -12331,7 +12331,7 @@ snapshots:
       jiti: 2.7.0
       yaml: 2.9.0
 
-  vitest@4.1.11(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@4.1.11)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)):
+  vitest@4.1.11(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@4.1.11)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)):
     dependencies:
       '@vitest/expect': 4.1.11
       '@vitest/mocker': 4.1.11(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))
@@ -12386,7 +12386,7 @@ snapshots:
     transitivePeerDependencies:
       - msw
 
-  vitest@5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)):
+  vitest@5.0.2(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)):
     dependencies:
       '@types/chai': 5.2.3
       '@vitest/mocker': 5.0.2(msw@2.15.0(@types/node@26.4.0)(typescript@6.0.3))(vite@8.3.1(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))

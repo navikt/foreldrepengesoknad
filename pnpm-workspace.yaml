@@ -31,7 +31,7 @@ catalog:
   express: 5.2.1
   http-proxy-middleware: 4.2.0
   i18n-iso-countries: 7.14.0
-  jsdom: 30.1.1
+  jsdom: 30.0.1
   ky: 2.1.0
   mockdate: 3.0.5
   morgan: 1.12.1
