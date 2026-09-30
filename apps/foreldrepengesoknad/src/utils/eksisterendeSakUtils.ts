@@ -256,19 +256,19 @@ const finnAnnenForelderForSaken = (
 
     const barnet = barnMedGittFnr ?? barnMedGittFødselsdato;
 
-    if (barnet !== undefined && barnet.annenPart?.fnr === annenForeldersFnrFraSaken) {
-        const annenForelder = barnet.annenPart;
-        const { fornavn } = annenForelder.navn;
-        const fornavnAnnenForelder =
-            fornavn !== undefined && fornavn.trim() !== '' ? fornavn : intl.formatMessage({ id: 'annen.forelder' });
-        const annenPart: AnnenForelderDto_fpoversikt = {
-            ...annenForelder,
-            navn: { ...annenForelder.navn, fornavn: fornavnAnnenForelder },
-        };
-        return getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, annenPart, grunnlag.søkerErFarEllerMedmor, intl);
+    const annenForelder = barnet?.annenPart;
+    if (annenForelder?.fnr !== annenForeldersFnrFraSaken) {
+        return;
     }
 
-    return;
+    const { fornavn } = annenForelder.navn;
+    const fornavnAnnenForelder =
+        fornavn !== undefined && fornavn.trim() !== '' ? fornavn : intl.formatMessage({ id: 'annen.forelder' });
+    const annenPart: AnnenForelderDto_fpoversikt = {
+        ...annenForelder,
+        navn: { ...annenForelder.navn, fornavn: fornavnAnnenForelder },
+    };
+    return getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, annenPart, grunnlag.søkerErFarEllerMedmor, intl);
 };
 
 const getBarnFromValgteBarn = (valgteBarn: ValgtBarn): Barn => {
