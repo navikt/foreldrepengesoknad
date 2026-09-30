@@ -51,6 +51,8 @@ export type HvaVilDuGjøre =
 export type FormValues = {
     fom?: string;
     tom?: string;
+    antallUker?: string;
+    antallDager?: string;
     hvaVilDuGjøre?: HvaVilDuGjøre;
 } & LeggTilEllerEndrePeriodeFormFormValues &
     UtsettelseFormValues;
