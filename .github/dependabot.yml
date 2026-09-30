@@ -1,15 +1,22 @@
 version: 2
 registries:
-  npm-github:
+  npm-navikt:
     type: npm-registry
     url: https://npm.pkg.github.com
     token: ${{secrets.READER_TOKEN}}
+    scope: '@navikt'
+  npm-nais:
+    type: npm-registry
+    url: https://npm.pkg.github.com
+    token: ${{secrets.READER_TOKEN}}
+    scope: '@nais'
 
 updates:
   - package-ecosystem: npm
     directory: '/'
     registries:
-      - npm-github
+      - npm-navikt
+      - npm-nais
     schedule:
       interval: weekly
     cooldown:
