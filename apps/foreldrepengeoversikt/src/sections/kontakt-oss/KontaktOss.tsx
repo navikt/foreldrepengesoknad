@@ -5,6 +5,7 @@ import { BodyShort, HGrid, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 
+import { getLenker } from '../../utils/lenker';
 import { LayoutWrapper } from '../LayoutWrapper';
 
 export const KontaktOss = () => {
@@ -27,7 +28,7 @@ export const KontaktOss = () => {
                         </BodyShort>
                     </VStack>
                     <VStack gap="space-16">
-                        <Link href={links.skrivTilOss}>
+                        <Link href={getLenker().skrivTilOss}>
                             <PaperplaneIcon aria-hidden={true} />
                             <BodyShort weight="semibold">
                                 <FormattedMessage id="KontaktOss.skrivTilOss" />

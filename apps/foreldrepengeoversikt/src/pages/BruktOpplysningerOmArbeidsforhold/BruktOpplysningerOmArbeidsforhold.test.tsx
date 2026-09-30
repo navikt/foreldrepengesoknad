@@ -1,12 +1,25 @@
 import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 
+import { erLokaltEllerDev } from '@navikt/fp-utils';
+
 import * as stories from './BruktOpplysningerOmArbeidsforhold.stories';
+
+vi.mock('@navikt/fp-utils', { spy: true });
 
 const { Default } = composeStories(stories);
 
 describe('<BruktOpplysningerOmArbeidsforhold>', () => {
-    it('Skal vise side som informerer om at Nav har brukt opplysninger om arbeidsforholdet', async () => {
+    afterEach(() => {
+        vi.mocked(erLokaltEllerDev).mockReset();
+    });
+
+    it.each([
+        { erDev: true, host: 'https://www.ansatt.dev.nav.no' },
+        { erDev: false, host: 'https://www.nav.no' },
+    ])('viser informasjon med lenke til arbeidsforhold på $host', async ({ erDev, host }) => {
+        vi.mocked(erLokaltEllerDev).mockReturnValue(erDev);
+
         render(<Default />);
 
         expect(await screen.findByText('Nav har hentet opplysninger om arbeidsforholdet ditt')).toBeInTheDocument();
@@ -33,7 +46,7 @@ describe('<BruktOpplysningerOmArbeidsforhold>', () => {
         expect(screen.getByText('Aa-registeret (åpner i en ny fane)')).toBeInTheDocument();
         expect(screen.getByText('Aa-registeret (åpner i en ny fane)')).toHaveAttribute(
             'href',
-            'https://www.nav.no/person/personopplysninger/nb/#arbeidsforhold',
+            `${host}/person/personopplysninger/nb/#arbeidsforhold`,
         );
 
         expect(screen.getByText(/Dette har vi gjort med hjemmel i folketrygdloven § 21-4\./)).toBeInTheDocument();

@@ -2,8 +2,9 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Accordion, BodyLong, BodyShort, Button, Detail, Link, VStack } from '@navikt/ds-react';
 
-import { links } from '@navikt/fp-constants';
 import { Ytelse } from '@navikt/fp-types';
+
+import { getLenker } from '../../utils/lenker';
 
 interface Props {
     kontonummer: string | undefined;
@@ -41,7 +42,7 @@ export const KontonummerInfo = ({ kontonummer, ytelse, harMinstEttArbeidsforhold
                         className="w-fit no-underline"
                         variant="secondary"
                         as={Link}
-                        href={links.brukerprofil}
+                        href={getLenker().brukerprofil}
                     >
                         {kontonummerEndreTekst}
                     </Button>

@@ -17,6 +17,7 @@ import {
 } from '@navikt/fp-uttaksplan';
 
 import { hentUttakskvoteOptions } from '../../api/queries';
+import { getLenker } from '../../utils/lenker';
 import { getBarnFraSak } from '../../utils/sakerUtils';
 
 interface Props {
@@ -87,7 +88,7 @@ export const DinPlan = ({ annenPartsPerioder, navnPåForeldre, sak }: Props) => 
                         className="mt-4"
                         size={isDesktop ? 'small' : 'medium'}
                         variant="secondary"
-                        onClick={() => location.assign('https://www.nav.no/foreldrepenger/soknad')}
+                        onClick={() => location.assign(getLenker().foreldrepengesoknad)}
                     >
                         <FormattedMessage id="DinPlan.EndrePlan" />
                     </Button>

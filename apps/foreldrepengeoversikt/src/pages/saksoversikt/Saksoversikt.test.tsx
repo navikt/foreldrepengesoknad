@@ -1,7 +1,11 @@
 import { composeStories, composeStory } from '@storybook/react-vite';
 import { screen } from '@testing-library/react';
 
+import { erLokaltEllerDev } from '@navikt/fp-utils';
+
 import * as stories from './Saksoversikt.stories';
+
+vi.mock('@navikt/fp-utils', { spy: true });
 
 const {
     Engangsstønad,
@@ -24,6 +28,10 @@ const ForeldrepengerSkyraEN = composeStory(
 );
 
 describe('<Saksoversikt>', () => {
+    afterEach(() => {
+        vi.mocked(erLokaltEllerDev).mockReset();
+    });
+
     it('skal vise hvor mye engangsstønad en har rett på', async () => {
         await Engangsstønad.run();
 
@@ -34,9 +42,17 @@ describe('<Saksoversikt>', () => {
         expect(screen.getByText('Endre kontonummer')).toBeInTheDocument();
     });
 
-    it('skal kun vise Endre plan lenke for foreldrepenger', async () => {
+    it.each([
+        { erDev: true, host: 'https://www.intern.dev.nav.no' },
+        { erDev: false, host: 'https://www.nav.no' },
+    ])('skal lenke til endring av planen på $host for foreldrepenger', async ({ erDev, host }) => {
+        vi.mocked(erLokaltEllerDev).mockReturnValue(erDev);
+
         await Foreldrepenger.run();
-        expect(await screen.findByText('Endre planen din')).toBeInTheDocument();
+        expect(await screen.findByRole('link', { name: 'Endre planen din' })).toHaveAttribute(
+            'href',
+            `${host}/foreldrepenger/soknad`,
+        );
     });
 
     it('skal IKKE vise Endre plan lenke for svangerskapspenger', async () => {

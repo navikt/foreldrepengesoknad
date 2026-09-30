@@ -4,6 +4,7 @@ import { Outlet, useNavigate } from 'react-router';
 
 import { assertUnreachable } from '@navikt/fp-validation';
 
+import { getLenker } from '../../utils/lenker';
 import { useGetSelectedSak } from './../../hooks/useSelectedSak';
 import { OversiktRoutes } from './../../routes/routes';
 import { useSelectedOversiktRoute } from './../../routes/useSelectedOversiktRoute';
@@ -16,7 +17,7 @@ export const Breadcrumb = () => {
 
     const minSide = {
         title: intl.formatMessage({ id: 'breadcrumb.minSide' }),
-        url: 'https://www.nav.no/minside' as const,
+        url: getLenker().minSide,
         handleInApp: false,
     };
 
@@ -100,7 +101,10 @@ export const Breadcrumb = () => {
         }
     };
 
-    const getRoute = (route: OversiktRoutes | 'https://www.nav.no/minside', saksnummer: string | undefined): string => {
+    const getRoute = (
+        route: OversiktRoutes | ReturnType<typeof getLenker>['minSide'],
+        saksnummer: string | undefined,
+    ): string => {
         const sakRoute = `${OversiktRoutes.SAKSOVERSIKT}/${saksnummer}`;
 
         if (saksnummer && route === OversiktRoutes.SAKSOVERSIKT) {

@@ -7,6 +7,7 @@ import { links } from '@navikt/fp-constants';
 
 import { LenkePanel } from '../../components/lenke-panel/LenkePanel';
 import { LayoutWrapper } from '../../sections/LayoutWrapper';
+import { getLenker } from '../../utils/lenker';
 
 const PanelBleed = ({ children, doBleed }: { children: ReactNode; doBleed: boolean }) => {
     return doBleed ? (
@@ -36,13 +37,16 @@ export const SøkelenkerPanel = ({ doBleed = false }: Props) => {
                 />
                 <LenkePanel
                     tittel={intl.formatMessage({ id: 'SøkelenkerPanel.SokFp' })}
-                    to={links.foreldrepengesoknad}
+                    to={getLenker().foreldrepengesoknad}
                 />
                 <LenkePanel
                     tittel={intl.formatMessage({ id: 'SøkelenkerPanel.SokSvp' })}
-                    to={links.svangerskapspenger}
+                    to={getLenker().svangerskapspengesoknad}
                 />
-                <LenkePanel tittel={intl.formatMessage({ id: 'SøkelenkerPanel.SokEs' })} to={links.engangsstonad} />
+                <LenkePanel
+                    tittel={intl.formatMessage({ id: 'SøkelenkerPanel.SokEs' })}
+                    to={getLenker().engangsstønadSøknad}
+                />
             </HGrid>
         </PanelBleed>
     );

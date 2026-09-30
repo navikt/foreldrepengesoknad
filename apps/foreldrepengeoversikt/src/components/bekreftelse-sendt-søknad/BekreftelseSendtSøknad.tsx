@@ -18,7 +18,7 @@ import {
     VStack,
 } from '@navikt/ds-react';
 
-import { Skjemanummer, links } from '@navikt/fp-constants';
+import { Skjemanummer } from '@navikt/fp-constants';
 import { TidslinjeHendelseDto_fpoversikt, Ytelse } from '@navikt/fp-types';
 import { capitalizeFirstLetter, formatDate, formatDateMedUkedag, formatTime } from '@navikt/fp-utils';
 
@@ -26,6 +26,7 @@ import { søkerInfoOptions } from '../../api/queries.ts';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak.ts';
 import { OversiktRoutes } from '../../routes/routes';
 import { DokumentHendelse } from '../../sections/tidslinje/DokumentHendelse';
+import { getLenker } from '../../utils/lenker';
 import { getFørsteUttaksdagIForeldrepengesaken } from '../../utils/sakerUtils.ts';
 import { getTidligstDatoForInntektsmelding } from '../../utils/tidslinjeUtils.ts';
 import { KontonummerInfo } from '../kontonummer-info/KontonummerInfo';
@@ -160,7 +161,7 @@ const EngangsstønadBekreftelse = () => {
                     </BodyLong>
                     <BodyLong size="small">
                         <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel2" />
-                        <Link href={links.utbetalingsoversikt}>
+                        <Link href={getLenker().utbetalingsoversikt}>
                             <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel3" />
                         </Link>
                         <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel4" />

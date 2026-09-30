@@ -5,6 +5,7 @@ import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react';
 import { links } from '@navikt/fp-constants';
 
 import { LayoutWrapper } from '../../sections/LayoutWrapper.tsx';
+import { getLenker } from '../../utils/lenker';
 
 export const BruktOpplysningerOmArbeidsforhold = () => {
     return (
@@ -22,7 +23,7 @@ export const BruktOpplysningerOmArbeidsforhold = () => {
                         id="BruktOpplysningerOmArbeidsforhold.tekst.2"
                         values={{
                             a: (msg) => (
-                                <Link href={links.arbeidsforholdMineSider} rel="noreferrer" target="_blank">
+                                <Link href={getLenker().arbeidsforholdMineSider} rel="noreferrer" target="_blank">
                                     {msg}
                                 </Link>
                             ),
