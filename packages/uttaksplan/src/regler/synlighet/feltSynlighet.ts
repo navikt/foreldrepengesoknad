@@ -15,6 +15,7 @@ export const useFeltSynlighet = (valgtePerioder: Periode[], formVerdier: FormVer
     const {
         foreldreInfo: { rettighetType, søker, erFarOgFar },
         familiehendelsedato,
+        termindato,
         familiesituasjon,
         barn,
     } = useUttaksplanData();
@@ -27,6 +28,7 @@ export const useFeltSynlighet = (valgtePerioder: Periode[], formVerdier: FormVer
         familiesituasjon,
         valgtePerioder,
         familiehendelsedato,
+        termindato,
         erFarOgFar,
     });
 };
@@ -44,6 +46,7 @@ type FeltSynlighetKontekst = {
     familiesituasjon: Familiesituasjon;
     valgtePerioder: Periode[];
     familiehendelsedato: string;
+    termindato?: string;
     erFarOgFar?: boolean;
 };
 
@@ -68,12 +71,15 @@ export const VIS_FLERBARNSDAGER_SPØRSMÅL: Synlighetsregel<FeltSynlighetKonteks
     id: 'feltSynlighet.visFlerbarnsdager',
     beskrivelse:
         'Spørsmålet «Ønsker du å bruke flerbarnsdager?» vises bare ved flerbarnssituasjon (antall barn > 1), ' +
-        'når forelderen ikke er mor, og når kontotypen for far/medmor ikke er mødrekvote eller aktivitetsfri kvote.',
+        'når forelderen ikke er mor, og når kontotypen for far/medmor ikke er mødrekvote eller aktivitetsfri kvote. ' +
+        'Ved fødsel må alle valgte perioder starte tidligst på fødselsdatoen, eller termindatoen hvis barnet ikke er født.',
     skalVises: (k) =>
         k.antallBarn > 1 &&
         k.forelder !== 'MOR' &&
         k.kontoTypeFarMedmor !== 'MØDREKVOTE' &&
-        k.kontoTypeFarMedmor !== 'AKTIVITETSFRI_KVOTE',
+        k.kontoTypeFarMedmor !== 'AKTIVITETSFRI_KVOTE' &&
+        (k.familiesituasjon === 'adopsjon' ||
+            !UttaksperiodeValidatorer.erNoenPerioderFørFamiliehendelsesdato(k.valgtePerioder, k.familiehendelsedato)),
 };
 
 export const VIS_MOR_OVERFØRING: Synlighetsregel<FeltSynlighetKontekst> = {
@@ -167,7 +173,7 @@ const erValgtPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel = (k: FeltS
         UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
             p,
             k.familiehendelsedato,
-            undefined,
+            k.termindato,
         ),
     );
 
@@ -176,7 +182,8 @@ export const VIS_INFO_FEDREKVOTE_RUNDT_FØDSEL: Synlighetsregel<FeltSynlighetKon
     beskrivelse:
         'Infotekst om at far/medmor må bruke fedrekvotedager i perioden rundt fødsel vises når far/medmor ' +
         'er valgt forelder, kvotetypen er fedrekvote og minst én av de valgte dagene ligger i intervallet ' +
-        'to uker før fødsel til seks uker etter fødsel. Vises aldri når begge foreldrene er fedre ' +
+        'fra to uker før den tidligste av fødselsdatoen og termindatoen til seks uker etter fødselsdatoen. ' +
+        'Uten termindato regnes starten fra fødselsdatoen. Vises aldri når begge foreldrene er fedre ' +
         '(erFarOgFar), siden teksten refererer til «mor».',
     skalVises: (k) =>
         !k.erFarOgFar &&

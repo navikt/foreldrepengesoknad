@@ -196,7 +196,10 @@ const starterTidsperiodeEtter2UkerFørFødsel = (
     return dayjs(fom).isSameOrAfter(førsteUttaksdagToUkerFørFødsel, 'day');
 };
 
-const getFørsteUttaksdag2UkerFørFødsel = (familiehendelsesdato: string, termindato: string | undefined): string => {
+export const getFørsteUttaksdag2UkerFørFødsel = (
+    familiehendelsesdato: string,
+    termindato: string | undefined,
+): string => {
     const tidligsteDato =
         termindato === undefined
             ? familiehendelsesdato

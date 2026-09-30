@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest';
 import { BarnType } from '@navikt/fp-constants';
 
 import { UttaksplanDataProvider } from '../../context/UttaksplanDataContext';
+import { useFeltSynlighet } from '../synlighet/feltSynlighet';
 import { useGyldigeKvotetyper } from './kvoteRegler';
 
 const FAMILIEHENDELSESDATO = '2024-06-17';
@@ -381,6 +382,153 @@ describe('useGyldigeKvotetyper - mors kvoter', () => {
         );
 
         expect(result.current.gyldigeStønadskontoerForMor).not.toContain('FORELDREPENGER');
+    });
+});
+
+describe('useGyldigeKvotetyper - flerbarnsdager', () => {
+    describe.each([
+        { navn: 'fødsel', barn: { ...DEFAULT_DATA.barn, antallBarn: 2 } },
+        {
+            navn: 'termin når barnet ikke er født',
+            barn: { type: BarnType.UFØDT, antallBarn: 2, termindato: FAMILIEHENDELSESDATO },
+        },
+    ] satisfies Array<{ navn: string; barn: ComponentProps<typeof UttaksplanDataProvider>['barn'] }>)(
+        '$navn',
+        ({ barn }) => {
+            it.each([
+                {
+                    navn: 'før familiehendelsen',
+                    valgtePerioder: [{ fom: '2024-06-14', tom: '2024-06-14' }],
+                    forventet: false,
+                },
+                {
+                    navn: 'én periode som krysser familiehendelsen',
+                    valgtePerioder: [{ fom: '2024-06-14', tom: '2024-06-18' }],
+                    forventet: false,
+                },
+                {
+                    navn: 'flere perioder der den siste starter før familiehendelsen',
+                    valgtePerioder: [
+                        { fom: '2024-06-18', tom: '2024-06-19' },
+                        { fom: '2024-06-14', tom: '2024-06-14' },
+                    ],
+                    forventet: false,
+                },
+                {
+                    navn: 'på familiehendelsesdatoen',
+                    valgtePerioder: [{ fom: FAMILIEHENDELSESDATO, tom: FAMILIEHENDELSESDATO }],
+                    forventet: true,
+                },
+                {
+                    navn: 'etter familiehendelsen',
+                    valgtePerioder: [{ fom: '2024-06-18', tom: '2024-06-19' }],
+                    forventet: true,
+                },
+            ])('$navn gir fellesperiode tilgjengelig=$forventet', ({ valgtePerioder, forventet }) => {
+                const { result } = renderHook(
+                    () => ({
+                        kvoter: useGyldigeKvotetyper({
+                            valgtePerioder,
+                            harValgtSamtidigUttak: true,
+                            ønskerFlerbarnsdager: true,
+                        }),
+                        synlighet: useFeltSynlighet(valgtePerioder, {
+                            forelder: 'BEGGE',
+                            kontoTypeMor: 'MØDREKVOTE',
+                            kontoTypeFarMedmor: 'FELLESPERIODE',
+                            ønskerFlerbarnsdager: true,
+                            samtidigUttaksprosentMor: '100',
+                            stillingsprosentMor: undefined,
+                        }),
+                    }),
+                    { wrapper: getWrapper({ barn }) },
+                );
+
+                expect(result.current.kvoter.gyldigeStønadskontoerForFarMedmor.includes('FELLESPERIODE')).toBe(
+                    forventet,
+                );
+                expect(result.current.synlighet.visFlerbarnsdager).toBe(forventet);
+            });
+        },
+    );
+
+    it.each(['BARE_SØKER_RETT', 'ALENEOMSORG'] as const)(
+        'tillater ikke fellesperiode med flerbarnsdager før fødsel ved %s',
+        (rettighetType) => {
+            const { result } = renderHook(
+                () =>
+                    useGyldigeKvotetyper({
+                        valgtePerioder: [{ fom: '2024-06-14', tom: '2024-06-18' }],
+                        harValgtSamtidigUttak: false,
+                        ønskerFlerbarnsdager: true,
+                    }),
+                {
+                    wrapper: getWrapper({
+                        foreldreInfo: { ...DEFAULT_DATA.foreldreInfo, søker: 'FAR_MEDMOR', rettighetType },
+                    }),
+                },
+            );
+
+            expect(result.current.gyldigeStønadskontoerForFarMedmor).not.toContain('FELLESPERIODE');
+        },
+    );
+
+    it.each([false, undefined])(
+        'beholder ordinær fedrekvote to uker før fødsel med flerbarnsdager=%s',
+        (ønskerFlerbarnsdager) => {
+            const { result } = renderHook(
+                () =>
+                    useGyldigeKvotetyper({
+                        valgtePerioder: [{ fom: '2024-06-03', tom: '2024-06-14' }],
+                        harValgtSamtidigUttak: false,
+                        ønskerFlerbarnsdager,
+                    }),
+                { wrapper: getWrapper() },
+            );
+
+            expect(result.current.gyldigeStønadskontoerForFarMedmor).toContain('FEDREKVOTE');
+            expect(result.current.gyldigeStønadskontoerForFarMedmor).not.toContain('FELLESPERIODE');
+        },
+    );
+
+    it.each([
+        { dato: '2024-06-14', forventet: false },
+        { dato: FAMILIEHENDELSESDATO, forventet: true },
+    ])('beholder adopsjonsreglene på $dato', ({ dato, forventet }) => {
+        const { result } = renderHook(
+            () =>
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: dato, tom: dato }],
+                    harValgtSamtidigUttak: true,
+                    ønskerFlerbarnsdager: true,
+                }),
+            {
+                wrapper: getWrapper({
+                    barn: {
+                        type: BarnType.ADOPTERT_ANNET_BARN,
+                        antallBarn: 2,
+                        adopsjonsdato: FAMILIEHENDELSESDATO,
+                        fødselsdatoer: ['2024-01-01'],
+                    },
+                }),
+            },
+        );
+
+        expect(result.current.gyldigeStønadskontoerForFarMedmor.includes('FELLESPERIODE')).toBe(forventet);
+    });
+
+    it.each([false, true])('beholder mors fellesperiode før fødsel med flerbarnsdager=%s', (ønskerFlerbarnsdager) => {
+        const { result } = renderHook(
+            () =>
+                useGyldigeKvotetyper({
+                    valgtePerioder: [{ fom: '2024-05-13', tom: '2024-05-17' }],
+                    harValgtSamtidigUttak: false,
+                    ønskerFlerbarnsdager,
+                }),
+            { wrapper: getWrapper() },
+        );
+
+        expect(result.current.gyldigeStønadskontoerForMor).toContain('FELLESPERIODE');
     });
 });
 

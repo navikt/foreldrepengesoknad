@@ -410,6 +410,7 @@
     "LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.KanIkkeHaMerEnn150Prosent": "Dere kan ikke ha mer enn 150 % foreldrepenger til sammen",
     "LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.KanIkkeHaMindreEnn100ProsentFlerbarnsdager": "Dere kan ikke ha mindre enn 100 % foreldrepenger til sammen når du har valgt flerbarnsdager",
     "LeggTilEllerEndrePeriodeForm.SamtidigUttakValidering.FarMedmorMåHa100ProsentUttakJobb": "Far/medmor må kombinere arbeid med foreldrepenger til sammen 100 % eller ha 100 % foreldrepenger.",
+    "LeggTilEllerEndrePeriodeForm.FlerbarnsdagerFørFødsel": "Du kan ikke bruke flerbarnsdager før fødsel. Velg perioder som starter tidligst på fødselsdatoen, eller termindatoen hvis barnet ikke er født.",
     "LeggTilEllerEndrePeriodeForm.Fødselpermisjonsvalidering.Må100ProsentUttak": "Her kan du ikke legge inn foreldrepenger som er mindre enn 100 % til sammen",
     "LeggTilEllerEndrePeriodeForm.Fødselpermisjonsvalidering.FarMedmorMåHa100ProsentUttakJobb": "Far/medmor må arbeide og ha foreldrepenger til sammen 100 %",
     "LeggTilEllerEndrePeriodeForm.Fødselpermisjonsvalidering.MorMåHa100ProsentUttakJobb": "Mor må arbeide og ha foreldrepenger til sammen 100 %. Hun vil miste dager når hun ikke har 100 % foreldrepenger",

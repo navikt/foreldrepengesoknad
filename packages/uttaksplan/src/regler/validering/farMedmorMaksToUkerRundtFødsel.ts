@@ -4,10 +4,11 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import minMax from 'dayjs/plugin/minMax';
 import { IntlShape } from 'react-intl';
 
-import { Uttaksdagen } from '@navikt/fp-utils';
+import { Uttaksdagen, getFloatFromString } from '@navikt/fp-utils';
 
 import { erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../utils/UttakPeriodeBuilder';
+import { getFørsteUttaksdag2UkerFørFødsel } from '../../utils/UttaksperiodeValidatorer';
 import { ANTALL_UTTAKSDAGER_SEKS_UKER, ANTALL_UTTAKSDAGER_TO_UKER } from '../../utils/uttaksdagerKonstanter';
 import { Periode, ValideringInput, Valideringsområde, Valideringsregel } from './types';
 
@@ -21,9 +22,11 @@ export const lagFarMedmorMaksToUkerRundtFødselOmråde = (
     id: 'farMedmorMaksToUkerRundtFødsel',
     område: 'Far/medmor sitt maksimum på 2 uker rundt fødsel',
     beskrivelse:
-        'Kontroll på at far/medmor ikke samlet får mer enn 2 uker uttak i intervallet 2 uker før til ' +
-        '6 uker etter fødsel/termin. Gjelder bare når begge har rett og søknaden gjelder begge foreldre, og ' +
-        'ikke ved adopsjon eller overført mødrekvote eller flerbarnsdager.',
+        'Far/medmor kan ta inntil 10 stønadsdager av egen kvote i forbindelse med fødselen. Intervallet starter ' +
+        '2 uker før den tidligste av fødselsdatoen og termindatoen og slutter etter de første 6 ukene fra fødselen. ' +
+        'Før fødselen er kjent, brukes termindatoen. Datogrensene er like i førstegangs- og endringssøknader. ' +
+        'Kontrollen gjelder samtidig uttak når begge har rett, ikke adopsjon. Flerbarnsdager, overført mødrekvote ' +
+        'og uttak fordi mor er innlagt eller helt avhengig av hjelp på grunn av sykdom, telles ikke med.',
     byggKontekst: byggKontekst,
     regler: lagRegler(intl),
 });
@@ -56,9 +59,10 @@ const lagRegler = (intl: IntlShape): ReadonlyArray<Valideringsregel<FarMedmorMak
     {
         id: 'farMedmorMaksToUkerRundtFødsel.merEnnToUkerRundtFamiliehendelse',
         beskrivelse:
-            'Når begge foreldre har rett og far/medmor tar uttak i intervallet 2 uker før til 6 uker etter ' +
-            'fødsel/termin, kan far/medmor maks ha 2 uker (10 uttaksdager) totalt i dette intervallet. ' +
-            'Også gradert uttak teller med, skalert med uttaksprosenten (100 % − stillingsprosent).',
+            'Nye og eksisterende dager med fedrekvote i forbindelse med fødselen kan til sammen ikke overstige ' +
+            '10 stønadsdager. Flerbarnsdager og uttak ved mors sykdom eller innleggelse kommer i tillegg til ' +
+            'denne grensen, uavhengig av rekkefølgen periodene legges inn i. Overført mødrekvote telles heller ' +
+            'ikke med. Gradert uttak teller med uttaksprosenten (100 % minus stillingsprosenten).',
         erBrutt: (k) => k.totaltAntallDagerInnenforIntervallet > ANTALL_UTTAKSDAGER_TO_UKER,
         feilmelding: intl.formatMessage({
             id: 'LeggTilEllerEndrePeriodeForm.FarMedmor.MerEnnToUkerRundtFamiliehendelse',
@@ -67,16 +71,8 @@ const lagRegler = (intl: IntlShape): ReadonlyArray<Valideringsregel<FarMedmorMak
 ];
 
 const byggKontekst = (input: ValideringInput): FarMedmorMaks2UkerKontekst | null => {
-    const {
-        familiesituasjon,
-        foreldreInfo,
-        formValues,
-        familiehendelsedato,
-        termindato,
-        erEndringssøknad,
-        perioder,
-        uttakPerioder,
-    } = input;
+    const { familiesituasjon, foreldreInfo, formValues, familiehendelsedato, termindato, perioder, uttakPerioder } =
+        input;
 
     if (familiesituasjon === 'adopsjon') {
         return null;
@@ -85,19 +81,10 @@ const byggKontekst = (input: ValideringInput): FarMedmorMaks2UkerKontekst | null
         return null;
     }
 
-    const tidligsteDato = termindato
-        ? dayjs.min(dayjs(familiehendelsedato), dayjs(termindato)).format('YYYY-MM-DD')
-        : familiehendelsedato;
-    const senesteDato = termindato
-        ? dayjs.max(dayjs(familiehendelsedato), dayjs(termindato)).format('YYYY-MM-DD')
-        : familiehendelsedato;
-
-    const førsteDag = Uttaksdagen.denneEllerNeste(
-        erEndringssøknad ? tidligsteDato : familiehendelsedato,
-    ).getDatoAntallUttaksdagerTidligere(ANTALL_UTTAKSDAGER_TO_UKER);
-    const sisteDag = Uttaksdagen.denneEllerNeste(
-        erEndringssøknad ? senesteDato : familiehendelsedato,
-    ).getDatoAntallUttaksdagerSenere(ANTALL_UTTAKSDAGER_SEKS_UKER);
+    const førsteDag = getFørsteUttaksdag2UkerFørFødsel(familiehendelsedato, termindato);
+    const sisteDag = Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerSenere(
+        ANTALL_UTTAKSDAGER_SEKS_UKER - 1,
+    );
 
     const skalRegelHoppesOverForNyePerioder =
         formValues.kontoTypeFarMedmor === 'MØDREKVOTE' || formValues.ønskerFlerbarnsdager === true;
@@ -114,13 +101,7 @@ const byggKontekst = (input: ValideringInput): FarMedmorMaks2UkerKontekst | null
         return null;
     }
 
-    // Stillingsprosenten er kor mykje forelderen skal jobba. Det som trekkjast frå kvoten er
-    // uttaksprosenten, altså den delen forelderen IKKJE jobbar (jf. finnAntallTidelerÅTrekke
-    // i utils/periodeUtils.ts). Utan gradering blir heile dagen trekt.
-    const uttaksfaktor =
-        formValues.stillingsprosentFarMedmor === undefined
-            ? 1
-            : (100 - Number.parseFloat(formValues.stillingsprosentFarMedmor)) / 100;
+    const uttaksfaktor = (100 - (getFloatFromString(formValues.stillingsprosentFarMedmor) ?? 0)) / 100;
 
     const dagerNyePerioder =
         nyePerioderInnenforIntervallet.reduce(
@@ -128,26 +109,26 @@ const byggKontekst = (input: ValideringInput): FarMedmorMaks2UkerKontekst | null
             0,
         ) * uttaksfaktor;
 
-    const uttakPerioderUtenOverførtMødrekvote = uttakPerioder.filter(
-        (p) => !(erVanligUttakPeriode(p) && p.forelder === 'FAR_MEDMOR' && p.kontoType === 'MØDREKVOTE'),
-    );
-
-    const eksisterendeFarMedmorPerioder = new UttakPeriodeBuilder(uttakPerioderUtenOverførtMødrekvote, 'validator')
+    const eksisterendeFarMedmorPerioder = new UttakPeriodeBuilder(uttakPerioder, 'validator')
         .fjernUttakPerioder(perioder, false)
         .getUttakPerioder()
-        .filter((p) => erVanligUttakPeriode(p) && p.forelder === 'FAR_MEDMOR');
+        .filter(erVanligUttakPeriode)
+        .filter(
+            (p) =>
+                p.forelder === 'FAR_MEDMOR' &&
+                p.kontoType !== 'MØDREKVOTE' &&
+                !p.flerbarnsdager &&
+                p.morsAktivitet !== 'INNLAGT' &&
+                p.morsAktivitet !== 'TRENGER_HJELP',
+        );
 
     const dagerEksisterendePerioder = eksisterendeFarMedmorPerioder.reduce((sum, p) => {
         const dager = tellArbeidsdagerInnenfor(p.fom, p.tom, førsteDag, sisteDag);
-        // Ingen gradering => arbeidstid 0 % => heile dagen blir trekt frå kvoten.
-        const arbeidstidprosent =
-            erVanligUttakPeriode(p) && p.gradering?.arbeidstidprosent !== undefined ? p.gradering.arbeidstidprosent : 0;
+        const arbeidstidprosent = p.gradering?.arbeidstidprosent ?? 0;
         return sum + dager * ((100 - arbeidstidprosent) / 100);
     }, 0);
 
     return {
-        // Rundar til tidelar for å unngå flyttalsstøy. Vi rundar med vilje ikkje ned til heile
-        // dagar: 10,4 trekkdagar er meir enn dei 10 dagane far/medmor kan bruka i intervallet.
         totaltAntallDagerInnenforIntervallet: Math.round((dagerNyePerioder + dagerEksisterendePerioder) * 10) / 10,
     };
 };
