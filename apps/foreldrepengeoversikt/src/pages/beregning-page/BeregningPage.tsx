@@ -32,6 +32,7 @@ import {
     erUttaksdag,
     formatCurrencyWithKr,
     getDecoratorLanguageCookie,
+    getLenker,
 } from '@navikt/fp-utils';
 
 import { API_URLS, hentDokumenterOptions, hentInntektsmelding } from '../../api/queries';
@@ -502,7 +503,7 @@ const UtbetalingsVisning = ({ sak }: { sak: Foreldrepengesak | Svangerskapspenge
                     <FormattedMessage
                         id="beregning.utbetalingsvisning.fullBeskrivelse"
                         values={{
-                            link1: (chunks) => <Link href="https://www.nav.no/utbetalingsoversikt">{chunks}</Link>,
+                            link1: (chunks) => <Link href={getLenker().utbetalingsoversikt}>{chunks}</Link>,
                             link2: (chunks) => (
                                 <Link href="https://www.nav.no/utbetalingsdatoer#foreldrepenger">{chunks}</Link>
                             ),
@@ -512,7 +513,7 @@ const UtbetalingsVisning = ({ sak }: { sak: Foreldrepengesak | Svangerskapspenge
                     <FormattedMessage
                         id="beregning.utbetalingsvisning.fullBeskrivelse.svp"
                         values={{
-                            link1: (chunks) => <Link href="https://www.nav.no/utbetalingsoversikt">{chunks}</Link>,
+                            link1: (chunks) => <Link href={getLenker().utbetalingsoversikt}>{chunks}</Link>,
                             link2: (chunks) => (
                                 <Link href="https://www.nav.no/utbetalingsdatoer#svangerskapspenger">{chunks}</Link>
                             ),

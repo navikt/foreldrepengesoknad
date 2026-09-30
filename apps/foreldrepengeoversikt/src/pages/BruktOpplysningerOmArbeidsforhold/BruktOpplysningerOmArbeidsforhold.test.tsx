@@ -1,12 +1,14 @@
 import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 
+import { getLenker } from '@navikt/fp-utils';
+
 import * as stories from './BruktOpplysningerOmArbeidsforhold.stories';
 
 const { Default } = composeStories(stories);
 
 describe('<BruktOpplysningerOmArbeidsforhold>', () => {
-    it('Skal vise side som informerer om at Nav har brukt opplysninger om arbeidsforholdet', async () => {
+    it('viser informasjon med lenke til arbeidsforhold i kjøremiljøet', async () => {
         render(<Default />);
 
         expect(await screen.findByText('Nav har hentet opplysninger om arbeidsforholdet ditt')).toBeInTheDocument();
@@ -33,7 +35,7 @@ describe('<BruktOpplysningerOmArbeidsforhold>', () => {
         expect(screen.getByText('Aa-registeret (åpner i en ny fane)')).toBeInTheDocument();
         expect(screen.getByText('Aa-registeret (åpner i en ny fane)')).toHaveAttribute(
             'href',
-            'https://www.nav.no/person/personopplysninger/nb/#arbeidsforhold',
+            getLenker().arbeidsforholdMineSider,
         );
 
         expect(screen.getByText(/Dette har vi gjort med hjemmel i folketrygdloven § 21-4\./)).toBeInTheDocument();

@@ -4,6 +4,7 @@ import { HGrid, Heading } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { Ytelse } from '@navikt/fp-types';
+import { getLenker } from '@navikt/fp-utils';
 
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { Sak } from '../../types/Sak';
@@ -23,15 +24,16 @@ const getLesMerLink = (stønadstype: Ytelse | undefined) => {
 };
 
 const getKlageLinkMedSak = (ytelse: Ytelse | undefined, sak: Sak) => {
+    const klage = getLenker().klage;
     if (ytelse === 'ENGANGSSTØNAD') {
-        return `https://klage.nav.no/nb/klage/ENGANGSSTONAD?saksnummer=${sak.saksnummer}`;
+        return `${klage}/ENGANGSSTONAD?saksnummer=${sak.saksnummer}`;
     }
 
     if (ytelse === 'SVANGERSKAPSPENGER') {
-        return `https://klage.nav.no/nb/klage/SVANGERSKAPSPENGER?saksnummer=${sak.saksnummer}`;
+        return `${klage}/SVANGERSKAPSPENGER?saksnummer=${sak.saksnummer}`;
     }
 
-    return `https://klage.nav.no/nb/klage/FORELDREPENGER?saksnummer=${sak.saksnummer}`;
+    return `${klage}/FORELDREPENGER?saksnummer=${sak.saksnummer}`;
 };
 
 const getKlageLink = (ytelse: Ytelse | undefined) => {
@@ -104,7 +106,10 @@ export const Snarveier = () => {
                             tittel={intl.formatMessage({ id: 'snarveier.slikKlagerDu' })}
                         />
                     )}
-                    <LenkePanel tittel={intl.formatMessage({ id: 'snarveier.kontonummer' })} to={links.brukerprofil} />
+                    <LenkePanel
+                        tittel={intl.formatMessage({ id: 'snarveier.kontonummer' })}
+                        to={getLenker().brukerprofil}
+                    />
                 </HGrid>
             </div>
         </div>

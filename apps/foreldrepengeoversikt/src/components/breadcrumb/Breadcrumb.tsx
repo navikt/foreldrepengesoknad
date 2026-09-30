@@ -2,6 +2,7 @@ import { onBreadcrumbClick, setBreadcrumbs } from '@navikt/nav-dekoratoren-modul
 import { useIntl } from 'react-intl';
 import { Outlet, useNavigate } from 'react-router';
 
+import { getLenker } from '@navikt/fp-utils';
 import { assertUnreachable } from '@navikt/fp-validation';
 
 import { useGetSelectedSak } from './../../hooks/useSelectedSak';
@@ -16,7 +17,7 @@ export const Breadcrumb = () => {
 
     const minSide = {
         title: intl.formatMessage({ id: 'breadcrumb.minSide' }),
-        url: 'https://www.nav.no/minside' as const,
+        url: getLenker().minSide,
         handleInApp: false,
     };
 
@@ -100,7 +101,10 @@ export const Breadcrumb = () => {
         }
     };
 
-    const getRoute = (route: OversiktRoutes | 'https://www.nav.no/minside', saksnummer: string | undefined): string => {
+    const getRoute = (
+        route: OversiktRoutes | ReturnType<typeof getLenker>['minSide'],
+        saksnummer: string | undefined,
+    ): string => {
         const sakRoute = `${OversiktRoutes.SAKSOVERSIKT}/${saksnummer}`;
 
         if (saksnummer && route === OversiktRoutes.SAKSOVERSIKT) {

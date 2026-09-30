@@ -8,10 +8,10 @@ import { useParams } from 'react-router';
 
 import { Alert, BodyShort, HGrid, HStack, Heading, Skeleton, VStack } from '@navikt/ds-react';
 
-import { DEFAULT_SATSER, links } from '@navikt/fp-constants';
+import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { SkyraSurvey } from '@navikt/fp-observability';
 import { OversiktPersonopplysningerDto_fpoversikt, Satser, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
-import { formatCurrencyWithKr, useDocumentTitle } from '@navikt/fp-utils';
+import { formatCurrencyWithKr, getLenker, useDocumentTitle } from '@navikt/fp-utils';
 
 import {
     hentDokumenterOptions,
@@ -180,7 +180,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                     {gjeldendeSak.ytelse === 'FORELDREPENGER' && (
                         <LenkePanel
                             tittel={intl.formatMessage({ id: 'saksoversikt.endrePlanenDin' })}
-                            to="https://nav.no/foreldrepenger/soknad"
+                            to={getLenker().foreldrepengesoknad}
                             Ikon={PencilIcon}
                         />
                     )}
@@ -253,7 +253,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                         </ContentSection>
                         <LenkePanel
                             tittel={intl.formatMessage({ id: 'saksoversikt.endre.kontonr' })}
-                            to={links.brukerprofil}
+                            to={getLenker().brukerprofil}
                         />
                     </VStack>
                 )}
