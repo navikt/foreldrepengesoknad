@@ -10,7 +10,7 @@ describe('<DinePlikter>', () => {
         render(<Default />);
 
         expect(
-            screen.queryByText(
+            screen.getByText(
                 'Jeg forstår at hvis jeg gir uriktige eller holder tilbake opplysninger kan det få konsekvenser for retten min til foreldrepenger.',
             ),
         ).toBeInTheDocument();

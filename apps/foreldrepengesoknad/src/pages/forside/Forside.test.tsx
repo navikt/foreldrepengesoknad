@@ -81,8 +81,8 @@ describe('<Forside>', () => {
         expect(screen.getByText('Evig Lykkelig født 06. desember 2022')).toBeInTheDocument();
         expect(screen.getByText('Saksnummer 123456, saken er ferdig behandlet')).toBeInTheDocument();
         expect(screen.getByText('Et annet barn')).toBeInTheDocument();
-        expect(screen.queryByText('Det vil opprettes en ny sak')).toBeInTheDocument();
-        expect(screen.queryByText('Jeg bekrefter at jeg har lest og forstått')).toBeInTheDocument();
+        expect(screen.getByText('Det vil opprettes en ny sak')).toBeInTheDocument();
+        expect(screen.getByText('Jeg bekrefter at jeg har lest og forstått')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Evig Lykkelig født 06. desember 2022'));
         await userEvent.click(screen.getByText('Jeg bekrefter at jeg har lest og forstått'));

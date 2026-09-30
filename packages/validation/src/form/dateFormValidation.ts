@@ -115,7 +115,7 @@ export const isPeriodNotOverlappingOthers =
         otherPeriods: Array<{ fom: string; tom?: string }>,
     ) =>
     (date: string): FormValidationResult => {
-        const normaliserTilDato = (tom?: string): string => (tom ? tom : TIDENES_ENDE);
+        const normaliserTilDato = (tom?: string): string => (tom || TIDENES_ENDE);
 
         const dateRanges = otherPeriods
             .filter((u) => u.fom)

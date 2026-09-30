@@ -96,20 +96,16 @@ describe('getTotalStillingsprosentPåSkjæringstidspunktet', () => {
         { fom: '2023-08-01', tom: '2023-11-01', stillingsprosent: 0 },
         { fom: '2023-10-01', stillingsprosent: 30 },
     ];
-    it('Skal returnere 100 % fordi den ene stillingen som er aktiv da er på 0%', () => {
-        const summertProsent = getTotalStillingsprosentPåSkjæringstidspunktet(stillingerMedNullProsent, '2023-06-02');
-        expect(summertProsent).toEqual(100);
-    });
-    it('Skal returnere 100 % fordi begge de aktive stillingene er 0%', () => {
-        const summertProsent = getTotalStillingsprosentPåSkjæringstidspunktet(stillingerMedNullProsent, '2023-08-02');
-        expect(summertProsent).toEqual(100);
-    });
-    it('Skal returnere 100 % fordi noen av de aktive stillingene er 100 %', () => {
-        const summertProsent = getTotalStillingsprosentPåSkjæringstidspunktet(stillingerMedNullProsent, '2023-10-30');
-        expect(summertProsent).toEqual(100);
-    });
-    it('Skal returnere 30% fordi stillingene som er 0% er avsluttet', () => {
-        const summertProsent = getTotalStillingsprosentPåSkjæringstidspunktet(stillingerMedNullProsent, '2023-12-02');
-        expect(summertProsent).toEqual(30);
+    it.each([
+        ['2023-06-02', 100, 'den ene stillingen som er aktiv da er på 0%'],
+        ['2023-08-02', 100, 'begge de aktive stillingene er 0%'],
+        ['2023-10-30', 100, 'noen av de aktive stillingene er 100 %'],
+        ['2023-12-02', 30, 'stillingene som er 0% er avsluttet'],
+    ])('Skal returnere riktig prosent på %s (%i %%) fordi %s', (skjæringstidspunkt, forventetProsent) => {
+        const summertProsent = getTotalStillingsprosentPåSkjæringstidspunktet(
+            stillingerMedNullProsent,
+            skjæringstidspunkt,
+        );
+        expect(summertProsent).toEqual(forventetProsent);
     });
 });

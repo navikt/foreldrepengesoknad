@@ -5,25 +5,24 @@ import { Attachment, AttachmentMetadataTidsperiode } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-export const getTidsperiodeString = (tidsperioder: AttachmentMetadataTidsperiode[]) => {
-    let periodeString: string | undefined;
+const formaterTidsperiode = (tidsperiode: AttachmentMetadataTidsperiode) =>
+    `${formatDate(tidsperiode.fom)} - ${tidsperiode.tom ? formatDate(tidsperiode.tom) : ''}`;
 
-    for (const [index, tidsperiode] of tidsperioder.entries()) {
-        if (periodeString) {
-            periodeString =
-                index === tidsperioder.length - 1
-                    ? periodeString.concat(
-                          ` og ${formatDate(tidsperiode.fom)} - ${tidsperiode.tom ? formatDate(tidsperiode.tom) : ''}`,
-                      )
-                    : periodeString.concat(
-                          `, ${formatDate(tidsperiode.fom)} - ${tidsperiode.tom ? formatDate(tidsperiode.tom) : ''}`,
-                      );
-        } else {
-            periodeString = `${formatDate(tidsperiode.fom)} - ${tidsperiode.tom ? formatDate(tidsperiode.tom) : ''}`;
-        }
+const getSkilletegn = (index: number, antall: number) => {
+    if (index === 0) {
+        return '';
+    }
+    return index === antall - 1 ? ' og ' : ', ';
+};
+
+export const getTidsperiodeString = (tidsperioder: AttachmentMetadataTidsperiode[]): string | undefined => {
+    if (tidsperioder.length === 0) {
+        return;
     }
 
-    return periodeString;
+    return tidsperioder
+        .map((tidsperiode, index) => `${getSkilletegn(index, tidsperioder.length)}${formaterTidsperiode(tidsperiode)}`)
+        .join('');
 };
 
 const getPeriodeLabelValues = (tidsperioder: AttachmentMetadataTidsperiode[] | undefined) => {
