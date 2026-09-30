@@ -201,8 +201,8 @@ catalogs:
       specifier: 7.88.0
       version: 7.88.0
     react-intl:
-      specifier: 10.2.2
-      version: 10.2.2
+      specifier: 12.1.3
+      version: 12.1.3
     react-router:
       specifier: 8.3.1
       version: 8.3.1
@@ -340,7 +340,7 @@ importers:
         version: 7.88.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
       react-router:
         specifier: 'catalog:'
         version: 8.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -479,7 +479,7 @@ importers:
         version: 19.3.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
       react-router:
         specifier: 'catalog:'
         version: 8.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -654,7 +654,7 @@ importers:
         version: 7.88.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
       react-router:
         specifier: 'catalog:'
         version: 8.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -799,7 +799,7 @@ importers:
         version: 7.88.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
       react-router:
         specifier: 'catalog:'
         version: 8.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -959,7 +959,7 @@ importers:
         version: 7.88.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
       react-router:
         specifier: 'catalog:'
         version: 8.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -1086,7 +1086,7 @@ importers:
         version: 7.88.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
       react-router:
         specifier: 'catalog:'
         version: 8.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -1219,7 +1219,7 @@ importers:
         version: 7.88.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
       react-router:
         specifier: 'catalog:'
         version: 8.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -1492,7 +1492,7 @@ importers:
         version: 19.3.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
     devDependencies:
       '@navikt/fp-config-eslint':
         specifier: workspace:*
@@ -1574,7 +1574,7 @@ importers:
         version: 7.88.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
     devDependencies:
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
@@ -1626,7 +1626,7 @@ importers:
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.2.2(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
+        version: 10.2.1(react-intl@12.1.3(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -1659,7 +1659,7 @@ importers:
         version: 19.3.0
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
     devDependencies:
       '@navikt/fp-config-eslint':
         specifier: workspace:*
@@ -1781,7 +1781,7 @@ importers:
         version: 7.88.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
     devDependencies:
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
@@ -1830,7 +1830,7 @@ importers:
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.2.2(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
+        version: 10.2.1(react-intl@12.1.3(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -1887,7 +1887,7 @@ importers:
         version: 7.88.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
     devDependencies:
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
@@ -1936,7 +1936,7 @@ importers:
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.2.2(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
+        version: 10.2.1(react-intl@12.1.3(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -1987,7 +1987,7 @@ importers:
         version: 7.88.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
     devDependencies:
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
@@ -2036,7 +2036,7 @@ importers:
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.2.2(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
+        version: 10.2.1(react-intl@12.1.3(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -2075,7 +2075,7 @@ importers:
         version: 19.3.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
     devDependencies:
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
@@ -2121,7 +2121,7 @@ importers:
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.2.2(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
+        version: 10.2.1(react-intl@12.1.3(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -2169,7 +2169,7 @@ importers:
         version: 19.3.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
     devDependencies:
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
@@ -2218,7 +2218,7 @@ importers:
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.2.2(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
+        version: 10.2.1(react-intl@12.1.3(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -2275,7 +2275,7 @@ importers:
         version: 7.88.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
     devDependencies:
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
@@ -2324,7 +2324,7 @@ importers:
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.2.2(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
+        version: 10.2.1(react-intl@12.1.3(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -2394,7 +2394,7 @@ importers:
         version: 19.3.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
     devDependencies:
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
@@ -2443,7 +2443,7 @@ importers:
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.2.2(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
+        version: 10.2.1(react-intl@12.1.3(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -2479,7 +2479,7 @@ importers:
         version: 19.3.0
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
     devDependencies:
       '@navikt/fp-config-eslint':
         specifier: workspace:*
@@ -2543,7 +2543,7 @@ importers:
         version: 19.3.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -2640,7 +2640,7 @@ importers:
         version: 7.88.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
     devDependencies:
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
@@ -2689,7 +2689,7 @@ importers:
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.2.2(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
+        version: 10.2.1(react-intl@12.1.3(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -3289,14 +3289,14 @@ packages:
   '@formatjs/fast-memoize@3.1.7':
     resolution: {integrity: sha512-zXfhLpvA6T7+efdt9JLbBwZ00tT7NsBMDVnDu8rpHeNNv8KfRZAMo2gkG0k9lK/Nzc//3kJ9pImsfuJxk3KhUA==}
 
-  '@formatjs/icu-messageformat-parser@3.5.18':
-    resolution: {integrity: sha512-wX1efcL8d7K5QapOTRsP/OLTA/kpwe4LwqWyNxDNg5iRs8i9jJbCyxB5P8jc4KOW5oiLzz2DJr+BRY5xMV9+bA==}
+  '@formatjs/icu-messageformat-parser@3.5.20':
+    resolution: {integrity: sha512-DUzCb2iskGDKvLU7P+nz/rjpmN59luoTRbWHFFNYNnZTxWCKvwPI94rNll99TGZaI6XoTbDF0QGegk21GFrQZQ==}
 
-  '@formatjs/icu-skeleton-parser@2.1.11':
-    resolution: {integrity: sha512-j8cUmOJzVgkHuS0QiQ6ga76UIoLOFSAMWhs7aZJztH3aAdCOAE6vpC8KVvFB4cU10ON0y2/5oOVmPJ43s2lTwA==}
+  '@formatjs/icu-skeleton-parser@2.1.12':
+    resolution: {integrity: sha512-ca7tZMLpfHX3sUD7hP6gE/qr6Iq89EDd3ZLeRhbsB7r0UD55DGJq+tmFLzrGrnx5StahUevQmQQVtbDRHsfDHA==}
 
-  '@formatjs/intl@4.2.1':
-    resolution: {integrity: sha512-GiL0cReencWQkhfJedNLMe0Aorb/wyTRJdi+hLgG9gsDPy4yw2N+EkMcijf5+oGKd5jde75tr5nujsPg78bUTw==}
+  '@formatjs/intl@6.1.2':
+    resolution: {integrity: sha512-YH3Ldfa2vmavWgBlCyrT9WiobphTXlNHnHxhhB6nLSUOxmitJ6Bzqzg61uBcnc6yhKTU+YRo8hLhEatOZrVJUg==}
 
   '@grafana/faro-core@2.11.0':
     resolution: {integrity: sha512-vaqko2foixRC9uZyqc4KzCUYqd21t27LhVgQ6hI6cmS3vRSMBoIgEg1FIrOOkT9KNRTpbKASE7iYn3QtHtq7zQ==}
@@ -6008,8 +6008,8 @@ packages:
   inline-style-parser@0.2.7:
     resolution: {integrity: sha512-Nb2ctOyNR8DqQoR0OwRG95uNWIC0C1lCgf5Naz5H6Ji72KZ8OcFZLz2P5sNgwlyoJ8Yif11oMuYs5pBQa86csA==}
 
-  intl-messageformat@11.2.15:
-    resolution: {integrity: sha512-W4VNytsXyWgW5lvVchmsb9xgA5rSKqoflu3/IQ9UCtB0z4R+Bx9MoEkwFT/+30RCl/KzUoH0QGGe9lppF5SuvQ==}
+  intl-messageformat@12.1.2:
+    resolution: {integrity: sha512-Y7ZnMtT/04nVJnjf1/x/AkfP5we/iN0AhckDdlFPtnetk6/VTuj2OPW5SE7steMd3UNaOtky4KJJY6jwyvWfJg==}
 
   iobuffer@5.4.0:
     resolution: {integrity: sha512-DRebOWuqDvxunfkNJAlc3IzWIPD5xVxwUNbHr7xKB8E6aLJxIPfNX3CoMJghcFjpv6RWQsrcJbghtEwSPoJqMA==}
@@ -6713,8 +6713,8 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
 
-  react-intl@10.2.2:
-    resolution: {integrity: sha512-LUzjoxGMbk9PWS4Kdr2QAYX8sqIuB3EKiFs6fi4kCgGAgWNlrYlq9ZLKxBg9Yeg9xeaFfeZ139FZ4Ub2w5L6SQ==}
+  react-intl@12.1.3:
+    resolution: {integrity: sha512-o14ogaAGSaYZMpyXcEnweedO2QoD1I5EdrZXq1iy+rFfhLWf8Nmr0YDCWtGwDAIPD/32ymnylpk7LGiS/AB5yw==}
     peerDependencies:
       '@types/react': 19.3.0
       react: '>=18.0.0'
@@ -7928,17 +7928,17 @@ snapshots:
 
   '@formatjs/fast-memoize@3.1.7': {}
 
-  '@formatjs/icu-messageformat-parser@3.5.18':
+  '@formatjs/icu-messageformat-parser@3.5.20':
     dependencies:
-      '@formatjs/icu-skeleton-parser': 2.1.11
+      '@formatjs/icu-skeleton-parser': 2.1.12
 
-  '@formatjs/icu-skeleton-parser@2.1.11': {}
+  '@formatjs/icu-skeleton-parser@2.1.12': {}
 
-  '@formatjs/intl@4.2.1':
+  '@formatjs/intl@6.1.2':
     dependencies:
       '@formatjs/fast-memoize': 3.1.7
-      '@formatjs/icu-messageformat-parser': 3.5.18
-      intl-messageformat: 11.2.15
+      '@formatjs/icu-messageformat-parser': 3.5.20
+      intl-messageformat: 12.1.2
 
   '@grafana/faro-core@2.11.0':
     dependencies:
@@ -10646,10 +10646,10 @@ snapshots:
 
   inline-style-parser@0.2.7: {}
 
-  intl-messageformat@11.2.15:
+  intl-messageformat@12.1.2:
     dependencies:
       '@formatjs/fast-memoize': 3.1.7
-      '@formatjs/icu-messageformat-parser': 3.5.18
+      '@formatjs/icu-messageformat-parser': 3.5.20
 
   iobuffer@5.4.0: {}
 
@@ -11352,12 +11352,12 @@ snapshots:
     dependencies:
       react: 19.3.0
 
-  react-intl@10.2.2(@types/react@19.3.0)(react@19.3.0):
+  react-intl@12.1.3(@types/react@19.3.0)(react@19.3.0):
     dependencies:
-      '@formatjs/icu-messageformat-parser': 3.5.18
-      '@formatjs/intl': 4.2.1
+      '@formatjs/icu-messageformat-parser': 3.5.20
+      '@formatjs/intl': 6.1.2
       '@types/react': 19.3.0
-      intl-messageformat: 11.2.15
+      intl-messageformat: 12.1.2
       react: 19.3.0
 
   react-is@16.13.1: {}
@@ -11588,9 +11588,9 @@ snapshots:
     transitivePeerDependencies:
       - react
 
-  storybook-react-intl@10.2.1(react-intl@10.2.2(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)):
+  storybook-react-intl@10.2.1(react-intl@12.1.3(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)):
     dependencies:
-      react-intl: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+      react-intl: 12.1.3(@types/react@19.3.0)(react@19.3.0)
       storybook: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
       storybook-i18n: 10.1.1(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
     transitivePeerDependencies:
