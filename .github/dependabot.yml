@@ -45,7 +45,7 @@ updates:
     schedule:
       interval: weekly
     cooldown:
-      default-days: 7
+      default-days: 3
     open-pull-requests-limit: 10
     groups:
       github:
