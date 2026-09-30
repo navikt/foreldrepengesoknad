@@ -4,8 +4,8 @@ import { FormattedMessage } from 'react-intl';
 import { BodyShort, HGrid, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
+import { getLenker } from '@navikt/fp-utils';
 
-import { getLenker } from '../../utils/lenker';
 import { LayoutWrapper } from '../LayoutWrapper';
 
 export const KontaktOss = () => {

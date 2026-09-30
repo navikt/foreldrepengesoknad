@@ -4,10 +4,10 @@ import { HGrid, Heading } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { Ytelse } from '@navikt/fp-types';
+import { getLenker } from '@navikt/fp-utils';
 
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { Sak } from '../../types/Sak';
-import { getLenker } from '../../utils/lenker';
 import { LenkePanel } from '../lenke-panel/LenkePanel';
 
 const getLesMerLink = (stønadstype: Ytelse | undefined) => {

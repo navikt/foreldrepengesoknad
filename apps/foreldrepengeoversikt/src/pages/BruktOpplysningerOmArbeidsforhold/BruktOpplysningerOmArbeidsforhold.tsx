@@ -3,9 +3,9 @@ import { FormattedMessage } from 'react-intl';
 import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
+import { getLenker } from '@navikt/fp-utils';
 
 import { LayoutWrapper } from '../../sections/LayoutWrapper.tsx';
-import { getLenker } from '../../utils/lenker';
 
 export const BruktOpplysningerOmArbeidsforhold = () => {
     return (

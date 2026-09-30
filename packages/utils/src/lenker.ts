@@ -1,15 +1,16 @@
 import { links } from '@navikt/fp-constants';
-import { erLokaltEllerDev } from '@navikt/fp-utils';
 
-export const getLenker = () => {
-    const erDev = erLokaltEllerDev();
+export const getLenker = (hostname = globalThis.location.hostname) => {
+    const erLokalt = hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '[::1]';
+    const erDev = erLokalt || hostname.endsWith('.dev.nav.no');
     const søknadHost = erDev ? 'https://www.intern.dev.nav.no' : 'https://www.nav.no';
     const minSideHost = erDev ? 'https://www.ansatt.dev.nav.no' : 'https://www.nav.no';
 
     return {
-        foreldrepengesoknad: `${søknadHost}/foreldrepenger/soknad`,
-        svangerskapspengesoknad: `${søknadHost}/svangerskapspenger/soknad`,
-        engangsstønadSøknad: `${søknadHost}/engangsstonad/soknad`,
+        foreldrepengesoknad: `${erLokalt ? 'http://localhost:9101' : søknadHost}/foreldrepenger/soknad`,
+        svangerskapspengesoknad: `${erLokalt ? 'http://localhost:9102' : søknadHost}/svangerskapspenger/soknad`,
+        engangsstønadSøknad: `${erLokalt ? 'http://localhost:9103' : søknadHost}/engangsstonad/soknad`,
+        innsyn: `${erLokalt ? 'http://localhost:9100' : søknadHost}/foreldrepenger/oversikt`,
         minSide: `${minSideHost}/minside`,
         brukerprofil: erDev ? 'https://www.ansatt.dev.nav.no/person/personopplysninger' : links.brukerprofil,
         arbeidsforholdMineSider: erDev

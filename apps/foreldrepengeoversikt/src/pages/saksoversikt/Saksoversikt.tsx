@@ -11,7 +11,7 @@ import { Alert, BodyShort, HGrid, HStack, Heading, Skeleton, VStack } from '@nav
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { SkyraSurvey } from '@navikt/fp-observability';
 import { OversiktPersonopplysningerDto_fpoversikt, Satser, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
-import { formatCurrencyWithKr, useDocumentTitle } from '@navikt/fp-utils';
+import { formatCurrencyWithKr, getLenker, useDocumentTitle } from '@navikt/fp-utils';
 
 import {
     hentDokumenterOptions,
@@ -30,7 +30,6 @@ import { OversiktRoutes } from '../../routes/routes';
 import { Oppgaver } from '../../sections/oppgaver/Oppgaver';
 import { Tidslinje } from '../../sections/tidslinje/Tidslinje.tsx';
 import { TidslinjeSkeleton } from '../../sections/tidslinje/TidslinjeSkeleton.tsx';
-import { getLenker } from '../../utils/lenker';
 import { getNavnPåForeldre } from '../../utils/personUtils';
 import { getBarnGrupperingFraSak, getNavnAnnenForelder } from '../../utils/sakerUtils';
 import {

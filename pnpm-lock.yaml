@@ -2067,6 +2067,9 @@ importers:
       '@navikt/fp-ui':
         specifier: workspace:*
         version: link:../ui
+      '@navikt/fp-utils':
+        specifier: workspace:*
+        version: link:../utils
       react:
         specifier: 'catalog:'
         version: 19.3.0

@@ -7,7 +7,7 @@ import { Foreldrepengesak } from 'types/Sak';
 import { Button, HStack, ToggleGroup, VStack } from '@navikt/ds-react';
 
 import { BrukerRolleSak_fpoversikt, NavnPåForeldre, UttakPeriode_fpoversikt } from '@navikt/fp-types';
-import { useMedia } from '@navikt/fp-utils';
+import { getLenker, useMedia } from '@navikt/fp-utils';
 import {
     KvoteOppsummering,
     UttaksplanDataProvider,
@@ -17,7 +17,6 @@ import {
 } from '@navikt/fp-uttaksplan';
 
 import { hentUttakskvoteOptions } from '../../api/queries';
-import { getLenker } from '../../utils/lenker';
 import { getBarnFraSak } from '../../utils/sakerUtils';
 
 interface Props {

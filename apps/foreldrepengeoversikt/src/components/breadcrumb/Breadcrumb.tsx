@@ -2,9 +2,9 @@ import { onBreadcrumbClick, setBreadcrumbs } from '@navikt/nav-dekoratoren-modul
 import { useIntl } from 'react-intl';
 import { Outlet, useNavigate } from 'react-router';
 
+import { getLenker } from '@navikt/fp-utils';
 import { assertUnreachable } from '@navikt/fp-validation';
 
-import { getLenker } from '../../utils/lenker';
 import { useGetSelectedSak } from './../../hooks/useSelectedSak';
 import { OversiktRoutes } from './../../routes/routes';
 import { useSelectedOversiktRoute } from './../../routes/useSelectedOversiktRoute';

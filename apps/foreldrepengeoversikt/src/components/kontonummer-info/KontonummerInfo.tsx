@@ -3,8 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Accordion, BodyLong, BodyShort, Button, Detail, Link, VStack } from '@navikt/ds-react';
 
 import { Ytelse } from '@navikt/fp-types';
-
-import { getLenker } from '../../utils/lenker';
+import { getLenker } from '@navikt/fp-utils';
 
 interface Props {
     kontonummer: string | undefined;

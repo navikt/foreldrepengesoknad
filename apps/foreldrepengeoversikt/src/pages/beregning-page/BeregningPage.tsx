@@ -32,6 +32,7 @@ import {
     erUttaksdag,
     formatCurrencyWithKr,
     getDecoratorLanguageCookie,
+    getLenker,
 } from '@navikt/fp-utils';
 
 import { API_URLS, hentDokumenterOptions, hentInntektsmelding } from '../../api/queries';
@@ -40,7 +41,6 @@ import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
 import { formaterDato } from '../../utils/dateUtils';
-import { getLenker } from '../../utils/lenker';
 
 dayjs.extend(isSameOrBefore);
 dayjs.locale(getDecoratorLanguageCookie('decorator-language'));

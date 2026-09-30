@@ -36,6 +36,7 @@ export { getFamiliehendelsedato, getFamiliesituasjon, sorterPersonEtterEldstOgNa
 export { formatCurrencyWithKr, formatCurrency } from './src/currencyUtils';
 export { encodeToBase64, decodeBase64, compressToUrl, decompressFromUrl } from './src/urlEncodingUtils';
 export { erLokaltEllerDev } from './src/miljoUtils';
+export { getLenker } from './src/lenker';
 export {
     getBokmålLocale,
     getLocaleForApi,
