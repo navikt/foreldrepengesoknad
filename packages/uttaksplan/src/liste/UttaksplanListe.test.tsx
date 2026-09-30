@@ -272,14 +272,22 @@ describe('UttaksplanListe', () => {
         expect(tilOgMedDato).toHaveValue('03.07.2025');
     });
 
-    it('skal lagre datoen fra ukefeltet når brukeren klikker direkte på Ferdig', async () => {
+    it.each(['før', 'etter'])('skal beholde varigheten når handling velges %s redigering', async (rekkefølge) => {
         const oppdaterUttaksplan = vi.fn();
-        const { uker } = await åpneTidsperiode(oppdaterUttaksplan);
-        await userEvent.click(screen.getByText('Legge til ferie'));
+        const { uker, dager, tilOgMedDato } = await åpneTidsperiode(oppdaterUttaksplan);
+        if (rekkefølge === 'før') {
+            await userEvent.click(screen.getByText('Legge til ferie'));
+        }
 
         await userEvent.clear(uker);
         await userEvent.type(uker, '2');
+        if (rekkefølge === 'etter') {
+            await userEvent.click(screen.getByText('Legge til ferie'));
+        }
         await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
+        expect(uker).toHaveValue('2');
+        expect(dager).toHaveValue('4');
+        expect(tilOgMedDato).toHaveValue('17.07.2025');
         await userEvent.click(screen.getByText('Endre uten å flytte resten av planen'));
         await userEvent.click(screen.getByText('Legg til'));
 
@@ -292,6 +300,21 @@ describe('UttaksplanListe', () => {
                 }),
             ]),
         );
+    });
+
+    it('skal beholde endret varighet når forelder byttes', async () => {
+        const { uker, dager, tilOgMedDato } = await åpneTidsperiode();
+        await userEvent.click(screen.getByText('Legge til periode med foreldrepenger'));
+        await userEvent.clear(uker);
+        await userEvent.type(uker, '2');
+        await userEvent.tab();
+        await userEvent.clear(dager);
+        await userEvent.type(dager, '3');
+
+        await userEvent.click(screen.getByRole('radio', { name: 'Begge' }));
+        expect(uker).toHaveValue('2');
+        expect(dager).toHaveValue('3');
+        expect(tilOgMedDato).toHaveValue('16.07.2025');
     });
 
     it('skal hindre lagring når antallet er ugyldig', async () => {

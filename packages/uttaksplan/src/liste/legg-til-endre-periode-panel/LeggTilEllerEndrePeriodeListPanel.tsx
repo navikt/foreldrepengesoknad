@@ -259,6 +259,8 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         formMethods.reset({
             fom: fomValue,
             tom: tomValue,
+            antallUker: formMethods.getValues('antallUker'),
+            antallDager: formMethods.getValues('antallDager'),
             hvaVilDuGjøre,
         });
         formMethods.setValue('forelder', forelderVerdi, { shouldDirty: true });
@@ -267,6 +269,8 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         formMethods.reset({
             fom: fomValue,
             tom: tomValue,
+            antallUker: formMethods.getValues('antallUker'),
+            antallDager: formMethods.getValues('antallDager'),
         });
         formMethods.setValue('hvaVilDuGjøre', value, { shouldDirty: true });
     };
