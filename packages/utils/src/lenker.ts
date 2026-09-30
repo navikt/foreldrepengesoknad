@@ -1,23 +1,50 @@
-import { links } from '@navikt/fp-constants';
+const PROD_LENKER = {
+    foreldrepengesoknad: 'https://www.nav.no/foreldrepenger/soknad',
+    svangerskapspengesoknad: 'https://www.nav.no/svangerskapspenger/soknad',
+    engangsstønadSøknad: 'https://www.nav.no/engangsstonad/soknad',
+    innsyn: 'https://www.nav.no/foreldrepenger/oversikt',
+    minSide: 'https://www.nav.no/minside',
+    brukerprofil: 'https://www.nav.no/person/personopplysninger',
+    arbeidsforholdMineSider: 'https://www.nav.no/person/personopplysninger/nb/#arbeidsforhold',
+    utbetalingsoversikt: 'https://www.nav.no/utbetalingsoversikt/',
+    klage: 'https://klage.nav.no/nb/klage',
+    skrivTilOss: 'https://innboks.nav.no/s/skriv-til-oss?category=Familie',
+} as const;
+
+const DEV_LENKER = {
+    foreldrepengesoknad: 'https://www.intern.dev.nav.no/foreldrepenger/soknad',
+    svangerskapspengesoknad: 'https://www.intern.dev.nav.no/svangerskapspenger/soknad',
+    engangsstønadSøknad: 'https://www.intern.dev.nav.no/engangsstonad/soknad',
+    innsyn: 'https://www.intern.dev.nav.no/foreldrepenger/oversikt',
+    minSide: 'https://www.ansatt.dev.nav.no/minside',
+    brukerprofil: 'https://www.ansatt.dev.nav.no/person/personopplysninger',
+    arbeidsforholdMineSider: 'https://www.ansatt.dev.nav.no/person/personopplysninger/nb/#arbeidsforhold',
+    utbetalingsoversikt: 'https://www.ansatt.dev.nav.no/utbetalingsoversikt/',
+    klage: 'https://klage.intern.dev.nav.no/nb/klage',
+    skrivTilOss: 'https://innboks.dev.nav.no/s/skriv-til-oss?category=Familie',
+} as const satisfies Record<keyof typeof PROD_LENKER, string>;
+
+const LOKALE_LENKER = {
+    foreldrepengesoknad: 'http://localhost:9101/foreldrepenger/soknad',
+    svangerskapspengesoknad: 'http://localhost:9102/svangerskapspenger/soknad',
+    engangsstønadSøknad: 'http://localhost:9103/engangsstonad/soknad',
+    innsyn: 'http://localhost:9100/foreldrepenger/oversikt',
+    minSide: 'https://www.ansatt.dev.nav.no/minside',
+    brukerprofil: 'https://www.ansatt.dev.nav.no/person/personopplysninger',
+    arbeidsforholdMineSider: 'https://www.ansatt.dev.nav.no/person/personopplysninger/nb/#arbeidsforhold',
+    utbetalingsoversikt: 'https://www.ansatt.dev.nav.no/utbetalingsoversikt/',
+    klage: 'https://klage.intern.dev.nav.no/nb/klage',
+    skrivTilOss: 'https://innboks.dev.nav.no/s/skriv-til-oss?category=Familie',
+} as const satisfies Record<keyof typeof PROD_LENKER, string>;
 
 export const getLenker = (hostname = globalThis.location.hostname) => {
-    const erLokalt = hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '[::1]';
-    const erDev = erLokalt || hostname.endsWith('.dev.nav.no');
-    const søknadHost = erDev ? 'https://www.intern.dev.nav.no' : 'https://www.nav.no';
-    const minSideHost = erDev ? 'https://www.ansatt.dev.nav.no' : 'https://www.nav.no';
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '[::1]') {
+        return LOKALE_LENKER;
+    }
 
-    return {
-        foreldrepengesoknad: `${erLokalt ? 'http://localhost:9101' : søknadHost}/foreldrepenger/soknad`,
-        svangerskapspengesoknad: `${erLokalt ? 'http://localhost:9102' : søknadHost}/svangerskapspenger/soknad`,
-        engangsstønadSøknad: `${erLokalt ? 'http://localhost:9103' : søknadHost}/engangsstonad/soknad`,
-        innsyn: `${erLokalt ? 'http://localhost:9100' : søknadHost}/foreldrepenger/oversikt`,
-        minSide: `${minSideHost}/minside`,
-        brukerprofil: erDev ? 'https://www.ansatt.dev.nav.no/person/personopplysninger' : links.brukerprofil,
-        arbeidsforholdMineSider: erDev
-            ? 'https://www.ansatt.dev.nav.no/person/personopplysninger/nb/#arbeidsforhold'
-            : links.arbeidsforholdMineSider,
-        utbetalingsoversikt: erDev ? 'https://www.ansatt.dev.nav.no/utbetalingsoversikt/' : links.utbetalingsoversikt,
-        klage: erDev ? 'https://klage.intern.dev.nav.no/nb/klage' : 'https://klage.nav.no/nb/klage',
-        skrivTilOss: erDev ? 'https://innboks.dev.nav.no/s/skriv-til-oss?category=Familie' : links.skrivTilOss,
-    } as const;
+    if (hostname.endsWith('.dev.nav.no')) {
+        return DEV_LENKER;
+    }
+
+    return PROD_LENKER;
 };
