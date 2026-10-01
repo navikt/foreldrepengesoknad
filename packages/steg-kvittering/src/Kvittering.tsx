@@ -5,6 +5,7 @@ import { BodyShort, Button, HStack, Heading, Loader, VStack } from '@navikt/ds-r
 
 import { ForsendelseStatus } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
+import { getLenker } from '@navikt/fp-utils';
 
 export const Kvittering = ({
     forsendelseStatus,
@@ -49,9 +50,6 @@ const SakenProsesseres = () => {
 };
 
 const GåTilMinSide = () => {
-    const erIDev = globalThis.location.hostname.includes('.dev.nav.');
-    const url = erIDev ? 'https://www.ansatt.dev.nav.no/minside' : 'https://www.nav.no/minside';
-
     return (
         <VStack>
             <KvitteringHeader />
@@ -60,7 +58,7 @@ const GåTilMinSide = () => {
             </BodyShort>
             <Button
                 as="a"
-                href={url}
+                href={getLenker().minSide}
                 className="mt-8 w-fit self-center"
                 iconPosition="right"
                 icon={<ChevronRightIcon />}
@@ -76,10 +74,7 @@ const GåTilInnsyn = ({ saksnummer }: { saksnummer?: string }) => {
         throw new Error('Udefinert saksnummer for status ENDELIG');
     }
 
-    const erIDev = globalThis.location.hostname.includes('.dev.nav.');
-    const url = erIDev
-        ? `https://www.intern.dev.nav.no/foreldrepenger/oversikt/sak/${saksnummer}`
-        : `https://www.nav.no/foreldrepenger/oversikt/sak/${saksnummer}`;
+    const url = `${getLenker().innsyn}/sak/${saksnummer}`;
 
     return (
         <VStack>

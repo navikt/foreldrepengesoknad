@@ -4,6 +4,7 @@ import { useIntl } from 'react-intl';
 import { Bleed, HGrid } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
+import { getLenker } from '@navikt/fp-utils';
 
 import { LenkePanel } from '../../components/lenke-panel/LenkePanel';
 import { LayoutWrapper } from '../../sections/LayoutWrapper';
@@ -36,13 +37,16 @@ export const SøkelenkerPanel = ({ doBleed = false }: Props) => {
                 />
                 <LenkePanel
                     tittel={intl.formatMessage({ id: 'SøkelenkerPanel.SokFp' })}
-                    to={links.foreldrepengesoknad}
+                    to={getLenker().foreldrepengesoknad}
                 />
                 <LenkePanel
                     tittel={intl.formatMessage({ id: 'SøkelenkerPanel.SokSvp' })}
-                    to={links.svangerskapspenger}
+                    to={getLenker().svangerskapspengesoknad}
                 />
-                <LenkePanel tittel={intl.formatMessage({ id: 'SøkelenkerPanel.SokEs' })} to={links.engangsstonad} />
+                <LenkePanel
+                    tittel={intl.formatMessage({ id: 'SøkelenkerPanel.SokEs' })}
+                    to={getLenker().engangsstønadSøknad}
+                />
             </HGrid>
         </PanelBleed>
     );
