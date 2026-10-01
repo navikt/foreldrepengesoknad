@@ -100,6 +100,7 @@ const showManglendeDokumentasjonSteg = (
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     eksisterendeSak: FpSak_fpoversikt | undefined,
+    erEndringssøknad: boolean,
 ) => {
     if (path === SøknadRoutes.DOKUMENTASJON) {
         // Steget skal alltid vere synleg så lenge det finst manuelt opplasta eller
@@ -118,19 +119,7 @@ const showManglendeDokumentasjonSteg = (
         const andreInntektskilder = getData(ContextDataType.ANDRE_INNTEKTSKILDER);
         const familiehendelsedato = barn ? getFamiliehendelsedato(barn) : undefined;
 
-        const skalHaAleneomsorgDok =
-            !!annenForelder && isAnnenForelderOppgitt(annenForelder) && annenForelder.erAleneOmOmsorg;
-
         const erFarEllerMedmor = !!søkersituasjon && isFarEllerMedmor(søkersituasjon.rolle);
-        const skalHaTerminDokumentasjon = skalViseTerminbekreftelseDokumentasjon({
-            søkersituasjon,
-            barn,
-            erFarEllerMedmor,
-            arbeidsforhold,
-            annenForelder,
-        });
-        const skalHaAdopsjonDokumentasjon = skalViseOmsorgsovertakelseDokumentasjon(søkersituasjon);
-
         const perioderSomSkalSjekkes = uttaksplan
             ? finnPerioderSomInngårISøknaden(uttaksplan, erFarEllerMedmor, !!eksisterendeSak)
             : [];
@@ -144,6 +133,22 @@ const showManglendeDokumentasjonSteg = (
                       familiehendelsedato,
                   )
                 : false;
+
+        if (erEndringssøknad) {
+            return skalHaUttakDok;
+        }
+
+        const skalHaAleneomsorgDok =
+            !!annenForelder && isAnnenForelderOppgitt(annenForelder) && annenForelder.erAleneOmOmsorg;
+
+        const skalHaTerminDokumentasjon = skalViseTerminbekreftelseDokumentasjon({
+            søkersituasjon,
+            barn,
+            erFarEllerMedmor,
+            arbeidsforhold,
+            annenForelder,
+        });
+        const skalHaAdopsjonDokumentasjon = skalViseOmsorgsovertakelseDokumentasjon(søkersituasjon);
 
         const skalHaAndreInntekterDok = andreInntektskilder?.some(
             (i) => i.type === 'MILITÆR_ELLER_SIVILTJENESTE' || i.type === 'ETTERLØNN_SLUTTPAKKE',
@@ -202,7 +207,7 @@ export const useStepConfig = ({
             ROUTES_ORDER.flatMap((path) =>
                 (requiredSteps.includes(path) && skalViseFordelingSteg(path, getStateData)) ||
                 showUtenlandsoppholdStep(path, currentPath, getStateData) ||
-                showManglendeDokumentasjonSteg(path, getStateData, arbeidsforhold, eksisterendeSak) ||
+                showManglendeDokumentasjonSteg(path, getStateData, arbeidsforhold, eksisterendeSak, erEndringssøknad) ||
                 showFrilansOgEgenNæring(path, currentPath, getStateData, harRegistrertNæring)
                     ? [path]
                     : [],
