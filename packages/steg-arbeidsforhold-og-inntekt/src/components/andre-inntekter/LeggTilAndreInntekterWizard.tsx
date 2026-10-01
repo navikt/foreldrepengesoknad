@@ -114,12 +114,7 @@ const LeggTilAndreInntekterWizardInner = ({
                 >
                     {!harEgenNæring && (
                         <>
-                            <Radio
-                                value="EGEN_NÆRING"
-                                description={intl.formatMessage({
-                                    id: 'LeggTilAndreInntekterWizard.egenNæring.description',
-                                })}
-                            >
+                            <Radio value="EGEN_NÆRING">
                                 <FormattedMessage id="LeggTilAndreInntekterWizard.egenNæring.label" />
                             </Radio>
                             <Radio

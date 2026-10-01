@@ -143,7 +143,7 @@ describe('<LeggTilAndreInntekterWizard>', () => {
             }),
         ).toBeInTheDocument();
         expect(screen.queryByText('Hvilken type inntekt har du hatt?')).not.toBeInTheDocument();
-        expect(screen.queryByRole('radio', { name: /ektefelles næring/ })).not.toBeInTheDocument();
+        expect(screen.queryByRole('radio', { name: /ektefelles virksomhet/ })).not.toBeInTheDocument();
         expect(screen.queryByRole('radio', { name: /fisker eller mannskap/ })).not.toBeInTheDocument();
         expect(screen.queryByRole('radio', { name: 'Næring i utlandet' })).not.toBeInTheDocument();
         expect(screen.queryByRole('button', { name: 'Tilbake' })).not.toBeInTheDocument();
@@ -158,7 +158,7 @@ describe('<LeggTilAndreInntekterWizard>', () => {
 
         await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
 
-        expect(screen.queryByRole('radio', { name: /ektefelles næring/ })).not.toBeInTheDocument();
+        expect(screen.queryByRole('radio', { name: /ektefelles virksomhet/ })).not.toBeInTheDocument();
         expect(screen.queryByRole('radio', { name: /fisker eller mannskap/ })).not.toBeInTheDocument();
         expect(screen.getByRole('radio', { name: /Annen pensjonsgivende inntekt/ })).toBeInTheDocument();
 
