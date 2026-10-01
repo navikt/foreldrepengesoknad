@@ -198,8 +198,16 @@ describe('mapTilSøknadDto', () => {
         };
         const data = getStateMock(annenForelderMock, barnMock, [morsUttak, farsUttak]);
         const søknadMedPerioder = mapTilSøknadDto(data, DEFAULT_SØKER_INFO);
-        expect(søknadMedPerioder.uttaksplan.uttaksperioder.length).toBe(1);
-        expect(søknadMedPerioder.uttaksplan.uttaksperioder[0]!.fom).toBe('2021-01-01');
+        expect(søknadMedPerioder.uttaksplan.uttaksperioder!.length).toBe(1);
+        expect(søknadMedPerioder.uttaksplan.uttaksperioder![0]!.fom).toBe('2021-01-01');
+        expect(søknadMedPerioder.uttaksplan.perioder).toEqual([
+            {
+                fom: '2021-01-01',
+                tom: '2021-01-10',
+                søker: { forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+                annenPart: undefined,
+            },
+        ]);
     });
 
     it('skal inkludere dekningsgrad og ønskerJustertUttakVedFødsel', () => {
@@ -241,8 +249,12 @@ describe('mapTilEndringssøknadDto', () => {
         const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO);
 
         // Endringstidspunktet er 2024-02-01 (første avvik), så berre perioder f.o.m. den datoen
-        expect(endringssøknad.uttaksplan.uttaksperioder.length).toBe(2);
-        expect(endringssøknad.uttaksplan.uttaksperioder[0]!.fom).toBe('2024-02-01');
+        expect(endringssøknad.uttaksplan.uttaksperioder!.length).toBe(2);
+        expect(endringssøknad.uttaksplan.uttaksperioder![0]!.fom).toBe('2024-02-01');
+        expect(endringssøknad.uttaksplan.perioder?.map((p) => [p.fom, p.søker?.kontoType])).toEqual([
+            ['2024-02-01', 'FELLESPERIODE'],
+            ['2024-03-01', 'MØDREKVOTE'],
+        ]);
     });
 
     it('skal leggje til FRI utsettelsesperiode ved gap på endringstidspunktet', () => {
@@ -260,10 +272,18 @@ describe('mapTilEndringssøknadDto', () => {
         const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO);
 
         // Endringstidspunkt er 2024-02-01, inga periode dekkjer den datoen → FRI utsettelse leggjast til
-        const perioder = endringssøknad.uttaksplan.uttaksperioder;
+        const perioder = endringssøknad.uttaksplan.uttaksperioder!;
         const friPeriode = perioder.find((p) => p.type === 'utsettelse');
         expect(friPeriode).toBeDefined();
         expect(friPeriode!.fom).toBe('2024-02-01');
+
+        const friPeriodeNy = endringssøknad.uttaksplan.perioder?.find((p) => p.søker?.utsettelseÅrsak === 'FRI');
+        expect(friPeriodeNy).toEqual({
+            fom: '2024-02-01',
+            tom: friPeriode!.tom,
+            søker: { forelder: 'MOR', utsettelseÅrsak: 'FRI', flerbarnsdager: false },
+        });
+        expect(endringssøknad.uttaksplan.perioder?.map((p) => p.fom)).toEqual(['2024-02-01', '2024-03-01']);
     });
 
     // Scenario fra produksjon: far tok perioden rundt fødsel med 100 % samtidig uttak. Endringstidspunktet
@@ -294,8 +314,8 @@ describe('mapTilEndringssøknadDto', () => {
             const data = getStateMock(annenForelderMock, barnMock, nyPlan, 'SAK-001', opprinneligPlan);
             const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO);
 
-            expect(endringssøknad.uttaksplan.uttaksperioder).toHaveLength(1);
-            expect(endringssøknad.uttaksplan.uttaksperioder[0]!.fom).toBe('2024-04-01');
+            expect(endringssøknad.uttaksplan.uttaksperioder!).toHaveLength(1);
+            expect(endringssøknad.uttaksplan.uttaksperioder![0]!.fom).toBe('2024-04-01');
         });
 
         it('skal ikke gi endringstidspunkt når planen er uendret', () => {
@@ -310,7 +330,7 @@ describe('mapTilEndringssøknadDto', () => {
             const data = getStateMock(annenForelderMock, barnMock, nyPlan, 'SAK-001', opprinneligPlan);
             const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO);
 
-            expect(endringssøknad.uttaksplan.uttaksperioder[0]!.fom).toBe('2024-01-01');
+            expect(endringssøknad.uttaksplan.uttaksperioder![0]!.fom).toBe('2024-01-01');
         });
 
         it('skal stoppe innsending når opprinnelig uttaksplan mangler', () => {

@@ -108,6 +108,7 @@ export type { UtsettelsesÅrsak } from './fpsoknadDtoGenerert';
 export type { UttaksPeriodeDto } from './fpsoknadDtoGenerert';
 export type { GraderingDto } from './fpsoknadDtoGenerert';
 export type { UttaksplanDto } from './fpsoknadDtoGenerert';
+export type { UttakPeriodeDto } from './fpsoknadDtoGenerert';
 export type { Uttaksplanperiode } from './fpsoknadDtoGenerert';
 export type { ArbeidsforholdDto } from './fpsoknadDtoGenerert';
 export type { FrilanserDto } from './fpsoknadDtoGenerert';

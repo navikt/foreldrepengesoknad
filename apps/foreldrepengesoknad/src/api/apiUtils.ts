@@ -23,6 +23,7 @@ import {
     Søkerrolle,
     UtsettelsesÅrsak,
     UtsettelseÅrsak_fpoversikt,
+    UttakPeriodeDto,
     UttakPeriodeDto_fpoversikt,
     Uttaksplanperiode,
     isAdoptertBarn,
@@ -83,24 +84,30 @@ const konverterRolle = (rolle: Søkerrolle): BrukerRolle => {
     }
 };
 
-export const getUttaksplanMedFriUtsettelsesperiode = (
-    uttaksplan: Uttaksplanperiode[],
-    endringstidspunkt: string,
-): Uttaksplanperiode[] => {
-    const førstePeriodeEtterEndringstidspunkt = uttaksplan.find((periode) =>
+const finnTidsromForFriUtsettelse = (perioder: Array<{ fom: string }>, endringstidspunkt: string) => {
+    const førstePeriodeEtterEndringstidspunkt = perioder.find((periode) =>
         dayjs(periode.fom).isAfter(endringstidspunkt, 'day'),
     );
     const endringsTidspunktPeriodeTom = førstePeriodeEtterEndringstidspunkt
         ? Uttaksdagen.forrige(førstePeriodeEtterEndringstidspunkt.fom).getDato()
         : endringstidspunkt;
 
-    const endringsTidspunktPeriode: Uttaksplanperiode = {
-        type: Periodetype.Utsettelse,
-        årsak: 'FRI',
+    return {
         fom: endringstidspunkt,
         tom: dayjs(endringsTidspunktPeriodeTom).isBefore(endringstidspunkt, 'day')
             ? endringstidspunkt
             : endringsTidspunktPeriodeTom,
+    };
+};
+
+export const getUttaksplanMedFriUtsettelsesperiode = (
+    uttaksplan: Uttaksplanperiode[],
+    endringstidspunkt: string,
+): Uttaksplanperiode[] => {
+    const endringsTidspunktPeriode: Uttaksplanperiode = {
+        type: Periodetype.Utsettelse,
+        årsak: 'FRI',
+        ...finnTidsromForFriUtsettelse(uttaksplan, endringstidspunkt),
         erArbeidstaker: false,
     };
 
@@ -110,6 +117,27 @@ export const getUttaksplanMedFriUtsettelsesperiode = (
 
     return uttaksplan;
 };
+
+const getPerioderMedFriUtsettelse = (
+    perioder: UttakPeriodeDto[],
+    endringstidspunkt: string,
+    forelder: NonNullable<UttakPeriodeDto['søker']>['forelder'],
+): UttakPeriodeDto[] => {
+    const friUtsettelse: UttakPeriodeDto = {
+        ...finnTidsromForFriUtsettelse(perioder, endringstidspunkt),
+        søker: { forelder, utsettelseÅrsak: 'FRI', flerbarnsdager: false },
+    };
+
+    return [...perioder, friUtsettelse].toSorted((p1, p2) => (dayjs(p1.fom).isBefore(p2.fom, 'day') ? -1 : 1));
+};
+
+const tilInnsendingsperioder = (perioder: UttakPeriodeDto_fpoversikt[]): UttakPeriodeDto[] =>
+    perioder.map(({ fom, tom, søker, annenPart }) => ({
+        fom,
+        tom,
+        søker: søker ? omitOne(søker, 'resultat') : undefined,
+        annenPart: annenPart ? omitOne(annenPart, 'resultat') : undefined,
+    }));
 
 const convertAttachmentsMapToArray = (vedlegg: VedleggDataType | undefined): Attachment[] => {
     if (!vedlegg) {
@@ -216,6 +244,7 @@ export const mapTilSøknadDto = (
         dekningsgrad,
         uttaksplan: {
             uttaksperioder: midlertidigMappingAvUttaksplan(søkersPerioder, barn, annenForelder),
+            perioder: tilInnsendingsperioder(søkersPerioder),
             ønskerJustertUttakVedFødsel,
         },
         utenlandsopphold: [...(utenlandsoppholdSiste12Mnd ?? []), ...(utenlandsoppholdNeste12Mnd ?? [])],
@@ -273,15 +302,14 @@ export const mapTilEndringssøknadDto = (
         ? filtrerPerioderFraOgMedEndringstidspunkt(søkersNyePerioder, endringstidspunkt)
         : søkersNyePerioder;
 
-    const mappaUttaksperioder = midlertidigMappingAvUttaksplan(
-        filtrerUtAvslåttePerioder(filtrerUtEøsPeriode(perioderForInnsending)),
-        barn,
-        annenForelder,
-    );
+    const perioderSomSendes = filtrerUtAvslåttePerioder(filtrerUtEøsPeriode(perioderForInnsending));
+    const mappaUttaksperioder = midlertidigMappingAvUttaksplan(perioderSomSendes, barn, annenForelder);
+    const nyePerioder = tilInnsendingsperioder(perioderSomSendes);
 
     const harPeriodeVedEndringstidspunkt = perioderForInnsending.some((periode) =>
         dayjs(endringstidspunkt).isBetween(periode.fom, periode.tom, 'day', '[]'),
     );
+    const skalLeggeTilFriUtsettelse = endringstidspunkt && !harPeriodeVedEndringstidspunkt;
 
     return {
         søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
@@ -292,10 +320,16 @@ export const mapTilEndringssøknadDto = (
         annenForelder: cleanAnnenforelder(annenForelder),
         vedlegg: convertAttachmentsMapToArray(vedlegg),
         uttaksplan: {
-            uttaksperioder:
-                endringstidspunkt && !harPeriodeVedEndringstidspunkt
-                    ? getUttaksplanMedFriUtsettelsesperiode(mappaUttaksperioder, endringstidspunkt)
-                    : mappaUttaksperioder,
+            uttaksperioder: skalLeggeTilFriUtsettelse
+                ? getUttaksplanMedFriUtsettelsesperiode(mappaUttaksperioder, endringstidspunkt)
+                : mappaUttaksperioder,
+            perioder: skalLeggeTilFriUtsettelse
+                ? getPerioderMedFriUtsettelse(
+                      nyePerioder,
+                      endringstidspunkt,
+                      søkersituasjon.rolle === 'mor' ? 'MOR' : 'FAR_MEDMOR',
+                  )
+                : nyePerioder,
             ønskerJustertUttakVedFødsel,
         },
     };

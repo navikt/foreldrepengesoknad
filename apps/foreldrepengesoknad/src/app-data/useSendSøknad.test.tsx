@@ -404,6 +404,13 @@ describe('useFpSendSøknad', () => {
                                 årsak: 'FRI',
                             },
                         ],
+                        perioder: [
+                            {
+                                fom: '2024-01-01',
+                                tom: '2024-10-10',
+                                søker: { forelder: 'MOR', utsettelseÅrsak: 'FRI', flerbarnsdager: false },
+                            },
+                        ],
                     },
                     vedlegg: VEDLEGG[Skjemanummer.TERMINBEKREFTELSE],
                 } satisfies ForeldrepengesøknadDto,
@@ -463,6 +470,13 @@ describe('useFpSendSøknad', () => {
                                 fom: '2024-01-02', // Endringstidspunkt
                                 tom: '2024-01-02', // Endringstidspunkt
                             }),
+                        ],
+                        perioder: [
+                            {
+                                fom: '2024-01-02',
+                                tom: '2024-01-02',
+                                søker: { forelder: 'MOR', utsettelseÅrsak: 'FRI', flerbarnsdager: false },
+                            },
                         ],
                     },
                     vedlegg: VEDLEGG[Skjemanummer.TERMINBEKREFTELSE],
