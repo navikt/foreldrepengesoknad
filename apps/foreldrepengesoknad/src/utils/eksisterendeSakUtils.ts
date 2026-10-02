@@ -10,9 +10,9 @@ import { ValgtBarn } from 'types/ValgtBarn';
 import { BarnType, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
     AnnenForelderDto_fpoversikt,
-    AnnenPartSak_fpoversikt,
     Barn,
     EøsUttakDto_fpoversikt,
+    FellesUttaksplanDto_fpoversikt,
     FpBarnDto_fpoversikt,
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
@@ -32,7 +32,7 @@ import { getFamiliehendelseType } from './familiehendelseUtils';
 import { getKjønnFromFnrString } from './personUtils';
 
 export const mapAnnenPartsEksisterendeSakFromDTO = (
-    eksisterendeSakAnnenPart: AnnenPartSak_fpoversikt | undefined,
+    eksisterendeSakAnnenPart: FellesUttaksplanDto_fpoversikt | undefined,
     barn: Barn,
     søkerErFarEllerMedmor: boolean,
     familiehendelsesdato: string,

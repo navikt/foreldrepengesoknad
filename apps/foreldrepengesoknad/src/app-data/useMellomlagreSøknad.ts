@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { API_URLS, useAnnenPartVedtakOptions } from 'api/queries';
+import { API_URLS, useAnnenPartUttaksplanOptions } from 'api/queries';
 import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -7,7 +7,7 @@ import { VERSJON_MELLOMLAGRING } from 'utils/mellomlagringUtils';
 
 import { ApiError, captureApiError, captureMessage } from '@navikt/fp-observability';
 import {
-    AnnenPartSak_fpoversikt,
+    FellesUttaksplanDto_fpoversikt,
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
     FpSoknadProblemDetails,
@@ -22,7 +22,7 @@ export type FpMellomlagretData = {
     foreldrepengerSaker: FpSak_fpoversikt[];
     erEndringssøknad: boolean;
     søknadGjelderEtNyttBarn?: boolean;
-    annenPartVedtak?: AnnenPartSak_fpoversikt;
+    fellesUttaksplan?: FellesUttaksplanDto_fpoversikt;
 } & ContextDataMap;
 
 type MellomlagreSøknadOptions = {
@@ -60,7 +60,7 @@ export const useMellomlagreSøknad = (
     const navigate = useNavigate();
     const state = useContextComplete();
 
-    const annenPartVedtakQuery = useQuery(useAnnenPartVedtakOptions());
+    const uttaksplanQuery = useQuery(useAnnenPartUttaksplanOptions());
 
     const [lagringFeilet, setLagringFeilet] = useState(false);
 
@@ -96,7 +96,7 @@ export const useMellomlagreSøknad = (
                 // Lagre kun når kallet faktisk har et resultat, slik at vi ikkje
                 // lagrar undefined når kallet er pending/feila og dermed gir falske
                 // utslag i RegisterdataUtdatert-sjekken ved neste oppstart.
-                ...(annenPartVedtakQuery.isSuccess && { annenPartVedtak: annenPartVedtakQuery.data }),
+                ...(uttaksplanQuery.isSuccess && { fellesUttaksplan: uttaksplanQuery.data }),
                 ...state,
             } satisfies FpMellomlagretData;
 

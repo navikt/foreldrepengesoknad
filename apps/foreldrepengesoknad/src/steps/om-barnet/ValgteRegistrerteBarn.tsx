@@ -1,11 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAnnenPartVedtakOptions } from 'api/queries';
+import { useAnnenPartUttaksplanOptions } from 'api/queries';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { RegistrertePersonalia } from 'pages/registrerte-personalia/RegistrertePersonalia';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { annenPartHarVedtak } from 'utils/annenForelderUtils';
 import { formaterFødselsdatoerPåBarn, getTittelBarnNårNavnSkalIkkeVises } from 'utils/barnUtils';
 import { getVarighetString } from 'utils/dateUtils';
 
@@ -38,11 +39,10 @@ export const ValgteRegistrerteBarn = ({ valgteRegistrerteBarn, skalInkludereTerm
     const fødselsdatoer = sorterteBarn.map((b) => b.fødselsdato);
     const fødselsdato = sorterteBarn[0]!.fødselsdato;
 
-    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
     const harTerminDatoFraVedtak =
         useQuery({
-            ...annenPartVedtakOptions,
-            select: (vedtak) => !!vedtak?.termindato,
+            ...useAnnenPartUttaksplanOptions(),
+            select: (uttaksplan) => annenPartHarVedtak(uttaksplan) && !!uttaksplan.termindato,
         }).data ?? false;
 
     const visInfoOmForlengetPeriode = skalInkludereTermindato && erFødtFørUke33(fødselsdato, termindato);

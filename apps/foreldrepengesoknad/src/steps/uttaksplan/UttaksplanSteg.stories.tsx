@@ -149,7 +149,6 @@ export const FødselMorOgFarBeggeHarRett: Story = {
     beforeEach({ msw }) {
         msw.use(
             http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': {
@@ -199,7 +198,6 @@ export const FødselMorOgFarKunMorHarRett: Story = {
     beforeEach({ msw }) {
         msw.use(
             http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': {
@@ -286,7 +284,6 @@ export const FødselMorOgMedmorKunMedmorHarRettMorUfør: Story = {
     beforeEach({ msw }) {
         msw.use(
             http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': {
@@ -334,7 +331,6 @@ export const FødselBareFarSøkerAleneOmOmsorg: Story = {
     beforeEach({ msw }) {
         msw.use(
             http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': {
@@ -377,7 +373,6 @@ export const AdopsjonMorOgFarBeggeHarRett: Story = {
     beforeEach({ msw }) {
         msw.use(
             http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '100': {
@@ -427,7 +422,6 @@ export const AdopsjonMorOgFarKunMorHarRett: Story = {
     beforeEach({ msw }) {
         msw.use(
             http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '100': {
@@ -474,7 +468,6 @@ export const AdopsjonMorOgFarKunFarHarRettMorErUfør: Story = {
     beforeEach({ msw }) {
         msw.use(
             http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '100': {
@@ -602,13 +595,12 @@ export const AdopsjonBareFarSøkerAleneOmOmsorg: Story = {
     },
 };
 
-// Story som reproduserer buggen der annen part har et vedtak med tomme perioder (perioder: []).
-// API returnerer en gyldig AnnenPartSak, men uten perioder. Dette resulterte tidligere i en tom uttaksplan.
+// Story som reproduserer buggen der uttaksplanen har tomme perioder (perioder: []).
+// API returnerer en gyldig uttaksplan, men uten perioder. Dette resulterte tidligere i en tom uttaksplan.
 export const FødselMorOgFarBeggeHarRettAnnenPartTomtVedtak: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
-            http.post(API_URLS.annenPartVedtak, () =>
+            http.post(API_URLS.uttaksplan, () =>
                 HttpResponse.json({
                     antallBarn: 1,
                     dekningsgrad: 'HUNDRE',
@@ -642,7 +634,6 @@ export const FødselFarBeggeHarRettStarterPåTermin: Story = {
     beforeEach({ msw }) {
         msw.use(
             http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': {
@@ -724,7 +715,6 @@ const INNVILGET_PLAN_FRA_EKSISTERENDE_SAK: UttakPeriodeDto_fpoversikt[] = [
 export const NySøknadFørVedtakMedEksisterendeSak: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': {

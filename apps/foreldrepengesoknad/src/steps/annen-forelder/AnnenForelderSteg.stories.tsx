@@ -72,6 +72,9 @@ const meta = {
     title: 'steps/AnnenForelderSteg',
     component: AnnenForelderSteg,
     decorators: [withQueryClient],
+    beforeEach({ msw }) {
+        msw.use(http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })));
+    },
     render: ({
         søkersituasjon = {
             situasjon: 'fødsel',
@@ -295,7 +298,7 @@ export const FarFødtBarnMorHarVedtak: Story = {
     },
 
     beforeEach({ msw }) {
-        msw.use(http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)));
+        msw.use(http.post(API_URLS.uttaksplan, () => HttpResponse.json(annenPartVedtak)));
     },
 };
 
@@ -311,6 +314,6 @@ export const FarFødtBarnMorHarAvslåttVedtak: Story = {
     },
 
     beforeEach({ msw }) {
-        msw.use(http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(avslåttAnnenPartVedtak)));
+        msw.use(http.post(API_URLS.uttaksplan, () => HttpResponse.json(avslåttAnnenPartVedtak)));
     },
 };

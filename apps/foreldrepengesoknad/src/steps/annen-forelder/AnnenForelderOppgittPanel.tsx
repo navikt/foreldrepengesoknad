@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAnnenPartVedtakOptions } from 'api/queries';
+import { useAnnenPartUttaksplanOptions } from 'api/queries';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { AnnenForelder } from 'types/AnnenForelder';
+import { annenPartHarInnvilgetUttak } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
@@ -24,11 +25,10 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
     const familiehendelsedato = getFamiliehendelsedato(barn);
 
     const formMethods = useFormContext<AnnenForelder>();
-    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
     const annenPartHarVedtak =
         useQuery({
-            ...annenPartVedtakOptions,
-            select: (vedtak) => vedtak?.perioder.some((p) => p.resultat?.innvilget),
+            ...useAnnenPartUttaksplanOptions(),
+            select: annenPartHarInnvilgetUttak,
         }).data ?? false;
 
     const formValues = formMethods.watch();

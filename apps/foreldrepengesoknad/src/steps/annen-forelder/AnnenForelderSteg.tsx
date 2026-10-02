@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAnnenPartVedtakOptions } from 'api/queries';
+import { useAnnenPartUttaksplanOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
@@ -9,6 +9,7 @@ import { RegistrertePersonalia } from 'pages/registrerte-personalia/RegistrerteP
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
+import { annenPartHarInnvilgetUttak } from 'utils/annenForelderUtils';
 import { getRegistrerteBarnOmDeFinnes } from 'utils/barnUtils';
 
 import { VStack } from '@navikt/ds-react';
@@ -62,11 +63,10 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
 
     const annenForelderFraRegistrertBarn = getRegistrertAnnenForelder(barn, søkerInfo);
 
-    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
     const annenPartHarVedtak =
         useQuery({
-            ...annenPartVedtakOptions,
-            select: (vedtak) => vedtak?.perioder.some((p) => p.resultat?.innvilget),
+            ...useAnnenPartUttaksplanOptions(),
+            select: annenPartHarInnvilgetUttak,
         }).data ?? false;
 
     const oppgittFnrErUlikRegistrertBarn =

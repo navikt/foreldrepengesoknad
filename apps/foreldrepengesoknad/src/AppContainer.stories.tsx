@@ -4,7 +4,6 @@ import { SøknadRoutes } from 'appData/routes';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter } from 'react-router';
-import { annenPartVedtak } from 'storybookData/annenPartVedtak';
 import { kvittering } from 'storybookData/kvittering';
 import { saker } from 'storybookData/saker';
 import { stønadskvoter } from 'storybookData/stønadskvoter';
@@ -59,7 +58,6 @@ const meta = {
         msw.use(
             http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
             http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-            http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
             http.post(API_URLS.uttaksplan, async ({ request }) => {
                 const { annenPartFødselsnummer } = (await request.json()) as FellesUttaksplanRequest_fpoversikt;
                 return annenPartFødselsnummer
@@ -95,7 +93,6 @@ export const SøkerErKvinne: Story = {
         msw.use(
             http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfoKvinne)),
             http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-            http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
             http.post(API_URLS.uttaksplan, async ({ request }) => {
                 const { annenPartFødselsnummer } = (await request.json()) as FellesUttaksplanRequest_fpoversikt;
                 return annenPartFødselsnummer

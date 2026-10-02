@@ -316,7 +316,7 @@ const meta = {
     beforeEach({ msw }) {
         msw.use(
             http.post(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': STØNADSKONTO_80,
@@ -567,7 +567,7 @@ export const FarMedMorSomHarVedtak: Story = {
     beforeEach({ msw }) {
         msw.use(
             http.post(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 200 })),
-            http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
+            http.post(API_URLS.uttaksplan, () => HttpResponse.json(annenPartVedtak)),
         );
     },
 };

@@ -460,10 +460,7 @@ describe('<AppContainer>', () => {
             {
                 ...stories.SøkerErMann,
                 beforeEach({ msw }) {
-                    msw.use(
-                        http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
-                        http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
-                    );
+                    msw.use(http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })));
                 },
             },
             {

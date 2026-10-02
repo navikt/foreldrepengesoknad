@@ -106,19 +106,6 @@ export const getUttaksplan = () => {
     }
 };
 
-export const getAnnenPartVedtak = () => {
-    const fileName = getFilePath('annenPartVedtak.json');
-    if (!fs.existsSync(fileName)) {
-        return null;
-    }
-    try {
-        const data = fs.readFileSync(fileName, 'utf8');
-        return data && data !== '' ? JSON.parse(data) : null;
-    } catch {
-        return null;
-    }
-};
-
 const app = express();
 const router = express.Router();
 
@@ -162,10 +149,6 @@ router.delete('/fpsoknad/api/storage/FORELDREPENGER', (_req, res) => {
 
 router.get('/fpoversikt/api/saker', (_req, res) => {
     res.send(getSaker());
-});
-
-router.post('/fpoversikt/api/annenPart', (_req, res) => {
-    res.send(getAnnenPartVedtak());
 });
 
 router.post('/fpoversikt/api/uttaksplan', (_req, res) => {

@@ -3,7 +3,7 @@ import {
     getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
     getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'api/getStønadskvoteParams';
-import { useAnnenPartVedtakOptions, useStønadsKontoerOptions, useUttaksplanOptions } from 'api/queries';
+import { useStønadsKontoerOptions, useUttaksplanOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
@@ -11,7 +11,7 @@ import { useStepConfig } from 'appData/useStepConfig';
 import { useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { kanGenerereUttaksplanForslag } from 'steps/uttaksplan/hooks/useUttaksplanForslag';
-import { getIsDeltUttak } from 'utils/annenForelderUtils';
+import { annenPartHarVedtak, getIsDeltUttak } from 'utils/annenForelderUtils';
 import { getTermindato } from 'utils/barnUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getNavnPåForeldre } from 'utils/personUtils';
@@ -70,13 +70,8 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
     const navnFarMedmor = navnPåForeldre.farMedmor;
     const deltUttak = getIsDeltUttak(annenForelder);
 
-    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
-    const annenPartsVedtakQuery = useQuery({
-        ...annenPartVedtakOptions,
-    });
-    const eksisterendeVedtakAnnenPart = annenPartsVedtakQuery.data;
-
     const uttaksplanQuery = useQuery(useUttaksplanOptions());
+    const eksisterendeVedtakAnnenPart = annenPartHarVedtak(uttaksplanQuery.data) ? uttaksplanQuery.data : undefined;
     const uttaksplanAnnenPart = useMemo(
         () =>
             uttaksplanQuery.data?.perioder.flatMap(({ fom, tom, annenPart }) =>
@@ -167,7 +162,7 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
         }
     }, [erFarEllerMedmor, saksgrunnlagsAntallBarn, barn, oppdaterBarn, saksgrunnlagsTermindato, resetUttaksplanData]);
 
-    if (!valgtStønadskvote || annenPartsVedtakQuery.isLoading || uttaksplanQuery.isLoading) {
+    if (!valgtStønadskvote || uttaksplanQuery.isLoading) {
         return <Spinner />;
     }
 

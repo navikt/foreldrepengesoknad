@@ -3,11 +3,9 @@ import { getStønadskvoteParams } from 'api/getStønadskvoteParams';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import ky, { type ResponsePromise } from 'ky';
-import { annenForelderHarNorskFnr, getAnnenPartVedtakParam, getUttaksplanParam } from 'utils/annenForelderUtils';
+import { annenForelderHarNorskFnr, annenPartHarVedtak, getUttaksplanParam } from 'utils/annenForelderUtils';
 
 import {
-    AnnenPartRequest_fpoversikt,
-    AnnenPartSak_fpoversikt,
     FellesUttaksplanDto_fpoversikt,
     FellesUttaksplanRequest_fpoversikt,
     ForsendelseStatus,
@@ -32,7 +30,6 @@ const jsonEllerNull = async <T>(responsePromise: ResponsePromise) => {
 export const API_URLS = {
     søkerInfo: `${urlPrefiks}/fpoversikt/api/personopplysninger/foreldrepenger`,
     saker: `${urlPrefiks}/fpoversikt/api/saker`,
-    annenPartVedtak: `${urlPrefiks}/fpoversikt/api/annenPart`,
     uttaksplan: `${urlPrefiks}/fpoversikt/api/uttaksplan`,
     konto: `${urlPrefiks}/fpgrunndata/api/konto`,
     trengerDokumentereMorsArbeid: `${urlPrefiks}/fpoversikt/api/arbeid/morDokumentasjon`,
@@ -90,13 +87,6 @@ export const mellomlagretInfoOptions = () =>
         refetchOnWindowFocus: 'always',
     });
 
-const annenPartVedtakOptions = (data?: AnnenPartRequest_fpoversikt) =>
-    queryOptions({
-        queryKey: ['ANNEN_PART_VEDTAK', data],
-        queryFn: () => jsonEllerNull<AnnenPartSak_fpoversikt>(ky.post(API_URLS.annenPartVedtak, { json: data })),
-        select: (sak) => sak ?? undefined,
-    });
-
 const tilgjengeligeStønadskvoterOptions = (data: KontoBeregningGrunnlagDto) =>
     queryOptions({
         queryKey: ['TILGJENGELIGE_STONADSKVOTER', data],
@@ -119,8 +109,7 @@ export const useStønadsKontoerOptions = () => {
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
 
-    const annenPartOptions = useAnnenPartVedtakOptions();
-    const annenPartVedtakQuery = useQuery(annenPartOptions);
+    const uttaksplanQuery = useQuery(useAnnenPartUttaksplanOptions());
 
     const sakerQuery = useQuery({ ...sakerOptions(), enabled: !!valgtEksisterendeSaksnr });
 
@@ -130,22 +119,11 @@ export const useStønadsKontoerOptions = () => {
         barn,
         annenForelder,
         søkersituasjon,
-        annenPartVedtakQuery.data,
+        annenPartHarVedtak(uttaksplanQuery.data) ? uttaksplanQuery.data : undefined,
         valgtSak?.familiehendelse.termindato,
     );
 
     return tilgjengeligeStønadskvoterOptions(stønadskvoteParams);
-};
-
-export const useAnnenPartVedtakOptions = () => {
-    const annenForelder = useContextGetData(ContextDataType.ANNEN_FORELDER);
-    const barn = useContextGetData(ContextDataType.OM_BARNET);
-
-    const enabled = !!annenForelder && !!barn && annenForelderHarNorskFnr(annenForelder);
-    return queryOptions({
-        ...annenPartVedtakOptions(enabled ? getAnnenPartVedtakParam(annenForelder, barn) : undefined),
-        enabled,
-    });
 };
 
 const uttaksplanOptions = (data?: FellesUttaksplanRequest_fpoversikt) =>
@@ -163,5 +141,16 @@ export const useUttaksplanOptions = () => {
     return queryOptions({
         ...uttaksplanOptions(enabled ? getUttaksplanParam(annenForelder, barn) : undefined),
         enabled,
+    });
+};
+
+// Annan part sine periodar kjem berre med når annan part har norsk fnr, så utan det treng ikkje stega
+// som berre bryr seg om annan part sitt vedtak å venta på kallet.
+export const useAnnenPartUttaksplanOptions = () => {
+    const annenForelder = useContextGetData(ContextDataType.ANNEN_FORELDER);
+    const options = useUttaksplanOptions();
+    return queryOptions({
+        ...options,
+        enabled: options.enabled && !!annenForelder && annenForelderHarNorskFnr(annenForelder),
     });
 };
