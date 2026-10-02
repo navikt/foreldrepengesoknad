@@ -13,6 +13,73 @@ const KONTOER: KontoBeregningDto = {
 };
 
 describe('getBrukteDager', () => {
+    it.each([false, true])('teller BFHR-perioder på riktig konto uten dobbeltelling (vedtatt: %s)', (vedtatt) => {
+        const kontoer: KontoBeregningDto = {
+            ...KONTOER,
+            kontoer: [
+                { konto: 'FORELDREPENGER', dager: 150 },
+                { konto: 'AKTIVITETSFRI_KVOTE', dager: 50 },
+            ],
+        };
+        const perioder: UttakPeriode_fpoversikt[] = [
+            {
+                fom: '2026-01-05',
+                tom: '2026-01-09',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FORELDREPENGER',
+                morsAktivitet: vedtatt ? 'IKKE_OPPGITT' : 'ARBEID',
+                flerbarnsdager: false,
+                resultat: vedtatt
+                    ? { innvilget: true, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' }
+                    : undefined,
+            },
+            {
+                fom: '2026-01-12',
+                tom: '2026-01-23',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FORELDREPENGER',
+                morsAktivitet: vedtatt ? 'ARBEID' : 'IKKE_OPPGITT',
+                flerbarnsdager: false,
+                resultat: vedtatt
+                    ? { innvilget: true, trekkerDager: true, trekkerMinsterett: true, årsak: 'ANNET' }
+                    : undefined,
+            },
+        ];
+
+        const resultat = getBrukteDager(kontoer, perioder, '2026-01-12', 'fødsel');
+        const forventet = [
+            { konto: 'FORELDREPENGER', dager: 5 },
+            { konto: 'AKTIVITETSFRI_KVOTE', dager: 10 },
+        ];
+
+        expect(resultat.alle).toEqual(forventet);
+        expect(resultat.farMedmor.alle).toEqual(forventet);
+        expect(resultat.farMedmor.dagerTotalt).toBe(15);
+        expect(resultat.farMedmor.førTermin).toEqual([{ konto: 'FORELDREPENGER', dager: 5 }]);
+        expect(resultat.farMedmor.etterTermin).toEqual([{ konto: 'AKTIVITETSFRI_KVOTE', dager: 10 }]);
+        expect(resultat.mor.dagerTotalt).toBe(0);
+    });
+
+    it.each(['FORELDREPENGER', 'AKTIVITETSFRI_KVOTE'] as const)(
+        'beholder klassifiseringen når saken bare har %s',
+        (konto) => {
+            const kontoer: KontoBeregningDto = { ...KONTOER, kontoer: [{ konto, dager: 200 }] };
+            const periode: UttakPeriode_fpoversikt = {
+                fom: '2026-01-05',
+                tom: '2026-01-09',
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FORELDREPENGER',
+                morsAktivitet: 'IKKE_OPPGITT',
+                flerbarnsdager: false,
+            };
+
+            const resultat = getBrukteDager(kontoer, [periode], '2026-01-05', 'fødsel');
+
+            expect(resultat.alle).toEqual([{ konto, dager: 5 }]);
+            expect(resultat.farMedmor.dagerTotalt).toBe(5);
+        },
+    );
+
     it('teller en oppholdsdag som fedrekvote når mor har utsettelse samme dag', () => {
         const perioder: UttakPeriode_fpoversikt[] = [
             {
