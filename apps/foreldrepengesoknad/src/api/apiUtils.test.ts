@@ -200,14 +200,7 @@ describe('mapTilSøknadDto', () => {
         const søknadMedPerioder = mapTilSøknadDto(data, DEFAULT_SØKER_INFO);
         expect(søknadMedPerioder.uttaksplan.uttaksperioder!.length).toBe(1);
         expect(søknadMedPerioder.uttaksplan.uttaksperioder![0]!.fom).toBe('2021-01-01');
-        expect(søknadMedPerioder.uttaksplan.perioder).toEqual([
-            {
-                fom: '2021-01-01',
-                tom: '2021-01-10',
-                søker: { forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
-                annenPart: undefined,
-            },
-        ]);
+        expect(søknadMedPerioder.uttaksplan.perioder).toEqual([morsUttak, farsUttak]);
     });
 
     it('skal inkludere dekningsgrad og ønskerJustertUttakVedFødsel', () => {
@@ -251,10 +244,7 @@ describe('mapTilEndringssøknadDto', () => {
         // Endringstidspunktet er 2024-02-01 (første avvik), så berre perioder f.o.m. den datoen
         expect(endringssøknad.uttaksplan.uttaksperioder!.length).toBe(2);
         expect(endringssøknad.uttaksplan.uttaksperioder![0]!.fom).toBe('2024-02-01');
-        expect(endringssøknad.uttaksplan.perioder?.map((p) => [p.fom, p.søker?.kontoType])).toEqual([
-            ['2024-02-01', 'FELLESPERIODE'],
-            ['2024-03-01', 'MØDREKVOTE'],
-        ]);
+        expect(endringssøknad.uttaksplan.perioder).toEqual(nyePerioder);
     });
 
     it('skal leggje til FRI utsettelsesperiode ved gap på endringstidspunktet', () => {
@@ -277,13 +267,7 @@ describe('mapTilEndringssøknadDto', () => {
         expect(friPeriode).toBeDefined();
         expect(friPeriode!.fom).toBe('2024-02-01');
 
-        const friPeriodeNy = endringssøknad.uttaksplan.perioder?.find((p) => p.søker?.utsettelseÅrsak === 'FRI');
-        expect(friPeriodeNy).toEqual({
-            fom: '2024-02-01',
-            tom: friPeriode!.tom,
-            søker: { forelder: 'MOR', utsettelseÅrsak: 'FRI', flerbarnsdager: false },
-        });
-        expect(endringssøknad.uttaksplan.perioder?.map((p) => p.fom)).toEqual(['2024-02-01', '2024-03-01']);
+        expect(endringssøknad.uttaksplan.perioder).toEqual(nyePerioder);
     });
 
     // Scenario fra produksjon: far tok perioden rundt fødsel med 100 % samtidig uttak. Endringstidspunktet

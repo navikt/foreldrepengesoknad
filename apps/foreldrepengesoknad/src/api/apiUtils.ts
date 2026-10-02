@@ -23,7 +23,6 @@ import {
     Søkerrolle,
     UtsettelsesÅrsak,
     UtsettelseÅrsak_fpoversikt,
-    UttakPeriodeDto,
     UttakPeriodeDto_fpoversikt,
     Uttaksplanperiode,
     isAdoptertBarn,
@@ -117,27 +116,6 @@ export const getUttaksplanMedFriUtsettelsesperiode = (
 
     return uttaksplan;
 };
-
-const getPerioderMedFriUtsettelse = (
-    perioder: UttakPeriodeDto[],
-    endringstidspunkt: string,
-    forelder: NonNullable<UttakPeriodeDto['søker']>['forelder'],
-): UttakPeriodeDto[] => {
-    const friUtsettelse: UttakPeriodeDto = {
-        ...finnTidsromForFriUtsettelse(perioder, endringstidspunkt),
-        søker: { forelder, utsettelseÅrsak: 'FRI', flerbarnsdager: false },
-    };
-
-    return [...perioder, friUtsettelse].toSorted((p1, p2) => (dayjs(p1.fom).isBefore(p2.fom, 'day') ? -1 : 1));
-};
-
-const tilInnsendingsperioder = (perioder: UttakPeriodeDto_fpoversikt[]): UttakPeriodeDto[] =>
-    perioder.map(({ fom, tom, søker, annenPart }) => ({
-        fom,
-        tom,
-        søker: søker ? omitOne(søker, 'resultat') : undefined,
-        annenPart: annenPart ? omitOne(annenPart, 'resultat') : undefined,
-    }));
 
 const convertAttachmentsMapToArray = (vedlegg: VedleggDataType | undefined): Attachment[] => {
     if (!vedlegg) {
@@ -242,9 +220,11 @@ export const mapTilSøknadDto = (
         barn: cleanBarn(barn),
         annenForelder: cleanAnnenforelder(annenForelder),
         dekningsgrad,
+        // fpsoknad tek søkjaren sine periodar herifrå og lagrar annan part sine periodar i fp-oversikt, så
+        // perioder skal innehalda heile planen. Ved endringssøknad kuttar fpsoknad sjølv ved endringstidspunktet.
         uttaksplan: {
             uttaksperioder: midlertidigMappingAvUttaksplan(søkersPerioder, barn, annenForelder),
-            perioder: tilInnsendingsperioder(søkersPerioder),
+            perioder: uttaksplan,
             ønskerJustertUttakVedFødsel,
         },
         utenlandsopphold: [...(utenlandsoppholdSiste12Mnd ?? []), ...(utenlandsoppholdNeste12Mnd ?? [])],
@@ -304,7 +284,6 @@ export const mapTilEndringssøknadDto = (
 
     const perioderSomSendes = filtrerUtAvslåttePerioder(filtrerUtEøsPeriode(perioderForInnsending));
     const mappaUttaksperioder = midlertidigMappingAvUttaksplan(perioderSomSendes, barn, annenForelder);
-    const nyePerioder = tilInnsendingsperioder(perioderSomSendes);
 
     const harPeriodeVedEndringstidspunkt = perioderForInnsending.some((periode) =>
         dayjs(endringstidspunkt).isBetween(periode.fom, periode.tom, 'day', '[]'),
@@ -323,13 +302,7 @@ export const mapTilEndringssøknadDto = (
             uttaksperioder: skalLeggeTilFriUtsettelse
                 ? getUttaksplanMedFriUtsettelsesperiode(mappaUttaksperioder, endringstidspunkt)
                 : mappaUttaksperioder,
-            perioder: skalLeggeTilFriUtsettelse
-                ? getPerioderMedFriUtsettelse(
-                      nyePerioder,
-                      endringstidspunkt,
-                      søkersituasjon.rolle === 'mor' ? 'MOR' : 'FAR_MEDMOR',
-                  )
-                : nyePerioder,
+            perioder: uttaksplan,
             ønskerJustertUttakVedFødsel,
         },
     };
