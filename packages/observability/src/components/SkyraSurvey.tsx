@@ -6,8 +6,10 @@ import { BodyShort, ExpansionCard, HStack, Skeleton, VStack } from '@navikt/ds-r
 
 import './SkyraSurvey.css';
 
-type SkyraEvent = { type: 'surveyCompleted'; slug: string };
-type SurveyStatus = 'loading' | 'ready' | 'error' | 'unavailable';
+type SkyraEvent =
+    | { type: 'surveyStarted'; slug: string }
+    | { type: 'surveyCompleted'; slug: string }
+    | { type: 'surveyRejected'; slug: string };
 
 declare global {
     var skyra:
@@ -27,7 +29,8 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
     const intl = useIntl();
     const resolvedTitle = intl.formatMessage({ id: 'SkyraSurvey.Tittel' });
     const surveyKey = `skyra-survey-${slug}-completed`;
-    const [surveyStatus, setSurveyStatus] = useState<SurveyStatus>('loading');
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [hasFailed, setHasFailed] = useState(false);
     const [hasCompletedSurvey, setHasCompletedSurvey] = useState(() => sessionStorage.getItem(surveyKey) === 'true');
     const [isOpen, setIsOpen] = useState(true);
 
@@ -35,6 +38,15 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
         if (sessionStorage.getItem(surveyKey) === 'true') {
             return;
         }
+
+        let hasLoaded = false;
+
+        const unsubscribeSurveyStarted = globalThis.skyra?.on('surveyStarted', (event) => {
+            if (event.slug === slug) {
+                hasLoaded = true;
+                setIsLoaded(true);
+            }
+        });
 
         const unsubscribeSurveyCompleted = globalThis.skyra?.on('surveyCompleted', (event) => {
             if (event.slug === slug) {
@@ -44,8 +56,23 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
             }
         });
 
+        const unsubscribeSurveyRejected = globalThis.skyra?.on('surveyRejected', (event) => {
+            if (event.slug === slug) {
+                setHasFailed(true);
+            }
+        });
+
+        const timeout = setTimeout(() => {
+            if (!hasLoaded) {
+                setHasFailed(true);
+            }
+        }, 30000);
+
         return () => {
+            unsubscribeSurveyStarted?.();
             unsubscribeSurveyCompleted?.();
+            unsubscribeSurveyRejected?.();
+            clearTimeout(timeout);
         };
     }, [slug]);
 
@@ -53,30 +80,25 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
         return null;
     }
 
-    // Visningsreglene til Skyra matcher ikke bruker/side, eller undersøkelsen finnes ikke – vis ingenting.
-    if (surveyStatus === 'unavailable') {
+    if (hasFailed) {
         return null;
     }
 
-    let surveyContent = null;
+    let surveyContent;
     if (hasCompletedSurvey) {
         surveyContent = (
             <BodyShort>
                 <FormattedMessage id="SkyraSurvey.Takk" />
             </BodyShort>
         );
-    } else if (surveyStatus === 'error') {
-        surveyContent = (
-            <BodyShort>
-                <FormattedMessage id="SkyraSurvey.Feil" />
-            </BodyShort>
-        );
-    } else if (surveyStatus === 'loading') {
+    } else if (isLoaded) {
+        surveyContent = null;
+    } else {
         surveyContent = (
             <VStack gap="space-8">
                 <Skeleton variant="text" />
                 <Skeleton variant="rounded" width="100%" height={30} />
-                <HStack justify="end">
+                <HStack justify={'end'}>
                     <Skeleton variant="rounded" width="30%" height={50} />
                 </HStack>
             </VStack>
@@ -102,19 +124,15 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
             <ExpansionCard.Content>
                 <div>
                     {surveyContent}
-                    {!hasCompletedSurvey && surveyStatus !== 'error' && (
+                    {!hasCompletedSurvey && (
                         // @ts-expect-error skyra-survey er et custom element
                         <skyra-survey
                             style={{
-                                opacity: surveyStatus === 'ready' ? 1 : 0,
-                                position: surveyStatus === 'ready' ? 'relative' : 'absolute',
-                                pointerEvents: surveyStatus === 'ready' ? 'auto' : 'none',
+                                opacity: isLoaded ? 1 : 0,
+                                position: isLoaded ? 'relative' : 'absolute',
+                                pointerEvents: isLoaded ? 'auto' : 'none',
                             }}
                             slug={slug}
-                            inline
-                            onReady={() => setSurveyStatus('ready')}
-                            onError={() => setSurveyStatus('error')}
-                            onUnavailable={() => setSurveyStatus('unavailable')}
                         />
                     )}
                 </div>
