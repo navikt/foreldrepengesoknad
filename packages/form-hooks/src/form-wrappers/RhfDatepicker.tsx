@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import React, { ComponentProps, JSX, ReactNode, useCallback, useMemo, useState } from 'react';
+import React, { ComponentProps, JSX, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { FieldValues, UseControllerProps, useController, useFormContext } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
@@ -66,10 +66,33 @@ export const RhfDatepicker = <T extends FieldValues>({
     const defaultDate = field.value ? dayjs(field.value, ISO_DATE_FORMAT, true).format(DDMMYYYY_DATE_FORMAT) : '';
     const [fieldValue, setFieldValue] = useState<string>(() => (isValidDateString(defaultDate) ? defaultDate : ''));
 
-    const { datepickerProps, inputProps } = useDatepicker({
+    const feltdato = dayjs(field.value, ISO_DATE_FORMAT, true);
+    const gyldigIso: string | undefined = feltdato.isValid() ? feltdato.format(ISO_DATE_FORMAT) : undefined;
+
+    const [forrigeFeltverdi, setForrigeFeltverdi] = useState<unknown>(field.value);
+    if (field.value !== forrigeFeltverdi) {
+        setForrigeFeltverdi(field.value);
+        const inputdato = dayjs(fieldValue, DDMMYYYY_DATE_FORMAT, true);
+        if (feltdato.isValid()) {
+            if (!(inputdato.isValid() && inputdato.isSame(feltdato, 'day'))) {
+                setFieldValue(feltdato.format(DDMMYYYY_DATE_FORMAT));
+            }
+        } else {
+            const nyTekst = typeof field.value === 'string' ? field.value : '';
+            if (nyTekst !== fieldValue) {
+                setFieldValue(nyTekst);
+            }
+        }
+    }
+
+    const { datepickerProps, inputProps, selectedDay, setSelected } = useDatepicker({
         onDateChange: (date) => {
             if (date !== undefined) {
                 const verdi = dayjs(date).format(ISO_DATE_FORMAT);
+                // setSelected kaller også onDateChange når kalenderen synkroniseres fra RHF.
+                if (verdi === field.value) {
+                    return;
+                }
                 if (onChange) {
                     onChange(verdi);
                 }
@@ -77,12 +100,19 @@ export const RhfDatepicker = <T extends FieldValues>({
                 setFieldValue(dayjs(verdi, ISO_DATE_FORMAT, true).format(DDMMYYYY_DATE_FORMAT));
             }
         },
-        defaultSelected:
-            field.value && isValidDateString(defaultDate)
-                ? dayjs(field.value, ISO_DATE_FORMAT, true).toDate()
-                : undefined,
         defaultMonth: defaultMonth ? dayjs(defaultMonth).toDate() : undefined,
     });
+
+    // defaultSelected utelates for at en tømt kalender skal åpne på defaultMonth, ikke den opprinnelige datoen.
+    useEffect(() => {
+        if (gyldigIso) {
+            if (!selectedDay || dayjs(selectedDay).format(ISO_DATE_FORMAT) !== gyldigIso) {
+                setSelected(dayjs(gyldigIso, ISO_DATE_FORMAT, true).toDate());
+            }
+        } else if (selectedDay) {
+            setSelected(undefined);
+        }
+    }, [gyldigIso, selectedDay, setSelected]);
 
     const onChangeInput = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {

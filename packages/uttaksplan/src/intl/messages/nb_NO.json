@@ -165,6 +165,8 @@
     "TidsperiodeSpørsmål.tom": "Til og med dato",
     "TidsperiodeSpørsmål.uker": "Uker",
     "TidsperiodeSpørsmål.dager": "Dager",
+    "TidsperiodeSpørsmål.antall.ugyldig": "Skriv et heltall som er minst {min}.",
+    "TidsperiodeSpørsmål.antall.forLangPeriode": "Perioden kan ikke slutte etter {dato}.",
     "TidsperiodeSpørsmål.plussUke": "Legg til en uke",
     "TidsperiodeSpørsmål.minusUke": "Fjern en uke",
     "TidsperiodeSpørsmål.plussDag": "Legg til en dag",

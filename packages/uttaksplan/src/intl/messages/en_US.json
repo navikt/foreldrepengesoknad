@@ -165,6 +165,8 @@
     "TidsperiodeSpørsmål.tom": "To date",
     "TidsperiodeSpørsmål.uker": "Weeks",
     "TidsperiodeSpørsmål.dager": "Days",
+    "TidsperiodeSpørsmål.antall.ugyldig": "Enter a whole number that is at least {min}.",
+    "TidsperiodeSpørsmål.antall.forLangPeriode": "The period cannot end after {dato}.",
     "TidsperiodeSpørsmål.plussUke": "Add one week",
     "TidsperiodeSpørsmål.minusUke": "Remove one week",
     "TidsperiodeSpørsmål.plussDag": "Add one day",
