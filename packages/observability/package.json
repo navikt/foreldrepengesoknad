@@ -12,7 +12,7 @@
         "clean": "rm -rf ./dist ./node_modules ./.turbo"
     },
     "dependencies": {
-        "@nais/apm": "0.6.3",
+        "@nais/apm": "0.7.2",
         "@navikt/aksel-icons": "catalog:",
         "@navikt/ds-react": "catalog:",
         "@navikt/fp-types": "workspace:*",
