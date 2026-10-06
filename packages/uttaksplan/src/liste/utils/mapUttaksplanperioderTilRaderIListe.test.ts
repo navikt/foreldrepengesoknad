@@ -87,4 +87,17 @@ describe('Skal gruppere perioder på søker og ikke kvote', () => {
         expect(uttaksplanperioderPerRadIListe[1]).toHaveLength(1);
         expect(uttaksplanperioderPerRadIListe[2]).toHaveLength(1);
     });
+
+    it('Skal ikke gruppere påfølgende EØS-perioder på samme rad', () => {
+        const perioder: Uttaksplanperiode[] = [
+            { fom: '2026-08-03', tom: '2026-08-07', annenPartEøs: { kontoType: 'FEDREKVOTE', trekkdager: 5 } },
+            { fom: '2026-08-10', tom: '2026-08-14', annenPartEøs: { kontoType: 'FELLESPERIODE', trekkdager: 5 } },
+        ];
+
+        const uttaksplanperioderPerRadIListe = mapUttaksplanperioderTilRaderIListe(perioder, '2026-06-01');
+
+        expect(uttaksplanperioderPerRadIListe).toHaveLength(2);
+        expect(uttaksplanperioderPerRadIListe[0]).toHaveLength(1);
+        expect(uttaksplanperioderPerRadIListe[1]).toHaveLength(1);
+    });
 });

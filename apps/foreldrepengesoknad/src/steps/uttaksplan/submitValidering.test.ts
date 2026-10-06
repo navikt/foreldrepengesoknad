@@ -2,6 +2,7 @@ import { EøsUttakDto_fpoversikt, UttakDto_fpoversikt, UttakPeriodeDto_fpoversik
 
 import {
     erSammePeriodeInkludertDatoer,
+    finnNyeEllerEndraPerioder,
     harBrukerKunSlettetPerioder,
     harMinstEnUttaksEllerOverføringsperiode,
 } from './submitValidering';
@@ -186,6 +187,62 @@ describe('harMinstEnUttaksEllerOverføringsperiode', () => {
 
     it('returnerer false når planen kun inneholder EØS-perioder', () => {
         expect(harMinstEnUttaksEllerOverføringsperiode([lagEøsPeriode()])).toBe(false);
+    });
+});
+
+describe('finnNyeEllerEndraPerioder og harBrukerKunSlettetPerioder ved samtidig uttak', () => {
+    const lagSamtidig = (søkerResultat = innvilget): UttakPeriodeDto_fpoversikt => ({
+        fom: '2024-07-01',
+        tom: '2024-07-12',
+        søker: {
+            forelder: 'MOR',
+            kontoType: 'FELLESPERIODE',
+            flerbarnsdager: false,
+            samtidigUttak: 50,
+            resultat: søkerResultat,
+        },
+        annenPart: {
+            forelder: 'FAR_MEDMOR',
+            kontoType: 'FEDREKVOTE',
+            flerbarnsdager: false,
+            samtidigUttak: 50,
+            resultat: innvilget,
+        },
+    });
+    const samtidig = lagSamtidig();
+    const utanSøker = { fom: samtidig.fom, tom: samtidig.tom, annenPart: samtidig.annenPart };
+    const seinare = lagPeriode({ fom: '2024-07-15', tom: '2024-07-26' });
+
+    it('reknar ikkje annan part si uendra side som ny når søkjaren slettar si side', () => {
+        const opprinneligPlan = [samtidig, seinare];
+        const perioder = [utanSøker, seinare];
+
+        expect(finnNyeEllerEndraPerioder(perioder, opprinneligPlan)).toEqual([]);
+        expect(harBrukerKunSlettetPerioder(perioder, opprinneligPlan)).toBe(true);
+    });
+
+    it('reknar ikkje annan part si side som ny når søkjaren berre har endra delar av intervallet', () => {
+        const opprinneligPlan = [samtidig, seinare];
+        const endraSøker = { ...samtidig, tom: '2024-07-05', søker: { ...samtidig.søker!, resultat: undefined } };
+        const restUtanSøker = { ...utanSøker, fom: '2024-07-08' };
+
+        expect(finnNyeEllerEndraPerioder([endraSøker, restUtanSøker, seinare], opprinneligPlan)).toEqual([endraSøker]);
+    });
+
+    it('reknar annan part si side som ny når ho ikkje finst i den opprinnelege planen', () => {
+        const nyAnnenPart = {
+            fom: '2024-08-01',
+            tom: '2024-08-09',
+            annenPart: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
+        } satisfies UttakPeriodeDto_fpoversikt;
+
+        expect(finnNyeEllerEndraPerioder([samtidig, seinare, nyAnnenPart], [samtidig, seinare])).toEqual([nyAnnenPart]);
+    });
+
+    it('tek berre med søkjaren sine periodar utan resultat når det ikkje finst nokon opprinneleg plan', () => {
+        const ny = lagPeriode({ fom: '2024-08-01', tom: '2024-08-09', resultat: undefined });
+
+        expect(finnNyeEllerEndraPerioder([samtidig, ny], undefined)).toEqual([ny]);
     });
 });
 

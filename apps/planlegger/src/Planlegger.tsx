@@ -18,9 +18,17 @@ import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettU
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { KontoBeregningResultatDto, OmBarnetPlanlegger } from '@navikt/fp-types';
 import { SimpleErrorPage } from '@navikt/fp-ui';
-import { decompressFromUrl } from '@navikt/fp-utils';
+import { decompressFromUrl, konverterFlatePerioderTilIntervall } from '@navikt/fp-utils';
 
 import { PlanleggerRouter } from './PlanleggerRouter';
+
+const lesPlanleggerdata = (json: string): ContextDataMap => {
+    const data = JSON.parse(json) as ContextDataMap;
+    const uttaksplan = data[ContextDataType.UTTAKSPLAN];
+    return uttaksplan
+        ? { ...data, [ContextDataType.UTTAKSPLAN]: konverterFlatePerioderTilIntervall(uttaksplan) }
+        : data;
+};
 
 const finnBrukerRolle = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett) => {
     return harMorRett(hvemHarRett, hvemPlanlegger) ? 'MOR' : 'FAR';
@@ -123,7 +131,7 @@ export const PlanleggerDataInit = () => {
 
     const dataParam = new URLSearchParams(locations.search).get('data');
     const decompressedData = dataParam ? decompressFromUrl(dataParam) : undefined;
-    const data = decompressedData ? (JSON.parse(decompressedData) as ContextDataMap) : undefined;
+    const data = decompressedData ? lesPlanleggerdata(decompressedData) : undefined;
 
     // Denne useEffecten kjøres for at skyra-undersøkelsen skal trigges inline på oppsummering-siden
     useEffect(() => {

@@ -14,7 +14,7 @@ import {
     SøkersituasjonFp,
     UttakPeriodeDto_fpoversikt,
 } from '@navikt/fp-types';
-import { decompressFromUrl } from '@navikt/fp-utils';
+import { decompressFromUrl, konverterFlatePerioderTilIntervall } from '@navikt/fp-utils';
 
 import { ContextDataMap, ContextDataType } from './FpDataContext';
 
@@ -83,7 +83,7 @@ const mapPlanleggerDataToSøknadState = (
     }
 
     if (uttaksplan) {
-        result[ContextDataType.UTTAKSPLAN] = uttaksplan;
+        result[ContextDataType.UTTAKSPLAN] = konverterFlatePerioderTilIntervall(uttaksplan);
     }
 
     return result;

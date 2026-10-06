@@ -9,6 +9,10 @@ import { erAvslåttPeriode, erPrematuruker, erUtsettelsesperiode } from '../../u
 const erSamtidigUttak = (periode: Uttaksplanperiode): boolean =>
     erPeriodeDto(periode) && !!periode.søker && !!periode.annenPart;
 
+// EØS-periodar er låste og skal ikkje slåast saman med andre periodar, slik at
+// sletteknappen ikkje blir vist for dei (sjå erUttaksplanperiodeEøs).
+const harEøsUttak = (periode: Uttaksplanperiode): boolean => erPeriodeDto(periode) && !!periode.annenPartEøs;
+
 export const mapUttaksplanperioderTilRaderIListe = (
     saksperioderInkludertHull: Uttaksplanperiode[],
     familiehendelsesdato: string,
@@ -30,12 +34,13 @@ export const mapUttaksplanperioderTilRaderIListe = (
     while (index < saksperioderInkludertHull.length) {
         const periode = saksperioderInkludertHull[index]!;
 
-        // Hull / Prematuruker / Utsettelse / samtidig uttak -> alltid egen rad
+        // Hull / Prematuruker / Utsettelse / samtidig uttak / EØS -> alltid egen rad
         if (
             erUttaksplanHull(periode) ||
             erPrematuruker(periode) ||
             erUtsettelsesperiode(periode) ||
-            erSamtidigUttak(periode)
+            erSamtidigUttak(periode) ||
+            harEøsUttak(periode)
         ) {
             avsluttAktivRad();
             rader.push([periode]);

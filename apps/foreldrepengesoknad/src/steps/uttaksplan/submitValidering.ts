@@ -113,29 +113,74 @@ export const useFinnFørsteSubmitFeilmelding = ({
     };
 };
 
+// Søkjaren si side og annan part si side i same intervall må vurderast kvar for seg: slettar søkjaren
+// berre si eiga side av eit samtidig uttak, står annan part si uendra side att i eit intervall som
+// elles ikkje finst i den opprinnelege planen.
+const finnSøkersSide = (perioder: UttaksplanPerioder): UttaksplanPerioder =>
+    perioder.flatMap(({ fom, tom, søker }) => (søker ? [{ fom, tom, søker }] : []));
+
+const erSøkersSideNyEllerEndra = (periode: UttaksplanPerioder[number], opprinneligPlan: UttaksplanPerioder) => {
+    const { fom, tom, søker } = periode;
+    return (
+        søker !== undefined &&
+        (søker.resultat === undefined ||
+            finnSøkersSide(opprinneligPlan).every(
+                (opprinnelig) => !erSammePeriodeInkludertDatoer({ fom, tom, søker }, opprinnelig),
+            ))
+    );
+};
+
+// Annan part si side kan bli delt opp når søkjaren endrar si side av eit samtidig uttak, så her held
+// det at eit opprinneleg intervall med lik annan part dekkjer heile perioden.
+const erAnnenPartsSideNyEllerEndra = (periode: UttaksplanPerioder[number], opprinneligPlan: UttaksplanPerioder) => {
+    const { fom, tom, annenPart } = periode;
+    return (
+        annenPart !== undefined &&
+        opprinneligPlan.every(
+            (opprinnelig) =>
+                opprinnelig.fom > fom ||
+                opprinnelig.tom < tom ||
+                !erPerioderEkslFomTomLike({ fom, tom, annenPart }, { fom, tom, annenPart: opprinnelig.annenPart }),
+        )
+    );
+};
+
+export const finnNyeEllerEndraPerioder = (
+    perioder: UttaksplanPerioder | undefined,
+    opprinneligPlan: UttaksplanPerioder | undefined,
+): UttaksplanPerioder => {
+    if (!opprinneligPlan) {
+        return perioder?.filter((periode) => periode.søker !== undefined && periode.søker.resultat === undefined) ?? [];
+    }
+    return (
+        perioder?.filter(
+            (periode) =>
+                erSøkersSideNyEllerEndra(periode, opprinneligPlan) ||
+                erAnnenPartsSideNyEllerEndra(periode, opprinneligPlan),
+        ) ?? []
+    );
+};
+
 export const harBrukerKunSlettetPerioder = (
     perioder: UttaksplanPerioder | undefined,
     opprinneligPlan: UttaksplanPerioder | undefined,
 ) => {
-    if (!opprinneligPlan) {
+    if (!opprinneligPlan || !perioder) {
         return false;
     }
 
-    const erKunSaksperioder = perioder?.every(
-        (periode) => periode.søker === undefined || periode.søker.resultat !== undefined,
+    const søkersPerioder = finnSøkersSide(perioder);
+    const søkersOpprinneligePerioder = finnSøkersSide(opprinneligPlan);
+
+    const erKunSaksperioder = søkersPerioder.every((periode) => periode.søker?.resultat !== undefined);
+
+    return (
+        erKunSaksperioder &&
+        søkersPerioder.length < søkersOpprinneligePerioder.length &&
+        søkersPerioder.every((periode) =>
+            søkersOpprinneligePerioder.some((opprinnelig) => erSammePeriodeInkludertDatoer(periode, opprinnelig)),
+        )
     );
-
-    if (erKunSaksperioder) {
-        const harSlettetPeriode = perioder
-            ? perioder.length < opprinneligPlan.length &&
-              perioder.every((periode) =>
-                  opprinneligPlan.some((opprinnelig) => erSammePeriodeInkludertDatoer(periode, opprinnelig)),
-              )
-            : false;
-        return harSlettetPeriode;
-    }
-
-    return false;
 };
 
 export const erSammePeriodeInkludertDatoer = (a: UttaksplanPerioder[number], b: UttaksplanPerioder[number]) =>
