@@ -132,8 +132,14 @@ export const erOverføringsperiode = (periode: Uttaksplanperiode) =>
 export const erOppholdsperiode = (periode: Uttaksplanperiode) =>
     erPeriodeDto(periode) && Uttaksperioden.erOppholdsperiode(periode);
 
-export const erAvslåttPeriode = (periode: Uttaksplanperiode) =>
-    erPeriodeDto(periode) && finnParter(periode).some((part) => Uttaksperioden.erAvslåttPeriode(part));
+// Eit samtidig uttak der berre den eine parten har fått avslag, er ikkje eit avslått intervall.
+export const erAvslåttPeriode = (periode: Uttaksplanperiode) => {
+    if (!erPeriodeDto(periode)) {
+        return false;
+    }
+    const parter = finnParter(periode);
+    return parter.length > 0 && parter.every((part) => Uttaksperioden.erAvslåttPeriode(part));
+};
 
 // Dei to partane (søker/annenPart) ein periode kan ha uttak for. EØS-parten er ikkje ein
 // UttakDto_fpoversikt-part og handterast difor separat der det trengst (t.d. kvoteBeregning).

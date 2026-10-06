@@ -548,6 +548,43 @@ describe('UttaksplanListe', () => {
         expect(screen.getByText('Hanne skal ha 50 % foreldrepenger')).toBeInTheDocument();
     });
 
+    it('Skal ikkje vise heile samtidig uttak som avslått når berre den eine parten har fått avslag', async () => {
+        render(
+            <FarSøkerEtterAtMorHarSøkt
+                perioder={[
+                    {
+                        fom: '2024-04-04',
+                        tom: '2024-04-18',
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FEDREKVOTE',
+                            samtidigUttak: 50,
+                            flerbarnsdager: false,
+                        },
+                        annenPart: {
+                            forelder: 'MOR',
+                            kontoType: 'MØDREKVOTE',
+                            samtidigUttak: 50,
+                            flerbarnsdager: false,
+                            resultat: {
+                                innvilget: false,
+                                trekkerDager: true,
+                                trekkerMinsterett: false,
+                                årsak: 'ANNET',
+                            },
+                        },
+                    },
+                ]}
+            />,
+        );
+
+        expect(await screen.findByText('Hans skal ha 50 % foreldrepenger')).toBeInTheDocument();
+        // Berre innhaldet for Hanne sin avslåtte del, ikkje overskrifta på heile rada.
+        expect(screen.getAllByText('Trekte dager')).toHaveLength(1);
+        expect(screen.getByText('Endre')).toBeInTheDocument();
+        expect(screen.getByText('Slett')).toBeInTheDocument();
+    });
+
     it('Mors fellesperiode skal vises som "Fellesperiode" i fars listevisning, ikke "med aktivitetskrav"', async () => {
         render(<FarSøkerEtterAtMorHarSøkt />);
 

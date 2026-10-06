@@ -1,6 +1,7 @@
 import { UttakDto_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import {
+    erAvslåttPeriode,
     finnAntallTidelerÅTrekkeForPart,
     harPeriodeDerMorsAktivitetIkkeErValgt,
     harPeriodeMedUkjentGraderingsaktivitet,
@@ -326,5 +327,37 @@ describe('finnAntallTidelerÅTrekkeForPart', () => {
         );
 
         expect(tideler).toBe(23);
+    });
+});
+
+describe('erAvslåttPeriode', () => {
+    const innvilget: UttakDto_fpoversikt = {
+        forelder: 'FAR_MEDMOR',
+        kontoType: 'FEDREKVOTE',
+        samtidigUttak: 50,
+        flerbarnsdager: false,
+        resultat: { innvilget: true, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+    };
+    const avslått: UttakDto_fpoversikt = {
+        forelder: 'MOR',
+        kontoType: 'MØDREKVOTE',
+        samtidigUttak: 50,
+        flerbarnsdager: false,
+        resultat: { innvilget: false, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+    };
+
+    it('skal ikkje rekna samtidig uttak som avslått når berre den eine parten er avslått', () => {
+        expect(erAvslåttPeriode({ fom: FOM, tom: FOM, søker: innvilget, annenPart: avslått })).toBe(false);
+    });
+
+    it('skal rekna perioden som avslått når alle partar er avslått', () => {
+        expect(
+            erAvslåttPeriode({ fom: FOM, tom: FOM, søker: { ...avslått, forelder: 'FAR_MEDMOR' }, annenPart: avslått }),
+        ).toBe(true);
+        expect(erAvslåttPeriode({ fom: FOM, tom: FOM, søker: avslått })).toBe(true);
+    });
+
+    it('skal ikkje rekna periode utan partar som avslått', () => {
+        expect(erAvslåttPeriode({ fom: FOM, tom: FOM })).toBe(false);
     });
 });
