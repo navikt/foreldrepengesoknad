@@ -131,6 +131,7 @@ const uttaksplanOptions = (data?: FellesUttaksplanRequest_fpoversikt) =>
         queryKey: ['UTTAKSPLAN', data],
         queryFn: () => jsonEllerNull<FellesUttaksplanDto_fpoversikt>(ky.post(API_URLS.uttaksplan, { json: data })),
         select: (uttaksplan) => uttaksplan ?? undefined,
+        throwOnError: true,
     });
 
 export const useUttaksplanOptions = () => {
