@@ -74,10 +74,10 @@ export const FordelingSteg = ({ person, arbeidsforhold, mellomlagreSøknadOgNavi
     const eksisterendeVedtakAnnenPart = annenPartHarVedtak(uttaksplanQuery.data) ? uttaksplanQuery.data : undefined;
     const uttaksplanAnnenPart = useMemo(
         () =>
-            uttaksplanQuery.data?.perioder.flatMap(({ fom, tom, annenPart }) =>
+            eksisterendeVedtakAnnenPart?.perioder.flatMap(({ fom, tom, annenPart }) =>
                 annenPart ? [{ fom, tom, annenPart }] : [],
             ),
-        [uttaksplanQuery.data],
+        [eksisterendeVedtakAnnenPart],
     );
 
     const kontoerOptions = useStønadsKontoerOptions();

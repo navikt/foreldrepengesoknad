@@ -24,7 +24,7 @@ import {
 } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { getPeriodeTittel, uttaksperiodeKanJusteresVedFødsel } from './OppsummeringUtils';
+import { uttaksperiodeKanJusteresVedFødsel } from './OppsummeringUtils';
 import { Overføringsperiodedetaljer } from './detaljer/Overføringsperiodedetaljer';
 import { Uttaksperiodedetaljer } from './detaljer/Uttaksperiodedetaljer';
 import { Utsettelsesperiodedetaljer } from './detaljer/Uttsettelsesperiodedetaljer';
@@ -37,11 +37,8 @@ interface Props {
 export const UttaksplanOppsummeringsliste = ({ navnPåForeldre, registrerteArbeidsforhold }: Props) => {
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
 
-    // Ei oppholdsperiode (periode.søker er udefinert, periode.annenPart er sett) er strukturelt eit
-    // hol i søkjaren sin eigen tidslinje der annan part tek ut, og høyrer difor heime i søkjaren si
-    // liste, akkurat som før då dette var ein eigen rad-type i søkjaren sin flate periodeliste.
     const søkersPerioder = filtrerBortPerioderUtenTrekkdager(
-        uttaksplan.filter((periode) => periode.søker !== undefined || Uttaksperioden.erOppholdsperiode(periode)),
+        uttaksplan.filter((periode) => periode.søker !== undefined),
         true,
     );
 
@@ -239,27 +236,6 @@ const UttaksplanListe = ({
                                                 periode={part}
                                                 navnPåForeldre={navnPåForeldre}
                                             />
-                                        </FormSummary.Value>
-                                    </FormSummary.Answer>
-                                );
-                            }
-                            if (erSøker && Uttaksperioden.erOppholdsperiode(periode)) {
-                                return (
-                                    <FormSummary.Answer key={lagKeyFraPeriode(periode, part)}>
-                                        <FormSummary.Label>
-                                            {formatTidsperiode(periode.fom, periode.tom)}
-                                        </FormSummary.Label>
-                                        <FormSummary.Value>
-                                            {getPeriodeTittel(
-                                                intl,
-                                                periode,
-                                                part,
-                                                navnPåForeldre,
-                                                familiehendelsesdato,
-                                                termindato,
-                                                søkersituasjon.situasjon,
-                                                søkerErFarEllerMedmor,
-                                            )}
                                         </FormSummary.Value>
                                     </FormSummary.Answer>
                                 );

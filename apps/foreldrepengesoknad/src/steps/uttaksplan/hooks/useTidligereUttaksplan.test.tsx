@@ -49,6 +49,13 @@ const PERIODER: UttakPeriodeDto_fpoversikt[] = [
     },
 ];
 
+const INNVILGET = {
+    innvilget: true,
+    trekkerDager: true,
+    trekkerMinsterett: false,
+    årsak: 'ANNET',
+} as const;
+
 const lagUttaksplan = (perioder: UttakPeriodeDto_fpoversikt[]): FellesUttaksplanDto_fpoversikt => ({
     antallBarn: 1,
     dekningsgrad: 'HUNDRE',
@@ -80,13 +87,49 @@ const getWrapper = (
 };
 
 describe('useTidligereUttaksplan', () => {
-    it('returnerer periodane frå uttaksplan-endepunktet', () => {
+    it('returnerer berre annan part sitt vedtak når ingen eksisterande sak er valt', () => {
+        const samtidig: UttakPeriodeDto_fpoversikt = {
+            fom: '2025-02-03',
+            tom: '2025-02-14',
+            søker: { forelder: 'MOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false, samtidigUttak: 50 },
+            annenPart: {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FELLESPERIODE',
+                flerbarnsdager: false,
+                samtidigUttak: 50,
+                resultat: INNVILGET,
+            },
+        };
+        const eøs: UttakPeriodeDto_fpoversikt = {
+            fom: '2025-03-03',
+            tom: '2025-03-14',
+            annenPartEøs: { kontoType: 'FELLESPERIODE', trekkdager: 10 },
+        };
+
+        const { result } = renderHook(() => useTidligereUttaksplan(), {
+            wrapper: getWrapper(lagUttaksplan([PERIODER[0]!, samtidig, eøs])),
+        });
+
+        expect(result.current.perioder).toEqual([
+            { fom: samtidig.fom, tom: samtidig.tom, annenPart: samtidig.annenPart },
+        ]);
+        expect(result.current.isLoading).toBe(false);
+    });
+
+    it('ignorerer annan part sine periodar utan resultat når ingen eksisterande sak er valt', () => {
         const { result } = renderHook(() => useTidligereUttaksplan(), {
             wrapper: getWrapper(lagUttaksplan(PERIODER)),
         });
 
+        expect(result.current.perioder).toBeUndefined();
+    });
+
+    it('returnerer alle periodane når ei eksisterande sak er valt', () => {
+        const { result } = renderHook(() => useTidligereUttaksplan(), {
+            wrapper: getWrapper(lagUttaksplan(PERIODER), { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER }),
+        });
+
         expect(result.current.perioder).toEqual(PERIODER);
-        expect(result.current.isLoading).toBe(false);
     });
 
     it('returnerer undefined når uttaksplanen ikkje har periodar', () => {
