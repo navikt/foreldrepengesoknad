@@ -221,7 +221,7 @@ export const mapTilSøknadDto = (
         annenForelder: cleanAnnenforelder(annenForelder),
         dekningsgrad,
         // fpsoknad tek søkjaren sine periodar herifrå og lagrar annan part sine periodar i fp-oversikt, så
-        // perioder skal innehalda heile planen. Ved endringssøknad kuttar fpsoknad sjølv ved endringstidspunktet.
+        // perioder skal innehalda heile planen.
         uttaksplan: {
             uttaksperioder: midlertidigMappingAvUttaksplan(søkersPerioder, barn, annenForelder),
             perioder: uttaksplan,
@@ -290,6 +290,17 @@ export const mapTilEndringssøknadDto = (
     );
     const skalLeggeTilFriUtsettelse = endringstidspunkt && !harPeriodeVedEndringstidspunkt;
 
+    // Midlertidig: perioder blir kutta på same måte som uttaksperioder, slik master gjorde, til
+    // backend sjølv kuttar ved endringstidspunktet.
+    const perioder = endringstidspunkt
+        ? finnPerioderFraOgMedEndringstidspunkt(
+              uttaksplan,
+              perioderForInnsending,
+              endringstidspunkt,
+              søkersituasjon.rolle === 'mor' ? 'MOR' : 'FAR_MEDMOR',
+          )
+        : uttaksplan;
+
     return {
         søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
         saksnummer: valgtEksisterendeSaksnr,
@@ -302,11 +313,50 @@ export const mapTilEndringssøknadDto = (
             uttaksperioder: skalLeggeTilFriUtsettelse
                 ? getUttaksplanMedFriUtsettelsesperiode(mappaUttaksperioder, endringstidspunkt)
                 : mappaUttaksperioder,
-            perioder: uttaksplan,
+            perioder,
             ønskerJustertUttakVedFødsel,
         },
     };
 };
+
+const finnPerioderFraOgMedEndringstidspunkt = (
+    uttaksplan: UttakPeriodeDto_fpoversikt[],
+    søkersPerioderForInnsending: UttakPeriodeDto_fpoversikt[],
+    endringstidspunkt: string,
+    søkersRolle: 'MOR' | 'FAR_MEDMOR',
+): UttakPeriodeDto_fpoversikt[] => {
+    const førsteFom = notEmpty(
+        [endringstidspunkt, ...søkersPerioderForInnsending.map((periode) => periode.fom)].toSorted((a, b) =>
+            a.localeCompare(b),
+        )[0],
+    );
+    const perioder = filtrerPerioderFraOgMedEndringstidspunkt(sorterPerioder(uttaksplan), førsteFom);
+
+    const periodeVedEndringstidspunkt = perioder.find((periode) =>
+        dayjs(endringstidspunkt).isBetween(periode.fom, periode.tom, 'day', '[]'),
+    );
+    if (periodeVedEndringstidspunkt?.søker) {
+        return perioder;
+    }
+
+    const fri = { forelder: søkersRolle, utsettelseÅrsak: 'FRI', flerbarnsdager: false } as const;
+
+    if (periodeVedEndringstidspunkt === undefined) {
+        return sorterPerioder([
+            ...perioder,
+            { ...finnTidsromForFriUtsettelse(perioder, endringstidspunkt), søker: fri },
+        ]);
+    }
+
+    // Søkjaren har fjerna sin del av eit intervall som annan part framleis har uttak i. Intervallet
+    // blir kutta ved endringstidspunktet, og søkjaren får FRI i resten av det.
+    return perioder.map((periode) =>
+        periode === periodeVedEndringstidspunkt ? { ...periode, fom: endringstidspunkt, søker: fri } : periode,
+    );
+};
+
+const sorterPerioder = (perioder: UttakPeriodeDto_fpoversikt[]): UttakPeriodeDto_fpoversikt[] =>
+    perioder.toSorted((p1, p2) => (dayjs(p1.fom).isBefore(p2.fom, 'day') ? -1 : 1));
 
 const finnOpprinneligPlan = (
     opprinneligUttaksplan: OpprinneligUttaksplan | undefined,

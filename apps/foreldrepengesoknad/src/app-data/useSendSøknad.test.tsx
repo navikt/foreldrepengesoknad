@@ -465,7 +465,13 @@ describe('useFpSendSøknad', () => {
                                 tom: '2024-01-02', // Endringstidspunkt
                             }),
                         ],
-                        perioder: [],
+                        perioder: [
+                            {
+                                fom: '2024-01-02',
+                                tom: '2024-01-02',
+                                søker: { forelder: 'MOR', utsettelseÅrsak: 'FRI', flerbarnsdager: false },
+                            },
+                        ],
                     },
                     vedlegg: VEDLEGG[Skjemanummer.TERMINBEKREFTELSE],
                 } satisfies EndringssøknadForeldrepengerDto,
