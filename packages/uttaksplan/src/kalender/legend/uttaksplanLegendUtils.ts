@@ -506,7 +506,7 @@ export const getLegendLabelFromPeriode = (
         return 'TAPTE_DAGER';
     }
 
-    if (erPeriodeDto(p) && p.søker?.utsettelseÅrsak === 'FERIE') {
+    if (erPeriodeDto(p) && (p.søker ?? p.annenPart)?.utsettelseÅrsak === 'FERIE') {
         return 'FERIE';
     }
 

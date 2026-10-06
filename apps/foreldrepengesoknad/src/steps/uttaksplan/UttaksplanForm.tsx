@@ -66,7 +66,7 @@ export const UttaksplanForm = ({
     const uttaksplanMedKunNyePerioder =
         uttaksplan?.filter(
             (p) =>
-                p.søker?.resultat === undefined ||
+                (p.søker !== undefined && p.søker.resultat === undefined) ||
                 (opprinneligPlan?.every((o) => !erSammePeriodeInkludertDatoer(p, o)) ?? false),
         ) ?? [];
     const gjeldendeUttaksplan = erEndringssøknad ? uttaksplanMedKunNyePerioder : uttaksplan;

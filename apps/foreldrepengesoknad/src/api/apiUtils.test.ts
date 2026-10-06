@@ -270,6 +270,39 @@ describe('mapTilEndringssøknadDto', () => {
         expect(endringssøknad.uttaksplan.perioder).toEqual(nyePerioder);
     });
 
+    it('skal sende annen part sitt uttak som opphald, men hoppe over utsetjingar, avslag og FFF', () => {
+        const annenPart = (
+            fom: string,
+            tom: string,
+            del: Partial<NonNullable<UttakPeriodeDto_fpoversikt['annenPart']>>,
+        ): UttakPeriodeDto_fpoversikt => ({
+            fom,
+            tom,
+            annenPart: { forelder: 'FAR_MEDMOR', flerbarnsdager: false, ...del },
+        });
+        const eksisterendePerioder: UttakPeriodeDto_fpoversikt[] = [
+            mor('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
+            annenPart('2024-02-01', '2024-02-29', { kontoType: 'FEDREKVOTE' }),
+            annenPart('2024-03-01', '2024-03-29', { utsettelseÅrsak: 'FERIE' }),
+            annenPart('2024-04-01', '2024-04-30', {
+                kontoType: 'FELLESPERIODE',
+                resultat: { innvilget: false, trekkerMinsterett: false, trekkerDager: false, årsak: 'ANNET' },
+            }),
+            annenPart('2024-05-01', '2024-05-31', { kontoType: 'FORELDREPENGER_FØR_FØDSEL' }),
+        ];
+        const nyePerioder: UttakPeriodeDto_fpoversikt[] = [
+            mor('2024-01-01', '2024-01-15', 'MØDREKVOTE'),
+            ...eksisterendePerioder.slice(1),
+        ];
+        const data = getStateMock(annenForelderMock, barnMock, nyePerioder, 'SAK-001', eksisterendePerioder);
+
+        const uttaksperioder = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO).uttaksplan.uttaksperioder!;
+
+        const opphald = uttaksperioder.filter((p) => p.type === 'opphold');
+        expect(opphald).toHaveLength(1);
+        expect(opphald[0]).toMatchObject({ fom: '2024-02-01', årsak: 'UTTAK_FEDREKVOTE_ANNEN_FORELDER' });
+    });
+
     // Scenario fra produksjon: far tok perioden rundt fødsel med 100 % samtidig uttak. Endringstidspunktet
     // skal utledes fra brukerens faktiske endring og ikke flyttes tilbake til fødselen (som gjorde at
     // perioden fall ut på søknadsfrist i fpsak).

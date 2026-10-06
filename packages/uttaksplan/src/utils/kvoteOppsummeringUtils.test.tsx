@@ -6,7 +6,7 @@ import { KontoBeregningDto, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types'
 
 import { UttaksplanDataProvider } from '../context/UttaksplanDataContext';
 import { ForeldreInfo } from '../types/ForeldreInfo';
-import { finnDinPlanKvoteRader, summerDagerIPerioder } from './kvoteBeregning';
+import { finnDinPlanKvoteRader, summerDagerIPerioder, tellDagerIUttaksPeriodene } from './kvoteBeregning';
 import { useUbrukteDagerPerKontoKunEnHarRett } from './kvoteOppsummeringUtils';
 
 const FAMILIEHENDELSESDATO = '2024-04-01'; // Mandag
@@ -359,5 +359,46 @@ describe('finnDinPlanKvoteRader', () => {
         const rader = finnDinPlanKvoteRader([periode], 'MOR', kontoerUtenMødrekvote, 'fødsel', FAMILIEHENDELSESDATO);
 
         expect(rader).toEqual([]);
+    });
+});
+
+describe('tellDagerIUttaksPeriodene – EØS-perioder for annen part', () => {
+    it('skal telje med annen part sine EØS-dagar på fellesperioden', () => {
+        const perioder: UttakPeriodeDto_fpoversikt[] = [
+            {
+                fom: '2024-06-03',
+                tom: '2024-07-26',
+                annenPartEøs: { kontoType: 'FELLESPERIODE', trekkdager: 40 },
+            },
+            {
+                fom: '2024-07-29',
+                tom: '2024-09-20',
+                søker: { forelder: 'FAR_MEDMOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false },
+            },
+        ];
+
+        const resultat = tellDagerIUttaksPeriodene(perioder, 'fødsel', KONTOER, FAMILIEHENDELSESDATO);
+
+        expect(resultat.dagerFellesBrukt).toBe(80);
+        expect(resultat.ubrukteDagerFelles).toBe(0);
+    });
+
+    it('skal gi overtrekk når EØS-dagar og eigne dagar til saman går over kontoen', () => {
+        const perioder: UttakPeriodeDto_fpoversikt[] = [
+            {
+                fom: '2024-06-03',
+                tom: '2024-07-26',
+                annenPartEøs: { kontoType: 'FELLESPERIODE', trekkdager: 50 },
+            },
+            {
+                fom: '2024-07-29',
+                tom: '2024-09-20',
+                søker: { forelder: 'FAR_MEDMOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false },
+            },
+        ];
+
+        const resultat = tellDagerIUttaksPeriodene(perioder, 'fødsel', KONTOER, FAMILIEHENDELSESDATO);
+
+        expect(resultat.antallOvertrukketDager).toBe(10);
     });
 });

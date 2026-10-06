@@ -6,8 +6,8 @@ import {
     KontoTypeUttak,
     MorsAktivitet,
     NavnPåForeldre,
-    UttakDto_fpoversikt,
     UtsettelseÅrsak_fpoversikt,
+    UttakDto_fpoversikt,
 } from '@navikt/fp-types';
 import { capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 
@@ -109,50 +109,6 @@ export const getStønadskvoteNavn = (intl: IntlShape, options: GetStønadskvoteN
     }
 
     return intl.formatMessage({ id: `uttaksplan.stønadskvotetype.${konto}` });
-};
-
-// Opphald har ikkje lenger noko eige oppholdÅrsak-felt – årsaka er no direkte annan part sin
-// kontoType (FELLESPERIODE/MØDREKVOTE/FEDREKVOTE/FORELDREPENGER/FORELDREPENGER_FØR_FØDSEL).
-export const getOppholdskontoNavn = (intl: IntlShape, kontoType: KontoType, foreldernavn: string, erMor: boolean) => {
-    const navn = capitalizeFirstLetter(foreldernavn);
-
-    if (erMor) {
-        if (kontoType === 'FELLESPERIODE') {
-            return intl.formatMessage(
-                { id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.FELLESPERIODE_ANNEN_FORELDER` },
-                { foreldernavn: navn },
-            );
-        }
-        if (kontoType === 'FEDREKVOTE') {
-            return intl.formatMessage(
-                { id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.FEDREKVOTE_ANNEN_FORELDER` },
-                { foreldernavn: navn },
-            );
-        }
-
-        return intl.formatMessage(
-            { id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.MØDREKVOTE_ANNEN_FORELDER` },
-            { foreldernavn: navn },
-        );
-    }
-
-    if (kontoType === 'FELLESPERIODE') {
-        return intl.formatMessage(
-            { id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.FELLESPERIODE_ANNEN_FORELDER` },
-            { foreldernavn: navn },
-        );
-    }
-    if (kontoType === 'FEDREKVOTE') {
-        return intl.formatMessage(
-            { id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.FEDREKVOTE_ANNEN_FORELDER` },
-            { foreldernavn: navn },
-        );
-    }
-
-    return intl.formatMessage(
-        { id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.MØDREKVOTE_ANNEN_FORELDER` },
-        { foreldernavn: navn },
-    );
 };
 
 export const finnTekstForUtsettelseÅrsak = (intl: IntlShape, utsettelseÅrsak: UtsettelseÅrsak_fpoversikt) => {

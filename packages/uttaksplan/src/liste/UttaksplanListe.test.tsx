@@ -513,13 +513,48 @@ describe('UttaksplanListe', () => {
         expect(screen.queryByText('Slett')).not.toBeInTheDocument();
     });
 
+    it('Skal vise annen part sin ferie og gradering, ikkje berre kontonamn', async () => {
+        render(<FarSøkerEtterAtMorHarSøkt />);
+
+        expect(await screen.findAllByText('Ferie')).toHaveLength(3);
+        expect(screen.getByText('Du skal jobbe 50 % og ha 50 % foreldrepenger')).toBeInTheDocument();
+    });
+
+    it('Skal vise begge foreldra sitt uttak når dei har samtidig uttak i same periode', async () => {
+        render(
+            <FarSøkerEtterAtMorHarSøkt
+                perioder={[
+                    {
+                        fom: '2024-04-04',
+                        tom: '2024-04-18',
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FEDREKVOTE',
+                            samtidigUttak: 50,
+                            flerbarnsdager: false,
+                        },
+                        annenPart: {
+                            forelder: 'MOR',
+                            kontoType: 'MØDREKVOTE',
+                            samtidigUttak: 50,
+                            flerbarnsdager: false,
+                        },
+                    },
+                ]}
+            />,
+        );
+
+        expect(await screen.findByText('Hans skal ha 50 % foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Hanne skal ha 50 % foreldrepenger')).toBeInTheDocument();
+    });
+
     it('Mors fellesperiode skal vises som "Fellesperiode" i fars listevisning, ikke "med aktivitetskrav"', async () => {
         render(<FarSøkerEtterAtMorHarSøkt />);
 
         // Mor har tre fellesperioder. Når far ser oversikten sin skal disse vises
-        // som fellesperiode, ikke "Foreldrepenger med aktivitetskrav" (som er
+        // som "Fellesperiode", ikke "Foreldrepenger med aktivitetskrav" (som er
         // forbeholdt bare-far-har-rett-perioder med kontoType FORELDREPENGER).
-        expect(await screen.findAllByText('Hanne tar ut fellesperiode')).toHaveLength(3);
+        expect(await screen.findAllByText('Fellesperiode')).toHaveLength(3);
         expect(screen.queryByText('Foreldrepenger med aktivitetskrav')).not.toBeInTheDocument();
     });
 

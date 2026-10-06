@@ -12,6 +12,7 @@ import { Uttaksplanperiode, erPeriodeDto } from '../../../../types/UttaksplanPer
 import { getVarighetString } from '../../../../utils/dateUtils';
 import {
     erAvslåttPeriode,
+    finnPartForForelder,
     harPeriodeDerMorsAktivitetIkkeErValgt,
     harPeriodeMedUkjentGraderingsaktivitet,
 } from '../../../../utils/periodeUtils';
@@ -29,15 +30,19 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
     const {
         foreldreInfo: { rettighetType, søker, erIkkeSøkerSpesifisert, erFarOgFar },
         kanVelgeArbeidsgiver,
+        perioder,
     } = useUttaksplanData();
 
-    // Vel søkjars eigen part når han finst, elles annan parts – berre éin av dei kan i
-    // praksis vera relevant her sidan denne komponenten ikkje viser opphald/EØS (dei har eigne
-    // content-komponentar), men samtidig uttak (begge parter) prioriterer søkjar sitt uttak.
+    // PeriodeListeContent deler intervall med fleire partar opp, så her er det berre éin part.
     const part = erPeriodeDto(periode) ? (periode.søker ?? periode.annenPart) : undefined;
     const erEøsPeriode = erPeriodeDto(periode) && !!periode.annenPartEøs && !part;
 
     const erAvslått = erAvslåttPeriode(periode);
+
+    const morsPerioder = perioder.flatMap((p) => {
+        const morsPart = finnPartForForelder(p, 'MOR');
+        return morsPart ? [{ fom: p.fom, tom: p.tom, søker: morsPart }] : [];
+    });
     const morsAktivitet = part?.morsAktivitet;
 
     const stønadskvoteNavn = getStønadskvoteNavn(intl, {
@@ -56,7 +61,7 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
                 rettighetType,
                 søker,
                 erIkkeSøkerSpesifisert ?? false,
-                [periode],
+                [periode, ...morsPerioder],
                 erFarOgFar,
             ) && (
                 <ExclamationmarkTriangleFillIcon

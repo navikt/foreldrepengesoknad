@@ -345,8 +345,20 @@ const filtrerUtAvslåttePerioder = (perioder: UttakPeriodeDto_fpoversikt[]): Utt
 
 // Ved endringssøknad blir annan part sitt uttak sendt som opphald, slik opphaldsradene i søkjaren sitt
 // eige vedtak vart sende før. Førstegongssøknaden sender berre søkjaren sine eigne periodar.
+// Annan part sine utsetjingar, avslag og periodar på kontoar utan opphaldsårsak (t.d. FFF) er ikkje opphald.
 const filtrerUtAnnenPartsPerioder = (uttaksplan: UttakPeriodeDto_fpoversikt[]): UttakPeriodeDto_fpoversikt[] => {
-    return uttaksplan.filter((periode) => periode.søker !== undefined || Uttaksperioden.erOppholdsperiode(periode));
+    return uttaksplan.filter((periode) => periode.søker !== undefined || erOppholdSomKanSendast(periode));
+};
+
+const erOppholdSomKanSendast = (periode: UttakPeriodeDto_fpoversikt): boolean => {
+    const annenPart = periode.annenPart;
+    return (
+        Uttaksperioden.erOppholdsperiode(periode) &&
+        !!annenPart &&
+        annenPart.utsettelseÅrsak === undefined &&
+        annenPart.resultat?.innvilget !== false &&
+        kontoTypeTilOppholdsårsak(annenPart.kontoType) !== undefined
+    );
 };
 
 const midlertidigMappingAvUttaksplan = (
@@ -364,7 +376,7 @@ const midlertidigMappingAvUttaksplan = (
                 type: 'opphold',
                 fom: periode.fom,
                 tom: periode.tom,
-                årsak: kontoTypeTilOppholdsårsak(periode.annenPart?.kontoType),
+                årsak: notEmpty(kontoTypeTilOppholdsårsak(periode.annenPart?.kontoType)),
             };
         }
 
@@ -425,7 +437,7 @@ const midlertidigMappingAvUttaksplan = (
 
 // Opphaldsårsaka kom tidlegare direkte frå backend som eit eige felt. No er ho strukturell:
 // årsaka til at søkjar har eit hol i planen sin er kontotypen til annan part sitt uttak der.
-const kontoTypeTilOppholdsårsak = (kontoType: KontoType | undefined): Oppholdsårsak => {
+const kontoTypeTilOppholdsårsak = (kontoType: KontoType | undefined): Oppholdsårsak | undefined => {
     switch (kontoType) {
         case 'MØDREKVOTE': {
             return 'UTTAK_MØDREKVOTE_ANNEN_FORELDER';
@@ -440,7 +452,7 @@ const kontoTypeTilOppholdsårsak = (kontoType: KontoType | undefined): Oppholds�
             return 'UTTAK_FORELDREPENGER_ANNEN_FORELDER';
         }
         default: {
-            throw new Error('Ukjent kontotype for oppholdsperiode');
+            return;
         }
     }
 };

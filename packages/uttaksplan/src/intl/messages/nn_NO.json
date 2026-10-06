@@ -47,12 +47,6 @@
     "uttaksplan.utsettelsesårsak.FRI": "Utsetjing",
     "uttaksplan.stønadskvotetype.undefined": "Ny periode utan kvote",
     "uttaksplan.varighet.helePerioden": "Heile perioden",
-    "uttaksplan.oppholdsårsaktype.foreldernavn.mor.FELLESPERIODE_ANNEN_FORELDER": "{foreldernavn} tar ut fellesperiode",
-    "uttaksplan.oppholdsårsaktype.foreldernavn.mor.FEDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut din kvote",
-    "uttaksplan.oppholdsårsaktype.foreldernavn.mor.MØDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut sin kvote",
-    "uttaksplan.oppholdsårsaktype.foreldernavn.far.FELLESPERIODE_ANNEN_FORELDER": "{foreldernavn} tar ut fellesperiode",
-    "uttaksplan.oppholdsårsaktype.foreldernavn.far.FEDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut sin kvote",
-    "uttaksplan.oppholdsårsaktype.foreldernavn.far.MØDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut din kvote",
     "uttaksplan.periodeListeContent.eøs": "Den andre forelderen får pengestøtte i eit anna EU/EØS-land",
     "uttaksplan.periodeListeContent.familiehendelse.termin": "Viss {erFarEllerMedmor, select, true {{navnMor}} other {du}} føder før termin, begynner {erFarEllerMedmor, select, true {{navnMor}} other {du}} å bruke kvoten sin frå fødsel. Resten av dei tre vekene blir sletta. Føder {erFarEllerMedmor, select, true {{navnMor}} other {du}} etter termin, bruker {erFarEllerMedmor, select, true {{navnMor}} other {du}} fellesperioden fram til fødselen.",
     "uttaksplan.periodeListeContent.familiehendelse.fødsel1": "Mor får 3 veker foreldrepengar som er sette av til å brukast før termin. Viss barnet blir født før termin, vil ein miste dagane av denne perioden, og starte på mødrekvoten av foreldrepengane den dagen barnet blir født.",
@@ -271,7 +265,6 @@
     "RedigeringPanel.LeggTilPeriode.Fortsett": "Fortsett",
     "RedigeringPanel.HvaSkalSkje": "Kva skal skje med resten av planen?",
     "RedigeringPanel.HvaSkalSkjeBeskrivelse": "Når du endrer periode, kan planen justeres på to ulike måter",
-
     "RedigeringPanel.FlyttPlanen": "Endre og flytt resten av planen",
     "RedigeringPanel.FlyttPlanenDetaljer": "Dagane blir lagt inn og resten av planen blir forskyvd.",
     "RedigeringPanel.EndrePlanen": "Endre uten å flytte resten av planen",
@@ -279,7 +272,6 @@
     "RedigeringPanel.AdopsjonPeriodeFørFamiliehendelsedato": "Du kan ikkje ha foreldrepengar før du overtek omsorga for barnet",
     "RedigeringPanel.ValgtDagerFørSeksUkerEtterFamDato": "Du kan ikkje forskyva periodar når du har valgt dagar før seks uker etter fødsel/termin",
     "RedigeringPanel.SenerePerioderReadonly": "Du kan ikkje forskyva periodar når det finnes seinare periodar som ikkje kan endrast.",
-
     "RedigeringPanel.Gradering": "Gradering: {prosent} %",
     "RedigeringPanel.GraderingForelder": "{forelder, select, MOR {Mor} other {{erMedmor, select, true {Medmor} other {Far}}}} er i {prosent} % arbeid",
     "RedigeringPanel.EøsUttakKanGiAvslag": "Den andre forelderen mottek pengestøtte i eit anna EU/EØS-land. Dersom de ønskjer å motta foreldrepengar samtidig, kan dette føre til avslag. Årsaka er at saka må vurderast i samsvar med norsk regelverk for foreldrepengar.",

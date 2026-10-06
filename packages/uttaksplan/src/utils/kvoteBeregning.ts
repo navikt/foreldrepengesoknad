@@ -75,7 +75,7 @@ export const finnDinPlanKvoteRader = (
         }
 
         const relevanteParter = søkersParter.filter(({ part }) => getUttaksKontoType(part) === kontoType);
-        const bruktDager = summerDagerForNorgeParter(relevanteParter, [konto], familiesituasjon, familiehendelsedato);
+        const bruktDager = summerDagerForParter(relevanteParter, [], [konto], familiesituasjon, familiehendelsedato);
 
         if (bruktDager <= 0) {
             return undefined;
@@ -96,6 +96,7 @@ export const finnAntallDagerDerKunEnHarForeldrepenger = (
     familiehendelsedato: string,
 ) => {
     const norgeParter = finnNorgeParter(uttakPerioder);
+    const eøsParter = finnEøsParter(uttakPerioder);
 
     const kvoter = ['FORELDREPENGER_FØR_FØDSEL', 'FORELDREPENGER', 'AKTIVITETSFRI_KVOTE'].map((kontoType) => {
         const aktuellKonto = valgtStønadskvote.kontoer.find((k) => k.konto === kontoType);
@@ -104,7 +105,7 @@ export const finnAntallDagerDerKunEnHarForeldrepenger = (
         }
 
         const ubrukteDagerSkalTrekkes = kontoType === 'FORELDREPENGER_FØR_FØDSEL' && familiesituasjon === 'fødsel';
-        const brukteDager = summerDagerForNorgeParter(
+        const brukteDager = summerDagerForParter(
             norgeParter.filter(({ part }) => {
                 const harMatchendePart =
                     getUttaksKontoType(part) === 'FORELDREPENGER' && part.morsAktivitet === 'IKKE_OPPGITT';
@@ -124,6 +125,7 @@ export const finnAntallDagerDerKunEnHarForeldrepenger = (
 
                 return kontoType === getUttaksKontoType(part);
             }),
+            eøsParter.filter(({ eøs }) => eøs.kontoType === kontoType),
             valgtStønadskvote.kontoer,
             familiesituasjon,
             familiehendelsedato,
@@ -184,34 +186,24 @@ export const tellDagerIUttaksPeriodene = (
     familiehendelsedato: string,
 ) => {
     const norgeParter = finnNorgeParter(uttakPerioder);
+    const eøsParter = finnEøsParter(uttakPerioder);
 
-    const dagerBruktAvMorFørFødsel = summerDagerForNorgeParter(
-        norgeParter.filter(({ part }) => getUttaksKontoType(part) === 'FORELDREPENGER_FØR_FØDSEL'),
-        valgtStønadskvote.kontoer,
-        familiesituasjon,
-        familiehendelsedato,
-    );
-    const dagerBruktAvMor = summerDagerForNorgeParter(
-        norgeParter.filter(
-            ({ part }) =>
-                getUttaksKontoType(part) === 'FORELDREPENGER_FØR_FØDSEL' || getUttaksKontoType(part) === 'MØDREKVOTE',
-        ),
-        valgtStønadskvote.kontoer,
-        familiesituasjon,
-        familiehendelsedato,
-    );
-    const dagerBruktAvFar = summerDagerForNorgeParter(
-        norgeParter.filter(({ part }) => getUttaksKontoType(part) === 'FEDREKVOTE'),
-        valgtStønadskvote.kontoer,
-        familiesituasjon,
-        familiehendelsedato,
-    );
-    const dagerFellesBrukt = summerDagerForNorgeParter(
-        norgeParter.filter(({ part }) => getUttaksKontoType(part) === 'FELLESPERIODE'),
-        valgtStønadskvote.kontoer,
-        familiesituasjon,
-        familiehendelsedato,
-    );
+    const summerDagerForKontotyper = (kontotyper: KontoTypeUttak[]) => {
+        const erAktuell = (kontoType: KontoTypeUttak | undefined) =>
+            kontoType !== undefined && kontotyper.includes(kontoType);
+        return summerDagerForParter(
+            norgeParter.filter(({ part }) => erAktuell(getUttaksKontoType(part))),
+            eøsParter.filter(({ eøs }) => erAktuell(eøs.kontoType)),
+            valgtStønadskvote.kontoer,
+            familiesituasjon,
+            familiehendelsedato,
+        );
+    };
+
+    const dagerBruktAvMorFørFødsel = summerDagerForKontotyper(['FORELDREPENGER_FØR_FØDSEL']);
+    const dagerBruktAvMor = summerDagerForKontotyper(['FORELDREPENGER_FØR_FØDSEL', 'MØDREKVOTE']);
+    const dagerBruktAvFar = summerDagerForKontotyper(['FEDREKVOTE']);
+    const dagerFellesBrukt = summerDagerForKontotyper(['FELLESPERIODE']);
 
     const barnetErFødt = familiesituasjon === 'fødsel';
 
@@ -243,70 +235,23 @@ export const tellDagerIUttaksPeriodene = (
     };
 };
 
-/** Summerer trekkdagar (i heile dagar) for eit sett av norske uttaksparter mot ein konto. */
-const summerDagerForNorgeParter = (
+/**
+ * Summerer trekkdagar (i heile dagar) for norske uttaksparter og EØS-parter. EØS-delen er avgrensa
+ * til tal dagar på kontoen.
+ */
+const summerDagerForParter = (
     norgeParter: NorgePart[],
+    eøsParter: EøsPart[],
     konto: KontoDto[],
     familiesituasjon: Familiesituasjon,
     familiehendelsedato: string,
 ): number => {
     const erFødsel = familiesituasjon === 'fødsel';
-
-    const aktuelleKontotyper = new Set(norgeParter.map(({ part }) => getUttaksKontoType(part)));
-
-    let tidelerTotalt = 0;
-
-    for (const aktuellKontoType of aktuelleKontotyper) {
-        const gjeldendeKonto = konto.find((k) => k.konto === aktuellKontoType);
-
-        if (!gjeldendeKonto || !aktuellKontoType) {
-            continue;
-        }
-
-        const tideler = sum(
-            norgeParter
-                .filter(({ part }) => getUttaksKontoType(part) === aktuellKontoType)
-                .map(({ fom, tom, part }) =>
-                    finnAntallTidelerÅTrekkeForPart({ fom, tom }, part, erFødsel, familiehendelsedato),
-                ),
-        );
-        tidelerTotalt += tideler;
-    }
-
-    return Math.floor(tidelerTotalt / 10);
-};
-
-/** Summerer trekkdagar (i heile dagar) mot ein konto, avgrensa til éin forelder sin part av kvar periode. */
-export const summerDagerForForelder = (
-    perioder: UttakPeriodeDto_fpoversikt[],
-    forelder: BrukerRolleSak_fpoversikt,
-    konto: KontoDto[],
-    familiesituasjon: Familiesituasjon,
-    familiehendelsedato: string,
-): number => {
-    const norgeParter = finnNorgeParter(perioder).filter(({ part }) => part.forelder === forelder);
-    return summerDagerForNorgeParter(norgeParter, konto, familiesituasjon, familiehendelsedato);
-};
-
-/**
- * Summerer trekkdagar (i heile dagar) for norske uttaksparter OG eventuelle EØS-parter mot ein
- * konto, avgrensa til maks tal dagar kontoen har igjen for EØS-delen (matchar tidlegare åtferd).
- */
-export const summerDagerIPerioder = (
-    perioder: UttakPeriodeDto_fpoversikt[],
-    konto: KontoDto[],
-    familiesituasjon: Familiesituasjon,
-    familiehendelsedato: string,
-) => {
-    const norgeParter = finnNorgeParter(perioder);
-    const eøsParter = finnEøsParter(perioder);
 
     const aktuelleKontotyper = new Set([
         ...norgeParter.map(({ part }) => getUttaksKontoType(part)),
         ...eøsParter.map(({ eøs }) => eøs.kontoType),
     ]);
-
-    const erFødsel = familiesituasjon === 'fødsel';
 
     // Trekkdagar summerast i tideler (heiltal) for å unngå flyttalsfeil; sjå
     // finnAntallTidelerÅTrekkeForPart. Resultatet golvast til heile dagar heilt til slutt.
@@ -339,6 +284,32 @@ export const summerDagerIPerioder = (
 
     return Math.floor(tidelerTotalt / 10);
 };
+
+/** Summerer trekkdagar (i heile dagar) mot ein konto, avgrensa til éin forelder sin part av kvar periode. */
+export const summerDagerForForelder = (
+    perioder: UttakPeriodeDto_fpoversikt[],
+    forelder: BrukerRolleSak_fpoversikt,
+    konto: KontoDto[],
+    familiesituasjon: Familiesituasjon,
+    familiehendelsedato: string,
+): number => {
+    const norgeParter = finnNorgeParter(perioder).filter(({ part }) => part.forelder === forelder);
+    return summerDagerForParter(norgeParter, [], konto, familiesituasjon, familiehendelsedato);
+};
+
+export const summerDagerIPerioder = (
+    perioder: UttakPeriodeDto_fpoversikt[],
+    konto: KontoDto[],
+    familiesituasjon: Familiesituasjon,
+    familiehendelsedato: string,
+) =>
+    summerDagerForParter(
+        finnNorgeParter(perioder),
+        finnEøsParter(perioder),
+        konto,
+        familiesituasjon,
+        familiehendelsedato,
+    );
 
 const getUttaksKontoType = (part: UttakDto_fpoversikt): KontoTypeUttak | undefined => {
     if (part.kontoType === 'FORELDREPENGER' && part.morsAktivitet === 'IKKE_OPPGITT') {

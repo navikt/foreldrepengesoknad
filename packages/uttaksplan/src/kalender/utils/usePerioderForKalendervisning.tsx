@@ -332,7 +332,7 @@ const getKalenderSkjermleserPeriodetekst = (
         }
     }
 
-    if (erPeriodeDto(periode) && periode.søker?.utsettelseÅrsak === 'FERIE') {
+    if (erPeriodeDto(periode) && (periode.søker ?? periode.annenPart)?.utsettelseÅrsak === 'FERIE') {
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.LovbestemtFerie' });
     }
 
