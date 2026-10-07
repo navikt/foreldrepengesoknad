@@ -9,7 +9,7 @@ import { isEqual } from 'es-toolkit';
 import { RegistrertePersonalia } from 'pages/registrerte-personalia/RegistrertePersonalia';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
+import { AnnenForelder, AnnenForelderOppgitt, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { annenPartHarInnvilgetUttak, getErMorUfør } from 'utils/annenForelderUtils';
 import { getRegistrerteBarnOmDeFinnes } from 'utils/barnUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
@@ -35,6 +35,66 @@ const getRegistrertAnnenForelder = (
             ? undefined
             : registrerteBarn.find((registrertBarn) => registrertBarn.annenPart !== undefined);
     return registrertBarnMedAnnenForelder?.annenPart;
+};
+
+const getUttaksplangrunnlag = (
+    annenForelder: AnnenForelder | undefined,
+    erNySøknadPåEksisterendeSak: boolean,
+    erFarEllerMedmor: boolean,
+    sammenlignDatoForAleneomsorg: boolean,
+) => {
+    if (!annenForelder || !isAnnenForelderOppgitt(annenForelder)) {
+        return erNySøknadPåEksisterendeSak ? annenForelder : undefined;
+    }
+
+    const grunnlag = {
+        kanIkkeOppgis: false as const,
+        harRettPåForeldrepengerINorge: annenForelder.harRettPåForeldrepengerINorge,
+        harRettPåForeldrepengerIEØS: annenForelder.harRettPåForeldrepengerIEØS,
+        erAleneOmOmsorg: annenForelder.erAleneOmOmsorg,
+    };
+    if (!erNySøknadPåEksisterendeSak) {
+        return grunnlag;
+    }
+
+    return {
+        ...grunnlag,
+        harRettPåForeldrepengerINorge: !!annenForelder.harRettPåForeldrepengerINorge,
+        harRettPåForeldrepengerIEØS: !!annenForelder.harRettPåForeldrepengerIEØS,
+        erAleneOmOmsorg: !!annenForelder.erAleneOmOmsorg,
+        erMorUfør: getErMorUfør(annenForelder, erFarEllerMedmor),
+        datoForAleneomsorg:
+            sammenlignDatoForAleneomsorg && annenForelder.erAleneOmOmsorg
+                ? annenForelder.datoForAleneomsorg
+                : undefined,
+        fnr: replaceInvisibleCharsWithSpace(annenForelder.fnr)?.trim() ?? '',
+        utenlandskFnr: !!annenForelder.utenlandskFnr,
+    };
+};
+
+const erUttaksplangrunnlagetEndret = (
+    annenForelder: AnnenForelder | undefined,
+    oppdatertAnnenForelder: AnnenForelderOppgitt,
+    erNySøknadPåEksisterendeSak: boolean,
+    erFarEllerMedmor: boolean,
+) => {
+    const sammenlignDatoForAleneomsorg =
+        annenForelder !== undefined &&
+        isAnnenForelderOppgitt(annenForelder) &&
+        annenForelder.datoForAleneomsorg !== undefined;
+    const gjeldendeGrunnlag = getUttaksplangrunnlag(
+        annenForelder,
+        erNySøknadPåEksisterendeSak,
+        erFarEllerMedmor,
+        sammenlignDatoForAleneomsorg,
+    );
+    const nyttGrunnlag = getUttaksplangrunnlag(
+        oppdatertAnnenForelder,
+        erNySøknadPåEksisterendeSak,
+        erFarEllerMedmor,
+        sammenlignDatoForAleneomsorg,
+    );
+    return gjeldendeGrunnlag !== undefined && !isEqual(gjeldendeGrunnlag, nyttGrunnlag);
 };
 
 type Props = {
@@ -104,55 +164,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
         // Derfor settes den true hvis vi har vedtak, og ellers brukes form-verdien
         const harRettPåForeldrepengerINorge = annenPartHarVedtak || values.harRettPåForeldrepengerINorge;
         const harRettPåForeldrepengerIEØS = values.harOppholdtSegIEØS ? values.harRettPåForeldrepengerIEØS : false;
-        const gjeldendeDatoForAleneomsorg =
-            annenForelder && isAnnenForelderOppgitt(annenForelder) ? annenForelder.datoForAleneomsorg : undefined;
-
-        const nyttGrunnlag = {
-            kanIkkeOppgis: false as const,
-            harRettPåForeldrepengerINorge,
-            harRettPåForeldrepengerIEØS,
-            erAleneOmOmsorg: values.erAleneOmOmsorg,
-            ...(erNySøknadPåEksisterendeSak && {
-                harRettPåForeldrepengerINorge: !!harRettPåForeldrepengerINorge,
-                harRettPåForeldrepengerIEØS: !!harRettPåForeldrepengerIEØS,
-                erAleneOmOmsorg: !!values.erAleneOmOmsorg,
-                erMorUfør: getErMorUfør(values, isFarEllerMedmor(rolle)),
-                datoForAleneomsorg:
-                    gjeldendeDatoForAleneomsorg !== undefined && values.erAleneOmOmsorg
-                        ? values.datoForAleneomsorg
-                        : undefined,
-                fnr: replaceInvisibleCharsWithSpace(fnr)?.trim() ?? '',
-                utenlandskFnr: !!values.utenlandskFnr,
-            }),
-        };
-        const gjeldendeGrunnlag =
-            annenForelder && isAnnenForelderOppgitt(annenForelder)
-                ? {
-                      kanIkkeOppgis: false as const,
-                      harRettPåForeldrepengerINorge: annenForelder.harRettPåForeldrepengerINorge,
-                      harRettPåForeldrepengerIEØS: annenForelder.harRettPåForeldrepengerIEØS,
-                      erAleneOmOmsorg: annenForelder.erAleneOmOmsorg,
-                      ...(erNySøknadPåEksisterendeSak && {
-                          harRettPåForeldrepengerINorge: !!annenForelder.harRettPåForeldrepengerINorge,
-                          harRettPåForeldrepengerIEØS: !!annenForelder.harRettPåForeldrepengerIEØS,
-                          erAleneOmOmsorg: !!annenForelder.erAleneOmOmsorg,
-                          erMorUfør: getErMorUfør(annenForelder, isFarEllerMedmor(rolle)),
-                          datoForAleneomsorg: annenForelder.erAleneOmOmsorg
-                              ? gjeldendeDatoForAleneomsorg
-                              : undefined,
-                          fnr: replaceInvisibleCharsWithSpace(annenForelder.fnr)?.trim() ?? '',
-                          utenlandskFnr: !!annenForelder.utenlandskFnr,
-                      }),
-                  }
-                : erNySøknadPåEksisterendeSak
-                  ? annenForelder
-                  : undefined;
-
-        if (gjeldendeGrunnlag !== undefined && !isEqual(gjeldendeGrunnlag, nyttGrunnlag)) {
-            resetUttaksplanData();
-        }
-
-        oppdaterAnnenForeldre({
+        const oppdatertAnnenForelder: AnnenForelderOppgitt = {
             ...values,
             harRettPåForeldrepengerINorge,
             kanIkkeOppgis: false, // NOTE: må settes eksplisitt
@@ -160,7 +172,20 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
             etternavn: replaceInvisibleCharsWithSpace(etternavn)?.trim() ?? '',
             fnr: replaceInvisibleCharsWithSpace(fnr)?.trim() ?? '',
             harRettPåForeldrepengerIEØS,
-        });
+        };
+
+        if (
+            erUttaksplangrunnlagetEndret(
+                annenForelder,
+                oppdatertAnnenForelder,
+                erNySøknadPåEksisterendeSak,
+                isFarEllerMedmor(rolle),
+            )
+        ) {
+            resetUttaksplanData();
+        }
+
+        oppdaterAnnenForeldre(oppdatertAnnenForelder);
 
         return navigator.goToNextStep();
     };

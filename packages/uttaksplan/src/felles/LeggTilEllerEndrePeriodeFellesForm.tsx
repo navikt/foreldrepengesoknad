@@ -920,50 +920,10 @@ export const mapFraFormValuesTilPeriodeDto = (
     let farMedmor: UttakDto_fpoversikt | undefined;
 
     if (values.forelder === 'MOR' || values.forelder === 'BEGGE') {
-        const erOverføringMor = values.kontoTypeMor === 'FEDREKVOTE';
-        mor = {
-            forelder: 'MOR',
-            kontoType: values.kontoTypeMor === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : values.kontoTypeMor,
-            morsAktivitet: values.morsAktivitet || undefined,
-            gradering:
-                !erOverføringMor && values.skalDuKombinereArbeidOgUttakMor
-                    ? getGradering(
-                          søker === 'MOR',
-                          values.stillingsprosentMor,
-                          values.hvorSkalDuJobbe,
-                          kanVelgeArbeidsgiver,
-                      )
-                    : undefined,
-            samtidigUttak:
-                values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentMor) : undefined,
-            overføringÅrsak: erOverføringMor ? values.overføringsårsak : undefined,
-            flerbarnsdager: values.ønskerFlerbarnsdager ?? false,
-        };
+        mor = mapMorsUttakFraFormValues(values, søker, kanVelgeArbeidsgiver);
     }
     if (values.forelder === 'FAR_MEDMOR' || values.forelder === 'BEGGE') {
-        const erOverføringFarMedmor = values.kontoTypeFarMedmor === 'MØDREKVOTE';
-        farMedmor = {
-            forelder: 'FAR_MEDMOR',
-            kontoType:
-                values.kontoTypeFarMedmor === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : values.kontoTypeFarMedmor,
-            morsAktivitet:
-                values.kontoTypeFarMedmor === 'AKTIVITETSFRI_KVOTE'
-                    ? 'IKKE_OPPGITT'
-                    : values.morsAktivitet || undefined,
-            gradering:
-                !erOverføringFarMedmor && values.skalDuKombinereArbeidOgUttakFarMedmor
-                    ? getGradering(
-                          søker === 'FAR_MEDMOR',
-                          values.stillingsprosentFarMedmor,
-                          values.hvorSkalDuJobbe,
-                          kanVelgeArbeidsgiver,
-                      )
-                    : undefined,
-            samtidigUttak:
-                values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentFarMedmor) : undefined,
-            overføringÅrsak: erOverføringFarMedmor ? values.overføringsårsak : undefined,
-            flerbarnsdager: values.ønskerFlerbarnsdager ?? false,
-        };
+        farMedmor = mapFarMedmorsUttakFraFormValues(values, søker, kanVelgeArbeidsgiver);
     }
 
     return [
@@ -974,6 +934,58 @@ export const mapFraFormValuesTilPeriodeDto = (
             annenPart: søker === 'MOR' ? farMedmor : mor,
         },
     ];
+};
+
+const mapMorsUttakFraFormValues = (
+    values: LeggTilEllerEndrePeriodeFormFormValues,
+    søker: BrukerRolleSak_fpoversikt,
+    kanVelgeArbeidsgiver: boolean,
+): UttakDto_fpoversikt => {
+    const erOverføringMor = values.kontoTypeMor === 'FEDREKVOTE';
+    return {
+        forelder: 'MOR',
+        kontoType: values.kontoTypeMor === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : values.kontoTypeMor,
+        morsAktivitet: values.morsAktivitet || undefined,
+        gradering:
+            !erOverføringMor && values.skalDuKombinereArbeidOgUttakMor
+                ? getGradering(
+                      søker === 'MOR',
+                      values.stillingsprosentMor,
+                      values.hvorSkalDuJobbe,
+                      kanVelgeArbeidsgiver,
+                  )
+                : undefined,
+        samtidigUttak: values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentMor) : undefined,
+        overføringÅrsak: erOverføringMor ? values.overføringsårsak : undefined,
+        flerbarnsdager: values.ønskerFlerbarnsdager ?? false,
+    };
+};
+
+const mapFarMedmorsUttakFraFormValues = (
+    values: LeggTilEllerEndrePeriodeFormFormValues,
+    søker: BrukerRolleSak_fpoversikt,
+    kanVelgeArbeidsgiver: boolean,
+): UttakDto_fpoversikt => {
+    const erOverføringFarMedmor = values.kontoTypeFarMedmor === 'MØDREKVOTE';
+    return {
+        forelder: 'FAR_MEDMOR',
+        kontoType: values.kontoTypeFarMedmor === 'AKTIVITETSFRI_KVOTE' ? 'FORELDREPENGER' : values.kontoTypeFarMedmor,
+        morsAktivitet:
+            values.kontoTypeFarMedmor === 'AKTIVITETSFRI_KVOTE' ? 'IKKE_OPPGITT' : values.morsAktivitet || undefined,
+        gradering:
+            !erOverføringFarMedmor && values.skalDuKombinereArbeidOgUttakFarMedmor
+                ? getGradering(
+                      søker === 'FAR_MEDMOR',
+                      values.stillingsprosentFarMedmor,
+                      values.hvorSkalDuJobbe,
+                      kanVelgeArbeidsgiver,
+                  )
+                : undefined,
+        samtidigUttak:
+            values.forelder === 'BEGGE' ? getFloatFromString(values.samtidigUttaksprosentFarMedmor) : undefined,
+        overføringÅrsak: erOverføringFarMedmor ? values.overføringsårsak : undefined,
+        flerbarnsdager: values.ønskerFlerbarnsdager ?? false,
+    };
 };
 
 export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (

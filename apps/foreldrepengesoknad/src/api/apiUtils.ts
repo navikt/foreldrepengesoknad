@@ -292,12 +292,9 @@ export const mapTilEndringssøknadDto = (
 
     // Midlertidig innsendingstilpasning: bruk samme datokutt og filtrering av annen part og avslag
     // som for uttaksperioder, til backend overtar. Den fullstendige planen i konteksten beholdes.
+    const søkersRolle = søkersituasjon.rolle === 'mor' ? 'MOR' : 'FAR_MEDMOR';
     const perioder = skalLeggeTilFriUtsettelse
-        ? leggTilFriUtsettelseForInnsending(
-              perioderSomSendes,
-              endringstidspunkt,
-              søkersituasjon.rolle === 'mor' ? 'MOR' : 'FAR_MEDMOR',
-          )
+        ? leggTilFriUtsettelseForInnsending(perioderSomSendes, endringstidspunkt, søkersRolle)
         : perioderSomSendes;
 
     return {
