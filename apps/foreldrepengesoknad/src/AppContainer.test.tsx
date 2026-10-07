@@ -16,6 +16,7 @@ import { compressToUrl } from '@navikt/fp-utils';
 
 import { AppContainer, queryClient } from './AppContainer';
 import * as stories from './AppContainer.stories';
+import messages from './intl/nb_NO.json';
 
 vi.mock('@navikt/nav-dekoratoren-moduler', () => ({
     setAvailableLanguages: vi.fn(),
@@ -257,6 +258,56 @@ describe('<AppContainer>', () => {
         expect(screen.queryByTestId('2026-05-05 - 2026-05-15')).not.toBeInTheDocument();
         expect(lagreUtkast).not.toHaveBeenCalled();
         expect(slettUtkast).not.toHaveBeenCalled();
+    });
+
+    it.each([
+        { name: 'network error', response: () => HttpResponse.error() },
+        { name: 'HTTP error', response: () => new HttpResponse(null, { status: 500 }) },
+    ])('shows the error page when fetching the existing plan fails with a $name', async ({ response }) => {
+        const { Historie, lagreUtkast, slettUtkast } = lagOppstartshistorie(
+            {
+                ...stories.MedMellomlagretEndringssøknad,
+                beforeEach: [
+                    ...[stories.MedMellomlagretEndringssøknad.beforeEach ?? []].flat(),
+                    ({ msw }) => {
+                        msw.use(http.post(API_URLS.uttaksplan, response));
+                    },
+                ],
+            },
+            '/',
+        );
+        await Historie.run();
+
+        expect(
+            await screen.findByText(messages['Foreldrepengesøknad.FeilVedHentingAvInformasjon'], { exact: false }),
+        ).toBeInTheDocument();
+        expect(screen.queryByRole('tab', { name: 'Liste' })).not.toBeInTheDocument();
+        expect(lagreUtkast).not.toHaveBeenCalled();
+        expect(slettUtkast).not.toHaveBeenCalled();
+    });
+
+    it('does not show the error page for a successful response without a plan', async () => {
+        const { Historie } = lagOppstartshistorie(
+            {
+                ...stories.MedMellomlagretEndringssøknad,
+                beforeEach: [
+                    ...[stories.MedMellomlagretEndringssøknad.beforeEach ?? []].flat(),
+                    ({ msw }) => {
+                        msw.use(http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })));
+                    },
+                ],
+            },
+            '/',
+        );
+        await Historie.run();
+
+        expect(await screen.findByRole('tab', { name: 'Liste' })).toBeInTheDocument();
+        await waitFor(() =>
+            expect(queryClient.getQueriesData({ queryKey: ['UTTAKSPLAN'] })).toEqual([[expect.any(Array), null]]),
+        );
+        expect(
+            screen.queryByText(messages['Foreldrepengesøknad.FeilVedHentingAvInformasjon'], { exact: false }),
+        ).not.toBeInTheDocument();
     });
 
     it('skal fortsatt varsle om utdaterte registerdata uten importlenke', async () => {
