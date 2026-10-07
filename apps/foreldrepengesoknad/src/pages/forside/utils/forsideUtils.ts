@@ -241,6 +241,12 @@ const getSelectableBarnOptionsFraPDL = (
             regBarn.fnr,
             regBarn.fødselsdato,
             registrerteBarnMedFnr,
+        ).filter(
+            (barn) =>
+                !fnrPåBarnSomErLagtTil.includes(barn.fnr) &&
+                (!regBarn.annenPart?.fnr ||
+                    !barn.annenPart?.fnr ||
+                    regBarn.annenPart.fnr === barn.annenPart.fnr),
         );
 
         fnrPåBarnSomErLagtTil.push(regBarn.fnr);

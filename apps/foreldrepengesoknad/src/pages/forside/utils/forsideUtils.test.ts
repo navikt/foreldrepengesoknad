@@ -180,6 +180,76 @@ describe('forsideUtils - getSelectableBarnOptions', () => {
     });
 });
 
+describe('forsideUtils - gruppering av PDL-barn', () => {
+    const barnA = {
+        fnr: '22222222222',
+        fødselsdato,
+        kjønn: 'K',
+        annenPart: { fnr: '11111111111', navn: { fornavn: 'Mor', etternavn: 'En' } },
+    } satisfies FpBarnDto_fpoversikt;
+    const barnB = {
+        ...barnA,
+        fnr: '33333333333',
+        annenPart: { fnr: '44444444444', navn: { fornavn: 'Mor', etternavn: 'To' } },
+    } satisfies FpBarnDto_fpoversikt;
+
+    it.each(['termin', 'fødsel', 'uten sak'] as const)(
+        'skal holde barn med ulike mødre atskilt ved %s',
+        (sakstype) => {
+            const valgtSak = {
+                ...sak,
+                sakTilhørerMor: false,
+                forelder: 'FAR_MEDMOR',
+                barn: undefined,
+                annenPart: { fnr: barnA.annenPart.fnr },
+                familiehendelse:
+                    sakstype === 'termin'
+                        ? { termindato: fødselsdato, antallBarn: 1 }
+                        : { fødselsdato, antallBarn: 1 },
+            } satisfies FpSak_fpoversikt;
+
+            for (const registrerteBarn of [[barnA, barnB], [barnB, barnA]]) {
+                const result = getSelectableBarnOptions(sakstype === 'uten sak' ? [] : [valgtSak], registrerteBarn);
+
+                expect(result).toHaveLength(2);
+                expect(result.find((barn) => barn.fnr?.includes(barnA.fnr))).toMatchObject({
+                    fnr: [barnA.fnr],
+                    antallBarn: 1,
+                });
+                expect(result.find((barn) => barn.fnr?.includes(barnB.fnr))).toMatchObject({
+                    fnr: [barnB.fnr],
+                    antallBarn: 1,
+                    annenForelder: barnB.annenPart,
+                });
+                expect(result.find((barn) => barn.fnr?.includes(barnB.fnr))?.sak).toBeUndefined();
+            }
+        },
+    );
+
+    it('skal ikke gjenbruke barn fra en sak i et flerlingvalg selv om annen part er lik', () => {
+        const valgtSak = {
+            ...sak,
+            barn: [{ fnr: barnA.fnr }],
+            annenPart: { fnr: barnA.annenPart.fnr },
+            familiehendelse: { termindato: fødselsdato, antallBarn: 1 },
+        } satisfies FpSak_fpoversikt;
+
+        const result = getSelectableBarnOptions([valgtSak], [barnA, { ...barnB, annenPart: barnA.annenPart }]);
+
+        expect(result).toHaveLength(2);
+        expect(result.map((barn) => barn.fnr)).toEqual([[barnA.fnr], [barnB.fnr]]);
+        expect(result.map((barn) => barn.antallBarn)).toEqual([1, 1]);
+    });
+
+    it('skal fortsatt gruppere tvillinger med samme annen part', () => {
+        const result = getSelectableBarnOptions([], [barnA, { ...barnB, annenPart: barnA.annenPart }]);
+
+        expect(result).toHaveLength(1);
+        expect(result[0]).toMatchObject({ antallBarn: 2, annenForelder: barnA.annenPart });
+        expect(result[0]?.fnr).toEqual(expect.arrayContaining([barnA.fnr, barnB.fnr]));
+    });
+});
+
 describe('forsideUtils - bestemSøknadsstart', () => {
     const lagValgtBarn = (overrides: Partial<ValgtBarn>): ValgtBarn => ({
         id: 'barn-1',
