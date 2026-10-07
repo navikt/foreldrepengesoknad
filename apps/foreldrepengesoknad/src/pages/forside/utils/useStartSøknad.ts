@@ -1,8 +1,13 @@
-import { ContextDataType, useContextSaveAnyData } from 'appData/FpDataContext';
+import { useQueryClient } from '@tanstack/react-query';
+import { uttaksplanOptions } from 'api/queries';
+import { ContextDataType, useContextGetAnyData, useContextSaveAnyData } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
+import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useSetSøknadsdata } from 'appData/useSetSøknadsdata';
+import { useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
+import { getUttaksplanParam } from 'utils/annenForelderUtils';
 import {
     lagEndringsSøknad,
     lagNySøknadForRegistrerteBarn,
@@ -11,7 +16,8 @@ import {
 } from 'utils/eksisterendeSakUtils';
 
 import { captureMessage } from '@navikt/fp-observability';
-import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
+import { FellesUttaksplanDto_fpoversikt, FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
+import { notEmpty } from '@navikt/fp-validation';
 
 import { ValgtBarn } from '../../../types/ValgtBarn';
 import { ForsideFormValues } from '../types/ForsideFormValues';
@@ -46,13 +52,28 @@ export const useStartSøknad = ({
     mellomlagreSøknadOgNaviger,
 }: Args) => {
     const intl = useIntl();
+    const queryClient = useQueryClient();
+    const [startFeilet, setStartFeilet] = useState(false);
+    const starterSøknadRef = useRef(false);
     const navigator = useFpNavigator({
         arbeidsforhold: søkerInfo.arbeidsforhold,
         harRegistrertNæring: søkerInfo.selvstendigNæring.length > 0,
         mellomlagreOgNaviger: mellomlagreSøknadOgNaviger,
     });
     const oppdaterDataIState = useContextSaveAnyData();
+    const getData = useContextGetAnyData();
+    const resetUttaksplanData = useResetUttaksplanData();
     const { oppdaterSøknadIState } = useSetSøknadsdata();
+
+    const forlaterSøknadUtenVedtak = () => {
+        const valgtSak = saker.find((sak) => sak.saksnummer === getData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR));
+        return valgtSak !== undefined && !valgtSak.gjeldendeVedtak;
+    };
+
+    const nullstillGjenbruktPlan = () => {
+        resetUttaksplanData();
+        oppdaterDataIState(ContextDataType.OPPRINNELIG_UTTAKSPLAN, undefined);
+    };
 
     const nullstillPlanleggerTilstand = () => {
         oppdaterDataIState(ContextDataType.SØKERSITUASJON, undefined);
@@ -63,6 +84,11 @@ export const useStartSøknad = ({
     };
 
     const startSomNySøknad = () => {
+        if (forlaterSøknadUtenVedtak()) {
+            nullstillGjenbruktPlan();
+            oppdaterDataIState(ContextDataType.VALGT_EKSISTERENDE_SAKSNR, undefined);
+            oppdaterDataIState(ContextDataType.FORDELING, undefined);
+        }
         oppdaterSøknadsmetadata({ harGodkjentVilkår: true, erEndringssøknad: false, søknadGjelderNyttBarn: true });
         return navigator.goToStep(SøknadRoutes.SØKERSITUASJON);
     };
@@ -76,7 +102,17 @@ export const useStartSøknad = ({
         return navigator.goToStep(SøknadRoutes.UTTAKSPLAN);
     };
 
-    const startNySøknadFraValgtBarn = (valgteBarn: ValgtBarn) => {
+    const startNySøknadFraValgtBarn = async (valgteBarn: ValgtBarn) => {
+        if (
+            valgteBarn.sak &&
+            !valgteBarn.sak.gjeldendeVedtak &&
+            valgteBarn.sak.saksnummer === getData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR) &&
+            getData(ContextDataType.SØKERSITUASJON) &&
+            getData(ContextDataType.OM_BARNET)
+        ) {
+            oppdaterSøknadsmetadata({ harGodkjentVilkår: true, erEndringssøknad: false, søknadGjelderNyttBarn: false });
+            return navigator.goToStep(SøknadRoutes.SØKERSITUASJON);
+        }
         const søknad =
             valgteBarn.sak !== undefined && valgteBarn.kanSøkeOmEndring === false
                 ? lagSøknadFraValgteBarnMedSak(
@@ -84,8 +120,35 @@ export const useStartSøknad = ({
                       intl,
                       søkerInfo.barn,
                       søkerInfo.fnr,
+                      !valgteBarn.sak.gjeldendeVedtak,
                   )
                 : lagNySøknadForRegistrerteBarn(valgteBarn);
+
+        if (valgteBarn.sak && !valgteBarn.sak.gjeldendeVedtak) {
+            const options = uttaksplanOptions(
+                getUttaksplanParam(notEmpty(søknad.annenForelder), notEmpty(søknad.barn)),
+            );
+            let uttaksplan: FellesUttaksplanDto_fpoversikt | null;
+            try {
+                uttaksplan = await queryClient.fetchQuery(options);
+            } catch {
+                setStartFeilet(true);
+                return;
+            }
+            const perioder = uttaksplan?.perioder ?? [];
+            nullstillGjenbruktPlan();
+            oppdaterDataIState(ContextDataType.OPPRINNELIG_UTTAKSPLAN, {
+                saksnummer: valgteBarn.sak.saksnummer,
+                perioder,
+            });
+            oppdaterDataIState(
+                ContextDataType.UTTAKSPLAN,
+                perioder.some((periode) => periode.søker !== undefined) ? perioder : undefined,
+            );
+        } else if (forlaterSøknadUtenVedtak()) {
+            nullstillGjenbruktPlan();
+        }
+        oppdaterDataIState(ContextDataType.VALGT_EKSISTERENDE_SAKSNR, valgteBarn.sak?.saksnummer);
         oppdaterSøknadIState(søknad);
 
         oppdaterSøknadsmetadata({ harGodkjentVilkår: true, erEndringssøknad: false, søknadGjelderNyttBarn: false });
@@ -116,14 +179,33 @@ export const useStartSøknad = ({
             return startSomNySøknad();
         }
 
-        oppdaterDataIState(ContextDataType.VALGT_EKSISTERENDE_SAKSNR, start.valgteBarn.sak?.saksnummer);
-
         if (start.type === 'ENDRING') {
+            if (
+                forlaterSøknadUtenVedtak() &&
+                getData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR) !== start.sak.saksnummer
+            ) {
+                nullstillGjenbruktPlan();
+            }
+            oppdaterDataIState(ContextDataType.VALGT_EKSISTERENDE_SAKSNR, start.valgteBarn.sak?.saksnummer);
             return startEndringssøknad(start.valgteBarn, start.sak);
         }
 
         return startNySøknadFraValgtBarn(start.valgteBarn);
     };
 
-    return { startSøknad };
+    return {
+        startSøknad: async (values: ForsideFormValues) => {
+            if (starterSøknadRef.current) {
+                return;
+            }
+            starterSøknadRef.current = true;
+            try {
+                await startSøknad(values);
+            } finally {
+                starterSøknadRef.current = false;
+            }
+        },
+        startFeilet,
+        nullstillStartFeilet: () => setStartFeilet(false),
+    };
 };

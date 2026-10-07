@@ -126,7 +126,7 @@ export const useStønadsKontoerOptions = () => {
     return tilgjengeligeStønadskvoterOptions(stønadskvoteParams);
 };
 
-const uttaksplanOptions = (data?: FellesUttaksplanRequest_fpoversikt) =>
+export const uttaksplanOptions = (data?: FellesUttaksplanRequest_fpoversikt) =>
     queryOptions({
         queryKey: ['UTTAKSPLAN', data],
         queryFn: () => jsonEllerNull<FellesUttaksplanDto_fpoversikt>(ky.post(API_URLS.uttaksplan, { json: data })),

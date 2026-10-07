@@ -6,6 +6,7 @@ import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 
 import { EksternArbeidsforholdDto_fpoversikt, FpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
+import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { FrilansSteg } from './FrilansSteg';
 
@@ -22,6 +23,7 @@ type StoryArgs = {
 const meta = {
     title: 'steps/FrilansSteg',
     component: FrilansSteg,
+    decorators: [withQueryClient],
     render: ({ gåTilNesteSide = action('button-click'), frilansoppdrag = [], søkerInfo: _søkerInfo, ...rest }) => {
         const søkerInfo: FpPersonopplysningerDto_fpoversikt = {
             arbeidsforhold: [],

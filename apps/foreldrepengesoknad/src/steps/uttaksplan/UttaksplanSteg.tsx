@@ -4,6 +4,7 @@ import { useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
+import { useValgtSak } from 'appData/useValgtSak';
 import { ReactNode, useCallback, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
@@ -58,6 +59,7 @@ export const UttaksplanSteg = ({
     const dekningsgrad = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
     const eksisterendeSaksnummer = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
+    const opprinneligUttaksplan = useContextGetData(ContextDataType.OPPRINNELIG_UTTAKSPLAN);
     const kommerFraPlanlegger = !!useContextGetData(ContextDataType.KOMMER_FRA_PLANLEGGER);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
@@ -67,15 +69,29 @@ export const UttaksplanSteg = ({
     const [opprinneligPlanleggerplan] = useState(() => (kommerFraPlanlegger ? uttaksplan : undefined));
 
     const eksisterendeSak = foreldrepengerSaker?.find((sak) => sak.saksnummer === eksisterendeSaksnummer);
+    const { erNySøknadPåEksisterendeSak } = useValgtSak(eksisterendeSak);
 
     const [feilmelding, setFeilmelding] = useState<ReactNode | undefined>();
 
     const oppdaterUttaksplanOgFjernFeilmelding = useCallback(
-        (...args: Parameters<typeof oppdaterUttaksplan>) => {
+        (perioder: Parameters<typeof oppdaterUttaksplan>[0]) => {
             setFeilmelding(undefined);
-            oppdaterUttaksplan(...args);
+            const gjenbruktPlan =
+                !erEndringssøknad &&
+                erNySøknadPåEksisterendeSak &&
+                opprinneligUttaksplan?.saksnummer === eksisterendeSaksnummer
+                    ? opprinneligUttaksplan?.perioder
+                    : undefined;
+            // Redigeringens «tilbakestill» bruker undefined, men skal ikke forkaste grunnlaget for gjenbruk.
+            oppdaterUttaksplan(perioder ?? gjenbruktPlan);
         },
-        [oppdaterUttaksplan],
+        [
+            oppdaterUttaksplan,
+            erEndringssøknad,
+            erNySøknadPåEksisterendeSak,
+            opprinneligUttaksplan,
+            eksisterendeSaksnummer,
+        ],
     );
 
     const harRegistrertNæring = søkerInfo.selvstendigNæring.length > 0;
@@ -125,7 +141,7 @@ export const UttaksplanSteg = ({
         },
     });
 
-    const tidligereUttaksplan = useTidligereUttaksplan();
+    const tidligereUttaksplan = useTidligereUttaksplan(erEndringssøknad, eksisterendeSak);
     const tidligereUttaksperioder = tidligereUttaksplan.perioder;
 
     const valgteStønadskvoter = tilgjengeligeStønadskvoterQuery.data;

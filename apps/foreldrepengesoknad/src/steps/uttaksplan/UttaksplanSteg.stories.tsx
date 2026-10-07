@@ -1,11 +1,12 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { API_URLS } from 'api/queries';
-import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
+import { Action, ContextDataType, FpDataContext, OpprinneligUttaksplan } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
+import { saker } from 'storybookData/saker';
 import { AnnenForelder } from 'types/AnnenForelder';
 import { FellesperiodeFordelingValg, Fordeling, OppstartValg } from 'types/Fordeling';
 
@@ -84,6 +85,7 @@ type StoryArgs = {
     fordeling?: Fordeling;
     valgtEksisterendeSaksnr?: string;
     uttaksplan?: UttakPeriodeDto_fpoversikt[];
+    opprinneligUttaksplan?: OpprinneligUttaksplan;
     kommerFraPlanlegger?: boolean;
 } & ComponentProps<typeof UttaksplanSteg>;
 
@@ -107,8 +109,10 @@ const meta = {
         dekningsgrad,
         fordeling,
         erEndringssøknad,
+        foreldrepengerSaker,
         valgtEksisterendeSaksnr,
         uttaksplan,
+        opprinneligUttaksplan,
         kommerFraPlanlegger,
     }) => {
         return (
@@ -127,6 +131,7 @@ const meta = {
                         [ContextDataType.PERIODE_MED_FORELDREPENGER]: dekningsgrad,
                         [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: valgtEksisterendeSaksnr,
                         [ContextDataType.UTTAKSPLAN]: uttaksplan,
+                        [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: opprinneligUttaksplan,
                         [ContextDataType.KOMMER_FRA_PLANLEGGER]: kommerFraPlanlegger,
                     }}
                 >
@@ -135,6 +140,7 @@ const meta = {
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}
                         erEndringssøknad={erEndringssøknad}
+                        foreldrepengerSaker={foreldrepengerSaker}
                     />
                 </FpDataContext>
             </MemoryRouter>
@@ -715,6 +721,12 @@ const INNVILGET_PLAN_FRA_EKSISTERENDE_SAK: UttakPeriodeDto_fpoversikt[] = [
 export const NySøknadFørVedtakMedEksisterendeSak: Story = {
     beforeEach({ msw }) {
         msw.use(
+            http.get(API_URLS.saker, () =>
+                HttpResponse.json({
+                    ...saker,
+                    foreldrepenger: [{ ...saker.foreldrepenger[0]!, saksnummer: '123456789' }],
+                }),
+            ),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': {

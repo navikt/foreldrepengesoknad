@@ -11,6 +11,7 @@ import {
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
 } from '@navikt/fp-types';
+import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { Forside } from './Forside';
 
@@ -225,6 +226,7 @@ type StoryArgs = {
 const meta = {
     title: 'pages/Forside',
     component: Forside,
+    decorators: [withQueryClient],
     render: ({ onDispatch, ...rest }) => {
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.VELKOMMEN]}>

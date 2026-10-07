@@ -1,7 +1,17 @@
 import { composeStories } from '@storybook/react-vite';
-import { fireEvent, screen } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { ContextDataType, FpDataContext } from 'appData/FpDataContext';
+import { SøknadRoutes } from 'appData/routes';
+import { MemoryRouter, Route, Routes } from 'react-router';
+import { saker } from 'storybookData/saker';
 
+import { UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { IntlProvider } from '@navikt/fp-ui';
+
+import messages from '../../intl/nb_NO.json';
+import { FordelingSteg } from './FordelingSteg';
 import * as stories from './FordelingSteg.stories';
 
 const {
@@ -34,6 +44,55 @@ const {
     BareFarHarRettTvillingerFødtFør1Okt2021,
     BareFarHarRettAdopsjonMorErUfør,
 } = composeStories(stories);
+
+it.each([true, false])(
+    'sender direkte tilgang til fordeling videre for gjenbrukt plan, manuelt tømt: %s',
+    async (tømt) => {
+        const plan: UttakPeriodeDto_fpoversikt[] = [
+            {
+                fom: '2026-06-01',
+                tom: '2026-06-12',
+                søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
+            },
+        ];
+        const client = new QueryClient();
+        client.setQueryData(['SAKER'], {
+            ...saker,
+            foreldrepenger: [{ ...saker.foreldrepenger[0]!, saksnummer: '123' }],
+        });
+        render(
+            <QueryClientProvider client={client}>
+                <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: messages }}>
+                    <FpDataContext
+                        initialState={{
+                            [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: '123',
+                            [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: '123', perioder: plan },
+                            [ContextDataType.UTTAKSPLAN]: tømt ? [] : plan,
+                        }}
+                    >
+                        <MemoryRouter initialEntries={[SøknadRoutes.FORDELING]}>
+                            <Routes>
+                                <Route
+                                    path={SøknadRoutes.FORDELING}
+                                    element={
+                                        <FordelingSteg
+                                            person={MorDeltUttakEttBarnTermin.args.person!}
+                                            arbeidsforhold={[]}
+                                            mellomlagreSøknadOgNaviger={vi.fn()}
+                                            avbrytSøknad={vi.fn()}
+                                        />
+                                    }
+                                />
+                                <Route path={SøknadRoutes.UTTAKSPLAN} element={<p>Uttaksplan åpnet</p>} />
+                            </Routes>
+                        </MemoryRouter>
+                    </FpDataContext>
+                </IntlProvider>
+            </QueryClientProvider>,
+        );
+        expect(await screen.findByText('Uttaksplan åpnet')).toBeInTheDocument();
+    },
+);
 
 describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
     const gåTilNesteSide = vi.fn();

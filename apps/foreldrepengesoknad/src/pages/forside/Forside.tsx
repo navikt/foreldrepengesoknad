@@ -8,7 +8,7 @@ import { Alert, BodyShort, Button, GuidePanel, HStack, Link, VStack } from '@nav
 import { links } from '@navikt/fp-constants';
 import { RhfConfirmationPanel, RhfForm } from '@navikt/fp-form-hooks';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
-import { SkjemaRotLayout } from '@navikt/fp-ui';
+import { ErrorPage, SkjemaRotLayout } from '@navikt/fp-ui';
 
 import { BarnVelger } from './BarnVelger';
 import { DinePlikter } from './dine-plikter/DinePlikter';
@@ -47,7 +47,7 @@ export const Forside = ({
 
     const harPlanleggerData = !!getData(ContextDataType.KOMMER_FRA_PLANLEGGER);
 
-    const { startSøknad } = useStartSøknad({
+    const { startSøknad, startFeilet, nullstillStartFeilet } = useStartSøknad({
         saker,
         selectableBarn,
         søkerInfo,
@@ -68,6 +68,16 @@ export const Forside = ({
         valgtBarn?.kanSøkeOmEndring === true
             ? intl.formatMessage({ id: 'velkommen.endreSøknad' })
             : intl.formatMessage({ id: 'velkommen.begynnMedSøknad' });
+
+    if (startFeilet) {
+        return (
+            <ErrorPage
+                appName="foreldrepengesoknad"
+                errorMessage={intl.formatMessage({ id: 'Foreldrepengesøknad.FeilVedHentingAvInformasjon' })}
+                retryCallback={nullstillStartFeilet}
+            />
+        );
+    }
 
     return (
         <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
@@ -113,7 +123,7 @@ export const Forside = ({
                         </VStack>
                     </RhfConfirmationPanel>
                     <HStack justify="center">
-                        <Button type="submit" variant="primary">
+                        <Button type="submit" variant="primary" loading={formMethods.formState.isSubmitting}>
                             {knapptekst}
                         </Button>
                     </HStack>

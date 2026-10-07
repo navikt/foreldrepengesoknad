@@ -377,11 +377,15 @@ export const lagSøknadFraValgteBarnMedSak = (
     intl: IntlShape,
     registrerteBarn: FpBarnDto_fpoversikt[],
     søkerFnr: string,
+    gjenbrukPlanUtenVedtak = false,
 ): Partial<Søknad> => {
     const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(valgteBarn.sak, valgteBarn.fødselsdatoer);
     const { grunnlag } = eksisterendeSak;
     const situasjon = getSøkersituasjonFromSaksgrunnlag(grunnlag.familiehendelseType);
-    const barn = getBarnFromValgteBarn(valgteBarn);
+    const barn =
+        gjenbrukPlanUtenVedtak && !valgteBarn.sak.gjeldendeVedtak && valgteBarn.sak.gjelderAdopsjon
+            ? getBarnFromSaksgrunnlag('adopsjon', grunnlag, valgteBarn)
+            : getBarnFromValgteBarn(valgteBarn);
     const annenForelder = opprettAnnenForelderFraEksisterendeSak(
         intl,
         valgteBarn.sak.annenPart,

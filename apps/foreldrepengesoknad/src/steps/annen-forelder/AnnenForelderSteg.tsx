@@ -4,13 +4,15 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useStepConfig } from 'appData/useStepConfig';
+import { useValgtSak } from 'appData/useValgtSak';
 import { isEqual } from 'es-toolkit';
 import { RegistrertePersonalia } from 'pages/registrerte-personalia/RegistrertePersonalia';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
-import { annenPartHarInnvilgetUttak } from 'utils/annenForelderUtils';
+import { annenPartHarInnvilgetUttak, getErMorUfør } from 'utils/annenForelderUtils';
 import { getRegistrerteBarnOmDeFinnes } from 'utils/barnUtils';
+import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -60,6 +62,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
 
     const oppdaterAnnenForeldre = useContextSaveData(ContextDataType.ANNEN_FORELDER);
     const resetUttaksplanData = useResetUttaksplanData();
+    const { erNySøknadPåEksisterendeSak } = useValgtSak();
 
     const annenForelderFraRegistrertBarn = getRegistrertAnnenForelder(barn, søkerInfo);
 
@@ -101,12 +104,26 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
         // Derfor settes den true hvis vi har vedtak, og ellers brukes form-verdien
         const harRettPåForeldrepengerINorge = annenPartHarVedtak || values.harRettPåForeldrepengerINorge;
         const harRettPåForeldrepengerIEØS = values.harOppholdtSegIEØS ? values.harRettPåForeldrepengerIEØS : false;
+        const gjeldendeDatoForAleneomsorg =
+            annenForelder && isAnnenForelderOppgitt(annenForelder) ? annenForelder.datoForAleneomsorg : undefined;
 
         const nyttGrunnlag = {
             kanIkkeOppgis: false as const,
             harRettPåForeldrepengerINorge,
             harRettPåForeldrepengerIEØS,
             erAleneOmOmsorg: values.erAleneOmOmsorg,
+            ...(erNySøknadPåEksisterendeSak && {
+                harRettPåForeldrepengerINorge: !!harRettPåForeldrepengerINorge,
+                harRettPåForeldrepengerIEØS: !!harRettPåForeldrepengerIEØS,
+                erAleneOmOmsorg: !!values.erAleneOmOmsorg,
+                erMorUfør: getErMorUfør(values, isFarEllerMedmor(rolle)),
+                datoForAleneomsorg:
+                    gjeldendeDatoForAleneomsorg !== undefined && values.erAleneOmOmsorg
+                        ? values.datoForAleneomsorg
+                        : undefined,
+                fnr: replaceInvisibleCharsWithSpace(fnr)?.trim() ?? '',
+                utenlandskFnr: !!values.utenlandskFnr,
+            }),
         };
         const gjeldendeGrunnlag =
             annenForelder && isAnnenForelderOppgitt(annenForelder)
@@ -115,8 +132,21 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
                       harRettPåForeldrepengerINorge: annenForelder.harRettPåForeldrepengerINorge,
                       harRettPåForeldrepengerIEØS: annenForelder.harRettPåForeldrepengerIEØS,
                       erAleneOmOmsorg: annenForelder.erAleneOmOmsorg,
+                      ...(erNySøknadPåEksisterendeSak && {
+                          harRettPåForeldrepengerINorge: !!annenForelder.harRettPåForeldrepengerINorge,
+                          harRettPåForeldrepengerIEØS: !!annenForelder.harRettPåForeldrepengerIEØS,
+                          erAleneOmOmsorg: !!annenForelder.erAleneOmOmsorg,
+                          erMorUfør: getErMorUfør(annenForelder, isFarEllerMedmor(rolle)),
+                          datoForAleneomsorg: annenForelder.erAleneOmOmsorg
+                              ? gjeldendeDatoForAleneomsorg
+                              : undefined,
+                          fnr: replaceInvisibleCharsWithSpace(annenForelder.fnr)?.trim() ?? '',
+                          utenlandskFnr: !!annenForelder.utenlandskFnr,
+                      }),
                   }
-                : undefined;
+                : erNySøknadPåEksisterendeSak
+                  ? annenForelder
+                  : undefined;
 
         if (gjeldendeGrunnlag !== undefined && !isEqual(gjeldendeGrunnlag, nyttGrunnlag)) {
             resetUttaksplanData();

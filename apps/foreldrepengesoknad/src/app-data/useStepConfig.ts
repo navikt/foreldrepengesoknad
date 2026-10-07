@@ -16,6 +16,7 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { getFamiliehendelsedato } from '../utils/barnUtils';
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';
+import { useValgtSak } from './useValgtSak';
 
 const getPathToLabelMap = (intl: IntlShape) =>
     ({
@@ -162,9 +163,17 @@ const showManglendeDokumentasjonSteg = (
 const skalViseFordelingSteg = (
     path: SøknadRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
+    erNySøknadPåEksisterendeSak: boolean,
 ): boolean => {
     if (path === SøknadRoutes.FORDELING) {
-        return getData(ContextDataType.KOMMER_FRA_PLANLEGGER) !== true;
+        const opprinneligPlan = getData(ContextDataType.OPPRINNELIG_UTTAKSPLAN);
+        const harGjenbruktPlan =
+            erNySøknadPåEksisterendeSak &&
+            opprinneligPlan !== undefined &&
+            opprinneligPlan.saksnummer === getData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR) &&
+            opprinneligPlan.perioder.some((periode) => periode.søker !== undefined) &&
+            getData(ContextDataType.UTTAKSPLAN) !== undefined;
+        return getData(ContextDataType.KOMMER_FRA_PLANLEGGER) !== true && !harGjenbruktPlan;
     }
     return true;
 };
@@ -187,6 +196,7 @@ export const useStepConfig = ({
 
     const location = useLocation();
     const getStateData = useContextGetAnyData();
+    const { erNySøknadPåEksisterendeSak } = useValgtSak(eksisterendeSak);
 
     const currentPath = useMemo(
         // eslint-disable-next-line unicorn/no-useless-coercion
@@ -198,14 +208,23 @@ export const useStepConfig = ({
     const appPathList = useMemo(
         () =>
             ROUTES_ORDER.flatMap((path) =>
-                (requiredSteps.includes(path) && skalViseFordelingSteg(path, getStateData)) ||
+                (requiredSteps.includes(path) &&
+                    skalViseFordelingSteg(path, getStateData, erNySøknadPåEksisterendeSak)) ||
                 showUtenlandsoppholdStep(path, currentPath, getStateData) ||
                 showManglendeDokumentasjonSteg(path, getStateData, arbeidsforhold, eksisterendeSak) ||
                 showFrilansOgEgenNæring(path, currentPath, getStateData, harRegistrertNæring)
                     ? [path]
                     : [],
             ),
-        [requiredSteps, currentPath, getStateData, arbeidsforhold, eksisterendeSak, harRegistrertNæring],
+        [
+            requiredSteps,
+            currentPath,
+            getStateData,
+            arbeidsforhold,
+            eksisterendeSak,
+            harRegistrertNæring,
+            erNySøknadPåEksisterendeSak,
+        ],
     );
 
     return useMemo(

@@ -8,9 +8,10 @@ import dayjs from 'dayjs';
 import ky from 'ky';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter } from 'react-router';
+import { saker } from 'storybookData/saker';
 
 import { BarnType, DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
-import { UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { FellesUttaksplanDto_fpoversikt, FpSak_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 import { compressToUrl } from '@navikt/fp-utils';
 
 import { AppContainer, queryClient } from './AppContainer';
@@ -90,6 +91,91 @@ const lagOppstartshistorie = (historie: typeof stories.SøkerErMann, url: string
 describe('<AppContainer>', () => {
     beforeEach(() => {
         queryClient.clear();
+    });
+
+    it.each([
+        { flyt: 'ny', route: SøknadRoutes.UTTAKSPLAN, samordner: false },
+        { flyt: 'vedtak', route: SøknadRoutes.UTTAKSPLAN, samordner: false },
+        { flyt: 'gjenbruk', route: SøknadRoutes.UTTAKSPLAN, samordner: true },
+        { flyt: 'ny', route: SøknadRoutes.FORDELING, samordner: true },
+        { flyt: 'gjenbruk', route: SøknadRoutes.FORDELING, samordner: true },
+    ])('beholder tidspunktet for samordning ved gjenopptak: $flyt, $route', async ({ flyt, route, samordner }) => {
+        const valgtSak: FpSak_fpoversikt = {
+            ...saker.foreldrepenger[0]!,
+            gjeldendeVedtak: flyt === 'vedtak' ? { perioder: [] } : undefined,
+        };
+        const fellesPlan: FellesUttaksplanDto_fpoversikt = {
+            antallBarn: 2,
+            termindato: '2025-05-01',
+            dekningsgrad: 'ÅTTI',
+            perioder: [
+                {
+                    fom: '2025-04-01',
+                    tom: '2025-04-30',
+                    annenPart: {
+                        forelder: 'MOR',
+                        kontoType: 'MØDREKVOTE',
+                        flerbarnsdager: false,
+                        resultat: { innvilget: true, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+                    },
+                },
+            ],
+        };
+        let opprinneligPlan: UttakPeriodeDto_fpoversikt[] | undefined;
+        const { Historie, lagreUtkast } = lagOppstartshistorie(
+            {
+                ...stories.MedMellomlagretSøknad,
+                beforeEach: [
+                    ...[stories.MedMellomlagretSøknad.beforeEach ?? []].flat(),
+                    async ({ msw }) => {
+                        const lagret = await ky.get(API_URLS.mellomlagring).json<FpMellomlagretData>();
+                        opprinneligPlan = lagret.UTTAKSPLAN;
+                        msw.use(
+                            http.get(API_URLS.saker, () => HttpResponse.json({ ...saker, foreldrepenger: [valgtSak] })),
+                            http.post(API_URLS.uttaksplan, () => HttpResponse.json(fellesPlan)),
+                            http.get(API_URLS.mellomlagring, () =>
+                                HttpResponse.json({
+                                    ...lagret,
+                                    foreldrepengerSaker: [valgtSak],
+                                    APP_ROUTE: route,
+                                    VALGT_EKSISTERENDE_SAKSNR: flyt === 'ny' ? undefined : valgtSak.saksnummer,
+                                    OPPRINNELIG_UTTAKSPLAN:
+                                        flyt === 'ny'
+                                            ? undefined
+                                            : {
+                                                  saksnummer: valgtSak.saksnummer,
+                                                  perioder: lagret.UTTAKSPLAN!,
+                                              },
+                                    ANNEN_FORELDER: {
+                                        kanIkkeOppgis: false,
+                                        fnr: '12038517080',
+                                        fornavn: 'Test',
+                                        etternavn: 'Forelder',
+                                        harRettPåForeldrepengerINorge: true,
+                                        erAleneOmOmsorg: false,
+                                    },
+                                } satisfies FpMellomlagretData),
+                            ),
+                        );
+                    },
+                ],
+            },
+            route,
+        );
+        await Historie.run();
+        const tittel = route === SøknadRoutes.FORDELING ? 'Fordeling av foreldrepenger' : 'Din plan med foreldrepenger';
+        expect(await screen.findAllByText(tittel)).toHaveLength(2);
+        await userEvent.click(screen.getByText('Forrige steg'));
+        if (!samordner && route === SøknadRoutes.UTTAKSPLAN) {
+            await userEvent.click(screen.getByRole('button', { name: 'Ja, gå tilbake' }));
+        }
+        await waitFor(() => expect(lagreUtkast).toHaveBeenCalled());
+        const lagret = lagreUtkast.mock.lastCall![0];
+        expect(lagret.OM_BARNET?.antallBarn).toBe(samordner ? 2 : 1);
+        expect(lagret.UTTAKSPLAN).toEqual(samordner ? undefined : opprinneligPlan);
+        expect(lagret.OPPRINNELIG_UTTAKSPLAN).toEqual(
+            flyt === 'vedtak' ? { saksnummer: valgtSak.saksnummer, perioder: opprinneligPlan } : undefined,
+        );
     });
 
     it.each([
