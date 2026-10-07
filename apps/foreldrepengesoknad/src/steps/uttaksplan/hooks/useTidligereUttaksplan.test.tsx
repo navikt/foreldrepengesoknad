@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
-import { act, renderHook, waitFor } from '@testing-library/react';
+import { act, renderHook, screen, waitFor } from '@testing-library/react';
 import {
     Action,
     ContextDataMap,
@@ -22,7 +22,7 @@ import { getUttaksplanParam } from 'utils/annenForelderUtils';
 
 import { BarnType } from '@navikt/fp-constants';
 import { Barn, FellesUttaksplanDto_fpoversikt, FpSak_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
-import { IntlProvider } from '@navikt/fp-ui';
+import { ErrorBoundary, IntlProvider } from '@navikt/fp-ui';
 import { DELT_UTTAK_100, MINSTERETTER } from '@navikt/fp-utils-test';
 
 import messages from '../../../intl/nb_NO.json';
@@ -202,30 +202,49 @@ describe('useTidligereUttaksplan', () => {
         expect(result.current.state.OPPRINNELIG_UTTAKSPLAN).toEqual(snapshot);
     });
 
-    it('beholder backendplanen ved bakgrunnsfeil for en sak med vedtak', async () => {
+    it('viser bakgrunnsfeil og beholder backendplanen i cache for en sak med vedtak', async () => {
+        const onDispatch = vi.fn();
+        const Wrapper = getWrapper(
+            lagUttaksplan(PERIODER),
+            { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER },
+            onDispatch,
+            SøknadRoutes.UTTAKSPLAN,
+            SAK_MED_VEDTAK,
+        );
         const { result } = renderHook(
             () => ({ tidligere: useTidligereUttaksplan(), client: useQueryClient(), state: useContextComplete() }),
             {
-                wrapper: getWrapper(
-                    lagUttaksplan(PERIODER),
-                    { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER },
-                    undefined,
-                    SøknadRoutes.UTTAKSPLAN,
-                    SAK_MED_VEDTAK,
+                wrapper: ({ children }) => (
+                    <Wrapper>
+                        <ErrorBoundary appName="foreldrepengesoknad">{children}</ErrorBoundary>
+                    </Wrapper>
                 ),
             },
         );
+        expect(result.current.tidligere.perioder).toEqual(PERIODER);
+        expect(result.current.state.OPPRINNELIG_UTTAKSPLAN?.perioder).toEqual(PERIODER);
+        const client = result.current.client;
+        const queryKey = ['UTTAKSPLAN', getUttaksplanParam(ANNEN_FORELDER, BARN)];
         await act(async () => {
             await expect(
-                result.current.client.fetchQuery({
-                    queryKey: ['UTTAKSPLAN', getUttaksplanParam(ANNEN_FORELDER, BARN)],
+                client.fetchQuery({
+                    queryKey,
                     queryFn: () => Promise.reject(new Error('Bakgrunnsfeil')),
                     staleTime: 0,
                 }),
             ).rejects.toThrow('Bakgrunnsfeil');
         });
-        expect(result.current.tidligere.perioder).toEqual(PERIODER);
-        expect(result.current.state.OPPRINNELIG_UTTAKSPLAN?.perioder).toEqual(PERIODER);
+        expect(await screen.findByText('Bakgrunnsfeil')).toBeInTheDocument();
+        expect(client.getQueryData(queryKey)).toEqual(lagUttaksplan(PERIODER));
+        expect(onDispatch.mock.calls).toEqual([
+            [
+                {
+                    type: 'update',
+                    key: ContextDataType.OPPRINNELIG_UTTAKSPLAN,
+                    data: { saksnummer: SAKSNUMMER, perioder: PERIODER },
+                },
+            ],
+        ]);
     });
 
     it('returnerer berre annan part sitt vedtak når ingen eksisterande sak er valt', () => {

@@ -3,9 +3,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { uttaksplanOptions } from 'api/queries';
-import { ContextDataType, FpDataContext, useContextGetData } from 'appData/FpDataContext';
+import { ContextDataMap, ContextDataType, FpDataContext, useContextGetData } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
+import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 import { saker } from 'storybookData/saker';
 import { AnnenForelder } from 'types/AnnenForelder';
@@ -28,6 +29,44 @@ const {
     FarFødtBarnMorHarVedtak,
     FarFødtBarnMorHarAvslåttVedtak,
 } = composeStories(stories);
+
+const renderForFar = (initialState: ContextDataMap, children?: ReactNode) => {
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: Infinity } } });
+    client.setQueryData(['SAKER'], saker);
+    client.setQueryData(
+        uttaksplanOptions(getUttaksplanParam(initialState.ANNEN_FORELDER!, ForFar.args.barn!)).queryKey,
+        null,
+    );
+    const onDispatch = vi.fn();
+    const mellomlagreSøknadOgNaviger = vi.fn().mockResolvedValue(undefined);
+    const resultat = render(
+        <QueryClientProvider client={client}>
+            <IntlProvider
+                locale="nb"
+                messagesGroupedByLocale={{ nb: { ...messages, ...formHookMessages.nb, ...uiMessages.nb } }}
+            >
+                <FpDataContext
+                    onDispatch={onDispatch}
+                    initialState={{
+                        [ContextDataType.SØKERSITUASJON]: ForFar.args.søkersituasjon,
+                        [ContextDataType.OM_BARNET]: ForFar.args.barn,
+                        ...initialState,
+                    }}
+                >
+                    {children}
+                    <MemoryRouter initialEntries={[SøknadRoutes.ANNEN_FORELDER]}>
+                        <AnnenForelderSteg
+                            søkerInfo={ForFar.args.søkerInfo!}
+                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                            avbrytSøknad={vi.fn()}
+                        />
+                    </MemoryRouter>
+                </FpDataContext>
+            </IntlProvider>
+        </QueryClientProvider>,
+    );
+    return { ...resultat, skjema: within(resultat.container), onDispatch, mellomlagreSøknadOgNaviger };
+};
 
 describe('<AnnenForelderSteg>', () => {
     it('skal fylle ut at en har aleneomsorg for barnet', async () => {
@@ -530,27 +569,23 @@ describe('<AnnenForelderSteg>', () => {
         { erMorUfør: true, gjenbruk: false },
         { erMorUfør: false, gjenbruk: false },
     ])('avgrenser endret uføretrygd til gjenbruksflyten: %j', async ({ erMorUfør, gjenbruk }) => {
-        const onDispatch = vi.fn();
-        await ForFar.run({
-            args: {
-                ...ForFar.args,
-                gåTilNesteSide: onDispatch,
-                valgtEksisterendeSaksnr: gjenbruk ? saker.foreldrepenger[0]!.saksnummer : undefined,
-                annenForelder: {
-                    kanIkkeOppgis: false,
-                    fnr: '12038517080',
-                    fornavn: 'TALENTFULL',
-                    etternavn: 'MYGG',
-                    erAleneOmOmsorg: false,
-                    harRettPåForeldrepengerINorge: false,
-                    harRettPåForeldrepengerIEØS: false,
-                    harOppholdtSegIEØS: false,
-                },
+        const { skjema, onDispatch, mellomlagreSøknadOgNaviger } = renderForFar({
+            [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: gjenbruk ? saker.foreldrepenger[0]!.saksnummer : undefined,
+            [ContextDataType.ANNEN_FORELDER]: {
+                kanIkkeOppgis: false,
+                fnr: '12038517080',
+                fornavn: 'TALENTFULL',
+                etternavn: 'MYGG',
+                erAleneOmOmsorg: false,
+                harRettPåForeldrepengerINorge: false,
+                harRettPåForeldrepengerIEØS: false,
+                harOppholdtSegIEØS: false,
             },
         });
-        const uføretrygd = screen.getByRole('radiogroup', { name: 'Mottar den andre forelderen uføretrygd?' });
+        const uføretrygd = skjema.getByRole('radiogroup', { name: 'Mottar den andre forelderen uføretrygd?' });
         await userEvent.click(within(uføretrygd).getByRole('radio', { name: erMorUfør ? 'Ja' : 'Nei' }));
-        await userEvent.click(screen.getByText('Neste steg'));
+        await userEvent.click(skjema.getByText('Neste steg'));
+        await waitFor(() => expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1));
         const reset = { type: 'update', key: ContextDataType.UTTAKSPLAN, data: undefined };
         const resetActions = onDispatch.mock.calls.filter(([action]) => action.key === ContextDataType.UTTAKSPLAN);
         expect(resetActions).toEqual(erMorUfør && gjenbruk ? [[reset]] : []);
@@ -562,28 +597,24 @@ describe('<AnnenForelderSteg>', () => {
     });
 
     it.each([true, false])('avgrenser endret dato for aleneomsorg til gjenbruksflyten: %s', async (gjenbruk) => {
-        const onDispatch = vi.fn();
-        await ForFar.run({
-            args: {
-                ...ForFar.args,
-                gåTilNesteSide: onDispatch,
-                valgtEksisterendeSaksnr: gjenbruk ? saker.foreldrepenger[0]!.saksnummer : undefined,
-                annenForelder: {
-                    kanIkkeOppgis: false,
-                    fnr: '12038517080',
-                    fornavn: 'TALENTFULL',
-                    etternavn: 'MYGG',
-                    erAleneOmOmsorg: true,
-                    harRettPåForeldrepengerIEØS: false,
-                    datoForAleneomsorg: '2021-03-15',
-                },
+        const { skjema, onDispatch, mellomlagreSøknadOgNaviger } = renderForFar({
+            [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: gjenbruk ? saker.foreldrepenger[0]!.saksnummer : undefined,
+            [ContextDataType.ANNEN_FORELDER]: {
+                kanIkkeOppgis: false,
+                fnr: '12038517080',
+                fornavn: 'TALENTFULL',
+                etternavn: 'MYGG',
+                erAleneOmOmsorg: true,
+                harRettPåForeldrepengerIEØS: false,
+                datoForAleneomsorg: '2021-03-15',
             },
         });
-        const dato = screen.getByRole('textbox');
+        const dato = skjema.getByRole('textbox');
         await userEvent.clear(dato);
         await userEvent.type(dato, '22.03.2021');
         await userEvent.tab();
-        await userEvent.click(screen.getByText('Neste steg'));
+        await userEvent.click(skjema.getByText('Neste steg'));
+        await waitFor(() => expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1));
         const resetActions = onDispatch.mock.calls.filter(([action]) => action.key === ContextDataType.UTTAKSPLAN);
         expect(resetActions).toEqual(
             gjenbruk ? [[{ type: 'update', key: ContextDataType.UTTAKSPLAN, data: undefined }]] : [],
@@ -610,10 +641,6 @@ describe('<AnnenForelderSteg>', () => {
                 erAleneOmOmsorg,
                 harRettPåForeldrepengerIEØS: false,
             };
-            const client = new QueryClient({ defaultOptions: { queries: { staleTime: Infinity } } });
-            client.setQueryData(['SAKER'], saker);
-            client.setQueryData(uttaksplanOptions(getUttaksplanParam(annenForelder, ForFar.args.barn!)).queryKey, null);
-            const mellomlagreSøknadOgNaviger = vi.fn().mockResolvedValue(undefined);
             let uttaksplan;
             let opprinneligUttaksplan;
             let lagretAnnenForelder;
@@ -623,33 +650,14 @@ describe('<AnnenForelderSteg>', () => {
                 lagretAnnenForelder = useContextGetData(ContextDataType.ANNEN_FORELDER);
                 return null;
             };
-            const { container } = render(
-                <QueryClientProvider client={client}>
-                    <IntlProvider
-                        locale="nb"
-                        messagesGroupedByLocale={{ nb: { ...messages, ...formHookMessages.nb, ...uiMessages.nb } }}
-                    >
-                        <FpDataContext
-                            initialState={{
-                                [ContextDataType.SØKERSITUASJON]: ForFar.args.søkersituasjon,
-                                [ContextDataType.OM_BARNET]: ForFar.args.barn,
-                                [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: saksnummer,
-                                [ContextDataType.UTTAKSPLAN]: plan,
-                                [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: snapshot,
-                                [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                            }}
-                        >
-                            <LesTilstand />
-                            <MemoryRouter initialEntries={[SøknadRoutes.ANNEN_FORELDER]}>
-                                <AnnenForelderSteg
-                                    søkerInfo={ForFar.args.søkerInfo!}
-                                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                                    avbrytSøknad={vi.fn()}
-                                />
-                            </MemoryRouter>
-                        </FpDataContext>
-                    </IntlProvider>
-                </QueryClientProvider>,
+            const { container, mellomlagreSøknadOgNaviger } = renderForFar(
+                {
+                    [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: saksnummer,
+                    [ContextDataType.UTTAKSPLAN]: plan,
+                    [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: snapshot,
+                    [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                },
+                <LesTilstand />,
             );
 
             const skjema = within(container);
@@ -659,7 +667,7 @@ describe('<AnnenForelderSteg>', () => {
             await userEvent.tab();
             await userEvent.click(skjema.getByText('Neste steg'));
 
-            expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+            await waitFor(() => expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1));
             expect(lagretAnnenForelder).toMatchObject({ erAleneOmOmsorg: true, datoForAleneomsorg: '2021-03-22' });
             expect(uttaksplan).toEqual(erAleneOmOmsorg ? plan : undefined);
             expect(opprinneligUttaksplan).toEqual(erAleneOmOmsorg ? snapshot : undefined);
@@ -669,7 +677,7 @@ describe('<AnnenForelderSteg>', () => {
             await userEvent.tab();
             await userEvent.click(skjema.getByText('Neste steg'));
 
-            expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(2);
+            await waitFor(() => expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(2));
             expect(lagretAnnenForelder).toMatchObject({ datoForAleneomsorg: '2021-03-23' });
             expect(uttaksplan).toBeUndefined();
             expect(opprinneligUttaksplan).toBeUndefined();
