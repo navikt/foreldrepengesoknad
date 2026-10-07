@@ -12,9 +12,8 @@ import { CalendarLabel, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-u
 import { notEmpty } from '@navikt/fp-validation';
 
 import { LegendLabel } from '../../types/LegendLabel';
-import { UttaksplanperiodeMedKunTapteDager, erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
+import { UttaksplanperiodeMedKunTapteDager, erPeriodeDto } from '../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
-import { filtrerBortAnnenPartsIdentiskePerioder } from '../utils/uttaksplanKalenderUtils';
 import { useUttaksplanData } from './../../context/UttaksplanDataContext';
 import {
     UttaksplanKalenderLegendInfo,
@@ -58,40 +57,41 @@ export const UttaksplanLegend = ({
 
     const saksperioderInkludertHull = useAlleUttakPerioderInklTapteDager();
 
-    const unikePerioder = filtrerBortAnnenPartsIdentiskePerioder(saksperioderInkludertHull, søker === 'FAR_MEDMOR');
+    const unikePeriodeLabelsMedFarge = saksperioderInkludertHull.reduce<UttaksplanKalenderLegendInfo[]>(
+        (acc, periode) => {
+            const label = getLegendLabelFromPeriode(periode, søker === 'FAR_MEDMOR');
 
-    const unikePeriodeLabelsMedFarge = unikePerioder.reduce<UttaksplanKalenderLegendInfo[]>((acc, periode) => {
-        const label = getLegendLabelFromPeriode(periode, søker === 'FAR_MEDMOR');
+            if (!label) {
+                return acc;
+            }
 
-        if (!label) {
-            return acc;
-        }
+            const periodeForKalendervisning = perioderForKalendervisning.find(
+                (p) =>
+                    dayjs(p.fom).isSameOrBefore(periode.tom) &&
+                    dayjs(p.tom).isSameOrAfter(periode.fom) &&
+                    !erBarnehageplassPeriode(p, barnehagestartdato) &&
+                    !erFamiliehendelsePeriode(p, familiehendelsedato),
+            );
 
-        const periodeForKalendervisning = perioderForKalendervisning.find(
-            (p) =>
-                dayjs(p.fom).isSameOrBefore(periode.tom) &&
-                dayjs(p.tom).isSameOrAfter(periode.fom) &&
-                !erBarnehageplassPeriode(p, barnehagestartdato) &&
-                !erFamiliehendelsePeriode(p, familiehendelsedato),
-        );
+            if (!periodeForKalendervisning) {
+                return acc;
+            }
 
-        if (!periodeForKalendervisning) {
-            return acc;
-        }
+            if (acc.some((item) => item.calendarPeriod.color === periodeForKalendervisning.color)) {
+                return acc;
+            }
 
-        if (acc.some((item) => item.calendarPeriod.color === periodeForKalendervisning.color)) {
-            return acc;
-        }
-
-        return [
-            ...acc,
-            {
-                label,
-                forelder: utledForelder(periode, søker),
-                calendarPeriod: periodeForKalendervisning,
-            },
-        ];
-    }, []);
+            return [
+                ...acc,
+                {
+                    label,
+                    forelder: utledForelder(periode, søker),
+                    calendarPeriod: periodeForKalendervisning,
+                },
+            ];
+        },
+        [],
+    );
 
     const barnehageplassPeriode = perioderForKalendervisning.find((p) =>
         erBarnehageplassPeriode(p, barnehagestartdato),
@@ -158,10 +158,17 @@ export const UttaksplanLegend = ({
 };
 
 const utledForelder = (periode: UttaksplanperiodeMedKunTapteDager, søker: BrukerRolleSak_fpoversikt) => {
-    if (erEøsUttakPeriode(periode)) {
+    if (!erPeriodeDto(periode)) {
+        return periode.forelder;
+    }
+    const part = periode.søker ?? periode.annenPart;
+    if (!part) {
+        // Rein EØS-periode – EøsUttakDto har ikkje noko eige forelder-felt (sjå
+        // uttaksplanLegendUtils), så vi fell tilbake til den same forenklinga som elles: EØS
+        // gjeld alltid annenPart, derav søkjar sin eigen rolle her (matchar getLegendLabelFromPeriode).
         return søker;
     }
-    return periode.forelder;
+    return part.forelder;
 };
 
 const HStackEllerVStack = ({

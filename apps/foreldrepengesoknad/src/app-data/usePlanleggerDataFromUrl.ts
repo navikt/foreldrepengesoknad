@@ -12,9 +12,9 @@ import {
     OmBarnetPlanlegger,
     Søkerrolle,
     SøkersituasjonFp,
-    UttakPeriode_fpoversikt,
+    UttakPeriodeDto_fpoversikt,
 } from '@navikt/fp-types';
-import { decompressFromUrl } from '@navikt/fp-utils';
+import { decompressFromUrl, konverterFlatePerioderTilIntervall } from '@navikt/fp-utils';
 
 import { ContextDataMap, ContextDataType } from './FpDataContext';
 
@@ -22,7 +22,7 @@ type PlanleggerDataFromUrl = {
     OM_BARNET?: OmBarnetPlanlegger;
     HVOR_LANG_PERIODE?: HvorLangPeriodePlanlegger;
     FORDELING?: FordelingPlanlegger;
-    UTTAKSPLAN?: UttakPeriode_fpoversikt[];
+    UTTAKSPLAN?: UttakPeriodeDto_fpoversikt[];
 };
 
 const erBarnetAdoptert = (barnet: OmBarnetPlanlegger): barnet is BarnetErAdoptertPlanlegger =>
@@ -83,7 +83,7 @@ const mapPlanleggerDataToSøknadState = (
     }
 
     if (uttaksplan) {
-        result[ContextDataType.UTTAKSPLAN] = uttaksplan;
+        result[ContextDataType.UTTAKSPLAN] = konverterFlatePerioderTilIntervall(uttaksplan);
     }
 
     return result;

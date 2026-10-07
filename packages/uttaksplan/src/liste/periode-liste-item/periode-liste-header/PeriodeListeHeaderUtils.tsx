@@ -14,7 +14,7 @@ import { IntlShape } from 'react-intl';
 import { Familiesituasjon, NavnPåForeldre } from '@navikt/fp-types';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
-import { Uttaksplanperiode, erVanligUttakPeriode } from '../../../types/UttaksplanPeriode';
+import { Uttaksplanperiode, erPeriodeDto } from '../../../types/UttaksplanPeriode';
 import {
     erAlleUttaksplanperioderAvslått,
     erUttaksplanperiodeErForelderMor,
@@ -167,14 +167,17 @@ export const getTekst = (
                 return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.instutisjonBarn' });
             case 'ARBEID':
                 return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.arbeid' });
-            case 'LOVBESTEMT_FERIE':
+            case 'FERIE':
                 return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.ferie' });
             case 'HV_ØVELSE':
                 return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.hvØvelse' });
             case 'NAV_TILTAK':
                 return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.navTiltak' });
             case 'FRI': {
-                if (uttaksplanperioder.some((p) => erVanligUttakPeriode(p) && p.morsAktivitet)) {
+                const periode = uttaksplanperioder.at(0);
+                const morsAktivitet =
+                    periode && erPeriodeDto(periode) ? (periode.søker ?? periode.annenPart)?.morsAktivitet : undefined;
+                if (morsAktivitet) {
                     return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.pause' });
                 }
                 return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.fri' });
@@ -230,7 +233,7 @@ export const getIkon = (uttaksplanperioder: Uttaksplanperiode[], familiehendelse
             return <BriefcaseFillIcon className={ikonfarge} width={24} height={24} />;
         }
 
-        if (utsettelseÅrsak === 'LOVBESTEMT_FERIE') {
+        if (utsettelseÅrsak === 'FERIE') {
             return <ParasolBeachFillIcon className={ikonfarge} width={24} height={24} />;
         }
 

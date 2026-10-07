@@ -1,9 +1,7 @@
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
-import { erVanligUttakPeriode } from '../types/UttaksplanPeriode';
 import {
     filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger,
     finnAntallDagerDerKunEnHarForeldrepenger,
-    getUttaksKontoType,
     summerDagerIPerioder,
     tellDagerIUttaksPeriodene,
 } from './kvoteBeregning';
@@ -11,13 +9,13 @@ import {
 export const useErAntallDagerOvertrukketIUttaksplan = () => {
     const {
         foreldreInfo: { rettighetType },
-        uttakPerioder,
+        perioder,
         familiesituasjon,
         valgtStønadskvote,
         familiehendelsedato,
     } = useUttaksplanData();
 
-    const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
+    const filtrertePerioder = perioder.map(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
 
     if (rettighetType === 'ALENEOMSORG' || rettighetType === 'BARE_SØKER_RETT') {
         return (
@@ -37,61 +35,34 @@ export const useErAntallDagerOvertrukketIUttaksplan = () => {
 };
 
 export const useTellDagerIUttaksPeriodene = () => {
-    const { uttakPerioder, familiesituasjon, valgtStønadskvote, familiehendelsedato } = useUttaksplanData();
+    const { perioder, familiesituasjon, valgtStønadskvote, familiehendelsedato } = useUttaksplanData();
 
-    const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
+    const filtrertePerioder = perioder.map(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
 
     return tellDagerIUttaksPeriodene(filtrertePerioder, familiesituasjon, valgtStønadskvote, familiehendelsedato);
 };
 
 export const useUbrukteDagerPerKontoKunEnHarRett = () => {
-    const { uttakPerioder, familiesituasjon, valgtStønadskvote, familiehendelsedato } = useUttaksplanData();
-    const filtrertePerioder = uttakPerioder.filter(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
+    const { perioder, familiesituasjon, valgtStønadskvote, familiehendelsedato } = useUttaksplanData();
+    const filtrertePerioder = perioder.map(filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger);
 
     const aktivitetsfriKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
     const foreldrepengerKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FORELDREPENGER');
     const førFødselKonto = valgtStønadskvote.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
 
+    // summerDagerIPerioder avgrensar sjølv til kontoen sin kontotype (sjå kvoteBeregning.ts),
+    // så periodene under treng ikkje forhandsfiltrerast per konto slik det gamle, flate
+    // periodeformatet krevde.
     const bruktAktivitetsfri = aktivitetsfriKonto
-        ? summerDagerIPerioder(
-              filtrertePerioder.filter((p) => {
-                  const erAktivitetsfriPeriode =
-                      erVanligUttakPeriode(p) &&
-                      getUttaksKontoType(p) === 'FORELDREPENGER' &&
-                      p.morsAktivitet === 'IKKE_OPPGITT';
-                  return erAktivitetsfriPeriode || getUttaksKontoType(p) === 'AKTIVITETSFRI_KVOTE';
-              }),
-              valgtStønadskvote.kontoer,
-              familiesituasjon,
-              familiehendelsedato,
-          )
+        ? summerDagerIPerioder(filtrertePerioder, [aktivitetsfriKonto], familiesituasjon, familiehendelsedato)
         : 0;
 
     const bruktMedAktivitetskrav = foreldrepengerKonto
-        ? summerDagerIPerioder(
-              filtrertePerioder.filter((p) => {
-                  const erAktivitetsfriPeriode =
-                      erVanligUttakPeriode(p) &&
-                      getUttaksKontoType(p) === 'FORELDREPENGER' &&
-                      p.morsAktivitet === 'IKKE_OPPGITT';
-                  if (erAktivitetsfriPeriode) {
-                      return false;
-                  }
-                  return getUttaksKontoType(p) === 'FORELDREPENGER';
-              }),
-              valgtStønadskvote.kontoer,
-              familiesituasjon,
-              familiehendelsedato,
-          )
+        ? summerDagerIPerioder(filtrertePerioder, [foreldrepengerKonto], familiesituasjon, familiehendelsedato)
         : 0;
 
     const bruktFørFødsel = førFødselKonto
-        ? summerDagerIPerioder(
-              filtrertePerioder.filter((p) => getUttaksKontoType(p) === 'FORELDREPENGER_FØR_FØDSEL'),
-              valgtStønadskvote.kontoer,
-              familiesituasjon,
-              familiehendelsedato,
-          )
+        ? summerDagerIPerioder(filtrertePerioder, [førFødselKonto], familiesituasjon, familiehendelsedato)
         : 0;
 
     const ubrukteFørFødselDager =

@@ -11,16 +11,14 @@ import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
 import {
     Uttaksplanperiode,
-    erEøsUttakPeriode,
+    erPeriodeDto,
     erPeriodeUtenUttakHull,
     erTapteDagerHull,
-    erVanligUttakPeriode,
 } from '../../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../../utils/UttakPeriodeBuilder';
 import { getVarighetString } from '../../../utils/dateUtils';
 import {
     erAvslåttPeriode,
-    erOppholdsperiode,
     erOverføringsperiode,
     erPrematuruker,
     erUtsettelsesperiode,
@@ -38,7 +36,6 @@ import {
 } from '../../utils/uttaksplanperiodeUtils';
 import { EndrePeriodePanel } from '../endre-periode-panel/EndrePeriodePanel';
 import { FamiliehendelseContent } from './components/FamiliehendelseContent';
-import { OppholdsPeriodeContent } from './components/OppholdsperiodeContent';
 import { OverføringsperiodeContent } from './components/OverføringsperiodeContent';
 import { PeriodeUtenUttakContent } from './components/PeriodeUtenUttakContext';
 import { PrematurukerContent } from './components/PrematurukerContent';
@@ -60,7 +57,7 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
         foreldreInfo: { navnPåForeldre, søker },
         barn,
         erPeriodeneTilAnnenPartLåst,
-        uttakPerioder,
+        perioder,
     } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
@@ -69,7 +66,7 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
     const erPeriodeForAnnenPartSomErLåst =
         erPeriodeneTilAnnenPartLåst &&
         !erSamtidigUttak &&
-        uttaksplanperioder.some((p) => erVanligUttakPeriode(p) && p.forelder !== søker);
+        uttaksplanperioder.some((p) => erPeriodeDto(p) && !!p.annenPart);
 
     const inneholderKunEnPeriode = uttaksplanperioder.length === 1;
     const erRedigerbar =
@@ -82,7 +79,7 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
 
     const handleSlettClick = () => {
         if (uttaksplanperioder.length === 1) {
-            const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder, 'liste')
+            const nyeUttakPerioder = new UttakPeriodeBuilder(perioder, 'liste')
                 .fjernUttakPerioder(uttaksplanperioder, false)
                 .getUttakPerioder();
             uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
@@ -100,7 +97,7 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
             {!isEndrePeriodePanelOpen && !isSlettPeriodePanelOpen && (
                 <>
                     <VStack gap="space-16">
-                        {uttaksplanperioder.map((periode) => (
+                        {uttaksplanperioder.flatMap(splittPerPart).map((periode) => (
                             <Periode
                                 key={genererPeriodeKey(periode)}
                                 periode={periode}
@@ -157,19 +154,7 @@ const Periode = ({
     erFarEllerMedmor: boolean;
     inneholderKunEnPeriode: boolean;
 }) => {
-    if (erVanligUttakPeriode(periode) && erOppholdsperiode(periode)) {
-        return (
-            <OppholdsPeriodeContent
-                key={genererPeriodeKey(periode)}
-                inneholderKunEnPeriode={inneholderKunEnPeriode}
-                navnPåForeldre={navnPåForeldre}
-                erFarEllerMedmor={erFarEllerMedmor}
-                periode={periode}
-            />
-        );
-    }
-
-    if (erVanligUttakPeriode(periode) && erOverføringsperiode(periode)) {
+    if (erOverføringsperiode(periode)) {
         return (
             <OverføringsperiodeContent
                 key={genererPeriodeKey(periode)}
@@ -194,15 +179,15 @@ const Periode = ({
         return <PrematurukerContent key={genererPeriodeKey(periode)} />;
     }
 
-    if (erVanligUttakPeriode(periode) && erAvslåttPeriode(periode)) {
+    if (erAvslåttPeriode(periode)) {
         return <AvslåttPeriodeContent key={genererPeriodeKey(periode)} periode={periode} />;
     }
 
-    if (erVanligUttakPeriode(periode) && erUtsettelsesperiode(periode)) {
+    if (erUtsettelsesperiode(periode)) {
         return <UtsettelsesPeriodeContent key={genererPeriodeKey(periode)} periode={periode} />;
     }
 
-    if ((erVanligUttakPeriode(periode) && erUttaksperiode(periode)) || erEøsUttakPeriode(periode)) {
+    if (erUttaksperiode(periode) || (erPeriodeDto(periode) && !!periode.annenPartEøs)) {
         return (
             <UttaksperiodeContent
                 key={genererPeriodeKey(periode)}
@@ -222,6 +207,20 @@ const Periode = ({
             <BodyShort weight="semibold">Ikke implementert</BodyShort>
         </HStack>
     );
+};
+
+// Eit intervall kan ha uttak for fleire partar (t.d. samtidig uttak). Kvar part skal visast for seg.
+const splittPerPart = (periode: Uttaksplanperiode): Uttaksplanperiode[] => {
+    if (!erPeriodeDto(periode)) {
+        return [periode];
+    }
+    const { fom, tom, søker, annenPart, annenPartEøs } = periode;
+    const deler: Uttaksplanperiode[] = [
+        ...(søker ? [{ fom, tom, søker }] : []),
+        ...(annenPart ? [{ fom, tom, annenPart }] : []),
+        ...(annenPartEøs ? [{ fom, tom, annenPartEøs }] : []),
+    ];
+    return deler.length > 1 ? deler : [periode];
 };
 
 const AvslåttPeriodeContent = ({ periode }: { periode: Uttaksplanperiode }) => {

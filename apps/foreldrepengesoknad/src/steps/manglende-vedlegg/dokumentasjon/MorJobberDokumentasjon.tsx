@@ -16,12 +16,11 @@ import {
     MorArbeidRequest_fpoversikt,
     NavnPåForeldre,
     PeriodeMedAktivitetskravType_fpoversikt,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
+    UttakPeriodeDto_fpoversikt,
     isAdoptertBarn,
     isFødtBarn,
 } from '@navikt/fp-types';
-import { Uttaksperioden, getFamiliehendelsedato } from '@navikt/fp-utils';
+import { getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttakUploader } from '../attachment-uploaders/UttakUploader';
@@ -30,7 +29,7 @@ import { IngenDokumentasjonPåkrevd } from './IngenDokumentasjonPåkrevd';
 interface Props {
     attachments: Attachment[];
     updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
-    perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    perioder: UttakPeriodeDto_fpoversikt[];
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
 }
@@ -114,7 +113,7 @@ const TrengerIkkeMorIArbeidDokumentasjon = ({
     perioder,
 }: {
     updateDokArbeidMorAttachment: (attachments: Attachment[]) => void;
-    perioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    perioder: UttakPeriodeDto_fpoversikt[];
 }) => {
     useEffect(() => {
         const init = lagAutomatiskDokument(AttachmentType.MORS_AKTIVITET_DOKUMENTASJON, Skjemanummer.DOK_ARBEID_MOR);
@@ -134,7 +133,7 @@ const TrengerIkkeMorIArbeidDokumentasjon = ({
 };
 
 const getDokumentereMorsArbeidParams = (
-    uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    uttaksplan: UttakPeriodeDto_fpoversikt[],
     barn: Barn,
     bareFarHarRett: boolean,
     annenPartFødselsnummer: string,
@@ -144,13 +143,11 @@ const getDokumentereMorsArbeidParams = (
             ? barn.fnr[0]
             : undefined;
 
-    const getPeriodeType = (
-        p: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-    ): PeriodeMedAktivitetskravType_fpoversikt => {
+    const getPeriodeType = (p: UttakPeriodeDto_fpoversikt): PeriodeMedAktivitetskravType_fpoversikt => {
         if (!bareFarHarRett) {
             return 'UTTAK_FELLESPERIODE';
         }
-        if (Uttaksperioden.erIkkeEøsPeriode(p) && p.utsettelseÅrsak === 'FRI') {
+        if (p.søker?.utsettelseÅrsak === 'FRI') {
             return 'UTSETTELSE_BFHR';
         }
         return 'UTTAK_BFHR';

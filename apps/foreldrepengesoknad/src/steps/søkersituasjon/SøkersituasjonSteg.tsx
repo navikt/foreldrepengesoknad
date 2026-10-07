@@ -4,6 +4,8 @@ import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
+import { fordelPlanleggerPerioderEtterSøker } from 'utils/planleggerUtils';
 
 import { Radio, VStack } from '@navikt/ds-react';
 
@@ -40,6 +42,8 @@ export const SøkersituasjonSteg = ({
     const oppdaterSøkersituasjon = useContextSaveData(ContextDataType.SØKERSITUASJON);
     const barn = useContextGetData(ContextDataType.OM_BARNET);
     const kommerFraPlanlegger = useContextGetData(ContextDataType.KOMMER_FRA_PLANLEGGER);
+    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
+    const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
     const resetUttaksplanData = useResetUttaksplanData();
 
     const situasjonFraBarn = barn && isAdoptertBarn(barn) ? 'adopsjon' : 'fødsel';
@@ -60,6 +64,13 @@ export const SøkersituasjonSteg = ({
             (søkersituasjon.situasjon !== nySøkersituasjon.situasjon || søkersituasjon.rolle !== nySøkersituasjon.rolle)
         ) {
             resetUttaksplanData();
+        } else if (kommerFraPlanlegger && uttaksplan) {
+            oppdaterUttaksplan(
+                fordelPlanleggerPerioderEtterSøker(
+                    uttaksplan,
+                    isFarEllerMedmor(nySøkersituasjon.rolle) ? 'FAR_MEDMOR' : 'MOR',
+                ),
+            );
         }
 
         oppdaterSøkersituasjon(nySøkersituasjon);

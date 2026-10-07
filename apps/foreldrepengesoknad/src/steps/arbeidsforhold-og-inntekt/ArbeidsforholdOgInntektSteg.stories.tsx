@@ -12,6 +12,7 @@ import {
     NæringDto,
     SelvstendigNæringDto_fpoversikt,
 } from '@navikt/fp-types';
+import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { ArbeidsforholdOgInntektSteg } from './ArbeidsforholdOgInntektSteg';
 
@@ -113,6 +114,7 @@ type StoryArgs = {
 const meta = {
     title: 'steps/ArbeidsforholdOgInntektSteg',
     component: ArbeidsforholdOgInntektSteg,
+    decorators: [withQueryClient],
     render: ({
         gåTilNesteSide = action('button-click'),
         egenNæring,

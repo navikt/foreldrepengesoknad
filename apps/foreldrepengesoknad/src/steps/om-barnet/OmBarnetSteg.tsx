@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAnnenPartVedtakOptions } from 'api/queries';
+import { useAnnenPartUttaksplanOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
+import { annenPartHarVedtak } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
 import {
     andreAugust2022ReglerGjelder,
@@ -90,10 +91,9 @@ type Props = {
 };
 
 export const OmBarnetSteg = (props: Props) => {
-    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
     const terminDatoQuery = useQuery({
-        ...annenPartVedtakOptions,
-        select: (vedtak) => vedtak?.termindato,
+        ...useAnnenPartUttaksplanOptions(),
+        select: (uttaksplan) => (annenPartHarVedtak(uttaksplan) ? uttaksplan.termindato : undefined),
     });
 
     if (terminDatoQuery.isLoading) {

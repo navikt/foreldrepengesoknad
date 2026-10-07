@@ -1,9 +1,10 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook } from '@testing-library/react';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 
 import { AttachmentType, BarnType, Skjemanummer } from '@navikt/fp-constants';
-import { FpSak_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { FpSak_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/nb_NO.json';
@@ -42,19 +43,24 @@ const eksisterendeSak = {
 const periodeMedDokumentasjonskrav = {
     fom: '2024-06-01',
     tom: '2024-06-30',
-    forelder: 'FAR_MEDMOR',
-    kontoType: 'FELLESPERIODE',
-    morsAktivitet: 'ARBEID',
-    flerbarnsdager: false,
-} satisfies UttakPeriode_fpoversikt;
+    søker: {
+        forelder: 'FAR_MEDMOR',
+        kontoType: 'FELLESPERIODE',
+        morsAktivitet: 'ARBEID',
+        flerbarnsdager: false,
+    },
+} satisfies UttakPeriodeDto_fpoversikt;
 
 const hentSteg = (data: ContextDataMap, erEndringssøknad: boolean, sak?: FpSak_fpoversikt) => {
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = ({ children }: { children: ReactNode }) => (
-        <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: nbMessages }}>
-            <MemoryRouter initialEntries={[SøknadRoutes.UTTAKSPLAN]}>
-                <FpDataContext initialState={{ ...grunnlag, ...data }}>{children}</FpDataContext>
-            </MemoryRouter>
-        </IntlProvider>
+        <QueryClientProvider client={queryClient}>
+            <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: nbMessages }}>
+                <MemoryRouter initialEntries={[SøknadRoutes.UTTAKSPLAN]}>
+                    <FpDataContext initialState={{ ...grunnlag, ...data }}>{children}</FpDataContext>
+                </MemoryRouter>
+            </IntlProvider>
+        </QueryClientProvider>
     );
 
     const { result } = renderHook(
@@ -104,7 +110,10 @@ describe('dokumentasjonssteg i endringssøknad', () => {
                         ...periodeMedDokumentasjonskrav,
                         fom: '2024-05-01',
                         tom: '2024-05-31',
-                        resultat: { innvilget: true, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+                        søker: {
+                            ...periodeMedDokumentasjonskrav.søker,
+                            resultat: { innvilget: true, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+                        },
                     },
                     periodeMedDokumentasjonskrav,
                 ],
@@ -124,9 +133,11 @@ describe('dokumentasjonssteg i endringssøknad', () => {
                     {
                         fom: '2024-06-01',
                         tom: '2024-06-30',
-                        forelder: 'MOR',
-                        kontoType: 'MØDREKVOTE',
-                        flerbarnsdager: false,
+                        søker: {
+                            forelder: 'MOR',
+                            kontoType: 'MØDREKVOTE',
+                            flerbarnsdager: false,
+                        },
                     },
                 ],
                 [ContextDataType.ANNEN_FORELDER]: { ...annenForelder, erAleneOmOmsorg: true },
@@ -145,7 +156,10 @@ describe('dokumentasjonssteg i endringssøknad', () => {
                 [ContextDataType.UTTAKSPLAN]: [
                     {
                         ...periodeMedDokumentasjonskrav,
-                        resultat: { innvilget: true, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+                        søker: {
+                            ...periodeMedDokumentasjonskrav.søker,
+                            resultat: { innvilget: true, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+                        },
                     },
                 ],
                 [ContextDataType.ANNEN_FORELDER]: { ...annenForelder, erAleneOmOmsorg: true },

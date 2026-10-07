@@ -1,11 +1,12 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
-import { useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
+import { useAnnenPartUttaksplanOptions, useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useIntl } from 'react-intl';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
+import { annenPartHarVedtak } from 'utils/annenForelderUtils';
 import { getVis1Juli2024Info } from 'utils/dateUtils';
 import { getKjønnFromFnr } from 'utils/personUtils';
 
@@ -44,8 +45,10 @@ export const PeriodeMedForeldrepengerSteg = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
 
-    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
-    const annenPartVedtak = useQuery(annenPartVedtakOptions).data;
+    const annenPartVedtak = useQuery({
+        ...useAnnenPartUttaksplanOptions(),
+        select: (uttaksplan) => (annenPartHarVedtak(uttaksplan) ? uttaksplan : undefined),
+    }).data;
 
     const kontoerOptions = useStønadsKontoerOptions();
     const tilgjengeligeStønadskvoterQuery = useQuery(kontoerOptions);
@@ -54,7 +57,7 @@ export const PeriodeMedForeldrepengerSteg = ({
         return <Spinner />;
     }
 
-    const visAnnenPartsValg = annenPartVedtak && annenPartVedtak.perioder.length > 0;
+    const visAnnenPartsValg = annenPartVedtak !== undefined;
     const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && !annenPartVedtak;
 
     return (

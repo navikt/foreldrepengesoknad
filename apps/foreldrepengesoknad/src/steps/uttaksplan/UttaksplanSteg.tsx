@@ -1,9 +1,10 @@
 import { BulletListIcon, CalendarIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
-import { useAnnenPartVedtakOptions, useStønadsKontoerOptions } from 'api/queries';
+import { useStønadsKontoerOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
+import { useValgtSak } from 'appData/useValgtSak';
 import { ReactNode, useCallback, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
@@ -17,7 +18,7 @@ import { Alert, BodyLong, Tabs } from '@navikt/ds-react';
 import { loggUmamiEvent } from '@navikt/fp-observability';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, RettighetType_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
-import { Uttaksperioden, barnehagestartDato, getFamiliehendelsedato } from '@navikt/fp-utils';
+import { barnehagestartDato, getFamiliehendelsedato } from '@navikt/fp-utils';
 import {
     FjernAltIUttaksplanModal,
     HvaErMulig,
@@ -32,7 +33,7 @@ import {
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanForm } from './UttaksplanForm';
-import { useUttaksplanForEksisterendeSak } from './hooks/useUttaksplanForEksisterendeSak';
+import { useTidligereUttaksplan } from './hooks/useTidligereUttaksplan';
 import { useUttaksplanForslag } from './hooks/useUttaksplanForslag';
 
 interface Props {
@@ -58,6 +59,7 @@ export const UttaksplanSteg = ({
     const dekningsgrad = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
     const eksisterendeSaksnummer = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
+    const opprinneligUttaksplan = useContextGetData(ContextDataType.OPPRINNELIG_UTTAKSPLAN);
     const kommerFraPlanlegger = !!useContextGetData(ContextDataType.KOMMER_FRA_PLANLEGGER);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
@@ -67,15 +69,29 @@ export const UttaksplanSteg = ({
     const [opprinneligPlanleggerplan] = useState(() => (kommerFraPlanlegger ? uttaksplan : undefined));
 
     const eksisterendeSak = foreldrepengerSaker?.find((sak) => sak.saksnummer === eksisterendeSaksnummer);
+    const { erNySøknadPåEksisterendeSak } = useValgtSak(eksisterendeSak);
 
     const [feilmelding, setFeilmelding] = useState<ReactNode | undefined>();
 
     const oppdaterUttaksplanOgFjernFeilmelding = useCallback(
-        (...args: Parameters<typeof oppdaterUttaksplan>) => {
+        (perioder: Parameters<typeof oppdaterUttaksplan>[0]) => {
             setFeilmelding(undefined);
-            oppdaterUttaksplan(...args);
+            const gjenbruktPlan =
+                !erEndringssøknad &&
+                erNySøknadPåEksisterendeSak &&
+                opprinneligUttaksplan?.saksnummer === eksisterendeSaksnummer
+                    ? opprinneligUttaksplan?.perioder
+                    : undefined;
+            // Redigeringens «tilbakestill» bruker undefined, men skal ikke forkaste grunnlaget for gjenbruk.
+            oppdaterUttaksplan(perioder ?? gjenbruktPlan);
         },
-        [oppdaterUttaksplan],
+        [
+            oppdaterUttaksplan,
+            erEndringssøknad,
+            erNySøknadPåEksisterendeSak,
+            opprinneligUttaksplan,
+            eksisterendeSaksnummer,
+        ],
     );
 
     const harRegistrertNæring = søkerInfo.selvstendigNæring.length > 0;
@@ -125,39 +141,24 @@ export const UttaksplanSteg = ({
         },
     });
 
-    const annenPartVedtakOptionsWrapped = useAnnenPartVedtakOptions();
-    const annenPartVedtakQuery = useQuery({
-        ...annenPartVedtakOptionsWrapped,
-    });
-    const erAnnenPartVedtakAvklart = annenPartVedtakQuery.isSuccess || annenPartVedtakOptionsWrapped.enabled === false;
-
-    const uttaksplanForEksisterendeSak = useUttaksplanForEksisterendeSak(
-        annenPartVedtakQuery.data?.perioder,
-        erAnnenPartVedtakAvklart,
-    );
+    const tidligereUttaksplan = useTidligereUttaksplan(erEndringssøknad, eksisterendeSak);
+    const tidligereUttaksperioder = tidligereUttaksplan.perioder;
 
     const valgteStønadskvoter = tilgjengeligeStønadskvoterQuery.data;
 
-    // Filtrerer ut periodane til annen part midlertidig fram til me får på plass lagring av desse periodane
+    // Filtrerer ut periodane til annen part midlertidig fram til me får på plass lagring av desse
+    // periodane. useUttaksplanForslag sørger for at .søker alltid betyr søkjars eigne periodar
+    // (uavhengig av forelderrolle), så det er nok å filtrere på at .søker finst.
     const nyttUttaksplanForslag = useUttaksplanForslag(
         valgteStønadskvoter,
-        annenPartVedtakQuery.data?.perioder,
-        annenPartVedtakQuery.isLoading,
-    ).filter(
-        (periode) =>
-            Uttaksperioden.erIkkeEøsPeriode(periode) &&
-            periode.forelder === (erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR'),
-    );
+        tidligereUttaksperioder,
+        tidligereUttaksplan.isLoading,
+    ).filter((periode) => periode.søker !== undefined);
 
-    if (!valgteStønadskvoter || annenPartVedtakQuery.isLoading) {
+    if (!valgteStønadskvoter || tidligereUttaksplan.isLoading) {
         return null;
     }
 
-    const annenPartsPerioderEllerUndefined =
-        annenPartVedtakQuery.data?.perioder && annenPartVedtakQuery.data?.perioder?.length > 0
-            ? annenPartVedtakQuery.data.perioder
-            : undefined;
-    const tidligereUttaksperioder = uttaksplanForEksisterendeSak ?? annenPartsPerioderEllerUndefined;
     const defaultUttaksperioder = opprinneligPlanleggerplan ?? tidligereUttaksperioder ?? nyttUttaksplanForslag;
 
     const erPlanenEndret =
@@ -196,7 +197,7 @@ export const UttaksplanSteg = ({
                     }}
                     valgtStønadskvote={valgteStønadskvoter}
                     harAktivitetskravIPeriodeUtenUttak={false}
-                    uttakPerioder={uttaksplan || defaultUttaksperioder}
+                    perioder={uttaksplan || defaultUttaksperioder}
                     erPeriodeneTilAnnenPartLåst={!!tidligereUttaksperioder}
                     aktiveArbeidsforhold={aktiveArbeidsforhold}
                     erEndringssøknad={erEndringssøknad}
@@ -262,7 +263,7 @@ export const UttaksplanSteg = ({
                         scrollToKvoteOppsummering={scrollToKvoteOppsummering}
                         defaultUttaksperioder={defaultUttaksperioder}
                         eksisterendeSak={eksisterendeSak}
-                        opprinneligPlan={uttaksplanForEksisterendeSak}
+                        opprinneligPlan={eksisterendeSaksnummer ? tidligereUttaksperioder : undefined}
                         erEndringssøknad={erEndringssøknad}
                     />
                 </UttaksplanDataProvider>

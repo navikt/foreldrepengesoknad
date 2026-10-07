@@ -9,12 +9,12 @@ import { action } from 'storybook/actions';
 import { AnnenForelder } from 'types/AnnenForelder';
 
 import { BarnType } from '@navikt/fp-constants';
-import { Barn, KontoBeregningDto, SøkersituasjonFp, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { Barn, KontoBeregningDto, SøkersituasjonFp, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { PeriodeMedForeldrepengerSteg } from './PeriodeMedForeldrepengerSteg';
 
-const UTTAKSPLAN_ANNEN_URL = API_URLS.annenPartVedtak;
+const UTTAKSPLAN_URL = API_URLS.uttaksplan;
 const STØNADSKONTO_URL = API_URLS.konto;
 
 const promiseAction = () => () => {
@@ -75,28 +75,30 @@ const STØNADSKONTO_80 = {
 const uttaksperiode = {
     fom: '2022-12-07',
     tom: '2022-12-07',
-    kontoType: 'MØDREKVOTE',
-    resultat: {
-        innvilget: true,
-        trekkerMinsterett: false,
-        trekkerDager: true,
-        årsak: 'ANNET',
-    },
-    morsAktivitet: 'ARBEID',
-    gradering: {
-        arbeidstidprosent: 55,
-        aktivitet: {
-            type: 'FRILANS',
-            arbeidsgiver: {
-                id: 'string',
-                type: 'PRIVAT',
+    annenPart: {
+        forelder: 'MOR',
+        kontoType: 'MØDREKVOTE',
+        resultat: {
+            innvilget: true,
+            trekkerMinsterett: false,
+            trekkerDager: true,
+            årsak: 'ANNET',
+        },
+        morsAktivitet: 'ARBEID',
+        gradering: {
+            arbeidstidprosent: 55,
+            aktivitet: {
+                type: 'FRILANS',
+                arbeidsgiver: {
+                    id: 'string',
+                    type: 'PRIVAT',
+                },
             },
         },
+        samtidigUttak: 50,
+        flerbarnsdager: true,
     },
-    samtidigUttak: 50,
-    flerbarnsdager: true,
-    forelder: 'MOR',
-} satisfies UttakPeriode_fpoversikt;
+} satisfies UttakPeriodeDto_fpoversikt;
 
 const fellesProps = {
     arbeidsforhold: [],
@@ -144,7 +146,7 @@ type Story = StoryObj<typeof meta>;
 export const FarEllerMedmorAleneomsorgFødsel: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
+            http.post(UTTAKSPLAN_URL, () => new HttpResponse(null, { status: 204 })),
             http.post(STØNADSKONTO_URL, () =>
                 HttpResponse.json({
                     '80': STØNADSKONTO_80,
@@ -175,7 +177,7 @@ export const FarEllerMedmorAleneomsorgFødsel: Story = {
 export const FarEllerMedmorFødselOgMorHarIkkeRett: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
+            http.post(UTTAKSPLAN_URL, () => new HttpResponse(null, { status: 204 })),
             http.post(STØNADSKONTO_URL, () =>
                 HttpResponse.json({
                     '80': {
@@ -297,7 +299,7 @@ export const MorBeggeHarRettAdopsjonEtter1Juli2024: Story = {
 export const MorSøkerAdopsjonMedAleneomsorg: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
+            http.post(UTTAKSPLAN_URL, () => new HttpResponse(null, { status: 204 })),
             http.post(STØNADSKONTO_URL, () =>
                 HttpResponse.json({
                     '100': {
@@ -437,7 +439,7 @@ export const MorAleneomsorgFødsel: Story = {
 export const MorFødselDeltUttakPrematurFødsel: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
+            http.post(UTTAKSPLAN_URL, () => new HttpResponse(null, { status: 204 })),
             http.post(STØNADSKONTO_URL, () =>
                 HttpResponse.json({
                     '100': {
@@ -479,7 +481,7 @@ export const MorFødselDeltUttakPrematurFødsel: Story = {
 export const MorAleneomsorgPrematurFødsel: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
+            http.post(UTTAKSPLAN_URL, () => new HttpResponse(null, { status: 204 })),
             http.post(STØNADSKONTO_URL, () =>
                 HttpResponse.json({
                     '100': {
@@ -560,7 +562,7 @@ export const MorFødselDeltUttak: Story = {
 export const MorFødselMedTvillingFlerbarnsuker: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
+            http.post(UTTAKSPLAN_URL, () => new HttpResponse(null, { status: 204 })),
             http.post(STØNADSKONTO_URL, () =>
                 HttpResponse.json({
                     '100': {
@@ -637,7 +639,7 @@ export const MorFødselMedTvillingFlerbarnsuker: Story = {
 export const MorFødselAleneomsorgMedTrillingFlerbarnsuker: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 204 })),
+            http.post(UTTAKSPLAN_URL, () => new HttpResponse(null, { status: 204 })),
             http.post(STØNADSKONTO_URL, () =>
                 HttpResponse.json({
                     '100': {
@@ -709,8 +711,9 @@ export const MorFødselAleneomsorgMedTrillingFlerbarnsuker: Story = {
 export const FarEllerMedmorSøkerOgMorHarLagetUttaksplan: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(UTTAKSPLAN_ANNEN_URL, () =>
+            http.post(UTTAKSPLAN_URL, () =>
                 HttpResponse.json({
+                    antallBarn: 1,
                     perioder: [uttaksperiode],
                     dekningsgrad: 'HUNDRE',
                 }),
@@ -773,8 +776,9 @@ export const FarMedMorMedTermin1Juli2024: Story = {
 export const MorMedTermin1Juli2024OgFarsSøknad: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(UTTAKSPLAN_ANNEN_URL, () =>
+            http.post(UTTAKSPLAN_URL, () =>
                 HttpResponse.json({
+                    antallBarn: 1,
                     perioder: [uttaksperiode],
                     dekningsgrad: 'ÅTTI',
                 }),

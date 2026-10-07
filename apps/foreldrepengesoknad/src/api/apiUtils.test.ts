@@ -7,11 +7,9 @@ import {
     Barn,
     FpPersonopplysningerDto_fpoversikt,
     FødtBarn,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
+    UttakPeriodeDto_fpoversikt,
     Uttaksplanperiode,
 } from '@navikt/fp-types';
-import { prosesserPerioderForVisning } from '@navikt/fp-uttaksplan';
 
 import { getUttaksplanMedFriUtsettelsesperiode, mapTilEndringssøknadDto, mapTilSøknadDto } from './apiUtils';
 
@@ -93,9 +91,9 @@ const getBarnMock = () => {
 const getStateMock = (
     annenForelderInput: AnnenForelder,
     barnInput: Barn,
-    uttaksplanInput: UttakPeriode_fpoversikt[],
+    uttaksplanInput: UttakPeriodeDto_fpoversikt[],
     saksnummer = 'SAK-001',
-    opprinneligUttaksplanInput: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | null = [],
+    opprinneligUttaksplanInput: UttakPeriodeDto_fpoversikt[] | null = [],
 ) => {
     const data: ContextDataMap = {
         [ContextDataType.ANNEN_FORELDER]: annenForelderInput,
@@ -112,6 +110,20 @@ const getStateMock = (
     };
     return <TYPE extends ContextDataType>(type: TYPE): ContextDataMap[TYPE] => data[type];
 };
+
+const mor = (
+    fom: string,
+    tom: string,
+    kontoType: 'MØDREKVOTE' | 'FELLESPERIODE' | 'FEDREKVOTE' | 'FORELDREPENGER',
+): UttakPeriodeDto_fpoversikt => ({
+    fom,
+    tom,
+    søker: {
+        forelder: 'MOR',
+        flerbarnsdager: false,
+        kontoType,
+    },
+});
 
 describe('mapTilSøknadDto', () => {
     const barnMock = getBarnMock();
@@ -166,24 +178,29 @@ describe('mapTilSøknadDto', () => {
     });
 
     it('skal berre inkludere søkers periodar i uttaksplanen', () => {
-        const morsUttak: UttakPeriode_fpoversikt = {
+        const morsUttak: UttakPeriodeDto_fpoversikt = {
             fom: '2021-01-01',
             tom: '2021-01-10',
-            forelder: 'MOR',
-            flerbarnsdager: false,
-            kontoType: 'MØDREKVOTE',
+            søker: {
+                forelder: 'MOR',
+                flerbarnsdager: false,
+                kontoType: 'MØDREKVOTE',
+            },
         };
-        const farsUttak: UttakPeriode_fpoversikt = {
+        const farsUttak: UttakPeriodeDto_fpoversikt = {
             fom: '2021-01-11',
             tom: '2021-01-20',
-            forelder: 'FAR_MEDMOR',
-            flerbarnsdager: false,
-            kontoType: 'FEDREKVOTE',
+            annenPart: {
+                forelder: 'FAR_MEDMOR',
+                flerbarnsdager: false,
+                kontoType: 'FEDREKVOTE',
+            },
         };
         const data = getStateMock(annenForelderMock, barnMock, [morsUttak, farsUttak]);
         const søknadMedPerioder = mapTilSøknadDto(data, DEFAULT_SØKER_INFO);
-        expect(søknadMedPerioder.uttaksplan.uttaksperioder.length).toBe(1);
-        expect(søknadMedPerioder.uttaksplan.uttaksperioder[0]!.fom).toBe('2021-01-01');
+        expect(søknadMedPerioder.uttaksplan.uttaksperioder!.length).toBe(1);
+        expect(søknadMedPerioder.uttaksplan.uttaksperioder![0]!.fom).toBe('2021-01-01');
+        expect(søknadMedPerioder.uttaksplan.perioder).toEqual([morsUttak, farsUttak]);
     });
 
     it('skal inkludere dekningsgrad og ønskerJustertUttakVedFødsel', () => {
@@ -211,122 +228,313 @@ describe('mapTilEndringssøknadDto', () => {
     });
 
     it('skal berre inkludere periodar frå og med endringstidspunktet', () => {
-        const nyePerioder: UttakPeriode_fpoversikt[] = [
-            { fom: '2024-01-01', tom: '2024-01-31', forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
-            {
-                fom: '2024-02-01',
-                tom: '2024-02-29',
-                forelder: 'MOR',
-                flerbarnsdager: false,
-                kontoType: 'FELLESPERIODE',
-            },
-            { fom: '2024-03-01', tom: '2024-03-29', forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+        const nyePerioder: UttakPeriodeDto_fpoversikt[] = [
+            mor('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
+            mor('2024-02-01', '2024-02-29', 'FELLESPERIODE'),
+            mor('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
         ];
-        const eksisterendePerioder: UttakPeriode_fpoversikt[] = [
-            { fom: '2024-01-01', tom: '2024-01-31', forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
-            { fom: '2024-02-01', tom: '2024-02-29', forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
-            { fom: '2024-03-01', tom: '2024-03-29', forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+        const eksisterendePerioder: UttakPeriodeDto_fpoversikt[] = [
+            mor('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
+            mor('2024-02-01', '2024-02-29', 'MØDREKVOTE'),
+            mor('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
         ];
         const data = getStateMock(annenForelderMock, barnMock, nyePerioder, 'SAK-001', eksisterendePerioder);
         const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO);
 
         // Endringstidspunktet er 2024-02-01 (første avvik), så berre perioder f.o.m. den datoen
-        expect(endringssøknad.uttaksplan.uttaksperioder.length).toBe(2);
-        expect(endringssøknad.uttaksplan.uttaksperioder[0]!.fom).toBe('2024-02-01');
+        expect(endringssøknad.uttaksplan.uttaksperioder!.length).toBe(2);
+        expect(endringssøknad.uttaksplan.uttaksperioder![0]!.fom).toBe('2024-02-01');
+        expect(endringssøknad.uttaksplan.perioder).toEqual(nyePerioder.slice(1));
     });
 
     it('skal leggje til FRI utsettelsesperiode ved gap på endringstidspunktet', () => {
-        const nyePerioder: UttakPeriode_fpoversikt[] = [
-            { fom: '2024-01-01', tom: '2024-01-31', forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+        const nyePerioder: UttakPeriodeDto_fpoversikt[] = [
+            mor('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
             // gap: 2024-02-01 til 2024-02-29 er fjerna
-            { fom: '2024-03-01', tom: '2024-03-29', forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+            mor('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
         ];
-        const eksisterendePerioder: UttakPeriode_fpoversikt[] = [
-            { fom: '2024-01-01', tom: '2024-01-31', forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
-            { fom: '2024-02-01', tom: '2024-02-29', forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
-            { fom: '2024-03-01', tom: '2024-03-29', forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+        const eksisterendePerioder: UttakPeriodeDto_fpoversikt[] = [
+            mor('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
+            mor('2024-02-01', '2024-02-29', 'MØDREKVOTE'),
+            mor('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
         ];
         const data = getStateMock(annenForelderMock, barnMock, nyePerioder, 'SAK-001', eksisterendePerioder);
         const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO);
 
         // Endringstidspunkt er 2024-02-01, inga periode dekkjer den datoen → FRI utsettelse leggjast til
-        const perioder = endringssøknad.uttaksplan.uttaksperioder;
+        const perioder = endringssøknad.uttaksplan.uttaksperioder!;
         const friPeriode = perioder.find((p) => p.type === 'utsettelse');
         expect(friPeriode).toBeDefined();
         expect(friPeriode!.fom).toBe('2024-02-01');
+
+        expect(endringssøknad.uttaksplan.perioder).toEqual([
+            {
+                fom: '2024-02-01',
+                tom: '2024-02-29',
+                søker: { forelder: 'MOR', utsettelseÅrsak: 'FRI', flerbarnsdager: false },
+            },
+            nyePerioder[1],
+        ]);
     });
 
-    // Scenario fra produksjon: far tok perioden rundt fødsel med 100 % samtidig uttak, mens mors vedtak
-    // ikke sier noe om samtidig uttak. prosesserPerioderForVisning setter da 100 % på mors mødrekvote for at
-    // planen skal henge sammen visuelt. Tilpassingen er ikke en brukerendring og skal ikke flytte
-    // endringstidspunktet tilbake til fødselen (som gjorde at perioden fall ut på søknadsfrist i fpsak).
-    describe('teknisk tilpassing av samtidig uttak skal ikke regnes som brukerendring', () => {
-        const MORS_VEDTAKSPERIODER: UttakPeriode_fpoversikt[] = [
-            { fom: '2024-01-01', tom: '2024-01-12', forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
-            { fom: '2024-01-15', tom: '2024-03-29', forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
-            {
-                fom: '2024-04-01',
-                tom: '2024-04-30',
-                forelder: 'MOR',
-                flerbarnsdager: false,
-                kontoType: 'FELLESPERIODE',
-            },
+    it('skal sende heile intervallet som dekkjer endringstidspunktet i perioder, slik som i uttaksperioder', () => {
+        const nyePerioder: UttakPeriodeDto_fpoversikt[] = [
+            mor('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
+            mor('2024-02-01', '2024-02-29', 'FELLESPERIODE'),
         ];
+        const eksisterendePerioder: UttakPeriodeDto_fpoversikt[] = [
+            mor('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
+            mor('2024-02-01', '2024-02-15', 'FELLESPERIODE'),
+            mor('2024-02-16', '2024-02-29', 'MØDREKVOTE'),
+        ];
+        const data = getStateMock(annenForelderMock, barnMock, nyePerioder, 'SAK-001', eksisterendePerioder);
+        const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO);
 
-        const FARS_VEDTAKSPERIODER: UttakPeriode_fpoversikt[] = [
+        expect(endringssøknad.uttaksplan.uttaksperioder!.map((p) => p.fom)).toEqual(['2024-02-01']);
+        expect(endringssøknad.uttaksplan.perioder).toEqual([nyePerioder[1]]);
+    });
+
+    it('skal ta med annan part sine intervall etter endringstidspunktet i perioder', () => {
+        const farsUttak: UttakPeriodeDto_fpoversikt = {
+            fom: '2024-03-01',
+            tom: '2024-03-29',
+            annenPart: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
+        };
+        const nyePerioder: UttakPeriodeDto_fpoversikt[] = [
+            mor('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
+            mor('2024-02-01', '2024-02-29', 'FELLESPERIODE'),
+            farsUttak,
+        ];
+        const eksisterendePerioder: UttakPeriodeDto_fpoversikt[] = [
+            mor('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
+            mor('2024-02-01', '2024-02-29', 'MØDREKVOTE'),
+            farsUttak,
+        ];
+        const data = getStateMock(annenForelderMock, barnMock, nyePerioder, 'SAK-001', eksisterendePerioder);
+        const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO);
+
+        expect(endringssøknad.uttaksplan.perioder).toEqual([nyePerioder[1], farsUttak]);
+    });
+
+    it('skal beholde opphold uten FRI når søkeren har fjernet sin del av et samtidig uttak', () => {
+        const farsDel = {
+            forelder: 'FAR_MEDMOR',
+            kontoType: 'FEDREKVOTE',
+            samtidigUttak: 50,
+            flerbarnsdager: false,
+        } as const;
+        const eksisterendePerioder: UttakPeriodeDto_fpoversikt[] = [
+            mor('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
+            { ...mor('2024-02-01', '2024-02-29', 'FELLESPERIODE'), annenPart: farsDel },
+            mor('2024-03-01', '2024-03-29', 'FELLESPERIODE'),
+        ];
+        const nyePerioder: UttakPeriodeDto_fpoversikt[] = [
+            mor('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
+            { fom: '2024-02-01', tom: '2024-02-29', annenPart: farsDel },
+            mor('2024-03-01', '2024-03-29', 'FELLESPERIODE'),
+        ];
+        const data = getStateMock(annenForelderMock, barnMock, nyePerioder, 'SAK-001', eksisterendePerioder);
+        const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO);
+
+        expect(endringssøknad.uttaksplan.perioder).toEqual(nyePerioder.slice(1));
+        expect(endringssøknad.uttaksplan.uttaksperioder![0]).toMatchObject({
+            type: 'opphold',
+            fom: '2024-02-01',
+            tom: '2024-02-29',
+            årsak: 'UTTAK_FEDREKVOTE_ANNEN_FORELDER',
+        });
+    });
+
+    it('skal sende annen part sitt uttak som opphald, men hoppe over utsetjingar, avslag og FFF', () => {
+        const annenPart = (
+            fom: string,
+            tom: string,
+            del: Partial<NonNullable<UttakPeriodeDto_fpoversikt['annenPart']>>,
+        ): UttakPeriodeDto_fpoversikt => ({
+            fom,
+            tom,
+            annenPart: { forelder: 'FAR_MEDMOR', flerbarnsdager: false, ...del },
+        });
+        const eksisterendePerioder: UttakPeriodeDto_fpoversikt[] = [
+            mor('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
+            annenPart('2024-02-01', '2024-02-29', { kontoType: 'FEDREKVOTE' }),
+            annenPart('2024-03-01', '2024-03-29', { utsettelseÅrsak: 'FERIE' }),
+            annenPart('2024-04-01', '2024-04-30', {
+                kontoType: 'FELLESPERIODE',
+                resultat: { innvilget: false, trekkerMinsterett: false, trekkerDager: false, årsak: 'ANNET' },
+            }),
+            annenPart('2024-05-01', '2024-05-31', { kontoType: 'FORELDREPENGER_FØR_FØDSEL' }),
+        ];
+        const nyePerioder: UttakPeriodeDto_fpoversikt[] = [
+            mor('2024-01-01', '2024-01-15', 'MØDREKVOTE'),
+            ...eksisterendePerioder.slice(1),
+        ];
+        const data = getStateMock(annenForelderMock, barnMock, nyePerioder, 'SAK-001', eksisterendePerioder);
+
+        const uttaksplan = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO).uttaksplan;
+        const uttaksperioder = uttaksplan.uttaksperioder!;
+
+        const opphald = uttaksperioder.filter((p) => p.type === 'opphold');
+        expect(opphald).toHaveLength(1);
+        expect(opphald[0]).toMatchObject({ fom: '2024-02-01', årsak: 'UTTAK_FEDREKVOTE_ANNEN_FORELDER' });
+        expect(uttaksplan.perioder).toEqual(nyePerioder.slice(0, 2));
+    });
+
+    it.each([
+        { søkerInnvilget: true, annenPartInnvilget: true },
+        { søkerInnvilget: true, annenPartInnvilget: false },
+        { søkerInnvilget: false, annenPartInnvilget: true },
+        { søkerInnvilget: false, annenPartInnvilget: false },
+    ])(
+        'skal filtrere samtidig uttak etter søkerens avslag (søker=$søkerInnvilget, annen part=$annenPartInnvilget)',
+        ({ søkerInnvilget, annenPartInnvilget }) => {
+            const samtidigPeriode: UttakPeriodeDto_fpoversikt = {
+                fom: '2024-03-01',
+                tom: '2024-03-29',
+                søker: {
+                    forelder: 'MOR',
+                    kontoType: 'FELLESPERIODE',
+                    samtidigUttak: 50,
+                    flerbarnsdager: false,
+                    resultat: {
+                        innvilget: søkerInnvilget,
+                        trekkerDager: true,
+                        trekkerMinsterett: false,
+                        årsak: 'ANNET',
+                    },
+                },
+                annenPart: {
+                    forelder: 'FAR_MEDMOR',
+                    kontoType: 'FEDREKVOTE',
+                    samtidigUttak: 50,
+                    flerbarnsdager: false,
+                    resultat: {
+                        innvilget: annenPartInnvilget,
+                        trekkerDager: true,
+                        trekkerMinsterett: false,
+                        årsak: 'ANNET',
+                    },
+                },
+            };
+            const opprinneligPlan = [mor('2024-02-01', '2024-02-29', 'MØDREKVOTE'), samtidigPeriode];
+            const nyPlan = [mor('2024-02-01', '2024-02-29', 'FELLESPERIODE'), samtidigPeriode];
+            const planFørInnsending = structuredClone(nyPlan);
+            const data = getStateMock(annenForelderMock, barnMock, nyPlan, 'SAK-001', opprinneligPlan);
+
+            const { perioder, uttaksperioder } = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO).uttaksplan;
+
+            expect(perioder).toEqual(søkerInnvilget ? nyPlan : [nyPlan[0]]);
+            expect(uttaksperioder!.map(({ fom, tom }) => ({ fom, tom }))).toEqual(
+                perioder!.map(({ fom, tom }) => ({ fom, tom })),
+            );
+            expect(uttaksperioder!.every((periode) => periode.type === 'uttak')).toBe(true);
+            expect(nyPlan).toEqual(planFørInnsending);
+        },
+    );
+
+    it('skal filtrere avslag også uten endringstidspunkt', () => {
+        const avslåttPeriode: UttakPeriodeDto_fpoversikt = {
+            fom: '2024-03-01',
+            tom: '2024-03-29',
+            søker: {
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                flerbarnsdager: false,
+                resultat: { innvilget: false, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+            },
+        };
+        const plan = [mor('2024-02-01', '2024-02-29', 'MØDREKVOTE'), avslåttPeriode];
+        const data = getStateMock(annenForelderMock, barnMock, plan, 'SAK-001', plan);
+
+        const { perioder, uttaksperioder } = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO).uttaksplan;
+
+        expect(getEndringstidspunktNy(plan, plan)).toBeUndefined();
+        expect(perioder).toEqual([plan[0]]);
+        expect(uttaksperioder).toHaveLength(1);
+    });
+
+    it('skal la FRI dekke hele hullet selv om annen part har en utsettelse i tidsrommet', () => {
+        const annenPartsUtsettelse: UttakPeriodeDto_fpoversikt = {
+            fom: '2024-02-12',
+            tom: '2024-02-29',
+            annenPart: { forelder: 'FAR_MEDMOR', utsettelseÅrsak: 'FERIE', flerbarnsdager: false },
+        };
+        const opprinneligPlan = [
+            mor('2024-02-01', '2024-02-09', 'MØDREKVOTE'),
+            annenPartsUtsettelse,
+            mor('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
+        ];
+        const nyPlan = opprinneligPlan.slice(1);
+        const data = getStateMock(annenForelderMock, barnMock, nyPlan, 'SAK-001', opprinneligPlan);
+
+        const { perioder, uttaksperioder } = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO).uttaksplan;
+
+        expect(perioder).toEqual([
+            {
+                fom: '2024-02-01',
+                tom: '2024-02-29',
+                søker: { forelder: 'MOR', utsettelseÅrsak: 'FRI', flerbarnsdager: false },
+            },
+            nyPlan[1],
+        ]);
+        expect(uttaksperioder![0]).toMatchObject({
+            type: 'utsettelse',
+            årsak: 'FRI',
+            fom: '2024-02-01',
+            tom: '2024-02-29',
+        });
+        expect(nyPlan[0]).toEqual(annenPartsUtsettelse);
+    });
+
+    // Scenario fra produksjon: far tok perioden rundt fødsel med 100 % samtidig uttak. Endringstidspunktet
+    // skal utledes fra brukerens faktiske endring og ikke flyttes tilbake til fødselen (som gjorde at
+    // perioden fall ut på søknadsfrist i fpsak).
+    describe('samtidig uttak rundt fødsel skal ikke regnes som brukerendring', () => {
+        const opprinneligPlan: UttakPeriodeDto_fpoversikt[] = [
             {
                 fom: '2024-01-01',
                 tom: '2024-01-12',
-                forelder: 'FAR_MEDMOR',
-                flerbarnsdager: false,
-                kontoType: 'FEDREKVOTE',
-                samtidigUttak: 100,
+                søker: { forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE', samtidigUttak: 100 },
+                annenPart: {
+                    forelder: 'FAR_MEDMOR',
+                    flerbarnsdager: false,
+                    kontoType: 'FEDREKVOTE',
+                    samtidigUttak: 100,
+                },
             },
+            mor('2024-01-15', '2024-03-29', 'MØDREKVOTE'),
+            mor('2024-04-01', '2024-04-30', 'FELLESPERIODE'),
         ];
 
-        // Planen slik brukeren faktisk får den presentert i uttaksplanen
-        const opprinneligPlan = prosesserPerioderForVisning(MORS_VEDTAKSPERIODER, FARS_VEDTAKSPERIODER);
-        const morsPerioderIPlanen = opprinneligPlan.filter(
-            (p): p is UttakPeriode_fpoversikt => 'forelder' in p && p.forelder === 'MOR',
-        );
-
-        it('prosesseringa set 100 % samtidig uttak på mor sin periode rundt fødsel', () => {
-            expect(morsPerioderIPlanen[0]).toMatchObject({ fom: '2024-01-01', samtidigUttak: 100 });
-            expect(MORS_VEDTAKSPERIODER[0]!.samtidigUttak).toBeUndefined();
-        });
-
-        it('skal utlede endringstidspunkt fra brukerens faktiske endring, ikke fra tilpassingen', () => {
-            const nyPlan = morsPerioderIPlanen.map((p) =>
-                p.kontoType === 'FELLESPERIODE' ? { ...p, tom: '2024-05-31' } : p,
+        it('skal utlede endringstidspunkt fra brukerens faktiske endring', () => {
+            const nyPlan = opprinneligPlan.map((p) =>
+                p.søker?.kontoType === 'FELLESPERIODE' ? { ...p, tom: '2024-05-31' } : p,
             );
 
             const data = getStateMock(annenForelderMock, barnMock, nyPlan, 'SAK-001', opprinneligPlan);
             const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO);
 
-            expect(endringssøknad.uttaksplan.uttaksperioder).toHaveLength(1);
-            expect(endringssøknad.uttaksplan.uttaksperioder[0]!.fom).toBe('2024-04-01');
+            expect(endringssøknad.uttaksplan.uttaksperioder!).toHaveLength(1);
+            expect(endringssøknad.uttaksplan.uttaksperioder![0]!.fom).toBe('2024-04-01');
         });
 
-        it('skal ikke gi endringstidspunkt når tilpassingen er den eneste forskjellen', () => {
-            const endringstidspunktMotSnapshot = getEndringstidspunktNy(morsPerioderIPlanen, morsPerioderIPlanen);
-            const endringstidspunktMotRåttVedtak = getEndringstidspunktNy(MORS_VEDTAKSPERIODER, morsPerioderIPlanen);
-
-            expect(endringstidspunktMotSnapshot).toBeUndefined();
-            // Slik feilen så ut før: tilpassingen ble tolket som en endring helt fra fødselen
-            expect(endringstidspunktMotRåttVedtak).toBe('2024-01-01');
+        it('skal ikke gi endringstidspunkt når planen er uendret', () => {
+            expect(getEndringstidspunktNy(opprinneligPlan, opprinneligPlan)).toBeUndefined();
         });
 
-        it('skal fremdeles fange opp at brukeren endrer den tilpassede perioden manuelt', () => {
-            const nyPlan = morsPerioderIPlanen.map((p) => (p.fom === '2024-01-01' ? { ...p, samtidigUttak: 50 } : p));
+        it('skal fremdeles fange opp at brukeren endrer samtidig uttak-perioden manuelt', () => {
+            const nyPlan = opprinneligPlan.map((p) =>
+                p.fom === '2024-01-01' ? { ...p, søker: { ...p.søker!, samtidigUttak: 50 } } : p,
+            );
 
             const data = getStateMock(annenForelderMock, barnMock, nyPlan, 'SAK-001', opprinneligPlan);
             const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO);
 
-            expect(endringssøknad.uttaksplan.uttaksperioder[0]!.fom).toBe('2024-01-01');
+            expect(endringssøknad.uttaksplan.uttaksperioder![0]!.fom).toBe('2024-01-01');
         });
 
         it('skal stoppe innsending når opprinnelig uttaksplan mangler', () => {
-            const data = getStateMock(annenForelderMock, barnMock, morsPerioderIPlanen, 'SAK-001', null);
+            const data = getStateMock(annenForelderMock, barnMock, opprinneligPlan, 'SAK-001', null);
 
             expect(() => mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO)).toThrow(
                 'Mangler opprinnelig uttaksplan for endringssøknad',
@@ -337,7 +545,7 @@ describe('mapTilEndringssøknadDto', () => {
             const data: ContextDataMap = {
                 [ContextDataType.ANNEN_FORELDER]: annenForelderMock,
                 [ContextDataType.OM_BARNET]: barnMock,
-                [ContextDataType.UTTAKSPLAN]: morsPerioderIPlanen,
+                [ContextDataType.UTTAKSPLAN]: opprinneligPlan,
                 [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: {
                     saksnummer: 'ANNEN-SAK',
                     perioder: opprinneligPlan,
@@ -495,30 +703,22 @@ describe('getUttaksplanMedFriUtsettelsesperiode', () => {
     });
 });
 
-// Hjelpefunksjon for å lage UttakPeriode_fpoversikt til testane
 const lagUttakPeriode = (
     fom: string,
     tom: string,
     kontoType: 'MØDREKVOTE' | 'FELLESPERIODE' | 'FEDREKVOTE' | 'FORELDREPENGER' = 'MØDREKVOTE',
-    forelder: 'MOR' | 'FAR_MEDMOR' = 'MOR',
-): UttakPeriode_fpoversikt => ({
-    fom,
-    tom,
-    forelder,
-    flerbarnsdager: false,
-    kontoType,
-});
+): UttakPeriodeDto_fpoversikt => mor(fom, tom, kontoType);
 
 describe('getEndringstidspunktNy - endringstidspunkt for endringssøknad', () => {
     describe('skal finne korrekt endringstidspunkt med 3+ periodar', () => {
         it('skal returnere endringstidspunkt når ein periode i midten er endra og det finst periodar etter', () => {
-            const opprinneligPlan: UttakPeriode_fpoversikt[] = [
+            const opprinneligPlan: UttakPeriodeDto_fpoversikt[] = [
                 lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
                 lagUttakPeriode('2024-02-01', '2024-02-29', 'MØDREKVOTE'),
                 lagUttakPeriode('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
             ];
 
-            const oppdatertPlan: UttakPeriode_fpoversikt[] = [
+            const oppdatertPlan: UttakPeriodeDto_fpoversikt[] = [
                 lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
                 lagUttakPeriode('2024-02-01', '2024-02-29', 'FELLESPERIODE'), // endra kontoType
                 lagUttakPeriode('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
@@ -530,13 +730,13 @@ describe('getEndringstidspunktNy - endringstidspunkt for endringssøknad', () =>
         });
 
         it('skal returnere endringstidspunkt når første periode er endra og det finst periodar etter', () => {
-            const opprinneligPlan: UttakPeriode_fpoversikt[] = [
+            const opprinneligPlan: UttakPeriodeDto_fpoversikt[] = [
                 lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
                 lagUttakPeriode('2024-02-01', '2024-02-29', 'MØDREKVOTE'),
                 lagUttakPeriode('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
             ];
 
-            const oppdatertPlan: UttakPeriode_fpoversikt[] = [
+            const oppdatertPlan: UttakPeriodeDto_fpoversikt[] = [
                 lagUttakPeriode('2024-01-01', '2024-01-31', 'FELLESPERIODE'), // endra
                 lagUttakPeriode('2024-02-01', '2024-02-29', 'MØDREKVOTE'),
                 lagUttakPeriode('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
@@ -547,12 +747,12 @@ describe('getEndringstidspunktNy - endringstidspunkt for endringssøknad', () =>
         });
 
         it('skal returnere endringstidspunkt når ny periode er lagt til mellom eksisterande periodar', () => {
-            const opprinneligPlan: UttakPeriode_fpoversikt[] = [
+            const opprinneligPlan: UttakPeriodeDto_fpoversikt[] = [
                 lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
                 lagUttakPeriode('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
             ];
 
-            const oppdatertPlan: UttakPeriode_fpoversikt[] = [
+            const oppdatertPlan: UttakPeriodeDto_fpoversikt[] = [
                 lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
                 lagUttakPeriode('2024-02-01', '2024-02-29', 'FELLESPERIODE'), // ny periode
                 lagUttakPeriode('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
@@ -563,14 +763,14 @@ describe('getEndringstidspunktNy - endringstidspunkt for endringssøknad', () =>
         });
 
         it('skal returnere endringstidspunkt når periode i midten av 4 periodar er endra', () => {
-            const opprinneligPlan: UttakPeriode_fpoversikt[] = [
+            const opprinneligPlan: UttakPeriodeDto_fpoversikt[] = [
                 lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
                 lagUttakPeriode('2024-02-01', '2024-02-29', 'MØDREKVOTE'),
                 lagUttakPeriode('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
                 lagUttakPeriode('2024-04-01', '2024-04-30', 'MØDREKVOTE'),
             ];
 
-            const oppdatertPlan: UttakPeriode_fpoversikt[] = [
+            const oppdatertPlan: UttakPeriodeDto_fpoversikt[] = [
                 lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
                 lagUttakPeriode('2024-02-01', '2024-02-29', 'FELLESPERIODE'), // endra
                 lagUttakPeriode('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
@@ -585,12 +785,12 @@ describe('getEndringstidspunktNy - endringstidspunkt for endringssøknad', () =>
 
     describe('kontrolltestar - scenario som fungerer korrekt', () => {
         it('skal returnere endringstidspunkt når siste av to periodar er endra', () => {
-            const opprinneligPlan: UttakPeriode_fpoversikt[] = [
+            const opprinneligPlan: UttakPeriodeDto_fpoversikt[] = [
                 lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
                 lagUttakPeriode('2024-02-01', '2024-02-29', 'MØDREKVOTE'),
             ];
 
-            const oppdatertPlan: UttakPeriode_fpoversikt[] = [
+            const oppdatertPlan: UttakPeriodeDto_fpoversikt[] = [
                 lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
                 lagUttakPeriode('2024-02-01', '2024-02-29', 'FELLESPERIODE'), // endra
             ];
@@ -600,13 +800,13 @@ describe('getEndringstidspunktNy - endringstidspunkt for endringssøknad', () =>
         });
 
         it('skal returnere endringstidspunkt når siste av tre periodar er endra', () => {
-            const opprinneligPlan: UttakPeriode_fpoversikt[] = [
+            const opprinneligPlan: UttakPeriodeDto_fpoversikt[] = [
                 lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
                 lagUttakPeriode('2024-02-01', '2024-02-29', 'MØDREKVOTE'),
                 lagUttakPeriode('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
             ];
 
-            const oppdatertPlan: UttakPeriode_fpoversikt[] = [
+            const oppdatertPlan: UttakPeriodeDto_fpoversikt[] = [
                 lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
                 lagUttakPeriode('2024-02-01', '2024-02-29', 'MØDREKVOTE'),
                 lagUttakPeriode('2024-03-01', '2024-03-29', 'FELLESPERIODE'), // endra siste
@@ -617,7 +817,7 @@ describe('getEndringstidspunktNy - endringstidspunkt for endringssøknad', () =>
         });
 
         it('skal returnere undefined når planane er identiske', () => {
-            const plan: UttakPeriode_fpoversikt[] = [
+            const plan: UttakPeriodeDto_fpoversikt[] = [
                 lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
                 lagUttakPeriode('2024-02-01', '2024-02-29', 'MØDREKVOTE'),
                 lagUttakPeriode('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
@@ -631,13 +831,13 @@ describe('getEndringstidspunktNy - endringstidspunkt for endringssøknad', () =>
         });
 
         it('skal returnere endringstidspunkt når ein periode er fjerna frå opprinnelig plan', () => {
-            const opprinneligPlan: UttakPeriode_fpoversikt[] = [
+            const opprinneligPlan: UttakPeriodeDto_fpoversikt[] = [
                 lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
                 lagUttakPeriode('2024-02-01', '2024-02-29', 'MØDREKVOTE'),
                 lagUttakPeriode('2024-03-01', '2024-03-29', 'MØDREKVOTE'),
             ];
 
-            const oppdatertPlan: UttakPeriode_fpoversikt[] = [
+            const oppdatertPlan: UttakPeriodeDto_fpoversikt[] = [
                 lagUttakPeriode('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
                 lagUttakPeriode('2024-03-01', '2024-03-29', 'MØDREKVOTE'), // feb er fjerna
             ];

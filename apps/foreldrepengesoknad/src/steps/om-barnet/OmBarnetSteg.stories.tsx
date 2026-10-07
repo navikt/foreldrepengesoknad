@@ -89,6 +89,9 @@ const meta = {
     title: 'steps/OmBarnetSteg',
     component: OmBarnetSteg,
     decorators: [withQueryClient],
+    beforeEach({ msw }) {
+        msw.use(http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })));
+    },
     render: ({
         søkersituasjon = {
             situasjon: 'fødsel',
@@ -365,6 +368,6 @@ export const FarFødselMorHarVedtak: Story = {
     },
 
     beforeEach({ msw }) {
-        msw.use(http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)));
+        msw.use(http.post(API_URLS.uttaksplan, () => HttpResponse.json(annenPartVedtak)));
     },
 };

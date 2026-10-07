@@ -14,80 +14,90 @@ import {
     Barn,
     Dekningsgrad,
     EksternArbeidsforholdDto_fpoversikt,
+    FellesUttaksplanDto_fpoversikt,
     FpPersonopplysningerDto_fpoversikt,
     KontoBeregningDto,
     SøkersituasjonFp,
-    UttakPeriode_fpoversikt,
 } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { FordelingSteg } from './FordelingSteg';
 
-const vedtakFar = {
+const uttaksplanFar = {
+    antallBarn: 1,
     dekningsgrad: 'HUNDRE',
     perioder: [
         {
             fom: '2024-02-07',
             tom: '2024-02-19',
-            kontoType: 'MØDREKVOTE',
-            overføringÅrsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
-            resultat: {
-                innvilget: true,
-                trekkerMinsterett: false,
-                trekkerDager: true,
-                årsak: 'ANNET',
+            annenPart: {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'MØDREKVOTE',
+                overføringÅrsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
             },
-            flerbarnsdager: false,
-            forelder: 'MOR',
         },
         {
             fom: '2024-06-11',
             tom: '2024-06-30',
-            kontoType: 'FELLESPERIODE',
-            resultat: {
-                innvilget: true,
-                trekkerMinsterett: false,
-                trekkerDager: true,
-                årsak: 'ANNET',
+            annenPart: {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FELLESPERIODE',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
             },
-            flerbarnsdager: false,
-            forelder: 'MOR',
         },
-    ] satisfies UttakPeriode_fpoversikt[],
-};
+    ],
+} satisfies FellesUttaksplanDto_fpoversikt;
 
-const vedtakMor = {
+const uttaksplanMor = {
+    antallBarn: 1,
     dekningsgrad: 'HUNDRE',
     perioder: [
         {
             fom: '2024-07-07',
             tom: '2024-07-24',
-            kontoType: 'FEDREKVOTE',
-            overføringÅrsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
-            resultat: {
-                innvilget: true,
-                trekkerMinsterett: false,
-                trekkerDager: true,
-                årsak: 'ANNET',
+            annenPart: {
+                forelder: 'MOR',
+                kontoType: 'FEDREKVOTE',
+                overføringÅrsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
             },
-            flerbarnsdager: false,
-            forelder: 'FAR_MEDMOR',
         },
         {
             fom: '2024-08-11',
             tom: '2024-08-12',
-            kontoType: 'FELLESPERIODE',
-            resultat: {
-                innvilget: true,
-                trekkerMinsterett: false,
-                trekkerDager: true,
-                årsak: 'ANNET',
+            annenPart: {
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
             },
-            flerbarnsdager: false,
-            forelder: 'MOR',
         },
-    ] satisfies UttakPeriode_fpoversikt[],
-};
+    ],
+} satisfies FellesUttaksplanDto_fpoversikt;
 
 const søkerInfoKvinne = {
     fnr: '1',
@@ -180,7 +190,7 @@ const DEFAULT_STØNADSKONTO = {
 export const MorAleneomsorgDekning80EttBarnFør1Okt2021: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': {
@@ -236,7 +246,7 @@ export const MorAleneomsorgDekning80EttBarnFør1Okt2021: Story = {
 export const MorAleneomsorgEttBarnPrematurFødsel: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,
@@ -296,7 +306,7 @@ export const MorAleneomsorgEttBarnPrematurFødsel: Story = {
 export const MorAleneomsorgAdopsjonTrillinger: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,
@@ -343,7 +353,7 @@ export const MorAleneomsorgAdopsjonTrillinger: Story = {
 export const FarMedmorAleneomsorgFødtTvillinger: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,
@@ -395,7 +405,7 @@ export const FarMedmorAleneomsorgFødtTvillinger: Story = {
 export const FarMedmorAleneomsorgFødtFireBarnFør1Okt2021: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,
@@ -447,7 +457,7 @@ export const FarMedmorAleneomsorgFødtFireBarnFør1Okt2021: Story = {
 export const FarMedmorAleneomsorgFødtTreBarnFørWLB: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,
@@ -499,7 +509,7 @@ export const FarMedmorAleneomsorgFødtTreBarnFørWLB: Story = {
 export const FarMedmorAleneomsorgEttBarnTerminEtterWLB: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,
@@ -550,7 +560,7 @@ export const FarMedmorAleneomsorgEttBarnTerminEtterWLB: Story = {
 export const FarMedmorAleneomsorgPrematurtFødtBarn: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,
@@ -606,7 +616,7 @@ export const FarMedmorAleneomsorgPrematurtFødtBarn: Story = {
 export const FarMedmorAleneomsorgAdopsjonFireBarn: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,
@@ -659,7 +669,7 @@ export const FarMedmorAleneomsorgAdopsjonFireBarn: Story = {
 export const MorDeltUttakEttBarnPrematurFødsel: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(undefined, { status: 200 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,
@@ -726,7 +736,7 @@ export const MorDeltUttakEttBarnPrematurFødsel: Story = {
 export const MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': {
@@ -792,7 +802,7 @@ export const MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning: Story = {
 export const MorDeltUttakEttBarnTermin: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,
@@ -854,7 +864,7 @@ export const MorDeltUttakEttBarnTermin: Story = {
 export const MorDeltUttakTvillingerFødt: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,
@@ -921,7 +931,7 @@ export const MorDeltUttakTvillingerFødt: Story = {
 export const MorDeltUttakFarSøkteMorsKvoteOgFellesperiode: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(vedtakFar)),
+            http.post(API_URLS.uttaksplan, () => HttpResponse.json(uttaksplanFar)),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,
@@ -983,7 +993,7 @@ export const MorDeltUttakFarSøkteMorsKvoteOgFellesperiode: Story = {
 export const FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,
@@ -1046,7 +1056,7 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021: Story = {
 export const FarMedmorSøkerDeltUttakTrillingerFødtFørWLB: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,
@@ -1113,7 +1123,7 @@ export const FarMedmorSøkerDeltUttakTrillingerFødtFørWLB: Story = {
 export const FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,
@@ -1175,7 +1185,7 @@ export const FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB: Story = {
 export const FarMedmorSøkerDeltUttakEttBarnFødtPrematurt: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,
@@ -1242,7 +1252,7 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtPrematurt: Story = {
 export const FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(vedtakMor)),
+            http.post(API_URLS.uttaksplan, () => HttpResponse.json(uttaksplanMor)),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,
@@ -1305,7 +1315,7 @@ export const FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode: Story = {
 export const FarSøkerAdopsjonToBarn: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,
@@ -1364,7 +1374,7 @@ export const FarSøkerAdopsjonToBarn: Story = {
 export const MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': {
@@ -1426,7 +1436,7 @@ export const MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80: Stor
 export const MorSøkerFarHarRettIEØSTerminDekningsgrad80: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': {
@@ -1490,7 +1500,7 @@ export const MorSøkerFarHarRettIEØSTerminDekningsgrad80: Story = {
 export const FarMedmorSøkerMorHarRettIEØSAdopsjon: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,
@@ -1553,7 +1563,7 @@ export const FarMedmorSøkerMorHarRettIEØSAdopsjon: Story = {
 export const BareMorHarRettTermin: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,
@@ -1603,7 +1613,7 @@ export const BareMorHarRettTermin: Story = {
 export const BareMorHarRettAdopsjon: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,
@@ -1654,7 +1664,7 @@ export const BareMorHarRettAdopsjon: Story = {
 export const BareFarHarRettOgMorErUførTermin4Barn: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,
@@ -1709,7 +1719,7 @@ export const BareFarHarRettOgMorErUførTermin4Barn: Story = {
 export const BareFarHarRettOgMorErIkkeUførFødtBarn: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,
@@ -1765,7 +1775,7 @@ export const BareFarHarRettOgMorErIkkeUførFødtBarn: Story = {
 export const BareFarHarRettTvillingerFødtFør1Okt2021: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,
@@ -1817,7 +1827,7 @@ export const BareFarHarRettTvillingerFødtFør1Okt2021: Story = {
 export const BareFarHarRettAdopsjonMorErUfør: Story = {
     beforeEach({ msw }) {
         msw.use(
-            http.post(API_URLS.annenPartVedtak, () => new HttpResponse(null, { status: 204 })),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
                     '80': DEFAULT_STØNADSKONTO,

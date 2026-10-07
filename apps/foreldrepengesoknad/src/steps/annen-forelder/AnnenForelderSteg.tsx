@@ -1,15 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAnnenPartVedtakOptions } from 'api/queries';
+import { useAnnenPartUttaksplanOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
 import { useStepConfig } from 'appData/useStepConfig';
+import { useValgtSak } from 'appData/useValgtSak';
 import { isEqual } from 'es-toolkit';
 import { RegistrertePersonalia } from 'pages/registrerte-personalia/RegistrertePersonalia';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
+import { AnnenForelder, AnnenForelderOppgitt, isAnnenForelderOppgitt } from 'types/AnnenForelder';
+import { annenPartHarInnvilgetUttak, getErMorUfør } from 'utils/annenForelderUtils';
 import { getRegistrerteBarnOmDeFinnes } from 'utils/barnUtils';
+import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -32,6 +35,66 @@ const getRegistrertAnnenForelder = (
             ? undefined
             : registrerteBarn.find((registrertBarn) => registrertBarn.annenPart !== undefined);
     return registrertBarnMedAnnenForelder?.annenPart;
+};
+
+const getUttaksplangrunnlag = (
+    annenForelder: AnnenForelder | undefined,
+    erNySøknadPåEksisterendeSak: boolean,
+    erFarEllerMedmor: boolean,
+    sammenlignDatoForAleneomsorg: boolean,
+) => {
+    if (!annenForelder || !isAnnenForelderOppgitt(annenForelder)) {
+        return erNySøknadPåEksisterendeSak ? annenForelder : undefined;
+    }
+
+    const grunnlag = {
+        kanIkkeOppgis: false as const,
+        harRettPåForeldrepengerINorge: annenForelder.harRettPåForeldrepengerINorge,
+        harRettPåForeldrepengerIEØS: annenForelder.harRettPåForeldrepengerIEØS,
+        erAleneOmOmsorg: annenForelder.erAleneOmOmsorg,
+    };
+    if (!erNySøknadPåEksisterendeSak) {
+        return grunnlag;
+    }
+
+    return {
+        ...grunnlag,
+        harRettPåForeldrepengerINorge: !!annenForelder.harRettPåForeldrepengerINorge,
+        harRettPåForeldrepengerIEØS: !!annenForelder.harRettPåForeldrepengerIEØS,
+        erAleneOmOmsorg: !!annenForelder.erAleneOmOmsorg,
+        erMorUfør: getErMorUfør(annenForelder, erFarEllerMedmor),
+        datoForAleneomsorg:
+            sammenlignDatoForAleneomsorg && annenForelder.erAleneOmOmsorg
+                ? annenForelder.datoForAleneomsorg
+                : undefined,
+        fnr: replaceInvisibleCharsWithSpace(annenForelder.fnr)?.trim() ?? '',
+        utenlandskFnr: !!annenForelder.utenlandskFnr,
+    };
+};
+
+const erUttaksplangrunnlagetEndret = (
+    annenForelder: AnnenForelder | undefined,
+    oppdatertAnnenForelder: AnnenForelderOppgitt,
+    erNySøknadPåEksisterendeSak: boolean,
+    erFarEllerMedmor: boolean,
+) => {
+    const sammenlignDatoForAleneomsorg =
+        annenForelder !== undefined &&
+        isAnnenForelderOppgitt(annenForelder) &&
+        annenForelder.datoForAleneomsorg !== undefined;
+    const gjeldendeGrunnlag = getUttaksplangrunnlag(
+        annenForelder,
+        erNySøknadPåEksisterendeSak,
+        erFarEllerMedmor,
+        sammenlignDatoForAleneomsorg,
+    );
+    const nyttGrunnlag = getUttaksplangrunnlag(
+        oppdatertAnnenForelder,
+        erNySøknadPåEksisterendeSak,
+        erFarEllerMedmor,
+        sammenlignDatoForAleneomsorg,
+    );
+    return gjeldendeGrunnlag !== undefined && !isEqual(gjeldendeGrunnlag, nyttGrunnlag);
 };
 
 type Props = {
@@ -59,14 +122,14 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
 
     const oppdaterAnnenForeldre = useContextSaveData(ContextDataType.ANNEN_FORELDER);
     const resetUttaksplanData = useResetUttaksplanData();
+    const { erNySøknadPåEksisterendeSak } = useValgtSak();
 
     const annenForelderFraRegistrertBarn = getRegistrertAnnenForelder(barn, søkerInfo);
 
-    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
     const annenPartHarVedtak =
         useQuery({
-            ...annenPartVedtakOptions,
-            select: (vedtak) => vedtak?.perioder.some((p) => p.resultat?.innvilget),
+            ...useAnnenPartUttaksplanOptions(),
+            select: annenPartHarInnvilgetUttak,
         }).data ?? false;
 
     const oppgittFnrErUlikRegistrertBarn =
@@ -101,28 +164,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
         // Derfor settes den true hvis vi har vedtak, og ellers brukes form-verdien
         const harRettPåForeldrepengerINorge = annenPartHarVedtak || values.harRettPåForeldrepengerINorge;
         const harRettPåForeldrepengerIEØS = values.harOppholdtSegIEØS ? values.harRettPåForeldrepengerIEØS : false;
-
-        const nyttGrunnlag = {
-            kanIkkeOppgis: false as const,
-            harRettPåForeldrepengerINorge,
-            harRettPåForeldrepengerIEØS,
-            erAleneOmOmsorg: values.erAleneOmOmsorg,
-        };
-        const gjeldendeGrunnlag =
-            annenForelder && isAnnenForelderOppgitt(annenForelder)
-                ? {
-                      kanIkkeOppgis: false as const,
-                      harRettPåForeldrepengerINorge: annenForelder.harRettPåForeldrepengerINorge,
-                      harRettPåForeldrepengerIEØS: annenForelder.harRettPåForeldrepengerIEØS,
-                      erAleneOmOmsorg: annenForelder.erAleneOmOmsorg,
-                  }
-                : undefined;
-
-        if (gjeldendeGrunnlag !== undefined && !isEqual(gjeldendeGrunnlag, nyttGrunnlag)) {
-            resetUttaksplanData();
-        }
-
-        oppdaterAnnenForeldre({
+        const oppdatertAnnenForelder: AnnenForelderOppgitt = {
             ...values,
             harRettPåForeldrepengerINorge,
             kanIkkeOppgis: false, // NOTE: må settes eksplisitt
@@ -130,7 +172,20 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
             etternavn: replaceInvisibleCharsWithSpace(etternavn)?.trim() ?? '',
             fnr: replaceInvisibleCharsWithSpace(fnr)?.trim() ?? '',
             harRettPåForeldrepengerIEØS,
-        });
+        };
+
+        if (
+            erUttaksplangrunnlagetEndret(
+                annenForelder,
+                oppdatertAnnenForelder,
+                erNySøknadPåEksisterendeSak,
+                isFarEllerMedmor(rolle),
+            )
+        ) {
+            resetUttaksplanData();
+        }
+
+        oppdaterAnnenForeldre(oppdatertAnnenForelder);
 
         return navigator.goToNextStep();
     };

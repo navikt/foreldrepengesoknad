@@ -3,6 +3,8 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 
+import { UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
+
 import * as stories from './UttaksplanListe.stories';
 
 const {
@@ -71,38 +73,28 @@ describe('UttaksplanListe', () => {
         expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
             {
                 fom: '2025-04-18',
-                forelder: 'MOR',
-                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 tom: '2025-05-08',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', kontoType: 'FORELDREPENGER_FØR_FØDSEL', flerbarnsdager: false },
             },
             {
                 fom: '2025-05-09',
-                forelder: 'MOR',
-                kontoType: 'MØDREKVOTE',
                 tom: '2025-06-27',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
             },
             {
                 fom: '2025-06-30',
                 tom: '2025-08-28',
-                forelder: 'MOR',
-                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', utsettelseÅrsak: 'FERIE', flerbarnsdager: false },
             },
             {
                 fom: '2025-08-29',
-                forelder: 'MOR',
-                kontoType: 'FELLESPERIODE',
                 tom: '2025-12-11',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false },
             },
             {
                 fom: '2025-12-12',
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FEDREKVOTE',
                 tom: '2026-03-26',
-                flerbarnsdager: false,
+                annenPart: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
             },
         ]);
     });
@@ -296,7 +288,7 @@ describe('UttaksplanListe', () => {
                 expect.objectContaining({
                     fom: '2025-06-30',
                     tom: '2025-07-17',
-                    utsettelseÅrsak: 'LOVBESTEMT_FERIE',
+                    søker: expect.objectContaining({ utsettelseÅrsak: 'FERIE' }),
                 }),
             ]),
         );
@@ -346,7 +338,11 @@ describe('UttaksplanListe', () => {
         await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
         expect(oppdaterUttaksplan).toHaveBeenCalledWith(
             expect.arrayContaining([
-                expect.objectContaining({ fom: '2025-12-12', tom: '2026-09-17', kontoType: 'FEDREKVOTE' }),
+                expect.objectContaining({
+                    fom: '2025-12-12',
+                    tom: '2026-09-17',
+                    annenPart: expect.objectContaining({ kontoType: 'FEDREKVOTE' }),
+                }),
             ]),
         );
     });
@@ -411,60 +407,52 @@ describe('UttaksplanListe', () => {
         expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
             {
                 fom: '2025-04-18',
-                forelder: 'MOR',
-                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 tom: '2025-05-08',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', kontoType: 'FORELDREPENGER_FØR_FØDSEL', flerbarnsdager: false },
             },
             {
                 fom: '2025-05-09',
-                forelder: 'MOR',
-                kontoType: 'MØDREKVOTE',
                 tom: '2025-06-27',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
             },
             {
                 fom: '2025-06-30',
-                forelder: 'MOR',
-                gradering: {
-                    aktivitet: {
-                        type: 'ANNET',
-                    },
-                    arbeidstidprosent: 50,
-                },
-                kontoType: 'FELLESPERIODE',
-                samtidigUttak: 50,
                 tom: '2025-08-28',
-                flerbarnsdager: false,
-            },
-            {
-                fom: '2025-06-30',
-                forelder: 'FAR_MEDMOR',
-                gradering: {
-                    aktivitet: {
-                        type: 'ANNET',
+                søker: {
+                    forelder: 'MOR',
+                    gradering: {
+                        aktivitet: {
+                            type: 'ANNET',
+                        },
+                        arbeidstidprosent: 50,
                     },
-                    arbeidstidprosent: 50,
+                    kontoType: 'FELLESPERIODE',
+                    samtidigUttak: 50,
+                    flerbarnsdager: false,
                 },
-                kontoType: 'FEDREKVOTE',
-                morsAktivitet: undefined,
-                samtidigUttak: 50,
-                tom: '2025-08-28',
-                flerbarnsdager: false,
+                annenPart: {
+                    forelder: 'FAR_MEDMOR',
+                    gradering: {
+                        aktivitet: {
+                            type: 'ANNET',
+                        },
+                        arbeidstidprosent: 50,
+                    },
+                    kontoType: 'FEDREKVOTE',
+                    morsAktivitet: undefined,
+                    samtidigUttak: 50,
+                    flerbarnsdager: false,
+                },
             },
             {
                 fom: '2025-08-29',
-                forelder: 'MOR',
-                kontoType: 'FELLESPERIODE',
                 tom: '2025-12-11',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false },
             },
             {
                 fom: '2025-12-12',
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FEDREKVOTE',
                 tom: '2026-03-26',
-                flerbarnsdager: false,
+                annenPart: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
             },
         ]);
     });
@@ -512,17 +500,15 @@ describe('UttaksplanListe', () => {
         await userEvent.click(screen.getByText('Legg til'));
 
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
-        const lagredePerioder = oppdaterUttaksplan.mock.calls[0]![0] as Array<{
-            forelder: string;
-            kontoType?: string;
-            fom: string;
-            morsAktivitet?: string;
-        }>;
+        const lagredePerioder = oppdaterUttaksplan.mock.calls[0]![0] as UttakPeriodeDto_fpoversikt[];
         const fedrekvotePeriode = lagredePerioder.find(
-            (p) => p.forelder === 'FAR_MEDMOR' && p.kontoType === 'FEDREKVOTE' && p.fom === '2025-06-30',
+            (p) =>
+                p.annenPart?.forelder === 'FAR_MEDMOR' &&
+                p.annenPart.kontoType === 'FEDREKVOTE' &&
+                p.fom === '2025-06-30',
         );
         expect(fedrekvotePeriode).toBeDefined();
-        expect(fedrekvotePeriode?.morsAktivitet).toBeUndefined();
+        expect(fedrekvotePeriode?.annenPart?.morsAktivitet).toBeUndefined();
     });
 
     it('Skal endre periode til ferie', async () => {
@@ -547,31 +533,23 @@ describe('UttaksplanListe', () => {
         expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
             {
                 fom: '2025-04-18',
-                forelder: 'MOR',
-                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 tom: '2025-05-08',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', kontoType: 'FORELDREPENGER_FØR_FØDSEL', flerbarnsdager: false },
             },
             {
                 fom: '2025-05-09',
-                forelder: 'MOR',
-                kontoType: 'MØDREKVOTE',
                 tom: '2025-08-21',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
             },
             {
                 fom: '2025-08-22',
-                forelder: 'MOR',
-                kontoType: 'FELLESPERIODE',
                 tom: '2025-12-11',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false },
             },
             {
                 fom: '2025-12-12',
-                forelder: 'MOR',
                 tom: '2026-03-26',
-                utsettelseÅrsak: 'LOVBESTEMT_FERIE',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', utsettelseÅrsak: 'FERIE', flerbarnsdager: false },
             },
         ]);
     });
@@ -630,25 +608,19 @@ describe('UttaksplanListe', () => {
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
         expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
             {
-                forelder: 'MOR',
-                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 fom: '2025-04-18',
                 tom: '2025-05-08',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', kontoType: 'FORELDREPENGER_FØR_FØDSEL', flerbarnsdager: false },
             },
             {
-                forelder: 'MOR',
-                kontoType: 'FELLESPERIODE',
                 fom: '2025-08-22',
                 tom: '2025-12-11',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false },
             },
             {
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FEDREKVOTE',
                 fom: '2025-12-12',
                 tom: '2026-03-26',
-                flerbarnsdager: false,
+                annenPart: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
             },
         ]);
     });
@@ -805,6 +777,78 @@ describe('UttaksplanListe', () => {
         expect(screen.queryByText('Slett')).not.toBeInTheDocument();
     });
 
+    it('Skal vise annen part sin ferie og gradering, ikkje berre kontonamn', async () => {
+        render(<FarSøkerEtterAtMorHarSøkt />);
+
+        expect(await screen.findAllByText('Ferie')).toHaveLength(3);
+        expect(screen.getByText('Du skal jobbe 50 % og ha 50 % foreldrepenger')).toBeInTheDocument();
+    });
+
+    it('Skal vise begge foreldra sitt uttak når dei har samtidig uttak i same periode', async () => {
+        render(
+            <FarSøkerEtterAtMorHarSøkt
+                perioder={[
+                    {
+                        fom: '2024-04-04',
+                        tom: '2024-04-18',
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FEDREKVOTE',
+                            samtidigUttak: 50,
+                            flerbarnsdager: false,
+                        },
+                        annenPart: {
+                            forelder: 'MOR',
+                            kontoType: 'MØDREKVOTE',
+                            samtidigUttak: 50,
+                            flerbarnsdager: false,
+                        },
+                    },
+                ]}
+            />,
+        );
+
+        expect(await screen.findByText('Hans skal ha 50 % foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Hanne skal ha 50 % foreldrepenger')).toBeInTheDocument();
+    });
+
+    it('Skal ikkje vise heile samtidig uttak som avslått når berre den eine parten har fått avslag', async () => {
+        render(
+            <FarSøkerEtterAtMorHarSøkt
+                perioder={[
+                    {
+                        fom: '2024-04-04',
+                        tom: '2024-04-18',
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FEDREKVOTE',
+                            samtidigUttak: 50,
+                            flerbarnsdager: false,
+                        },
+                        annenPart: {
+                            forelder: 'MOR',
+                            kontoType: 'MØDREKVOTE',
+                            samtidigUttak: 50,
+                            flerbarnsdager: false,
+                            resultat: {
+                                innvilget: false,
+                                trekkerDager: true,
+                                trekkerMinsterett: false,
+                                årsak: 'ANNET',
+                            },
+                        },
+                    },
+                ]}
+            />,
+        );
+
+        expect(await screen.findByText('Hans skal ha 50 % foreldrepenger')).toBeInTheDocument();
+        // Berre innhaldet for Hanne sin avslåtte del, ikkje overskrifta på heile rada.
+        expect(screen.getAllByText('Trekte dager')).toHaveLength(1);
+        expect(screen.getByText('Endre')).toBeInTheDocument();
+        expect(screen.getByText('Slett')).toBeInTheDocument();
+    });
+
     it('Mors fellesperiode skal vises som "Fellesperiode" i fars listevisning, ikke "med aktivitetskrav"', async () => {
         render(<FarSøkerEtterAtMorHarSøkt />);
 
@@ -857,25 +901,19 @@ describe('UttaksplanListe', () => {
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
         expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
             {
-                forelder: 'MOR',
-                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 fom: '2025-04-18',
                 tom: '2025-05-08',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', kontoType: 'FORELDREPENGER_FØR_FØDSEL', flerbarnsdager: false },
             },
             {
                 fom: '2025-05-09',
-                forelder: 'MOR',
-                kontoType: 'MØDREKVOTE',
                 tom: '2025-08-21',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
             },
             {
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FEDREKVOTE',
                 fom: '2025-12-12',
                 tom: '2026-03-26',
-                flerbarnsdager: false,
+                annenPart: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
             },
         ]);
     });
@@ -894,25 +932,19 @@ describe('UttaksplanListe', () => {
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
         expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
             {
-                forelder: 'MOR',
-                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
                 fom: '2025-04-18',
                 tom: '2025-05-08',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', kontoType: 'FORELDREPENGER_FØR_FØDSEL', flerbarnsdager: false },
             },
             {
                 fom: '2025-05-09',
-                forelder: 'MOR',
-                kontoType: 'MØDREKVOTE',
                 tom: '2025-08-21',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
             },
             {
-                forelder: 'MOR',
-                kontoType: 'FELLESPERIODE',
                 fom: '2025-08-22',
                 tom: '2025-12-11',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false },
             },
         ]);
     });
@@ -968,16 +1000,12 @@ describe('UttaksplanListe', () => {
             {
                 fom: '2025-08-15',
                 tom: '2025-08-25',
-                forelder: 'MOR',
-                utsettelseÅrsak: 'BARN_INNLAGT',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', utsettelseÅrsak: 'BARN_INNLAGT', flerbarnsdager: false },
             },
             {
                 fom: '2025-08-26',
                 tom: '2025-08-28',
-                forelder: 'MOR',
-                utsettelseÅrsak: 'SØKER_SYKDOM',
-                flerbarnsdager: false,
+                søker: { forelder: 'MOR', utsettelseÅrsak: 'SØKER_SYKDOM', flerbarnsdager: false },
             },
         ]);
     });
@@ -1027,34 +1055,34 @@ describe('UttaksplanListe', () => {
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
         expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
             {
-                flerbarnsdager: false,
                 fom: '2024-05-17',
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FEDREKVOTE',
                 tom: '2024-05-23',
+                søker: { flerbarnsdager: false, forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE' },
             },
             {
-                flerbarnsdager: false,
                 fom: '2024-05-24',
-                forelder: 'FAR_MEDMOR',
-                morsAktivitet: 'ARBEID_OG_UTDANNING',
                 tom: '2024-05-28',
-                utsettelseÅrsak: 'FRI',
+                søker: {
+                    flerbarnsdager: false,
+                    forelder: 'FAR_MEDMOR',
+                    morsAktivitet: 'ARBEID_OG_UTDANNING',
+                    utsettelseÅrsak: 'FRI',
+                },
             },
             {
-                flerbarnsdager: false,
                 fom: '2024-05-29',
-                forelder: 'FAR_MEDMOR',
-                morsAktivitet: 'ARBEID',
                 tom: '2024-05-30',
-                utsettelseÅrsak: 'FRI',
+                søker: {
+                    flerbarnsdager: false,
+                    forelder: 'FAR_MEDMOR',
+                    morsAktivitet: 'ARBEID',
+                    utsettelseÅrsak: 'FRI',
+                },
             },
             {
-                flerbarnsdager: false,
                 fom: '2024-05-31',
-                forelder: 'FAR_MEDMOR',
-                kontoType: 'FEDREKVOTE',
                 tom: '2024-06-13',
+                søker: { flerbarnsdager: false, forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE' },
             },
         ]);
     });

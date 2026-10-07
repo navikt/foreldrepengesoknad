@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAnnenPartVedtakOptions } from 'api/queries';
+import { useAnnenPartUttaksplanOptions } from 'api/queries';
 import { FormattedMessage } from 'react-intl';
 import { AnnenForelder, isAnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from 'types/AnnenForelder';
+import { annenPartHarInnvilgetUttak } from 'utils/annenForelderUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { FormSummary } from '@navikt/ds-react';
@@ -18,11 +19,10 @@ interface Props {
 export const AnnenForelderOppsummering = ({ annenForelder, søkerrolle, onVilEndreSvar }: Props) => {
     const erFarEllerMedmor = isFarEllerMedmor(søkerrolle);
 
-    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
     const annenPartHarVedtak =
         useQuery({
-            ...annenPartVedtakOptions,
-            select: (vedtak) => vedtak?.perioder.some((p) => p.resultat?.innvilget),
+            ...useAnnenPartUttaksplanOptions(),
+            select: annenPartHarInnvilgetUttak,
         }).data ?? false;
 
     return (

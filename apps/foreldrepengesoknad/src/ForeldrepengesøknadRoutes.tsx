@@ -1,9 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
-import { useAnnenPartVedtakOptions } from 'api/queries';
 import { SøknadRoutes, isRouteAvailable } from 'appData/routes';
 import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
 import { useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
+import { useSamordneBarnMedAnnenPart } from 'appData/useSamordneBarnMedAnnenPart';
 import { useSendSøknad } from 'appData/useSendSøknad';
+import { useValgtSak } from 'appData/useValgtSak';
 import { Forside } from 'pages/forside/Forside';
 import { Søknadsmetadata } from 'pages/forside/utils/useStartSøknad';
 import { KvitteringPage } from 'pages/kvittering/KvitteringPage';
@@ -28,7 +28,7 @@ import { UttaksplanSteg } from 'steps/uttaksplan/UttaksplanSteg';
 import { Alert, Button, VStack } from '@navikt/ds-react';
 
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
-import { ErrorPage, Umyndig } from '@navikt/fp-ui';
+import { ErrorPage, Spinner, Umyndig } from '@navikt/fp-ui';
 import { erMyndig } from '@navikt/fp-utils';
 
 interface SøknadRoutesOptions {
@@ -277,6 +277,12 @@ interface Props {
     lagretSøknadGjelderNyttBarn?: boolean;
 }
 
+const STEG_MED_SAMORDNING = new Set<string>([
+    SøknadRoutes.PERIODE_MED_FORELDREPENGER,
+    SøknadRoutes.FORDELING,
+    SøknadRoutes.UTTAKSPLAN,
+]);
+
 export const ForeldrepengesøknadRoutes = ({
     currentRoute,
     søkerInfo,
@@ -309,10 +315,10 @@ export const ForeldrepengesøknadRoutes = ({
         setSøknadGjelderNyttBarn(metadata.søknadGjelderNyttBarn);
     }, []);
 
-    // Hvis valgt barn kan vi forsøke hente termindato fra annenpartsvedtak.
-    // Dette trengs ikke før i OmBarnet. Men om vi legger et query på rot for å prefetche så tidlig som mulig.
-    const annenPartVedtakOptions = useAnnenPartVedtakOptions();
-    useQuery(annenPartVedtakOptions);
+    const { erNySøknadPåEksisterendeSak, isLoading: lasterValgtSak } = useValgtSak();
+    const erStegMedSamordning =
+        harGodkjentVilkår && !erEndringssøknad && STEG_MED_SAMORDNING.has(routerLocation.pathname);
+    const samordnerBarn = useSamordneBarnMedAnnenPart(erStegMedSamordning && erNySøknadPåEksisterendeSak);
 
     useEffect(() => {
         if (!(
@@ -332,6 +338,10 @@ export const ForeldrepengesøknadRoutes = ({
             void navigate(SøknadRoutes.UTTAKSPLAN);
         }
     }, [currentRoute, søkerInfo.fødselsdato, lagretHarGodkjentVilkår, navigate, routerLocation.pathname]);
+
+    if (samordnerBarn || (erStegMedSamordning && lasterValgtSak)) {
+        return <Spinner />;
+    }
 
     if (errorSendSøknad) {
         return (

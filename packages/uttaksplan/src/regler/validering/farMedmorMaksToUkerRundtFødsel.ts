@@ -4,11 +4,12 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import minMax from 'dayjs/plugin/minMax';
 import { IntlShape } from 'react-intl';
 
+import { UttakDto_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen, getFloatFromString } from '@navikt/fp-utils';
 
-import { erVanligUttakPeriode } from '../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../utils/UttakPeriodeBuilder';
 import { getFørsteUttaksdag2UkerFørFødsel } from '../../utils/UttaksperiodeValidatorer';
+import { finnPartForForelder } from '../../utils/periodeUtils';
 import { ANTALL_UTTAKSDAGER_SEKS_UKER, ANTALL_UTTAKSDAGER_TO_UKER } from '../../utils/uttaksdagerKonstanter';
 import { Periode, ValideringInput, Valideringsområde, Valideringsregel } from './types';
 
@@ -54,6 +55,14 @@ const tellArbeidsdagerInnenfor = (fom: string, tom: string, førsteDag: string, 
     }
     return dager;
 };
+
+const skalTelleMotToUkersgrensen = (part: UttakDto_fpoversikt | undefined): boolean =>
+    part?.forelder === 'FAR_MEDMOR' &&
+    part.kontoType !== undefined &&
+    part.kontoType !== 'MØDREKVOTE' &&
+    !part.flerbarnsdager &&
+    part.morsAktivitet !== 'INNLAGT' &&
+    part.morsAktivitet !== 'TRENGER_HJELP';
 
 const lagRegler = (intl: IntlShape): ReadonlyArray<Valideringsregel<FarMedmorMaks2UkerKontekst>> => [
     {
@@ -109,22 +118,23 @@ const byggKontekst = (input: ValideringInput): FarMedmorMaks2UkerKontekst | null
             0,
         ) * uttaksfaktor;
 
-    const eksisterendeFarMedmorPerioder = new UttakPeriodeBuilder(uttakPerioder, 'validator')
+    const uttakPerioderInnenforGrensen = uttakPerioder.map((p) => ({
+        ...p,
+        søker: skalTelleMotToUkersgrensen(p.søker) ? p.søker : undefined,
+        annenPart: skalTelleMotToUkersgrensen(p.annenPart) ? p.annenPart : undefined,
+    }));
+
+    const eksisterendeFarMedmorPerioder = new UttakPeriodeBuilder(uttakPerioderInnenforGrensen, 'validator')
         .fjernUttakPerioder(perioder, false)
         .getUttakPerioder()
-        .filter(erVanligUttakPeriode)
-        .filter(
-            (p) =>
-                p.forelder === 'FAR_MEDMOR' &&
-                p.kontoType !== 'MØDREKVOTE' &&
-                !p.flerbarnsdager &&
-                p.morsAktivitet !== 'INNLAGT' &&
-                p.morsAktivitet !== 'TRENGER_HJELP',
-        );
+        .flatMap((p) => {
+            const part = finnPartForForelder(p, 'FAR_MEDMOR');
+            return part ? [{ fom: p.fom, tom: p.tom, part }] : [];
+        });
 
-    const dagerEksisterendePerioder = eksisterendeFarMedmorPerioder.reduce((sum, p) => {
-        const dager = tellArbeidsdagerInnenfor(p.fom, p.tom, førsteDag, sisteDag);
-        const arbeidstidprosent = p.gradering?.arbeidstidprosent ?? 0;
+    const dagerEksisterendePerioder = eksisterendeFarMedmorPerioder.reduce((sum, { fom, tom, part }) => {
+        const dager = tellArbeidsdagerInnenfor(fom, tom, førsteDag, sisteDag);
+        const arbeidstidprosent = part.gradering?.arbeidstidprosent ?? 0;
         return sum + dager * ((100 - arbeidstidprosent) / 100);
     }, 0);
 

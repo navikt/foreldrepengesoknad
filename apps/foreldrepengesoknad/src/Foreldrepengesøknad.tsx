@@ -4,7 +4,7 @@ import {
     mellomlagretInfoOptions,
     sakerOptions,
     søkerinfoOptions,
-    useAnnenPartVedtakOptions,
+    useAnnenPartUttaksplanOptions,
 } from 'api/queries';
 import { ContextDataMap, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
@@ -116,9 +116,9 @@ const ForeldrepengesøknadInnhold = () => {
     );
 };
 
-// Sjekkar om registerdata (søkerInfo, saker, annenpartsvedtak) har endra seg
+// Sjekkar om registerdata (søkerInfo, saker, uttaksplan) har endra seg
 // sidan mellomlagring. Renderast inne i FpDataContext slik at
-// useAnnenPartVedtakOptions kan lesa annenForelder/barn frå context og sjølv
+// useAnnenPartUttaksplanOptions kan lesa annenForelder/barn frå context og sjølv
 // styra om kallet skal gjerast.
 const RegisterdataSjekk = ({
     mellomlagretData,
@@ -131,22 +131,22 @@ const RegisterdataSjekk = ({
     foreldrepengerSaker: FpSak_fpoversikt[];
     children: ReactNode;
 }) => {
-    const annenPartVedtakQuery = useQuery(useAnnenPartVedtakOptions());
+    const uttaksplanQuery = useQuery(useAnnenPartUttaksplanOptions());
 
     if (!mellomlagretData) {
         return <>{children}</>;
     }
 
-    const harLagretAnnenPartVedtak = mellomlagretData.annenPartVedtak !== undefined;
+    const harLagretFellesUttaksplan = mellomlagretData.fellesUttaksplan !== undefined;
 
-    if (harLagretAnnenPartVedtak && annenPartVedtakQuery.isPending && annenPartVedtakQuery.fetchStatus !== 'idle') {
+    if (harLagretFellesUttaksplan && uttaksplanQuery.isPending && uttaksplanQuery.fetchStatus !== 'idle') {
         return <Spinner />;
     }
 
-    const annenPartVedtakErEndret =
-        harLagretAnnenPartVedtak &&
-        annenPartVedtakQuery.isSuccess &&
-        !erLikUansettRekkefølge(annenPartVedtakQuery.data, mellomlagretData.annenPartVedtak);
+    const fellesUttaksplanErEndret =
+        harLagretFellesUttaksplan &&
+        uttaksplanQuery.isSuccess &&
+        !erLikUansettRekkefølge(uttaksplanQuery.data, mellomlagretData.fellesUttaksplan);
 
     const søkerInfoErEndret = !erLikUansettRekkefølge(
         // frilansoppdrag/selvstendigNæring kan mangle på lagret søkerInfo dersom mellomlagringen ble gjort
@@ -165,13 +165,13 @@ const RegisterdataSjekk = ({
         relevanteSaker(foreldrepengerSaker),
     );
 
-    const registerdataErEndret = søkerInfoErEndret || sakerErEndret || annenPartVedtakErEndret;
+    const registerdataErEndret = søkerInfoErEndret || sakerErEndret || fellesUttaksplanErEndret;
 
     if (registerdataErEndret) {
         const avvik = [
             søkerInfoErEndret ? 'søkerInfo' : undefined,
             sakerErEndret ? 'saker' : undefined,
-            annenPartVedtakErEndret ? 'annenPartVedtak' : undefined,
+            fellesUttaksplanErEndret ? 'fellesUttaksplan' : undefined,
         ]
             .filter(Boolean)
             .join(',');

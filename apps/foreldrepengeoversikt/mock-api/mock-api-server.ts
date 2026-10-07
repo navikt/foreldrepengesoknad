@@ -28,8 +28,8 @@ export const getDokumenter = () => {
     return getFileContent('dokumenter.json');
 };
 
-export const getAnnenPartsVedtak = () => {
-    return getFileContent('annenPartVedtak.json');
+export const getUttaksplan = () => {
+    return getFileContent('uttaksplan.json');
 };
 
 export const getSaker = () => {
@@ -98,8 +98,8 @@ router.get(['/fpoversikt/api/dokument/alle'], (_req, res) => {
     res.send(getDokumenter());
 });
 
-router.post(['/fpoversikt/api/annenPart'], (_req, res) => {
-    res.send(getAnnenPartsVedtak());
+router.post(['/fpoversikt/api/uttaksplan'], (_req, res) => {
+    res.send(getUttaksplan());
 });
 
 router.get('/fpoversikt/api/saker', (_req, res) => {

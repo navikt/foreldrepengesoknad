@@ -2,6 +2,9 @@ import { composeStories } from '@storybook/react-vite';
 import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
+import { saker } from 'storybookData/saker';
+
+import { UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
 
 import * as stories from './UttaksplanSteg.stories';
 
@@ -321,6 +324,53 @@ describe('<UttaksplanSteg>', () => {
         expect(screen.getByRole('button', { name: 'Tilbakestill plan' })).toBeDisabled();
     });
 
+    it.each([true, false])(
+        'avgrenser tilbakestilling til snapshot og skjult fordeling til gjenbruk: %s',
+        async (gjenbruk) => {
+            const onDispatch = vi.fn();
+            const args = NySøknadFørVedtakMedEksisterendeSak.args;
+            await NySøknadFørVedtakMedEksisterendeSak.run({
+                args: {
+                    ...args,
+                    gåTilNesteSide: onDispatch,
+                    foreldrepengerSaker: [
+                        {
+                            ...saker.foreldrepenger[0]!,
+                            saksnummer: args.valgtEksisterendeSaksnr!,
+                            gjeldendeVedtak: gjenbruk ? undefined : { perioder: [] },
+                        },
+                    ],
+                    opprinneligUttaksplan: {
+                        saksnummer: args.valgtEksisterendeSaksnr!,
+                        perioder: args.uttaksplan!,
+                    },
+                },
+            });
+            expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+            await userEvent.click(screen.getByText('Start redigering'));
+            await userEvent.click(screen.getAllByText('Du kan velge datoer i kalenderen')[0]!);
+            await userEvent.click(screen.getByRole('button', { name: 'Fjern alt' }));
+            await userEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Fjern alt' }));
+            await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+            await userEvent.click(screen.getByRole('button', { name: 'Tilbakestill plan' }));
+            await userEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Tilbakestill' }));
+            await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+
+            expect(onDispatch).toHaveBeenCalledWith({
+                type: 'update',
+                key: ContextDataType.UTTAKSPLAN,
+                data: gjenbruk ? args.uttaksplan : undefined,
+            });
+            expect(onDispatch).not.toHaveBeenCalledWith({
+                type: 'update',
+                key: ContextDataType.OPPRINNELIG_UTTAKSPLAN,
+                data: undefined,
+            });
+            expect(screen.getByRole('button', { name: 'Tilbakestill plan' })).toBeDisabled();
+            expect(screen.queryByText('Fordeling av foreldrepenger') !== null).toBe(!gjenbruk);
+        },
+    );
+
     // TODO (TOR) Denne skal slåast på igjen etter ein sluttar å filtrera vekk perioden til annen part fra forslaget til plan
     it.todo('skal vise feilmelding når en prøver å gå videre med stjernemerkede perioder', async () => {
         const gåTilNesteSide = vi.fn();
@@ -372,17 +422,12 @@ describe('<UttaksplanSteg>', () => {
         );
         expect(uttaksplanAction).toBeDefined();
 
-        const uttaksplan = uttaksplanAction![0].data as Array<{
-            forelder: string;
-            kontoType: string;
-            fom: string;
-            tom: string;
-        }>;
-        const farPerioder = uttaksplan.filter((p) => p.forelder === 'FAR_MEDMOR');
+        const uttaksplan = uttaksplanAction![0].data as UttakPeriodeDto_fpoversikt[];
+        const farPerioder = uttaksplan.filter((p) => p.søker?.forelder === 'FAR_MEDMOR');
 
         // Forslaget skal kun inneholde de to ukene ved termin (10 uttaksdager), ikke gjenstående fedrekvote i fremtiden
         expect(farPerioder).toHaveLength(1);
-        expect(farPerioder[0]!.kontoType).toBe('FEDREKVOTE');
+        expect(farPerioder[0]!.søker!.kontoType).toBe('FEDREKVOTE');
         // Perioden skal starte på termindato (2024-07-01) og vare nøyaktig 10 uttaksdager (tom: 2024-07-12)
         expect(farPerioder[0]!.fom).toBe('2024-07-01');
         expect(farPerioder[0]!.tom).toBe('2024-07-12');
