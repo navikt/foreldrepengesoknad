@@ -115,6 +115,69 @@ describe('forsideUtils - getSelectableBarnOptions', () => {
         const result = getSelectableBarnOptions([], [barnMerEnn3ÅrOg3Mnd]);
         expect(result.length).toBe(0);
     });
+    it('skal ikke koble barn med annen registrert annen part til termin-sak', () => {
+        const termindato = dayjs().subtract(2, 'month').format('YYYY-MM-DD');
+        const terminSak = {
+            ...sak,
+            sakTilhørerMor: false,
+            forelder: 'FAR_MEDMOR',
+            familiehendelse: { termindato, antallBarn: 1 },
+            annenPart: { fnr: '11111111111' },
+            barn: undefined,
+        } satisfies FpSak_fpoversikt;
+        const barnetTilSaken = {
+            fødselsdato: termindato,
+            fnr: '22222222222',
+            kjønn: 'K',
+            annenPart: { fnr: '11111111111', navn: { fornavn: 'Mor', etternavn: 'En' } },
+        } satisfies FpBarnDto_fpoversikt;
+        const barnMedAnnenMor = {
+            fødselsdato: dayjs(termindato).subtract(2, 'month').format('YYYY-MM-DD'),
+            fnr: '33333333333',
+            kjønn: 'M',
+            annenPart: { fnr: '44444444444', navn: { fornavn: 'Mor', etternavn: 'To' } },
+        } satisfies FpBarnDto_fpoversikt;
+
+        const result = getSelectableBarnOptions([terminSak], [barnMedAnnenMor, barnetTilSaken]);
+
+        expect(result.length).toBe(2);
+        expect(result[0]!.sak).toBe(terminSak);
+        expect(result[0]!.fnr).toEqual(['22222222222']);
+        expect(result[1]!.sak).toBeUndefined();
+        expect(result[1]!.fnr).toEqual(['33333333333']);
+    });
+    it('skal ikke koble barn med annen registrert annen part til sak med fødselsdato uten barn', () => {
+        const fødselssak = {
+            ...sak,
+            annenPart: { fnr: '11111111111' },
+            barn: undefined,
+        } satisfies FpSak_fpoversikt;
+        const barnMedAnnenMor = {
+            fødselsdato,
+            fnr: '33333333333',
+            kjønn: 'M',
+            annenPart: { fnr: '44444444444', navn: { fornavn: 'Mor', etternavn: 'To' } },
+        } satisfies FpBarnDto_fpoversikt;
+
+        const result = getSelectableBarnOptions([fødselssak], [barnMedAnnenMor]);
+
+        expect(result.length).toBe(2);
+        expect(result[0]!.fnr).toBeUndefined();
+        expect(result[1]!.sak).toBeUndefined();
+        expect(result[1]!.fnr).toEqual(['33333333333']);
+    });
+    it('skal koble barn uten registrert annen part til sak med samme fødselsdato', () => {
+        const fødselssak = {
+            ...sak,
+            annenPart: { fnr: '11111111111' },
+            barn: undefined,
+        } satisfies FpSak_fpoversikt;
+
+        const result = getSelectableBarnOptions([fødselssak], [barnFraPDL]);
+
+        expect(result.length).toBe(1);
+        expect(result[0]!.fnr).toEqual(['123456789']);
+    });
 });
 
 describe('forsideUtils - bestemSøknadsstart', () => {
