@@ -1,6 +1,8 @@
 import { composeStories, composeStory } from '@storybook/react-vite';
 import { screen } from '@testing-library/react';
 
+import { getLenker } from '@navikt/fp-utils';
+
 import * as stories from './Saksoversikt.stories';
 
 const {
@@ -34,9 +36,12 @@ describe('<Saksoversikt>', () => {
         expect(screen.getByText('Endre kontonummer')).toBeInTheDocument();
     });
 
-    it('skal kun vise Endre plan lenke for foreldrepenger', async () => {
+    it('skal lenke til endring av planen i kjøremiljøet for foreldrepenger', async () => {
         await Foreldrepenger.run();
-        expect(await screen.findByText('Endre planen din')).toBeInTheDocument();
+        expect(await screen.findByRole('link', { name: 'Endre planen din' })).toHaveAttribute(
+            'href',
+            getLenker().foreldrepengesoknad,
+        );
     });
 
     it('skal IKKE vise Endre plan lenke for svangerskapspenger', async () => {

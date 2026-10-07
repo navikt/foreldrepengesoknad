@@ -18,9 +18,9 @@ import {
     VStack,
 } from '@navikt/ds-react';
 
-import { Skjemanummer, links } from '@navikt/fp-constants';
+import { Skjemanummer } from '@navikt/fp-constants';
 import { TidslinjeHendelseDto_fpoversikt, Ytelse } from '@navikt/fp-types';
-import { capitalizeFirstLetter, formatDate, formatDateMedUkedag, formatTime } from '@navikt/fp-utils';
+import { capitalizeFirstLetter, formatDate, formatDateMedUkedag, formatTime, getLenker } from '@navikt/fp-utils';
 
 import { søkerInfoOptions } from '../../api/queries.ts';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak.ts';
@@ -160,7 +160,7 @@ const EngangsstønadBekreftelse = () => {
                     </BodyLong>
                     <BodyLong size="small">
                         <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel2" />
-                        <Link href={links.utbetalingsoversikt}>
+                        <Link href={getLenker().utbetalingsoversikt}>
                             <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel3" />
                         </Link>
                         <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel4" />

@@ -50,7 +50,7 @@ const finnRettighetstype = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHar
     return 'BARE_SØKER_RETT';
 };
 
-const getStønadskvoter = async (
+const getStønadskvoter = (
     omBarnet?: OmBarnetPlanlegger,
     arbeidssituasjon?: Arbeidssituasjon,
     hvemPlanlegger?: HvemPlanlegger,

@@ -5,6 +5,7 @@ import { IntlProvider, createIntl, createIntlCache } from 'react-intl';
 import { describe, expect, it } from 'vitest';
 
 import { BarnType, ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { UttakDto_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { UttaksplanDataProvider } from '../context/UttaksplanDataContext';
@@ -214,6 +215,91 @@ const getWrapper =
     );
 
 describe('useFormSubmitValidator', () => {
+    it.each([false, true])(
+        'teller også dagene to uker før termin ved sen fødsel, erEndringssøknad=%s',
+        (erEndringssøknad) => {
+            const { result } = renderHook(() => useFormSubmitValidator(), {
+                wrapper: getWrapper({
+                    erEndringssøknad,
+                    barn: {
+                        type: BarnType.FØDT,
+                        antallBarn: 1,
+                        termindato: '2026-08-03',
+                        fødselsdatoer: ['2026-08-10'],
+                    },
+                    perioder: [
+                        {
+                            fom: '2026-07-20',
+                            tom: '2026-07-24',
+                            søker: {
+                                forelder: 'FAR_MEDMOR',
+                                kontoType: 'FEDREKVOTE',
+                                flerbarnsdager: false,
+                                samtidigUttak: 100,
+                            },
+                        },
+                    ],
+                }),
+            });
+
+            expect(
+                result.current([{ fom: '2026-08-10', tom: '2026-08-21' }], {
+                    forelder: 'BEGGE',
+                    kontoTypeMor: 'MØDREKVOTE',
+                    kontoTypeFarMedmor: 'FEDREKVOTE',
+                    samtidigUttaksprosentMor: '100',
+                    samtidigUttaksprosentFarMedmor: '100',
+                    skalDuKombinereArbeidOgUttakMor: false,
+                    skalDuKombinereArbeidOgUttakFarMedmor: false,
+                }),
+            ).toBe('Du kan ikke velge mer enn to uker totalt i perioden to uker før og seks uker etter fødsel/termin');
+        },
+    );
+
+    it.each([
+        { flerbarnsdager: true, samtidigUttak: 100 },
+        { morsAktivitet: 'INNLAGT' },
+        { morsAktivitet: 'TRENGER_HJELP' },
+    ] satisfies Array<Partial<UttakDto_fpoversikt>>)(
+        'tillater to uker samtidig fedrekvote etter unntaksuttak: %o',
+        (unntak) => {
+            const { result } = renderHook(() => useFormSubmitValidator(), {
+                wrapper: getWrapper({
+                    barn: {
+                        type: BarnType.FØDT,
+                        antallBarn: 2,
+                        fødselsdatoer: ['2026-08-10', '2026-08-10'],
+                    },
+                    perioder: [
+                        {
+                            fom: '2026-08-10',
+                            tom: '2026-08-21',
+                            søker: {
+                                forelder: 'FAR_MEDMOR',
+                                kontoType: 'FEDREKVOTE',
+                                flerbarnsdager: false,
+                                ...unntak,
+                            },
+                        },
+                    ],
+                }),
+            });
+
+            expect(
+                result.current([{ fom: '2026-08-24', tom: '2026-09-04' }], {
+                    forelder: 'BEGGE',
+                    kontoTypeMor: 'MØDREKVOTE',
+                    kontoTypeFarMedmor: 'FEDREKVOTE',
+                    samtidigUttaksprosentMor: '100',
+                    samtidigUttaksprosentFarMedmor: '100',
+                    skalDuKombinereArbeidOgUttakMor: false,
+                    skalDuKombinereArbeidOgUttakFarMedmor: false,
+                    ønskerFlerbarnsdager: false,
+                }),
+            ).toBeNull();
+        },
+    );
+
     it('skal returnere feilmelding dersom mor kombinerer arbeid og foreldrepenger de første 6 ukene', () => {
         const { result } = renderHook(() => useFormSubmitValidator(), {
             wrapper: getWrapper(),
@@ -455,6 +541,7 @@ describe('useFormSubmitValidator', () => {
                         tom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(4),
                         søker: {
                             forelder: 'FAR_MEDMOR',
+                            kontoType: 'FEDREKVOTE',
                             gradering: {
                                 aktivitet: {
                                     type: 'ORDINÆRT_ARBEID',

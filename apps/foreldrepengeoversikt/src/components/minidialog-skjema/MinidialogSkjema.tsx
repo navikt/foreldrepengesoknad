@@ -77,7 +77,7 @@ export const MinidialogSkjema = ({
 
     useQuery({
         queryKey: ['minidialog'],
-        queryFn: async () => {
+        queryFn: () => {
             setFetchCounter((prev) => prev + 1);
             return ky.get(API_URLS.minidialog).json<TilbakekrevingUttalelseOppgave_fpoversikt[]>();
         },

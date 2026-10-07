@@ -337,7 +337,8 @@ const FAR_MEDMOR_FELLESPERIODE: Kvoteregel<KvoteKontekst> = {
     forelder: 'FAR_MEDMOR',
     kontotype: 'FELLESPERIODE',
     beskrivelse:
-        'Fellesperiode kan velges av far/medmor: ved flerbarnsdager er den alltid tilgjengelig. Ellers ' +
+        'Fellesperiode med flerbarnsdager kan velges av far/medmor fra familiehendelsesdatoen, ' +
+        'som er termindatoen hvis barnet ikke er født. Ingen valgte perioder kan starte før denne datoen. Ellers ' +
         'er den ikke gyldig dersom perioden ligger i intervallet 3 uker før familiehendelsesdato til ' +
         'familiehendelsesdatoen, mer enn 12 uker (60 uttaksdager) før familiehendelsesdatoen, mer enn ' +
         '2 uker før familiehendelsesdatoen, eller i de første seks ukene etter familiehendelsesdato ' +
@@ -347,7 +348,7 @@ const FAR_MEDMOR_FELLESPERIODE: Kvoteregel<KvoteKontekst> = {
             return false;
         }
         if (k.ønskerFlerbarnsdager) {
-            return true;
+            return !harPeriodeFørFamiliehendelsesdato(k);
         }
         if (harPeriodeInnenforTreUkerFørFamDatoOgFamDato(k)) {
             return false;

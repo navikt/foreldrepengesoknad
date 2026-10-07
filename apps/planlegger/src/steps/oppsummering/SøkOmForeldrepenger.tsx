@@ -5,10 +5,9 @@ import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 
 import { BodyShort, LinkCard, VStack } from '@navikt/ds-react';
 
-import { links } from '@navikt/fp-constants';
 import { OmBarnetPlanlegger } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
-import { compressToUrl } from '@navikt/fp-utils';
+import { compressToUrl, getLenker } from '@navikt/fp-utils';
 
 interface Props {
     erAlenesøker: boolean;
@@ -17,7 +16,7 @@ interface Props {
 
 export const SøkOmForeldrepenger = ({ erAlenesøker, barnet }: Props) => {
     const planleggerState = useContextComplete();
-    const søknadHref = `${links.foreldrepengesoknad}/?planleggerData=${compressToUrl(
+    const søknadHref = `${getLenker().foreldrepengesoknad}/?planleggerData=${compressToUrl(
         JSON.stringify(sanitizePlanleggerState(planleggerState)),
     )}`;
 

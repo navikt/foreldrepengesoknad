@@ -2,6 +2,8 @@ import { composeStories, composeStory } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { getLenker } from '@navikt/fp-utils';
+
 import * as stories from './OppsummeringSteg.stories';
 
 const {
@@ -50,6 +52,10 @@ describe('<OppsummeringSteg>', () => {
                 'Dere valgte 100 % foreldrepenger i 49 uker og fordeler fellesperioden med 5 uker til Klara og 11 uker til Espen.',
             ),
         ).toBeInTheDocument();
+
+        const søknadUrl = new URL(screen.getByRole<HTMLAnchorElement>('link', { name: 'Send digitalt' }).href);
+        expect(`${søknadUrl.origin}${søknadUrl.pathname}`).toBe(`${getLenker().foreldrepengesoknad}/`);
+        expect(søknadUrl.searchParams.get('planleggerData')).toBeTruthy();
     });
 
     it('skal vise info der det er flere forsørgere og begge har rett til foreldrepenger - adopsjon', async () => {

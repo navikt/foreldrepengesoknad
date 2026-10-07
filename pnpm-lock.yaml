@@ -108,20 +108,20 @@ settings:
 catalogs:
   default:
     '@navikt/aksel-icons':
-      specifier: 8.16.2
-      version: 8.16.2
+      specifier: 8.17.2
+      version: 8.17.2
     '@navikt/ds-css':
-      specifier: 8.16.2
-      version: 8.16.2
+      specifier: 8.17.2
+      version: 8.17.2
     '@navikt/ds-react':
-      specifier: 8.16.2
-      version: 8.16.2
+      specifier: 8.17.2
+      version: 8.17.2
     '@navikt/ds-tailwind':
-      specifier: 8.16.2
-      version: 8.16.2
+      specifier: 8.17.2
+      version: 8.17.2
     '@navikt/nav-dekoratoren-moduler':
-      specifier: 4.3.0
-      version: 4.3.0
+      specifier: 4.5.0
+      version: 4.5.0
     '@storybook/addon-a11y':
       specifier: 10.6.0
       version: 10.6.0
@@ -201,8 +201,8 @@ catalogs:
       specifier: 7.88.0
       version: 7.88.0
     react-intl:
-      specifier: 10.2.2
-      version: 10.2.2
+      specifier: 12.1.3
+      version: 12.1.3
     react-router:
       specifier: 8.3.1
       version: 8.3.1
@@ -268,13 +268,13 @@ importers:
     dependencies:
       '@navikt/ds-css':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-react':
         specifier: 'catalog:'
-        version: 8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 8.17.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/fp-app-shell':
         specifier: workspace:*
         version: link:../../packages/app-shell
@@ -319,7 +319,7 @@ importers:
         version: link:../../packages/validation
       '@navikt/nav-dekoratoren-moduler':
         specifier: 'catalog:'
-        version: 4.3.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
+        version: 4.5.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       '@tanstack/react-query':
         specifier: 'catalog:'
         version: 5.102.8(react@19.3.0)
@@ -340,7 +340,7 @@ importers:
         version: 7.88.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
       react-router:
         specifier: 'catalog:'
         version: 8.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -416,16 +416,16 @@ importers:
     dependencies:
       '@navikt/aksel-icons':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-css':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-react':
         specifier: 'catalog:'
-        version: 8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 8.17.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/fp-app-shell':
         specifier: workspace:*
         version: link:../../packages/app-shell
@@ -458,7 +458,7 @@ importers:
         version: link:../../packages/validation
       '@navikt/nav-dekoratoren-moduler':
         specifier: 'catalog:'
-        version: 4.3.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
+        version: 4.5.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       '@tanstack/react-query':
         specifier: 'catalog:'
         version: 5.102.8(react@19.3.0)
@@ -479,7 +479,7 @@ importers:
         version: 19.3.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
       react-router:
         specifier: 'catalog:'
         version: 8.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -567,16 +567,16 @@ importers:
     dependencies:
       '@navikt/aksel-icons':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-css':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-react':
         specifier: 'catalog:'
-        version: 8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 8.17.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/fnrvalidator':
         specifier: 2.2.1
         version: 2.2.1
@@ -630,7 +630,7 @@ importers:
         version: link:../../packages/validation
       '@navikt/nav-dekoratoren-moduler':
         specifier: 'catalog:'
-        version: 4.3.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
+        version: 4.5.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       '@tanstack/react-query':
         specifier: 'catalog:'
         version: 5.102.8(react@19.3.0)
@@ -654,7 +654,7 @@ importers:
         version: 7.88.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
       react-router:
         specifier: 'catalog:'
         version: 8.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -733,16 +733,16 @@ importers:
     dependencies:
       '@navikt/aksel-icons':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-css':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-react':
         specifier: 'catalog:'
-        version: 8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 8.17.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/fp-app-shell':
         specifier: workspace:*
         version: link:../../packages/app-shell
@@ -772,7 +772,7 @@ importers:
         version: link:../../packages/validation
       '@navikt/nav-dekoratoren-moduler':
         specifier: 'catalog:'
-        version: 4.3.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
+        version: 4.5.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       '@tanstack/react-query':
         specifier: 'catalog:'
         version: 5.102.8(react@19.3.0)
@@ -799,7 +799,7 @@ importers:
         version: 7.88.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
       react-router:
         specifier: 'catalog:'
         version: 8.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -878,16 +878,16 @@ importers:
     dependencies:
       '@navikt/aksel-icons':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-css':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-react':
         specifier: 'catalog:'
-        version: 8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 8.17.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/fp-app-shell':
         specifier: workspace:*
         version: link:../../packages/app-shell
@@ -935,7 +935,7 @@ importers:
         version: link:../../packages/validation
       '@navikt/nav-dekoratoren-moduler':
         specifier: 'catalog:'
-        version: 4.3.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
+        version: 4.5.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       '@tanstack/react-query':
         specifier: 'catalog:'
         version: 5.102.8(react@19.3.0)
@@ -959,7 +959,7 @@ importers:
         version: 7.88.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
       react-router:
         specifier: 'catalog:'
         version: 8.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -1035,16 +1035,16 @@ importers:
     dependencies:
       '@navikt/aksel-icons':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-css':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-react':
         specifier: 'catalog:'
-        version: 8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 8.17.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/fp-app-shell':
         specifier: workspace:*
         version: link:../../packages/app-shell
@@ -1086,7 +1086,7 @@ importers:
         version: 7.88.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
       react-router:
         specifier: 'catalog:'
         version: 8.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -1162,16 +1162,16 @@ importers:
     dependencies:
       '@navikt/aksel-icons':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-css':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-react':
         specifier: 'catalog:'
-        version: 8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 8.17.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/fp-app-shell':
         specifier: workspace:*
         version: link:../../packages/app-shell
@@ -1219,7 +1219,7 @@ importers:
         version: 7.88.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
       react-router:
         specifier: 'catalog:'
         version: 8.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -1298,7 +1298,7 @@ importers:
     dependencies:
       '@navikt/ds-react':
         specifier: 'catalog:'
-        version: 8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 8.17.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/fp-observability':
         specifier: workspace:*
         version: link:../observability
@@ -1313,7 +1313,7 @@ importers:
         version: link:../utils
       '@navikt/nav-dekoratoren-moduler':
         specifier: 'catalog:'
-        version: 4.3.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
+        version: 4.5.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       '@tanstack/react-query':
         specifier: 'catalog:'
         version: 5.102.8(react@19.3.0)
@@ -1465,10 +1465,10 @@ importers:
     dependencies:
       '@navikt/ds-css':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-react':
         specifier: 'catalog:'
-        version: 8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 8.17.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -1492,7 +1492,7 @@ importers:
         version: 19.3.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
     devDependencies:
       '@navikt/fp-config-eslint':
         specifier: workspace:*
@@ -1547,10 +1547,10 @@ importers:
     dependencies:
       '@navikt/ds-css':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-react':
         specifier: 'catalog:'
-        version: 8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 8.17.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -1574,11 +1574,11 @@ importers:
         version: 7.88.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
     devDependencies:
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
@@ -1626,7 +1626,7 @@ importers:
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.2.2(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
+        version: 10.2.1(react-intl@12.1.3(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -1647,10 +1647,10 @@ importers:
         version: 0.6.3(@grafana/faro-react@2.8.2(react-dom@19.3.0(react@19.3.0))(react-router-dom@7.18.2(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-router@8.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react-router-dom@7.18.2(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-router@8.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)
       '@navikt/aksel-icons':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-react':
         specifier: 'catalog:'
-        version: 8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 8.17.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
@@ -1659,7 +1659,7 @@ importers:
         version: 19.3.0
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
     devDependencies:
       '@navikt/fp-config-eslint':
         specifier: workspace:*
@@ -1696,7 +1696,7 @@ importers:
     dependencies:
       '@navikt/nav-dekoratoren-moduler':
         specifier: 'catalog:'
-        version: 4.3.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
+        version: 4.5.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       '@navikt/vite-mode':
         specifier: 1.0.1
         version: 1.0.1(express@5.2.1)
@@ -1736,13 +1736,13 @@ importers:
     dependencies:
       '@navikt/aksel-icons':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-css':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-react':
         specifier: 'catalog:'
-        version: 8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 8.17.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -1781,11 +1781,11 @@ importers:
         version: 7.88.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
     devDependencies:
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
@@ -1830,7 +1830,7 @@ importers:
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.2.2(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
+        version: 10.2.1(react-intl@12.1.3(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -1848,10 +1848,10 @@ importers:
     dependencies:
       '@navikt/ds-css':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-react':
         specifier: 'catalog:'
-        version: 8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 8.17.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -1887,11 +1887,11 @@ importers:
         version: 7.88.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
     devDependencies:
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
@@ -1936,7 +1936,7 @@ importers:
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.2.2(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
+        version: 10.2.1(react-intl@12.1.3(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -1954,10 +1954,10 @@ importers:
     dependencies:
       '@navikt/ds-css':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-react':
         specifier: 'catalog:'
-        version: 8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 8.17.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -1987,11 +1987,11 @@ importers:
         version: 7.88.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
     devDependencies:
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
@@ -2036,7 +2036,7 @@ importers:
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.2.2(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
+        version: 10.2.1(react-intl@12.1.3(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -2054,19 +2054,22 @@ importers:
     dependencies:
       '@navikt/aksel-icons':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-css':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-react':
         specifier: 'catalog:'
-        version: 8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 8.17.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
       '@navikt/fp-ui':
         specifier: workspace:*
         version: link:../ui
+      '@navikt/fp-utils':
+        specifier: workspace:*
+        version: link:../utils
       react:
         specifier: 'catalog:'
         version: 19.3.0
@@ -2075,11 +2078,11 @@ importers:
         version: 19.3.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
     devDependencies:
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
@@ -2121,7 +2124,7 @@ importers:
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.2.2(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
+        version: 10.2.1(react-intl@12.1.3(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -2139,10 +2142,10 @@ importers:
     dependencies:
       '@navikt/ds-css':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-react':
         specifier: 'catalog:'
-        version: 8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 8.17.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/fp-steg-arbeidsforhold-og-inntekt':
         specifier: workspace:*
         version: link:../steg-arbeidsforhold-og-inntekt
@@ -2169,11 +2172,11 @@ importers:
         version: 19.3.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
     devDependencies:
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
@@ -2218,7 +2221,7 @@ importers:
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.2.2(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
+        version: 10.2.1(react-intl@12.1.3(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -2236,13 +2239,13 @@ importers:
     dependencies:
       '@navikt/aksel-icons':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-css':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-react':
         specifier: 'catalog:'
-        version: 8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 8.17.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -2275,11 +2278,11 @@ importers:
         version: 7.88.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
     devDependencies:
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
@@ -2324,7 +2327,7 @@ importers:
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.2.2(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
+        version: 10.2.1(react-intl@12.1.3(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -2361,13 +2364,13 @@ importers:
     dependencies:
       '@navikt/aksel-icons':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-css':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-react':
         specifier: 'catalog:'
-        version: 8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 8.17.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -2394,11 +2397,11 @@ importers:
         version: 19.3.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
     devDependencies:
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
@@ -2443,7 +2446,7 @@ importers:
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.2.2(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
+        version: 10.2.1(react-intl@12.1.3(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -2479,7 +2482,7 @@ importers:
         version: 19.3.0
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
     devDependencies:
       '@navikt/fp-config-eslint':
         specifier: workspace:*
@@ -2522,7 +2525,7 @@ importers:
     dependencies:
       '@navikt/ds-react':
         specifier: 'catalog:'
-        version: 8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 8.17.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
@@ -2543,7 +2546,7 @@ importers:
         version: 19.3.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -2592,13 +2595,13 @@ importers:
     dependencies:
       '@navikt/aksel-icons':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-css':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/ds-react':
         specifier: 'catalog:'
-        version: 8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 8.17.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -2640,11 +2643,11 @@ importers:
         version: 7.88.0(react@19.3.0)
       react-intl:
         specifier: 'catalog:'
-        version: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+        version: 12.1.3(@types/react@19.3.0)(react@19.3.0)
     devDependencies:
       '@navikt/ds-tailwind':
         specifier: 'catalog:'
-        version: 8.16.2
+        version: 8.17.2
       '@navikt/fp-config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
@@ -2689,7 +2692,7 @@ importers:
         version: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
       storybook-react-intl:
         specifier: 'catalog:'
-        version: 10.2.1(react-intl@10.2.2(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
+        version: 10.2.1(react-intl@12.1.3(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
@@ -3289,14 +3292,14 @@ packages:
   '@formatjs/fast-memoize@3.1.7':
     resolution: {integrity: sha512-zXfhLpvA6T7+efdt9JLbBwZ00tT7NsBMDVnDu8rpHeNNv8KfRZAMo2gkG0k9lK/Nzc//3kJ9pImsfuJxk3KhUA==}
 
-  '@formatjs/icu-messageformat-parser@3.5.18':
-    resolution: {integrity: sha512-wX1efcL8d7K5QapOTRsP/OLTA/kpwe4LwqWyNxDNg5iRs8i9jJbCyxB5P8jc4KOW5oiLzz2DJr+BRY5xMV9+bA==}
+  '@formatjs/icu-messageformat-parser@3.5.20':
+    resolution: {integrity: sha512-DUzCb2iskGDKvLU7P+nz/rjpmN59luoTRbWHFFNYNnZTxWCKvwPI94rNll99TGZaI6XoTbDF0QGegk21GFrQZQ==}
 
-  '@formatjs/icu-skeleton-parser@2.1.11':
-    resolution: {integrity: sha512-j8cUmOJzVgkHuS0QiQ6ga76UIoLOFSAMWhs7aZJztH3aAdCOAE6vpC8KVvFB4cU10ON0y2/5oOVmPJ43s2lTwA==}
+  '@formatjs/icu-skeleton-parser@2.1.12':
+    resolution: {integrity: sha512-ca7tZMLpfHX3sUD7hP6gE/qr6Iq89EDd3ZLeRhbsB7r0UD55DGJq+tmFLzrGrnx5StahUevQmQQVtbDRHsfDHA==}
 
-  '@formatjs/intl@4.2.1':
-    resolution: {integrity: sha512-GiL0cReencWQkhfJedNLMe0Aorb/wyTRJdi+hLgG9gsDPy4yw2N+EkMcijf5+oGKd5jde75tr5nujsPg78bUTw==}
+  '@formatjs/intl@6.1.2':
+    resolution: {integrity: sha512-YH3Ldfa2vmavWgBlCyrT9WiobphTXlNHnHxhhB6nLSUOxmitJ6Bzqzg61uBcnc6yhKTU+YRo8hLhEatOZrVJUg==}
 
   '@grafana/faro-core@2.11.0':
     resolution: {integrity: sha512-vaqko2foixRC9uZyqc4KzCUYqd21t27LhVgQ6hI6cmS3vRSMBoIgEg1FIrOOkT9KNRTpbKASE7iYn3QtHtq7zQ==}
@@ -3479,34 +3482,34 @@ packages:
       '@emnapi/core': ^1.7.1 || ^2.0.0-alpha.4
       '@emnapi/runtime': ^1.7.1 || ^2.0.0-alpha.4
 
-  '@navikt/aksel-icons@8.16.2':
-    resolution: {integrity: sha512-d2GWooeIEJYq8NYJIJJhMo84Vac6SyCvLJDFWG6RSj8vcgFanQMnKAram1zd48UO/rjuuZZk99p4UZt4jsD0RA==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-icons/8.16.2/8873ba72cb6d59c80e864fb04cf43ca0731dbfa5}
+  '@navikt/aksel-icons@8.17.2':
+    resolution: {integrity: sha512-P4N/SrXu1BFaanvp83AWb58hP2qutfmL5u+wBpoxtcSP5uSXDmNdT0qtsE8E7kvdY+cCPKfetHLlGX5O7xRD5g==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-icons/8.17.2/e10ec442fa1f25b24704b55cc77c02a5d908a0f6}
 
   '@navikt/analytics-types@0.0.9':
     resolution: {integrity: sha512-bopCvqEogyFcmrJiBxK/Mr25d6yPKF7GR36MGrJqiHCPJYf1rDu6lK4cpooTG4Q//D/1xTkHRom8ZH5BI6dTew==, tarball: https://npm.pkg.github.com/download/@navikt/analytics-types/0.0.9/5919241a6dbb782eb101fff3234ce5c36d16e942}
     engines: {node: '>=20.0.0', npm: '>=9.0.0'}
 
-  '@navikt/ds-css@8.16.2':
-    resolution: {integrity: sha512-RMKKQ1OTXGPwSGPsWEvOXpRTxA+QhnHc4oGG0ePg7AeeGQvYE/VjtySL2ddOYwAR8BygyvuB/sDrjm5AkQQ0cw==, tarball: https://npm.pkg.github.com/download/@navikt/ds-css/8.16.2/a132ee47c528af289b89dd5d806ac1abfc937e44}
+  '@navikt/ds-css@8.17.2':
+    resolution: {integrity: sha512-k+xkEVF5ZBSM5UoLjqDsRAn/mBrlLXL3S8JLQj3syW1i4HIu6N6FaIGMveZeobZef5rIBWwhLGsIJ8doWtgyOQ==, tarball: https://npm.pkg.github.com/download/@navikt/ds-css/8.17.2/b0294b41e7004be0e010c409ae4d42c6167c8538}
 
-  '@navikt/ds-react@8.16.2':
-    resolution: {integrity: sha512-pJGVltBJT5hNwo+fZee5qaM+Kc+hZZgPU7WoXbUbZxUtTbhHM+5uFo4J5ceMU2KBUhamtqtRGso2dXdztyEiHQ==, tarball: https://npm.pkg.github.com/download/@navikt/ds-react/8.16.2/212af8009cab85a672faa15f0a039eaabec9cbc7}
+  '@navikt/ds-react@8.17.2':
+    resolution: {integrity: sha512-gVCKqF0rwlclmwpd3U3vAO1db49RhOpzVw+lCBz05RGCxH4ynmeTakuy2xI7MUsnIbiTB3LeBvnOsA23ynh1Dw==, tarball: https://npm.pkg.github.com/download/@navikt/ds-react/8.17.2/aff1f3f872620b72f91f14126b3169e34821408e}
     peerDependencies:
       '@types/react': 19.3.0
       react: ^17 || ^18 || ^19
       react-dom: ^17 || ^18 || ^19
 
-  '@navikt/ds-tailwind@8.16.2':
-    resolution: {integrity: sha512-Wdmb/ik6ai4o+EJQgceNh7XQD+ZYsDtoiou1wzu9BaykYHzwNNrZhE3o224624rYANo2orBn+wBExAOF9a1NHA==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/8.16.2/ca9f0b867b730e1d1b4c51a01daec6795523f7ac}
+  '@navikt/ds-tailwind@8.17.2':
+    resolution: {integrity: sha512-vnk1Rh10u58SArtWY1eoVRc3W5pvQIcb6XLwmTicCO0nSnMhTSPOFnrtTLaMxj0yqwncunQgu7L3ziN5EZ1MsQ==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/8.17.2/27c852f81b6fe3333ba7f876b2950dfb457e9cf3}
 
-  '@navikt/ds-tokens@8.16.2':
-    resolution: {integrity: sha512-WXtLRb034uUN1SUBEg+AYUrAu0zm+P0xuUheIWABEDpWnVGmfXDng7lIW5JDFbut3rQIa1xfzvUfeL3ghc4eng==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/8.16.2/a22ed996203e7730664ed43d7025c68609c937a8}
+  '@navikt/ds-tokens@8.17.2':
+    resolution: {integrity: sha512-oDKFZxlgt/L2zNPCma03fo1sls5E9bUTybMh8/ELh7btS3Kurv7fvwlF7CMW8mWTa+/yh1oqLXY/ONp4+/mPTg==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/8.17.2/6d44d329afac5ae8d729cdf2f1c83d009dfd2c80}
 
   '@navikt/fnrvalidator@2.2.1':
     resolution: {integrity: sha512-R6x3MBFC0E/B7oTs+P2jAP+ym7+d6cwSpDsLeMja9IwPpJq3HV/OClFBVWm9fJZPmXfumKRMGy6gqsQPj90ftg==, tarball: https://npm.pkg.github.com/download/@navikt/fnrvalidator/2.2.1/37ed0feb23a7525139ad5512684ff6b0977112c6}
 
-  '@navikt/nav-dekoratoren-moduler@4.3.0':
-    resolution: {integrity: sha512-DpUW0J1pIAncsEh698x6mSt7UsILEIbrYFzKTDuXem0y2bYjG+ki78NV2lhN/nPYXcoVYizsC1eetH72VMEoEw==, tarball: https://npm.pkg.github.com/download/@navikt/nav-dekoratoren-moduler/4.3.0/d2d64c4afd0201f3a1e8ec8fba9651c05fdfb736}
+  '@navikt/nav-dekoratoren-moduler@4.5.0':
+    resolution: {integrity: sha512-0eTtpgk+kOGjxncAA5PT2+yLPIobPdvIMVJzWDVdlZmuKUGG1NMoom8DYtnCPkro3Mw+dZeoFJ0TVY+4F57J5Q==, tarball: https://npm.pkg.github.com/download/@navikt/nav-dekoratoren-moduler/4.5.0/e3c7d8e6e3f2efd2fb46952564e6c9c47ca200ad}
     engines: {node: 24.x}
     peerDependencies:
       html-react-parser: '>=5.x'
@@ -5387,8 +5390,8 @@ packages:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
 
-  csp-header@6.3.1:
-    resolution: {integrity: sha512-ykcqGMOGP/uU7RLXDD83k2Ge5Stgc/N3qgKgSN+dATDlNgLHnIoI1IdZBjOskD5Ev1RSKTabLdIETJ6VzXTmvA==}
+  csp-header@6.4.0:
+    resolution: {integrity: sha512-9YEpW20tPtKzVouyAxNtXqSE4EGaTd4ZiT1n/FbUQ5xhmFkPCjC3Db/gHDbesryQoO/TigBAUCqgKypOHviRgQ==}
     engines: {node: '>=18'}
 
   css-line-break@2.1.0:
@@ -6008,8 +6011,8 @@ packages:
   inline-style-parser@0.2.7:
     resolution: {integrity: sha512-Nb2ctOyNR8DqQoR0OwRG95uNWIC0C1lCgf5Naz5H6Ji72KZ8OcFZLz2P5sNgwlyoJ8Yif11oMuYs5pBQa86csA==}
 
-  intl-messageformat@11.2.15:
-    resolution: {integrity: sha512-W4VNytsXyWgW5lvVchmsb9xgA5rSKqoflu3/IQ9UCtB0z4R+Bx9MoEkwFT/+30RCl/KzUoH0QGGe9lppF5SuvQ==}
+  intl-messageformat@12.1.2:
+    resolution: {integrity: sha512-Y7ZnMtT/04nVJnjf1/x/AkfP5we/iN0AhckDdlFPtnetk6/VTuj2OPW5SE7steMd3UNaOtky4KJJY6jwyvWfJg==}
 
   iobuffer@5.4.0:
     resolution: {integrity: sha512-DRebOWuqDvxunfkNJAlc3IzWIPD5xVxwUNbHr7xKB8E6aLJxIPfNX3CoMJghcFjpv6RWQsrcJbghtEwSPoJqMA==}
@@ -6713,8 +6716,8 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
 
-  react-intl@10.2.2:
-    resolution: {integrity: sha512-LUzjoxGMbk9PWS4Kdr2QAYX8sqIuB3EKiFs6fi4kCgGAgWNlrYlq9ZLKxBg9Yeg9xeaFfeZ139FZ4Ub2w5L6SQ==}
+  react-intl@12.1.3:
+    resolution: {integrity: sha512-o14ogaAGSaYZMpyXcEnweedO2QoD1I5EdrZXq1iy+rFfhLWf8Nmr0YDCWtGwDAIPD/32ymnylpk7LGiS/AB5yw==}
     peerDependencies:
       '@types/react': 19.3.0
       react: '>=18.0.0'
@@ -7928,17 +7931,17 @@ snapshots:
 
   '@formatjs/fast-memoize@3.1.7': {}
 
-  '@formatjs/icu-messageformat-parser@3.5.18':
+  '@formatjs/icu-messageformat-parser@3.5.20':
     dependencies:
-      '@formatjs/icu-skeleton-parser': 2.1.11
+      '@formatjs/icu-skeleton-parser': 2.1.12
 
-  '@formatjs/icu-skeleton-parser@2.1.11': {}
+  '@formatjs/icu-skeleton-parser@2.1.12': {}
 
-  '@formatjs/intl@4.2.1':
+  '@formatjs/intl@6.1.2':
     dependencies:
       '@formatjs/fast-memoize': 3.1.7
-      '@formatjs/icu-messageformat-parser': 3.5.18
-      intl-messageformat: 11.2.15
+      '@formatjs/icu-messageformat-parser': 3.5.20
+      intl-messageformat: 12.1.2
 
   '@grafana/faro-core@2.11.0':
     dependencies:
@@ -8187,34 +8190,34 @@ snapshots:
       '@tybys/wasm-util': 0.10.3
     optional: true
 
-  '@navikt/aksel-icons@8.16.2': {}
+  '@navikt/aksel-icons@8.17.2': {}
 
   '@navikt/analytics-types@0.0.9': {}
 
-  '@navikt/ds-css@8.16.2': {}
+  '@navikt/ds-css@8.17.2': {}
 
-  '@navikt/ds-react@8.16.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@navikt/ds-react@8.17.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
     dependencies:
       '@floating-ui/react': 0.27.20(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@floating-ui/react-dom': 2.1.9(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@navikt/aksel-icons': 8.16.2
-      '@navikt/ds-tokens': 8.16.2
+      '@navikt/aksel-icons': 8.17.2
+      '@navikt/ds-tokens': 8.17.2
       '@types/react': 19.3.0
       date-fns: 4.4.0
       react: 19.3.0
       react-day-picker: 10.0.1(@types/react@19.3.0)(react@19.3.0)
       react-dom: 19.3.0(react@19.3.0)
 
-  '@navikt/ds-tailwind@8.16.2': {}
+  '@navikt/ds-tailwind@8.17.2': {}
 
-  '@navikt/ds-tokens@8.16.2': {}
+  '@navikt/ds-tokens@8.17.2': {}
 
   '@navikt/fnrvalidator@2.2.1': {}
 
-  '@navikt/nav-dekoratoren-moduler@4.3.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)':
+  '@navikt/nav-dekoratoren-moduler@4.5.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)':
     dependencies:
       '@navikt/analytics-types': 0.0.9
-      csp-header: 6.3.1
+      csp-header: 6.4.0
       html-react-parser: 6.1.1(@types/react@19.3.0)(react@19.3.0)
       js-cookie: 3.0.8
       react: 19.3.0
@@ -9918,7 +9921,7 @@ snapshots:
       shebang-command: 2.0.0
       which: 2.0.2
 
-  csp-header@6.3.1: {}
+  csp-header@6.4.0: {}
 
   css-line-break@2.1.0:
     dependencies:
@@ -10646,10 +10649,10 @@ snapshots:
 
   inline-style-parser@0.2.7: {}
 
-  intl-messageformat@11.2.15:
+  intl-messageformat@12.1.2:
     dependencies:
       '@formatjs/fast-memoize': 3.1.7
-      '@formatjs/icu-messageformat-parser': 3.5.18
+      '@formatjs/icu-messageformat-parser': 3.5.20
 
   iobuffer@5.4.0: {}
 
@@ -11352,12 +11355,12 @@ snapshots:
     dependencies:
       react: 19.3.0
 
-  react-intl@10.2.2(@types/react@19.3.0)(react@19.3.0):
+  react-intl@12.1.3(@types/react@19.3.0)(react@19.3.0):
     dependencies:
-      '@formatjs/icu-messageformat-parser': 3.5.18
-      '@formatjs/intl': 4.2.1
+      '@formatjs/icu-messageformat-parser': 3.5.20
+      '@formatjs/intl': 6.1.2
       '@types/react': 19.3.0
-      intl-messageformat: 11.2.15
+      intl-messageformat: 12.1.2
       react: 19.3.0
 
   react-is@16.13.1: {}
@@ -11588,9 +11591,9 @@ snapshots:
     transitivePeerDependencies:
       - react
 
-  storybook-react-intl@10.2.1(react-intl@10.2.2(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)):
+  storybook-react-intl@10.2.1(react-intl@12.1.3(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)):
     dependencies:
-      react-intl: 10.2.2(@types/react@19.3.0)(react@19.3.0)
+      react-intl: 12.1.3(@types/react@19.3.0)(react@19.3.0)
       storybook: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
       storybook-i18n: 10.1.1(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
     transitivePeerDependencies:

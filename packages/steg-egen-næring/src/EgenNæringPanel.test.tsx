@@ -163,11 +163,11 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(screen.queryAllByText('Du må oppgi type virksomhet du har.')[0]).toBeInTheDocument();
-        expect(screen.queryAllByText('Du må oppgi navnet på virksomheten din')[0]).toBeInTheDocument();
-        expect(screen.queryAllByText('Du må oppgi en startdato.')[0]).toBeInTheDocument();
-        expect(screen.queryAllByText('Du må oppgi om virksomheten din er pågående.')[0]).toBeInTheDocument();
-        expect(screen.queryAllByText('Du må oppgi næringsresultat de siste 12 månedene.')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('Du må oppgi type virksomhet du har.')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('Du må oppgi navnet på virksomheten din')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('Du må oppgi en startdato.')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('Du må oppgi om virksomheten din er pågående.')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('Du må oppgi næringsresultat de siste 12 månedene.')[0]).toBeInTheDocument();
         expect(
             screen.queryAllByText('Du må oppgi om du har begynt å jobbe i løpet av de 3 siste ferdigliknede årene.')[0],
         ).toBeInTheDocument();
@@ -220,6 +220,30 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
             registrertINorge: true,
         });
     });
+
+    it.each([
+        { månederSidenOppstart: 53, spørOmNæringsresultat: true },
+        { månederSidenOppstart: 54, spørOmNæringsresultat: false },
+        { månederSidenOppstart: 55, spørOmNæringsresultat: false },
+    ])(
+        'skal velge riktige inntektsspørsmål når virksomheten startet for $månederSidenOppstart måneder siden',
+        async ({ månederSidenOppstart, spørOmNæringsresultat }) => {
+            render(<Default />);
+
+            const startdatoInput = screen.getByLabelText('Når startet du virksomheten?');
+            await userEvent.type(startdatoInput, dayjs().subtract(månederSidenOppstart, 'month').format('DD.MM.YYYY'));
+            await userEvent.tab();
+
+            expect(
+                screen.queryByLabelText('Hva var næringsresultatet ditt før skatt de siste 12 månedene?') !== null,
+            ).toBe(spørOmNæringsresultat);
+            expect(
+                screen.queryByText(
+                    'Har du hatt en varig endring i virksomheten eller arbeidssituasjonen din de siste 4 årene?',
+                ) !== null,
+            ).toBe(!spørOmNæringsresultat);
+        },
+    );
 
     it('skal ikke vise fiske som valg for selvstendig næring', async () => {
         render(<Default />);

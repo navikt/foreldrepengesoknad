@@ -7,7 +7,7 @@ import { Foreldrepengesak } from 'types/Sak';
 import { Button, HStack, ToggleGroup, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-types';
-import { useMedia } from '@navikt/fp-utils';
+import { getLenker, useMedia } from '@navikt/fp-utils';
 import { KvoteOppsummering, UttaksplanDataProvider, UttaksplanKalender, UttaksplanListe } from '@navikt/fp-uttaksplan';
 
 import { hentUttakskvoteOptions } from '../../api/queries';
@@ -67,7 +67,7 @@ export const DinPlan = ({ navnPåForeldre, sak }: Props) => {
                         className="mt-4"
                         size={isDesktop ? 'small' : 'medium'}
                         variant="secondary"
-                        onClick={() => location.assign('https://www.nav.no/foreldrepenger/soknad')}
+                        onClick={() => location.assign(getLenker().foreldrepengesoknad)}
                     >
                         <FormattedMessage id="DinPlan.EndrePlan" />
                     </Button>

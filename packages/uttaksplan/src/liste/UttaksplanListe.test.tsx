@@ -22,6 +22,22 @@ const {
     EøsPerioderForAnnenPart,
 } = composeStories(stories);
 
+const åpneTidsperiode = async (oppdaterUttaksplan = vi.fn()) => {
+    render(<Default oppdaterUttaksplan={oppdaterUttaksplan} />);
+    await userEvent.click(await screen.findByText('Legg til periode'));
+    const fraOgMedDato = screen.getByLabelText('Fra og med dato');
+    const tilOgMedDato = screen.getByLabelText('Til og med dato');
+    await userEvent.type(fraOgMedDato, '30.06.2025');
+    await userEvent.type(tilOgMedDato, '28.08.2025');
+    await userEvent.tab();
+    return {
+        fraOgMedDato,
+        tilOgMedDato,
+        uker: screen.getByRole('textbox', { name: 'Uker' }),
+        dager: screen.getByRole('textbox', { name: 'Dager' }),
+    };
+};
+
 describe('UttaksplanListe', () => {
     it('skal legge til ny periode - ferie', async () => {
         const oppdaterUttaksplan = vi.fn();
@@ -81,6 +97,254 @@ describe('UttaksplanListe', () => {
                 annenPart: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
             },
         ]);
+    });
+
+    it('skal kunne skrive inn antall uker og dager, og la dager over fire gå over i uker', async () => {
+        render(<Default />);
+
+        expect(await screen.findByText('18. april 25 - 08. mai 25')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Legg til periode'));
+        expect(await screen.findByText('Hvilke datoer skal perioden være?')).toBeInTheDocument();
+        await userEvent.type(screen.getByLabelText('Fra og med dato'), dayjs('2025-06-30').format('DD.MM.YYYY'));
+        await userEvent.tab();
+        const tilOgMedDato = screen.getByLabelText('Til og med dato');
+        await userEvent.type(tilOgMedDato, dayjs('2025-08-28').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        const uker = await screen.findByRole('textbox', { name: 'Uker' });
+        const dager = screen.getByRole('textbox', { name: 'Dager' });
+        expect(uker).toHaveValue('8');
+        expect(dager).toHaveValue('4');
+
+        await userEvent.clear(uker);
+        await userEvent.type(uker, '40');
+        await userEvent.tab();
+
+        expect(uker).toHaveValue('40');
+        expect(dager).toHaveValue('4');
+        expect(tilOgMedDato).toHaveValue('09.04.2026');
+
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til en dag' }));
+
+        expect(uker).toHaveValue('41');
+        expect(dager).toHaveValue('0');
+        expect(tilOgMedDato).toHaveValue('10.04.2026');
+
+        await userEvent.clear(dager);
+        await userEvent.type(dager, '7');
+        expect(dager).toHaveValue('7');
+        expect(tilOgMedDato).toHaveValue('10.04.2026');
+        await userEvent.tab();
+
+        expect(uker).toHaveValue('42');
+        expect(dager).toHaveValue('2');
+        expect(tilOgMedDato).toHaveValue('21.04.2026');
+
+        await userEvent.click(screen.getByRole('button', { name: 'Fjern en dag' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fjern en dag' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fjern en dag' }));
+
+        expect(uker).toHaveValue('41');
+        expect(dager).toHaveValue('4');
+        expect(tilOgMedDato).toHaveValue('16.04.2026');
+    });
+
+    it('skal bevare hele dagtallet under inntasting og normalisere ved Enter eller blur', async () => {
+        const { uker, dager, tilOgMedDato } = await åpneTidsperiode();
+
+        await userEvent.clear(dager);
+        await userEvent.type(dager, '50');
+        expect(dager).toHaveValue('50');
+        expect(uker).toHaveValue('8');
+        expect(tilOgMedDato).toHaveValue('28.08.2025');
+
+        await userEvent.keyboard('{Enter}');
+        expect(dager).toHaveFocus();
+        expect(uker).toHaveValue('18');
+        expect(dager).toHaveValue('0');
+        expect(tilOgMedDato).toHaveValue('31.10.2025');
+
+        await userEvent.clear(dager);
+        await userEvent.paste('75');
+        await userEvent.tab();
+        expect(uker).toHaveValue('33');
+        expect(dager).toHaveValue('0');
+        expect(tilOgMedDato).toHaveValue('13.02.2026');
+    });
+
+    it('skal oppdatere uker og dager når datoene endres direkte', async () => {
+        const { fraOgMedDato, tilOgMedDato } = await åpneTidsperiode();
+
+        await userEvent.clear(tilOgMedDato);
+        await userEvent.type(tilOgMedDato, '04.07.2025');
+        await userEvent.tab();
+        expect(screen.getByRole('textbox', { name: 'Uker' })).toHaveValue('1');
+        expect(screen.getByRole('textbox', { name: 'Dager' })).toHaveValue('0');
+
+        await userEvent.clear(fraOgMedDato);
+        await userEvent.type(fraOgMedDato, '02.07.2025');
+        await userEvent.tab();
+        expect(screen.getByRole('textbox', { name: 'Uker' })).toHaveValue('0');
+        expect(screen.getByRole('textbox', { name: 'Dager' })).toHaveValue('3');
+    });
+
+    it.each([
+        ['Uker', '100000000', 'Perioden kan ikke slutte etter 09.05.2028.'],
+        ['Dager', '100000000', 'Perioden kan ikke slutte etter 09.05.2028.'],
+        ['Uker', '9'.repeat(400), 'Perioden kan ikke slutte etter 09.05.2028.'],
+        ['Uker', '-1', 'Skriv et heltall som er minst 0.'],
+        ['Uker', '1.5', 'Skriv et heltall som er minst 0.'],
+        ['Uker', 'abc', 'Skriv et heltall som er minst 0.'],
+        ['Uker', '', 'Skriv et heltall som er minst 0.'],
+    ])('skal avvise ugyldig antall i %s (tilfelle %#)', async (navn, verdi, forventetFeilmelding) => {
+        const { tilOgMedDato } = await åpneTidsperiode();
+        const antall = screen.getByRole('textbox', { name: navn });
+
+        await userEvent.clear(antall);
+        await userEvent.paste(verdi);
+        await userEvent.tab();
+
+        expect(antall).toHaveAttribute('aria-invalid', 'true');
+        expect(screen.getByText(forventetFeilmelding)).toBeInTheDocument();
+        expect(tilOgMedDato).toHaveValue('28.08.2025');
+
+        await userEvent.clear(antall);
+        await userEvent.type(antall, '2');
+        await userEvent.tab();
+        expect(antall).not.toHaveAttribute('aria-invalid', 'true');
+        expect(tilOgMedDato).toHaveValue(navn === 'Uker' ? '17.07.2025' : '26.08.2025');
+    });
+
+    it('skal stoppe ved siste tillatte dato', async () => {
+        const { tilOgMedDato } = await åpneTidsperiode();
+        await userEvent.clear(tilOgMedDato);
+        await userEvent.type(tilOgMedDato, '09.05.2028');
+        await userEvent.tab();
+        expect(screen.getByRole('button', { name: 'Legg til en dag' })).toBeDisabled();
+        expect(screen.getByRole('button', { name: 'Legg til en uke' })).toBeDisabled();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Fjern en dag' }));
+        expect(tilOgMedDato).toHaveValue('08.05.2028');
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til en dag' }));
+        expect(tilOgMedDato).toHaveValue('09.05.2028');
+    });
+
+    it('skal beholde minst én dag og la dagsknappene passere ukegrensen begge veier', async () => {
+        const { uker, dager, tilOgMedDato } = await åpneTidsperiode();
+        await userEvent.clear(uker);
+        await userEvent.type(uker, '0');
+        await userEvent.tab();
+        await userEvent.clear(dager);
+        await userEvent.type(dager, '1');
+        await userEvent.tab();
+        expect(tilOgMedDato).toHaveValue('30.06.2025');
+        expect(screen.getByRole('button', { name: 'Fjern en dag' })).toBeDisabled();
+        expect(screen.getByRole('button', { name: 'Fjern en uke' })).toBeDisabled();
+
+        await userEvent.clear(dager);
+        await userEvent.type(dager, '0');
+        await userEvent.tab();
+        expect(dager).toHaveAttribute('aria-invalid', 'true');
+        expect(tilOgMedDato).toHaveValue('30.06.2025');
+
+        await userEvent.clear(dager);
+        await userEvent.type(dager, '4');
+        await userEvent.tab();
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til en dag' }));
+        expect(uker).toHaveValue('1');
+        expect(dager).toHaveValue('0');
+        expect(dager).not.toHaveAttribute('aria-invalid', 'true');
+        expect(tilOgMedDato).toHaveValue('04.07.2025');
+        expect(screen.getByRole('button', { name: 'Fjern en uke' })).toBeDisabled();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Fjern en dag' }));
+        expect(uker).toHaveValue('0');
+        expect(dager).toHaveValue('4');
+        expect(tilOgMedDato).toHaveValue('03.07.2025');
+    });
+
+    it.each(['før', 'etter'])('skal beholde varigheten når handling velges %s redigering', async (rekkefølge) => {
+        const oppdaterUttaksplan = vi.fn();
+        const { uker, dager, tilOgMedDato } = await åpneTidsperiode(oppdaterUttaksplan);
+        if (rekkefølge === 'før') {
+            await userEvent.click(screen.getByText('Legge til ferie'));
+        }
+
+        await userEvent.clear(uker);
+        await userEvent.type(uker, '2');
+        if (rekkefølge === 'etter') {
+            await userEvent.click(screen.getByText('Legge til ferie'));
+        }
+        await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
+        expect(uker).toHaveValue('2');
+        expect(dager).toHaveValue('4');
+        expect(tilOgMedDato).toHaveValue('17.07.2025');
+        await userEvent.click(screen.getByText('Endre uten å flytte resten av planen'));
+        await userEvent.click(screen.getByText('Legg til'));
+
+        expect(oppdaterUttaksplan).toHaveBeenCalledWith(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    fom: '2025-06-30',
+                    tom: '2025-07-17',
+                    søker: expect.objectContaining({ utsettelseÅrsak: 'FERIE' }),
+                }),
+            ]),
+        );
+    });
+
+    it('skal beholde endret varighet når forelder byttes', async () => {
+        const { uker, dager, tilOgMedDato } = await åpneTidsperiode();
+        await userEvent.click(screen.getByText('Legge til periode med foreldrepenger'));
+        await userEvent.clear(uker);
+        await userEvent.type(uker, '2');
+        await userEvent.tab();
+        await userEvent.clear(dager);
+        await userEvent.type(dager, '3');
+
+        await userEvent.click(screen.getByRole('radio', { name: 'Begge' }));
+        expect(uker).toHaveValue('2');
+        expect(dager).toHaveValue('3');
+        expect(tilOgMedDato).toHaveValue('16.07.2025');
+    });
+
+    it('skal hindre lagring når antallet er ugyldig', async () => {
+        const oppdaterUttaksplan = vi.fn();
+        const { uker } = await åpneTidsperiode(oppdaterUttaksplan);
+        await userEvent.click(screen.getByText('Legge til ferie'));
+        await userEvent.clear(uker);
+        await userEvent.type(uker, '-1');
+        await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
+
+        expect(uker).toHaveAttribute('aria-invalid', 'true');
+        expect(screen.queryByText('Hva skal skje med resten av planen?')).not.toBeInTheDocument();
+        expect(oppdaterUttaksplan).not.toHaveBeenCalled();
+    });
+
+    it('skal endre antall uker i en eksisterende periode og vise og lagre den nye datoen', async () => {
+        const oppdaterUttaksplan = vi.fn();
+        render(<Default oppdaterUttaksplan={oppdaterUttaksplan} />);
+        await userEvent.click(await screen.findByText('12. des. 25 - 26. mars 26'));
+        await userEvent.click(screen.getAllByText('Endre')[2]!);
+        const uker = screen.getByRole('textbox', { name: 'Uker' });
+        expect(uker).toHaveValue('15');
+
+        await userEvent.clear(uker);
+        await userEvent.type(uker, '40');
+        await userEvent.tab();
+        expect(screen.getByLabelText('Til og med dato')).toHaveValue('17.09.2026');
+
+        await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
+        expect(oppdaterUttaksplan).toHaveBeenCalledWith(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    fom: '2025-12-12',
+                    tom: '2026-09-17',
+                    annenPart: expect.objectContaining({ kontoType: 'FEDREKVOTE' }),
+                }),
+            ]),
+        );
     });
 
     it('skal legge til ny periode - Periode med foreldrepenger', async () => {

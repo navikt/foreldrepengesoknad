@@ -1,15 +1,15 @@
 import { MinusCircleFillIcon, PlusCircleFillIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { useCallback } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useCallback, useMemo } from 'react';
+import { useController, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, Box, Button, HStack, Heading, Label, VStack } from '@navikt/ds-react';
+import { Button, HStack, Heading, TextField, VStack } from '@navikt/ds-react';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { Uttaksdagen } from '@navikt/fp-utils';
-import { isBeforeOrSame, isRequired, isValidDate, isWeekday } from '@navikt/fp-validation';
+import { isBeforeOrSame, isRequired, isValidDate, isValidInteger, isWeekday } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { countWeekdaysBetween } from '../../utils/dateUtils';
@@ -20,7 +20,7 @@ export const TidsperiodeSpørsmål = () => {
 
     const { familiehendelsedato } = useUttaksplanData();
 
-    const { watch, control, setValue, trigger } = useFormContext<FormValues>();
+    const { watch, control, setValue, trigger, clearErrors } = useFormContext<FormValues>();
 
     const { tom, fom } = watch();
 
@@ -29,34 +29,41 @@ export const TidsperiodeSpørsmål = () => {
     const antallDager = finnAntallDager(fom, tom);
     const uker = Math.floor(antallDager / 5);
     const dager = antallDager % 5;
+    const maksAntallDager = useMemo(() => finnAntallDager(fom, maxDate), [fom, maxDate]);
 
-    const oppdaterTomDato = useCallback(
-        (nyeUker: number, nyeDager: number) => {
-            if (!fom) {
-                return;
-            }
-            const totaltUttaksdager = nyeUker * 5 + nyeDager;
-            if (totaltUttaksdager < 1) {
-                return;
-            }
-            const nyTom = Uttaksdagen.denneEllerNeste(fom).getDatoAntallUttaksdagerSenere(totaltUttaksdager - 1);
-            if (dayjs(nyTom).isAfter(dayjs(maxDate))) {
-                return;
-            }
-            setValue('tom', nyTom, { shouldDirty: true });
-            void trigger('tom');
-            void trigger('fom');
+    const oppdaterAntall = useCallback(
+        (nyFom?: string, nyTom?: string) => {
+            const antall = finnAntallDager(nyFom, nyTom);
+            setValue('antallUker', Math.floor(antall / 5).toString());
+            setValue('antallDager', (antall % 5).toString());
+            clearErrors(['antallUker', 'antallDager']);
         },
-        [fom, maxDate, setValue, trigger],
+        [clearErrors, setValue],
     );
 
-    const harGyldigFomOgTom =
-        fom !== undefined &&
-        fom !== '' &&
-        dayjs(fom).isValid() &&
-        tom !== undefined &&
-        tom !== '' &&
-        dayjs(tom).isValid();
+    const oppdaterTomDato = useCallback(
+        (nyeUker: number, nyeDager: number): boolean => {
+            if (!fom) {
+                return false;
+            }
+            const totaltUttaksdager = nyeUker * 5 + nyeDager;
+            if (
+                !Number.isSafeInteger(totaltUttaksdager) ||
+                totaltUttaksdager < 1 ||
+                totaltUttaksdager > maksAntallDager
+            ) {
+                return false;
+            }
+            const nyTom = Uttaksdagen.denneEllerNeste(fom).getDatoAntallUttaksdagerSenere(totaltUttaksdager - 1);
+            setValue('tom', nyTom, { shouldDirty: true });
+            oppdaterAntall(fom, nyTom);
+            void trigger(['tom', 'fom']);
+            return true;
+        },
+        [fom, maksAntallDager, oppdaterAntall, setValue, trigger],
+    );
+
+    const harGyldigFomOgTom = erGyldigDato(fom) && erGyldigDato(tom);
 
     return (
         <VStack gap="space-16">
@@ -67,6 +74,7 @@ export const TidsperiodeSpørsmål = () => {
                 <RhfDatepicker
                     name="fom"
                     control={control}
+                    onChange={(nyFom) => oppdaterAntall(nyFom, tom)}
                     showMonthAndYearDropdowns
                     minDate={Uttaksdagen.denneEllerNeste(familiehendelsedato).getDatoAntallUttaksdagerTidligere(60)}
                     maxDate={maxDate}
@@ -82,6 +90,7 @@ export const TidsperiodeSpørsmål = () => {
                 <RhfDatepicker
                     name="tom"
                     control={control}
+                    onChange={(nyTom) => oppdaterAntall(fom, nyTom)}
                     showMonthAndYearDropdowns
                     validate={[
                         isRequired(intl.formatMessage({ id: 'endreTidsPeriodeModal.tom.påkrevd' })),
@@ -95,75 +104,32 @@ export const TidsperiodeSpørsmål = () => {
                 />
                 {harGyldigFomOgTom && (
                     <HStack gap="space-16" align="start">
-                        <VStack gap="space-4">
-                            <Label size="medium">
-                                <FormattedMessage id="TidsperiodeSpørsmål.uker" />
-                            </Label>
-                            <HStack gap="space-2" align="center" style={{ height: '3rem' }}>
-                                <Button
-                                    type="button"
-                                    variant="tertiary"
-                                    size="medium"
-                                    icon={<MinusCircleFillIcon aria-hidden fontSize="32" />}
-                                    onClick={() => oppdaterTomDato(uker - 1, dager)}
-                                    disabled={uker <= 0}
-                                    aria-label={intl.formatMessage({ id: 'TidsperiodeSpørsmål.minusUke' })}
-                                />
-                                <Box
-                                    borderWidth="1"
-                                    borderColor="neutral"
-                                    borderRadius="8"
-                                    paddingInline="space-24"
-                                    height="100%"
-                                    style={{ display: 'flex', alignItems: 'center' }}
-                                >
-                                    <BodyShort size="large">{uker}</BodyShort>
-                                </Box>
-                                <Button
-                                    type="button"
-                                    variant="tertiary"
-                                    size="small"
-                                    icon={<PlusCircleFillIcon aria-hidden fontSize="32" />}
-                                    onClick={() => oppdaterTomDato(uker + 1, dager)}
-                                    aria-label={intl.formatMessage({ id: 'TidsperiodeSpørsmål.plussUke' })}
-                                />
-                            </HStack>
-                        </VStack>
-                        <VStack gap="space-4">
-                            <Label size="medium">
-                                <FormattedMessage id="TidsperiodeSpørsmål.dager" />
-                            </Label>
-                            <HStack gap="space-2" align="center" style={{ height: '3rem' }}>
-                                <Button
-                                    type="button"
-                                    variant="tertiary"
-                                    size="medium"
-                                    icon={<MinusCircleFillIcon aria-hidden fontSize="32" />}
-                                    onClick={() => oppdaterTomDato(uker, dager - 1)}
-                                    disabled={dager <= 0}
-                                    aria-label={intl.formatMessage({ id: 'TidsperiodeSpørsmål.minusDag' })}
-                                />
-                                <Box
-                                    borderWidth="1"
-                                    borderColor="neutral"
-                                    borderRadius="8"
-                                    paddingInline="space-24"
-                                    height="100%"
-                                    style={{ display: 'flex', alignItems: 'center' }}
-                                >
-                                    <BodyShort size="large">{dager}</BodyShort>
-                                </Box>
-                                <Button
-                                    type="button"
-                                    variant="tertiary"
-                                    size="small"
-                                    icon={<PlusCircleFillIcon aria-hidden fontSize="32" />}
-                                    onClick={() => oppdaterTomDato(uker, dager + 1)}
-                                    disabled={dager >= 4}
-                                    aria-label={intl.formatMessage({ id: 'TidsperiodeSpørsmål.plussDag' })}
-                                />
-                            </HStack>
-                        </VStack>
+                        <AntallVelger
+                            name="antallUker"
+                            label={intl.formatMessage({ id: 'TidsperiodeSpørsmål.uker' })}
+                            verdi={uker}
+                            minusLabel={intl.formatMessage({ id: 'TidsperiodeSpørsmål.minusUke' })}
+                            plussLabel={intl.formatMessage({ id: 'TidsperiodeSpørsmål.plussUke' })}
+                            minVerdi={dager === 0 ? 1 : 0}
+                            maksVerdi={Math.floor((maksAntallDager - dager) / 5)}
+                            maksDato={maxDate}
+                            minusDisabled={antallDager <= 5}
+                            plussDisabled={antallDager + 5 > maksAntallDager}
+                            oppdater={(nyeUker) => oppdaterTomDato(nyeUker, dager)}
+                        />
+                        <AntallVelger
+                            name="antallDager"
+                            label={intl.formatMessage({ id: 'TidsperiodeSpørsmål.dager' })}
+                            verdi={dager}
+                            minusLabel={intl.formatMessage({ id: 'TidsperiodeSpørsmål.minusDag' })}
+                            plussLabel={intl.formatMessage({ id: 'TidsperiodeSpørsmål.plussDag' })}
+                            minusDisabled={antallDager <= 1}
+                            plussDisabled={antallDager >= maksAntallDager}
+                            oppdater={(nyeDager) => oppdaterTomDato(uker, nyeDager)}
+                            minVerdi={uker === 0 ? 1 : 0}
+                            maksVerdi={maksAntallDager - uker * 5}
+                            maksDato={maxDate}
+                        />
                     </HStack>
                 )}
             </HStack>
@@ -171,6 +137,112 @@ export const TidsperiodeSpørsmål = () => {
     );
 };
 
-const finnAntallDager = (fom?: string, tom?: string): number => {
-    return !fom || !tom ? 0 : countWeekdaysBetween(dayjs(fom), dayjs(tom));
+type AntallVelgerProps = {
+    name: 'antallUker' | 'antallDager';
+    label: string;
+    verdi: number;
+    minusLabel: string;
+    plussLabel: string;
+    minusDisabled: boolean;
+    plussDisabled: boolean;
+    oppdater: (nyVerdi: number) => boolean;
+    minVerdi: number;
+    maksVerdi: number;
+    maksDato: string;
 };
+
+const AntallVelger = ({
+    name,
+    label,
+    verdi,
+    minusLabel,
+    plussLabel,
+    minusDisabled,
+    plussDisabled,
+    oppdater,
+    minVerdi,
+    maksVerdi,
+    maksDato,
+}: AntallVelgerProps) => {
+    const intl = useIntl();
+    const { control, setError } = useFormContext<FormValues>();
+    const feilmelding = intl.formatMessage({ id: 'TidsperiodeSpørsmål.antall.ugyldig' }, { min: minVerdi });
+    const forLangPeriode = intl.formatMessage(
+        { id: 'TidsperiodeSpørsmål.antall.forLangPeriode' },
+        { dato: intl.formatDate(maksDato, { day: '2-digit', month: '2-digit', year: 'numeric' }) },
+    );
+    const valider = (tekst: string | undefined) => {
+        const formatfeil = isRequired(feilmelding)(tekst ?? '') || isValidInteger(feilmelding)(tekst ?? '');
+        if (formatfeil) {
+            return formatfeil;
+        }
+        const antall = Number(tekst);
+        if (antall > maksVerdi) {
+            return forLangPeriode;
+        }
+        return (Number.isSafeInteger(antall) && antall >= minVerdi) || feilmelding;
+    };
+
+    const { field, fieldState } = useController<FormValues, 'antallUker' | 'antallDager'>({
+        name,
+        control,
+        defaultValue: verdi.toString(),
+        shouldUnregister: true,
+        rules: { validate: valider },
+    });
+
+    const bekreftVerdi = () => {
+        field.onBlur();
+        const resultat = valider(field.value);
+        if (resultat !== true) {
+            setError(name, { type: 'validate', message: resultat });
+        } else if (!oppdater(Number(field.value))) {
+            setError(name, { type: 'validate', message: forLangPeriode });
+        }
+    };
+
+    return (
+        <HStack gap="space-2" align="end">
+            <Button
+                type="button"
+                variant="tertiary"
+                size="medium"
+                icon={<MinusCircleFillIcon aria-hidden fontSize="32" />}
+                onClick={() => oppdater(verdi - 1)}
+                disabled={minusDisabled}
+                aria-label={minusLabel}
+            />
+            <TextField
+                {...field}
+                label={label}
+                inputMode="numeric"
+                htmlSize={3}
+                autoComplete="off"
+                value={field.value ?? ''}
+                error={fieldState.error?.message}
+                onBlur={bekreftVerdi}
+                onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        bekreftVerdi();
+                    }
+                }}
+            />
+            <Button
+                type="button"
+                variant="tertiary"
+                size="medium"
+                icon={<PlusCircleFillIcon aria-hidden fontSize="32" />}
+                onClick={() => oppdater(verdi + 1)}
+                disabled={plussDisabled}
+                aria-label={plussLabel}
+            />
+        </HStack>
+    );
+};
+
+const finnAntallDager = (fom?: string, tom?: string): number => {
+    return erGyldigDato(fom) && erGyldigDato(tom) ? countWeekdaysBetween(dayjs(fom), dayjs(tom)) : 0;
+};
+
+const erGyldigDato = (dato?: string): boolean => !!dato && dayjs(dato, ISO_DATE_FORMAT, true).isValid();

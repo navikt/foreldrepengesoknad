@@ -42,6 +42,8 @@ export type HvaVilDuGjøre =
 export type FormValues = {
     fom?: string;
     tom?: string;
+    antallUker?: string;
+    antallDager?: string;
     hvaVilDuGjøre?: HvaVilDuGjøre;
 } & LeggTilEllerEndrePeriodeFormFormValues &
     UtsettelseFormValues;
@@ -255,6 +257,8 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         formMethods.reset({
             fom: fomValue,
             tom: tomValue,
+            antallUker: formMethods.getValues('antallUker'),
+            antallDager: formMethods.getValues('antallDager'),
             hvaVilDuGjøre,
         });
         formMethods.setValue('forelder', forelderVerdi, { shouldDirty: true });
@@ -263,6 +267,8 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         formMethods.reset({
             fom: fomValue,
             tom: tomValue,
+            antallUker: formMethods.getValues('antallUker'),
+            antallDager: formMethods.getValues('antallDager'),
         });
         formMethods.setValue('hvaVilDuGjøre', value, { shouldDirty: true });
     };
