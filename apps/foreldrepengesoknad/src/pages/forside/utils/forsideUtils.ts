@@ -35,6 +35,14 @@ const getSelectableBarnType = (
     return ValgtBarnType.UFØDT;
 };
 
+// Far/medmor kan ha barn med ulike mødre født nær hverandre. Et barn med en annen registrert
+// annen part enn saken hører ikke til saken, selv om datoen passer.
+const kanTilhøreSaken = (barn: FpBarnDto_fpoversikt, sak: FpSak_fpoversikt) => {
+    const annenPartFnrFraSak = sak.annenPart?.fnr;
+    const annenPartFnrFraBarn = barn.annenPart?.fnr;
+    return !annenPartFnrFraSak || !annenPartFnrFraBarn || annenPartFnrFraSak === annenPartFnrFraBarn;
+};
+
 const getPDLBarnForSakMedUfødtBarn = (
     sak: FpSak_fpoversikt,
     registrerteBarn: FpBarnDto_fpoversikt[],
@@ -43,8 +51,10 @@ const getPDLBarnForSakMedUfødtBarn = (
     if (isISODateString(termindato)) {
         const terminMinus17Uker = dayjs(termindato).subtract(17, 'week');
         const terminPlus6Uker = dayjs(termindato).add(6, 'week');
-        return registrerteBarn.filter((barn) =>
-            dayjs(barn.fødselsdato).isBetween(terminMinus17Uker, terminPlus6Uker, 'day', '[]'),
+        return registrerteBarn.filter(
+            (barn) =>
+                dayjs(barn.fødselsdato).isBetween(terminMinus17Uker, terminPlus6Uker, 'day', '[]') &&
+                kanTilhøreSaken(barn, sak),
         );
     }
     return [];
@@ -63,7 +73,8 @@ const getPDLBarnForSakMedFødteBarn = (
         ? registrerteBarn.filter(
               (barn) =>
                   getErDatoInnenEnDagFraAnnenDato(barn.fødselsdato, fødselsdatoFraSak) &&
-                  pdlBarnMedSammeFnr.every((pdlBarn) => pdlBarn.fnr !== barn.fnr),
+                  pdlBarnMedSammeFnr.every((pdlBarn) => pdlBarn.fnr !== barn.fnr) &&
+                  kanTilhøreSaken(barn, sak),
           )
         : [];
 
@@ -230,6 +241,12 @@ const getSelectableBarnOptionsFraPDL = (
             regBarn.fnr,
             regBarn.fødselsdato,
             registrerteBarnMedFnr,
+        ).filter(
+            (barn) =>
+                !fnrPåBarnSomErLagtTil.includes(barn.fnr) &&
+                (!regBarn.annenPart?.fnr ||
+                    !barn.annenPart?.fnr ||
+                    regBarn.annenPart.fnr === barn.annenPart.fnr),
         );
 
         fnrPåBarnSomErLagtTil.push(regBarn.fnr);
