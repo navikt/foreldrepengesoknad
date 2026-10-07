@@ -1,6 +1,6 @@
 import { composeStories } from '@storybook/react-vite';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, screen, waitFor, within } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { uttaksplanOptions } from 'api/queries';
 import { ContextDataMap, ContextDataType, FpDataContext, useContextGetData } from 'appData/FpDataContext';
@@ -66,6 +66,13 @@ const renderForFar = (initialState: ContextDataMap, children?: ReactNode) => {
         </QueryClientProvider>,
     );
     return { ...resultat, skjema: within(resultat.container), onDispatch, mellomlagreSøknadOgNaviger };
+};
+
+// userEvent.type på datofeltet ga ikke stabil verdi i browser-modus i CI. Setter derfor verdien direkte.
+const settDato = (felt: HTMLElement, dato: string) => {
+    fireEvent.change(felt, { target: { value: dato } });
+    fireEvent.blur(felt);
+    expect(felt).toHaveValue(dato);
 };
 
 describe('<AnnenForelderSteg>', () => {
@@ -609,10 +616,7 @@ describe('<AnnenForelderSteg>', () => {
                 datoForAleneomsorg: '2021-03-15',
             },
         });
-        const dato = skjema.getByRole('textbox');
-        await userEvent.clear(dato);
-        await userEvent.type(dato, '22.03.2021');
-        await userEvent.tab();
+        settDato(skjema.getByRole('textbox'), '22.03.2021');
         await userEvent.click(skjema.getByText('Neste steg'));
         await waitFor(() => expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1));
         const resetActions = onDispatch.mock.calls.filter(([action]) => action.key === ContextDataType.UTTAKSPLAN);
@@ -663,8 +667,7 @@ describe('<AnnenForelderSteg>', () => {
             const skjema = within(container);
             await userEvent.click(skjema.getByText('Nei, jeg har aleneomsorg'));
             const dato = skjema.getByRole('textbox');
-            await userEvent.type(dato, '22.03.2021');
-            await userEvent.tab();
+            settDato(dato, '22.03.2021');
             await userEvent.click(skjema.getByText('Neste steg'));
 
             await waitFor(() => expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1));
@@ -672,9 +675,7 @@ describe('<AnnenForelderSteg>', () => {
             expect(uttaksplan).toEqual(erAleneOmOmsorg ? plan : undefined);
             expect(opprinneligUttaksplan).toEqual(erAleneOmOmsorg ? snapshot : undefined);
 
-            await userEvent.clear(dato);
-            await userEvent.type(dato, '23.03.2021');
-            await userEvent.tab();
+            settDato(dato, '23.03.2021');
             await userEvent.click(skjema.getByText('Neste steg'));
 
             await waitFor(() => expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(2));
