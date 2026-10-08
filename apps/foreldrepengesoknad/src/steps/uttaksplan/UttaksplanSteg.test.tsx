@@ -46,6 +46,7 @@ describe('<UttaksplanSteg>', () => {
 
             await FødselFarBeggeHarRettStarterPåTermin.run({
                 args: {
+                    ...FødselFarBeggeHarRettStarterPåTermin.args,
                     erEndringssøknad: true,
                     harJustertUttakVedFødsel: true,
                     gåTilNesteSide,
@@ -78,6 +79,7 @@ describe('<UttaksplanSteg>', () => {
 
             await FødselFarBeggeHarRettStarterPåTermin.run({
                 args: {
+                    ...FødselFarBeggeHarRettStarterPåTermin.args,
                     erEndringssøknad: true,
                     gåTilNesteSide,
                     uttaksplan: [
@@ -115,6 +117,7 @@ describe('<UttaksplanSteg>', () => {
 
             await FødselFarBeggeHarRettStarterPåTermin.run({
                 args: {
+                    ...FødselFarBeggeHarRettStarterPåTermin.args,
                     erEndringssøknad: true,
                     harJustertUttakVedFødsel: true,
                     gåTilNesteSide,
