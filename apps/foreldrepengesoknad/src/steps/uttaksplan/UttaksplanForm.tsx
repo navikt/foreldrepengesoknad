@@ -96,7 +96,13 @@ export const UttaksplanForm = ({
     // Når far/medmor kommer rett fra planleggeren ligg uttaket i defaultUttaksperioder fram til
     // planen blir redigert (då blir uttaksplan-context fylt). Bruk same fallback som onSubmit slik
     // at spørsmålet om automatisk justering står fast med ein gong, utan at brukaren må tukle med planen.
-    const planForVisning = gjeldendeUttaksplan ?? defaultUttaksperioder;
+    //
+    // NB: her må vi bruke heile fars plan (uttaksplan), ikkje gjeldendeUttaksplan. I ein endringssøknad
+    // er gjeldendeUttaksplan avgrensa til berre nye/endra periodar (uttaksplanMedKunNyePerioder), medan
+    // fpsak (FarsJustering.skalJustere) vurderer heile fars oppgitte fordeling rundt fødsel. Brukar vi
+    // berre delta-periodane her, kan vi anten tilby justering som fpsak likevel ikkje kan gjennomføre,
+    // eller skjule spørsmålet sjølv om fpsak faktisk kan justere.
+    const planForVisning = uttaksplan ?? defaultUttaksperioder;
 
     const farMedmorPerioder = planForVisning
         .filter((p): p is UttakPeriode_fpoversikt => Uttaksperioden.erIkkeEøsPeriode(p))
