@@ -347,7 +347,7 @@
     "AktivitetskravSpørsmål.Trenger_hjelp": "Too sick to care for the child",
     "AktivitetskravSpørsmål.Innlagt": "Hospitalized",
     "AktivitetskravSpørsmål.Arbeid_og_utdanning": "Work and education",
-    "AktivitetskravSpørsmål.Description": "In order to receive parental benefits during this period, mom must be active",
+    "AktivitetskravSpørsmål.Description": "{erFarEllerMedmor, select, true {In order to receive parental benefits during this period, mom must be active} other {In order for {erMedmor, select, true {the co-mother} other {dad}} to receive parental benefits during this period, mom must be active}}",
     "LeggTilEllerEndrePeriodeForm.HvorSkalDuJobbe": "Where will you work?",
     "LeggTilEllerEndrePeriodeForm.HvorSkalDuJobbe.Påkrevd": "You must specify where you will work.",
     "LeggTilEllerEndrePeriodeForm.Selvstendig": "Self-employed",
