@@ -63,7 +63,7 @@ describe('<UttaksplanSteg>', () => {
             });
 
             expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
-            expect(screen.queryByRole('group', { name: justeringsspørsmål })).not.toBeInTheDocument();
+            expect(screen.queryByRole('radiogroup', { name: justeringsspørsmål })).not.toBeInTheDocument();
 
             await userEvent.click(screen.getByRole('button', { name: 'Neste steg' }));
 
@@ -96,7 +96,7 @@ describe('<UttaksplanSteg>', () => {
                 },
             });
 
-            const spørsmål = await screen.findByRole('group', { name: justeringsspørsmål });
+            const spørsmål = await screen.findByRole('radiogroup', { name: justeringsspørsmål });
             await userEvent.click(within(spørsmål).getByRole('radio', { name: 'Ja' }));
 
             expect(
@@ -133,7 +133,7 @@ describe('<UttaksplanSteg>', () => {
                 },
             });
 
-            const spørsmål = await screen.findByRole('group', { name: justeringsspørsmål });
+            const spørsmål = await screen.findByRole('radiogroup', { name: justeringsspørsmål });
             expect(within(spørsmål).getByRole('radio', { name: 'Ja' })).toBeChecked();
 
             await userEvent.click(screen.getByRole('button', { name: 'Neste steg' }));
