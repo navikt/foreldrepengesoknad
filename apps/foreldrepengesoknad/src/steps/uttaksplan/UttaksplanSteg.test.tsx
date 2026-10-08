@@ -3,6 +3,8 @@ import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
 
+import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
+
 import * as stories from './UttaksplanSteg.stories';
 
 const infoTekst = [
@@ -22,6 +24,128 @@ const {
 } = composeStories(stories);
 
 describe('<UttaksplanSteg>', () => {
+    describe('automatisk justering i endringssøknad før fødsel', () => {
+        const innvilgetResultat = {
+            innvilget: true,
+            trekkerDager: true,
+            trekkerMinsterett: false,
+            årsak: 'ANNET',
+        } as const;
+        const terminperiode: UttakPeriode_fpoversikt = {
+            fom: '2024-07-01',
+            tom: '2024-07-12',
+            forelder: 'FAR_MEDMOR',
+            kontoType: 'FEDREKVOTE',
+            samtidigUttak: 100,
+            flerbarnsdager: false,
+        };
+        const justeringsspørsmål = /ønsker du at vi endrer den til å starte fra fødselsdato/;
+
+        it('skal ta med uendrede farsperioder og fjerne tidligere ja når planen ikke kan justeres', async () => {
+            const gåTilNesteSide = vi.fn();
+
+            await FødselFarBeggeHarRettStarterPåTermin.run({
+                args: {
+                    ...FødselFarBeggeHarRettStarterPåTermin.args,
+                    erEndringssøknad: true,
+                    harJustertUttakVedFødsel: true,
+                    gåTilNesteSide,
+                    uttaksplan: [
+                        terminperiode,
+                        {
+                            ...terminperiode,
+                            fom: '2024-07-22',
+                            tom: '2024-07-26',
+                            resultat: innvilgetResultat,
+                        },
+                    ],
+                },
+            });
+
+            expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+            expect(screen.queryByRole('radiogroup', { name: justeringsspørsmål })).not.toBeInTheDocument();
+
+            await userEvent.click(screen.getByRole('button', { name: 'Neste steg' }));
+
+            expect(gåTilNesteSide).toHaveBeenCalledWith({
+                type: 'update',
+                key: ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL,
+                data: undefined,
+            });
+        });
+
+        it('skal ikke telle mors uendrede perioder i infoteksten når far svarer ja', async () => {
+            const gåTilNesteSide = vi.fn();
+
+            await FødselFarBeggeHarRettStarterPåTermin.run({
+                args: {
+                    ...FødselFarBeggeHarRettStarterPåTermin.args,
+                    erEndringssøknad: true,
+                    gåTilNesteSide,
+                    uttaksplan: [
+                        terminperiode,
+                        {
+                            fom: '2024-07-01',
+                            tom: '2024-08-09',
+                            forelder: 'MOR',
+                            kontoType: 'MØDREKVOTE',
+                            flerbarnsdager: false,
+                            resultat: innvilgetResultat,
+                        },
+                    ],
+                },
+            });
+
+            const spørsmål = await screen.findByRole('radiogroup', { name: justeringsspørsmål });
+            await userEvent.click(within(spørsmål).getByRole('radio', { name: 'Ja' }));
+
+            expect(
+                screen.queryByText(/Vi kan ikke automatisk endre disse periodene når barnet blir født/),
+            ).not.toBeInTheDocument();
+
+            await userEvent.click(screen.getByRole('button', { name: 'Neste steg' }));
+
+            expect(gåTilNesteSide).toHaveBeenCalledWith({
+                type: 'update',
+                key: ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL,
+                data: true,
+            });
+        });
+
+        it('skal beholde tidligere ja når terminperioden er uendret og far endrer en senere periode', async () => {
+            const gåTilNesteSide = vi.fn();
+
+            await FødselFarBeggeHarRettStarterPåTermin.run({
+                args: {
+                    ...FødselFarBeggeHarRettStarterPåTermin.args,
+                    erEndringssøknad: true,
+                    harJustertUttakVedFødsel: true,
+                    gåTilNesteSide,
+                    uttaksplan: [
+                        { ...terminperiode, resultat: innvilgetResultat },
+                        {
+                            ...terminperiode,
+                            fom: '2024-09-02',
+                            tom: '2024-09-13',
+                            samtidigUttak: undefined,
+                        },
+                    ],
+                },
+            });
+
+            const spørsmål = await screen.findByRole('radiogroup', { name: justeringsspørsmål });
+            expect(within(spørsmål).getByRole('radio', { name: 'Ja' })).toBeChecked();
+
+            await userEvent.click(screen.getByRole('button', { name: 'Neste steg' }));
+
+            expect(gåTilNesteSide).toHaveBeenCalledWith({
+                type: 'update',
+                key: ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL,
+                data: true,
+            });
+        });
+    });
+
     it('skal vise feilmelding når en sletter alle perioder og prøver å gå videre', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
