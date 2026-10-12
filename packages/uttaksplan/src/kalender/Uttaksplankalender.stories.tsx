@@ -5,6 +5,7 @@ import { action } from 'storybook/actions';
 import { BarnType } from '@navikt/fp-constants';
 import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
+import { FjernAltIUttaksplanModal } from '../FjernAltIUttaksplanModal';
 import { UttaksplanDataProvider } from '../context/UttaksplanDataContext';
 import { UttaksplanRedigeringProvider } from '../context/UttaksplanRedigeringContext';
 import { UttaksplanKalender } from './UttaksplanKalender';
@@ -60,6 +61,7 @@ const meta = {
                         scrollToKvoteOppsummering={action('button-click')}
                         barnehagestartdato={args.barnehagestartdato}
                     />
+                    <FjernAltIUttaksplanModal />
                 </UttaksplanRedigeringProvider>
             </UttaksplanDataProvider>
         );

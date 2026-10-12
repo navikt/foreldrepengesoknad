@@ -1,6 +1,7 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { afterEach, vi } from 'vitest';
 
 import * as stories from './Uttaksplankalender.stories';
 
@@ -26,6 +27,10 @@ const {
     SkalViseAvslåttPeriodeKorrekt,
     SkalIkkeMarkereAvslåttePerioderMedVarselOmMorsAktivitet,
 } = composeStories(stories);
+
+afterEach(() => {
+    vi.useRealTimers();
+});
 
 describe('UttaksplanKalender', () => {
     it('skal vise riktige labels og farger på periodene i kalender med gradering, samtidig uttak og tapte dager', () => {
@@ -296,6 +301,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(foreldrepengerFørFødsel.getByRole('button', { name: 'Slett dager fra periode' }));
 
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
         expect(within(mars).getByTestId('day:18;dayColor:NONE')).toBeInTheDocument();
         expect(within(mars).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(2);
         expect(within(april).getByTestId('day:1;dayColor:NONE')).toBeInTheDocument();
@@ -1606,6 +1612,9 @@ describe('UttaksplanKalender', () => {
     });
 
     it('skal vise avslåtte periode korrekt og så markere som hull når en sletter', async () => {
+        vi.useFakeTimers({ toFake: ['Date'] });
+        vi.setSystemTime(new Date('2026-07-01T12:00:00'));
+
         render(<SkalViseAvslåttPeriodeKorrekt />);
 
         const juli = screen.getByTestId('year:2026;month:6');
@@ -1621,6 +1630,160 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(screen.getByRole('button', { name: 'Slett dager fra periode' }));
 
         expect(within(juli).getByTestId('day:14;dayColor:BLACK')).toBeInTheDocument();
+    });
+
+    it('skal be om bekreftelse ved delvis sletting av en tidligere periode og beholde valget ved avbryt', async () => {
+        vi.useFakeTimers({ toFake: ['Date'] });
+        vi.setSystemTime(new Date('2026-08-01T12:00:00'));
+
+        render(<SkalViseAvslåttPeriodeKorrekt />);
+
+        const juli = screen.getByTestId('year:2026;month:6');
+
+        await userEvent.click(within(juli).getByTestId('day:14;dayColor:BLACKOUTLINE'));
+        await userEvent.click(within(juli).getByTestId('day:16;dayColor:BLACKOUTLINE'));
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        const periode = within(screen.getByTestId('eksisterende-periode-2026-07-01-2026-07-17'));
+        await userEvent.click(periode.getByRole('button', { name: 'Slett dager fra periode' }));
+
+        expect(await screen.findByRole('dialog')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Endringen kan påvirke utbetalingen. Hvis du allerede har fått utbetalt penger, kan du måtte betale dem tilbake.',
+            ),
+        ).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:14;dayColor:DARKBLUE')).toBeInTheDocument();
+        expect(screen.getByTestId('eksisterende-periode-2026-07-01-2026-07-17')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Avbryt' }));
+
+        await waitFor(() => {
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        });
+        expect(within(juli).getByTestId('day:14;dayColor:DARKBLUE')).toBeInTheDocument();
+        expect(screen.getByTestId('eksisterende-periode-2026-07-01-2026-07-17')).toBeInTheDocument();
+
+        await userEvent.click(
+            within(screen.getByTestId('eksisterende-periode-2026-07-01-2026-07-17')).getByRole('button', {
+                name: 'Slett dager fra periode',
+            }),
+        );
+        await userEvent.click(screen.getByRole('button', { name: 'Slett periode' }));
+
+        expect(within(juli).getByTestId('day:14;dayColor:BLACK')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:13;dayColor:BLACKOUTLINE')).toBeInTheDocument();
+    });
+
+    it.each(['2026-07-01', '2026-06-01'])(
+        'skal slette julidatoer uten bekreftelse når dagens dato er %s',
+        async (dagensDato) => {
+            vi.useFakeTimers({ toFake: ['Date'] });
+            vi.setSystemTime(new Date(`${dagensDato}T12:00:00`));
+
+            render(<SkalViseAvslåttPeriodeKorrekt />);
+
+            const juli = screen.getByTestId('year:2026;month:6');
+
+            await userEvent.click(within(juli).getByRole('button', { name: /^14\.07\.2026,/ }));
+            await userEvent.click(within(juli).getByRole('button', { name: /^16\.07\.2026,/ }));
+            await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+            await userEvent.click(screen.getByRole('button', { name: 'Slett dager fra periode' }));
+
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+            for (const dag of [14, 15, 16]) {
+                expect(within(juli).getByTestId(`day:${dag};dayColor:BLACK`)).toBeInTheDocument();
+            }
+            expect(within(juli).getByTestId('day:13;dayColor:BLACKOUTLINE')).toBeInTheDocument();
+            expect(within(juli).getByTestId('day:17;dayColor:BLACKOUTLINE')).toBeInTheDocument();
+        },
+    );
+
+    it('skal varsle ved sletting av siste dag i forrige måned', async () => {
+        vi.useFakeTimers({ toFake: ['Date'] });
+        vi.setSystemTime(new Date('2026-07-01T12:00:00'));
+
+        render(<SkalViseAvslåttPeriodeKorrekt />);
+
+        const kalenderMåned = screen.getByTestId('year:2026;month:5');
+        const dag = within(kalenderMåned).getByRole('button', {
+            name: /^30\.06\.2026,/,
+        });
+        await userEvent.click(dag);
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        const valgtLabel = dag.getAttribute('aria-label');
+        await userEvent.click(screen.getByRole('button', { name: 'Slett dager fra periode' }));
+
+        expect(await screen.findByRole('dialog')).toBeInTheDocument();
+        expect(dag).toHaveAttribute('aria-label', valgtLabel);
+        expect(screen.getByTestId('eksisterende-periode-2026-06-01-2026-06-30')).toBeInTheDocument();
+    });
+
+    it('skal slette første dag i inneværende måned uten bekreftelse', async () => {
+        vi.useFakeTimers({ toFake: ['Date'] });
+        vi.setSystemTime(new Date('2026-07-01T12:00:00'));
+
+        render(<SkalViseAvslåttPeriodeKorrekt />);
+
+        const juli = screen.getByTestId('year:2026;month:6');
+        await userEvent.click(within(juli).getByRole('button', { name: /^01\.07\.2026,/ }));
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Slett dager fra periode' }));
+
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        expect(within(juli).getByTestId('day:1;dayColor:BLACK')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:2;dayColor:BLACKOUTLINE')).toBeInTheDocument();
+    });
+
+    it('skal varsle om sletting over årsskiftet når deler av perioden ligger før inneværende måned', async () => {
+        vi.useFakeTimers({ toFake: ['Date'] });
+        vi.setSystemTime(new Date('2026-01-01T12:00:00'));
+
+        render(<SkalIkkeViseAvslåttePerioderSomOverlapperMedAndrePerioder />);
+
+        while (!screen.queryByTestId('year:2026;month:0') && screen.queryByText('Vis flere måneder')) {
+            const visFlereMåneder = screen.getAllByText('Vis flere måneder');
+            await userEvent.click(visFlereMåneder[visFlereMåneder.length - 1]!);
+        }
+
+        const desember = screen.getByTestId('year:2025;month:11');
+        const januar = screen.getByTestId('year:2026;month:0');
+
+        await userEvent.click(within(desember).getByRole('button', { name: /^29\.12\.2025,/ }));
+        await userEvent.click(within(januar).getByRole('button', { name: /^04\.01\.2026,/ }));
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        await userEvent.click(
+            within(screen.getByTestId('eksisterende-periode-2025-12-01-2026-01-30')).getByRole('button', {
+                name: 'Slett dager fra periode',
+            }),
+        );
+
+        expect(await screen.findByRole('dialog')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Endringen kan påvirke utbetalingen. Hvis du allerede har fått utbetalt penger, kan du måtte betale dem tilbake.',
+            ),
+        ).toBeInTheDocument();
+    });
+
+    it('skal beholde eksisterende varsel for Fjern alt uten å vise et ekstra varsel', async () => {
+        render(<SkalViseAvslåttPeriodeKorrekt />);
+
+        await userEvent.click(screen.getByRole('button', { name: 'Fjern alt' }));
+
+        expect(await screen.findByRole('dialog')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                /Hvis du sender en ny søknad der du har slettet perioder du allerede har fått foreldrepenger for/,
+            ),
+        ).toBeInTheDocument();
+        expect(
+            screen.queryByText(
+                'Endringen kan påvirke utbetalingen. Hvis du allerede har fått utbetalt penger, kan du måtte betale dem tilbake.',
+            ),
+        ).not.toBeInTheDocument();
     });
 
     it('skal ikke markere avslåtte perioder med varsel om mors aktivitet', () => {
