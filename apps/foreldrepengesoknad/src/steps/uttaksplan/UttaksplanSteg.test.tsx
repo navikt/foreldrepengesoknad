@@ -4,9 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
 import { saker } from 'storybookData/saker';
 
-import { UttakPeriodeDto } from '@navikt/fp-types';
-
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { UttakDto, UttakPeriodeDto } from '@navikt/fp-types';
 
 import * as stories from './UttaksplanSteg.stories';
 
@@ -34,13 +32,16 @@ describe('<UttaksplanSteg>', () => {
             trekkerMinsterett: false,
             årsak: 'ANNET',
         } as const;
-        const terminperiode: UttakPeriode_fpoversikt = {
-            fom: '2024-07-01',
-            tom: '2024-07-12',
+        const fedrekvote: UttakDto = {
             forelder: 'FAR_MEDMOR',
             kontoType: 'FEDREKVOTE',
             samtidigUttak: 100,
             flerbarnsdager: false,
+        };
+        const terminperiode: UttakPeriodeDto = {
+            fom: '2024-07-01',
+            tom: '2024-07-12',
+            søker: fedrekvote,
         };
         const justeringsspørsmål = /ønsker du at vi endrer den til å starte fra fødselsdato/;
 
@@ -56,10 +57,9 @@ describe('<UttaksplanSteg>', () => {
                     uttaksplan: [
                         terminperiode,
                         {
-                            ...terminperiode,
                             fom: '2024-07-22',
                             tom: '2024-07-26',
-                            resultat: innvilgetResultat,
+                            søker: { ...fedrekvote, resultat: innvilgetResultat },
                         },
                     ],
                 },
@@ -79,6 +79,12 @@ describe('<UttaksplanSteg>', () => {
 
         it('skal ikke telle mors uendrede perioder i infoteksten når far svarer ja', async () => {
             const gåTilNesteSide = vi.fn();
+            const mødrekvote: UttakDto = {
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                flerbarnsdager: false,
+                resultat: innvilgetResultat,
+            };
 
             await FødselFarBeggeHarRettStarterPåTermin.run({
                 args: {
@@ -86,15 +92,8 @@ describe('<UttaksplanSteg>', () => {
                     erEndringssøknad: true,
                     gåTilNesteSide,
                     uttaksplan: [
-                        terminperiode,
-                        {
-                            fom: '2024-07-01',
-                            tom: '2024-08-09',
-                            forelder: 'MOR',
-                            kontoType: 'MØDREKVOTE',
-                            flerbarnsdager: false,
-                            resultat: innvilgetResultat,
-                        },
+                        { ...terminperiode, annenPart: mødrekvote },
+                        { fom: '2024-07-15', tom: '2024-08-09', annenPart: mødrekvote },
                     ],
                 },
             });
@@ -125,12 +124,11 @@ describe('<UttaksplanSteg>', () => {
                     harJustertUttakVedFødsel: true,
                     gåTilNesteSide,
                     uttaksplan: [
-                        { ...terminperiode, resultat: innvilgetResultat },
+                        { ...terminperiode, søker: { ...fedrekvote, resultat: innvilgetResultat } },
                         {
-                            ...terminperiode,
                             fom: '2024-09-02',
                             tom: '2024-09-13',
-                            samtidigUttak: undefined,
+                            søker: { ...fedrekvote, samtidigUttak: undefined },
                         },
                     ],
                 },
