@@ -54,65 +54,12 @@ export class UttakPeriodeBuilder {
         beholdAnnenPart = false,
     ): this {
         this.operasjonsLogg.push({ operasjon: 'fjernUttakPerioder', perioderSomSkalFjernes, forskyvPerioder });
-        if (forskyvPerioder) {
-            for (const periodeSomSkalFjernes of perioderSomSkalFjernes) {
-                this.allePerioder = fjernOgForskyvPerioderBakover(this.allePerioder, periodeSomSkalFjernes);
-            }
-        } else {
-            for (const periodeSomSkalFjernes of perioderSomSkalFjernes) {
-                const nFom = toDay(periodeSomSkalFjernes.fom);
-                const nTom = toDay(periodeSomSkalFjernes.tom);
-
-                const nyePerioder: UttakPeriodeDto[] = [];
-
-                for (const eksisterendePeriode of this.allePerioder) {
-                    const eFom = toDay(eksisterendePeriode.fom);
-                    const eTom = toDay(eksisterendePeriode.tom);
-
-                    if (erOverlappende(eFom, eTom, nFom, nTom)) {
-                        // Ikkje legg til eksisterande periode om den er eksakt lik den som skal fjernes
-
-                        // Overlappende, behold del før sletta periode
-                        if (eFom.isBefore(nFom)) {
-                            nyePerioder.push({
-                                ...eksisterendePeriode,
-                                tom: Uttaksdagen.forrige(periodeSomSkalFjernes.fom).getDato(),
-                            });
-                        }
-
-                        if (beholdAnnenPart && (eksisterendePeriode.annenPart || eksisterendePeriode.annenPartEøs)) {
-                            const fom = eFom.isBefore(nFom)
-                                ? Uttaksdagen.denneEllerNeste(periodeSomSkalFjernes.fom).getDato()
-                                : eksisterendePeriode.fom;
-                            const tom = eTom.isAfter(nTom)
-                                ? Uttaksdagen.denneEllerForrige(periodeSomSkalFjernes.tom).getDato()
-                                : eksisterendePeriode.tom;
-
-                            if (!toDay(fom).isAfter(toDay(tom))) {
-                                nyePerioder.push({
-                                    fom,
-                                    tom,
-                                    annenPart: eksisterendePeriode.annenPart,
-                                    annenPartEøs: eksisterendePeriode.annenPartEøs,
-                                });
-                            }
-                        }
-
-                        // Overlappende, behold del etter sletta periode
-                        if (eTom.isAfter(nTom)) {
-                            nyePerioder.push({
-                                ...eksisterendePeriode,
-                                fom: Uttaksdagen.neste(periodeSomSkalFjernes.tom).getDato(),
-                            });
-                        }
-                    } else {
-                        // Ingen overlapp, behold eksisterande periode
-                        nyePerioder.push(eksisterendePeriode);
-                    }
-                }
-
-                this.allePerioder = nyePerioder;
-            }
+        for (const periodeSomSkalFjernes of perioderSomSkalFjernes) {
+            this.allePerioder = forskyvPerioder
+                ? fjernOgForskyvPerioderBakover(this.allePerioder, periodeSomSkalFjernes)
+                : this.allePerioder.flatMap((eksisterendePeriode) =>
+                      fjernFraPeriode(eksisterendePeriode, periodeSomSkalFjernes, beholdAnnenPart),
+                  );
         }
 
         this.allePerioder.sort(sorterPerioder);
@@ -391,6 +338,54 @@ const slåSammenLikeTilstøtendePerioder = (sortertePerioder: UttakPeriodeDto[])
 
         return acc.concat(periode);
     }, []);
+};
+
+const fjernFraPeriode = (
+    eksisterendePeriode: UttakPeriodeDto,
+    periodeSomSkalFjernes: { fom: string; tom: string },
+    beholdAnnenPart: boolean,
+): UttakPeriodeDto[] => {
+    const eFom = toDay(eksisterendePeriode.fom);
+    const eTom = toDay(eksisterendePeriode.tom);
+    const nFom = toDay(periodeSomSkalFjernes.fom);
+    const nTom = toDay(periodeSomSkalFjernes.tom);
+
+    if (!erOverlappende(eFom, eTom, nFom, nTom)) {
+        return [eksisterendePeriode];
+    }
+
+    const starterFør = eFom.isBefore(nFom);
+    const slutterEtter = eTom.isAfter(nTom);
+    const perioder: UttakPeriodeDto[] = [];
+
+    if (starterFør) {
+        perioder.push({ ...eksisterendePeriode, tom: Uttaksdagen.forrige(periodeSomSkalFjernes.fom).getDato() });
+    }
+
+    if (beholdAnnenPart) {
+        perioder.push(
+            ...beholdAnnenPartIOverlapp(
+                eksisterendePeriode,
+                starterFør ? Uttaksdagen.denneEllerNeste(periodeSomSkalFjernes.fom).getDato() : eksisterendePeriode.fom,
+                slutterEtter
+                    ? Uttaksdagen.denneEllerForrige(periodeSomSkalFjernes.tom).getDato()
+                    : eksisterendePeriode.tom,
+            ),
+        );
+    }
+
+    if (slutterEtter) {
+        perioder.push({ ...eksisterendePeriode, fom: Uttaksdagen.neste(periodeSomSkalFjernes.tom).getDato() });
+    }
+
+    return perioder;
+};
+
+const beholdAnnenPartIOverlapp = (periode: UttakPeriodeDto, fom: string, tom: string): UttakPeriodeDto[] => {
+    if ((!periode.annenPart && !periode.annenPartEøs) || toDay(fom).isAfter(toDay(tom))) {
+        return [];
+    }
+    return [{ fom, tom, annenPart: periode.annenPart, annenPartEøs: periode.annenPartEøs }];
 };
 
 const toDay = (iso: string): Dayjs => dayjs.utc(iso).startOf('day');
