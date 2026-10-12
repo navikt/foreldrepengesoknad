@@ -24,7 +24,7 @@
         "@navikt/fp-observability": "workspace:*",
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
-        "@radix-ui/react-slider": "^1.4.7",
+        "@radix-ui/react-slider": "^1.5.0",
         "dayjs": "catalog:",
         "react": "catalog:",
         "react-dom": "catalog:",
