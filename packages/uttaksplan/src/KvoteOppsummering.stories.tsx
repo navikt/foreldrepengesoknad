@@ -987,3 +987,46 @@ export const BHFRMedAvslåttePerioder: Story = {
         erEndringssøknad: true,
     },
 };
+
+export const BHFRMedAvslåttePerioderOgOverforbruk: Story = {
+    args: {
+        valgtStønadskvote: kontoNårBareFarHarRett,
+        uttakPerioder: [
+            {
+                fom: '2026-01-05',
+                tom: '2026-04-08',
+                kontoType: 'FORELDREPENGER',
+                resultat: {
+                    innvilget: false,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                morsAktivitet: 'ARBEID',
+                flerbarnsdager: false,
+                forelder: 'FAR_MEDMOR',
+            },
+            {
+                fom: '2026-04-09',
+                tom: '2026-08-26',
+                kontoType: 'FORELDREPENGER',
+                resultat: {
+                    innvilget: true,
+                    trekkerMinsterett: false,
+                    trekkerDager: true,
+                    årsak: 'ANNET',
+                },
+                morsAktivitet: 'ARBEID',
+                flerbarnsdager: false,
+                forelder: 'FAR_MEDMOR',
+            },
+        ],
+        foreldreInfo: {
+            ...DEFAULT_FORELDRE_INFO,
+            rettighetType: 'BARE_SØKER_RETT',
+            søker: 'FAR_MEDMOR',
+        },
+        erInnsyn: false,
+        erEndringssøknad: true,
+    },
+};
