@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query';
-import ky from 'ky';
+import ky, { ResponsePromise } from 'ky';
 
 import { Skjemanummer } from '@navikt/fp-constants';
 import {
@@ -16,6 +16,11 @@ import {
     TilbakekrevingUttalelseOppgave_fpoversikt,
 } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
+
+const jsonEllerNull = async <T>(responsePromise: ResponsePromise) => {
+    const response = await responsePromise;
+    return response.status === 204 ? null : response.json<T>();
+};
 
 export const urlPrefiks = import.meta.env.BASE_URL;
 
@@ -93,7 +98,7 @@ export const hentInntektsmelding = (saksnummer: string) =>
 export const hentUttaksplanOptions = (body: FellesUttaksplanRequest_fpoversikt) =>
     queryOptions({
         queryKey: ['UTTAKSPLAN', body],
-        queryFn: () => ky.post(API_URLS.uttaksplan, { json: body }).json<FellesUttaksplanDto>(),
+        queryFn: () => jsonEllerNull<FellesUttaksplanDto>(ky.post(API_URLS.uttaksplan, { json: body })),
     });
 
 export const hentTidslinjehendelserOptions = (saksnummer: string) =>

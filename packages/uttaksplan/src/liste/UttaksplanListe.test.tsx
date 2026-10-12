@@ -777,6 +777,41 @@ describe('UttaksplanListe', () => {
         expect(screen.queryByText('Slett')).not.toBeInTheDocument();
     });
 
+    it('Skal bare slette søkers del av samtidig uttak når annen parts perioder er låst', async () => {
+        const oppdaterUttaksplan = vi.fn();
+        const annenPart = {
+            forelder: 'MOR',
+            kontoType: 'MØDREKVOTE',
+            samtidigUttak: 50,
+            flerbarnsdager: false,
+        } as const;
+
+        render(
+            <FarSøkerEtterAtMorHarSøkt
+                oppdaterUttaksplan={oppdaterUttaksplan}
+                perioder={[
+                    {
+                        fom: '2024-04-04',
+                        tom: '2024-04-18',
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FEDREKVOTE',
+                            samtidigUttak: 50,
+                            flerbarnsdager: false,
+                        },
+                        annenPart,
+                    },
+                ]}
+            />,
+        );
+
+        expect(await screen.findByText('Hans skal ha 50 % foreldrepenger')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Slett'));
+
+        expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
+        expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [{ fom: '2024-04-04', tom: '2024-04-18', annenPart }]);
+    });
+
     it('Skal vise annen part sin ferie og gradering, ikkje berre kontonamn', async () => {
         render(<FarSøkerEtterAtMorHarSøkt />);
 

@@ -80,7 +80,7 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
     const handleSlettClick = () => {
         if (uttaksplanperioder.length === 1) {
             const nyeUttakPerioder = new UttakPeriodeBuilder(perioder, 'liste')
-                .fjernUttakPerioder(uttaksplanperioder, false)
+                .fjernUttakPerioder(uttaksplanperioder, false, erPeriodeneTilAnnenPartLåst)
                 .getUttakPerioder();
             uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
         } else {

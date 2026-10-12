@@ -32,7 +32,7 @@ interface FormValues {
 export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForeldre, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
 
-    const { perioder, foreldreInfo } = useUttaksplanData();
+    const { perioder, foreldreInfo, erPeriodeneTilAnnenPartLåst } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
@@ -54,7 +54,7 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
 
     const slettPerioder = (perioderSomSkalSlettes: Uttaksplanperiode[]) => {
         const nyeUttakPerioder = new UttakPeriodeBuilder(perioder, 'liste')
-            .fjernUttakPerioder(perioderSomSkalSlettes, false)
+            .fjernUttakPerioder(perioderSomSkalSlettes, false, erPeriodeneTilAnnenPartLåst)
             .getUttakPerioder();
         uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
 

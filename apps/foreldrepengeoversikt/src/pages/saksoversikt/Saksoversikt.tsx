@@ -201,16 +201,22 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                             showSkeleton={uttaksplanQuery.isLoading}
                             skeletonProps={{ height: '210px', variant: 'rounded' }}
                         >
-                            <Suspense fallback={<Skeleton height="210px" variant="rounded" />}>
-                                <DinPlan
-                                    sak={gjeldendeSak}
-                                    navnPåForeldre={getNavnPåForeldre(
-                                        gjeldendeSak,
-                                        søkerinfo.navn.fornavn,
-                                        getNavnAnnenForelder(søkerinfo, gjeldendeSak, intl),
-                                    )}
-                                />
-                            </Suspense>
+                            {uttaksplanQuery.isError ? (
+                                <Alert variant="error">
+                                    <FormattedMessage id="felles.feil.prøvSenere" />
+                                </Alert>
+                            ) : (
+                                <Suspense fallback={<Skeleton height="210px" variant="rounded" />}>
+                                    <DinPlan
+                                        sak={gjeldendeSak}
+                                        navnPåForeldre={getNavnPåForeldre(
+                                            gjeldendeSak,
+                                            søkerinfo.navn.fornavn,
+                                            getNavnAnnenForelder(søkerinfo, gjeldendeSak, intl),
+                                        )}
+                                    />
+                                </Suspense>
+                            )}
                         </ContentSection>
                     </div>
                 )}

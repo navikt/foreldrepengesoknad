@@ -30,7 +30,7 @@ export const KalenderRedigeringProvider = ({
     setValgtePerioder,
     setEndredePerioder,
 }: Props) => {
-    const { perioder: uttakPerioder } = useUttaksplanData();
+    const { perioder: uttakPerioder, erPeriodeneTilAnnenPartLåst } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
@@ -50,10 +50,10 @@ export const KalenderRedigeringProvider = ({
     const slettUttaksplanPerioder = useCallback(
         (perioder: Array<{ fom: string; tom: string }>, skalForskyveBakover: boolean) => {
             const uttakPeriodeBuilder = new UttakPeriodeBuilder(uttakPerioder, 'kalender');
-            uttakPeriodeBuilder.fjernUttakPerioder(perioder, skalForskyveBakover);
+            uttakPeriodeBuilder.fjernUttakPerioder(perioder, skalForskyveBakover, erPeriodeneTilAnnenPartLåst);
             notEmpty(uttaksplanRedigering).oppdaterUttaksplan(uttakPeriodeBuilder.getUttakPerioder());
         },
-        [uttaksplanRedigering, uttakPerioder],
+        [uttaksplanRedigering, uttakPerioder, erPeriodeneTilAnnenPartLåst],
     );
 
     const value = useMemo(() => {

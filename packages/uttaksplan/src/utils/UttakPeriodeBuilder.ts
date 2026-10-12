@@ -48,7 +48,11 @@ export class UttakPeriodeBuilder {
         return this;
     }
 
-    fjernUttakPerioder(perioderSomSkalFjernes: Array<{ fom: string; tom: string }>, forskyvPerioder: boolean): this {
+    fjernUttakPerioder(
+        perioderSomSkalFjernes: Array<{ fom: string; tom: string }>,
+        forskyvPerioder: boolean,
+        beholdAnnenPart = false,
+    ): this {
         this.operasjonsLogg.push({ operasjon: 'fjernUttakPerioder', perioderSomSkalFjernes, forskyvPerioder });
         if (forskyvPerioder) {
             for (const periodeSomSkalFjernes of perioderSomSkalFjernes) {
@@ -74,6 +78,24 @@ export class UttakPeriodeBuilder {
                                 ...eksisterendePeriode,
                                 tom: Uttaksdagen.forrige(periodeSomSkalFjernes.fom).getDato(),
                             });
+                        }
+
+                        if (beholdAnnenPart && (eksisterendePeriode.annenPart || eksisterendePeriode.annenPartEøs)) {
+                            const fom = eFom.isBefore(nFom)
+                                ? Uttaksdagen.denneEllerNeste(periodeSomSkalFjernes.fom).getDato()
+                                : eksisterendePeriode.fom;
+                            const tom = eTom.isAfter(nTom)
+                                ? Uttaksdagen.denneEllerForrige(periodeSomSkalFjernes.tom).getDato()
+                                : eksisterendePeriode.tom;
+
+                            if (!toDay(fom).isAfter(toDay(tom))) {
+                                nyePerioder.push({
+                                    fom,
+                                    tom,
+                                    annenPart: eksisterendePeriode.annenPart,
+                                    annenPartEøs: eksisterendePeriode.annenPartEøs,
+                                });
+                            }
                         }
 
                         // Overlappende, behold del etter sletta periode

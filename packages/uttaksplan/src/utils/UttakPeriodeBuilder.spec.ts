@@ -379,6 +379,52 @@ describe('UttakPeriodeBuilder.fjernUttakPerioder (Ikke forskyv)', () => {
     });
 });
 
+describe('UttakPeriodeBuilder.fjernUttakPerioder (Behold annen part)', () => {
+    const annenPart = { forelder: 'FAR_MEDMOR', flerbarnsdager: false, samtidigUttak: 50 } as const;
+
+    it('skal bare fjerne søkers del av samtidig uttak', () => {
+        const builder = new UttakPeriodeBuilder([lagSamtidigUttakPeriode('2024-01-01', '2024-01-12')]);
+
+        builder.fjernUttakPerioder([{ fom: '2024-01-01', tom: '2024-01-12' }], false, true);
+
+        expect(builder.getUttakPerioder()).toEqual([{ fom: '2024-01-01', tom: '2024-01-12', annenPart }]);
+    });
+
+    it('skal beholde samtidig uttak utenfor tidsrommet som slettes', () => {
+        const builder = new UttakPeriodeBuilder([lagSamtidigUttakPeriode('2024-01-01', '2024-01-31')]);
+
+        builder.fjernUttakPerioder([{ fom: '2024-01-06', tom: '2024-01-14' }], false, true);
+
+        expect(builder.getUttakPerioder()).toEqual([
+            lagSamtidigUttakPeriode('2024-01-01', '2024-01-05'),
+            { fom: '2024-01-08', tom: '2024-01-12', annenPart },
+            lagSamtidigUttakPeriode('2024-01-15', '2024-01-31'),
+        ]);
+    });
+
+    it('skal beholde annen part i EØS', () => {
+        const eøsPeriode: UttakPeriodeDto = {
+            ...lagPeriode('2024-01-01', '2024-01-12'),
+            annenPartEøs: { kontoType: 'FELLESPERIODE', trekkdager: 10 },
+        };
+        const builder = new UttakPeriodeBuilder([eøsPeriode]);
+
+        builder.fjernUttakPerioder([{ fom: '2024-01-01', tom: '2024-01-12' }], false, true);
+
+        expect(builder.getUttakPerioder()).toEqual([
+            { fom: '2024-01-01', tom: '2024-01-12', annenPartEøs: eøsPeriode.annenPartEøs },
+        ]);
+    });
+
+    it('skal fjerne hele perioden når den bare har søker', () => {
+        const builder = new UttakPeriodeBuilder([lagPeriode('2024-01-01', '2024-01-12')]);
+
+        builder.fjernUttakPerioder([{ fom: '2024-01-01', tom: '2024-01-12' }], false, true);
+
+        expect(builder.getUttakPerioder()).toEqual([]);
+    });
+});
+
 describe('UttakPeriodeBuilder.fjernUttakPerioder (Forskyv)', () => {
     it('skal fjerne en periode som overlapper en del midt inni en eksisterende periode', () => {
         const builder = new UttakPeriodeBuilder([lagPeriode('2024-01-01', '2024-01-10')]);

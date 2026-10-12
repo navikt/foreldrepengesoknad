@@ -65,6 +65,40 @@ export const Foreldrepenger: Story = {
     },
 };
 
+export const ForeldrepengerUtenUttaksplan: Story = {
+    beforeEach({ msw }) {
+        msw.use(
+            http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
+            http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+            http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelserFP)),
+            http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
+        );
+    },
+
+    args: {
+        søkerinfo: søkerinfo,
+        saksnummer: '1',
+    },
+};
+
+export const ForeldrepengerFeilVedHentingAvUttaksplan: Story = {
+    beforeEach({ msw }) {
+        msw.use(
+            http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
+            http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+            http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelserFP)),
+            http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 500 })),
+        );
+    },
+
+    args: {
+        søkerinfo: søkerinfo,
+        saksnummer: '1',
+    },
+};
+
 const engangsstønadHandlers = [
     http.get(API_URLS.saker, () =>
         HttpResponse.json({
