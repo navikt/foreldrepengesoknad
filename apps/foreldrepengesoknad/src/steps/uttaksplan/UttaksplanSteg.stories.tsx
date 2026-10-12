@@ -85,6 +85,7 @@ type StoryArgs = {
     valgtEksisterendeSaksnr?: string;
     uttaksplan?: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
     kommerFraPlanlegger?: boolean;
+    harJustertUttakVedFødsel?: boolean;
 } & ComponentProps<typeof UttaksplanSteg>;
 
 const meta = {
@@ -110,6 +111,7 @@ const meta = {
         valgtEksisterendeSaksnr,
         uttaksplan,
         kommerFraPlanlegger,
+        harJustertUttakVedFødsel,
     }) => {
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.UTTAKSPLAN]}>
@@ -128,6 +130,7 @@ const meta = {
                         [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: valgtEksisterendeSaksnr,
                         [ContextDataType.UTTAKSPLAN]: uttaksplan,
                         [ContextDataType.KOMMER_FRA_PLANLEGGER]: kommerFraPlanlegger,
+                        [ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL]: harJustertUttakVedFødsel,
                     }}
                 >
                     <UttaksplanSteg
