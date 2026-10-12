@@ -675,7 +675,10 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                         label={intl.formatMessage({ id: 'AktivitetskravSpørsmål.Label' })}
                         control={formMethods.control}
                         validate={[isRequired(intl.formatMessage({ id: 'AktivitetskravSpørsmål.Påkrevd' }))]}
-                        description={intl.formatMessage({ id: 'AktivitetskravSpørsmål.Description' })}
+                        description={intl.formatMessage(
+                            { id: 'AktivitetskravSpørsmål.Description' },
+                            { erFarEllerMedmor: søker === 'FAR_MEDMOR', erMedmor: erMedmorDelAvSøknaden },
+                        )}
                     >
                         {getAktivitetskravOptions(
                             feltSynlighet.visMorsAktivitetskravVedSamtidigUttak,

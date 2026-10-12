@@ -347,7 +347,7 @@
     "AktivitetskravSpørsmål.Trenger_hjelp": "For sjuk til å ta seg av barnet",
     "AktivitetskravSpørsmål.Innlagt": "Innlagt",
     "AktivitetskravSpørsmål.Arbeid_og_utdanning": "Arbeid og utdanning",
-    "AktivitetskravSpørsmål.Description": "For at du skal kunne ta foreldrepengar i denne perioden må mor vere i aktivitet",
+    "AktivitetskravSpørsmål.Description": "{erFarEllerMedmor, select, true {For at du skal kunne ta foreldrepengar i denne perioden må mor vere i aktivitet} other {For at {erMedmor, select, true {medmor} other {far}} skal kunne ta foreldrepengar i denne perioden må mor vere i aktivitet}}",
     "LeggTilEllerEndrePeriodeForm.HvorSkalDuJobbe": "Kor skal du jobba?",
     "LeggTilEllerEndrePeriodeForm.HvorSkalDuJobbe.Påkrevd": "Du må oppgi kor du skal jobba.",
     "LeggTilEllerEndrePeriodeForm.Selvstendig": "Sjølvstendig næringsdrivande",

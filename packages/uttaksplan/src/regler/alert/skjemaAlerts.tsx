@@ -54,8 +54,18 @@ export const useSkjemaKontekstuelleAlerts = (
     valgtePerioder: Periode[],
     morsAktivitet?: MorsAktivitet,
 ): SkjemaKontekstuelleAlerts => {
-    const { familiehendelsedato, erEndringssøknad } = useUttaksplanData();
-    const ctx: KontekstuellAlertKontekst = { valgtePerioder, familiehendelsedato, morsAktivitet, erEndringssøknad };
+    const {
+        familiehendelsedato,
+        erEndringssøknad,
+        foreldreInfo: { søker },
+    } = useUttaksplanData();
+    const ctx: KontekstuellAlertKontekst = {
+        valgtePerioder,
+        familiehendelsedato,
+        morsAktivitet,
+        erEndringssøknad,
+        søker,
+    };
     return {
         graderingDagerReduseres: KONTEKSTUELL_GRADERING_ALERT.skalVises(ctx)
             ? {
@@ -183,6 +193,7 @@ type KontekstuellAlertKontekst = {
     familiehendelsedato: string;
     morsAktivitet?: MorsAktivitet;
     erEndringssøknad: boolean;
+    søker: BrukerRolleSak_fpoversikt;
 };
 
 const AKTIVITETSKRAV_SOM_KREVER_DOKUMENTASJON: ReadonlySet<MorsAktivitet> = new Set([
@@ -216,7 +227,7 @@ const KONTEKSTUELL_GRADERING_ALERT = lagAlertregel<KontekstuellAlertKontekst>({
 const AKTIVITETSKRAV_DOKUMENTASJON_ALERT = lagAlertregel<KontekstuellAlertKontekst>({
     id: 'kontekstuelleAlerts.aktivitetskravDokumentasjon',
     beskrivelse:
-        'Brukeren har i en førstegangssøknad valgt et aktivitetskrav (arbeid, ' +
+        'Far/medmor har i en førstegangssøknad valgt et aktivitetskrav (arbeid, ' +
         'utdanning eller arbeid og utdanning) for perioden. Denne typen aktivitet ' +
         'krever normalt dokumentasjon, og planlagt aktivitet langt fram i tid kan ' +
         'ofte ikke dokumenteres ennå. Alerten forbereder brukeren på at søknaden ' +
@@ -232,6 +243,7 @@ const AKTIVITETSKRAV_DOKUMENTASJON_ALERT = lagAlertregel<KontekstuellAlertKontek
     variant: 'info',
     type: 'kontekstuell',
     skalVises: (ctx) =>
+        ctx.søker === 'FAR_MEDMOR' &&
         !ctx.erEndringssøknad &&
         ctx.morsAktivitet !== undefined &&
         AKTIVITETSKRAV_SOM_KREVER_DOKUMENTASJON.has(ctx.morsAktivitet),
