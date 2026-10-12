@@ -87,6 +87,7 @@ type StoryArgs = {
     uttaksplan?: UttakPeriodeDto[];
     opprinneligUttaksplan?: OpprinneligUttaksplan;
     kommerFraPlanlegger?: boolean;
+    harJustertUttakVedFødsel?: boolean;
 } & ComponentProps<typeof UttaksplanSteg>;
 
 const meta = {
@@ -114,6 +115,7 @@ const meta = {
         uttaksplan,
         opprinneligUttaksplan,
         kommerFraPlanlegger,
+        harJustertUttakVedFødsel,
     }) => {
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.UTTAKSPLAN]}>
@@ -133,6 +135,7 @@ const meta = {
                         [ContextDataType.UTTAKSPLAN]: uttaksplan,
                         [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: opprinneligUttaksplan,
                         [ContextDataType.KOMMER_FRA_PLANLEGGER]: kommerFraPlanlegger,
+                        [ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL]: harJustertUttakVedFødsel,
                     }}
                 >
                     <UttaksplanSteg

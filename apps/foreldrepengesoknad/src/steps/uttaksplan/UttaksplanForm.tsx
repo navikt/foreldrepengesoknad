@@ -85,10 +85,9 @@ export const UttaksplanForm = ({
 
     const erFødselssituasjonForFar = erSøkerFarEllerMedmor && søkersituasjon.situasjon === 'fødsel';
 
-    // Når far/medmor kommer rett fra planleggeren ligg uttaket i defaultUttaksperioder fram til
-    // planen blir redigert (då blir uttaksplan-context fylt). Bruk same fallback som onSubmit slik
-    // at spørsmålet om automatisk justering står fast med ein gong, utan at brukaren må tukle med planen.
-    const planForVisning = gjeldendeUttaksplan ?? defaultUttaksperioder;
+    // Uendrede perioder må også inngå i justeringssjekken. Backend kan hente inn
+    // tidligere vedtaksperioder når fødselen registreres.
+    const planForVisning = uttaksplan ?? defaultUttaksperioder;
 
     const farMedmorPerioder = planForVisning.filter((p) => p.søker?.forelder === 'FAR_MEDMOR');
 
@@ -134,7 +133,7 @@ export const UttaksplanForm = ({
                     <VStack gap="space-16">
                         <AutomatiskJusteringInfotekst
                             harSvartJaPåAutoJustering={harSvartJaPåAutoJustering}
-                            uttaksplan={planForVisning}
+                            uttaksplan={farMedmorPerioder}
                         />
                         <RhfRadioGroup
                             name="ønskerJustertUttakVedFødsel"
