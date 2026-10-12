@@ -44,7 +44,9 @@ export const useTidligereUttaksplan = (
         if (!annenPartHarVedtak(uttaksplan)) {
             return;
         }
-        return uttaksplan.perioder.flatMap(({ fom, tom, annenPart }) => (annenPart ? [{ fom, tom, annenPart }] : []));
+        return uttaksplan.perioder.flatMap(({ fom, tom, annenPart }) =>
+            annenPart?.resultat ? [{ fom, tom, annenPart }] : [],
+        );
     }, [
         uttaksplan,
         valgtEksisterendeSaksnr,

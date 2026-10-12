@@ -281,6 +281,16 @@ describe('useTidligereUttaksplan', () => {
         expect(result.current.perioder).toBeUndefined();
     });
 
+    it('tar bare med annen parts perioder med resultat når vedtak og ubehandlet søknad er blandet', () => {
+        const annenPart = { ...PERIODER[1]!.annenPart!, resultat: INNVILGET };
+        const ubehandlet: UttakPeriodeDto = { ...PERIODER[1]!, fom: '2025-06-02', tom: '2025-06-13' };
+        const { result } = renderHook(() => useTidligereUttaksplan(), {
+            wrapper: getWrapper(lagUttaksplan([{ ...PERIODER[1]!, annenPart }, ubehandlet])),
+        });
+
+        expect(result.current.perioder).toEqual([{ ...PERIODER[1]!, annenPart }]);
+    });
+
     it('returnerer alle periodane når ei eksisterande sak er valt', () => {
         const { result } = renderHook(() => useTidligereUttaksplan(false, SAK_MED_VEDTAK), {
             wrapper: getWrapper(lagUttaksplan(PERIODER), { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER }),
