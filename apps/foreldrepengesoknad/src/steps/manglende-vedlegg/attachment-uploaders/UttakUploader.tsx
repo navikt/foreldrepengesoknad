@@ -11,7 +11,7 @@ import { BodyLong } from '@navikt/ds-react';
 
 import { AttachmentType } from '@navikt/fp-constants';
 import { FileUploader } from '@navikt/fp-filopplaster';
-import { Attachment, NavnPåForeldre, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { Attachment, NavnPåForeldre, UttakPeriodeDto } from '@navikt/fp-types';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -21,7 +21,7 @@ import { PeriodeVisning } from './periodevisning/PeriodeVisning';
 interface Props {
     attachments: Attachment[];
     updateAttachments: (attachments: Attachment[]) => void;
-    perioder: UttakPeriodeDto_fpoversikt[];
+    perioder: UttakPeriodeDto[];
     navnPåForeldre: NavnPåForeldre;
     skjemanummer: GyldigeSkjemanummer;
     labelText: string;

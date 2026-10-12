@@ -14,7 +14,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, BodyShort, Button, HStack, Heading, Spacer, Tooltip, VStack } from '@navikt/ds-react';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { BrukerRolleSak_fpoversikt, NavnPåForeldre, UtsettelseÅrsak_fpoversikt } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, NavnPåForeldre, UtsettelseÅrsak } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 import { Uttaksdagen, capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 
@@ -601,7 +601,7 @@ const PeriodeKvoteType = ({
     return <BodyShort>{treff.render()}</BodyShort>;
 };
 
-const getUtsettelseÅrsakTekst = (utsettelseÅrsak: UtsettelseÅrsak_fpoversikt) => {
+const getUtsettelseÅrsakTekst = (utsettelseÅrsak: UtsettelseÅrsak) => {
     switch (utsettelseÅrsak) {
         case 'SØKER_SYKDOM':
             return <FormattedMessage id="LeggTilUtsettelsePanel.SøkerSykdom" />;

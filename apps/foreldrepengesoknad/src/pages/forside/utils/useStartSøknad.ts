@@ -16,7 +16,7 @@ import {
 } from 'utils/eksisterendeSakUtils';
 
 import { captureMessage } from '@navikt/fp-observability';
-import { FellesUttaksplanDto_fpoversikt, FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
+import { FellesUttaksplanDto, FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ValgtBarn } from '../../../types/ValgtBarn';
@@ -128,7 +128,7 @@ export const useStartSøknad = ({
             const options = uttaksplanOptions(
                 getUttaksplanParam(notEmpty(søknad.annenForelder), notEmpty(søknad.barn)),
             );
-            let uttaksplan: FellesUttaksplanDto_fpoversikt | null;
+            let uttaksplan: FellesUttaksplanDto | null;
             try {
                 uttaksplan = await queryClient.fetchQuery(options);
             } catch {

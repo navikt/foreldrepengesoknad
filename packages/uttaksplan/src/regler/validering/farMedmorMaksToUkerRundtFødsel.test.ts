@@ -1,7 +1,7 @@
 import { createIntl, createIntlCache } from 'react-intl';
 import { describe, expect, it } from 'vitest';
 
-import { UttakDto_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { UttakDto, UttakPeriodeDto } from '@navikt/fp-types';
 
 import messages from '../../intl/messages/nb_NO.json';
 import { lagFarMedmorMaksToUkerRundtFødselOmråde } from './farMedmorMaksToUkerRundtFødsel';
@@ -46,9 +46,7 @@ const lagFarPeriode = ({
     fom = '2024-06-17',
     tom = '2024-06-28',
     ...part
-}: Partial<
-    UttakDto_fpoversikt & Pick<UttakPeriodeDto_fpoversikt, 'fom' | 'tom'>
-> = {}): UttakPeriodeDto_fpoversikt => ({
+}: Partial<UttakDto & Pick<UttakPeriodeDto, 'fom' | 'tom'>> = {}): UttakPeriodeDto => ({
     fom,
     tom,
     søker: {
@@ -69,7 +67,7 @@ describe('farMedmorMaksToUkerRundtFødsel', () => {
             { part: { morsAktivitet: 'INNLAGT' }, forventet: undefined },
             { part: { morsAktivitet: 'TRENGER_HJELP' }, forventet: undefined },
             { part: { kontoType: undefined, utsettelseÅrsak: 'FERIE' }, forventet: undefined },
-        ] satisfies Array<{ part: Partial<UttakDto_fpoversikt>; forventet: string | undefined }>)(
+        ] satisfies Array<{ part: Partial<UttakDto>; forventet: string | undefined }>)(
             'teller fedrekvote, men ikke unntaksuttak: $part',
             ({ part, forventet }) => {
                 const farPeriode = lagFarPeriode(part);
@@ -312,7 +310,7 @@ describe('farMedmorMaksToUkerRundtFødsel', () => {
         { navn: 'mors innleggelse', periode: { morsAktivitet: 'INNLAGT', samtidigUttak: undefined } },
         { navn: 'mors sykdom', periode: { morsAktivitet: 'TRENGER_HJELP', samtidigUttak: undefined } },
         { navn: 'overført mødrekvote', periode: { kontoType: 'MØDREKVOTE', samtidigUttak: undefined } },
-    ] satisfies Array<{ navn: string; periode: Partial<UttakDto_fpoversikt> }>)(
+    ] satisfies Array<{ navn: string; periode: Partial<UttakDto> }>)(
         'holder eksisterende uttak ved $navn utenfor de to ukene',
         ({ periode }) => {
             expect(
@@ -360,7 +358,7 @@ describe('farMedmorMaksToUkerRundtFødsel', () => {
         ).toBe(FEILMELDING);
     });
 
-    it.each([undefined, 'ARBEID', 'IKKE_OPPGITT'] satisfies Array<UttakDto_fpoversikt['morsAktivitet']>)(
+    it.each([undefined, 'ARBEID', 'IKKE_OPPGITT'] satisfies Array<UttakDto['morsAktivitet']>)(
         'teller vanlig fedrekvote uten registrert samtidigUttak, morsAktivitet=%s',
         (morsAktivitet) => {
             expect(

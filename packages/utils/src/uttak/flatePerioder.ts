@@ -1,12 +1,7 @@
 import dayjs from 'dayjs';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import {
-    UttakDto_fpoversikt,
-    UttakOppholdÅrsak_fpoversikt,
-    UttakPeriodeDto_fpoversikt,
-    UttakPeriode_fpoversikt,
-} from '@navikt/fp-types';
+import { UttakDto, UttakOppholdÅrsak_fpoversikt, UttakPeriodeDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { Uttaksdagen } from './Uttaksdagen';
 
@@ -15,12 +10,12 @@ const KONTOTYPE_FOR_OPPHOLDSÅRSAK = {
     FEDREKVOTE_ANNEN_FORELDER: 'FEDREKVOTE',
     FELLESPERIODE_ANNEN_FORELDER: 'FELLESPERIODE',
     FORELDREPENGER_ANNEN_FORELDER: 'FORELDREPENGER',
-} as const satisfies Record<UttakOppholdÅrsak_fpoversikt, UttakDto_fpoversikt['kontoType']>;
+} as const satisfies Record<UttakOppholdÅrsak_fpoversikt, UttakDto['kontoType']>;
 
 const erFlatPeriode = (periode: unknown): periode is UttakPeriode_fpoversikt =>
     typeof periode === 'object' && periode !== null && 'forelder' in periode;
 
-const tilPart = (periode: UttakPeriode_fpoversikt): UttakDto_fpoversikt => {
+const tilPart = (periode: UttakPeriode_fpoversikt): UttakDto => {
     if (periode.oppholdÅrsak) {
         return {
             forelder: periode.forelder === 'MOR' ? 'FAR_MEDMOR' : 'MOR',
@@ -51,19 +46,19 @@ const dagenFør = (dato: string) => dayjs(dato).subtract(1, 'day').format(ISO_DA
  * forelder, der samtidig uttak er to overlappande periodar). Desse blir gjort om til
  * ikkje-overlappande intervall. Er det to foreldre i same intervall, hamnar mor på `søker`.
  */
-export const konverterFlatePerioderTilIntervall = (perioder: unknown[]): UttakPeriodeDto_fpoversikt[] => {
+export const konverterFlatePerioderTilIntervall = (perioder: unknown[]): UttakPeriodeDto[] => {
     const flatePerioder = perioder.filter(erFlatPeriode);
     if (flatePerioder.length === 0) {
-        return perioder as UttakPeriodeDto_fpoversikt[];
+        return perioder as UttakPeriodeDto[];
     }
 
-    const andrePerioder = perioder.filter((periode) => !erFlatPeriode(periode)) as UttakPeriodeDto_fpoversikt[];
+    const andrePerioder = perioder.filter((periode) => !erFlatPeriode(periode)) as UttakPeriodeDto[];
 
     const grenser = [...new Set(flatePerioder.flatMap((periode) => [periode.fom, dagenEtter(periode.tom)]))].sort(
         (a, b) => a.localeCompare(b),
     );
 
-    const intervall = grenser.slice(0, -1).flatMap((grense, index): UttakPeriodeDto_fpoversikt[] => {
+    const intervall = grenser.slice(0, -1).flatMap((grense, index): UttakPeriodeDto[] => {
         const fom = Uttaksdagen.denneEllerNeste(grense).getDato();
         const tom = Uttaksdagen.denneEllerForrige(dagenFør(grenser[index + 1]!)).getDato();
         if (fom > tom) {

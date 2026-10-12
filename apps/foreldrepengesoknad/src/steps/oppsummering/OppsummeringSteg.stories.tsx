@@ -25,7 +25,7 @@ import {
     SøkersituasjonFp,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
-    UttakPeriodeDto_fpoversikt,
+    UttakPeriodeDto,
 } from '@navikt/fp-types';
 
 import { OppsummeringSteg } from './OppsummeringSteg';
@@ -127,7 +127,7 @@ const defaultUttaksplan = [
         tom: '2022-06-07',
         søker: { forelder: 'MOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false },
     },
-] satisfies UttakPeriodeDto_fpoversikt[];
+] satisfies UttakPeriodeDto[];
 
 const defaultUttaksplanFar = [
     {
@@ -140,7 +140,7 @@ const defaultUttaksplanFar = [
         tom: '2022-06-25',
         søker: { forelder: 'FAR_MEDMOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false },
     },
-] satisfies UttakPeriodeDto_fpoversikt[];
+] satisfies UttakPeriodeDto[];
 
 const defaultUttaksplanFarAleneomsorg = [
     {
@@ -158,7 +158,7 @@ const defaultUttaksplanFarAleneomsorg = [
         tom: '2022-06-07',
         søker: { forelder: 'FAR_MEDMOR', kontoType: 'FORELDREPENGER', flerbarnsdager: false },
     },
-] satisfies UttakPeriodeDto_fpoversikt[];
+] satisfies UttakPeriodeDto[];
 
 // «Bare far har rett»-scenario der far ikkje har søkt om pause i ein periode mor ikkje har rett:
 // perioden blir avslått, men trekkjer likevel dagar frå kvoten, og skal difor visast som
@@ -180,7 +180,7 @@ const defaultUttaksplanFarAleneomsorgMedTaptPeriode = [
             },
         },
     },
-] satisfies UttakPeriodeDto_fpoversikt[];
+] satisfies UttakPeriodeDto[];
 
 const defaultArbeidsforholdOgInntekt = {
     harJobbetSomFrilans: false,
@@ -304,7 +304,7 @@ type StoryArgs = {
     egenNæring?: NæringDto;
     andreInntekter?: AndreInntektskilder[];
     vedlegg?: VedleggDataType;
-    uttaksplan?: UttakPeriodeDto_fpoversikt[];
+    uttaksplan?: UttakPeriodeDto[];
     manglerUttaksplan?: boolean;
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof OppsummeringSteg>;
@@ -1128,7 +1128,7 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
                 tom: '2022-06-07',
                 søker: { forelder: 'FAR_MEDMOR', kontoType: 'FELLESPERIODE', samtidigUttak: 50, flerbarnsdager: false },
                 annenPart: { forelder: 'MOR', kontoType: 'FELLESPERIODE', samtidigUttak: 50, flerbarnsdager: false },
-            } satisfies UttakPeriodeDto_fpoversikt,
+            } satisfies UttakPeriodeDto,
         ];
 
         return (
@@ -1211,7 +1211,7 @@ export const VisGradertPeriode: Story = {
                     flerbarnsdager: false,
                 },
             },
-        ] satisfies UttakPeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto[],
     },
 };
 
@@ -1307,6 +1307,6 @@ export const HarPerioderForBådeMorOgFar: Story = {
                     flerbarnsdager: false,
                 },
             },
-        ] satisfies UttakPeriodeDto_fpoversikt[],
+        ] satisfies UttakPeriodeDto[],
     },
 };

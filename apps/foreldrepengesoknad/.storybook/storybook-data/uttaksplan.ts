@@ -1,4 +1,4 @@
-import { FellesUttaksplanDto_fpoversikt } from '@navikt/fp-types';
+import { FellesUttaksplanDto } from '@navikt/fp-types';
 
 const innvilget = { innvilget: true, trekkerMinsterett: true, trekkerDager: true, årsak: 'ANNET' } as const;
 
@@ -40,7 +40,7 @@ export const uttaksplanMedFarSomAnnenPart = {
             },
         },
     ],
-} satisfies FellesUttaksplanDto_fpoversikt;
+} satisfies FellesUttaksplanDto;
 
 export const uttaksplanMedMorSomAnnenPart = {
     termindato: '2022-08-17',
@@ -80,4 +80,4 @@ export const uttaksplanMedMorSomAnnenPart = {
             },
         },
     ],
-} satisfies FellesUttaksplanDto_fpoversikt;
+} satisfies FellesUttaksplanDto;

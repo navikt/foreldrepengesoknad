@@ -1,8 +1,8 @@
-import { FellesUttaksplanDto_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { FellesUttaksplanDto, UttakPeriodeDto } from '@navikt/fp-types';
 
 import { annenPartHarInnvilgetUttak, annenPartHarVedtak } from './annenForelderUtils';
 
-const lagPlan = (perioder: UttakPeriodeDto_fpoversikt[]): FellesUttaksplanDto_fpoversikt => ({
+const lagPlan = (perioder: UttakPeriodeDto[]): FellesUttaksplanDto => ({
     antallBarn: 1,
     dekningsgrad: 'HUNDRE',
     perioder,
@@ -15,19 +15,19 @@ const resultat = (innvilget: boolean) => ({
     årsak: 'ANNET' as const,
 });
 
-const søkersVedtaksperiode: UttakPeriodeDto_fpoversikt = {
+const søkersVedtaksperiode: UttakPeriodeDto = {
     fom: '2024-01-01',
     tom: '2024-01-31',
     søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false, resultat: resultat(true) },
 };
 
-const annenPartsSøknadsperiode: UttakPeriodeDto_fpoversikt = {
+const annenPartsSøknadsperiode: UttakPeriodeDto = {
     fom: '2024-02-01',
     tom: '2024-02-29',
     annenPart: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
 };
 
-const annenPartsVedtaksperiode = (innvilget: boolean): UttakPeriodeDto_fpoversikt => ({
+const annenPartsVedtaksperiode = (innvilget: boolean): UttakPeriodeDto => ({
     ...annenPartsSøknadsperiode,
     annenPart: { ...annenPartsSøknadsperiode.annenPart!, resultat: resultat(innvilget) },
 });

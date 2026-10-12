@@ -6,7 +6,7 @@ import { getUttaksprosentFromStillingsprosent, prettifyProsent } from 'utils/utt
 
 import { BodyShort, HStack, Label, VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre, Situasjon, UttakDto_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { NavnPåForeldre, Situasjon, UttakDto, UttakPeriodeDto } from '@navikt/fp-types';
 import { Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
 import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan/validators';
 
@@ -15,7 +15,7 @@ import { UtsettelseIkon } from './UtsettelseIkon';
 import UttaksplanAdvarselIkon from './UttaksplanAdvarselIkon';
 
 interface Props {
-    periode: UttakPeriodeDto_fpoversikt;
+    periode: UttakPeriodeDto;
     navnPåForeldre: NavnPåForeldre;
     familiehendelsesdato: string;
     termindato: string | undefined;
@@ -72,7 +72,7 @@ const PeriodeIkon = ({
     navnPåForeldre,
     erFarEllerMedmor,
 }: {
-    periode: UttakPeriodeDto_fpoversikt;
+    periode: UttakPeriodeDto;
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
 }): React.ReactNode | null => {
@@ -177,7 +177,7 @@ const PeriodeTittel = ({
     erFarEllerMedmor,
     erAleneOmOmsorg,
 }: {
-    periode: UttakPeriodeDto_fpoversikt;
+    periode: UttakPeriodeDto;
     navnPåForeldre: NavnPåForeldre;
     familiehendelsesdato: string;
     termindato: string | undefined;
@@ -221,7 +221,7 @@ const PeriodeTittel = ({
 
 const getPeriodeTittelUttaksPeriode = (
     intl: IntlShape,
-    periode: UttakPeriodeDto_fpoversikt,
+    periode: UttakPeriodeDto,
     navnPåForeldre: NavnPåForeldre,
     familiehendelsesdato: string,
     termindato: string | undefined,
@@ -260,7 +260,7 @@ const getPeriodeTittelUttaksPeriode = (
 const appendPeriodeNavnHvisUttakRundtFødselFarMedmor = (
     intl: IntlShape,
     periodeNavn: string,
-    periode: UttakPeriodeDto_fpoversikt,
+    periode: UttakPeriodeDto,
     situasjon: Situasjon,
     familiehendelsesdato: string,
     termindato: string | undefined,
@@ -271,7 +271,7 @@ const appendPeriodeNavnHvisUttakRundtFødselFarMedmor = (
 };
 
 const isUttaksperiodeFarMedmorPgaFødsel = (
-    periode: UttakPeriodeDto_fpoversikt,
+    periode: UttakPeriodeDto,
     familiehendelsesdato: string,
     termindato: string | undefined,
 ): boolean => {
@@ -290,7 +290,7 @@ const isUttaksperiodeFarMedmorPgaFødsel = (
 // Far/medmor kan velje å ta fedrekvote samtidig med mor sitt uttak rundt fødsel – då skal
 // perioden merkast som "rundt fødsel" i visninga, uavhengig av om ho faktisk ligg i det lovpålagte
 // tidsromet (det sjekkast separat i erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel).
-const erFarMedmorMedValgForUttakRundtFødsel = (søker: UttakDto_fpoversikt): boolean => {
+const erFarMedmorMedValgForUttakRundtFødsel = (søker: UttakDto): boolean => {
     return (
         Uttaksperioden.erUttaksperiode(søker) &&
         søker.forelder === 'FAR_MEDMOR' &&

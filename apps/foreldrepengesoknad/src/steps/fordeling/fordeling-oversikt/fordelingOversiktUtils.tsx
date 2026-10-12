@@ -26,7 +26,7 @@ import {
     Minsteretter,
     NavnPåForeldre,
     SøkersituasjonFp,
-    UttakPeriodeDto_fpoversikt,
+    UttakPeriodeDto,
     isAdoptertBarn,
     isFødtBarn,
     isUfødtBarn,
@@ -266,7 +266,7 @@ const getFellesInfoTekst = (
 };
 
 const getAntallDagerSøkerensKvoteBruktAvAnnenPart = (
-    uttaksplanAnnenPart: UttakPeriodeDto_fpoversikt[] | undefined,
+    uttaksplanAnnenPart: UttakPeriodeDto[] | undefined,
     kontoer: KontoBeregningDto,
     erFarEllerMedmor: boolean,
     familiehendelsesdato: string,
@@ -280,7 +280,7 @@ const getAntallDagerSøkerensKvoteBruktAvAnnenPart = (
 };
 
 const getAntallDagerFellesperiodeBruktAvAnnenPart = (
-    uttaksplanAnnenPart: UttakPeriodeDto_fpoversikt[] | undefined,
+    uttaksplanAnnenPart: UttakPeriodeDto[] | undefined,
     kontoer: KontoBeregningDto,
     erFarEllerMedmor: boolean,
     familiehendelsesdato: string,
@@ -778,7 +778,7 @@ export const getFordelingFraKontoer = (
     navnPåForeldre: NavnPåForeldre,
     annenForelder: AnnenForelder,
     intl: IntlShape,
-    uttaksplanAnnenPart?: UttakPeriodeDto_fpoversikt[],
+    uttaksplanAnnenPart?: UttakPeriodeDto[],
 ): DelInformasjon[] => {
     const navnMor = navnPåForeldre.mor;
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
@@ -927,7 +927,7 @@ export const getBeggeHarRettGrafFordeling = (
 export const getSisteUttaksdagAnnenForelder = (
     erFarEllerMedmor: boolean,
     deltUttak: boolean,
-    perioderAnnenPart: UttakPeriodeDto_fpoversikt[] | undefined,
+    perioderAnnenPart: UttakPeriodeDto[] | undefined,
 ): string | undefined => {
     if (!deltUttak || !perioderAnnenPart || perioderAnnenPart.length === 0) {
         return undefined;

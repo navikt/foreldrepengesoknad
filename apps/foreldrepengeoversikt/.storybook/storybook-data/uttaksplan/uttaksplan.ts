@@ -1,4 +1,4 @@
-import { FellesUttaksplanDto_fpoversikt } from '@navikt/fp-types';
+import { FellesUttaksplanDto } from '@navikt/fp-types';
 
 const innvilget = {
     innvilget: true,
@@ -70,4 +70,4 @@ export const uttaksplan = {
             },
         },
     ],
-} satisfies FellesUttaksplanDto_fpoversikt;
+} satisfies FellesUttaksplanDto;

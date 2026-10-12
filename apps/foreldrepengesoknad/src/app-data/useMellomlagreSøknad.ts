@@ -7,7 +7,7 @@ import { VERSJON_MELLOMLAGRING } from 'utils/mellomlagringUtils';
 
 import { ApiError, captureApiError, captureMessage } from '@navikt/fp-observability';
 import {
-    FellesUttaksplanDto_fpoversikt,
+    FellesUttaksplanDto,
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
     FpSoknadProblemDetails,
@@ -22,7 +22,7 @@ export type FpMellomlagretData = {
     foreldrepengerSaker: FpSak_fpoversikt[];
     erEndringssøknad: boolean;
     søknadGjelderEtNyttBarn?: boolean;
-    fellesUttaksplan?: FellesUttaksplanDto_fpoversikt;
+    fellesUttaksplan?: FellesUttaksplanDto;
 } & ContextDataMap;
 
 type MellomlagreSøknadOptions = {

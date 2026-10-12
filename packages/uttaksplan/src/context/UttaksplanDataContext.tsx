@@ -5,7 +5,7 @@ import {
     EksternArbeidsforholdDto_fpoversikt,
     Familiesituasjon,
     KontoBeregningDto,
-    UttakPeriodeDto_fpoversikt,
+    UttakPeriodeDto,
     isFødtBarn,
 } from '@navikt/fp-types';
 import { getFamiliehendelsedato, getFamiliesituasjon } from '@navikt/fp-utils';
@@ -19,7 +19,7 @@ type Props = {
     valgtStønadskvote: KontoBeregningDto;
     harAktivitetskravIPeriodeUtenUttak: boolean;
     erPeriodeneTilAnnenPartLåst: boolean;
-    perioder: UttakPeriodeDto_fpoversikt[];
+    perioder: UttakPeriodeDto[];
     aktiveArbeidsforhold?: EksternArbeidsforholdDto_fpoversikt[];
     children: React.ReactNode;
     erEndringssøknad: boolean;
@@ -73,10 +73,10 @@ export const useUttaksplanData = () => {
 };
 
 // TODO (TOR) Denne fjerninga av avslåtte periodar uten trekkdagar bør ligga i backend
-const harTrekkdager = (part: UttakPeriodeDto_fpoversikt['søker']): boolean =>
+const harTrekkdager = (part: UttakPeriodeDto['søker']): boolean =>
     !part || !(part.resultat?.innvilget === false && part.resultat.trekkerDager === false);
 
-const filtrerBortParterUtenTrekkdager = (perioder: UttakPeriodeDto_fpoversikt[]): UttakPeriodeDto_fpoversikt[] =>
+const filtrerBortParterUtenTrekkdager = (perioder: UttakPeriodeDto[]): UttakPeriodeDto[] =>
     perioder
         .map((periode) => ({
             ...periode,

@@ -3,7 +3,7 @@ import isoWeek from 'dayjs/plugin/isoWeek';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { KontoBeregningDto, KontoDto, OmBarnetPlanlegger, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { KontoBeregningDto, KontoDto, OmBarnetPlanlegger, UttakPeriodeDto } from '@navikt/fp-types';
 import { Uttaksdagen, treUkerSiden } from '@navikt/fp-utils';
 import { deltUttak, ikkeDeltUttak } from '@navikt/fp-uttaksplan/delt-uttak';
 
@@ -21,8 +21,8 @@ import {
 } from './stønadskvoterUtils';
 
 export interface PlanForslag {
-    søker1: UttakPeriodeDto_fpoversikt[];
-    søker2: UttakPeriodeDto_fpoversikt[];
+    søker1: UttakPeriodeDto[];
+    søker2: UttakPeriodeDto[];
 }
 
 dayjs.extend(isoWeek);
@@ -408,7 +408,7 @@ export const lagForslagTilPlan = ({
 // forelderen på `.søker` eller `.annenPart`).
 export const getSøkersPerioder = (
     erDeltUttak: boolean,
-    gjeldendeUttaksplan: UttakPeriodeDto_fpoversikt[],
+    gjeldendeUttaksplan: UttakPeriodeDto[],
     erFarEllerMedmor: boolean,
     starterForelder?: 'MOR' | 'FAR_MEDMOR',
 ) => {
@@ -422,7 +422,7 @@ export const getSøkersPerioder = (
 
 export const getAnnenpartsPerioder = (
     erDeltUttak: boolean,
-    gjeldendeUttaksplan: UttakPeriodeDto_fpoversikt[],
+    gjeldendeUttaksplan: UttakPeriodeDto[],
     erFarEllerMedmor: boolean,
     starterForelder?: 'MOR' | 'FAR_MEDMOR',
 ) => {

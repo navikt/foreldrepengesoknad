@@ -4,12 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { BodyShort, Box, Label, List, VStack } from '@navikt/ds-react';
 
 import { Skjemanummer } from '@navikt/fp-constants';
-import {
-    Attachment,
-    AttachmentMetadataTidsperiode,
-    NavnPåForeldre,
-    UttakPeriodeDto_fpoversikt,
-} from '@navikt/fp-types';
+import { Attachment, AttachmentMetadataTidsperiode, NavnPåForeldre, UttakPeriodeDto } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
 import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan/validators';
 import { notEmpty } from '@navikt/fp-validation';
@@ -37,7 +32,7 @@ const ManglerDokumentasjon = ({ headerLabel, bodyLabel }: ManglerDokumentasjonPr
     </VStack>
 );
 
-const isPeriodeMedMorInnleggelse = (periode: UttakPeriodeDto_fpoversikt, familiehendelsedato: string) => {
+const isPeriodeMedMorInnleggelse = (periode: UttakPeriodeDto, familiehendelsedato: string) => {
     const søker = periode.søker;
     if (!søker) {
         return false;
@@ -78,7 +73,7 @@ interface Props {
     attachment: Attachment;
     erFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
-    uttaksperioderSomManglerVedlegg: UttakPeriodeDto_fpoversikt[];
+    uttaksperioderSomManglerVedlegg: UttakPeriodeDto[];
     familiehendelsedato: string;
 }
 

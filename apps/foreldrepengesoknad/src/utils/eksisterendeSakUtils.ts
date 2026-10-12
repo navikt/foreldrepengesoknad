@@ -11,8 +11,8 @@ import { BarnType, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
     AnnenForelderDto_fpoversikt,
     Barn,
-    EøsUttakDto_fpoversikt,
-    FellesUttaksplanDto_fpoversikt,
+    EøsUttakDto,
+    FellesUttaksplanDto,
     FpBarnDto_fpoversikt,
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
@@ -20,8 +20,8 @@ import {
     Person_fpoversikt,
     Situasjon,
     Søkerrolle,
-    UttakDto_fpoversikt,
-    UttakPeriodeDto_fpoversikt,
+    UttakDto,
+    UttakPeriodeDto,
     isAdoptertBarn,
     isFødtBarn,
     isUfødtBarn,
@@ -32,7 +32,7 @@ import { getFamiliehendelseType } from './familiehendelseUtils';
 import { getKjønnFromFnrString } from './personUtils';
 
 export const mapAnnenPartsEksisterendeSakFromDTO = (
-    eksisterendeSakAnnenPart: FellesUttaksplanDto_fpoversikt | undefined,
+    eksisterendeSakAnnenPart: FellesUttaksplanDto | undefined,
     barn: Barn,
     søkerErFarEllerMedmor: boolean,
     familiehendelsesdato: string,
@@ -448,20 +448,20 @@ export const lagEndringsSøknad = (
 };
 
 export const erPeriodeIOpprinneligPlan = (
-    eksisterendePerioder: UttakPeriodeDto_fpoversikt[],
-    nyPeriode: UttakPeriodeDto_fpoversikt,
+    eksisterendePerioder: UttakPeriodeDto[],
+    nyPeriode: UttakPeriodeDto,
 ): boolean => {
     return eksisterendePerioder.some((p) => erLikPeriode(nyPeriode, p));
 };
 
-const erLikPeriode = (a: UttakPeriodeDto_fpoversikt, b: UttakPeriodeDto_fpoversikt): boolean =>
+const erLikPeriode = (a: UttakPeriodeDto, b: UttakPeriodeDto): boolean =>
     a.fom === b.fom &&
     a.tom === b.tom &&
     erLikUttakDto(a.søker, b.søker) &&
     erLikUttakDto(a.annenPart, b.annenPart) &&
     erLikEøsUttakDto(a.annenPartEøs, b.annenPartEøs);
 
-const erLikUttakDto = (a: UttakDto_fpoversikt | undefined, b: UttakDto_fpoversikt | undefined): boolean => {
+const erLikUttakDto = (a: UttakDto | undefined, b: UttakDto | undefined): boolean => {
     if (!a || !b) {
         return a === b;
     }
@@ -481,7 +481,7 @@ const erLikUttakDto = (a: UttakDto_fpoversikt | undefined, b: UttakDto_fpoversik
     );
 };
 
-const erLikEøsUttakDto = (a: EøsUttakDto_fpoversikt | undefined, b: EøsUttakDto_fpoversikt | undefined): boolean => {
+const erLikEøsUttakDto = (a: EøsUttakDto | undefined, b: EøsUttakDto | undefined): boolean => {
     if (!a || !b) {
         return a === b;
     }

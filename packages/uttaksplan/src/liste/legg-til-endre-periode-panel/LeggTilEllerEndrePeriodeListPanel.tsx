@@ -7,7 +7,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, Button, ErrorMessage, HStack, Heading, Radio, VStack } from '@navikt/ds-react';
 
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
-import { BrukerRolleSak_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, UttakPeriodeDto } from '@navikt/fp-types';
 import { Tidsperioden, omitMany } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
@@ -71,7 +71,7 @@ const byggEnkelHandlingPerioder = (
     tom: string,
     søker: BrukerRolleSak_fpoversikt,
     values: FormValues,
-): UttakPeriodeDto_fpoversikt[] | undefined => {
+): UttakPeriodeDto[] | undefined => {
     switch (hvaVilDuGjøre) {
         case 'LEGG_TIL_FERIE':
             // forelder settes til MOR fordi feltet er påkrevd, men ferie behandles likt for alle
@@ -103,13 +103,13 @@ const byggEnkelHandlingPerioder = (
     }
 };
 
-const erOverlappendeMedEøsPerioder = (perioder: UttakPeriodeDto_fpoversikt[], fom: string, tom: string): boolean =>
+const erOverlappendeMedEøsPerioder = (perioder: UttakPeriodeDto[], fom: string, tom: string): boolean =>
     perioder.some((periode) => !!periode.annenPartEøs && Tidsperioden.forPeriode(periode).overlapper({ fom, tom }));
 
 const skalViseEndreEllerForskyvPanel = (
     harPeriodeDerMorsAktivitetIkkeErValgt: boolean,
     kanKunErstatte: boolean,
-    uttakPerioder: UttakPeriodeDto_fpoversikt[],
+    uttakPerioder: UttakPeriodeDto[],
     fom: string,
     tom: string,
 ): boolean =>
@@ -174,7 +174,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         erGradert: erGradertMorsUttak(hvaVilDuGjøre, forelder, skalDuKombinereArbeidOgUttakMor),
     });
 
-    const handleAddPeriode = (nyPeriode: UttakPeriodeDto_fpoversikt[], skalForskyve: boolean) => {
+    const handleAddPeriode = (nyPeriode: UttakPeriodeDto[], skalForskyve: boolean) => {
         const builder = new UttakPeriodeBuilder(allePerioder, 'liste');
         if (uttaksplanperiode) {
             builder.fjernUttakPerioder([uttaksplanperiode], false);

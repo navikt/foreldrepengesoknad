@@ -1,44 +1,44 @@
-import { UttakDto_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { UttakDto, UttakPeriodeDto } from '@navikt/fp-types';
 
 import { Uttaksdagen } from './Uttaksdagen';
 
-// Kun for funksjoner som kun sjekker på UttakDto_fpoversikt (éi part av eit periodeintervall)
-// eller UttakPeriodeDto_fpoversikt (heile intervallet). Validatorer med andre input kan legges i
+// Kun for funksjoner som kun sjekker på UttakDto (éi part av eit periodeintervall)
+// eller UttakPeriodeDto (heile intervallet). Validatorer med andre input kan legges i
 // UttaksperiodeValidatorer.
 
 export const Uttaksperioden = {
-    erAvslåttPeriode(part: UttakDto_fpoversikt) {
+    erAvslåttPeriode(part: UttakDto) {
         return part.resultat !== undefined && part.resultat.innvilget !== true;
     },
 
-    erUttaksperiode(part: UttakDto_fpoversikt) {
+    erUttaksperiode(part: UttakDto) {
         return !part.overføringÅrsak && !part.utsettelseÅrsak;
     },
 
-    erOverføringsperiode(part: UttakDto_fpoversikt) {
+    erOverføringsperiode(part: UttakDto) {
         return !!part.overføringÅrsak;
     },
 
     // Opphold har ikkje lenger noko eige oppholdÅrsak-felt frå backend – det er strukturelt
     // ein periode der søkjar ikkje har uttak medan annan part har det. Årsaka til oppholdet er
     // då direkte annan part sin kontoType.
-    erOppholdsperiode(periode: UttakPeriodeDto_fpoversikt) {
+    erOppholdsperiode(periode: UttakPeriodeDto) {
         return !periode.søker && !!periode.annenPart;
     },
 
-    erUtsettelsesperiode(part: UttakDto_fpoversikt) {
+    erUtsettelsesperiode(part: UttakDto) {
         return part.utsettelseÅrsak !== undefined && part.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER';
     },
 
-    erSamtidigUttak(part: UttakDto_fpoversikt) {
+    erSamtidigUttak(part: UttakDto) {
         return part.samtidigUttak !== undefined;
     },
 
-    erPrematuruker(part: UttakDto_fpoversikt) {
+    erPrematuruker(part: UttakDto) {
         return part.kontoType !== undefined && part.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
     },
 
-    erFlerbarnsdager(part: UttakDto_fpoversikt) {
+    erFlerbarnsdager(part: UttakDto) {
         return !!part.flerbarnsdager;
     },
 

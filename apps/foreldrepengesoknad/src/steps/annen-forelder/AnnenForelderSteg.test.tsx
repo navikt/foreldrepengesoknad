@@ -14,7 +14,7 @@ import { getUttaksplanParam } from 'utils/annenForelderUtils';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { formHookMessages } from '@navikt/fp-form-hooks';
-import { UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriodeDto } from '@navikt/fp-types';
 import { IntlProvider, uiMessages } from '@navikt/fp-ui';
 
 import messages from '../../intl/nb_NO.json';
@@ -629,7 +629,7 @@ describe('<AnnenForelderSteg>', () => {
         'beholder gjenbrukt plan ved første datoinnfylling bare når aleneomsorg er uendret: %s',
         async (erAleneOmOmsorg) => {
             const saksnummer = saker.foreldrepenger[0]!.saksnummer;
-            const plan: UttakPeriodeDto_fpoversikt[] = [
+            const plan: UttakPeriodeDto[] = [
                 {
                     fom: '2021-03-15',
                     tom: '2021-03-26',

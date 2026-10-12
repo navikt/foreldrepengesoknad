@@ -1,4 +1,4 @@
-import { UttakDto_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { UttakDto, UttakPeriodeDto } from '@navikt/fp-types';
 
 import {
     erAvslåttPeriode,
@@ -11,7 +11,7 @@ import {
 const FOM = '2025-06-02';
 const TOM = '2025-07-25';
 
-const lagFarPart = (overrides: Partial<UttakDto_fpoversikt> = {}): UttakDto_fpoversikt => ({
+const lagFarPart = (overrides: Partial<UttakDto> = {}): UttakDto => ({
     forelder: 'FAR_MEDMOR',
     kontoType: 'FELLESPERIODE',
     flerbarnsdager: false,
@@ -19,21 +19,20 @@ const lagFarPart = (overrides: Partial<UttakDto_fpoversikt> = {}): UttakDto_fpov
     ...overrides,
 });
 
-const lagMorPart = (overrides: Partial<UttakDto_fpoversikt> = {}): UttakDto_fpoversikt => ({
+const lagMorPart = (overrides: Partial<UttakDto> = {}): UttakDto => ({
     forelder: 'MOR',
     kontoType: 'MØDREKVOTE',
     flerbarnsdager: false,
     ...overrides,
 });
 
-const lagPeriode = (
-    parter: Pick<UttakPeriodeDto_fpoversikt, 'søker' | 'annenPart'>,
-    fom = FOM,
-    tom = TOM,
-): UttakPeriodeDto_fpoversikt => ({ fom, tom, ...parter });
+const lagPeriode = (parter: Pick<UttakPeriodeDto, 'søker' | 'annenPart'>, fom = FOM, tom = TOM): UttakPeriodeDto => ({
+    fom,
+    tom,
+    ...parter,
+});
 
-const lagFarSøkerPeriode = (overrides: Partial<UttakDto_fpoversikt> = {}) =>
-    lagPeriode({ søker: lagFarPart(overrides) });
+const lagFarSøkerPeriode = (overrides: Partial<UttakDto> = {}) => lagPeriode({ søker: lagFarPart(overrides) });
 
 describe('sorterUttakPerioder', () => {
     const perioder = [
@@ -331,14 +330,14 @@ describe('finnAntallTidelerÅTrekkeForPart', () => {
 });
 
 describe('erAvslåttPeriode', () => {
-    const innvilget: UttakDto_fpoversikt = {
+    const innvilget: UttakDto = {
         forelder: 'FAR_MEDMOR',
         kontoType: 'FEDREKVOTE',
         samtidigUttak: 50,
         flerbarnsdager: false,
         resultat: { innvilget: true, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
     };
-    const avslått: UttakDto_fpoversikt = {
+    const avslått: UttakDto = {
         forelder: 'MOR',
         kontoType: 'MØDREKVOTE',
         samtidigUttak: 50,

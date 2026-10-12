@@ -22,8 +22,8 @@ import {
     SøkerDto,
     Søkerrolle,
     UtsettelsesÅrsak,
-    UtsettelseÅrsak_fpoversikt,
-    UttakPeriodeDto_fpoversikt,
+    UtsettelseÅrsak,
+    UttakPeriodeDto,
     Uttaksplanperiode,
     isAdoptertBarn,
     isAdoptertStebarn,
@@ -316,11 +316,11 @@ export const mapTilEndringssøknadDto = (
 };
 
 const leggTilFriUtsettelseForInnsending = (
-    perioder: UttakPeriodeDto_fpoversikt[],
+    perioder: UttakPeriodeDto[],
     endringstidspunkt: string,
     søkersRolle: 'MOR' | 'FAR_MEDMOR',
-): UttakPeriodeDto_fpoversikt[] => {
-    const friPeriode: UttakPeriodeDto_fpoversikt = {
+): UttakPeriodeDto[] => {
+    const friPeriode: UttakPeriodeDto = {
         ...finnTidsromForFriUtsettelse(perioder, endringstidspunkt),
         søker: { forelder: søkersRolle, utsettelseÅrsak: 'FRI', flerbarnsdager: false },
     };
@@ -330,7 +330,7 @@ const leggTilFriUtsettelseForInnsending = (
 const finnOpprinneligPlan = (
     opprinneligUttaksplan: OpprinneligUttaksplan | undefined,
     valgtEksisterendeSaksnr: string,
-): UttakPeriodeDto_fpoversikt[] => {
+): UttakPeriodeDto[] => {
     if (opprinneligUttaksplan === undefined) {
         throw new Error('Mangler opprinnelig uttaksplan for endringssøknad');
     }
@@ -341,9 +341,9 @@ const finnOpprinneligPlan = (
 };
 
 const filtrerPerioderFraOgMedEndringstidspunkt = (
-    perioder: UttakPeriodeDto_fpoversikt[],
+    perioder: UttakPeriodeDto[],
     endringstidspunkt: string,
-): UttakPeriodeDto_fpoversikt[] => {
+): UttakPeriodeDto[] => {
     const endring = dayjs(endringstidspunkt);
     return perioder.filter(
         (periode) =>
@@ -352,13 +352,13 @@ const filtrerPerioderFraOgMedEndringstidspunkt = (
     );
 };
 
-const filtrerUtEøsPeriode = (nyUttaksplan: UttakPeriodeDto_fpoversikt[]): UttakPeriodeDto_fpoversikt[] => {
+const filtrerUtEøsPeriode = (nyUttaksplan: UttakPeriodeDto[]): UttakPeriodeDto[] => {
     // Ei "eøs-periode" i det gamle flate modellen var ei rein annenPartEøs-rad utan .søker/.annenPart.
     // Slike periodar manglar no både .søker og .annenPart.
     return nyUttaksplan.filter((periode) => periode.søker !== undefined || periode.annenPart !== undefined);
 };
 
-const filtrerUtAvslåttePerioder = (perioder: UttakPeriodeDto_fpoversikt[]): UttakPeriodeDto_fpoversikt[] => {
+const filtrerUtAvslåttePerioder = (perioder: UttakPeriodeDto[]): UttakPeriodeDto[] => {
     // Ikke fjern bare søkerdelen: da ville backend tolket et gjenværende uttak hos annen part som et nytt opphold.
     return perioder.filter((periode) => periode.søker?.resultat?.innvilget !== false);
 };
@@ -366,11 +366,11 @@ const filtrerUtAvslåttePerioder = (perioder: UttakPeriodeDto_fpoversikt[]): Utt
 // Ved endringssøknad blir annan part sitt uttak sendt som opphald, slik opphaldsradene i søkjaren sitt
 // eige vedtak vart sende før. Førstegongssøknaden sender berre søkjaren sine eigne periodar.
 // Annan part sine utsetjingar, avslag og periodar på kontoar utan opphaldsårsak (t.d. FFF) er ikkje opphald.
-const filtrerUtAnnenPartsPerioder = (uttaksplan: UttakPeriodeDto_fpoversikt[]): UttakPeriodeDto_fpoversikt[] => {
+const filtrerUtAnnenPartsPerioder = (uttaksplan: UttakPeriodeDto[]): UttakPeriodeDto[] => {
     return uttaksplan.filter((periode) => periode.søker !== undefined || erOppholdSomKanSendast(periode));
 };
 
-const erOppholdSomKanSendast = (periode: UttakPeriodeDto_fpoversikt): boolean => {
+const erOppholdSomKanSendast = (periode: UttakPeriodeDto): boolean => {
     const annenPart = periode.annenPart;
     return (
         Uttaksperioden.erOppholdsperiode(periode) &&
@@ -382,7 +382,7 @@ const erOppholdSomKanSendast = (periode: UttakPeriodeDto_fpoversikt): boolean =>
 };
 
 const midlertidigMappingAvUttaksplan = (
-    uttaksplan: UttakPeriodeDto_fpoversikt[],
+    uttaksplan: UttakPeriodeDto[],
     barn: Barn,
     annenForelder: AnnenForelder,
 ): Uttaksplanperiode[] => {
@@ -477,7 +477,7 @@ const kontoTypeTilOppholdsårsak = (kontoType: KontoType | undefined): Oppholds�
     }
 };
 
-const midlertidigMappingAvUtsettelseÅrsak = (årsak: UtsettelseÅrsak_fpoversikt): UtsettelsesÅrsak => {
+const midlertidigMappingAvUtsettelseÅrsak = (årsak: UtsettelseÅrsak): UtsettelsesÅrsak => {
     switch (årsak) {
         case 'ARBEID': {
             return 'ARBEID';

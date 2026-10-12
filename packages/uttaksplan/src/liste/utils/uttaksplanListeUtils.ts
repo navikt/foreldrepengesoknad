@@ -6,8 +6,8 @@ import {
     KontoTypeUttak,
     MorsAktivitet,
     NavnPåForeldre,
-    UtsettelseÅrsak_fpoversikt,
-    UttakDto_fpoversikt,
+    UtsettelseÅrsak,
+    UttakDto,
 } from '@navikt/fp-types';
 import { capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 
@@ -111,7 +111,7 @@ export const getStønadskvoteNavn = (intl: IntlShape, options: GetStønadskvoteN
     return intl.formatMessage({ id: `uttaksplan.stønadskvotetype.${konto}` });
 };
 
-export const finnTekstForUtsettelseÅrsak = (intl: IntlShape, utsettelseÅrsak: UtsettelseÅrsak_fpoversikt) => {
+export const finnTekstForUtsettelseÅrsak = (intl: IntlShape, utsettelseÅrsak: UtsettelseÅrsak) => {
     switch (utsettelseÅrsak) {
         case 'ARBEID':
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.ARBEID' });
@@ -132,7 +132,7 @@ export const finnTekstForUtsettelseÅrsak = (intl: IntlShape, utsettelseÅrsak: 
     }
 };
 
-const partNøkkel = (part?: UttakDto_fpoversikt): string =>
+const partNøkkel = (part?: UttakDto): string =>
     part
         ? `${part.forelder}-${part.kontoType}-${part.flerbarnsdager}-${part.utsettelseÅrsak}-${part.overføringÅrsak}`
         : '';

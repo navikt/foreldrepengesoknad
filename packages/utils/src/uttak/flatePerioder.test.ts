@@ -1,10 +1,10 @@
-import { UttakPeriodeDto_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriodeDto, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { konverterFlatePerioderTilIntervall } from './flatePerioder';
 
 describe('konverterFlatePerioderTilIntervall', () => {
     it('lèt periodar i intervallmodellen vere uendra', () => {
-        const perioder: UttakPeriodeDto_fpoversikt[] = [
+        const perioder: UttakPeriodeDto[] = [
             {
                 fom: '2026-08-03',
                 tom: '2026-08-07',

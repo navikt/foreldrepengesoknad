@@ -587,76 +587,76 @@ export type TidslinjeHendelseType_fpoversikt =
     | 'FORELDREPENGER_FEIL_PRAKSIS_UTSETTELSE_INFOBREV'
     | 'UTGÅENDE_VARSEL_TILBAKEBETALING';
 
-export type FellesUttaksplanDto_fpoversikt = {
+export type FellesUttaksplanDto = {
     antallBarn: number;
-    dekningsgrad: Dekningsgrad_fpoversikt;
-    perioder: UttakPeriodeDto_fpoversikt[];
+    dekningsgrad: Dekningsgrad;
+    perioder: UttakPeriodeDto[];
     termindato?: string;
 };
 
-export type Aktivitet_fpoversikt2 = {
-    arbeidsgiver?: Arbeidsgiver_fpoversikt2;
+export type Aktivitet = {
+    arbeidsgiver?: Arbeidsgiver;
     arbeidsgiverNavn?: string;
-    type: AktivitetType_fpoversikt2;
+    type: AktivitetType;
 };
 
-export type AktivitetType_fpoversikt2 = 'FRILANS' | 'ORDINÆRT_ARBEID' | 'SELVSTENDIG_NÆRINGSDRIVENDE' | 'ANNET';
+export type AktivitetType = 'FRILANS' | 'ORDINÆRT_ARBEID' | 'SELVSTENDIG_NÆRINGSDRIVENDE' | 'ANNET';
 
-export type Arbeidsgiver_fpoversikt2 = {
+export type Arbeidsgiver = {
     id: string;
-    type?: ArbeidsgiverType_fpoversikt2;
+    type?: ArbeidsgiverType;
 };
 
-export type ArbeidsgiverType_fpoversikt2 = 'PRIVAT' | 'ORGANISASJON';
+export type ArbeidsgiverType = 'PRIVAT' | 'ORGANISASJON';
 
-export type Dekningsgrad_fpoversikt = 'ÅTTI' | 'HUNDRE';
+export type Dekningsgrad = 'ÅTTI' | 'HUNDRE';
 
-export type EøsUttakDto_fpoversikt = {
+export type EøsUttakDto = {
     kontoType: no_nav_foreldrepenger_kontrakter_felles_kodeverk_KontoType;
     trekkdager: number;
 };
 
-export type Gradering_fpoversikt2 = {
-    aktivitet?: Aktivitet_fpoversikt2;
+export type Gradering = {
+    aktivitet?: Aktivitet;
     arbeidstidprosent: number;
 };
 
-export type OverføringÅrsak_fpoversikt =
+export type OverføringÅrsak =
     'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' | 'SYKDOM_ANNEN_FORELDER' | 'ALENEOMSORG' | 'IKKE_RETT_ANNEN_FORELDER';
 
-export type Rolle_fpoversikt = 'MOR' | 'FAR_MEDMOR';
+export type Rolle = 'MOR' | 'FAR_MEDMOR';
 
-export type UtsettelseÅrsak_fpoversikt =
+export type UtsettelseÅrsak =
     'ARBEID' | 'FERIE' | 'SØKER_SYKDOM' | 'SØKER_INNLAGT' | 'BARN_INNLAGT' | 'HV_ØVELSE' | 'NAV_TILTAK' | 'FRI';
 
-export type UttakDto_fpoversikt = {
+export type UttakDto = {
     flerbarnsdager: boolean;
-    forelder: Rolle_fpoversikt;
-    gradering?: Gradering_fpoversikt2;
+    forelder: Rolle;
+    gradering?: Gradering;
     kontoType?: no_nav_foreldrepenger_kontrakter_felles_kodeverk_KontoType;
     morsAktivitet?: no_nav_foreldrepenger_kontrakter_felles_kodeverk_MorsAktivitet;
-    overføringÅrsak?: OverføringÅrsak_fpoversikt;
-    resultat?: VedtattResultat_fpoversikt;
+    overføringÅrsak?: OverføringÅrsak;
+    resultat?: VedtattResultat;
     samtidigUttak?: number;
-    utsettelseÅrsak?: UtsettelseÅrsak_fpoversikt;
+    utsettelseÅrsak?: UtsettelseÅrsak;
 };
 
-export type UttakPeriodeDto_fpoversikt = {
-    annenPart?: UttakDto_fpoversikt;
-    annenPartEøs?: EøsUttakDto_fpoversikt;
+export type UttakPeriodeDto = {
+    annenPart?: UttakDto;
+    annenPartEøs?: EøsUttakDto;
     fom: string;
-    søker?: UttakDto_fpoversikt;
+    søker?: UttakDto;
     tom: string;
 };
 
-export type VedtattResultat_fpoversikt = {
+export type VedtattResultat = {
     innvilget: boolean;
     trekkerDager: boolean;
     trekkerMinsterett: boolean;
-    årsak: Årsak_fpoversikt;
+    årsak: Årsak;
 };
 
-export type Årsak_fpoversikt =
+export type Årsak =
     | 'ANNET'
     | 'AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER'
     | 'AVSLAG_FRATREKK_PLEIEPENGER'

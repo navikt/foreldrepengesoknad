@@ -30,12 +30,7 @@ import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/ut
 import { BodyLong, BodyShort, Box, Heading, InlineMessage, Tabs, ToggleGroup, VStack } from '@navikt/ds-react';
 
 import { loggUmamiEvent } from '@navikt/fp-observability';
-import {
-    Dekningsgrad,
-    FordelingPlanlegger,
-    KontoBeregningResultatDto,
-    UttakPeriodeDto_fpoversikt,
-} from '@navikt/fp-types';
+import { Dekningsgrad, FordelingPlanlegger, KontoBeregningResultatDto, UttakPeriodeDto } from '@navikt/fp-types';
 import { BluePanel, Infobox, StepButtons } from '@navikt/fp-ui';
 import { compressToUrl, useMedia, useScrollBehaviour } from '@navikt/fp-utils';
 import {
@@ -106,7 +101,7 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
         intl,
     );
 
-    const lagreUttaksplanOgOppdaterUrl = (oppdatertUttaksplan: UttakPeriodeDto_fpoversikt[] | undefined) => {
+    const lagreUttaksplanOgOppdaterUrl = (oppdatertUttaksplan: UttakPeriodeDto[] | undefined) => {
         // I planleggeren finst det ingen ekte EØS-integrasjon, så periodane som blir laga/redigert her
         // har aldri berre `annenPartEøs` – det er difor ikkje lenger nødvendig å filtrera bort ein
         // eigen "EØS-periode"-kategori før lagring slik det var med den flate periodemodellen.
@@ -310,7 +305,7 @@ const AntallUkerVelger = ({
 }: {
     stønadskvoter: KontoBeregningResultatDto;
     hvemHarRett: HvemHarRett;
-    lagreUttaksplanOgOppdaterUrl: (oppdatertUttaksplan: UttakPeriodeDto_fpoversikt[] | undefined) => void;
+    lagreUttaksplanOgOppdaterUrl: (oppdatertUttaksplan: UttakPeriodeDto[] | undefined) => void;
 }) => {
     const intl = useIntl();
 

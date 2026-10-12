@@ -6,11 +6,11 @@ import { IntlShape } from 'react-intl';
 
 import {
     BrukerRolleSak_fpoversikt,
-    EøsUttakDto_fpoversikt,
+    EøsUttakDto,
     MorsAktivitet,
     RettighetType_fpoversikt,
-    UttakDto_fpoversikt,
-    UttakPeriodeDto_fpoversikt,
+    UttakDto,
+    UttakPeriodeDto,
 } from '@navikt/fp-types';
 import { Tidsperioden, Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
 
@@ -89,7 +89,7 @@ const tidelerNedrundet = (dager: number, prosent: number): number => {
  */
 export const finnAntallTidelerÅTrekkeForPart = (
     periode: { fom: string; tom: string },
-    part: UttakDto_fpoversikt,
+    part: UttakDto,
     erFødsel: boolean,
     familiehendelsedato: string,
 ): number => {
@@ -115,7 +115,7 @@ export const finnAntallTidelerÅTrekkeForPart = (
 };
 
 // EØS-trekkdagar kjem ferdig utrekna (maks 1 desimal) frå fp-sak.
-export const finnAntallTidelerÅTrekkeForEøs = (eøs: EøsUttakDto_fpoversikt): number => Math.round(eøs.trekkdager * 10);
+export const finnAntallTidelerÅTrekkeForEøs = (eøs: EøsUttakDto): number => Math.round(eøs.trekkdager * 10);
 
 export const erUttaksperiode = (periode: Uttaksplanperiode) =>
     erPeriodeDto(periode) && finnParter(periode).some((part) => Uttaksperioden.erUttaksperiode(part));
@@ -142,14 +142,14 @@ export const erAvslåttPeriode = (periode: Uttaksplanperiode) => {
 };
 
 // Dei to partane (søker/annenPart) ein periode kan ha uttak for. EØS-parten er ikkje ein
-// UttakDto_fpoversikt-part og handterast difor separat der det trengst (t.d. kvoteBeregning).
-export const finnParter = (periode: UttakPeriodeDto_fpoversikt): UttakDto_fpoversikt[] =>
-    [periode.søker, periode.annenPart].filter((part): part is UttakDto_fpoversikt => part !== undefined);
+// UttakDto-part og handterast difor separat der det trengst (t.d. kvoteBeregning).
+export const finnParter = (periode: UttakPeriodeDto): UttakDto[] =>
+    [periode.søker, periode.annenPart].filter((part): part is UttakDto => part !== undefined);
 
 export const finnPartForForelder = (
-    periode: UttakPeriodeDto_fpoversikt,
+    periode: UttakPeriodeDto,
     forelder: BrukerRolleSak_fpoversikt,
-): UttakDto_fpoversikt | undefined => {
+): UttakDto | undefined => {
     if (periode.søker?.forelder === forelder) {
         return periode.søker;
     }
@@ -183,7 +183,7 @@ export const sorterPerioder = (a: { fom: string; tom: string }, b: { fom: string
     return 0;
 };
 
-export const sorterUttakPerioder = (p1: UttakPeriodeDto_fpoversikt, p2: UttakPeriodeDto_fpoversikt) => {
+export const sorterUttakPerioder = (p1: UttakPeriodeDto, p2: UttakPeriodeDto) => {
     const tidsperiode1 = { fom: p1.fom, tom: p1.tom };
     const tidsperiode2 = { fom: p2.fom, tom: p2.tom };
 
@@ -287,7 +287,7 @@ export const harPeriodeMedUkjentGraderingsaktivitet = (
     });
 };
 
-const erParterLike = (a: UttakDto_fpoversikt | undefined, b: UttakDto_fpoversikt | undefined): boolean => {
+const erParterLike = (a: UttakDto | undefined, b: UttakDto | undefined): boolean => {
     if (!a || !b) {
         return a === b;
     }
@@ -308,20 +308,20 @@ const erParterLike = (a: UttakDto_fpoversikt | undefined, b: UttakDto_fpoversikt
     );
 };
 
-const erEøsParterLike = (a: EøsUttakDto_fpoversikt | undefined, b: EøsUttakDto_fpoversikt | undefined): boolean => {
+const erEøsParterLike = (a: EøsUttakDto | undefined, b: EøsUttakDto | undefined): boolean => {
     if (!a || !b) {
         return a === b;
     }
     return a.kontoType === b.kontoType && a.trekkdager === b.trekkdager;
 };
 
-export const erPerioderEkslFomTomLike = (periode1: UttakPeriodeDto_fpoversikt, periode2: UttakPeriodeDto_fpoversikt) =>
+export const erPerioderEkslFomTomLike = (periode1: UttakPeriodeDto, periode2: UttakPeriodeDto) =>
     erParterLike(periode1.søker, periode2.søker) &&
     erParterLike(periode1.annenPart, periode2.annenPart) &&
     erEøsParterLike(periode1.annenPartEøs, periode2.annenPartEøs);
 
 export const erDetEksisterendePerioderEtterValgtePerioder = (
-    allePerioder: UttakPeriodeDto_fpoversikt[],
+    allePerioder: UttakPeriodeDto[],
     valgtePerioder: Array<{ fom: string; tom: string }>,
 ) => {
     const sisteValgteDag = dayjs.max(valgtePerioder.map((p) => dayjs(p.tom)));
@@ -330,7 +330,7 @@ export const erDetEksisterendePerioderEtterValgtePerioder = (
 };
 
 export const erDetReadonlyPerioderEtterValgtePerioder = (
-    allePerioder: UttakPeriodeDto_fpoversikt[],
+    allePerioder: UttakPeriodeDto[],
     valgtePerioder: Array<{ fom: string; tom: string }>,
     forelderSomHarLåstePerioder: BrukerRolleSak_fpoversikt | undefined,
 ) => {

@@ -15,9 +15,9 @@ import type {
     KontoTypeUttak,
     MorsAktivitet,
     NavnPåForeldre,
-    UttakDto_fpoversikt,
+    UttakDto,
     UttakOverføringÅrsak_fpoversikt,
-    UttakPeriodeDto_fpoversikt,
+    UttakPeriodeDto,
 } from '@navikt/fp-types';
 import { getFloatFromString, getNavnGenitivEierform } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -900,7 +900,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
 };
 
 /**
- * Byggjer éin sammanslått {@link UttakPeriodeDto_fpoversikt} frå skjemaverdiane – ikkje éin rad per
+ * Byggjer éin sammanslått {@link UttakPeriodeDto} frå skjemaverdiane – ikkje éin rad per
  * forelder slik det var i den gamle flate modellen. Kva part («søker»/«annenPart») kvar
  * forelder sine felt hamnar på, er styrt av kven som er innlogga søkjar (parameteren `søker`):
  * MOR-felta hamnar på `.søker` når søkjar er mor, elles på `.annenPart`, og tilsvarande motsett
@@ -911,13 +911,13 @@ export const mapFraFormValuesTilPeriodeDto = (
     periode: { fom: string; tom: string },
     søker: BrukerRolleSak_fpoversikt,
     kanVelgeArbeidsgiver: boolean,
-): UttakPeriodeDto_fpoversikt[] => {
+): UttakPeriodeDto[] => {
     if (!values.forelder) {
         return [];
     }
 
-    let mor: UttakDto_fpoversikt | undefined;
-    let farMedmor: UttakDto_fpoversikt | undefined;
+    let mor: UttakDto | undefined;
+    let farMedmor: UttakDto | undefined;
 
     if (values.forelder === 'MOR' || values.forelder === 'BEGGE') {
         mor = mapMorsUttakFraFormValues(values, søker, kanVelgeArbeidsgiver);
@@ -940,7 +940,7 @@ const mapMorsUttakFraFormValues = (
     values: LeggTilEllerEndrePeriodeFormFormValues,
     søker: BrukerRolleSak_fpoversikt,
     kanVelgeArbeidsgiver: boolean,
-): UttakDto_fpoversikt => {
+): UttakDto => {
     const erOverføringMor = values.kontoTypeMor === 'FEDREKVOTE';
     return {
         forelder: 'MOR',
@@ -965,7 +965,7 @@ const mapFarMedmorsUttakFraFormValues = (
     values: LeggTilEllerEndrePeriodeFormFormValues,
     søker: BrukerRolleSak_fpoversikt,
     kanVelgeArbeidsgiver: boolean,
-): UttakDto_fpoversikt => {
+): UttakDto => {
     const erOverføringFarMedmor = values.kontoTypeFarMedmor === 'MØDREKVOTE';
     return {
         forelder: 'FAR_MEDMOR',
@@ -989,7 +989,7 @@ const mapFarMedmorsUttakFraFormValues = (
 };
 
 export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
-    uttaksplanperioder: UttakPeriodeDto_fpoversikt[],
+    uttaksplanperioder: UttakPeriodeDto[],
     valgtPeriode: { fom: string; tom: string },
     søker: BrukerRolleSak_fpoversikt,
     erPeriodeneTilAnnenPartLåst: boolean,

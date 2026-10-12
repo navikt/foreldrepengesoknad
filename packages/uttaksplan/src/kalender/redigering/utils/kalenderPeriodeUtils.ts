@@ -1,13 +1,13 @@
 import dayjs from 'dayjs';
 
-import { UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriodeDto } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 
 import { UttaksplanperiodeMedKunTapteDager, erPeriodeDto } from '../../../types/UttaksplanPeriode';
 import { countWeekdaysBetween } from '../../../utils/dateUtils';
 import { erPerioderEkslFomTomLike } from '../../../utils/periodeUtils';
 
-export type UttakPeriodeMedAntallDager = UttakPeriodeDto_fpoversikt & {
+export type UttakPeriodeMedAntallDager = UttakPeriodeDto & {
     valgteDagerIPeriode: number;
 };
 

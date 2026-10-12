@@ -5,7 +5,7 @@ import { Skjemanummer } from '@navikt/fp-constants';
 import {
     DokumentDto_fpoversikt,
     EttersendelseDto,
-    FellesUttaksplanDto_fpoversikt,
+    FellesUttaksplanDto,
     FellesUttaksplanRequest_fpoversikt,
     FpOversiktInntektsmeldingDto_fpoversikt,
     KontoBeregningGrunnlagDto,
@@ -93,7 +93,7 @@ export const hentInntektsmelding = (saksnummer: string) =>
 export const hentUttaksplanOptions = (body: FellesUttaksplanRequest_fpoversikt) =>
     queryOptions({
         queryKey: ['UTTAKSPLAN', body],
-        queryFn: () => ky.post(API_URLS.uttaksplan, { json: body }).json<FellesUttaksplanDto_fpoversikt>(),
+        queryFn: () => ky.post(API_URLS.uttaksplan, { json: body }).json<FellesUttaksplanDto>(),
     });
 
 export const hentTidslinjehendelserOptions = (saksnummer: string) =>

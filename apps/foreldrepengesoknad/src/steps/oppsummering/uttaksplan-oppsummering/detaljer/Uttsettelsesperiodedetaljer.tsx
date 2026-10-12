@@ -1,12 +1,12 @@
 import { IntlShape, useIntl } from 'react-intl';
 
-import { UttakDto_fpoversikt } from '@navikt/fp-types';
+import { UttakDto } from '@navikt/fp-types';
 
 import { Feltoppsummering } from './Feltoppsummering';
 import { MorsAktivitetDetaljer } from './MorsaktiviteterDetaljer';
 
 interface Props {
-    periode: UttakDto_fpoversikt;
+    periode: UttakDto;
 }
 
 export const Utsettelsesperiodedetaljer = ({ periode }: Props) => {
@@ -24,7 +24,7 @@ export const Utsettelsesperiodedetaljer = ({ periode }: Props) => {
     );
 };
 
-const getÅrsakTekst = (intl: IntlShape, periode: UttakDto_fpoversikt) => {
+const getÅrsakTekst = (intl: IntlShape, periode: UttakDto) => {
     switch (periode.utsettelseÅrsak) {
         case 'ARBEID': {
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.ARBEID' });

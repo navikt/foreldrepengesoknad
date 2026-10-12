@@ -14,10 +14,10 @@ import { BarnType } from '@navikt/fp-constants';
 import {
     Barn,
     Dekningsgrad,
-    FellesUttaksplanDto_fpoversikt,
+    FellesUttaksplanDto,
     FpPersonopplysningerDto_fpoversikt,
     SøkersituasjonFp,
-    UttakPeriodeDto_fpoversikt,
+    UttakPeriodeDto,
 } from '@navikt/fp-types';
 import {
     ALENE_OM_OMSORG_80_FARMEDMOR,
@@ -84,7 +84,7 @@ type StoryArgs = {
     dekningsgrad: Dekningsgrad;
     fordeling?: Fordeling;
     valgtEksisterendeSaksnr?: string;
-    uttaksplan?: UttakPeriodeDto_fpoversikt[];
+    uttaksplan?: UttakPeriodeDto[];
     opprinneligUttaksplan?: OpprinneligUttaksplan;
     kommerFraPlanlegger?: boolean;
 } & ComponentProps<typeof UttaksplanSteg>;
@@ -689,7 +689,7 @@ const INNVILGET_RESULTAT = {
 } as const;
 
 // Plan lastet fra en eksisterende, ikke-vedtatt sak: alle periodene har resultat (kommer fra gjeldende vedtak).
-const INNVILGET_PLAN_FRA_EKSISTERENDE_SAK: UttakPeriodeDto_fpoversikt[] = [
+const INNVILGET_PLAN_FRA_EKSISTERENDE_SAK: UttakPeriodeDto[] = [
     {
         fom: '2024-06-10',
         tom: '2024-06-28',
@@ -744,7 +744,7 @@ export const NySøknadFørVedtakMedEksisterendeSak: Story = {
                     antallBarn: 1,
                     dekningsgrad: 'HUNDRE',
                     perioder: INNVILGET_PLAN_FRA_EKSISTERENDE_SAK,
-                } satisfies FellesUttaksplanDto_fpoversikt),
+                } satisfies FellesUttaksplanDto),
             ),
         );
     },
@@ -796,7 +796,7 @@ const planleggerUttaksplan = [
             flerbarnsdager: false,
         },
     },
-] satisfies UttakPeriodeDto_fpoversikt[];
+] satisfies UttakPeriodeDto[];
 
 export const FødselMorOgFarBeggeHarRettOverførtFraPlanlegger: Story = {
     beforeEach: FødselMorOgFarBeggeHarRett.beforeEach,

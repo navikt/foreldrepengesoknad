@@ -1,7 +1,7 @@
 import { useIntl } from 'react-intl';
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 
-import { Barn, EksternArbeidsforholdDto_fpoversikt, UttakDto_fpoversikt } from '@navikt/fp-types';
+import { Barn, EksternArbeidsforholdDto_fpoversikt, UttakDto } from '@navikt/fp-types';
 import { skalBesvareFlerbarnsdager } from '@navikt/fp-uttaksplan/flerbarnsdager';
 
 import { getAktivitetTekst } from '../OppsummeringUtils';
@@ -9,7 +9,7 @@ import { Feltoppsummering } from './Feltoppsummering';
 import { MorsAktivitetDetaljer } from './MorsaktiviteterDetaljer';
 
 interface Props {
-    periode: UttakDto_fpoversikt;
+    periode: UttakDto;
     registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[] | undefined;
     annenForelder: AnnenForelder;
     barn: Barn;

@@ -5,13 +5,13 @@ import { useValgtSak } from 'appData/useValgtSak';
 import { useEffect, useMemo } from 'react';
 import { annenPartHarVedtak } from 'utils/annenForelderUtils';
 
-import { FpSak_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { FpSak_fpoversikt, UttakPeriodeDto } from '@navikt/fp-types';
 
 export const useTidligereUttaksplan = (
     erEndringssøknad = false,
     eksisterendeSak?: FpSak_fpoversikt,
 ): {
-    perioder: UttakPeriodeDto_fpoversikt[] | undefined;
+    perioder: UttakPeriodeDto[] | undefined;
     isLoading: boolean;
 } => {
     const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);

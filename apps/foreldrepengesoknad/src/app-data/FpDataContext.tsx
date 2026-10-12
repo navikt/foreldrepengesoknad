@@ -14,7 +14,7 @@ import {
     SøkersituasjonFp,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
-    UttakPeriodeDto_fpoversikt,
+    UttakPeriodeDto,
 } from '@navikt/fp-types';
 
 export enum ContextDataType {
@@ -41,7 +41,7 @@ export enum ContextDataType {
 
 export type OpprinneligUttaksplan = {
     saksnummer: string;
-    perioder: UttakPeriodeDto_fpoversikt[];
+    perioder: UttakPeriodeDto[];
 };
 
 export type ContextDataMap = {
@@ -59,7 +59,7 @@ export type ContextDataMap = {
     [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]?: UtenlandsoppholdPeriode[];
     [ContextDataType.PERIODE_MED_FORELDREPENGER]?: Dekningsgrad;
     [ContextDataType.FORDELING]?: Fordeling;
-    [ContextDataType.UTTAKSPLAN]?: UttakPeriodeDto_fpoversikt[];
+    [ContextDataType.UTTAKSPLAN]?: UttakPeriodeDto[];
     [ContextDataType.OPPRINNELIG_UTTAKSPLAN]?: OpprinneligUttaksplan;
     [ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL]?: boolean;
     [ContextDataType.VEDLEGG]?: VedleggDataType;

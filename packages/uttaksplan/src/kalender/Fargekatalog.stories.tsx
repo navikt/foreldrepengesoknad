@@ -4,12 +4,7 @@ import { ReactNode } from 'react';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
 
-import {
-    EøsUttakDto_fpoversikt,
-    UttakDto_fpoversikt,
-    UttakPeriodeDto_fpoversikt,
-    VedtattResultat_fpoversikt,
-} from '@navikt/fp-types';
+import { EøsUttakDto, UttakDto, UttakPeriodeDto, VedtattResultat } from '@navikt/fp-types';
 import { CalendarLabel, CalendarPeriodColor } from '@navikt/fp-ui';
 
 import {
@@ -36,19 +31,19 @@ const FOM = '2025-06-01';
 const TOM = '2025-06-14';
 const HISTORISK_DATO = '2025-01-01';
 
-const lagUttak = (o: Partial<UttakDto_fpoversikt> = {}): UttakDto_fpoversikt => ({
+const lagUttak = (o: Partial<UttakDto> = {}): UttakDto => ({
     flerbarnsdager: false,
     forelder: 'MOR',
     ...o,
 });
 
-const lagPeriode = (o: Partial<UttakDto_fpoversikt> = {}): UttakPeriodeDto_fpoversikt => ({
+const lagPeriode = (o: Partial<UttakDto> = {}): UttakPeriodeDto => ({
     fom: FOM,
     tom: TOM,
     søker: lagUttak(o),
 });
 
-const lagEøs = (o: Partial<EøsUttakDto_fpoversikt> = {}): UttakPeriodeDto_fpoversikt => ({
+const lagEøs = (o: Partial<EøsUttakDto> = {}): UttakPeriodeDto => ({
     fom: FOM,
     tom: TOM,
     annenPartEøs: { kontoType: 'FELLESPERIODE', trekkdager: 15, ...o },
@@ -58,13 +53,13 @@ const TAPTE: TapteDagerHull = { type: 'TAPTE_DAGER', fom: FOM, tom: TOM, forelde
 const UTEN_UTTAK: PerioderUtenUttakHull = { type: 'PERIODE_UTEN_UTTAK', fom: FOM, tom: TOM };
 const FAMHENDELSE: FamiliehendelseDato = { type: 'FAMILIEHENDELSE', fom: FOM, tom: TOM };
 
-const AVSLAG: VedtattResultat_fpoversikt = {
+const AVSLAG: VedtattResultat = {
     innvilget: false,
     trekkerDager: false,
     trekkerMinsterett: false,
     årsak: 'ANNET',
 };
-const PLEIEPENGE_AVSLAG: VedtattResultat_fpoversikt = {
+const PLEIEPENGE_AVSLAG: VedtattResultat = {
     innvilget: false,
     trekkerDager: false,
     trekkerMinsterett: false,
@@ -238,13 +233,13 @@ const OMRÅDER: FargeOmråde[] = [
                 kontoType: 'FEDREKVOTE',
                 samtidigUttak: 50,
             });
-            const morSamtidig: UttakPeriodeDto_fpoversikt = {
+            const morSamtidig: UttakPeriodeDto = {
                 fom: FOM,
                 tom: TOM,
                 søker: morsUttak,
                 annenPart: farsUttak,
             };
-            const farSamtidig: UttakPeriodeDto_fpoversikt = {
+            const farSamtidig: UttakPeriodeDto = {
                 fom: FOM,
                 tom: TOM,
                 søker: farsUttak,

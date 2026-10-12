@@ -1,4 +1,4 @@
-import { KontoDto, Tidsperiode, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { KontoDto, Tidsperiode, UttakPeriodeDto } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { sorterUttakPerioder } from '../periodeUtils';
@@ -27,16 +27,16 @@ interface ForelderKonfig {
     andreForelderKvote: KontoDto | undefined;
     førsteForelderKontoType: 'MØDREKVOTE' | 'FEDREKVOTE';
     andreForelderKontoType: 'MØDREKVOTE' | 'FEDREKVOTE';
-    førsteForelderPerioder: UttakPeriodeDto_fpoversikt[];
-    andreForelderPerioder: UttakPeriodeDto_fpoversikt[];
+    førsteForelderPerioder: UttakPeriodeDto[];
+    andreForelderPerioder: UttakPeriodeDto[];
 }
 
 const getForelderKonfig = (
     starterForelder: Forelder,
     mødrekvote: KontoDto | undefined,
     fedrekvote: KontoDto | undefined,
-    morsPerioder: UttakPeriodeDto_fpoversikt[],
-    farsPerioder: UttakPeriodeDto_fpoversikt[],
+    morsPerioder: UttakPeriodeDto[],
+    farsPerioder: UttakPeriodeDto[],
 ): ForelderKonfig => {
     const starterMor = starterForelder === 'MOR';
     return {
@@ -60,7 +60,7 @@ const lagPeriode = (
     kontoType: 'MØDREKVOTE' | 'FEDREKVOTE' | 'FELLESPERIODE' | 'FORELDREPENGER_FØR_FØDSEL',
     fom: string,
     tom: string,
-): UttakPeriodeDto_fpoversikt => ({
+): UttakPeriodeDto => ({
     fom,
     tom,
     søker: {
@@ -78,7 +78,7 @@ const lagPeriode = (
  * When `startdato` is provided explicitly (e.g., the same day as `famDato`) the plan starts there
  * with no foreldrepenger-før-fødsel period.
  *
- * Returns et sett `UttakPeriodeDto_fpoversikt` med dei føreslegne periodane for delt uttak, alle lagt
+ * Returns et sett `UttakPeriodeDto` med dei føreslegne periodane for delt uttak, alle lagt
  * på `.søker` (sjå lagPeriode).
  */
 export const deltUttak = ({
@@ -87,7 +87,7 @@ export const deltUttak = ({
     fellesperiodeDagerFørsteForelder,
     starterForelder = 'MOR',
     startdato,
-}: DeltUttakParams): UttakPeriodeDto_fpoversikt[] => {
+}: DeltUttakParams): UttakPeriodeDto[] => {
     if (fellesperiodeDagerFørsteForelder === undefined) {
         return [];
     }
@@ -117,8 +117,8 @@ export const deltUttak = ({
         (fellesperiode?.dager ?? 0) - dagerMedFellesperiodeFørFødsel - fellesperiodeDagerFørsteForelder,
     );
 
-    const morsPerioder: UttakPeriodeDto_fpoversikt[] = [];
-    const farsPerioder: UttakPeriodeDto_fpoversikt[] = [];
+    const morsPerioder: UttakPeriodeDto[] = [];
+    const farsPerioder: UttakPeriodeDto[] = [];
     let currentFomDate = effectiveStartdato;
     let tidsperiode: Tidsperiode;
 

@@ -6,7 +6,7 @@ import ky, { type ResponsePromise } from 'ky';
 import { annenForelderHarNorskFnr, annenPartHarVedtak, getUttaksplanParam } from 'utils/annenForelderUtils';
 
 import {
-    FellesUttaksplanDto_fpoversikt,
+    FellesUttaksplanDto,
     FellesUttaksplanRequest_fpoversikt,
     ForsendelseStatus,
     FpPersonopplysningerDto_fpoversikt,
@@ -129,7 +129,7 @@ export const useStønadsKontoerOptions = () => {
 export const uttaksplanOptions = (data?: FellesUttaksplanRequest_fpoversikt) =>
     queryOptions({
         queryKey: ['UTTAKSPLAN', data],
-        queryFn: () => jsonEllerNull<FellesUttaksplanDto_fpoversikt>(ky.post(API_URLS.uttaksplan, { json: data })),
+        queryFn: () => jsonEllerNull<FellesUttaksplanDto>(ky.post(API_URLS.uttaksplan, { json: data })),
         select: (uttaksplan) => uttaksplan ?? undefined,
         throwOnError: true,
     });

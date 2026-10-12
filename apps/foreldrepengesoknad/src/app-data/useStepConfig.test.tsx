@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router';
 
 import { AttachmentType, BarnType, Skjemanummer } from '@navikt/fp-constants';
-import { FpSak_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { FpSak_fpoversikt, UttakPeriodeDto } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/nb_NO.json';
@@ -49,7 +49,7 @@ const periodeMedDokumentasjonskrav = {
         morsAktivitet: 'ARBEID',
         flerbarnsdager: false,
     },
-} satisfies UttakPeriodeDto_fpoversikt;
+} satisfies UttakPeriodeDto;
 
 const hentSteg = (data: ContextDataMap, erEndringssøknad: boolean, sak?: FpSak_fpoversikt) => {
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });

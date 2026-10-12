@@ -1,4 +1,4 @@
-import { EøsUttakDto_fpoversikt, UttakDto_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { EøsUttakDto, UttakDto, UttakPeriodeDto } from '@navikt/fp-types';
 
 import {
     erSammePeriodeInkludertDatoer,
@@ -7,7 +7,7 @@ import {
     harMinstEnUttaksEllerOverføringsperiode,
 } from './submitValidering';
 
-const innvilget: UttakDto_fpoversikt['resultat'] = {
+const innvilget: UttakDto['resultat'] = {
     innvilget: true,
     trekkerDager: true,
     trekkerMinsterett: false,
@@ -18,7 +18,7 @@ const lagPeriode = ({
     fom = '2024-07-01',
     tom = '2024-07-31',
     ...overrides
-}: Partial<UttakDto_fpoversikt> & { fom?: string; tom?: string } = {}): UttakPeriodeDto_fpoversikt => ({
+}: Partial<UttakDto> & { fom?: string; tom?: string } = {}): UttakPeriodeDto => ({
     fom,
     tom,
     søker: {
@@ -34,7 +34,7 @@ const lagEøsPeriode = ({
     fom = '2024-10-01',
     tom = '2024-10-31',
     ...overrides
-}: Partial<EøsUttakDto_fpoversikt> & { fom?: string; tom?: string } = {}): UttakPeriodeDto_fpoversikt => ({
+}: Partial<EøsUttakDto> & { fom?: string; tom?: string } = {}): UttakPeriodeDto => ({
     fom,
     tom,
     annenPartEøs: {
@@ -191,7 +191,7 @@ describe('harMinstEnUttaksEllerOverføringsperiode', () => {
 });
 
 describe('finnNyeEllerEndraPerioder og harBrukerKunSlettetPerioder ved samtidig uttak', () => {
-    const lagSamtidig = (søkerResultat = innvilget): UttakPeriodeDto_fpoversikt => ({
+    const lagSamtidig = (søkerResultat = innvilget): UttakPeriodeDto => ({
         fom: '2024-07-01',
         tom: '2024-07-12',
         søker: {
@@ -234,7 +234,7 @@ describe('finnNyeEllerEndraPerioder og harBrukerKunSlettetPerioder ved samtidig 
             fom: '2024-08-01',
             tom: '2024-08-09',
             annenPart: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
-        } satisfies UttakPeriodeDto_fpoversikt;
+        } satisfies UttakPeriodeDto;
 
         expect(finnNyeEllerEndraPerioder([samtidig, seinare, nyAnnenPart], [samtidig, seinare])).toEqual([nyAnnenPart]);
     });

@@ -7,7 +7,7 @@ import { SøknadRoutes } from 'appData/routes';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { saker } from 'storybookData/saker';
 
-import { UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriodeDto } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
 import messages from '../../intl/nb_NO.json';
@@ -48,7 +48,7 @@ const {
 it.each([true, false])(
     'sender direkte tilgang til fordeling videre for gjenbrukt plan, manuelt tømt: %s',
     async (tømt) => {
-        const plan: UttakPeriodeDto_fpoversikt[] = [
+        const plan: UttakPeriodeDto[] = [
             {
                 fom: '2026-06-01',
                 tom: '2026-06-12',

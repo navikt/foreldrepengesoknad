@@ -7,9 +7,9 @@ import {
     Barn,
     KontoBeregningDto,
     KontoDto,
-    Rolle_fpoversikt,
+    Rolle,
     Tidsperiode,
-    UttakPeriodeDto_fpoversikt,
+    UttakPeriodeDto,
     isAdoptertAnnetBarn,
 } from '@navikt/fp-types';
 import { Uttaksdagen, getFamiliehendelsedato } from '@navikt/fp-utils';
@@ -43,10 +43,10 @@ const lagDeltUttakForFarMedmor = (
     helgejustertFamDato: string,
     stønadskvoter: KontoDto[],
     startdato: string,
-): UttakPeriodeDto_fpoversikt[] => {
+): UttakPeriodeDto[] => {
     const farStartdato = Uttaksdagen.denneEllerNeste(startdato).getDato();
     const harFødselspermisjon = helgejustertFamDato === farStartdato;
-    const forslag: UttakPeriodeDto_fpoversikt[] = [];
+    const forslag: UttakPeriodeDto[] = [];
 
     const foreldrepengerFørFødsel = stønadskvoter.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
     const mødrekvote = stønadskvoter.find((k) => k.konto === 'MØDREKVOTE');
@@ -171,12 +171,9 @@ const lagDeltUttakForFarMedmor = (
  * han legg alle genererte periodar (for BÅDE mor og far/medmor) på .søker, skilt kun ved
  * periode.søker.forelder. Denne funksjonen flytter periodane som eigentleg gjeld den andre
  * forelderen over til .annenPart, slik at forslaget kan brukast som ein vanleg
- * UttakPeriodeDto_fpoversikt[] der .søker faktisk betyr «den innlogga søkjaren».
+ * UttakPeriodeDto[] der .søker faktisk betyr «den innlogga søkjaren».
  */
-const fordelPerioderEtterSøkerrolle = (
-    perioder: UttakPeriodeDto_fpoversikt[],
-    søkersRolle: Rolle_fpoversikt,
-): UttakPeriodeDto_fpoversikt[] =>
+const fordelPerioderEtterSøkerrolle = (perioder: UttakPeriodeDto[], søkersRolle: Rolle): UttakPeriodeDto[] =>
     perioder.map((periode) => {
         if (periode.søker && periode.søker.forelder !== søkersRolle) {
             const { søker, ...periodeUtenSøker } = periode;
@@ -192,14 +189,14 @@ const fordelPerioderEtterSøkerrolle = (
  * slik at ein kan unngå å spørje brukaren om ein startdato som uansett ikkje
  * vil bli brukt.
  */
-export const kanGenerereUttaksplanForslag = (tidligerePerioder?: UttakPeriodeDto_fpoversikt[]): boolean =>
+export const kanGenerereUttaksplanForslag = (tidligerePerioder?: UttakPeriodeDto[]): boolean =>
     tidligerePerioder === undefined || tidligerePerioder.length === 0;
 
 export const useUttaksplanForslag = (
     valgtStønadskvote?: KontoBeregningDto,
-    tidligerePerioder?: UttakPeriodeDto_fpoversikt[],
+    tidligerePerioder?: UttakPeriodeDto[],
     tidligerePerioderLaster = false,
-): UttakPeriodeDto_fpoversikt[] => {
+): UttakPeriodeDto[] => {
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));

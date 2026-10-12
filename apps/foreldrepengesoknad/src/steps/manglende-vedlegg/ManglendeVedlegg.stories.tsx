@@ -17,7 +17,7 @@ import {
     Barn,
     FpPersonopplysningerDto_fpoversikt,
     Situasjon,
-    UttakPeriodeDto_fpoversikt,
+    UttakPeriodeDto,
 } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
@@ -125,7 +125,7 @@ type StoryArgs = {
     situasjon?: Situasjon;
     annenForelder?: AnnenForelder;
     barn?: Barn;
-    uttaksplan?: UttakPeriodeDto_fpoversikt[];
+    uttaksplan?: UttakPeriodeDto[];
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektFp;
     annenInntekt?: AndreInntektskilder[];
     vedlegg?: VedleggDataType;

@@ -9,7 +9,7 @@ import { action } from 'storybook/actions';
 import { AnnenForelder } from 'types/AnnenForelder';
 
 import { BarnType } from '@navikt/fp-constants';
-import { Barn, KontoBeregningDto, SøkersituasjonFp, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { Barn, KontoBeregningDto, SøkersituasjonFp, UttakPeriodeDto } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { PeriodeMedForeldrepengerSteg } from './PeriodeMedForeldrepengerSteg';
@@ -98,7 +98,7 @@ const uttaksperiode = {
         samtidigUttak: 50,
         flerbarnsdager: true,
     },
-} satisfies UttakPeriodeDto_fpoversikt;
+} satisfies UttakPeriodeDto;
 
 const fellesProps = {
     arbeidsforhold: [],

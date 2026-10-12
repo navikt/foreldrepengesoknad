@@ -11,7 +11,7 @@ import { MemoryRouter } from 'react-router';
 import { saker } from 'storybookData/saker';
 
 import { BarnType, DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
-import { FellesUttaksplanDto_fpoversikt, FpSak_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { FellesUttaksplanDto, FpSak_fpoversikt, UttakPeriodeDto } from '@navikt/fp-types';
 import { compressToUrl } from '@navikt/fp-utils';
 
 import { AppContainer, queryClient } from './AppContainer';
@@ -28,7 +28,7 @@ const { SøkerErMann, SøkerErKvinne } = composeStories(stories);
 const PLANLEGGER_DATA =
     'eyJPTV9CQVJORVQiOnsiZXJGw7hkc2VsIjp0cnVlLCJhbnRhbGxCYXJuIjoiMSIsImVyQmFybmV0RsO4ZHQiOnRydWUsImbDuGRzZWxzZGF0byI6IjIwMjYtMDUtMDUiLCJ0ZXJtaW5kYXRvIjoiMjAyNi0wNS0wMiJ9LCJIVk9SX0xBTkdfUEVSSU9ERSI6eyJkZWtuaW5nc2dyYWQiOiIxMDAifSwiRk9SREVMSU5HIjp7ImFudGFsbERhZ2VyU8O4a2VyMSI6NjB9LCJVVFRBS1NQTEFOIjpbeyJmb20iOiIyMDI2LTA0LTE0IiwidG9tIjoiMjAyNi0wNS0wNCIsInPDuGtlciI6eyJmb3JlbGRlciI6Ik1PUiIsImtvbnRvVHlwZSI6IkZPUkVMRFJFUEVOR0VSX0bDmFJfRsOYRFNFTCIsImZsZXJiYXJuc2RhZ2VyIjpmYWxzZX19LHsiZm9tIjoiMjAyNi0wNS0wNSIsInRvbSI6IjIwMjYtMDgtMTciLCJzw7hrZXIiOnsiZm9yZWxkZXIiOiJNT1IiLCJrb250b1R5cGUiOiJNw5hEUkVLVk9URSIsImZsZXJiYXJuc2RhZ2VyIjpmYWxzZX19LHsiZm9tIjoiMjAyNi0wOC0xOCIsInRvbSI6IjIwMjYtMTEtMDkiLCJzw7hrZXIiOnsiZm9yZWxkZXIiOiJNT1IiLCJrb250b1R5cGUiOiJGRUxMRVNQRVJJT0RFIiwiZmxlcmJhcm5zZGFnZXIiOmZhbHNlfX0seyJmb20iOiIyMDI2LTExLTEwIiwidG9tIjoiMjAyNi0xMS0xMyIsInPDuGtlciI6eyJmb3JlbGRlciI6IkZBUl9NRURNT1IiLCJrb250b1R5cGUiOiJGRURSRUtWT1RFIiwiZmxlcmJhcm5zZGFnZXIiOmZhbHNlfX0seyJmb20iOiIyMDI2LTExLTE2IiwidG9tIjoiMjAyNi0xMS0yNyIsInPDuGtlciI6eyJmb3JlbGRlciI6Ik1PUiIsInV0c2V0dGVsc2XDhXJzYWsiOiJGRVJJRSIsImZsZXJiYXJuc2RhZ2VyIjpmYWxzZX19LHsiZm9tIjoiMjAyNi0xMS0zMCIsInRvbSI6IjIwMjctMDItMjIiLCJzw7hrZXIiOnsiZm9yZWxkZXIiOiJGQVJfTUVETU9SIiwia29udG9UeXBlIjoiRkVEUkVLVk9URSIsImZsZXJiYXJuc2RhZ2VyIjpmYWxzZX19LHsiZm9tIjoiMjAyNy0wMi0yMyIsInRvbSI6IjIwMjctMDMtMjIiLCJzw7hrZXIiOnsia29udG9UeXBlIjoiRkVMTEVTUEVSSU9ERSIsIm1vcnNBa3Rpdml0ZXQiOiJUUkVOR0VSX0hKRUxQIiwiZm9yZWxkZXIiOiJGQVJfTUVETU9SIiwiZmxlcmJhcm5zZGFnZXIiOmZhbHNlfX1dfQ==';
 
-const importertPlan: UttakPeriodeDto_fpoversikt[] = [
+const importertPlan: UttakPeriodeDto[] = [
     {
         fom: '2026-05-05',
         tom: '2026-05-15',
@@ -105,7 +105,7 @@ describe('<AppContainer>', () => {
             ...saker.foreldrepenger[0]!,
             gjeldendeVedtak: flyt === 'vedtak' ? { perioder: [] } : undefined,
         };
-        const fellesPlan: FellesUttaksplanDto_fpoversikt = {
+        const fellesPlan: FellesUttaksplanDto = {
             antallBarn: 2,
             termindato: '2025-05-01',
             dekningsgrad: 'ÅTTI',
@@ -122,7 +122,7 @@ describe('<AppContainer>', () => {
                 },
             ],
         };
-        let opprinneligPlan: UttakPeriodeDto_fpoversikt[] | undefined;
+        let opprinneligPlan: UttakPeriodeDto[] | undefined;
         const { Historie, lagreUtkast } = lagOppstartshistorie(
             {
                 ...stories.MedMellomlagretSøknad,
@@ -668,7 +668,7 @@ describe('<AppContainer>', () => {
 
         const sisteMellomlagretUttaksplan = kyPost.mock.calls
             .filter(([url]) => url === API_URLS.mellomlagring)
-            .map(([, options]) => (options?.json as { UTTAKSPLAN?: UttakPeriodeDto_fpoversikt[] }).UTTAKSPLAN)
+            .map(([, options]) => (options?.json as { UTTAKSPLAN?: UttakPeriodeDto[] }).UTTAKSPLAN)
             .at(-1);
 
         expect(sisteMellomlagretUttaksplan?.map((p) => [p.fom, p.søker?.forelder, p.annenPart?.forelder])).toEqual([

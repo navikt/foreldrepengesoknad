@@ -2,16 +2,16 @@ import { useIntl } from 'react-intl';
 
 import { Box } from '@navikt/ds-react';
 
-import { BrukerRolleSak_fpoversikt, UtsettelseÅrsak_fpoversikt } from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, UtsettelseÅrsak } from '@navikt/fp-types';
 
 import { UttaksplanIkon, UttaksplanIkonKeys } from './UttaksplanIkon';
 
 interface Props {
-    årsak: UtsettelseÅrsak_fpoversikt;
+    årsak: UtsettelseÅrsak;
     forelder: BrukerRolleSak_fpoversikt;
 }
 
-const getIkonForÅrsak = (årsak: UtsettelseÅrsak_fpoversikt): UttaksplanIkonKeys => {
+const getIkonForÅrsak = (årsak: UtsettelseÅrsak): UttaksplanIkonKeys => {
     switch (årsak) {
         case 'FERIE': {
             return UttaksplanIkonKeys.ferie;

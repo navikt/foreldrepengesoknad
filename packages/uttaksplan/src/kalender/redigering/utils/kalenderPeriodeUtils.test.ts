@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
-import { UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriodeDto } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 
 import { finnValgtePerioder } from './kalenderPeriodeUtils';
 
 describe('finnValgtePerioder', () => {
     it('skal ikke slå sammen foreldrepenger uten og med aktivitetskrav til én periode (kun far har rett)', () => {
-        const utenAktivitetskrav: UttakPeriodeDto_fpoversikt = {
+        const utenAktivitetskrav: UttakPeriodeDto = {
             fom: '2024-01-01',
             tom: '2024-01-05',
             søker: {
@@ -17,7 +17,7 @@ describe('finnValgtePerioder', () => {
                 flerbarnsdager: false,
             },
         };
-        const medAktivitetskrav: UttakPeriodeDto_fpoversikt = {
+        const medAktivitetskrav: UttakPeriodeDto = {
             fom: '2024-01-08',
             tom: '2024-01-12',
             søker: {

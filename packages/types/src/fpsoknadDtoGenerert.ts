@@ -150,6 +150,73 @@ export type UtenlandskForelderDto = {
     rettigheter: Rettigheter;
 };
 
+export type Aktivitet = {
+    arbeidsgiver?: Arbeidsgiver;
+    arbeidsgiverNavn?: string;
+    type: AktivitetType;
+};
+
+export type AktivitetType = 'FRILANS' | 'ORDINÆRT_ARBEID' | 'SELVSTENDIG_NÆRINGSDRIVENDE' | 'ANNET';
+
+export type Arbeidsgiver = {
+    id: string;
+    type?: ArbeidsgiverType;
+};
+
+export type ArbeidsgiverType = 'PRIVAT' | 'ORGANISASJON';
+
+export type EøsUttakDto = {
+    kontoType: no_nav_foreldrepenger_kontrakter_felles_kodeverk_KontoType;
+    trekkdager: number;
+};
+
+export type Gradering = {
+    aktivitet?: Aktivitet;
+    arbeidstidprosent: number;
+};
+
+export type OverføringÅrsak =
+    'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' | 'SYKDOM_ANNEN_FORELDER' | 'ALENEOMSORG' | 'IKKE_RETT_ANNEN_FORELDER';
+
+export type Rolle = 'MOR' | 'FAR_MEDMOR';
+
+export type UtsettelseÅrsak =
+    'ARBEID' | 'FERIE' | 'SØKER_SYKDOM' | 'SØKER_INNLAGT' | 'BARN_INNLAGT' | 'HV_ØVELSE' | 'NAV_TILTAK' | 'FRI';
+
+export type UttakDto = {
+    flerbarnsdager: boolean;
+    forelder: Rolle;
+    gradering?: Gradering;
+    kontoType?: no_nav_foreldrepenger_kontrakter_felles_kodeverk_KontoType;
+    morsAktivitet?: no_nav_foreldrepenger_kontrakter_felles_kodeverk_MorsAktivitet;
+    overføringÅrsak?: OverføringÅrsak;
+    resultat?: VedtattResultat;
+    samtidigUttak?: number;
+    utsettelseÅrsak?: UtsettelseÅrsak;
+};
+
+export type UttakPeriodeDto = {
+    annenPart?: UttakDto;
+    annenPartEøs?: EøsUttakDto;
+    fom: string;
+    søker?: UttakDto;
+    tom: string;
+};
+
+export type VedtattResultat = {
+    innvilget: boolean;
+    trekkerDager: boolean;
+    trekkerMinsterett: boolean;
+    årsak: Årsak;
+};
+
+export type Årsak =
+    | 'ANNET'
+    | 'AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER'
+    | 'AVSLAG_FRATREKK_PLEIEPENGER'
+    | 'AVSLAG_UTSETTELSE_TILBAKE_I_TID'
+    | 'INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID';
+
 export type OppholdsPeriodeDto = {
     fom: string;
     tom: string;
@@ -212,73 +279,6 @@ export type UttaksplanDto = {
     perioder?: UttakPeriodeDto[];
     uttaksperioder?: Uttaksplanperiode[];
     ønskerJustertUttakVedFødsel?: boolean;
-};
-
-export type UttakPeriodeDto = {
-    annenPart?: UttakDto;
-    annenPartEøs?: EøsUttakDto;
-    fom: string;
-    søker?: UttakDto;
-    tom: string;
-};
-
-export type UttakDto = {
-    flerbarnsdager: boolean;
-    forelder: Rolle;
-    gradering?: Gradering;
-    kontoType?: no_nav_foreldrepenger_kontrakter_felles_kodeverk_KontoType;
-    morsAktivitet?: no_nav_foreldrepenger_kontrakter_felles_kodeverk_MorsAktivitet;
-    overføringÅrsak?: OverføringÅrsak;
-    resultat?: VedtattResultat;
-    samtidigUttak?: number;
-    utsettelseÅrsak?: UtsettelseÅrsak;
-};
-
-export type Rolle = 'MOR' | 'FAR_MEDMOR';
-
-export type Gradering = {
-    aktivitet?: Aktivitet;
-    arbeidstidprosent: number;
-};
-
-export type Aktivitet = {
-    arbeidsgiver?: Arbeidsgiver;
-    arbeidsgiverNavn?: string;
-    type: AktivitetType;
-};
-
-export type AktivitetType = 'FRILANS' | 'ORDINÆRT_ARBEID' | 'SELVSTENDIG_NÆRINGSDRIVENDE' | 'ANNET';
-
-export type Arbeidsgiver = {
-    id: string;
-    type?: ArbeidsgiverType;
-};
-
-export type ArbeidsgiverType = 'PRIVAT' | 'ORGANISASJON';
-
-export type OverføringÅrsak =
-    'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' | 'SYKDOM_ANNEN_FORELDER' | 'ALENEOMSORG' | 'IKKE_RETT_ANNEN_FORELDER';
-
-export type VedtattResultat = {
-    innvilget: boolean;
-    trekkerDager: boolean;
-    trekkerMinsterett: boolean;
-    årsak: Årsak;
-};
-
-export type Årsak =
-    | 'ANNET'
-    | 'AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER'
-    | 'AVSLAG_FRATREKK_PLEIEPENGER'
-    | 'AVSLAG_UTSETTELSE_TILBAKE_I_TID'
-    | 'INNVILGET_UTTAK_AVSLÅTT_GRADERING_TILBAKE_I_TID';
-
-export type UtsettelseÅrsak =
-    'ARBEID' | 'FERIE' | 'SØKER_SYKDOM' | 'SØKER_INNLAGT' | 'BARN_INNLAGT' | 'HV_ØVELSE' | 'NAV_TILTAK' | 'FRI';
-
-export type EøsUttakDto = {
-    kontoType: no_nav_foreldrepenger_kontrakter_felles_kodeverk_KontoType;
-    trekkdager: number;
 };
 
 export type Uttaksplanperiode = (
@@ -416,8 +416,6 @@ export type EngangsstønadDto = {
 export type UtenlandsoppholdsperiodeDto = {
     fom: string;
     landkode: string;
-    // TFP-5511: midlertidig gjort valgfri i påvente av at typen regenereres
-    // fra fp-soknad sin OpenAPI-spesifikasjon (se navikt/fp-soknad#187).
     tom?: string;
 };
 

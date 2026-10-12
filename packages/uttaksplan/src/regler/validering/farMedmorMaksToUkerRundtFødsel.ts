@@ -4,7 +4,7 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import minMax from 'dayjs/plugin/minMax';
 import { IntlShape } from 'react-intl';
 
-import { UttakDto_fpoversikt } from '@navikt/fp-types';
+import { UttakDto } from '@navikt/fp-types';
 import { Uttaksdagen, getFloatFromString } from '@navikt/fp-utils';
 
 import { UttakPeriodeBuilder } from '../../utils/UttakPeriodeBuilder';
@@ -56,7 +56,7 @@ const tellArbeidsdagerInnenfor = (fom: string, tom: string, førsteDag: string, 
     return dager;
 };
 
-const skalTelleMotToUkersgrensen = (part: UttakDto_fpoversikt | undefined): boolean =>
+const skalTelleMotToUkersgrensen = (part: UttakDto | undefined): boolean =>
     part?.forelder === 'FAR_MEDMOR' &&
     part.kontoType !== undefined &&
     part.kontoType !== 'MØDREKVOTE' &&

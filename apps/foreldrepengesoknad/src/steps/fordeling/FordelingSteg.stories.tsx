@@ -14,7 +14,7 @@ import {
     Barn,
     Dekningsgrad,
     EksternArbeidsforholdDto_fpoversikt,
-    FellesUttaksplanDto_fpoversikt,
+    FellesUttaksplanDto,
     FpPersonopplysningerDto_fpoversikt,
     KontoBeregningDto,
     SøkersituasjonFp,
@@ -59,7 +59,7 @@ const uttaksplanFar = {
             },
         },
     ],
-} satisfies FellesUttaksplanDto_fpoversikt;
+} satisfies FellesUttaksplanDto;
 
 const uttaksplanMor = {
     antallBarn: 1,
@@ -97,7 +97,7 @@ const uttaksplanMor = {
             },
         },
     ],
-} satisfies FellesUttaksplanDto_fpoversikt;
+} satisfies FellesUttaksplanDto;
 
 const søkerInfoKvinne = {
     fnr: '1',

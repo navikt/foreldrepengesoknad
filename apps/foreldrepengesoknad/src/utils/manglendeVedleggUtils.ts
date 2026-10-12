@@ -1,6 +1,6 @@
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 
-import { UtsettelseÅrsak_fpoversikt, UttakDto_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { UtsettelseÅrsak, UttakDto, UttakPeriodeDto } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
 import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan/validators';
 
@@ -14,9 +14,9 @@ import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan/validators';
  * innvilget, selv om han kun endrer/legger til en ny periode.
  */
 export const finnPerioderSomInngårISøknaden = (
-    uttaksplan: UttakPeriodeDto_fpoversikt[],
+    uttaksplan: UttakPeriodeDto[],
     harEksisterendeSak: boolean,
-): UttakPeriodeDto_fpoversikt[] => {
+): UttakPeriodeDto[] => {
     return uttaksplan.filter((periode) => {
         if (!periode.søker) {
             return false;
@@ -26,7 +26,7 @@ export const finnPerioderSomInngårISøknaden = (
 };
 
 export const perioderSomKreverVedlegg = (
-    uttaksplan: UttakPeriodeDto_fpoversikt[],
+    uttaksplan: UttakPeriodeDto[],
     erFarEllerMedmor: boolean,
     annenForelder: AnnenForelder,
     familiehendelsedato: string,
@@ -39,7 +39,7 @@ export const perioderSomKreverVedlegg = (
 };
 
 const shouldPeriodeHaveAttachment = (
-    periode: UttakPeriodeDto_fpoversikt,
+    periode: UttakPeriodeDto,
     søkerErFarEllerMedmor: boolean,
     annenForelder: AnnenForelder,
     familiehendelsedato: string,
@@ -82,12 +82,12 @@ const skalBesvaresVedUtsettelse = (søkerErFarEllerMedmor: boolean, annenForelde
     return søkerErFarEllerMedmor && annenForelderHarRett === false;
 };
 
-const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelseÅrsak_fpoversikt) =>
+const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelseÅrsak) =>
     ['SØKER_SYKDOM', 'SØKER_INNLAGT', 'BARN_INNLAGT'].includes(årsak);
 
 const dokumentasjonBehøvesForUttaksperiode = (
-    periode: UttakPeriodeDto_fpoversikt,
-    søker: UttakDto_fpoversikt,
+    periode: UttakPeriodeDto,
+    søker: UttakDto,
     søkerErFarEllerMedmor: boolean,
     familiehendelsedato: string,
 ): boolean => {

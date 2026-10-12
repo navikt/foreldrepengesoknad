@@ -16,7 +16,7 @@ import {
     MorArbeidRequest_fpoversikt,
     NavnPåForeldre,
     PeriodeMedAktivitetskravType_fpoversikt,
-    UttakPeriodeDto_fpoversikt,
+    UttakPeriodeDto,
     isAdoptertBarn,
     isFødtBarn,
 } from '@navikt/fp-types';
@@ -29,7 +29,7 @@ import { IngenDokumentasjonPåkrevd } from './IngenDokumentasjonPåkrevd';
 interface Props {
     attachments: Attachment[];
     updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
-    perioder: UttakPeriodeDto_fpoversikt[];
+    perioder: UttakPeriodeDto[];
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
 }
@@ -113,7 +113,7 @@ const TrengerIkkeMorIArbeidDokumentasjon = ({
     perioder,
 }: {
     updateDokArbeidMorAttachment: (attachments: Attachment[]) => void;
-    perioder: UttakPeriodeDto_fpoversikt[];
+    perioder: UttakPeriodeDto[];
 }) => {
     useEffect(() => {
         const init = lagAutomatiskDokument(AttachmentType.MORS_AKTIVITET_DOKUMENTASJON, Skjemanummer.DOK_ARBEID_MOR);
@@ -133,7 +133,7 @@ const TrengerIkkeMorIArbeidDokumentasjon = ({
 };
 
 const getDokumentereMorsArbeidParams = (
-    uttaksplan: UttakPeriodeDto_fpoversikt[],
+    uttaksplan: UttakPeriodeDto[],
     barn: Barn,
     bareFarHarRett: boolean,
     annenPartFødselsnummer: string,
@@ -143,7 +143,7 @@ const getDokumentereMorsArbeidParams = (
             ? barn.fnr[0]
             : undefined;
 
-    const getPeriodeType = (p: UttakPeriodeDto_fpoversikt): PeriodeMedAktivitetskravType_fpoversikt => {
+    const getPeriodeType = (p: UttakPeriodeDto): PeriodeMedAktivitetskravType_fpoversikt => {
         if (!bareFarHarRett) {
             return 'UTTAK_FELLESPERIODE';
         }

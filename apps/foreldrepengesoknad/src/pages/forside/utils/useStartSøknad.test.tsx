@@ -18,7 +18,7 @@ import { lagSøknadFraValgteBarnMedSak } from 'utils/eksisterendeSakUtils';
 
 import { BarnType } from '@navikt/fp-constants';
 import { formHookMessages } from '@navikt/fp-form-hooks';
-import { FellesUttaksplanDto_fpoversikt, FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
+import { FellesUttaksplanDto, FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { IntlProvider, uiMessages } from '@navikt/fp-ui';
 
 import messages from '../../../intl/nb_NO.json';
@@ -52,7 +52,7 @@ const søkerInfo: FpPersonopplysningerDto_fpoversikt = {
     frilansoppdrag: [],
     selvstendigNæring: [],
 };
-const tidligerePlan: FellesUttaksplanDto_fpoversikt = {
+const tidligerePlan: FellesUttaksplanDto = {
     antallBarn: 1,
     dekningsgrad: 'HUNDRE',
     perioder: [
@@ -311,7 +311,7 @@ describe('useStartSøknad', () => {
 
     it('venter på planen og starter ikke søknaden ved hentefeil', async () => {
         const { result, values, client, naviger, metadata } = setup();
-        const response = Promise.withResolvers<FellesUttaksplanDto_fpoversikt>();
+        const response = Promise.withResolvers<FellesUttaksplanDto>();
         vi.spyOn(client, 'fetchQuery').mockReturnValueOnce(response.promise);
         let start: Promise<void>;
         act(() => {

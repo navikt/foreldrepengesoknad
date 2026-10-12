@@ -21,7 +21,7 @@ import { FellesperiodeFordelingValg, OppstartValg } from 'types/Fordeling';
 import { getUttaksplanParam } from 'utils/annenForelderUtils';
 
 import { BarnType } from '@navikt/fp-constants';
-import { Barn, FellesUttaksplanDto_fpoversikt, FpSak_fpoversikt, UttakPeriodeDto_fpoversikt } from '@navikt/fp-types';
+import { Barn, FellesUttaksplanDto, FpSak_fpoversikt, UttakPeriodeDto } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider } from '@navikt/fp-ui';
 import { DELT_UTTAK_100, MINSTERETTER } from '@navikt/fp-utils-test';
 
@@ -49,7 +49,7 @@ const ANNEN_FORELDER: AnnenForelder = {
     harRettPåForeldrepengerINorge: true,
 };
 
-const PERIODER: UttakPeriodeDto_fpoversikt[] = [
+const PERIODER: UttakPeriodeDto[] = [
     {
         fom: '2025-01-01',
         tom: '2025-01-10',
@@ -77,14 +77,14 @@ const INNVILGET = {
     årsak: 'ANNET',
 } as const;
 
-const lagUttaksplan = (perioder: UttakPeriodeDto_fpoversikt[]): FellesUttaksplanDto_fpoversikt => ({
+const lagUttaksplan = (perioder: UttakPeriodeDto[]): FellesUttaksplanDto => ({
     antallBarn: 1,
     dekningsgrad: 'HUNDRE',
     perioder,
 });
 
 const getWrapper = (
-    uttaksplan: FellesUttaksplanDto_fpoversikt,
+    uttaksplan: FellesUttaksplanDto,
     initialState?: ContextDataMap,
     onDispatch?: (action: Action) => void,
     route = SøknadRoutes.PERIODE_MED_FORELDREPENGER,
@@ -118,14 +118,11 @@ const getWrapper = (
 
 describe('useTidligereUttaksplan', () => {
     it('beholder tidligere fallback når valgt saksnummer ikke finnes i sakslisten', () => {
-        const { result } = renderHook(
-            () => ({ tidligere: useTidligereUttaksplan(), state: useContextComplete() }),
-            {
-                wrapper: getWrapper(lagUttaksplan(PERIODER), {
-                    [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: 'annen-sak',
-                }),
-            },
-        );
+        const { result } = renderHook(() => ({ tidligere: useTidligereUttaksplan(), state: useContextComplete() }), {
+            wrapper: getWrapper(lagUttaksplan(PERIODER), {
+                [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: 'annen-sak',
+            }),
+        });
         expect(result.current.tidligere.perioder).toEqual(PERIODER);
         expect(result.current.state.OPPRINNELIG_UTTAKSPLAN).toEqual({
             saksnummer: 'annen-sak',
@@ -136,7 +133,7 @@ describe('useTidligereUttaksplan', () => {
     it.each([false, true])(
         'beholder hele planen og snapshot for vedtak, kan søke om endring: %s',
         (kanSøkeOmEndring) => {
-            const perioder: UttakPeriodeDto_fpoversikt[] = [
+            const perioder: UttakPeriodeDto[] = [
                 ...PERIODER,
                 { fom: '2025-02-03', tom: '2025-02-14', annenPartEøs: { kontoType: 'FELLESPERIODE', trekkdager: 10 } },
             ];
@@ -248,7 +245,7 @@ describe('useTidligereUttaksplan', () => {
     });
 
     it('returnerer berre annan part sitt vedtak når ingen eksisterande sak er valt', () => {
-        const samtidig: UttakPeriodeDto_fpoversikt = {
+        const samtidig: UttakPeriodeDto = {
             fom: '2025-02-03',
             tom: '2025-02-14',
             søker: { forelder: 'MOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false, samtidigUttak: 50 },
@@ -260,7 +257,7 @@ describe('useTidligereUttaksplan', () => {
                 resultat: INNVILGET,
             },
         };
-        const eøs: UttakPeriodeDto_fpoversikt = {
+        const eøs: UttakPeriodeDto = {
             fom: '2025-03-03',
             tom: '2025-03-14',
             annenPartEøs: { kontoType: 'FELLESPERIODE', trekkdager: 10 },

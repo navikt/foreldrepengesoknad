@@ -5,11 +5,11 @@ import { IntlShape, useIntl } from 'react-intl';
 import {
     Barn,
     BrukerRolleSak_fpoversikt,
-    EøsUttakDto_fpoversikt,
+    EøsUttakDto,
     NavnPåForeldre,
     RettighetType_fpoversikt,
-    UttakDto_fpoversikt,
-    UttakPeriodeDto_fpoversikt,
+    UttakDto,
+    UttakPeriodeDto,
     isAdoptertBarn,
     isFødtBarn,
 } from '@navikt/fp-types';
@@ -33,7 +33,7 @@ import {
 // hjelparen vel ut kva EIN part som skal styra tekst/farge når vi ikkje treng begge samtidig,
 // med prioritet søker > annenPart > annenPartEøs (matchar tidlegare deduplisering som alltid
 // beheldt søkjar sin flate rad når to rader fanst for same intervall).
-type VisningsPart = { type: 'UTTAK'; part: UttakDto_fpoversikt } | { type: 'EØS'; part: EøsUttakDto_fpoversikt };
+type VisningsPart = { type: 'UTTAK'; part: UttakDto } | { type: 'EØS'; part: EøsUttakDto };
 
 const finnVisningsPart = (periode: UttaksplanperiodeMedKunTapteDager): VisningsPart | undefined => {
     if (!erPeriodeDto(periode)) {
@@ -377,7 +377,7 @@ const splittPeriodeITo = (
     intl: IntlShape,
     isUpdated: boolean,
     rettighetType: RettighetType_fpoversikt,
-    allePerioder: UttakPeriodeDto_fpoversikt[],
+    allePerioder: UttakPeriodeDto[],
     kanVelgeArbeidsgiver: boolean,
     søker: BrukerRolleSak_fpoversikt,
     erIkkeSøkerSpesifisert: boolean,
@@ -418,7 +418,7 @@ const splittPeriodeITo = (
 const leggTilVarselikonVedManglendeObligatoriskeValg = (
     rettighetType: RettighetType_fpoversikt,
     periode: UttaksplanperiodeMedKunTapteDager,
-    allePerioder: UttakPeriodeDto_fpoversikt[],
+    allePerioder: UttakPeriodeDto[],
     kanVelgeArbeidsgiver: boolean,
     søker: BrukerRolleSak_fpoversikt,
     erIkkeSøkerSpesifisert: boolean,
@@ -426,7 +426,7 @@ const leggTilVarselikonVedManglendeObligatoriskeValg = (
 ) => {
     // Byggjer syntetiske periodar med KUN mors part, slik at den delte sjekk-funksjonen ikkje
     // ved eit uhell finn far/medmor sine data frå ei anna, urelatert (t.d. samtidig uttak-)rad.
-    const morsPerioder: UttakPeriodeDto_fpoversikt[] = allePerioder.flatMap((p) => {
+    const morsPerioder: UttakPeriodeDto[] = allePerioder.flatMap((p) => {
         const morsPart = finnPartForForelder(p, 'MOR');
         return morsPart ? [{ fom: p.fom, tom: p.tom, søker: morsPart }] : [];
     });

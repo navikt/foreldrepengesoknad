@@ -1,6 +1,6 @@
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 
-import { Barn, FellesUttaksplanDto_fpoversikt, FellesUttaksplanRequest_fpoversikt, isFødtBarn } from '@navikt/fp-types';
+import { Barn, FellesUttaksplanDto, FellesUttaksplanRequest_fpoversikt, isFødtBarn } from '@navikt/fp-types';
 
 import { getFamiliehendelsedato } from './barnUtils';
 
@@ -14,11 +14,10 @@ export const getDatoForAleneomsorg = (annenForelder: AnnenForelder): string | un
 
 // Planen kan òg innehalde annan part sin ubehandla søknad. Berre periodar med resultat kjem frå eit vedtak.
 export const annenPartHarVedtak = (
-    uttaksplan: FellesUttaksplanDto_fpoversikt | null | undefined,
-): uttaksplan is FellesUttaksplanDto_fpoversikt =>
-    !!uttaksplan?.perioder.some((p) => p.annenPart?.resultat !== undefined);
+    uttaksplan: FellesUttaksplanDto | null | undefined,
+): uttaksplan is FellesUttaksplanDto => !!uttaksplan?.perioder.some((p) => p.annenPart?.resultat !== undefined);
 
-export const annenPartHarInnvilgetUttak = (uttaksplan: FellesUttaksplanDto_fpoversikt | null | undefined): boolean =>
+export const annenPartHarInnvilgetUttak = (uttaksplan: FellesUttaksplanDto | null | undefined): boolean =>
     !!uttaksplan?.perioder.some((p) => p.annenPart?.resultat?.innvilget);
 
 export const annenForelderHarNorskFnr = (annenForelder: AnnenForelder) => {

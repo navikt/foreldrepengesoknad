@@ -7,7 +7,7 @@ import { getFarMedmorErAleneOmOmsorg, getMorErAleneOmOmsorg } from 'utils/person
 
 import {
     Barn,
-    FellesUttaksplanDto_fpoversikt,
+    FellesUttaksplanDto,
     KontoBeregningGrunnlagDto,
     SøkersituasjonFp,
     isAdoptertBarn,
@@ -91,7 +91,7 @@ export const getStønadskvoteParams = (
     barn: Barn,
     annenForelder: AnnenForelder,
     søkersituasjon: SøkersituasjonFp,
-    annenPartsVedtak: FellesUttaksplanDto_fpoversikt | undefined,
+    annenPartsVedtak: FellesUttaksplanDto | undefined,
     termindatoEksisterendeSak?: string,
 ): KontoBeregningGrunnlagDto => {
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;

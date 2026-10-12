@@ -2,13 +2,13 @@ import { sum, sumBy } from 'es-toolkit';
 
 import {
     BrukerRolleSak_fpoversikt,
-    EøsUttakDto_fpoversikt,
+    EøsUttakDto,
     Familiesituasjon,
     KontoBeregningDto,
     KontoDto,
     KontoTypeUttak,
-    UttakDto_fpoversikt,
-    UttakPeriodeDto_fpoversikt,
+    UttakDto,
+    UttakPeriodeDto,
 } from '@navikt/fp-types';
 
 import { finnAntallTidelerÅTrekkeForEøs, finnAntallTidelerÅTrekkeForPart } from './periodeUtils';
@@ -29,13 +29,13 @@ const DIN_PLAN_KVOTE_REKKEFØLGE: KontoTypeUttak[] = [
     'FELLESPERIODE',
 ];
 
-type NorgePart = { fom: string; tom: string; part: UttakDto_fpoversikt };
-type EøsPart = { fom: string; tom: string; eøs: EøsUttakDto_fpoversikt };
+type NorgePart = { fom: string; tom: string; part: UttakDto };
+type EøsPart = { fom: string; tom: string; eøs: EøsUttakDto };
 
 // Flatar dei to partane (søker/annenPart) ein periode kan ha uttak for, saman med tidsrommet
 // deira, slik at dagsteljingane under kan handsame søkjar og annan part sine periodar likt –
 // uavhengig av kven av dei som faktisk har uttak i det aktuelle tidsrommet.
-const finnNorgeParter = (perioder: UttakPeriodeDto_fpoversikt[]): NorgePart[] =>
+const finnNorgeParter = (perioder: UttakPeriodeDto[]): NorgePart[] =>
     perioder.flatMap((p) =>
         [
             p.søker && { fom: p.fom, tom: p.tom, part: p.søker },
@@ -43,7 +43,7 @@ const finnNorgeParter = (perioder: UttakPeriodeDto_fpoversikt[]): NorgePart[] =>
         ].filter((s): s is NorgePart => s !== undefined),
     );
 
-const finnEøsParter = (perioder: UttakPeriodeDto_fpoversikt[]): EøsPart[] =>
+const finnEøsParter = (perioder: UttakPeriodeDto[]): EøsPart[] =>
     perioder.flatMap((p) => (p.annenPartEøs ? [{ fom: p.fom, tom: p.tom, eøs: p.annenPartEøs }] : []));
 
 /**
@@ -57,7 +57,7 @@ const finnEøsParter = (perioder: UttakPeriodeDto_fpoversikt[]): EøsPart[] =>
  * søkjaren faktisk har planlagt å bruke noko av han.
  */
 export const finnDinPlanKvoteRader = (
-    uttakPerioder: UttakPeriodeDto_fpoversikt[],
+    uttakPerioder: UttakPeriodeDto[],
     søkerRolle: BrukerRolleSak_fpoversikt,
     kontoer: KontoDto[],
     familiesituasjon: Familiesituasjon,
@@ -90,7 +90,7 @@ export const finnDinPlanKvoteRader = (
 };
 
 export const finnAntallDagerDerKunEnHarForeldrepenger = (
-    uttakPerioder: UttakPeriodeDto_fpoversikt[],
+    uttakPerioder: UttakPeriodeDto[],
     familiesituasjon: Familiesituasjon,
     valgtStønadskvote: KontoBeregningDto,
     familiehendelsedato: string,
@@ -161,7 +161,7 @@ export const finnAntallDagerDerKunEnHarForeldrepenger = (
     };
 };
 
-const partTrekkerDager = (part: UttakDto_fpoversikt): boolean => {
+const partTrekkerDager = (part: UttakDto): boolean => {
     // Utsettelseperiodar trekker ikkje dagar frå kvoten og skal ikkje reknast med.
     if (part.utsettelseÅrsak !== undefined && part.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER') {
         return false;
@@ -172,15 +172,15 @@ const partTrekkerDager = (part: UttakDto_fpoversikt): boolean => {
 
 /** Fjernar søker- og annenPart-uttak som er utsettelsar eller avslag utan trekkdagar (behold pleiepenger). */
 export const filtrerBortUtsettelserOgAvslåttePerioderMenBeholdPleiepenger = (
-    periode: UttakPeriodeDto_fpoversikt,
-): UttakPeriodeDto_fpoversikt => ({
+    periode: UttakPeriodeDto,
+): UttakPeriodeDto => ({
     ...periode,
     søker: periode.søker && partTrekkerDager(periode.søker) ? periode.søker : undefined,
     annenPart: periode.annenPart && partTrekkerDager(periode.annenPart) ? periode.annenPart : undefined,
 });
 
 export const tellDagerIUttaksPeriodene = (
-    uttakPerioder: UttakPeriodeDto_fpoversikt[],
+    uttakPerioder: UttakPeriodeDto[],
     familiesituasjon: Familiesituasjon,
     valgtStønadskvote: KontoBeregningDto,
     familiehendelsedato: string,
@@ -287,7 +287,7 @@ const summerDagerForParter = (
 
 /** Summerer trekkdagar (i heile dagar) mot ein konto, avgrensa til éin forelder sin part av kvar periode. */
 export const summerDagerForForelder = (
-    perioder: UttakPeriodeDto_fpoversikt[],
+    perioder: UttakPeriodeDto[],
     forelder: BrukerRolleSak_fpoversikt,
     konto: KontoDto[],
     familiesituasjon: Familiesituasjon,
@@ -298,7 +298,7 @@ export const summerDagerForForelder = (
 };
 
 export const summerDagerIPerioder = (
-    perioder: UttakPeriodeDto_fpoversikt[],
+    perioder: UttakPeriodeDto[],
     konto: KontoDto[],
     familiesituasjon: Familiesituasjon,
     familiehendelsedato: string,
@@ -311,7 +311,7 @@ export const summerDagerIPerioder = (
         familiehendelsedato,
     );
 
-const getUttaksKontoType = (part: UttakDto_fpoversikt): KontoTypeUttak | undefined => {
+const getUttaksKontoType = (part: UttakDto): KontoTypeUttak | undefined => {
     if (part.kontoType === 'FORELDREPENGER' && part.morsAktivitet === 'IKKE_OPPGITT') {
         return 'AKTIVITETSFRI_KVOTE';
     }

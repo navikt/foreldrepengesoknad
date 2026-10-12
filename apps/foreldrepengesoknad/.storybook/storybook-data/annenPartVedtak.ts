@@ -1,4 +1,4 @@
-import { FellesUttaksplanDto_fpoversikt } from '@navikt/fp-types';
+import { FellesUttaksplanDto } from '@navikt/fp-types';
 
 export const annenPartVedtak = {
     termindato: '2022-08-17',
@@ -38,7 +38,7 @@ export const annenPartVedtak = {
         },
     ],
     dekningsgrad: 'HUNDRE',
-} satisfies FellesUttaksplanDto_fpoversikt;
+} satisfies FellesUttaksplanDto;
 
 export const avslåttAnnenPartVedtak = {
     termindato: '2022-08-17',
@@ -57,4 +57,4 @@ export const avslåttAnnenPartVedtak = {
         },
     ],
     dekningsgrad: 'HUNDRE',
-} satisfies FellesUttaksplanDto_fpoversikt;
+} satisfies FellesUttaksplanDto;

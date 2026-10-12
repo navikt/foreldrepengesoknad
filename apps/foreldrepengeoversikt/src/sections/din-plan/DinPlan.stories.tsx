@@ -4,7 +4,7 @@ import { saker } from 'storybookData/saker/saker';
 import { stønadskvoter1 } from 'storybookData/stønadskvoter/stønadskvoter1';
 import { stønadskvoter2 } from 'storybookData/stønadskvoter/stønadskvoter2';
 
-import { FellesUttaksplanDto_fpoversikt } from '@navikt/fp-types';
+import { FellesUttaksplanDto } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { API_URLS } from '../../api/queries.ts';
@@ -84,7 +84,7 @@ export const Default: Story = {
                             },
                         },
                     ],
-                } satisfies FellesUttaksplanDto_fpoversikt),
+                } satisfies FellesUttaksplanDto),
             ),
         );
     },
@@ -186,7 +186,7 @@ export const FarSøker: Story = {
                             },
                         },
                     ],
-                } satisfies FellesUttaksplanDto_fpoversikt),
+                } satisfies FellesUttaksplanDto),
             ),
         );
     },
@@ -325,7 +325,7 @@ export const MorOgFarOgFarGraderer: Story = {
                             },
                         },
                     ],
-                } satisfies FellesUttaksplanDto_fpoversikt),
+                } satisfies FellesUttaksplanDto),
             ),
         );
     },
@@ -415,7 +415,7 @@ export const MorMedFarSomHarTattOverMødrekvote: Story = {
                             },
                         },
                     ],
-                } satisfies FellesUttaksplanDto_fpoversikt),
+                } satisfies FellesUttaksplanDto),
             ),
         );
     },
