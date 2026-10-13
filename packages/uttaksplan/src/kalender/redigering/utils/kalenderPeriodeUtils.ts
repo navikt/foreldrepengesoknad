@@ -122,3 +122,42 @@ export const finnAntallDager = (perioder: CalendarPeriod[]): number => {
         return acc + dager;
     }, 0);
 };
+
+export const finnPerioderMedEndretGradering = (
+    nyePerioder: UttakPeriode_fpoversikt[],
+    opprinneligePerioder: UttakPeriode_fpoversikt[],
+    søker: UttakPeriode_fpoversikt['forelder'],
+    kanVelgeArbeidsgiver: boolean,
+): Array<{ fom: string; tom: string }> =>
+    nyePerioder.flatMap((ny) => {
+        const overlappendePerioder = opprinneligePerioder
+            .filter((p) => p.forelder === ny.forelder && p.fom <= ny.tom && p.tom >= ny.fom)
+            .sort((a, b) => a.fom.localeCompare(b.fom));
+        const endredePerioder: Array<{ fom: string; tom: string }> = [];
+        let nesteDato = ny.fom;
+
+        for (const opprinnelig of overlappendePerioder) {
+            const fom = opprinnelig.fom > ny.fom ? opprinnelig.fom : ny.fom;
+            const tom = opprinnelig.tom < ny.tom ? opprinnelig.tom : ny.tom;
+            if (ny.gradering && nesteDato < fom) {
+                endredePerioder.push({ fom: nesteDato, tom: dayjs(fom).subtract(1, 'day').format('YYYY-MM-DD') });
+            }
+
+            const gammelGradering = opprinnelig.gradering;
+            const nyGradering = ny.gradering;
+            const harEndretAktivitet =
+                ny.forelder === søker &&
+                kanVelgeArbeidsgiver &&
+                ((gammelGradering?.aktivitet?.type ?? 'ANNET') !== (nyGradering?.aktivitet?.type ?? 'ANNET') ||
+                    gammelGradering?.aktivitet?.arbeidsgiver?.id !== nyGradering?.aktivitet?.arbeidsgiver?.id);
+            if (gammelGradering?.arbeidstidprosent !== nyGradering?.arbeidstidprosent || harEndretAktivitet) {
+                endredePerioder.push({ fom, tom });
+            }
+            nesteDato = dayjs(tom).add(1, 'day').format('YYYY-MM-DD');
+        }
+
+        if (ny.gradering && nesteDato <= ny.tom) {
+            endredePerioder.push({ fom: nesteDato, tom: ny.tom });
+        }
+        return endredePerioder;
+    });

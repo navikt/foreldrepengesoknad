@@ -35,8 +35,13 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
         uttakPerioder,
     } = useUttaksplanData();
 
-    const { sammenslåtteValgtePerioder, setValgtePerioder, leggTilUttaksplanPerioder, setEndredePerioder } =
-        useKalenderRedigeringContext();
+    const {
+        sammenslåtteValgtePerioder,
+        setValgtePerioder,
+        leggTilUttaksplanPerioder,
+        setEndredePerioder,
+        utførEllerBekreftHistoriskEndring,
+    } = useKalenderRedigeringContext();
 
     const uttakPerioderInkludertTapteDager = useAlleUttakPerioderInklTapteDager();
 
@@ -83,22 +88,24 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
         });
 
     const leggTilEllerForskyvPeriode = (skalForskyve: boolean) => {
-        leggTilUttaksplanPerioder(
-            sammenslåtteValgtePerioder.map(
-                (p) =>
-                    ({
-                        forelder: søker,
-                        fom: p.fom,
-                        tom: p.tom,
-                        utsettelseÅrsak: 'LOVBESTEMT_FERIE',
-                        flerbarnsdager: false,
-                    }) satisfies UttakPeriode_fpoversikt,
-            ),
-            skalForskyve,
-        );
+        utførEllerBekreftHistoriskEndring(sammenslåtteValgtePerioder, () => {
+            leggTilUttaksplanPerioder(
+                sammenslåtteValgtePerioder.map(
+                    (p) =>
+                        ({
+                            forelder: søker,
+                            fom: p.fom,
+                            tom: p.tom,
+                            utsettelseÅrsak: 'LOVBESTEMT_FERIE',
+                            flerbarnsdager: false,
+                        }) satisfies UttakPeriode_fpoversikt,
+                ),
+                skalForskyve,
+            );
 
-        setValgtePerioder([]);
-        setEndredePerioder(sammenslåtteValgtePerioder);
+            setValgtePerioder([]);
+            setEndredePerioder(sammenslåtteValgtePerioder);
+        });
     };
 
     return (

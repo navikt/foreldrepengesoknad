@@ -21,11 +21,11 @@ import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forsk
 import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { useFormSubmitValidator } from '../../../../felles/uttaksplanValidatorer';
 import { useKanKunErstatte, useLeggTilEndreSkjemaInfoAlerts } from '../../../../regler/alert/informasjonsAlertHooks';
-import { erEøsUttakPeriode } from '../../../../types/UttaksplanPeriode';
+import { erEøsUttakPeriode, erVanligUttakPeriode } from '../../../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from '../../context/KalenderRedigeringContext';
-import { finnValgtePerioder } from '../../utils/kalenderPeriodeUtils';
+import { finnPerioderMedEndretGradering, finnValgtePerioder } from '../../utils/kalenderPeriodeUtils';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
@@ -42,8 +42,13 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
 
-    const { sammenslåtteValgtePerioder, leggTilUttaksplanPerioder, setValgtePerioder, setEndredePerioder } =
-        useKalenderRedigeringContext();
+    const {
+        sammenslåtteValgtePerioder,
+        leggTilUttaksplanPerioder,
+        setValgtePerioder,
+        setEndredePerioder,
+        utførEllerBekreftHistoriskEndring,
+    } = useKalenderRedigeringContext();
 
     const [feilmelding, setFeilmelding] = useState<string | undefined>();
 
@@ -138,17 +143,27 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
     };
 
     const leggIKalender = (skalForskyve: boolean) => {
-        leggTilUttaksplanPerioder(
-            sammenslåtteValgtePerioder.flatMap((periode) =>
-                mapFraFormValuesTilUttakPeriode(formMethods.getValues(), periode, søker, kanVelgeArbeidsgiver),
-            ),
-            skalForskyve,
+        const verdier = formMethods.getValues();
+        const nyePerioder = sammenslåtteValgtePerioder.flatMap((periode) =>
+            mapFraFormValuesTilUttakPeriode(verdier, periode, søker, kanVelgeArbeidsgiver),
         );
 
-        setValgtePerioder([]);
-        setEndredePerioder(sammenslåtteValgtePerioder);
+        const utførEndring = () => {
+            leggTilUttaksplanPerioder(nyePerioder, skalForskyve);
+            setValgtePerioder([]);
+            setEndredePerioder(sammenslåtteValgtePerioder);
+            lukkRedigeringsmodus();
+        };
 
-        lukkRedigeringsmodus();
+        utførEllerBekreftHistoriskEndring(
+            finnPerioderMedEndretGradering(
+                nyePerioder,
+                uttakPerioder.filter(erVanligUttakPeriode),
+                søker,
+                kanVelgeArbeidsgiver,
+            ),
+            utførEndring,
+        );
     };
 
     return (

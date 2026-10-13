@@ -1,4 +1,8 @@
-import { createContext, use, useCallback, useMemo } from 'react';
+import dayjs from 'dayjs';
+import { createContext, use, useCallback, useMemo, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
+
+import { Alert, Button, Dialog } from '@navikt/ds-react';
 
 import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
@@ -20,6 +24,7 @@ type ContextValues = Omit<Props, 'children' | 'valgtePerioder' | 'oppdaterUttaks
     sammenslåtteValgtePerioder: CalendarPeriod[];
     leggTilUttaksplanPerioder: (perioder: UttakPeriode_fpoversikt[], skalForskyvePeriode: boolean) => void;
     slettUttaksplanPerioder: (perioder: Array<{ fom: string; tom: string }>, skalForskyveBakover: boolean) => void;
+    utførEllerBekreftHistoriskEndring: (perioder: Array<{ fom: string; tom: string }>, handling: () => void) => void;
 };
 
 const KalenderRedigeringContext = createContext<ContextValues | null>(null);
@@ -30,9 +35,10 @@ export const KalenderRedigeringProvider = ({
     setValgtePerioder,
     setEndredePerioder,
 }: Props) => {
-    const { uttakPerioder } = useUttaksplanData();
+    const { uttakPerioder, erEndringssøknad } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
+    const [ventendeHistoriskEndring, setVentendeHistoriskEndring] = useState<{ handling: () => void }>();
 
     const sammenslåtteValgtePerioder = useMemo(() => slåSammenTilstøtendePerioder(valgtePerioder), [valgtePerioder]);
 
@@ -56,11 +62,37 @@ export const KalenderRedigeringProvider = ({
         [uttaksplanRedigering, uttakPerioder],
     );
 
+    const utførEllerBekreftHistoriskEndring = useCallback(
+        (perioder: Array<{ fom: string; tom: string }>, handling: () => void) => {
+            const førsteDagDenneMåneden = dayjs().startOf('month');
+            const berørerTidligereMåned = perioder.some((periode) =>
+                dayjs(periode.fom).isBefore(førsteDagDenneMåneden, 'day'),
+            );
+
+            if (erEndringssøknad && berørerTidligereMåned) {
+                setVentendeHistoriskEndring({ handling });
+                return;
+            }
+
+            handling();
+        },
+        [erEndringssøknad],
+    );
+
+    const avbrytHistoriskEndring = useCallback(() => setVentendeHistoriskEndring(undefined), []);
+    const bekreftHistoriskEndring = useCallback(() => {
+        if (ventendeHistoriskEndring) {
+            ventendeHistoriskEndring.handling();
+            setVentendeHistoriskEndring(undefined);
+        }
+    }, [ventendeHistoriskEndring]);
+
     const value = useMemo(() => {
         return {
             sammenslåtteValgtePerioder,
             leggTilUttaksplanPerioder,
             slettUttaksplanPerioder,
+            utførEllerBekreftHistoriskEndring,
             setValgtePerioder,
             setEndredePerioder,
         };
@@ -68,11 +100,47 @@ export const KalenderRedigeringProvider = ({
         sammenslåtteValgtePerioder,
         leggTilUttaksplanPerioder,
         slettUttaksplanPerioder,
+        utførEllerBekreftHistoriskEndring,
         setValgtePerioder,
         setEndredePerioder,
     ]);
 
-    return <KalenderRedigeringContext value={value}>{children}</KalenderRedigeringContext>;
+    return (
+        <KalenderRedigeringContext value={value}>
+            {children}
+            <Dialog
+                open={ventendeHistoriskEndring !== undefined}
+                onOpenChange={(open) => {
+                    if (!open) {
+                        avbrytHistoriskEndring();
+                    }
+                }}
+            >
+                <Dialog.Popup id="BekreftHistoriskEndringModal">
+                    <Dialog.Header>
+                        <Dialog.Title>
+                            <FormattedMessage id="KalenderRedigering.HistoriskEndring.Modal.Tittel" />
+                        </Dialog.Title>
+                    </Dialog.Header>
+                    <Dialog.Body>
+                        <Alert variant="warning">
+                            <FormattedMessage id="KalenderRedigering.HistoriskEndring.Modal.Advarsel" />
+                        </Alert>
+                    </Dialog.Body>
+                    <Dialog.Footer>
+                        <Dialog.CloseTrigger>
+                            <Button type="button" variant="secondary">
+                                <FormattedMessage id="KalenderRedigering.HistoriskEndring.Modal.Knapp.Avbryt" />
+                            </Button>
+                        </Dialog.CloseTrigger>
+                        <Button type="button" variant="primary" onClick={bekreftHistoriskEndring}>
+                            <FormattedMessage id="KalenderRedigering.HistoriskEndring.Modal.Knapp.Bekreft" />
+                        </Button>
+                    </Dialog.Footer>
+                </Dialog.Popup>
+            </Dialog>
+        </KalenderRedigeringContext>
+    );
 };
 
 export const useKalenderRedigeringContext = () => {

@@ -1648,15 +1648,11 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(periode.getByRole('button', { name: 'Slett dager fra periode' }));
 
         expect(await screen.findByRole('dialog')).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                'Endringen kan påvirke utbetalingen. Hvis du allerede har fått utbetalt penger, kan du måtte betale dem tilbake.',
-            ),
-        ).toBeInTheDocument();
+        expect(screen.getByText('TODO: Advarsel')).toBeInTheDocument();
         expect(within(juli).getByTestId('day:14;dayColor:DARKBLUE')).toBeInTheDocument();
         expect(screen.getByTestId('eksisterende-periode-2026-07-01-2026-07-17')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByRole('button', { name: 'Avbryt' }));
+        await userEvent.click(screen.getByRole('button', { name: 'TODO: Avbryt' }));
 
         await waitFor(() => {
             expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
@@ -1669,7 +1665,7 @@ describe('UttaksplanKalender', () => {
                 name: 'Slett dager fra periode',
             }),
         );
-        await userEvent.click(screen.getByRole('button', { name: 'Slett periode' }));
+        await userEvent.click(screen.getByRole('button', { name: 'TODO: Bekreft' }));
 
         expect(within(juli).getByTestId('day:14;dayColor:BLACK')).toBeInTheDocument();
         expect(within(juli).getByTestId('day:13;dayColor:BLACKOUTLINE')).toBeInTheDocument();
@@ -1761,11 +1757,97 @@ describe('UttaksplanKalender', () => {
         );
 
         expect(await screen.findByRole('dialog')).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                'Endringen kan påvirke utbetalingen. Hvis du allerede har fått utbetalt penger, kan du måtte betale dem tilbake.',
-            ),
-        ).toBeInTheDocument();
+        expect(screen.getByText('TODO: Advarsel')).toBeInTheDocument();
+    });
+
+    it('skal be om bekreftelse før ferie legges til tilbake i tid', async () => {
+        vi.useFakeTimers({ toFake: ['Date'] });
+        vi.setSystemTime(new Date('2026-08-01T12:00:00'));
+
+        render(<SkalViseAvslåttPeriodeKorrekt />);
+
+        const mars = screen.getByTestId('year:2026;month:2');
+        await userEvent.click(within(mars).getByRole('button', { name: '02.03.2026' }));
+        await userEvent.click(within(mars).getByRole('button', { name: '10.03.2026' }));
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til ferie' }));
+
+        expect(await screen.findByRole('dialog')).toBeInTheDocument();
+        expect(screen.getByText('TODO: Advarsel')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByRole('button', { name: 'TODO: Avbryt' }));
+
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        expect(within(mars).getByTestId('day:2;dayColor:DARKBLUE')).toBeInTheDocument();
+        expect(within(mars).getByTestId('day:10;dayColor:DARKBLUE')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til ferie' }));
+        await userEvent.click(screen.getByRole('button', { name: 'TODO: Bekreft' }));
+
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        expect(within(mars).getByRole('button', { name: /^02\.03\.2026,.*Ferie/ })).toBeInTheDocument();
+    });
+
+    it.each([
+        { erEndringssøknad: true, dagensDato: '2026-08-01', forventerVarsel: true },
+        { erEndringssøknad: false, dagensDato: '2026-08-01', forventerVarsel: false },
+        { erEndringssøknad: true, dagensDato: '2026-07-01', forventerVarsel: false },
+        { erEndringssøknad: true, dagensDato: '2026-06-01', forventerVarsel: false },
+    ])(
+        'skal varsle ved gradering etter søknadstype og dato: $erEndringssøknad, $dagensDato',
+        async ({ erEndringssøknad, dagensDato, forventerVarsel }) => {
+            vi.useFakeTimers({ toFake: ['Date'] });
+            vi.setSystemTime(new Date(`${dagensDato}T12:00:00`));
+
+            render(<SkalViseAvslåttPeriodeKorrekt erEndringssøknad={erEndringssøknad} />);
+
+            const juli = screen.getByTestId('year:2026;month:6');
+            await userEvent.click(within(juli).getByRole('button', { name: /^20\.07\.2026,/ }));
+            await userEvent.click(within(juli).getByRole('button', { name: /^27\.07\.2026,/ }));
+            await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+            await userEvent.click(screen.getAllByText('Endre')[0]!);
+            await userEvent.click(screen.getAllByText('Fars kvote')[0]!);
+
+            const gradering = screen.getByRole('radiogroup', { name: 'Skal far kombinere foreldrepenger med arbeid?' });
+            await userEvent.click(within(gradering).getByRole('radio', { name: 'Ja' }));
+            await userEvent.type(screen.getByLabelText('Hvor mange prosent skal far jobbe?'), '60');
+            await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
+
+            expect(screen.queryByRole('dialog') !== null).toBe(forventerVarsel);
+
+            if (forventerVarsel) {
+                await userEvent.click(screen.getByRole('button', { name: 'TODO: Avbryt' }));
+                await waitFor(() => screen.getByRole('button', { name: 'Legg til' }));
+                await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
+                await userEvent.click(screen.getByRole('button', { name: 'TODO: Bekreft' }));
+            }
+
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+            expect(within(juli).getByTestId('day:20;dayColor:GREENSTRIPED')).toBeInTheDocument();
+
+            await userEvent.click(within(juli).getByRole('button', { name: /^20\.07\.2026,/ }));
+            await userEvent.click(within(juli).getByRole('button', { name: /^27\.07\.2026,/ }));
+            await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+            await userEvent.click(screen.getAllByText('Endre')[0]!);
+            expect(screen.getByLabelText('Hvor mange prosent skal far jobbe?')).toHaveValue('60');
+        },
+    );
+
+    it('skal ikke varsle ved rent kvotetypebytte tilbake i tid', async () => {
+        vi.useFakeTimers({ toFake: ['Date'] });
+        vi.setSystemTime(new Date('2026-08-01T12:00:00'));
+        render(<SkalViseAvslåttPeriodeKorrekt />);
+
+        const juli = screen.getByTestId('year:2026;month:6');
+        await userEvent.click(within(juli).getByRole('button', { name: /^20\.07\.2026,/ }));
+        await userEvent.click(within(juli).getByRole('button', { name: /^27\.07\.2026,/ }));
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getAllByText('Endre')[0]!);
+        await userEvent.click(screen.getByRole('radio', { name: 'Fars kvote' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
+
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        expect(within(juli).getByRole('button', { name: /^20\.07\.2026,.*Fedrekvote/ })).toBeInTheDocument();
     });
 
     it('skal beholde eksisterende varsel for Fjern alt uten å vise et ekstra varsel', async () => {
@@ -1779,11 +1861,7 @@ describe('UttaksplanKalender', () => {
                 /Hvis du sender en ny søknad der du har slettet perioder du allerede har fått foreldrepenger for/,
             ),
         ).toBeInTheDocument();
-        expect(
-            screen.queryByText(
-                'Endringen kan påvirke utbetalingen. Hvis du allerede har fått utbetalt penger, kan du måtte betale dem tilbake.',
-            ),
-        ).not.toBeInTheDocument();
+        expect(screen.queryByText('TODO: Advarsel')).not.toBeInTheDocument();
     });
 
     it('skal ikke markere avslåtte perioder med varsel om mors aktivitet', () => {
