@@ -22,194 +22,179 @@
     border-radius: 4px;
     user-select: none;
     border: 2px solid transparent;
-}
 
-.roundedLeft {
-    border-top-left-radius: 14px;
-    border-bottom-left-radius: 14px;
-}
+    &[data-shape='rounded-left'] {
+        border-top-left-radius: 14px;
+        border-bottom-left-radius: 14px;
+    }
 
-.roundedRight {
-    border-top-right-radius: 14px;
-    border-bottom-right-radius: 14px;
-}
+    &[data-shape='rounded-right'] {
+        border-top-right-radius: 14px;
+        border-bottom-right-radius: 14px;
+    }
 
-@media (max-width: 768px) {
-    .days {
+    @media (max-width: 768px) {
         height: 40px;
         font-size: 15px;
     }
-}
 
-@media (max-width: 480px) {
-    .days {
+    @media (max-width: 480px) {
         height: 30px;
         font-size: 14px;
     }
-}
 
-.cursorAndHoover {
-    cursor: pointer;
+    &[data-clickable='true'] {
+        cursor: pointer;
 
-    &:hover,
-    &:focus-visible {
-        box-shadow: 0 2px 6px var(--ax-bg-overlay);
-        border-color: var(--ax-bg-overlay);
+        &:hover,
+        &:focus-visible {
+            box-shadow: 0 2px 6px var(--ax-bg-overlay);
+            border-color: var(--ax-bg-overlay);
+        }
     }
-}
 
-.fadeIn {
-    animation: fadeIn 0.5s ease-in forwards;
-}
+    &[data-clickable='false'] {
+        cursor: default;
+    }
 
-.blueDay {
-    background-color: var(--ax-accent-400) !important;
-    print-color-adjust: exact;
-}
+    &[data-fade-in='true'] {
+        @media (prefers-reduced-motion: no-preference) {
+            animation: fadeIn 0.5s ease-in forwards;
+        }
+    }
 
-.darkblueDay {
-    background-color: var(--ax-bg-accent-strong-pressed) !important;
-    color: var(--ax-bg-default);
-    print-color-adjust: exact;
-}
+    &[data-periode-color] {
+        print-color-adjust: exact;
+    }
 
-.lightblueDay {
-    background-color: var(--ax-accent-300) !important;
-    border: 2px solid var(--ax-accent-500);
-    print-color-adjust: exact;
-}
+    &[data-periode-color='BLUE'] {
+        background-color: var(--ax-accent-400);
+    }
 
-.lightgreenDay {
-    background-color: var(--ax-success-400) !important;
-    border: 2px solid var(--ax-success-400);
-    print-color-adjust: exact;
-}
+    &[data-periode-color='DARKBLUE'] {
+        background-color: var(--ax-bg-accent-strong-pressed);
+        color: var(--ax-bg-default);
+    }
 
-.greenDay {
-    background-color: var(--ax-success-400) !important;
-    print-color-adjust: exact;
-}
+    &[data-periode-color='LIGHTBLUE'] {
+        background-color: var(--ax-accent-300);
+        border-color: var(--ax-accent-500);
+    }
 
-.greenStripedDay {
-    background: linear-gradient(
-        45deg,
-        var(--ax-success-400) 0%,
-        var(--ax-success-400) 15%,
-        var(--ax-bg-default) 15%,
-        var(--ax-bg-default) 30%,
-        var(--ax-success-400) 30%,
-        var(--ax-success-400) 45%,
-        var(--ax-bg-default) 45%,
-        var(--ax-bg-default) 60%,
-        var(--ax-success-400) 60%,
-        var(--ax-success-400) 75%,
-        var(--ax-bg-default) 75%,
-        var(--ax-bg-default) 90%,
-        var(--ax-success-400) 90%
-    ) !important;
-    border: 2px solid var(--ax-success-500);
-    print-color-adjust: exact;
-}
+    &[data-periode-color='LIGHTGREEN'] {
+        background-color: var(--ax-success-400);
+        border-color: var(--ax-success-400);
+    }
 
-.blueStripedDay {
-    background: linear-gradient(
-        45deg,
-        var(--ax-accent-400) 0%,
-        var(--ax-accent-400) 15%,
-        var(--ax-bg-default) 15%,
-        var(--ax-bg-default) 30%,
-        var(--ax-accent-400) 30%,
-        var(--ax-accent-400) 45%,
-        var(--ax-bg-default) 45%,
-        var(--ax-bg-default) 60%,
-        var(--ax-accent-400) 60%,
-        var(--ax-accent-400) 75%,
-        var(--ax-bg-default) 75%,
-        var(--ax-bg-default) 90%,
-        var(--ax-accent-400) 90%
-    ) !important;
-    border: 2px solid var(--ax-accent-500);
-    print-color-adjust: exact;
-}
+    &[data-periode-color='GREEN'] {
+        background-color: var(--ax-success-400);
+    }
 
-.grayDay {
-    background-color: var(--ax-neutral-100);
-    print-color-adjust: exact;
-    cursor: default;
-}
+    &[data-periode-color='GREENSTRIPED'] {
+        background: linear-gradient(
+                45deg,
+                var(--ax-success-400) 0%,
+                var(--ax-success-400) 15%,
+                var(--ax-bg-default) 15%,
+                var(--ax-bg-default) 30%,
+                var(--ax-success-400) 30%,
+                var(--ax-success-400) 45%,
+                var(--ax-bg-default) 45%,
+                var(--ax-bg-default) 60%,
+                var(--ax-success-400) 60%,
+                var(--ax-success-400) 75%,
+                var(--ax-bg-default) 75%,
+                var(--ax-bg-default) 90%,
+                var(--ax-success-400) 90%
+        );
+        border-color: var(--ax-success-500);
+    }
 
-.darkgrayDay {
-    background-color: var(--ax-neutral-400);
-    print-color-adjust: exact;
-    cursor: default;
-}
+    &[data-periode-color='BLUESTRIPED'] {
+        background: linear-gradient(
+                45deg,
+                var(--ax-accent-400) 0%,
+                var(--ax-accent-400) 15%,
+                var(--ax-bg-default) 15%,
+                var(--ax-bg-default) 30%,
+                var(--ax-accent-400) 30%,
+                var(--ax-accent-400) 45%,
+                var(--ax-bg-default) 45%,
+                var(--ax-bg-default) 60%,
+                var(--ax-accent-400) 60%,
+                var(--ax-accent-400) 75%,
+                var(--ax-bg-default) 75%,
+                var(--ax-bg-default) 90%,
+                var(--ax-accent-400) 90%
+        );
+        border-color: var(--ax-accent-500);
+    }
 
-.blackDay {
-    background-color: var(--ax-bg-neutral-strong) !important;
-    color: var(--ax-bg-default);
-    print-color-adjust: exact;
-}
+    &[data-periode-color='GRAY'] {
+        background-color: var(--ax-neutral-100);
+    }
 
-.blackOutlineDay {
-    border: 2px solid var(--ax-bg-neutral-strong);
-    print-color-adjust: exact;
-}
+    &[data-periode-color='DARKGRAY'] {
+        background-color: var(--ax-neutral-400);
+    }
 
-.blueOutlineDay {
-    border: 2px solid var(--ax-accent-500);
-    print-color-adjust: exact;
-}
+    &[data-periode-color='BLACK'] {
+        background-color: var(--ax-bg-neutral-strong);
+        color: var(--ax-bg-default);
+    }
 
-.beigeOutlineDay {
-    border: 2px solid var(--ax-brand-beige-600);
-    print-color-adjust: exact;
-}
+    &[data-periode-color='BLACKOUTLINE'] {
+        border-color: var(--ax-bg-neutral-strong);
+    }
 
-.greenWithBlackOutlineDay {
-    background-color: var(--ax-success-400) !important;
-    border: 2px solid var(--ax-bg-neutral-strong);
-    print-color-adjust: exact;
-}
+    &[data-periode-color='BLUEOUTLINE'] {
+        border-color: var(--ax-accent-500);
+    }
 
-.blueWithBlackOutlineDay {
-    background-color: var(--ax-accent-400) !important;
-    border: 2px solid var(--ax-bg-neutral-strong);
-    print-color-adjust: exact;
-}
+    &[data-periode-color='BEIGEOUTLINE'] {
+        border-color: var(--ax-brand-beige-600);
+    }
 
-.greenOutlineDay {
-    border: 2px solid var(--ax-success-400);
-    print-color-adjust: exact;
-}
+    &[data-periode-color='GREEN_WITH_BLACK_OUTLINE'] {
+        background-color: var(--ax-success-400);
+        border-color: var(--ax-bg-neutral-strong);
+    }
 
-.lightgreenBlueDay {
-    background: linear-gradient(
-        to top,
-        var(--ax-accent-400),
-        var(--ax-accent-400) 50%,
-        var(--ax-success-200) 50%,
-        var(--ax-success-200) 75%,
-        var(--ax-success-200) 100%
-    ) !important;
-    border: 2px solid var(--ax-accent-400);
-    print-color-adjust: exact;
-}
+    &[data-periode-color='BLUE_WITH_BLACK_OUTLINE'] {
+        background-color: var(--ax-accent-400);
+        border-color: var(--ax-bg-neutral-strong);
+    }
 
-.lightblueGreenDay {
-    background: linear-gradient(
-        to top,
-        var(--ax-success-400),
-        var(--ax-success-400) 50%,
-        var(--ax-accent-300) 50%,
-        var(--ax-accent-300) 100%
-    ) !important;
-    border: 2px solid var(--ax-success-400);
-    print-color-adjust: exact;
-}
+    &[data-periode-color='GREENOUTLINE'] {
+        border-color: var(--ax-success-400);
+    }
 
-.hoverPreviewDay {
-    background-color: var(--ax-accent-600);
-    print-color-adjust: exact;
+    &[data-periode-color='LIGHTGREENBLUE'] {
+        background: linear-gradient(
+                to top,
+                var(--ax-accent-400),
+                var(--ax-accent-400) 50%,
+                var(--ax-success-200) 50%,
+                var(--ax-success-200) 75%,
+                var(--ax-success-200) 100%
+        );
+        border-color: var(--ax-accent-400);
+    }
+
+    &[data-periode-color='LIGHTBLUEGREEN'] {
+        background: linear-gradient(
+                to top,
+                var(--ax-success-400),
+                var(--ax-success-400) 50%,
+                var(--ax-accent-300) 50%,
+                var(--ax-accent-300) 100%
+        );
+        border-color: var(--ax-success-400);
+    }
+
+    &[data-hover-preview='true'] {
+        background-color: var(--ax-accent-600);
+    }
 }
 
 .icon {

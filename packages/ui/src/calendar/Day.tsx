@@ -11,28 +11,6 @@ import { CalendarPeriodColor } from './types/CalendarPeriodColor';
 
 export type DayShape = 'square' | 'rounded-right' | 'rounded-left';
 
-const DAY_STYLE: Record<CalendarPeriodColor, string> = {
-    ['NONE']: '',
-    ['BLUE']: styles.blueDay!,
-    ['DARKBLUE']: styles.darkblueDay!,
-    ['LIGHTGREEN']: styles.lightgreenDay!,
-    ['GRAY']: styles.grayDay!,
-    ['DARKGRAY']: styles.darkgrayDay!,
-    ['BLACK']: styles.blackDay!,
-    ['BLACKOUTLINE']: styles.blackOutlineDay!,
-    ['BLUEOUTLINE']: styles.blueOutlineDay!,
-    ['GREENOUTLINE']: styles.greenOutlineDay!,
-    ['LIGHTBLUE']: styles.lightblueDay!,
-    ['GREEN']: styles.greenDay!,
-    ['LIGHTBLUEGREEN']: styles.lightblueGreenDay!,
-    ['LIGHTGREENBLUE']: styles.lightgreenBlueDay!,
-    ['GREENSTRIPED']: styles.greenStripedDay!,
-    ['BLUESTRIPED']: styles.blueStripedDay!,
-    ['GREEN_WITH_BLACK_OUTLINE']: styles.greenWithBlackOutlineDay!,
-    ['BLUE_WITH_BLACK_OUTLINE']: styles.blueWithBlackOutlineDay!,
-    ['BEIGEOUTLINE']: styles.beigeOutlineDay!,
-};
-
 type Props = {
     isoDate: string;
     periodeColor: CalendarPeriodColor;
@@ -84,25 +62,24 @@ export const Day = React.memo(
         );
 
         const isClickable = !!dateClickCallback && !isWeekend(date);
-        const colorClass =
-            isHoverPreview && !isWeekend(date) && periodeColor !== 'DARKBLUE'
-                ? styles.hoverPreviewDay
-                : DAY_STYLE[periodeColor];
 
         return (
             <button
                 ref={setButtonRef}
                 type="button"
                 data-testid={`day:${day};dayColor:${periodeColor}${Icon ? `;with-icon` : ''}`}
+                data-shape={shape}
+                data-clickable={isClickable}
+                data-fade-in={isUpdated}
+                data-periode-color={periodeColor}
+                data-hover-preview={isHoverPreview && !isWeekend(date) && periodeColor !== 'DARKBLUE'}
                 tabIndex={isFocused ? 0 : -1}
-                className={`${styles.days} ${colorClass} ${isClickable && styles.cursorAndHoover} ${isUpdated && styles.fadeIn}
-                ${shape === 'rounded-left' && styles.roundedLeft} ${shape === 'rounded-right' && styles.roundedRight}`}
+                className={styles.days}
                 onFocus={isClickable ? () => setFocusedDate(date) : undefined}
                 onMouseEnter={onDateHover && isClickable ? () => onDateHover(isoDate) : undefined}
                 onMouseOver={dateTooltipCallback ? () => setIsTooltipOpen(true) : undefined}
                 onMouseLeave={dateTooltipCallback ? () => setIsTooltipOpen(false) : undefined}
                 onClick={isClickable ? () => dateClickCallback(isoDate) : undefined}
-                onAnimationEnd={() => buttonRef.current?.classList.remove(styles.fadeIn!)}
                 onKeyDown={
                     dateClickCallback
                         ? (e) =>
