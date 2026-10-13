@@ -1648,11 +1648,11 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(periode.getByRole('button', { name: 'Slett dager fra periode' }));
 
         expect(await screen.findByRole('dialog')).toBeInTheDocument();
-        expect(screen.getByText('TODO: Advarsel')).toBeInTheDocument();
+        expect(screen.getByText(/kan det påvirke utbetalingen/)).toBeInTheDocument();
         expect(within(juli).getByTestId('day:14;dayColor:DARKBLUE')).toBeInTheDocument();
         expect(screen.getByTestId('eksisterende-periode-2026-07-01-2026-07-17')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByRole('button', { name: 'TODO: Avbryt' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Avbryt' }));
 
         await waitFor(() => {
             expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
@@ -1665,7 +1665,7 @@ describe('UttaksplanKalender', () => {
                 name: 'Slett dager fra periode',
             }),
         );
-        await userEvent.click(screen.getByRole('button', { name: 'TODO: Bekreft' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Slett' }));
 
         expect(within(juli).getByTestId('day:14;dayColor:BLACK')).toBeInTheDocument();
         expect(within(juli).getByTestId('day:13;dayColor:BLACKOUTLINE')).toBeInTheDocument();
@@ -1757,7 +1757,7 @@ describe('UttaksplanKalender', () => {
         );
 
         expect(await screen.findByRole('dialog')).toBeInTheDocument();
-        expect(screen.getByText('TODO: Advarsel')).toBeInTheDocument();
+        expect(screen.getByText(/kan det påvirke utbetalingen/)).toBeInTheDocument();
     });
 
     it('skal be om bekreftelse før ferie legges til tilbake i tid', async () => {
@@ -1773,16 +1773,16 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(screen.getByRole('button', { name: 'Legg til ferie' }));
 
         expect(await screen.findByRole('dialog')).toBeInTheDocument();
-        expect(screen.getByText('TODO: Advarsel')).toBeInTheDocument();
+        expect(screen.getByText(/kan det påvirke utbetalingen/)).toBeInTheDocument();
 
-        await userEvent.click(screen.getByRole('button', { name: 'TODO: Avbryt' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Avbryt' }));
 
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
         expect(within(mars).getByTestId('day:2;dayColor:DARKBLUE')).toBeInTheDocument();
         expect(within(mars).getByTestId('day:10;dayColor:DARKBLUE')).toBeInTheDocument();
 
         await userEvent.click(screen.getByRole('button', { name: 'Legg til ferie' }));
-        await userEvent.click(screen.getByRole('button', { name: 'TODO: Bekreft' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Endre' }));
 
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
         expect(within(mars).getByRole('button', { name: /^02\.03\.2026,.*Ferie/ })).toBeInTheDocument();
@@ -1816,10 +1816,10 @@ describe('UttaksplanKalender', () => {
             expect(screen.queryByRole('dialog') !== null).toBe(forventerVarsel);
 
             if (forventerVarsel) {
-                await userEvent.click(screen.getByRole('button', { name: 'TODO: Avbryt' }));
+                await userEvent.click(screen.getByRole('button', { name: 'Avbryt' }));
                 await waitFor(() => screen.getByRole('button', { name: 'Legg til' }));
                 await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
-                await userEvent.click(screen.getByRole('button', { name: 'TODO: Bekreft' }));
+                await userEvent.click(screen.getByRole('button', { name: 'Endre' }));
             }
 
             expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
@@ -1861,7 +1861,7 @@ describe('UttaksplanKalender', () => {
                 /Hvis du sender en ny søknad der du har slettet perioder du allerede har fått foreldrepenger for/,
             ),
         ).toBeInTheDocument();
-        expect(screen.queryByText('TODO: Advarsel')).not.toBeInTheDocument();
+        expect(screen.queryByText(/kan det påvirke utbetalingen/)).not.toBeInTheDocument();
     });
 
     it('skal ikke markere avslåtte perioder med varsel om mors aktivitet', () => {
