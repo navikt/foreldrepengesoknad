@@ -106,7 +106,7 @@ const UttaksplanListe = ({
     const termindato = getTermindato(barn);
 
     // Parten denne lista viser periodane til: søkjaren sin eigen (.søker) eller annan part sin (.annenPart).
-    const finnPart = (periode: UttakPeriodeDto): UttakDto | undefined => (erSøker ? periode.søker : periode.annenPart);
+    const finnPart = (periode: UttakPeriodeDto) => (erSøker ? periode.søker : periode.annenPart);
 
     const getStønadskvoteNavnFraKvote = (konto: KontoType | undefined, morsAktivitet?: MorsAktivitet) => {
         return (
@@ -125,7 +125,7 @@ const UttaksplanListe = ({
 
     const getUttaksperiodeNavn = (periode: UttakPeriodeDto, part: UttakDto | undefined) => {
         const tittel = getStønadskvoteNavnFraKvote(part?.kontoType, part?.morsAktivitet);
-        const periodeForFødselssjekk: UttakPeriodeDto = { ...periode, søker: part };
+        const periodeForFødselssjekk = { ...periode, søker: part };
         return søkersituasjon.situasjon === 'fødsel' &&
             isUttaksperiodeFarMedmorPgaFødsel(periodeForFødselssjekk, familiehendelsesdato, termindato)
             ? tittel + intl.formatMessage({ id: 'rundtFødsel' })
@@ -197,7 +197,7 @@ const UttaksplanListe = ({
                                         <FormSummary.Value>
                                             {getUttaksperiodeNavn(periode, part)}
                                             <Uttaksperiodedetaljer
-                                                periode={part}
+                                                part={part}
                                                 registrerteArbeidsforhold={registrerteArbeidsforhold}
                                                 annenForelder={annenForelder}
                                                 barn={barn}
@@ -215,7 +215,7 @@ const UttaksplanListe = ({
                                         </FormSummary.Label>
                                         <FormSummary.Value>
                                             <FormattedMessage id="oppsummering.utsettelse.pga" />
-                                            <Utsettelsesperiodedetaljer periode={part} />
+                                            <Utsettelsesperiodedetaljer part={part} />
                                         </FormSummary.Value>
                                     </FormSummary.Answer>
                                 );
@@ -231,10 +231,7 @@ const UttaksplanListe = ({
                                                 id="oppsummering.overtakelse.pga"
                                                 values={{ kvote: getStønadskvoteNavnFraKvote(part.kontoType) }}
                                             />
-                                            <Overføringsperiodedetaljer
-                                                periode={part}
-                                                navnPåForeldre={navnPåForeldre}
-                                            />
+                                            <Overføringsperiodedetaljer part={part} navnPåForeldre={navnPåForeldre} />
                                         </FormSummary.Value>
                                     </FormSummary.Answer>
                                 );

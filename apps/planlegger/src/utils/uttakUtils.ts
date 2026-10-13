@@ -401,11 +401,7 @@ export const lagForslagTilPlan = ({
     return { søker1: perioder, søker2: [] };
 };
 
-// Ein periode er no eit tidsintervall som kan ha både `søker` og `annenPart` samtidig (i staden for
-// éin flat rad per person), så vi kan ikkje lenger anta at eit periode-objekt "tilhøyrer" éin forelder.
-// Funksjonane returnerer difor framleis fulle periodar (med `fom`/`tom` for visning), filtrert til dei
-// som har den aktuelle forelderen på minst éi side (uansett om forslagsmotoren/redigeringa har lagt
-// forelderen på `.søker` eller `.annenPart`).
+// En forelder kan ligge på både `.søker` og `.annenPart`, så vi filtrerer på begge og returnerer hele perioder.
 export const getSøkersPerioder = (
     erDeltUttak: boolean,
     gjeldendeUttaksplan: UttakPeriodeDto[],

@@ -16,7 +16,12 @@ import { getErFarOgFar, getErSøkerFarEllerMedmor, getKjønnFromFnr, getNavnPåF
 import { Alert, BodyLong, Tabs } from '@navikt/ds-react';
 
 import { loggUmamiEvent } from '@navikt/fp-observability';
-import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, RettighetType_fpoversikt } from '@navikt/fp-types';
+import {
+    FpPersonopplysningerDto_fpoversikt,
+    FpSak_fpoversikt,
+    RettighetType_fpoversikt,
+    UttakPeriodeDto,
+} from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { barnehagestartDato, getFamiliehendelsedato } from '@navikt/fp-utils';
 import {
@@ -74,7 +79,7 @@ export const UttaksplanSteg = ({
     const [feilmelding, setFeilmelding] = useState<ReactNode | undefined>();
 
     const oppdaterUttaksplanOgFjernFeilmelding = useCallback(
-        (perioder: Parameters<typeof oppdaterUttaksplan>[0]) => {
+        (perioder: UttakPeriodeDto[] | undefined) => {
             setFeilmelding(undefined);
             const gjenbruktPlan =
                 !erEndringssøknad &&

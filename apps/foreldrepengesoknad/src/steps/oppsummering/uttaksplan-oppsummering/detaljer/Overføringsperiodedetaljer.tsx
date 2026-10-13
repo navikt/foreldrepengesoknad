@@ -5,7 +5,7 @@ import { KontoTypeUttak, NavnPåForeldre, UttakDto } from '@navikt/fp-types';
 import { Feltoppsummering } from './Feltoppsummering';
 
 interface Props {
-    periode: UttakDto;
+    part: UttakDto;
     navnPåForeldre: NavnPåForeldre;
 }
 
@@ -19,19 +19,19 @@ const getNavnPåAnnenForelder = (navnPåForeldre: NavnPåForeldre, konto: KontoT
     return intl.formatMessage({ id: 'annen.forelder' });
 };
 
-export const Overføringsperiodedetaljer = ({ periode, navnPåForeldre }: Props) => {
+export const Overføringsperiodedetaljer = ({ part, navnPåForeldre }: Props) => {
     const intl = useIntl();
-    const navnAnnenForelder = getNavnPåAnnenForelder(navnPåForeldre, periode.kontoType, intl);
+    const navnAnnenForelder = getNavnPåAnnenForelder(navnPåForeldre, part.kontoType, intl);
     return (
         <Feltoppsummering
             feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.årsak' })}
-            verdi={getÅrsakTekst(intl, periode, navnAnnenForelder)}
+            verdi={getÅrsakTekst(intl, part, navnAnnenForelder)}
         />
     );
 };
 
-const getÅrsakTekst = (intl: IntlShape, periode: UttakDto, navnAnnenForelder: string) => {
-    const { overføringÅrsak } = periode;
+const getÅrsakTekst = (intl: IntlShape, part: UttakDto, navnAnnenForelder: string) => {
+    const { overføringÅrsak } = part;
 
     if (overføringÅrsak === 'ALENEOMSORG') {
         return intl.formatMessage({ id: 'uttaksplan.overføringsårsaktype.ALENEOMSORG' }, { navnAnnenForelder });

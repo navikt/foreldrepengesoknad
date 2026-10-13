@@ -139,12 +139,6 @@ describe('harBrukerKunSlettetPerioder', () => {
             expect(harBrukerKunSlettetPerioder(perioder, opprinneligPlan)).toBe(false);
         });
     });
-
-    describe('perioder er undefined', () => {
-        it('returnerer false når perioder er undefined', () => {
-            expect(harBrukerKunSlettetPerioder(undefined, [A, B])).toBe(false);
-        });
-    });
 });
 
 /**

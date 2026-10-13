@@ -48,7 +48,8 @@ export const useFinnFørsteSubmitFeilmelding = ({
         perioder.filter((periode) => periode.søker !== undefined);
 
     const manglerPerioderEtterValg = (perioder: UttakPeriodeDto[]) =>
-        perioder.length === 0 && !harBrukerKunSlettetPerioder(uttaksplan, opprinneligPlan);
+        perioder.length === 0 &&
+        (uttaksplan === undefined || !harBrukerKunSlettetPerioder(uttaksplan, opprinneligPlan));
 
     // Innsendinga inneheld berre søkjaren sine eigne perioder (sjå filtrerUtAnnenPartsPerioder i apiUtils),
     // så valideringa må sjå på dei same periodane. Ser ein på heile planen, kan annen part sine perioder
@@ -144,26 +145,24 @@ const erAnnenPartsPeriodeNyEllerEndret = (periode: UttakPeriodeDto, opprinneligP
 };
 
 export const finnNyeEllerEndredePerioder = (
-    perioder: UttakPeriodeDto[] | undefined,
+    perioder: UttakPeriodeDto[],
     opprinneligPlan: UttakPeriodeDto[] | undefined,
 ): UttakPeriodeDto[] => {
     if (!opprinneligPlan) {
-        return perioder?.filter((periode) => periode.søker !== undefined && periode.søker.resultat === undefined) ?? [];
+        return perioder.filter((periode) => periode.søker !== undefined && periode.søker.resultat === undefined);
     }
-    return (
-        perioder?.filter(
-            (periode) =>
-                erSøkersPeriodeNyEllerEndret(periode, opprinneligPlan) ||
-                erAnnenPartsPeriodeNyEllerEndret(periode, opprinneligPlan),
-        ) ?? []
+    return perioder.filter(
+        (periode) =>
+            erSøkersPeriodeNyEllerEndret(periode, opprinneligPlan) ||
+            erAnnenPartsPeriodeNyEllerEndret(periode, opprinneligPlan),
     );
 };
 
 export const harBrukerKunSlettetPerioder = (
-    perioder: UttakPeriodeDto[] | undefined,
+    perioder: UttakPeriodeDto[],
     opprinneligPlan: UttakPeriodeDto[] | undefined,
 ) => {
-    if (!opprinneligPlan || !perioder) {
+    if (!opprinneligPlan) {
         return false;
     }
 

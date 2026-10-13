@@ -64,7 +64,7 @@ export const UttaksplanForm = ({
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
     const gjeldendeUttaksplan = erEndringssøknad
-        ? finnNyeEllerEndredePerioder(uttaksplan, opprinneligPlan)
+        ? finnNyeEllerEndredePerioder(uttaksplan ?? [], opprinneligPlan)
         : uttaksplan;
 
     const navigator = useFpNavigator({

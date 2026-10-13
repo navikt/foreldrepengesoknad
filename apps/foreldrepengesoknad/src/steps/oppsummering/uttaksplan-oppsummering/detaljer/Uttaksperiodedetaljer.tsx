@@ -9,23 +9,23 @@ import { Feltoppsummering } from './Feltoppsummering';
 import { MorsAktivitetDetaljer } from './MorsaktiviteterDetaljer';
 
 interface Props {
-    periode: UttakDto;
+    part: UttakDto;
     registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[] | undefined;
     annenForelder: AnnenForelder;
     barn: Barn;
     erSøker: boolean;
 }
 
-export const Uttaksperiodedetaljer = ({ periode, annenForelder, registrerteArbeidsforhold, barn, erSøker }: Props) => {
+export const Uttaksperiodedetaljer = ({ part, annenForelder, registrerteArbeidsforhold, barn, erSøker }: Props) => {
     const intl = useIntl();
 
     const erDeltUttakINorge = isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge;
 
     const skalViseFlerbarnsdager = skalBesvareFlerbarnsdager(
         barn.antallBarn,
-        periode.forelder,
-        periode.kontoType,
-        periode.samtidigUttak,
+        part.forelder,
+        part.kontoType,
+        part.samtidigUttak,
     );
 
     return (
@@ -36,42 +36,40 @@ export const Uttaksperiodedetaljer = ({ periode, annenForelder, registrerteArbei
                         { id: 'oppsummering.uttak.ønskerFlerbarnsdager' },
                         { erSøker, fornavn: annenForelder.kanIkkeOppgis ? '' : annenForelder.fornavn },
                     )}
-                    verdi={
-                        periode.flerbarnsdager ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })
-                    }
+                    verdi={part.flerbarnsdager ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
                 />
             )}
-            {periode.samtidigUttak !== undefined && erDeltUttakINorge && (
+            {part.samtidigUttak !== undefined && erDeltUttakINorge && (
                 <Feltoppsummering
                     feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.samtidigUttak' })}
-                    verdi={periode.samtidigUttak ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
+                    verdi={part.samtidigUttak ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
                 />
             )}
-            {periode.kontoType !== 'FORELDREPENGER_FØR_FØDSEL' && !periode.samtidigUttak && (
+            {part.kontoType !== 'FORELDREPENGER_FØR_FØDSEL' && !part.samtidigUttak && (
                 <Feltoppsummering
                     feltnavn={intl.formatMessage(
                         { id: 'oppsummering.uttak.kombineresMedarbeid' },
                         { erSøker, fornavn: annenForelder.kanIkkeOppgis ? '' : annenForelder.fornavn },
                     )}
-                    verdi={periode.gradering ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
+                    verdi={part.gradering ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
                 />
             )}
 
-            {periode.gradering?.arbeidstidprosent && (
+            {part.gradering?.arbeidstidprosent && (
                 <Feltoppsummering
                     feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.stillingsprosent' })}
-                    verdi={periode.gradering.arbeidstidprosent.toString()}
+                    verdi={part.gradering.arbeidstidprosent.toString()}
                 />
             )}
 
-            {periode.gradering?.aktivitet && erSøker && (
+            {part.gradering?.aktivitet && erSøker && (
                 <Feltoppsummering
                     feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.arbeidstaker.label' })}
-                    verdi={getAktivitetTekst(intl, periode.gradering?.aktivitet, registrerteArbeidsforhold)}
+                    verdi={getAktivitetTekst(intl, part.gradering?.aktivitet, registrerteArbeidsforhold)}
                 />
             )}
-            {periode.morsAktivitet && periode.morsAktivitet !== 'IKKE_OPPGITT' && (
-                <MorsAktivitetDetaljer morsAktivitet={periode.morsAktivitet} />
+            {part.morsAktivitet && part.morsAktivitet !== 'IKKE_OPPGITT' && (
+                <MorsAktivitetDetaljer morsAktivitet={part.morsAktivitet} />
             )}
         </>
     );

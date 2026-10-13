@@ -102,9 +102,6 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
     );
 
     const lagreUttaksplanOgOppdaterUrl = (oppdatertUttaksplan: UttakPeriodeDto[] | undefined) => {
-        // I planleggeren finst det ingen ekte EØS-integrasjon, så periodane som blir laga/redigert her
-        // har aldri berre `annenPartEøs` – det er difor ikkje lenger nødvendig å filtrera bort ein
-        // eigen "EØS-periode"-kategori før lagring slik det var med den flate periodemodellen.
         lagreUttaksplan(oppdatertUttaksplan);
 
         const contextData = {
