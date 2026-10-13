@@ -13,15 +13,13 @@ import {
 } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
-export type UttaksplanPerioder = UttakPeriodeDto[];
-
 type SubmitValideringsregel = {
-    gjelder: (planForValidering: UttaksplanPerioder) => boolean;
+    gjelder: (planForValidering: UttakPeriodeDto[]) => boolean;
     message: string;
 };
 
 interface UseFinnFørsteSubmitFeilmeldingProps {
-    opprinneligPlan: UttaksplanPerioder | undefined;
+    opprinneligPlan: UttakPeriodeDto[] | undefined;
     erEndringssøknad: boolean;
 }
 
@@ -46,21 +44,21 @@ export const useFinnFørsteSubmitFeilmelding = ({
 
     // .søker representerer alltid søkjaren sjølv (uavhengig av MOR/FAR_MEDMOR-rolle), så det held å
     // filtrere på at sida finst.
-    const finnSøkersPerioder = (perioder: UttaksplanPerioder) =>
+    const finnSøkersPerioder = (perioder: UttakPeriodeDto[]) =>
         perioder.filter((periode) => periode.søker !== undefined);
 
-    const manglerPerioderEtterValg = (perioder: UttaksplanPerioder) =>
+    const manglerPerioderEtterValg = (perioder: UttakPeriodeDto[]) =>
         perioder.length === 0 && !harBrukerKunSlettetPerioder(uttaksplan, opprinneligPlan);
 
     // Innsendinga inneheld berre søkjaren sine eigne perioder (sjå filtrerUtAnnenPartsPerioder i apiUtils),
     // så valideringa må sjå på dei same periodane. Ser ein på heile planen, kan annen part sine perioder
     // "dekke over" at søkjaren ikkje har eigne perioder, og backend svarar då at uttaksplanen er tom.
-    const manglerUttaksperioderForNySøknad = (perioder: UttaksplanPerioder) =>
+    const manglerUttaksperioderForNySøknad = (perioder: UttakPeriodeDto[]) =>
         !erEndringssøknad && !harMinstEnUttaksEllerOverføringsperiode(finnSøkersPerioder(perioder));
 
     const harOvertrukketDager = () => erAntallDagerOvertrukket;
 
-    const manglerMorsAktivitetDerPåkrevd = (perioder: UttaksplanPerioder) =>
+    const manglerMorsAktivitetDerPåkrevd = (perioder: UttakPeriodeDto[]) =>
         harPeriodeDerMorsAktivitetIkkeErValgt(
             utledRettighet(erAleneOmOmsorg, erDeltUttak),
             erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
@@ -68,10 +66,10 @@ export const useFinnFørsteSubmitFeilmelding = ({
             perioder,
         );
 
-    const manglerGraderingsaktivitet = (perioder: UttaksplanPerioder) =>
+    const manglerGraderingsaktivitet = (perioder: UttakPeriodeDto[]) =>
         harPeriodeMedUkjentGraderingsaktivitet(finnSøkersPerioder(perioder), søkersForelder);
 
-    const harKunPerioderForDenAndreForelderen = (perioder: UttaksplanPerioder) =>
+    const harKunPerioderForDenAndreForelderen = (perioder: UttakPeriodeDto[]) =>
         harKunPerioderForAnnenForelder(erAleneOmOmsorg, perioder);
 
     const submitValideringsregler: SubmitValideringsregel[] = [
@@ -107,7 +105,7 @@ export const useFinnFørsteSubmitFeilmelding = ({
         },
     ];
 
-    return (planForValidering: UttaksplanPerioder): string | undefined => {
+    return (planForValidering: UttakPeriodeDto[]): string | undefined => {
         const valideringsfeil = submitValideringsregler.find((regel) => regel.gjelder(planForValidering));
         return valideringsfeil?.message;
     };
@@ -116,10 +114,10 @@ export const useFinnFørsteSubmitFeilmelding = ({
 // Søkjaren si side og annan part si side i same intervall må vurderast kvar for seg: slettar søkjaren
 // berre si eiga side av eit samtidig uttak, står annan part si uendra side att i eit intervall som
 // elles ikkje finst i den opprinnelege planen.
-const finnSøkersSide = (perioder: UttaksplanPerioder): UttaksplanPerioder =>
+const finnSøkersSide = (perioder: UttakPeriodeDto[]): UttakPeriodeDto[] =>
     perioder.flatMap(({ fom, tom, søker }) => (søker ? [{ fom, tom, søker }] : []));
 
-const erSøkersSideNyEllerEndra = (periode: UttaksplanPerioder[number], opprinneligPlan: UttaksplanPerioder) => {
+const erSøkersSideNyEllerEndra = (periode: UttakPeriodeDto, opprinneligPlan: UttakPeriodeDto[]) => {
     const { fom, tom, søker } = periode;
     return (
         søker !== undefined &&
@@ -132,7 +130,7 @@ const erSøkersSideNyEllerEndra = (periode: UttaksplanPerioder[number], opprinne
 
 // Annan part si side kan bli delt opp når søkjaren endrar si side av eit samtidig uttak, så her held
 // det at eit opprinneleg intervall med lik annan part dekkjer heile perioden.
-const erAnnenPartsSideNyEllerEndra = (periode: UttaksplanPerioder[number], opprinneligPlan: UttaksplanPerioder) => {
+const erAnnenPartsSideNyEllerEndra = (periode: UttakPeriodeDto, opprinneligPlan: UttakPeriodeDto[]) => {
     const { fom, tom, annenPart } = periode;
     return (
         annenPart !== undefined &&
@@ -146,9 +144,9 @@ const erAnnenPartsSideNyEllerEndra = (periode: UttaksplanPerioder[number], oppri
 };
 
 export const finnNyeEllerEndraPerioder = (
-    perioder: UttaksplanPerioder | undefined,
-    opprinneligPlan: UttaksplanPerioder | undefined,
-): UttaksplanPerioder => {
+    perioder: UttakPeriodeDto[] | undefined,
+    opprinneligPlan: UttakPeriodeDto[] | undefined,
+): UttakPeriodeDto[] => {
     if (!opprinneligPlan) {
         return perioder?.filter((periode) => periode.søker !== undefined && periode.søker.resultat === undefined) ?? [];
     }
@@ -162,8 +160,8 @@ export const finnNyeEllerEndraPerioder = (
 };
 
 export const harBrukerKunSlettetPerioder = (
-    perioder: UttaksplanPerioder | undefined,
-    opprinneligPlan: UttaksplanPerioder | undefined,
+    perioder: UttakPeriodeDto[] | undefined,
+    opprinneligPlan: UttakPeriodeDto[] | undefined,
 ) => {
     if (!opprinneligPlan || !perioder) {
         return false;
@@ -183,12 +181,12 @@ export const harBrukerKunSlettetPerioder = (
     );
 };
 
-export const erSammePeriodeInkludertDatoer = (a: UttaksplanPerioder[number], b: UttaksplanPerioder[number]) =>
+export const erSammePeriodeInkludertDatoer = (a: UttakPeriodeDto, b: UttakPeriodeDto) =>
     a.fom === b.fom && a.tom === b.tom && erPerioderEkslFomTomLike(a, b);
 
 // .søker er alltid søkjaren sin eigen side. «Berre periodar for annan forelder» betyr difor at
 // ingen av periodane har ei .søker-side sett.
-export const harKunPerioderForAnnenForelder = (erAleneOmOmsorg: boolean, perioder?: UttaksplanPerioder) => {
+export const harKunPerioderForAnnenForelder = (erAleneOmOmsorg: boolean, perioder?: UttakPeriodeDto[]) => {
     if (erAleneOmOmsorg || !perioder || perioder.length === 0) {
         return false;
     }
@@ -198,13 +196,13 @@ export const harKunPerioderForAnnenForelder = (erAleneOmOmsorg: boolean, periode
 
 // Ein overføringsperiode (t.d. far som overtek mødrekvote fordi mor er for sjuk) er eit
 // reelt uttak av foreldrepengar, og er ein gyldig søknad åleine på lik linje med ein uttaksperiode.
-export const harMinstEnUttaksEllerOverføringsperiode = (perioder: UttaksplanPerioder) =>
+export const harMinstEnUttaksEllerOverføringsperiode = (perioder: UttakPeriodeDto[]) =>
     perioder.some((periode) => {
         const søker = periode.søker;
         return !!søker && (Uttaksperioden.erUttaksperiode(søker) || Uttaksperioden.erOverføringsperiode(søker));
     });
 
-export const erKunUtsettelser = (perioder: UttaksplanPerioder) => {
+export const erKunUtsettelser = (perioder: UttakPeriodeDto[]) => {
     if (perioder.length === 0) {
         return false;
     }
