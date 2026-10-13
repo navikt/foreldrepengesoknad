@@ -42,9 +42,9 @@ export const useFinnFørsteSubmitFeilmelding = ({
 
     const søkersForelder = erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
 
-    // .søker representerer alltid søkjaren sjølv (uavhengig av MOR/FAR_MEDMOR-rolle), så det held å
-    // filtrere på at sida finst.
-    const finnSøkersPerioder = (perioder: UttakPeriodeDto[]) =>
+    // .søker er alltid søkeren selv (uavhengig av MOR/FAR_MEDMOR-rolle), så det holder å filtrere på at
+    // søkers periode finnes.
+    const finnPerioderMedSøker = (perioder: UttakPeriodeDto[]) =>
         perioder.filter((periode) => periode.søker !== undefined);
 
     const manglerPerioderEtterValg = (perioder: UttakPeriodeDto[]) =>
@@ -54,7 +54,7 @@ export const useFinnFørsteSubmitFeilmelding = ({
     // så valideringa må sjå på dei same periodane. Ser ein på heile planen, kan annen part sine perioder
     // "dekke over" at søkjaren ikkje har eigne perioder, og backend svarar då at uttaksplanen er tom.
     const manglerUttaksperioderForNySøknad = (perioder: UttakPeriodeDto[]) =>
-        !erEndringssøknad && !harMinstEnUttaksEllerOverføringsperiode(finnSøkersPerioder(perioder));
+        !erEndringssøknad && !harMinstEnUttaksEllerOverføringsperiode(finnPerioderMedSøker(perioder));
 
     const harOvertrukketDager = () => erAntallDagerOvertrukket;
 
@@ -67,7 +67,7 @@ export const useFinnFørsteSubmitFeilmelding = ({
         );
 
     const manglerGraderingsaktivitet = (perioder: UttakPeriodeDto[]) =>
-        harPeriodeMedUkjentGraderingsaktivitet(finnSøkersPerioder(perioder), søkersForelder);
+        harPeriodeMedUkjentGraderingsaktivitet(finnPerioderMedSøker(perioder), søkersForelder);
 
     const harKunPerioderForDenAndreForelderen = (perioder: UttakPeriodeDto[]) =>
         harKunPerioderForAnnenForelder(erAleneOmOmsorg, perioder);
@@ -111,26 +111,26 @@ export const useFinnFørsteSubmitFeilmelding = ({
     };
 };
 
-// Søkjaren si side og annan part si side i same intervall må vurderast kvar for seg: slettar søkjaren
-// berre si eiga side av eit samtidig uttak, står annan part si uendra side att i eit intervall som
-// elles ikkje finst i den opprinnelege planen.
-const finnSøkersSide = (perioder: UttakPeriodeDto[]): UttakPeriodeDto[] =>
+// Søkers periode og annen parts periode i samme intervall må vurderes hver for seg: sletter søkeren bare
+// sin egen periode i et samtidig uttak, står annen parts uendrede periode igjen i et intervall som ellers
+// ikke finnes i den opprinnelige planen.
+const finnSøkersPerioder = (perioder: UttakPeriodeDto[]): UttakPeriodeDto[] =>
     perioder.flatMap(({ fom, tom, søker }) => (søker ? [{ fom, tom, søker }] : []));
 
-const erSøkersSideNyEllerEndra = (periode: UttakPeriodeDto, opprinneligPlan: UttakPeriodeDto[]) => {
+const erSøkersPeriodeNyEllerEndret = (periode: UttakPeriodeDto, opprinneligPlan: UttakPeriodeDto[]) => {
     const { fom, tom, søker } = periode;
     return (
         søker !== undefined &&
         (søker.resultat === undefined ||
-            finnSøkersSide(opprinneligPlan).every(
+            finnSøkersPerioder(opprinneligPlan).every(
                 (opprinnelig) => !erSammePeriodeInkludertDatoer({ fom, tom, søker }, opprinnelig),
             ))
     );
 };
 
-// Annan part si side kan bli delt opp når søkjaren endrar si side av eit samtidig uttak, så her held
-// det at eit opprinneleg intervall med lik annan part dekkjer heile perioden.
-const erAnnenPartsSideNyEllerEndra = (periode: UttakPeriodeDto, opprinneligPlan: UttakPeriodeDto[]) => {
+// Annen parts periode kan bli delt opp når søkeren endrer sin periode i et samtidig uttak, så her holder
+// det at et opprinnelig intervall med lik annen part dekker hele perioden.
+const erAnnenPartsPeriodeNyEllerEndret = (periode: UttakPeriodeDto, opprinneligPlan: UttakPeriodeDto[]) => {
     const { fom, tom, annenPart } = periode;
     return (
         annenPart !== undefined &&
@@ -143,7 +143,7 @@ const erAnnenPartsSideNyEllerEndra = (periode: UttakPeriodeDto, opprinneligPlan:
     );
 };
 
-export const finnNyeEllerEndraPerioder = (
+export const finnNyeEllerEndredePerioder = (
     perioder: UttakPeriodeDto[] | undefined,
     opprinneligPlan: UttakPeriodeDto[] | undefined,
 ): UttakPeriodeDto[] => {
@@ -153,8 +153,8 @@ export const finnNyeEllerEndraPerioder = (
     return (
         perioder?.filter(
             (periode) =>
-                erSøkersSideNyEllerEndra(periode, opprinneligPlan) ||
-                erAnnenPartsSideNyEllerEndra(periode, opprinneligPlan),
+                erSøkersPeriodeNyEllerEndret(periode, opprinneligPlan) ||
+                erAnnenPartsPeriodeNyEllerEndret(periode, opprinneligPlan),
         ) ?? []
     );
 };
@@ -167,8 +167,8 @@ export const harBrukerKunSlettetPerioder = (
         return false;
     }
 
-    const søkersPerioder = finnSøkersSide(perioder);
-    const søkersOpprinneligePerioder = finnSøkersSide(opprinneligPlan);
+    const søkersPerioder = finnSøkersPerioder(perioder);
+    const søkersOpprinneligePerioder = finnSøkersPerioder(opprinneligPlan);
 
     const erKunSaksperioder = søkersPerioder.every((periode) => periode.søker?.resultat !== undefined);
 
@@ -184,8 +184,8 @@ export const harBrukerKunSlettetPerioder = (
 export const erSammePeriodeInkludertDatoer = (a: UttakPeriodeDto, b: UttakPeriodeDto) =>
     a.fom === b.fom && a.tom === b.tom && erPerioderEkslFomTomLike(a, b);
 
-// .søker er alltid søkjaren sin eigen side. «Berre periodar for annan forelder» betyr difor at
-// ingen av periodane har ei .søker-side sett.
+// .søker er alltid søkerens egen periode. «Kun perioder for annen forelder» betyr derfor at ingen av
+// periodene har .søker satt.
 export const harKunPerioderForAnnenForelder = (erAleneOmOmsorg: boolean, perioder?: UttakPeriodeDto[]) => {
     if (erAleneOmOmsorg || !perioder || perioder.length === 0) {
         return false;
@@ -213,7 +213,7 @@ export const erKunUtsettelser = (perioder: UttakPeriodeDto[]) => {
         return false;
     }
 
-    // Ser berre på søkjaren sin eigen side her, i tråd med konvensjonen elles i fila.
+    // Ser bare på søkerens egne perioder her, i tråd med konvensjonen ellers i filen.
     return perioder.every((periode) => !!periode.søker && Uttaksperioden.erUtsettelsesperiode(periode.søker));
 };
 

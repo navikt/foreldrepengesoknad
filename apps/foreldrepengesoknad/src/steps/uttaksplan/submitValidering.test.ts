@@ -2,7 +2,7 @@ import { EøsUttakDto, UttakDto, UttakPeriodeDto } from '@navikt/fp-types';
 
 import {
     erSammePeriodeInkludertDatoer,
-    finnNyeEllerEndraPerioder,
+    finnNyeEllerEndredePerioder,
     harBrukerKunSlettetPerioder,
     harMinstEnUttaksEllerOverføringsperiode,
 } from './submitValidering';
@@ -190,7 +190,7 @@ describe('harMinstEnUttaksEllerOverføringsperiode', () => {
     });
 });
 
-describe('finnNyeEllerEndraPerioder og harBrukerKunSlettetPerioder ved samtidig uttak', () => {
+describe('finnNyeEllerEndredePerioder og harBrukerKunSlettetPerioder ved samtidig uttak', () => {
     const lagSamtidig = (søkerResultat = innvilget): UttakPeriodeDto => ({
         fom: '2024-07-01',
         tom: '2024-07-12',
@@ -210,39 +210,41 @@ describe('finnNyeEllerEndraPerioder og harBrukerKunSlettetPerioder ved samtidig 
         },
     });
     const samtidig = lagSamtidig();
-    const utanSøker = { fom: samtidig.fom, tom: samtidig.tom, annenPart: samtidig.annenPart };
-    const seinare = lagPeriode({ fom: '2024-07-15', tom: '2024-07-26' });
+    const utenSøker = { fom: samtidig.fom, tom: samtidig.tom, annenPart: samtidig.annenPart };
+    const senere = lagPeriode({ fom: '2024-07-15', tom: '2024-07-26' });
 
-    it('reknar ikkje annan part si uendra side som ny når søkjaren slettar si side', () => {
-        const opprinneligPlan = [samtidig, seinare];
-        const perioder = [utanSøker, seinare];
+    it('regner ikke annen parts uendrede periode som ny når søkeren sletter sin periode', () => {
+        const opprinneligPlan = [samtidig, senere];
+        const perioder = [utenSøker, senere];
 
-        expect(finnNyeEllerEndraPerioder(perioder, opprinneligPlan)).toEqual([]);
+        expect(finnNyeEllerEndredePerioder(perioder, opprinneligPlan)).toEqual([]);
         expect(harBrukerKunSlettetPerioder(perioder, opprinneligPlan)).toBe(true);
     });
 
-    it('reknar ikkje annan part si side som ny når søkjaren berre har endra delar av intervallet', () => {
-        const opprinneligPlan = [samtidig, seinare];
-        const endraSøker = { ...samtidig, tom: '2024-07-05', søker: { ...samtidig.søker!, resultat: undefined } };
-        const restUtanSøker = { ...utanSøker, fom: '2024-07-08' };
+    it('regner ikke annen parts periode som ny når søkeren bare har endret deler av intervallet', () => {
+        const opprinneligPlan = [samtidig, senere];
+        const endretSøker = { ...samtidig, tom: '2024-07-05', søker: { ...samtidig.søker!, resultat: undefined } };
+        const restUtenSøker = { ...utenSøker, fom: '2024-07-08' };
 
-        expect(finnNyeEllerEndraPerioder([endraSøker, restUtanSøker, seinare], opprinneligPlan)).toEqual([endraSøker]);
+        expect(finnNyeEllerEndredePerioder([endretSøker, restUtenSøker, senere], opprinneligPlan)).toEqual([
+            endretSøker,
+        ]);
     });
 
-    it('reknar annan part si side som ny når ho ikkje finst i den opprinnelege planen', () => {
+    it('regner annen parts periode som ny når den ikke finnes i den opprinnelige planen', () => {
         const nyAnnenPart = {
             fom: '2024-08-01',
             tom: '2024-08-09',
             annenPart: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
         } satisfies UttakPeriodeDto;
 
-        expect(finnNyeEllerEndraPerioder([samtidig, seinare, nyAnnenPart], [samtidig, seinare])).toEqual([nyAnnenPart]);
+        expect(finnNyeEllerEndredePerioder([samtidig, senere, nyAnnenPart], [samtidig, senere])).toEqual([nyAnnenPart]);
     });
 
     it('tek berre med søkjaren sine periodar utan resultat når det ikkje finst nokon opprinneleg plan', () => {
         const ny = lagPeriode({ fom: '2024-08-01', tom: '2024-08-09', resultat: undefined });
 
-        expect(finnNyeEllerEndraPerioder([samtidig, ny], undefined)).toEqual([ny]);
+        expect(finnNyeEllerEndredePerioder([samtidig, ny], undefined)).toEqual([ny]);
     });
 });
 

@@ -24,7 +24,7 @@ import { Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { GåTilbakeModal } from './GåTilbakeModal';
-import { finnNyeEllerEndraPerioder, useFinnFørsteSubmitFeilmelding } from './submitValidering';
+import { finnNyeEllerEndredePerioder, useFinnFørsteSubmitFeilmelding } from './submitValidering';
 
 type FormValues = {
     ønskerJustertUttakVedFødsel?: boolean;
@@ -63,7 +63,9 @@ export const UttaksplanForm = ({
     const oppdaterHarJustertUttakVedFødsel = useContextSaveData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
-    const gjeldendeUttaksplan = erEndringssøknad ? finnNyeEllerEndraPerioder(uttaksplan, opprinneligPlan) : uttaksplan;
+    const gjeldendeUttaksplan = erEndringssøknad
+        ? finnNyeEllerEndredePerioder(uttaksplan, opprinneligPlan)
+        : uttaksplan;
 
     const navigator = useFpNavigator({
         arbeidsforhold: søkerInfo.arbeidsforhold,
