@@ -503,10 +503,6 @@ const PeriodeKvoteType = ({
         foreldreInfo: { søker, rettighetType },
     } = useUttaksplanData();
 
-    // Sida sin eigen kontoType dekker no det den gamle oppholdÅrsak-suffiksen (t.d.
-    // MØDREKVOTE_ANNEN_FORELDER) gjorde: for opphaldsrader (kun annenPart har uttak) er det
-    // annenPart sin *eigen* kontoType (t.d. MØDREKVOTE) som styrer teksten, utan noko eige
-    // «opphald»-uttrykk.
     const uttak = periode.søker ?? periode.annenPart;
     const utsettelseÅrsak = uttak?.utsettelseÅrsak;
     const kontoType = uttak?.kontoType ?? periode.annenPartEøs?.kontoType;
