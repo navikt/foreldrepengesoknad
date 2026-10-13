@@ -24,7 +24,11 @@ type ContextValues = Omit<Props, 'children' | 'valgtePerioder' | 'oppdaterUttaks
     sammenslåtteValgtePerioder: CalendarPeriod[];
     leggTilUttaksplanPerioder: (perioder: UttakPeriode_fpoversikt[], skalForskyvePeriode: boolean) => void;
     slettUttaksplanPerioder: (perioder: Array<{ fom: string; tom: string }>, skalForskyveBakover: boolean) => void;
-    utførEllerBekreftHistoriskEndring: (perioder: Array<{ fom: string; tom: string }>, handling: () => void) => void;
+    utførEllerBekreftHistoriskEndring: (
+        perioder: Array<{ fom: string; tom: string }>,
+        handling: () => void,
+        erSletting?: boolean,
+    ) => void;
 };
 
 const KalenderRedigeringContext = createContext<ContextValues | null>(null);
@@ -38,7 +42,7 @@ export const KalenderRedigeringProvider = ({
     const { uttakPerioder, erEndringssøknad } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
-    const [ventendeHistoriskEndring, setVentendeHistoriskEndring] = useState<{ handling: () => void }>();
+    const [ventendeHistoriskEndring, setVentendeHistoriskEndring] = useState<{ handling: () => void; erSletting: boolean }>();
 
     const sammenslåtteValgtePerioder = useMemo(() => slåSammenTilstøtendePerioder(valgtePerioder), [valgtePerioder]);
 
@@ -63,14 +67,14 @@ export const KalenderRedigeringProvider = ({
     );
 
     const utførEllerBekreftHistoriskEndring = useCallback(
-        (perioder: Array<{ fom: string; tom: string }>, handling: () => void) => {
+        (perioder: Array<{ fom: string; tom: string }>, handling: () => void, erSletting = false) => {
             const førsteDagDenneMåneden = dayjs().startOf('month');
             const berørerTidligereMåned = perioder.some((periode) =>
                 dayjs(periode.fom).isBefore(førsteDagDenneMåneden, 'day'),
             );
 
             if (erEndringssøknad && berørerTidligereMåned) {
-                setVentendeHistoriskEndring({ handling });
+                setVentendeHistoriskEndring({ handling, erSletting });
                 return;
             }
 
@@ -119,12 +123,16 @@ export const KalenderRedigeringProvider = ({
                 <Dialog.Popup id="BekreftHistoriskEndringModal">
                     <Dialog.Header>
                         <Dialog.Title>
-                            <FormattedMessage id="KalenderRedigering.HistoriskEndring.Modal.Tittel" />
+                            <FormattedMessage id="KalenderRedigering.HistoriskEndring.Modal.Tittel"
+                                values={{ erSletting: ventendeHistoriskEndring?.erSletting ? 'slettet' : 'endret' }}
+                            />
                         </Dialog.Title>
                     </Dialog.Header>
                     <Dialog.Body>
                         <Alert variant="warning">
-                            <FormattedMessage id="KalenderRedigering.HistoriskEndring.Modal.Advarsel" />
+                            <FormattedMessage id="KalenderRedigering.HistoriskEndring.Modal.Advarsel"
+                                values={{ erSletting: ventendeHistoriskEndring?.erSletting ? 'slettet' : 'endret' }}
+                            />
                         </Alert>
                     </Dialog.Body>
                     <Dialog.Footer>
@@ -134,7 +142,9 @@ export const KalenderRedigeringProvider = ({
                             </Button>
                         </Dialog.CloseTrigger>
                         <Button type="button" variant="primary" onClick={bekreftHistoriskEndring}>
-                            <FormattedMessage id="KalenderRedigering.HistoriskEndring.Modal.Knapp.Bekreft" />
+                            <FormattedMessage id="KalenderRedigering.HistoriskEndring.Modal.Knapp.Bekreft"
+                                values={{ erSletting: ventendeHistoriskEndring?.erSletting ? 'slettet' : 'endret' }}
+                            />
                         </Button>
                     </Dialog.Footer>
                 </Dialog.Popup>

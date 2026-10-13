@@ -668,8 +668,10 @@ const useSlettPeriodeFn = () => {
             }),
         );
 
-        utførEllerBekreftHistoriskEndring(perioderSomSkalSlettes, () =>
-            utførSletting(perioderSomSkalSlettes, periodeSomSkalSlettes, skalForskyveBakover),
+        utførEllerBekreftHistoriskEndring(
+            perioderSomSkalSlettes,
+            () => utførSletting(perioderSomSkalSlettes, periodeSomSkalSlettes, skalForskyveBakover),
+            true,
         );
     };
 
