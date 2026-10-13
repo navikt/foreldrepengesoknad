@@ -401,7 +401,6 @@ export const lagForslagTilPlan = ({
     return { søker1: perioder, søker2: [] };
 };
 
-// En forelder kan ligge på både `.søker` og `.annenPart`, så vi filtrerer på begge og returnerer hele perioder.
 export const getSøkersPerioder = (
     erDeltUttak: boolean,
     gjeldendeUttaksplan: UttakPeriodeDto[],
