@@ -19,9 +19,6 @@ export const Uttaksperioden = {
         return !!uttak.overføringÅrsak;
     },
 
-    // Opphold har ikkje lenger noko eige oppholdÅrsak-felt frå backend – det er strukturelt
-    // ein periode der søkjar ikkje har uttak medan annan part har det. Årsaka til oppholdet er
-    // då direkte annan part sin kontoType.
     erOppholdsperiode(periode: UttakPeriodeDto) {
         return !periode.søker && !!periode.annenPart;
     },
