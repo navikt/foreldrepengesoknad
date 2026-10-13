@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAnnenPartUttaksplanOptions } from 'api/queries';
+import { useUttaksplanOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import { annenPartHarVedtak } from 'utils/annenForelderUtils';
+import { annenForelderHarNorskFnr, annenPartHarVedtak } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
 import {
     andreAugust2022ReglerGjelder,
@@ -91,8 +91,13 @@ type Props = {
 };
 
 export const OmBarnetSteg = (props: Props) => {
+    const annenForelder = useContextGetData(ContextDataType.ANNEN_FORELDER);
+    const uttaksplanOptions = useUttaksplanOptions();
+    // Termindato fra vedtak finnes bare når annen part har norsk fnr. Uten sjekken gjøres kallet på nytt
+    // når barnet lagres ved innsending, og spinneren under avmonterer skjemaet før navigeringen er gjort.
     const terminDatoQuery = useQuery({
-        ...useAnnenPartUttaksplanOptions(),
+        ...uttaksplanOptions,
+        enabled: uttaksplanOptions.enabled && !!annenForelder && annenForelderHarNorskFnr(annenForelder),
         select: (uttaksplan) => (annenPartHarVedtak(uttaksplan) ? uttaksplan.termindato : undefined),
     });
 

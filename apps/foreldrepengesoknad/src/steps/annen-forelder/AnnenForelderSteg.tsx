@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAnnenPartUttaksplanOptions } from 'api/queries';
+import { useUttaksplanOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
@@ -128,7 +128,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
 
     const annenPartHarVedtak =
         useQuery({
-            ...useAnnenPartUttaksplanOptions(),
+            ...useUttaksplanOptions(),
             select: annenPartHarInnvilgetUttak,
         }).data ?? false;
 

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { API_URLS, useAnnenPartUttaksplanOptions } from 'api/queries';
+import { API_URLS, useUttaksplanOptions } from 'api/queries';
 import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -60,7 +60,7 @@ export const useMellomlagreSøknad = (
     const navigate = useNavigate();
     const state = useContextComplete();
 
-    const uttaksplanQuery = useQuery(useAnnenPartUttaksplanOptions());
+    const uttaksplanQuery = useQuery(useUttaksplanOptions());
 
     const [lagringFeilet, setLagringFeilet] = useState(false);
 

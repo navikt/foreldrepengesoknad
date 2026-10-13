@@ -1,6 +1,6 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
-import { useAnnenPartUttaksplanOptions, useStønadsKontoerOptions } from 'api/queries';
+import { useStønadsKontoerOptions, useUttaksplanOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
@@ -46,7 +46,7 @@ export const PeriodeMedForeldrepengerSteg = ({
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
 
     const annenPartVedtak = useQuery({
-        ...useAnnenPartUttaksplanOptions(),
+        ...useUttaksplanOptions(),
         select: (uttaksplan) => (annenPartHarVedtak(uttaksplan) ? uttaksplan : undefined),
     }).data;
 

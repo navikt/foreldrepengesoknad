@@ -3,7 +3,7 @@ import { getStønadskvoteParams } from 'api/getStønadskvoteParams';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import ky, { type ResponsePromise } from 'ky';
-import { annenForelderHarNorskFnr, getUttaksplanParam } from 'utils/annenForelderUtils';
+import { getUttaksplanParam } from 'utils/annenForelderUtils';
 
 import {
     FellesUttaksplanDto,
@@ -109,7 +109,7 @@ export const useStønadsKontoerOptions = () => {
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
 
-    const uttaksplanQuery = useQuery(useAnnenPartUttaksplanOptions());
+    const uttaksplanQuery = useQuery(useUttaksplanOptions());
 
     const sakerQuery = useQuery({ ...sakerOptions(), enabled: !!valgtEksisterendeSaksnr });
 
@@ -142,16 +142,5 @@ export const useUttaksplanOptions = () => {
     return queryOptions({
         ...uttaksplanOptions(enabled ? getUttaksplanParam(annenForelder, barn) : undefined),
         enabled,
-    });
-};
-
-// Annan part sine periodar kjem berre med når annan part har norsk fnr, så utan det treng ikkje stega
-// som berre bryr seg om annan part sitt vedtak å venta på kallet.
-export const useAnnenPartUttaksplanOptions = () => {
-    const annenForelder = useContextGetData(ContextDataType.ANNEN_FORELDER);
-    const options = useUttaksplanOptions();
-    return queryOptions({
-        ...options,
-        enabled: options.enabled && !!annenForelder && annenForelderHarNorskFnr(annenForelder),
     });
 };

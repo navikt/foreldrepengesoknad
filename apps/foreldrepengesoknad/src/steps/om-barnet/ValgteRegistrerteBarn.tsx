@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAnnenPartUttaksplanOptions } from 'api/queries';
+import { useUttaksplanOptions } from 'api/queries';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
@@ -41,7 +41,7 @@ export const ValgteRegistrerteBarn = ({ valgteRegistrerteBarn, skalInkludereTerm
 
     const harTerminDatoFraVedtak =
         useQuery({
-            ...useAnnenPartUttaksplanOptions(),
+            ...useUttaksplanOptions(),
             select: (uttaksplan) => annenPartHarVedtak(uttaksplan) && !!uttaksplan.termindato,
         }).data ?? false;
 

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAnnenPartUttaksplanOptions } from 'api/queries';
+import { useUttaksplanOptions } from 'api/queries';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { AnnenForelder } from 'types/AnnenForelder';
@@ -27,7 +27,7 @@ export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
     const formMethods = useFormContext<AnnenForelder>();
     const annenPartHarVedtak =
         useQuery({
-            ...useAnnenPartUttaksplanOptions(),
+            ...useUttaksplanOptions(),
             select: annenPartHarInnvilgetUttak,
         }).data ?? false;
 

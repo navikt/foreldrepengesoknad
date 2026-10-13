@@ -1,11 +1,5 @@
 import { useQuery, useSuspenseQueries } from '@tanstack/react-query';
-import {
-    API_URLS,
-    mellomlagretInfoOptions,
-    sakerOptions,
-    søkerinfoOptions,
-    useAnnenPartUttaksplanOptions,
-} from 'api/queries';
+import { API_URLS, mellomlagretInfoOptions, sakerOptions, søkerinfoOptions, useUttaksplanOptions } from 'api/queries';
 import { ContextDataMap, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
@@ -116,10 +110,7 @@ const ForeldrepengesøknadInnhold = () => {
     );
 };
 
-// Sjekkar om registerdata (søkerInfo, saker, uttaksplan) har endra seg
-// sidan mellomlagring. Renderast inne i FpDataContext slik at
-// useAnnenPartUttaksplanOptions kan lesa annenForelder/barn frå context og sjølv
-// styra om kallet skal gjerast.
+// Renderes inne i FpDataContext slik at useUttaksplanOptions kan lese annenForelder/barn fra context.
 const RegisterdataSjekk = ({
     mellomlagretData,
     søkerInfo,
@@ -131,7 +122,7 @@ const RegisterdataSjekk = ({
     foreldrepengerSaker: FpSak_fpoversikt[];
     children: ReactNode;
 }) => {
-    const uttaksplanQuery = useQuery(useAnnenPartUttaksplanOptions());
+    const uttaksplanQuery = useQuery(useUttaksplanOptions());
 
     if (!mellomlagretData) {
         return <>{children}</>;

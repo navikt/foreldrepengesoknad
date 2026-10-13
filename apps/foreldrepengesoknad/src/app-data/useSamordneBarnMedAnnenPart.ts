@@ -3,7 +3,7 @@ import {
     getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
     getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'api/getStønadskvoteParams';
-import { useAnnenPartUttaksplanOptions } from 'api/queries';
+import { useUttaksplanOptions } from 'api/queries';
 import { useEffect } from 'react';
 import { annenPartHarVedtak } from 'utils/annenForelderUtils';
 import { getTermindato } from 'utils/barnUtils';
@@ -21,7 +21,7 @@ export const useSamordneBarnMedAnnenPart = (enabled: boolean) => {
     const oppdaterBarn = useContextSaveData(ContextDataType.OM_BARNET);
     const resetUttaksplanData = useResetUttaksplanData();
     const skalSamordne = enabled && !kommerFraPlanlegger && !!søkersituasjon && isFarEllerMedmor(søkersituasjon.rolle);
-    const uttaksplanQuery = useQuery(useAnnenPartUttaksplanOptions());
+    const uttaksplanQuery = useQuery(useUttaksplanOptions());
     const vedtak = annenPartHarVedtak(uttaksplanQuery.data) ? uttaksplanQuery.data : undefined;
     const antallBarn = barn
         ? getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter(skalSamordne, barn.antallBarn, vedtak?.antallBarn)

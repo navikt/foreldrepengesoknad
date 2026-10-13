@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAnnenPartUttaksplanOptions } from 'api/queries';
+import { useUttaksplanOptions } from 'api/queries';
 import { FormattedMessage } from 'react-intl';
 import { AnnenForelder, isAnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { annenPartHarInnvilgetUttak } from 'utils/annenForelderUtils';
@@ -21,7 +21,7 @@ export const AnnenForelderOppsummering = ({ annenForelder, søkerrolle, onVilEnd
 
     const annenPartHarVedtak =
         useQuery({
-            ...useAnnenPartUttaksplanOptions(),
+            ...useUttaksplanOptions(),
             select: annenPartHarInnvilgetUttak,
         }).data ?? false;
 
