@@ -64,8 +64,8 @@ const beregnBrukteUttaksdager = (
         .filter((k) => k.dager > 0);
 };
 
-// EØS-parten blir fjerna, sidan han aldri representerer den norske forelderen sine eigne dagar.
-const taKunPartForForelder = (periode: UttakPeriodeDto, forelder: BrukerRolleSak_fpoversikt): UttakPeriodeDto => ({
+// EØS-uttaket blir fjernet, siden det aldri representerer den norske forelderens egne dager.
+const taKunUttakForForelder = (periode: UttakPeriodeDto, forelder: BrukerRolleSak_fpoversikt): UttakPeriodeDto => ({
     fom: periode.fom,
     tom: periode.tom,
     søker: periode.søker?.forelder === forelder ? periode.søker : undefined,
@@ -79,7 +79,7 @@ const beregnBrukteUttaksdagerForForelder = (
     familiesituasjon: Familiesituasjon,
     familiehendelsesdato: string,
 ): KontoDto[] => {
-    const perioderForForelder = perioder.map((p) => taKunPartForForelder(p, forelder));
+    const perioderForForelder = perioder.map((p) => taKunUttakForForelder(p, forelder));
     return tilgjengeligeStønadskvoter.kontoer
         .map((konto) => {
             const dager = summerDagerIPerioder(perioderForForelder, [konto], familiesituasjon, familiehendelsesdato);

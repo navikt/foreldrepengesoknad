@@ -10,10 +10,10 @@ export const fordelPlanleggerPerioderEtterSøker = (
         if (periode.søker?.forelder === periode.annenPart?.forelder) {
             return periode;
         }
-        const parter = [periode.søker, periode.annenPart].filter((part) => part !== undefined);
+        const alleUttak = [periode.søker, periode.annenPart].filter((uttak) => uttak !== undefined);
         return {
             ...periode,
-            søker: parter.find((part) => part.forelder === søkersForelder),
-            annenPart: parter.find((part) => part.forelder !== søkersForelder),
+            søker: alleUttak.find((uttak) => uttak.forelder === søkersForelder),
+            annenPart: alleUttak.find((uttak) => uttak.forelder !== søkersForelder),
         };
     });

@@ -15,7 +15,7 @@ const KONTOTYPE_FOR_OPPHOLDSÅRSAK = {
 const erFlatPeriode = (periode: unknown): periode is UttakPeriode_fpoversikt =>
     typeof periode === 'object' && periode !== null && 'forelder' in periode;
 
-const tilPart = (periode: UttakPeriode_fpoversikt): UttakDto => {
+const tilUttak = (periode: UttakPeriode_fpoversikt): UttakDto => {
     if (periode.oppholdÅrsak) {
         return {
             forelder: periode.forelder === 'MOR' ? 'FAR_MEDMOR' : 'MOR',
@@ -65,11 +65,11 @@ export const konverterFlatePerioderTilIntervall = (perioder: unknown[]): UttakPe
             return [];
         }
 
-        const parter = flatePerioder
+        const alleUttak = flatePerioder
             .filter((periode) => periode.fom <= fom && periode.tom >= tom)
-            .map(tilPart)
+            .map(tilUttak)
             .sort((a, b) => Number(a.forelder !== 'MOR') - Number(b.forelder !== 'MOR'));
-        const [søker, annenPart] = parter;
+        const [søker, annenPart] = alleUttak;
         if (!søker) {
             return [];
         }

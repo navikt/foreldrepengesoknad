@@ -9,7 +9,7 @@ import { Uttaksdagen, getFloatFromString } from '@navikt/fp-utils';
 
 import { UttakPeriodeBuilder } from '../../utils/UttakPeriodeBuilder';
 import { getFørsteUttaksdag2UkerFørFødsel } from '../../utils/UttaksperiodeValidatorer';
-import { finnPartForForelder } from '../../utils/periodeUtils';
+import { finnUttakForForelder } from '../../utils/periodeUtils';
 import { ANTALL_UTTAKSDAGER_SEKS_UKER, ANTALL_UTTAKSDAGER_TO_UKER } from '../../utils/uttaksdagerKonstanter';
 import { Periode, ValideringInput, Valideringsområde, Valideringsregel } from './types';
 
@@ -56,13 +56,13 @@ const tellArbeidsdagerInnenfor = (fom: string, tom: string, førsteDag: string, 
     return dager;
 };
 
-const skalTelleMotToUkersgrensen = (part: UttakDto | undefined): boolean =>
-    part?.forelder === 'FAR_MEDMOR' &&
-    part.kontoType !== undefined &&
-    part.kontoType !== 'MØDREKVOTE' &&
-    !part.flerbarnsdager &&
-    part.morsAktivitet !== 'INNLAGT' &&
-    part.morsAktivitet !== 'TRENGER_HJELP';
+const skalTelleMotToUkersgrensen = (uttak: UttakDto | undefined): boolean =>
+    uttak?.forelder === 'FAR_MEDMOR' &&
+    uttak.kontoType !== undefined &&
+    uttak.kontoType !== 'MØDREKVOTE' &&
+    !uttak.flerbarnsdager &&
+    uttak.morsAktivitet !== 'INNLAGT' &&
+    uttak.morsAktivitet !== 'TRENGER_HJELP';
 
 const lagRegler = (intl: IntlShape): ReadonlyArray<Valideringsregel<FarMedmorMaks2UkerKontekst>> => [
     {
@@ -128,13 +128,13 @@ const byggKontekst = (input: ValideringInput): FarMedmorMaks2UkerKontekst | null
         .fjernUttakPerioder(perioder, false)
         .getUttakPerioder()
         .flatMap((p) => {
-            const part = finnPartForForelder(p, 'FAR_MEDMOR');
-            return part ? [{ fom: p.fom, tom: p.tom, part }] : [];
+            const uttak = finnUttakForForelder(p, 'FAR_MEDMOR');
+            return uttak ? [{ fom: p.fom, tom: p.tom, uttak }] : [];
         });
 
-    const dagerEksisterendePerioder = eksisterendeFarMedmorPerioder.reduce((sum, { fom, tom, part }) => {
+    const dagerEksisterendePerioder = eksisterendeFarMedmorPerioder.reduce((sum, { fom, tom, uttak }) => {
         const dager = tellArbeidsdagerInnenfor(fom, tom, førsteDag, sisteDag);
-        const arbeidstidprosent = part.gradering?.arbeidstidprosent ?? 0;
+        const arbeidstidprosent = uttak.gradering?.arbeidstidprosent ?? 0;
         return sum + dager * ((100 - arbeidstidprosent) / 100);
     }, 0);
 

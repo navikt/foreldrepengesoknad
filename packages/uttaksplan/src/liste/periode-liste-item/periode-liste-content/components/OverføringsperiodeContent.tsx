@@ -1,8 +1,9 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { NavnPåForeldre, UttakOverføringÅrsak_fpoversikt } from '@navikt/fp-types';
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
+
+import { NavnPåForeldre, UttakOverføringÅrsak_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen, formatDateExtended } from '@navikt/fp-utils';
 
 import { Uttaksplanperiode, erPeriodeDto } from '../../../../types/UttaksplanPeriode';
@@ -18,20 +19,20 @@ interface Props {
 export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre }: Props) => {
     const intl = useIntl();
 
-    const part = erPeriodeDto(periode) ? (periode.søker ?? periode.annenPart) : undefined;
-    if (!part) {
+    const uttak = erPeriodeDto(periode) ? (periode.søker ?? periode.annenPart) : undefined;
+    if (!uttak) {
         return null;
     }
 
-    const morsAktivitet = part.morsAktivitet;
+    const morsAktivitet = uttak.morsAktivitet;
     const stønadskvoteNavn = getStønadskvoteNavn(intl, {
         navnPåForeldre,
-        erFarEllerMedmor: part.forelder === 'FAR_MEDMOR',
+        erFarEllerMedmor: uttak.forelder === 'FAR_MEDMOR',
         erEøsPeriode: false,
         morsAktivitet,
-        konto: part.kontoType,
+        konto: uttak.kontoType,
     });
-    const navnPåAnnenForelder = part.forelder === 'FAR_MEDMOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+    const navnPåAnnenForelder = uttak.forelder === 'FAR_MEDMOR' ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
     return (
         <HStack gap="space-8">
@@ -56,15 +57,15 @@ export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, na
                 </HStack>
                 <HStack gap="space-8">
                     <BodyShort>
-                        {getOverføringsTekst(stønadskvoteNavn, navnPåAnnenForelder, part.overføringÅrsak)}
+                        {getOverføringsTekst(stønadskvoteNavn, navnPåAnnenForelder, uttak.overføringÅrsak)}
                     </BodyShort>
-                    {part.gradering !== undefined && (
+                    {uttak.gradering !== undefined && (
                         <BodyShort>
                             <FormattedMessage
                                 id="uttaksplan.periodeListeContent.arbeid"
                                 values={{
-                                    arbeidstidprosent: part.gradering.arbeidstidprosent,
-                                    uttaksprosent: 100 - part.gradering.arbeidstidprosent,
+                                    arbeidstidprosent: uttak.gradering.arbeidstidprosent,
+                                    uttaksprosent: 100 - uttak.gradering.arbeidstidprosent,
                                 }}
                             />
                         </BodyShort>

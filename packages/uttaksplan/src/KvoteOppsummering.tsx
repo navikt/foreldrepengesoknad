@@ -16,7 +16,7 @@ import {
     summerDagerIPerioder,
     tellDagerIUttaksPeriodene,
 } from './utils/kvoteBeregning';
-import { finnParter } from './utils/periodeUtils';
+import { finnAlleUttak } from './utils/periodeUtils';
 
 interface Props {
     visStatusIkoner: boolean;
@@ -176,9 +176,9 @@ const KvoteTittel = ({
 
     if (antallOvertrukketDager > 0) {
         const beggeHarBruktMorsKvote = filtrertePerioder
-            .flatMap(finnParter)
-            .filter((part) => part.kontoType === 'MØDREKVOTE')
-            .some((part) => part.overføringÅrsak !== undefined);
+            .flatMap(finnAlleUttak)
+            .filter((uttak) => uttak.kontoType === 'MØDREKVOTE')
+            .some((uttak) => uttak.overføringÅrsak !== undefined);
 
         const beskrivelseMor =
             ubrukteDagerMor < 0
@@ -210,9 +210,9 @@ const KvoteTittel = ({
                 : '';
 
         const beggeHarBruktFarsKvote = filtrertePerioder
-            .flatMap(finnParter)
-            .filter((part) => part.kontoType === 'FEDREKVOTE')
-            .some((part) => part.overføringÅrsak !== undefined);
+            .flatMap(finnAlleUttak)
+            .filter((uttak) => uttak.kontoType === 'FEDREKVOTE')
+            .some((uttak) => uttak.overføringÅrsak !== undefined);
         const beskrivelseFar =
             ubrukteDagerFar < 0
                 ? beggeHarBruktFarsKvote

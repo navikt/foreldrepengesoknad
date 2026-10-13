@@ -161,14 +161,14 @@ const utledForelder = (periode: UttaksplanperiodeMedKunTapteDager, søker: Bruke
     if (!erPeriodeDto(periode)) {
         return periode.forelder;
     }
-    const part = periode.søker ?? periode.annenPart;
-    if (!part) {
+    const uttak = periode.søker ?? periode.annenPart;
+    if (!uttak) {
         // Rein EØS-periode – EøsUttakDto har ikkje noko eige forelder-felt (sjå
         // uttaksplanLegendUtils), så vi fell tilbake til den same forenklinga som elles: EØS
         // gjeld alltid annenPart, derav søkjar sin eigen rolle her (matchar getLegendLabelFromPeriode).
         return søker;
     }
-    return part.forelder;
+    return uttak.forelder;
 };
 
 const HStackEllerVStack = ({

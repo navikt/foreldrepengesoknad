@@ -12,15 +12,15 @@ vi.mock('@navikt/fp-observability', () => ({
 const getContext = () => captureExceptionMock.mock.calls[0]?.[1]?.context;
 
 // Søker (mor) sine periodar er eksisterande, annen part (far/medmor) sine er nye, slik at dei kan skiljast.
-const lagPeriode = (fom: string, tom: string, part: Partial<UttakDto> = {}): UttakPeriodeDto => ({
+const lagPeriode = (fom: string, tom: string, uttak: Partial<UttakDto> = {}): UttakPeriodeDto => ({
     fom,
     tom,
-    søker: { forelder: 'MOR', flerbarnsdager: false, ...part },
+    søker: { forelder: 'MOR', flerbarnsdager: false, ...uttak },
 });
-const lagNyPeriode = (fom: string, tom: string, part: Partial<UttakDto> = {}): UttakPeriodeDto => ({
+const lagNyPeriode = (fom: string, tom: string, uttak: Partial<UttakDto> = {}): UttakPeriodeDto => ({
     fom,
     tom,
-    annenPart: { forelder: 'FAR_MEDMOR', flerbarnsdager: false, ...part },
+    annenPart: { forelder: 'FAR_MEDMOR', flerbarnsdager: false, ...uttak },
 });
 
 const lagSamtidigUttakPeriode = (fom: string, tom: string): UttakPeriodeDto => ({

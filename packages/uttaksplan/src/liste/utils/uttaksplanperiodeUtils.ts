@@ -5,7 +5,7 @@ import {
     erPeriodeUtenUttakHull,
     erTapteDagerHull,
 } from '../../types/UttaksplanPeriode';
-import { erAvslåttPeriode, erOppholdsperiode, erPrematuruker, finnParter } from '../../utils/periodeUtils';
+import { erAvslåttPeriode, erOppholdsperiode, erPrematuruker, finnAlleUttak } from '../../utils/periodeUtils';
 
 export const getFørsteUttaksplanperiodeFom = (uttaksplanperioder: Uttaksplanperiode[]) => {
     return uttaksplanperioder.at(0)!.fom;
@@ -52,7 +52,7 @@ export const erAlleUttaksplanperioderAvslått = (uttaksplanperioder: Uttaksplanp
             (p) =>
                 erPeriodeDto(p) &&
                 erAvslåttPeriode(p) &&
-                finnParter(p).every((part) => part.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER'),
+                finnAlleUttak(p).every((uttak) => uttak.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER'),
         )
     );
 };

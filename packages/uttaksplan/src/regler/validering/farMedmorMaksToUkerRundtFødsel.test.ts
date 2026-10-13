@@ -45,7 +45,7 @@ const FEILMELDING = 'Du kan ikke velge mer enn to uker totalt i perioden to uker
 const lagFarPeriode = ({
     fom = '2024-06-17',
     tom = '2024-06-28',
-    ...part
+    ...uttak
 }: Partial<UttakDto & Pick<UttakPeriodeDto, 'fom' | 'tom'>> = {}): UttakPeriodeDto => ({
     fom,
     tom,
@@ -54,23 +54,23 @@ const lagFarPeriode = ({
         kontoType: 'FEDREKVOTE',
         flerbarnsdager: false,
         samtidigUttak: 100,
-        ...part,
+        ...uttak,
     },
 });
 
 describe('farMedmorMaksToUkerRundtFødsel', () => {
     describe.each(['søker', 'annenPart'] as const)('far/medmor som %s', (side) => {
         it.each([
-            { part: {}, forventet: FEILMELDING },
-            { part: { kontoType: 'MØDREKVOTE' }, forventet: undefined },
-            { part: { flerbarnsdager: true }, forventet: undefined },
-            { part: { morsAktivitet: 'INNLAGT' }, forventet: undefined },
-            { part: { morsAktivitet: 'TRENGER_HJELP' }, forventet: undefined },
-            { part: { kontoType: undefined, utsettelseÅrsak: 'FERIE' }, forventet: undefined },
-        ] satisfies Array<{ part: Partial<UttakDto>; forventet: string | undefined }>)(
-            'teller fedrekvote, men ikke unntaksuttak: $part',
-            ({ part, forventet }) => {
-                const farPeriode = lagFarPeriode(part);
+            { uttak: {}, forventet: FEILMELDING },
+            { uttak: { kontoType: 'MØDREKVOTE' }, forventet: undefined },
+            { uttak: { flerbarnsdager: true }, forventet: undefined },
+            { uttak: { morsAktivitet: 'INNLAGT' }, forventet: undefined },
+            { uttak: { morsAktivitet: 'TRENGER_HJELP' }, forventet: undefined },
+            { uttak: { kontoType: undefined, utsettelseÅrsak: 'FERIE' }, forventet: undefined },
+        ] satisfies Array<{ uttak: Partial<UttakDto>; forventet: string | undefined }>)(
+            'teller fedrekvote, men ikke unntaksuttak: $uttak',
+            ({ uttak, forventet }) => {
+                const farPeriode = lagFarPeriode(uttak);
                 const motsattSide = side === 'søker' ? 'annenPart' : 'søker';
                 const feil = evaluer(
                     lagInput({

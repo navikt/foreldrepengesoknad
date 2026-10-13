@@ -132,9 +132,9 @@ export const finnTekstForUtsettelseÅrsak = (intl: IntlShape, utsettelseÅrsak: 
     }
 };
 
-const partNøkkel = (part?: UttakDto): string =>
-    part
-        ? `${part.forelder}-${part.kontoType}-${part.flerbarnsdager}-${part.utsettelseÅrsak}-${part.overføringÅrsak}`
+const uttakNøkkel = (uttak?: UttakDto): string =>
+    uttak
+        ? `${uttak.forelder}-${uttak.kontoType}-${uttak.flerbarnsdager}-${uttak.utsettelseÅrsak}-${uttak.overføringÅrsak}`
         : '';
 
 export const genererPeriodeKey = (saksperiode?: Uttaksplanperiode): string | undefined => {
@@ -160,5 +160,5 @@ export const genererPeriodeKey = (saksperiode?: Uttaksplanperiode): string | und
 
     const { fom, tom, søker, annenPart, annenPartEøs } = saksperiode;
     const eøsNøkkel = annenPartEøs ? `eøs-${annenPartEøs.kontoType}-${annenPartEøs.trekkdager}` : '';
-    return `${fom} - ${tom} - ${partNøkkel(søker)} - ${partNøkkel(annenPart)} - ${eøsNøkkel}`;
+    return `${fom} - ${tom} - ${uttakNøkkel(søker)} - ${uttakNøkkel(annenPart)} - ${eøsNøkkel}`;
 };

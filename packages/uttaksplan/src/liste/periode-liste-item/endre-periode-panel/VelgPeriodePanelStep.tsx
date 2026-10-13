@@ -58,9 +58,9 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
                     ]}
                 >
                     {perioder.map((p, index) => {
-                        const part = erPeriodeDto(p) ? (p.søker ?? p.annenPart) : undefined;
-                        const morsAktivitet = part?.morsAktivitet;
-                        const eøsPart = erPeriodeDto(p) ? p.annenPartEøs : undefined;
+                        const uttak = erPeriodeDto(p) ? (p.søker ?? p.annenPart) : undefined;
+                        const morsAktivitet = uttak?.morsAktivitet;
+                        const eøsUttak = erPeriodeDto(p) ? p.annenPartEøs : undefined;
                         return (
                             <Radio key={genererPeriodeKey(p)} value={index} autoFocus={index === 0}>
                                 <HStack gap="space-4">
@@ -92,9 +92,9 @@ export const VelgPeriodePanelStep = ({ perioder, setValgtPeriodeIndex, closePane
                                         `${getStønadskvoteNavn(intl, {
                                             navnPåForeldre,
                                             erFarEllerMedmor: søker === 'FAR_MEDMOR',
-                                            erEøsPeriode: !!eøsPart && !part,
+                                            erEøsPeriode: !!eøsUttak && !uttak,
                                             morsAktivitet,
-                                            konto: part?.kontoType ?? eøsPart?.kontoType,
+                                            konto: uttak?.kontoType ?? eøsUttak?.kontoType,
                                             erAleneOmOmsorg: rettighetType === 'ALENEOMSORG',
                                             erAvslått: erAvslåttPeriode(p),
                                         })}`}

@@ -7,16 +7,16 @@ import { Uttaksdagen } from './Uttaksdagen';
 // UttaksperiodeValidatorer.
 
 export const Uttaksperioden = {
-    erAvslåttPeriode(part: UttakDto) {
-        return part.resultat !== undefined && part.resultat.innvilget !== true;
+    erAvslåttPeriode(uttak: UttakDto) {
+        return uttak.resultat !== undefined && uttak.resultat.innvilget !== true;
     },
 
-    erUttaksperiode(part: UttakDto) {
-        return !part.overføringÅrsak && !part.utsettelseÅrsak;
+    erUttaksperiode(uttak: UttakDto) {
+        return !uttak.overføringÅrsak && !uttak.utsettelseÅrsak;
     },
 
-    erOverføringsperiode(part: UttakDto) {
-        return !!part.overføringÅrsak;
+    erOverføringsperiode(uttak: UttakDto) {
+        return !!uttak.overføringÅrsak;
     },
 
     // Opphold har ikkje lenger noko eige oppholdÅrsak-felt frå backend – det er strukturelt
@@ -26,20 +26,20 @@ export const Uttaksperioden = {
         return !periode.søker && !!periode.annenPart;
     },
 
-    erUtsettelsesperiode(part: UttakDto) {
-        return part.utsettelseÅrsak !== undefined && part.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER';
+    erUtsettelsesperiode(uttak: UttakDto) {
+        return uttak.utsettelseÅrsak !== undefined && uttak.resultat?.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER';
     },
 
-    erSamtidigUttak(part: UttakDto) {
-        return part.samtidigUttak !== undefined;
+    erSamtidigUttak(uttak: UttakDto) {
+        return uttak.samtidigUttak !== undefined;
     },
 
-    erPrematuruker(part: UttakDto) {
-        return part.kontoType !== undefined && part.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
+    erPrematuruker(uttak: UttakDto) {
+        return uttak.kontoType !== undefined && uttak.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER';
     },
 
-    erFlerbarnsdager(part: UttakDto) {
-        return !!part.flerbarnsdager;
+    erFlerbarnsdager(uttak: UttakDto) {
+        return !!uttak.flerbarnsdager;
     },
 
     getAntallUttaksdager(periode: { fom: string; tom: string }) {

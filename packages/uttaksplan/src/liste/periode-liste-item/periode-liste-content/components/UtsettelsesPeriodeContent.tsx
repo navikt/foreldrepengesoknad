@@ -17,9 +17,9 @@ interface Props {
 export const UtsettelsesPeriodeContent = ({ periode }: Props) => {
     const intl = useIntl();
 
-    const part = erPeriodeDto(periode) ? (periode.søker ?? periode.annenPart) : undefined;
+    const uttak = erPeriodeDto(periode) ? (periode.søker ?? periode.annenPart) : undefined;
 
-    if (!part?.utsettelseÅrsak) {
+    if (!uttak?.utsettelseÅrsak) {
         return null;
     }
 
@@ -41,11 +41,11 @@ export const UtsettelsesPeriodeContent = ({ periode }: Props) => {
                     </BodyShort>
                 </HStack>
                 <HStack gap="space-8">
-                    {part.morsAktivitet !== undefined && (
-                        <BodyShort>{getMorsAktivitetTekst(intl, part.morsAktivitet)}</BodyShort>
+                    {uttak.morsAktivitet !== undefined && (
+                        <BodyShort>{getMorsAktivitetTekst(intl, uttak.morsAktivitet)}</BodyShort>
                     )}
-                    {part.utsettelseÅrsak !== 'FRI' && (
-                        <BodyShort>{finnTekstForUtsettelseÅrsak(intl, part.utsettelseÅrsak)}</BodyShort>
+                    {uttak.utsettelseÅrsak !== 'FRI' && (
+                        <BodyShort>{finnTekstForUtsettelseÅrsak(intl, uttak.utsettelseÅrsak)}</BodyShort>
                     )}
                 </HStack>
             </VStack>

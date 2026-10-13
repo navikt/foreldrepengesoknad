@@ -22,7 +22,7 @@ import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerE
 import { useFormSubmitValidator } from '../../../../felles/uttaksplanValidatorer';
 import { useKanKunErstatte, useLeggTilEndreSkjemaInfoAlerts } from '../../../../regler/alert/informasjonsAlertHooks';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
-import { erDetEksisterendePerioderEtterValgtePerioder, finnPartForForelder } from '../../../../utils/periodeUtils';
+import { erDetEksisterendePerioderEtterValgtePerioder, finnUttakForForelder } from '../../../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from '../../context/KalenderRedigeringContext';
 import { finnValgtePerioder } from '../../utils/kalenderPeriodeUtils';
 
@@ -99,8 +99,8 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
     // Byggjer syntetiske periodar med KUN mors part, slik at den delte sjekk-funksjonen ikkje
     // ved eit uhell finn far/medmor sine data frå ei anna, urelatert (t.d. samtidig uttak-)rad.
     const morsPerioder: UttakPeriodeDto[] = perioder.flatMap((p) => {
-        const morsPart = finnPartForForelder(p, 'MOR');
-        return morsPart ? [{ fom: p.fom, tom: p.tom, søker: morsPart }] : [];
+        const morsUttak = finnUttakForForelder(p, 'MOR');
+        return morsUttak ? [{ fom: p.fom, tom: p.tom, søker: morsUttak }] : [];
     });
 
     const { morsAktivitetIkkeOppgittAlert } = useLeggTilEndreSkjemaInfoAlerts(

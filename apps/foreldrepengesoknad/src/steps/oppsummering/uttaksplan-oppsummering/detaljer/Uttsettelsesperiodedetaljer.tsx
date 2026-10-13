@@ -6,26 +6,26 @@ import { Feltoppsummering } from './Feltoppsummering';
 import { MorsAktivitetDetaljer } from './MorsaktiviteterDetaljer';
 
 interface Props {
-    part: UttakDto;
+    uttak: UttakDto;
 }
 
-export const Utsettelsesperiodedetaljer = ({ part }: Props) => {
-    const { morsAktivitet } = part;
+export const Utsettelsesperiodedetaljer = ({ uttak }: Props) => {
+    const { morsAktivitet } = uttak;
     const intl = useIntl();
 
     return (
         <>
             <Feltoppsummering
                 feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.årsak' })}
-                verdi={getÅrsakTekst(intl, part)}
+                verdi={getÅrsakTekst(intl, uttak)}
             />
             {morsAktivitet && <MorsAktivitetDetaljer morsAktivitet={morsAktivitet} />}
         </>
     );
 };
 
-const getÅrsakTekst = (intl: IntlShape, part: UttakDto) => {
-    switch (part.utsettelseÅrsak) {
+const getÅrsakTekst = (intl: IntlShape, uttak: UttakDto) => {
+    switch (uttak.utsettelseÅrsak) {
         case 'ARBEID': {
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.ARBEID' });
         }
@@ -51,7 +51,7 @@ const getÅrsakTekst = (intl: IntlShape, part: UttakDto) => {
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.NAV_TILTAK' });
         }
         default: {
-            throw new Error(`Ukjent utsettelseÅrsak: ${part.utsettelseÅrsak}`);
+            throw new Error(`Ukjent utsettelseÅrsak: ${uttak.utsettelseÅrsak}`);
         }
     }
 };

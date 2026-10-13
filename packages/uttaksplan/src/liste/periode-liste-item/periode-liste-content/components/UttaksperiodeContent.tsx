@@ -12,7 +12,7 @@ import { Uttaksplanperiode, erPeriodeDto } from '../../../../types/UttaksplanPer
 import { getVarighetString } from '../../../../utils/dateUtils';
 import {
     erAvslåttPeriode,
-    finnPartForForelder,
+    finnUttakForForelder,
     harPeriodeDerMorsAktivitetIkkeErValgt,
     harPeriodeMedUkjentGraderingsaktivitet,
 } from '../../../../utils/periodeUtils';
@@ -34,23 +34,23 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
     } = useUttaksplanData();
 
     // PeriodeListeContent deler intervall med fleire partar opp, så her er det berre éin part.
-    const part = erPeriodeDto(periode) ? (periode.søker ?? periode.annenPart) : undefined;
-    const erEøsPeriode = erPeriodeDto(periode) && !!periode.annenPartEøs && !part;
+    const uttak = erPeriodeDto(periode) ? (periode.søker ?? periode.annenPart) : undefined;
+    const erEøsPeriode = erPeriodeDto(periode) && !!periode.annenPartEøs && !uttak;
 
     const erAvslått = erAvslåttPeriode(periode);
 
     const morsPerioder = perioder.flatMap((p) => {
-        const morsPart = finnPartForForelder(p, 'MOR');
-        return morsPart ? [{ fom: p.fom, tom: p.tom, søker: morsPart }] : [];
+        const morsUttak = finnUttakForForelder(p, 'MOR');
+        return morsUttak ? [{ fom: p.fom, tom: p.tom, søker: morsUttak }] : [];
     });
-    const morsAktivitet = part?.morsAktivitet;
+    const morsAktivitet = uttak?.morsAktivitet;
 
     const stønadskvoteNavn = getStønadskvoteNavn(intl, {
         navnPåForeldre,
         erFarEllerMedmor,
         erEøsPeriode,
         morsAktivitet,
-        konto: part?.kontoType ?? (erPeriodeDto(periode) ? periode.annenPartEøs?.kontoType : undefined),
+        konto: uttak?.kontoType ?? (erPeriodeDto(periode) ? periode.annenPartEøs?.kontoType : undefined),
         erAleneOmOmsorg: rettighetType === 'ALENEOMSORG',
         erAvslått,
     });
@@ -151,23 +151,23 @@ const getTekstForArbeidOgSamtidigUttak = (
     if (!erPeriodeDto(periode)) {
         return undefined;
     }
-    const part = periode.søker ?? periode.annenPart;
-    if (!part) {
+    const uttak = periode.søker ?? periode.annenPart;
+    if (!uttak) {
         return undefined;
     }
 
-    if (part.gradering !== undefined) {
-        const uttaksprosent = Math.round((100 - part.gradering.arbeidstidprosent) * 100) / 100;
+    if (uttak.gradering !== undefined) {
+        const uttaksprosent = Math.round((100 - uttak.gradering.arbeidstidprosent) * 100) / 100;
         return (
             <FormattedMessage
                 id="uttaksplan.periodeListeContent.arbeid"
-                values={{ arbeidstidprosent: part.gradering.arbeidstidprosent, uttaksprosent }}
+                values={{ arbeidstidprosent: uttak.gradering.arbeidstidprosent, uttaksprosent }}
             />
         );
     }
 
-    if (part.samtidigUttak !== undefined) {
-        return getSamtidigUttakTekst(part.samtidigUttak, part.forelder, erFarEllerMedmor, navnPåForeldre);
+    if (uttak.samtidigUttak !== undefined) {
+        return getSamtidigUttakTekst(uttak.samtidigUttak, uttak.forelder, erFarEllerMedmor, navnPåForeldre);
     }
 
     return undefined;

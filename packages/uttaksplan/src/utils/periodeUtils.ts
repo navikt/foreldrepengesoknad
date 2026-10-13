@@ -87,21 +87,21 @@ const tidelerNedrundet = (dager: number, prosent: number): number => {
  * / `Trekkdager`): trekkdagar = virkedagar × utbetalingsgrad / 100, runda *ned*
  * til 1 desimal (RoundingMode.DOWN) per periode.
  */
-export const finnAntallTidelerÅTrekkeForPart = (
+export const finnAntallTidelerÅTrekkeForUttak = (
     periode: { fom: string; tom: string },
-    part: UttakDto,
+    uttak: UttakDto,
     erFødsel: boolean,
     familiehendelsedato: string,
 ): number => {
-    const arbeidstidprosent = part.gradering?.arbeidstidprosent;
-    const samtidigUttak = part.samtidigUttak;
+    const arbeidstidprosent = uttak.gradering?.arbeidstidprosent;
+    const samtidigUttak = uttak.samtidigUttak;
     const dager = Uttaksperioden.getAntallUttaksdager(periode);
 
     if (arbeidstidprosent) {
         const utbetalingsgrad = 100 - arbeidstidprosent;
         // Mor sin gradering i tidsrommet 3 veker før / 6 veker etter familiehendinga
         // gir ikkje forlenging av stønadsperioden – dagane i vinduet trekkjast som heile.
-        if (erFødsel && part.forelder === 'MOR') {
+        if (erFødsel && uttak.forelder === 'MOR') {
             const dagerIVindu = getAntallUttaksdagerIVinduRundtFødsel(periode.fom, periode.tom, familiehendelsedato);
             const dagerUtenforVindu = dager - dagerIVindu;
             return dagerIVindu * 10 + tidelerNedrundet(dagerUtenforVindu, utbetalingsgrad);
@@ -118,16 +118,16 @@ export const finnAntallTidelerÅTrekkeForPart = (
 export const finnAntallTidelerÅTrekkeForEøs = (eøs: EøsUttakDto): number => Math.round(eøs.trekkdager * 10);
 
 export const erUttaksperiode = (periode: Uttaksplanperiode) =>
-    erPeriodeDto(periode) && finnParter(periode).some((part) => Uttaksperioden.erUttaksperiode(part));
+    erPeriodeDto(periode) && finnAlleUttak(periode).some((uttak) => Uttaksperioden.erUttaksperiode(uttak));
 
 export const erPrematuruker = (periode: Uttaksplanperiode) =>
-    erPeriodeDto(periode) && finnParter(periode).some((part) => Uttaksperioden.erPrematuruker(part));
+    erPeriodeDto(periode) && finnAlleUttak(periode).some((uttak) => Uttaksperioden.erPrematuruker(uttak));
 
 export const erUtsettelsesperiode = (periode: Uttaksplanperiode) =>
-    erPeriodeDto(periode) && finnParter(periode).some((part) => Uttaksperioden.erUtsettelsesperiode(part));
+    erPeriodeDto(periode) && finnAlleUttak(periode).some((uttak) => Uttaksperioden.erUtsettelsesperiode(uttak));
 
 export const erOverføringsperiode = (periode: Uttaksplanperiode) =>
-    erPeriodeDto(periode) && finnParter(periode).some((part) => Uttaksperioden.erOverføringsperiode(part));
+    erPeriodeDto(periode) && finnAlleUttak(periode).some((uttak) => Uttaksperioden.erOverføringsperiode(uttak));
 
 export const erOppholdsperiode = (periode: Uttaksplanperiode) =>
     erPeriodeDto(periode) && Uttaksperioden.erOppholdsperiode(periode);
@@ -137,16 +137,16 @@ export const erAvslåttPeriode = (periode: Uttaksplanperiode) => {
     if (!erPeriodeDto(periode)) {
         return false;
     }
-    const parter = finnParter(periode);
-    return parter.length > 0 && parter.every((part) => Uttaksperioden.erAvslåttPeriode(part));
+    const alleUttak = finnAlleUttak(periode);
+    return alleUttak.length > 0 && alleUttak.every((uttak) => Uttaksperioden.erAvslåttPeriode(uttak));
 };
 
 // Dei to partane (søker/annenPart) ein periode kan ha uttak for. EØS-parten er ikkje ein
 // UttakDto-part og handterast difor separat der det trengst (t.d. kvoteBeregning).
-export const finnParter = (periode: UttakPeriodeDto): UttakDto[] =>
-    [periode.søker, periode.annenPart].filter((part): part is UttakDto => part !== undefined);
+export const finnAlleUttak = (periode: UttakPeriodeDto): UttakDto[] =>
+    [periode.søker, periode.annenPart].filter((uttak): uttak is UttakDto => uttak !== undefined);
 
-export const finnPartForForelder = (
+export const finnUttakForForelder = (
     periode: UttakPeriodeDto,
     forelder: BrukerRolleSak_fpoversikt,
 ): UttakDto | undefined => {
@@ -218,8 +218,8 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
             if (!erPeriodeDto(p)) {
                 return false;
             }
-            const morsPart = finnPartForForelder(p, 'MOR');
-            if (!morsPart) {
+            const morsUttak = finnUttakForForelder(p, 'MOR');
+            if (!morsUttak) {
                 return false;
             }
 
@@ -228,7 +228,7 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
                 tom: p.tom,
             });
 
-            const morsTotalprosent = (morsPart.samtidigUttak ?? 0) + (morsPart.gradering?.arbeidstidprosent ?? 0);
+            const morsTotalprosent = (morsUttak.samtidigUttak ?? 0) + (morsUttak.gradering?.arbeidstidprosent ?? 0);
 
             return overlapper && morsTotalprosent === 100;
         });
@@ -237,17 +237,17 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
         if (!erPeriodeDto(periode)) {
             return false;
         }
-        const farsPart = finnPartForForelder(periode, 'FAR_MEDMOR');
-        if (!farsPart) {
+        const farsUttak = finnUttakForForelder(periode, 'FAR_MEDMOR');
+        if (!farsUttak) {
             return false;
         }
 
-        const erFarMedmorsKvote = farsPart.kontoType === 'FELLESPERIODE' || farsPart.kontoType === 'FORELDREPENGER';
+        const erFarMedmorsKvote = farsUttak.kontoType === 'FELLESPERIODE' || farsUttak.kontoType === 'FORELDREPENGER';
 
         const erInnvilgetUtenMorsAktivitet =
-            farsPart.resultat?.innvilget !== false &&
-            farsPart.morsAktivitet === undefined &&
-            farsPart.flerbarnsdager === false;
+            farsUttak.resultat?.innvilget !== false &&
+            farsUttak.morsAktivitet === undefined &&
+            farsUttak.flerbarnsdager === false;
 
         return erFarMedmorsKvote && erInnvilgetUtenMorsAktivitet && !morHar100ProsentUttakOgGradering(periode);
     });
@@ -270,8 +270,8 @@ export const harPeriodeMedUkjentGraderingsaktivitet = (
         if (!erPeriodeDto(periode)) {
             return false;
         }
-        const søkersPart = finnPartForForelder(periode, søker);
-        const aktivitet = søkersPart?.gradering?.aktivitet;
+        const søkersUttak = finnUttakForForelder(periode, søker);
+        const aktivitet = søkersUttak?.gradering?.aktivitet;
         if (!aktivitet) {
             return false;
         }
@@ -287,7 +287,7 @@ export const harPeriodeMedUkjentGraderingsaktivitet = (
     });
 };
 
-const erParterLike = (a: UttakDto | undefined, b: UttakDto | undefined): boolean => {
+const erUttakLike = (a: UttakDto | undefined, b: UttakDto | undefined): boolean => {
     if (!a || !b) {
         return a === b;
     }
@@ -308,7 +308,7 @@ const erParterLike = (a: UttakDto | undefined, b: UttakDto | undefined): boolean
     );
 };
 
-const erEøsParterLike = (a: EøsUttakDto | undefined, b: EøsUttakDto | undefined): boolean => {
+const erEøsUttakLike = (a: EøsUttakDto | undefined, b: EøsUttakDto | undefined): boolean => {
     if (!a || !b) {
         return a === b;
     }
@@ -316,9 +316,9 @@ const erEøsParterLike = (a: EøsUttakDto | undefined, b: EøsUttakDto | undefin
 };
 
 export const erPerioderEkslFomTomLike = (periode1: UttakPeriodeDto, periode2: UttakPeriodeDto) =>
-    erParterLike(periode1.søker, periode2.søker) &&
-    erParterLike(periode1.annenPart, periode2.annenPart) &&
-    erEøsParterLike(periode1.annenPartEøs, periode2.annenPartEøs);
+    erUttakLike(periode1.søker, periode2.søker) &&
+    erUttakLike(periode1.annenPart, periode2.annenPart) &&
+    erEøsUttakLike(periode1.annenPartEøs, periode2.annenPartEøs);
 
 export const erDetEksisterendePerioderEtterValgtePerioder = (
     allePerioder: UttakPeriodeDto[],

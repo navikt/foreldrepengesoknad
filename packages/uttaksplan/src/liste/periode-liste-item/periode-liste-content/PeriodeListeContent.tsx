@@ -97,7 +97,7 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
             {!isEndrePeriodePanelOpen && !isSlettPeriodePanelOpen && (
                 <>
                     <VStack gap="space-16">
-                        {uttaksplanperioder.flatMap(splittPerPart).map((periode) => (
+                        {uttaksplanperioder.flatMap(splittPerUttak).map((periode) => (
                             <Periode
                                 key={genererPeriodeKey(periode)}
                                 periode={periode}
@@ -210,7 +210,7 @@ const Periode = ({
 };
 
 // Eit intervall kan ha uttak for fleire partar (t.d. samtidig uttak). Kvar part skal visast for seg.
-const splittPerPart = (periode: Uttaksplanperiode): Uttaksplanperiode[] => {
+const splittPerUttak = (periode: Uttaksplanperiode): Uttaksplanperiode[] => {
     if (!erPeriodeDto(periode)) {
         return [periode];
     }

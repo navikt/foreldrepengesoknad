@@ -23,7 +23,7 @@ import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder'
 import {
     erAvslåttPeriode,
     erUttaksperiode,
-    finnPartForForelder,
+    finnUttakForForelder,
     harPeriodeDerMorsAktivitetIkkeErValgt,
     harPeriodeMedUkjentGraderingsaktivitet,
 } from '../../utils/periodeUtils';
@@ -33,20 +33,20 @@ import {
 // hjelparen vel ut kva EIN part som skal styra tekst/farge når vi ikkje treng begge samtidig,
 // med prioritet søker > annenPart > annenPartEøs (matchar tidlegare deduplisering som alltid
 // beheldt søkjar sin flate rad når to rader fanst for same intervall).
-type VisningsPart = { type: 'UTTAK'; part: UttakDto } | { type: 'EØS'; part: EøsUttakDto };
+type VisningsUttak = { type: 'UTTAK'; uttak: UttakDto } | { type: 'EØS'; uttak: EøsUttakDto };
 
-const finnVisningsPart = (periode: UttaksplanperiodeMedKunTapteDager): VisningsPart | undefined => {
+const finnVisningsUttak = (periode: UttaksplanperiodeMedKunTapteDager): VisningsUttak | undefined => {
     if (!erPeriodeDto(periode)) {
         return undefined;
     }
     if (periode.søker) {
-        return { type: 'UTTAK', part: periode.søker };
+        return { type: 'UTTAK', uttak: periode.søker };
     }
     if (periode.annenPart) {
-        return { type: 'UTTAK', part: periode.annenPart };
+        return { type: 'UTTAK', uttak: periode.annenPart };
     }
     if (periode.annenPartEøs) {
-        return { type: 'EØS', part: periode.annenPartEøs };
+        return { type: 'EØS', uttak: periode.annenPartEøs };
     }
     return undefined;
 };
@@ -197,8 +197,8 @@ export const getKalenderFargeForPeriode = (
     }
 
     if (erAvslåttPeriode(periode)) {
-        const avslåttPart = periode.søker ?? periode.annenPart;
-        if (avslåttPart?.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
+        const avslåttUttak = periode.søker ?? periode.annenPart;
+        if (avslåttUttak?.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
             return 'DARKGRAY';
         }
         return 'BLACKOUTLINE';
@@ -219,31 +219,31 @@ export const getKalenderFargeForPeriode = (
 
     // Opphald (kun annenPart har uttak, søkjar har «pause») treng ingen eigen fargelogikk her –
     // annenPart sin eigen farge (under) blir brukt akkurat som om det var søkjar sin periode.
-    const part = periode.søker ?? periode.annenPart;
-    if (!part) {
+    const uttak = periode.søker ?? periode.annenPart;
+    if (!uttak) {
         return 'NONE';
     }
 
-    if (part.utsettelseÅrsak) {
-        if (part.utsettelseÅrsak === 'FERIE') {
+    if (uttak.utsettelseÅrsak) {
+        if (uttak.utsettelseÅrsak === 'FERIE') {
             return 'BLUEOUTLINE';
         }
         return 'BEIGEOUTLINE';
     }
 
-    if (part.forelder === 'MOR') {
-        if (part.gradering && part.gradering.arbeidstidprosent > 0) {
+    if (uttak.forelder === 'MOR') {
+        if (uttak.gradering && uttak.gradering.arbeidstidprosent > 0) {
             return 'BLUESTRIPED';
         }
 
         return 'BLUE';
     }
 
-    if (part.forelder === 'FAR_MEDMOR') {
-        if (part.gradering && part.gradering.arbeidstidprosent > 0) {
+    if (uttak.forelder === 'FAR_MEDMOR') {
+        if (uttak.gradering && uttak.gradering.arbeidstidprosent > 0) {
             return 'GREENSTRIPED';
         }
-        if (part.kontoType === 'FORELDREPENGER' && part.morsAktivitet === 'IKKE_OPPGITT') {
+        if (uttak.kontoType === 'FORELDREPENGER' && uttak.morsAktivitet === 'IKKE_OPPGITT') {
             return 'GREENOUTLINE';
         }
 
@@ -292,19 +292,19 @@ const getKalenderSkjermleserPeriodetekst = (
     navnPåForeldre: NavnPåForeldre,
     intl: IntlShape,
 ): string => {
-    const visning = finnVisningsPart(periode);
+    const visning = finnVisningsUttak(periode);
     const erEøs = visning?.type === 'EØS';
 
     // NB: EØS-sida har ikkje noko eige `forelder`-felt i DTO-en (ho gjeld alltid annenPart, men
     // ikkje kva rolle annenPart har) – held difor same forenkling som før migreringa og syner
     // farMedmor sitt namn for EØS-periodar. Sjå oppsummeringa for meir kontekst.
-    const navn = erEøs || visning?.part.forelder === 'FAR_MEDMOR' ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
+    const navn = erEøs || visning?.uttak.forelder === 'FAR_MEDMOR' ? navnPåForeldre.farMedmor : navnPåForeldre.mor;
 
     const periodenTilhører = intl.formatMessage({ id: 'kalender.srText.PeriodenTil' }, { navn });
 
     if (erAvslåttPeriode(periode)) {
-        const avslåttPart = visning?.type === 'UTTAK' ? visning.part : undefined;
-        if (avslåttPart?.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
+        const avslåttUttak = visning?.type === 'UTTAK' ? visning.uttak : undefined;
+        if (avslåttUttak?.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER') {
             return periodenTilhører + intl.formatMessage({ id: 'kalender.avslagFratrekkPleiepenger' });
         }
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.AvslåttPeriode' });
@@ -314,7 +314,7 @@ const getKalenderSkjermleserPeriodetekst = (
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.TapteDager' });
     }
 
-    const kontoType = visning?.part.kontoType;
+    const kontoType = visning?.uttak.kontoType;
     if (kontoType) {
         switch (kontoType) {
             case 'FORELDREPENGER_FØR_FØDSEL':
@@ -340,7 +340,7 @@ const getKalenderSkjermleserPeriodetekst = (
 };
 
 const finnSkjermleserTekstForKvoteForeldrepenger = (
-    visning: VisningsPart,
+    visning: VisningsUttak,
     periodenTilhører: string,
     intl: IntlShape,
 ): string => {
@@ -348,21 +348,21 @@ const finnSkjermleserTekstForKvoteForeldrepenger = (
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.ForeldrepengerIkkeGradert' });
     }
 
-    const { part } = visning;
+    const { uttak } = visning;
 
-    if (part.morsAktivitet === 'IKKE_OPPGITT') {
-        if (part.gradering?.arbeidstidprosent) {
+    if (uttak.morsAktivitet === 'IKKE_OPPGITT') {
+        if (uttak.gradering?.arbeidstidprosent) {
             return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.AktivitetsfrieDelGradert' });
         }
 
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.AktivitetsfrieIkkeGradert' });
     }
 
-    if (part.samtidigUttak && part.samtidigUttak > 0) {
+    if (uttak.samtidigUttak && uttak.samtidigUttak > 0) {
         return intl.formatMessage({ id: 'kalender.srText.SamtidigUttaksperiode' });
     }
 
-    if (part.gradering?.arbeidstidprosent) {
+    if (uttak.gradering?.arbeidstidprosent) {
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.ForeldrepengerGradert' });
     }
 
@@ -427,8 +427,8 @@ const leggTilVarselikonVedManglendeObligatoriskeValg = (
     // Byggjer syntetiske periodar med KUN mors part, slik at den delte sjekk-funksjonen ikkje
     // ved eit uhell finn far/medmor sine data frå ei anna, urelatert (t.d. samtidig uttak-)rad.
     const morsPerioder: UttakPeriodeDto[] = allePerioder.flatMap((p) => {
-        const morsPart = finnPartForForelder(p, 'MOR');
-        return morsPart ? [{ fom: p.fom, tom: p.tom, søker: morsPart }] : [];
+        const morsUttak = finnUttakForForelder(p, 'MOR');
+        return morsUttak ? [{ fom: p.fom, tom: p.tom, søker: morsUttak }] : [];
     });
 
     if (
