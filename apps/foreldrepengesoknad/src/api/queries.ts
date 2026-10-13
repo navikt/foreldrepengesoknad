@@ -3,7 +3,7 @@ import { getStønadskvoteParams } from 'api/getStønadskvoteParams';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import ky, { type ResponsePromise } from 'ky';
-import { annenForelderHarNorskFnr, annenPartHarVedtak, getUttaksplanParam } from 'utils/annenForelderUtils';
+import { annenForelderHarNorskFnr, getUttaksplanParam } from 'utils/annenForelderUtils';
 
 import {
     FellesUttaksplanDto,
@@ -119,7 +119,7 @@ export const useStønadsKontoerOptions = () => {
         barn,
         annenForelder,
         søkersituasjon,
-        annenPartHarVedtak(uttaksplanQuery.data) ? uttaksplanQuery.data : undefined,
+        uttaksplanQuery.data,
         valgtSak?.familiehendelse.termindato,
     );
 
