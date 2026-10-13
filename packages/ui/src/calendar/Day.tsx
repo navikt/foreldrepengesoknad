@@ -4,7 +4,7 @@ import React, { ReactElement, useRef, useState } from 'react';
 import { Popover } from '@navikt/ds-react';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { formatDate, formaterDatoUtenDag } from '@navikt/fp-utils';
+import { formatDate } from '@navikt/fp-utils';
 
 import styles from './day.module.css';
 import { CalendarPeriodColor } from './types/CalendarPeriodColor';
@@ -109,7 +109,7 @@ export const Day = React.memo(
                               handleKeyNavigationAndSelection(e, date, dateClickCallback, setFocusedDate, onDateHover)
                         : undefined
                 }
-                aria-label={formaterDatoUtenDag(date) + (srText ? `, ${srText}` : '')}
+                aria-label={formatDate(date) + (srText ? `, ${srText}` : '')}
             >
                 {(!Icon || (!iconFull && periodeColor === 'GRAY')) && day}
 
