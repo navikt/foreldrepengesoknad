@@ -49,7 +49,7 @@ export const UttaksplanDataProvider = (props: Props) => {
         const familiesituasjon = getFamiliesituasjon(otherProps.barn);
         const termindato = isFødtBarn(otherProps.barn) ? otherProps.barn.termindato : undefined;
 
-        const sortertePerioder = filtrerBortUttakUtenTrekkdager(otherProps.perioder).sort(sorterPerioder);
+        const sortertePerioder = [...otherProps.perioder].sort(sorterPerioder);
 
         return {
             ...otherProps,
@@ -71,16 +71,3 @@ export const useUttaksplanData = () => {
     }
     return context;
 };
-
-// TODO (TOR) Denne fjerninga av avslåtte periodar uten trekkdagar bør ligga i backend
-const harTrekkdager = (uttak: UttakPeriodeDto['søker']): boolean =>
-    !uttak || !(uttak.resultat?.innvilget === false && uttak.resultat.trekkerDager === false);
-
-const filtrerBortUttakUtenTrekkdager = (perioder: UttakPeriodeDto[]): UttakPeriodeDto[] =>
-    perioder
-        .map((periode) => ({
-            ...periode,
-            søker: harTrekkdager(periode.søker) ? periode.søker : undefined,
-            annenPart: harTrekkdager(periode.annenPart) ? periode.annenPart : undefined,
-        }))
-        .filter((periode) => periode.søker !== undefined || periode.annenPart !== undefined || periode.annenPartEøs);

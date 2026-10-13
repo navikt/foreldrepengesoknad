@@ -37,15 +37,8 @@ interface Props {
 export const UttaksplanOppsummeringsliste = ({ navnPåForeldre, registrerteArbeidsforhold }: Props) => {
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
 
-    const søkersPerioder = filtrerBortPerioderUtenTrekkdager(
-        uttaksplan.filter((periode) => periode.søker !== undefined),
-        true,
-    );
-
-    const annenPartsPerioder = filtrerBortPerioderUtenTrekkdager(
-        uttaksplan.filter((periode) => periode.annenPart !== undefined),
-        false,
-    );
+    const søkersPerioder = uttaksplan.filter((periode) => periode.søker !== undefined);
+    const annenPartsPerioder = uttaksplan.filter((periode) => periode.annenPart !== undefined);
 
     const søkerHarLagtTilPerioderForAnnenPart = annenPartsPerioder.some(
         (periode) => periode.annenPart?.resultat === undefined,
@@ -256,10 +249,3 @@ const erAvslåttPeriodeSomTrekkerDager = (uttak: UttakDto | undefined): boolean 
         uttak.resultat.trekkerDager &&
         uttak.resultat.årsak !== 'AVSLAG_FRATREKK_PLEIEPENGER'
     );
-
-// TODO (TOR) Denne fjerninga av avslåtte periodar uten trekkdagar bør ligga i backend
-const filtrerBortPerioderUtenTrekkdager = (perioder: UttakPeriodeDto[], erSøkerListe: boolean) =>
-    perioder.filter((periode) => {
-        const uttak = erSøkerListe ? periode.søker : periode.annenPart;
-        return uttak === undefined || uttak.resultat?.innvilget !== false || uttak.resultat.trekkerDager;
-    });

@@ -381,17 +381,6 @@ export const MorMedFarSomHarTattOverMødrekvote: Story = {
                         {
                             fom: '2025-03-25',
                             tom: '2025-05-06',
-                            søker: {
-                                kontoType: 'MØDREKVOTE',
-                                resultat: {
-                                    innvilget: false,
-                                    trekkerDager: false,
-                                    trekkerMinsterett: false,
-                                    årsak: 'ANNET',
-                                },
-                                flerbarnsdager: false,
-                                forelder: 'MOR',
-                            },
                             annenPart: {
                                 kontoType: 'MØDREKVOTE',
                                 overføringÅrsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
