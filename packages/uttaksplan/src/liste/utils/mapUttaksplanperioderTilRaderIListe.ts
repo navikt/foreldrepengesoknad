@@ -3,9 +3,6 @@ import dayjs from 'dayjs';
 import { Uttaksplanperiode, erPeriodeDto, erUttaksplanHull } from '../../types/UttaksplanPeriode';
 import { erAvslåttPeriode, erPrematuruker, erUtsettelsesperiode } from '../../utils/periodeUtils';
 
-// Ein periode der både søker og annenPart har uttak (samtidig uttak) representerer allereie
-// éi sammanslått rad i den nye modellen – han skal difor stå åleine, akkurat som
-// hull/prematuruker/utsettelse, og ikkje forsøkast slått saman med naboradene.
 const erSamtidigUttak = (periode: Uttaksplanperiode): boolean =>
     erPeriodeDto(periode) && !!periode.søker && !!periode.annenPart;
 
