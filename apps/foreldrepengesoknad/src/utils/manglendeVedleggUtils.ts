@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 
 import {
@@ -97,31 +96,20 @@ const dokumentasjonBehøvesForUttaksperiode = (
         return false;
     }
 
+    const erPeriodeMedFedrekvoteIFødselspermTidsrommet =
+        UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
+            periode,
+            familiehendelsedato,
+            undefined,
+        ) &&
+        periode.kontoType === 'FEDREKVOTE' &&
+        !periode.samtidigUttak;
+
     // Dokumentasjon av mors aktivitet ("hva skal mor gjøre i denne perioden") skal kun kreves i
     // far/medmor sin søknad. I mors egen søknad skal det aldri kreves dokumentasjon for mors
     // aktivitet, uansett hvilken aktivitet hun velger.
     const krevesDokumentasjonAvMorsAktivitet =
         søkerErFarEllerMedmor && periode.morsAktivitet !== undefined && periode.morsAktivitet !== 'UFØRE';
 
-    return (
-        krevesDokumentasjonAvMorsAktivitet || kreverDokumentasjonForFedrekvoteRundtFødsel(periode, familiehendelsedato)
-    );
-};
-
-export const kreverDokumentasjonForFedrekvoteRundtFødsel = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-    familiehendelsedato: string,
-): boolean => {
-    return (
-        Uttaksperioden.erIkkeEøsPeriode(periode) &&
-        Uttaksperioden.erUttaksperiode(periode) &&
-        periode.kontoType === 'FEDREKVOTE' &&
-        !periode.samtidigUttak &&
-        !dayjs(periode.fom).isBefore(familiehendelsedato, 'day') &&
-        UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
-            periode,
-            familiehendelsedato,
-            undefined,
-        )
-    );
+    return krevesDokumentasjonAvMorsAktivitet || erPeriodeMedFedrekvoteIFødselspermTidsrommet;
 };

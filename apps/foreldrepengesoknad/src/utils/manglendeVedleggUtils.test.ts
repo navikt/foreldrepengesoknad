@@ -1,10 +1,8 @@
-import dayjs from 'dayjs';
 import { AnnenForelder } from 'types/AnnenForelder';
 
 import { UttakPeriodeResultat_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
 
 import { finnPerioderSomInngårISøknaden, perioderSomKreverVedlegg } from './manglendeVedleggUtils';
-import { getErSøkerFarEllerMedmor } from './personUtils';
 
 const annenForelder = {
     fornavn: 'Far',
@@ -82,65 +80,6 @@ describe('perioderSomKreverVedlegg - dokumentasjon av mors aktivitet', () => {
         );
 
         expect(perioder).toHaveLength(1);
-    });
-});
-
-describe('dokumentasjon for fedrekvote rundt fødsel', () => {
-    it.each(['far', 'medmor'] as const)('%s skal ikke bes om dokumentasjon før termin', (rolle) => {
-        const termindato = dayjs().add(1, 'week').format('YYYY-MM-DD');
-        const uttaksdato = dayjs(termindato).subtract(1, 'day').format('YYYY-MM-DD');
-        const periode: UttakPeriode_fpoversikt = {
-            forelder: 'FAR_MEDMOR',
-            kontoType: 'FEDREKVOTE',
-            fom: uttaksdato,
-            tom: uttaksdato,
-            flerbarnsdager: false,
-        };
-
-        const perioder = perioderSomKreverVedlegg(
-            [periode],
-            getErSøkerFarEllerMedmor(rolle),
-            annenForelder,
-            termindato,
-        );
-
-        expect(perioder).toHaveLength(0);
-    });
-
-    it.each(['far', 'medmor'] as const)('%s blir bedt om dokumentasjon når perioden starter på termin', (rolle) => {
-        const termindato = dayjs().add(1, 'week').format('YYYY-MM-DD');
-        const periode: UttakPeriode_fpoversikt = {
-            forelder: 'FAR_MEDMOR',
-            kontoType: 'FEDREKVOTE',
-            fom: termindato,
-            tom: termindato,
-            flerbarnsdager: false,
-        };
-
-        const perioder = perioderSomKreverVedlegg(
-            [periode],
-            getErSøkerFarEllerMedmor(rolle),
-            annenForelder,
-            termindato,
-        );
-
-        expect(perioder).toHaveLength(1);
-    });
-
-    it('ber ikke om dokumentasjon ved samtidig uttak selv om perioden starter på termin', () => {
-        const termindato = dayjs().add(1, 'week').format('YYYY-MM-DD');
-        const periode: UttakPeriode_fpoversikt = {
-            forelder: 'FAR_MEDMOR',
-            kontoType: 'FEDREKVOTE',
-            fom: termindato,
-            tom: termindato,
-            samtidigUttak: 100,
-            flerbarnsdager: false,
-        };
-
-        const perioder = perioderSomKreverVedlegg([periode], true, annenForelder, termindato);
-
-        expect(perioder).toHaveLength(0);
     });
 });
 
