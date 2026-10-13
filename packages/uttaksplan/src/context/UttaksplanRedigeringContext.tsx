@@ -32,7 +32,7 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
     const [visFjernAltModal, setVisFjernAltModal] = useState(false);
     const [visTilbakestillModal, setVisTilbakestillModal] = useState(false);
 
-    const { perioder: uttakPerioder, erEndringssøknad } = useUttaksplanData();
+    const { perioder, erEndringssøknad } = useUttaksplanData();
 
     const harLoggetInitielleOverlappRef = useRef(false);
     useEffect(() => {
@@ -41,7 +41,7 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
         }
         harLoggetInitielleOverlappRef.current = true;
 
-        const ugyldigeOverlapp = finnUgyldigeOverlapp(uttakPerioder);
+        const ugyldigeOverlapp = finnUgyldigeOverlapp(perioder);
         if (ugyldigeOverlapp.length === 0) {
             return;
         }
@@ -55,10 +55,10 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
                     a: periodeTilLoggObjekt(a),
                     b: periodeTilLoggObjekt(b),
                 })),
-                opprinneligPerioder: uttakPerioder.map(periodeTilLoggObjekt),
+                opprinneligPerioder: perioder.map(periodeTilLoggObjekt),
             },
         });
-    }, [uttakPerioder]);
+    }, [perioder]);
 
     const [uttaksplanVersjoner, setUttaksplanVersjoner] = useState<UttakPeriodeDto[][]>([]);
 
@@ -91,7 +91,7 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
     const fjernAltIUttaksplan = useCallback(() => {
         setUttaksplanVersjoner([]);
         // Behold kun EØS-sida av kvar periode (søker/annenPart sitt uttak fjernes).
-        const kunEøsPerioder = uttakPerioder
+        const kunEøsPerioder = perioder
             .filter((periode) => periode.annenPartEøs !== undefined)
             .map((periode): UttakPeriodeDto => ({
                 fom: periode.fom,
@@ -99,7 +99,7 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
                 annenPartEøs: periode.annenPartEøs,
             }));
         oppdater(kunEøsPerioder);
-    }, [oppdater, uttakPerioder]);
+    }, [oppdater, perioder]);
 
     const value = useMemo(
         () => ({

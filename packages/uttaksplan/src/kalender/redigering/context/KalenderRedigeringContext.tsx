@@ -30,30 +30,34 @@ export const KalenderRedigeringProvider = ({
     setValgtePerioder,
     setEndredePerioder,
 }: Props) => {
-    const { perioder: uttakPerioder, erPeriodeneTilAnnenPartLåst } = useUttaksplanData();
+    const { perioder, erPeriodeneTilAnnenPartLåst } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
     const sammenslåtteValgtePerioder = useMemo(() => slåSammenTilstøtendePerioder(valgtePerioder), [valgtePerioder]);
 
     const leggTilUttaksplanPerioder = useCallback(
-        (perioder: UttakPeriodeDto[], skalForskyvePeriode: boolean) => {
-            const nyeUttakPerioder = new UttakPeriodeBuilder(uttakPerioder, 'kalender')
-                .leggTilUttakPerioder(perioder, skalForskyvePeriode)
+        (nyePerioder: UttakPeriodeDto[], skalForskyvePeriode: boolean) => {
+            const nyeUttakPerioder = new UttakPeriodeBuilder(perioder, 'kalender')
+                .leggTilUttakPerioder(nyePerioder, skalForskyvePeriode)
                 .getUttakPerioder();
 
             notEmpty(uttaksplanRedigering).oppdaterUttaksplan(nyeUttakPerioder);
         },
-        [uttaksplanRedigering, uttakPerioder],
+        [uttaksplanRedigering, perioder],
     );
 
     const slettUttaksplanPerioder = useCallback(
-        (perioder: Array<{ fom: string; tom: string }>, skalForskyveBakover: boolean) => {
-            const uttakPeriodeBuilder = new UttakPeriodeBuilder(uttakPerioder, 'kalender');
-            uttakPeriodeBuilder.fjernUttakPerioder(perioder, skalForskyveBakover, erPeriodeneTilAnnenPartLåst);
+        (perioderSomSkalSlettes: Array<{ fom: string; tom: string }>, skalForskyveBakover: boolean) => {
+            const uttakPeriodeBuilder = new UttakPeriodeBuilder(perioder, 'kalender');
+            uttakPeriodeBuilder.fjernUttakPerioder(
+                perioderSomSkalSlettes,
+                skalForskyveBakover,
+                erPeriodeneTilAnnenPartLåst,
+            );
             notEmpty(uttaksplanRedigering).oppdaterUttaksplan(uttakPeriodeBuilder.getUttakPerioder());
         },
-        [uttaksplanRedigering, uttakPerioder, erPeriodeneTilAnnenPartLåst],
+        [uttaksplanRedigering, perioder, erPeriodeneTilAnnenPartLåst],
     );
 
     const value = useMemo(() => {

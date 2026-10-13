@@ -19,12 +19,11 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
 export const useAlleUttakPerioderInklTapteDager = (): UttaksplanperiodeMedKunTapteDager[] => {
-    const { perioder: uttakPerioder, familiehendelsedato, familiesituasjon, foreldreInfo } = useUttaksplanData();
+    const { perioder, familiehendelsedato, familiesituasjon, foreldreInfo } = useUttaksplanData();
 
-    return [
-        ...uttakPerioder,
-        ...lagTapteDagerPerioder(uttakPerioder, familiehendelsedato, familiesituasjon, foreldreInfo),
-    ].sort(sorterPerioder);
+    return [...perioder, ...lagTapteDagerPerioder(perioder, familiehendelsedato, familiesituasjon, foreldreInfo)].sort(
+        sorterPerioder,
+    );
 };
 
 export const useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak = (
