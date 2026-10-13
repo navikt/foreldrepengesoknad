@@ -29,11 +29,6 @@ interface Props {
     perioder: UttakPeriodeMedAntallDager[];
 }
 
-// Éin merga periode kan ha inntil tre parter samtidig (søker/annenPart/annenPartEøs). Denne fila
-// vel søkjar sin part når han finst, elles annenPart sin (opphald – søkjar har «pause» medan annan
-// part har uttak), og fell attende til annenPartEøs berre for rein EØS-visning. Samtidig uttak
-// (begge parter populert) blir handtert eksplisitt i SamtidigUttak-komponenten, som no kan lesa
-// begge partane direkte frå same rad i staden for å leita etter «den andre periode»-raden.
 export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
     const intl = useIntl();
 
