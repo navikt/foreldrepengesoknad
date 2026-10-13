@@ -22,6 +22,8 @@ import { decompressFromUrl, konverterFlatePerioderTilIntervall } from '@navikt/f
 
 import { PlanleggerRouter } from './PlanleggerRouter';
 
+// TODO: Fjern konverteringa frå gammalt flatt format når delte lenker i gammalt format ikkje lenger er i bruk
+// (vurder etter 1. juni 2027).
 const lesPlanleggerdata = (json: string): ContextDataMap => {
     const data = JSON.parse(json) as ContextDataMap;
     const uttaksplan = data[ContextDataType.UTTAKSPLAN];

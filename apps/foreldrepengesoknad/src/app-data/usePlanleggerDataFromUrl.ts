@@ -83,6 +83,8 @@ const mapPlanleggerDataToSøknadState = (
     }
 
     if (uttaksplan) {
+        // TODO: Fjern konverteringa frå gammalt flatt format etter 1. desember 2026. Planlegger lagar no lenker
+        // i nytt format, så det gamle formatet kjem berre frå innloggingar som var i gang då dette vart prodsett.
         result[ContextDataType.UTTAKSPLAN] = konverterFlatePerioderTilIntervall(uttaksplan);
     }
 
