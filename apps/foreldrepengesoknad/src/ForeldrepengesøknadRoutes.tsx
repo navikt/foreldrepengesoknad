@@ -2,7 +2,7 @@ import { SøknadRoutes, isRouteAvailable } from 'appData/routes';
 import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
 import { useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
 import { useSamordneBarnMedAnnenPart } from 'appData/useSamordneBarnMedAnnenPart';
-import { useSendSøknad } from 'appData/useSendSøknad';
+import { SendSøknadResultat, useSendSøknad } from 'appData/useSendSøknad';
 import { useValgtSak } from 'appData/useValgtSak';
 import { Forside } from 'pages/forside/Forside';
 import { Søknadsmetadata } from 'pages/forside/utils/useStartSøknad';
@@ -36,7 +36,7 @@ interface SøknadRoutesOptions {
     erEndringssøknad: boolean;
     søkerInfo: FpPersonopplysningerDto_fpoversikt;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
-    sendSøknad: () => Promise<void>;
+    sendSøknad: () => Promise<SendSøknadResultat>;
     avbrytSøknad: () => void;
     søknadGjelderNyttBarn?: boolean;
     foreldrepengerSaker?: FpSak_fpoversikt[];

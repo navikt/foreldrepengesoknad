@@ -31,6 +31,7 @@ const {
     FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning,
     FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon,
     ManglerUttaksplan,
+    ManglerUttaksperioderVedInnsending,
 } = composeStories(stories);
 
 describe('<Oppsummering>', () => {
@@ -294,6 +295,29 @@ describe('<Oppsummering>', () => {
 
         expect(screen.getByRole('heading', { name: 'Planen din mangler' })).toBeInTheDocument();
         expect(screen.getByText('Du må fullføre planen før du kan se oppsummeringen.')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Gå til planen' }));
+
+        expect(gåTilNesteSide).toHaveBeenCalledWith({
+            type: 'update',
+            key: ContextDataType.APP_ROUTE,
+            data: SøknadRoutes.UTTAKSPLAN,
+        });
+    });
+
+    it('skal sende brukaren til planen når innsendinga blir stoppa fordi planen manglar perioder', async () => {
+        const gåTilNesteSide = vi.fn();
+        render(<ManglerUttaksperioderVedInnsending gåTilNesteSide={gåTilNesteSide} />);
+
+        await userEvent.click(
+            screen.getByText(
+                'Jeg har gjort meg kjent med vilkårene for å motta foreldrepenger, og skal ha omsorgen for barnet i perioden jeg søker om.',
+            ),
+        );
+        await userEvent.click(screen.getByText('Send søknaden'));
+
+        expect(await screen.findByRole('heading', { name: 'Planen din mangler perioder' })).toBeInTheDocument();
+        expect(screen.getByText('Du må legge inn perioder i planen før du kan sende søknaden.')).toBeInTheDocument();
 
         await userEvent.click(screen.getByRole('button', { name: 'Gå til planen' }));
 

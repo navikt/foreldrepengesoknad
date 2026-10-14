@@ -249,6 +249,8 @@
     "Oppsummering.ManglerUttaksplan.Action": "Gå til planen",
     "Oppsummering.ManglerUttaksplan.Description": "Du må fullføre planen før du kan sjå oppsummeringa.",
     "Oppsummering.ManglerUttaksplan.Heading": "Planen din manglar",
+    "Oppsummering.ManglerUttaksperioder.Description": "Du må leggje inn periodar i planen før du kan sende søknaden.",
+    "Oppsummering.ManglerUttaksperioder.Heading": "Planen din manglar periodar",
     "oppsummering.annenForelder.ikkeOppgitt": "Eg kan ikkje oppgi den andre forelderen",
     "oppsummering.annenForelder.navn": "Navn og fødselsnummer",
     "oppsummering.morsAktivitet": "Aktiviteten til mor i perioden",
