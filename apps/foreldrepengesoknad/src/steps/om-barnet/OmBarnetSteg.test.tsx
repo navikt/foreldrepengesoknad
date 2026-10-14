@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
@@ -29,7 +29,7 @@ describe('<OmBarnetSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<MorFødsel gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+        await MorFødsel.run({ args: { ...MorFødsel.args, gåTilNesteSide, mellomlagreSøknadOgNaviger } });
 
         expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
 
@@ -77,7 +77,7 @@ describe('<OmBarnetSteg>', () => {
 
         vi.setSystemTime(new Date('2024-01-01'));
 
-        render(<MorFødsel gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+        await MorFødsel.run({ args: { ...MorFødsel.args, gåTilNesteSide, mellomlagreSøknadOgNaviger } });
 
         await userEvent.click(await screen.findByText('Ja'));
         await userEvent.click(screen.getByText('Ett barn'));
@@ -115,7 +115,7 @@ describe('<OmBarnetSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<MorFødsel gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+        await MorFødsel.run({ args: { ...MorFødsel.args, gåTilNesteSide, mellomlagreSøknadOgNaviger } });
 
         expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
@@ -159,7 +159,7 @@ describe('<OmBarnetSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<MorFødsel gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+        await MorFødsel.run({ args: { ...MorFødsel.args, gåTilNesteSide, mellomlagreSøknadOgNaviger } });
 
         expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
@@ -187,7 +187,7 @@ describe('<OmBarnetSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<ForAdopsjon gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+        await ForAdopsjon.run({ args: { ...ForAdopsjon.args, gåTilNesteSide, mellomlagreSøknadOgNaviger } });
 
         expect(await screen.findByText('Gjelder søknaden din stebarnsadopsjon?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
@@ -211,7 +211,7 @@ describe('<OmBarnetSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<MorFødsel gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+        await MorFødsel.run({ args: { ...MorFødsel.args, gåTilNesteSide, mellomlagreSøknadOgNaviger } });
 
         expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige steg'));
@@ -229,7 +229,7 @@ describe('<OmBarnetSteg>', () => {
     it('skal ikke ha født barn ennå', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
-        render(<MorFødsel gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+        await MorFødsel.run({ args: { ...MorFødsel.args, gåTilNesteSide, mellomlagreSøknadOgNaviger } });
 
         expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
 
@@ -271,7 +271,7 @@ describe('<OmBarnetSteg>', () => {
     it('skal godta dagens dato som terminbekreftelsesdato', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
-        render(<MorFødsel gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+        await MorFødsel.run({ args: { ...MorFødsel.args, gåTilNesteSide, mellomlagreSøknadOgNaviger } });
 
         expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Nei'));
@@ -301,7 +301,7 @@ describe('<OmBarnetSteg>', () => {
     });
 
     it('skal avvise morgondagens dato som terminbekreftelsesdato', async () => {
-        render(<MorFødsel />);
+        await MorFødsel.run();
 
         expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Nei'));
@@ -325,7 +325,7 @@ describe('<OmBarnetSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<ForAdopsjon gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+        await ForAdopsjon.run({ args: { ...ForAdopsjon.args, gåTilNesteSide, mellomlagreSøknadOgNaviger } });
 
         expect(await screen.findByText('Gjelder søknaden din stebarnsadopsjon?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
@@ -367,7 +367,7 @@ describe('<OmBarnetSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<ForAdopsjon gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+        await ForAdopsjon.run({ args: { ...ForAdopsjon.args, gåTilNesteSide, mellomlagreSøknadOgNaviger } });
 
         expect(await screen.findByText('Gjelder søknaden din stebarnsadopsjon?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
@@ -428,7 +428,7 @@ describe('<OmBarnetSteg>', () => {
         'skal søke adopsjon men ikke stebarnsadopsjon for ett barn, skal ikke bli spurt om' +
             ' adopsjon fra utland hvis barnet er adoptert etter 1.10.2021',
         async () => {
-            render(<ForAdopsjon />);
+            await ForAdopsjon.run();
 
             expect(await screen.findByText('Gjelder søknaden din stebarnsadopsjon?')).toBeInTheDocument();
             await userEvent.click(screen.getByText('Nei'));
@@ -453,7 +453,7 @@ describe('<OmBarnetSteg>', () => {
         const mockTodayDate = new Date('2022-08-01');
         vi.setSystemTime(mockTodayDate);
 
-        render(<FarFødsel />);
+        await FarFødsel.run();
 
         expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Nei'));
@@ -481,7 +481,7 @@ describe('<OmBarnetSteg>', () => {
         const mockTodayDate = new Date('2022-08-01');
         vi.setSystemTime(mockTodayDate);
 
-        render(<MedmorFødsel />);
+        await MedmorFødsel.run();
 
         expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Nei'));
@@ -509,7 +509,7 @@ describe('<OmBarnetSteg>', () => {
         const mockTodayDate = new Date('2022-08-02');
         vi.setSystemTime(mockTodayDate);
 
-        render(<FarFødsel />);
+        await FarFødsel.run();
 
         expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Nei'));
@@ -540,7 +540,7 @@ describe('<OmBarnetSteg>', () => {
         const mockTodayDate = new Date('2022-08-02');
         vi.setSystemTime(mockTodayDate);
 
-        render(<MedmorFødsel />);
+        await MedmorFødsel.run();
 
         expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Nei'));
@@ -577,12 +577,9 @@ describe('<OmBarnetSteg>', () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
 
-            render(
-                <RegistrertBarnFødselFar
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await RegistrertBarnFødselFar.run({
+                args: { ...RegistrertBarnFødselFar.args, gåTilNesteSide, mellomlagreSøknadOgNaviger },
+            });
 
             expect(await screen.findByText('Barnet du søker foreldrepenger for:')).toBeInTheDocument();
             expect(screen.getByText('KLØKTIG')).toBeInTheDocument();
@@ -627,12 +624,9 @@ describe('<OmBarnetSteg>', () => {
 
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
-            render(
-                <RegistrertBarnFødselFar
-                    gåTilNesteSide={gåTilNesteSide}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />,
-            );
+            await RegistrertBarnFødselFar.run({
+                args: { ...RegistrertBarnFødselFar.args, gåTilNesteSide, mellomlagreSøknadOgNaviger },
+            });
 
             expect(await screen.findByText('Barnet du søker foreldrepenger for:')).toBeInTheDocument();
             expect(screen.getByText('KLØKTIG')).toBeInTheDocument();
@@ -671,12 +665,9 @@ describe('<OmBarnetSteg>', () => {
 
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
-        render(
-            <RegistrertBarnFødselMor
-                gåTilNesteSide={gåTilNesteSide}
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-            />,
-        );
+        await RegistrertBarnFødselMor.run({
+            args: { ...RegistrertBarnFødselMor.args, gåTilNesteSide, mellomlagreSøknadOgNaviger },
+        });
 
         expect(await screen.findByText('Barna du søker foreldrepenger for:')).toBeInTheDocument();
         expect(screen.getByText('LYST')).toBeInTheDocument();
@@ -717,12 +708,9 @@ describe('<OmBarnetSteg>', () => {
 
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
-        render(
-            <RegistrertBarnFødselMor
-                gåTilNesteSide={gåTilNesteSide}
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-            />,
-        );
+        await RegistrertBarnFødselMor.run({
+            args: { ...RegistrertBarnFødselMor.args, gåTilNesteSide, mellomlagreSøknadOgNaviger },
+        });
 
         expect(await screen.findByText('Barna du søker foreldrepenger for:')).toBeInTheDocument();
 
@@ -744,7 +732,7 @@ describe('<OmBarnetSteg>', () => {
     });
 
     it('Trillinger der en er død skal vises uten navn', async () => {
-        render(<RegistrertBarnTrillingerDerEnErDød />);
+        await RegistrertBarnTrillingerDerEnErDød.run();
         expect(await screen.findByText('Barna du søker foreldrepenger for:')).toBeInTheDocument();
         expect(screen.getByText('Trillinger født 01. mars 2023 og 02. mars 2023')).toBeInTheDocument();
     });

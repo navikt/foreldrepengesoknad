@@ -7,6 +7,7 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 import { annenPartVedtak, avslåttAnnenPartVedtak } from 'storybookData/annenPartVedtak';
+import { saker } from 'storybookData/saker';
 import { AnnenForelder } from 'types/AnnenForelder';
 
 import { BarnType } from '@navikt/fp-constants';
@@ -66,12 +67,17 @@ type StoryArgs = {
     barn?: Barn;
     annenForelder?: AnnenForelder;
     gåTilNesteSide?: (action: Action) => void;
+    valgtEksisterendeSaksnr?: string;
 } & ComponentProps<typeof AnnenForelderSteg>;
 
 const meta = {
     title: 'steps/AnnenForelderSteg',
     component: AnnenForelderSteg,
     decorators: [withQueryClient],
+    beforeEach({ msw }) {
+        msw.use(http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })));
+        msw.use(http.get(API_URLS.saker, () => HttpResponse.json(saker)));
+    },
     render: ({
         søkersituasjon = {
             situasjon: 'fødsel',
@@ -84,6 +90,7 @@ const meta = {
         },
         annenForelder,
         gåTilNesteSide = action('button-click'),
+        valgtEksisterendeSaksnr,
         ...rest
     }) => {
         return (
@@ -94,6 +101,7 @@ const meta = {
                         [ContextDataType.SØKERSITUASJON]: søkersituasjon,
                         [ContextDataType.OM_BARNET]: barn,
                         [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                        [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: valgtEksisterendeSaksnr,
                     }}
                 >
                     <AnnenForelderSteg {...rest} />
@@ -295,7 +303,7 @@ export const FarFødtBarnMorHarVedtak: Story = {
     },
 
     beforeEach({ msw }) {
-        msw.use(http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)));
+        msw.use(http.post(API_URLS.uttaksplan, () => HttpResponse.json(annenPartVedtak)));
     },
 };
 
@@ -311,6 +319,6 @@ export const FarFødtBarnMorHarAvslåttVedtak: Story = {
     },
 
     beforeEach({ msw }) {
-        msw.use(http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(avslåttAnnenPartVedtak)));
+        msw.use(http.post(API_URLS.uttaksplan, () => HttpResponse.json(avslåttAnnenPartVedtak)));
     },
 };

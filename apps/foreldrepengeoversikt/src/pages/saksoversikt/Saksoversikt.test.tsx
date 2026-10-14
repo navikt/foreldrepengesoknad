@@ -1,7 +1,8 @@
 import { composeStories, composeStory } from '@storybook/react-vite';
-import { screen } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 
 import { getLenker } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
 
 import * as stories from './Saksoversikt.stories';
 
@@ -12,6 +13,8 @@ const {
     ForeldrepengerTestAvSkyraGammelInnsending,
     ForeldrepengerTestAvSkyraNyligInnsending,
     ForeldrepengerEndringssøknad,
+    ForeldrepengerUtenUttaksplan,
+    ForeldrepengerFeilVedHentingAvUttaksplan,
     EngangsstønadTestAvSkyraNyligInnsending,
     SvangerskapspengerTestAvSkyraNyligInnsending,
 } = composeStories(stories);
@@ -42,6 +45,22 @@ describe('<Saksoversikt>', () => {
             'href',
             getLenker().foreldrepengesoknad,
         );
+    });
+
+    it('skal ikke vise feilmelding når det ikke finnes noen uttaksplan', async () => {
+        await ForeldrepengerUtenUttaksplan.run();
+
+        const dinPlanOverskrift = await screen.findByText('Din plan');
+        const dinPlanSeksjon = notEmpty(dinPlanOverskrift.closest('section'));
+        await waitFor(() => expect(dinPlanSeksjon.querySelector('.aksel-skeleton')).not.toBeInTheDocument());
+        expect(within(dinPlanSeksjon).queryByText('Kalender')).not.toBeInTheDocument();
+        expect(within(dinPlanSeksjon).queryByText('Noe gikk galt. Prøv igjen senere')).not.toBeInTheDocument();
+    });
+
+    it('skal vise feilmelding når henting av uttaksplan feiler', async () => {
+        await ForeldrepengerFeilVedHentingAvUttaksplan.run();
+
+        expect(await screen.findByText('Noe gikk galt. Prøv igjen senere')).toBeInTheDocument();
     });
 
     it('skal IKKE vise Endre plan lenke for svangerskapspenger', async () => {

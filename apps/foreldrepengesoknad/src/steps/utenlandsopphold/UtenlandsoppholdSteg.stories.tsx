@@ -5,6 +5,8 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 
+import { withQueryClient } from '@navikt/fp-utils-test';
+
 import { UtenlandsoppholdSteg } from './UtenlandsoppholdSteg';
 
 const promiseAction = () => () => {
@@ -19,6 +21,7 @@ type StoryArgs = {
 const meta = {
     title: 'steps/UtenlandsoppholdSteg',
     component: UtenlandsoppholdSteg,
+    decorators: [withQueryClient],
     render: ({ gåTilNesteSide, ...rest }) => {
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.UTENLANDSOPPHOLD]}>

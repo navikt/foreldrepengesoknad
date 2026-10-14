@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
+import { UttakDto, UttakPeriodeDto } from '@navikt/fp-types';
 
 import { UttakPeriodeBuilder } from './UttakPeriodeBuilder';
 
@@ -11,26 +11,29 @@ vi.mock('@navikt/fp-observability', () => ({
 
 const getContext = () => captureExceptionMock.mock.calls[0]?.[1]?.context;
 
-// Bruker forelder for å skille på eksisterende og nye perioder.
-const lagPeriode = (fom: string, tom: string) => ({
+// Søker (mor) sine periodar er eksisterande, annen part (far/medmor) sine er nye, slik at dei kan skiljast.
+const lagPeriode = (fom: string, tom: string, uttak: Partial<UttakDto> = {}): UttakPeriodeDto => ({
     fom,
     tom,
-    forelder: 'MOR' as BrukerRolleSak_fpoversikt,
-    flerbarnsdager: false,
+    søker: { forelder: 'MOR', flerbarnsdager: false, ...uttak },
 });
-const lagNyPeriode = (fom: string, tom: string) => ({
+const lagNyPeriode = (fom: string, tom: string, uttak: Partial<UttakDto> = {}): UttakPeriodeDto => ({
     fom,
     tom,
-    forelder: 'FAR_MEDMOR' as BrukerRolleSak_fpoversikt,
-    flerbarnsdager: false,
+    annenPart: { forelder: 'FAR_MEDMOR', flerbarnsdager: false, ...uttak },
 });
 
-// EØS-periodar for annen part har ikkje `forelder`, men kan identifiserast på `trekkdager`.
-const lagEøsPeriode = (fom: string, tom: string) => ({
+const lagSamtidigUttakPeriode = (fom: string, tom: string): UttakPeriodeDto => ({
     fom,
     tom,
-    kontoType: 'FORELDREPENGER' as const,
-    trekkdager: 5,
+    søker: { forelder: 'MOR', flerbarnsdager: false, samtidigUttak: 50 },
+    annenPart: { forelder: 'FAR_MEDMOR', flerbarnsdager: false, samtidigUttak: 50 },
+});
+
+const lagEøsPeriode = (fom: string, tom: string): UttakPeriodeDto => ({
+    fom,
+    tom,
+    annenPartEøs: { kontoType: 'FORELDREPENGER', trekkdager: 5 },
 });
 
 const SKAL_FORSKYVE = true;
@@ -107,18 +110,14 @@ describe('UttakPeriodeBuilder.leggTilUttakPerioder (Ikke forskyv)', () => {
         ]);
     });
 
-    it('skal håndtere å legge til flere perioder som er like', () => {
+    it('skal håndtere å legge til samtidig uttak i same tidsrom', () => {
         const builder = new UttakPeriodeBuilder([lagPeriode('2024-01-01', '2024-01-19')]);
 
-        builder.leggTilUttakPerioder(
-            [lagNyPeriode('2024-01-05', '2024-01-08'), lagNyPeriode('2024-01-05', '2024-01-08')],
-            false,
-        );
+        builder.leggTilUttakPerioder([lagSamtidigUttakPeriode('2024-01-05', '2024-01-08')], false);
 
         expect(builder.getUttakPerioder()).toEqual([
             lagPeriode('2024-01-01', '2024-01-04'),
-            lagNyPeriode('2024-01-05', '2024-01-08'),
-            lagNyPeriode('2024-01-05', '2024-01-08'),
+            lagSamtidigUttakPeriode('2024-01-05', '2024-01-08'),
             lagPeriode('2024-01-09', '2024-01-19'),
         ]);
     });
@@ -244,13 +243,10 @@ describe('UttakPeriodeBuilder.leggTilUttakPerioder (Forskyv)', () => {
     });
     it('Skal forskyve eksisterende periode som ligg heilt inni ny periode utan å produsere overlapp', () => {
         // Sett opp nærmare produksjonscaset: ein FELLESPERIODE som startar samstundes som den nye,
-        // og ein LOVBESTEMT_FERIE heilt inni den nye. Ulik kontoType/utsettelseÅrsak hindrar
+        // og ein FERIE heilt inni den nye. Ulik kontoType/utsettelseÅrsak hindrar
         // at periodane vert slått saman, slik at eit eventuelt overlapp ville vere synleg.
-        const fellesperiode = { ...lagPeriode('2024-01-01', '2024-01-05'), kontoType: 'FELLESPERIODE' as const };
-        const feriePeriode = {
-            ...lagPeriode('2024-01-08', '2024-01-09'),
-            utsettelseÅrsak: 'LOVBESTEMT_FERIE' as const,
-        };
+        const fellesperiode = lagPeriode('2024-01-01', '2024-01-05', { kontoType: 'FELLESPERIODE' });
+        const feriePeriode = lagPeriode('2024-01-08', '2024-01-09', { utsettelseÅrsak: 'FERIE' });
 
         const builder = new UttakPeriodeBuilder([fellesperiode, feriePeriode]);
 
@@ -261,26 +257,22 @@ describe('UttakPeriodeBuilder.leggTilUttakPerioder (Forskyv)', () => {
             { ...lagNyPeriode('2024-01-01', '2024-01-12') },
             // FELLESPERIODE: nFom == eFom, nTom > eTom → shift +10 verkedagar
             { ...fellesperiode, fom: '2024-01-15', tom: '2024-01-19' },
-            // LOVBESTEMT_FERIE: heilt inni → shift +10 verkedagar (ikkje hamne på same fom som over)
+            // FERIE: heilt inni → shift +10 verkedagar (ikkje hamne på same fom som over)
             { ...feriePeriode, fom: '2024-01-22', tom: '2024-01-23' },
         ]);
     });
 
-    it('Skal forskyve korrekt når en legger til to like perioder', () => {
+    it('Skal forskyve korrekt når en legger til samtidig uttak', () => {
         const builder = new UttakPeriodeBuilder([
             lagPeriode('2024-07-01', '2024-07-02'),
             lagPeriode('2024-07-03', '2024-07-15'),
         ]);
 
-        builder.leggTilUttakPerioder(
-            [lagNyPeriode('2024-07-03', '2024-07-04'), lagNyPeriode('2024-07-03', '2024-07-04')],
-            SKAL_FORSKYVE,
-        );
+        builder.leggTilUttakPerioder([lagSamtidigUttakPeriode('2024-07-03', '2024-07-04')], SKAL_FORSKYVE);
 
         expect(builder.getUttakPerioder()).toEqual([
             lagPeriode('2024-07-01', '2024-07-02'),
-            lagNyPeriode('2024-07-03', '2024-07-04'),
-            lagNyPeriode('2024-07-03', '2024-07-04'),
+            lagSamtidigUttakPeriode('2024-07-03', '2024-07-04'),
             lagPeriode('2024-07-05', '2024-07-17'),
         ]);
     });
@@ -387,6 +379,52 @@ describe('UttakPeriodeBuilder.fjernUttakPerioder (Ikke forskyv)', () => {
     });
 });
 
+describe('UttakPeriodeBuilder.fjernUttakPerioder (Behold annen part)', () => {
+    const annenPart = { forelder: 'FAR_MEDMOR', flerbarnsdager: false, samtidigUttak: 50 } as const;
+
+    it('skal bare fjerne søkers del av samtidig uttak', () => {
+        const builder = new UttakPeriodeBuilder([lagSamtidigUttakPeriode('2024-01-01', '2024-01-12')]);
+
+        builder.fjernUttakPerioder([{ fom: '2024-01-01', tom: '2024-01-12' }], false, true);
+
+        expect(builder.getUttakPerioder()).toEqual([{ fom: '2024-01-01', tom: '2024-01-12', annenPart }]);
+    });
+
+    it('skal beholde samtidig uttak utenfor tidsrommet som slettes', () => {
+        const builder = new UttakPeriodeBuilder([lagSamtidigUttakPeriode('2024-01-01', '2024-01-31')]);
+
+        builder.fjernUttakPerioder([{ fom: '2024-01-06', tom: '2024-01-14' }], false, true);
+
+        expect(builder.getUttakPerioder()).toEqual([
+            lagSamtidigUttakPeriode('2024-01-01', '2024-01-05'),
+            { fom: '2024-01-08', tom: '2024-01-12', annenPart },
+            lagSamtidigUttakPeriode('2024-01-15', '2024-01-31'),
+        ]);
+    });
+
+    it('skal beholde annen part i EØS', () => {
+        const eøsPeriode: UttakPeriodeDto = {
+            ...lagPeriode('2024-01-01', '2024-01-12'),
+            annenPartEøs: { kontoType: 'FELLESPERIODE', trekkdager: 10 },
+        };
+        const builder = new UttakPeriodeBuilder([eøsPeriode]);
+
+        builder.fjernUttakPerioder([{ fom: '2024-01-01', tom: '2024-01-12' }], false, true);
+
+        expect(builder.getUttakPerioder()).toEqual([
+            { fom: '2024-01-01', tom: '2024-01-12', annenPartEøs: eøsPeriode.annenPartEøs },
+        ]);
+    });
+
+    it('skal fjerne hele perioden når den bare har søker', () => {
+        const builder = new UttakPeriodeBuilder([lagPeriode('2024-01-01', '2024-01-12')]);
+
+        builder.fjernUttakPerioder([{ fom: '2024-01-01', tom: '2024-01-12' }], false, true);
+
+        expect(builder.getUttakPerioder()).toEqual([]);
+    });
+});
+
 describe('UttakPeriodeBuilder.fjernUttakPerioder (Forskyv)', () => {
     it('skal fjerne en periode som overlapper en del midt inni en eksisterende periode', () => {
         const builder = new UttakPeriodeBuilder([lagPeriode('2024-01-01', '2024-01-10')]);
@@ -446,8 +484,15 @@ describe('UttakPeriodeBuilder.getUttakPerioder - validering av ugyldig overlapp'
     it('loggar ikkje for gyldig samtidig uttak (ulik forelder, samtidigUttak satt)', () => {
         captureExceptionMock.mockClear();
         const builder = new UttakPeriodeBuilder([
-            { ...lagPeriode('2024-01-01', '2024-01-05'), kontoType: 'MØDREKVOTE', samtidigUttak: 100 },
-            { ...lagNyPeriode('2024-01-01', '2024-01-05'), kontoType: 'FEDREKVOTE', samtidigUttak: 100 },
+            {
+                ...lagPeriode('2024-01-01', '2024-01-05', { kontoType: 'MØDREKVOTE', samtidigUttak: 100 }),
+                annenPart: {
+                    forelder: 'FAR_MEDMOR',
+                    kontoType: 'FEDREKVOTE',
+                    samtidigUttak: 100,
+                    flerbarnsdager: false,
+                },
+            },
         ]);
 
         builder.getUttakPerioder();
@@ -461,13 +506,15 @@ describe('UttakPeriodeBuilder.getUttakPerioder - validering av ugyldig overlapp'
         // ber ikkje `samtidigUttak`-flagget, men er likevel ein gyldig overlappande tilstand.
         const builder = new UttakPeriodeBuilder(
             [
-                { ...lagPeriode('2026-05-04', '2026-05-15'), kontoType: 'MØDREKVOTE' },
-                { ...lagNyPeriode('2026-05-04', '2026-05-15'), kontoType: 'FEDREKVOTE' },
+                {
+                    ...lagPeriode('2026-05-04', '2026-05-15', { kontoType: 'MØDREKVOTE' }),
+                    annenPart: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
+                },
             ],
             'kalender',
         );
 
-        builder.leggTilUttakPerioder([{ ...lagNyPeriode('2026-12-07', '2026-12-18'), kontoType: 'FEDREKVOTE' }], false);
+        builder.leggTilUttakPerioder([lagNyPeriode('2026-12-07', '2026-12-18', { kontoType: 'FEDREKVOTE' })], false);
 
         builder.getUttakPerioder();
 
@@ -478,11 +525,11 @@ describe('UttakPeriodeBuilder.getUttakPerioder - validering av ugyldig overlapp'
         captureExceptionMock.mockClear();
 
         const opprinnelig = [
-            { ...lagPeriode('2026-12-30', '2026-12-30'), kontoType: 'FELLESPERIODE' as const },
-            { ...lagPeriode('2026-12-30', '2026-12-30'), utsettelseÅrsak: 'LOVBESTEMT_FERIE' as const },
+            lagPeriode('2026-12-30', '2026-12-30', { kontoType: 'FELLESPERIODE' }),
+            lagPeriode('2026-12-30', '2026-12-30', { utsettelseÅrsak: 'FERIE' }),
         ];
         const builder = new UttakPeriodeBuilder(opprinnelig, 'liste');
-        const nyPeriode = { ...lagNyPeriode('2026-12-31', '2026-12-31'), kontoType: 'FELLESPERIODE' as const };
+        const nyPeriode = lagNyPeriode('2026-12-31', '2026-12-31', { kontoType: 'FELLESPERIODE' });
         builder.leggTilUttakPerioder([nyPeriode], false);
 
         builder.getUttakPerioder();
@@ -507,8 +554,8 @@ describe('UttakPeriodeBuilder.getUttakPerioder - validering av ugyldig overlapp'
 
         const opp = context.opprinneligPerioder;
         expect(opp).toHaveLength(2);
-        expect(opp[0]).toMatchObject({ fom: '2026-12-30', tom: '2026-12-30', kontoType: 'FELLESPERIODE' });
-        expect(opp[1]).toMatchObject({ fom: '2026-12-30', tom: '2026-12-30', utsettelseÅrsak: 'LOVBESTEMT_FERIE' });
+        expect(opp[0]).toMatchObject({ fom: '2026-12-30', tom: '2026-12-30', søker: { kontoType: 'FELLESPERIODE' } });
+        expect(opp[1]).toMatchObject({ fom: '2026-12-30', tom: '2026-12-30', søker: { utsettelseÅrsak: 'FERIE' } });
 
         const resultat = context.resultatPerioder;
         expect(resultat.length).toBeGreaterThanOrEqual(2);

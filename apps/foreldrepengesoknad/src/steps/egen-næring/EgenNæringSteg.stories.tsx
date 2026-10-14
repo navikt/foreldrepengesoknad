@@ -6,6 +6,7 @@ import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 
 import { FpPersonopplysningerDto_fpoversikt, SelvstendigNæringDto_fpoversikt } from '@navikt/fp-types';
+import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { EgenNæringSteg } from './EgenNæringSteg';
 
@@ -30,6 +31,7 @@ type StoryArgs = {
 const meta = {
     title: 'steps/EgenNæringSteg',
     component: EgenNæringSteg,
+    decorators: [withQueryClient],
     render: ({
         gåTilNesteSide = action('button-click'),
         selvstendigNæring = DEFAULT_SELVSTENDIG_NÆRING,

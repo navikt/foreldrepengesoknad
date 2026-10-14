@@ -1,7 +1,7 @@
 import { useIntl } from 'react-intl';
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 
-import { Barn, EksternArbeidsforholdDto_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { Barn, EksternArbeidsforholdDto_fpoversikt, UttakDto } from '@navikt/fp-types';
 import { skalBesvareFlerbarnsdager } from '@navikt/fp-uttaksplan/flerbarnsdager';
 
 import { getAktivitetTekst } from '../OppsummeringUtils';
@@ -9,23 +9,23 @@ import { Feltoppsummering } from './Feltoppsummering';
 import { MorsAktivitetDetaljer } from './MorsaktiviteterDetaljer';
 
 interface Props {
-    periode: UttakPeriode_fpoversikt;
+    uttak: UttakDto;
     registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[] | undefined;
     annenForelder: AnnenForelder;
     barn: Barn;
     erSøker: boolean;
 }
 
-export const Uttaksperiodedetaljer = ({ periode, annenForelder, registrerteArbeidsforhold, barn, erSøker }: Props) => {
+export const Uttaksperiodedetaljer = ({ uttak, annenForelder, registrerteArbeidsforhold, barn, erSøker }: Props) => {
     const intl = useIntl();
 
     const erDeltUttakINorge = isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge;
 
     const skalViseFlerbarnsdager = skalBesvareFlerbarnsdager(
         barn.antallBarn,
-        periode.forelder,
-        periode.kontoType,
-        periode.samtidigUttak,
+        uttak.forelder,
+        uttak.kontoType,
+        uttak.samtidigUttak,
     );
 
     return (
@@ -36,42 +36,40 @@ export const Uttaksperiodedetaljer = ({ periode, annenForelder, registrerteArbei
                         { id: 'oppsummering.uttak.ønskerFlerbarnsdager' },
                         { erSøker, fornavn: annenForelder.kanIkkeOppgis ? '' : annenForelder.fornavn },
                     )}
-                    verdi={
-                        periode.flerbarnsdager ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })
-                    }
+                    verdi={uttak.flerbarnsdager ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
                 />
             )}
-            {periode.samtidigUttak !== undefined && erDeltUttakINorge && (
+            {uttak.samtidigUttak !== undefined && erDeltUttakINorge && (
                 <Feltoppsummering
                     feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.samtidigUttak' })}
-                    verdi={periode.samtidigUttak ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
+                    verdi={uttak.samtidigUttak ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
                 />
             )}
-            {periode.kontoType !== 'FORELDREPENGER_FØR_FØDSEL' && !periode.samtidigUttak && (
+            {uttak.kontoType !== 'FORELDREPENGER_FØR_FØDSEL' && !uttak.samtidigUttak && (
                 <Feltoppsummering
                     feltnavn={intl.formatMessage(
                         { id: 'oppsummering.uttak.kombineresMedarbeid' },
                         { erSøker, fornavn: annenForelder.kanIkkeOppgis ? '' : annenForelder.fornavn },
                     )}
-                    verdi={periode.gradering ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
+                    verdi={uttak.gradering ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
                 />
             )}
 
-            {periode.gradering?.arbeidstidprosent && (
+            {uttak.gradering?.arbeidstidprosent && (
                 <Feltoppsummering
                     feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.stillingsprosent' })}
-                    verdi={periode.gradering.arbeidstidprosent.toString()}
+                    verdi={uttak.gradering.arbeidstidprosent.toString()}
                 />
             )}
 
-            {periode.gradering?.aktivitet && erSøker && (
+            {uttak.gradering?.aktivitet && erSøker && (
                 <Feltoppsummering
                     feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.arbeidstaker.label' })}
-                    verdi={getAktivitetTekst(intl, periode.gradering?.aktivitet, registrerteArbeidsforhold)}
+                    verdi={getAktivitetTekst(intl, uttak.gradering?.aktivitet, registrerteArbeidsforhold)}
                 />
             )}
-            {periode.morsAktivitet && periode.morsAktivitet !== 'IKKE_OPPGITT' && (
-                <MorsAktivitetDetaljer morsAktivitet={periode.morsAktivitet} />
+            {uttak.morsAktivitet && uttak.morsAktivitet !== 'IKKE_OPPGITT' && (
+                <MorsAktivitetDetaljer morsAktivitet={uttak.morsAktivitet} />
             )}
         </>
     );

@@ -1258,6 +1258,42 @@ describe('UttaksplanKalender', () => {
         expect(screen.queryByText('Hva skal skje med resten av planen?')).not.toBeInTheDocument();
     });
 
+    it('skal beholde annen parts låste del når søker sletter sin del av samtidig uttak', async () => {
+        render(
+            <FarSøkerEtterAtMorHarSøkt
+                perioder={[
+                    {
+                        fom: '2024-04-04',
+                        tom: '2024-04-18',
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FEDREKVOTE',
+                            samtidigUttak: 50,
+                            flerbarnsdager: false,
+                        },
+                        annenPart: {
+                            forelder: 'MOR',
+                            kontoType: 'MØDREKVOTE',
+                            samtidigUttak: 50,
+                            flerbarnsdager: false,
+                        },
+                    },
+                ]}
+            />,
+        );
+
+        const april = await screen.findByTestId('year:2024;month:3');
+
+        await userEvent.click(within(april).getByTestId('day:4;dayColor:LIGHTBLUEGREEN;with-icon'));
+
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        await userEvent.click(screen.getByRole('button', { name: 'Slett dager fra periode' }));
+
+        expect(within(april).queryByTestId('day:4;dayColor:NONE;with-icon')).not.toBeInTheDocument();
+        expect(within(april).getByTestId('day:4;dayColor:LIGHTBLUEGREEN;with-icon')).toBeInTheDocument();
+    });
+
     it('skal ikke få spørsmål om forskyv/erstatt når en sletter siste dag i kalenderen', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 
