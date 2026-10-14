@@ -2,6 +2,7 @@ import { ContextDataMap, ContextDataType, OpprinneligUttaksplan } from 'appData/
 import dayjs from 'dayjs';
 import { AnnenForelder, isAnnenForelderIkkeOppgitt } from 'types/AnnenForelder';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
+import { harMinstEnUttaksEllerOverføringsperiode } from 'steps/uttaksplan/submitValidering';
 import { VedleggDataType } from 'types/VedleggDataType';
 import { getEndringstidspunktNy } from 'utils/dateUtils';
 
@@ -164,6 +165,19 @@ export const getSøknadsdataForInnsending = (
     }
 
     return erEndringssøknad ? mapTilEndringssøknadDto(hentData, søkerinfo) : mapTilSøknadDto(hentData, søkerinfo);
+};
+
+// Dobbelsikring mot at ein plan som ikkje er validert i uttaksplan-steget (t.d. etter navigering med
+// nettlesaren sin fram/tilbake-knapp) blir sendt inn utan dei periodane backend krev.
+export const harSøknadenNødvendigeUttaksperioder = (
+    søknad: ForeldrepengesøknadDto | EndringssøknadForeldrepengerDto,
+    erEndringssøknad: boolean,
+): boolean => {
+    const perioder = søknad.uttaksplan.perioder ?? [];
+    if (erEndringssøknad) {
+        return perioder.length > 0;
+    }
+    return harMinstEnUttaksEllerOverføringsperiode(perioder);
 };
 
 export const mapTilSøknadDto = (
@@ -352,4 +366,9 @@ const erOppholdSomKanSendast = (periode: UttakPeriodeDto): boolean => {
     );
 };
 
-const KONTOTYPER_MED_OPPHOLDSÅRSAK = new Set<KontoType>(['MØDREKVOTE', 'FEDREKVOTE', 'FELLESPERIODE', 'FORELDREPENGER']);
+const KONTOTYPER_MED_OPPHOLDSÅRSAK = new Set<KontoType>([
+    'MØDREKVOTE',
+    'FEDREKVOTE',
+    'FELLESPERIODE',
+    'FORELDREPENGER',
+]);

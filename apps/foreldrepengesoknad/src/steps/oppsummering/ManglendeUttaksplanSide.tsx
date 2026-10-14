@@ -5,19 +5,28 @@ import { Alert, BodyShort, Button, Heading, VStack } from '@navikt/ds-react';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 
 interface Props {
+    manglerPerioder: boolean;
     onGåTilUttaksplan: () => void;
 }
 
-export const ManglendeUttaksplanSide = ({ onGåTilUttaksplan }: Props) => (
+export const ManglendeUttaksplanSide = ({ manglerPerioder, onGåTilUttaksplan }: Props) => (
     <SkjemaRotLayout pageTitle={<FormattedMessage id="søknad.pageheading" />}>
         <VStack gap="space-40">
             <Alert variant="warning">
                 <VStack gap="space-16">
                     <Heading size="small" level="2">
-                        <FormattedMessage id="Oppsummering.ManglerUttaksplan.Heading" />
+                        {manglerPerioder ? (
+                            <FormattedMessage id="Oppsummering.ManglerUttaksperioder.Heading" />
+                        ) : (
+                            <FormattedMessage id="Oppsummering.ManglerUttaksplan.Heading" />
+                        )}
                     </Heading>
                     <BodyShort>
-                        <FormattedMessage id="Oppsummering.ManglerUttaksplan.Description" />
+                        {manglerPerioder ? (
+                            <FormattedMessage id="Oppsummering.ManglerUttaksperioder.Description" />
+                        ) : (
+                            <FormattedMessage id="Oppsummering.ManglerUttaksplan.Description" />
+                        )}
                     </BodyShort>
                 </VStack>
             </Alert>

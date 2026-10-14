@@ -161,7 +161,7 @@ const UTTAKSPLAN_PERIODE = {
     tom: '2024-10-10',
     søker: {
         forelder: 'MOR',
-        utsettelseÅrsak: 'FRI',
+        kontoType: 'MØDREKVOTE',
         flerbarnsdager: false,
     },
 } satisfies UttakPeriodeDto;
@@ -459,4 +459,35 @@ describe('useFpSendSøknad', () => {
             }),
         );
     });
+
+    it.each([
+        ['ingen perioder', []],
+        [
+            'berre perioder for den andre forelderen',
+            [
+                {
+                    fom: UTTAKSPLAN_PERIODE.fom,
+                    tom: UTTAKSPLAN_PERIODE.tom,
+                    annenPart: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
+                },
+            ],
+        ],
+        ['berre utsettelse', [{ ...EKSISTERENDE_PERIODE, fom: '2024-01-01', tom: '2024-10-10' }]],
+    ] satisfies Array<[string, UttakPeriodeDto[]]>)(
+        'skal ikkje sende inn søknad når søkjaren har %s',
+        async (_beskrivelse, uttaksplan) => {
+            const postMock = vi.spyOn(ky, 'post');
+            const deleteMock = vi.spyOn(ky, 'delete');
+
+            const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, false, saker), {
+                wrapper: getWrapper(uttaksplan),
+            });
+
+            const resultat = await act(() => result.current.sendSøknad());
+
+            expect(resultat).toBe('MANGLER_UTTAKSPERIODER');
+            expect(postMock).not.toHaveBeenCalled();
+            expect(deleteMock).not.toHaveBeenCalled();
+        },
+    );
 });

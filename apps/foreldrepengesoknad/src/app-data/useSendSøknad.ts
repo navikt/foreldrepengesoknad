@@ -1,16 +1,18 @@
 import { useMutation } from '@tanstack/react-query';
-import { getSøknadsdataForInnsending } from 'api/apiUtils';
+import { getSøknadsdataForInnsending, harSøknadenNødvendigeUttaksperioder } from 'api/apiUtils';
 import { API_URLS } from 'api/queries';
 import { SøknadRoutes } from 'appData/routes';
 import ky, { HTTPError } from 'ky';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router';
 
-import { ApiError } from '@navikt/fp-observability';
+import { ApiError, captureMessage } from '@navikt/fp-observability';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, FpSoknadProblemDetails } from '@navikt/fp-types';
 import { useAbortSignal } from '@navikt/fp-utils';
 
 import { useContextGetAnyData } from './FpDataContext';
+
+export type SendSøknadResultat = 'SENDT' | 'MANGLER_UTTAKSPERIODER';
 
 export const useSendSøknad = (
     søkerinfo: FpPersonopplysningerDto_fpoversikt,
@@ -26,8 +28,15 @@ export const useSendSøknad = (
         mutationFn: () => ky.delete(API_URLS.mellomlagring),
     });
 
-    const send = async () => {
+    const send = async (): Promise<SendSøknadResultat> => {
         const cleanedSøknad = getSøknadsdataForInnsending(erEndringssøknad, hentData, søkerinfo, foreldrepengerSaker);
+
+        if (!harSøknadenNødvendigeUttaksperioder(cleanedSøknad, erEndringssøknad)) {
+            captureMessage(
+                `Stoppa innsending av ${erEndringssøknad ? 'endringssøknad' : 'søknad'} utan nødvendige uttaksperioder`,
+            );
+            return 'MANGLER_UTTAKSPERIODER';
+        }
 
         const abortSignal = initAbortSignal();
 
@@ -40,6 +49,7 @@ export const useSendSøknad = (
             });
             slettMellomlagring();
             void navigate(SøknadRoutes.KVITTERING);
+            return 'SENDT';
         } catch (error: unknown) {
             if (error instanceof HTTPError) {
                 if (abortSignal.aborted || error.response.status === 401 || error.response.status === 403) {
@@ -50,7 +60,8 @@ export const useSendSøknad = (
                 // Da ønsker vi at de skal følge samme løp som om de fikk 200 og havne på kvitteringssiden slik at de kan se søknad i innsyn.
                 if (error.response.status === 409) {
                     slettMellomlagring();
-                    return navigate(SøknadRoutes.KVITTERING);
+                    void navigate(SøknadRoutes.KVITTERING);
+                    return 'SENDT';
                 }
 
                 const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
