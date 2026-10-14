@@ -167,8 +167,8 @@ export const getSøknadsdataForInnsending = (
     return erEndringssøknad ? mapTilEndringssøknadDto(hentData, søkerinfo) : mapTilSøknadDto(hentData, søkerinfo);
 };
 
-// Dobbelsikring mot at ein plan som ikkje er validert i uttaksplan-steget (t.d. etter navigering med
-// nettlesaren sin fram/tilbake-knapp) blir sendt inn utan dei periodane backend krev.
+// Dobbelsikring mot at en plan som ikke er validert i uttaksplan-steget (f.eks. etter navigering med
+// nettleserens frem/tilbake-knapp) blir sendt inn uten periodene backend krever.
 export const harSøknadenNødvendigeUttaksperioder = (
     søknad: ForeldrepengesøknadDto | EndringssøknadForeldrepengerDto,
     erEndringssøknad: boolean,
