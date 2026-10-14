@@ -305,7 +305,7 @@ describe('<Oppsummering>', () => {
         });
     });
 
-    it('skal sende brukaren til planen når innsendinga blir stoppa fordi planen manglar perioder', async () => {
+    it('skal sende brukeren til planen når innsendingen stoppes fordi planen mangler perioder', async () => {
         const gåTilNesteSide = vi.fn();
         render(<ManglerUttaksperioderVedInnsending gåTilNesteSide={gåTilNesteSide} />);
 

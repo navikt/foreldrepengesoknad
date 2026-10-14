@@ -486,7 +486,7 @@ describe('useFpSendSøknad', () => {
     it.each([
         ['ingen perioder', []],
         [
-            'berre perioder for den andre forelderen',
+            'bare perioder for den andre forelderen',
             [
                 {
                     fom: UTTAKSPLAN_PERIODE.fom,
@@ -495,9 +495,9 @@ describe('useFpSendSøknad', () => {
                 },
             ],
         ],
-        ['berre utsettelse', [{ ...EKSISTERENDE_PERIODE, fom: '2024-01-01', tom: '2024-10-10' }]],
+        ['bare utsettelse', [{ ...EKSISTERENDE_PERIODE, fom: '2024-01-01', tom: '2024-10-10' }]],
     ] satisfies Array<[string, UttakPeriodeDto[]]>)(
-        'skal ikkje sende inn søknad når søkjaren har %s',
+        'skal ikke sende inn søknad når søkeren har %s',
         async (_beskrivelse, uttaksplan) => {
             const postMock = vi.spyOn(ky, 'post');
             const deleteMock = vi.spyOn(ky, 'delete');
