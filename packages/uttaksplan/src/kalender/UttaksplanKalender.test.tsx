@@ -1681,8 +1681,8 @@ describe('UttaksplanKalender', () => {
 
             const juli = screen.getByTestId('year:2026;month:6');
 
-            await userEvent.click(within(juli).getByRole('button', { name: /^14\.07\.2026,/ }));
-            await userEvent.click(within(juli).getByRole('button', { name: /^16\.07\.2026,/ }));
+            await userEvent.click(within(juli).getByRole('button', { name: /^14\. juli 2026,/ }));
+            await userEvent.click(within(juli).getByRole('button', { name: /^16\. juli 2026,/ }));
             await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
 
             await userEvent.click(screen.getByRole('button', { name: 'Slett dager fra periode' }));
@@ -1704,7 +1704,7 @@ describe('UttaksplanKalender', () => {
 
         const kalenderMåned = screen.getByTestId('year:2026;month:5');
         const dag = within(kalenderMåned).getByRole('button', {
-            name: /^30\.06\.2026,/,
+            name: /^30\. juni 2026,/,
         });
         await userEvent.click(dag);
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
@@ -1723,7 +1723,7 @@ describe('UttaksplanKalender', () => {
         render(<SkalViseAvslåttPeriodeKorrekt />);
 
         const juli = screen.getByTestId('year:2026;month:6');
-        await userEvent.click(within(juli).getByRole('button', { name: /^01\.07\.2026,/ }));
+        await userEvent.click(within(juli).getByRole('button', { name: /^1\. juli 2026,/ }));
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
         await userEvent.click(screen.getByRole('button', { name: 'Slett dager fra periode' }));
 
@@ -1746,8 +1746,8 @@ describe('UttaksplanKalender', () => {
         const desember = screen.getByTestId('year:2025;month:11');
         const januar = screen.getByTestId('year:2026;month:0');
 
-        await userEvent.click(within(desember).getByRole('button', { name: /^29\.12\.2025,/ }));
-        await userEvent.click(within(januar).getByRole('button', { name: /^04\.01\.2026,/ }));
+        await userEvent.click(within(desember).getByRole('button', { name: /^29\. desember 2025,/ }));
+        await userEvent.click(within(januar).getByRole('button', { name: /^4\. januar 2026,/ }));
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
 
         await userEvent.click(
@@ -1767,8 +1767,8 @@ describe('UttaksplanKalender', () => {
         render(<SkalViseAvslåttPeriodeKorrekt />);
 
         const mars = screen.getByTestId('year:2026;month:2');
-        await userEvent.click(within(mars).getByRole('button', { name: '02.03.2026' }));
-        await userEvent.click(within(mars).getByRole('button', { name: '10.03.2026' }));
+        await userEvent.click(within(mars).getByRole('button', { name: '2. mars 2026' }));
+        await userEvent.click(within(mars).getByRole('button', { name: '10. mars 2026' }));
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
         await userEvent.click(screen.getByRole('button', { name: 'Legg til ferie' }));
 
@@ -1785,7 +1785,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(screen.getByRole('button', { name: 'Endre' }));
 
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-        expect(within(mars).getByRole('button', { name: /^02\.03\.2026,.*Ferie/ })).toBeInTheDocument();
+        expect(within(mars).getByRole('button', { name: /^2\. mars 2026,.*Ferie/ })).toBeInTheDocument();
     });
 
     it.each([
@@ -1802,8 +1802,8 @@ describe('UttaksplanKalender', () => {
             render(<SkalViseAvslåttPeriodeKorrekt erEndringssøknad={erEndringssøknad} />);
 
             const juli = screen.getByTestId('year:2026;month:6');
-            await userEvent.click(within(juli).getByRole('button', { name: /^20\.07\.2026,/ }));
-            await userEvent.click(within(juli).getByRole('button', { name: /^27\.07\.2026,/ }));
+            await userEvent.click(within(juli).getByRole('button', { name: /^20\. juli 2026,/ }));
+            await userEvent.click(within(juli).getByRole('button', { name: /^27\. juli 2026,/ }));
             await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
             await userEvent.click(screen.getAllByText('Endre')[0]!);
             await userEvent.click(screen.getAllByText('Fars kvote')[0]!);
@@ -1825,8 +1825,8 @@ describe('UttaksplanKalender', () => {
             expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
             expect(within(juli).getByTestId('day:20;dayColor:GREENSTRIPED')).toBeInTheDocument();
 
-            await userEvent.click(within(juli).getByRole('button', { name: /^20\.07\.2026,/ }));
-            await userEvent.click(within(juli).getByRole('button', { name: /^27\.07\.2026,/ }));
+            await userEvent.click(within(juli).getByRole('button', { name: /^20\. juli 2026,/ }));
+            await userEvent.click(within(juli).getByRole('button', { name: /^27\. juli 2026,/ }));
             await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
             await userEvent.click(screen.getAllByText('Endre')[0]!);
             expect(screen.getByLabelText('Hvor mange prosent skal far jobbe?')).toHaveValue('60');
@@ -1839,15 +1839,15 @@ describe('UttaksplanKalender', () => {
         render(<SkalViseAvslåttPeriodeKorrekt />);
 
         const juli = screen.getByTestId('year:2026;month:6');
-        await userEvent.click(within(juli).getByRole('button', { name: /^20\.07\.2026,/ }));
-        await userEvent.click(within(juli).getByRole('button', { name: /^27\.07\.2026,/ }));
+        await userEvent.click(within(juli).getByRole('button', { name: /^20\. juli 2026,/ }));
+        await userEvent.click(within(juli).getByRole('button', { name: /^27\. juli 2026,/ }));
         await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
         await userEvent.click(screen.getAllByText('Endre')[0]!);
         await userEvent.click(screen.getByRole('radio', { name: 'Fars kvote' }));
         await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
 
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-        expect(within(juli).getByRole('button', { name: /^20\.07\.2026,.*Fedrekvote/ })).toBeInTheDocument();
+        expect(within(juli).getByRole('button', { name: /^20\. juli 2026,.*Fedrekvote/ })).toBeInTheDocument();
     });
 
     it('skal beholde eksisterende varsel for Fjern alt uten å vise et ekstra varsel', async () => {
