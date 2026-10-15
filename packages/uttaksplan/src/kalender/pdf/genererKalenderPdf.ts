@@ -373,7 +373,8 @@ export const genererKalenderPdf = async ({
     // Fang månadane bitvis. Kvar bit blir rendra i ein eigen offscreen-
     // container, fanga, klypt opp i månadar og paginert – deretter blir både
     // container og bit-canvas sleppt før neste bit.
-    const fangOgTegnBit = async (bitElementer: HTMLElement[]): Promise<void> => {
+    for (let i = 0; i < månedElementer.length; i += månederPerBit) {
+        const bitElementer = månedElementer.slice(i, i + månederPerBit);
         const container = lagOffscreenContainer();
         container.style.display = 'grid';
         container.style.gridTemplateColumns = `repeat(${antallKolonner}, ${MND_BREDDE_PX}px)`;
@@ -392,7 +393,7 @@ export const genererKalenderPdf = async ({
             bitKloner.forEach(sentrerTekstForFanging);
 
             const skala = veljSkala(container.scrollWidth, container.scrollHeight);
-            const bitCanvas = await html2canvas(container, {
+            const bitCanvas = await html2canvas(container, { // NOSONAR
                 scale: skala,
                 useCORS: true,
                 logging: false,
@@ -420,15 +421,7 @@ export const genererKalenderPdf = async ({
         } finally {
             container.remove();
         }
-    };
-
-    const biter = Array.from({ length: Math.ceil(månedElementer.length / månederPerBit) }, (_, indeks) =>
-        månedElementer.slice(indeks * månederPerBit, (indeks + 1) * månederPerBit),
-    );
-    await biter.reduce<Promise<void>>(
-        (forrigeBit, bitElementer) => forrigeBit.then(() => fangOgTegnBit(bitElementer)),
-        Promise.resolve(),
-    );
+    }
 
     await pdf.save(filename, { returnPromise: true });
 };
