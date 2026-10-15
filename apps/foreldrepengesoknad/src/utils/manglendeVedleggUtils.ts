@@ -103,6 +103,10 @@ const dokumentasjonBehøvesForUttaksperiode = (
     const krevesDokumentasjonAvMorsAktivitet =
         søkerErFarEllerMedmor && søker.morsAktivitet !== undefined && søker.morsAktivitet !== 'UFØRE';
 
+    if (søker.kontoType === 'FEDREKVOTE' && dayjs(periode.tom).isBefore(familiehendelsedato, 'day')) {
+        return false;
+    }
+
     return (
         krevesDokumentasjonAvMorsAktivitet || kreverDokumentasjonForFedrekvoteRundtFødsel(periode, familiehendelsedato)
     );
