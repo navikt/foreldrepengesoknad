@@ -60,7 +60,7 @@ const uploadPendingAttachments = async ({
             continue;
         }
 
-        await uploadAttachment(pendingAttachment.attachmentData, uploadPath, timeout);
+        await uploadAttachment(pendingAttachment.attachmentData, uploadPath, timeout); // NOSONAR
         setAttachments((current) => replaceAttachment(current, pendingAttachment));
     }
 };

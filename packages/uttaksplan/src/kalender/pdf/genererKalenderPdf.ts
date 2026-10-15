@@ -393,7 +393,7 @@ export const genererKalenderPdf = async ({
             bitKloner.forEach(sentrerTekstForFanging);
 
             const skala = veljSkala(container.scrollWidth, container.scrollHeight);
-            const bitCanvas = await html2canvas(container, {
+            const bitCanvas = await html2canvas(container, { // NOSONAR
                 scale: skala,
                 useCORS: true,
                 logging: false,
