@@ -4,6 +4,7 @@ import { VedleggDataType } from 'types/VedleggDataType';
 import { Skjemanummer } from '@navikt/fp-constants';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from './FpDataContext';
+import { useValgtSak } from './useValgtSak';
 
 const NULLSTILTE_PERIODE_VEDLEGG: VedleggDataType = {
     [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: [],
@@ -19,14 +20,26 @@ const NULLSTILTE_PERIODE_VEDLEGG: VedleggDataType = {
 };
 
 export const useResetUttaksplanData = () => {
+    const { erNySøknadPåEksisterendeSak } = useValgtSak();
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
     const oppdaterHarJustertUttakVedFødsel = useContextSaveData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
     const oppdaterVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
+    const oppdaterOpprinneligUttaksplan = useContextSaveData(ContextDataType.OPPRINNELIG_UTTAKSPLAN);
 
     return useCallback(() => {
         oppdaterHarJustertUttakVedFødsel(undefined);
         oppdaterUttaksplan(undefined);
+        if (erNySøknadPåEksisterendeSak) {
+            oppdaterOpprinneligUttaksplan(undefined);
+        }
         oppdaterVedlegg({ ...vedlegg, ...NULLSTILTE_PERIODE_VEDLEGG });
-    }, [vedlegg, oppdaterHarJustertUttakVedFødsel, oppdaterUttaksplan, oppdaterVedlegg]);
+    }, [
+        vedlegg,
+        oppdaterHarJustertUttakVedFødsel,
+        oppdaterUttaksplan,
+        oppdaterOpprinneligUttaksplan,
+        oppdaterVedlegg,
+        erNySøknadPåEksisterendeSak,
+    ]);
 };

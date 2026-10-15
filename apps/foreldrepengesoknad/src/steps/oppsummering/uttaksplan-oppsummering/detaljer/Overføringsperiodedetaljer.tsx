@@ -1,11 +1,11 @@
 import { IntlShape, useIntl } from 'react-intl';
 
-import { KontoTypeUttak, NavnPåForeldre, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { KontoTypeUttak, NavnPåForeldre, UttakDto } from '@navikt/fp-types';
 
 import { Feltoppsummering } from './Feltoppsummering';
 
 interface Props {
-    periode: UttakPeriode_fpoversikt;
+    uttak: UttakDto;
     navnPåForeldre: NavnPåForeldre;
 }
 
@@ -19,19 +19,19 @@ const getNavnPåAnnenForelder = (navnPåForeldre: NavnPåForeldre, konto: KontoT
     return intl.formatMessage({ id: 'annen.forelder' });
 };
 
-export const Overføringsperiodedetaljer = ({ periode, navnPåForeldre }: Props) => {
+export const Overføringsperiodedetaljer = ({ uttak, navnPåForeldre }: Props) => {
     const intl = useIntl();
-    const navnAnnenForelder = getNavnPåAnnenForelder(navnPåForeldre, periode.kontoType, intl);
+    const navnAnnenForelder = getNavnPåAnnenForelder(navnPåForeldre, uttak.kontoType, intl);
     return (
         <Feltoppsummering
             feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.årsak' })}
-            verdi={getÅrsakTekst(intl, periode, navnAnnenForelder)}
+            verdi={getÅrsakTekst(intl, uttak, navnAnnenForelder)}
         />
     );
 };
 
-const getÅrsakTekst = (intl: IntlShape, periode: UttakPeriode_fpoversikt, navnAnnenForelder: string) => {
-    const { overføringÅrsak } = periode;
+const getÅrsakTekst = (intl: IntlShape, uttak: UttakDto, navnAnnenForelder: string) => {
+    const { overføringÅrsak } = uttak;
 
     if (overføringÅrsak === 'ALENEOMSORG') {
         return intl.formatMessage({ id: 'uttaksplan.overføringsårsaktype.ALENEOMSORG' }, { navnAnnenForelder });

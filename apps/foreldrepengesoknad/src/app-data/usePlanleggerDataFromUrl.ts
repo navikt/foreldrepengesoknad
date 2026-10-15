@@ -12,9 +12,9 @@ import {
     OmBarnetPlanlegger,
     Søkerrolle,
     SøkersituasjonFp,
-    UttakPeriode_fpoversikt,
+    UttakPeriodeDto,
 } from '@navikt/fp-types';
-import { decompressFromUrl } from '@navikt/fp-utils';
+import { decompressFromUrl, konverterFlatePerioderTilIntervall } from '@navikt/fp-utils';
 
 import { ContextDataMap, ContextDataType } from './FpDataContext';
 
@@ -22,7 +22,7 @@ type PlanleggerDataFromUrl = {
     OM_BARNET?: OmBarnetPlanlegger;
     HVOR_LANG_PERIODE?: HvorLangPeriodePlanlegger;
     FORDELING?: FordelingPlanlegger;
-    UTTAKSPLAN?: UttakPeriode_fpoversikt[];
+    UTTAKSPLAN?: UttakPeriodeDto[];
 };
 
 const erBarnetAdoptert = (barnet: OmBarnetPlanlegger): barnet is BarnetErAdoptertPlanlegger =>
@@ -83,7 +83,9 @@ const mapPlanleggerDataToSøknadState = (
     }
 
     if (uttaksplan) {
-        result[ContextDataType.UTTAKSPLAN] = uttaksplan;
+        // TODO: Fjern konverteringa frå gammalt flatt format etter 1. desember 2026. Planlegger lagar no lenker
+        // i nytt format, så det gamle formatet kjem berre frå innloggingar som var i gang då dette vart prodsett.
+        result[ContextDataType.UTTAKSPLAN] = konverterFlatePerioderTilIntervall(uttaksplan);
     }
 
     return result;

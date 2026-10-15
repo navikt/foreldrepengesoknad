@@ -3,11 +3,7 @@ import { useIntl } from 'react-intl';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 
-import {
-    RettighetType_fpoversikt,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
-} from '@navikt/fp-types';
+import { RettighetType_fpoversikt, UttakPeriodeDto } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
 import {
     erPerioderEkslFomTomLike,
@@ -17,15 +13,13 @@ import {
 } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
-export type UttaksplanPerioder = Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
-
 type SubmitValideringsregel = {
-    gjelder: (planForValidering: UttaksplanPerioder) => boolean;
+    gjelder: (planForValidering: UttakPeriodeDto[], helePlanen: UttakPeriodeDto[]) => boolean;
     message: string;
 };
 
 interface UseFinnFørsteSubmitFeilmeldingProps {
-    opprinneligPlan: UttaksplanPerioder | undefined;
+    opprinneligPlan: UttakPeriodeDto[] | undefined;
     erEndringssøknad: boolean;
 }
 
@@ -48,23 +42,24 @@ export const useFinnFørsteSubmitFeilmelding = ({
 
     const søkersForelder = erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
 
-    const finnSøkersPerioder = (perioder: UttaksplanPerioder) =>
-        perioder
-            .filter((periode) => Uttaksperioden.erIkkeEøsPeriode(periode))
-            .filter((periode) => periode.forelder === søkersForelder);
+    // .søker er alltid søkeren selv (uavhengig av MOR/FAR_MEDMOR-rolle), så det holder å filtrere på at
+    // søkers periode finnes.
+    const finnPerioderMedSøker = (perioder: UttakPeriodeDto[]) =>
+        perioder.filter((periode) => periode.søker !== undefined);
 
-    const manglerPerioderEtterValg = (perioder: UttaksplanPerioder) =>
-        perioder.length === 0 && !harBrukerKunSlettetPerioder(uttaksplan, opprinneligPlan);
+    const manglerPerioderEtterValg = (perioder: UttakPeriodeDto[]) =>
+        perioder.length === 0 &&
+        (uttaksplan === undefined || !harBrukerKunSlettetPerioder(uttaksplan, opprinneligPlan));
 
     // Innsendinga inneheld berre søkjaren sine eigne perioder (sjå filtrerUtAnnenPartsPerioder i apiUtils),
     // så valideringa må sjå på dei same periodane. Ser ein på heile planen, kan annen part sine perioder
     // "dekke over" at søkjaren ikkje har eigne perioder, og backend svarar då at uttaksplanen er tom.
-    const manglerUttaksperioderForNySøknad = (perioder: UttaksplanPerioder) =>
-        !erEndringssøknad && !harMinstEnUttaksEllerOverføringsperiode(finnSøkersPerioder(perioder));
+    const manglerUttaksperioderForNySøknad = (perioder: UttakPeriodeDto[]) =>
+        !erEndringssøknad && !harMinstEnUttaksEllerOverføringsperiode(finnPerioderMedSøker(perioder));
 
     const harOvertrukketDager = () => erAntallDagerOvertrukket;
 
-    const manglerMorsAktivitetDerPåkrevd = (perioder: UttaksplanPerioder) =>
+    const manglerMorsAktivitetDerPåkrevd = (perioder: UttakPeriodeDto[]) =>
         harPeriodeDerMorsAktivitetIkkeErValgt(
             utledRettighet(erAleneOmOmsorg, erDeltUttak),
             erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR',
@@ -72,11 +67,11 @@ export const useFinnFørsteSubmitFeilmelding = ({
             perioder,
         );
 
-    const manglerGraderingsaktivitet = (perioder: UttaksplanPerioder) =>
-        harPeriodeMedUkjentGraderingsaktivitet(finnSøkersPerioder(perioder), søkersForelder);
+    const manglerGraderingsaktivitet = (perioder: UttakPeriodeDto[]) =>
+        harPeriodeMedUkjentGraderingsaktivitet(finnPerioderMedSøker(perioder), søkersForelder);
 
-    const harKunPerioderForDenAndreForelderen = (perioder: UttaksplanPerioder) =>
-        harKunPerioderForAnnenForelder(erSøkerFarEllerMedmor, erAleneOmOmsorg, perioder);
+    const harKunPerioderForDenAndreForelderen = (perioder: UttakPeriodeDto[]) =>
+        harKunPerioderForAnnenForelder(erAleneOmOmsorg, perioder);
 
     const submitValideringsregler: SubmitValideringsregel[] = [
         {
@@ -106,78 +101,119 @@ export const useFinnFørsteSubmitFeilmelding = ({
             message: intl.formatMessage({ id: 'UttaksplanSteg.KunPerioderForAnnenForelder' }),
         },
         {
-            gjelder: erKunUtsettelser,
+            // Ved endringssøknad inneholder planForValidering bare nye og endrede perioder. Uendret uttak
+            // fra vedtaket må telle med, ellers ser for eksempel ferie lagt til på slutten ut som en
+            // plan med bare utsettelser.
+            gjelder: (_planForValidering, helePlanen) => erKunUtsettelser(helePlanen),
             message: intl.formatMessage({ id: 'UttaksplanSteg.KunUtsettelser' }),
         },
     ];
 
-    return (planForValidering: UttaksplanPerioder): string | undefined => {
-        const valideringsfeil = submitValideringsregler.find((regel) => regel.gjelder(planForValidering));
+    return (planForValidering: UttakPeriodeDto[], helePlanen: UttakPeriodeDto[]): string | undefined => {
+        const valideringsfeil = submitValideringsregler.find((regel) => regel.gjelder(planForValidering, helePlanen));
         return valideringsfeil?.message;
     };
 };
 
+// Søkers periode og annen parts periode i samme intervall må vurderes hver for seg: sletter søkeren bare
+// sin egen periode i et samtidig uttak, står annen parts uendrede periode igjen i et intervall som ellers
+// ikke finnes i den opprinnelige planen.
+const finnSøkersPerioder = (perioder: UttakPeriodeDto[]): UttakPeriodeDto[] =>
+    perioder.flatMap(({ fom, tom, søker }) => (søker ? [{ fom, tom, søker }] : []));
+
+const erSøkersPeriodeNyEllerEndret = (periode: UttakPeriodeDto, opprinneligPlan: UttakPeriodeDto[]) => {
+    const { fom, tom, søker } = periode;
+    return (
+        søker !== undefined &&
+        (søker.resultat === undefined ||
+            finnSøkersPerioder(opprinneligPlan).every(
+                (opprinnelig) => !erSammePeriodeInkludertDatoer({ fom, tom, søker }, opprinnelig),
+            ))
+    );
+};
+
+// Annen parts periode kan bli delt opp når søkeren endrer sin periode i et samtidig uttak, så her holder
+// det at et opprinnelig intervall med lik annen part dekker hele perioden.
+const erAnnenPartsPeriodeNyEllerEndret = (periode: UttakPeriodeDto, opprinneligPlan: UttakPeriodeDto[]) => {
+    const { fom, tom, annenPart } = periode;
+    return (
+        annenPart !== undefined &&
+        opprinneligPlan.every(
+            (opprinnelig) =>
+                opprinnelig.fom > fom ||
+                opprinnelig.tom < tom ||
+                !erPerioderEkslFomTomLike({ fom, tom, annenPart }, { fom, tom, annenPart: opprinnelig.annenPart }),
+        )
+    );
+};
+
+export const finnNyeEllerEndredePerioder = (
+    perioder: UttakPeriodeDto[],
+    opprinneligPlan: UttakPeriodeDto[] | undefined,
+): UttakPeriodeDto[] => {
+    if (!opprinneligPlan) {
+        return perioder.filter((periode) => periode.søker !== undefined && periode.søker.resultat === undefined);
+    }
+    return perioder.filter(
+        (periode) =>
+            erSøkersPeriodeNyEllerEndret(periode, opprinneligPlan) ||
+            erAnnenPartsPeriodeNyEllerEndret(periode, opprinneligPlan),
+    );
+};
+
 export const harBrukerKunSlettetPerioder = (
-    perioder: UttaksplanPerioder | undefined,
-    opprinneligPlan: UttaksplanPerioder | undefined,
+    perioder: UttakPeriodeDto[],
+    opprinneligPlan: UttakPeriodeDto[] | undefined,
 ) => {
     if (!opprinneligPlan) {
         return false;
     }
 
-    const erKunSaksperioder = perioder?.every(
-        (periode) => Uttaksperioden.erEøsPeriode(periode) || periode.resultat !== undefined,
+    const søkersPerioder = finnSøkersPerioder(perioder);
+    const søkersOpprinneligePerioder = finnSøkersPerioder(opprinneligPlan);
+
+    const erKunSaksperioder = søkersPerioder.every((periode) => periode.søker?.resultat !== undefined);
+
+    return (
+        erKunSaksperioder &&
+        søkersPerioder.length < søkersOpprinneligePerioder.length &&
+        søkersPerioder.every((periode) =>
+            søkersOpprinneligePerioder.some((opprinnelig) => erSammePeriodeInkludertDatoer(periode, opprinnelig)),
+        )
     );
-
-    if (erKunSaksperioder) {
-        const harSlettetPeriode = perioder
-            ? perioder.length < opprinneligPlan.length &&
-              perioder.every((periode) =>
-                  opprinneligPlan.some((opprinnelig) => erSammePeriodeInkludertDatoer(periode, opprinnelig)),
-              )
-            : false;
-        return harSlettetPeriode;
-    }
-
-    return false;
 };
 
-export const erSammePeriodeInkludertDatoer = (a: UttaksplanPerioder[number], b: UttaksplanPerioder[number]) =>
+export const erSammePeriodeInkludertDatoer = (a: UttakPeriodeDto, b: UttakPeriodeDto) =>
     a.fom === b.fom && a.tom === b.tom && erPerioderEkslFomTomLike(a, b);
 
-export const harKunPerioderForAnnenForelder = (
-    erSøkerFarEllerMedmor: boolean,
-    erAleneOmOmsorg: boolean,
-    perioder?: UttaksplanPerioder,
-) => {
+// .søker er alltid søkerens egen periode. «Kun perioder for annen forelder» betyr derfor at ingen av
+// periodene har .søker satt.
+export const harKunPerioderForAnnenForelder = (erAleneOmOmsorg: boolean, perioder?: UttakPeriodeDto[]) => {
     if (erAleneOmOmsorg || !perioder || perioder.length === 0) {
         return false;
     }
 
-    const søkersForelder = erSøkerFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR';
-
-    return perioder.every((periode) => Uttaksperioden.erEøsPeriode(periode) || periode.forelder !== søkersForelder);
+    return perioder.every((periode) => periode.søker === undefined);
 };
 
 // Ein overføringsperiode (t.d. far som overtek mødrekvote fordi mor er for sjuk) er eit
 // reelt uttak av foreldrepengar, og er ein gyldig søknad åleine på lik linje med ein uttaksperiode.
-export const harMinstEnUttaksEllerOverføringsperiode = (perioder: UttaksplanPerioder) =>
-    perioder.some((periode) => Uttaksperioden.erUttaksperiode(periode) || Uttaksperioden.erOverføringsperiode(periode));
+export const harMinstEnUttaksEllerOverføringsperiode = (perioder: UttakPeriodeDto[]) =>
+    perioder.some((periode) => {
+        const søker = periode.søker;
+        return !!søker && (Uttaksperioden.erUttaksperiode(søker) || Uttaksperioden.erOverføringsperiode(søker));
+    });
 
-export const erKunUtsettelser = (perioder: UttaksplanPerioder) => {
-    if (perioder.length === 0) {
-        return false;
-    }
-
-    // Ferie er ein utsettelse som legg dagar tilbake i beholdninga, og er ein gyldig søknad åleine.
-    const harFerie = perioder.some(
-        (periode) => Uttaksperioden.erIkkeEøsPeriode(periode) && periode.utsettelseÅrsak === 'LOVBESTEMT_FERIE',
+export const erKunUtsettelser = (perioder: UttakPeriodeDto[]) => {
+    // Avslåtte perioder sendes ikke inn (filtrerUtAvslåttePerioder i apiUtils), så de teller ikke som uttak.
+    const søkersPerioder = perioder.flatMap((periode) =>
+        periode.søker && periode.søker.resultat?.innvilget !== false ? [periode.søker] : [],
     );
-    if (harFerie) {
+    if (søkersPerioder.length === 0) {
         return false;
     }
 
-    return perioder.every((periode) => Uttaksperioden.erUtsettelsesperiode(periode));
+    return søkersPerioder.every((søker) => Uttaksperioden.erUtsettelsesperiode(søker));
 };
 
 const utledRettighet = (erAleneOmOmsorg: boolean, erDeltUttak: boolean): RettighetType_fpoversikt => {

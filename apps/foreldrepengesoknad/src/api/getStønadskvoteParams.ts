@@ -1,13 +1,13 @@
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
-import { getErMorUfør } from 'utils/annenForelderUtils';
+import { annenPartHarVedtak, getErMorUfør } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'utils/eksisterendeSakUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getFarMedmorErAleneOmOmsorg, getMorErAleneOmOmsorg } from 'utils/personUtils';
 
 import {
-    AnnenPartSak_fpoversikt,
     Barn,
+    FellesUttaksplanDto,
     KontoBeregningGrunnlagDto,
     SøkersituasjonFp,
     isAdoptertBarn,
@@ -91,7 +91,7 @@ export const getStønadskvoteParams = (
     barn: Barn,
     annenForelder: AnnenForelder,
     søkersituasjon: SøkersituasjonFp,
-    annenPartsVedtak: AnnenPartSak_fpoversikt | undefined,
+    uttaksplan: FellesUttaksplanDto | undefined,
     termindatoEksisterendeSak?: string,
 ): KontoBeregningGrunnlagDto => {
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
@@ -109,7 +109,7 @@ export const getStønadskvoteParams = (
     );
 
     const eksisterendeVedtakAnnenPart = mapAnnenPartsEksisterendeSakFromDTO(
-        annenPartsVedtak,
+        annenPartHarVedtak(uttaksplan) ? uttaksplan : undefined,
         barn,
         erFarEllerMedmor,
         getFamiliehendelsedato(barn),

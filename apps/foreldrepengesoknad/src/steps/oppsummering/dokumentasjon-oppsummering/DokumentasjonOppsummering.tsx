@@ -32,7 +32,7 @@ export const DokumentasjonOppsummering = ({ onVilEndreSvar, navnPåForeldre }: P
     const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsedato = getFamiliehendelsedato(barn);
     const uttaksperioderSomManglerVedlegg = perioderSomKreverVedlegg(
-        finnPerioderSomInngårISøknaden(uttaksplan || [], erSøkerFarEllerMedmor, !!eksisterendeSaksnummer),
+        finnPerioderSomInngårISøknaden(uttaksplan || [], !!eksisterendeSaksnummer),
         erSøkerFarEllerMedmor,
         annenForelder,
         familiehendelsedato,

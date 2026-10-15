@@ -1,11 +1,5 @@
 import { useQuery, useSuspenseQueries } from '@tanstack/react-query';
-import {
-    API_URLS,
-    mellomlagretInfoOptions,
-    sakerOptions,
-    søkerinfoOptions,
-    useAnnenPartVedtakOptions,
-} from 'api/queries';
+import { API_URLS, mellomlagretInfoOptions, sakerOptions, søkerinfoOptions, useUttaksplanOptions } from 'api/queries';
 import { ContextDataMap, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
@@ -116,10 +110,7 @@ const ForeldrepengesøknadInnhold = () => {
     );
 };
 
-// Sjekkar om registerdata (søkerInfo, saker, annenpartsvedtak) har endra seg
-// sidan mellomlagring. Renderast inne i FpDataContext slik at
-// useAnnenPartVedtakOptions kan lesa annenForelder/barn frå context og sjølv
-// styra om kallet skal gjerast.
+// Renderes inne i FpDataContext slik at useUttaksplanOptions kan lese annenForelder/barn fra context.
 const RegisterdataSjekk = ({
     mellomlagretData,
     søkerInfo,
@@ -131,22 +122,22 @@ const RegisterdataSjekk = ({
     foreldrepengerSaker: FpSak_fpoversikt[];
     children: ReactNode;
 }) => {
-    const annenPartVedtakQuery = useQuery(useAnnenPartVedtakOptions());
+    const uttaksplanQuery = useQuery(useUttaksplanOptions());
 
     if (!mellomlagretData) {
         return <>{children}</>;
     }
 
-    const harLagretAnnenPartVedtak = mellomlagretData.annenPartVedtak !== undefined;
+    const harLagretFellesUttaksplan = mellomlagretData.fellesUttaksplan !== undefined;
 
-    if (harLagretAnnenPartVedtak && annenPartVedtakQuery.isPending && annenPartVedtakQuery.fetchStatus !== 'idle') {
+    if (harLagretFellesUttaksplan && uttaksplanQuery.isPending && uttaksplanQuery.fetchStatus !== 'idle') {
         return <Spinner />;
     }
 
-    const annenPartVedtakErEndret =
-        harLagretAnnenPartVedtak &&
-        annenPartVedtakQuery.isSuccess &&
-        !erLikUansettRekkefølge(annenPartVedtakQuery.data, mellomlagretData.annenPartVedtak);
+    const fellesUttaksplanErEndret =
+        harLagretFellesUttaksplan &&
+        uttaksplanQuery.isSuccess &&
+        !erLikUansettRekkefølge(uttaksplanQuery.data, mellomlagretData.fellesUttaksplan);
 
     const søkerInfoErEndret = !erLikUansettRekkefølge(
         // frilansoppdrag/selvstendigNæring kan mangle på lagret søkerInfo dersom mellomlagringen ble gjort
@@ -165,13 +156,13 @@ const RegisterdataSjekk = ({
         relevanteSaker(foreldrepengerSaker),
     );
 
-    const registerdataErEndret = søkerInfoErEndret || sakerErEndret || annenPartVedtakErEndret;
+    const registerdataErEndret = søkerInfoErEndret || sakerErEndret || fellesUttaksplanErEndret;
 
     if (registerdataErEndret) {
         const avvik = [
             søkerInfoErEndret ? 'søkerInfo' : undefined,
             sakerErEndret ? 'saker' : undefined,
-            annenPartVedtakErEndret ? 'annenPartVedtak' : undefined,
+            fellesUttaksplanErEndret ? 'fellesUttaksplan' : undefined,
         ]
             .filter(Boolean)
             .join(',');

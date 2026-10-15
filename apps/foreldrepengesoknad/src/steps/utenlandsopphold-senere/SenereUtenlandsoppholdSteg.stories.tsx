@@ -8,6 +8,7 @@ import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 
 import { Utenlandsopphold } from '@navikt/fp-types';
+import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { SenereUtenlandsoppholdSteg } from './SenereUtenlandsoppholdSteg';
 
@@ -29,6 +30,7 @@ type StoryArgs = {
 const meta = {
     title: 'steps/SenereUtenlandsoppholdSteg',
     component: SenereUtenlandsoppholdSteg,
+    decorators: [withQueryClient],
 
     beforeEach({ msw }) {
         msw.use(

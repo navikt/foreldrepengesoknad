@@ -3,12 +3,7 @@ import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorMye } from 'types/HvorMye';
 
-import {
-    FordelingPlanlegger,
-    HvorLangPeriodePlanlegger,
-    OmBarnetPlanlegger,
-    UttakPeriode_fpoversikt,
-} from '@navikt/fp-types';
+import { FordelingPlanlegger, HvorLangPeriodePlanlegger, OmBarnetPlanlegger, UttakPeriodeDto } from '@navikt/fp-types';
 
 export enum ContextDataType {
     HVEM_PLANLEGGER = 'HVEM_PLANLEGGER',
@@ -27,7 +22,7 @@ export type ContextDataMap = {
     [ContextDataType.HVOR_MYE]?: HvorMye;
     [ContextDataType.HVOR_LANG_PERIODE]?: HvorLangPeriodePlanlegger;
     [ContextDataType.FORDELING]?: FordelingPlanlegger;
-    [ContextDataType.UTTAKSPLAN]?: UttakPeriode_fpoversikt[];
+    [ContextDataType.UTTAKSPLAN]?: UttakPeriodeDto[];
 };
 
 const defaultInitialState: ContextDataMap = {};

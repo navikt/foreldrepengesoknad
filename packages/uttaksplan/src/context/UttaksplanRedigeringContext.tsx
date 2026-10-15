@@ -1,22 +1,19 @@
 import { createContext, use, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { captureException } from '@navikt/fp-observability';
-import { UttakPeriodeAnnenpartEøs_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriodeDto } from '@navikt/fp-types';
 
-import { erEøsUttakPeriode } from '../types/UttaksplanPeriode';
 import { finnUgyldigeOverlapp, periodeTilLoggObjekt } from '../utils/UttakPeriodeBuilder';
 import { useUttaksplanData } from './UttaksplanDataContext';
 
-type AlleUttakPerioder = UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt;
-
 type Props = {
     harEndretPlan: boolean;
-    oppdaterUttaksplan: (uttaksplan: AlleUttakPerioder[] | undefined) => void;
+    oppdaterUttaksplan: (uttaksplan: UttakPeriodeDto[] | undefined) => void;
     children: React.ReactNode;
 };
 
 type ContextValues = {
-    uttaksplanVersjoner: AlleUttakPerioder[][];
+    uttaksplanVersjoner: UttakPeriodeDto[][];
     visFjernAltModal: boolean;
     visTilbakestillModal: boolean;
     harEndretPlan: boolean;
@@ -24,7 +21,7 @@ type ContextValues = {
     setVisTilbakestillModal: (open: boolean) => void;
     angreSisteEndring: () => void;
     fjernAltIUttaksplan: () => void;
-    oppdaterUttaksplan: (uttaksplan: AlleUttakPerioder[]) => void;
+    oppdaterUttaksplan: (uttaksplan: UttakPeriodeDto[]) => void;
     tilbakestillUttaksplan: () => void;
 };
 
@@ -35,7 +32,7 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
     const [visFjernAltModal, setVisFjernAltModal] = useState(false);
     const [visTilbakestillModal, setVisTilbakestillModal] = useState(false);
 
-    const { uttakPerioder, erEndringssøknad } = useUttaksplanData();
+    const { perioder, erEndringssøknad } = useUttaksplanData();
 
     const harLoggetInitielleOverlappRef = useRef(false);
     useEffect(() => {
@@ -44,7 +41,7 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
         }
         harLoggetInitielleOverlappRef.current = true;
 
-        const ugyldigeOverlapp = finnUgyldigeOverlapp(uttakPerioder);
+        const ugyldigeOverlapp = finnUgyldigeOverlapp(perioder);
         if (ugyldigeOverlapp.length === 0) {
             return;
         }
@@ -58,15 +55,15 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
                     a: periodeTilLoggObjekt(a),
                     b: periodeTilLoggObjekt(b),
                 })),
-                opprinneligPerioder: uttakPerioder.map(periodeTilLoggObjekt),
+                opprinneligPerioder: perioder.map(periodeTilLoggObjekt),
             },
         });
-    }, [uttakPerioder]);
+    }, [perioder]);
 
-    const [uttaksplanVersjoner, setUttaksplanVersjoner] = useState<AlleUttakPerioder[][]>([]);
+    const [uttaksplanVersjoner, setUttaksplanVersjoner] = useState<UttakPeriodeDto[][]>([]);
 
     const oppdaterUttaksplan = useCallback(
-        (nyUttaksplan: AlleUttakPerioder[]) => {
+        (nyUttaksplan: UttakPeriodeDto[]) => {
             setUttaksplanVersjoner((eksisterendeVersjoner) => [...eksisterendeVersjoner, nyUttaksplan]);
             oppdater(nyUttaksplan);
         },
@@ -93,8 +90,16 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
 
     const fjernAltIUttaksplan = useCallback(() => {
         setUttaksplanVersjoner([]);
-        oppdater(uttakPerioder.filter((periode) => erEøsUttakPeriode(periode)));
-    }, [oppdater, uttakPerioder]);
+        // Behold kun EØS-sida av kvar periode (søker/annenPart sitt uttak fjernes).
+        const kunEøsPerioder = perioder
+            .filter((periode) => periode.annenPartEøs !== undefined)
+            .map((periode): UttakPeriodeDto => ({
+                fom: periode.fom,
+                tom: periode.tom,
+                annenPartEøs: periode.annenPartEøs,
+            }));
+        oppdater(kunEøsPerioder);
+    }, [oppdater, perioder]);
 
     const value = useMemo(
         () => ({

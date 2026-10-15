@@ -3,21 +3,23 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
+import { Uttaksplanperiode, erPeriodeDto } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
 import { finnTekstForUtsettelseÅrsak } from '../../../utils/uttaksplanListeUtils';
 import { getMorsAktivitetTekst } from './UttaksperiodeContent';
 
 interface Props {
-    periode: UttakPeriode_fpoversikt;
+    periode: Uttaksplanperiode;
 }
 
 export const UtsettelsesPeriodeContent = ({ periode }: Props) => {
     const intl = useIntl();
 
-    if (!periode.utsettelseÅrsak) {
+    const uttak = erPeriodeDto(periode) ? (periode.søker ?? periode.annenPart) : undefined;
+
+    if (!uttak?.utsettelseÅrsak) {
         return null;
     }
 
@@ -39,11 +41,11 @@ export const UtsettelsesPeriodeContent = ({ periode }: Props) => {
                     </BodyShort>
                 </HStack>
                 <HStack gap="space-8">
-                    {periode.morsAktivitet !== undefined && (
-                        <BodyShort>{getMorsAktivitetTekst(intl, periode.morsAktivitet)}</BodyShort>
+                    {uttak.morsAktivitet !== undefined && (
+                        <BodyShort>{getMorsAktivitetTekst(intl, uttak.morsAktivitet)}</BodyShort>
                     )}
-                    {periode.utsettelseÅrsak !== 'FRI' && (
-                        <BodyShort>{finnTekstForUtsettelseÅrsak(intl, periode.utsettelseÅrsak)}</BodyShort>
+                    {uttak.utsettelseÅrsak !== 'FRI' && (
+                        <BodyShort>{finnTekstForUtsettelseÅrsak(intl, uttak.utsettelseÅrsak)}</BodyShort>
                     )}
                 </HStack>
             </VStack>

@@ -30,15 +30,9 @@ import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/ut
 import { BodyLong, BodyShort, Box, Heading, InlineMessage, Tabs, ToggleGroup, VStack } from '@navikt/ds-react';
 
 import { loggUmamiEvent } from '@navikt/fp-observability';
-import {
-    Dekningsgrad,
-    FordelingPlanlegger,
-    KontoBeregningResultatDto,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
-} from '@navikt/fp-types';
+import { Dekningsgrad, FordelingPlanlegger, KontoBeregningResultatDto, UttakPeriodeDto } from '@navikt/fp-types';
 import { BluePanel, Infobox, StepButtons } from '@navikt/fp-ui';
-import { Uttaksperioden, compressToUrl, useMedia, useScrollBehaviour } from '@navikt/fp-utils';
+import { compressToUrl, useMedia, useScrollBehaviour } from '@navikt/fp-utils';
 import {
     FjernAltIUttaksplanModal,
     KvoteOppsummering,
@@ -107,10 +101,8 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
         intl,
     );
 
-    const lagreUttaksplanOgOppdaterUrl = (
-        oppdatertUttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt> | undefined,
-    ) => {
-        lagreUttaksplan(oppdatertUttaksplan?.filter((p) => Uttaksperioden.erIkkeEøsPeriode(p)));
+    const lagreUttaksplanOgOppdaterUrl = (oppdatertUttaksplan: UttakPeriodeDto[] | undefined) => {
+        lagreUttaksplan(oppdatertUttaksplan);
 
         const contextData = {
             ...completeAppContext,
@@ -166,7 +158,7 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
                     }}
                     valgtStønadskvote={valgtStønadskvote}
                     harAktivitetskravIPeriodeUtenUttak={false}
-                    uttakPerioder={uttaksplan ?? kombinertForslag}
+                    perioder={uttaksplan ?? kombinertForslag}
                     erPeriodeneTilAnnenPartLåst={false}
                     erEndringssøknad={false}
                 >
@@ -310,7 +302,7 @@ const AntallUkerVelger = ({
 }: {
     stønadskvoter: KontoBeregningResultatDto;
     hvemHarRett: HvemHarRett;
-    lagreUttaksplanOgOppdaterUrl: (oppdatertUttaksplan: UttakPeriode_fpoversikt[] | undefined) => void;
+    lagreUttaksplanOgOppdaterUrl: (oppdatertUttaksplan: UttakPeriodeDto[] | undefined) => void;
 }) => {
     const intl = useIntl();
 

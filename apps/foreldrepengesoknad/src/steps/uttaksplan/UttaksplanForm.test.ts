@@ -1,58 +1,66 @@
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { UttakDto, UttakPeriodeDto } from '@navikt/fp-types';
 
 import { kanJustereFarsUttakRundtFødsel } from './UttaksplanForm';
 import { erKunUtsettelser, harKunPerioderForAnnenForelder } from './submitValidering';
 
-const utsettelseFar: UttakPeriode_fpoversikt = {
+const utsettelseFar: UttakPeriodeDto = {
     fom: '2026-06-01',
     tom: '2026-06-05',
-    forelder: 'FAR_MEDMOR',
-    flerbarnsdager: false,
-    kontoType: 'FEDREKVOTE',
-    utsettelseÅrsak: 'LOVBESTEMT_FERIE',
+    søker: {
+        forelder: 'FAR_MEDMOR',
+        flerbarnsdager: false,
+        kontoType: 'FEDREKVOTE',
+        utsettelseÅrsak: 'FERIE',
+    },
 };
 
-const utsettelseArbeidFar: UttakPeriode_fpoversikt = {
+const utsettelseArbeidFar: UttakPeriodeDto = {
     fom: '2026-06-08',
     tom: '2026-06-12',
-    forelder: 'FAR_MEDMOR',
-    flerbarnsdager: false,
-    kontoType: 'FEDREKVOTE',
-    utsettelseÅrsak: 'ARBEID',
+    søker: {
+        forelder: 'FAR_MEDMOR',
+        flerbarnsdager: false,
+        kontoType: 'FEDREKVOTE',
+        utsettelseÅrsak: 'ARBEID',
+    },
 };
 
-const uttakFar: UttakPeriode_fpoversikt = {
+const uttakFar: UttakPeriodeDto = {
     fom: '2026-07-01',
     tom: '2026-07-31',
-    forelder: 'FAR_MEDMOR',
-    flerbarnsdager: false,
-    kontoType: 'FEDREKVOTE',
+    søker: {
+        forelder: 'FAR_MEDMOR',
+        flerbarnsdager: false,
+        kontoType: 'FEDREKVOTE',
+    },
 };
 
-const uttakMor: UttakPeriode_fpoversikt = {
+const uttakMor: UttakPeriodeDto = {
     fom: '2026-05-01',
     tom: '2026-05-31',
-    forelder: 'MOR',
-    flerbarnsdager: false,
-    kontoType: 'MØDREKVOTE',
+    annenPart: {
+        forelder: 'MOR',
+        flerbarnsdager: false,
+        kontoType: 'MØDREKVOTE',
+    },
 };
 
 describe('harKunPerioderForAnnenForelder', () => {
     it('returnerer false når perioder er undefined eller tom', () => {
-        expect(harKunPerioderForAnnenForelder(true, false)).toBe(false);
-        expect(harKunPerioderForAnnenForelder(true, false, [])).toBe(false);
+        expect(harKunPerioderForAnnenForelder(false)).toBe(false);
+        expect(harKunPerioderForAnnenForelder(false, [])).toBe(false);
     });
 
     it('returnerer false når søker (far) har minst én ekte uttaksperiode', () => {
-        expect(harKunPerioderForAnnenForelder(true, false, [uttakMor, uttakFar])).toBe(false);
+        expect(harKunPerioderForAnnenForelder(false, [uttakMor, uttakFar])).toBe(false);
     });
 
     it('returnerer true når planen kun har perioder for annen forelder', () => {
-        expect(harKunPerioderForAnnenForelder(true, false, [uttakMor])).toBe(true);
+        expect(harKunPerioderForAnnenForelder(false, [uttakMor])).toBe(true);
     });
 
     it('returnerer false for aleneomsorg', () => {
-        expect(harKunPerioderForAnnenForelder(true, true, [uttakMor, utsettelseFar])).toBe(false);
+        expect(harKunPerioderForAnnenForelder(true, [uttakMor, utsettelseFar])).toBe(false);
     });
 });
 
@@ -61,20 +69,49 @@ describe('erKunUtsettelser', () => {
         expect(erKunUtsettelser([])).toBe(false);
     });
 
-    it('returnerer true når planen kun har utsettelser uten ferie', () => {
+    it('returnerer true når planen kun har utsettelser', () => {
         expect(erKunUtsettelser([utsettelseArbeidFar])).toBe(true);
     });
 
-    it('returnerer false når planen kun har ferie', () => {
-        expect(erKunUtsettelser([utsettelseFar])).toBe(false);
-    });
-
-    it('returnerer false når planen har ferie sammen med andre utsettelser', () => {
-        expect(erKunUtsettelser([utsettelseFar, utsettelseArbeidFar])).toBe(false);
+    it('returnerer true når planen kun har ferie', () => {
+        expect(erKunUtsettelser([utsettelseFar])).toBe(true);
     });
 
     it('returnerer false når planen har en ekte uttaksperiode', () => {
         expect(erKunUtsettelser([utsettelseArbeidFar, uttakFar])).toBe(false);
+    });
+
+    it('returnerer false når ferie legges til etter eksisterende uttak (regresjon: TFP-7005)', () => {
+        const innvilgetUttak: UttakPeriodeDto = {
+            ...uttakFar,
+            søker: {
+                ...uttakFar.søker!,
+                resultat: { innvilget: true, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+            },
+        };
+        const ferieEtterUttak: UttakPeriodeDto = { ...utsettelseFar, fom: '2026-08-03', tom: '2026-08-07' };
+
+        expect(erKunUtsettelser([innvilgetUttak, ferieEtterUttak])).toBe(false);
+    });
+
+    it('regner ikke avslått uttak som uttak', () => {
+        const avslåttUttak: UttakPeriodeDto = {
+            ...uttakFar,
+            søker: {
+                ...uttakFar.søker!,
+                resultat: { innvilget: false, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+            },
+        };
+
+        expect(erKunUtsettelser([avslåttUttak, utsettelseFar])).toBe(true);
+    });
+
+    it('ser bort fra annen parts perioder', () => {
+        expect(erKunUtsettelser([uttakMor, utsettelseFar])).toBe(true);
+    });
+
+    it('returnerer false når planen kun har perioder for annen part', () => {
+        expect(erKunUtsettelser([uttakMor])).toBe(false);
     });
 });
 
@@ -82,13 +119,19 @@ describe('kanJustereFarsUttakRundtFødsel', () => {
     // Termin 2026-07-06 (mandag). Intervall far rundt fødsel: [2026-06-22, 2026-08-16].
     const termindato = '2026-07-06';
 
-    const lagFarPeriode = (overrides: Partial<UttakPeriode_fpoversikt>): UttakPeriode_fpoversikt => ({
-        fom: '2026-07-06',
-        tom: '2026-07-10',
-        forelder: 'FAR_MEDMOR',
-        flerbarnsdager: false,
-        kontoType: 'FORELDREPENGER',
-        ...overrides,
+    const lagFarPeriode = ({
+        fom = '2026-07-06',
+        tom = '2026-07-10',
+        ...overrides
+    }: Partial<UttakDto> & { fom?: string; tom?: string }): UttakPeriodeDto => ({
+        fom,
+        tom,
+        søker: {
+            forelder: 'FAR_MEDMOR',
+            flerbarnsdager: false,
+            kontoType: 'FORELDREPENGER',
+            ...overrides,
+        },
     });
 
     it('returnerer false når far ikke har perioder', () => {
