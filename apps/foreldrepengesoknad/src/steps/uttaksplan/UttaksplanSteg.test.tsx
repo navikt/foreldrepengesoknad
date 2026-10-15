@@ -377,6 +377,35 @@ describe('<UttaksplanSteg>', () => {
         expect(await screen.findByText('Du må gjøre en endring for å kunne søke om endring')).toBeInTheDocument();
     });
 
+    it('TFP-7005: skal kunne gå videre i endringssøknad når ferie legges til etter eksisterende uttak', async () => {
+        const gåTilNesteSide = vi.fn();
+        const eksisterendePlan = NySøknadFørVedtakMedEksisterendeSak.args.uttaksplan!;
+        const ferie: UttakPeriodeDto = {
+            fom: '2024-09-23',
+            tom: '2024-09-27',
+            søker: { forelder: 'MOR', utsettelseÅrsak: 'FERIE', flerbarnsdager: false },
+        };
+
+        await NySøknadFørVedtakMedEksisterendeSak.run({
+            args: {
+                ...NySøknadFørVedtakMedEksisterendeSak.args,
+                gåTilNesteSide,
+                erEndringssøknad: true,
+                uttaksplan: [...eksisterendePlan, ferie],
+            },
+        });
+
+        expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(screen.queryByText(/Du har kun lagt til utsettelser i planen/)).not.toBeInTheDocument();
+        const navigasjonsAction = gåTilNesteSide.mock.calls.find(
+            ([action]) => action.key === ContextDataType.APP_ROUTE,
+        );
+        expect(navigasjonsAction).toBeDefined();
+    });
+
     it('skal stoppe innsending når planen kun har perioder for den andre forelderen og søker har aleneomsorg', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();

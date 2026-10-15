@@ -14,7 +14,7 @@ import {
 import { notEmpty } from '@navikt/fp-validation';
 
 type SubmitValideringsregel = {
-    gjelder: (planForValidering: UttakPeriodeDto[]) => boolean;
+    gjelder: (planForValidering: UttakPeriodeDto[], helePlanen: UttakPeriodeDto[]) => boolean;
     message: string;
 };
 
@@ -101,13 +101,16 @@ export const useFinnFørsteSubmitFeilmelding = ({
             message: intl.formatMessage({ id: 'UttaksplanSteg.KunPerioderForAnnenForelder' }),
         },
         {
-            gjelder: erKunUtsettelser,
+            // Ved endringssøknad inneholder planForValidering bare nye og endrede perioder. Uendret uttak
+            // fra vedtaket må telle med, ellers ser for eksempel ferie lagt til på slutten ut som en
+            // plan med bare utsettelser.
+            gjelder: (_planForValidering, helePlanen) => erKunUtsettelser(helePlanen),
             message: intl.formatMessage({ id: 'UttaksplanSteg.KunUtsettelser' }),
         },
     ];
 
-    return (planForValidering: UttakPeriodeDto[]): string | undefined => {
-        const valideringsfeil = submitValideringsregler.find((regel) => regel.gjelder(planForValidering));
+    return (planForValidering: UttakPeriodeDto[], helePlanen: UttakPeriodeDto[]): string | undefined => {
+        const valideringsfeil = submitValideringsregler.find((regel) => regel.gjelder(planForValidering, helePlanen));
         return valideringsfeil?.message;
     };
 };
@@ -202,18 +205,15 @@ export const harMinstEnUttaksEllerOverføringsperiode = (perioder: UttakPeriodeD
     });
 
 export const erKunUtsettelser = (perioder: UttakPeriodeDto[]) => {
-    if (perioder.length === 0) {
+    // Avslåtte perioder sendes ikke inn (filtrerUtAvslåttePerioder i apiUtils), så de teller ikke som uttak.
+    const søkersPerioder = perioder.flatMap((periode) =>
+        periode.søker && periode.søker.resultat?.innvilget !== false ? [periode.søker] : [],
+    );
+    if (søkersPerioder.length === 0) {
         return false;
     }
 
-    // Ferie er ein utsettelse som legg dagar tilbake i beholdninga, og er ein gyldig søknad åleine.
-    const harFerie = perioder.some((periode) => periode.søker?.utsettelseÅrsak === 'FERIE');
-    if (harFerie) {
-        return false;
-    }
-
-    // Ser bare på søkerens egne perioder her, i tråd med konvensjonen ellers i filen.
-    return perioder.every((periode) => !!periode.søker && Uttaksperioden.erUtsettelsesperiode(periode.søker));
+    return søkersPerioder.every((søker) => Uttaksperioden.erUtsettelsesperiode(søker));
 };
 
 const utledRettighet = (erAleneOmOmsorg: boolean, erDeltUttak: boolean): RettighetType_fpoversikt => {
