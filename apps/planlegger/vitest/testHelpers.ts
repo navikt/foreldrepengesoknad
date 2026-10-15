@@ -20,7 +20,9 @@ export const endreFordelingMedSlider = async (
     const nåSliderVerdi = Number(slider.getAttribute('aria-valuenow') ?? 0);
     const ønsketSliderVerdi = max - ønsketAntallDager;
     const diff = ønsketSliderVerdi - nåSliderVerdi;
-    const steg = Math.abs(diff) / 5;
-    const key = diff >= 0 ? '{ArrowRight}' : '{ArrowLeft}';
-    await userEvent.keyboard(key.repeat(Math.ceil(steg)));
+    const steg = Math.ceil(Math.abs(diff) / 5);
+    if (steg > 0) {
+        const key = diff >= 0 ? '{ArrowRight}' : '{ArrowLeft}';
+        await userEvent.keyboard(key.repeat(steg));
+    }
 };
