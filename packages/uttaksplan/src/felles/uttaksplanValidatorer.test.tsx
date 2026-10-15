@@ -5,7 +5,7 @@ import { IntlProvider, createIntl, createIntlCache } from 'react-intl';
 import { describe, expect, it } from 'vitest';
 
 import { BarnType, ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { UttakDto } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { UttaksplanDataProvider } from '../context/UttaksplanDataContext';
@@ -198,7 +198,7 @@ const DEFAULT_DATA = {
         fødselsdatoer: [FAMILIEHENDELSESDATO],
     },
     harAktivitetskravIPeriodeUtenUttak: false,
-    uttakPerioder: [],
+    perioder: [],
     erPeriodeneTilAnnenPartLåst: false,
     children: [],
     erEndringssøknad: false,
@@ -227,14 +227,16 @@ describe('useFormSubmitValidator', () => {
                         termindato: '2026-08-03',
                         fødselsdatoer: ['2026-08-10'],
                     },
-                    uttakPerioder: [
+                    perioder: [
                         {
                             fom: '2026-07-20',
                             tom: '2026-07-24',
-                            forelder: 'FAR_MEDMOR',
-                            kontoType: 'FEDREKVOTE',
-                            flerbarnsdager: false,
-                            samtidigUttak: 100,
+                            søker: {
+                                forelder: 'FAR_MEDMOR',
+                                kontoType: 'FEDREKVOTE',
+                                flerbarnsdager: false,
+                                samtidigUttak: 100,
+                            },
                         },
                     ],
                 }),
@@ -258,43 +260,42 @@ describe('useFormSubmitValidator', () => {
         { flerbarnsdager: true, samtidigUttak: 100 },
         { morsAktivitet: 'INNLAGT' },
         { morsAktivitet: 'TRENGER_HJELP' },
-    ] satisfies Array<Partial<UttakPeriode_fpoversikt>>)(
-        'tillater to uker samtidig fedrekvote etter unntaksuttak: %o',
-        (unntak) => {
-            const { result } = renderHook(() => useFormSubmitValidator(), {
-                wrapper: getWrapper({
-                    barn: {
-                        type: BarnType.FØDT,
-                        antallBarn: 2,
-                        fødselsdatoer: ['2026-08-10', '2026-08-10'],
-                    },
-                    uttakPerioder: [
-                        {
-                            fom: '2026-08-10',
-                            tom: '2026-08-21',
+    ] satisfies Array<Partial<UttakDto>>)('tillater to uker samtidig fedrekvote etter unntaksuttak: %o', (unntak) => {
+        const { result } = renderHook(() => useFormSubmitValidator(), {
+            wrapper: getWrapper({
+                barn: {
+                    type: BarnType.FØDT,
+                    antallBarn: 2,
+                    fødselsdatoer: ['2026-08-10', '2026-08-10'],
+                },
+                perioder: [
+                    {
+                        fom: '2026-08-10',
+                        tom: '2026-08-21',
+                        søker: {
                             forelder: 'FAR_MEDMOR',
                             kontoType: 'FEDREKVOTE',
                             flerbarnsdager: false,
                             ...unntak,
                         },
-                    ],
-                }),
-            });
+                    },
+                ],
+            }),
+        });
 
-            expect(
-                result.current([{ fom: '2026-08-24', tom: '2026-09-04' }], {
-                    forelder: 'BEGGE',
-                    kontoTypeMor: 'MØDREKVOTE',
-                    kontoTypeFarMedmor: 'FEDREKVOTE',
-                    samtidigUttaksprosentMor: '100',
-                    samtidigUttaksprosentFarMedmor: '100',
-                    skalDuKombinereArbeidOgUttakMor: false,
-                    skalDuKombinereArbeidOgUttakFarMedmor: false,
-                    ønskerFlerbarnsdager: false,
-                }),
-            ).toBeNull();
-        },
-    );
+        expect(
+            result.current([{ fom: '2026-08-24', tom: '2026-09-04' }], {
+                forelder: 'BEGGE',
+                kontoTypeMor: 'MØDREKVOTE',
+                kontoTypeFarMedmor: 'FEDREKVOTE',
+                samtidigUttaksprosentMor: '100',
+                samtidigUttaksprosentFarMedmor: '100',
+                skalDuKombinereArbeidOgUttakMor: false,
+                skalDuKombinereArbeidOgUttakFarMedmor: false,
+                ønskerFlerbarnsdager: false,
+            }),
+        ).toBeNull();
+    });
 
     it('skal returnere feilmelding dersom mor kombinerer arbeid og foreldrepenger de første 6 ukene', () => {
         const { result } = renderHook(() => useFormSubmitValidator(), {
@@ -394,13 +395,15 @@ describe('useFormSubmitValidator', () => {
                     erMedmorDelAvSøknaden: false,
                     navnPåForeldre: { farMedmor: 'Far Medmor', mor: 'Mor' },
                 },
-                uttakPerioder: [
+                perioder: [
                     {
                         fom: FAMILIEHENDELSESDATO,
                         tom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(4),
-                        forelder: 'FAR_MEDMOR',
-                        flerbarnsdager: false,
-                        samtidigUttak: 100,
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            flerbarnsdager: false,
+                            samtidigUttak: 100,
+                        },
                     },
                 ],
             }),
@@ -436,12 +439,14 @@ describe('useFormSubmitValidator', () => {
                     erMedmorDelAvSøknaden: false,
                     navnPåForeldre: { farMedmor: 'Far Medmor', mor: 'Mor' },
                 },
-                uttakPerioder: [
+                perioder: [
                     {
                         fom: FAMILIEHENDELSESDATO,
                         tom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(4),
-                        forelder: 'FAR_MEDMOR',
-                        flerbarnsdager: false,
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            flerbarnsdager: false,
+                        },
                     },
                 ],
             }),
@@ -475,22 +480,24 @@ describe('useFormSubmitValidator', () => {
                     erMedmorDelAvSøknaden: false,
                     navnPåForeldre: { farMedmor: 'Far Medmor', mor: 'Mor' },
                 },
-                uttakPerioder: [
+                perioder: [
                     {
                         fom: FAMILIEHENDELSESDATO,
                         tom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(4),
-                        forelder: 'FAR_MEDMOR',
-                        gradering: {
-                            aktivitet: {
-                                type: 'ORDINÆRT_ARBEID',
-                                arbeidsgiver: {
-                                    id: '123456789',
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            gradering: {
+                                aktivitet: {
+                                    type: 'ORDINÆRT_ARBEID',
+                                    arbeidsgiver: {
+                                        id: '123456789',
+                                    },
+                                    arbeidsgiverNavn: 'Test AS',
                                 },
-                                arbeidsgiverNavn: 'Test AS',
+                                arbeidstidprosent: 50,
                             },
-                            arbeidstidprosent: 50,
+                            flerbarnsdager: false,
                         },
-                        flerbarnsdager: false,
                     },
                 ],
             }),
@@ -525,23 +532,26 @@ describe('useFormSubmitValidator', () => {
                     erMedmorDelAvSøknaden: false,
                     navnPåForeldre: { farMedmor: 'Far Medmor', mor: 'Mor' },
                 },
-                uttakPerioder: [
+                perioder: [
                     {
                         fom: FAMILIEHENDELSESDATO,
                         tom: Uttaksdagen.denne(FAMILIEHENDELSESDATO).getDatoAntallUttaksdagerSenere(4),
-                        forelder: 'FAR_MEDMOR',
-                        gradering: {
-                            aktivitet: {
-                                type: 'ORDINÆRT_ARBEID',
-                                arbeidsgiver: {
-                                    id: '123456789',
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FEDREKVOTE',
+                            gradering: {
+                                aktivitet: {
+                                    type: 'ORDINÆRT_ARBEID',
+                                    arbeidsgiver: {
+                                        id: '123456789',
+                                    },
+                                    arbeidsgiverNavn: 'Test AS',
                                 },
-                                arbeidsgiverNavn: 'Test AS',
+                                arbeidstidprosent: 50,
                             },
-                            arbeidstidprosent: 50,
+                            flerbarnsdager: false,
+                            samtidigUttak: 50,
                         },
-                        flerbarnsdager: false,
-                        samtidigUttak: 50,
                     },
                 ],
             }),

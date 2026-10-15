@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router';
-import { annenPartVedtak } from 'storybookData/annenPartVedtak/annenPartVedtak';
 import { dokumenter } from 'storybookData/dokumenter/dokumenter';
 import { manglendeVedlegg } from 'storybookData/manglendeVedlegg/manglendeVedlegg';
 import { saker } from 'storybookData/saker/saker';
@@ -16,6 +15,7 @@ import {
     tidslinjeHendelser_FP_førstegangssøknad_nylig,
     tidslinjeHendelser_SVP_førstegangssøknad_nylig,
 } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
+import { uttaksplan } from 'storybookData/uttaksplan/uttaksplan';
 
 import { OversiktPersonopplysningerDto_fpoversikt, Saker_fpoversikt } from '@navikt/fp-types';
 import { withQueryClient } from '@navikt/fp-utils-test';
@@ -55,7 +55,41 @@ export const Foreldrepenger: Story = {
             http.get(API_URLS.saker, () => HttpResponse.json(saker)),
             http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelserFP)),
             http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
-            http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
+            http.post(API_URLS.uttaksplan, () => HttpResponse.json(uttaksplan)),
+        );
+    },
+
+    args: {
+        søkerinfo: søkerinfo,
+        saksnummer: '1',
+    },
+};
+
+export const ForeldrepengerUtenUttaksplan: Story = {
+    beforeEach({ msw }) {
+        msw.use(
+            http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
+            http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+            http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelserFP)),
+            http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
+        );
+    },
+
+    args: {
+        søkerinfo: søkerinfo,
+        saksnummer: '1',
+    },
+};
+
+export const ForeldrepengerFeilVedHentingAvUttaksplan: Story = {
+    beforeEach({ msw }) {
+        msw.use(
+            http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
+            http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+            http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelserFP)),
+            http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
+            http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 500 })),
         );
     },
 
@@ -115,7 +149,7 @@ const svangerskapspengerHandlers = [
         }),
     ),
     http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
-    http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
+    http.post(API_URLS.uttaksplan, () => HttpResponse.json(uttaksplan)),
 ];
 
 export const Svangerskapspenger: Story = {
@@ -139,7 +173,7 @@ export const ForeldrepengerTestAvSkyraNyligInnsending: Story = {
             http.get(API_URLS.saker, () => HttpResponse.json(saker)),
             http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_FP_førstegangssøknad_nylig)),
             http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
-            http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
+            http.post(API_URLS.uttaksplan, () => HttpResponse.json(uttaksplan)),
         );
     },
 
@@ -156,7 +190,7 @@ export const ForeldrepengerTestAvSkyraGammelInnsending: Story = {
             http.get(API_URLS.saker, () => HttpResponse.json(saker)),
             http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_FP_førstegangssøknad_gammel)),
             http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
-            http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
+            http.post(API_URLS.uttaksplan, () => HttpResponse.json(uttaksplan)),
         );
     },
 
@@ -173,7 +207,7 @@ export const ForeldrepengerEndringssøknad: Story = {
             http.get(API_URLS.saker, () => HttpResponse.json(saker)),
             http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_FP_endringssøknad_nylig)),
             http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
-            http.post(API_URLS.annenPartVedtak, () => HttpResponse.json(annenPartVedtak)),
+            http.post(API_URLS.uttaksplan, () => HttpResponse.json(uttaksplan)),
         );
     },
 

@@ -73,6 +73,7 @@ export {
 
 export { Uttaksdagen, erUttaksdag } from './src/uttak/Uttaksdagen';
 export { Uttaksperioden } from './src/uttak/Uttaksperioden';
+export { konverterFlatePerioderTilIntervall } from './src/uttak/flatePerioder';
 export { erFødtFørUke33, getAntallVirkedagerFraFødselTilTermin } from './src/uttak/prematurUtils';
 export { Tidsperioden } from './src/Tidsperioden';
 export * from './src/cookieUtils';

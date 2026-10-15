@@ -48,7 +48,7 @@ describe('<Oppsummering>', () => {
     it('Skal bekrefte vilkårene og sende inn søknad', async () => {
         const sendSøknad = vi.fn();
 
-        render(<Default sendSøknad={sendSøknad} />);
+        await Default.run({ args: { ...Default.args, sendSøknad } });
 
         expect(screen.queryByText('Du må bekrefte at du har oppgitt riktige opplysninger')).not.toBeInTheDocument();
 

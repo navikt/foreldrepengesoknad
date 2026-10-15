@@ -42,15 +42,15 @@ export const kanMisteDagerVedFerieIUke7EtterTermin = (
 
 export const useFormSubmitValidator = <T extends LeggTilEllerEndrePeriodeFormFormValues>() => {
     const intl = useIntl();
-    const { familiehendelsedato, familiesituasjon, foreldreInfo, uttakPerioder, termindato, erEndringssøknad } =
+    const { familiehendelsedato, familiesituasjon, foreldreInfo, perioder, termindato, erEndringssøknad } =
         useUttaksplanData();
 
-    return (perioder: Array<{ fom: string; tom: string }>, formValues: T): string | null =>
+    return (valgtePerioder: Array<{ fom: string; tom: string }>, formValues: T): string | null =>
         valider(
             {
                 formValues,
-                perioder,
-                uttakPerioder,
+                perioder: valgtePerioder,
+                uttakPerioder: perioder,
                 familiehendelsedato,
                 familiesituasjon,
                 termindato,

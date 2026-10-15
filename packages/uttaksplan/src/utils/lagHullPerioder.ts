@@ -2,12 +2,7 @@ import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 
-import {
-    BrukerRolleSak_fpoversikt,
-    Familiesituasjon,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
-} from '@navikt/fp-types';
+import { BrukerRolleSak_fpoversikt, Familiesituasjon, UttakPeriodeDto } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
@@ -24,16 +19,15 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
 export const useAlleUttakPerioderInklTapteDager = (): UttaksplanperiodeMedKunTapteDager[] => {
-    const { uttakPerioder, familiehendelsedato, familiesituasjon, foreldreInfo } = useUttaksplanData();
+    const { perioder, familiehendelsedato, familiesituasjon, foreldreInfo } = useUttaksplanData();
 
-    return [
-        ...uttakPerioder,
-        ...lagTapteDagerPerioder(uttakPerioder, familiehendelsedato, familiesituasjon, foreldreInfo),
-    ].sort(sorterPerioder);
+    return [...perioder, ...lagTapteDagerPerioder(perioder, familiehendelsedato, familiesituasjon, foreldreInfo)].sort(
+        sorterPerioder,
+    );
 };
 
 export const useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak = (
-    uttakPerioderJustertForFamiliehendelsesdato: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    uttakPerioderJustertForFamiliehendelsesdato: UttakPeriodeDto[],
 ): Uttaksplanperiode[] => {
     const { familiehendelsedato, familiesituasjon, foreldreInfo } = useUttaksplanData();
 
@@ -51,7 +45,7 @@ export const useAlleUttakPerioderInklTapteDagerOgPerioderUtenUttak = (
 };
 
 export const lagTapteDagerPerioder = (
-    sortertePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    sortertePerioder: UttakPeriodeDto[],
     familiehendelsedato: string,
     familiesituasjon: Familiesituasjon,
     foreldreInfo: ForeldreInfo,
@@ -92,7 +86,7 @@ export const lagTapteDagerPerioder = (
 };
 
 const lagTapteDagerHull = (
-    sortertePerioder: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    sortertePerioder: UttakPeriodeDto[],
     forelder: BrukerRolleSak_fpoversikt,
     periodeSomSkalSjekkesForHull: { fom: string; tom: string },
 ): TapteDagerHull[] => {

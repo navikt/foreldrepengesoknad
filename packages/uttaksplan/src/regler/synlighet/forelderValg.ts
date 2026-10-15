@@ -1,7 +1,6 @@
 import type { BrukerRolleSak_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import { erEøsUttakPeriode } from '../../types/UttaksplanPeriode';
 import { useGyldigeKvotetyper } from '../kvotetype/kvoteRegler';
 import { Periode } from '../types';
 import { ForelderValg, Synlighetsregel } from './types';
@@ -22,7 +21,7 @@ export const useForelderValgSynlighet = (
     const {
         foreldreInfo: { søker },
         erPeriodeneTilAnnenPartLåst,
-        uttakPerioder,
+        perioder,
     } = useUttaksplanData();
 
     const { gyldigeStønadskontoerForMor, gyldigeStønadskontoerForFarMedmor } = useGyldigeKvotetyper({
@@ -33,7 +32,7 @@ export const useForelderValgSynlighet = (
 
     const erMorGyldigForelder = gyldigeStønadskontoerForMor.length > 0;
     const erFarMedmorGyldigForelder = gyldigeStønadskontoerForFarMedmor.length > 0;
-    const erMinstEnEøsPeriode = uttakPerioder.some((periode) => erEøsUttakPeriode(periode));
+    const erMinstEnEøsPeriode = perioder.some((periode) => !!periode.annenPartEøs);
     const erFarMedmorLåst = erPeriodeneTilAnnenPartLåst && søker === 'MOR';
     const erMorLåst = erPeriodeneTilAnnenPartLåst && søker === 'FAR_MEDMOR';
 

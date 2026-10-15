@@ -1,39 +1,33 @@
 import dayjs from 'dayjs';
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 
-import {
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
-    UttakUtsettelseÅrsak_fpoversikt,
-} from '@navikt/fp-types';
+import { UtsettelseÅrsak, UttakDto, UttakPeriodeDto } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
 import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan/validators';
 
 /**
  * Finner periodene som faktisk inngår i denne søknaden, og som derfor kan kreve dokumentasjon.
  *
- * Filtrerer bort annen parts perioder, og – i en endringssøknad mot en eksisterende sak –
- * perioder som allerede er innvilget (de har et `resultat`). Uten dette ville søknaden f.eks.
- * be far om sykdomsdokumentasjon for fellesperiode mor syk som allerede er innvilget, selv om
- * han kun endrer/legger til en ny periode.
+ * Filtrerer bort periodene der søkjar ikkje har eige uttak (periode.søker er ikkje sett, t.d.
+ * reine opphaldsperiodar eller periodar som berre gjeld annan part), og – i en endringssøknad mot
+ * en eksisterende sak – perioder som allerede er innvilget (de har et `resultat`). Uten dette
+ * ville søknaden f.eks. be far om sykdomsdokumentasjon for fellesperiode mor syk som allerede er
+ * innvilget, selv om han kun endrer/legger til en ny periode.
  */
 export const finnPerioderSomInngårISøknaden = (
-    uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
-    erFarEllerMedmor: boolean,
+    uttaksplan: UttakPeriodeDto[],
     harEksisterendeSak: boolean,
-): UttakPeriode_fpoversikt[] => {
-    return uttaksplan.filter((periode): periode is UttakPeriode_fpoversikt => {
-        if (Uttaksperioden.erEøsPeriode(periode)) {
+): UttakPeriodeDto[] => {
+    return uttaksplan.filter((periode) => {
+        if (!periode.søker) {
             return false;
         }
-        const erSøkersPeriode = periode.forelder === (erFarEllerMedmor ? 'FAR_MEDMOR' : 'MOR');
-        const erDelAvSøknaden = harEksisterendeSak ? periode.resultat === undefined : true;
-        return erSøkersPeriode && erDelAvSøknaden;
+        return harEksisterendeSak ? periode.søker.resultat === undefined : true;
     });
 };
 
 export const perioderSomKreverVedlegg = (
-    uttaksplan: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>,
+    uttaksplan: UttakPeriodeDto[],
     erFarEllerMedmor: boolean,
     annenForelder: AnnenForelder,
     familiehendelsedato: string,
@@ -46,13 +40,18 @@ export const perioderSomKreverVedlegg = (
 };
 
 const shouldPeriodeHaveAttachment = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    periode: UttakPeriodeDto,
     søkerErFarEllerMedmor: boolean,
     annenForelder: AnnenForelder,
     familiehendelsedato: string,
 ): boolean => {
-    if ('utsettelseÅrsak' in periode && !!periode.utsettelseÅrsak) {
-        const årsak = periode.utsettelseÅrsak;
+    const søker = periode.søker;
+    if (!søker) {
+        return false;
+    }
+
+    if (søker.utsettelseÅrsak) {
+        const årsak = søker.utsettelseÅrsak;
         return (
             skalBesvaresVedUtsettelse(søkerErFarEllerMedmor, annenForelder) ||
             erÅrsakSykdomEllerInstitusjonsopphold(årsak) ||
@@ -60,17 +59,17 @@ const shouldPeriodeHaveAttachment = (
             årsak === 'NAV_TILTAK'
         );
     }
-    if ('overføringÅrsak' in periode && !!periode.overføringÅrsak) {
+    if (søker.overføringÅrsak) {
         return (
-            periode.overføringÅrsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' ||
-            periode.overføringÅrsak === 'SYKDOM_ANNEN_FORELDER' ||
-            ((søkerErFarEllerMedmor || periode.overføringÅrsak !== 'ALENEOMSORG') &&
-                periode.overføringÅrsak !== 'IKKE_RETT_ANNEN_FORELDER')
+            søker.overføringÅrsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' ||
+            søker.overføringÅrsak === 'SYKDOM_ANNEN_FORELDER' ||
+            ((søkerErFarEllerMedmor || søker.overføringÅrsak !== 'ALENEOMSORG') &&
+                søker.overføringÅrsak !== 'IKKE_RETT_ANNEN_FORELDER')
         );
     }
 
-    if (Uttaksperioden.erIkkeEøsPeriode(periode) && Uttaksperioden.erUttaksperiode(periode)) {
-        return dokumentasjonBehøvesForUttaksperiode(periode, søkerErFarEllerMedmor, familiehendelsedato);
+    if (Uttaksperioden.erUttaksperiode(søker)) {
+        return dokumentasjonBehøvesForUttaksperiode(periode, søker, søkerErFarEllerMedmor, familiehendelsedato);
     }
 
     return false;
@@ -84,15 +83,16 @@ const skalBesvaresVedUtsettelse = (søkerErFarEllerMedmor: boolean, annenForelde
     return søkerErFarEllerMedmor && annenForelderHarRett === false;
 };
 
-const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UttakUtsettelseÅrsak_fpoversikt) =>
+const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelseÅrsak) =>
     ['SØKER_SYKDOM', 'SØKER_INNLAGT', 'BARN_INNLAGT'].includes(årsak);
 
 const dokumentasjonBehøvesForUttaksperiode = (
-    periode: UttakPeriode_fpoversikt,
+    periode: UttakPeriodeDto,
+    søker: UttakDto,
     søkerErFarEllerMedmor: boolean,
     familiehendelsedato: string,
 ): boolean => {
-    const harIkkeAktivitetskrav = periode.kontoType === 'FORELDREPENGER' && periode.morsAktivitet === 'IKKE_OPPGITT';
+    const harIkkeAktivitetskrav = søker.kontoType === 'FORELDREPENGER' && søker.morsAktivitet === 'IKKE_OPPGITT';
     if (harIkkeAktivitetskrav) {
         return false;
     }
@@ -101,7 +101,7 @@ const dokumentasjonBehøvesForUttaksperiode = (
     // far/medmor sin søknad. I mors egen søknad skal det aldri kreves dokumentasjon for mors
     // aktivitet, uansett hvilken aktivitet hun velger.
     const krevesDokumentasjonAvMorsAktivitet =
-        søkerErFarEllerMedmor && periode.morsAktivitet !== undefined && periode.morsAktivitet !== 'UFØRE';
+        søkerErFarEllerMedmor && søker.morsAktivitet !== undefined && søker.morsAktivitet !== 'UFØRE';
 
     return (
         krevesDokumentasjonAvMorsAktivitet || kreverDokumentasjonForFedrekvoteRundtFødsel(periode, familiehendelsedato)
@@ -109,14 +109,16 @@ const dokumentasjonBehøvesForUttaksperiode = (
 };
 
 export const kreverDokumentasjonForFedrekvoteRundtFødsel = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
+    periode: UttakPeriodeDto,
     familiehendelsedato: string,
 ): boolean => {
+    const søker = periode.søker;
+
     return (
-        Uttaksperioden.erIkkeEøsPeriode(periode) &&
-        Uttaksperioden.erUttaksperiode(periode) &&
-        periode.kontoType === 'FEDREKVOTE' &&
-        !periode.samtidigUttak &&
+        !!søker &&
+        Uttaksperioden.erUttaksperiode(søker) &&
+        søker.kontoType === 'FEDREKVOTE' &&
+        !søker.samtidigUttak &&
         !dayjs(periode.fom).isBefore(familiehendelsedato, 'day') &&
         UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
             periode,

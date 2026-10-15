@@ -1,15 +1,17 @@
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { UttakDto, UttakPeriodeDto } from '@navikt/fp-types';
 
 import {
-    finnAntallTidelerÅTrekke,
+    erAvslåttPeriode,
+    finnAntallTidelerÅTrekkeForUttak,
     harPeriodeDerMorsAktivitetIkkeErValgt,
     harPeriodeMedUkjentGraderingsaktivitet,
     sorterUttakPerioder,
 } from './periodeUtils';
 
-const lagFarPeriode = (overrides: Partial<UttakPeriode_fpoversikt> = {}): UttakPeriode_fpoversikt => ({
-    fom: '2025-06-02',
-    tom: '2025-07-25',
+const FOM = '2025-06-02';
+const TOM = '2025-07-25';
+
+const lagFarUttak = (overrides: Partial<UttakDto> = {}): UttakDto => ({
     forelder: 'FAR_MEDMOR',
     kontoType: 'FELLESPERIODE',
     flerbarnsdager: false,
@@ -17,22 +19,32 @@ const lagFarPeriode = (overrides: Partial<UttakPeriode_fpoversikt> = {}): UttakP
     ...overrides,
 });
 
-const lagMorPeriode = (overrides: Partial<UttakPeriode_fpoversikt> = {}): UttakPeriode_fpoversikt => ({
-    fom: '2025-06-02',
-    tom: '2025-07-25',
+const lagMorUttak = (overrides: Partial<UttakDto> = {}): UttakDto => ({
     forelder: 'MOR',
     kontoType: 'MØDREKVOTE',
     flerbarnsdager: false,
     ...overrides,
 });
 
+const lagPeriode = (
+    alleUttak: Pick<UttakPeriodeDto, 'søker' | 'annenPart'>,
+    fom = FOM,
+    tom = TOM,
+): UttakPeriodeDto => ({
+    fom,
+    tom,
+    ...alleUttak,
+});
+
+const lagFarSøkerPeriode = (overrides: Partial<UttakDto> = {}) => lagPeriode({ søker: lagFarUttak(overrides) });
+
 describe('sorterUttakPerioder', () => {
     const perioder = [
-        lagFarPeriode({ fom: '2025-06-02', tom: '2025-06-06' }),
-        lagFarPeriode({ fom: '2025-06-04', tom: '2025-06-10' }),
-        lagMorPeriode({ fom: '2025-06-02', tom: '2025-06-10' }),
-        lagMorPeriode({ fom: '2025-06-02', tom: '2025-06-13' }),
-        lagFarPeriode({ fom: '2025-06-16', tom: '2025-06-20' }),
+        lagPeriode({ søker: lagFarUttak() }, '2025-06-02', '2025-06-06'),
+        lagPeriode({ søker: lagFarUttak() }, '2025-06-04', '2025-06-10'),
+        lagPeriode({ annenPart: lagMorUttak() }, '2025-06-02', '2025-06-10'),
+        lagPeriode({ annenPart: lagMorUttak() }, '2025-06-02', '2025-06-13'),
+        lagPeriode({ søker: lagFarUttak() }, '2025-06-16', '2025-06-20'),
     ];
 
     it('skal sortere omsluttede perioder først, også ved lik start eller slutt', () => {
@@ -40,8 +52,8 @@ describe('sorterUttakPerioder', () => {
     });
 
     it('skal bevare rekkefølgen til perioder med identiske datoer', () => {
-        const mor = lagMorPeriode();
-        const far = lagFarPeriode();
+        const mor = lagPeriode({ annenPart: lagMorUttak() });
+        const far = lagFarSøkerPeriode();
 
         expect(sorterUttakPerioder(mor, far)).toBe(0);
         expect(sorterUttakPerioder(mor, mor)).toBe(0);
@@ -64,9 +76,9 @@ describe('sorterUttakPerioder', () => {
     });
 
     it('skal sortere ugyldige perioder først og behandle to ugyldige perioder likt', () => {
-        const ugyldig = lagFarPeriode({ fom: '2025-06-10', tom: '2025-06-02' });
-        const annenUgyldig = lagMorPeriode({ fom: 'ugyldig' });
-        const gyldig = lagMorPeriode();
+        const ugyldig = lagPeriode({ søker: lagFarUttak() }, '2025-06-10', '2025-06-02');
+        const annenUgyldig = lagPeriode({ annenPart: lagMorUttak() }, 'ugyldig');
+        const gyldig = lagPeriode({ annenPart: lagMorUttak() });
 
         expect(sorterUttakPerioder(ugyldig, annenUgyldig)).toBe(0);
         expect(sorterUttakPerioder(ugyldig, gyldig)).toBeLessThan(0);
@@ -76,7 +88,7 @@ describe('sorterUttakPerioder', () => {
 
 describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
     it('skal returnere true når far har periode uten morsAktivitet og ingen overlappende mor-periode', () => {
-        const perioder = [lagFarPeriode()];
+        const perioder = [lagFarSøkerPeriode()];
 
         const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', 'FAR_MEDMOR', false, perioder);
 
@@ -84,7 +96,7 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
     });
 
     it('skal returnere false når søker er MOR uavhengig av far-perioder uten morsAktivitet', () => {
-        const perioder = [lagFarPeriode()];
+        const perioder = [lagPeriode({ annenPart: lagFarUttak() })];
 
         const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', 'MOR', false, perioder);
 
@@ -92,7 +104,7 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
     });
 
     it('skal returnere true når søker er MOR men søker ikke er spesifisert (planlegger felles plan)', () => {
-        const perioder = [lagFarPeriode()];
+        const perioder = [lagPeriode({ annenPart: lagFarUttak() })];
 
         const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', 'MOR', true, perioder);
 
@@ -100,7 +112,7 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
     });
 
     it('skal returnere false ved ALENEOMSORG uavhengig av perioder', () => {
-        const perioder = [lagFarPeriode()];
+        const perioder = [lagFarSøkerPeriode()];
 
         const result = harPeriodeDerMorsAktivitetIkkeErValgt('ALENEOMSORG', 'FAR_MEDMOR', false, perioder);
 
@@ -108,7 +120,7 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
     });
 
     it('skal returnere false ved erFarOgFar uavhengig av perioder', () => {
-        const perioder = [lagFarPeriode()];
+        const perioder = [lagFarSøkerPeriode()];
 
         const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', 'FAR_MEDMOR', false, perioder, true);
 
@@ -117,10 +129,12 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
 
     it('skal returnere false når far har periode uten morsAktivitet og overlappende mor-periode med samtidigUttak + gradering = 100', () => {
         const perioder = [
-            lagFarPeriode({ samtidigUttak: 50 }),
-            lagMorPeriode({
-                samtidigUttak: 50,
-                gradering: { arbeidstidprosent: 50, aktivitet: { type: 'ANNET' } },
+            lagPeriode({
+                søker: lagFarUttak({ samtidigUttak: 50 }),
+                annenPart: lagMorUttak({
+                    samtidigUttak: 50,
+                    gradering: { arbeidstidprosent: 50, aktivitet: { type: 'ANNET' } },
+                }),
             }),
         ];
 
@@ -130,7 +144,9 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
     });
 
     it('skal returnere false når mor tar 100 % samtidigUttak uten gradering', () => {
-        const perioder = [lagFarPeriode({ samtidigUttak: 100 }), lagMorPeriode({ samtidigUttak: 100 })];
+        const perioder = [
+            lagPeriode({ søker: lagFarUttak({ samtidigUttak: 100 }), annenPart: lagMorUttak({ samtidigUttak: 100 }) }),
+        ];
 
         const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', 'FAR_MEDMOR', false, perioder);
 
@@ -139,10 +155,12 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
 
     it('skal returnere true når overlappende mor-periode ikke summerer til 100 % (samtidigUttak + gradering < 100)', () => {
         const perioder = [
-            lagFarPeriode({ samtidigUttak: 40 }),
-            lagMorPeriode({
-                samtidigUttak: 40,
-                gradering: { arbeidstidprosent: 40, aktivitet: { type: 'ANNET' } },
+            lagPeriode({
+                søker: lagFarUttak({ samtidigUttak: 40 }),
+                annenPart: lagMorUttak({
+                    samtidigUttak: 40,
+                    gradering: { arbeidstidprosent: 40, aktivitet: { type: 'ANNET' } },
+                }),
             }),
         ];
 
@@ -153,13 +171,17 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
 
     it('skal returnere true når mor-perioden ikke overlapper med far-perioden', () => {
         const perioder = [
-            lagFarPeriode({ fom: '2025-06-02', tom: '2025-07-25' }),
-            lagMorPeriode({
-                fom: '2025-08-01',
-                tom: '2025-09-01',
-                samtidigUttak: 50,
-                gradering: { arbeidstidprosent: 50, aktivitet: { type: 'ANNET' } },
-            }),
+            lagPeriode({ søker: lagFarUttak() }, '2025-06-02', '2025-07-25'),
+            lagPeriode(
+                {
+                    annenPart: lagMorUttak({
+                        samtidigUttak: 50,
+                        gradering: { arbeidstidprosent: 50, aktivitet: { type: 'ANNET' } },
+                    }),
+                },
+                '2025-08-01',
+                '2025-09-01',
+            ),
         ];
 
         const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', 'FAR_MEDMOR', false, perioder);
@@ -168,7 +190,7 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
     });
 
     it('skal returnere false når far-periode med morsAktivitet satt ikke trigges', () => {
-        const perioder = [lagFarPeriode({ morsAktivitet: 'ARBEID' })];
+        const perioder = [lagFarSøkerPeriode({ morsAktivitet: 'ARBEID' })];
 
         const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', 'FAR_MEDMOR', false, perioder);
 
@@ -179,11 +201,13 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
 describe('harPeriodeMedUkjentGraderingsaktivitet', () => {
     it('skal returnere true når søkers periode har gradering med ANNET (frå planleggaren)', () => {
         const perioder = [
-            lagMorPeriode({
-                gradering: {
-                    arbeidstidprosent: 60,
-                    aktivitet: { type: 'ANNET' },
-                },
+            lagPeriode({
+                søker: lagMorUttak({
+                    gradering: {
+                        arbeidstidprosent: 60,
+                        aktivitet: { type: 'ANNET' },
+                    },
+                }),
             }),
         ];
 
@@ -192,11 +216,13 @@ describe('harPeriodeMedUkjentGraderingsaktivitet', () => {
 
     it('skal returnere false når ANNET-perioden tilhøyrer annen part (ikkje søker)', () => {
         const perioder = [
-            lagFarPeriode({
-                gradering: {
-                    arbeidstidprosent: 60,
-                    aktivitet: { type: 'ANNET' },
-                },
+            lagPeriode({
+                annenPart: lagFarUttak({
+                    gradering: {
+                        arbeidstidprosent: 60,
+                        aktivitet: { type: 'ANNET' },
+                    },
+                }),
             }),
         ];
 
@@ -205,11 +231,13 @@ describe('harPeriodeMedUkjentGraderingsaktivitet', () => {
 
     it('skal returnere true når søkers periode har gradering med ORDINÆRT_ARBEID uten arbeidsgiver', () => {
         const perioder = [
-            lagMorPeriode({
-                gradering: {
-                    arbeidstidprosent: 60,
-                    aktivitet: { type: 'ORDINÆRT_ARBEID' },
-                },
+            lagPeriode({
+                søker: lagMorUttak({
+                    gradering: {
+                        arbeidstidprosent: 60,
+                        aktivitet: { type: 'ORDINÆRT_ARBEID' },
+                    },
+                }),
             }),
         ];
 
@@ -218,14 +246,16 @@ describe('harPeriodeMedUkjentGraderingsaktivitet', () => {
 
     it('skal returnere false når ORDINÆRT_ARBEID har gyldig arbeidsgiver', () => {
         const perioder = [
-            lagMorPeriode({
-                gradering: {
-                    arbeidstidprosent: 60,
-                    aktivitet: {
-                        type: 'ORDINÆRT_ARBEID',
-                        arbeidsgiver: { id: '910909088', type: 'ORGANISASJON' },
+            lagPeriode({
+                søker: lagMorUttak({
+                    gradering: {
+                        arbeidstidprosent: 60,
+                        aktivitet: {
+                            type: 'ORDINÆRT_ARBEID',
+                            arbeidsgiver: { id: '910909088', type: 'ORGANISASJON' },
+                        },
                     },
-                },
+                }),
             }),
         ];
 
@@ -234,14 +264,16 @@ describe('harPeriodeMedUkjentGraderingsaktivitet', () => {
 
     it('skal returnere true når arbeidsgiver-id er aktivitetstype-plassholdaren ORDINÆRT_ARBEID', () => {
         const perioder = [
-            lagMorPeriode({
-                gradering: {
-                    arbeidstidprosent: 60,
-                    aktivitet: {
-                        type: 'ORDINÆRT_ARBEID',
-                        arbeidsgiver: { id: 'ORDINÆRT_ARBEID', type: 'ORGANISASJON' },
+            lagPeriode({
+                søker: lagMorUttak({
+                    gradering: {
+                        arbeidstidprosent: 60,
+                        aktivitet: {
+                            type: 'ORDINÆRT_ARBEID',
+                            arbeidsgiver: { id: 'ORDINÆRT_ARBEID', type: 'ORGANISASJON' },
+                        },
                     },
-                },
+                }),
             }),
         ];
 
@@ -250,8 +282,10 @@ describe('harPeriodeMedUkjentGraderingsaktivitet', () => {
 
     it('skal returnere false for FRILANS uten arbeidsgiver', () => {
         const perioder = [
-            lagMorPeriode({
-                gradering: { arbeidstidprosent: 60, aktivitet: { type: 'FRILANS' } },
+            lagPeriode({
+                søker: lagMorUttak({
+                    gradering: { arbeidstidprosent: 60, aktivitet: { type: 'FRILANS' } },
+                }),
             }),
         ];
 
@@ -260,11 +294,13 @@ describe('harPeriodeMedUkjentGraderingsaktivitet', () => {
 
     it('skal returnere false for SELVSTENDIG_NÆRINGSDRIVENDE uten arbeidsgiver', () => {
         const perioder = [
-            lagMorPeriode({
-                gradering: {
-                    arbeidstidprosent: 60,
-                    aktivitet: { type: 'SELVSTENDIG_NÆRINGSDRIVENDE' },
-                },
+            lagPeriode({
+                søker: lagMorUttak({
+                    gradering: {
+                        arbeidstidprosent: 60,
+                        aktivitet: { type: 'SELVSTENDIG_NÆRINGSDRIVENDE' },
+                    },
+                }),
             }),
         ];
 
@@ -272,7 +308,7 @@ describe('harPeriodeMedUkjentGraderingsaktivitet', () => {
     });
 
     it('skal returnere false når perioden ikke har gradering', () => {
-        const perioder = [lagMorPeriode()];
+        const perioder = [lagPeriode({ søker: lagMorUttak() })];
 
         expect(harPeriodeMedUkjentGraderingsaktivitet(perioder, 'MOR')).toBe(false);
     });
@@ -282,16 +318,49 @@ describe('harPeriodeMedUkjentGraderingsaktivitet', () => {
     });
 });
 
-describe('finnAntallTidelerÅTrekke', () => {
+describe('finnAntallTidelerÅTrekkeForUttak', () => {
     it('skal runde desimalprosent eksakt ned til 1 desimal utan flyttals-underflyt', () => {
-        const periodeMed25Uttaksdager = lagFarPeriode({
-            fom: '2025-06-02',
-            tom: '2025-07-04',
-            samtidigUttak: 9.2,
-        });
+        const periodeMed25Uttaksdager = { fom: '2025-06-02', tom: '2025-07-04' };
 
-        const tideler = finnAntallTidelerÅTrekke(periodeMed25Uttaksdager, false, '2025-01-01');
+        const tideler = finnAntallTidelerÅTrekkeForUttak(
+            periodeMed25Uttaksdager,
+            lagFarUttak({ samtidigUttak: 9.2 }),
+            false,
+            '2025-01-01',
+        );
 
         expect(tideler).toBe(23);
+    });
+});
+
+describe('erAvslåttPeriode', () => {
+    const innvilget: UttakDto = {
+        forelder: 'FAR_MEDMOR',
+        kontoType: 'FEDREKVOTE',
+        samtidigUttak: 50,
+        flerbarnsdager: false,
+        resultat: { innvilget: true, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+    };
+    const avslått: UttakDto = {
+        forelder: 'MOR',
+        kontoType: 'MØDREKVOTE',
+        samtidigUttak: 50,
+        flerbarnsdager: false,
+        resultat: { innvilget: false, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+    };
+
+    it('skal ikkje rekna samtidig uttak som avslått når berre den eine parten er avslått', () => {
+        expect(erAvslåttPeriode({ fom: FOM, tom: FOM, søker: innvilget, annenPart: avslått })).toBe(false);
+    });
+
+    it('skal rekna perioden som avslått når alle partar er avslått', () => {
+        expect(
+            erAvslåttPeriode({ fom: FOM, tom: FOM, søker: { ...avslått, forelder: 'FAR_MEDMOR' }, annenPart: avslått }),
+        ).toBe(true);
+        expect(erAvslåttPeriode({ fom: FOM, tom: FOM, søker: avslått })).toBe(true);
+    });
+
+    it('skal ikkje rekna periode utan partar som avslått', () => {
+        expect(erAvslåttPeriode({ fom: FOM, tom: FOM })).toBe(false);
     });
 });

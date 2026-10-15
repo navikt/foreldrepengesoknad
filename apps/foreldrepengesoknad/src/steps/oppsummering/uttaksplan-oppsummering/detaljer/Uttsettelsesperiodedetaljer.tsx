@@ -1,36 +1,36 @@
 import { IntlShape, useIntl } from 'react-intl';
 
-import { UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { UttakDto } from '@navikt/fp-types';
 
 import { Feltoppsummering } from './Feltoppsummering';
 import { MorsAktivitetDetaljer } from './MorsaktiviteterDetaljer';
 
 interface Props {
-    periode: UttakPeriode_fpoversikt;
+    uttak: UttakDto;
 }
 
-export const Utsettelsesperiodedetaljer = ({ periode }: Props) => {
-    const { morsAktivitet } = periode;
+export const Utsettelsesperiodedetaljer = ({ uttak }: Props) => {
+    const { morsAktivitet } = uttak;
     const intl = useIntl();
 
     return (
         <>
             <Feltoppsummering
                 feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.årsak' })}
-                verdi={getÅrsakTekst(intl, periode)}
+                verdi={getÅrsakTekst(intl, uttak)}
             />
             {morsAktivitet && <MorsAktivitetDetaljer morsAktivitet={morsAktivitet} />}
         </>
     );
 };
 
-const getÅrsakTekst = (intl: IntlShape, periode: UttakPeriode_fpoversikt) => {
-    switch (periode.utsettelseÅrsak) {
+const getÅrsakTekst = (intl: IntlShape, uttak: UttakDto) => {
+    switch (uttak.utsettelseÅrsak) {
         case 'ARBEID': {
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.ARBEID' });
         }
-        case 'LOVBESTEMT_FERIE': {
-            return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.LOVBESTEMT_FERIE' });
+        case 'FERIE': {
+            return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.FERIE' });
         }
         case 'SØKER_SYKDOM': {
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.SØKER_SYKDOM' });
@@ -51,7 +51,7 @@ const getÅrsakTekst = (intl: IntlShape, periode: UttakPeriode_fpoversikt) => {
             return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.NAV_TILTAK' });
         }
         default: {
-            throw new Error(`Ukjent utsettelseÅrsak: ${periode.utsettelseÅrsak}`);
+            throw new Error(`Ukjent utsettelseÅrsak: ${uttak.utsettelseÅrsak}`);
         }
     }
 };

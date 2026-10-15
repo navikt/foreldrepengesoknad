@@ -4,7 +4,7 @@ import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import {
     Uttaksplanperiode,
     UttaksplanperiodeMedKunTapteDager,
-    erVanligUttakPeriode,
+    erPeriodeDto,
 } from '../../types/UttaksplanPeriode';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { Periode } from '../types';
@@ -110,7 +110,7 @@ export const SKAL_VISE_LEGG_TIL_KNAPPETEKST: Synlighetsregel<KnapperIRedigerings
     skalVises: (k) =>
         k.eksisterendePerioderSomErValgt.length === 0 ||
         (k.erPeriodeneTilAnnenPartLåst &&
-            k.eksisterendePerioderSomErValgt.some((p) => erVanligUttakPeriode(p) && p.forelder !== k.søker)),
+            k.eksisterendePerioderSomErValgt.some((p) => erPeriodeDto(p) && !!p.annenPart)),
 };
 
 /**

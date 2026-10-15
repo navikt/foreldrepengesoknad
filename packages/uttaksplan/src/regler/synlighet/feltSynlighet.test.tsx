@@ -84,7 +84,7 @@ describe.each([
                 harAktivitetskravIPeriodeUtenUttak={false}
                 erPeriodeneTilAnnenPartLåst={false}
                 erEndringssøknad={false}
-                uttakPerioder={[]}
+                perioder={[]}
             >
                 {children}
             </UttaksplanDataProvider>

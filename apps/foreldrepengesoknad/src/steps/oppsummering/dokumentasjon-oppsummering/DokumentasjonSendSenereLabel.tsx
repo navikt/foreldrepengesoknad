@@ -5,13 +5,7 @@ import { kreverDokumentasjonForFedrekvoteRundtFødsel } from 'utils/manglendeVed
 import { BodyShort, Box, Label, List, VStack } from '@navikt/ds-react';
 
 import { Skjemanummer } from '@navikt/fp-constants';
-import {
-    Attachment,
-    AttachmentMetadataTidsperiode,
-    NavnPåForeldre,
-    UttakPeriodeAnnenpartEøs_fpoversikt,
-    UttakPeriode_fpoversikt,
-} from '@navikt/fp-types';
+import { Attachment, AttachmentMetadataTidsperiode, NavnPåForeldre, UttakPeriodeDto } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -38,15 +32,13 @@ const ManglerDokumentasjon = ({ headerLabel, bodyLabel }: ManglerDokumentasjonPr
     </VStack>
 );
 
-const isPeriodeMedMorInnleggelse = (
-    periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt,
-    familiehendelsedato: string,
-) => {
-    if (Uttaksperioden.erEøsPeriode(periode)) {
+const isPeriodeMedMorInnleggelse = (periode: UttakPeriodeDto, familiehendelsedato: string) => {
+    const søker = periode.søker;
+    if (!søker) {
         return false;
     }
 
-    if (periode.overføringÅrsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' && periode.forelder === 'FAR_MEDMOR') {
+    if (søker.overføringÅrsak === 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER' && søker.forelder === 'FAR_MEDMOR') {
         return true;
     }
 
@@ -55,28 +47,24 @@ const isPeriodeMedMorInnleggelse = (
     }
 
     if (
-        (periode.kontoType === 'FELLESPERIODE' || periode.kontoType === 'FORELDREPENGER') &&
-        periode.morsAktivitet === 'INNLAGT'
+        (søker.kontoType === 'FELLESPERIODE' || søker.kontoType === 'FORELDREPENGER') &&
+        søker.morsAktivitet === 'INNLAGT'
     ) {
         return true;
     }
 
-    if (periode.utsettelseÅrsak === 'SØKER_INNLAGT') {
+    if (søker.utsettelseÅrsak === 'SØKER_INNLAGT') {
         return true;
     }
 
     return false;
 };
 
-const erUttaksperiode = (periode: UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt): boolean => {
-    return !('trekkdager' in periode) && !periode.oppholdÅrsak && !periode.overføringÅrsak && !periode.utsettelseÅrsak;
-};
-
 interface Props {
     attachment: Attachment;
     erFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
-    uttaksperioderSomManglerVedlegg: Array<UttakPeriode_fpoversikt | UttakPeriodeAnnenpartEøs_fpoversikt>;
+    uttaksperioderSomManglerVedlegg: UttakPeriodeDto[];
     familiehendelsedato: string;
 }
 
@@ -92,11 +80,12 @@ export const DokumentasjonSendSenereLabel = ({
     const morErForSykEllerInnlagtFørsteSeksUker = uttaksperioderSomManglerVedlegg
         .filter((p) => isPeriodeMedMorInnleggelse(p, familiehendelsedato))
         .some((p) => {
+            const søker = p.søker;
             return (
-                erUttaksperiode(p) &&
-                'morsAktivitet' in p &&
-                p.morsAktivitet === 'INNLAGT' &&
-                p.kontoType === 'FEDREKVOTE'
+                !!søker &&
+                Uttaksperioden.erUttaksperiode(søker) &&
+                søker.morsAktivitet === 'INNLAGT' &&
+                søker.kontoType === 'FEDREKVOTE'
             );
         });
 

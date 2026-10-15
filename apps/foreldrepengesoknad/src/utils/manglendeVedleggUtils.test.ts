@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { AnnenForelder } from 'types/AnnenForelder';
 
-import { UttakPeriodeResultat_fpoversikt, UttakPeriode_fpoversikt } from '@navikt/fp-types';
+import { UttakPeriodeDto, VedtattResultat } from '@navikt/fp-types';
 
 import { finnPerioderSomInngårISøknaden, perioderSomKreverVedlegg } from './manglendeVedleggUtils';
 import { getErSøkerFarEllerMedmor } from './personUtils';
@@ -17,48 +17,56 @@ const annenForelder = {
 
 const familiehendelsedato = '2024-01-01';
 
-const lagFellesperiodeMedMorsAktivitet = (forelder: 'MOR' | 'FAR_MEDMOR'): UttakPeriode_fpoversikt => ({
-    forelder,
-    kontoType: 'FELLESPERIODE',
+const lagFellesperiodeMedMorsAktivitet = (forelder: 'MOR' | 'FAR_MEDMOR'): UttakPeriodeDto => ({
     fom: '2024-06-01',
     tom: '2024-06-30',
-    morsAktivitet: 'ARBEID',
-    samtidigUttak: 50,
-    flerbarnsdager: false,
+    søker: {
+        forelder,
+        kontoType: 'FELLESPERIODE',
+        morsAktivitet: 'ARBEID',
+        samtidigUttak: 50,
+        flerbarnsdager: false,
+    },
 });
 
-const innvilgetResultat: UttakPeriodeResultat_fpoversikt = {
+const innvilgetResultat: VedtattResultat = {
     innvilget: true,
     trekkerDager: true,
     trekkerMinsterett: false,
     årsak: 'ANNET',
 };
 
-const innvilgetFellesperiodeMorSyk: UttakPeriode_fpoversikt = {
+const innvilgetFellesperiodeMorSyk: UttakPeriodeDto = {
     fom: '2024-01-01',
     tom: '2024-01-31',
-    flerbarnsdager: false,
-    forelder: 'FAR_MEDMOR',
-    kontoType: 'FELLESPERIODE',
-    morsAktivitet: 'TRENGER_HJELP',
-    resultat: innvilgetResultat,
+    søker: {
+        flerbarnsdager: false,
+        forelder: 'FAR_MEDMOR',
+        kontoType: 'FELLESPERIODE',
+        morsAktivitet: 'TRENGER_HJELP',
+        resultat: innvilgetResultat,
+    },
 };
 
-const nyFellesperiodeMorJobber: UttakPeriode_fpoversikt = {
+const nyFellesperiodeMorJobber: UttakPeriodeDto = {
     fom: '2024-02-01',
     tom: '2024-02-28',
-    flerbarnsdager: false,
-    forelder: 'FAR_MEDMOR',
-    kontoType: 'FELLESPERIODE',
-    morsAktivitet: 'ARBEID',
+    søker: {
+        flerbarnsdager: false,
+        forelder: 'FAR_MEDMOR',
+        kontoType: 'FELLESPERIODE',
+        morsAktivitet: 'ARBEID',
+    },
 };
 
-const morsPeriode: UttakPeriode_fpoversikt = {
+const morsPeriode: UttakPeriodeDto = {
     fom: '2023-12-01',
     tom: '2023-12-31',
-    flerbarnsdager: false,
-    forelder: 'MOR',
-    kontoType: 'MØDREKVOTE',
+    annenPart: {
+        flerbarnsdager: false,
+        forelder: 'MOR',
+        kontoType: 'MØDREKVOTE',
+    },
 };
 
 describe('perioderSomKreverVedlegg - dokumentasjon av mors aktivitet', () => {
@@ -89,12 +97,14 @@ describe('dokumentasjon for fedrekvote rundt fødsel', () => {
     it.each(['far', 'medmor'] as const)('%s skal ikke bes om dokumentasjon før termin', (rolle) => {
         const termindato = dayjs().add(1, 'week').format('YYYY-MM-DD');
         const uttaksdato = dayjs(termindato).subtract(1, 'day').format('YYYY-MM-DD');
-        const periode: UttakPeriode_fpoversikt = {
-            forelder: 'FAR_MEDMOR',
-            kontoType: 'FEDREKVOTE',
+        const periode: UttakPeriodeDto = {
             fom: uttaksdato,
             tom: uttaksdato,
-            flerbarnsdager: false,
+            søker: {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                flerbarnsdager: false,
+            },
         };
 
         const perioder = perioderSomKreverVedlegg(
@@ -109,12 +119,14 @@ describe('dokumentasjon for fedrekvote rundt fødsel', () => {
 
     it.each(['far', 'medmor'] as const)('%s blir bedt om dokumentasjon når perioden starter på termin', (rolle) => {
         const termindato = dayjs().add(1, 'week').format('YYYY-MM-DD');
-        const periode: UttakPeriode_fpoversikt = {
-            forelder: 'FAR_MEDMOR',
-            kontoType: 'FEDREKVOTE',
+        const periode: UttakPeriodeDto = {
             fom: termindato,
             tom: termindato,
-            flerbarnsdager: false,
+            søker: {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                flerbarnsdager: false,
+            },
         };
 
         const perioder = perioderSomKreverVedlegg(
@@ -129,13 +141,15 @@ describe('dokumentasjon for fedrekvote rundt fødsel', () => {
 
     it('ber ikke om dokumentasjon ved samtidig uttak selv om perioden starter på termin', () => {
         const termindato = dayjs().add(1, 'week').format('YYYY-MM-DD');
-        const periode: UttakPeriode_fpoversikt = {
-            forelder: 'FAR_MEDMOR',
-            kontoType: 'FEDREKVOTE',
+        const periode: UttakPeriodeDto = {
             fom: termindato,
             tom: termindato,
-            samtidigUttak: 100,
-            flerbarnsdager: false,
+            søker: {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FEDREKVOTE',
+                samtidigUttak: 100,
+                flerbarnsdager: false,
+            },
         };
 
         const perioder = perioderSomKreverVedlegg([periode], true, annenForelder, termindato);
@@ -146,28 +160,24 @@ describe('dokumentasjon for fedrekvote rundt fødsel', () => {
 
 describe('finnPerioderSomInngårISøknaden', () => {
     it('utelater allerede innvilgede perioder i en endringssøknad mot en eksisterende sak', () => {
-        const resultat = finnPerioderSomInngårISøknaden(
-            [innvilgetFellesperiodeMorSyk, nyFellesperiodeMorJobber],
-            true,
-            true,
-        );
+        const resultat = finnPerioderSomInngårISøknaden([innvilgetFellesperiodeMorSyk, nyFellesperiodeMorJobber], true);
 
         expect(resultat).toEqual([nyFellesperiodeMorJobber]);
     });
 
     it('beholder alle søkerens perioder i en førstegangssøknad uten eksisterende sak', () => {
-        const periodeUtenResultat: UttakPeriode_fpoversikt = {
+        const periodeUtenResultat: UttakPeriodeDto = {
             ...nyFellesperiodeMorJobber,
-            morsAktivitet: 'TRENGER_HJELP',
+            søker: { ...nyFellesperiodeMorJobber.søker!, morsAktivitet: 'TRENGER_HJELP' },
         };
 
-        const resultat = finnPerioderSomInngårISøknaden([periodeUtenResultat, nyFellesperiodeMorJobber], true, false);
+        const resultat = finnPerioderSomInngårISøknaden([periodeUtenResultat, nyFellesperiodeMorJobber], false);
 
         expect(resultat).toEqual([periodeUtenResultat, nyFellesperiodeMorJobber]);
     });
 
     it('filtrerer bort annen parts perioder', () => {
-        const resultat = finnPerioderSomInngårISøknaden([morsPeriode, nyFellesperiodeMorJobber], true, false);
+        const resultat = finnPerioderSomInngårISøknaden([morsPeriode, nyFellesperiodeMorJobber], false);
 
         expect(resultat).toEqual([nyFellesperiodeMorJobber]);
     });

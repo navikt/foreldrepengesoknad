@@ -6,6 +6,7 @@ import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 
 import { SøkersituasjonFp } from '@navikt/fp-types';
+import { withQueryClient } from '@navikt/fp-utils-test';
 
 import { SøkersituasjonSteg } from './SøkersituasjonSteg';
 
@@ -22,6 +23,7 @@ type StoryArgs = {
 const meta = {
     title: 'steps/SøkersituasjonSteg',
     component: SøkersituasjonSteg,
+    decorators: [withQueryClient],
     render: ({ søkersituasjon, gåTilNesteSide = action('button-click'), ...rest }) => {
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.SØKERSITUASJON]}>
