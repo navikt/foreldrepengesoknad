@@ -69,20 +69,49 @@ describe('erKunUtsettelser', () => {
         expect(erKunUtsettelser([])).toBe(false);
     });
 
-    it('returnerer true når planen kun har utsettelser uten ferie', () => {
+    it('returnerer true når planen kun har utsettelser', () => {
         expect(erKunUtsettelser([utsettelseArbeidFar])).toBe(true);
     });
 
-    it('returnerer false når planen kun har ferie', () => {
-        expect(erKunUtsettelser([utsettelseFar])).toBe(false);
-    });
-
-    it('returnerer false når planen har ferie sammen med andre utsettelser', () => {
-        expect(erKunUtsettelser([utsettelseFar, utsettelseArbeidFar])).toBe(false);
+    it('returnerer true når planen kun har ferie', () => {
+        expect(erKunUtsettelser([utsettelseFar])).toBe(true);
     });
 
     it('returnerer false når planen har en ekte uttaksperiode', () => {
         expect(erKunUtsettelser([utsettelseArbeidFar, uttakFar])).toBe(false);
+    });
+
+    it('returnerer false når ferie legges til etter eksisterende uttak (regresjon: TFP-7005)', () => {
+        const innvilgetUttak: UttakPeriodeDto = {
+            ...uttakFar,
+            søker: {
+                ...uttakFar.søker!,
+                resultat: { innvilget: true, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+            },
+        };
+        const ferieEtterUttak: UttakPeriodeDto = { ...utsettelseFar, fom: '2026-08-03', tom: '2026-08-07' };
+
+        expect(erKunUtsettelser([innvilgetUttak, ferieEtterUttak])).toBe(false);
+    });
+
+    it('regner ikke avslått uttak som uttak', () => {
+        const avslåttUttak: UttakPeriodeDto = {
+            ...uttakFar,
+            søker: {
+                ...uttakFar.søker!,
+                resultat: { innvilget: false, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+            },
+        };
+
+        expect(erKunUtsettelser([avslåttUttak, utsettelseFar])).toBe(true);
+    });
+
+    it('ser bort fra annen parts perioder', () => {
+        expect(erKunUtsettelser([uttakMor, utsettelseFar])).toBe(true);
+    });
+
+    it('returnerer false når planen kun har perioder for annen part', () => {
+        expect(erKunUtsettelser([uttakMor])).toBe(false);
     });
 });
 
