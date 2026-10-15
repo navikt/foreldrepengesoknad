@@ -94,6 +94,18 @@ describe('erKunUtsettelser', () => {
         expect(erKunUtsettelser([innvilgetUttak, ferieEtterUttak])).toBe(false);
     });
 
+    it('regner ikke avslått uttak som uttak', () => {
+        const avslåttUttak: UttakPeriodeDto = {
+            ...uttakFar,
+            søker: {
+                ...uttakFar.søker!,
+                resultat: { innvilget: false, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+            },
+        };
+
+        expect(erKunUtsettelser([avslåttUttak, utsettelseFar])).toBe(true);
+    });
+
     it('ser bort fra annen parts perioder', () => {
         expect(erKunUtsettelser([uttakMor, utsettelseFar])).toBe(true);
     });

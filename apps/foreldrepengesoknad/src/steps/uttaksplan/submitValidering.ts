@@ -205,7 +205,10 @@ export const harMinstEnUttaksEllerOverføringsperiode = (perioder: UttakPeriodeD
     });
 
 export const erKunUtsettelser = (perioder: UttakPeriodeDto[]) => {
-    const søkersPerioder = perioder.flatMap((periode) => (periode.søker ? [periode.søker] : []));
+    // Avslåtte perioder sendes ikke inn (filtrerUtAvslåttePerioder i apiUtils), så de teller ikke som uttak.
+    const søkersPerioder = perioder.flatMap((periode) =>
+        periode.søker && periode.søker.resultat?.innvilget !== false ? [periode.søker] : [],
+    );
     if (søkersPerioder.length === 0) {
         return false;
     }
