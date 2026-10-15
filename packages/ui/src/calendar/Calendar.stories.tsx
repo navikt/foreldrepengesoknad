@@ -236,10 +236,7 @@ export const AllePeriodefarger: Story = {
             srText: color,
         })),
         dateTooltipCallback: (date: string) => (
-            <BodyShort>
-                {allePeriodefarger.find(([dato]) => dato === date)?.[1]}
-                {date}
-            </BodyShort>
+            <BodyShort>{allePeriodefarger.find(([dato]) => dato === date)?.[1]}</BodyShort>
         ),
     },
 };

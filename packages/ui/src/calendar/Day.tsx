@@ -88,17 +88,22 @@ export const Day = React.memo(
                 }
                 aria-label={formaterDatoUtenDag(date) + (srText ? `, ${srText}` : '')}
             >
-                {(!Icon || (!iconFull && periodeColor === 'GRAY')) && day}
+                {(!Icon || (!iconFull && periodeColor === 'GRAY')) && <span>{day}</span>}
 
                 {Icon && iconFull && Icon}
                 {Icon && !iconFull && periodeColor !== 'GRAY' && (
                     <>
-                        {day}
+                        <span>{day}</span>
                         <div className={styles.icon}>{Icon}</div>
                     </>
                 )}
                 {dateTooltipCallback && isPeriodDifferentFromNoneOrGray(periodeColor) && (
-                    <Popover open={isTooltipOpen} onClose={() => setIsTooltipOpen(false)} anchorEl={buttonRef.current}>
+                    <Popover
+                        open={isTooltipOpen}
+                        onClose={() => setIsTooltipOpen(false)}
+                        anchorEl={buttonRef.current}
+                        className={styles.popover}
+                    >
                         <Popover.Content>{dateTooltipCallback(isoDate)}</Popover.Content>
                     </Popover>
                 )}

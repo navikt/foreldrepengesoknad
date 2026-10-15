@@ -1,60 +1,27 @@
+import { ReactNode } from 'react';
+
 import { HStack } from '@navikt/ds-react';
 
 import { CalendarPeriodColor } from '../types/CalendarPeriodColor';
 import styles from './calendarLabel.module.css';
 
 interface Props {
-    children: React.ReactNode;
+    children: ReactNode;
     color: CalendarPeriodColor;
 }
 
 export const CalendarLabel = ({ children, color }: Props) => {
-    if (color !== 'DARKBLUE') {
-        return (
-            <HStack gap="space-8" align="center" wrap={false}>
-                <div>{getRect(color)}</div>
-                {children}
-            </HStack>
-        );
+    if (color === 'NONE' || color === 'DARKBLUE') {
+        return null;
     }
-    return null;
+    return (
+        <HStack gap="space-8" align="center" wrap={false}>
+            <div>{getRect(color)}</div>
+            {children}
+        </HStack>
+    );
 };
 
-const getRect = (color: CalendarPeriodColor) => {
-    switch (color) {
-        case 'BLUE':
-        case 'LIGHTBLUE':
-            return <div className={styles.blueRect} />;
-        case 'GREEN':
-        case 'LIGHTGREEN':
-            return <div className={styles.greenRect} />;
-        case 'BLUEOUTLINE':
-            return <div className={styles.blueOutlineRect} />;
-        case 'BEIGEOUTLINE':
-            return <div className={styles.beigeOutlineRect} />;
-        case 'BLACKOUTLINE':
-            return <div className={styles.blackOutlineRect} />;
-        case 'GREENOUTLINE':
-            return <div className={styles.greenOutlineRect} />;
-        case 'BLACK':
-            return <div className={styles.blackRect} />;
-        case 'LIGHTBLUEGREEN':
-            return <div className={styles.lightblueGreenRect} />;
-        case 'LIGHTGREENBLUE':
-            return <div className={styles.lightgreenBlueRect} />;
-        case 'BLUESTRIPED':
-            return <div className={styles.blueStripedRect} />;
-        case 'GREENSTRIPED':
-            return <div className={styles.greenStripedRect} />;
-        case 'GRAY':
-            return <div className={styles.grayRect} />;
-        case 'DARKGRAY':
-            return <div className={styles.darkgrayRect} />;
-        case 'GREEN_WITH_BLACK_OUTLINE':
-            return <div className={styles.greenWithBlackOutlineDayRect} />;
-        case 'BLUE_WITH_BLACK_OUTLINE':
-            return <div className={styles.blueWithBlackOutlineDayRect} />;
-        default:
-            return null;
-    }
+const getRect = (color: Omit<CalendarPeriodColor, 'NONE' | 'DARKBLUE'>) => {
+    return <div data-periode-color={color} className={styles.rect} />;
 };

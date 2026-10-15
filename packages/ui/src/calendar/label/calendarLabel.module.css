@@ -1,166 +1,118 @@
-.greenStripedRect {
+.rect {
     width: 20px;
     height: 20px;
     border-radius: 4px;
-    background: linear-gradient(
-        45deg,
-        var(--ax-success-400) 0%,
-        var(--ax-success-400) 25%,
-        white 25%,
-        white 40%,
-        var(--ax-success-400) 40%,
-        var(--ax-success-400) 60%,
-        white 60%,
-        white 75%,
-        var(--ax-success-400) 75%,
-        var(--ax-success-400) 100%,
-        white 100%
-    );
-    border: 2px solid var(--ax-success-500);
+    border-width: 2px;
+    border-style: solid;
     print-color-adjust: exact;
-}
 
-.blueStripedRect {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-    background: linear-gradient(
-        45deg,
-        var(--ax-accent-400) 0%,
-        var(--ax-accent-400) 25%,
-        white 25%,
-        white 40%,
-        var(--ax-accent-400) 40%,
-        var(--ax-accent-400) 60%,
-        white 60%,
-        white 75%,
-        var(--ax-accent-400) 75%,
-        var(--ax-accent-400) 100%,
-        white 100%
-    );
-    border: 2px solid var(--ax-accent-500);
-    print-color-adjust: exact;
-}
+    &[data-periode-color='GREENSTRIPED'] {
+        background: linear-gradient(
+            45deg,
+            var(--ax-success-400) 0%,
+            var(--ax-success-400) 25%,
+            white 25%,
+            white 40%,
+            var(--ax-success-400) 40%,
+            var(--ax-success-400) 60%,
+            white 60%,
+            white 75%,
+            var(--ax-success-400) 75%,
+            var(--ax-success-400) 100%,
+            white 100%
+        );
+        border-color: var(--ax-success-500);
+    }
 
-.lightblueGreenRect {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-    background: linear-gradient(
-        to top,
-        var(--ax-success-200),
-        var(--ax-success-200) 50%,
-        var(--ax-accent-400) 50%,
-        var(--ax-accent-400) 100%
-    );
-    border: 2px solid var(--ax-success-200);
-    print-color-adjust: exact;
-}
+    &[data-periode-color='BLUESTRIPED'] {
+        background: linear-gradient(
+            45deg,
+            var(--ax-accent-400) 0%,
+            var(--ax-accent-400) 25%,
+            white 25%,
+            white 40%,
+            var(--ax-accent-400) 40%,
+            var(--ax-accent-400) 60%,
+            white 60%,
+            white 75%,
+            var(--ax-accent-400) 75%,
+            var(--ax-accent-400) 100%,
+            white 100%
+        );
+        border-color: var(--ax-accent-500);
+    }
 
-.lightgreenBlueRect {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-    background: linear-gradient(
-        to top,
-        var(--ax-accent-400),
-        var(--ax-accent-400) 50%,
-        var(--ax-success-200) 50%,
-        var(--ax-success-200) 100%
-    );
-    border: 2px solid var(--ax-accent-400);
-    print-color-adjust: exact;
-}
+    &[data-periode-color='LIGHTBLUEGREEN'] {
+        background: linear-gradient(
+            to top,
+            var(--ax-success-200),
+            var(--ax-success-200) 50%,
+            var(--ax-accent-400) 50%,
+            var(--ax-accent-400) 100%
+        );
+        border-color: var(--ax-success-200);
+    }
 
-.blueOutlineRect {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-    border: 2px solid var(--ax-accent-500);
-    print-color-adjust: exact;
-}
+    &[data-periode-color='LIGHTGREENBLUE'] {
+        background: linear-gradient(
+            to top,
+            var(--ax-accent-400),
+            var(--ax-accent-400) 50%,
+            var(--ax-success-200) 50%,
+            var(--ax-success-200) 100%
+        );
+        border-color: var(--ax-accent-400);
+    }
 
-.beigeOutlineRect {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-    border: 2px solid var(--ax-brand-beige-600);
-    print-color-adjust: exact;
-}
+    &[data-periode-color='BLUEOUTLINE'] {
+        border-color: var(--ax-accent-500);
+    }
 
-.blackOutlineRect {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-    border: 2px solid var(--ax-bg-neutral-strong);
-    print-color-adjust: exact;
-}
+    &[data-periode-color='BEIGEOUTLINE'] {
+        border-color: var(--ax-brand-beige-600);
+    }
 
-.greenWithBlackOutlineDayRect {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-    background-color: var(--ax-success-400);
-    border: 2px solid var(--ax-bg-neutral-strong);
-    print-color-adjust: exact;
-}
+    &[data-periode-color='BLACKOUTLINE'] {
+        border-color: var(--ax-bg-neutral-strong);
+    }
 
-.blueWithBlackOutlineDayRect {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-    background-color: var(--ax-accent-400);
-    border: 2px solid var(--ax-bg-neutral-strong);
-    print-color-adjust: exact;
-}
+    &[data-periode-color='GREEN_WITH_BLACK_OUTLINE'] {
+        background-color: var(--ax-success-400);
+        border-color: var(--ax-bg-neutral-strong);
+    }
 
-.greenOutlineRect {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-    border: 2px solid var(--ax-success-400);
-    print-color-adjust: exact;
-}
+    &[data-periode-color='BLUE_WITH_BLACK_OUTLINE'] {
+        background-color: var(--ax-accent-400);
+        border-color: var(--ax-bg-neutral-strong);
+    }
 
-.blackRect {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-    background-color: var(--ax-neutral-900);
-    print-color-adjust: exact;
-}
+    &[data-periode-color='GREENOUTLINE'] {
+        border-color: var(--ax-success-400);
+    }
 
-.greenRect {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-    border: 1px solid var(--ax-success-600);
-    background-color: var(--ax-success-400);
-    print-color-adjust: exact;
-}
+    &[data-periode-color='BLACK'] {
+        background-color: var(--ax-neutral-900);
+    }
 
-.blueRect {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-    border: 1px solid var(--ax-accent-600);
-    background-color: var(--ax-accent-400);
-    print-color-adjust: exact;
-}
+    &[data-periode-color='GREEN'],
+    &[data-periode-color='LIGHTGREEN'] {
+        border-color: var(--ax-success-600);
+        background-color: var(--ax-success-400);
+    }
 
-.grayRect {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-    border: 1px solid var(--ax-neutral-500);
-    background-color: var(--ax-neutral-100);
-    print-color-adjust: exact;
-}
-.darkgrayRect {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-    border: 1px solid var(--ax-neutral-500);
-    background-color: var(--ax-neutral-400);
-    print-color-adjust: exact;
+    &[data-periode-color='BLUE'],
+    &[data-periode-color='LIGHTBLUE'] {
+        border-color: var(--ax-accent-600);
+        background-color: var(--ax-accent-400);
+    }
+
+    &[data-periode-color='GRAY'] {
+        border-color: var(--ax-neutral-500);
+        background-color: var(--ax-neutral-100);
+    }
+
+    &[data-periode-color='DARKGRAY'] {
+        border-color: var(--ax-neutral-500);
+        background-color: var(--ax-neutral-400);
+    }
 }

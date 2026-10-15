@@ -92,40 +92,40 @@
 
     &[data-periode-color='GREENSTRIPED'] {
         background: linear-gradient(
-                45deg,
-                var(--ax-success-400) 0%,
-                var(--ax-success-400) 15%,
-                var(--ax-bg-default) 15%,
-                var(--ax-bg-default) 30%,
-                var(--ax-success-400) 30%,
-                var(--ax-success-400) 45%,
-                var(--ax-bg-default) 45%,
-                var(--ax-bg-default) 60%,
-                var(--ax-success-400) 60%,
-                var(--ax-success-400) 75%,
-                var(--ax-bg-default) 75%,
-                var(--ax-bg-default) 90%,
-                var(--ax-success-400) 90%
+            45deg,
+            var(--ax-success-400) 0%,
+            var(--ax-success-400) 15%,
+            var(--ax-bg-default) 15%,
+            var(--ax-bg-default) 30%,
+            var(--ax-success-400) 30%,
+            var(--ax-success-400) 45%,
+            var(--ax-bg-default) 45%,
+            var(--ax-bg-default) 60%,
+            var(--ax-success-400) 60%,
+            var(--ax-success-400) 75%,
+            var(--ax-bg-default) 75%,
+            var(--ax-bg-default) 90%,
+            var(--ax-success-400) 90%
         );
         border-color: var(--ax-success-500);
     }
 
     &[data-periode-color='BLUESTRIPED'] {
         background: linear-gradient(
-                45deg,
-                var(--ax-accent-400) 0%,
-                var(--ax-accent-400) 15%,
-                var(--ax-bg-default) 15%,
-                var(--ax-bg-default) 30%,
-                var(--ax-accent-400) 30%,
-                var(--ax-accent-400) 45%,
-                var(--ax-bg-default) 45%,
-                var(--ax-bg-default) 60%,
-                var(--ax-accent-400) 60%,
-                var(--ax-accent-400) 75%,
-                var(--ax-bg-default) 75%,
-                var(--ax-bg-default) 90%,
-                var(--ax-accent-400) 90%
+            45deg,
+            var(--ax-accent-400) 0%,
+            var(--ax-accent-400) 15%,
+            var(--ax-bg-default) 15%,
+            var(--ax-bg-default) 30%,
+            var(--ax-accent-400) 30%,
+            var(--ax-accent-400) 45%,
+            var(--ax-bg-default) 45%,
+            var(--ax-bg-default) 60%,
+            var(--ax-accent-400) 60%,
+            var(--ax-accent-400) 75%,
+            var(--ax-bg-default) 75%,
+            var(--ax-bg-default) 90%,
+            var(--ax-accent-400) 90%
         );
         border-color: var(--ax-accent-500);
     }
@@ -140,7 +140,10 @@
 
     &[data-periode-color='BLACK'] {
         background-color: var(--ax-bg-neutral-strong);
-        color: var(--ax-bg-default);
+
+        & span {
+            color: var(--ax-bg-default);
+        }
     }
 
     &[data-periode-color='BLACKOUTLINE'] {
@@ -171,23 +174,23 @@
 
     &[data-periode-color='LIGHTGREENBLUE'] {
         background: linear-gradient(
-                to top,
-                var(--ax-accent-400),
-                var(--ax-accent-400) 50%,
-                var(--ax-success-200) 50%,
-                var(--ax-success-200) 75%,
-                var(--ax-success-200) 100%
+            to top,
+            var(--ax-accent-400),
+            var(--ax-accent-400) 50%,
+            var(--ax-success-200) 50%,
+            var(--ax-success-200) 75%,
+            var(--ax-success-200) 100%
         );
         border-color: var(--ax-accent-400);
     }
 
     &[data-periode-color='LIGHTBLUEGREEN'] {
         background: linear-gradient(
-                to top,
-                var(--ax-success-400),
-                var(--ax-success-400) 50%,
-                var(--ax-accent-300) 50%,
-                var(--ax-accent-300) 100%
+            to top,
+            var(--ax-success-400),
+            var(--ax-success-400) 50%,
+            var(--ax-accent-300) 50%,
+            var(--ax-accent-300) 100%
         );
         border-color: var(--ax-success-400);
     }

@@ -86,3 +86,9 @@ export const BlackLabel: Story = {
         children: <div>black</div>,
     },
 };
+export const DarkBlueLabelVisesIkke: Story = {
+    args: {
+        color: 'DARKBLUE',
+        children: <div>mørkeblå</div>,
+    },
+};
