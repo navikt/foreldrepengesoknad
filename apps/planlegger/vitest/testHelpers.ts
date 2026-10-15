@@ -22,7 +22,5 @@ export const endreFordelingMedSlider = async (
     const diff = ønsketSliderVerdi - nåSliderVerdi;
     const steg = Math.abs(diff) / 5;
     const key = diff >= 0 ? '{ArrowRight}' : '{ArrowLeft}';
-    for (let i = 0; i < steg; i += 1) {
-        await userEvent.keyboard(key);
-    }
+    await userEvent.keyboard(key.repeat(Math.ceil(steg)));
 };

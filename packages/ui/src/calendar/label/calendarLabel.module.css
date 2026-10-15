@@ -15,8 +15,8 @@
         var(--ax-success-400) 75%,
         var(--ax-success-400) 100%,
         white 100%
-    ) !important;
-    border: 2px solid var(--ax-success-500) !important;
+    );
+    border: 2px solid var(--ax-success-500);
     print-color-adjust: exact;
 }
 
@@ -37,8 +37,8 @@
         var(--ax-accent-400) 75%,
         var(--ax-accent-400) 100%,
         white 100%
-    ) !important;
-    border: 2px solid var(--ax-accent-500) !important;
+    );
+    border: 2px solid var(--ax-accent-500);
     print-color-adjust: exact;
 }
 
@@ -52,8 +52,8 @@
         var(--ax-success-200) 50%,
         var(--ax-accent-400) 50%,
         var(--ax-accent-400) 100%
-    ) !important;
-    border: 2px solid var(--ax-success-200) !important;
+    );
+    border: 2px solid var(--ax-success-200);
     print-color-adjust: exact;
 }
 
@@ -67,8 +67,8 @@
         var(--ax-accent-400) 50%,
         var(--ax-success-200) 50%,
         var(--ax-success-200) 100%
-    ) !important;
-    border: 2px solid var(--ax-accent-400) !important;
+    );
+    border: 2px solid var(--ax-accent-400);
     print-color-adjust: exact;
 }
 
@@ -76,7 +76,7 @@
     width: 20px;
     height: 20px;
     border-radius: 4px;
-    border: 2px solid var(--ax-accent-500) !important;
+    border: 2px solid var(--ax-accent-500);
     print-color-adjust: exact;
 }
 
@@ -84,7 +84,7 @@
     width: 20px;
     height: 20px;
     border-radius: 4px;
-    border: 2px solid var(--ax-brand-beige-600) !important;
+    border: 2px solid var(--ax-brand-beige-600);
     print-color-adjust: exact;
 }
 
@@ -92,7 +92,7 @@
     width: 20px;
     height: 20px;
     border-radius: 4px;
-    border: 2px solid var(--ax-bg-neutral-strong) !important;
+    border: 2px solid var(--ax-bg-neutral-strong);
     print-color-adjust: exact;
 }
 
@@ -101,7 +101,7 @@
     height: 20px;
     border-radius: 4px;
     background-color: var(--ax-success-400);
-    border: 2px solid var(--ax-bg-neutral-strong) !important;
+    border: 2px solid var(--ax-bg-neutral-strong);
     print-color-adjust: exact;
 }
 
@@ -110,7 +110,7 @@
     height: 20px;
     border-radius: 4px;
     background-color: var(--ax-accent-400);
-    border: 2px solid var(--ax-bg-neutral-strong) !important;
+    border: 2px solid var(--ax-bg-neutral-strong);
     print-color-adjust: exact;
 }
 
@@ -118,7 +118,7 @@
     width: 20px;
     height: 20px;
     border-radius: 4px;
-    border: 2px solid var(--ax-success-400) !important;
+    border: 2px solid var(--ax-success-400);
     print-color-adjust: exact;
 }
 
@@ -126,7 +126,7 @@
     width: 20px;
     height: 20px;
     border-radius: 4px;
-    background-color: var(--ax-neutral-900) !important;
+    background-color: var(--ax-neutral-900);
     print-color-adjust: exact;
 }
 
@@ -153,7 +153,7 @@
     height: 20px;
     border-radius: 4px;
     border: 1px solid var(--ax-neutral-500);
-    background-color: var(--ax-neutral-100) !important;
+    background-color: var(--ax-neutral-100);
     print-color-adjust: exact;
 }
 .darkgrayRect {
@@ -161,6 +161,6 @@
     height: 20px;
     border-radius: 4px;
     border: 1px solid var(--ax-neutral-500);
-    background-color: var(--ax-neutral-400) !important;
+    background-color: var(--ax-neutral-400);
     print-color-adjust: exact;
 }

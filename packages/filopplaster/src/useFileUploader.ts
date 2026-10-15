@@ -55,14 +55,14 @@ const uploadPendingAttachments = async ({
     timeout?: number;
     setAttachments: Dispatch<SetStateAction<FileUploaderAttachment[]>>;
 }): Promise<void> => {
-    for (const pendingAttachment of pendingAttachments) {
-        if (pendingAttachment.fileObject.error) {
-            continue;
-        }
-
-        await uploadAttachment(pendingAttachment.attachmentData, uploadPath, timeout);
-        setAttachments((current) => replaceAttachment(current, pendingAttachment));
-    }
+    await Promise.all(
+        pendingAttachments
+            .filter((pendingAttachment) => !pendingAttachment.fileObject.error)
+            .map(async (pendingAttachment) => {
+                await uploadAttachment(pendingAttachment.attachmentData, uploadPath, timeout);
+                setAttachments((current) => replaceAttachment(current, pendingAttachment));
+            }),
+    );
 };
 
 export const useFileUploader = ({ existingAttachments, attachmentType, skjemanummer, uploadPath, timeout }: Args) => {
