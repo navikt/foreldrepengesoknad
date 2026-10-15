@@ -94,14 +94,14 @@ const preview: Preview = {
             if (import.meta.env['TEST_MODE'] === 'jsdom-mode') {
                 const { setupServer } = await import('msw/node');
                 const server = setupServer();
-                server.listen({ onUnhandledRequest: 'bypass' });
+                server.listen({ onUnhandledFrame: 'bypass' });
                 return server as unknown as SetupWorker;
             }
 
             const { setupWorker } = await import('msw/browser');
             const worker = setupWorker();
             await worker.start({
-                onUnhandledRequest: 'bypass',
+                onUnhandledFrame: 'bypass',
                 serviceWorker: {
                     url: './mockServiceWorker.js',
                 },

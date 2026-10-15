@@ -26,7 +26,7 @@ const IGNORED_UNICORN_RULES = {
 };
 
 export const unicornConfig = [
-    eslintPluginUnicorn.configs['flat/recommended'],
+    eslintPluginUnicorn.configs.recommended,
     eslintConfigPrettier,
     {
         rules: IGNORED_UNICORN_RULES,

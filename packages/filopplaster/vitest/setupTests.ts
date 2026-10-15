@@ -8,18 +8,25 @@ setProjectAnnotations(globalStorybookConfig);
 if (import.meta.env['TEST_MODE'] === 'jsdom-mode') {
     globalThis.scrollTo = () => undefined;
 
-    if (import.meta.env['TEST_MODE'] === 'jsdom-mode') {
-        globalThis.scrollTo = () => undefined;
+    if (globalThis.ReadableStream) {
+        const RS = globalThis.ReadableStream.prototype;
 
-        if (globalThis.ReadableStream) {
-            const RS = globalThis.ReadableStream.prototype;
+        // Denne var tricky å finne ut av. Den feiler ikke i jsdom, men den blir stående å vente/henge på et eller annet uvisst.
+        // Resolver den derfor umiddelbart. Det er oppførsel (retries, opploadprogress, etc.) som ikke er relevant å teste i jsdom.
+        // Om det i fremtiden skal testes bør det skje i ekte browser - ikke jsdom
+        RS.cancel = function () {
+            return Promise.resolve();
+        };
+    }
 
-            // Denne var tricky å finne ut av. Den feiler ikke i jsdom, men den blir stående å vente/henge på et eller annet uvisst.
-            // Resolver den derfor umiddelbart. Det er oppførsel (retries, opploadprogress, etc.) som ikke er relevant å teste i jsdom.
-            // Om det i fremtiden skal testes bør det skje i ekte browser - ikke jsdom
-            RS.cancel = function () {
-                return Promise.resolve();
-            };
-        }
+    if (globalThis.Blob && !globalThis.Blob.prototype.stream) {
+        globalThis.Blob.prototype.stream = function () {
+            return new ReadableStream({
+                start: async (controller) => {
+                    controller.enqueue(await this.bytes());
+                    controller.close();
+                },
+            });
+        };
     }
 }
