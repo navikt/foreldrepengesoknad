@@ -98,12 +98,7 @@ export const Day = React.memo(
                     </>
                 )}
                 {dateTooltipCallback && isPeriodDifferentFromNoneOrGray(periodeColor) && (
-                    <Popover
-                        open={isTooltipOpen}
-                        onClose={() => setIsTooltipOpen(false)}
-                        anchorEl={buttonRef.current}
-                        className={styles.popover}
-                    >
+                    <Popover open={isTooltipOpen} onClose={() => setIsTooltipOpen(false)} anchorEl={buttonRef.current}>
                         <Popover.Content>{dateTooltipCallback(isoDate)}</Popover.Content>
                     </Popover>
                 )}

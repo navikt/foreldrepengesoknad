@@ -73,7 +73,10 @@
 
     &[data-periode-color='DARKBLUE'] {
         background-color: var(--ax-bg-accent-strong-pressed);
-        color: var(--ax-bg-default);
+
+        & span {
+            color: var(--ax-text-accent-contrast);
+        }
     }
 
     &[data-periode-color='LIGHTBLUE'] {
@@ -83,7 +86,6 @@
 
     &[data-periode-color='LIGHTGREEN'] {
         background-color: var(--ax-success-400);
-        border-color: var(--ax-success-400);
     }
 
     &[data-periode-color='GREEN'] {
@@ -142,7 +144,7 @@
         background-color: var(--ax-bg-neutral-strong);
 
         & span {
-            color: var(--ax-bg-default);
+            color: var(--ax-text-neutral-contrast);
         }
     }
 
@@ -178,7 +180,6 @@
             var(--ax-accent-400),
             var(--ax-accent-400) 50%,
             var(--ax-success-200) 50%,
-            var(--ax-success-200) 75%,
             var(--ax-success-200) 100%
         );
         border-color: var(--ax-accent-400);

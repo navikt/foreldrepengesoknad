@@ -16,12 +16,8 @@ export const CalendarLabel = ({ children, color }: Props) => {
     }
     return (
         <HStack gap="space-8" align="center" wrap={false}>
-            <div>{getRect(color)}</div>
+            <div data-periode-color={color} className={styles.rectangle} />
             {children}
         </HStack>
     );
-};
-
-const getRect = (color: Omit<CalendarPeriodColor, 'NONE' | 'DARKBLUE'>) => {
-    return <div data-periode-color={color} className={styles.rect} />;
 };

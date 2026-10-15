@@ -13,82 +13,82 @@ type Story = StoryObj<typeof meta>;
 export const GreenLabel: Story = {
     args: {
         color: 'GREEN',
-        children: <div>green</div>,
+        children: 'green',
     },
 };
 
 export const BlueLabel: Story = {
     args: {
         color: 'BLUE',
-        children: <div>blue</div>,
+        children: 'blue',
     },
 };
 
 export const BlueOutlineLabel: Story = {
     args: {
         color: 'BLUEOUTLINE',
-        children: <div>blue outline</div>,
+        children: 'blue outline',
     },
 };
 
 export const BlueStripedLabel: Story = {
     args: {
         color: 'BLUESTRIPED',
-        children: <div>blue striped</div>,
+        children: 'blue striped',
     },
 };
 
 export const GreenOutlineLabel: Story = {
     args: {
         color: 'GREENOUTLINE',
-        children: <div>green outline</div>,
+        children: 'green outline',
     },
 };
 
 export const GreenStripedLabel: Story = {
     args: {
         color: 'GREENSTRIPED',
-        children: <div>green striped</div>,
+        children: 'green striped',
     },
 };
 
 export const LightBlueLabel: Story = {
     args: {
         color: 'LIGHTBLUE',
-        children: <div>light blue</div>,
+        children: 'light blue',
     },
 };
 
 export const LightGreenLabel: Story = {
     args: {
         color: 'LIGHTGREEN',
-        children: <div>light green</div>,
+        children: 'light green',
     },
 };
 
 export const LightGreenBlueLabel: Story = {
     args: {
         color: 'LIGHTGREENBLUE',
-        children: <div>light green blue</div>,
+        children: 'light green blue',
     },
 };
 
 export const LightBlueGreenLabel: Story = {
     args: {
         color: 'LIGHTBLUEGREEN',
-        children: <div>light blue green</div>,
+        children: 'light blue green',
     },
 };
 
 export const BlackLabel: Story = {
     args: {
         color: 'BLACK',
-        children: <div>black</div>,
+        children: 'black',
     },
 };
 export const DarkBlueLabelVisesIkke: Story = {
     args: {
         color: 'DARKBLUE',
-        children: <div>mørkeblå</div>,
+        children: 'mørkeblå',
     },
 };
