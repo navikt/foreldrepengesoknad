@@ -1,9 +1,9 @@
 import { VedleggDataType } from 'types/VedleggDataType';
+import { kreverDokumentasjonForFedrekvoteRundtFødsel } from 'utils/manglendeVedleggUtils';
 
 import { Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, UttakPeriodeDto } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
-import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan/validators';
 
 export const isPeriodeMedMorInnleggelse = (periode: UttakPeriodeDto, familiehendelsedato: string) => {
     return (
@@ -65,18 +65,7 @@ export const isOverføringFarForSyk = (periode: UttakPeriodeDto) => {
 };
 
 const isUttakAvFedrekvoteMorForSyk = (periode: UttakPeriodeDto, familiehendelsedato: string): boolean => {
-    const søker = periode.søker;
-    return (
-        !!søker &&
-        Uttaksperioden.erUttaksperiode(søker) &&
-        søker.kontoType === 'FEDREKVOTE' &&
-        !søker.samtidigUttak &&
-        UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
-            periode,
-            familiehendelsedato,
-            undefined,
-        )
-    );
+    return kreverDokumentasjonForFedrekvoteRundtFødsel(periode, familiehendelsedato);
 };
 
 export const isPeriodeMedMorForSyk = (periode: UttakPeriodeDto) => {

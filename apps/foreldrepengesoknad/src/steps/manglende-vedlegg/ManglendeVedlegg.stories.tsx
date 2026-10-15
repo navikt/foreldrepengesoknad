@@ -471,7 +471,7 @@ export const BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbei
     },
 };
 
-export const FarTarUtFedrekvoteFørsteSeksUkerUtenSamtidigMåDokumenterMorsSykdomEllerInnleggelse: Story = {
+export const FarTarUtFedrekvoteEtterFødselUtenSamtidigMåDokumentereMorsSykdomEllerInnleggelse: Story = {
     args: {
         søkerInfo: {
             ...defaultSøkerinfoFar,
@@ -502,6 +502,28 @@ export const FarTarUtFedrekvoteFørsteSeksUkerUtenSamtidigMåDokumenterMorsSykdo
                 () => new HttpResponse(JSON.stringify(false), { status: 200 }),
             ),
         );
+    },
+};
+
+export const FarTarUtFedrekvoteFørTerminUtenSamtidigMåIkkeDokumentereMorsSykdomEllerInnleggelse: Story = {
+    args: {
+        ...FarTarUtFedrekvoteEtterFødselUtenSamtidigMåDokumentereMorsSykdomEllerInnleggelse.args,
+        barn: {
+            antallBarn: 1,
+            type: BarnType.UFØDT,
+            termindato: dayjs().add(1, 'week').format('YYYY-MM-DD'),
+        },
+        uttaksplan: [
+            {
+                fom: dayjs().add(1, 'week').format('YYYY-MM-DD'),
+                tom: dayjs().add(1, 'week').format('YYYY-MM-DD'),
+                søker: {
+                    forelder: 'FAR_MEDMOR',
+                    kontoType: 'FEDREKVOTE',
+                    flerbarnsdager: false,
+                },
+            },
+        ],
     },
 };
 
