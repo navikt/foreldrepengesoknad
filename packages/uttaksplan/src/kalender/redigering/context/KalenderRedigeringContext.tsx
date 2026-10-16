@@ -76,24 +76,24 @@ export const KalenderRedigeringProvider = ({
             type: TypePeriodeendring,
             etterUtført: () => void,
         ) => {
+            const nyeUttakPerioder = new UttakPeriodeBuilder(perioder, 'kalender')
+                .leggTilUttakPerioder(nyePerioder, skalForskyvePeriode)
+                .getUttakPerioder();
             const utfør = () => {
-                const nyeUttakPerioder = new UttakPeriodeBuilder(perioder, 'kalender')
-                    .leggTilUttakPerioder(nyePerioder, skalForskyvePeriode)
-                    .getUttakPerioder();
                 notEmpty(uttaksplanRedigering).oppdaterUttaksplan(nyeUttakPerioder);
                 etterUtført();
             };
             const førsteDagIMåneden = dayjs().startOf('month').format('YYYY-MM-DD');
             const berørerHistoriskDato =
-                type === 'ferie'
-                    ? harHistoriskFerieendring(perioder, nyePerioder, søker, førsteDagIMåneden)
-                    : type === 'gradering' &&
-                      harHistoriskGraderingsendring(perioder, nyePerioder, {
-                          søker,
-                          kanVelgeArbeidsgiver,
-                          erPeriodeneTilAnnenPartLåst,
-                          førsteDagIMåneden,
-                      });
+                type !== 'annet' &&
+                (harHistoriskFerieendring(perioder, nyeUttakPerioder, søker, førsteDagIMåneden, true) ||
+                    harHistoriskGraderingsendring(perioder, nyeUttakPerioder, {
+                        søker,
+                        kanVelgeArbeidsgiver,
+                        erPeriodeneTilAnnenPartLåst,
+                        førsteDagIMåneden,
+                        sammenlignHelePlanen: true,
+                    }));
 
             if (erEndringssøknad && berørerHistoriskDato) {
                 setVentendeHandling({ type: 'endret', utfør });

@@ -18,14 +18,14 @@ import { KalenderRedigeringProvider, useKalenderRedigeringContext } from './Kale
 
 const ORIGINAL_PERIODS: UttakPeriodeDto[] = [
     {
-        fom: '2024-06-03',
-        tom: '2024-06-28',
+        fom: '2026-09-07',
+        tom: '2026-10-02',
         søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
     },
 ];
 
 const SELECTED_PERIODS: CalendarPeriod[] = [
-    { fom: '2024-06-03', tom: '2024-06-28', color: 'BLUE', srText: 'Valgt periode' },
+    { fom: '2026-09-07', tom: '2026-10-02', color: 'BLUE', srText: 'Valgt periode' },
 ];
 
 const foreldreInfo: ForeldreInfo = {
@@ -41,21 +41,32 @@ const lagFerieperiode = (fom: string, tom: string): UttakPeriodeDto => ({
     søker: { forelder: 'MOR', utsettelseÅrsak: 'FERIE', flerbarnsdager: false },
 });
 
-const lagGraderingsperiode = (fom: string, tom: string): UttakPeriodeDto => ({
+const lagGraderingsperiode = (
+    fom: string,
+    tom: string,
+    kontoType: 'MØDREKVOTE' | 'FELLESPERIODE' = 'MØDREKVOTE',
+): UttakPeriodeDto => ({
     fom,
     tom,
     søker: {
         forelder: 'MOR',
-        kontoType: 'MØDREKVOTE',
+        kontoType,
         flerbarnsdager: false,
         gradering: { arbeidstidprosent: 50 },
     },
+});
+
+const lagKvoteperiode = (fom: string, tom: string): UttakPeriodeDto => ({
+    fom,
+    tom,
+    søker: { forelder: 'MOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false },
 });
 
 type HarnessProps = {
     perioder?: UttakPeriodeDto[];
     erEndringssøknad?: boolean;
     datoer?: { fom: string; tom: string };
+    fødselsdato?: string;
     oppdaterUttaksplan: (perioder: UttakPeriodeDto[] | undefined) => void;
     etterUtført: () => void;
 };
@@ -63,7 +74,8 @@ type HarnessProps = {
 const Harness = ({
     perioder = ORIGINAL_PERIODS,
     erEndringssøknad = true,
-    datoer = { fom: '2024-06-10', tom: '2024-06-12' },
+    datoer = { fom: '2026-09-14', tom: '2026-09-16' },
+    fødselsdato = '2026-06-01',
     oppdaterUttaksplan,
     etterUtført,
 }: HarnessProps) => {
@@ -73,7 +85,7 @@ const Harness = ({
     return (
         <IntlProvider locale="nb" messages={nyUttaksplanMessages.nb}>
             <UttaksplanDataProvider
-                barn={{ type: BarnType.FØDT, fødselsdatoer: ['2024-01-01'], antallBarn: 1 }}
+                barn={{ type: BarnType.FØDT, fødselsdatoer: [fødselsdato], antallBarn: 1 }}
                 foreldreInfo={foreldreInfo}
                 valgtStønadskvote={{
                     kontoer: [
@@ -158,6 +170,44 @@ const ApiHarness = ({
             >
                 Legg til gradering
             </button>
+            <button
+                type="button"
+                onClick={() =>
+                    leggTilUttaksplanPerioder(
+                        [lagGraderingsperiode(fom, tom, 'FELLESPERIODE')],
+                        false,
+                        'gradering',
+                        etterUtført,
+                    )
+                }
+            >
+                Endre kvotetype uten forskyvning
+            </button>
+            <button
+                type="button"
+                onClick={() =>
+                    leggTilUttaksplanPerioder(
+                        [lagGraderingsperiode(fom, tom, 'FELLESPERIODE')],
+                        true,
+                        'gradering',
+                        etterUtført,
+                    )
+                }
+            >
+                Endre kvotetype med forskyvning
+            </button>
+            <button
+                type="button"
+                onClick={() => leggTilUttaksplanPerioder([lagKvoteperiode(fom, tom)], true, 'gradering', etterUtført)}
+            >
+                Legg til ugraderte foreldrepenger med forskyvning
+            </button>
+            <button
+                type="button"
+                onClick={() => leggTilUttaksplanPerioder([lagKvoteperiode(fom, tom)], false, 'gradering', etterUtført)}
+            >
+                Legg til ugraderte foreldrepenger uten forskyvning
+            </button>
             <button type="button" onClick={() => uttaksplanRedigering?.setVisFjernAltModal(true)}>
                 Åpne Fjern alt modal
             </button>
@@ -170,6 +220,7 @@ const renderHarness = (
         perioder?: UttakPeriodeDto[];
         erEndringssøknad?: boolean;
         datoer?: { fom: string; tom: string };
+        fødselsdato?: string;
     } = {},
 ) => {
     const oppdaterUttaksplan = vi.fn();
@@ -189,7 +240,7 @@ const forventetPlanEtterSletting = (
 
 describe('KalenderRedigeringContext', () => {
     beforeEach(() => {
-        vi.setSystemTime(new Date('2024-07-01T12:00:00.000Z'));
+        vi.setSystemTime(new Date('2026-10-16T12:00:00.000Z'));
     });
 
     it.each([false, true])(
@@ -210,7 +261,7 @@ describe('KalenderRedigeringContext', () => {
 
             expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
             expect(oppdaterUttaksplan).toHaveBeenCalledWith(
-                forventetPlanEtterTillegg(ORIGINAL_PERIODS, [lagFerieperiode('2024-06-10', '2024-06-12')], forskyv),
+                forventetPlanEtterTillegg(ORIGINAL_PERIODS, [lagFerieperiode('2026-09-14', '2026-09-16')], forskyv),
             );
             expect(etterUtført).toHaveBeenCalledTimes(1);
             expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
@@ -237,7 +288,7 @@ describe('KalenderRedigeringContext', () => {
 
             expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
             expect(oppdaterUttaksplan).toHaveBeenCalledWith(
-                forventetPlanEtterSletting(ORIGINAL_PERIODS, [{ fom: '2024-06-10', tom: '2024-06-12' }], forskyv),
+                forventetPlanEtterSletting(ORIGINAL_PERIODS, [{ fom: '2026-09-14', tom: '2026-09-16' }], forskyv),
             );
             expect(etterUtført).toHaveBeenCalledTimes(1);
         },
@@ -260,8 +311,8 @@ describe('KalenderRedigeringContext', () => {
             }
 
             expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-            expect(screen.getByLabelText('Fra')).toHaveValue('2024-06-10');
-            expect(screen.getByLabelText('Til')).toHaveValue('2024-06-12');
+            expect(screen.getByLabelText('Fra')).toHaveValue('2026-09-14');
+            expect(screen.getByLabelText('Til')).toHaveValue('2026-09-16');
             expect(screen.getByLabelText('Valgte perioder')).toHaveTextContent(selected ?? '');
             expect(oppdaterUttaksplan).not.toHaveBeenCalled();
             expect(etterUtført).not.toHaveBeenCalled();
@@ -275,10 +326,10 @@ describe('KalenderRedigeringContext', () => {
     it('viser ferieendring i historisk gap før planen oppdateres', async () => {
         const user = userEvent.setup();
         const gapPeriods: UttakPeriodeDto[] = [
-            { ...ORIGINAL_PERIODS[0]!, tom: '2024-06-07' },
+            { ...ORIGINAL_PERIODS[0]!, tom: '2026-09-11' },
             {
-                fom: '2024-06-17',
-                tom: '2024-06-21',
+                fom: '2026-09-21',
+                tom: '2026-09-25',
                 søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
             },
         ];
@@ -293,7 +344,7 @@ describe('KalenderRedigeringContext', () => {
 
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
         expect(oppdaterUttaksplan).toHaveBeenCalledWith(
-            forventetPlanEtterTillegg(gapPeriods, [lagFerieperiode('2024-06-10', '2024-06-12')], false),
+            forventetPlanEtterTillegg(gapPeriods, [lagFerieperiode('2026-09-14', '2026-09-16')], false),
         );
         expect(etterUtført).toHaveBeenCalledTimes(1);
     });
@@ -313,14 +364,14 @@ describe('KalenderRedigeringContext', () => {
         const user = userEvent.setup();
         const currentPeriod: UttakPeriodeDto[] = [
             {
-                fom: '2024-07-03',
-                tom: '2024-07-19',
+                fom: '2026-10-07',
+                tom: '2026-10-23',
                 søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
             },
         ];
         const { oppdaterUttaksplan, etterUtført } = renderHarness({
             perioder: currentPeriod,
-            datoer: { fom: '2024-07-03', tom: '2024-07-05' },
+            datoer: { fom: '2026-10-07', tom: '2026-10-09' },
         });
 
         await user.click(screen.getByRole('button', { name: 'Legg til ferie' }));
@@ -334,8 +385,8 @@ describe('KalenderRedigeringContext', () => {
         const user = userEvent.setup();
         const futurePeriods: UttakPeriodeDto[] = [
             {
-                fom: '2024-07-15',
-                tom: '2024-07-26',
+                fom: '2026-10-19',
+                tom: '2026-10-30',
                 søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
             },
         ];
@@ -351,7 +402,7 @@ describe('KalenderRedigeringContext', () => {
 
     it('oppdaterer historisk uttak med uendret gradering uten historisk bekreftelse', async () => {
         const user = userEvent.setup();
-        const gradedPeriods = [lagGraderingsperiode('2024-06-10', '2024-06-12')];
+        const gradedPeriods = [lagGraderingsperiode('2026-09-14', '2026-09-16')];
         const { oppdaterUttaksplan, etterUtført } = renderHarness({ perioder: gradedPeriods });
 
         await user.click(screen.getByRole('button', { name: 'Legg til gradering' }));
@@ -359,9 +410,196 @@ describe('KalenderRedigeringContext', () => {
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
         expect(oppdaterUttaksplan).toHaveBeenCalledWith(
-            forventetPlanEtterTillegg(gradedPeriods, [lagGraderingsperiode('2024-06-10', '2024-06-12')], false),
+            forventetPlanEtterTillegg(gradedPeriods, [lagGraderingsperiode('2026-09-14', '2026-09-16')], false),
         );
         expect(etterUtført).toHaveBeenCalledTimes(1);
+    });
+
+    it('oppdaterer historisk gradering uten varsel når bare kvotetype endres uten forskyvning', async () => {
+        vi.setSystemTime(new Date('2026-10-16T12:00:00.000Z'));
+        const historicalGradedPeriods = [
+            lagGraderingsperiode('2026-09-07', '2026-09-11'),
+            lagGraderingsperiode('2026-09-14', '2026-09-18'),
+        ];
+        const submittedGrading = lagGraderingsperiode('2026-09-07', '2026-09-11', 'FELLESPERIODE');
+
+        const withoutShift = renderHarness({
+            perioder: historicalGradedPeriods,
+            datoer: { fom: '2026-09-07', tom: '2026-09-11' },
+            fødselsdato: '2026-06-01',
+        });
+        await userEvent.click(screen.getByRole('button', { name: 'Endre kvotetype uten forskyvning' }));
+
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        expect(withoutShift.oppdaterUttaksplan).toHaveBeenCalledTimes(1);
+        expect(withoutShift.oppdaterUttaksplan).toHaveBeenCalledWith(
+            forventetPlanEtterTillegg(historicalGradedPeriods, [submittedGrading], false),
+        );
+
+        const candidateWithoutShift = withoutShift.oppdaterUttaksplan.mock.calls[0]?.[0];
+        expect(candidateWithoutShift).toHaveLength(2);
+        expect(candidateWithoutShift).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    fom: '2026-09-07',
+                    tom: '2026-09-11',
+                    søker: expect.objectContaining({
+                        kontoType: 'FELLESPERIODE',
+                        gradering: { arbeidstidprosent: 50 },
+                    }),
+                }),
+                expect.objectContaining({ fom: '2026-09-14', tom: '2026-09-18' }),
+            ]),
+        );
+    });
+
+    it('varsler om historisk gradering som forskyves av en kvotetypeendring og avbryter uten å endre planen', async () => {
+        vi.setSystemTime(new Date('2026-10-16T12:00:00.000Z'));
+        const historicalGradedPeriods = [
+            lagGraderingsperiode('2026-09-07', '2026-09-11'),
+            lagKvoteperiode('2026-09-14', '2026-09-18'),
+        ];
+        const submittedGrading = lagGraderingsperiode('2026-09-07', '2026-09-11', 'FELLESPERIODE');
+        const originalPlan = structuredClone(historicalGradedPeriods);
+        const user = userEvent.setup();
+        const withShift = renderHarness({
+            perioder: historicalGradedPeriods,
+            datoer: { fom: '2026-09-07', tom: '2026-09-11' },
+            fødselsdato: '2026-06-01',
+        });
+        await user.click(screen.getByRole('button', { name: 'Endre kvotetype med forskyvning' }));
+
+        expect(screen.getByRole('dialog')).toBeInTheDocument();
+        expect(withShift.oppdaterUttaksplan).not.toHaveBeenCalled();
+        expect(withShift.etterUtført).not.toHaveBeenCalled();
+
+        const closeDialog = within(screen.getByRole('dialog'));
+        await user.click(closeDialog.getByRole('button', { name: 'Avbryt' }));
+
+        expect(withShift.oppdaterUttaksplan).not.toHaveBeenCalled();
+        expect(withShift.etterUtført).not.toHaveBeenCalled();
+        expect(historicalGradedPeriods).toEqual(originalPlan);
+
+        await user.click(screen.getByRole('button', { name: 'Endre kvotetype med forskyvning' }));
+        await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Endre' }));
+
+        expect(withShift.oppdaterUttaksplan).toHaveBeenCalledTimes(1);
+        expect(withShift.oppdaterUttaksplan).toHaveBeenCalledWith(
+            forventetPlanEtterTillegg(historicalGradedPeriods, [submittedGrading], true),
+        );
+        const committedGrading = withShift.oppdaterUttaksplan.mock.calls[0]?.[0];
+        expect(committedGrading).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({ fom: '2026-09-07', tom: '2026-09-11' }),
+                expect.objectContaining({ fom: '2026-09-21', tom: '2026-09-25' }),
+            ]),
+        );
+        expect(withShift.etterUtført).toHaveBeenCalledTimes(1);
+    });
+
+    it('varsler om historisk ferie som forskyves selv når den innlagte ferien er uendret', async () => {
+        vi.setSystemTime(new Date('2026-10-16T12:00:00.000Z'));
+        const historicalVacationPeriods = [
+            lagFerieperiode('2026-09-07', '2026-09-11'),
+            lagKvoteperiode('2026-09-14', '2026-09-18'),
+        ];
+        const user = userEvent.setup();
+        const { oppdaterUttaksplan, etterUtført } = renderHarness({
+            perioder: historicalVacationPeriods,
+            datoer: { fom: '2026-09-07', tom: '2026-09-11' },
+            fødselsdato: '2026-06-01',
+        });
+
+        await user.click(screen.getByRole('button', { name: 'Legg til ferie med forskyvning' }));
+
+        expect(screen.getByRole('dialog')).toBeInTheDocument();
+        expect(oppdaterUttaksplan).not.toHaveBeenCalled();
+        expect(etterUtført).not.toHaveBeenCalled();
+
+        await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Endre' }));
+
+        expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
+        expect(oppdaterUttaksplan).toHaveBeenCalledWith(
+            forventetPlanEtterTillegg(historicalVacationPeriods, [lagFerieperiode('2026-09-07', '2026-09-11')], true),
+        );
+        expect(oppdaterUttaksplan.mock.calls[0]?.[0]).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({ fom: '2026-09-07', tom: '2026-09-18' }),
+                expect.objectContaining({ fom: '2026-09-21', tom: '2026-09-25' }),
+            ]),
+        );
+        expect(etterUtført).toHaveBeenCalledTimes(1);
+    });
+
+    it('varsler når innlegging av ugraderte foreldrepenger forskyver historisk ferie', async () => {
+        vi.setSystemTime(new Date('2026-10-16T12:00:00.000Z'));
+        const historicalVacation = lagFerieperiode('2026-09-14', '2026-09-18');
+        const user = userEvent.setup();
+        const { oppdaterUttaksplan, etterUtført } = renderHarness({
+            perioder: [historicalVacation],
+            datoer: { fom: '2026-09-07', tom: '2026-09-11' },
+            fødselsdato: '2026-06-01',
+        });
+
+        await user.click(screen.getByRole('button', { name: 'Legg til ugraderte foreldrepenger med forskyvning' }));
+
+        expect(screen.getByRole('dialog')).toBeInTheDocument();
+        expect(oppdaterUttaksplan).not.toHaveBeenCalled();
+
+        await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Endre' }));
+
+        expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
+        expect(oppdaterUttaksplan).toHaveBeenCalledWith(
+            forventetPlanEtterTillegg([historicalVacation], [lagKvoteperiode('2026-09-07', '2026-09-11')], true),
+        );
+        expect(oppdaterUttaksplan.mock.calls[0]?.[0]).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({ fom: '2026-09-07', tom: '2026-09-11' }),
+                expect.objectContaining({ fom: '2026-09-21', tom: '2026-09-25' }),
+            ]),
+        );
+        expect(etterUtført).toHaveBeenCalledTimes(1);
+    });
+
+    it.each([
+        { label: 'inneværende måned', fom: '2026-10-19', tom: '2026-10-23', erEndringssøknad: true },
+        { label: 'framtidig måned', fom: '2026-11-02', tom: '2026-11-06', erEndringssøknad: true },
+        { label: 'ny søknad', fom: '2026-09-07', tom: '2026-09-11', erEndringssøknad: false },
+    ])('viser ikke historisk dialog for $label', async ({ fom, tom, erEndringssøknad }) => {
+        vi.setSystemTime(new Date('2026-10-16T12:00:00.000Z'));
+        const user = userEvent.setup();
+        const periods = [lagGraderingsperiode(fom, tom)];
+        const { oppdaterUttaksplan, etterUtført } = renderHarness({
+            perioder: periods,
+            datoer: { fom, tom },
+            erEndringssøknad,
+            fødselsdato: '2026-06-01',
+        });
+
+        await user.click(screen.getByRole('button', { name: 'Legg til gradering' }));
+
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
+        expect(etterUtført).toHaveBeenCalledTimes(1);
+    });
+
+    it.each([
+        { label: '30. september', fom: '2026-09-30', tom: '2026-09-30', skalVarsle: true },
+        { label: '1. oktober', fom: '2026-10-01', tom: '2026-10-01', skalVarsle: false },
+        { label: '5.–9. oktober før dagens dato', fom: '2026-10-05', tom: '2026-10-09', skalVarsle: false },
+    ])('bruker historisk grense riktig for $label', async ({ fom, tom, skalVarsle }) => {
+        vi.setSystemTime(new Date('2026-10-16T12:00:00.000Z'));
+        const user = userEvent.setup();
+        const { oppdaterUttaksplan } = renderHarness({
+            perioder: [lagGraderingsperiode(fom, tom)],
+            datoer: { fom, tom },
+            fødselsdato: '2026-06-01',
+        });
+
+        await user.click(screen.getByRole('button', { name: 'Legg til ugraderte foreldrepenger uten forskyvning' }));
+
+        expect(screen.queryAllByRole('dialog')).toHaveLength(skalVarsle ? 1 : 0);
+        expect(oppdaterUttaksplan).toHaveBeenCalledTimes(skalVarsle ? 0 : 1);
     });
 
     it('viser kun én dialog når FjernAltIUttaksplanModal åpnes med kalenderredigering montert', async () => {

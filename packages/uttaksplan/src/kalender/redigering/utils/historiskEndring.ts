@@ -16,6 +16,7 @@ type Graderingssammenligning = {
     kanVelgeArbeidsgiver: boolean;
     erPeriodeneTilAnnenPartLåst: boolean;
     førsteDagIMåneden: string;
+    sammenlignHelePlanen?: boolean;
 };
 
 const overlapper = (a: Datointervall, b: Datointervall): boolean =>
@@ -34,8 +35,13 @@ export const harHistoriskFerieendring = (
     nyePerioder: UttakPeriodeDto[],
     søker: BrukerRolleSak_fpoversikt,
     førsteDagIMåneden: string,
+    sammenlignHelePlanen = false,
 ): boolean => {
-    for (const nyPeriode of nyePerioder) {
+    const intervaller = sammenlignHelePlanen
+        ? finnSammenligningsintervaller(eksisterendePerioder, nyePerioder)
+        : nyePerioder;
+
+    for (const nyPeriode of intervaller) {
         let dato = dayjs(nyPeriode.fom);
         const tom = dayjs(nyPeriode.tom);
 
@@ -44,7 +50,10 @@ export const harHistoriskFerieendring = (
                 const nyttUttak = finnUttakPåDato(nyePerioder, dato, søker);
                 const gammeltUttak = finnUttakPåDato(eksisterendePerioder, dato, søker);
 
-                if (nyttUttak?.utsettelseÅrsak === 'FERIE' && gammeltUttak?.utsettelseÅrsak !== 'FERIE') {
+                const erFerie = nyttUttak?.utsettelseÅrsak === 'FERIE';
+                const varFerie = gammeltUttak?.utsettelseÅrsak === 'FERIE';
+
+                if (sammenlignHelePlanen ? erFerie !== varFerie : erFerie && !varFerie) {
                     return true;
                 }
             }
@@ -97,8 +106,11 @@ export const finnPerioderMedEndretGradering = (
     sammenligning: Omit<Graderingssammenligning, 'førsteDagIMåneden'>,
 ): Datointervall[] => {
     const endredePerioder: Datointervall[] = [];
+    const intervaller = sammenligning.sammenlignHelePlanen
+        ? finnSammenligningsintervaller(eksisterendePerioder, nyePerioder)
+        : nyePerioder;
 
-    for (const nyPeriode of nyePerioder) {
+    for (const nyPeriode of intervaller) {
         let dato = dayjs(nyPeriode.fom);
         const tom = dayjs(nyPeriode.tom);
         let endretFra: string | undefined;
@@ -106,10 +118,10 @@ export const finnPerioderMedEndretGradering = (
         while (dato.isBefore(tom, 'day') || dato.isSame(tom, 'day')) {
             const erEndret = (['MOR', 'FAR_MEDMOR'] as const).some((forelder) => {
                 const gammelUttak = finnUttakPåDato(eksisterendePerioder, dato, forelder);
-                const nyttUttak = finnUttakForForelder(nyPeriode, forelder);
+                const nyttUttak = finnUttakPåDato(nyePerioder, dato, forelder);
                 const erLåstAnnenPart = sammenligning.erPeriodeneTilAnnenPartLåst && forelder !== sammenligning.søker;
 
-                if (erLåstAnnenPart && !nyttUttak) {
+                if (erLåstAnnenPart && !nyttUttak && !sammenligning.sammenlignHelePlanen) {
                     return false;
                 }
 
@@ -136,6 +148,27 @@ export const finnPerioderMedEndretGradering = (
     }
 
     return endredePerioder;
+};
+
+const finnSammenligningsintervaller = (
+    eksisterendePerioder: Datointervall[],
+    nyePerioder: Datointervall[],
+): Datointervall[] => {
+    const sorterte = [...eksisterendePerioder, ...nyePerioder].sort((a, b) => a.fom.localeCompare(b.fom));
+    const intervaller: Datointervall[] = [];
+
+    for (const periode of sorterte) {
+        const forrige = intervaller.at(-1);
+        if (forrige && overlapper(forrige, periode)) {
+            if (periode.tom > forrige.tom) {
+                forrige.tom = periode.tom;
+            }
+        } else {
+            intervaller.push({ fom: periode.fom, tom: periode.tom });
+        }
+    }
+
+    return intervaller;
 };
 
 const finnUttakPåDato = (
