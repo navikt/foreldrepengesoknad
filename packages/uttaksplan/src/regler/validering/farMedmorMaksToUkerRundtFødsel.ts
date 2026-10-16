@@ -56,6 +56,17 @@ const tellArbeidsdagerInnenfor = (fom: string, tom: string, førsteDag: string, 
     return dager;
 };
 
+// Samme rekkefølge som TrekkdagerUtregningUtil i fp-uttak: gradering går foran samtidig uttak.
+const finnUttaksfaktor = (arbeidstidprosent: number | undefined, samtidigUttaksprosent: number | undefined): number => {
+    if (arbeidstidprosent !== undefined) {
+        return Math.max(0, 100 - arbeidstidprosent) / 100;
+    }
+    if (samtidigUttaksprosent !== undefined) {
+        return Math.max(0, samtidigUttaksprosent) / 100;
+    }
+    return 1;
+};
+
 const skalTelleMotToUkersgrensen = (uttak: UttakDto | undefined): boolean =>
     uttak?.forelder === 'FAR_MEDMOR' &&
     uttak.kontoType !== undefined &&
@@ -71,7 +82,8 @@ const lagRegler = (intl: IntlShape): ReadonlyArray<Valideringsregel<FarMedmorMak
             'Nye og eksisterende dager med fedrekvote i forbindelse med fødselen kan til sammen ikke overstige ' +
             '10 stønadsdager. Flerbarnsdager og uttak ved mors sykdom eller innleggelse kommer i tillegg til ' +
             'denne grensen, uavhengig av rekkefølgen periodene legges inn i. Overført mødrekvote telles heller ' +
-            'ikke med. Gradert uttak teller med uttaksprosenten (100 % minus stillingsprosenten).',
+            'ikke med. Gradert uttak teller med uttaksprosenten (100 % minus stillingsprosenten). Samtidig uttak ' +
+            'uten gradering teller med samtidig uttaksprosent.',
         erBrutt: (k) => k.totaltAntallDagerInnenforIntervallet > ANTALL_UTTAKSDAGER_TO_UKER,
         feilmelding: intl.formatMessage({
             id: 'LeggTilEllerEndrePeriodeForm.FarMedmor.MerEnnToUkerRundtFamiliehendelse',
@@ -110,7 +122,12 @@ const byggKontekst = (input: ValideringInput): FarMedmorMaks2UkerKontekst | null
         return null;
     }
 
-    const uttaksfaktor = (100 - (getFloatFromString(formValues.stillingsprosentFarMedmor) ?? 0)) / 100;
+    const uttaksfaktor = finnUttaksfaktor(
+        formValues.skalDuKombinereArbeidOgUttakFarMedmor === false
+            ? undefined
+            : getFloatFromString(formValues.stillingsprosentFarMedmor),
+        getFloatFromString(formValues.samtidigUttaksprosentFarMedmor),
+    );
 
     const dagerNyePerioder =
         nyePerioderInnenforIntervallet.reduce(
@@ -134,8 +151,7 @@ const byggKontekst = (input: ValideringInput): FarMedmorMaks2UkerKontekst | null
 
     const dagerEksisterendePerioder = eksisterendeFarMedmorPerioder.reduce((sum, { fom, tom, uttak }) => {
         const dager = tellArbeidsdagerInnenfor(fom, tom, førsteDag, sisteDag);
-        const arbeidstidprosent = uttak.gradering?.arbeidstidprosent ?? 0;
-        return sum + dager * ((100 - arbeidstidprosent) / 100);
+        return sum + dager * finnUttaksfaktor(uttak.gradering?.arbeidstidprosent, uttak.samtidigUttak);
     }, 0);
 
     return {
