@@ -301,6 +301,23 @@ describe('UttakPeriodeBuilder – sortering og mutasjon', () => {
     });
 });
 
+describe('UttakPeriodeBuilder – endre periode med forskyving', () => {
+    it('skal bare forskyve etterfølgende perioder med forlengelsen når en periode på 1 uke utvides til 2 uker', () => {
+        const gammelPeriode = lagPeriode('2024-01-01', '2024-01-05', { kontoType: 'FELLESPERIODE' });
+        const nestePeriode = lagPeriode('2024-01-08', '2024-01-12', { kontoType: 'MØDREKVOTE' });
+        const builder = new UttakPeriodeBuilder([gammelPeriode, nestePeriode]);
+
+        builder
+            .fjernUttakPerioder([gammelPeriode], SKAL_FORSKYVE)
+            .leggTilUttakPerioder([lagNyPeriode('2024-01-01', '2024-01-12')], SKAL_FORSKYVE);
+
+        expect(builder.getUttakPerioder()).toEqual([
+            lagNyPeriode('2024-01-01', '2024-01-12'),
+            { ...nestePeriode, fom: '2024-01-15', tom: '2024-01-19' },
+        ]);
+    });
+});
+
 describe('UttakPeriodeBuilder.fjernUttakPerioder (Ikke forskyv)', () => {
     it('skal fjerne en periode som overlapper en del midt inni en eksisterende periode', () => {
         const builder = new UttakPeriodeBuilder([lagPeriode('2024-01-01', '2024-01-10')]);
