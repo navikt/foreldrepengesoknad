@@ -5,14 +5,30 @@ import eslintConfig from '@navikt/fp-config-eslint';
 const IGNORED_UNICORN_RULES = {
     'unicorn/filename-case': 'off',
     'unicorn/name-replacements': 'off',
+    'unicorn/no-async-iterator-callback': 'off',
+    'unicorn/no-asterisk-prefix-in-documentation-comments': 'off',
+    'unicorn/no-invalid-temporal-arithmetic': 'off',
+    'unicorn/no-leading-empty-lines': 'off',
     'unicorn/no-nested-ternary': 'off',
     'unicorn/no-null': 'off',
+    'unicorn/no-unnecessary-parameters': 'off',
+    'unicorn/no-unused-iterator-helper': 'off',
+    'unicorn/no-using-resource-escape': 'off',
+    'unicorn/prefer-combined-guards': 'off',
+    'unicorn/prefer-escaped-irregular-whitespace': 'off',
+    'unicorn/prefer-iterator-helpers': 'off',
+    'unicorn/prefer-iterator-zip': 'off',
+    'unicorn/prefer-literal-ascii': 'off',
+    'unicorn/prefer-promise-static-methods': 'off',
+    'unicorn/prefer-short-escape-sequences': 'off',
+    'unicorn/prefer-temporal-conversion': 'off',
     'unicorn/prevent-abbreviations': 'off',
+    'unicorn/require-text-decoder-streaming': 'off',
 };
 
 export default [
     ...eslintConfig,
-    eslintPluginUnicorn.configs['flat/recommended'],
+    eslintPluginUnicorn.configs.recommended,
     {
         rules: {
             ...IGNORED_UNICORN_RULES,
