@@ -511,6 +511,50 @@ describe('UttaksplanListe', () => {
         expect(fedrekvotePeriode?.annenPart?.morsAktivitet).toBeUndefined();
     });
 
+    it('Fedrekvote skal ikke beholde aktivitetskrav (morsAktivitet) når datoene flyttes til før fødsel', async () => {
+        const oppdaterUttaksplan = vi.fn();
+
+        render(<Default oppdaterUttaksplan={oppdaterUttaksplan} />);
+
+        expect(await screen.findByText('18. april 25 - 08. mai 25')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Legg til periode'));
+        const fraOgMedDato = await screen.findByLabelText('Fra og med dato');
+        const tilOgMedDato = screen.getByLabelText('Til og med dato');
+        await userEvent.type(fraOgMedDato, '12.05.2025');
+        await userEvent.tab();
+        await userEvent.type(tilOgMedDato, '16.05.2025');
+        await userEvent.tab();
+
+        await userEvent.click(await screen.findByText('Legge til periode med foreldrepenger'));
+        await userEvent.click(await screen.findByRole('radio', { name: 'Far' }));
+        await userEvent.click(await screen.findByRole('radio', { name: 'Fars kvote' }));
+
+        await userEvent.selectOptions(
+            await screen.findByLabelText('Hva skal mor gjøre i denne perioden?'),
+            'TRENGER_HJELP',
+        );
+
+        // Far flytter perioden til før fødsel – da finnes det ingen mor å dokumentere aktiviteten til.
+        await userEvent.clear(fraOgMedDato);
+        await userEvent.type(fraOgMedDato, '28.04.2025');
+        await userEvent.clear(tilOgMedDato);
+        await userEvent.type(tilOgMedDato, '02.05.2025');
+        await userEvent.tab();
+        await waitFor(() => expect(screen.queryByText('Hva skal mor gjøre i denne perioden?')).not.toBeInTheDocument());
+
+        await userEvent.click(screen.getByRole('radio', { name: 'Nei' }));
+        await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
+
+        await waitFor(() => expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1));
+        const lagredePerioder = oppdaterUttaksplan.mock.calls[0]![0] as UttakPeriodeDto[];
+        const fedrekvotePeriode = lagredePerioder.find(
+            (p) => p.annenPart?.kontoType === 'FEDREKVOTE' && p.fom === '2025-04-28',
+        );
+        expect(fedrekvotePeriode).toBeDefined();
+        expect(fedrekvotePeriode?.annenPart?.morsAktivitet).toBeUndefined();
+    });
+
     it('Skal endre periode til ferie', async () => {
         const oppdaterUttaksplan = vi.fn();
 

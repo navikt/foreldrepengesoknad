@@ -1,12 +1,12 @@
 import { ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { kreverDokumentasjonForFedrekvoteRundtFødsel } from 'utils/manglendeVedleggUtils';
 
 import { BodyShort, Box, Label, List, VStack } from '@navikt/ds-react';
 
 import { Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, AttachmentMetadataTidsperiode, NavnPåForeldre, UttakPeriodeDto } from '@navikt/fp-types';
 import { Uttaksperioden } from '@navikt/fp-utils';
-import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan/validators';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { getTidsperiodeString } from './DokumentasjonLastetOppLabel';
@@ -42,16 +42,7 @@ const isPeriodeMedMorInnleggelse = (periode: UttakPeriodeDto, familiehendelsedat
         return true;
     }
 
-    if (
-        Uttaksperioden.erUttaksperiode(søker) &&
-        søker.kontoType === 'FEDREKVOTE' &&
-        !søker.samtidigUttak &&
-        UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
-            periode,
-            familiehendelsedato,
-            undefined,
-        )
-    ) {
+    if (kreverDokumentasjonForFedrekvoteRundtFødsel(periode, familiehendelsedato)) {
         return true;
     }
 

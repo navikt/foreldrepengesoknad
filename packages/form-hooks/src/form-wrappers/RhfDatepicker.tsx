@@ -72,16 +72,9 @@ export const RhfDatepicker = <T extends FieldValues>({
     const [forrigeFeltverdi, setForrigeFeltverdi] = useState<unknown>(field.value);
     if (field.value !== forrigeFeltverdi) {
         setForrigeFeltverdi(field.value);
-        const inputdato = dayjs(fieldValue, DDMMYYYY_DATE_FORMAT, true);
-        if (feltdato.isValid()) {
-            if (!(inputdato.isValid() && inputdato.isSame(feltdato, 'day'))) {
-                setFieldValue(feltdato.format(DDMMYYYY_DATE_FORMAT));
-            }
-        } else {
-            const nyTekst = typeof field.value === 'string' ? field.value : '';
-            if (nyTekst !== fieldValue) {
-                setFieldValue(nyTekst);
-            }
+        const nyInputverdi = finnInputverdiEtterEksternEndring(feltdato, field.value, fieldValue);
+        if (nyInputverdi !== fieldValue) {
+            setFieldValue(nyInputverdi);
         }
     }
 
@@ -164,6 +157,17 @@ export const RhfDatepicker = <T extends FieldValues>({
 
 const INVALID_DATE = 'Invalid Date';
 const isValidDateString = (date: string): boolean => date !== INVALID_DATE;
+
+const finnInputverdiEtterEksternEndring = (feltdato: Dayjs, feltverdi: unknown, inputverdi: string): string => {
+    if (!feltdato.isValid()) {
+        return typeof feltverdi === 'string' ? feltverdi : '';
+    }
+    const inputdato = dayjs(inputverdi, DDMMYYYY_DATE_FORMAT, true);
+    if (inputdato.isValid() && inputdato.isSame(feltdato, 'day')) {
+        return inputverdi;
+    }
+    return feltdato.format(DDMMYYYY_DATE_FORMAT);
+};
 
 const findDisabledDays = (minDate?: Date, maxDate?: Date): Array<{ from: Date; to?: Date }> => {
     const disabledDays = [];
