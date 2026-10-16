@@ -40,9 +40,7 @@ const replaceAttachment = (
     currentAttachments: FileUploaderAttachment[],
     updatedAttachment: FileUploaderAttachment,
 ): FileUploaderAttachment[] =>
-    currentAttachments.map((a) =>
-        getAttachmentKey(a) === getAttachmentKey(updatedAttachment) ? updatedAttachment : a,
-    );
+    currentAttachments.map((a) => (a.attachmentData.id === updatedAttachment.attachmentData.id ? updatedAttachment : a));
 
 const uploadPendingAttachments = async ({
     pendingAttachments,

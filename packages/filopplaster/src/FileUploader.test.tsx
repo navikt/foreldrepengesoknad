@@ -120,6 +120,28 @@ describe('FileUploader', () => {
         expect(screen.queryByText('Laster opp...')).not.toBeInTheDocument();
     });
 
+    it('skal beholde begge vedleggene når to filer med samme navn lastes opp samtidig', async () => {
+        const updateAttachments = vi.fn();
+
+        await Default.run({ args: { ...Default.args, updateAttachments } });
+
+        const liten = new File(['a'], 'samme-navn.pdf', { type: 'application/pdf' });
+        const stor = new File(['abcdef'], 'samme-navn.pdf', { type: 'application/pdf' });
+
+        const fileInput = screen.getByLabelText('Last opp fil');
+        await userEvent.upload(fileInput, [liten, stor]);
+
+        await waitFor(() =>
+            expect(updateAttachments).toHaveBeenLastCalledWith(
+                expect.arrayContaining([
+                    expect.objectContaining({ filesize: liten.size, uploaded: true }),
+                    expect.objectContaining({ filesize: stor.size, uploaded: true }),
+                ]),
+                false,
+            ),
+        );
+    });
+
     it('skal få timeout ved opplasting', async () => {
         await OpplastningTimeout.run();
 
