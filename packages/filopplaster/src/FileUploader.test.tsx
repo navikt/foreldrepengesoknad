@@ -6,7 +6,7 @@ import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
 import * as stories from './FileUploader.stories';
 
-const { Default, OpplastningTimeout } = composeStories(stories);
+const { Default, OpplastningTimeout, OpplastningNettverksfeilForFørsteFil } = composeStories(stories);
 
 describe('FileUploader', () => {
     it('skal laste opp en fil', async () => {
@@ -95,6 +95,29 @@ describe('FileUploader', () => {
             ),
         );
         expect(updateAttachments.mock.lastCall?.[0]).toHaveLength(2);
+    });
+
+    it('skal vise feilmelding ved nettverksfeil og likevel laste opp resten av filene', async () => {
+        const updateAttachments = vi.fn();
+
+        await OpplastningNettverksfeilForFørsteFil.run({
+            args: { ...OpplastningNettverksfeilForFørsteFil.args, updateAttachments },
+        });
+
+        const fil1 = new File(['hello'], 'fil-1.pdf', { type: 'application/pdf' });
+        const fil2 = new File(['world'], 'fil-2.pdf', { type: 'application/pdf' });
+
+        const fileInput = screen.getByLabelText('Last opp fil');
+        await userEvent.upload(fileInput, [fil1, fil2]);
+
+        expect(await screen.findByText('Ops noe gikk galt prøv igjen', { exact: false })).toBeInTheDocument();
+        await waitFor(() =>
+            expect(updateAttachments).toHaveBeenLastCalledWith(
+                [expect.objectContaining({ filename: 'fil-2.pdf', pending: false, uploaded: true })],
+                false,
+            ),
+        );
+        expect(screen.queryByText('Laster opp...')).not.toBeInTheDocument();
     });
 
     it('skal få timeout ved opplasting', async () => {

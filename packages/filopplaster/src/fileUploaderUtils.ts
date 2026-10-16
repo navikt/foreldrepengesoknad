@@ -49,14 +49,18 @@ export const getPendingAttachmentFromFile = (
 };
 
 export const uploadAttachment = async (attachment: Attachment, uploadPath: string, timeout?: number): Promise<void> => {
-    const response = await getSaveAttachmentFetch({ uploadPath, attachment, timeout });
-
-    attachment.pending = false;
-    if (response.success) {
-        attachment.uploaded = true;
-        attachment.uuid = response.data;
-    } else {
-        attachment.error = response.feilkode;
+    try {
+        const response = await getSaveAttachmentFetch({ uploadPath, attachment, timeout });
+        if (response.success) {
+            attachment.uploaded = true;
+            attachment.uuid = response.data;
+        } else {
+            attachment.error = response.feilkode;
+        }
+    } catch {
+        attachment.error = 'SERVER_ERROR';
+    } finally {
+        attachment.pending = false;
     }
 };
 
