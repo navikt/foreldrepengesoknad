@@ -5,8 +5,8 @@ import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { useTilretteleggingerHelper } from 'appData/useTilretteleggingerHelper';
 import { FormattedMessage } from 'react-intl';
 import { ArbeidIUtlandetType } from 'types/ArbeidIUtlandet';
-import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
-import { getRuteVelgArbeidEllerSkjema } from 'utils/tilretteleggingUtils';
+import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'utils/arbeidsforholdUtils';
+import { getRuteVelgArbeidEllerSkjema, getTilretteleggingId } from 'utils/tilretteleggingUtils';
 
 import { AndreInntektskilder, ArbeidsforholdOgInntektPanel } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { EGEN_NÆRING_ID, skalViseEgenNæringSteg } from '@navikt/fp-steg-egen-naering';
@@ -43,16 +43,18 @@ type Props = {
 };
 
 export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }: Props) => {
-    const { fjernTilrettelegginger } = useTilretteleggingerHelper();
+    const { fjernTilrettelegginger, beholdKunTilrettelegginger } = useTilretteleggingerHelper();
 
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const arbeidIUtlandet = useContextGetData(ContextDataType.ARBEID_I_UTLANDET);
+    const valgteArbeidsforhold = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
     const { termindato } = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
     const oppdaterArbeidsforholdOgInntekt = useContextSaveData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const oppdaterFrilans = useContextSaveData(ContextDataType.FRILANS);
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
     const oppdaterArbeidIUtlandet = useContextSaveData(ContextDataType.ARBEID_I_UTLANDET);
+    const oppdaterValgteArbeidsforhold = useContextSaveData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
 
     const { arbeidsforhold, frilansoppdrag, selvstendigNæring: registrerteNæringer } = søkerInfo;
 
@@ -102,7 +104,7 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
 
         oppdaterArbeidsforholdOgInntekt(values);
 
-        const tilretteleggingerSomSkalFjernes = [];
+        const tilretteleggingerSomSkalFjernes: string[] = [];
 
         if (!values.harHattArbeidIUtlandet) {
             oppdaterArbeidIUtlandet(undefined);
@@ -116,7 +118,22 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
             tilretteleggingerSomSkalFjernes.push(EGEN_NÆRING_ID);
         }
 
-        if (tilretteleggingerSomSkalFjernes.length > 0) {
+        const harKunEttArbeid = søkerHarKunEtAktivtArbeid(
+            termindato,
+            arbeidsforhold,
+            values.harJobbetSomFrilans,
+            values.harJobbetSomSelvstendigNæringsdrivende,
+        );
+
+        if (harKunEttArbeid) {
+            oppdaterValgteArbeidsforhold(undefined);
+            const tilretteleggingId = getTilretteleggingId(arbeidsforhold, termindato, values);
+            beholdKunTilrettelegginger(tilretteleggingId ? [tilretteleggingId] : []);
+        } else {
+            if (valgteArbeidsforhold) {
+                const gyldigeValg = valgteArbeidsforhold.filter((id) => !tilretteleggingerSomSkalFjernes.includes(id));
+                oppdaterValgteArbeidsforhold(gyldigeValg.length > 0 ? gyldigeValg : undefined);
+            }
             fjernTilrettelegginger(tilretteleggingerSomSkalFjernes);
         }
 
