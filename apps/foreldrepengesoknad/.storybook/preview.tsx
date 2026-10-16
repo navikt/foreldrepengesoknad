@@ -99,6 +99,11 @@ const preview: Preview = {
             // jsdom-testene har ingen service worker; bruk msw/node-server der.
             // I nettleseren (Storybook og browser-mode-tester) bruker vi service worker.
             if (import.meta.env['TEST_MODE'] === 'jsdom-mode') {
+                Object.defineProperty(Object.getPrototypeOf(globalThis), 'XMLHttpRequest', {
+                    value: globalThis.XMLHttpRequest,
+                    configurable: true,
+                    writable: true,
+                });
                 const { setupServer } = await import('msw/node');
                 const server = setupServer();
                 server.listen({ onUnhandledFrame: 'bypass' });
