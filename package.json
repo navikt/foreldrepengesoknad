@@ -28,7 +28,7 @@
         "knip": "6.41.0",
         "msw": "3.0.3",
         "msw-storybook-addon": "3.0.3",
-        "prettier": "3.9.9",
+        "prettier": "3.9.10",
         "typescript": "catalog:"
     },
     "lint-staged": {
