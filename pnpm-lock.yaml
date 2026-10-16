@@ -410,7 +410,7 @@ importers:
         version: 8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
   apps/foreldrepengeoversikt:
     dependencies:
@@ -561,7 +561,7 @@ importers:
         version: 8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
   apps/foreldrepengesoknad:
     dependencies:
@@ -727,7 +727,7 @@ importers:
         version: 8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
   apps/planlegger:
     dependencies:
@@ -872,7 +872,7 @@ importers:
         version: 8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
   apps/svangerskapspengesoknad:
     dependencies:
@@ -1029,7 +1029,7 @@ importers:
         version: 8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
   apps/veiviser-fp-eller-es:
     dependencies:
@@ -1156,7 +1156,7 @@ importers:
         version: 8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
   apps/veiviser-hvor-mye:
     dependencies:
@@ -1292,7 +1292,7 @@ importers:
         version: 8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
   packages/app-shell:
     dependencies:
@@ -1368,7 +1368,7 @@ importers:
         version: 8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
   packages/config-eslint:
     devDependencies:
@@ -1440,7 +1440,7 @@ importers:
         version: 2.5.3
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
   packages/constants:
     dependencies:
@@ -1541,7 +1541,7 @@ importers:
         version: 8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
   packages/form-hooks:
     dependencies:
@@ -1638,7 +1638,7 @@ importers:
         version: 8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
   packages/observability:
     dependencies:
@@ -1690,7 +1690,7 @@ importers:
         version: 8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
   packages/server-utils:
     dependencies:
@@ -1842,7 +1842,7 @@ importers:
         version: 8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
   packages/steg-egen-næring:
     dependencies:
@@ -1948,7 +1948,7 @@ importers:
         version: 8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
   packages/steg-frilans:
     dependencies:
@@ -2048,7 +2048,7 @@ importers:
         version: 8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
   packages/steg-kvittering:
     dependencies:
@@ -2136,7 +2136,7 @@ importers:
         version: 8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
   packages/steg-oppsummering:
     dependencies:
@@ -2233,7 +2233,7 @@ importers:
         version: 8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
   packages/steg-utenlandsopphold:
     dependencies:
@@ -2339,7 +2339,7 @@ importers:
         version: 8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
   packages/types:
     dependencies:
@@ -2458,7 +2458,7 @@ importers:
         version: 8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
   packages/utils:
     dependencies:
@@ -2519,7 +2519,7 @@ importers:
         version: 8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
   packages/utils-test:
     dependencies:
@@ -2589,7 +2589,7 @@ importers:
         version: 8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
   packages/uttaksplan:
     dependencies:
@@ -2704,7 +2704,7 @@ importers:
         version: 8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
   packages/validation:
     dependencies:
@@ -2747,7 +2747,7 @@ importers:
         version: 8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
   server:
     dependencies:
@@ -2796,7 +2796,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+        version: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
   server-uinnlogget:
     dependencies:
@@ -10167,7 +10167,7 @@ snapshots:
       '@vitest/mocker': 5.0.3(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
       playwright: 1.64.0
       tinyrainbow: 3.2.0
-      vitest: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+      vitest: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
     transitivePeerDependencies:
       - bufferutil
       - msw
@@ -10202,7 +10202,7 @@ snapshots:
       pngjs: 7.0.0
       sirv: 3.0.2
       tinyrainbow: 3.2.0
-      vitest: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+      vitest: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
       ws: 8.22.0
     transitivePeerDependencies:
       - bufferutil
@@ -10304,7 +10304,7 @@ snapshots:
       pathe: 2.0.3
       sirv: 3.0.2
       tinyrainbow: 3.2.0
-      vitest: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
+      vitest: 5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
 
   '@vitest/utils@3.2.4':
     dependencies:
@@ -12942,7 +12942,7 @@ snapshots:
       - msw
     optional: true
 
-  vitest@5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)):
+  vitest@5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.0.1(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)):
     dependencies:
       '@types/chai': 5.2.3
       '@vitest/mocker': 5.0.3(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
@@ -12967,7 +12967,7 @@ snapshots:
     transitivePeerDependencies:
       - msw
 
-  vitest@5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)):
+  vitest@5.0.3(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@30.1.2(@noble/hashes@1.8.0))(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)):
     dependencies:
       '@types/chai': 5.2.3
       '@vitest/mocker': 5.0.3(msw@3.0.3(@types/node@26.4.0)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1)))(vite@8.3.4(@types/node@26.4.0)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.1))
