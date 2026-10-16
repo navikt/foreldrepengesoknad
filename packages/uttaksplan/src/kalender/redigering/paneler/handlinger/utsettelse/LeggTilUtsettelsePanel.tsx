@@ -41,10 +41,12 @@ export const LeggTilUtsettelsePanel = ({ setVisUtsettelsePanel }: Props) => {
                     }) satisfies UttakPeriodeDto,
             ),
             false,
+            'annet',
+            () => {
+                setValgtePerioder([]);
+                setEndredePerioder(sammenslåtteValgtePerioder);
+            },
         );
-
-        setValgtePerioder([]);
-        setEndredePerioder(sammenslåtteValgtePerioder);
     };
 
     return (
