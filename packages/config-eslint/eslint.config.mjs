@@ -20,24 +20,13 @@ const IGNORED_UNICORN_RULES = {
     'unicorn/max-nested-calls': OFF,
     'unicorn/no-top-level-side-effects': OFF,
     'unicorn/name-replacements': OFF,
-    'unicorn/no-asterisk-prefix-in-documentation-comments': OFF,
     'unicorn/no-nested-ternary': OFF,
     'unicorn/no-null': OFF,
-    'unicorn/no-unnecessary-array-flat-map': OFF,
-    'unicorn/no-unnecessary-parameters': OFF,
-    'unicorn/prefer-combined-guards': OFF,
-    'unicorn/prefer-continue': OFF,
-    'unicorn/prefer-default-parameters': OFF,
-    'unicorn/prefer-early-return': OFF,
-    'unicorn/prefer-escaped-irregular-whitespace': OFF,
-    'unicorn/prefer-logical-operator-over-ternary': OFF,
-    'unicorn/prefer-single-object-destructuring': OFF,
-    'unicorn/prefer-ternary': OFF,
     'unicorn/prevent-abbreviations': OFF,
 };
 
 export const unicornConfig = [
-    eslintPluginUnicorn.configs.recommended,
+    eslintPluginUnicorn.configs['flat/recommended'],
     eslintConfigPrettier,
     {
         rules: IGNORED_UNICORN_RULES,

@@ -12,7 +12,7 @@ const IGNORED_UNICORN_RULES = {
 
 export default [
     ...eslintConfig,
-    eslintPluginUnicorn.configs.recommended,
+    eslintPluginUnicorn.configs['flat/recommended'],
     {
         rules: {
             ...IGNORED_UNICORN_RULES,
