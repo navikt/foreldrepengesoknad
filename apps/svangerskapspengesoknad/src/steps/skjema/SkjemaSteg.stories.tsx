@@ -159,6 +159,7 @@ export const MedToTilrettelegginger: Story = {
     beforeEach: SkalIkkeFeileOpplasting.beforeEach,
     args: {
         ...SkalIkkeFeileOpplasting.args,
+        arbeidsforhold: DEFAULT_ARBEIDSFORHOLD.map(({ tom: _tom, ...arbeidsforhold }) => arbeidsforhold),
         valgteArbeidsforhold: [ARBEIDSGIVER_ID, ANNEN_ARBEIDSGIVER_ID],
     },
 };

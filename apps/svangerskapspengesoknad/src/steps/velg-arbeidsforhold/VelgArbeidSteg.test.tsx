@@ -154,6 +154,38 @@ describe('<VelgArbeidSteg>', () => {
         );
     });
 
+    it('skal fjerne vedlegg og ferie for bortvalgt arbeidsforhold selv om tilrettelegging ikke er lagret ennå', async () => {
+        const gåTilNesteSide = vi.fn();
+        const vedlegg = {
+            id: '990322244',
+            file: new File(['skjema'], 'skjema.pdf', { type: 'application/pdf' }),
+            filename: 'skjema.pdf',
+            filesize: 6,
+            pending: false,
+            uploaded: true,
+            innsendingsType: 'LASTET_OPP' as const,
+            skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
+            type: AttachmentType.TILRETTELEGGING,
+        };
+
+        render(
+            <Default
+                gåTilNesteSide={gåTilNesteSide}
+                valgteArbeidsforhold={['975326209', '990322244']}
+                tilretteleggingerVedlegg={{ '975326209': [vedlegg], '990322244': [vedlegg] }}
+            />,
+        );
+
+        await userEvent.click(await screen.findByText('Omsorgspartner Vestfold AS'));
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(gåTilNesteSide).toHaveBeenCalledWith({
+            data: { '975326209': [vedlegg] },
+            key: ContextDataType.TILRETTELEGGINGER_VEDLEGG,
+            type: 'update',
+        });
+    });
+
     it('skal vise feilmelding hvis ingen arbeidsforhold er avhuket', async () => {
         render(<Default />);
 
