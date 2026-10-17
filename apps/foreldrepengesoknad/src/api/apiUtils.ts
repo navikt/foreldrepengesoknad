@@ -190,6 +190,19 @@ export const getSøknadsdataForInnsending = (
     return erEndringssøknad ? mapTilEndringssøknadDto(hentData, søkerinfo) : mapTilSøknadDto(hentData, søkerinfo);
 };
 
+// Dobbelsikring mot at en plan som ikke er validert i uttaksplan-steget (f.eks. etter navigering med
+// nettleserens frem/tilbake-knapp) blir sendt inn uten periodene backend krever.
+export const harSøknadenNødvendigeUttaksperioder = (
+    søknad: ForeldrepengesøknadDto | EndringssøknadForeldrepengerDto,
+    erEndringssøknad: boolean,
+): boolean => {
+    const uttaksperioder = søknad.uttaksplan.uttaksperioder ?? [];
+    if (erEndringssøknad) {
+        return uttaksperioder.length > 0;
+    }
+    return uttaksperioder.some((periode) => periode.type === 'uttak' || periode.type === 'overføring');
+};
+
 export const mapTilSøknadDto = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     søkerinfo: FpPersonopplysningerDto_fpoversikt,

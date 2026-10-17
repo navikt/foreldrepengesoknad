@@ -386,7 +386,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     args: {
         erEndringssøknad: false,
-        sendSøknad: () => Promise.resolve(),
+        sendSøknad: () => Promise.resolve('SENDT'),
         søkerInfo: defaultSøkerinfoMor,
         avbrytSøknad: action('button-click'),
         mellomlagreSøknadOgNaviger: promiseAction(),
@@ -397,6 +397,13 @@ export const ManglerUttaksplan: Story = {
     args: {
         ...Default.args,
         manglerUttaksplan: true,
+    },
+};
+
+export const ManglerUttaksperioderVedInnsending: Story = {
+    args: {
+        ...Default.args,
+        sendSøknad: () => Promise.resolve('MANGLER_UTTAKSPERIODER'),
     },
 };
 

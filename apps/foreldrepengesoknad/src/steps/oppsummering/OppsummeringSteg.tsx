@@ -1,7 +1,9 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
+import { SendSøknadResultat } from 'appData/useSendSøknad';
 import { useStepConfig } from 'appData/useStepConfig';
+import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
@@ -33,7 +35,7 @@ import { UttaksplanOppsummering } from './uttaksplan-oppsummering/UttaksplanOpps
 interface Props {
     søkerInfo: FpPersonopplysningerDto_fpoversikt;
     erEndringssøknad: boolean;
-    sendSøknad: () => Promise<void>;
+    sendSøknad: () => Promise<SendSøknadResultat>;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
     foreldrepengerSaker?: FpSak_fpoversikt[];
@@ -74,9 +76,23 @@ export const OppsummeringSteg = (props: Props) => {
     });
     const { selvstendigNæring: registrerteNæringer } = søkerInfo;
 
-    if (uttaksplan === undefined) {
-        return <ManglendeUttaksplanSide onGåTilUttaksplan={() => navigator.goToStep(SøknadRoutes.UTTAKSPLAN)} />;
+    const [manglerUttaksperioder, setManglerUttaksperioder] = useState(false);
+
+    if (uttaksplan === undefined || manglerUttaksperioder) {
+        return (
+            <ManglendeUttaksplanSide
+                manglerPerioder={manglerUttaksperioder}
+                onGåTilUttaksplan={() => navigator.goToStep(SøknadRoutes.UTTAKSPLAN)}
+            />
+        );
     }
+
+    const sendSøknadOmPlanenHarNødvendigePerioder = async () => {
+        const resultat = await sendSøknad();
+        if (resultat === 'MANGLER_UTTAKSPERIODER') {
+            setManglerUttaksperioder(true);
+        }
+    };
 
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(
@@ -110,7 +126,7 @@ export const OppsummeringSteg = (props: Props) => {
             <OppsummeringPanel
                 appName="Foreldrepenger"
                 stepConfig={stepConfig}
-                sendSøknad={sendSøknad}
+                sendSøknad={sendSøknadOmPlanenHarNødvendigePerioder}
                 onAvsluttOgSlett={avbrytSøknad}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 onFortsettSenere={navigator.fortsettSøknadSenere}
