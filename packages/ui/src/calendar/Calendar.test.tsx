@@ -6,35 +6,21 @@ import * as stories from './Calendar.stories';
 const { Default, PeriodsThatSpanOverAYear } = composeStories(stories);
 
 describe('<Calendar>', () => {
-    it('skal vise korrekt antall dager uten markering', async () => {
-        render(<Default />);
-        expect(await screen.findAllByTestId('dayColor:NONE', { exact: false })).toHaveLength(22);
+    it('skal vise riktige dagmarkeringer og familiehendelse', () => {
+        const { container } = render(<Default />);
+
+        expect(container.querySelectorAll('[data-periode-color="NONE"]')).toHaveLength(22);
+        expect(container.querySelectorAll('[data-periode-color="GRAY"]')).toHaveLength(69);
+        expect(container.querySelectorAll('[data-periode-color="BLUE"]')).toHaveLength(68);
+        expect(container.querySelectorAll('[data-periode-color="LIGHTGREEN"]')).toHaveLength(85);
+        expect(screen.getByLabelText('21. februar 2024, Termindato')).toHaveAttribute('data-periode-color', 'BLUE');
     });
 
-    it('skal vise korrekt antall dager med helgemarkering', async () => {
-        render(<Default />);
-        expect(await screen.findAllByTestId('dayColor:GRAY', { exact: false })).toHaveLength(69);
-    });
-
-    it('skal vise korrekt antall dager med blå markering', async () => {
-        render(<Default />);
-        expect(await screen.findAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(68);
-    });
-
-    it('skal vise korrekt antall dager med grønn markering', async () => {
-        render(<Default />);
-        expect(await screen.findAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(85);
-    });
-
-    it('skal vise korrekt familiehendelse den 21 februar', () => {
-        render(<Default />);
-        expect(screen.getByTestId('day:21;dayColor:BLUE;with-icon')).toBeInTheDocument();
-    });
-
-    it('skal vise korrekt navn på måneder når perioden går over to år', async () => {
+    it('skal vise korrekt navn på måneder når perioden går over to år', () => {
         render(<PeriodsThatSpanOverAYear />);
 
-        expect(await screen.findByText('Februar 2024')).toBeInTheDocument();
+        expect(screen.getAllByRole('heading', { level: 4 })).toHaveLength(18);
+        expect(screen.getByText('Februar 2024')).toBeInTheDocument();
         expect(screen.getByText('Mars 2024')).toBeInTheDocument();
         expect(screen.getByText('April 2024')).toBeInTheDocument();
         expect(screen.getByText('Mai 2024')).toBeInTheDocument();
