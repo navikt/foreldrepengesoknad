@@ -449,6 +449,91 @@ describe('farMedmorMaksToUkerRundtFødsel', () => {
         ).toBeUndefined();
     });
 
+    describe('samtidig uttak under 100 %', () => {
+        // Tre uker gir 15 uttaksdager i intervallet.
+        const TRE_UKER = { fom: '2024-06-17', tom: '2024-07-05' };
+
+        it.each([
+            {
+                navn: '50 % samtidig uttak uten arbeid gir 7,5 trekkdager',
+                formValues: { samtidigUttaksprosentFarMedmor: '50', skalDuKombinereArbeidOgUttakFarMedmor: false },
+                forventet: undefined,
+            },
+            {
+                navn: '80 % samtidig uttak uten arbeid gir 12 trekkdager',
+                formValues: { samtidigUttaksprosentFarMedmor: '80', skalDuKombinereArbeidOgUttakFarMedmor: false },
+                forventet: FEILMELDING,
+            },
+            {
+                navn: 'stillingsprosent ignoreres når far/medmor ikke kombinerer med arbeid',
+                formValues: {
+                    samtidigUttaksprosentFarMedmor: '100',
+                    skalDuKombinereArbeidOgUttakFarMedmor: false,
+                    stillingsprosentFarMedmor: '80',
+                },
+                forventet: FEILMELDING,
+            },
+            {
+                navn: '50 % samtidig uttak med 50 % arbeid gir 7,5 trekkdager',
+                formValues: {
+                    samtidigUttaksprosentFarMedmor: '50',
+                    skalDuKombinereArbeidOgUttakFarMedmor: true,
+                    stillingsprosentFarMedmor: '50',
+                },
+                forventet: undefined,
+            },
+            {
+                navn: 'gradering går foran samtidig uttak: 20 % arbeid gir 12 trekkdager',
+                formValues: {
+                    samtidigUttaksprosentFarMedmor: '50',
+                    skalDuKombinereArbeidOgUttakFarMedmor: true,
+                    stillingsprosentFarMedmor: '20',
+                },
+                forventet: FEILMELDING,
+            },
+        ] satisfies Array<{
+            navn: string;
+            formValues: Partial<ValideringInput['formValues']>;
+            forventet: string | undefined;
+        }>)('ny periode: $navn', ({ formValues, forventet }) => {
+            expect(
+                evaluer(
+                    lagInput({
+                        perioder: [TRE_UKER],
+                        formValues: { forelder: 'BEGGE', samtidigUttaksprosentMor: '100', ...formValues },
+                    }),
+                ),
+            ).toBe(forventet);
+        });
+
+        it.each([
+            { navn: '50 % samtidig uttak uten arbeid', uttak: { samtidigUttak: 50 }, forventet: undefined },
+            { navn: '100 % samtidig uttak uten arbeid', uttak: { samtidigUttak: 100 }, forventet: FEILMELDING },
+            {
+                navn: '50 % samtidig uttak med 50 % arbeid',
+                uttak: { samtidigUttak: 50, gradering: { arbeidstidprosent: 50 } },
+                forventet: undefined,
+            },
+            {
+                navn: 'gradering foran samtidig uttak (20 % arbeid)',
+                uttak: { samtidigUttak: 50, gradering: { arbeidstidprosent: 20 } },
+                forventet: FEILMELDING,
+            },
+        ] satisfies Array<{ navn: string; uttak: Partial<UttakDto>; forventet: string | undefined }>)(
+            'eksisterende periode: $navn',
+            ({ uttak, forventet }) => {
+                expect(
+                    evaluer(
+                        lagInput({
+                            uttakPerioder: [lagFarPeriode({ ...TRE_UKER, ...uttak })],
+                            perioder: [{ fom: '2024-07-08', tom: '2024-07-09' }],
+                        }),
+                    ),
+                ).toBe(forventet);
+            },
+        );
+    });
+
     it('bruker desimalkomma i stillingsprosent uten å runde ned arbeidsandelen', () => {
         expect(
             evaluer(
