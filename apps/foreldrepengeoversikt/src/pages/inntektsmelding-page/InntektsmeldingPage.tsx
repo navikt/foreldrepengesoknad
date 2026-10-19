@@ -47,12 +47,12 @@ export const InntektsmeldingPage = () => {
     if (inntektsmeldingerQuery.isPending) {
         return (
             <PageRouteLayout header="">
-                <div className="flex flex-col items-center justify-center gap-4">
+                <VStack align="center" justify="center" gap="space-16">
                     <Loader size="2xlarge" />
                     <BodyShort>
                         <FormattedMessage id={'inntektsmelding.laster'} />
                     </BodyShort>
-                </div>
+                </VStack>
             </PageRouteLayout>
         );
     }
