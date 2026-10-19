@@ -1,19 +1,7 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from './SvpDataContext';
 
-const filtrerBort = <T>(
-    tilrettelegginger: Record<string, T>,
-    tilretteleggingerSomSkalFjernes: string[],
-): Record<string, T> => {
-    const filtrerteTilrettelegginger: Record<string, T> = {};
-
-    for (const [id, tilrettelegging] of Object.entries(tilrettelegginger)) {
-        if (!tilretteleggingerSomSkalFjernes.includes(id)) {
-            filtrerteTilrettelegginger[id] = tilrettelegging;
-        }
-    }
-
-    return filtrerteTilrettelegginger;
-};
+const filtrerPåId = <T>(data: Record<string, T>, skalBeholdes: (id: string) => boolean): Record<string, T> =>
+    Object.fromEntries(Object.entries(data).filter(([id]) => skalBeholdes(id)));
 
 export const useTilretteleggingerHelper = () => {
     const tilrettelegginger = useContextGetData(ContextDataType.TILRETTELEGGINGER);
@@ -26,25 +14,23 @@ export const useTilretteleggingerHelper = () => {
     const oppdaterTilretteleggingerVedlegg = useContextSaveData(ContextDataType.TILRETTELEGGINGER_VEDLEGG);
     const oppdaterFerie = useContextSaveData(ContextDataType.FERIE);
 
-    const fjernTilrettelegginger = (tilretteleggingerSomSkalFjernes: string[]) => {
-        if (!(tilrettelegginger && tilretteleggingerSomSkalFjernes.length > 0)) {
-            return;
+    const beholdKunTilrettelegginger = (ider: string[]) => {
+        const skalBeholdes = (id: string) => ider.includes(id);
+        if (tilrettelegginger) {
+            oppdaterTilrettelegginger(filtrerPåId(tilrettelegginger, skalBeholdes));
         }
-
-        oppdaterTilrettelegginger(filtrerBort(tilrettelegginger, tilretteleggingerSomSkalFjernes));
         if (tilretteleggingerVedlegg) {
-            oppdaterTilretteleggingerVedlegg(filtrerBort(tilretteleggingerVedlegg, tilretteleggingerSomSkalFjernes));
+            oppdaterTilretteleggingerVedlegg(filtrerPåId(tilretteleggingerVedlegg, skalBeholdes));
         }
         if (tilretteleggingerPerioder) {
-            oppdaterTilretteleggingerPerioder(filtrerBort(tilretteleggingerPerioder, tilretteleggingerSomSkalFjernes));
+            oppdaterTilretteleggingerPerioder(filtrerPåId(tilretteleggingerPerioder, skalBeholdes));
         }
-
         if (ferie) {
-            oppdaterFerie(filtrerBort(ferie, tilretteleggingerSomSkalFjernes));
+            oppdaterFerie(filtrerPåId(ferie, skalBeholdes));
         }
     };
 
     return {
-        fjernTilrettelegginger,
+        beholdKunTilrettelegginger,
     };
 };

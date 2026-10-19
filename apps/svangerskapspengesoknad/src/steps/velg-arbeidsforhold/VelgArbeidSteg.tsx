@@ -40,10 +40,9 @@ export const VelgArbeidSteg = ({
         arbeidsforhold,
         harRegistrertNæring,
     });
-    const { fjernTilrettelegginger } = useTilretteleggingerHelper();
+    const { beholdKunTilrettelegginger } = useTilretteleggingerHelper();
 
     const valgteArbeidsforhold = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
-    const tilrettelegginger = useContextGetData(ContextDataType.TILRETTELEGGINGER);
     const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
     const frilans = useContextGetData(ContextDataType.FRILANS);
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
@@ -66,12 +65,7 @@ export const VelgArbeidSteg = ({
             .map((a) => a.id);
         oppdaterValgteArbeidsforhold(sorterteArbeidsforholdIder);
 
-        if (tilrettelegginger) {
-            const valgSomSkalFjernes = Object.keys(tilrettelegginger).filter(
-                (id) => !sorterteArbeidsforholdIder.includes(id),
-            );
-            fjernTilrettelegginger(valgSomSkalFjernes);
-        }
+        beholdKunTilrettelegginger(sorterteArbeidsforholdIder);
 
         return navigator.goToStep(SøknadRoute.SKJEMA + '/' + sorterteArbeidsforholdIder[0]);
     };

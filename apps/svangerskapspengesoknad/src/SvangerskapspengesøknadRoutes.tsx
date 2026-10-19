@@ -3,10 +3,11 @@ import { SøknadRoute, TILRETTELEGGING_PARAM } from 'appData/routes';
 import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
 import { SvpMellomlagretData, useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
 import { useSendSøknad } from 'appData/useSendSøknad';
-import { useEffect, useState } from 'react';
+import { useStepConfig } from 'appData/useStepConfig';
+import { ReactNode, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router';
 
-import { SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
 
 import { Forside } from './pages/forside/Forside';
@@ -34,6 +35,22 @@ export const ApiErrorHandler = ({ error }: { error: Error }) => {
             retryCallback={() => location.reload()}
         />
     );
+};
+
+const GyldigTilretteleggingRute = ({
+    arbeidsforhold,
+    harRegistrertNæring,
+    children,
+}: {
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    harRegistrertNæring: boolean;
+    children: ReactNode;
+}) => {
+    const stepConfig = useStepConfig({ arbeidsforhold, harRegistrertNæring });
+    if (stepConfig.every((step) => !step.isSelected)) {
+        return <Navigate to={SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT} replace />;
+    }
+    return children;
 };
 
 const renderSøknadRoutes = (
@@ -150,45 +167,65 @@ const renderSøknadRoutes = (
             <Route
                 path={`${SøknadRoute.SKJEMA}/${TILRETTELEGGING_PARAM}`}
                 element={
-                    <SkjemaSteg
+                    <GyldigTilretteleggingRute
                         arbeidsforhold={søkerInfo.arbeidsforhold}
                         harRegistrertNæring={harRegistrertNæring}
-                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                        avbrytSøknad={avbrytSøknad}
-                    />
+                    >
+                        <SkjemaSteg
+                            arbeidsforhold={søkerInfo.arbeidsforhold}
+                            harRegistrertNæring={harRegistrertNæring}
+                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                            avbrytSøknad={avbrytSøknad}
+                        />
+                    </GyldigTilretteleggingRute>
                 }
             />
             <Route
                 path={`${SøknadRoute.TILRETTELEGGING}/${TILRETTELEGGING_PARAM}`}
                 element={
-                    <TilretteleggingSteg
+                    <GyldigTilretteleggingRute
                         arbeidsforhold={søkerInfo.arbeidsforhold}
                         harRegistrertNæring={harRegistrertNæring}
-                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                        avbrytSøknad={avbrytSøknad}
-                    />
+                    >
+                        <TilretteleggingSteg
+                            arbeidsforhold={søkerInfo.arbeidsforhold}
+                            harRegistrertNæring={harRegistrertNæring}
+                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                            avbrytSøknad={avbrytSøknad}
+                        />
+                    </GyldigTilretteleggingRute>
                 }
             />
             <Route
                 path={`${SøknadRoute.PERIODER}/${TILRETTELEGGING_PARAM}`}
                 element={
-                    <PerioderSteg
+                    <GyldigTilretteleggingRute
                         arbeidsforhold={søkerInfo.arbeidsforhold}
                         harRegistrertNæring={harRegistrertNæring}
-                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                        avbrytSøknad={avbrytSøknad}
-                    />
+                    >
+                        <PerioderSteg
+                            arbeidsforhold={søkerInfo.arbeidsforhold}
+                            harRegistrertNæring={harRegistrertNæring}
+                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                            avbrytSøknad={avbrytSøknad}
+                        />
+                    </GyldigTilretteleggingRute>
                 }
             />
             <Route
                 path={`${SøknadRoute.FERIE}/${TILRETTELEGGING_PARAM}`}
                 element={
-                    <FerieSteg
+                    <GyldigTilretteleggingRute
                         arbeidsforhold={søkerInfo.arbeidsforhold}
                         harRegistrertNæring={harRegistrertNæring}
-                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                        avbrytSøknad={avbrytSøknad}
-                    />
+                    >
+                        <FerieSteg
+                            arbeidsforhold={søkerInfo.arbeidsforhold}
+                            harRegistrertNæring={harRegistrertNæring}
+                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                            avbrytSøknad={avbrytSøknad}
+                        />
+                    </GyldigTilretteleggingRute>
                 }
             />
             <Route

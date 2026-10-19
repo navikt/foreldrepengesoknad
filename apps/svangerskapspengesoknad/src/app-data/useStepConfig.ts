@@ -6,7 +6,7 @@ import {
     DelvisTilrettelegging,
     IngenTilrettelegging,
 } from 'types/Tilrettelegging';
-import { søkerHarKunEtAktivtArbeid } from 'utils/arbeidsforholdUtils';
+import { getGyldigeTilretteleggingIder, søkerHarKunEtAktivtArbeid } from 'utils/arbeidsforholdUtils';
 import { getTilretteleggingId, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
 
 import { EGEN_NÆRING_ID, skalViseEgenNæringSteg } from '@navikt/fp-steg-egen-naering';
@@ -136,7 +136,6 @@ const getStepConfig = (
 ): Array<ProgressStep<string>> => {
     const arbeidsforholdOgInntekt = getStateData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const tilrettelegginger = getStateData(ContextDataType.TILRETTELEGGINGER);
-    const valgteArbeidsforhold = getStateData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
     const barn = getStateData(ContextDataType.OM_BARNET);
     const utenlandsopphold = getStateData(ContextDataType.UTENLANDSOPPHOLD);
 
@@ -187,6 +186,20 @@ const getStepConfig = (
     if (!harKunEttArbeid) {
         steps.push(createStep(SøknadRoute.VELG_ARBEID, intl, currentPath));
     }
+
+    const gyldigeIder =
+        !harKunEttArbeid && arbeidsforholdOgInntekt && barn?.termindato
+            ? getGyldigeTilretteleggingIder(
+                  arbeidsforhold,
+                  barn.termindato,
+                  arbeidsforholdOgInntekt.harJobbetSomFrilans && !!getStateData(ContextDataType.FRILANS),
+                  arbeidsforholdOgInntekt.harJobbetSomSelvstendigNæringsdrivende &&
+                      !!getStateData(ContextDataType.EGEN_NÆRING),
+              )
+            : [];
+    const gyldigeValg =
+        getStateData(ContextDataType.VALGTE_ARBEIDSFORHOLD)?.filter((id) => gyldigeIder.includes(id)) ?? [];
+    const valgteArbeidsforhold = gyldigeValg.length > 0 ? gyldigeValg : undefined;
 
     const harValgtFlereTilrettelegginger = !!valgteArbeidsforhold && valgteArbeidsforhold.length > 1;
     const harValgtEnTilrettelegging = !!valgteArbeidsforhold && valgteArbeidsforhold.length === 1;
