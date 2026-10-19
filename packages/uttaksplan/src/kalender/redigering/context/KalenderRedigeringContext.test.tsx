@@ -62,6 +62,12 @@ const lagKvoteperiode = (fom: string, tom: string): UttakPeriodeDto => ({
     søker: { forelder: 'MOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false },
 });
 
+const lagUtsettelsesperiode = (fom: string, tom: string, utsettelseÅrsak: 'FRI' | 'SØKER_SYKDOM'): UttakPeriodeDto => ({
+    fom,
+    tom,
+    søker: { forelder: 'MOR', utsettelseÅrsak, flerbarnsdager: false },
+});
+
 type HarnessProps = {
     perioder?: UttakPeriodeDto[];
     erEndringssøknad?: boolean;
@@ -146,7 +152,21 @@ const ApiHarness = ({
             <output aria-label="Valgte perioder">{JSON.stringify(sammenslåtteValgtePerioder)}</output>
             <button
                 type="button"
-                onClick={() => leggTilUttaksplanPerioder([lagFerieperiode(fom, tom)], false, 'ferie', etterUtført)}
+                onClick={() => leggTilUttaksplanPerioder([lagUtsettelsesperiode(fom, tom, 'FRI')], false, etterUtført)}
+            >
+                Legg til pause
+            </button>
+            <button
+                type="button"
+                onClick={() =>
+                    leggTilUttaksplanPerioder([lagUtsettelsesperiode(fom, tom, 'SØKER_SYKDOM')], false, etterUtført)
+                }
+            >
+                Legg til utsettelse
+            </button>
+            <button
+                type="button"
+                onClick={() => leggTilUttaksplanPerioder([lagFerieperiode(fom, tom)], false, etterUtført)}
             >
                 Legg til ferie
             </button>
@@ -158,27 +178,20 @@ const ApiHarness = ({
             </button>
             <button
                 type="button"
-                onClick={() => leggTilUttaksplanPerioder([lagFerieperiode(fom, tom)], true, 'ferie', etterUtført)}
+                onClick={() => leggTilUttaksplanPerioder([lagFerieperiode(fom, tom)], true, etterUtført)}
             >
                 Legg til ferie med forskyvning
             </button>
             <button
                 type="button"
-                onClick={() =>
-                    leggTilUttaksplanPerioder([lagGraderingsperiode(fom, tom)], false, 'gradering', etterUtført)
-                }
+                onClick={() => leggTilUttaksplanPerioder([lagGraderingsperiode(fom, tom)], false, etterUtført)}
             >
                 Legg til gradering
             </button>
             <button
                 type="button"
                 onClick={() =>
-                    leggTilUttaksplanPerioder(
-                        [lagGraderingsperiode(fom, tom, 'FELLESPERIODE')],
-                        false,
-                        'gradering',
-                        etterUtført,
-                    )
+                    leggTilUttaksplanPerioder([lagGraderingsperiode(fom, tom, 'FELLESPERIODE')], false, etterUtført)
                 }
             >
                 Endre kvotetype uten forskyvning
@@ -186,25 +199,20 @@ const ApiHarness = ({
             <button
                 type="button"
                 onClick={() =>
-                    leggTilUttaksplanPerioder(
-                        [lagGraderingsperiode(fom, tom, 'FELLESPERIODE')],
-                        true,
-                        'gradering',
-                        etterUtført,
-                    )
+                    leggTilUttaksplanPerioder([lagGraderingsperiode(fom, tom, 'FELLESPERIODE')], true, etterUtført)
                 }
             >
                 Endre kvotetype med forskyvning
             </button>
             <button
                 type="button"
-                onClick={() => leggTilUttaksplanPerioder([lagKvoteperiode(fom, tom)], true, 'gradering', etterUtført)}
+                onClick={() => leggTilUttaksplanPerioder([lagKvoteperiode(fom, tom)], true, etterUtført)}
             >
                 Legg til ugraderte foreldrepenger med forskyvning
             </button>
             <button
                 type="button"
-                onClick={() => leggTilUttaksplanPerioder([lagKvoteperiode(fom, tom)], false, 'gradering', etterUtført)}
+                onClick={() => leggTilUttaksplanPerioder([lagKvoteperiode(fom, tom)], false, etterUtført)}
             >
                 Legg til ugraderte foreldrepenger uten forskyvning
             </button>
@@ -242,6 +250,104 @@ describe('KalenderRedigeringContext', () => {
     beforeEach(() => {
         vi.setSystemTime(new Date('2026-10-16T12:00:00.000Z'));
     });
+
+    it.each([
+        { knapp: 'Legg til pause', årsak: 'FRI' as const, lagPeriode: lagGraderingsperiode },
+        { knapp: 'Legg til utsettelse', årsak: 'SØKER_SYKDOM' as const, lagPeriode: lagGraderingsperiode },
+        { knapp: 'Legg til utsettelse', årsak: 'SØKER_SYKDOM' as const, lagPeriode: lagFerieperiode },
+    ])(
+        'bekrefter $knapp som fjerner historisk gradering eller ferie ($årsak)',
+        async ({ knapp, årsak, lagPeriode }) => {
+            const user = userEvent.setup();
+            const perioder = [lagPeriode('2026-09-14', '2026-09-18')];
+            const original = structuredClone(perioder);
+            const { oppdaterUttaksplan, etterUtført } = renderHarness({
+                perioder,
+                datoer: { fom: '2026-09-14', tom: '2026-09-18' },
+            });
+
+            await user.click(screen.getByRole('button', { name: knapp }));
+            expect(screen.getByRole('dialog')).toBeInTheDocument();
+            expect(oppdaterUttaksplan).not.toHaveBeenCalled();
+            expect(etterUtført).not.toHaveBeenCalled();
+
+            await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Avbryt' }));
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+            expect(oppdaterUttaksplan).not.toHaveBeenCalled();
+            expect(etterUtført).not.toHaveBeenCalled();
+            expect(perioder).toEqual(original);
+
+            await user.click(screen.getByRole('button', { name: knapp }));
+            await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Endre' }));
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+            expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
+            expect(oppdaterUttaksplan).toHaveBeenCalledWith([lagUtsettelsesperiode('2026-09-14', '2026-09-18', årsak)]);
+            expect(etterUtført).toHaveBeenCalledTimes(1);
+        },
+    );
+
+    it.each([
+        { label: 'ugradert periode', perioder: [lagKvoteperiode('2026-09-14', '2026-09-18')] },
+        { label: 'hull', perioder: [] },
+        {
+            label: 'inneværende måned',
+            perioder: [lagGraderingsperiode('2026-10-05', '2026-10-09')],
+            fom: '2026-10-05',
+            tom: '2026-10-09',
+        },
+        { label: 'ny søknad', perioder: [lagGraderingsperiode('2026-09-14', '2026-09-18')], erEndringssøknad: false },
+    ])(
+        'legger til pause uten varsel for $label',
+        async ({ perioder, fom = '2026-09-14', tom = '2026-09-18', erEndringssøknad = true }) => {
+            const user = userEvent.setup();
+            const { oppdaterUttaksplan, etterUtført } = renderHarness({
+                perioder,
+                datoer: { fom, tom },
+                erEndringssøknad,
+            });
+
+            await user.click(screen.getByRole('button', { name: 'Legg til pause' }));
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+            expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
+            expect(oppdaterUttaksplan).toHaveBeenCalledWith([lagUtsettelsesperiode(fom, tom, 'FRI')]);
+            expect(etterUtført).toHaveBeenCalledTimes(1);
+        },
+    );
+
+    it.each([
+        { knapp: 'Legg til ferie', lagPeriode: lagFerieperiode },
+        { knapp: 'Legg til gradering', lagPeriode: lagGraderingsperiode },
+    ])('varsler ikke når $knapp 2. november forlenger lik periode over helgen', async ({ knapp, lagPeriode }) => {
+        vi.setSystemTime(new Date('2026-11-02T12:00:00.000Z'));
+        const user = userEvent.setup();
+        const { oppdaterUttaksplan, etterUtført } = renderHarness({
+            perioder: [lagPeriode('2026-10-30', '2026-10-30')],
+            datoer: { fom: '2026-11-02', tom: '2026-11-02' },
+        });
+
+        await user.click(screen.getByRole('button', { name: knapp }));
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        expect(oppdaterUttaksplan).toHaveBeenCalledExactlyOnceWith([lagPeriode('2026-10-30', '2026-11-02')]);
+        expect(etterUtført).toHaveBeenCalledTimes(1);
+    });
+
+    it.each([lagFerieperiode, lagGraderingsperiode])(
+        'varsler fortsatt når fredag 30. oktober endres',
+        async (lagPeriode) => {
+            vi.setSystemTime(new Date('2026-11-02T12:00:00.000Z'));
+            const user = userEvent.setup();
+            const { oppdaterUttaksplan } = renderHarness({
+                perioder: [lagPeriode('2026-10-30', '2026-10-30')],
+                datoer: { fom: '2026-10-30', tom: '2026-10-30' },
+            });
+
+            await user.click(
+                screen.getByRole('button', { name: 'Legg til ugraderte foreldrepenger uten forskyvning' }),
+            );
+            expect(screen.getByRole('dialog')).toBeInTheDocument();
+            expect(oppdaterUttaksplan).not.toHaveBeenCalled();
+        },
+    );
 
     it.each([false, true])(
         'utsetter ferieendring i historisk periode til bekreftelse (forskyvning: %s)',

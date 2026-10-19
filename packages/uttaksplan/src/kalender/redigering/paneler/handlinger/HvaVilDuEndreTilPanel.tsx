@@ -94,7 +94,6 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
                     }) satisfies UttakPeriodeDto,
             ),
             skalForskyve,
-            'ferie',
             () => {
                 setValgtePerioder([]);
                 setEndredePerioder(sammenslåtteValgtePerioder);

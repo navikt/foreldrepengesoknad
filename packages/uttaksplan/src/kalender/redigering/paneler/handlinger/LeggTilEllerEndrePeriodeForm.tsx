@@ -142,7 +142,6 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
                 mapFraFormValuesTilPeriodeDto(formMethods.getValues(), periode, søker, kanVelgeArbeidsgiver),
             ),
             skalForskyve,
-            'gradering',
             () => {
                 setValgtePerioder([]);
                 setEndredePerioder(sammenslåtteValgtePerioder);

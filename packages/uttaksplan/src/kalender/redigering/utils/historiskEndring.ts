@@ -3,6 +3,7 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 
 import { BrukerRolleSak_fpoversikt, UttakDto, UttakPeriodeDto } from '@navikt/fp-types';
+import { erUttaksdag } from '@navikt/fp-utils';
 
 import { finnAlleUttak, finnUttakForForelder } from '../../../utils/periodeUtils';
 
@@ -176,6 +177,10 @@ const finnUttakPåDato = (
     dato: Dayjs,
     forelder: BrukerRolleSak_fpoversikt,
 ): UttakDto | undefined => {
+    if (!erUttaksdag(dato.format('YYYY-MM-DD'))) {
+        return undefined;
+    }
+
     const periode = perioder.find(
         (p) => dayjs(p.fom).isSameOrBefore(dato, 'day') && dayjs(p.tom).isSameOrAfter(dato, 'day'),
     );

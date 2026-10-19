@@ -1758,6 +1758,51 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Fars kvote')).toBeInTheDocument();
     });
 
+    it('bekrefter pause som erstatter historisk gradering og beholder skjemaet ved avbrudd', async () => {
+        vi.setSystemTime(new Date('2026-10-16T12:00:00.000Z'));
+        const user = userEvent.setup();
+        render(
+            <KunFarHarRettOgHarPauseperiode
+                erEndringssøknad
+                barn={{ type: BarnType.FØDT, fødselsdatoer: ['2026-06-01'], antallBarn: 1 }}
+                perioder={[
+                    {
+                        fom: '2026-09-14',
+                        tom: '2026-09-18',
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FORELDREPENGER',
+                            flerbarnsdager: false,
+                            morsAktivitet: 'ARBEID',
+                            gradering: { arbeidstidprosent: 50 },
+                        },
+                    },
+                ]}
+            />,
+        );
+        const september = screen.getByTestId('year:2026;month:8');
+        await user.click(within(september).getByTestId('day:14;dayColor:GREENSTRIPED'));
+        await user.click(within(september).getByTestId('day:18;dayColor:GREENSTRIPED'));
+        await user.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await user.click(screen.getByText('Legg til pause'));
+        await user.selectOptions(screen.getByLabelText('Hva gjør mor i denne perioden?'), 'ARBEID');
+        await user.click(screen.getByRole('button', { name: 'Legg til' }));
+
+        expect(screen.getByRole('dialog')).toHaveTextContent(
+            'Er du sikker på at du skal endre foreldrepenger tilbake i tid?',
+        );
+        expect(within(september).queryByTestId('day:14;dayColor:BEIGEOUTLINE')).not.toBeInTheDocument();
+        await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Avbryt' }));
+        expect(screen.getByLabelText('Hva gjør mor i denne perioden?')).toHaveValue('ARBEID');
+        expect(within(september).getByTestId('day:14;dayColor:DARKBLUE')).toBeInTheDocument();
+
+        await user.click(screen.getByRole('button', { name: 'Legg til' }));
+        await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Endre' }));
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        expect(within(september).getAllByTestId('dayColor:BEIGEOUTLINE', { exact: false })).toHaveLength(5);
+        expect(screen.queryByLabelText('Hva gjør mor i denne perioden?')).not.toBeInTheDocument();
+    });
+
     it('skal vise pause og legge til ny pause', async () => {
         render(<KunFarHarRettOgHarPauseperiode />);
 

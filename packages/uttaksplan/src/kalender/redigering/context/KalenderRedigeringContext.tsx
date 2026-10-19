@@ -19,7 +19,6 @@ import {
 import { slåSammenTilstøtendePerioder } from '../utils/kalenderPeriodeUtils';
 
 type TypeHistoriskEndring = 'slettet' | 'endret';
-type TypePeriodeendring = 'gradering' | 'ferie' | 'annet';
 
 type VentendeHandling = {
     type: TypeHistoriskEndring;
@@ -38,7 +37,6 @@ type ContextValues = Omit<Props, 'children' | 'valgtePerioder' | 'oppdaterUttaks
     leggTilUttaksplanPerioder: (
         perioder: UttakPeriodeDto[],
         skalForskyvePeriode: boolean,
-        type: TypePeriodeendring,
         etterUtført: () => void,
     ) => void;
     slettUttaksplanPerioder: (
@@ -70,12 +68,7 @@ export const KalenderRedigeringProvider = ({
     const sammenslåtteValgtePerioder = useMemo(() => slåSammenTilstøtendePerioder(valgtePerioder), [valgtePerioder]);
 
     const leggTilUttaksplanPerioder = useCallback(
-        (
-            nyePerioder: UttakPeriodeDto[],
-            skalForskyvePeriode: boolean,
-            type: TypePeriodeendring,
-            etterUtført: () => void,
-        ) => {
+        (nyePerioder: UttakPeriodeDto[], skalForskyvePeriode: boolean, etterUtført: () => void) => {
             const nyeUttakPerioder = new UttakPeriodeBuilder(perioder, 'kalender')
                 .leggTilUttakPerioder(nyePerioder, skalForskyvePeriode)
                 .getUttakPerioder();
@@ -85,15 +78,14 @@ export const KalenderRedigeringProvider = ({
             };
             const førsteDagIMåneden = dayjs().startOf('month').format('YYYY-MM-DD');
             const berørerHistoriskDato =
-                type !== 'annet' &&
-                (harHistoriskFerieendring(perioder, nyeUttakPerioder, søker, førsteDagIMåneden, true) ||
-                    harHistoriskGraderingsendring(perioder, nyeUttakPerioder, {
-                        søker,
-                        kanVelgeArbeidsgiver,
-                        erPeriodeneTilAnnenPartLåst,
-                        førsteDagIMåneden,
-                        sammenlignHelePlanen: true,
-                    }));
+                harHistoriskFerieendring(perioder, nyeUttakPerioder, søker, førsteDagIMåneden, true) ||
+                harHistoriskGraderingsendring(perioder, nyeUttakPerioder, {
+                    søker,
+                    kanVelgeArbeidsgiver,
+                    erPeriodeneTilAnnenPartLåst,
+                    førsteDagIMåneden,
+                    sammenlignHelePlanen: true,
+                });
 
             if (erEndringssøknad && berørerHistoriskDato) {
                 setVentendeHandling({ type: 'endret', utfør });

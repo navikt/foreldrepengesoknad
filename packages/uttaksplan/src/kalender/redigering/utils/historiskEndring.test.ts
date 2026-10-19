@@ -139,7 +139,11 @@ describe('historiske kalenderendringer', () => {
 
         expect(harHistoriskGraderingsendring(eksisterende, nye, sammenligning)).toBe(false);
         expect(finnPerioderMedEndretGradering(eksisterende, nye, sammenligning)).toEqual([
-            { fom: '2026-10-01', tom: '2026-10-30' },
+            { fom: '2026-10-01', tom: '2026-10-02' },
+            { fom: '2026-10-05', tom: '2026-10-09' },
+            { fom: '2026-10-12', tom: '2026-10-16' },
+            { fom: '2026-10-19', tom: '2026-10-23' },
+            { fom: '2026-10-26', tom: '2026-10-30' },
         ]);
     });
 
@@ -251,9 +255,41 @@ describe('historiske kalenderendringer', () => {
                 sammenligning,
             ),
         ).toEqual([
-            { fom: '2026-09-12', tom: '2026-09-20' },
-            { fom: '2026-09-26', tom: '2026-10-02' },
+            { fom: '2026-09-14', tom: '2026-09-18' },
+            { fom: '2026-09-28', tom: '2026-10-02' },
         ]);
+    });
+
+    it.each(['ferie', 'gradering'] as const)(
+        'ignorerer helgen når lik %s forlenges fra fredag 30. oktober til mandag 2. november',
+        (type) => {
+            const uttak =
+                type === 'ferie' ? { ...lagUttak('MOR'), utsettelseÅrsak: 'FERIE' as const } : lagUttak('MOR', 50);
+            const eksisterende = [{ fom: '2026-10-30', tom: '2026-10-30', søker: uttak }];
+            const nye = [{ fom: '2026-10-30', tom: '2026-11-02', søker: uttak }];
+
+            expect(harHistoriskFerieendring(eksisterende, nye, 'MOR', '2026-11-01', true)).toBe(false);
+            expect(
+                harHistoriskGraderingsendring(eksisterende, nye, {
+                    ...sammenligning,
+                    førsteDagIMåneden: '2026-11-01',
+                    sammenlignHelePlanen: true,
+                }),
+            ).toBe(false);
+        },
+    );
+
+    it('beholder endret gradering i et hull på en ukedag, men utelater helgedager', () => {
+        expect(
+            finnPerioderMedEndretGradering(
+                [
+                    { fom: '2026-10-29', tom: '2026-10-29', søker: lagUttak('MOR', 50) },
+                    { fom: '2026-11-02', tom: '2026-11-02', søker: lagUttak('MOR', 50) },
+                ],
+                [{ fom: '2026-10-29', tom: '2026-11-02', søker: lagUttak('MOR', 50) }],
+                sammenligning,
+            ),
+        ).toEqual([{ fom: '2026-10-30', tom: '2026-10-30' }]);
     });
 
     it('sammenligner graderingen for samme forelder ved samtidige uttak', () => {
