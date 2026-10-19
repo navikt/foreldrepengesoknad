@@ -61,6 +61,7 @@ describe('useStepConfig', () => {
                 harJobbetSomSelvstendigNæringsdrivende: false,
             },
             [ContextDataType.VALGTE_ARBEIDSFORHOLD]: [ARBEIDSGIVER_ID, FRILANS_ID, EGEN_NÆRING_ID, '123456789'],
+            [ContextDataType.FRILANS]: { oppstart: '2024-01-01' },
         });
 
         const stegIder = result.current.map((steg) => steg.id);
@@ -69,5 +70,21 @@ describe('useStepConfig', () => {
         expect(stegIder).toContain(addTilretteleggingIdToRoute(SøknadRoute.SKJEMA, FRILANS_ID));
         expect(stegIder).not.toContain(addTilretteleggingIdToRoute(SøknadRoute.SKJEMA, EGEN_NÆRING_ID));
         expect(stegIder).not.toContain(addTilretteleggingIdToRoute(SøknadRoute.SKJEMA, '123456789'));
+    });
+
+    it('skal ikke lage steg for frilans når frilansdata mangler i context', () => {
+        const { result } = renderStepConfig({
+            [ContextDataType.OM_BARNET]: { erBarnetFødt: false, fødselsdato: undefined, termindato: '2026-12-01' },
+            [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
+                harHattArbeidIUtlandet: false,
+                harJobbetSomFrilans: true,
+                harJobbetSomSelvstendigNæringsdrivende: false,
+            },
+            [ContextDataType.VALGTE_ARBEIDSFORHOLD]: [ARBEIDSGIVER_ID, FRILANS_ID],
+        });
+
+        const stegIder = result.current.map((steg) => steg.id);
+        expect(stegIder).toContain(addTilretteleggingIdToRoute(SøknadRoute.SKJEMA, ARBEIDSGIVER_ID));
+        expect(stegIder).not.toContain(addTilretteleggingIdToRoute(SøknadRoute.SKJEMA, FRILANS_ID));
     });
 });

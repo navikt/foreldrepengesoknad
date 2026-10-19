@@ -14,6 +14,8 @@ import {
     Attachment,
     EksternArbeidsforholdDto_fpoversikt,
     FRILANS_ID,
+    Frilans,
+    NæringDto,
 } from '@navikt/fp-types';
 
 import { SkjemaSteg } from './SkjemaSteg';
@@ -53,6 +55,8 @@ type StoryArgs = {
     valgteArbeidsforhold?: string[];
     valgtTilretteleggingId: string;
     arbeidsforholdOgInntekt: ArbeidsforholdOgInntektSvp;
+    frilans?: Frilans;
+    egenNæring?: NæringDto;
 } & ComponentProps<typeof SkjemaSteg>;
 
 const meta = {
@@ -64,6 +68,8 @@ const meta = {
         valgteArbeidsforhold,
         valgtTilretteleggingId,
         arbeidsforholdOgInntekt,
+        frilans,
+        egenNæring,
         ...rest
     }) => {
         return (
@@ -74,6 +80,8 @@ const meta = {
                         [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
                         [ContextDataType.TILRETTELEGGINGER_VEDLEGG]: vedlegg,
                         [ContextDataType.VALGTE_ARBEIDSFORHOLD]: valgteArbeidsforhold,
+                        [ContextDataType.FRILANS]: frilans,
+                        [ContextDataType.EGEN_NÆRING]: egenNæring,
                         [ContextDataType.OM_BARNET]: {
                             erBarnetFødt: false,
                             termindato: '2024-02-18',
@@ -170,6 +178,9 @@ export const ErTypeFrilans: Story = {
         ...SkalIkkeFeileOpplasting.args,
         valgtTilretteleggingId: FRILANS_ID,
         valgteArbeidsforhold: [FRILANS_ID],
+        frilans: {
+            oppstart: '2020-01-01',
+        },
         arbeidsforholdOgInntekt: {
             harHattArbeidIUtlandet: false,
             harJobbetSomFrilans: true,
@@ -184,6 +195,11 @@ export const ErTypeEgenNæring: Story = {
         ...SkalIkkeFeileOpplasting.args,
         valgtTilretteleggingId: EGEN_NÆRING_ID,
         valgteArbeidsforhold: [EGEN_NÆRING_ID],
+        egenNæring: {
+            fom: '2020-01-01',
+            registrertINorge: true,
+            næringstype: 'FISKE',
+        },
         arbeidsforholdOgInntekt: {
             harHattArbeidIUtlandet: false,
             harJobbetSomFrilans: false,

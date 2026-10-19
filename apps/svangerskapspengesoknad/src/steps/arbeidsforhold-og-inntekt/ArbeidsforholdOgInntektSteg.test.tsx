@@ -145,11 +145,12 @@ describe('<ArbeidsforholdOgInntektSteg>', () => {
             },
         ];
 
-        const lagArbeidsforhold = (id: string, navn: string): EksternArbeidsforholdDto_fpoversikt => ({
+        const lagArbeidsforhold = (id: string, navn: string, tom?: string): EksternArbeidsforholdDto_fpoversikt => ({
             arbeidsgiverId: id,
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: navn,
             fom: '2025-01-01',
+            tom,
             stillingsprosent: 100,
         });
 
@@ -221,6 +222,26 @@ describe('<ArbeidsforholdOgInntektSteg>', () => {
                     lagArbeidsforhold('990322244', 'Omsorgspartner'),
                 ],
                 ['975326209', '990322244', FRILANS_ID],
+            );
+
+            await userEvent.click(await screen.findByRole('button', { name: 'Neste steg' }));
+
+            await waitFor(() => expect(result.current[ContextDataType.APP_ROUTE]).toBe(SøknadRoute.VELG_ARBEID));
+            expect(result.current[ContextDataType.VALGTE_ARBEIDSFORHOLD]).toEqual(['975326209', '990322244']);
+            expect(Object.keys(result.current[ContextDataType.TILRETTELEGGINGER_VEDLEGG] ?? {})).toEqual([
+                '975326209',
+                '990322244',
+            ]);
+        });
+
+        it('skal fjerne arbeidsforhold som ikke lenger er aktive fra valgte arbeidsforhold og vedlegg', async () => {
+            const { result } = renderSteg(
+                [
+                    lagArbeidsforhold('975326209', 'Sykehuset i Vestfold'),
+                    lagArbeidsforhold('990322244', 'Omsorgspartner'),
+                    lagArbeidsforhold('896929119', 'Avsluttet AS', '2025-06-01'),
+                ],
+                ['975326209', '990322244', '896929119'],
             );
 
             await userEvent.click(await screen.findByRole('button', { name: 'Neste steg' }));

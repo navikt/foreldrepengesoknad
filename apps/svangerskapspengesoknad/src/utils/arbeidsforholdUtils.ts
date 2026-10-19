@@ -7,7 +7,8 @@ import { UnikArbeidsforhold } from 'types/Arbeidsforhold';
 import { Stilling } from 'types/Tilrettelegging';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
+import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
+import { EksternArbeidsforholdDto_fpoversikt, FRILANS_ID } from '@navikt/fp-types';
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isBetween);
@@ -117,4 +118,20 @@ export const søkerHarKunEtAktivtArbeid = (
         (aktiveUnikeArbeidsforhold.length === 0 && erFrilanser && !harEgenNæring) ||
         (aktiveUnikeArbeidsforhold.length === 0 && !erFrilanser && harEgenNæring)
     );
+};
+
+export const getGyldigeTilretteleggingIder = (
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
+    termindato: string,
+    harFrilans: boolean,
+    harEgenNæring: boolean,
+): string[] => {
+    const ider = getUnikeArbeidsforhold(arbeidsforhold, termindato).map((a) => a.id);
+    if (harFrilans) {
+        ider.push(FRILANS_ID);
+    }
+    if (harEgenNæring) {
+        ider.push(EGEN_NÆRING_ID);
+    }
+    return ider;
 };

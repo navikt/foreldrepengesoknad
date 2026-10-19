@@ -14,7 +14,8 @@ export const useTilretteleggingerHelper = () => {
     const oppdaterTilretteleggingerVedlegg = useContextSaveData(ContextDataType.TILRETTELEGGINGER_VEDLEGG);
     const oppdaterFerie = useContextSaveData(ContextDataType.FERIE);
 
-    const filtrerAlle = (skalBeholdes: (id: string) => boolean) => {
+    const beholdKunTilrettelegginger = (ider: string[]) => {
+        const skalBeholdes = (id: string) => ider.includes(id);
         if (tilrettelegginger) {
             oppdaterTilrettelegginger(filtrerPåId(tilrettelegginger, skalBeholdes));
         }
@@ -29,19 +30,7 @@ export const useTilretteleggingerHelper = () => {
         }
     };
 
-    const fjernTilrettelegginger = (tilretteleggingerSomSkalFjernes: string[]) => {
-        if (tilretteleggingerSomSkalFjernes.length === 0) {
-            return;
-        }
-        filtrerAlle((id) => !tilretteleggingerSomSkalFjernes.includes(id));
-    };
-
-    const beholdKunTilrettelegginger = (tilretteleggingerSomSkalBeholdes: string[]) => {
-        filtrerAlle((id) => tilretteleggingerSomSkalBeholdes.includes(id));
-    };
-
     return {
-        fjernTilrettelegginger,
         beholdKunTilrettelegginger,
     };
 };

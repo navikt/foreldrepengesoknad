@@ -6,11 +6,11 @@ import {
     DelvisTilrettelegging,
     IngenTilrettelegging,
 } from 'types/Tilrettelegging';
-import { getUnikeArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'utils/arbeidsforholdUtils';
+import { getGyldigeTilretteleggingIder, søkerHarKunEtAktivtArbeid } from 'utils/arbeidsforholdUtils';
 import { getTilretteleggingId, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
 
 import { EGEN_NÆRING_ID, skalViseEgenNæringSteg } from '@navikt/fp-steg-egen-naering';
-import { ArbeidsforholdOgInntektSvp, EksternArbeidsforholdDto_fpoversikt, FRILANS_ID } from '@navikt/fp-types';
+import { EksternArbeidsforholdDto_fpoversikt, FRILANS_ID } from '@navikt/fp-types';
 import { ProgressStep } from '@navikt/fp-ui';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
@@ -120,26 +120,6 @@ const getTilretteleggingLabels = (
     return getStepLabels(intl, erFlereTilrettelegginger, navn);
 };
 
-const getGyldigeValgteArbeidsforhold = (
-    valgteArbeidsforhold: string[] | undefined,
-    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
-    termindato: string,
-    arbeidsforholdOgInntekt: ArbeidsforholdOgInntektSvp,
-): string[] | undefined => {
-    if (!valgteArbeidsforhold) {
-        return undefined;
-    }
-    const gyldigeIder = new Set(getUnikeArbeidsforhold(arbeidsforhold, termindato).map((a) => a.id));
-    if (arbeidsforholdOgInntekt.harJobbetSomFrilans) {
-        gyldigeIder.add(FRILANS_ID);
-    }
-    if (arbeidsforholdOgInntekt.harJobbetSomSelvstendigNæringsdrivende) {
-        gyldigeIder.add(EGEN_NÆRING_ID);
-    }
-    const gyldigeValg = valgteArbeidsforhold.filter((id) => gyldigeIder.has(id));
-    return gyldigeValg.length > 0 ? gyldigeValg : undefined;
-};
-
 const createStep = (route: SøknadRoute, intl: IntlShape, currentPath: string): ProgressStep<string> => ({
     id: route,
     label: getStepLabels(intl)[route],
@@ -207,15 +187,19 @@ const getStepConfig = (
         steps.push(createStep(SøknadRoute.VELG_ARBEID, intl, currentPath));
     }
 
-    const valgteArbeidsforhold =
+    const gyldigeIder =
         !harKunEttArbeid && arbeidsforholdOgInntekt && barn?.termindato
-            ? getGyldigeValgteArbeidsforhold(
-                  getStateData(ContextDataType.VALGTE_ARBEIDSFORHOLD),
+            ? getGyldigeTilretteleggingIder(
                   arbeidsforhold,
                   barn.termindato,
-                  arbeidsforholdOgInntekt,
+                  arbeidsforholdOgInntekt.harJobbetSomFrilans && !!getStateData(ContextDataType.FRILANS),
+                  arbeidsforholdOgInntekt.harJobbetSomSelvstendigNæringsdrivende &&
+                      !!getStateData(ContextDataType.EGEN_NÆRING),
               )
-            : undefined;
+            : [];
+    const gyldigeValg =
+        getStateData(ContextDataType.VALGTE_ARBEIDSFORHOLD)?.filter((id) => gyldigeIder.includes(id)) ?? [];
+    const valgteArbeidsforhold = gyldigeValg.length > 0 ? gyldigeValg : undefined;
 
     const harValgtFlereTilrettelegginger = !!valgteArbeidsforhold && valgteArbeidsforhold.length > 1;
     const harValgtEnTilrettelegging = !!valgteArbeidsforhold && valgteArbeidsforhold.length === 1;
