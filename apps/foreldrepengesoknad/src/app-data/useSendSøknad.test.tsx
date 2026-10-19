@@ -446,7 +446,13 @@ describe('useFpSendSøknad', () => {
                     },
                     uttaksplan: {
                         ønskerJustertUttakVedFødsel: UTTAKSPLAN_METADATA.ønskerJustertUttakVedFødsel,
-                        perioder: [],
+                        perioder: [
+                            {
+                                fom: '2024-01-02',
+                                tom: '2024-01-02',
+                                søker: { forelder: 'MOR', utsettelseÅrsak: 'FRI', flerbarnsdager: false },
+                            },
+                        ],
                     },
                     vedlegg: VEDLEGG[Skjemanummer.TERMINBEKREFTELSE],
                 } satisfies EndringssøknadForeldrepengerDto,
