@@ -44,23 +44,25 @@ export const getPendingAttachmentFromFile = (
     skjemanummer: Skjemanummer,
 ): FileUploaderAttachment => {
     const newAttachment = mapFileToAttachment(file, attachmentType, skjemanummer);
-    newAttachment.attachmentData.pending = !file.error;
-    return newAttachment;
+    return {
+        ...newAttachment,
+        attachmentData: { ...newAttachment.attachmentData, pending: !file.error },
+    };
 };
 
-export const uploadAttachment = async (attachment: Attachment, uploadPath: string, timeout?: number): Promise<void> => {
+export const uploadAttachment = async (
+    attachment: Attachment,
+    uploadPath: string,
+    timeout?: number,
+): Promise<Attachment> => {
     try {
         const response = await getSaveAttachmentFetch({ uploadPath, attachment, timeout });
         if (response.success) {
-            attachment.uploaded = true;
-            attachment.uuid = response.data;
-        } else {
-            attachment.error = response.feilkode;
+            return { ...attachment, pending: false, uploaded: true, uuid: response.data };
         }
+        return { ...attachment, pending: false, error: response.feilkode };
     } catch {
-        attachment.error = 'SERVER_ERROR';
-    } finally {
-        attachment.pending = false;
+        return { ...attachment, pending: false, error: 'SERVER_ERROR' };
     }
 };
 

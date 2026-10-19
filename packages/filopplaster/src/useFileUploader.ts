@@ -22,19 +22,19 @@ interface Args {
     timeout?: number;
 }
 
+const erSammeFil = (a: FileUploaderAttachment, b: FileUploaderAttachment): boolean =>
+    a.attachmentData.skjemanummer === b.attachmentData.skjemanummer &&
+    a.fileObject.file.name === b.fileObject.file.name &&
+    a.fileObject.file.size === b.fileObject.file.size &&
+    a.fileObject.file.lastModified === b.fileObject.file.lastModified;
+
 const addOrReplaceAttachments = (
     currentAttachments: FileUploaderAttachment[],
     attachmentsToAdd: FileUploaderAttachment[],
-): FileUploaderAttachment[] => {
-    const attachmentKeysToReplace = new Set(attachmentsToAdd.map(getAttachmentKey));
-    return [
-        ...currentAttachments.filter((a) => !attachmentKeysToReplace.has(getAttachmentKey(a))),
-        ...attachmentsToAdd,
-    ];
-};
-
-const getAttachmentKey = (attachment: FileUploaderAttachment): string =>
-    `${attachment.attachmentData.skjemanummer}:${attachment.attachmentData.filename}`;
+): FileUploaderAttachment[] => [
+    ...currentAttachments.filter((current) => !attachmentsToAdd.some((added) => erSammeFil(current, added))),
+    ...attachmentsToAdd,
+];
 
 const replaceAttachment = (
     currentAttachments: FileUploaderAttachment[],
@@ -58,8 +58,8 @@ const uploadPendingAttachments = async ({
             continue;
         }
 
-        await uploadAttachment(pendingAttachment.attachmentData, uploadPath, timeout); // NOSONAR
-        setAttachments((current) => replaceAttachment(current, pendingAttachment));
+        const attachmentData = await uploadAttachment(pendingAttachment.attachmentData, uploadPath, timeout); // NOSONAR
+        setAttachments((current) => replaceAttachment(current, { ...pendingAttachment, attachmentData }));
     }
 };
 
