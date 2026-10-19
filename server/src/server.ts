@@ -10,10 +10,12 @@ import {
     setupSkjermleserCssTilgang,
 } from '@navikt/fp-server-utils';
 
-import { serveKomprimerteFilerHvisMulig } from './compression';
+import { lagKomprimeringsMiddleware } from './compression';
 import { configureReverseProxyApi } from './reverseProxy.js';
 import { rewriteHtmlAmpersandsInQueryString } from './rewriteHtmlAmpersandsInQueryString';
 import { validerInnkommendeIdportenToken } from './tokenValidation.js';
+
+const STATISK_ROT = './public';
 
 export const server = express();
 
@@ -33,9 +35,9 @@ server.use(rewriteHtmlAmpersandsInQueryString);
 setupSkjermleserCssTilgang(publicRouter);
 
 // Server ferdig komprimerte gzip/br filer hvis mulig.
-publicRouter.use(serveKomprimerteFilerHvisMulig);
+publicRouter.use(lagKomprimeringsMiddleware(STATISK_ROT));
 
-publicRouter.use(express.static('./public', { index: false }));
+publicRouter.use(express.static(STATISK_ROT, { index: false }));
 server.use(serverConfig.app.publicPath, publicRouter);
 
 server.use(validerInnkommendeIdportenToken);
