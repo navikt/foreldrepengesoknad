@@ -394,16 +394,6 @@ describe('useFpSendSøknad', () => {
                     dekningsgrad: '100',
                     uttaksplan: {
                         ønskerJustertUttakVedFødsel: UTTAKSPLAN_METADATA.ønskerJustertUttakVedFødsel,
-                        uttaksperioder: [
-                            {
-                                erArbeidstaker: false,
-                                fom: '2024-01-01',
-                                morsAktivitetIPerioden: undefined,
-                                tom: '2024-10-10',
-                                type: 'utsettelse',
-                                årsak: 'FRI',
-                            },
-                        ],
                         perioder: [UTTAKSPLAN_PERIODE],
                     },
                     vedlegg: VEDLEGG[Skjemanummer.TERMINBEKREFTELSE],
@@ -456,22 +446,7 @@ describe('useFpSendSøknad', () => {
                     },
                     uttaksplan: {
                         ønskerJustertUttakVedFødsel: UTTAKSPLAN_METADATA.ønskerJustertUttakVedFødsel,
-                        uttaksperioder: [
-                            expect.objectContaining({
-                                erArbeidstaker: false,
-                                type: 'utsettelse',
-                                årsak: 'FRI',
-                                fom: '2024-01-02', // Endringstidspunkt
-                                tom: '2024-01-02', // Endringstidspunkt
-                            }),
-                        ],
-                        perioder: [
-                            {
-                                fom: '2024-01-02',
-                                tom: '2024-01-02',
-                                søker: { forelder: 'MOR', utsettelseÅrsak: 'FRI', flerbarnsdager: false },
-                            },
-                        ],
+                        perioder: [],
                     },
                     vedlegg: VEDLEGG[Skjemanummer.TERMINBEKREFTELSE],
                 } satisfies EndringssøknadForeldrepengerDto,

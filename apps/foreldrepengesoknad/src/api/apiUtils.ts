@@ -1,11 +1,8 @@
-import { ContextDataMap, ContextDataType, OpprinneligUttaksplan } from 'appData/FpDataContext';
-import dayjs from 'dayjs';
-import { AnnenForelder, isAnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from 'types/AnnenForelder';
+import { ContextDataMap, ContextDataType } from 'appData/FpDataContext';
+import { AnnenForelder, isAnnenForelderIkkeOppgitt } from 'types/AnnenForelder';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { VedleggDataType } from 'types/VedleggDataType';
-import { getEndringstidspunktNy } from 'utils/dateUtils';
 
-import { Periodetype } from '@navikt/fp-constants';
 import {
     AnnenForelderDto,
     Attachment,
@@ -16,22 +13,15 @@ import {
     ForeldrepengesøknadDto,
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
-    KontoType,
     Målform,
-    Oppholdsårsak,
     SøkerDto,
     Søkerrolle,
-    UtsettelsesÅrsak,
-    UtsettelseÅrsak,
-    UttakPeriodeDto,
-    Uttaksplanperiode,
     isAdoptertBarn,
     isAdoptertStebarn,
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-types';
-import { Uttaksdagen, Uttaksperioden, getDecoratorLanguageCookie, omitOne } from '@navikt/fp-utils';
-import { skalBesvareFlerbarnsdager } from '@navikt/fp-uttaksplan/flerbarnsdager';
+import { getDecoratorLanguageCookie, omitOne } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 const hentValgtSpråk = (): Målform => {
@@ -81,40 +71,6 @@ const konverterRolle = (rolle: Søkerrolle): BrukerRolle => {
             return 'MEDMOR';
         }
     }
-};
-
-const finnTidsromForFriUtsettelse = (perioder: Array<{ fom: string }>, endringstidspunkt: string) => {
-    const førstePeriodeEtterEndringstidspunkt = perioder.find((periode) =>
-        dayjs(periode.fom).isAfter(endringstidspunkt, 'day'),
-    );
-    const endringsTidspunktPeriodeTom = førstePeriodeEtterEndringstidspunkt
-        ? Uttaksdagen.forrige(førstePeriodeEtterEndringstidspunkt.fom).getDato()
-        : endringstidspunkt;
-
-    return {
-        fom: endringstidspunkt,
-        tom: dayjs(endringsTidspunktPeriodeTom).isBefore(endringstidspunkt, 'day')
-            ? endringstidspunkt
-            : endringsTidspunktPeriodeTom,
-    };
-};
-
-export const getUttaksplanMedFriUtsettelsesperiode = (
-    uttaksplan: Uttaksplanperiode[],
-    endringstidspunkt: string,
-): Uttaksplanperiode[] => {
-    const endringsTidspunktPeriode: Uttaksplanperiode = {
-        type: Periodetype.Utsettelse,
-        årsak: 'FRI',
-        ...finnTidsromForFriUtsettelse(uttaksplan, endringstidspunkt),
-        erArbeidstaker: false,
-    };
-
-    uttaksplan.push(endringsTidspunktPeriode);
-
-    uttaksplan.sort((p1, p2) => (dayjs(p1.fom).isBefore(p2.fom, 'day') ? -1 : 1));
-
-    return uttaksplan;
 };
 
 const convertAttachmentsMapToArray = (vedlegg: VedleggDataType | undefined): Attachment[] => {
@@ -208,8 +164,6 @@ export const mapTilSøknadDto = (
 
     const vedlegg = hentData(ContextDataType.VEDLEGG);
 
-    const søkersPerioder = uttaksplan.filter((periode) => periode.søker !== undefined);
-
     return {
         søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
         rolle: konverterRolle(søkersituasjon.rolle),
@@ -220,10 +174,7 @@ export const mapTilSøknadDto = (
         barn: cleanBarn(barn),
         annenForelder: cleanAnnenforelder(annenForelder),
         dekningsgrad,
-        // fpsoknad tek søkjaren sine periodar herifrå og lagrar annan part sine periodar i fp-oversikt, så
-        // perioder skal innehalda heile planen.
         uttaksplan: {
-            uttaksperioder: midlertidigMappingAvUttaksplan(søkersPerioder, barn, annenForelder),
             perioder: uttaksplan,
             ønskerJustertUttakVedFødsel,
         },
@@ -266,36 +217,8 @@ export const mapTilEndringssøknadDto = (
     const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
     const valgtEksisterendeSaksnr = notEmpty(hentData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR));
     const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN));
-    const opprinneligUttaksplan = hentData(ContextDataType.OPPRINNELIG_UTTAKSPLAN);
     const ønskerJustertUttakVedFødsel = hentData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
     const vedlegg = hentData(ContextDataType.VEDLEGG);
-
-    const søkersNyePerioder = filtrerUtAnnenPartsPerioder(uttaksplan);
-
-    const søkersEksisterendePerioder = filtrerUtAnnenPartsPerioder(
-        finnOpprinneligPlan(opprinneligUttaksplan, valgtEksisterendeSaksnr),
-    );
-
-    const endringstidspunkt = getEndringstidspunktNy(søkersEksisterendePerioder, søkersNyePerioder);
-
-    const perioderForInnsending = endringstidspunkt
-        ? filtrerPerioderFraOgMedEndringstidspunkt(søkersNyePerioder, endringstidspunkt)
-        : søkersNyePerioder;
-
-    const perioderSomSendes = filtrerUtAvslåttePerioder(filtrerUtEøsPeriode(perioderForInnsending));
-    const mappaUttaksperioder = midlertidigMappingAvUttaksplan(perioderSomSendes, barn, annenForelder);
-
-    const harPeriodeVedEndringstidspunkt = perioderForInnsending.some((periode) =>
-        dayjs(endringstidspunkt).isBetween(periode.fom, periode.tom, 'day', '[]'),
-    );
-    const skalLeggeTilFriUtsettelse = endringstidspunkt && !harPeriodeVedEndringstidspunkt;
-
-    // Midlertidig innsendingstilpasning: bruk samme datokutt og filtrering av annen part og avslag
-    // som for uttaksperioder, til backend overtar. Den fullstendige planen i konteksten beholdes.
-    const søkersRolle = søkersituasjon.rolle === 'mor' ? 'MOR' : 'FAR_MEDMOR';
-    const perioder = skalLeggeTilFriUtsettelse
-        ? leggTilFriUtsettelseForInnsending(perioderSomSendes, endringstidspunkt, søkersRolle)
-        : perioderSomSendes;
 
     return {
         søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
@@ -306,205 +229,8 @@ export const mapTilEndringssøknadDto = (
         annenForelder: cleanAnnenforelder(annenForelder),
         vedlegg: convertAttachmentsMapToArray(vedlegg),
         uttaksplan: {
-            uttaksperioder: skalLeggeTilFriUtsettelse
-                ? getUttaksplanMedFriUtsettelsesperiode(mappaUttaksperioder, endringstidspunkt)
-                : mappaUttaksperioder,
-            perioder,
+            perioder: uttaksplan,
             ønskerJustertUttakVedFødsel,
         },
     };
-};
-
-const leggTilFriUtsettelseForInnsending = (
-    perioder: UttakPeriodeDto[],
-    endringstidspunkt: string,
-    søkersRolle: 'MOR' | 'FAR_MEDMOR',
-): UttakPeriodeDto[] => {
-    const friPeriode: UttakPeriodeDto = {
-        ...finnTidsromForFriUtsettelse(perioder, endringstidspunkt),
-        søker: { forelder: søkersRolle, utsettelseÅrsak: 'FRI', flerbarnsdager: false },
-    };
-    return [...perioder, friPeriode].toSorted((p1, p2) => (dayjs(p1.fom).isBefore(p2.fom, 'day') ? -1 : 1));
-};
-
-const finnOpprinneligPlan = (
-    opprinneligUttaksplan: OpprinneligUttaksplan | undefined,
-    valgtEksisterendeSaksnr: string,
-): UttakPeriodeDto[] => {
-    if (opprinneligUttaksplan === undefined) {
-        throw new Error('Mangler opprinnelig uttaksplan for endringssøknad');
-    }
-    if (opprinneligUttaksplan.saksnummer !== valgtEksisterendeSaksnr) {
-        throw new Error('Opprinnelig uttaksplan tilhører ikke valgt sak');
-    }
-    return opprinneligUttaksplan.perioder;
-};
-
-const filtrerPerioderFraOgMedEndringstidspunkt = (
-    perioder: UttakPeriodeDto[],
-    endringstidspunkt: string,
-): UttakPeriodeDto[] => {
-    const endring = dayjs(endringstidspunkt);
-    return perioder.filter(
-        (periode) =>
-            endring.isBetween(periode.fom, periode.tom, 'day', '[]') ||
-            dayjs(periode.fom).isSameOrAfter(endring, 'day'),
-    );
-};
-
-const filtrerUtEøsPeriode = (nyUttaksplan: UttakPeriodeDto[]): UttakPeriodeDto[] => {
-    // Ei "eøs-periode" i det gamle flate modellen var ei rein annenPartEøs-rad utan .søker/.annenPart.
-    // Slike periodar manglar no både .søker og .annenPart.
-    return nyUttaksplan.filter((periode) => periode.søker !== undefined || periode.annenPart !== undefined);
-};
-
-const filtrerUtAvslåttePerioder = (perioder: UttakPeriodeDto[]): UttakPeriodeDto[] => {
-    // Ikke fjern bare søkerdelen: da ville backend tolket et gjenværende uttak hos annen part som et nytt opphold.
-    return perioder.filter((periode) => periode.søker?.resultat?.innvilget !== false);
-};
-
-// Ved endringssøknad blir annan part sitt uttak sendt som opphald, slik opphaldsradene i søkjaren sitt
-// eige vedtak vart sende før. Førstegongssøknaden sender berre søkjaren sine eigne periodar.
-// Annan part sine utsetjingar, avslag og periodar på kontoar utan opphaldsårsak (t.d. FFF) er ikkje opphald.
-const filtrerUtAnnenPartsPerioder = (uttaksplan: UttakPeriodeDto[]): UttakPeriodeDto[] => {
-    return uttaksplan.filter((periode) => periode.søker !== undefined || erOppholdSomKanSendast(periode));
-};
-
-const erOppholdSomKanSendast = (periode: UttakPeriodeDto): boolean => {
-    const annenPart = periode.annenPart;
-    return (
-        Uttaksperioden.erOppholdsperiode(periode) &&
-        !!annenPart &&
-        annenPart.utsettelseÅrsak === undefined &&
-        annenPart.resultat?.innvilget !== false &&
-        kontoTypeTilOppholdsårsak(annenPart.kontoType) !== undefined
-    );
-};
-
-const midlertidigMappingAvUttaksplan = (
-    uttaksplan: UttakPeriodeDto[],
-    barn: Barn,
-    annenForelder: AnnenForelder,
-): Uttaksplanperiode[] => {
-    const erDeltUttak = isAnnenForelderOppgitt(annenForelder)
-        ? !!annenForelder.harRettPåForeldrepengerINorge || !!annenForelder.harRettPåForeldrepengerIEØS
-        : false;
-
-    return uttaksplan.map((periode) => {
-        if (Uttaksperioden.erOppholdsperiode(periode)) {
-            return {
-                type: 'opphold',
-                fom: periode.fom,
-                tom: periode.tom,
-                årsak: notEmpty(kontoTypeTilOppholdsårsak(periode.annenPart?.kontoType)),
-            };
-        }
-
-        // Ei uttaksperiode/utsettelse/overføring har alltid ein .søker her, sidan periodar
-        // utan .søker allereie er filtrert bort med mindre dei er oppholdsperiodar (over).
-        const søker = notEmpty(periode.søker);
-
-        const skalViseFlerbarnsdager = skalBesvareFlerbarnsdager(
-            barn.antallBarn,
-            søker.forelder,
-            søker.kontoType,
-            søker.samtidigUttak,
-        );
-
-        if (søker.overføringÅrsak) {
-            return {
-                type: 'overføring',
-                fom: periode.fom,
-                tom: periode.tom,
-                konto: notEmpty(søker.kontoType),
-                årsak: søker.overføringÅrsak,
-            };
-        }
-        if (søker.utsettelseÅrsak) {
-            return {
-                type: 'utsettelse',
-                fom: periode.fom,
-                tom: periode.tom,
-                erArbeidstaker: false,
-                morsAktivitetIPerioden: søker.morsAktivitet,
-                årsak: midlertidigMappingAvUtsettelseÅrsak(søker.utsettelseÅrsak),
-            };
-        }
-        return {
-            type: 'uttak',
-            fom: periode.fom,
-            tom: periode.tom,
-            gradering: søker.gradering
-                ? {
-                      erArbeidstaker: søker.gradering.aktivitet?.type === 'ORDINÆRT_ARBEID',
-                      erFrilanser: søker.gradering.aktivitet?.type === 'FRILANS',
-                      erSelvstendig: søker.gradering.aktivitet?.type === 'SELVSTENDIG_NÆRINGSDRIVENDE',
-                      orgnumre: søker.gradering.aktivitet?.arbeidsgiver?.id
-                          ? [søker.gradering.aktivitet.arbeidsgiver.id]
-                          : [],
-                      stillingsprosent: søker.gradering?.arbeidstidprosent,
-                  }
-                : undefined,
-            konto: notEmpty(søker.kontoType),
-            morsAktivitetIPerioden: søker.morsAktivitet,
-            samtidigUttakProsent: søker.samtidigUttak,
-            ønskerFlerbarnsdager: skalViseFlerbarnsdager ? søker.flerbarnsdager : undefined,
-            ønskerGradering: søker.gradering !== undefined,
-            ønskerSamtidigUttak: erDeltUttak ? søker.samtidigUttak !== undefined : undefined,
-        };
-    });
-};
-
-// Opphaldsårsaka kom tidlegare direkte frå backend som eit eige felt. No er ho strukturell:
-// årsaka til at søkjar har eit hol i planen sin er kontotypen til annan part sitt uttak der.
-const kontoTypeTilOppholdsårsak = (kontoType: KontoType | undefined): Oppholdsårsak | undefined => {
-    switch (kontoType) {
-        case 'MØDREKVOTE': {
-            return 'UTTAK_MØDREKVOTE_ANNEN_FORELDER';
-        }
-        case 'FEDREKVOTE': {
-            return 'UTTAK_FEDREKVOTE_ANNEN_FORELDER';
-        }
-        case 'FELLESPERIODE': {
-            return 'UTTAK_FELLESP_ANNEN_FORELDER';
-        }
-        case 'FORELDREPENGER': {
-            return 'UTTAK_FORELDREPENGER_ANNEN_FORELDER';
-        }
-        default: {
-            return;
-        }
-    }
-};
-
-const midlertidigMappingAvUtsettelseÅrsak = (årsak: UtsettelseÅrsak): UtsettelsesÅrsak => {
-    switch (årsak) {
-        case 'ARBEID': {
-            return 'ARBEID';
-        }
-        case 'BARN_INNLAGT': {
-            return 'INSTITUSJONSOPPHOLD_BARNET';
-        }
-        case 'FRI': {
-            return 'FRI';
-        }
-        case 'HV_ØVELSE': {
-            return 'HV_OVELSE';
-        }
-        case 'FERIE': {
-            return 'LOVBESTEMT_FERIE';
-        }
-        case 'NAV_TILTAK': {
-            return 'NAV_TILTAK';
-        }
-        case 'SØKER_INNLAGT': {
-            return 'INSTITUSJONSOPPHOLD_SØKER';
-        }
-        case 'SØKER_SYKDOM': {
-            return 'SYKDOM';
-        }
-        default: {
-            throw new Error('Ukjent utsettelsesårsak');
-        }
-    }
 };
