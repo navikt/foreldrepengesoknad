@@ -26,6 +26,8 @@ export interface StackFrame {
     function?: string;
 }
 
+const FRAME_UTEN_FIL = /^(<anonymous>|native|\[native code\])?$/;
+
 /**
  * Sjekker om stackframes mangler opprinnelse i vår kode.
  *
@@ -33,22 +35,29 @@ export interface StackFrame {
  * FEIL_VI_VIL_LUKE_BORT, uavhengig av filtype/plassering) → return true (filtrer).
  * Dette fanger opp alt fra dekoratøren, ikke bare bundlede `/assets/*.js`-chunks
  * (f.eks. rå kildefiler som `personbruker/nav-dekoratoren/src/helpers/auth.ts`).
- * Hvis framen er fra vårt eget asset (FARO: `/assets/*.js`) → return false (ikke filtrer).
- * Hvis framen verken er fra dekoratøren eller vårt eget asset (altså ikke fra vår bundle) → return true (filtrer).
  *
- * Funksjonen returnerer true hvis minst én frame ikke har opprinnelse i vår kode,
- * eller hvis en frame kommer fra dekoratøren.
+ * Frames uten fil (`<anonymous>`, native, tomt filnavn) sier ingenting om opprinnelse og ignoreres,
+ * ellers ville f.eks. `Array.map (<anonymous>)` skjult feil i vår kode.
+ * Av de gjenværende framene: finnes minst én fra vårt eget asset (`/assets/*.js`) → return false (ikke filtrer).
+ * Finnes ingen → return true (filtrer). Er det ingen frames med fil, kan vi ikke avgjøre
+ * opprinnelsen, og feilen beholdes.
  */
 export const harUtenforstaendeKodeOpprinnelse = (frames: StackFrame[]): boolean => {
-    return frames.some((frame) => {
-        const erDekoratørFrame = FEIL_VI_VIL_LUKE_BORT.some((feil) => frame.filename?.includes(feil));
-        if (erDekoratørFrame) {
-            return true;
-        }
+    const erDekoratørFeil = frames.some((frame) =>
+        FEIL_VI_VIL_LUKE_BORT.some((feil) => frame.filename?.includes(feil)),
+    );
+    if (erDekoratørFeil) {
+        return true;
+    }
 
-        const assetFrame = frame.filename && /\/assets\/.*\.js$/.test(frame.filename);
-        return !assetFrame;
-    });
+    const filnavn = frames
+        .map((frame) => frame.filename ?? '')
+        .filter((filename) => !FRAME_UTEN_FIL.test(filename));
+    if (filnavn.length === 0) {
+        return false;
+    }
+
+    return !filnavn.some((filename) => /\/assets\/.*\.js$/.test(filename));
 };
 
 /**
