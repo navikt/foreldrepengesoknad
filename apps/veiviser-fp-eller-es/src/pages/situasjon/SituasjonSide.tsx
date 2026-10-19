@@ -28,8 +28,6 @@ export type FpEllerEsSituasjon = {
     jobberDuINorge: boolean;
 };
 
-type MuligUbesvart<T> = { [K in keyof T]: T[K] extends boolean ? T[K] | null | undefined : T[K] };
-
 const REKKEFØLGE_FELT = [
     'situasjon',
     'erIArbeid',
@@ -71,7 +69,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
         defaultValues: fpEllerEsSituasjon,
     });
 
-    const svar: MuligUbesvart<FpEllerEsSituasjon> = formMethods.watch();
+    const svar: Partial<FpEllerEsSituasjon> = formMethods.watch();
     const { situasjon, erIArbeid, harHattInntekt, lønnPerMåned, borDuINorge, harHattAndreInntekter, jobberDuINorge } =
         svar;
 
@@ -82,7 +80,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
 
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
     const minstelønn = Math.round(grunnbeløpet / 2);
-    const lønnPerMånedNummer = formatValue(lønnPerMåned) ?? 0;
+    const lønnPerMånedNummer = formatValue(lønnPerMåned ?? '') ?? 0;
 
     const { ref, scrollToBottom } = useScrollBehaviour();
 
