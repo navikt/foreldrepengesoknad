@@ -57,5 +57,8 @@ const handleUploadError = (error: unknown): AttachmentUploadError => {
         return handleHTTPError(error);
     }
 
-    throw error;
+    return {
+        success: false,
+        feilkode: 'SERVER_ERROR',
+    };
 };
