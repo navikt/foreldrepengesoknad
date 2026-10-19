@@ -28,6 +28,8 @@ export type FpEllerEsSituasjon = {
     jobberDuINorge: boolean;
 };
 
+type MuligUbesvart<T> = { [K in keyof T]: T[K] extends boolean ? T[K] | null | undefined : T[K] };
+
 const REKKEFØLGE_FELT = [
     'situasjon',
     'erIArbeid',
@@ -69,8 +71,9 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
         defaultValues: fpEllerEsSituasjon,
     });
 
+    const svar: MuligUbesvart<FpEllerEsSituasjon> = formMethods.watch();
     const { situasjon, erIArbeid, harHattInntekt, lønnPerMåned, borDuINorge, harHattAndreInntekter, jobberDuINorge } =
-        formMethods.watch();
+        svar;
 
     const onSubmit = (formValues: FpEllerEsSituasjon) => {
         setFpEllerEsSituasjon(formValues);
@@ -156,7 +159,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                             </ReadMore>
                         </VStack>
                     )}
-                    {!erIArbeid && (
+                    {erIArbeid === false && (
                         <VStack gap="space-12">
                             <BlueRadioGroup
                                 name="harHattAndreInntekter"
@@ -176,7 +179,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                     <FormattedMessage id="SituasjonSide.AndreInntektskilderDetaljer" />
                                 </BodyShort>
                             </ReadMore>
-                            {!harHattAndreInntekter && (
+                            {harHattAndreInntekter === false && (
                                 <Infobox
                                     header={<FormattedMessage id="SituasjonSide.JobbetMinst6av10" />}
                                     headingLevel="2"
@@ -206,7 +209,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                     <FormattedMessage id="SituasjonSide.Nei" />
                                 </Radio>
                             </BlueRadioGroup>
-                            {!harHattInntekt && (
+                            {harHattInntekt === false && (
                                 <Infobox
                                     header={<FormattedMessage id="SituasjonSide.JobbetMinst6av10" />}
                                     headingLevel="2"
@@ -304,7 +307,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                         </VStack>
                     )}
 
-                    {(lønnPerMåned || !harHattInntekt || !harHattAndreInntekter) && (
+                    {(lønnPerMåned || harHattInntekt === false || harHattAndreInntekter === false) && (
                         <VStack gap="space-12">
                             <BlueRadioGroup
                                 name="borDuINorge"
@@ -323,7 +326,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                     )}
                     <Spacer />
 
-                    {!borDuINorge && (
+                    {borDuINorge === false && (
                         <VStack gap="space-12">
                             <BlueRadioGroup
                                 name="jobberDuINorge"
@@ -338,7 +341,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                                     <FormattedMessage id="SituasjonSide.Nei" />
                                 </Radio>
                             </BlueRadioGroup>
-                            {!jobberDuINorge && (
+                            {jobberDuINorge === false && (
                                 <Infobox
                                     header={<FormattedMessage id="SituasjonSide.MåVæreMedlem" />}
                                     headingLevel="2"
