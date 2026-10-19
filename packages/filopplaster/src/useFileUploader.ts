@@ -22,11 +22,11 @@ interface Args {
     timeout?: number;
 }
 
-const erSammeFil = (a: FileUploaderAttachment, b: FileUploaderAttachment): boolean =>
-    a.attachmentData.skjemanummer === b.attachmentData.skjemanummer &&
-    a.fileObject.file.name === b.fileObject.file.name &&
-    a.fileObject.file.size === b.fileObject.file.size &&
-    a.fileObject.file.lastModified === b.fileObject.file.lastModified;
+const erSammeFil = ({ attachmentData: a }: FileUploaderAttachment, { attachmentData: b }: FileUploaderAttachment) =>
+    a.skjemanummer === b.skjemanummer &&
+    a.filename === b.filename &&
+    a.filesize === b.filesize &&
+    a.file.lastModified === b.file.lastModified;
 
 const addOrReplaceAttachments = (
     currentAttachments: FileUploaderAttachment[],

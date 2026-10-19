@@ -202,6 +202,42 @@ describe('FileUploader', () => {
         expect(updateAttachments.mock.lastCall?.[0][0].id).not.toBe(førsteId);
     });
 
+    it('skal erstatte eksisterende vedlegg når samme fil velges på nytt', async () => {
+        const fil = new File(['hello'], 'scan.pdf', { type: 'application/pdf' });
+        const updateAttachments = vi.fn();
+
+        await Default.run({
+            args: {
+                ...Default.args,
+                updateAttachments,
+                existingAttachments: [
+                    {
+                        id: 'existing-id',
+                        filename: fil.name,
+                        filesize: fil.size,
+                        file: fil,
+                        pending: false,
+                        uploaded: true,
+                        type: AttachmentType.OMSORGSOVERTAKELSE,
+                        skjemanummer: Skjemanummer.OMSORGSOVERTAKELSE,
+                        innsendingsType: 'LASTET_OPP',
+                    },
+                ],
+            },
+        });
+
+        const fileInput = screen.getByLabelText('Last opp fil');
+        await userEvent.upload(fileInput, fil);
+
+        await waitFor(() =>
+            expect(updateAttachments).toHaveBeenLastCalledWith(
+                [expect.objectContaining({ filename: 'scan.pdf', uuid: 'uuid-test', pending: false })],
+                false,
+            ),
+        );
+        expect(updateAttachments.mock.lastCall?.[0][0].id).not.toBe('existing-id');
+    });
+
     it('skal få timeout ved opplasting', async () => {
         await OpplastningTimeout.run();
 
