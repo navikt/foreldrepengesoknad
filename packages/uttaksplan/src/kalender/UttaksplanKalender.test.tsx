@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 import { afterEach, beforeEach, vi } from 'vitest';
@@ -359,7 +359,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getByRole('button', { name: 'Avbryt' }));
 
-        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
         expect(screen.getByTestId('eksisterende-periode-2026-09-07-2026-09-30')).toBeInTheDocument();
 
         await userEvent.click(
@@ -369,7 +369,7 @@ describe('UttaksplanKalender', () => {
         );
         await userEvent.click(screen.getByRole('button', { name: 'Slett' }));
 
-        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
         expect(screen.queryByTestId('eksisterende-periode-2026-09-07-2026-09-30')).not.toBeInTheDocument();
     });
 
@@ -1148,7 +1148,7 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByRole('dialog')).toBeInTheDocument();
 
         await userEvent.keyboard('{Escape}');
-        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
         expect(screen.getByRole('radio', { name: new RegExp(valg) })).toBeChecked();
         expect(within(juni).getByTestId('day:7;dayColor:DARKBLUE')).toBeInTheDocument();
 
@@ -1189,7 +1189,7 @@ describe('UttaksplanKalender', () => {
 
             expect(screen.getByRole('dialog')).toBeInTheDocument();
             await userEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Avbryt' }));
-            expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+            await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
         });
     });
 
@@ -1342,6 +1342,7 @@ describe('UttaksplanKalender', () => {
         );
         await userEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Avbryt' }));
 
+        await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
         expect(screen.getByRole('radio', { name: /Endre uten å flytte resten av planen/ })).toBeChecked();
         expect(within(juni).getByTestId('day:7;dayColor:DARKBLUE')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Tilbake'));
@@ -1353,7 +1354,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(screen.getByText('Legg til'));
         await userEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Endre' }));
 
-        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
         expect(within(juni).getByTestId('day:7;dayColor:BLUESTRIPED')).toBeInTheDocument();
         expect(screen.queryByText('Hvor mange prosent skal mor jobbe?')).not.toBeInTheDocument();
     });
@@ -1793,12 +1794,13 @@ describe('UttaksplanKalender', () => {
         );
         expect(within(september).queryByTestId('day:14;dayColor:BEIGEOUTLINE')).not.toBeInTheDocument();
         await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Avbryt' }));
+        await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
         expect(screen.getByLabelText('Hva gjør mor i denne perioden?')).toHaveValue('ARBEID');
         expect(within(september).getByTestId('day:14;dayColor:DARKBLUE')).toBeInTheDocument();
 
         await user.click(screen.getByRole('button', { name: 'Legg til' }));
         await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Endre' }));
-        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
         expect(within(september).getAllByTestId('dayColor:BEIGEOUTLINE', { exact: false })).toHaveLength(5);
         expect(screen.queryByLabelText('Hva gjør mor i denne perioden?')).not.toBeInTheDocument();
     });
