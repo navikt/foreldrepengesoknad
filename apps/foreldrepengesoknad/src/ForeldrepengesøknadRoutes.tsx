@@ -287,16 +287,16 @@ export const ForeldrepengesøknadRoutes = ({
     currentRoute,
     søkerInfo,
     foreldrepengerSaker,
-    lagretErEndringssøknad,
-    lagretHarGodkjentVilkår,
+    lagretErEndringssøknad = false,
+    lagretHarGodkjentVilkår = false,
     lagretSøknadGjelderNyttBarn,
 }: Props) => {
     const navigate = useNavigate();
     const routerLocation = useLocation();
     const isFirstTimeLoadingAppRef = useRef(true);
 
-    const [harGodkjentVilkår, setHarGodkjentVilkår] = useState(lagretHarGodkjentVilkår || false);
-    const [erEndringssøknad, setErEndringssøknad] = useState(lagretErEndringssøknad || false);
+    const [harGodkjentVilkår, setHarGodkjentVilkår] = useState(lagretHarGodkjentVilkår);
+    const [erEndringssøknad, setErEndringssøknad] = useState(lagretErEndringssøknad);
     const [søknadGjelderNyttBarn, setSøknadGjelderNyttBarn] = useState(lagretSøknadGjelderNyttBarn);
 
     const { sendSøknad, errorSendSøknad } = useSendSøknad(søkerInfo, erEndringssøknad, foreldrepengerSaker);

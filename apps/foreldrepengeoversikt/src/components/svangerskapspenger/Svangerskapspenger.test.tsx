@@ -18,13 +18,12 @@ const AKTIVITET = {
 
 const lagArbeidsforhold = (
     tilrettelegginger: SvpArbeidsforhold_fpoversikt['tilrettelegginger'],
-    oppholdsperioder: SvpArbeidsforhold_fpoversikt['oppholdsperioder'] = [],
 ): SvpArbeidsforhold_fpoversikt => ({
     aktivitet: AKTIVITET,
-    behovFrom: tilrettelegginger[0]?.fom ?? oppholdsperioder[0]?.fom,
+    behovFrom: tilrettelegginger[0]?.fom,
     avslutningÅrsak: 'NORMAL',
     tilrettelegginger,
-    oppholdsperioder,
+    oppholdsperioder: [],
 });
 
 const lagSak = (arbeidsforhold: SvpArbeidsforhold_fpoversikt[]): SvangerskapspengeSak => ({

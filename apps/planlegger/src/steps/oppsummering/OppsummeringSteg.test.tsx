@@ -200,7 +200,7 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getAllByText('Barnehageplass')).toHaveLength(2);
         expect(screen.getByText('Dette svarte dere')).toBeInTheDocument();
     });
-    it('skal ikke vise info om barnehage – adopsjon', async () => {
+    it('skal ikke vise info om barnehage –\u{A0}adopsjon', async () => {
         render(<FarOgFarAdopsjonKunFar1HarRett />);
 
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);

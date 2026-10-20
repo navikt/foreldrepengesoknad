@@ -74,11 +74,10 @@ export const getNesteDagEtterSistePeriode = (
     sisteDagForSvangerskapspenger: string,
     alleVarierendePerioder: PeriodeMedVariasjonFormValues[],
 ): string => {
-    if (alleVarierendePerioder.length === 0) {
-        return '';
-    }
-
-    if (alleVarierendePerioder.some((p) => p.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP)) {
+    if (
+        alleVarierendePerioder.length === 0 ||
+        alleVarierendePerioder.some((p) => p.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP)
+    ) {
         return '';
     }
     const alleTomDatoer = alleVarierendePerioder

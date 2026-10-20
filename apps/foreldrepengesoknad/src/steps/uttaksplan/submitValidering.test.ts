@@ -1,4 +1,4 @@
-import { EøsUttakDto, UttakDto, UttakPeriodeDto } from '@navikt/fp-types';
+import { UttakDto, UttakPeriodeDto } from '@navikt/fp-types';
 
 import {
     erSammePeriodeInkludertDatoer,
@@ -30,17 +30,12 @@ const lagPeriode = ({
     },
 });
 
-const lagEøsPeriode = ({
-    fom = '2024-10-01',
-    tom = '2024-10-31',
-    ...overrides
-}: Partial<EøsUttakDto> & { fom?: string; tom?: string } = {}): UttakPeriodeDto => ({
-    fom,
-    tom,
+const lagEøsPeriode = (): UttakPeriodeDto => ({
+    fom: '2024-10-01',
+    tom: '2024-10-31',
     annenPartEøs: {
         kontoType: 'FELLESPERIODE',
         trekkdager: 23,
-        ...overrides,
     },
 });
 

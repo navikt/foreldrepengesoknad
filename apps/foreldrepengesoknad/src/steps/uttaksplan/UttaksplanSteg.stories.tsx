@@ -829,7 +829,7 @@ export const FødselFarAleneOmOmsorgKunAnnenPartsPerioder: Story = {
             harOppholdtSegIEØS: false,
         },
         uttaksplan: planleggerUttaksplan.flatMap(({ fom, tom, søker }) =>
-            søker ? [{ fom, tom, annenPart: søker }] : [],
+            søker ? { fom, tom, annenPart: søker } : [],
         ),
     },
 };

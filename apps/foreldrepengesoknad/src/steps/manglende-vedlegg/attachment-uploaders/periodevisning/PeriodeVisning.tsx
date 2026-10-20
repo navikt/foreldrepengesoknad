@@ -151,7 +151,7 @@ const getVarighetString = (antallDager: number, intl: IntlShape, format: Varighe
     return ukerStr;
 };
 
-const renderDagMnd = (dato: string, visÅr = true): JSX.Element => {
+const renderDagMnd = (dato: string): JSX.Element => {
     const d = dayjs(dato);
 
     return (
@@ -159,11 +159,9 @@ const renderDagMnd = (dato: string, visÅr = true): JSX.Element => {
             <BodyShort>
                 {d.get('date')}. {d.format('MMM').slice(0, 3)}.
             </BodyShort>
-            {visÅr && (
-                <BodyShort as="span">
-                    <abbr title={`${d.format('MMMM')} ${d.format('YYYY')}`}>{d.format('YYYY')}</abbr>
-                </BodyShort>
-            )}
+            <BodyShort as="span">
+                <abbr title={`${d.format('MMMM')} ${d.format('YYYY')}`}>{d.format('YYYY')}</abbr>
+            </BodyShort>
         </VStack>
     );
 };

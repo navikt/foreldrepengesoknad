@@ -46,11 +46,11 @@ interface SakInfo {
     omsorgsovertakelse?: string;
 }
 
-const getSakMedBarn = (sak: FpSak_fpoversikt, barnFnr: string[]): FpSak_fpoversikt => {
+const getSakMedTvillinger = (barnFnr: string[]): FpSak_fpoversikt => {
     const barna = barnFnr.map((fnrBarn) => {
         return { fnr: fnrBarn };
     });
-    return { ...sak, barn: barna };
+    return { ...sakMedTvillinger, barn: barna };
 };
 
 const getSak = (sakinfo: SakInfo): FpSak_fpoversikt => {
@@ -426,7 +426,7 @@ export const HarSakAdopsjonMedEtDødtBarn: Story = {
 export const HarSakMedOppgittBarnTvillingerAlleLever: Story = {
     args: {
         ...Default.args,
-        saker: [getSakMedBarn(sakMedTvillinger, ['1', '2'])],
+        saker: [getSakMedTvillinger(['1', '2'])],
         søkerInfo: getSøkerinfoMedBarn([levendeBarn, levendeTvilling]),
     },
 };
@@ -434,7 +434,7 @@ export const HarSakMedOppgittBarnTvillingerAlleLever: Story = {
 export const HarSakMedOppgittBarnMedEnLevendeOgEnDødfødtTvilling: Story = {
     args: {
         ...Default.args,
-        saker: [getSakMedBarn(sakMedTvillinger, ['1'])],
+        saker: [getSakMedTvillinger(['1'])],
         søkerInfo: getSøkerinfoMedBarn([levendeBarn, dødfødtBarn]),
     },
 };

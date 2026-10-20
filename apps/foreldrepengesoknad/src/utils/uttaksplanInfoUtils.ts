@@ -7,11 +7,7 @@ import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan/validators';
 import { perioderSomKreverVedlegg } from './manglendeVedleggUtils';
 
 export const prettifyProsent = (nbr: number | undefined): number | undefined => {
-    if (nbr === undefined) {
-        return undefined;
-    }
-
-    if (Number.isNaN(nbr)) {
+    if (nbr === undefined || Number.isNaN(nbr)) {
         return undefined;
     }
     if (Math.round(nbr) === nbr) {

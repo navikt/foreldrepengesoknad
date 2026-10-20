@@ -69,7 +69,7 @@ export const lagAppStegliste = (getData: GetData): Path[] =>
         REQUIRED_APP_STEPS.includes(path) ||
         skalViseUtenlandsoppholdSteg(path, getData) ||
         skalViseDokumentasjonSteg(path, getData)
-            ? [path]
+            ? path
             : [],
     );
 
