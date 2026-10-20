@@ -159,7 +159,7 @@ export const KalenderRedigeringProvider = ({
                         <Dialog.Title>
                             <FormattedMessage
                                 id="KalenderRedigering.HistoriskEndring.Modal.Tittel"
-                                values={{ erSletting: ventendeHandling?.type ?? 'endret' }}
+                                values={{ handlingstype: ventendeHandling?.type ?? 'endret' }}
                             />
                         </Dialog.Title>
                     </Dialog.Header>
@@ -168,7 +168,7 @@ export const KalenderRedigeringProvider = ({
                             <BodyLong>
                                 <FormattedMessage
                                     id="KalenderRedigering.HistoriskEndring.Modal.Advarsel"
-                                    values={{ erSletting: ventendeHandling?.type ?? 'endret' }}
+                                    values={{ handlingstype: ventendeHandling?.type ?? 'endret' }}
                                 />
                             </BodyLong>
                         </Alert>
@@ -182,7 +182,7 @@ export const KalenderRedigeringProvider = ({
                         <Button type="button" variant="primary" onClick={bekreftVentendeHandling}>
                             <FormattedMessage
                                 id="KalenderRedigering.HistoriskEndring.Modal.Knapp.Bekreft"
-                                values={{ erSletting: ventendeHandling?.type ?? 'endret' }}
+                                values={{ handlingstype: ventendeHandling?.type ?? 'endret' }}
                             />
                         </Button>
                     </Dialog.Footer>
