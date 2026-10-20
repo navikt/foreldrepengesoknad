@@ -23,18 +23,18 @@ export const Utbetaling = ({ satser, lønnSøker, fornavn }: Props) => {
 
     const decimal80 = 80 / 100;
 
-    const getMonthlyPayment = (lønn: number, decimal: number) => {
-        if (Number.isNaN(lønn)) {
+    const getMonthlyPayment = (decimal: number) => {
+        if (Number.isNaN(lønnSøker)) {
             return 0;
         }
-        return Math.round(Math.min(lønn, monthlyMax) * decimal);
+        return Math.round(Math.min(lønnSøker, monthlyMax) * decimal);
     };
 
-    const getDailyPayment = (lønn: number, decimal: number) => {
-        if (Number.isNaN(lønn)) {
+    const getDailyPayment = (decimal: number) => {
+        if (Number.isNaN(lønnSøker)) {
             return 0;
         }
-        return Math.round(Math.min((lønn * 12) / 260, dailyMax) * decimal);
+        return Math.round(Math.min((lønnSøker * 12) / 260, dailyMax) * decimal);
     };
 
     return (
@@ -46,8 +46,8 @@ export const Utbetaling = ({ satser, lønnSøker, fornavn }: Props) => {
                             id="HvorMyeSteg.VilFå"
                             values={{
                                 hvem: capitalizeFirstLetter(fornavn),
-                                utregning100: formatCurrencyWithKr(getDailyPayment(lønnSøker, 1)),
-                                utregning80: formatCurrencyWithKr(getDailyPayment(lønnSøker, decimal80)),
+                                utregning100: formatCurrencyWithKr(getDailyPayment(1)),
+                                utregning80: formatCurrencyWithKr(getDailyPayment(decimal80)),
                             }}
                         />
                     ) : (
@@ -55,8 +55,8 @@ export const Utbetaling = ({ satser, lønnSøker, fornavn }: Props) => {
                             id="HvorMyeSteg.KanFå"
                             values={{
                                 hvem: capitalizeFirstLetter(fornavn),
-                                utregning100: formatCurrencyWithKr(getDailyPayment(lønnSøker, 1)),
-                                utregning80: formatCurrencyWithKr(getDailyPayment(lønnSøker, decimal80)),
+                                utregning100: formatCurrencyWithKr(getDailyPayment(1)),
+                                utregning80: formatCurrencyWithKr(getDailyPayment(decimal80)),
                             }}
                         />
                     )
@@ -77,8 +77,8 @@ export const Utbetaling = ({ satser, lønnSøker, fornavn }: Props) => {
                         <FormattedMessage
                             id="HvorMyeSteg.Utregning"
                             values={{
-                                utregning100: formatCurrencyWithKr(getMonthlyPayment(lønnSøker, 1)),
-                                utregning80: formatCurrencyWithKr(getMonthlyPayment(lønnSøker, decimal80)),
+                                utregning100: formatCurrencyWithKr(getMonthlyPayment(1)),
+                                utregning80: formatCurrencyWithKr(getMonthlyPayment(decimal80)),
                             }}
                         />
                     </BodyShort>

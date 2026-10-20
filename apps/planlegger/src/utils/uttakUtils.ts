@@ -95,10 +95,12 @@ const trekkUttaksdagerFraDato = (dato: string, uttaksdager: number): string => {
             .utc(dato)
             .add(--dagteller * 24, 'hours')
             .format(ISO_DATE_FORMAT);
-        if (erUttaksdag(tellerdato)) {
-            nyDato = tellerdato;
-            uttaksdageteller++;
+        if (!erUttaksdag(tellerdato)) {
+            continue;
         }
+
+        nyDato = tellerdato;
+        uttaksdageteller++;
     }
     return nyDato;
 };

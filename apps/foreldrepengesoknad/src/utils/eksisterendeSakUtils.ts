@@ -191,9 +191,9 @@ const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag, valgte
 };
 
 const finnFornavn = (annenPart: AnnenForelderDto_fpoversikt, intl: IntlShape) => {
-    return annenPart.navn.fornavn !== undefined && annenPart.navn.fornavn !== ''
-        ? annenPart.navn.fornavn
-        : intl.formatMessage({ id: 'annen.forelder' });
+    return annenPart.navn.fornavn === undefined || annenPart.navn.fornavn === ''
+        ? intl.formatMessage({ id: 'annen.forelder' })
+        : annenPart.navn.fornavn;
 };
 
 const getAnnenForelderFromSaksgrunnlag = (
@@ -263,7 +263,7 @@ const finnAnnenForelderForSaken = (
 
     const { fornavn } = annenForelder.navn;
     const fornavnAnnenForelder =
-        fornavn !== undefined && fornavn.trim() !== '' ? fornavn : intl.formatMessage({ id: 'annen.forelder' });
+        fornavn === undefined || fornavn.trim() === '' ? intl.formatMessage({ id: 'annen.forelder' }) : fornavn;
     const annenPart: AnnenForelderDto_fpoversikt = {
         ...annenForelder,
         navn: { ...annenForelder.navn, fornavn: fornavnAnnenForelder },
@@ -379,8 +379,7 @@ export const lagSøknadFraValgteBarnMedSak = (
     søkerFnr: string,
     gjenbrukPlanUtenVedtak = false,
 ): Partial<Søknad> => {
-    const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(valgteBarn.sak, valgteBarn.fødselsdatoer);
-    const { grunnlag } = eksisterendeSak;
+    const { grunnlag } = mapSøkerensEksisterendeSakFromDTO(valgteBarn.sak, valgteBarn.fødselsdatoer);
     const situasjon = getSøkersituasjonFromSaksgrunnlag(grunnlag.familiehendelseType);
     const barn =
         gjenbrukPlanUtenVedtak && !valgteBarn.sak.gjeldendeVedtak && valgteBarn.sak.gjelderAdopsjon

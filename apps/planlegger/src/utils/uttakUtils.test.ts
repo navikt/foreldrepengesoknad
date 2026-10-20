@@ -7,17 +7,17 @@ import { deltUttak } from '@navikt/fp-uttaksplan';
 import { HvemPlanlegger, HvemPlanleggerType } from '../types/HvemPlanlegger';
 import { finnUttaksdata } from './uttakUtils';
 
-const lagStønadskvote = (kontoer: KontoDto[]): KontoBeregningDto => ({
-    kontoer,
-    minsteretter: { farRundtFødsel: 0, toTette: 0 },
-});
-
 const KONTOER: KontoDto[] = [
     { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
     { konto: 'MØDREKVOTE', dager: 75 },
     { konto: 'FELLESPERIODE', dager: 80 },
     { konto: 'FEDREKVOTE', dager: 75 },
 ];
+
+const STØNADSKVOTE: KontoBeregningDto = {
+    kontoer: KONTOER,
+    minsteretter: { farRundtFødsel: 0, toTette: 0 },
+};
 
 const morOgFar: HvemPlanlegger = {
     type: HvemPlanleggerType.MOR_OG_FAR,
@@ -38,13 +38,7 @@ describe('finnUttaksdata - delt uttak, fødsel', () => {
             termindato: '2026-04-23',
         };
 
-        const uttaksdata = finnUttaksdata(
-            'beggeHarRett',
-            morOgFar,
-            lagStønadskvote(KONTOER),
-            barnet,
-            FELLESPERIODE_DAGER_MOR,
-        );
+        const uttaksdata = finnUttaksdata('beggeHarRett', morOgFar, STØNADSKVOTE, barnet, FELLESPERIODE_DAGER_MOR);
 
         const uttaksplan = deltUttak({
             famDato: fødselsdato,
@@ -76,13 +70,7 @@ describe('finnUttaksdata - delt uttak, fødsel', () => {
             termindato: '2026-04-23',
         };
 
-        const uttaksdata = finnUttaksdata(
-            'beggeHarRett',
-            morOgFar,
-            lagStønadskvote(KONTOER),
-            barnet,
-            FELLESPERIODE_DAGER_MOR,
-        );
+        const uttaksdata = finnUttaksdata('beggeHarRett', morOgFar, STØNADSKVOTE, barnet, FELLESPERIODE_DAGER_MOR);
 
         const forventetStart = Uttaksdagen.denne(fødselsdato).getDatoAntallUttaksdagerTidligere(15);
         expect(uttaksdata.startdatoPeriode1).toEqual(forventetStart);
@@ -98,13 +86,7 @@ describe('finnUttaksdata - delt uttak, fødsel', () => {
             termindato: '2026-04-23',
         };
 
-        const uttaksdata = finnUttaksdata(
-            'beggeHarRett',
-            morOgFar,
-            lagStønadskvote(KONTOER),
-            barnet,
-            FELLESPERIODE_DAGER_MOR,
-        );
+        const uttaksdata = finnUttaksdata('beggeHarRett', morOgFar, STØNADSKVOTE, barnet, FELLESPERIODE_DAGER_MOR);
 
         const uttaksplan = deltUttak({
             famDato: fødselsdato,

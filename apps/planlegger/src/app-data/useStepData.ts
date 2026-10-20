@@ -127,7 +127,7 @@ export const useStepData = (): Array<ProgressStep<PlanleggerRoutes>> => {
                 showHvorMyeStep(path, getStateData) ||
                 showFordelingStep(path, getStateData) ||
                 showHvorLangPeriodePlanleggerEllerOversiktStep(path, getStateData)
-                    ? [path]
+                    ? path
                     : [],
             ),
         [getStateData],

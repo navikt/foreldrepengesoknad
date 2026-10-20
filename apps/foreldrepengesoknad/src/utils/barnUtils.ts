@@ -25,9 +25,9 @@ export const getFamiliehendelsedatoDate = (barn: Barn): string => {
 type DateType = string | undefined;
 
 const barnFødselsdatoLikSakFødselsdato = (fødselsdatoer: string[] | undefined, regBarnFødselsdato: DateType) => {
-    return fødselsdatoer !== undefined && regBarnFødselsdato !== undefined
-        ? fødselsdatoer.some((fødselsdato) => dayjs(fødselsdato).isSame(regBarnFødselsdato))
-        : false;
+    return fødselsdatoer === undefined || regBarnFødselsdato === undefined
+        ? false
+        : fødselsdatoer.some((fødselsdato) => dayjs(fødselsdato).isSame(regBarnFødselsdato));
 };
 
 export const getRegistrerteBarnOmDeFinnes = (
@@ -150,10 +150,10 @@ export const formaterFødselsdatoerPåBarn = (fødselsdatoer: string[] | undefin
     const unikeFødselsdatoer = [] as string[];
     for (const f of fødselsdatoer) {
         const finnesIUnikeFødselsdatoer = unikeFødselsdatoer.find((dato) => dayjs(dato).isSame(f, 'day'));
-        if (finnesIUnikeFødselsdatoer === undefined) {
-            const dateString = dayjs(f).format(ISO_DATE_FORMAT);
-            unikeFødselsdatoer.push(dateString);
+        if (finnesIUnikeFødselsdatoer !== undefined) {
+            continue;
         }
+        unikeFødselsdatoer.push(dayjs(f).format(ISO_DATE_FORMAT));
     }
 
     if (unikeFødselsdatoer.length > 1) {

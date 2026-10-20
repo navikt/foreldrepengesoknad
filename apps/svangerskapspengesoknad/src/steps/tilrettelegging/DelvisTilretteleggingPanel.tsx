@@ -40,7 +40,7 @@ export const DelvisTilretteleggingPanel = ({
     arbeidsforholdType,
     sluttdatoArbeid,
     startdatoArbeid,
-    arbeidsforholdNavn,
+    arbeidsforholdNavn = '',
     stillinger,
 }: Props) => {
     const intl = useIntl();
@@ -164,7 +164,7 @@ export const DelvisTilretteleggingPanel = ({
                             behovForTilretteleggingFom,
                             sisteDagForSvangerskapspenger,
                             'delvis',
-                            arbeidsforholdNavn || '',
+                            arbeidsforholdNavn,
                             sluttdatoArbeid,
                             kanHaSVPFremTilTreUkerFørTermin,
                         ),
@@ -222,7 +222,7 @@ export const DelvisTilretteleggingPanel = ({
                             sisteDagForSvangerskapspenger,
                             enPeriodeMedTilretteleggingFom,
                             'delvis',
-                            arbeidsforholdNavn || '',
+                            arbeidsforholdNavn,
                             sluttdatoArbeid,
                             kanHaSVPFremTilTreUkerFørTermin,
                         ),

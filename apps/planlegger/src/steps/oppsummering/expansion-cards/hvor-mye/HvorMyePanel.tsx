@@ -30,9 +30,8 @@ export const HvorMyePanel = ({ satser, lønnSøker, fornavn }: Props) => {
 
     const decimal80 = 80 / 100;
 
-    const getMonthlyPayment = (lønn: number, decimal: number) => Math.round(Math.min(lønn, monthlyMax) * decimal);
-    const getDailyPayment = (lønn: number, decimal: number) =>
-        Math.round(Math.min((lønn * 12) / 260, dailyMax) * decimal);
+    const getMonthlyPayment = (decimal: number) => Math.round(Math.min(lønnSøker, monthlyMax) * decimal);
+    const getDailyPayment = (decimal: number) => Math.round(Math.min((lønnSøker * 12) / 260, dailyMax) * decimal);
 
     return (
         <VStack gap="space-40">
@@ -45,8 +44,8 @@ export const HvorMyePanel = ({ satser, lønnSøker, fornavn }: Props) => {
                                 values={{
                                     hvem: capitalizeFirstLetter(fornavn),
                                     erAlenesøker,
-                                    utbetaling100: formatCurrencyWithKr(getDailyPayment(lønnSøker, 1)),
-                                    utbetaling80: formatCurrencyWithKr(getDailyPayment(lønnSøker, decimal80)),
+                                    utbetaling100: formatCurrencyWithKr(getDailyPayment(1)),
+                                    utbetaling80: formatCurrencyWithKr(getDailyPayment(decimal80)),
                                 }}
                             />
                         </Heading>
@@ -65,8 +64,8 @@ export const HvorMyePanel = ({ satser, lønnSøker, fornavn }: Props) => {
                         <FormattedMessage
                             id="HvorMyeOppsummering.DetteBlir"
                             values={{
-                                utbetaling100: formatCurrencyWithKr(getMonthlyPayment(lønnSøker, 1)),
-                                utbetaling80: formatCurrencyWithKr(getMonthlyPayment(lønnSøker, decimal80)),
+                                utbetaling100: formatCurrencyWithKr(getMonthlyPayment(1)),
+                                utbetaling80: formatCurrencyWithKr(getMonthlyPayment(decimal80)),
                             }}
                         />
                     </BodyLong>
@@ -103,7 +102,7 @@ export const HvorMyePanel = ({ satser, lønnSøker, fornavn }: Props) => {
                             values={{
                                 erAlenesøker,
                                 hvem: fornavn,
-                                inntekt: formatCurrencyWithKr(getMonthlyPayment(lønnSøker, 1)),
+                                inntekt: formatCurrencyWithKr(getMonthlyPayment(1)),
                             }}
                         />
                     </BodyLong>
