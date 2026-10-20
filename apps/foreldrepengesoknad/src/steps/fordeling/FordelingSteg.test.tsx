@@ -7,6 +7,7 @@ import { SøknadRoutes } from 'appData/routes';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { saker } from 'storybookData/saker';
 
+import { BarnType } from '@navikt/fp-constants';
 import { UttakPeriodeDto } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
 
@@ -44,6 +45,28 @@ const {
     BareFarHarRettTvillingerFødtFør1Okt2021,
     BareFarHarRettAdopsjonMorErUfør,
 } = composeStories(stories);
+
+it.each([
+    ['2024-06-17', 'Tre uker før termin fra 27. mai 2024'],
+    ['2024-07-15', 'Tre uker før termin fra 24. juni 2024'],
+    ['2024-07-01', 'Tre uker før fødsel fra 10. juni 2024'],
+])('viser oppstartsvalget med samme datogrunnlag som forslaget når termin er %s', async (termindato, tekst) => {
+    await MorDeltUttakEttBarnTermin.run({
+        args: {
+            ...MorDeltUttakEttBarnTermin.args,
+            barnet: {
+                type: BarnType.FØDT,
+                fødselsdatoer: ['2024-07-01'],
+                termindato,
+                antallBarn: 1,
+            },
+        },
+    });
+    const oppstartsvalg = await screen.findByRole('radio', { name: tekst });
+    await userEvent.click(oppstartsvalg);
+    expect(oppstartsvalg).toBeChecked();
+    expect(oppstartsvalg).toHaveAttribute('value', 'TRE_UKER_FØR_FØDSEL');
+});
 
 it.each([true, false])(
     'sender direkte tilgang til fordeling videre for gjenbrukt plan, manuelt tømt: %s',
@@ -121,7 +144,7 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
         expect(screen.getByText('Hvis du jobber samtidig som du har foreldrepenger')).toBeInTheDocument();
 
         expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
-        expect(screen.getByText('Tre uker før fødsel fra 31. august 2021')).toBeInTheDocument();
+        expect(screen.getByText('Tre uker før termin fra 03. september 2021')).toBeInTheDocument();
         expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
@@ -986,7 +1009,7 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
         expect(screen.getByText('Jeg vil ha hele fellesperioden')).toBeInTheDocument();
 
         expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
-        expect(screen.getByText(/Tre uker før fødsel fra/)).toBeInTheDocument();
+        expect(screen.getByText(/Tre uker før termin fra/)).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -1528,7 +1551,7 @@ describe('Fordeling - BareMorHarRettTermin', () => {
         expect(screen.getByText('40 uker')).toBeInTheDocument();
         expect(screen.getByText('kan brukes når som helst før barnet fyller 3 år.')).toBeInTheDocument();
         expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
-        expect(screen.getByText(/Tre uker før fødsel fra/)).toBeInTheDocument();
+        expect(screen.getByText(/Tre uker før termin fra/)).toBeInTheDocument();
         expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
     });
 });

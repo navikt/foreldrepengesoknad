@@ -1,6 +1,7 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getDatoForAleneomsorg, getErMorUfør } from 'utils/annenForelderUtils';
+import { getStandardOppstartsdato } from 'utils/oppstartUtils';
 import { getErFarOgFar, getErSøkerFarEllerMedmor } from 'utils/personUtils';
 
 import {
@@ -374,19 +375,11 @@ const getOppstartsdatoFromFordelingValg = (
     if (oppstartDato && (!oppstartValg || oppstartValg === OppstartValg.ANNEN_DATO)) {
         return Uttaksdagen.denneEllerNeste(oppstartDato).getDato();
     }
-    const termindato = getTermindato(barn);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     switch (oppstartValg) {
         case OppstartValg.TRE_UKER_FØR_TERMIN:
         case OppstartValg.TRE_UKER_FØR_FØDSEL: {
-            const startdato = getFørsteUttaksdagForeldrepengerFørFødsel(
-                tilpassTilTermin || oppstartValg === OppstartValg.TRE_UKER_FØR_TERMIN
-                    ? termindato
-                    : familiehendelsesdato,
-            );
-            return tilpassTilTermin && startdato > familiehendelsesdato
-                ? Uttaksdagen.denneEllerNeste(familiehendelsesdato).getDato()
-                : startdato;
+            return getStandardOppstartsdato(barn, oppstartValg, tilpassTilTermin);
         }
         case OppstartValg.FAMILIEHENDELSESDATO: {
             return Uttaksdagen.denneEllerNeste(familiehendelsesdato).getDato();
