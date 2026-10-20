@@ -483,7 +483,6 @@ describe('<SituasjonSide>', () => {
         await userEvent.click(screen.getByText('Mor'));
         await velgSvar(arbeidEllerNav, 'Ja');
         await velgSvar(harHattInntekt, 'Ja');
-        await velgSvar(borDuINorge, 'Ja');
 
         const alertErSynlig = () =>
             expect(
@@ -510,5 +509,96 @@ describe('<SituasjonSide>', () => {
         await userEvent.type(hvorMye, '{backspace}'.repeat(3));
         await userEvent.tab();
         alertErSynlig();
+    });
+
+    const jobbetMinst6av10 = 'For å kunne ha rett til foreldrepenger må man ha jobbet 6 av de 10 siste månedene';
+    const måVæreMedlem =
+        'For å kunne ha rett til foreldrepenger eller engangsstønad må man være medlem av folketrygden';
+
+    it('skal ikke vise oppfølgingsspørsmål eller infobokser før forrige spørsmål er besvart', async () => {
+        render(<Default />);
+
+        expect(await screen.findByText('Hvem er du?')).toBeInTheDocument();
+        expect(screen.queryByText(arbeidEllerNav)).not.toBeInTheDocument();
+        expect(screen.queryByText(harAndreInntektskilder)).not.toBeInTheDocument();
+        expect(screen.queryByText(harHattInntekt)).not.toBeInTheDocument();
+        expect(screen.queryByText(borDuINorge)).not.toBeInTheDocument();
+        expect(screen.queryByText(jobberDuINorge)).not.toBeInTheDocument();
+        expect(screen.queryByText(jobbetMinst6av10)).not.toBeInTheDocument();
+        expect(screen.queryByText(måVæreMedlem)).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Mor'));
+
+        expect(screen.getByText(arbeidEllerNav)).toBeInTheDocument();
+        expect(screen.queryByText(harAndreInntektskilder)).not.toBeInTheDocument();
+        expect(screen.queryByText(borDuINorge)).not.toBeInTheDocument();
+        expect(screen.queryByText(jobberDuINorge)).not.toBeInTheDocument();
+        expect(screen.queryByText(jobbetMinst6av10)).not.toBeInTheDocument();
+        expect(screen.queryByText(måVæreMedlem)).not.toBeInTheDocument();
+
+        await velgSvar(arbeidEllerNav, 'Ja');
+
+        expect(screen.getByText(harHattInntekt)).toBeInTheDocument();
+        expect(screen.queryByText(harAndreInntektskilder)).not.toBeInTheDocument();
+        expect(screen.queryByText(jobbetMinst6av10)).not.toBeInTheDocument();
+        expect(screen.queryByText(borDuINorge)).not.toBeInTheDocument();
+    });
+
+    it('skal vise oppfølgingsspørsmål og infobokser når svaret er nei', async () => {
+        render(<Default />);
+
+        await userEvent.click(await screen.findByText('Mor'));
+        await velgSvar(arbeidEllerNav, 'Nei');
+
+        expect(screen.getByText(harAndreInntektskilder)).toBeInTheDocument();
+        expect(screen.queryByText(jobbetMinst6av10)).not.toBeInTheDocument();
+        expect(screen.queryByText(borDuINorge)).not.toBeInTheDocument();
+
+        await velgSvar(harAndreInntektskilder, 'Nei');
+
+        expect(screen.getByText(jobbetMinst6av10)).toBeInTheDocument();
+        expect(screen.getByText(borDuINorge)).toBeInTheDocument();
+        expect(screen.queryByText(jobberDuINorge)).not.toBeInTheDocument();
+
+        await velgSvar(borDuINorge, 'Nei');
+
+        expect(screen.getByText(jobberDuINorge)).toBeInTheDocument();
+        expect(screen.queryByText(måVæreMedlem)).not.toBeInTheDocument();
+
+        await velgSvar(jobberDuINorge, 'Nei');
+
+        expect(screen.getByText(måVæreMedlem)).toBeInTheDocument();
+    });
+
+    it('skal vise infoboks om inntekt når en ikke har hatt inntekt 6 av 10 måneder', async () => {
+        render(<Default />);
+
+        await userEvent.click(await screen.findByText('Mor'));
+        await velgSvar(arbeidEllerNav, 'Ja');
+        await velgSvar(harHattInntekt, 'Nei');
+
+        expect(screen.getByText(jobbetMinst6av10)).toBeInTheDocument();
+        expect(screen.getByText(borDuINorge)).toBeInTheDocument();
+    });
+
+    it('skal skjule oppfølgingsspørsmål og infobokser når et tidligere svar endres og etterfølgende svar nullstilles', async () => {
+        render(<Default />);
+
+        await userEvent.click(await screen.findByText('Mor'));
+        await velgSvar(arbeidEllerNav, 'Ja');
+        await velgSvar(harHattInntekt, 'Nei');
+        await velgSvar(borDuINorge, 'Nei');
+        await velgSvar(jobberDuINorge, 'Nei');
+
+        expect(screen.getByText(måVæreMedlem)).toBeInTheDocument();
+
+        await velgSvar(arbeidEllerNav, 'Nei');
+
+        expect(screen.getByText(harAndreInntektskilder)).toBeInTheDocument();
+        expect(screen.queryByText(harHattInntekt)).not.toBeInTheDocument();
+        expect(screen.queryByText(jobbetMinst6av10)).not.toBeInTheDocument();
+        expect(screen.queryByText(borDuINorge)).not.toBeInTheDocument();
+        expect(screen.queryByText(jobberDuINorge)).not.toBeInTheDocument();
+        expect(screen.queryByText(måVæreMedlem)).not.toBeInTheDocument();
     });
 });
