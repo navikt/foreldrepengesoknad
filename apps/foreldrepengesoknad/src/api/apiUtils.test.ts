@@ -2,16 +2,10 @@ import { ContextDataMap, ContextDataType } from 'appData/FpDataContext';
 import { AnnenForelder } from 'types/AnnenForelder';
 import { getEndringstidspunktNy } from 'utils/dateUtils';
 
-import { BarnType, Periodetype } from '@navikt/fp-constants';
-import {
-    Barn,
-    FpPersonopplysningerDto_fpoversikt,
-    FødtBarn,
-    UttakPeriodeDto,
-    Uttaksplanperiode,
-} from '@navikt/fp-types';
+import { BarnType } from '@navikt/fp-constants';
+import { Barn, FpPersonopplysningerDto_fpoversikt, FødtBarn, UttakPeriodeDto } from '@navikt/fp-types';
 
-import { getUttaksplanMedFriUtsettelsesperiode, mapTilEndringssøknadDto, mapTilSøknadDto } from './apiUtils';
+import { mapTilEndringssøknadDto, mapTilSøknadDto } from './apiUtils';
 
 const DEFAULT_SØKER_INFO = {
     arbeidsforhold: [
@@ -198,9 +192,8 @@ describe('mapTilSøknadDto', () => {
         };
         const data = getStateMock(annenForelderMock, barnMock, [morsUttak, farsUttak]);
         const søknadMedPerioder = mapTilSøknadDto(data, DEFAULT_SØKER_INFO);
-        expect(søknadMedPerioder.uttaksplan.uttaksperioder!.length).toBe(1);
-        expect(søknadMedPerioder.uttaksplan.uttaksperioder![0]!.fom).toBe('2021-01-01');
         expect(søknadMedPerioder.uttaksplan.perioder).toEqual([morsUttak, farsUttak]);
+        expect(Object.hasOwn(søknadMedPerioder.uttaksplan, 'uttaksperioder')).toBe(false);
     });
 
     it('skal inkludere dekningsgrad og ønskerJustertUttakVedFødsel', () => {
@@ -242,8 +235,6 @@ describe('mapTilEndringssøknadDto', () => {
         const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO);
 
         // Endringstidspunktet er 2024-02-01 (første avvik), så berre perioder f.o.m. den datoen
-        expect(endringssøknad.uttaksplan.uttaksperioder!.length).toBe(2);
-        expect(endringssøknad.uttaksplan.uttaksperioder![0]!.fom).toBe('2024-02-01');
         expect(endringssøknad.uttaksplan.perioder).toEqual(nyePerioder.slice(1));
     });
 
@@ -262,11 +253,6 @@ describe('mapTilEndringssøknadDto', () => {
         const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO);
 
         // Endringstidspunkt er 2024-02-01, inga periode dekkjer den datoen → FRI utsettelse leggjast til
-        const perioder = endringssøknad.uttaksplan.uttaksperioder!;
-        const friPeriode = perioder.find((p) => p.type === 'utsettelse');
-        expect(friPeriode).toBeDefined();
-        expect(friPeriode!.fom).toBe('2024-02-01');
-
         expect(endringssøknad.uttaksplan.perioder).toEqual([
             {
                 fom: '2024-02-01',
@@ -277,7 +263,7 @@ describe('mapTilEndringssøknadDto', () => {
         ]);
     });
 
-    it('skal sende heile intervallet som dekkjer endringstidspunktet i perioder, slik som i uttaksperioder', () => {
+    it('skal sende heile intervallet som dekkjer endringstidspunktet i perioder', () => {
         const nyePerioder: UttakPeriodeDto[] = [
             mor('2024-01-01', '2024-01-31', 'MØDREKVOTE'),
             mor('2024-02-01', '2024-02-29', 'FELLESPERIODE'),
@@ -290,7 +276,6 @@ describe('mapTilEndringssøknadDto', () => {
         const data = getStateMock(annenForelderMock, barnMock, nyePerioder, 'SAK-001', eksisterendePerioder);
         const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO);
 
-        expect(endringssøknad.uttaksplan.uttaksperioder!.map((p) => p.fom)).toEqual(['2024-02-01']);
         expect(endringssøknad.uttaksplan.perioder).toEqual([nyePerioder[1]]);
     });
 
@@ -337,12 +322,6 @@ describe('mapTilEndringssøknadDto', () => {
         const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO);
 
         expect(endringssøknad.uttaksplan.perioder).toEqual(nyePerioder.slice(1));
-        expect(endringssøknad.uttaksplan.uttaksperioder![0]).toMatchObject({
-            type: 'opphold',
-            fom: '2024-02-01',
-            tom: '2024-02-29',
-            årsak: 'UTTAK_FEDREKVOTE_ANNEN_FORELDER',
-        });
     });
 
     it('skal sende annen part sitt uttak som opphald, men hoppe over utsetjingar, avslag og FFF', () => {
@@ -372,11 +351,7 @@ describe('mapTilEndringssøknadDto', () => {
         const data = getStateMock(annenForelderMock, barnMock, nyePerioder, 'SAK-001', eksisterendePerioder);
 
         const uttaksplan = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO).uttaksplan;
-        const uttaksperioder = uttaksplan.uttaksperioder!;
 
-        const opphald = uttaksperioder.filter((p) => p.type === 'opphold');
-        expect(opphald).toHaveLength(1);
-        expect(opphald[0]).toMatchObject({ fom: '2024-02-01', årsak: 'UTTAK_FEDREKVOTE_ANNEN_FORELDER' });
         expect(uttaksplan.perioder).toEqual(nyePerioder.slice(0, 2));
     });
 
@@ -421,13 +396,9 @@ describe('mapTilEndringssøknadDto', () => {
             const planFørInnsending = structuredClone(nyPlan);
             const data = getStateMock(annenForelderMock, barnMock, nyPlan, 'SAK-001', opprinneligPlan);
 
-            const { perioder, uttaksperioder } = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO).uttaksplan;
+            const { perioder } = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO).uttaksplan;
 
             expect(perioder).toEqual(søkerInnvilget ? nyPlan : [nyPlan[0]]);
-            expect(uttaksperioder!.map(({ fom, tom }) => ({ fom, tom }))).toEqual(
-                perioder!.map(({ fom, tom }) => ({ fom, tom })),
-            );
-            expect(uttaksperioder!.every((periode) => periode.type === 'uttak')).toBe(true);
             expect(nyPlan).toEqual(planFørInnsending);
         },
     );
@@ -446,11 +417,10 @@ describe('mapTilEndringssøknadDto', () => {
         const plan = [mor('2024-02-01', '2024-02-29', 'MØDREKVOTE'), avslåttPeriode];
         const data = getStateMock(annenForelderMock, barnMock, plan, 'SAK-001', plan);
 
-        const { perioder, uttaksperioder } = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO).uttaksplan;
+        const { perioder } = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO).uttaksplan;
 
         expect(getEndringstidspunktNy(plan, plan)).toBeUndefined();
         expect(perioder).toEqual([plan[0]]);
-        expect(uttaksperioder).toHaveLength(1);
     });
 
     it('skal la FRI dekke hele hullet selv om annen part har en utsettelse i tidsrommet', () => {
@@ -467,7 +437,7 @@ describe('mapTilEndringssøknadDto', () => {
         const nyPlan = opprinneligPlan.slice(1);
         const data = getStateMock(annenForelderMock, barnMock, nyPlan, 'SAK-001', opprinneligPlan);
 
-        const { perioder, uttaksperioder } = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO).uttaksplan;
+        const { perioder } = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO).uttaksplan;
 
         expect(perioder).toEqual([
             {
@@ -477,12 +447,6 @@ describe('mapTilEndringssøknadDto', () => {
             },
             nyPlan[1],
         ]);
-        expect(uttaksperioder![0]).toMatchObject({
-            type: 'utsettelse',
-            årsak: 'FRI',
-            fom: '2024-02-01',
-            tom: '2024-02-29',
-        });
         expect(nyPlan[0]).toEqual(annenPartsUtsettelse);
     });
 
@@ -514,8 +478,8 @@ describe('mapTilEndringssøknadDto', () => {
             const data = getStateMock(annenForelderMock, barnMock, nyPlan, 'SAK-001', opprinneligPlan);
             const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO);
 
-            expect(endringssøknad.uttaksplan.uttaksperioder!).toHaveLength(1);
-            expect(endringssøknad.uttaksplan.uttaksperioder![0]!.fom).toBe('2024-04-01');
+            expect(endringssøknad.uttaksplan.perioder!).toHaveLength(1);
+            expect(endringssøknad.uttaksplan.perioder![0]!.fom).toBe('2024-04-01');
         });
 
         it('skal ikke gi endringstidspunkt når planen er uendret', () => {
@@ -530,7 +494,7 @@ describe('mapTilEndringssøknadDto', () => {
             const data = getStateMock(annenForelderMock, barnMock, nyPlan, 'SAK-001', opprinneligPlan);
             const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO);
 
-            expect(endringssøknad.uttaksplan.uttaksperioder![0]!.fom).toBe('2024-01-01');
+            expect(endringssøknad.uttaksplan.perioder![0]!.fom).toBe('2024-01-01');
         });
 
         it('skal stoppe innsending når opprinnelig uttaksplan mangler', () => {
@@ -559,147 +523,6 @@ describe('mapTilEndringssøknadDto', () => {
                 'Opprinnelig uttaksplan tilhører ikke valgt sak',
             );
         });
-    });
-});
-
-//Periode 1:
-const fraDato_1 = '2022-01-25';
-const tilDato_1 = '2022-01-28';
-const periode_1 = {
-    type: Periodetype.Uttak,
-    konto: 'FELLESPERIODE',
-    fom: fraDato_1,
-    tom: tilDato_1,
-} satisfies Uttaksplanperiode;
-
-//Periode 2:
-const fraDato_2 = '2022-01-31';
-const tilDato_2 = '2022-02-07';
-const periode_2 = {
-    type: Periodetype.Uttak,
-    konto: 'FELLESPERIODE',
-    fom: fraDato_2,
-    tom: tilDato_2,
-} satisfies Uttaksplanperiode;
-
-//Periode 3: (1 dag)
-const fraDato_3 = '2022-02-11';
-const tilDato_3 = '2022-02-11';
-const periode_3 = {
-    type: Periodetype.Uttak,
-    konto: 'FELLESPERIODE',
-    fom: fraDato_3,
-    tom: tilDato_3,
-} satisfies Uttaksplanperiode;
-
-//Periode 4:
-const fraDato_4 = '2022-02-14';
-const tilDato_4 = '2022-02-24';
-const periode_4 = {
-    type: Periodetype.Uttak,
-    konto: 'FELLESPERIODE',
-    fom: fraDato_4,
-    tom: tilDato_4,
-} satisfies Uttaksplanperiode;
-
-//Periode 5: 28.02, 1 dag, ikke skuddår
-const fraDato_5 = '2022-02-28';
-const tilDato_5 = '2022-02-28';
-const periode_5 = {
-    type: Periodetype.Uttak,
-    konto: 'FELLESPERIODE',
-    fom: fraDato_5,
-    tom: tilDato_5,
-} satisfies Uttaksplanperiode;
-
-//Periode 6: 1.03, ikke skuddår
-const fraDato_6 = '2022-03-01';
-const tilDato_6 = '2022-03-07';
-const periode_6 = {
-    type: Periodetype.Uttak,
-    konto: 'FELLESPERIODE',
-    fom: fraDato_6,
-    tom: tilDato_6,
-} satisfies Uttaksplanperiode;
-
-//Periode 7: 1.03 i et skuddår
-const fraDato_7 = '2024-03-01';
-const tilDato_7 = '2024-03-07';
-const periode_7 = {
-    type: Periodetype.Uttak,
-    konto: 'FELLESPERIODE',
-    fom: fraDato_7,
-    tom: tilDato_7,
-} satisfies Uttaksplanperiode;
-
-const uttaksplanMedAllePerioder: Uttaksplanperiode[] = [
-    periode_1,
-    periode_2,
-    periode_3,
-    periode_4,
-    periode_5,
-    periode_6,
-    periode_7,
-];
-
-const getUttaksplanUtenPeriode = (periodeSomSkalFjernes: Uttaksplanperiode): Uttaksplanperiode[] => {
-    return uttaksplanMedAllePerioder.filter((periode) => periode !== periodeSomSkalFjernes);
-};
-
-const uttaksplanUtenPeriode_1 = getUttaksplanUtenPeriode(periode_1);
-const uttaksplanUtenPeriode_2 = getUttaksplanUtenPeriode(periode_2);
-const uttaksplanUtenPeriode_3 = getUttaksplanUtenPeriode(periode_3);
-const uttaksplanUtenPeriode_5 = getUttaksplanUtenPeriode(periode_5);
-
-describe('getUttaksplanMedFriUtsettelsesperiode', () => {
-    it('inserts correct fri utsettelsesperiode that ends on a Friday', () => {
-        const nyUttaksplan = getUttaksplanMedFriUtsettelsesperiode(uttaksplanUtenPeriode_1, fraDato_1);
-        const friUtsettelsePeriode = nyUttaksplan[0]!;
-        expect(nyUttaksplan.length).toEqual(uttaksplanMedAllePerioder.length);
-        expect(friUtsettelsePeriode.type).toBe(Periodetype.Utsettelse);
-        expect(friUtsettelsePeriode.fom).toEqual(fraDato_1);
-        expect(friUtsettelsePeriode.tom).toEqual(tilDato_1);
-    });
-    it('inserts correct fri utsettelsesperiode and fills out hole before next periode', () => {
-        const nyUttaksplan = getUttaksplanMedFriUtsettelsesperiode(uttaksplanUtenPeriode_2, fraDato_2);
-        const friUtsettelsePeriode = nyUttaksplan[1]!;
-        expect(nyUttaksplan.length).toEqual(uttaksplanMedAllePerioder.length);
-        expect(friUtsettelsePeriode.fom).toEqual(fraDato_2);
-        expect(friUtsettelsePeriode.tom).toEqual('2022-02-10');
-    });
-    it('inserts correct fri utsettelsesperiode that lasts 1 day', () => {
-        const nyUttaksplan = getUttaksplanMedFriUtsettelsesperiode(uttaksplanUtenPeriode_3, fraDato_3);
-        const friUtsettelsePeriode = nyUttaksplan[2]!;
-        expect(nyUttaksplan.length).toEqual(uttaksplanMedAllePerioder.length);
-        expect(friUtsettelsePeriode.fom).toEqual(fraDato_3);
-        expect(friUtsettelsePeriode.tom).toEqual(tilDato_3);
-    });
-
-    it('inserts correct fri utsettelsesperiode that ends last day of February in a non-leap year', () => {
-        const nyUttaksplan = getUttaksplanMedFriUtsettelsesperiode(uttaksplanUtenPeriode_5, fraDato_5);
-        const friUtsettelsePeriode = nyUttaksplan[4]!;
-        expect(nyUttaksplan.length).toEqual(uttaksplanMedAllePerioder.length);
-        expect(friUtsettelsePeriode.fom).toEqual(fraDato_5);
-        expect(friUtsettelsePeriode.tom).toEqual(tilDato_5);
-    });
-
-    it('inserts correct fri utsettelsesperiode that ends last day of February in leap year', () => {
-        const nyUttaksplan = getUttaksplanMedFriUtsettelsesperiode([...uttaksplanMedAllePerioder], '2024-02-27');
-        expect(nyUttaksplan.length).toEqual(uttaksplanMedAllePerioder.length + 1);
-        const friUtsettelsePeriode = nyUttaksplan[6]!;
-        expect(friUtsettelsePeriode.type).toBe(Periodetype.Utsettelse);
-        expect(friUtsettelsePeriode.fom).toEqual('2024-02-27');
-        expect(friUtsettelsePeriode.tom).toEqual('2024-02-29');
-    });
-
-    it('inserts correct fri utsettelsesperiode that ends at endringstidspunkt if no periods after', () => {
-        const endringstidspunkt = '2024-03-08';
-        const nyUttaksplan = getUttaksplanMedFriUtsettelsesperiode([...uttaksplanMedAllePerioder], endringstidspunkt);
-        expect(nyUttaksplan.length).toEqual(uttaksplanMedAllePerioder.length + 1);
-        const friUtsettelsePeriode = nyUttaksplan[7]!;
-        expect(friUtsettelsePeriode.type).toBe(Periodetype.Utsettelse);
-        expect(friUtsettelsePeriode.fom).toEqual(endringstidspunkt);
-        expect(friUtsettelsePeriode.tom).toEqual(endringstidspunkt);
     });
 });
 
