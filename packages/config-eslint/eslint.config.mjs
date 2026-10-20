@@ -14,19 +14,23 @@ const ERROR = 2;
 
 const IGNORED_UNICORN_RULES = {
     'unicorn/consistent-boolean-name': OFF,
-    'unicorn/no-array-callback-reference': OFF,
     'unicorn/consistent-function-scoping': OFF,
     'unicorn/filename-case': OFF,
     'unicorn/max-nested-calls': OFF,
-    'unicorn/no-top-level-side-effects': OFF,
     'unicorn/name-replacements': OFF,
+    'unicorn/no-array-callback-reference': OFF,
+    'unicorn/no-asterisk-prefix-in-documentation-comments': OFF,
     'unicorn/no-nested-ternary': OFF,
     'unicorn/no-null': OFF,
+    'unicorn/no-top-level-side-effects': OFF,
+    'unicorn/prefer-logical-operator-over-ternary': OFF,
+    'unicorn/prefer-minimal-ternary': OFF,
+    'unicorn/prefer-ternary': OFF,
     'unicorn/prevent-abbreviations': OFF,
 };
 
 export const unicornConfig = [
-    eslintPluginUnicorn.configs['flat/recommended'],
+    eslintPluginUnicorn.configs.recommended,
     eslintConfigPrettier,
     {
         rules: IGNORED_UNICORN_RULES,

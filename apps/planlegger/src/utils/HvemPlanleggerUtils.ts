@@ -61,11 +61,12 @@ export const getStarterForelder = (
     fordeling: FordelingPlanlegger | undefined,
     barnet: OmBarnetPlanlegger | undefined,
 ): StarterForelder | undefined => {
-    if (!barnet || !kanVelgeHvemSomStarterPermisjonen(hvemPlanlegger) || !erBarnetAdoptert(barnet)) {
-        return undefined;
-    }
-
-    if (!fordeling?.hvemStarterPermisjon) {
+    if (
+        !barnet ||
+        !kanVelgeHvemSomStarterPermisjonen(hvemPlanlegger) ||
+        !erBarnetAdoptert(barnet) ||
+        !fordeling?.hvemStarterPermisjon
+    ) {
         return undefined;
     }
 
@@ -174,10 +175,7 @@ export const erFarSøker2 = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is 
     hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR || hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR;
 
 const getNavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
-    if (hvemPlanlegger.type === HvemPlanleggerType.FAR) {
-        return intl.formatMessage({ id: 'Du' });
-    }
-    if (hvemPlanlegger.type === HvemPlanleggerType.MOR) {
+    if (hvemPlanlegger.type === HvemPlanleggerType.FAR || hvemPlanlegger.type === HvemPlanleggerType.MOR) {
         return intl.formatMessage({ id: 'Du' });
     }
     if (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR) {

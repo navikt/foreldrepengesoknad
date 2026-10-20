@@ -107,14 +107,15 @@ export const PlanleggerDataFetcher = () => {
             // Bearbeide hver dekningsgrad
             for (const dekningsgrad of dekningsgrader) {
                 const stønadskonto = modifiserteData[dekningsgrad];
-                if (stønadskonto?.kontoer.some((k) => k.konto === 'FORELDREPENGER')) {
-                    // Summer antall dager i alle kontoer
-                    const totalDager = stønadskonto.kontoer.reduce((sum, konto) => sum + konto.dager, 0);
-                    // Filtrer og lag 'AKTIVITETSFRI_KVOTE' -kontoen
-                    stønadskonto.kontoer = stønadskonto.kontoer
-                        .filter((konto) => konto.konto === 'FORELDREPENGER')
-                        .map(() => ({ konto: 'AKTIVITETSFRI_KVOTE', dager: totalDager }));
+                if (!stønadskonto?.kontoer.some((k) => k.konto === 'FORELDREPENGER')) {
+                    continue;
                 }
+                // Summer antall dager i alle kontoer
+                const totalDager = stønadskonto.kontoer.reduce((sum, konto) => sum + konto.dager, 0);
+                // Filtrer og lag 'AKTIVITETSFRI_KVOTE' -kontoen
+                stønadskonto.kontoer = stønadskonto.kontoer
+                    .filter((konto) => konto.konto === 'FORELDREPENGER')
+                    .map(() => ({ konto: 'AKTIVITETSFRI_KVOTE', dager: totalDager }));
             }
             return modifiserteData;
         },
@@ -140,16 +141,17 @@ export const PlanleggerDataInit = () => {
         // Skyra støtter kun nb og nn
         const isSupportedLocale = intl.locale === 'nb' || intl.locale === 'nn';
 
-        if (isSupportedLocale && locations.pathname.includes('oppsummering')) {
-            const skyraGlobal = globalThis as typeof globalThis & { skyra?: { reload: () => void } };
-            if (typeof skyraGlobal.skyra?.reload === 'function') {
-                skyraGlobal.skyra.reload();
-                // eslint-disable-next-line no-console
-                console.log(`skyra.reload() kjørt på ${locations.pathname}`);
-            } else {
-                // eslint-disable-next-line no-console
-                console.warn('skyra.reload() ikke tilgjengelig');
-            }
+        if (!isSupportedLocale || !locations.pathname.includes('oppsummering')) {
+            return;
+        }
+        const skyraGlobal = globalThis as typeof globalThis & { skyra?: { reload: () => void } };
+        if (typeof skyraGlobal.skyra?.reload === 'function') {
+            skyraGlobal.skyra.reload();
+            // eslint-disable-next-line no-console
+            console.log(`skyra.reload() kjørt på ${locations.pathname}`);
+        } else {
+            // eslint-disable-next-line no-console
+            console.warn('skyra.reload() ikke tilgjengelig');
         }
     }, [locations.pathname, intl.locale]);
 

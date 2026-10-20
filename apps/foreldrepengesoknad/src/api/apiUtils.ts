@@ -165,9 +165,9 @@ const cleanAnnenforelder = (annenForelder: AnnenForelder | undefined): AnnenFore
             harAnnenForelderOppholdtSegIEØS: annenForelder.harOppholdtSegIEØS,
             harAnnenForelderTilsvarendeRettEØS:
                 // Bevarer logikken fra steget og gammel oppførsel her siden harRettPåForeldrepengerIEØS defaulter til false mange plasser
-                annenForelder.harRettPåForeldrepengerINorge !== false || annenForelder.harOppholdtSegIEØS !== true
-                    ? undefined
-                    : annenForelder.harRettPåForeldrepengerIEØS,
+                annenForelder.harRettPåForeldrepengerINorge === false && annenForelder.harOppholdtSegIEØS === true
+                    ? annenForelder.harRettPåForeldrepengerIEØS
+                    : undefined,
         },
     };
     return annenForelder.utenlandskFnr

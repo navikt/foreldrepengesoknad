@@ -41,7 +41,12 @@ export const HvorforHarJegIkkeRettEsPanel = ({ fpEllerEsSituasjon }: Props) => {
                             headerLevel="3"
                             boxBodyText={
                                 <>
-                                    {!borDuINorge && !jobberDuINorge ? (
+                                    {borDuINorge || jobberDuINorge ? (
+                                        <FormattedMessage
+                                            id="HvorforHarJegRettPanel.OppgittAtDuBorINorge"
+                                            values={{ borINorge: borDuINorge }}
+                                        />
+                                    ) : (
                                         <FormattedMessage
                                             id="HvorforHarJegRettPanel.IkkeMedlem"
                                             values={{
@@ -51,11 +56,6 @@ export const HvorforHarJegIkkeRettEsPanel = ({ fpEllerEsSituasjon }: Props) => {
                                                     </Link>
                                                 ),
                                             }}
-                                        />
-                                    ) : (
-                                        <FormattedMessage
-                                            id="HvorforHarJegRettPanel.OppgittAtDuBorINorge"
-                                            values={{ borINorge: borDuINorge }}
                                         />
                                     )}
                                 </>

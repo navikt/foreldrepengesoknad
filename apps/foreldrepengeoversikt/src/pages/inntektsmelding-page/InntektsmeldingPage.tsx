@@ -148,7 +148,7 @@ export const InntektsmeldingPage = () => {
 };
 
 const HvordanUtbetalesPengene = ({ inntektsmelding }: { inntektsmelding: FpOversiktInntektsmeldingDto_fpoversikt }) => {
-    const { inntektPrMnd, refusjonsperioder, refusjonPrMnd, arbeidsgiverNavn } = inntektsmelding;
+    const { inntektPrMnd, refusjonsperioder, refusjonPrMnd = 0, arbeidsgiverNavn } = inntektsmelding;
 
     return (
         <>
@@ -156,7 +156,7 @@ const HvordanUtbetalesPengene = ({ inntektsmelding }: { inntektsmelding: FpOvers
                 <BodyShort>
                     <HvordanUtbetalesPengeneTekst
                         inntektPrMnd={inntektPrMnd}
-                        refusjonPrMnd={refusjonPrMnd ?? 0}
+                        refusjonPrMnd={refusjonPrMnd}
                         arbeidsgiverNavn={arbeidsgiverNavn}
                     />
                 </BodyShort>

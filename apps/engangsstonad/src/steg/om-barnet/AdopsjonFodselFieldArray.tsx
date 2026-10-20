@@ -64,13 +64,13 @@ export const AdopsjonFodselFieldArray = ({ adopsjonsdato, antallBarn, antallBarn
                         isRequired(intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Fodselsdato.DuMåOppgi' })),
                         isValidDate(intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Fødselsdato.Gyldig' })),
                         (fødselsdato) => {
-                            return !fødselsdato || !adopsjonsdato
-                                ? null
-                                : isBeforeTodayOrToday(
+                            return fødselsdato && adopsjonsdato
+                                ? isBeforeTodayOrToday(
                                       intl.formatMessage({
                                           id: 'AdopsjonFodselFieldArray.fodselsdato.MåVæreIdagEllerTidligere',
                                       }),
-                                  )(fødselsdato);
+                                  )(fødselsdato)
+                                : null;
                         },
                     ]}
                 />

@@ -12,8 +12,8 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(isBetween);
 dayjs.locale(getDecoratorLanguageCookie('decorator-language'));
 
-export const formaterDato = (dato: string | undefined, datoformat?: string) => {
-    return dayjs(dato).format(datoformat || 'dddd D. MMMM YYYY');
+export const formaterDato = (dato: string | undefined, datoformat = 'dddd D. MMMM YYYY') => {
+    return dayjs(dato).format(datoformat);
 };
 
 export const getErDatoInnenEnDagFraAnnenDato = (dato1: string | undefined, dato2: string | undefined): boolean => {

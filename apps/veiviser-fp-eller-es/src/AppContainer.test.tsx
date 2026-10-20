@@ -11,8 +11,8 @@ vi.mock('@navikt/nav-dekoratoren-moduler', () => ({
 
 const { FpEllerEsVeiviserMockaStønadskvoterOgSatser } = composeStories(stories);
 
-const velgSvar = (spørsmål: string, svar: 'Ja' | 'Nei') =>
-    userEvent.click(within(screen.getByRole('radiogroup', { name: spørsmål })).getByRole('radio', { name: svar }));
+const svarJa = (spørsmål: string) =>
+    userEvent.click(within(screen.getByRole('radiogroup', { name: spørsmål })).getByRole('radio', { name: 'Ja' }));
 
 describe('<AppContainer>', () => {
     it('FP eller ES veiviser: skal gå gjennom app og så tilbake', async () => {
@@ -29,19 +29,18 @@ describe('<AppContainer>', () => {
                 'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
             ),
         ).toBeInTheDocument();
-        await velgSvar(
+        await svarJa(
             'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
-            'Ja',
         );
 
         expect(screen.getByText('Har du hatt inntekt 6 av de 10 siste månedene?')).toBeInTheDocument();
-        await velgSvar('Har du hatt inntekt 6 av de 10 siste månedene?', 'Ja');
+        await svarJa('Har du hatt inntekt 6 av de 10 siste månedene?');
 
         const hvorMye = screen.getByLabelText('Omtrent hvor mye tjener du i måneden før skatt?');
         await userEvent.type(hvorMye, '50000');
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
-        await velgSvar('Bor du i Norge?', 'Ja');
+        await svarJa('Bor du i Norge?');
 
         await userEvent.click(screen.getByText('Se resultatet'));
 

@@ -30,7 +30,7 @@ export const IngenTilretteleggingPanel = ({
     sluttdatoArbeid,
     startdatoArbeid,
     arbeidsforholdType,
-    arbeidsforholdNavn,
+    arbeidsforholdNavn = '',
 }: Props) => {
     const intl = useIntl();
 
@@ -89,7 +89,7 @@ export const IngenTilretteleggingPanel = ({
                         behovForTilretteleggingFom,
                         sisteDagForSvangerskapspenger,
                         'ingen',
-                        arbeidsforholdNavn || '',
+                        arbeidsforholdNavn,
                         sluttdatoArbeid,
                         kanHaSVPFremTilTreUkerFørTermin,
                     ),
@@ -144,7 +144,7 @@ export const IngenTilretteleggingPanel = ({
                             sisteDagForSvangerskapspenger,
                             enPeriodeMedTilretteleggingFom,
                             'ingen',
-                            arbeidsforholdNavn || '',
+                            arbeidsforholdNavn,
                             sluttdatoArbeid,
                             kanHaSVPFremTilTreUkerFørTermin,
                         ),

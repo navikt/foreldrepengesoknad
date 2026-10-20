@@ -119,7 +119,7 @@ export const useFinnFørsteSubmitFeilmelding = ({
 // sin egen periode i et samtidig uttak, står annen parts uendrede periode igjen i et intervall som ellers
 // ikke finnes i den opprinnelige planen.
 const finnSøkersPerioder = (perioder: UttakPeriodeDto[]): UttakPeriodeDto[] =>
-    perioder.flatMap(({ fom, tom, søker }) => (søker ? [{ fom, tom, søker }] : []));
+    perioder.flatMap(({ fom, tom, søker }) => (søker ? { fom, tom, søker } : []));
 
 const erSøkersPeriodeNyEllerEndret = (periode: UttakPeriodeDto, opprinneligPlan: UttakPeriodeDto[]) => {
     const { fom, tom, søker } = periode;
