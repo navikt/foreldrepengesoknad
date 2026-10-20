@@ -80,12 +80,9 @@ describe('<AnnenForelderSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(
-            <AnnenForelderFraOppgittBarn
-                gåTilNesteSide={gåTilNesteSide}
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-            />,
-        );
+        await AnnenForelderFraOppgittBarn.run({
+            args: { ...AnnenForelderFraOppgittBarn.args, gåTilNesteSide, mellomlagreSøknadOgNaviger },
+        });
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
@@ -128,12 +125,9 @@ describe('<AnnenForelderSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(
-            <AnnenForelderFraOppgittBarn
-                gåTilNesteSide={gåTilNesteSide}
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-            />,
-        );
+        await AnnenForelderFraOppgittBarn.run({
+            args: { ...AnnenForelderFraOppgittBarn.args, gåTilNesteSide, mellomlagreSøknadOgNaviger },
+        });
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige steg'));
@@ -152,12 +146,9 @@ describe('<AnnenForelderSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(
-            <AnnenForelderFraOppgittBarn
-                gåTilNesteSide={gåTilNesteSide}
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-            />,
-        );
+        await AnnenForelderFraOppgittBarn.run({
+            args: { ...AnnenForelderFraOppgittBarn.args, gåTilNesteSide, mellomlagreSøknadOgNaviger },
+        });
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
@@ -206,12 +197,9 @@ describe('<AnnenForelderSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(
-            <AnnenForelderFraOppgittBarn
-                gåTilNesteSide={gåTilNesteSide}
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-            />,
-        );
+        await AnnenForelderFraOppgittBarn.run({
+            args: { ...AnnenForelderFraOppgittBarn.args, gåTilNesteSide, mellomlagreSøknadOgNaviger },
+        });
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
@@ -266,7 +254,7 @@ describe('<AnnenForelderSteg>', () => {
     });
 
     it('skal fylle ut at en ikke har aleneomsorg for barnet og at en har rett til foreldrepenger og har ikke orientert annen part', async () => {
-        render(<AnnenForelderFraOppgittBarn />);
+        await AnnenForelderFraOppgittBarn.run();
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
@@ -293,12 +281,9 @@ describe('<AnnenForelderSteg>', () => {
     it('skal fylle ut at en ikke har aleneomsorg for barnet og at en har rett til foreldrepenger og har orientert annen part', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
-        render(
-            <AnnenForelderFraOppgittBarn
-                gåTilNesteSide={gåTilNesteSide}
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-            />,
-        );
+        await AnnenForelderFraOppgittBarn.run({
+            args: { ...AnnenForelderFraOppgittBarn.args, gåTilNesteSide, mellomlagreSøknadOgNaviger },
+        });
 
         expect(await screen.findByText('LEALAUS BÆREPOSE')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
@@ -342,12 +327,9 @@ describe('<AnnenForelderSteg>', () => {
     it('skal velge at en ikke kan oppgi personalia til den andre forelderen', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
-        render(
-            <SkalOppgiPersonalia
-                gåTilNesteSide={gåTilNesteSide}
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-            />,
-        );
+        await SkalOppgiPersonalia.run({
+            args: { ...SkalOppgiPersonalia.args, gåTilNesteSide, mellomlagreSøknadOgNaviger },
+        });
 
         expect(await screen.findAllByText('Den andre forelderen')).toHaveLength(2);
 
@@ -375,12 +357,9 @@ describe('<AnnenForelderSteg>', () => {
     it('skal oppgi personalia til den andre forelderen og velge at han har utenlandsk fødselsnummer', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
-        render(
-            <SkalOppgiPersonalia
-                gåTilNesteSide={gåTilNesteSide}
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-            />,
-        );
+        await SkalOppgiPersonalia.run({
+            args: { ...SkalOppgiPersonalia.args, gåTilNesteSide, mellomlagreSøknadOgNaviger },
+        });
 
         expect(await screen.findAllByText('Den andre forelderen')).toHaveLength(2);
 
@@ -429,7 +408,9 @@ describe('<AnnenForelderSteg>', () => {
     it('skal søke som far og ha aleneomsorg for barnet', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
-        render(<ForFar gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+        await ForFar.run({
+            args: { ...ForFar.args, gåTilNesteSide, mellomlagreSøknadOgNaviger },
+        });
 
         expect(await screen.findByText('TALENTFULL MYGG')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer: 12038517080')).toBeInTheDocument();
@@ -468,7 +449,9 @@ describe('<AnnenForelderSteg>', () => {
     it('Skal søke som far og velge at mor har foreldrepenger i EØS', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
-        render(<ForFar gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+        await ForFar.run({
+            args: { ...ForFar.args, gåTilNesteSide, mellomlagreSøknadOgNaviger },
+        });
 
         expect(await screen.findByText('TALENTFULL MYGG')).toBeInTheDocument();
 
@@ -529,7 +512,7 @@ describe('<AnnenForelderSteg>', () => {
     });
 
     it('skal ikke vise infoboks om farskapsportal når mor søker på termin, annen forelder er en medmor og har rett i Norge', async () => {
-        render(<MorUfødtBarn />);
+        await MorUfødtBarn.run();
 
         expect(await screen.findAllByText('Den andre forelderen')).toHaveLength(2);
 

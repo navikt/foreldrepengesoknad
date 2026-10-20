@@ -342,6 +342,15 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
         }
     }, [forelder, enesteMuligeForelder, formMethods]);
 
+    // Aktivitetskravet kan slutte å gjelde uten at kontotypen endres, f.eks. når tidsperioden flyttes
+    // til før fødsel. Da er feltet skjult, men svaret ligger igjen i form-state og lagres på perioden.
+    const visAktivitetskravFelt = feltSynlighet.visAktivitetskravFelt;
+    useEffect(() => {
+        if (!visAktivitetskravFelt && formMethods.getValues('morsAktivitet') !== undefined) {
+            formMethods.setValue('morsAktivitet', undefined, { shouldDirty: true });
+        }
+    }, [visAktivitetskravFelt, formMethods]);
+
     const blokkerendeAlert = useBlokkerendeAlert({
         valgtePerioder,
         erMorGyldigForelder: forelderValgSynlighet.erMorGyldigForelder,

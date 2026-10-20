@@ -28,4 +28,15 @@ if (import.meta.env['TEST_MODE'] === 'jsdom-mode') {
             return Promise.resolve();
         };
     }
+
+    if (globalThis.Blob && !globalThis.Blob.prototype.stream) {
+        globalThis.Blob.prototype.stream = function () {
+            return new ReadableStream({
+                start: async (controller) => {
+                    controller.enqueue(await this.bytes());
+                    controller.close();
+                },
+            });
+        };
+    }
 }
