@@ -104,6 +104,28 @@ export const OpplastningServerFeil: Story = {
     },
 };
 
+export const OpplastningNettverksfeilForFørsteFil: Story = {
+    args: {
+        ...Default.args,
+        existingAttachments: [],
+    },
+
+    beforeEach({ msw }) {
+        let antallKall = 0;
+        msw.use(
+            http.post(MOCK_API_PATH, () => {
+                antallKall++;
+                if (antallKall === 1) {
+                    return HttpResponse.error();
+                }
+                return new HttpResponse(JSON.stringify('uuid-test'), {
+                    status: 200,
+                });
+            }),
+        );
+    },
+};
+
 export const OpplastningTimeout: Story = {
     args: {
         ...Default.args,
