@@ -44,9 +44,14 @@ export const useTidligereUttaksplan = (
         if (!annenPartHarVedtak(uttaksplan)) {
             return;
         }
-        return uttaksplan.perioder.flatMap(({ fom, tom, annenPart }) =>
-            annenPart?.resultat ? { fom, tom, annenPart } : [],
-        );
+        const medSøkersPerioder = valgtEksisterendeSaksnr === undefined;
+        return uttaksplan.perioder.flatMap(({ fom, tom, søker, annenPart }) => {
+            const søkersUttak = medSøkersPerioder ? søker : undefined;
+            if (!søkersUttak && !annenPart) {
+                return [];
+            }
+            return { fom, tom, ...(søkersUttak && { søker: søkersUttak }), ...(annenPart && { annenPart }) };
+        });
     }, [
         uttaksplan,
         valgtEksisterendeSaksnr,

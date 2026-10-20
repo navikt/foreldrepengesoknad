@@ -244,7 +244,7 @@ describe('useTidligereUttaksplan', () => {
         ]);
     });
 
-    it('returnerer berre annan part sitt vedtak når ingen eksisterande sak er valt', () => {
+    it('returnerer søkers og annen parts perioder uten EØS når ingen eksisterende sak er valgt', () => {
         const samtidig: UttakPeriodeDto = {
             fom: '2025-02-03',
             tom: '2025-02-14',
@@ -267,9 +267,7 @@ describe('useTidligereUttaksplan', () => {
             wrapper: getWrapper(lagUttaksplan([PERIODER[0]!, samtidig, eøs])),
         });
 
-        expect(result.current.perioder).toEqual([
-            { fom: samtidig.fom, tom: samtidig.tom, annenPart: samtidig.annenPart },
-        ]);
+        expect(result.current.perioder).toEqual([PERIODER[0], samtidig]);
         expect(result.current.isLoading).toBe(false);
     });
 
@@ -281,14 +279,27 @@ describe('useTidligereUttaksplan', () => {
         expect(result.current.perioder).toBeUndefined();
     });
 
-    it('tar bare med annen parts perioder med resultat når vedtak og ubehandlet søknad er blandet', () => {
-        const annenPart = { ...PERIODER[1]!.annenPart!, resultat: INNVILGET };
-        const ubehandlet: UttakPeriodeDto = { ...PERIODER[1]!, fom: '2025-06-02', tom: '2025-06-13' };
+    it('tar med annen parts ferie og søkers perioder fra annen parts søknad sammen med vedtaket', () => {
+        const vedtak: UttakPeriodeDto = {
+            fom: '2026-12-08',
+            tom: '2027-01-04',
+            annenPart: { forelder: 'MOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false, resultat: INNVILGET },
+        };
+        const ferie: UttakPeriodeDto = {
+            fom: '2027-01-05',
+            tom: '2027-01-15',
+            annenPart: { forelder: 'MOR', utsettelseÅrsak: 'FERIE', flerbarnsdager: false },
+        };
+        const fedrekvote: UttakPeriodeDto = {
+            fom: '2027-03-30',
+            tom: '2027-04-09',
+            søker: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
+        };
         const { result } = renderHook(() => useTidligereUttaksplan(), {
-            wrapper: getWrapper(lagUttaksplan([{ ...PERIODER[1]!, annenPart }, ubehandlet])),
+            wrapper: getWrapper(lagUttaksplan([vedtak, ferie, fedrekvote])),
         });
 
-        expect(result.current.perioder).toEqual([{ ...PERIODER[1]!, annenPart }]);
+        expect(result.current.perioder).toEqual([vedtak, ferie, fedrekvote]);
     });
 
     it('returnerer alle periodane når ei eksisterande sak er valt', () => {
@@ -399,14 +410,19 @@ describe('useTidligereUttaksplan', () => {
         expect(result.current.tidligere.perioder).toBeUndefined();
     });
 
-    it('beholder bare annen parts vedtak etter at egen plan er forkastet', () => {
+    it('beholder bare annen parts perioder etter at egen plan er forkastet', () => {
         const annenPart = { ...PERIODER[1]!.annenPart!, resultat: INNVILGET };
+        const ferie: UttakPeriodeDto = {
+            fom: '2025-02-03',
+            tom: '2025-02-07',
+            annenPart: { forelder: 'FAR_MEDMOR', utsettelseÅrsak: 'FERIE', flerbarnsdager: false },
+        };
         const { result } = renderHook(() => useTidligereUttaksplan(), {
-            wrapper: getWrapper(lagUttaksplan([PERIODER[0]!, { ...PERIODER[1]!, annenPart }]), {
+            wrapper: getWrapper(lagUttaksplan([PERIODER[0]!, { ...PERIODER[1]!, annenPart }, ferie]), {
                 [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
             }),
         });
-        expect(result.current.perioder).toEqual([{ ...PERIODER[1]!, annenPart }]);
+        expect(result.current.perioder).toEqual([{ ...PERIODER[1]!, annenPart }, ferie]);
     });
 
     it('forkaster snapshot fra en eldre lagring når gjeldende plan er undefined', () => {
