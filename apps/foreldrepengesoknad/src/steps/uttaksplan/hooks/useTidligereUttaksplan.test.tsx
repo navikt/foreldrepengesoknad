@@ -271,9 +271,17 @@ describe('useTidligereUttaksplan', () => {
         expect(result.current.isLoading).toBe(false);
     });
 
-    it('ignorerer annan part sine periodar utan resultat når ingen eksisterande sak er valt', () => {
+    it('bruker annen parts plan før vedtak når ingen eksisterende sak er valgt', () => {
         const { result } = renderHook(() => useTidligereUttaksplan(), {
             wrapper: getWrapper(lagUttaksplan(PERIODER)),
+        });
+
+        expect(result.current.perioder).toEqual(PERIODER);
+    });
+
+    it('returnerer undefined når planen ikke har perioder for annen part', () => {
+        const { result } = renderHook(() => useTidligereUttaksplan(), {
+            wrapper: getWrapper(lagUttaksplan([PERIODER[0]!])),
         });
 
         expect(result.current.perioder).toBeUndefined();
@@ -377,7 +385,7 @@ describe('useTidligereUttaksplan', () => {
             }),
         });
 
-        expect(result.current.perioder).toBeUndefined();
+        expect(result.current.perioder).toEqual([PERIODER[1]]);
     });
 
     it('beholder opprinnelig plan etter manuell tømming, men ikke etter endret grunnlag', () => {
@@ -402,12 +410,12 @@ describe('useTidligereUttaksplan', () => {
         expect(result.current.state.UTTAKSPLAN).toEqual([]);
 
         act(() => result.current.reset());
-        expect(result.current.tidligere.perioder).toBeUndefined();
+        expect(result.current.tidligere.perioder).toEqual([PERIODER[1]]);
         expect(result.current.state.OPPRINNELIG_UTTAKSPLAN).toBeUndefined();
 
         act(() => result.current.lagre([{ ...PERIODER[0]!, fom: '2025-02-01' }]));
         rerender();
-        expect(result.current.tidligere.perioder).toBeUndefined();
+        expect(result.current.tidligere.perioder).toEqual([PERIODER[1]]);
     });
 
     it('beholder bare annen parts perioder etter at egen plan er forkastet', () => {
@@ -432,7 +440,7 @@ describe('useTidligereUttaksplan', () => {
                 [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: PERIODER },
             }),
         });
-        expect(result.current.tidligere.perioder).toBeUndefined();
+        expect(result.current.tidligere.perioder).toEqual([PERIODER[1]]);
         expect(result.current.state.OPPRINNELIG_UTTAKSPLAN).toBeUndefined();
     });
 
@@ -515,7 +523,7 @@ describe('useTidligereUttaksplan', () => {
                 };
             },
             {
-                wrapper: getWrapper(lagUttaksplan(PERIODER), {
+                wrapper: getWrapper(lagUttaksplan([PERIODER[0]!]), {
                     [ContextDataType.SØKERSITUASJON]: { rolle: 'mor', situasjon: 'fødsel' },
                     [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
                     [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: PERIODER },
