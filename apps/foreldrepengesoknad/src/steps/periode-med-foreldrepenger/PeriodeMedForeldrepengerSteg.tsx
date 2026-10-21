@@ -6,7 +6,7 @@ import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useIntl } from 'react-intl';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
-import { annenPartHarPlan } from 'utils/annenForelderUtils';
+import { finnAnnenPartsPlan } from 'utils/annenForelderUtils';
 import { getVis1Juli2024Info } from 'utils/dateUtils';
 import { getKjønnFromFnr } from 'utils/personUtils';
 
@@ -47,7 +47,7 @@ export const PeriodeMedForeldrepengerSteg = ({
 
     const annenPartsPlan = useQuery({
         ...useUttaksplanOptions(),
-        select: (uttaksplan) => (annenPartHarPlan(uttaksplan) ? uttaksplan : undefined),
+        select: finnAnnenPartsPlan,
     }).data;
 
     const kontoerOptions = useStønadsKontoerOptions();

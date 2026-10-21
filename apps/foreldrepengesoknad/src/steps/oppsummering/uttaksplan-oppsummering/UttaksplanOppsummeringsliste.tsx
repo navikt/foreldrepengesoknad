@@ -3,7 +3,7 @@ import { useUttaksplanOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
-import { annenPartHarPlan } from 'utils/annenForelderUtils';
+import { finnAnnenPartsPlan } from 'utils/annenForelderUtils';
 import { getTermindato } from 'utils/barnUtils';
 import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 import { getStønadskvoteNavn } from 'utils/stønadskvoterUtils';
@@ -43,7 +43,10 @@ export const UttaksplanOppsummeringsliste = ({ navnPåForeldre, registrerteArbei
     const søkersPerioder = uttaksplan.filter((periode) => periode.søker !== undefined);
     const annenPartsPerioder = uttaksplan.filter((periode) => periode.annenPart !== undefined);
 
-    const annenPartsPlanQuery = useQuery({ ...useUttaksplanOptions(), select: annenPartHarPlan });
+    const annenPartsPlanQuery = useQuery({
+        ...useUttaksplanOptions(),
+        select: (plan) => finnAnnenPartsPlan(plan) !== undefined,
+    });
     const søkerHarLagtTilPerioderForAnnenPart =
         annenPartsPlanQuery.isSuccess && !annenPartsPlanQuery.data && annenPartsPerioder.length > 0;
 

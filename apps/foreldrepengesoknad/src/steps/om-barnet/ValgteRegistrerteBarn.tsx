@@ -6,7 +6,7 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { RegistrertePersonalia } from 'pages/registrerte-personalia/RegistrertePersonalia';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { annenPartHarPlan } from 'utils/annenForelderUtils';
+import { finnAnnenPartsPlan } from 'utils/annenForelderUtils';
 import { formaterFødselsdatoerPåBarn, getTittelBarnNårNavnSkalIkkeVises } from 'utils/barnUtils';
 import { getVarighetString } from 'utils/dateUtils';
 
@@ -42,7 +42,7 @@ export const ValgteRegistrerteBarn = ({ valgteRegistrerteBarn, skalInkludereTerm
     const harTerminDatoFraVedtak =
         useQuery({
             ...useUttaksplanOptions(),
-            select: (uttaksplan) => annenPartHarPlan(uttaksplan) && !!uttaksplan.termindato,
+            select: (uttaksplan) => !!finnAnnenPartsPlan(uttaksplan)?.termindato,
         }).data ?? false;
 
     const visInfoOmForlengetPeriode = skalInkludereTermindato && erFødtFørUke33(fødselsdato, termindato);

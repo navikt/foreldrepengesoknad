@@ -12,17 +12,19 @@ export const getDatoForAleneomsorg = (annenForelder: AnnenForelder): string | un
     return isAnnenForelderOppgitt(annenForelder) ? annenForelder.datoForAleneomsorg : undefined;
 };
 
-const annenPartHarVedtak = (
+export const finnAnnenPartsPlan = (
     uttaksplan: FellesUttaksplanDto | null | undefined,
-): uttaksplan is FellesUttaksplanDto => !!uttaksplan?.perioder.some((p) => p.annenPart?.resultat !== undefined);
+): FellesUttaksplanDto | undefined =>
+    uttaksplan?.perioder.some((p) => p.annenPart !== undefined) ? uttaksplan : undefined;
 
-export const annenPartHarPlan = (
-    uttaksplan: FellesUttaksplanDto | null | undefined,
-): uttaksplan is FellesUttaksplanDto => !!uttaksplan?.perioder.some((p) => p.annenPart !== undefined);
-
-export const annenPartHarInnvilgetUttak = (uttaksplan: FellesUttaksplanDto | null | undefined): boolean =>
-    annenPartHarPlan(uttaksplan) &&
-    (!annenPartHarVedtak(uttaksplan) || uttaksplan.perioder.some((p) => p.annenPart?.resultat?.innvilget));
+export const annenPartHarInnvilgetUttak = (uttaksplan: FellesUttaksplanDto | null | undefined): boolean => {
+    const annenPartsPlan = finnAnnenPartsPlan(uttaksplan);
+    if (!annenPartsPlan) {
+        return false;
+    }
+    const harVedtak = annenPartsPlan.perioder.some((p) => p.annenPart?.resultat !== undefined);
+    return !harVedtak || annenPartsPlan.perioder.some((p) => p.annenPart?.resultat?.innvilget);
+};
 
 export const annenForelderHarNorskFnr = (annenForelder: AnnenForelder) => {
     const annenPartFnr =

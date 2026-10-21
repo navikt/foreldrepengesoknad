@@ -933,9 +933,11 @@ export const getSisteUttaksdagAnnenForelder = (
         return undefined;
     }
     const annenPartForelder = erFarEllerMedmor ? 'MOR' : 'FAR_MEDMOR';
-    // EØS-periodar høyrer alltid til annan part (annenPartEøs).
+    // EØS-perioder hører alltid til annen part (annenPartEøs). Utsettelser (f.eks. ferie) er ikke dager med foreldrepenger.
     const annenForeldersFiltrertePerioder = perioderAnnenPart.filter(
-        (p) => p.annenPart?.forelder === annenPartForelder || p.annenPartEøs !== undefined,
+        (p) =>
+            (p.annenPart?.forelder === annenPartForelder && p.annenPart.utsettelseÅrsak === undefined) ||
+            p.annenPartEøs !== undefined,
     );
 
     const [førstePeriode, ...resten] = annenForeldersFiltrertePerioder;
