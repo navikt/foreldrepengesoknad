@@ -75,13 +75,22 @@ describe('annenPartHarPlan', () => {
 });
 
 describe('annenPartHarInnvilgetUttak', () => {
-    it('skal gi false når annan part berre har avslåtte periodar', () => {
+    it('skal gi false når det ikke finnes noen plan eller bare søkerens perioder', () => {
+        expect(annenPartHarInnvilgetUttak(undefined)).toBe(false);
+        expect(annenPartHarInnvilgetUttak(lagPlan([søkersVedtaksperiode]))).toBe(false);
+    });
+
+    it('skal gi false når annen part bare har avslåtte perioder', () => {
         expect(annenPartHarInnvilgetUttak(lagPlan([søkersVedtaksperiode, annenPartsVedtaksperiode(false)]))).toBe(
             false,
         );
     });
 
-    it('skal gi true når annan part har minst éin innvilga periode', () => {
+    it('skal gi true når annen part har en ubehandlet søknad', () => {
+        expect(annenPartHarInnvilgetUttak(lagPlan([annenPartsSøknadsperiode]))).toBe(true);
+    });
+
+    it('skal gi true når annen part har minst én innvilget periode', () => {
         expect(annenPartHarInnvilgetUttak(lagPlan([annenPartsVedtaksperiode(true)]))).toBe(true);
     });
 });

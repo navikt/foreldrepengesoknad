@@ -6,7 +6,7 @@ import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
-import { annenPartVedtak, avslåttAnnenPartVedtak } from 'storybookData/annenPartVedtak';
+import { annenPartSøknad, annenPartVedtak, avslåttAnnenPartVedtak } from 'storybookData/annenPartVedtak';
 import { saker } from 'storybookData/saker';
 import { AnnenForelder } from 'types/AnnenForelder';
 
@@ -320,5 +320,21 @@ export const FarFødtBarnMorHarAvslåttVedtak: Story = {
 
     beforeEach({ msw }) {
         msw.use(http.post(API_URLS.uttaksplan, () => HttpResponse.json(avslåttAnnenPartVedtak)));
+    },
+};
+
+export const FarFødtBarnMorHarSøktUtenVedtak: Story = {
+    args: {
+        ...AnnenForelderFraOppgittBarn.args,
+        annenForelder: {
+            ...defaultAnnenForelder,
+            fornavn: defaultSøker.navn.fornavn,
+            etternavn: defaultSøker.navn.etternavn,
+            fnr: defaultSøker.fnr,
+        },
+    },
+
+    beforeEach({ msw }) {
+        msw.use(http.post(API_URLS.uttaksplan, () => HttpResponse.json(annenPartSøknad)));
     },
 };
