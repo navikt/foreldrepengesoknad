@@ -12,8 +12,7 @@ export const getDatoForAleneomsorg = (annenForelder: AnnenForelder): string | un
     return isAnnenForelderOppgitt(annenForelder) ? annenForelder.datoForAleneomsorg : undefined;
 };
 
-// Planen kan òg innehalde annan part sin ubehandla søknad. Berre periodar med resultat kjem frå eit vedtak.
-export const annenPartHarVedtak = (
+const annenPartHarVedtak = (
     uttaksplan: FellesUttaksplanDto | null | undefined,
 ): uttaksplan is FellesUttaksplanDto => !!uttaksplan?.perioder.some((p) => p.annenPart?.resultat !== undefined);
 
