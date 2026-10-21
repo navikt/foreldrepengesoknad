@@ -1,4 +1,4 @@
-import { FellesUttaksplanDto } from '@navikt/fp-types';
+import { FellesUttaksplanDto, FpSak_fpoversikt, Saker_fpoversikt } from '@navikt/fp-types';
 
 const innvilget = {
     innvilget: true,
@@ -71,3 +71,30 @@ export const uttaksplan = {
         },
     ],
 } satisfies FellesUttaksplanDto;
+
+// Lager en enkel felles uttaksplan med søkerens perioder fra saken, slik backend gjør når
+// annen part ikke har vedtak: perioder fra gjeldende vedtak, ellers fra søknaden under behandling.
+export const lagFellesUttaksplanFraSak = (sak: FpSak_fpoversikt): FellesUttaksplanDto => {
+    const perioder = sak.gjeldendeVedtak?.perioder ?? sak.åpenBehandling?.søknadsperioder ?? [];
+    return {
+        antallBarn: sak.familiehendelse.antallBarn,
+        dekningsgrad: sak.dekningsgrad ?? 'HUNDRE',
+        termindato: sak.familiehendelse.termindato,
+        perioder: perioder.map((periode) => ({
+            fom: periode.fom,
+            tom: periode.tom,
+            søker: {
+                flerbarnsdager: periode.flerbarnsdager,
+                forelder: periode.forelder,
+                kontoType: periode.kontoType,
+                resultat: periode.resultat,
+                samtidigUttak: periode.samtidigUttak,
+            },
+        })),
+    };
+};
+
+export const lagFellesUttaksplanForSaksnummer = (saker: Saker_fpoversikt, saksnummer: string) => {
+    const sak = saker.foreldrepenger.find((s) => s.saksnummer === saksnummer);
+    return sak ? lagFellesUttaksplanFraSak(sak) : null;
+};

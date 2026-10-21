@@ -14,7 +14,7 @@ import {
     FpBarnDto_fpoversikt,
     FpSak_fpoversikt,
 } from '@navikt/fp-types';
-import { Uttaksdagen, isISODateString, sorterPersonEtterEldstOgNavn } from '@navikt/fp-utils';
+import { isISODateString, sorterPersonEtterEldstOgNavn } from '@navikt/fp-utils';
 
 import { ForsideFormValues, SelectableBarnOptions } from '../types/ForsideFormValues';
 
@@ -115,10 +115,6 @@ const getSelectableBarnFraSak = (sak: FpSak_fpoversikt, registrerteBarn: FpBarnD
         fødselsdatoer,
         familiehendelsesdato: familiehendelseDato,
         sortableDato: sak.familiehendelse.termindato!,
-        startdatoFørsteStønadsperiode:
-            sak.gjeldendeVedtak !== undefined && sak.gjeldendeVedtak.perioder.length > 0
-                ? Uttaksdagen.denneEllerNeste(sak.gjeldendeVedtak.perioder[0]!.fom).getDato()
-                : undefined,
         fornavn:
             pdlBarn !== undefined && pdlBarn.length > 0
                 ? pdlBarn
@@ -244,9 +240,7 @@ const getSelectableBarnOptionsFraPDL = (
         ).filter(
             (barn) =>
                 !fnrPåBarnSomErLagtTil.includes(barn.fnr) &&
-                (!regBarn.annenPart?.fnr ||
-                    !barn.annenPart?.fnr ||
-                    regBarn.annenPart.fnr === barn.annenPart.fnr),
+                (!regBarn.annenPart?.fnr || !barn.annenPart?.fnr || regBarn.annenPart.fnr === barn.annenPart.fnr),
         );
 
         fnrPåBarnSomErLagtTil.push(regBarn.fnr);

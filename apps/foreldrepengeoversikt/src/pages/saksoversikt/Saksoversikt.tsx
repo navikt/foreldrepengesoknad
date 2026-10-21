@@ -132,6 +132,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
         tidslinjeHendelserBackend: tidslinjeHendelserQuery.data ?? [],
         sak: gjeldendeSak,
         barnFraSak,
+        fellesUttaksplan: uttaksplanQuery.data ?? undefined,
         intl,
     });
     const tidslinjeHeading = finnesDetFremtidigeTidslinjehendelser(alleTidslinjeHendelser)
@@ -164,6 +165,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                         tidslinjeHendelser={tidslinjeHendelserQuery.data ?? []}
                         manglendeVedlegg={manglendeVedleggQuery.data ?? []}
                         søkersBarn={søkerinfo.barn ?? []}
+                        fellesUttaksplan={uttaksplanQuery.data ?? undefined}
                     />
                 </ContentSection>
                 <HGrid gap="space-16" columns={{ sm: 1, md: 2 }} className="mb-12">
@@ -192,9 +194,9 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                     <div>
                         <ContentSection
                             heading={
-                                gjeldendeSak.gjeldendeVedtak?.perioder
-                                    ? intl.formatMessage({ id: 'saksoversikt.dinPlan.vedtatt' })
-                                    : intl.formatMessage({ id: 'saksoversikt.dinPlan.søktOm' })
+                                gjeldendeSak.gjeldendeVedtak === undefined
+                                    ? intl.formatMessage({ id: 'saksoversikt.dinPlan.søktOm' })
+                                    : intl.formatMessage({ id: 'saksoversikt.dinPlan.vedtatt' })
                             }
                             // Fordi uttaksplanQuery kan være et disabled query må man bruke isLoading heller enn isPending:
                             // https://tanstack.com/query/latest/docs/framework/react/guides/disabling-queries/#isloading-previously-isinitialloading

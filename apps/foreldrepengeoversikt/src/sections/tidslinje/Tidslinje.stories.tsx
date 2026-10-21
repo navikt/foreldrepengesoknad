@@ -34,6 +34,7 @@ import {
     tidslinjehendelser_SVP_innvilget,
     tidslinjehendelser_SVP_under_behandling,
 } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
+import { lagFellesUttaksplanFraSak } from 'storybookData/uttaksplan/uttaksplan.ts';
 
 import { OversiktBarnDto_fpoversikt } from '@navikt/fp-types';
 import { withMockDate, withQueryClient } from '@navikt/fp-utils-test';
@@ -73,6 +74,7 @@ const MockTidslinje = (props: MockProps) => {
                 sak={sak}
                 manglendeVedlegg={manglendeVedleggData}
                 tidslinjeHendelser={tidslinjeHendelser}
+                fellesUttaksplan={sak.ytelse === 'FORELDREPENGER' ? lagFellesUttaksplanFraSak(sak) : undefined}
             />
         </div>
     );
