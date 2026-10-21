@@ -1,6 +1,6 @@
 import { FellesUttaksplanDto, UttakPeriodeDto } from '@navikt/fp-types';
 
-import { annenPartHarInnvilgetUttak, annenPartHarVedtak } from './annenForelderUtils';
+import { annenPartHarInnvilgetUttak, annenPartHarPlan, annenPartHarVedtak } from './annenForelderUtils';
 
 const lagPlan = (perioder: UttakPeriodeDto[]): FellesUttaksplanDto => ({
     antallBarn: 1,
@@ -59,6 +59,18 @@ describe('annenPartHarVedtak', () => {
         } else {
             expectTypeOf(plan).toEqualTypeOf<FellesUttaksplanDto | null | undefined>();
         }
+    });
+});
+
+describe('annenPartHarPlan', () => {
+    it('skal gi false når det ikke finnes noen plan eller bare søkerens perioder', () => {
+        expect(annenPartHarPlan(undefined)).toBe(false);
+        expect(annenPartHarPlan(lagPlan([søkersVedtaksperiode]))).toBe(false);
+    });
+
+    it('skal gi true når annen part har søkt, med eller uten vedtak', () => {
+        expect(annenPartHarPlan(lagPlan([annenPartsSøknadsperiode]))).toBe(true);
+        expect(annenPartHarPlan(lagPlan([annenPartsVedtaksperiode(true)]))).toBe(true);
     });
 });
 

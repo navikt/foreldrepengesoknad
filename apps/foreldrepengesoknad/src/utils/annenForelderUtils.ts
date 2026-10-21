@@ -24,6 +24,10 @@ export const annenPartHarVedtak = (
 ): uttaksplan is FellesUttaksplanMedAnnenPartVedtak =>
     !!uttaksplan?.perioder.some((p) => p.annenPart?.resultat !== undefined);
 
+export const annenPartHarPlan = (
+    uttaksplan: FellesUttaksplanDto | null | undefined,
+): uttaksplan is FellesUttaksplanDto => !!uttaksplan?.perioder.some((p) => p.annenPart !== undefined);
+
 export const annenPartHarInnvilgetUttak = (uttaksplan: FellesUttaksplanDto | null | undefined): boolean =>
     !!uttaksplan?.perioder.some((p) => p.annenPart?.resultat?.innvilget);
 
