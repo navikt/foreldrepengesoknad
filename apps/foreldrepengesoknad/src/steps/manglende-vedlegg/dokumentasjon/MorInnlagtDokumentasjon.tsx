@@ -1,10 +1,9 @@
 import { useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
+import { kreverDokumentasjonForFedrekvoteRundtFødsel } from 'utils/manglendeVedleggUtils';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, NavnPåForeldre, UttakPeriodeDto } from '@navikt/fp-types';
-import { Uttaksperioden } from '@navikt/fp-utils';
-import { UttaksperiodeValidatorer } from '@navikt/fp-uttaksplan/validators';
 
 import { UttakUploader } from '../attachment-uploaders/UttakUploader';
 
@@ -31,20 +30,9 @@ export const MorInnlagtDokumentasjon = ({
         return null;
     }
 
-    const perioderRundtFødsel = perioder.filter((p) =>
-        UttaksperiodeValidatorer.erPeriodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel(
-            p,
-            familiehendelsedato,
-            undefined,
-        ),
+    const morErForSykEllerInnlagtFørsteSeksUker = perioder.some((p) =>
+        kreverDokumentasjonForFedrekvoteRundtFødsel(p, familiehendelsedato),
     );
-
-    const morErForSykEllerInnlagtFørsteSeksUker = perioderRundtFødsel.some((p) => {
-        const søker = p.søker;
-        return (
-            !!søker && Uttaksperioden.erUttaksperiode(søker) && søker.kontoType === 'FEDREKVOTE' && !søker.samtidigUttak
-        );
-    });
 
     return (
         <UttakUploader

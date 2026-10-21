@@ -107,14 +107,15 @@ export const PlanleggerDataFetcher = () => {
             // Bearbeide hver dekningsgrad
             for (const dekningsgrad of dekningsgrader) {
                 const stønadskonto = modifiserteData[dekningsgrad];
-                if (stønadskonto?.kontoer.some((k) => k.konto === 'FORELDREPENGER')) {
-                    // Summer antall dager i alle kontoer
-                    const totalDager = stønadskonto.kontoer.reduce((sum, konto) => sum + konto.dager, 0);
-                    // Filtrer og lag 'AKTIVITETSFRI_KVOTE' -kontoen
-                    stønadskonto.kontoer = stønadskonto.kontoer
-                        .filter((konto) => konto.konto === 'FORELDREPENGER')
-                        .map(() => ({ konto: 'AKTIVITETSFRI_KVOTE', dager: totalDager }));
+                if (!stønadskonto?.kontoer.some((k) => k.konto === 'FORELDREPENGER')) {
+                    continue;
                 }
+                // Summer antall dager i alle kontoer
+                const totalDager = stønadskonto.kontoer.reduce((sum, konto) => sum + konto.dager, 0);
+                // Filtrer og lag 'AKTIVITETSFRI_KVOTE' -kontoen
+                stønadskonto.kontoer = stønadskonto.kontoer
+                    .filter((konto) => konto.konto === 'FORELDREPENGER')
+                    .map(() => ({ konto: 'AKTIVITETSFRI_KVOTE', dager: totalDager }));
             }
             return modifiserteData;
         },

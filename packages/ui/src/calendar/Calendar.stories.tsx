@@ -1,32 +1,23 @@
 import { ExclamationmarkTriangleFillIcon, HeartFillIcon } from '@navikt/aksel-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
-import dayjs from 'dayjs';
 import { useState } from 'react';
+import { action } from 'storybook/actions';
 
 import { BodyShort, Detail, VStack } from '@navikt/ds-react';
 
 import { Calendar } from './Calendar';
 import { CalendarPeriod } from './types/CalendarPeriod';
+import { CalendarPeriodColor } from './types/CalendarPeriodColor';
 
 const getSrTextForSelectedPeriod = () => '';
 
 const meta = {
     title: 'Calendar',
     component: Calendar,
-    render: (args) => (
-        <div>
-            <Calendar {...args} />
-        </div>
-    ),
-} satisfies Meta<typeof Calendar>;
-export default meta;
-
-type Story = StoryObj<typeof meta>;
-
-export const Default: Story = {
     args: {
         firstDateInCalendar: '2024-01-31',
         lastDateInCalendar: '2024-08-30',
+        getSrTextForSelectedPeriod,
         periods: [
             {
                 fom: '2024-01-31',
@@ -55,20 +46,22 @@ export const Default: Story = {
                 srText: 'Fars periode',
             },
         ],
-        getSrTextForSelectedPeriod: () => '',
     },
-};
+} satisfies Meta<typeof Calendar>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {};
 
 export const IkkeVisUkenr: Story = {
     args: {
-        ...Default.args,
         showWeekNumbers: false,
     },
 };
 
 export const MedTooltip: Story = {
     args: {
-        ...Default.args,
         dateTooltipCallback: (date: string) => (
             <VStack gap="space-4">
                 <BodyShort>Dette er en tooltip</BodyShort>
@@ -79,82 +72,33 @@ export const MedTooltip: Story = {
 };
 
 export const VisKalenderMedValgAvEnkeltdager: Story = {
-    args: Default.args,
-    render: () => {
-        const allePerioder = [
-            {
-                fom: '2024-01-31',
-                tom: '2024-02-20',
-                color: 'BLUE',
-                srText: 'Mors periode',
-            },
-            {
-                fom: '2024-05-06',
-                tom: '2024-08-30',
-                color: 'LIGHTGREEN',
-                srText: 'Fars periode',
-            },
-        ] satisfies CalendarPeriod[];
-
-        const sortPeriods = (a: CalendarPeriod, b: CalendarPeriod) => dayjs(a.fom).diff(dayjs(b.fom));
-
-        const [perioder, setPerioder] = useState<CalendarPeriod[]>(allePerioder);
-        const setSelectedPeriods = (value: React.SetStateAction<CalendarPeriod[]>) => {
-            setPerioder((old) => {
-                const newValue = typeof value === 'function' ? value(old) : value;
-                return newValue.sort(sortPeriods);
-            });
-        };
-
+    render: (args) => {
+        const [perioder, setPerioder] = useState<CalendarPeriod[]>(args.periods);
         return (
             <Calendar
+                {...args}
                 periods={perioder}
-                isRangeSelection={false}
-                setSelectedPeriods={setSelectedPeriods}
-                firstDateInCalendar={allePerioder[0]!.fom}
-                lastDateInCalendar={allePerioder[1]!.tom}
-                getSrTextForSelectedPeriod={getSrTextForSelectedPeriod}
+                setSelectedPeriods={(value) => {
+                    setPerioder(value);
+                    action('Valgte perioder')(value);
+                }}
             />
         );
     },
 };
 
 export const VisKalenderMedValgAvPerioder: Story = {
-    args: Default.args,
-    render: () => {
-        const allePerioder = [
-            {
-                fom: '2024-01-31',
-                tom: '2024-02-20',
-                color: 'BLUE',
-                srText: 'Mors periode',
-            },
-            {
-                fom: '2024-05-06',
-                tom: '2024-08-30',
-                color: 'LIGHTGREEN',
-                srText: 'Fars periode',
-            },
-        ] satisfies CalendarPeriod[];
-
-        const sortPeriods = (a: CalendarPeriod, b: CalendarPeriod) => dayjs(a.fom).diff(dayjs(b.fom));
-
-        const [perioder, setPerioder] = useState<CalendarPeriod[]>(allePerioder);
-        const setSelectedPeriods = (value: React.SetStateAction<CalendarPeriod[]>) => {
-            setPerioder((old) => {
-                const newValue = typeof value === 'function' ? value(old) : value;
-                return newValue.sort(sortPeriods);
-            });
-        };
-
+    render: (args) => {
+        const [perioder, setPerioder] = useState<CalendarPeriod[]>(args.periods);
         return (
             <Calendar
+                {...args}
                 periods={perioder}
                 isRangeSelection
-                setSelectedPeriods={setSelectedPeriods}
-                firstDateInCalendar={allePerioder[0]!.fom}
-                lastDateInCalendar={allePerioder[1]!.tom}
-                getSrTextForSelectedPeriod={() => ''}
+                setSelectedPeriods={(value) => {
+                    setPerioder(value);
+                    action('Valgte perioder')(value);
+                }}
             />
         );
     },
@@ -178,7 +122,6 @@ export const PeriodsWithGap: Story = {
         ],
         firstDateInCalendar: '2024-01-31',
         lastDateInCalendar: '2024-08-30',
-        getSrTextForSelectedPeriod: () => '',
     },
 };
 
@@ -200,27 +143,23 @@ export const PeriodsThatSpanOverAYear: Story = {
         ],
         firstDateInCalendar: '2024-02-01',
         lastDateInCalendar: '2025-07-30',
-        getSrTextForSelectedPeriod: () => '',
     },
 };
 
 export const MedEnKolonne: Story = {
     args: {
-        ...Default.args,
         nrOfColumns: 1,
     },
 };
 
 export const MedToKolonner: Story = {
     args: {
-        ...Default.args,
         nrOfColumns: 2,
     },
 };
 
 export const MedTreKolonner: Story = {
     args: {
-        ...Default.args,
         nrOfColumns: 3,
     },
 };
@@ -229,7 +168,6 @@ export const MarkertMedStjerne: Story = {
     args: {
         firstDateInCalendar: '2024-01-31',
         lastDateInCalendar: '2024-08-30',
-        getSrTextForSelectedPeriod: () => '',
         periods: [
             {
                 fom: '2024-01-31',
@@ -262,5 +200,43 @@ export const MarkertMedStjerne: Story = {
                 iconFull: false,
             },
         ],
+    },
+};
+
+const allePeriodefarger: Array<[string, CalendarPeriodColor]> = [
+    ['2024-01-01', 'NONE'],
+    ['2024-01-02', 'LIGHTBLUE'],
+    ['2024-01-03', 'BLUE'],
+    ['2024-01-04', 'DARKBLUE'],
+    ['2024-01-05', 'GREEN'],
+    ['2024-01-08', 'LIGHTGREEN'],
+    ['2024-01-09', 'GRAY'],
+    ['2024-01-10', 'DARKGRAY'],
+    ['2024-01-11', 'BLACK'],
+    ['2024-01-12', 'BLACKOUTLINE'],
+    ['2024-01-15', 'LIGHTBLUEGREEN'],
+    ['2024-01-16', 'LIGHTGREENBLUE'],
+    ['2024-01-17', 'GREENSTRIPED'],
+    ['2024-01-18', 'BLUESTRIPED'],
+    ['2024-01-19', 'GREENOUTLINE'],
+    ['2024-01-22', 'BLUEOUTLINE'],
+    ['2024-01-23', 'GREEN_WITH_BLACK_OUTLINE'],
+    ['2024-01-24', 'BLUE_WITH_BLACK_OUTLINE'],
+    ['2024-01-25', 'BEIGEOUTLINE'],
+];
+
+export const AllePeriodefarger: Story = {
+    args: {
+        firstDateInCalendar: '2024-01-01',
+        lastDateInCalendar: '2024-01-31',
+        periods: allePeriodefarger.map(([dato, color]) => ({
+            fom: dato,
+            tom: dato,
+            color,
+            srText: color,
+        })),
+        dateTooltipCallback: (date: string) => (
+            <BodyShort>{allePeriodefarger.find(([dato]) => dato === date)?.[1]}</BodyShort>
+        ),
     },
 };

@@ -158,7 +158,7 @@ const OmBarnetStegInner = ({
         !søknadGjelderNyttBarn && (valgteRegistrerteBarn === undefined || valgteRegistrerteBarn.length === 0);
 
     const onSubmit = (values: BarnetFormValues) => {
-        const valgtBarn = !søknadGjelderNyttBarn && !barnSøktOmFørMenIkkeRegistrert ? omBarnet : undefined;
+        const valgtBarn = søknadGjelderNyttBarn || barnSøktOmFørMenIkkeRegistrert ? undefined : omBarnet;
 
         const oppdatertBarn = mapOmBarnetFormDataToState(
             values,

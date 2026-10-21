@@ -90,7 +90,7 @@ const FordelingStegInnhold = ({
     const uttaksplanAnnenPart = useMemo(
         () =>
             eksisterendeVedtakAnnenPart?.perioder.flatMap(({ fom, tom, annenPart }) =>
-                annenPart ? [{ fom, tom, annenPart }] : [],
+                annenPart ? { fom, tom, annenPart } : [],
             ),
         [eksisterendeVedtakAnnenPart],
     );

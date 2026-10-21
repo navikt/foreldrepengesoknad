@@ -22,27 +22,25 @@ interface Args {
     timeout?: number;
 }
 
+const erSammeFil = ({ attachmentData: a }: FileUploaderAttachment, { attachmentData: b }: FileUploaderAttachment) =>
+    a.skjemanummer === b.skjemanummer &&
+    a.filename === b.filename &&
+    a.filesize === b.filesize &&
+    a.file.lastModified === b.file.lastModified;
+
 const addOrReplaceAttachments = (
     currentAttachments: FileUploaderAttachment[],
     attachmentsToAdd: FileUploaderAttachment[],
-): FileUploaderAttachment[] => {
-    const attachmentKeysToReplace = new Set(attachmentsToAdd.map(getAttachmentKey));
-    return [
-        ...currentAttachments.filter((a) => !attachmentKeysToReplace.has(getAttachmentKey(a))),
-        ...attachmentsToAdd,
-    ];
-};
-
-const getAttachmentKey = (attachment: FileUploaderAttachment): string =>
-    `${attachment.attachmentData.skjemanummer}:${attachment.attachmentData.filename}`;
+): FileUploaderAttachment[] => [
+    ...currentAttachments.filter((current) => !attachmentsToAdd.some((added) => erSammeFil(current, added))),
+    ...attachmentsToAdd,
+];
 
 const replaceAttachment = (
     currentAttachments: FileUploaderAttachment[],
     updatedAttachment: FileUploaderAttachment,
 ): FileUploaderAttachment[] =>
-    currentAttachments.map((a) =>
-        getAttachmentKey(a) === getAttachmentKey(updatedAttachment) ? updatedAttachment : a,
-    );
+    currentAttachments.map((a) => (a.attachmentData.id === updatedAttachment.attachmentData.id ? updatedAttachment : a));
 
 const uploadPendingAttachments = async ({
     pendingAttachments,
@@ -60,8 +58,8 @@ const uploadPendingAttachments = async ({
             continue;
         }
 
-        await uploadAttachment(pendingAttachment.attachmentData, uploadPath, timeout);
-        setAttachments((current) => replaceAttachment(current, pendingAttachment));
+        const attachmentData = await uploadAttachment(pendingAttachment.attachmentData, uploadPath, timeout); // NOSONAR
+        setAttachments((current) => replaceAttachment(current, { ...pendingAttachment, attachmentData }));
     }
 };
 

@@ -169,7 +169,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         expect(screen.getAllByText('Du må oppgi om virksomheten din er pågående.')[0]).toBeInTheDocument();
         expect(screen.getAllByText('Du må oppgi næringsresultat de siste 12 månedene.')[0]).toBeInTheDocument();
         expect(
-            screen.queryAllByText('Du må oppgi om du har begynt å jobbe i løpet av de 3 siste ferdigliknede årene.')[0],
+            screen.getAllByText('Du må oppgi om du har begynt å jobbe i løpet av de 3 siste ferdigliknede årene.')[0],
         ).toBeInTheDocument();
     });
 

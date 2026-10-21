@@ -218,7 +218,7 @@ export const useStepConfig = ({
                 showUtenlandsoppholdStep(path, currentPath, getStateData) ||
                 showManglendeDokumentasjonSteg(path, getStateData, arbeidsforhold, eksisterendeSak, erEndringssøknad) ||
                 showFrilansOgEgenNæring(path, currentPath, getStateData, harRegistrertNæring)
-                    ? [path]
+                    ? path
                     : [],
             ),
         [

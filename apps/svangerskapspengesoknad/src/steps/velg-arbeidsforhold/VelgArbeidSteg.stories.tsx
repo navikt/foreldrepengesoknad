@@ -6,7 +6,13 @@ import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 import { DelvisTilrettelegging, IngenTilrettelegging } from 'types/Tilrettelegging';
 
-import { ArbeidsforholdOgInntektSvp, EksternArbeidsforholdDto_fpoversikt, Frilans, NæringDto } from '@navikt/fp-types';
+import {
+    ArbeidsforholdOgInntektSvp,
+    Attachment,
+    EksternArbeidsforholdDto_fpoversikt,
+    Frilans,
+    NæringDto,
+} from '@navikt/fp-types';
 
 import { VelgArbeidSteg } from './VelgArbeidSteg';
 
@@ -66,6 +72,7 @@ const DEFAULT_ARBEIDSFORHOLD = [
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
     tilrettelegginger?: Record<string, DelvisTilrettelegging | IngenTilrettelegging>;
+    tilretteleggingerVedlegg?: Record<string, Attachment[]>;
     valgteArbeidsforhold?: string[];
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektSvp;
     egenNæring?: NæringDto;
@@ -79,6 +86,7 @@ const meta = {
         gåTilNesteSide = action('button-click'),
         arbeidsforholdOgInntekt,
         tilrettelegginger,
+        tilretteleggingerVedlegg,
         valgteArbeidsforhold,
         egenNæring,
         frilans,
@@ -91,6 +99,7 @@ const meta = {
                     initialState={{
                         [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
                         [ContextDataType.TILRETTELEGGINGER]: tilrettelegginger,
+                        [ContextDataType.TILRETTELEGGINGER_VEDLEGG]: tilretteleggingerVedlegg,
                         [ContextDataType.VALGTE_ARBEIDSFORHOLD]: valgteArbeidsforhold,
                         [ContextDataType.EGEN_NÆRING]: egenNæring,
                         [ContextDataType.FRILANS]: frilans,

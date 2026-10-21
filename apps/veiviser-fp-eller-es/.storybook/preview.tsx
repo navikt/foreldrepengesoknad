@@ -97,16 +97,21 @@ const preview: Preview = {
             // jsdom-testene har ingen service worker; bruk msw/node-server der.
             // I nettleseren (Storybook og browser-mode-tester) bruker vi service worker.
             if (import.meta.env['TEST_MODE'] === 'jsdom-mode') {
+                Object.defineProperty(Object.getPrototypeOf(globalThis), 'XMLHttpRequest', {
+                    value: globalThis.XMLHttpRequest,
+                    configurable: true,
+                    writable: true,
+                });
                 const { setupServer } = await import('msw/node');
                 const server = setupServer();
-                server.listen({ onUnhandledRequest: 'bypass' });
+                server.listen({ onUnhandledFrame: 'bypass' });
                 return server as unknown as SetupWorker;
             }
 
             const { setupWorker } = await import('msw/browser');
             const worker = setupWorker();
             await worker.start({
-                onUnhandledRequest: 'bypass',
+                onUnhandledFrame: 'bypass',
                 serviceWorker: {
                     url: './mockServiceWorker.js',
                 },

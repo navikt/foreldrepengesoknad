@@ -45,7 +45,7 @@ export const useTidligereUttaksplan = (
             return;
         }
         return uttaksplan.perioder.flatMap(({ fom, tom, annenPart }) =>
-            annenPart?.resultat ? [{ fom, tom, annenPart }] : [],
+            annenPart?.resultat ? { fom, tom, annenPart } : [],
         );
     }, [
         uttaksplan,

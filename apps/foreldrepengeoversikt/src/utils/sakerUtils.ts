@@ -240,9 +240,9 @@ export const getNavnAnnenForelder = (
             ? søkerinfo.barn.find((b) => dayjs(b.fødselsdato).isSame(fødselsdatoFraSak, 'd'))
             : undefined;
     const annenForelderNavn = barn?.annenPartFornavn;
-    return annenForelderNavn !== undefined && annenForelderNavn.trim() !== ''
-        ? annenForelderNavn
-        : intl.formatMessage({ id: 'forelder.annenForelder' });
+    return annenForelderNavn === undefined || annenForelderNavn.trim() === ''
+        ? intl.formatMessage({ id: 'forelder.annenForelder' })
+        : annenForelderNavn;
 };
 
 const getTekstForAntallBarn = (antallBarn: number, intl: IntlShape): string => {
