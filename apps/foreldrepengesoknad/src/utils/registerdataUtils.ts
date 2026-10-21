@@ -36,13 +36,13 @@ const relevanteSøkerInfoFelt = (søkerInfo: FpPersonopplysningerDto_fpoversikt)
     selvstendigNæring: søkerInfo.selvstendigNæring,
 });
 
-export const erSakerEndret = (lagredeSaker: FpSak_fpoversikt[], ferskeSaker: FpSak_fpoversikt[]): boolean =>
+export const erSakerEndret = (lagredeSaker: FpSak_fpoversikt[], ferskeSaker: FpSak_fpoversikt[]) =>
     !erLikUansettRekkefølge(lagredeSaker.map(relevanteSaksfelt), ferskeSaker.map(relevanteSaksfelt));
 
 export const erSøkerInfoEndret = (
     lagretSøkerInfo: FpPersonopplysningerDto_fpoversikt,
     ferskSøkerInfo: FpPersonopplysningerDto_fpoversikt,
-): boolean =>
+) =>
     !erLikUansettRekkefølge(
         relevanteSøkerInfoFelt({
             ...lagretSøkerInfo,

@@ -110,7 +110,7 @@ export const getTidslinjeTittelForBarnTreÅr = ({
 };
 
 // Tilsvarer at alle periodene i gjeldende vedtak er avslått. Mens planen lastes antar vi at søknaden ikke er avslått.
-const erAlleVedtatteUttaksperioderAvslått = (sak: Sak, fellesUttaksplan: FellesUttaksplanDto | undefined): boolean => {
+const erAlleVedtatteUttaksperioderAvslått = (sak: Sak, fellesUttaksplan: FellesUttaksplanDto | undefined) => {
     if (fellesUttaksplan === undefined || sak.ytelse !== 'FORELDREPENGER' || sak.gjeldendeVedtak === undefined) {
         return false;
     }

@@ -43,7 +43,7 @@ export const ytelseSomTekst = (ytelse: Sak['ytelse'], intl: IntlShape) => {
     }
 };
 
-export const getFørsteUttaksdagFraUttaksplan = (uttaksplan: FellesUttaksplanDto | undefined): string | undefined =>
+export const getFørsteUttaksdagFraUttaksplan = (uttaksplan: FellesUttaksplanDto | undefined) =>
     uttaksplan?.perioder
         .filter((periode) => periode.søker !== undefined)
         .map((periode) => periode.fom)
