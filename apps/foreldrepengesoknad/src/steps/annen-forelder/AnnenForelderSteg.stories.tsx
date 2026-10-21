@@ -291,16 +291,18 @@ export const FarGiftUfødtBarn: Story = {
     },
 };
 
-export const FarFødtBarnMorHarVedtak: Story = {
-    args: {
-        ...AnnenForelderFraOppgittBarn.args,
-        annenForelder: {
-            ...defaultAnnenForelder,
-            fornavn: defaultSøker.navn.fornavn,
-            etternavn: defaultSøker.navn.etternavn,
-            fnr: defaultSøker.fnr,
-        },
+const farFødtBarnMorHarSøktArgs = {
+    ...ForFar.args,
+    annenForelder: {
+        ...defaultAnnenForelder,
+        fornavn: 'TALENTFULL',
+        etternavn: 'MYGG',
+        fnr: '12038517080',
     },
+};
+
+export const FarFødtBarnMorHarVedtak: Story = {
+    args: farFødtBarnMorHarSøktArgs,
 
     beforeEach({ msw }) {
         msw.use(http.post(API_URLS.uttaksplan, () => HttpResponse.json(annenPartVedtak)));
@@ -308,15 +310,7 @@ export const FarFødtBarnMorHarVedtak: Story = {
 };
 
 export const FarFødtBarnMorHarAvslåttVedtak: Story = {
-    args: {
-        ...AnnenForelderFraOppgittBarn.args,
-        annenForelder: {
-            ...defaultAnnenForelder,
-            fornavn: defaultSøker.navn.fornavn,
-            etternavn: defaultSøker.navn.etternavn,
-            fnr: defaultSøker.fnr,
-        },
-    },
+    args: farFødtBarnMorHarSøktArgs,
 
     beforeEach({ msw }) {
         msw.use(http.post(API_URLS.uttaksplan, () => HttpResponse.json(avslåttAnnenPartVedtak)));
@@ -324,15 +318,7 @@ export const FarFødtBarnMorHarAvslåttVedtak: Story = {
 };
 
 export const FarFødtBarnMorHarSøktUtenVedtak: Story = {
-    args: {
-        ...AnnenForelderFraOppgittBarn.args,
-        annenForelder: {
-            ...defaultAnnenForelder,
-            fornavn: defaultSøker.navn.fornavn,
-            etternavn: defaultSøker.navn.etternavn,
-            fnr: defaultSøker.fnr,
-        },
-    },
+    args: farFødtBarnMorHarSøktArgs,
 
     beforeEach({ msw }) {
         msw.use(http.post(API_URLS.uttaksplan, () => HttpResponse.json(annenPartSøknad)));

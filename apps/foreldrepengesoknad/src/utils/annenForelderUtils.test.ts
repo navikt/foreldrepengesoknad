@@ -1,6 +1,6 @@
 import { FellesUttaksplanDto, UttakPeriodeDto } from '@navikt/fp-types';
 
-import { annenPartHarInnvilgetUttak, annenPartHarPlan } from './annenForelderUtils';
+import { annenPartHarInnvilgetUttak, finnAnnenPartsPlan } from './annenForelderUtils';
 
 const lagPlan = (perioder: UttakPeriodeDto[]): FellesUttaksplanDto => ({
     antallBarn: 1,
@@ -32,17 +32,22 @@ const annenPartsVedtaksperiode = (innvilget: boolean): UttakPeriodeDto => ({
     annenPart: { ...annenPartsSøknadsperiode.annenPart!, resultat: resultat(innvilget) },
 });
 
-describe('annenPartHarPlan', () => {
-    it('skal gi false når det ikke finnes noen plan eller bare søkerens perioder', () => {
-        expect(annenPartHarPlan(undefined)).toBe(false);
-        expect(annenPartHarPlan(null)).toBe(false);
-        expect(annenPartHarPlan(lagPlan([søkersVedtaksperiode]))).toBe(false);
+describe('finnAnnenPartsPlan', () => {
+    it('skal gi undefined når det ikke finnes noen plan eller bare søkerens perioder', () => {
+        expect(finnAnnenPartsPlan(undefined)).toBeUndefined();
+        expect(finnAnnenPartsPlan(null)).toBeUndefined();
+        expect(finnAnnenPartsPlan(lagPlan([søkersVedtaksperiode]))).toBeUndefined();
     });
 
-    it('skal gi true når annen part har søkt, med eller uten vedtak', () => {
-        expect(annenPartHarPlan(lagPlan([annenPartsSøknadsperiode]))).toBe(true);
-        expect(annenPartHarPlan(lagPlan([annenPartsVedtaksperiode(true)]))).toBe(true);
-        expect(annenPartHarPlan(lagPlan([annenPartsVedtaksperiode(false)]))).toBe(true);
+    it('skal gi planen når annen part har søkt, med eller uten vedtak', () => {
+        for (const periode of [
+            annenPartsSøknadsperiode,
+            annenPartsVedtaksperiode(true),
+            annenPartsVedtaksperiode(false),
+        ]) {
+            const plan = lagPlan([periode]);
+            expect(finnAnnenPartsPlan(plan)).toBe(plan);
+        }
     });
 });
 
