@@ -1,6 +1,7 @@
 import { composeStories, composeStory } from '@storybook/react-vite';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
 
 import { getLenker } from '@navikt/fp-utils';
 
@@ -258,6 +259,33 @@ describe('<OppsummeringSteg>', () => {
 
         // Sjekk at surveyen rendres med norsk tittel
         expect(screen.getByText('Frivillig spørreundersøkelse')).toBeInTheDocument();
+    });
+
+    it('skal laste Skyra etter at undersøkelsen er rendret', async () => {
+        // Tester komponentens reaksjon på surveyStarted, ikke at Skyra faktisk sender eventet.
+        const callbacks = new Map<string, (event: { slug: string }) => void>();
+        vi.stubGlobal('skyra', {
+            on: vi.fn((event: string, callback: (event: { slug: string }) => void) => {
+                callbacks.set(event, callback);
+                return vi.fn();
+            }),
+        });
+
+        try {
+            const StoryWithNorsk = composeStory({ ...stories.FlereForsørgereHundreProsentTermin }, stories.default, {
+                initialGlobals: { locale: 'nb' },
+            });
+            render(<StoryWithNorsk />);
+            expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+            act(() => {
+                callbacks.get('surveyStarted')?.({
+                    slug: 'arbeids-og-velferdsetaten-nav/planlegg-foreldrepenger-inline',
+                });
+            });
+            expect(document.querySelector<HTMLElement>('skyra-survey')?.style.opacity).toBe('1');
+        } finally {
+            vi.unstubAllGlobals();
+        }
     });
 
     it('skal vise Skyra-undersøkelse for nynorsk', async () => {

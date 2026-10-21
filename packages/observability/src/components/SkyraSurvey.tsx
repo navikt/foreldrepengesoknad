@@ -16,6 +16,7 @@ declare global {
     var skyra:
         | {
               on: (event: SkyraEvent['type'], callback: (event: { slug: string }) => void) => () => void;
+              reload?: () => void;
           }
         | undefined;
 }
@@ -30,7 +31,7 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
     const intl = useIntl();
     const resolvedTitle = intl.formatMessage({ id: 'SkyraSurvey.Tittel' });
     const surveyKey = `skyra-survey-${slug}-completed`;
-    const hasResolvedSurvey = useRef(false);
+    const hasResolvedSurveyRef = useRef(false);
     const [surveyStatus, setSurveyStatus] = useState<SurveyStatus>('loading');
     const [hasCompletedSurvey, setHasCompletedSurvey] = useState(() => sessionStorage.getItem(surveyKey) === 'true');
     const [isOpen, setIsOpen] = useState(true);
@@ -40,35 +41,35 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
             return;
         }
 
-        hasResolvedSurvey.current = false;
+        // Reset the custom element when its locale or slug changes.
+        // eslint-disable-next-line @eslint-react/set-state-in-effect, react-you-might-not-need-an-effect/no-adjust-state-on-prop-change
         setSurveyStatus('loading');
+
+        hasResolvedSurveyRef.current = false;
 
         const unsubscribeSurveyStarted = globalThis.skyra?.on('surveyStarted', (event) => {
             if (event.slug === slug) {
-                hasResolvedSurvey.current = true;
+                hasResolvedSurveyRef.current = true;
                 setSurveyStatus('ready');
             }
         });
 
         const unsubscribeSurveyCompleted = globalThis.skyra?.on('surveyCompleted', (event) => {
             if (event.slug === slug) {
-                hasResolvedSurvey.current = true;
                 setHasCompletedSurvey(true);
                 setIsOpen(false);
                 sessionStorage.setItem(surveyKey, 'true');
             }
         });
-
         const unsubscribeSurveyRejected = globalThis.skyra?.on('surveyRejected', (event) => {
             if (event.slug === slug) {
-                hasResolvedSurvey.current = true;
+                hasResolvedSurveyRef.current = true;
                 setSurveyStatus('unavailable');
             }
         });
 
         const timeout = setTimeout(() => {
-            if (!hasResolvedSurvey.current) {
-                hasResolvedSurvey.current = true;
+            if (!hasResolvedSurveyRef.current) {
                 setSurveyStatus('error');
             }
         }, 30000);
@@ -79,7 +80,7 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
             unsubscribeSurveyRejected?.();
             clearTimeout(timeout);
         };
-    }, [slug]);
+    }, [intl.locale, slug]);
 
     if (intl.locale !== 'nb' && intl.locale !== 'nn') {
         return null;
@@ -144,15 +145,15 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
                             slug={slug}
                             inline
                             onReady={() => {
-                                hasResolvedSurvey.current = true;
+                                hasResolvedSurveyRef.current = true;
                                 setSurveyStatus('ready');
                             }}
                             onError={() => {
-                                hasResolvedSurvey.current = true;
+                                hasResolvedSurveyRef.current = true;
                                 setSurveyStatus('error');
                             }}
                             onUnavailable={() => {
-                                hasResolvedSurvey.current = true;
+                                hasResolvedSurveyRef.current = true;
                                 setSurveyStatus('unavailable');
                             }}
                         />
