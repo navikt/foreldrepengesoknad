@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import { annenForelderHarNorskFnr, annenPartHarVedtak } from 'utils/annenForelderUtils';
+import { annenForelderHarNorskFnr, annenPartHarPlan } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
 import {
     andreAugust2022ReglerGjelder,
@@ -98,7 +98,7 @@ export const OmBarnetSteg = (props: Props) => {
     const terminDatoQuery = useQuery({
         ...uttaksplanOptions,
         enabled: uttaksplanOptions.enabled && !!annenForelder && annenForelderHarNorskFnr(annenForelder),
-        select: (uttaksplan) => (annenPartHarVedtak(uttaksplan) ? uttaksplan.termindato : undefined),
+        select: (uttaksplan) => (annenPartHarPlan(uttaksplan) ? uttaksplan.termindato : undefined),
     });
 
     if (terminDatoQuery.isLoading) {

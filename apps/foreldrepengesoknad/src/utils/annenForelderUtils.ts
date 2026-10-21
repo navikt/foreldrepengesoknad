@@ -22,7 +22,8 @@ export const annenPartHarPlan = (
 ): uttaksplan is FellesUttaksplanDto => !!uttaksplan?.perioder.some((p) => p.annenPart !== undefined);
 
 export const annenPartHarInnvilgetUttak = (uttaksplan: FellesUttaksplanDto | null | undefined): boolean =>
-    !!uttaksplan?.perioder.some((p) => p.annenPart?.resultat?.innvilget);
+    annenPartHarPlan(uttaksplan) &&
+    (!annenPartHarVedtak(uttaksplan) || uttaksplan.perioder.some((p) => p.annenPart?.resultat?.innvilget));
 
 export const annenForelderHarNorskFnr = (annenForelder: AnnenForelder) => {
     const annenPartFnr =
