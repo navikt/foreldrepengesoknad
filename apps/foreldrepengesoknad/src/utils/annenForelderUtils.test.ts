@@ -49,6 +49,17 @@ describe('annenPartHarVedtak', () => {
     it('skal gi true når annan part har vedtaksperiodar, også avslåtte', () => {
         expect(annenPartHarVedtak(lagPlan([annenPartsVedtaksperiode(false)]))).toBe(true);
     });
+
+    it('skal ikkje snevre inn false-greina til null | undefined', () => {
+        const hentPlan = (): FellesUttaksplanDto | null | undefined => lagPlan([søkersVedtaksperiode]);
+        const plan = hentPlan();
+        expect(annenPartHarVedtak(plan)).toBe(false);
+        if (annenPartHarVedtak(plan)) {
+            expectTypeOf(plan).toExtend<FellesUttaksplanDto>();
+        } else {
+            expectTypeOf(plan).toEqualTypeOf<FellesUttaksplanDto | null | undefined>();
+        }
+    });
 });
 
 describe('annenPartHarInnvilgetUttak', () => {
