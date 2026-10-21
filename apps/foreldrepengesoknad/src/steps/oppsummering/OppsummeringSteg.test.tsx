@@ -543,6 +543,12 @@ describe('<Oppsummering>', () => {
         await FarErSøkerOgMorHarSøktUtenVedtak.run();
 
         expect(await screen.findByText('Periodene med foreldrepenger til den andre forelderen')).toBeInTheDocument();
+        // Spørsmålet skjules først når uttaksplan-svaret med mors plan er kommet.
+        await waitFor(() =>
+            expect(
+                screen.queryByText('Har den andre forelderen rett til foreldrepenger i Norge?'),
+            ).not.toBeInTheDocument(),
+        );
         expect(
             screen.queryByText('Den andre forelderen må selv sende oss en søknad for sine perioder.'),
         ).not.toBeInTheDocument();
