@@ -1,5 +1,5 @@
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
-import { annenPartHarVedtak, getErMorUfør } from 'utils/annenForelderUtils';
+import { annenPartHarPlan, getErMorUfør } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'utils/eksisterendeSakUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
@@ -109,7 +109,7 @@ export const getStønadskvoteParams = (
     );
 
     const eksisterendeVedtakAnnenPart = mapAnnenPartsEksisterendeSakFromDTO(
-        annenPartHarVedtak(uttaksplan) ? uttaksplan : undefined,
+        annenPartHarPlan(uttaksplan) ? uttaksplan : undefined,
         barn,
         erFarEllerMedmor,
         getFamiliehendelsedato(barn),

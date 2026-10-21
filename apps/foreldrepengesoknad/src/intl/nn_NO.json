@@ -532,7 +532,7 @@
     "uttaksplan.utsettelsesårsak.HV_ØVELSE": "Utsetjing på grunn av øving eller teneste i Heimevernet",
     "uttaksplan.utsettelsesårsak.NAV_TILTAK": "Utsetjing på grunn av Nav-tiltak som utgjer 100 % arbeid",
     "uttaksplan.AnnenPartPerioderInfomelding": "I denne søknaden søkjer du kun for deg sjølv. Du kan legge inn foreldrepengar for den andre forelderen, men informasjonen vil ikkje bli sendt inn. Den andre forelderen må sjølv hukse å senda oss ein søknad",
-    "oppsummering.AnnenPartPerioderInfomelding": "Periodane til den andre forelderen blir ikkje sendt inn. Den andre forelderen må sjølv huske å sende oss ein søknad.",
+    "oppsummering.AnnenPartPerioderInfomelding": "Den andre forelderen må sjølv sende oss ein søknad for sine periodar.",
     "uttaksplan.overføringsårsaktype.ALENEOMSORG": "Eg har blitt aleine om omsorga",
     "uttaksplan.overføringsårsaktype.IKKE_RETT_ANNEN_FORELDER": "{navnAnnenForelder} har ikkje rett til foreldrepengar",
     "uttaksplan.overføringsårsaktype.INSTITUSJONSOPPHOLD_ANNEN_FORELDER": "{navnAnnenForelder} er innlagt på helseinstitusjon",
