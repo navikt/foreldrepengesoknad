@@ -437,6 +437,8 @@
     "fordeling.oppstartValg.description.morFødselTermin": "Du kan velje ein dato frå 12 veker før termin og fram til termindato.",
     "fordeling.oppstartValg.treUkerFørTermin": "Tre veker før termin frå {dato}",
     "fordeling.oppstartValg.treUkerFørFødsel": "Tre veker før fødsel frå {dato}",
+    "fordeling.oppstartValg.førFødselFraDato": "{varighet} før fødsel frå {dato}",
+    "fordeling.oppstartValg.fraDato": "Frå {dato}",
     "fordeling.oppstartValg.annenDato": "Eg vil velje ein annan dato",
     "fordeling.oppstartValg.påFødsel.barnErIkkeFødt": "Frå termindato",
     "fordeling.oppstartValg.påFødsel.barnErFødt": "Då {antallBarn, plural, one {barnet} other {barna}} ble fødd",

@@ -47,16 +47,22 @@ const {
 } = composeStories(stories);
 
 it.each([
-    ['2024-06-17', 'Tre uker før termin fra 27. mai 2024'],
-    ['2024-07-15', 'Tre uker før termin fra 24. juni 2024'],
-    ['2024-07-01', 'Tre uker før fødsel fra 10. juni 2024'],
-])('viser oppstartsvalget med samme datogrunnlag som forslaget når termin er %s', async (termindato, tekst) => {
+    ['2024-07-01', '2024-06-17', '5 uker før fødsel fra 27. mai 2024'],
+    ['2024-07-01', '2024-07-15', '1 uke før fødsel fra 24. juni 2024'],
+    ['2024-07-01', '2024-07-01', 'Tre uker før fødsel fra 10. juni 2024'],
+    ['2026-10-06', '2026-10-20', '1 uke før fødsel fra 29. september 2026'],
+    ['2026-10-06', '2026-09-22', '5 uker før fødsel fra 01. september 2026'],
+    ['2024-07-01', '2024-07-17', '3 dager før fødsel fra 26. juni 2024'],
+    ['2024-07-01', '2024-07-22', 'Fra 01. juli 2024'],
+    ['2024-07-01', '2024-06-20', '4 uker og 2 dager før fødsel fra 30. mai 2024'],
+    ['2024-06-30', '2024-07-14', '1 uke før fødsel fra 24. juni 2024'],
+])('viser faktisk varighet før fødsel %s når termin er %s', async (fødselsdato, termindato, tekst) => {
     await MorDeltUttakEttBarnTermin.run({
         args: {
             ...MorDeltUttakEttBarnTermin.args,
             barnet: {
                 type: BarnType.FØDT,
-                fødselsdatoer: ['2024-07-01'],
+                fødselsdatoer: [fødselsdato],
                 termindato,
                 antallBarn: 1,
             },
@@ -144,7 +150,7 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
         expect(screen.getByText('Hvis du jobber samtidig som du har foreldrepenger')).toBeInTheDocument();
 
         expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
-        expect(screen.getByText('Tre uker før termin fra 03. september 2021')).toBeInTheDocument();
+        expect(screen.getByText('2 uker og 2 dager før fødsel fra 03. september 2021')).toBeInTheDocument();
         expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
