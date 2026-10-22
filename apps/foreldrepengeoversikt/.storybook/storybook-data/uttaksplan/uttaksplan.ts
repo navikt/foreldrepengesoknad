@@ -1,4 +1,4 @@
-import { FellesUttaksplanDto, FpSak_fpoversikt, Saker_fpoversikt } from '@navikt/fp-types';
+import { FellesUttaksplanDto } from '@navikt/fp-types';
 
 const innvilget = {
     innvilget: true,
@@ -72,29 +72,35 @@ export const uttaksplan = {
     ],
 } satisfies FellesUttaksplanDto;
 
-// Lager en enkel felles uttaksplan med søkerens perioder fra saken, slik backend gjør når
-// annen part ikke har vedtak: perioder fra gjeldende vedtak, ellers fra søknaden under behandling.
-export const lagFellesUttaksplanFraSak = (sak: FpSak_fpoversikt): FellesUttaksplanDto => {
-    const perioder = sak.gjeldendeVedtak?.perioder ?? sak.åpenBehandling?.søknadsperioder ?? [];
-    return {
-        antallBarn: sak.familiehendelse.antallBarn,
-        dekningsgrad: sak.dekningsgrad ?? 'HUNDRE',
-        termindato: sak.familiehendelse.termindato,
-        perioder: perioder.map((periode) => ({
-            fom: periode.fom,
-            tom: periode.tom,
-            søker: {
-                flerbarnsdager: periode.flerbarnsdager,
-                forelder: periode.forelder,
-                kontoType: periode.kontoType,
-                resultat: periode.resultat,
-                samtidigUttak: periode.samtidigUttak,
-            },
-        })),
-    };
-};
+export const uttaksplanUtenPerioder = {
+    antallBarn: 1,
+    dekningsgrad: 'HUNDRE',
+    termindato: '2023-01-10',
+    perioder: [],
+} satisfies FellesUttaksplanDto;
 
-export const lagFellesUttaksplanForSaksnummer = (saker: Saker_fpoversikt, saksnummer: string) => {
-    const sak = saker.foreldrepenger.find((s) => s.saksnummer === saksnummer);
-    return sak ? lagFellesUttaksplanFraSak(sak) : null;
-};
+export const uttaksplanForTidligSøknad = {
+    antallBarn: 1,
+    dekningsgrad: 'HUNDRE',
+    termindato: '2026-02-01',
+    perioder: [
+        {
+            fom: '2026-02-02',
+            tom: '2026-04-10',
+            søker: {
+                kontoType: 'FORELDREPENGER',
+                forelder: 'FAR_MEDMOR',
+                flerbarnsdager: false,
+            },
+        },
+        {
+            fom: '2026-04-13',
+            tom: '2026-11-06',
+            søker: {
+                kontoType: 'FORELDREPENGER',
+                forelder: 'FAR_MEDMOR',
+                flerbarnsdager: false,
+            },
+        },
+    ],
+} satisfies FellesUttaksplanDto;
