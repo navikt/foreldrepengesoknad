@@ -120,9 +120,11 @@ describe('getAlleTidslinjehendelser - avslått foreldrepengesøknad', () => {
         expect(harBarnetTreÅrHendelse(fpSak, plan)).toBe(true);
     });
 
-    it('skal ikke regne søknaden som avslått uten vedtak eller før planen er lastet', () => {
+    it('skal ikke regne søknaden som avslått uten vedtak, uten søkerperioder eller før planen er lastet', () => {
         const plan = lagPlan([{ fom: '2024-01-01', tom: '2024-02-01', søker: lagUttak(false) }]);
+        const planUtenSøker = lagPlan([{ fom: '2024-01-01', tom: '2024-02-01', annenPart: lagUttak(true) }]);
         expect(harBarnetTreÅrHendelse({ ...fpSak, gjeldendeVedtak: undefined }, plan)).toBe(true);
+        expect(harBarnetTreÅrHendelse(fpSak, planUtenSøker)).toBe(true);
         expect(harBarnetTreÅrHendelse(fpSak, undefined)).toBe(true);
     });
 });

@@ -104,3 +104,56 @@ export const uttaksplanForTidligSøknad = {
         },
     ],
 } satisfies FellesUttaksplanDto;
+
+export const uttaksplanAvslått = {
+    antallBarn: 1,
+    dekningsgrad: 'HUNDRE',
+    termindato: '2025-10-27',
+    perioder: [
+        {
+            fom: '2025-10-06',
+            tom: '2025-10-24',
+            søker: {
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                resultat: {
+                    innvilget: false,
+                    trekkerMinsterett: false,
+                    trekkerDager: false,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+        },
+        {
+            fom: '2025-10-27',
+            tom: '2026-02-06',
+            søker: {
+                kontoType: 'MØDREKVOTE',
+                resultat: {
+                    innvilget: false,
+                    trekkerMinsterett: false,
+                    trekkerDager: false,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+        },
+        {
+            fom: '2026-02-09',
+            tom: '2026-05-29',
+            søker: {
+                kontoType: 'FELLESPERIODE',
+                resultat: {
+                    innvilget: false,
+                    trekkerMinsterett: false,
+                    trekkerDager: false,
+                    årsak: 'ANNET',
+                },
+                flerbarnsdager: false,
+                forelder: 'MOR',
+            },
+        },
+    ],
+} satisfies FellesUttaksplanDto;

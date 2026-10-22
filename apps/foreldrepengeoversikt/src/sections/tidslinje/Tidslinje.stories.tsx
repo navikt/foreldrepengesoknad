@@ -34,7 +34,7 @@ import {
     tidslinjehendelser_SVP_innvilget,
     tidslinjehendelser_SVP_under_behandling,
 } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
-import { uttaksplan, uttaksplanForTidligSøknad } from 'storybookData/uttaksplan/uttaksplan.ts';
+import { uttaksplan, uttaksplanAvslått, uttaksplanForTidligSøknad } from 'storybookData/uttaksplan/uttaksplan.ts';
 
 import { FellesUttaksplanDto, OversiktBarnDto_fpoversikt } from '@navikt/fp-types';
 import { withMockDate, withQueryClient } from '@navikt/fp-utils-test';
@@ -173,6 +173,7 @@ export const FPMedTilbakekreving: Story = {
     args: {
         søkersBarn,
         saksnummer: '827',
+        fellesUttaksplan: uttaksplanAvslått,
     },
 };
 

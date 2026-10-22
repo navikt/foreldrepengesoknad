@@ -114,9 +114,8 @@ const erAlleVedtatteUttaksperioderAvslått = (sak: Sak, fellesUttaksplan: Felles
     if (fellesUttaksplan === undefined || sak.ytelse !== 'FORELDREPENGER' || sak.gjeldendeVedtak === undefined) {
         return false;
     }
-    return fellesUttaksplan.perioder
-        .filter((periode) => periode.søker !== undefined)
-        .every((periode) => periode.søker?.resultat?.innvilget === false);
+    const søkersPerioder = fellesUttaksplan.perioder.filter((periode) => periode.søker !== undefined);
+    return søkersPerioder.length > 0 && søkersPerioder.every((periode) => periode.søker?.resultat?.innvilget === false);
 };
 
 // TODO: burde håndteres backend
