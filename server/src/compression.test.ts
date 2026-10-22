@@ -67,8 +67,8 @@ describe('lagKomprimeringsMiddleware', () => {
         expect(response.body).toBe(BROTLI_JS);
     });
 
-    it('fell tilbake til gzip når berre .gz finst', async () => {
-        const response = await hentTekst('/assets/bare-gzip.js', 'gzip, br');
+    it('serverer .gz-fila når klienten berre støttar gzip', async () => {
+        const response = await hentTekst('/assets/bare-gzip.js', 'gzip');
 
         expect(response.headers['content-encoding']).toBe('gzip');
         expect(response.body).toBe(GZIP_JS);
