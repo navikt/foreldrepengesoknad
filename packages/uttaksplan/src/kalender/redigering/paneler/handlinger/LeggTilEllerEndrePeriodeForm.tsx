@@ -23,7 +23,9 @@ import { useFormSubmitValidator } from '../../../../felles/uttaksplanValidatorer
 import { useKanKunErstatte, useLeggTilEndreSkjemaInfoAlerts } from '../../../../regler/alert/informasjonsAlertHooks';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
 import { erDetEksisterendePerioderEtterValgtePerioder, finnUttakForForelder } from '../../../../utils/periodeUtils';
+import { BekreftHistoriskEndringModal } from '../../BekreftHistoriskEndringModal';
 import { useKalenderRedigeringContext } from '../../context/KalenderRedigeringContext';
+import { erHistoriskKalenderEndring } from '../../utils/historiskEndring';
 import { finnValgtePerioder } from '../../utils/kalenderPeriodeUtils';
 
 dayjs.extend(isSameOrBefore);
@@ -38,6 +40,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         perioder,
         foreldreInfo: { søker },
         erPeriodeneTilAnnenPartLåst,
+        erEndringssøknad,
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
 
@@ -45,6 +48,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         useKalenderRedigeringContext();
 
     const [feilmelding, setFeilmelding] = useState<string | undefined>();
+    const [ventendeForskyvning, setVentendeForskyvning] = useState<boolean | undefined>();
 
     const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } =
         useVisForskyvEllerErstattPanel(sammenslåtteValgtePerioder);
@@ -136,69 +140,101 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         }
     };
 
-    const leggIKalender = (skalForskyve: boolean) => {
-        leggTilUttaksplanPerioder(
-            sammenslåtteValgtePerioder.flatMap((periode) =>
-                mapFraFormValuesTilPeriodeDto(formMethods.getValues(), periode, søker, kanVelgeArbeidsgiver),
-            ),
-            skalForskyve,
-            () => {
-                setValgtePerioder([]);
-                setEndredePerioder(sammenslåtteValgtePerioder);
-                lukkRedigeringsmodus();
-            },
+    const utførLeggIKalender = (skalForskyve: boolean) => {
+        const nyePerioder = sammenslåtteValgtePerioder.flatMap((periode) =>
+            mapFraFormValuesTilPeriodeDto(formMethods.getValues(), periode, søker, kanVelgeArbeidsgiver),
         );
+        leggTilUttaksplanPerioder(nyePerioder, skalForskyve);
+        setValgtePerioder([]);
+        setEndredePerioder(sammenslåtteValgtePerioder);
+        lukkRedigeringsmodus();
+    };
+
+    const leggIKalender = (skalForskyve: boolean) => {
+        const nyePerioder = sammenslåtteValgtePerioder.flatMap((periode) =>
+            mapFraFormValuesTilPeriodeDto(formMethods.getValues(), periode, søker, kanVelgeArbeidsgiver),
+        );
+
+        if (
+            erHistoriskKalenderEndring({
+                erEndringssøknad,
+                eksisterendePerioder: perioder,
+                nyePerioder,
+                skalForskyvePeriode: skalForskyve,
+                søker,
+                kanVelgeArbeidsgiver,
+                erPeriodeneTilAnnenPartLåst,
+            })
+        ) {
+            setVentendeForskyvning(skalForskyve);
+            return;
+        }
+
+        utførLeggIKalender(skalForskyve);
     };
 
     return (
-        <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
-            {visEndreEllerForskyvPanel && (
-                <LeggTilPeriodeForskyvEllerErstattPanel
-                    setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
-                    leggTilEllerForskyvPeriode={leggIKalender}
-                />
-            )}
-            {!visEndreEllerForskyvPanel && (
-                <VStack gap="space-16">
-                    {morsAktivitetIkkeOppgittAlert && (
-                        <Alert variant={morsAktivitetIkkeOppgittAlert.variant} size="small">
-                            {morsAktivitetIkkeOppgittAlert.melding}
-                        </Alert>
-                    )}
-
-                    <LeggTilEllerEndrePeriodeFellesForm
-                        valgtePerioder={sammenslåtteValgtePerioder}
-                        resetFormValuesVedEndringAvForelder={resetFormValuesVedEndringAvForelder}
+        <>
+            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
+                {visEndreEllerForskyvPanel && (
+                    <LeggTilPeriodeForskyvEllerErstattPanel
+                        setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
+                        leggTilEllerForskyvPeriode={leggIKalender}
                     />
+                )}
+                {!visEndreEllerForskyvPanel && (
+                    <VStack gap="space-16">
+                        {morsAktivitetIkkeOppgittAlert && (
+                            <Alert variant={morsAktivitetIkkeOppgittAlert.variant} size="small">
+                                {morsAktivitetIkkeOppgittAlert.melding}
+                            </Alert>
+                        )}
 
-                    {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
+                        <LeggTilEllerEndrePeriodeFellesForm
+                            valgtePerioder={sammenslåtteValgtePerioder}
+                            resetFormValuesVedEndringAvForelder={resetFormValuesVedEndringAvForelder}
+                        />
 
-                    <HStack gap="space-12" className="w-full">
-                        <Button
-                            type="submit"
-                            variant="primary"
-                            size="small"
-                            className="flex-1"
-                            disabled={!formMethods.formState.isDirty}
-                        >
-                            {harNesteSteg ? (
-                                <FormattedMessage id="RedigeringPanel.LeggTilPeriode.Fortsett" />
-                            ) : (
-                                <FormattedMessage id="RedigeringPanel.LeggTilPeriode" />
-                            )}
-                        </Button>
-                        <Button
-                            type="button"
-                            variant="secondary"
-                            size="small"
-                            className="flex-1"
-                            onClick={lukkRedigeringsmodus}
-                        >
-                            <FormattedMessage id="RedigeringPanel.LeggTilPeriode.Tilbake" />
-                        </Button>
-                    </HStack>
-                </VStack>
-            )}
-        </RhfForm>
+                        {feilmelding && <ErrorMessage>{feilmelding}</ErrorMessage>}
+
+                        <HStack gap="space-12" className="w-full">
+                            <Button
+                                type="submit"
+                                variant="primary"
+                                size="small"
+                                className="flex-1"
+                                disabled={!formMethods.formState.isDirty}
+                            >
+                                {harNesteSteg ? (
+                                    <FormattedMessage id="RedigeringPanel.LeggTilPeriode.Fortsett" />
+                                ) : (
+                                    <FormattedMessage id="RedigeringPanel.LeggTilPeriode" />
+                                )}
+                            </Button>
+                            <Button
+                                type="button"
+                                variant="secondary"
+                                size="small"
+                                className="flex-1"
+                                onClick={lukkRedigeringsmodus}
+                            >
+                                <FormattedMessage id="RedigeringPanel.LeggTilPeriode.Tilbake" />
+                            </Button>
+                        </HStack>
+                    </VStack>
+                )}
+            </RhfForm>
+            <BekreftHistoriskEndringModal
+                open={ventendeForskyvning !== undefined}
+                handlingstype="endret"
+                onAvbryt={() => setVentendeForskyvning(undefined)}
+                onBekreft={() => {
+                    if (ventendeForskyvning !== undefined) {
+                        utførLeggIKalender(ventendeForskyvning);
+                        setVentendeForskyvning(undefined);
+                    }
+                }}
+            />
+        </>
     );
 };

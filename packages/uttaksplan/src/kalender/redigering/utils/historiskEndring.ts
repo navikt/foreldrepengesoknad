@@ -5,6 +5,7 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { BrukerRolleSak_fpoversikt, UttakDto, UttakPeriodeDto } from '@navikt/fp-types';
 import { erUttaksdag } from '@navikt/fp-utils';
 
+import { UttakPeriodeBuilder } from '../../../utils/UttakPeriodeBuilder';
 import { finnAlleUttak, finnUttakForForelder } from '../../../utils/periodeUtils';
 
 dayjs.extend(isSameOrAfter);
@@ -214,5 +215,45 @@ const harGraderingsendring = (
     return (
         (gammelAktivitet?.type ?? 'ANNET') !== (nyAktivitet?.type ?? 'ANNET') ||
         gammelAktivitet?.arbeidsgiver?.id !== nyAktivitet?.arbeidsgiver?.id
+    );
+};
+
+type HistoriskKalenderEndringParams = {
+    erEndringssøknad: boolean;
+    eksisterendePerioder: UttakPeriodeDto[];
+    nyePerioder: UttakPeriodeDto[];
+    skalForskyvePeriode: boolean;
+    søker: BrukerRolleSak_fpoversikt;
+    kanVelgeArbeidsgiver: boolean;
+    erPeriodeneTilAnnenPartLåst: boolean;
+};
+
+export const erHistoriskKalenderEndring = ({
+    erEndringssøknad,
+    eksisterendePerioder,
+    nyePerioder,
+    skalForskyvePeriode,
+    søker,
+    kanVelgeArbeidsgiver,
+    erPeriodeneTilAnnenPartLåst,
+}: HistoriskKalenderEndringParams): boolean => {
+    if (!erEndringssøknad) {
+        return false;
+    }
+
+    const nyeUttakPerioder = new UttakPeriodeBuilder(eksisterendePerioder, 'kalender')
+        .leggTilUttakPerioder(nyePerioder, skalForskyvePeriode)
+        .getUttakPerioder();
+    const førsteDagIMåneden = dayjs().startOf('month').format('YYYY-MM-DD');
+
+    return (
+        harHistoriskFerieendring(eksisterendePerioder, nyeUttakPerioder, søker, førsteDagIMåneden, true) ||
+        harHistoriskGraderingsendring(eksisterendePerioder, nyeUttakPerioder, {
+            søker,
+            kanVelgeArbeidsgiver,
+            erPeriodeneTilAnnenPartLåst,
+            førsteDagIMåneden,
+            sammenlignHelePlanen: true,
+        })
     );
 };

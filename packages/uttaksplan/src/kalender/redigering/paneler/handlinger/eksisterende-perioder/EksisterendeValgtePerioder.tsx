@@ -8,7 +8,7 @@ import {
     TrashIcon,
 } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import type { ReactNode } from 'react';
+import { type ReactNode, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Button, HStack, Heading, Spacer, Tooltip, VStack } from '@navikt/ds-react';
@@ -23,7 +23,9 @@ import { UttakPeriodeMedAntallDager } from '../../../../../kalender/redigering/u
 import { getForelderVisningsnavnForFarOgFar } from '../../../../../liste/utils/uttaksplanListeUtils';
 import { useEksisterendeValgtePeriodeAlerts } from '../../../../../regler/alert/informasjonsAlertHooks';
 import { getVarighetString } from '../../../../../utils/dateUtils';
+import { BekreftHistoriskEndringModal } from '../../../BekreftHistoriskEndringModal';
 import { useKalenderRedigeringContext } from '../../../context/KalenderRedigeringContext';
+import { harHistoriskSletting } from '../../../utils/historiskEndring';
 
 interface Props {
     perioder: UttakPeriodeMedAntallDager[];
@@ -32,7 +34,7 @@ interface Props {
 export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
     const intl = useIntl();
 
-    const slettPeriode = useSlettPeriodeFn();
+    const { slettPeriode, ventendeSletting, bekreftSletting, avbrytSletting } = useSlettPeriodeFn();
 
     const {
         foreldreInfo: { erMedmorDelAvSøknaden, søker, navnPåForeldre, erFarOgFar },
@@ -177,6 +179,12 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                     </HStack>
                 );
             })}
+            <BekreftHistoriskEndringModal
+                open={ventendeSletting !== undefined}
+                handlingstype="slettet"
+                onAvbryt={avbrytSletting}
+                onBekreft={bekreftSletting}
+            />
         </VStack>
     );
 };
@@ -606,9 +614,14 @@ const getUtsettelseÅrsakTekst = (utsettelseÅrsak: UtsettelseÅrsak) => {
 };
 
 const useSlettPeriodeFn = () => {
+    const { perioder: allePerioder, erEndringssøknad } = useUttaksplanData();
     const { sammenslåtteValgtePerioder, slettUttaksplanPerioder, setValgtePerioder } = useKalenderRedigeringContext();
+    const [ventendeSletting, setVentendeSletting] = useState<{
+        periodeSomSkalSlettes: { fom: string; tom: string; forelder?: BrukerRolleSak_fpoversikt };
+        skalForskyveBakover: boolean;
+    }>();
 
-    return (
+    const utførSlett = (
         periodeSomSkalSlettes: { fom: string; tom: string; forelder?: BrukerRolleSak_fpoversikt },
         skalForskyveBakover: boolean,
     ) => {
@@ -620,10 +633,38 @@ const useSlettPeriodeFn = () => {
                 tom: dayjs(p.tom).isAfter(periodeSomSkalSlettes.tom) ? periodeSomSkalSlettes.tom : p.tom,
             })),
             skalForskyveBakover,
-            () => {
-                setValgtePerioder((oldPeriods) => justerValgteKalenderperioder(oldPeriods, periodeSomSkalSlettes));
-            },
         );
+        setValgtePerioder((oldPeriods) => justerValgteKalenderperioder(oldPeriods, periodeSomSkalSlettes));
+    };
+
+    const slettPeriode = (
+        periodeSomSkalSlettes: { fom: string; tom: string; forelder?: BrukerRolleSak_fpoversikt },
+        skalForskyveBakover: boolean,
+    ) => {
+        const perioder = finnDagerSomSkalSlettes(sammenslåtteValgtePerioder, periodeSomSkalSlettes).map((p) => ({
+            fom: dayjs(p.fom).isBefore(periodeSomSkalSlettes.fom) ? periodeSomSkalSlettes.fom : p.fom,
+            tom: dayjs(p.tom).isAfter(periodeSomSkalSlettes.tom) ? periodeSomSkalSlettes.tom : p.tom,
+        }));
+        const førsteDagIMåneden = dayjs().startOf('month').format('YYYY-MM-DD');
+
+        if (erEndringssøknad && harHistoriskSletting(allePerioder, perioder, førsteDagIMåneden)) {
+            setVentendeSletting({ periodeSomSkalSlettes, skalForskyveBakover });
+            return;
+        }
+
+        utførSlett(periodeSomSkalSlettes, skalForskyveBakover);
+    };
+
+    return {
+        slettPeriode,
+        ventendeSletting,
+        avbrytSletting: () => setVentendeSletting(undefined),
+        bekreftSletting: () => {
+            if (ventendeSletting) {
+                utførSlett(ventendeSletting.periodeSomSkalSlettes, ventendeSletting.skalForskyveBakover);
+                setVentendeSletting(undefined);
+            }
+        },
     };
 };
 
