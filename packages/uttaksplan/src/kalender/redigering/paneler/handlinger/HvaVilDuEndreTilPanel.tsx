@@ -15,9 +15,7 @@ import { useKnapperIRedigeringspanelSynlighet } from '../../../../regler/synligh
 import { getVarighetString } from '../../../../utils/dateUtils';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
-import { BekreftHistoriskEndringModal } from '../../BekreftHistoriskEndringModal';
 import { useKalenderRedigeringContext } from '../../context/KalenderRedigeringContext';
-import { erHistoriskKalenderEndring } from '../../utils/historiskEndring';
 import { finnAntallDager, finnValgtePerioder } from '../../utils/kalenderPeriodeUtils';
 import { useErDesktop, useMediaResetMinimering } from '../../utils/useMediaActions';
 import { PeriodeDetaljerOgInfoMeldinger } from './eksisterende-perioder/PeriodeDetaljerOgInfoMeldinger';
@@ -34,15 +32,10 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
     const {
         foreldreInfo: { søker },
         perioder,
-        erEndringssøknad,
-        kanVelgeArbeidsgiver,
-        erPeriodeneTilAnnenPartLåst,
     } = useUttaksplanData();
 
     const { sammenslåtteValgtePerioder, setValgtePerioder, leggTilUttaksplanPerioder, setEndredePerioder } =
         useKalenderRedigeringContext();
-
-    const [ventendeFerieForskyvning, setVentendeFerieForskyvning] = useState<boolean | undefined>();
 
     const uttakPerioderInkludertTapteDager = useAlleUttakPerioderInklTapteDager();
 
@@ -86,43 +79,25 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
             eksisterendePerioderSomErValgt,
         });
 
-    const lagFeriePerioder = () =>
-        sammenslåtteValgtePerioder.map(
-            (p) =>
-                ({
-                    fom: p.fom,
-                    tom: p.tom,
-                    søker: {
-                        forelder: søker,
-                        utsettelseÅrsak: 'FERIE',
-                        flerbarnsdager: false,
-                    },
-                }) satisfies UttakPeriodeDto,
+    const leggTilEllerForskyvPeriode = (skalForskyve: boolean) => {
+        leggTilUttaksplanPerioder(
+            sammenslåtteValgtePerioder.map(
+                (p) =>
+                    ({
+                        fom: p.fom,
+                        tom: p.tom,
+                        søker: {
+                            forelder: søker,
+                            utsettelseÅrsak: 'FERIE',
+                            flerbarnsdager: false,
+                        },
+                    }) satisfies UttakPeriodeDto,
+            ),
+            skalForskyve,
         );
 
-    const utførLeggTilFerie = (skalForskyve: boolean) => {
-        leggTilUttaksplanPerioder(lagFeriePerioder(), skalForskyve);
         setValgtePerioder([]);
         setEndredePerioder(sammenslåtteValgtePerioder);
-    };
-
-    const leggTilEllerForskyvPeriode = (skalForskyve: boolean) => {
-        if (
-            erHistoriskKalenderEndring({
-                erEndringssøknad,
-                eksisterendePerioder: perioder,
-                nyePerioder: lagFeriePerioder(),
-                skalForskyvePeriode: skalForskyve,
-                søker,
-                kanVelgeArbeidsgiver,
-                erPeriodeneTilAnnenPartLåst,
-            })
-        ) {
-            setVentendeFerieForskyvning(skalForskyve);
-            return;
-        }
-
-        utførLeggTilFerie(skalForskyve);
     };
 
     return (
@@ -228,17 +203,6 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
                     </VStack>
                 </div>
             )}
-            <BekreftHistoriskEndringModal
-                open={ventendeFerieForskyvning !== undefined}
-                handlingstype="endret"
-                onAvbryt={() => setVentendeFerieForskyvning(undefined)}
-                onBekreft={() => {
-                    if (ventendeFerieForskyvning !== undefined) {
-                        utførLeggTilFerie(ventendeFerieForskyvning);
-                        setVentendeFerieForskyvning(undefined);
-                    }
-                }}
-            />
         </VStack>
     );
 };

@@ -1,7 +1,9 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
+import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getTermindato } from 'utils/barnUtils';
+import { getEndringstidspunktNy } from 'utils/dateUtils';
 import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 import { getStønadskvoteNavn } from 'utils/stønadskvoterUtils';
 import { isUttaksperiodeFarMedmorPgaFødsel } from 'utils/uttaksplanInfoUtils';
@@ -36,8 +38,16 @@ interface Props {
 
 export const UttaksplanOppsummeringsliste = ({ navnPåForeldre, registrerteArbeidsforhold }: Props) => {
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
+    const opprinneligUttaksplan = useContextGetData(ContextDataType.OPPRINNELIG_UTTAKSPLAN);
 
     const søkersPerioder = uttaksplan.filter((periode) => periode.søker !== undefined);
+    const søkersOpprinneligePerioder = opprinneligUttaksplan?.perioder.filter((periode) => periode.søker !== undefined);
+    const endringstidspunkt = søkersOpprinneligePerioder
+        ? getEndringstidspunktNy(søkersOpprinneligePerioder, søkersPerioder)
+        : undefined;
+    const harHistoriskEndring =
+        endringstidspunkt !== undefined && dayjs(endringstidspunkt).isBefore(dayjs().startOf('month'), 'day');
+
     const annenPartsPerioder = uttaksplan.filter((periode) => periode.annenPart !== undefined);
 
     const søkerHarLagtTilPerioderForAnnenPart = annenPartsPerioder.some(
@@ -52,6 +62,7 @@ export const UttaksplanOppsummeringsliste = ({ navnPåForeldre, registrerteArbei
                     uttaksplan={søkersPerioder}
                     registrerteArbeidsforhold={registrerteArbeidsforhold}
                     navnPåForeldre={navnPåForeldre}
+                    visAdvarselOmHistoriskEndring={harHistoriskEndring}
                 />
             )}
             {annenPartsPerioder.length > 0 && (
@@ -73,12 +84,14 @@ const UttaksplanListe = ({
     registrerteArbeidsforhold,
     navnPåForeldre,
     visAdvarselOmEgendefinertePerioder,
+    visAdvarselOmHistoriskEndring,
 }: {
     erSøker: boolean;
     uttaksplan: UttakPeriodeDto[];
     registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     navnPåForeldre: NavnPåForeldre;
     visAdvarselOmEgendefinertePerioder?: boolean;
+    visAdvarselOmHistoriskEndring?: boolean;
 }) => {
     const intl = useIntl();
 
@@ -156,6 +169,13 @@ const UttaksplanListe = ({
             )}
             <FormSummary.Value>
                 <VStack gap="space-16">
+                    {visAdvarselOmHistoriskEndring && (
+                        <Alert variant="warning">
+                            <BodyLong>
+                                <FormattedMessage id="oppsummering.HistoriskEndringInfomelding" />
+                            </BodyLong>
+                        </Alert>
+                    )}
                     {visAdvarselOmEgendefinertePerioder && (
                         <Alert variant="warning">
                             <BodyLong>

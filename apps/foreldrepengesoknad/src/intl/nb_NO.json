@@ -533,6 +533,7 @@
     "uttaksplan.utsettelsesårsak.NAV_TILTAK": "Utsettelse på grunn av Nav tiltak som utgjør 100 % arbeid",
     "uttaksplan.AnnenPartPerioderInfomelding": "I denne søknaden søker du kun for deg selv. Du kan legge inn foreldrepenger for den andre forelderen, men informasjonen vil ikke bli sendt inn. Den andre forelderen må selv huske å sende oss en søknad.",
     "oppsummering.AnnenPartPerioderInfomelding": "Periodene til den andre forelderen blir ikke sendt inn. Den andre forelderen må selv huske å sende oss en søknad.",
+    "oppsummering.HistoriskEndringInfomelding": "Du endrer foreldrepenger tilbake i tid. Hvis du får mindre utbetalt enn du allerede har fått, kan det føre til at du må betale tilbake.",
     "uttaksplan.overføringsårsaktype.ALENEOMSORG": "Jeg har blitt alene om omsorgen",
     "uttaksplan.overføringsårsaktype.IKKE_RETT_ANNEN_FORELDER": "{navnAnnenForelder} har ikke rett til foreldrepenger",
     "uttaksplan.overføringsårsaktype.INSTITUSJONSOPPHOLD_ANNEN_FORELDER": "{navnAnnenForelder} er innlagt på helseinstitusjon",

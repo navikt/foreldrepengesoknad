@@ -41,6 +41,7 @@ export const KalenderRedigeringProvider = ({
             const nyeUttakPerioder = new UttakPeriodeBuilder(perioder, 'kalender')
                 .leggTilUttakPerioder(nyePerioder, skalForskyvePeriode)
                 .getUttakPerioder();
+
             notEmpty(uttaksplanRedigering).oppdaterUttaksplan(nyeUttakPerioder);
         },
         [uttaksplanRedigering, perioder],
@@ -48,10 +49,13 @@ export const KalenderRedigeringProvider = ({
 
     const slettUttaksplanPerioder = useCallback(
         (perioderSomSkalSlettes: Array<{ fom: string; tom: string }>, skalForskyveBakover: boolean) => {
-            const nyeUttakPerioder = new UttakPeriodeBuilder(perioder, 'kalender')
-                .fjernUttakPerioder(perioderSomSkalSlettes, skalForskyveBakover, erPeriodeneTilAnnenPartLåst)
-                .getUttakPerioder();
-            notEmpty(uttaksplanRedigering).oppdaterUttaksplan(nyeUttakPerioder);
+            const uttakPeriodeBuilder = new UttakPeriodeBuilder(perioder, 'kalender');
+            uttakPeriodeBuilder.fjernUttakPerioder(
+                perioderSomSkalSlettes,
+                skalForskyveBakover,
+                erPeriodeneTilAnnenPartLåst,
+            );
+            notEmpty(uttaksplanRedigering).oppdaterUttaksplan(uttakPeriodeBuilder.getUttakPerioder());
         },
         [uttaksplanRedigering, perioder, erPeriodeneTilAnnenPartLåst],
     );
