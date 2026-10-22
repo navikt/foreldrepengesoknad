@@ -377,6 +377,37 @@ describe('<UttaksplanSteg>', () => {
         expect(await screen.findByText('Du må gjøre en endring for å kunne søke om endring')).toBeInTheDocument();
     });
 
+    it('skal stoppe endringssøknad når søker har fjernet alle sine perioder med "Fjern alt"', async () => {
+        const gåTilNesteSide = vi.fn();
+
+        await NySøknadFørVedtakMedEksisterendeSak.run({
+            args: {
+                ...NySøknadFørVedtakMedEksisterendeSak.args,
+                gåTilNesteSide,
+                erEndringssøknad: true,
+                opprinneligUttaksplan: {
+                    saksnummer: NySøknadFørVedtakMedEksisterendeSak.args.valgtEksisterendeSaksnr!,
+                    perioder: NySøknadFørVedtakMedEksisterendeSak.args.uttaksplan!,
+                },
+            },
+        });
+
+        expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+        await userEvent.click(screen.getByText('Start redigering'));
+        await userEvent.click(screen.getAllByText('Du kan velge datoer i kalenderen')[0]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Fjern alt' }));
+        await userEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Fjern alt' }));
+        await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(await screen.findByText('Du må ha minst én uttaksperiode i planen.')).toBeInTheDocument();
+        const navigasjonsAction = gåTilNesteSide.mock.calls.find(
+            ([action]) => action.key === ContextDataType.APP_ROUTE,
+        );
+        expect(navigasjonsAction).toBeUndefined();
+    });
+
     it('TFP-7005: skal kunne gå videre i endringssøknad når ferie legges til etter eksisterende uttak', async () => {
         const gåTilNesteSide = vi.fn();
         const eksisterendePlan = NySøknadFørVedtakMedEksisterendeSak.args.uttaksplan!;
