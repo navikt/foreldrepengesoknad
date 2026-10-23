@@ -2,11 +2,11 @@ import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
-import { IntlProvider } from 'react-intl';
 
 import { Button } from '@navikt/ds-react';
 
 import { formHookMessages } from '@navikt/fp-form-hooks';
+import { IntlProvider } from '@navikt/fp-ui';
 
 import { EgenNæringForm } from './EgenNæringPanel';
 import * as stories from './EgenNæringPanel.stories';
@@ -17,7 +17,7 @@ const { Default } = composeStories(stories);
 describe('<Arbeid som selvstendig næringsdrivende>', () => {
     it('skal vise og låse navn, organisasjonsnummer og type fra registeret', () => {
         const { container } = render(
-            <IntlProvider locale="nb" messages={{ ...formHookMessages.nb, ...nbMessages }}>
+            <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: { ...formHookMessages.nb, ...nbMessages } }}>
                 <EgenNæringForm
                     registrerteNæringer={[
                         {
@@ -46,7 +46,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
 
     it('skal forklare at svarene gjelder samlet når flere næringer er registrert', () => {
         render(
-            <IntlProvider locale="nb" messages={{ ...formHookMessages.nb, ...nbMessages }}>
+            <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: { ...formHookMessages.nb, ...nbMessages } }}>
                 <EgenNæringForm
                     registrerteNæringer={[
                         {
@@ -79,7 +79,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         const onSubmit = vi.fn();
 
         render(
-            <IntlProvider locale="nb" messages={{ ...formHookMessages.nb, ...nbMessages }}>
+            <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: { ...formHookMessages.nb, ...nbMessages } }}>
                 <EgenNæringForm
                     fixedNæringstype="FISKE"
                     egenNæring={{
@@ -118,7 +118,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         const onSubmit = vi.fn();
 
         render(
-            <IntlProvider locale="nb" messages={{ ...formHookMessages.nb, ...nbMessages }}>
+            <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: { ...formHookMessages.nb, ...nbMessages } }}>
                 <EgenNæringForm
                     fixedRegistrertINorge={false}
                     egenNæring={{

@@ -1,11 +1,12 @@
 import { renderHook } from '@testing-library/react';
 import dayjs from 'dayjs';
 import { ComponentProps, ReactNode } from 'react';
-import { IntlProvider, createIntl, createIntlCache } from 'react-intl';
+import { createIntl, createIntlCache } from 'react-intl';
 import { describe, expect, it } from 'vitest';
 
 import { BarnType, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { UttakDto } from '@navikt/fp-types';
+import { IntlProvider } from '@navikt/fp-ui';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { UttaksplanDataProvider } from '../context/UttaksplanDataContext';
@@ -24,7 +25,7 @@ const intlMock = createIntl(
     {
         locale: 'nb',
         defaultLocale: 'nb',
-        messages,
+        messages: messages as Record<string, string>,
     },
     cache,
 );
@@ -207,7 +208,7 @@ const DEFAULT_DATA = {
 const getWrapper =
     (customData?: Partial<ComponentProps<typeof UttaksplanDataProvider>>) =>
     ({ children }: { children: ReactNode }) => (
-        <IntlProvider locale="nb" messages={messages}>
+        <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: messages }}>
             <UttaksplanDataProvider {...DEFAULT_DATA} {...customData}>
                 {children}
             </UttaksplanDataProvider>

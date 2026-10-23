@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { IntlProvider } from 'react-intl';
 
 import type { NæringDto } from '@navikt/fp-types';
+import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../../intl/messages/nb_NO.json';
 import { ManueltLagtTilNæring } from './ManueltLagtTilNæring';
@@ -32,7 +32,7 @@ describe('<ManueltLagtTilNæring>', () => {
         const onRemove = vi.fn();
 
         render(
-            <IntlProvider locale="nb" messages={nbMessages}>
+            <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: nbMessages }}>
                 <ManueltLagtTilNæring egenNæring={egenNæring} onRemove={onRemove} />
             </IntlProvider>,
         );
@@ -48,13 +48,13 @@ describe('<ManueltLagtTilNæring>', () => {
 
     it('skal scrolle ny næring inn i synsfeltet', () => {
         const { rerender } = render(
-            <IntlProvider locale="nb" messages={nbMessages}>
+            <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: nbMessages }}>
                 <ManueltLagtTilNæring onRemove={vi.fn()} />
             </IntlProvider>,
         );
 
         rerender(
-            <IntlProvider locale="nb" messages={nbMessages}>
+            <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: nbMessages }}>
                 <ManueltLagtTilNæring egenNæring={egenNæring} onRemove={vi.fn()} />
             </IntlProvider>,
         );
@@ -64,7 +64,7 @@ describe('<ManueltLagtTilNæring>', () => {
 
     it('skal kunne vise næringen uten fjern-knapp', () => {
         render(
-            <IntlProvider locale="nb" messages={nbMessages}>
+            <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: nbMessages }}>
                 <ManueltLagtTilNæring egenNæring={egenNæring} />
             </IntlProvider>,
         );
@@ -75,7 +75,7 @@ describe('<ManueltLagtTilNæring>', () => {
 
     it('skal vise landsnavn i stedet for landskode for utenlandsk næring', () => {
         render(
-            <IntlProvider locale="nb" messages={nbMessages}>
+            <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: nbMessages }}>
                 <ManueltLagtTilNæring
                     egenNæring={{
                         ...egenNæring,

@@ -6,7 +6,7 @@ import { lagSamtidigUttakOmråde } from './samtidigUttak';
 import { ValideringInput, førsteBrutteValideringsregel } from './types';
 
 const cache = createIntlCache();
-const intlMock = createIntl({ locale: 'nb', defaultLocale: 'nb', messages }, cache);
+const intlMock = createIntl({ locale: 'nb', defaultLocale: 'nb', messages: messages as Record<string, string> }, cache);
 
 // Måndag. Verneperioden rundt fødsel er då 2024-06-03 til 2024-07-29 — periodane under
 // ligg godt utanfor denne, sidan samtidigUttak-området berre gjeld utanfor verneperioden.
