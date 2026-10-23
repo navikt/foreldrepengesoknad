@@ -158,6 +158,7 @@ export const UttaksplanSteg = ({
         valgteStønadskvoter,
         tidligereUttaksperioder,
         tidligereUttaksplan.isLoading,
+        erEndringssøknad,
     ).filter((periode) => periode.søker !== undefined);
 
     if (!valgteStønadskvoter || tidligereUttaksplan.isLoading) {
