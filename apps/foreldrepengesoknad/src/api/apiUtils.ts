@@ -177,7 +177,10 @@ export const harSøknadenNødvendigeUttaksperioder = (
     if (erEndringssøknad) {
         // Endringssøknaden får en FRI-utsettelse ved endringstidspunktet når søkeren har slettet perioder,
         // så perioder i søknaden er aldri tom. Sjekk søkerens perioder i hele planen, slik uttaksplan-steget gjør.
-        return helePlanen.some((periode) => periode.søker !== undefined);
+        // Uten endringstidspunkt kan søknaden likevel bli tom når alle søkerens perioder er avslått og filtrert bort.
+        return (
+            (søknad.uttaksplan.perioder ?? []).length > 0 && helePlanen.some((periode) => periode.søker !== undefined)
+        );
     }
     return harMinstEnUttaksEllerOverføringsperiode(søknad.uttaksplan.perioder ?? []);
 };

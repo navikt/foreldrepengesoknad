@@ -257,7 +257,10 @@ const saker = [
 ] satisfies FpSak_fpoversikt[];
 
 const getWrapper =
-    (uttaksplan: UttakPeriodeDto[] = [UTTAKSPLAN_PERIODE]) =>
+    (
+        uttaksplan: UttakPeriodeDto[] = [UTTAKSPLAN_PERIODE],
+        opprinneligePerioder: UttakPeriodeDto[] = [EKSISTERENDE_PERIODE],
+    ) =>
     ({ children }: { children: ReactNode }) => (
         <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
             <QueryClientProvider client={queryClient}>
@@ -284,7 +287,7 @@ const getWrapper =
                             [ContextDataType.UTTAKSPLAN]: uttaksplan,
                             [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: {
                                 saksnummer: '1',
-                                perioder: [EKSISTERENDE_PERIODE],
+                                perioder: opprinneligePerioder,
                             },
                             [ContextDataType.VEDLEGG]: VEDLEGG,
                             [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: '1',
@@ -491,6 +494,29 @@ describe('useFpSendSøknad', () => {
 
         const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, true, saker), {
             wrapper: getWrapper([]),
+        });
+
+        const resultat = await act(() => result.current.sendSøknad());
+
+        expect(resultat).toBe('MANGLER_UTTAKSPERIODER');
+        expect(postMock).not.toHaveBeenCalled();
+        expect(deleteMock).not.toHaveBeenCalled();
+    });
+
+    it('skal ikke sende inn endringssøknad når søkeren bare har uendrede, avslåtte perioder', async () => {
+        const postMock = vi.spyOn(ky, 'post');
+        const deleteMock = vi.spyOn(ky, 'delete');
+
+        const avslåttPeriode = {
+            ...UTTAKSPLAN_PERIODE,
+            søker: {
+                ...UTTAKSPLAN_PERIODE.søker,
+                resultat: { innvilget: false, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+            },
+        } satisfies UttakPeriodeDto;
+
+        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, true, saker), {
+            wrapper: getWrapper([avslåttPeriode], [avslåttPeriode]),
         });
 
         const resultat = await act(() => result.current.sendSøknad());
