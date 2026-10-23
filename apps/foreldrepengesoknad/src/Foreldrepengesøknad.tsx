@@ -8,11 +8,12 @@ import ky from 'ky';
 import { ReactNode, Suspense, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { shouldApplyStorage } from 'utils/mellomlagringUtils';
+import { erSakerEndret, erSøkerInfoEndret } from 'utils/registerdataUtils';
 
 import { erUmyndigFeil } from '@navikt/fp-app-shell';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { ErrorBoundary, ErrorPage, RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
-import { erLikUansettRekkefølge, omitMany, useDocumentTitle } from '@navikt/fp-utils';
+import { erLikUansettRekkefølge, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ForeldrepengesøknadRoutes } from './ForeldrepengesøknadRoutes';
@@ -139,22 +140,8 @@ const RegisterdataSjekk = ({
         uttaksplanQuery.isSuccess &&
         !erLikUansettRekkefølge(uttaksplanQuery.data, mellomlagretData.fellesUttaksplan);
 
-    const søkerInfoErEndret = !erLikUansettRekkefølge(
-        // frilansoppdrag/selvstendigNæring kan mangle på lagret søkerInfo dersom mellomlagringen ble gjort
-        // før disse feltene fantes i kontrakten. Da faller vi tilbake på ferske data i stedet for å be brukeren
-        // starte på nytt bare fordi den lagrede søknaden mangler felt hun aldri fikk mulighet til å ha.
-        {
-            ...mellomlagretData.søkerInfo,
-            frilansoppdrag: mellomlagretData.søkerInfo.frilansoppdrag ?? søkerInfo.frilansoppdrag ?? [],
-            selvstendigNæring: mellomlagretData.søkerInfo.selvstendigNæring ?? søkerInfo.selvstendigNæring ?? [],
-        },
-        søkerInfo,
-    );
-
-    const sakerErEndret = !erLikUansettRekkefølge(
-        relevanteSaker(mellomlagretData.foreldrepengerSaker),
-        relevanteSaker(foreldrepengerSaker),
-    );
+    const søkerInfoErEndret = erSøkerInfoEndret(mellomlagretData.søkerInfo, søkerInfo);
+    const sakerErEndret = erSakerEndret(mellomlagretData.foreldrepengerSaker, foreldrepengerSaker);
 
     const registerdataErEndret = søkerInfoErEndret || sakerErEndret || fellesUttaksplanErEndret;
 
@@ -178,19 +165,3 @@ const RegisterdataSjekk = ({
 
     return <>{children}</>;
 };
-
-// Samanliknar berre felt som faktisk gjer ei mellomlagra søknad ugyldig.
-// Volatile felt frå backend som ikkje seier noko om søknadsgrunnlaget er endra,
-// blir fjerna: oppdatertTidspunkt er eit reint tidsstempel, og åpenBehandling er
-// behandlingsstatus (berre brukt til statustekst på forsida, ikkje i sjølve
-// søknadsflyten). I gjeldendeVedtak er det berre periodane som blir brukte i
-// søknadsflyten; beregningsgrunnlag og tilkjentYtelse høyrer til oversikta og
-// skal ikkje gjera ei mellomlagring utdatert. Slik unngår vi falske positive
-// utdatert-varsel.
-const relevanteSaker = (saker: FpSak_fpoversikt[]) =>
-    saker.map((sak) => ({
-        ...omitMany(sak, ['oppdatertTidspunkt', 'åpenBehandling', 'gjeldendeVedtak']),
-        ...(sak.gjeldendeVedtak && {
-            gjeldendeVedtak: omitMany(sak.gjeldendeVedtak, ['beregningsgrunnlag', 'tilkjentYtelse']),
-        }),
-    }));

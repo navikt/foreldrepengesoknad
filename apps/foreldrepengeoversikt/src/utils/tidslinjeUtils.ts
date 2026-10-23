@@ -7,13 +7,14 @@ import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
     BehandlingTilstand_fpoversikt,
     Familiehendelse_fpoversikt,
+    FellesUttaksplanDto,
     TidslinjeHendelseDto_fpoversikt,
 } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { BarnGruppering } from '../types/BarnGruppering.ts';
 import { Tidslinjehendelse2 } from '../types/Tidslinjehendelse.ts';
-import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils.ts';
+import { getFamiliehendelseDato, getFørsteUttaksdagFraUttaksplan, getNavnPåBarna } from './sakerUtils.ts';
 
 const UTTAKSDAGER_PER_UKE = 5;
 
@@ -108,14 +109,24 @@ export const getTidslinjeTittelForBarnTreÅr = ({
     );
 };
 
+// Tilsvarer at alle periodene i gjeldende vedtak er avslått. Mens planen lastes antar vi at søknaden ikke er avslått.
+const erAlleVedtatteUttaksperioderAvslått = (sak: Sak, fellesUttaksplan: FellesUttaksplanDto | undefined) => {
+    if (fellesUttaksplan === undefined || sak.ytelse !== 'FORELDREPENGER' || sak.gjeldendeVedtak === undefined) {
+        return false;
+    }
+    const søkersPerioder = fellesUttaksplan.perioder.filter((periode) => periode.søker !== undefined);
+    return søkersPerioder.length > 0 && søkersPerioder.every((periode) => periode.søker?.resultat?.innvilget === false);
+};
+
 // TODO: burde håndteres backend
 export const getAlleTidslinjehendelser = (props: {
     tidslinjeHendelserBackend: TidslinjeHendelseDto_fpoversikt[];
     sak: Sak;
     barnFraSak: BarnGruppering;
+    fellesUttaksplan: FellesUttaksplanDto | undefined;
     intl: IntlShape;
 }): Tidslinjehendelse2[] => {
-    const { tidslinjeHendelserBackend, sak, barnFraSak } = props;
+    const { tidslinjeHendelserBackend, sak, barnFraSak, fellesUttaksplan } = props;
     const tidslinjeHendelser: Tidslinjehendelse2[] = tidslinjeHendelserBackend.map((hendelse) => {
         return {
             ...hendelse,
@@ -132,10 +143,7 @@ export const getAlleTidslinjehendelser = (props: {
     const åpenBehandlingPåVent =
         sak.åpenBehandling && VENTEÅRSAKER.includes(sak.åpenBehandling.tilstand) ? sak.åpenBehandling : undefined;
 
-    const erAvslåttForeldrepengesøknad =
-        (sak.ytelse === 'FORELDREPENGER' &&
-            sak.gjeldendeVedtak?.perioder.every((p) => p.resultat?.innvilget === false)) ??
-        false;
+    const erAvslåttForeldrepengesøknad = erAlleVedtatteUttaksperioderAvslått(sak, fellesUttaksplan);
 
     // Vi setter opprettet til imorgen. Det er litt misvisende, men poenget er at den brukes til å finne "aktiv hendelse".
     const imorgen = dayjs().add(1, 'd').toISOString();
@@ -273,7 +281,10 @@ export const beregnTidslinjeVindu = ({
     };
 };
 
-export const getTidligstBehandlingsDatoForTidligSøknad = (sak: Sak): string | undefined => {
+export const getTidligstBehandlingsDatoForTidligSøknad = (
+    sak: Sak,
+    fellesUttaksplan: FellesUttaksplanDto | undefined,
+): string | undefined => {
     if (sak.ytelse === 'SVANGERSKAPSPENGER') {
         const tilretteleggingerFomDatoer =
             sak.åpenBehandling?.søknad.arbeidsforhold.flatMap((a) => {
@@ -287,8 +298,10 @@ export const getTidligstBehandlingsDatoForTidligSøknad = (sak: Sak): string | u
     }
 
     if (sak.ytelse === 'FORELDREPENGER') {
-        const søknadsperioder = sak.åpenBehandling?.søknadsperioder ?? [];
-        const førsteUttaksdagISaken = dayjs(søknadsperioder[0]!.fom).format(ISO_DATE_FORMAT);
+        const førsteUttaksdagISaken = getFørsteUttaksdagFraUttaksplan(fellesUttaksplan);
+        if (!førsteUttaksdagISaken) {
+            return undefined;
+        }
         return Uttaksdagen.denneEllerNeste(førsteUttaksdagISaken).getDatoAntallUttaksdagerTidligere(
             4 * UTTAKSDAGER_PER_UKE,
         );

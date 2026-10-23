@@ -21,6 +21,5 @@ export type ValgtBarn = {
     sak?: FpSak_fpoversikt;
     annenForelder?: AnnenForelderDto_fpoversikt;
     familiehendelsesdato?: string;
-    startdatoFørsteStønadsperiode?: string;
     alleBarnaLever: boolean;
 };

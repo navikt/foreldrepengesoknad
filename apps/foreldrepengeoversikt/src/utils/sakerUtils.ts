@@ -8,6 +8,7 @@ import {
     EsSak_fpoversikt,
     Familiehendelse_fpoversikt,
     Familiesituasjon,
+    FellesUttaksplanDto,
     FpSak_fpoversikt,
     OversiktBarnDto_fpoversikt,
     OversiktPersonopplysningerDto_fpoversikt,
@@ -42,9 +43,11 @@ export const ytelseSomTekst = (ytelse: Sak['ytelse'], intl: IntlShape) => {
     }
 };
 
-export const getFørsteUttaksdagIForeldrepengesaken = (sak: Foreldrepengesak) => {
-    return sak.gjeldendeVedtak?.perioder[0]?.fom ?? sak.åpenBehandling?.søknadsperioder?.[0]?.fom;
-};
+export const getFørsteUttaksdagFraUttaksplan = (uttaksplan: FellesUttaksplanDto | undefined) =>
+    uttaksplan?.perioder
+        .filter((periode) => periode.søker !== undefined)
+        .map((periode) => periode.fom)
+        .toSorted((a, b) => a.localeCompare(b))[0];
 
 export const getBarnFraSak = (familiehendelse: Familiehendelse_fpoversikt, gjelderAdopsjon: boolean): Barn => {
     if (gjelderAdopsjon) {

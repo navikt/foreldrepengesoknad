@@ -22,7 +22,7 @@ import { BodyShort, Box, Button, Link, List, Process, ReadMore, VStack } from '@
 
 import { DDMMYYYY_DATE_FORMAT, Skjemanummer, links } from '@navikt/fp-constants';
 import { loggUmamiEvent } from '@navikt/fp-observability';
-import { OversiktBarnDto_fpoversikt, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
+import { FellesUttaksplanDto, OversiktBarnDto_fpoversikt, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
 
 import { OversiktRoutes } from '../../routes/routes.ts';
 import { Sak } from '../../types/Sak';
@@ -45,9 +45,10 @@ type Props = {
     manglendeVedlegg: Skjemanummer[];
     tidslinjeHendelser: TidslinjeHendelseDto_fpoversikt[];
     sak: Sak;
+    fellesUttaksplan: FellesUttaksplanDto | undefined;
 };
 
-export const Tidslinje = ({ sak, søkersBarn, tidslinjeHendelser, manglendeVedlegg }: Props) => {
+export const Tidslinje = ({ sak, søkersBarn, tidslinjeHendelser, manglendeVedlegg, fellesUttaksplan }: Props) => {
     const intl = useIntl();
     const [visHeleTidslinjen, setVisHeleTidslinjen] = useState(false);
 
@@ -61,6 +62,7 @@ export const Tidslinje = ({ sak, søkersBarn, tidslinjeHendelser, manglendeVedle
         tidslinjeHendelserBackend: tidslinjeHendelser,
         sak,
         barnFraSak,
+        fellesUttaksplan,
         intl,
     });
 
@@ -103,6 +105,7 @@ export const Tidslinje = ({ sak, søkersBarn, tidslinjeHendelser, manglendeVedle
                             sak={sak}
                             manglendeVedlegg={manglendeVedlegg}
                             hendelse={hendelse}
+                            fellesUttaksplan={fellesUttaksplan}
                         />
                     );
                 })}
@@ -124,8 +127,10 @@ const Hendelse = ({
     søkersBarn,
     status,
     manglendeVedlegg,
+    fellesUttaksplan,
 }: {
     sak: Sak;
+    fellesUttaksplan: FellesUttaksplanDto | undefined;
     status?: 'active' | 'completed' | 'uncompleted';
     hendelse: Tidslinjehendelse2;
     søkersBarn: OversiktBarnDto_fpoversikt[];
@@ -291,7 +296,7 @@ const Hendelse = ({
                 return null;
             }
 
-            const tidligstBehandlingsDato = getTidligstBehandlingsDatoForTidligSøknad(sak);
+            const tidligstBehandlingsDato = getTidligstBehandlingsDatoForTidligSøknad(sak, fellesUttaksplan);
 
             if (!tidligstBehandlingsDato) {
                 // Burde ikke skje

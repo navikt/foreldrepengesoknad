@@ -3,6 +3,7 @@ import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { endringFPSøknad, saker, sakerTidligFPSøknad, sakerVenterPåFpInntektsmelding } from 'storybookData/saker/saker';
 import { søkerinfo, søkerinfoUtenArbeidsforhold } from 'storybookData/sokerinfo/sokerinfo';
+import { uttaksplan, uttaksplanUtenPerioder } from 'storybookData/uttaksplan/uttaksplan';
 
 import { Skjemanummer } from '@navikt/fp-constants';
 import { TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
@@ -12,9 +13,12 @@ import { API_URLS } from '../../api/queries.ts';
 import { OversiktRoutes } from '../../routes/routes.ts';
 import { BekreftelseSendtSøknad } from './BekreftelseSendtSøknad';
 
+const FP_SAKSNUMMER = '352011079';
+
 const defaultHandlers = [
     http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
     http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+    http.post(API_URLS.uttaksplan, () => new HttpResponse(null, { status: 204 })),
 ];
 
 const meta = {
@@ -41,7 +45,7 @@ type Story = StoryObj<typeof meta>;
 
 export const ForForeldrepenger: Story = {
     args: {
-        saksnummer: '352011079',
+        saksnummer: FP_SAKSNUMMER,
         relevantNyTidslinjehendelse: {
             opprettet: new Date().toISOString(),
             aktørType: 'BRUKER',
@@ -68,6 +72,7 @@ export const ForForeldrepengerForTidligSøknad: Story = {
         msw.use(
             http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
             http.get(API_URLS.saker, () => HttpResponse.json(sakerTidligFPSøknad)),
+            http.post(API_URLS.uttaksplan, () => HttpResponse.json(uttaksplanUtenPerioder)),
         );
     },
 };
@@ -79,6 +84,7 @@ export const ForForeldrepengerVenterPåInntektsmelding: Story = {
         msw.use(
             http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
             http.get(API_URLS.saker, () => HttpResponse.json(sakerVenterPåFpInntektsmelding)),
+            http.post(API_URLS.uttaksplan, () => HttpResponse.json(uttaksplanUtenPerioder)),
         );
     },
 };
@@ -90,6 +96,7 @@ export const ForForeldrepengerEndringsøknad: Story = {
         msw.use(
             http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
             http.get(API_URLS.saker, () => HttpResponse.json(endringFPSøknad)),
+            http.post(API_URLS.uttaksplan, () => HttpResponse.json(uttaksplan)),
         );
     },
 };
