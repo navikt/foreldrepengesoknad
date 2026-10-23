@@ -634,6 +634,54 @@ describe('UttaksplanListe', () => {
         expect(screen.queryByText('12. des. 25 - 15. des. 25')).not.toBeInTheDocument();
     });
 
+    it('Skal bare forskyve resten av planen med forlengelsen når en periode endres med forskyving', async () => {
+        const oppdaterUttaksplan = vi.fn();
+        const fellesperiode = { forelder: 'MOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false } as const;
+        const fedrekvote = { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false } as const;
+
+        render(
+            <Default
+                oppdaterUttaksplan={oppdaterUttaksplan}
+                perioder={[
+                    {
+                        fom: '2025-04-18',
+                        tom: '2025-05-08',
+                        søker: { forelder: 'MOR', kontoType: 'FORELDREPENGER_FØR_FØDSEL', flerbarnsdager: false },
+                    },
+                    {
+                        fom: '2025-05-09',
+                        tom: '2025-08-15',
+                        søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
+                    },
+                    { fom: '2025-08-25', tom: '2025-08-29', søker: fellesperiode },
+                    { fom: '2025-09-01', tom: '2025-09-05', annenPart: fedrekvote },
+                ]}
+            />,
+        );
+
+        await userEvent.click(await screen.findByText('25. aug. 25 - 29. aug. 25'));
+        const periodeContainer = screen.getByText('25. aug. 25 - 29. aug. 25').closest('.aksel-stack') as HTMLElement;
+        await userEvent.click(within(periodeContainer).getByRole('button', { name: /endre/i }));
+        expect(await screen.findByText('Endre periode')).toBeInTheDocument();
+
+        const tilOgMedDato = screen.getByLabelText('Til og med dato');
+        await userEvent.clear(tilOgMedDato);
+        await userEvent.type(tilOgMedDato, '05.09.2025');
+        await userEvent.tab();
+
+        await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
+        expect(await screen.findByText('Hva skal skje med resten av planen?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Endre og flytt resten av planen'));
+        await userEvent.click(screen.getByText('Legg til'));
+
+        expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
+        const nyePerioder = oppdaterUttaksplan.mock.calls[0]![0] as UttakPeriodeDto[];
+        expect(nyePerioder.slice(2)).toMatchObject([
+            { fom: '2025-08-25', tom: '2025-09-05', søker: fellesperiode },
+            { fom: '2025-09-08', tom: '2025-09-12', annenPart: fedrekvote },
+        ]);
+    });
+
     it('Skal slette periode', async () => {
         const oppdaterUttaksplan = vi.fn();
 
@@ -895,6 +943,99 @@ describe('UttaksplanListe', () => {
 
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
         expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, []);
+    });
+
+    it('Skal beholde annen parts låste del av samtidig uttak når søker legger inn periode uten foreldrepenger', async () => {
+        const oppdaterUttaksplan = vi.fn();
+        const annenPart = {
+            forelder: 'MOR',
+            kontoType: 'MØDREKVOTE',
+            samtidigUttak: 50,
+            flerbarnsdager: false,
+        } as const;
+
+        render(
+            <FarSøkerEtterAtMorHarSøkt
+                oppdaterUttaksplan={oppdaterUttaksplan}
+                perioder={[
+                    {
+                        fom: '2024-06-03',
+                        tom: '2024-06-14',
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FEDREKVOTE',
+                            samtidigUttak: 50,
+                            flerbarnsdager: false,
+                        },
+                        annenPart,
+                    },
+                ]}
+            />,
+        );
+
+        await userEvent.click(await screen.findByText('Legg til periode'));
+        await userEvent.type(screen.getByLabelText('Fra og med dato'), '03.06.2024');
+        await userEvent.tab();
+        await userEvent.type(screen.getByLabelText('Til og med dato'), '14.06.2024');
+        await userEvent.tab();
+
+        await userEvent.click(await screen.findByText('Legge til periode uten foreldrepenger'));
+        await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
+
+        expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
+        expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [{ fom: '2024-06-03', tom: '2024-06-14', annenPart }]);
+    });
+
+    it('Skal beholde annen parts låste del av samtidig uttak utenfor ny periode når søker endrer perioden', async () => {
+        const oppdaterUttaksplan = vi.fn();
+        const annenPart = {
+            forelder: 'MOR',
+            kontoType: 'MØDREKVOTE',
+            samtidigUttak: 50,
+            flerbarnsdager: false,
+        } as const;
+
+        render(
+            <FarSøkerEtterAtMorHarSøkt
+                oppdaterUttaksplan={oppdaterUttaksplan}
+                perioder={[
+                    {
+                        fom: '2024-06-03',
+                        tom: '2024-06-14',
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FEDREKVOTE',
+                            samtidigUttak: 50,
+                            flerbarnsdager: false,
+                        },
+                        annenPart,
+                    },
+                ]}
+            />,
+        );
+
+        await userEvent.click(await screen.findByText('03. juni 24 - 14. juni 24'));
+        const periodeContainer = screen.getByText('03. juni 24 - 14. juni 24').closest('.aksel-stack') as HTMLElement;
+        await userEvent.click(within(periodeContainer).getByRole('button', { name: /endre/i }));
+        expect(await screen.findByText('Endre periode')).toBeInTheDocument();
+
+        await userEvent.type(screen.getByLabelText('Fra og med dato'), '03.06.2024');
+        await userEvent.tab();
+        await userEvent.type(screen.getByLabelText('Til og med dato'), '07.06.2024');
+        await userEvent.tab();
+
+        await userEvent.click(await screen.findByText('Ferie'));
+        await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
+
+        expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
+        expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
+            {
+                fom: '2024-06-03',
+                tom: '2024-06-07',
+                søker: { forelder: 'MOR', utsettelseÅrsak: 'FERIE', flerbarnsdager: false },
+            },
+            { fom: '2024-06-10', tom: '2024-06-14', annenPart },
+        ]);
     });
 
     it('Skal vise annen part sin ferie og gradering, ikkje berre kontonamn', async () => {
