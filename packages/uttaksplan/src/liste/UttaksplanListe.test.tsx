@@ -853,7 +853,13 @@ describe('UttaksplanListe', () => {
         await userEvent.click(screen.getByText('Slett'));
 
         expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
-        expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [{ fom: '2024-04-04', tom: '2024-04-18', annenPart }]);
+        expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
+            {
+                fom: '2024-04-04',
+                tom: '2024-04-18',
+                annenPart: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
+            },
+        ]);
     });
 
     it('Skal vise annen part sin ferie og gradering, ikkje berre kontonamn', async () => {
