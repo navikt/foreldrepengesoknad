@@ -5,7 +5,7 @@ import {
 } from 'api/getStønadskvoteParams';
 import { useUttaksplanOptions } from 'api/queries';
 import { useEffect } from 'react';
-import { annenPartHarVedtak } from 'utils/annenForelderUtils';
+import { finnAnnenPartsPlan } from 'utils/annenForelderUtils';
 import { getTermindato } from 'utils/barnUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
@@ -22,12 +22,12 @@ export const useSamordneBarnMedAnnenPart = (enabled: boolean) => {
     const resetUttaksplanData = useResetUttaksplanData();
     const skalSamordne = enabled && !kommerFraPlanlegger && !!søkersituasjon && isFarEllerMedmor(søkersituasjon.rolle);
     const uttaksplanQuery = useQuery(useUttaksplanOptions());
-    const vedtak = annenPartHarVedtak(uttaksplanQuery.data) ? uttaksplanQuery.data : undefined;
+    const annenPartsPlan = finnAnnenPartsPlan(uttaksplanQuery.data);
     const antallBarn = barn
-        ? getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter(skalSamordne, barn.antallBarn, vedtak?.antallBarn)
+        ? getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter(skalSamordne, barn.antallBarn, annenPartsPlan?.antallBarn)
         : undefined;
     const termindato = barn
-        ? getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter(skalSamordne, getTermindato(barn), vedtak?.termindato)
+        ? getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter(skalSamordne, getTermindato(barn), annenPartsPlan?.termindato)
         : undefined;
     const skalOppdatereBarn =
         skalSamordne &&

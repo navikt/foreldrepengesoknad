@@ -6,7 +6,7 @@ import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useIntl } from 'react-intl';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
-import { annenPartHarVedtak } from 'utils/annenForelderUtils';
+import { finnAnnenPartsPlan } from 'utils/annenForelderUtils';
 import { getVis1Juli2024Info } from 'utils/dateUtils';
 import { getKjønnFromFnr } from 'utils/personUtils';
 
@@ -45,9 +45,9 @@ export const PeriodeMedForeldrepengerSteg = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
 
-    const annenPartVedtak = useQuery({
+    const annenPartsPlan = useQuery({
         ...useUttaksplanOptions(),
-        select: (uttaksplan) => (annenPartHarVedtak(uttaksplan) ? uttaksplan : undefined),
+        select: finnAnnenPartsPlan,
     }).data;
 
     const kontoerOptions = useStønadsKontoerOptions();
@@ -57,8 +57,8 @@ export const PeriodeMedForeldrepengerSteg = ({
         return <Spinner />;
     }
 
-    const visAnnenPartsValg = annenPartVedtak !== undefined;
-    const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && !annenPartVedtak;
+    const visAnnenPartsValg = annenPartsPlan !== undefined;
+    const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && !annenPartsPlan;
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>
@@ -83,10 +83,10 @@ export const PeriodeMedForeldrepengerSteg = ({
                                 goToNextDefaultStep={navigator.goToNextStep}
                                 fornavnAnnenForelder={annenForelder.fornavn}
                                 kjønnAnnenForelder={getKjønnFromFnr(annenForelder)}
-                                dekningsgrad={annenPartVedtak.dekningsgrad === 'HUNDRE' ? '100' : '80'}
+                                dekningsgrad={annenPartsPlan.dekningsgrad === 'HUNDRE' ? '100' : '80'}
                                 valgtStønadskvote={
                                     tilgjengeligeStønadskvoterQuery.data[
-                                        annenPartVedtak.dekningsgrad === 'HUNDRE' ? '100' : '80'
+                                        annenPartsPlan.dekningsgrad === 'HUNDRE' ? '100' : '80'
                                     ]
                                 }
                             />

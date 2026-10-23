@@ -28,6 +28,7 @@ const {
     MorUfødtBarn,
     FarFødtBarnMorHarVedtak,
     FarFødtBarnMorHarAvslåttVedtak,
+    FarFødtBarnMorHarSøktUtenVedtak,
 } = composeStories(stories);
 
 const renderForFar = (initialState: ContextDataMap, children?: ReactNode) => {
@@ -544,6 +545,18 @@ describe('<AnnenForelderSteg>', () => {
             ).not.toBeInTheDocument();
         });
     });
+
+    it('skal ikke spørre om annenpart har rett hvis annenpart har søkt uten vedtak', async () => {
+        await FarFødtBarnMorHarSøktUtenVedtak.run();
+
+        expect(await screen.findAllByText('Den andre forelderen')).toHaveLength(2);
+        await waitFor(() => {
+            expect(
+                screen.queryByText('Har den andre forelderen rett til foreldrepenger i Norge?', { exact: false }),
+            ).not.toBeInTheDocument();
+        });
+    });
+
     it('skal spørre om annenpart har rett hvis annenpart har avslått vedtak', async () => {
         await FarFødtBarnMorHarAvslåttVedtak.run();
 

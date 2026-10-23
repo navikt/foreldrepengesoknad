@@ -18,6 +18,7 @@ import {
     ArbeidsforholdOgInntektFp,
     Barn,
     EksternArbeidsforholdDto_fpoversikt,
+    FellesUttaksplanDto,
     FpPersonopplysningerDto_fpoversikt,
     Frilans,
     KontoBeregningDto,
@@ -1157,6 +1158,32 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
                     </FpDataContext>
                 </MemoryRouter>
             </QueryClientProvider>
+        );
+    },
+};
+
+export const FarErSøkerOgMorHarSøktUtenVedtak: Story = {
+    ...FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon,
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.uttaksplan, () =>
+                HttpResponse.json({
+                    antallBarn: 1,
+                    dekningsgrad: 'HUNDRE',
+                    perioder: [
+                        {
+                            fom: '2022-03-30',
+                            tom: '2022-06-07',
+                            annenPart: {
+                                forelder: 'MOR',
+                                kontoType: 'FELLESPERIODE',
+                                samtidigUttak: 50,
+                                flerbarnsdager: false,
+                            },
+                        },
+                    ],
+                } satisfies FellesUttaksplanDto),
+            ),
         );
     },
 };
