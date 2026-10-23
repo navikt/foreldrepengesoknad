@@ -10,7 +10,7 @@ import { ApiError, captureMessage } from '@navikt/fp-observability';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, FpSoknadProblemDetails } from '@navikt/fp-types';
 import { useAbortSignal } from '@navikt/fp-utils';
 
-import { useContextGetAnyData } from './FpDataContext';
+import { ContextDataType, useContextGetAnyData } from './FpDataContext';
 
 export type SendSøknadResultat = 'SENDT' | 'MANGLER_UTTAKSPERIODER';
 
@@ -37,7 +37,8 @@ export const useSendSøknad = (
     const send = async (): Promise<SendSøknadResultat> => {
         const cleanedSøknad = getSøknadsdataForInnsending(erEndringssøknad, hentData, søkerinfo, foreldrepengerSaker);
 
-        if (!harSøknadenNødvendigeUttaksperioder(cleanedSøknad, erEndringssøknad)) {
+        const helePlanen = hentData(ContextDataType.UTTAKSPLAN) ?? [];
+        if (!harSøknadenNødvendigeUttaksperioder(cleanedSøknad, erEndringssøknad, helePlanen)) {
             captureMessage(
                 `Stoppet innsending av ${erEndringssøknad ? 'endringssøknad' : 'søknad'} uten nødvendige uttaksperioder`,
             );

@@ -410,7 +410,7 @@ describe('useFpSendSøknad', () => {
 
         const erEndringssøknad = true;
         const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, erEndringssøknad, saker), {
-            wrapper: getWrapper([]),
+            wrapper: getWrapper(),
         });
 
         await act(() => result.current.sendSøknad());
@@ -446,13 +446,7 @@ describe('useFpSendSøknad', () => {
                     },
                     uttaksplan: {
                         ønskerJustertUttakVedFødsel: UTTAKSPLAN_METADATA.ønskerJustertUttakVedFødsel,
-                        perioder: [
-                            {
-                                fom: '2024-01-02',
-                                tom: '2024-01-02',
-                                søker: { forelder: 'MOR', utsettelseÅrsak: 'FRI', flerbarnsdager: false },
-                            },
-                        ],
+                        perioder: [UTTAKSPLAN_PERIODE],
                     },
                     vedlegg: VEDLEGG[Skjemanummer.TERMINBEKREFTELSE],
                 } satisfies EndringssøknadForeldrepengerDto,
@@ -490,4 +484,19 @@ describe('useFpSendSøknad', () => {
             expect(deleteMock).not.toHaveBeenCalled();
         },
     );
+
+    it('skal ikke sende inn endringssøknad når søkeren har slettet alle sine perioder', async () => {
+        const postMock = vi.spyOn(ky, 'post');
+        const deleteMock = vi.spyOn(ky, 'delete');
+
+        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, true, saker), {
+            wrapper: getWrapper([]),
+        });
+
+        const resultat = await act(() => result.current.sendSøknad());
+
+        expect(resultat).toBe('MANGLER_UTTAKSPERIODER');
+        expect(postMock).not.toHaveBeenCalled();
+        expect(deleteMock).not.toHaveBeenCalled();
+    });
 });

@@ -1,8 +1,8 @@
 import { ContextDataMap, ContextDataType, OpprinneligUttaksplan } from 'appData/FpDataContext';
 import dayjs from 'dayjs';
+import { harMinstEnUttaksEllerOverføringsperiode } from 'steps/uttaksplan/submitValidering';
 import { AnnenForelder, isAnnenForelderIkkeOppgitt } from 'types/AnnenForelder';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
-import { harMinstEnUttaksEllerOverføringsperiode } from 'steps/uttaksplan/submitValidering';
 import { VedleggDataType } from 'types/VedleggDataType';
 import { getEndringstidspunktNy } from 'utils/dateUtils';
 
@@ -172,12 +172,14 @@ export const getSøknadsdataForInnsending = (
 export const harSøknadenNødvendigeUttaksperioder = (
     søknad: ForeldrepengesøknadDto | EndringssøknadForeldrepengerDto,
     erEndringssøknad: boolean,
+    helePlanen: UttakPeriodeDto[],
 ): boolean => {
-    const perioder = søknad.uttaksplan.perioder ?? [];
     if (erEndringssøknad) {
-        return perioder.length > 0;
+        // Endringssøknaden får en FRI-utsettelse ved endringstidspunktet når søkeren har slettet perioder,
+        // så perioder i søknaden er aldri tom. Sjekk søkerens perioder i hele planen, slik uttaksplan-steget gjør.
+        return helePlanen.some((periode) => periode.søker !== undefined);
     }
-    return harMinstEnUttaksEllerOverføringsperiode(perioder);
+    return harMinstEnUttaksEllerOverføringsperiode(søknad.uttaksplan.perioder ?? []);
 };
 
 export const mapTilSøknadDto = (

@@ -307,7 +307,9 @@ describe('<Oppsummering>', () => {
 
     it('skal sende brukeren til planen når innsendingen stoppes fordi planen mangler perioder', async () => {
         const gåTilNesteSide = vi.fn();
-        render(<ManglerUttaksperioderVedInnsending gåTilNesteSide={gåTilNesteSide} />);
+        await ManglerUttaksperioderVedInnsending.run({
+            args: { ...ManglerUttaksperioderVedInnsending.args, gåTilNesteSide },
+        });
 
         await userEvent.click(
             screen.getByText(
