@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { IntlProvider } from 'react-intl';
+
+import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../../intl/messages/nb_NO.json';
 import { type AndreInntektskilder } from '../../types/AndreInntektskilder';
@@ -29,7 +30,7 @@ const inntektskilder = [
 
 const renderInntektskilder = (andreInntektskilder: AndreInntektskilder[], onRemove = vi.fn()) =>
     render(
-        <IntlProvider locale="nb" messages={nbMessages}>
+        <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: nbMessages }}>
             <AndreInntektskilderBox andreInntektskilder={andreInntektskilder} onRemove={onRemove} />
         </IntlProvider>,
     );
@@ -83,7 +84,7 @@ describe('<AndreInntektskilderBox>', () => {
         const { rerender } = renderInntektskilder([]);
 
         rerender(
-            <IntlProvider locale="nb" messages={nbMessages}>
+            <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: nbMessages }}>
                 <AndreInntektskilderBox andreInntektskilder={[inntektskilder[0]!]} onRemove={vi.fn()} />
             </IntlProvider>,
         );

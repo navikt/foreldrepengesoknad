@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { IntlProvider } from 'react-intl';
+
+import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../../intl/messages/nb_NO.json';
 import { WizardNavigator } from './WizardNavigator';
@@ -11,7 +12,7 @@ describe('<WizardNavigator>', () => {
         const onNext = vi.fn();
 
         render(
-            <IntlProvider locale="nb" messages={nbMessages}>
+            <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: nbMessages }}>
                 <WizardNavigator isLastStep={false} onCancel={onCancel} onNext={onNext} />
             </IntlProvider>,
         );
@@ -29,7 +30,7 @@ describe('<WizardNavigator>', () => {
         const onNext = vi.fn();
 
         render(
-            <IntlProvider locale="nb" messages={nbMessages}>
+            <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: nbMessages }}>
                 <WizardNavigator isLastStep onCancel={vi.fn()} onBack={onBack} onNext={onNext} />
             </IntlProvider>,
         );

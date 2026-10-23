@@ -1,11 +1,10 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { ComponentProps } from 'react';
-import { IntlProvider } from 'react-intl';
 
 import { formHookMessages } from '@navikt/fp-form-hooks';
 import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
-import { uiMessages } from '@navikt/fp-ui';
+import { IntlProvider, uiMessages } from '@navikt/fp-ui';
 
 import nbMessages from '../../intl/messages/nb_NO.json';
 import { LeggTilAndreInntekterWizard } from './LeggTilAndreInntekterWizard';
@@ -22,7 +21,9 @@ const renderWizard = (props: RenderWizardProps = {}) =>
     render(
         <IntlProvider
             locale="nb"
-            messages={{ ...formHookMessages.nb, ...egenNæringMessages.nb, ...uiMessages.nb, ...nbMessages }}
+            messagesGroupedByLocale={{
+                nb: { ...formHookMessages.nb, ...egenNæringMessages.nb, ...uiMessages.nb, ...nbMessages },
+            }}
         >
             <LeggTilAndreInntekterWizard appOrigin="foreldrepengesoknad" {...props} />
         </IntlProvider>,

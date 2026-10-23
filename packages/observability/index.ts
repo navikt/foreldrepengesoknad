@@ -10,6 +10,8 @@ export type { SkyraSurveyProps } from './src/components/SkyraSurvey';
 export { initFaro } from './src/initFaro';
 export { loggUmamiEvent } from './src/umami';
 
+export type { ObservabilityMessageId } from './src/intl/messageIds';
+
 export const observabilityMessages = {
     nb: nbMessages,
     nn: nnMessages,
