@@ -862,6 +862,41 @@ describe('UttaksplanListe', () => {
         ]);
     });
 
+    it('Skal slette samtidig uttak for begge når annen parts perioder ikke er låst', async () => {
+        const oppdaterUttaksplan = vi.fn();
+
+        render(
+            <FarSøkerEtterAtMorHarSøkt
+                oppdaterUttaksplan={oppdaterUttaksplan}
+                erPeriodeneTilAnnenPartLåst={false}
+                perioder={[
+                    {
+                        fom: '2024-04-04',
+                        tom: '2024-04-18',
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FEDREKVOTE',
+                            samtidigUttak: 50,
+                            flerbarnsdager: false,
+                        },
+                        annenPart: {
+                            forelder: 'MOR',
+                            kontoType: 'MØDREKVOTE',
+                            samtidigUttak: 50,
+                            flerbarnsdager: false,
+                        },
+                    },
+                ]}
+            />,
+        );
+
+        expect(await screen.findByText('Hans skal ha 50 % foreldrepenger')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Slett'));
+
+        expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
+        expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, []);
+    });
+
     it('Skal vise annen part sin ferie og gradering, ikkje berre kontonamn', async () => {
         render(<FarSøkerEtterAtMorHarSøkt />);
 
