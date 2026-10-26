@@ -1,6 +1,6 @@
 import { composeStories } from '@storybook/react-vite';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { getStønadskvoteParams } from 'api/getStønadskvoteParams';
 import { uttaksplanOptions } from 'api/queries';
@@ -167,7 +167,7 @@ it('skal bruke mors perioder og skjule oppstartsvalg også når mor kun har søk
         },
     );
 
-    render(
+    const { container } = render(
         <QueryClientProvider client={client}>
             <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: { ...messages, ...uiMessages.nb } }}>
                 <FpDataContext
@@ -191,10 +191,9 @@ it('skal bruke mors perioder og skjule oppstartsvalg også når mor kun har søk
         </QueryClientProvider>,
     );
 
-    expect(
-        await screen.findByText('Hannes siste dag med foreldrepenger er mandag 12. august 2024.'),
-    ).toBeInTheDocument();
-    expect(screen.queryByText('Når vil du starte permisjonen din med foreldrepenger?')).not.toBeInTheDocument();
+    const steg = within(container);
+    expect(await steg.findByText('Hannes siste dag med foreldrepenger er mandag 12. august 2024.')).toBeInTheDocument();
+    expect(steg.queryByText('Når vil du starte permisjonen din med foreldrepenger?')).not.toBeInTheDocument();
     vi.useRealTimers();
 });
 
