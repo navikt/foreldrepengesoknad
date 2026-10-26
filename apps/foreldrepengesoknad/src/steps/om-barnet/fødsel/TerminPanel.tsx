@@ -45,11 +45,11 @@ export const TerminPanel = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtN
 
     const formMethods = useFormContext<UfødtBarn>();
     const termindato = formMethods.watch('termindato');
-    const erForTidligTilÅSøkePåTermin =
-        termindato && isValidDateString(termindato) ? !erIUke22Pluss3(termindato) : false;
+    const harGyldigTermindato = !!termindato && isValidDateString(termindato);
+    const erForTidligTilÅSøkePåTermin = harGyldigTermindato ? !erIUke22Pluss3(termindato) : false;
 
     const søkerErFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const farMedMorSøkerPåTermin = søkerErFarMedmor && termindato;
+    const farMedMorSøkerPåTermin = søkerErFarMedmor && harGyldigTermindato;
     const kanSøkePåTermin = getKanSøkePåTermin(søkersituasjon.rolle, termindato);
 
     const aktiveArbeidsforhold =
