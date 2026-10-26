@@ -392,7 +392,14 @@ const LottOgHyreInntekt = (props: FiskerNæringProps) => {
                     </InfoCard.Title>
                 </InfoCard.Header>
                 <InfoCard.Content>
-                    <FormattedMessage id="LeggTilAndreInntekterWizard.lottOgHyre.content" />
+                    <VStack gap="space-16">
+                        <BodyShort>
+                            <FormattedMessage id="LeggTilAndreInntekterWizard.lottOgHyre.content1" />
+                        </BodyShort>
+                        <BodyShort>
+                            <FormattedMessage id="LeggTilAndreInntekterWizard.lottOgHyre.content2" />
+                        </BodyShort>
+                    </VStack>
                 </InfoCard.Content>
             </InfoCard>
             <FiskerEgenNæringForm {...props} />
