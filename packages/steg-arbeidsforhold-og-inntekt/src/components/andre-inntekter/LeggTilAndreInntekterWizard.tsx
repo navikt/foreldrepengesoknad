@@ -1,4 +1,4 @@
-import { ExclamationmarkTriangleIcon, InformationSquareIcon, PersonEnvelopeIcon } from '@navikt/aksel-icons';
+import { ExclamationmarkTriangleIcon, PersonEnvelopeIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -255,14 +255,6 @@ const FiskerForm = ({ appOrigin, onAbort, onBack, onComplete, onSaveEgenNæring 
                 <Heading level="2" size="small">
                     <FormattedMessage id="LeggTilAndreInntekterWizard.tittel" />
                 </Heading>
-                <Label>
-                    <FormattedMessage id="LeggTilAndreInntekterWizard.fiskerForm.label" />
-                </Label>
-                <InfoCard data-color="meta-lime">
-                    <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
-                        <FormattedMessage id="LeggTilAndreInntekterWizard.fiskerForm.infoMessage" />
-                    </InfoCard.Message>
-                </InfoCard>
                 <RadioGroup
                     legend={intl.formatMessage({ id: 'LeggTilAndreInntekterWizard.fiskerForm.legend' })}
                     value={fiskerValg ?? ''}
