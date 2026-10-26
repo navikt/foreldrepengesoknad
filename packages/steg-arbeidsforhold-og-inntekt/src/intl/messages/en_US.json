@@ -121,7 +121,6 @@
     "LeggTilAndreInntekterWizard.aktivInntekt.content": "Active income is income from work or assignments you have carried out yourself during the period.",
     "LeggTilAndreInntekterWizard.savnerInntekt.header": "Are you missing an income source in the overview?",
     "LeggTilAndreInntekterWizard.savnerInntekt.content": "If you notice errors or missing information, you must ask your employer to register the correct information in the Register of Employers and Employees. We retrieve the information from there.",
-    "LeggTilAndreInntekterWizard.fiskerForm.label": "Income as a fisher or crew member",
     "LeggTilAndreInntekterWizard.fiskerForm.legend": "What arrangement do you have as a fisher or crew member?",
     "LeggTilAndreInntekterWizard.fiskerForm.lott": "Lott (share of catch)",
     "LeggTilAndreInntekterWizard.fiskerForm.hyre": "Hire (wages)",

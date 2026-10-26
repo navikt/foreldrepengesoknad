@@ -121,7 +121,6 @@
     "LeggTilAndreInntekterWizard.aktivInntekt.content": "Aktiv inntekt er inntekt fra arbeid eller oppdrag du selv har utført i perioden.",
     "LeggTilAndreInntekterWizard.savnerInntekt.header": "Savner du en inntekt i oversikten?",
     "LeggTilAndreInntekterWizard.savnerInntekt.content": "Hvis du oppdager feil eller manglende opplysninger, må du be arbeidsgiveren din om å registrere riktig informasjon i Arbeidsgiver- og arbeidstakerregisteret. Vi henter opplysningene derfra.",
-    "LeggTilAndreInntekterWizard.fiskerForm.label": "Inntekt som fisker eller mannskap",
     "LeggTilAndreInntekterWizard.fiskerForm.legend": "Hvilken ordning har du som fisker eller mannskap?",
     "LeggTilAndreInntekterWizard.fiskerForm.lott": "Lott",
     "LeggTilAndreInntekterWizard.fiskerForm.hyre": "Hyre",

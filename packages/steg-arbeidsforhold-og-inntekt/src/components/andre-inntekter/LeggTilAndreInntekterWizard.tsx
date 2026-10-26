@@ -255,9 +255,6 @@ const FiskerForm = ({ appOrigin, onAbort, onBack, onComplete, onSaveEgenNæring 
                 <Heading level="2" size="small">
                     <FormattedMessage id="LeggTilAndreInntekterWizard.tittel" />
                 </Heading>
-                <Label>
-                    <FormattedMessage id="LeggTilAndreInntekterWizard.fiskerForm.label" />
-                </Label>
                 <RadioGroup
                     legend={intl.formatMessage({ id: 'LeggTilAndreInntekterWizard.fiskerForm.legend' })}
                     value={fiskerValg ?? ''}
