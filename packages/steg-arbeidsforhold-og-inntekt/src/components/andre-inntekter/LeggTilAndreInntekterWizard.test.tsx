@@ -80,7 +80,6 @@ describe('<LeggTilAndreInntekterWizard>', () => {
 
     it.each([
         ['Lott', 'Inntekt fra lott', true],
-        ['Hyre', 'Du må be arbeidsgiveren din sende inntektsmelding', false],
         ['Lott og hyre', 'Inntekt fra lott og hyre', true],
         ['Egen båt', 'Fiske med egen båt', true],
     ])('skal vise riktig informasjonssteg for %s', async (radioLabel, expectedText, skalViseEgenNæring) => {
@@ -103,6 +102,27 @@ describe('<LeggTilAndreInntekterWizard>', () => {
         expect(screen.queryByText('Hvilken type næring har du hatt?')).not.toBeInTheDocument();
         expect(screen.queryByText('Hva heter virksomheten? (valgfritt)') !== null).toBe(skalViseEgenNæring);
         expect(screen.getByRole('button', { name: 'Legg til' }).hasAttribute('disabled')).toBe(!skalViseEgenNæring);
+    });
+
+    it('skal vise informasjon om hyre og gå tilbake til arbeidsforhold og inntekt ved fortsett', async () => {
+        const onSaveEgenNæring = vi.fn();
+        const onSaveAndreInntekt = vi.fn();
+        renderWizard({ onSaveEgenNæring, onSaveAndreInntekt });
+
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
+        await userEvent.click(screen.getByRole('radio', { name: /Jeg er fisker eller mannskap på båt/ }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
+        await userEvent.click(screen.getByRole('radio', { name: 'Hyre' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
+
+        expect(screen.getByText('Du må be arbeidsgiveren din sende inntektsmelding')).toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: 'Legg til' })).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
+
+        expect(screen.getByRole('button', { name: 'Legg til inntekt' })).toBeInTheDocument();
+        expect(onSaveEgenNæring).not.toHaveBeenCalled();
+        expect(onSaveAndreInntekt).not.toHaveBeenCalled();
     });
 
     it('skal validere og lagre annen inntekt før wizarden avsluttes', async () => {

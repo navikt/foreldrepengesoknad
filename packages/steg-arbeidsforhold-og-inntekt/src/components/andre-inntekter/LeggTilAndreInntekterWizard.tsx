@@ -300,8 +300,7 @@ const FiskerForm = ({ appOrigin, onAbort, onBack, onComplete, onSaveEgenNæring 
                 </Heading>
                 <HyreInntekt />
                 <WizardNavigator
-                    isLastStep
-                    isNextDisabled
+                    isLastStep={false}
                     onCancel={onAbort}
                     onBack={() => setStep('VELG_ORDNING')}
                     onNext={onComplete}
