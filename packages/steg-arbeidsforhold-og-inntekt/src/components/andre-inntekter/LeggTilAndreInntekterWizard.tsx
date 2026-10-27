@@ -84,6 +84,7 @@ const LeggTilAndreInntekterWizardInner = ({
     const intl = useIntl();
     const [step, setStep] = useState<WizardStep>('START');
     const [inntektstype, setInntektstype] = useState<Inntektstype>();
+    const harNæring = harRegistrertNæring || harEgenNæring;
 
     const avsluttWizard = () => {
         setInntektstype(undefined);
@@ -91,11 +92,7 @@ const LeggTilAndreInntekterWizardInner = ({
     };
 
     if (step === 'START') {
-        return (
-            <LeggTilAndreInntekterButton
-                onClick={() => setStep(harRegistrertNæring ? 'ANNEN_INNTEKT' : 'VELG_INNTEKTSTYPE')}
-            />
-        );
+        return <LeggTilAndreInntekterButton onClick={() => setStep('VELG_INNTEKTSTYPE')} />;
     }
 
     if (step === 'VELG_INNTEKTSTYPE') {
@@ -112,21 +109,17 @@ const LeggTilAndreInntekterWizardInner = ({
                     value={inntektstype ?? ''}
                     onChange={setInntektstype}
                 >
-                    {!harEgenNæring && (
-                        <>
-                            <Radio value="EGEN_NÆRING">
-                                <FormattedMessage id="LeggTilAndreInntekterWizard.egenNæring.label" />
-                            </Radio>
-                            <Radio
-                                value="FISKER"
-                                description={intl.formatMessage({
-                                    id: 'LeggTilAndreInntekterWizard.fisker.description',
-                                })}
-                            >
-                                <FormattedMessage id="LeggTilAndreInntekterWizard.fisker.label" />
-                            </Radio>
-                        </>
-                    )}
+                    <Radio value="EGEN_NÆRING">
+                        <FormattedMessage id="LeggTilAndreInntekterWizard.egenNæring.label" />
+                    </Radio>
+                    <Radio
+                        value="FISKER"
+                        description={intl.formatMessage({
+                            id: 'LeggTilAndreInntekterWizard.fisker.description',
+                        })}
+                    >
+                        <FormattedMessage id="LeggTilAndreInntekterWizard.fisker.label" />
+                    </Radio>
                     <Radio
                         value="ANNEN_INNTEKT"
                         description={
@@ -178,6 +171,7 @@ const LeggTilAndreInntekterWizardInner = ({
         return (
             <FiskerForm
                 appOrigin={appOrigin}
+                harNæring={harNæring}
                 onAbort={avsluttWizard}
                 onBack={() => setStep('VELG_INNTEKTSTYPE')}
                 onComplete={avsluttWizard}
@@ -190,9 +184,9 @@ const LeggTilAndreInntekterWizardInner = ({
         return (
             <AnnenInntektForm
                 appOrigin={appOrigin}
-                harNæring={harRegistrertNæring || harEgenNæring}
+                harNæring={harNæring}
                 onAbort={avsluttWizard}
-                onBack={harRegistrertNæring ? undefined : () => setStep('VELG_INNTEKTSTYPE')}
+                onBack={() => setStep('VELG_INNTEKTSTYPE')}
                 onSubmit={(annenInntekt) => {
                     onSaveAndreInntekt?.(annenInntekt);
                     avsluttWizard();
@@ -202,6 +196,24 @@ const LeggTilAndreInntekterWizardInner = ({
                     avsluttWizard();
                 }}
             />
+        );
+    }
+
+    if (step === 'EGEN_NÆRING' && harNæring) {
+        return (
+            <VStack gap="space-40">
+                <Heading level="2" size="small">
+                    <FormattedMessage id="LeggTilAndreInntekterWizard.tittel" />
+                </Heading>
+                <AlleredeRegistrertNæringInfoCard />
+                <WizardNavigator
+                    isLastStep
+                    isConfirmation
+                    onCancel={avsluttWizard}
+                    onBack={() => setStep('VELG_INNTEKTSTYPE')}
+                    onNext={avsluttWizard}
+                />
+            </VStack>
         );
     }
 
@@ -230,13 +242,16 @@ interface WizardBranchFormProps {
 
 interface FiskerFormProps extends WizardBranchFormProps {
     appOrigin: AppName;
+    harNæring: boolean;
     onSaveEgenNæring?: (egenNæring: NæringDto) => void;
 }
 
 interface FiskerNæringProps {
     appOrigin: AppName;
+    harNæring: boolean;
     onAbort: () => void;
     onBack: () => void;
+    onComplete: () => void;
     onSubmit: (egenNæring: NæringDto) => void;
 }
 
@@ -244,7 +259,7 @@ type FiskerValg = 'lott' | 'hyre' | 'lott_og_hyre' | 'egen_båt';
 
 type FiskerStep = 'VELG_ORDNING' | 'VIS_INFORMASJON';
 
-const FiskerForm = ({ appOrigin, onAbort, onBack, onComplete, onSaveEgenNæring }: FiskerFormProps) => {
+const FiskerForm = ({ appOrigin, harNæring, onAbort, onBack, onComplete, onSaveEgenNæring }: FiskerFormProps) => {
     const intl = useIntl();
     const [fiskerValg, setFiskerValg] = useState<FiskerValg>();
     const [step, setStep] = useState<FiskerStep>('VELG_ORDNING');
@@ -303,8 +318,10 @@ const FiskerForm = ({ appOrigin, onAbort, onBack, onComplete, onSaveEgenNæring 
 
     const fiskerNæringProps: FiskerNæringProps = {
         appOrigin,
+        harNæring,
         onAbort,
         onBack: () => setStep('VELG_ORDNING'),
+        onComplete,
         onSubmit: (egenNæring) => {
             onSaveEgenNæring?.(egenNæring);
             onComplete();
@@ -323,17 +340,40 @@ const FiskerForm = ({ appOrigin, onAbort, onBack, onComplete, onSaveEgenNæring 
     );
 };
 
-const FiskerEgenNæringForm = ({ appOrigin, onSubmit, onAbort, onBack }: FiskerNæringProps) => (
-    <EgenNæringForm
-        fixedNæringstype="FISKE"
-        fixedRegistrertINorge
-        appOrigin={appOrigin}
-        onSubmit={onSubmit}
-        withoutFormElement
-        renderActions={(submitForm) => (
-            <WizardNavigator isLastStep onCancel={onAbort} onBack={onBack} onNext={() => submitForm()} />
-        )}
-    />
+const FiskerEgenNæringForm = ({ appOrigin, harNæring, onSubmit, onAbort, onBack, onComplete }: FiskerNæringProps) => {
+    if (harNæring) {
+        return (
+            <>
+                <AlleredeRegistrertNæringInfoCard />
+                <WizardNavigator isLastStep isConfirmation onCancel={onAbort} onBack={onBack} onNext={onComplete} />
+            </>
+        );
+    }
+    return (
+        <EgenNæringForm
+            fixedNæringstype="FISKE"
+            fixedRegistrertINorge
+            appOrigin={appOrigin}
+            onSubmit={onSubmit}
+            withoutFormElement
+            renderActions={(submitForm) => (
+                <WizardNavigator isLastStep onCancel={onAbort} onBack={onBack} onNext={() => submitForm()} />
+            )}
+        />
+    );
+};
+
+const AlleredeRegistrertNæringInfoCard = () => (
+    <InfoCard data-color="info">
+        <InfoCard.Header icon={<PersonEnvelopeIcon aria-hidden />}>
+            <InfoCard.Title>
+                <FormattedMessage id="LeggTilAndreInntekterWizard.alleredeRegistrertNæring.title" />
+            </InfoCard.Title>
+        </InfoCard.Header>
+        <InfoCard.Content>
+            <FormattedMessage id="LeggTilAndreInntekterWizard.alleredeRegistrertNæring.content" />
+        </InfoCard.Content>
+    </InfoCard>
 );
 
 const LottInntekt = (props: FiskerNæringProps) => {

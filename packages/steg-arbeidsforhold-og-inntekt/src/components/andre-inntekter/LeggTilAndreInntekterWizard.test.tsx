@@ -153,34 +153,17 @@ describe('<LeggTilAndreInntekterWizard>', () => {
         expect(screen.getByRole('button', { name: 'Legg til inntekt' })).toBeInTheDocument();
     });
 
-    it('skal gå direkte til annen pensjonsgivende inntekt når næring finnes i registeret', async () => {
-        renderWizard({ harRegistrertNæring: true });
+    it.each([
+        ['registrert næring', { harRegistrertNæring: true }],
+        ['egen næring lagt til', { harEgenNæring: true }],
+    ])('skal vise alle inntektstyper når søker har %s', async (_, props) => {
+        renderWizard(props);
 
         await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
 
-        expect(
-            screen.getByRole('radiogroup', {
-                name: 'Hvilken annen type pensjonsgivende inntekt har du hatt de siste 10 månedene?',
-            }),
-        ).toBeInTheDocument();
-        expect(screen.queryByText('Hvilken type inntekt har du hatt?')).not.toBeInTheDocument();
-        expect(screen.queryByRole('radio', { name: /ektefelles virksomhet/ })).not.toBeInTheDocument();
-        expect(screen.queryByRole('radio', { name: /fisker eller mannskap/ })).not.toBeInTheDocument();
-        expect(screen.queryByRole('radio', { name: 'Næring i utlandet' })).not.toBeInTheDocument();
-        expect(screen.queryByRole('button', { name: 'Tilbake' })).not.toBeInTheDocument();
-
-        await userEvent.click(screen.getByRole('button', { name: 'Avbryt' }));
-
-        expect(screen.getByRole('button', { name: 'Legg til inntekt' })).toBeInTheDocument();
-    });
-
-    it('skal skjule valg som kan opprette ny egen næring når egen næring allerede er lagt til', async () => {
-        renderWizard({ harEgenNæring: true });
-
-        await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
-
-        expect(screen.queryByRole('radio', { name: /ektefelles virksomhet/ })).not.toBeInTheDocument();
-        expect(screen.queryByRole('radio', { name: /fisker eller mannskap/ })).not.toBeInTheDocument();
+        expect(screen.getByText('Hvilken type inntekt har du hatt?')).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: /ektefelles virksomhet/ })).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: /fisker eller mannskap/ })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: /Annen pensjonsgivende inntekt/ })).toBeInTheDocument();
 
         await userEvent.click(screen.getByRole('radio', { name: /Annen pensjonsgivende inntekt/ }));
@@ -190,6 +173,78 @@ describe('<LeggTilAndreInntekterWizard>', () => {
         expect(screen.getByRole('radio', { name: 'Jobb i utlandet' })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: 'Etterlønn eller sluttvederlag' })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: 'Førstegangstjeneste' })).toBeInTheDocument();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Tilbake' }));
+
+        expect(screen.getByText('Hvilken type inntekt har du hatt?')).toBeInTheDocument();
+    });
+
+    it.each([
+        ['registrert næring', { harRegistrertNæring: true }],
+        ['egen næring lagt til', { harEgenNæring: true }],
+    ])('skal vise informasjon i stedet for skjema ved valg av egen næring når søker har %s', async (_, props) => {
+        const onSaveEgenNæring = vi.fn();
+        renderWizard({ ...props, onSaveEgenNæring });
+
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
+        await userEvent.click(screen.getByRole('radio', { name: /ektefelles virksomhet/ }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
+
+        expect(screen.getByText('Du er allerede registrert som selvstendig næringsdrivende')).toBeInTheDocument();
+        expect(screen.queryByText('Hvilken type næring har du hatt?')).not.toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: 'Legg til' })).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Tilbake' }));
+        expect(screen.getByRole('radio', { name: /ektefelles virksomhet/ })).toBeChecked();
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
+
+        await userEvent.click(screen.getByRole('button', { name: 'OK' }));
+
+        expect(screen.getByRole('button', { name: 'Legg til inntekt' })).toBeInTheDocument();
+        expect(onSaveEgenNæring).not.toHaveBeenCalled();
+    });
+
+    it.each([
+        ['Lott', 'Inntekt fra lott', 'Du er selvstendig næringsdrivende'],
+        ['Lott og hyre', 'Inntekt fra lott og hyre', 'Du er både selvstendig næringsdrivende og arbeidstaker'],
+        ['Egen båt', 'Fiske med egen båt', 'Du er selvstendig næringsdrivende'],
+    ])(
+        'skal vise informasjon i stedet for skjema for %s når søker allerede har næring',
+        async (radioLabel, expectedLabel, eksisterendeInfoTittel) => {
+            const onSaveEgenNæring = vi.fn();
+            renderWizard({ harRegistrertNæring: true, onSaveEgenNæring });
+
+            await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
+            await userEvent.click(screen.getByRole('radio', { name: /Jeg er fisker eller mannskap på båt/ }));
+            await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
+            await userEvent.click(screen.getByRole('radio', { name: radioLabel }));
+            await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
+
+            expect(screen.getByText(expectedLabel)).toBeInTheDocument();
+            expect(screen.getByText(eksisterendeInfoTittel)).toBeInTheDocument();
+            expect(screen.getByText('Du er allerede registrert som selvstendig næringsdrivende')).toBeInTheDocument();
+            expect(screen.queryByLabelText('Når startet du virksomheten?')).not.toBeInTheDocument();
+            expect(screen.queryByRole('button', { name: 'Legg til' })).not.toBeInTheDocument();
+
+            await userEvent.click(screen.getByRole('button', { name: 'OK' }));
+
+            expect(screen.getByRole('button', { name: 'Legg til inntekt' })).toBeInTheDocument();
+            expect(onSaveEgenNæring).not.toHaveBeenCalled();
+        },
+    );
+
+    it('skal vise hyre som vanlig når søker allerede har næring', async () => {
+        renderWizard({ harEgenNæring: true });
+
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
+        await userEvent.click(screen.getByRole('radio', { name: /Jeg er fisker eller mannskap på båt/ }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
+        await userEvent.click(screen.getByRole('radio', { name: 'Hyre' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
+
+        expect(screen.getByText('Du må be arbeidsgiveren din sende inntektsmelding')).toBeInTheDocument();
+        expect(screen.queryByText('Du er allerede registrert som selvstendig næringsdrivende')).not.toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Fortsett' })).toBeInTheDocument();
     });
 
     it('skal vise skjema for næring i utlandet', async () => {
