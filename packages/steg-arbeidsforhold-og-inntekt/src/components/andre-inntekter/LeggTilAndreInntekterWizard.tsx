@@ -382,16 +382,18 @@ const LottInntekt = (props: FiskerNæringProps) => {
             <Label>
                 <FormattedMessage id="LeggTilAndreInntekterWizard.lott.label" />
             </Label>
-            <InfoCard data-color="info">
-                <InfoCard.Header icon={<PersonEnvelopeIcon aria-hidden />}>
-                    <InfoCard.Title>
-                        <FormattedMessage id="LeggTilAndreInntekterWizard.duErSelvstendigNæringsdrivende.title" />
-                    </InfoCard.Title>
-                </InfoCard.Header>
-                <InfoCard.Content>
-                    <FormattedMessage id="LeggTilAndreInntekterWizard.lott.content" />
-                </InfoCard.Content>
-            </InfoCard>
+            {!props.harNæring && (
+                <InfoCard data-color="info">
+                    <InfoCard.Header icon={<PersonEnvelopeIcon aria-hidden />}>
+                        <InfoCard.Title>
+                            <FormattedMessage id="LeggTilAndreInntekterWizard.duErSelvstendigNæringsdrivende.title" />
+                        </InfoCard.Title>
+                    </InfoCard.Header>
+                    <InfoCard.Content>
+                        <FormattedMessage id="LeggTilAndreInntekterWizard.lott.content" />
+                    </InfoCard.Content>
+                </InfoCard>
+            )}
             <FiskerEgenNæringForm {...props} />
         </>
     );
@@ -446,16 +448,18 @@ const EgenBåtInntekt = (props: FiskerNæringProps) => {
             <Label>
                 <FormattedMessage id="LeggTilAndreInntekterWizard.egenBåt.label" />
             </Label>
-            <InfoCard data-color="info">
-                <InfoCard.Header icon={<PersonEnvelopeIcon aria-hidden />}>
-                    <InfoCard.Title>
-                        <FormattedMessage id="LeggTilAndreInntekterWizard.duErSelvstendigNæringsdrivende.title" />
-                    </InfoCard.Title>
-                </InfoCard.Header>
-                <InfoCard.Content>
-                    <FormattedMessage id="LeggTilAndreInntekterWizard.egenBåt.content" />
-                </InfoCard.Content>
-            </InfoCard>
+            {!props.harNæring && (
+                <InfoCard data-color="info">
+                    <InfoCard.Header icon={<PersonEnvelopeIcon aria-hidden />}>
+                        <InfoCard.Title>
+                            <FormattedMessage id="LeggTilAndreInntekterWizard.duErSelvstendigNæringsdrivende.title" />
+                        </InfoCard.Title>
+                    </InfoCard.Header>
+                    <InfoCard.Content>
+                        <FormattedMessage id="LeggTilAndreInntekterWizard.egenBåt.content" />
+                    </InfoCard.Content>
+                </InfoCard>
+            )}
             <FiskerEgenNæringForm {...props} />
         </>
     );

@@ -205,12 +205,12 @@ describe('<LeggTilAndreInntekterWizard>', () => {
     });
 
     it.each([
-        ['Lott', 'Inntekt fra lott', 'Du er selvstendig næringsdrivende'],
-        ['Lott og hyre', 'Inntekt fra lott og hyre', 'Du er både selvstendig næringsdrivende og arbeidstaker'],
-        ['Egen båt', 'Fiske med egen båt', 'Du er selvstendig næringsdrivende'],
+        ['Lott', 'Inntekt fra lott', false],
+        ['Lott og hyre', 'Inntekt fra lott og hyre', true],
+        ['Egen båt', 'Fiske med egen båt', false],
     ])(
         'skal vise informasjon i stedet for skjema for %s når søker allerede har næring',
-        async (radioLabel, expectedLabel, eksisterendeInfoTittel) => {
+        async (radioLabel, expectedLabel, skalViseLottOgHyreInfo) => {
             const onSaveEgenNæring = vi.fn();
             renderWizard({ harRegistrertNæring: true, onSaveEgenNæring });
 
@@ -221,7 +221,10 @@ describe('<LeggTilAndreInntekterWizard>', () => {
             await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
 
             expect(screen.getByText(expectedLabel)).toBeInTheDocument();
-            expect(screen.getByText(eksisterendeInfoTittel)).toBeInTheDocument();
+            expect(screen.queryByText('Du er både selvstendig næringsdrivende og arbeidstaker') !== null).toBe(
+                skalViseLottOgHyreInfo,
+            );
+            expect(screen.queryByText('Du er selvstendig næringsdrivende')).not.toBeInTheDocument();
             expect(screen.getByText('Du er allerede registrert som selvstendig næringsdrivende')).toBeInTheDocument();
             expect(screen.queryByLabelText('Når startet du virksomheten?')).not.toBeInTheDocument();
             expect(screen.queryByRole('button', { name: 'Legg til' })).not.toBeInTheDocument();
