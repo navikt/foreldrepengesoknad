@@ -2,7 +2,7 @@ import { IntlShape } from 'react-intl';
 import { Arbeidsforholdstype } from 'types/Tilrettelegging';
 import { getUnikeArbeidsforhold } from 'utils/arbeidsforholdUtils';
 
-import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
+import { EGEN_NÆRING_ID, erEgenNæringAktiv } from '@navikt/fp-steg-egen-naering';
 import {
     ArbeidsforholdOgInntektSvp,
     EksternArbeidsforholdDto_fpoversikt,
@@ -61,7 +61,9 @@ export const mapArbeidsforholdToVelgArbeidOptions = (
 ): VelgArbeidsforholdOptions[] => {
     const unikeArbeidsforhold = getArbeidsforholdTilretteleggingOptions(arbeidsforhold, termindato, intl);
     const næringValg =
-        egenNæring && inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende
+        egenNæring &&
+        erEgenNæringAktiv(egenNæring, 'svangerskapspengesoknad') &&
+        inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende
             ? [getNæringTilretteleggingOption(egenNæring)]
             : [];
     const frilansValg = frilans && inntektsinformasjon.harJobbetSomFrilans ? [getFrilansTilretteleggingOption()] : [];

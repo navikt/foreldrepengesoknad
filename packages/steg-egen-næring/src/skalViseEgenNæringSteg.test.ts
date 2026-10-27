@@ -1,6 +1,6 @@
 import { NæringDto } from '@navikt/fp-types';
 
-import { skalViseEgenNæringSteg } from './skalViseEgenNæringSteg';
+import { erEgenNæringAktiv, skalViseEgenNæringSteg } from './skalViseEgenNæringSteg';
 
 const ferdigUtfyltNæring = {
     navnPåNæringen: 'Fiskebåten',
@@ -48,5 +48,16 @@ describe('skalViseEgenNæringSteg', () => {
                 erPåEgenNæringSteg: true,
             }),
         ).toBe(true);
+    });
+});
+
+describe('erEgenNæringAktiv', () => {
+    it('skal regne pågående næring som aktiv', () => {
+        expect(erEgenNæringAktiv(ferdigUtfyltNæring, 'foreldrepengesoknad')).toBe(true);
+    });
+
+    it('skal regne næring avsluttet for mer enn 13 måneder siden som inaktiv i FP, og 5 måneder i SVP', () => {
+        expect(erEgenNæringAktiv({ ...ferdigUtfyltNæring, tom: '2019-12-31' }, 'foreldrepengesoknad')).toBe(false);
+        expect(erEgenNæringAktiv({ ...ferdigUtfyltNæring, tom: '2019-12-31' }, 'svangerskapspengesoknad')).toBe(false);
     });
 });

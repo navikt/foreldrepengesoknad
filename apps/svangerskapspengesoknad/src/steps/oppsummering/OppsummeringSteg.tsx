@@ -8,6 +8,7 @@ import { getTilretteleggingId } from 'utils/tilretteleggingUtils';
 
 import { FormSummary } from '@navikt/ds-react';
 
+import { erEgenNæringAktiv } from '@navikt/fp-steg-egen-naering';
 import {
     ArbeidsforholdOppsummering,
     BoIUtlandetOppsummering,
@@ -116,7 +117,7 @@ export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avb
                 />
                 <FrilansOppsummering frilans={frilans} onVilEndreSvar={() => navigator.goToStep(SøknadRoute.FRILANS)} />
                 <SelvstendigNæringsdrivendeOppsummering
-                    egenNæring={egenNæring}
+                    egenNæring={erEgenNæringAktiv(egenNæring, 'svangerskapspengesoknad') ? egenNæring : undefined}
                     registrerteNæringer={registrerteNæringer}
                     onVilEndreSvar={() =>
                         navigator.goToStep(

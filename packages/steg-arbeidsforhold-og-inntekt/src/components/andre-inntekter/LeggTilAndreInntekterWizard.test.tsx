@@ -222,12 +222,14 @@ describe('<LeggTilAndreInntekterWizard>', () => {
         await userEvent.selectOptions(screen.getByLabelText('I hvilket land er virksomheten din registrert i?'), 'SWE');
         await userEvent.type(screen.getByLabelText('Når startet du virksomheten?'), '30.04.2023');
         await userEvent.click(
-            within(screen.getByRole('radiogroup', { name: 'Jobber du der fortsatt?' })).getByRole('radio', {
+            within(
+                screen.getByRole('radiogroup', { name: 'Jobber du fortsatt som selvstendig næringsdrivende?' }),
+            ).getByRole('radio', {
                 name: 'Ja',
             }),
         );
         await userEvent.type(
-            screen.getByLabelText('Hva var næringsresultatet ditt før skatt de siste 12 månedene?'),
+            screen.getByLabelText('Hva var personinntekt fra næring før skatt de siste 12 månedene?'),
             '1000',
         );
         await userEvent.click(
@@ -281,12 +283,14 @@ describe('<LeggTilAndreInntekterWizard>', () => {
         expect(screen.queryByText('Er virksomheten registrert i Norge?')).not.toBeInTheDocument();
         await userEvent.type(screen.getByLabelText('Når startet du virksomheten?'), '30.04.2023');
         await userEvent.click(
-            within(screen.getByRole('radiogroup', { name: 'Jobber du der fortsatt?' })).getByRole('radio', {
+            within(
+                screen.getByRole('radiogroup', { name: 'Jobber du fortsatt som selvstendig næringsdrivende?' }),
+            ).getByRole('radio', {
                 name: 'Ja',
             }),
         );
         await userEvent.type(
-            screen.getByLabelText('Hva var næringsresultatet ditt før skatt de siste 12 månedene?'),
+            screen.getByLabelText('Hva var personinntekt fra næring før skatt de siste 12 månedene?'),
             '1000',
         );
         await userEvent.click(

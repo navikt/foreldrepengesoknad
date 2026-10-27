@@ -193,11 +193,11 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         await userEvent.type(startdatoInput, dayjs('2023-04-30').format('DD.MM.YYYY'));
         await userEvent.tab();
 
-        expect(screen.getByText('Jobber du der fortsatt?')).toBeInTheDocument();
+        expect(screen.getByText('Jobber du fortsatt som selvstendig næringsdrivende?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[0]!);
 
         const næringsresultatInput = screen.getByLabelText(
-            'Hva var næringsresultatet ditt før skatt de siste 12 månedene?',
+            'Hva var personinntekt fra næring før skatt de siste 12 månedene?',
         );
         await userEvent.type(næringsresultatInput, '1000');
 
@@ -235,7 +235,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
             await userEvent.tab();
 
             expect(
-                screen.queryByLabelText('Hva var næringsresultatet ditt før skatt de siste 12 månedene?') !== null,
+                screen.queryByLabelText('Hva var personinntekt fra næring før skatt de siste 12 månedene?') !== null,
             ).toBe(spørOmNæringsresultat);
             expect(
                 screen.queryByText(
@@ -260,7 +260,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         await userEvent.type(startdatoInput, 'ikemfke');
         await userEvent.tab();
 
-        expect(screen.getByText('Jobber du der fortsatt?')).toBeInTheDocument();
+        expect(screen.getByText('Jobber du fortsatt som selvstendig næringsdrivende?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Nei')[0]!);
 
         expect(screen.getByText('Når avsluttet du virksomheten?')).toBeInTheDocument();
@@ -351,5 +351,52 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
 
         expect(onStepChange).toHaveBeenCalledTimes(1);
         expect(onStepChange).toHaveBeenNthCalledWith(1, 'BARNET_PATH');
+    });
+
+    it('skal vise infoboks og skjule oppfølgingsspørsmål når sluttdato er mer enn 13 måneder tilbake i tid i FP', async () => {
+        const saveOnNext = vi.fn();
+
+        render(<Default saveOnNext={saveOnNext} />);
+
+        await userEvent.click(await screen.findByText('Gårdsdrift'));
+        await userEvent.type(screen.getByLabelText('Hva heter virksomheten?'), 'Gammel Virksomhet AS');
+        await userEvent.type(screen.getByLabelText('Hva er organisasjonsnummeret?'), '997519485');
+
+        const startdatoInput = screen.getByLabelText('Når startet du virksomheten?');
+        await userEvent.type(startdatoInput, '01.01.2019');
+        await userEvent.tab();
+
+        await userEvent.click(screen.getAllByText('Nei')[0]!);
+
+        const sluttdatoInput = screen.getByLabelText('Når avsluttet du virksomheten?');
+        await userEvent.type(sluttdatoInput, '31.12.2019');
+        await userEvent.tab();
+
+        expect(
+            screen.getByText(
+                'Siden det er lenge siden du avsluttet virksomheten, trenger vi ikke denne informasjonen. ' +
+                    'Informasjon om virksomheten din vil derfor bli fjernet når du sender søknaden.',
+            ),
+        ).toBeInTheDocument();
+        expect(
+            screen.queryByLabelText('Hva var personinntekt fra næring før skatt de siste 12 månedene?'),
+        ).not.toBeInTheDocument();
+        expect(
+            screen.queryByText(
+                'Har du hatt en varig endring i virksomheten eller arbeidssituasjonen din de siste 4 årene?',
+            ),
+        ).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(saveOnNext).toHaveBeenCalledTimes(1);
+        expect(saveOnNext).toHaveBeenCalledWith({
+            fom: '2019-01-01',
+            tom: '2019-12-31',
+            navnPåNæringen: 'Gammel Virksomhet AS',
+            næringstype: 'JORDBRUK_SKOGBRUK',
+            organisasjonsnummer: '997519485',
+            registrertINorge: true,
+        });
     });
 });
