@@ -35,7 +35,7 @@
         "apps/**/*.{ts,tsx,js,jsx, css}": "prettier --write",
         "packages/**/*.{ts,tsx,js,jsx, css}": "prettier --write"
     },
-    "packageManager": "pnpm@12.3.4",
+    "packageManager": "pnpm@12.15.0",
     "msw": {
         "workerDirectory": [
             "./scripts/mock-service-worker"
