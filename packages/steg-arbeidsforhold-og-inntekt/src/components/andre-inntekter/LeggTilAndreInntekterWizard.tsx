@@ -1,4 +1,4 @@
-import { ExclamationmarkTriangleIcon, InformationSquareIcon, PersonEnvelopeIcon } from '@navikt/aksel-icons';
+import { ExclamationmarkTriangleIcon, PersonEnvelopeIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -255,14 +255,6 @@ const FiskerForm = ({ appOrigin, onAbort, onBack, onComplete, onSaveEgenNæring 
                 <Heading level="2" size="small">
                     <FormattedMessage id="LeggTilAndreInntekterWizard.tittel" />
                 </Heading>
-                <Label>
-                    <FormattedMessage id="LeggTilAndreInntekterWizard.fiskerForm.label" />
-                </Label>
-                <InfoCard data-color="meta-lime">
-                    <InfoCard.Message icon={<InformationSquareIcon aria-hidden />}>
-                        <FormattedMessage id="LeggTilAndreInntekterWizard.fiskerForm.infoMessage" />
-                    </InfoCard.Message>
-                </InfoCard>
                 <RadioGroup
                     legend={intl.formatMessage({ id: 'LeggTilAndreInntekterWizard.fiskerForm.legend' })}
                     value={fiskerValg ?? ''}
@@ -300,8 +292,7 @@ const FiskerForm = ({ appOrigin, onAbort, onBack, onComplete, onSaveEgenNæring 
                 </Heading>
                 <HyreInntekt />
                 <WizardNavigator
-                    isLastStep
-                    isNextDisabled
+                    isLastStep={false}
                     onCancel={onAbort}
                     onBack={() => setStep('VELG_ORDNING')}
                     onNext={onComplete}
@@ -401,7 +392,14 @@ const LottOgHyreInntekt = (props: FiskerNæringProps) => {
                     </InfoCard.Title>
                 </InfoCard.Header>
                 <InfoCard.Content>
-                    <FormattedMessage id="LeggTilAndreInntekterWizard.lottOgHyre.content" />
+                    <VStack gap="space-16">
+                        <BodyShort>
+                            <FormattedMessage id="LeggTilAndreInntekterWizard.lottOgHyre.content1" />
+                        </BodyShort>
+                        <BodyShort>
+                            <FormattedMessage id="LeggTilAndreInntekterWizard.lottOgHyre.content2" />
+                        </BodyShort>
+                    </VStack>
                 </InfoCard.Content>
             </InfoCard>
             <FiskerEgenNæringForm {...props} />

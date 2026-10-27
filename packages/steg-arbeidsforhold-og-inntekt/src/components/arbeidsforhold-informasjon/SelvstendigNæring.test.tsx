@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { IntlProvider } from 'react-intl';
 
 import { SelvstendigNæringDto_fpoversikt } from '@navikt/fp-types';
+import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../../intl/messages/nb_NO.json';
 import { SelvstendigNæring } from './SelvstendigNæring';
@@ -27,7 +27,7 @@ const næringer = [
 
 const renderNæringer = (registrerteNæringer: SelvstendigNæringDto_fpoversikt[]) =>
     render(
-        <IntlProvider locale="nb" messages={nbMessages}>
+        <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: nbMessages }}>
             <SelvstendigNæring registrerteNæringer={registrerteNæringer} />
         </IntlProvider>,
     );

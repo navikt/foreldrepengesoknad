@@ -2,6 +2,8 @@ import enMessages from './src/intl/messages/en_US.json';
 import nbMessages from './src/intl/messages/nb_NO.json';
 import nnMessages from './src/intl/messages/nn_NO.json';
 
+export type { UtilsMessageId } from './src/intl/messageIds';
+
 export const utilsMessages = {
     nb: nbMessages,
     nn: nnMessages,

@@ -385,7 +385,15 @@ const beholdAnnenPartIOverlapp = (periode: UttakPeriodeDto, fom: string, tom: st
     if ((!periode.annenPart && !periode.annenPartEøs) || toDay(fom).isAfter(toDay(tom))) {
         return [];
     }
-    return [{ fom, tom, annenPart: periode.annenPart, annenPartEøs: periode.annenPartEøs }];
+    return [{ fom, tom, annenPart: fjernSamtidigUttak(periode.annenPart), annenPartEøs: periode.annenPartEøs }];
+};
+
+const fjernSamtidigUttak = (uttak: UttakPeriodeDto['annenPart']): UttakPeriodeDto['annenPart'] => {
+    if (!uttak) {
+        return undefined;
+    }
+    const { samtidigUttak: _samtidigUttak, ...uttakUtenSamtidigUttak } = uttak;
+    return uttakUtenSamtidigUttak;
 };
 
 const toDay = (iso: string): Dayjs => dayjs.utc(iso).startOf('day');

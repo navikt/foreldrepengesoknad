@@ -57,6 +57,9 @@ export const useFinnFørsteSubmitFeilmelding = ({
     const manglerUttaksperioderForNySøknad = (perioder: UttakPeriodeDto[]) =>
         !erEndringssøknad && !harMinstEnUttaksEllerOverføringsperiode(finnPerioderMedSøker(perioder));
 
+    const harSlettetAlleEgnePerioderIEndringssøknad = (helePlanen: UttakPeriodeDto[]) =>
+        erEndringssøknad && finnPerioderMedSøker(helePlanen).length === 0;
+
     const harOvertrukketDager = () => erAntallDagerOvertrukket;
 
     const manglerMorsAktivitetDerPåkrevd = (perioder: UttakPeriodeDto[]) =>
@@ -82,6 +85,10 @@ export const useFinnFørsteSubmitFeilmelding = ({
         },
         {
             gjelder: manglerUttaksperioderForNySøknad,
+            message: intl.formatMessage({ id: 'UttaksplanSteg.IngenUttaksperioder' }),
+        },
+        {
+            gjelder: (_planForValidering, helePlanen) => harSlettetAlleEgnePerioderIEndringssøknad(helePlanen),
             message: intl.formatMessage({ id: 'UttaksplanSteg.IngenUttaksperioder' }),
         },
         {

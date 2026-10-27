@@ -12,10 +12,17 @@ export const getDatoForAleneomsorg = (annenForelder: AnnenForelder): string | un
     return isAnnenForelderOppgitt(annenForelder) ? annenForelder.datoForAleneomsorg : undefined;
 };
 
+declare const annenPartVedtakBrand: unique symbol;
+
+// Merka subtype slik at false-greina av type-predikatet framleis kan vere ein FellesUttaksplanDto
+// (t.d. ein plan med berre søkjaren sine periodar), og ikkje blir snevra inn til null | undefined.
+export type FellesUttaksplanMedAnnenPartVedtak = FellesUttaksplanDto & { readonly [annenPartVedtakBrand]: true };
+
 // Planen kan òg innehalde annan part sin ubehandla søknad. Berre periodar med resultat kjem frå eit vedtak.
 export const annenPartHarVedtak = (
     uttaksplan: FellesUttaksplanDto | null | undefined,
-): uttaksplan is FellesUttaksplanDto => !!uttaksplan?.perioder.some((p) => p.annenPart?.resultat !== undefined);
+): uttaksplan is FellesUttaksplanMedAnnenPartVedtak =>
+    !!uttaksplan?.perioder.some((p) => p.annenPart?.resultat !== undefined);
 
 export const annenPartHarInnvilgetUttak = (uttaksplan: FellesUttaksplanDto | null | undefined): boolean =>
     !!uttaksplan?.perioder.some((p) => p.annenPart?.resultat?.innvilget);

@@ -34,8 +34,9 @@ import {
     tidslinjehendelser_SVP_innvilget,
     tidslinjehendelser_SVP_under_behandling,
 } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
+import { uttaksplan, uttaksplanAvslått, uttaksplanForTidligSøknad } from 'storybookData/uttaksplan/uttaksplan.ts';
 
-import { OversiktBarnDto_fpoversikt } from '@navikt/fp-types';
+import { FellesUttaksplanDto, OversiktBarnDto_fpoversikt } from '@navikt/fp-types';
 import { withMockDate, withQueryClient } from '@navikt/fp-utils-test';
 
 import { API_URLS, hentManglendeVedleggOptions, hentTidslinjehendelserOptions } from '../../api/queries.ts';
@@ -55,6 +56,7 @@ const søkersBarn = [
 
 type MockProps = {
     søkersBarn: OversiktBarnDto_fpoversikt[];
+    fellesUttaksplan?: FellesUttaksplanDto;
 };
 const MockTidslinje = (props: MockProps) => {
     const params = useParams();
@@ -70,6 +72,7 @@ const MockTidslinje = (props: MockProps) => {
         <div style={{ marginTop: '1rem' }}>
             <Tidslinje
                 {...props}
+                fellesUttaksplan={props.fellesUttaksplan}
                 sak={sak}
                 manglendeVedlegg={manglendeVedleggData}
                 tidslinjeHendelser={tidslinjeHendelser}
@@ -121,6 +124,7 @@ export const FP: Story = {
     args: {
         søkersBarn,
         saksnummer: '1',
+        fellesUttaksplan: uttaksplan,
     },
 };
 
@@ -169,6 +173,7 @@ export const FPMedTilbakekreving: Story = {
     args: {
         søkersBarn,
         saksnummer: '827',
+        fellesUttaksplan: uttaksplanAvslått,
     },
 };
 
@@ -201,6 +206,7 @@ export const FPForTidligSøknad: Story = {
     args: {
         søkersBarn,
         saksnummer: '837',
+        fellesUttaksplan: uttaksplanForTidligSøknad,
     },
 };
 

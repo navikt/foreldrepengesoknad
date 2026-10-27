@@ -18,6 +18,8 @@ export { StepButtonsHookForm } from './src/StepButtonsHookForm';
 export { ErrorSummaryHookForm } from './src/error/ErrorSummaryHookForm';
 export { trimStringValues } from './src/form-wrappers/formUtils';
 
+export type { FormHooksMessageId } from './src/intl/messageIds';
+
 export const formHookMessages = {
     nb: nbMessages,
     nn: nnMessages,

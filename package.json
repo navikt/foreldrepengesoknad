@@ -20,22 +20,22 @@
     },
     "dependencies": {
         "lint-staged": "17.6.0",
-        "turbo": "2.11.7"
+        "turbo": "2.11.9"
     },
     "devDependencies": {
         "@trivago/prettier-plugin-sort-imports": "6.0.2",
         "@types/node": "catalog:",
-        "knip": "6.41.0",
+        "knip": "6.42.1",
         "msw": "3.0.3",
         "msw-storybook-addon": "3.0.3",
-        "prettier": "3.9.9",
+        "prettier": "3.9.10",
         "typescript": "catalog:"
     },
     "lint-staged": {
         "apps/**/*.{ts,tsx,js,jsx, css}": "prettier --write",
         "packages/**/*.{ts,tsx,js,jsx, css}": "prettier --write"
     },
-    "packageManager": "pnpm@12.3.4",
+    "packageManager": "pnpm@12.15.0",
     "msw": {
         "workerDirectory": [
             "./scripts/mock-service-worker"

@@ -8,7 +8,7 @@ import { lagFarMedmorMaksToUkerRundtFødselOmråde } from './farMedmorMaksToUker
 import { ValideringInput, førsteBrutteValideringsregel } from './types';
 
 const cache = createIntlCache();
-const intlMock = createIntl({ locale: 'nb', defaultLocale: 'nb', messages }, cache);
+const intlMock = createIntl({ locale: 'nb', defaultLocale: 'nb', messages: messages as Record<string, string> }, cache);
 
 // Mandag. Intervallet har uttaksdager fra 3. juni til og med 26. juli.
 const FAMILIEHENDELSESDATO = '2024-06-17';

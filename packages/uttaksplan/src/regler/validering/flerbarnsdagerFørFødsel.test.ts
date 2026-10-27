@@ -5,7 +5,10 @@ import messages from '../../intl/messages/nb_NO.json';
 import { ValideringInput } from './types';
 import { lagValideringsområder, valider } from './valider';
 
-const intl = createIntl({ locale: 'nb', defaultLocale: 'nb', messages }, createIntlCache());
+const intl = createIntl(
+    { locale: 'nb', defaultLocale: 'nb', messages: messages as Record<string, string> },
+    createIntlCache(),
+);
 const FEILMELDING =
     'Du kan ikke bruke flerbarnsdager før fødsel. Velg perioder som starter tidligst på fødselsdatoen, eller termindatoen hvis barnet ikke er født.';
 

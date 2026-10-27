@@ -1,5 +1,6 @@
 import { ContextDataMap, ContextDataType, OpprinneligUttaksplan } from 'appData/FpDataContext';
 import dayjs from 'dayjs';
+import { harMinstEnUttaksEllerOverføringsperiode } from 'steps/uttaksplan/submitValidering';
 import { AnnenForelder, isAnnenForelderIkkeOppgitt } from 'types/AnnenForelder';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { VedleggDataType } from 'types/VedleggDataType';
@@ -164,6 +165,24 @@ export const getSøknadsdataForInnsending = (
     }
 
     return erEndringssøknad ? mapTilEndringssøknadDto(hentData, søkerinfo) : mapTilSøknadDto(hentData, søkerinfo);
+};
+
+// Dobbelsikring mot at en plan som ikke er validert i uttaksplan-steget (f.eks. etter navigering med
+// nettleserens frem/tilbake-knapp) blir sendt inn uten periodene backend krever.
+export const harSøknadenNødvendigeUttaksperioder = (
+    søknad: ForeldrepengesøknadDto | EndringssøknadForeldrepengerDto,
+    erEndringssøknad: boolean,
+    helePlanen: UttakPeriodeDto[],
+): boolean => {
+    if (erEndringssøknad) {
+        // Endringssøknaden får en FRI-utsettelse ved endringstidspunktet når søkeren har slettet perioder,
+        // så perioder i søknaden er aldri tom. Sjekk søkerens perioder i hele planen, slik uttaksplan-steget gjør.
+        // Uten endringstidspunkt kan søknaden likevel bli tom når alle søkerens perioder er avslått og filtrert bort.
+        return (
+            (søknad.uttaksplan.perioder ?? []).length > 0 && helePlanen.some((periode) => periode.søker !== undefined)
+        );
+    }
+    return harMinstEnUttaksEllerOverføringsperiode(søknad.uttaksplan.perioder ?? []);
 };
 
 export const mapTilSøknadDto = (
@@ -352,4 +371,9 @@ const erOppholdSomKanSendast = (periode: UttakPeriodeDto): boolean => {
     );
 };
 
-const KONTOTYPER_MED_OPPHOLDSÅRSAK = new Set<KontoType>(['MØDREKVOTE', 'FEDREKVOTE', 'FELLESPERIODE', 'FORELDREPENGER']);
+const KONTOTYPER_MED_OPPHOLDSÅRSAK = new Set<KontoType>([
+    'MØDREKVOTE',
+    'FEDREKVOTE',
+    'FELLESPERIODE',
+    'FORELDREPENGER',
+]);

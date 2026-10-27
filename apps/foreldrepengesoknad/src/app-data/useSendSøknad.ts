@@ -1,16 +1,18 @@
 import { useMutation } from '@tanstack/react-query';
-import { getSøknadsdataForInnsending } from 'api/apiUtils';
+import { getSøknadsdataForInnsending, harSøknadenNødvendigeUttaksperioder } from 'api/apiUtils';
 import { API_URLS } from 'api/queries';
 import { SøknadRoutes } from 'appData/routes';
 import ky, { HTTPError } from 'ky';
-import { useIntl } from 'react-intl';
+import { IntlShape, useIntl } from 'react-intl';
 import { useNavigate } from 'react-router';
 
-import { ApiError } from '@navikt/fp-observability';
+import { ApiError, captureMessage } from '@navikt/fp-observability';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt, FpSoknadProblemDetails } from '@navikt/fp-types';
 import { useAbortSignal } from '@navikt/fp-utils';
 
-import { useContextGetAnyData } from './FpDataContext';
+import { ContextDataType, useContextGetAnyData } from './FpDataContext';
+
+export type SendSøknadResultat = 'SENDT' | 'MANGLER_UTTAKSPERIODER';
 
 export const useSendSøknad = (
     søkerinfo: FpPersonopplysningerDto_fpoversikt,
@@ -26,8 +28,22 @@ export const useSendSøknad = (
         mutationFn: () => ky.delete(API_URLS.mellomlagring),
     });
 
-    const send = async () => {
+    const fullførInnsending = (): SendSøknadResultat => {
+        slettMellomlagring();
+        void navigate(SøknadRoutes.KVITTERING);
+        return 'SENDT';
+    };
+
+    const send = async (): Promise<SendSøknadResultat> => {
         const cleanedSøknad = getSøknadsdataForInnsending(erEndringssøknad, hentData, søkerinfo, foreldrepengerSaker);
+
+        const helePlanen = hentData(ContextDataType.UTTAKSPLAN) ?? [];
+        if (!harSøknadenNødvendigeUttaksperioder(cleanedSøknad, erEndringssøknad, helePlanen)) {
+            captureMessage(
+                `Stoppet innsending av ${erEndringssøknad ? 'endringssøknad' : 'søknad'} uten nødvendige uttaksperioder`,
+            );
+            return 'MANGLER_UTTAKSPERIODER';
+        }
 
         const abortSignal = initAbortSignal();
 
@@ -38,35 +54,9 @@ export const useSendSøknad = (
                 signal: abortSignal,
                 timeout: 120 * 1000,
             });
-            slettMellomlagring();
-            void navigate(SøknadRoutes.KVITTERING);
+            return fullførInnsending();
         } catch (error: unknown) {
-            if (error instanceof HTTPError) {
-                if (abortSignal.aborted || error.response.status === 401 || error.response.status === 403) {
-                    throw error;
-                }
-
-                // Hvis man får 409 har man sendt inn nøyaktig samme søknad.
-                // Da ønsker vi at de skal følge samme løp som om de fikk 200 og havne på kvitteringssiden slik at de kan se søknad i innsyn.
-                if (error.response.status === 409) {
-                    slettMellomlagring();
-                    return navigate(SøknadRoutes.KVITTERING);
-                }
-
-                const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
-                const callId = jsonResponse?.callId;
-                const feilmelding = callId
-                    ? intl.formatMessage(
-                          { id: 'useSendSøknad.FeilVedInnsending.MedCallId' },
-                          { callId: callId.slice(0, 6) },
-                      )
-                    : intl.formatMessage({ id: 'useSendSøknad.FeilVedInnsending.UtenCallId' });
-                throw new ApiError(feilmelding, 'Feil ved innsending av foreldrepengesøknad', jsonResponse);
-            }
-            if (error instanceof Error) {
-                throw error;
-            }
-            throw new Error(String(error), { cause: error });
+            return håndterInnsendingsfeil(error, abortSignal, intl, fullførInnsending);
         }
     };
 
@@ -76,3 +66,31 @@ export const useSendSøknad = (
 
     return { sendSøknad, errorSendSøknad: error };
 };
+
+function håndterInnsendingsfeil(
+    error: unknown,
+    abortSignal: AbortSignal,
+    intl: IntlShape,
+    fullførInnsending: () => SendSøknadResultat,
+): SendSøknadResultat {
+    if (!(error instanceof HTTPError)) {
+        throw error instanceof Error ? error : new Error(String(error), { cause: error });
+    }
+
+    if (abortSignal.aborted || error.response.status === 401 || error.response.status === 403) {
+        throw error;
+    }
+
+    // Hvis man får 409 har man sendt inn nøyaktig samme søknad.
+    // Da ønsker vi at de skal følge samme løp som om de fikk 200 og havne på kvitteringssiden slik at de kan se søknad i innsyn.
+    if (error.response.status === 409) {
+        return fullførInnsending();
+    }
+
+    const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
+    const callId = jsonResponse?.callId;
+    const feilmelding = callId
+        ? intl.formatMessage({ id: 'useSendSøknad.FeilVedInnsending.MedCallId' }, { callId: callId.slice(0, 6) })
+        : intl.formatMessage({ id: 'useSendSøknad.FeilVedInnsending.UtenCallId' });
+    throw new ApiError(feilmelding, 'Feil ved innsending av foreldrepengesøknad', jsonResponse);
+}
