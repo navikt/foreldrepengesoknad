@@ -1,12 +1,12 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
-import { IntlProvider } from 'react-intl';
+
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { BarnType } from '@navikt/fp-constants';
 import { UttakPeriodeDto } from '@navikt/fp-types';
-import { CalendarPeriod } from '@navikt/fp-ui';
+import { CalendarPeriod, IntlProvider } from '@navikt/fp-ui';
 
 import { FjernAltIUttaksplanModal } from '../../../FjernAltIUttaksplanModal';
 import { UttaksplanDataProvider } from '../../../context/UttaksplanDataContext';
@@ -89,7 +89,7 @@ const Harness = ({
     const [tom, setTom] = useState(datoer.tom);
 
     return (
-        <IntlProvider locale="nb" messages={nyUttaksplanMessages.nb}>
+        <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: nyUttaksplanMessages.nb }}>
             <UttaksplanDataProvider
                 barn={{ type: BarnType.FØDT, fødselsdatoer: [fødselsdato], antallBarn: 1 }}
                 foreldreInfo={foreldreInfo}
