@@ -48,6 +48,8 @@ describe('<ArbeidsforholdOgInntektSteg>', () => {
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
 
         await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
+        await userEvent.click(screen.getByRole('radio', { name: /Annen pensjonsgivende inntekt/ }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fortsett' }));
         expect(screen.queryByRole('radio', { name: 'Etterlønn eller sluttvederlag' })).not.toBeInTheDocument();
         expect(screen.queryByRole('radio', { name: 'Førstegangstjeneste' })).not.toBeInTheDocument();
 
