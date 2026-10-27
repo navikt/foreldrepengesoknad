@@ -7,7 +7,7 @@ import messages from '../../intl/messages/nb_NO.json';
 import { lagHvaVilDuGjøreRegler } from './hvaVilDuGjøre';
 
 const cache = createIntlCache();
-const intlMock = createIntl({ locale: 'nb', defaultLocale: 'nb', messages }, cache);
+const intlMock = createIntl({ locale: 'nb', defaultLocale: 'nb', messages: messages as Record<string, string> }, cache);
 
 // Torsdag. Seks uker etter blir 2024-09-10.
 const FAMILIEHENDELSESDATO = '2024-07-30';

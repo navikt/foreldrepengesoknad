@@ -380,9 +380,9 @@ describe('UttakPeriodeBuilder.fjernUttakPerioder (Ikke forskyv)', () => {
 });
 
 describe('UttakPeriodeBuilder.fjernUttakPerioder (Behold annen part)', () => {
-    const annenPart = { forelder: 'FAR_MEDMOR', flerbarnsdager: false, samtidigUttak: 50 } as const;
+    const annenPart = { forelder: 'FAR_MEDMOR', flerbarnsdager: false } as const;
 
-    it('skal bare fjerne søkers del av samtidig uttak', () => {
+    it('skal gjøre samtidig uttak om til en periode der bare annen part har uttak', () => {
         const builder = new UttakPeriodeBuilder([lagSamtidigUttakPeriode('2024-01-01', '2024-01-12')]);
 
         builder.fjernUttakPerioder([{ fom: '2024-01-01', tom: '2024-01-12' }], false, true);
@@ -420,6 +420,14 @@ describe('UttakPeriodeBuilder.fjernUttakPerioder (Behold annen part)', () => {
         const builder = new UttakPeriodeBuilder([lagPeriode('2024-01-01', '2024-01-12')]);
 
         builder.fjernUttakPerioder([{ fom: '2024-01-01', tom: '2024-01-12' }], false, true);
+
+        expect(builder.getUttakPerioder()).toEqual([]);
+    });
+
+    it('skal fjerne samtidig uttak for begge når annen part ikke er låst', () => {
+        const builder = new UttakPeriodeBuilder([lagSamtidigUttakPeriode('2024-01-01', '2024-01-12')]);
+
+        builder.fjernUttakPerioder([{ fom: '2024-01-01', tom: '2024-01-12' }], false, false);
 
         expect(builder.getUttakPerioder()).toEqual([]);
     });

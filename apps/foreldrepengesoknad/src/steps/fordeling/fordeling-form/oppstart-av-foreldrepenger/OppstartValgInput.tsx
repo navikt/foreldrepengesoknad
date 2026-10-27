@@ -6,17 +6,17 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Fordeling, OppstartValg } from 'types/Fordeling';
 import { getDatoForAleneomsorg, getIsDeltUttak } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'utils/barnUtils';
+import { getVarighetString } from 'utils/dateUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
+import { getStandardOppstartsdato } from 'utils/oppstartUtils';
 import { getKunFarHarRett } from 'utils/personUtils';
 
 import { Radio } from '@navikt/ds-react';
 
 import { RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { Barn, NavnPåForeldre, SøkersituasjonFp, isAdoptertAnnetBarn, isFødtBarn } from '@navikt/fp-types';
-import { formatDateExtended } from '@navikt/fp-utils';
+import { Uttaksdagen, formatDateExtended } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
-
-import { getFørsteUttaksdagForeldrepengerFørFødsel } from './MorOppstartInformasjon';
 
 const getOppstartsvalgFarFødsel = (
     familiehendelsesDato: string,
@@ -225,8 +225,7 @@ const getRadioOptionAnnenDato = (): React.ReactElement => (
 );
 
 const getRadioOptionTreUkerFørTermin = (barn: Barn): React.ReactElement => {
-    const termindato = getTermindato(barn);
-    const førsteDagTreUkerFørFødsel = getFørsteUttaksdagForeldrepengerFørFødsel(termindato);
+    const førsteDagTreUkerFørFødsel = getStandardOppstartsdato(barn, OppstartValg.TRE_UKER_FØR_TERMIN, false);
     return (
         <Radio key={OppstartValg.TRE_UKER_FØR_TERMIN} value={OppstartValg.TRE_UKER_FØR_TERMIN}>
             <FormattedMessage
@@ -237,15 +236,38 @@ const getRadioOptionTreUkerFørTermin = (barn: Barn): React.ReactElement => {
     );
 };
 
-const getRadioOptionTreUkerFørFødsel = (barn: Barn): React.ReactElement => {
-    const fødselsdato = getFødselsdato(barn);
-    const førsteDagTreUkerFørFødsel = getFørsteUttaksdagForeldrepengerFørFødsel(fødselsdato);
+const getRadioOptionTreUkerFørFødsel = (barn: Barn, intl: IntlShape): React.ReactElement => {
+    const tilpassTilTermin =
+        isFødtBarn(barn) && barn.termindato !== undefined && barn.termindato !== getFamiliehendelsedato(barn);
+    const førsteDagTreUkerFørFødsel = getStandardOppstartsdato(
+        barn,
+        OppstartValg.TRE_UKER_FØR_FØDSEL,
+        tilpassTilTermin,
+    );
+    const antallDagerFørFødsel = Uttaksdagen.denne(førsteDagTreUkerFørFødsel).getUttaksdagerFremTilDato(
+        Uttaksdagen.denneEllerNeste(getFamiliehendelsedato(barn)).getDato(),
+    );
     return (
         <Radio key={OppstartValg.TRE_UKER_FØR_FØDSEL} value={OppstartValg.TRE_UKER_FØR_FØDSEL}>
-            <FormattedMessage
-                id="fordeling.oppstartValg.treUkerFørFødsel"
-                values={{ dato: formatDateExtended(førsteDagTreUkerFørFødsel) }}
-            />
+            {tilpassTilTermin && antallDagerFørFødsel === 0 ? (
+                <FormattedMessage
+                    id="fordeling.oppstartValg.fraDato"
+                    values={{ dato: formatDateExtended(førsteDagTreUkerFørFødsel) }}
+                />
+            ) : tilpassTilTermin ? (
+                <FormattedMessage
+                    id="fordeling.oppstartValg.førFødselFraDato"
+                    values={{
+                        varighet: getVarighetString(antallDagerFørFødsel, intl),
+                        dato: formatDateExtended(førsteDagTreUkerFørFødsel),
+                    }}
+                />
+            ) : (
+                <FormattedMessage
+                    id="fordeling.oppstartValg.treUkerFørFødsel"
+                    values={{ dato: formatDateExtended(førsteDagTreUkerFørFødsel) }}
+                />
+            )}
         </Radio>
     );
 };
@@ -322,7 +344,7 @@ const mapOppstartValgToRadioOption = (
             return getRadioOptionTreUkerFørTermin(barn);
         }
         case OppstartValg.TRE_UKER_FØR_FØDSEL: {
-            return getRadioOptionTreUkerFørFødsel(barn);
+            return getRadioOptionTreUkerFørFødsel(barn, intl);
         }
         case OppstartValg.DATO_FOR_ALENEOMSORG: {
             return getRadioOptionForDatoForAleneomsorg(datoForAleneomsorg);

@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import { ComponentProps } from 'react';
-import { IntlProvider } from 'react-intl';
 import { describe, expect, it } from 'vitest';
 
 import { BarnType } from '@navikt/fp-constants';
+import { IntlProvider } from '@navikt/fp-ui';
 
 import { UttaksplanDataProvider } from '../context/UttaksplanDataContext';
 import messages from '../intl/messages/nb_NO.json';
@@ -48,7 +48,7 @@ const DEFAULT_DATA = {
 const renderForklaring = (fom: string, customData?: Partial<ComponentProps<typeof UttaksplanDataProvider>>) => {
     const data = { ...DEFAULT_DATA, ...customData } as ComponentProps<typeof UttaksplanDataProvider>;
     return render(
-        <IntlProvider locale="nb" messages={messages}>
+        <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: messages }}>
             <UttaksplanDataProvider {...data}>
                 <TapteDagerForklaring fom={fom} />
             </UttaksplanDataProvider>

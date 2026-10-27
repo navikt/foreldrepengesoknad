@@ -1,7 +1,8 @@
 import { act, render, renderHook, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useForm } from 'react-hook-form';
-import { IntlProvider } from 'react-intl';
+
+import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/messages/nb_NO.json';
 import { RhfDatepicker } from './RhfDatepicker';
@@ -23,7 +24,7 @@ const renderSkjema = ({
     const { result } = renderHook(() => useForm<FormValues>({ defaultValues: { tom: defaultValue } }));
     const formMethods = result.current;
     render(
-        <IntlProvider locale="nb" messages={nbMessages}>
+        <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: nbMessages }}>
             <RhfForm formMethods={formMethods}>
                 <RhfDatepicker
                     name="tom"

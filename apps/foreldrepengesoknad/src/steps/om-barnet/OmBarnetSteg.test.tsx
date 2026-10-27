@@ -505,6 +505,18 @@ describe('<OmBarnetSteg>', () => {
         vi.useRealTimers();
     });
 
+    it('Far skal ikke få for-tidlig-varsel før hele termindatoen er tastet inn', async () => {
+        await FarFødsel.run();
+
+        expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Nei'));
+        await userEvent.click(screen.getByText('Ett barn'));
+
+        await userEvent.type(screen.getByLabelText('Når er termindatoen?'), '1');
+
+        expect(screen.queryByText('Du er for tidlig ute')).not.toBeInTheDocument();
+    });
+
     it('Far kan søke på termin hvis WLB regler gjelder', async () => {
         const mockTodayDate = new Date('2022-08-02');
         vi.setSystemTime(mockTodayDate);

@@ -161,7 +161,7 @@ const UTTAKSPLAN_PERIODE = {
     tom: '2024-10-10',
     søker: {
         forelder: 'MOR',
-        utsettelseÅrsak: 'FRI',
+        kontoType: 'MØDREKVOTE',
         flerbarnsdager: false,
     },
 } satisfies UttakPeriodeDto;
@@ -257,7 +257,10 @@ const saker = [
 ] satisfies FpSak_fpoversikt[];
 
 const getWrapper =
-    (uttaksplan: UttakPeriodeDto[] = [UTTAKSPLAN_PERIODE]) =>
+    (
+        uttaksplan: UttakPeriodeDto[] = [UTTAKSPLAN_PERIODE],
+        opprinneligePerioder: UttakPeriodeDto[] = [EKSISTERENDE_PERIODE],
+    ) =>
     ({ children }: { children: ReactNode }) => (
         <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
             <QueryClientProvider client={queryClient}>
@@ -284,7 +287,7 @@ const getWrapper =
                             [ContextDataType.UTTAKSPLAN]: uttaksplan,
                             [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: {
                                 saksnummer: '1',
-                                perioder: [EKSISTERENDE_PERIODE],
+                                perioder: opprinneligePerioder,
                             },
                             [ContextDataType.VEDLEGG]: VEDLEGG,
                             [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: '1',
@@ -410,7 +413,7 @@ describe('useFpSendSøknad', () => {
 
         const erEndringssøknad = true;
         const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, erEndringssøknad, saker), {
-            wrapper: getWrapper([]),
+            wrapper: getWrapper(),
         });
 
         await act(() => result.current.sendSøknad());
@@ -446,17 +449,80 @@ describe('useFpSendSøknad', () => {
                     },
                     uttaksplan: {
                         ønskerJustertUttakVedFødsel: UTTAKSPLAN_METADATA.ønskerJustertUttakVedFødsel,
-                        perioder: [
-                            {
-                                fom: '2024-01-02',
-                                tom: '2024-01-02',
-                                søker: { forelder: 'MOR', utsettelseÅrsak: 'FRI', flerbarnsdager: false },
-                            },
-                        ],
+                        perioder: [UTTAKSPLAN_PERIODE],
                     },
                     vedlegg: VEDLEGG[Skjemanummer.TERMINBEKREFTELSE],
                 } satisfies EndringssøknadForeldrepengerDto,
             }),
         );
+    });
+
+    it.each([
+        ['ingen perioder', []],
+        [
+            'bare perioder for den andre forelderen',
+            [
+                {
+                    fom: UTTAKSPLAN_PERIODE.fom,
+                    tom: UTTAKSPLAN_PERIODE.tom,
+                    annenPart: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
+                },
+            ],
+        ],
+        ['bare utsettelse', [{ ...EKSISTERENDE_PERIODE, fom: '2024-01-01', tom: '2024-10-10' }]],
+    ] satisfies Array<[string, UttakPeriodeDto[]]>)(
+        'skal ikke sende inn søknad når søkeren har %s',
+        async (_beskrivelse, uttaksplan) => {
+            const postMock = vi.spyOn(ky, 'post');
+            const deleteMock = vi.spyOn(ky, 'delete');
+
+            const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, false, saker), {
+                wrapper: getWrapper(uttaksplan),
+            });
+
+            const resultat = await act(() => result.current.sendSøknad());
+
+            expect(resultat).toBe('MANGLER_UTTAKSPERIODER');
+            expect(postMock).not.toHaveBeenCalled();
+            expect(deleteMock).not.toHaveBeenCalled();
+        },
+    );
+
+    it('skal ikke sende inn endringssøknad når søkeren har slettet alle sine perioder', async () => {
+        const postMock = vi.spyOn(ky, 'post');
+        const deleteMock = vi.spyOn(ky, 'delete');
+
+        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, true, saker), {
+            wrapper: getWrapper([]),
+        });
+
+        const resultat = await act(() => result.current.sendSøknad());
+
+        expect(resultat).toBe('MANGLER_UTTAKSPERIODER');
+        expect(postMock).not.toHaveBeenCalled();
+        expect(deleteMock).not.toHaveBeenCalled();
+    });
+
+    it('skal ikke sende inn endringssøknad når søkeren bare har uendrede, avslåtte perioder', async () => {
+        const postMock = vi.spyOn(ky, 'post');
+        const deleteMock = vi.spyOn(ky, 'delete');
+
+        const avslåttPeriode = {
+            ...UTTAKSPLAN_PERIODE,
+            søker: {
+                ...UTTAKSPLAN_PERIODE.søker,
+                resultat: { innvilget: false, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+            },
+        } satisfies UttakPeriodeDto;
+
+        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, true, saker), {
+            wrapper: getWrapper([avslåttPeriode], [avslåttPeriode]),
+        });
+
+        const resultat = await act(() => result.current.sendSøknad());
+
+        expect(resultat).toBe('MANGLER_UTTAKSPERIODER');
+        expect(postMock).not.toHaveBeenCalled();
+        expect(deleteMock).not.toHaveBeenCalled();
     });
 });

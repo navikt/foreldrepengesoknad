@@ -1427,7 +1427,7 @@ describe('UttaksplanKalender', () => {
         expect(screen.queryByText('Hva skal skje med resten av planen?')).not.toBeInTheDocument();
     });
 
-    it('skal beholde annen parts låste del når søker sletter sin del av samtidig uttak', async () => {
+    it('skal gjøre samtidig uttak om til annen parts låste periode når søker sletter sin del', async () => {
         render(
             <FarSøkerEtterAtMorHarSøkt
                 perioder={[
@@ -1460,7 +1460,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(screen.getByRole('button', { name: 'Slett dager fra periode' }));
 
         expect(within(april).queryByTestId('day:4;dayColor:NONE;with-icon')).not.toBeInTheDocument();
-        expect(within(april).getByTestId('day:4;dayColor:LIGHTBLUEGREEN;with-icon')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:4;dayColor:BLUE;with-icon')).toBeInTheDocument();
     });
 
     it('skal ikke få spørsmål om forskyv/erstatt når en sletter siste dag i kalenderen', async () => {

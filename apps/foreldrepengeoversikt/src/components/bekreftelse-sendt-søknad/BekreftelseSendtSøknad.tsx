@@ -24,9 +24,10 @@ import { capitalizeFirstLetter, formatDate, formatDateMedUkedag, formatTime, get
 
 import { søkerInfoOptions } from '../../api/queries.ts';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak.ts';
+import { useUttaksplan } from '../../hooks/useUttaksplan.ts';
 import { OversiktRoutes } from '../../routes/routes';
 import { DokumentHendelse } from '../../sections/tidslinje/DokumentHendelse';
-import { getFørsteUttaksdagIForeldrepengesaken } from '../../utils/sakerUtils.ts';
+import { getFørsteUttaksdagFraUttaksplan } from '../../utils/sakerUtils.ts';
 import { getTidligstDatoForInntektsmelding } from '../../utils/tidslinjeUtils.ts';
 import { KontonummerInfo } from '../kontonummer-info/KontonummerInfo';
 
@@ -373,10 +374,11 @@ const useÅpenBehandlingTilstand = () => {
 
 const useGetTidligstMuligeSvar = () => {
     const sak = useGetSelectedSak();
+    const uttaksplanQuery = useUttaksplan(sak);
 
     if (sak?.ytelse !== 'FORELDREPENGER') {
         return;
     }
 
-    return getTidligstDatoForInntektsmelding(getFørsteUttaksdagIForeldrepengesaken(sak));
+    return getTidligstDatoForInntektsmelding(getFørsteUttaksdagFraUttaksplan(uttaksplanQuery.data ?? undefined));
 };
