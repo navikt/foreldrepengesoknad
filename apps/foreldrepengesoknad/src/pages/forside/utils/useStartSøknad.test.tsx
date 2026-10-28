@@ -10,6 +10,7 @@ import {
 } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
+import ky, { type ResponsePromise } from 'ky';
 import { ReactNode } from 'react';
 import { createIntl } from 'react-intl';
 import { MemoryRouter } from 'react-router';
@@ -398,5 +399,45 @@ describe('useStartSøknad', () => {
         await act(() => result.current.startSøknad(values));
         expect(fetch).not.toHaveBeenCalled();
         expect(result.current.state.APP_ROUTE).toBe(SøknadRoutes.UTTAKSPLAN);
+    });
+
+    it('fjernar aktivitet ANNET frå innsendt plan som blir henta med fetchQuery', async () => {
+        const graderingMedAnnet = { arbeidstidprosent: 50, aktivitet: { type: 'ANNET' as const } };
+        const planMedAnnet: FellesUttaksplanDto = {
+            ...tidligerePlan,
+            perioder: [
+                {
+                    fom: '2026-06-29',
+                    tom: '2026-07-10',
+                    søker: {
+                        forelder: 'MOR',
+                        kontoType: 'FELLESPERIODE',
+                        flerbarnsdager: false,
+                        gradering: graderingMedAnnet,
+                    },
+                },
+            ],
+        };
+        const { result, values, client } = setup();
+        client.removeQueries({ queryKey });
+        const postMock = vi.spyOn(ky, 'post').mockReturnValue(
+            Promise.resolve({ status: 200, json: () => Promise.resolve(planMedAnnet) }) as unknown as ResponsePromise,
+        );
+
+        await act(() => result.current.startSøknad(values));
+
+        expect(postMock).toHaveBeenCalled();
+        const forventaPerioder = [
+            {
+                ...planMedAnnet.perioder[0],
+                søker: { ...planMedAnnet.perioder[0]!.søker, gradering: { arbeidstidprosent: 50 } },
+            },
+        ];
+        expect(result.current.state.UTTAKSPLAN).toEqual(forventaPerioder);
+        expect(result.current.state.OPPRINNELIG_UTTAKSPLAN).toEqual({
+            saksnummer: sak.saksnummer,
+            perioder: forventaPerioder,
+        });
+        postMock.mockRestore();
     });
 });
