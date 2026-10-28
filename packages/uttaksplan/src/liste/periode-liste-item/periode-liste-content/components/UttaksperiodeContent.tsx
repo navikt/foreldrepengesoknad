@@ -17,6 +17,7 @@ import {
     harPeriodeMedUkjentGraderingsaktivitet,
 } from '../../../../utils/periodeUtils';
 import { getStønadskvoteNavn } from '../../../utils/uttaksplanListeUtils';
+import { GraderingTekst } from './GraderingTekst';
 
 interface Props {
     periode: Uttaksplanperiode;
@@ -157,11 +158,12 @@ const getTekstForArbeidOgSamtidigUttak = (
     }
 
     if (uttak.gradering !== undefined) {
-        const uttaksprosent = Math.round((100 - uttak.gradering.arbeidstidprosent) * 100) / 100;
         return (
-            <FormattedMessage
-                id="uttaksplan.periodeListeContent.arbeid"
-                values={{ arbeidstidprosent: uttak.gradering.arbeidstidprosent, uttaksprosent }}
+            <GraderingTekst
+                arbeidstidprosent={uttak.gradering.arbeidstidprosent}
+                erAnnenPartsPeriode={!periode.søker}
+                forelder={uttak.forelder}
+                navnPåForeldre={navnPåForeldre}
             />
         );
     }

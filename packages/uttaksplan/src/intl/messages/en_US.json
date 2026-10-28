@@ -58,6 +58,7 @@
     "uttaksplan.periodeListeContent.overføring.ikkeRettAnnenForelder": "Transfer of {stønadskvoteNavn} because {navnPåAnnenForelder} has lost the right to parental benefits",
     "uttaksplan.periodeListeContent.overføring.institusjonsoppholdAnnenForelder": "Transfer of {stønadskvoteNavn} because {navnPåAnnenForelder} is hospitalized",
     "uttaksplan.periodeListeContent.arbeid": "You will work {arbeidstidprosent} % and receive {uttaksprosent} % parental benefits",
+    "uttaksplan.periodeListeContent.arbeid.annenForelder": "{navnPåForelder} will work {arbeidstidprosent} % and receive {uttaksprosent} % parental benefits",
     "uttaksplan.periodeListeContent.samtidigUttak": "{navnPåHovedforelderIPerioden} will receive {samtidiguttaksProsent} % parental benefits",
     "uttaksplan.periodeListeContent.samtidigUttak.annenForelder": "{navnPåAnnenForelderIPerioden} will receive {samtidiguttaksProsent} % parental benefits",
     "uttaksplan.periodeListeContent.skalIkkeJobbe": "Will not work during this period",
