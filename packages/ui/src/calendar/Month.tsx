@@ -17,7 +17,7 @@ dayjs.extend(isoWeek);
 interface Props {
     year: number;
     month: number;
-    isFirstMonth: boolean;
+    harStandardTabStopp: boolean;
     showWeekNumbers: boolean;
     periods: CalendarPeriod[];
     focusedDate: Dayjs | undefined;
@@ -33,7 +33,7 @@ export const Month = React.memo(
     ({
         year,
         month,
-        isFirstMonth,
+        harStandardTabStopp,
         showWeekNumbers,
         periods,
         focusedDate,
@@ -114,7 +114,12 @@ export const Month = React.memo(
                             return (
                                 <HGrid key={`week-${weekNr}`} columns={nrOfColumns}>
                                     {showWeekNumbers && (
-                                        <div key={`weeknr-${weekNr}`} className={styles.weeknr} data-testid="ukenummer">
+                                        <div
+                                            key={`weeknr-${weekNr}`}
+                                            className={styles.weeknr}
+                                            data-testid="ukenummer"
+                                            aria-hidden
+                                        >
                                             {weekNr}
                                         </div>
                                     )}
@@ -145,11 +150,12 @@ export const Month = React.memo(
                                                 dateTooltipCallback={dateTooltipCallback}
                                                 dateClickCallback={dateClickCallback}
                                                 onDateHover={onDateHover}
-                                                isFocused={
-                                                    focusedDate?.isSame(date, 'day') ??
-                                                    (isFirstMonth && cellIndex === startWeekDay - 1) ??
-                                                    false
+                                                isTabStop={
+                                                    focusedDate
+                                                        ? focusedDate.isSame(date, 'day')
+                                                        : harStandardTabStopp && cellIndex === startWeekDay - 1
                                                 }
+                                                isFocused={!!focusedDate?.isSame(date, 'day')}
                                                 setFocusedDate={setFocusedDate}
                                             />
                                         );

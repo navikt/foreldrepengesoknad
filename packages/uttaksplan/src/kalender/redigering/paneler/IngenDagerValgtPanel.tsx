@@ -7,6 +7,7 @@ import { BodyShort, Box, Detail, HStack, Heading, Link, Show, Tag, VStack } from
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
 import { UttaksplanHandlingKnapper } from '../../../felles/UttaksplanHandlingKnapper';
+import { UtvidIkonKnapp } from '../../../felles/UtvidIkonKnapp';
 import { getVarighetString } from '../../../utils/dateUtils';
 import {
     useTellDagerIUttaksPeriodene,
@@ -43,19 +44,22 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
             >
                 <Show below="md">
                     <VStack gap="space-1" align="center">
-                        {erMinimert ? (
-                            <ChevronUpIcon
-                                title={intl.formatMessage({ id: 'RedigeringPanel.Maksimer' })}
-                                height={24}
-                                width={24}
-                            />
-                        ) : (
-                            <ChevronDownIcon
-                                title={intl.formatMessage({ id: 'RedigeringPanel.Minimer' })}
-                                height={24}
-                                width={24}
-                            />
-                        )}
+                        <UtvidIkonKnapp
+                            ikon={
+                                erMinimert ? (
+                                    <ChevronUpIcon aria-hidden height={24} width={24} />
+                                ) : (
+                                    <ChevronDownIcon aria-hidden height={24} width={24} />
+                                )
+                            }
+                            label={
+                                erMinimert
+                                    ? intl.formatMessage({ id: 'RedigeringPanel.Maksimer' })
+                                    : intl.formatMessage({ id: 'RedigeringPanel.Minimer' })
+                            }
+                            erUtvidet={!erMinimert}
+                            onClick={() => setErMinimert(!erMinimert)}
+                        />
                         <Heading size="small">
                             <HStack gap="space-4" align="center">
                                 <NotePencilIcon aria-hidden height={16} width={16} />

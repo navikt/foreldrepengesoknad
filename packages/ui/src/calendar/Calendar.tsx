@@ -69,7 +69,7 @@ export const Calendar = ({
                 return (
                     <Month
                         key={`${year}-${month}`}
-                        isFirstMonth={index === 0}
+                        harStandardTabStopp={index === 0 && focusedDate === undefined}
                         year={year}
                         month={month}
                         periods={monthPeriods}

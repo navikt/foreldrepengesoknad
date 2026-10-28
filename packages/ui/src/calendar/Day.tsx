@@ -14,6 +14,7 @@ export type DayShape = 'square' | 'rounded-right' | 'rounded-left';
 type Props = {
     isoDate: string;
     periodeColor: CalendarPeriodColor;
+    isTabStop: boolean;
     isFocused: boolean;
     srText?: string;
     isUpdated?: boolean;
@@ -31,6 +32,7 @@ export const Day = React.memo(
     ({
         isoDate,
         periodeColor,
+        isTabStop,
         isFocused,
         srText,
         isUpdated,
@@ -73,7 +75,7 @@ export const Day = React.memo(
                 data-fade-in={isUpdated}
                 data-periode-color={periodeColor}
                 data-hover-preview={isHoverPreview && !isWeekend(date) && periodeColor !== 'DARKBLUE'}
-                tabIndex={isFocused ? 0 : -1}
+                tabIndex={isTabStop ? 0 : -1}
                 className={styles.days}
                 onFocus={isClickable ? () => setFocusedDate(date) : undefined}
                 onMouseEnter={onDateHover && isClickable ? () => onDateHover(isoDate) : undefined}
@@ -128,6 +130,8 @@ const skipWeekends = (date: Dayjs, direction: 1 | -1): Dayjs => {
     return next;
 };
 
+const HANDLED_KEYS = new Set(['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Enter', ' ']);
+
 const handleKeyNavigationAndSelection = (
     e: React.KeyboardEvent,
     date: Dayjs,
@@ -135,7 +139,7 @@ const handleKeyNavigationAndSelection = (
     setFocusedDate: (date: Dayjs) => void,
     onDateHover?: (date: string | undefined) => void,
 ) => {
-    if (e.key === 'Tab') {
+    if (!HANDLED_KEYS.has(e.key)) {
         return;
     }
 

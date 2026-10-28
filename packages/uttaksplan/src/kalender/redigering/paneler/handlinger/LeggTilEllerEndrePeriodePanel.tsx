@@ -4,6 +4,7 @@ import { useIntl } from 'react-intl';
 
 import { Box, Chips, HStack, Show, VStack } from '@navikt/ds-react';
 
+import { UtvidIkonKnapp } from '../../../../felles/UtvidIkonKnapp';
 import { getVarighetString } from '../../../../utils/dateUtils';
 import { useKalenderRedigeringContext } from '../../context/KalenderRedigeringContext';
 import { finnAntallDager } from '../../utils/kalenderPeriodeUtils';
@@ -69,19 +70,22 @@ const HeaderDesktop = ({ labels }: { labels: React.ReactNode }) => {
                             )}
                         </Chips.Removable>
                     </Chips>
-                    {visPeriodeDetaljer ? (
-                        <ChevronUpIcon
-                            title={intl.formatMessage({ id: 'RedigeringPanel.SkjulDetaljer' })}
-                            fontSize="1.5rem"
-                            onClick={() => setVisPeriodeDetaljer(false)}
-                        />
-                    ) : (
-                        <ChevronDownIcon
-                            title={intl.formatMessage({ id: 'RedigeringPanel.VisDetaljer' })}
-                            fontSize="1.5rem"
-                            onClick={() => setVisPeriodeDetaljer(true)}
-                        />
-                    )}
+                    <UtvidIkonKnapp
+                        ikon={
+                            visPeriodeDetaljer ? (
+                                <ChevronUpIcon aria-hidden fontSize="1.5rem" />
+                            ) : (
+                                <ChevronDownIcon aria-hidden fontSize="1.5rem" />
+                            )
+                        }
+                        label={
+                            visPeriodeDetaljer
+                                ? intl.formatMessage({ id: 'RedigeringPanel.SkjulDetaljer' })
+                                : intl.formatMessage({ id: 'RedigeringPanel.VisDetaljer' })
+                        }
+                        erUtvidet={visPeriodeDetaljer}
+                        onClick={() => setVisPeriodeDetaljer(!visPeriodeDetaljer)}
+                    />
                 </HStack>
                 {labels}
                 {visPeriodeDetaljer && <PeriodeDetaljerOgInfoMeldinger />}
@@ -111,19 +115,22 @@ const HeaderMobil = ({
                 className="bg-ax-bg-accent-soft hover:bg-ax-bg-accent-moderate cursor-pointer"
             >
                 <VStack gap="space-4" align="center">
-                    {erMinimert ? (
-                        <ChevronUpIcon
-                            title={intl.formatMessage({ id: 'RedigeringPanel.Maksimer' })}
-                            height={24}
-                            width={24}
-                        />
-                    ) : (
-                        <ChevronDownIcon
-                            title={intl.formatMessage({ id: 'RedigeringPanel.Minimer' })}
-                            height={24}
-                            width={24}
-                        />
-                    )}
+                    <UtvidIkonKnapp
+                        ikon={
+                            erMinimert ? (
+                                <ChevronUpIcon aria-hidden height={24} width={24} />
+                            ) : (
+                                <ChevronDownIcon aria-hidden height={24} width={24} />
+                            )
+                        }
+                        label={
+                            erMinimert
+                                ? intl.formatMessage({ id: 'RedigeringPanel.Maksimer' })
+                                : intl.formatMessage({ id: 'RedigeringPanel.Minimer' })
+                        }
+                        erUtvidet={!erMinimert}
+                        onClick={() => setErMinimert(!erMinimert)}
+                    />
 
                     <Chips size="small">
                         <Chips.Removable onDelete={() => setValgtePerioder([])} onClick={(e) => e.stopPropagation()}>

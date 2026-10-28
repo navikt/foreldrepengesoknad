@@ -8,6 +8,7 @@ import { Box, Button, Chips, HStack, Heading, Show, VStack } from '@navikt/ds-re
 import { UttakPeriodeDto } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
+import { UtvidIkonKnapp } from '../../../../felles/UtvidIkonKnapp';
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { useKanKunErstatte } from '../../../../regler/alert/informasjonsAlertHooks';
@@ -254,19 +255,22 @@ const HeaderForMobil = ({
             className="bg-ax-bg-accent-soft hover:bg-ax-bg-accent-moderate cursor-pointer"
         >
             <VStack gap="space-4" align="center">
-                {erMinimert ? (
-                    <ChevronUpIcon
-                        title={intl.formatMessage({ id: 'RedigeringPanel.Maksimer' })}
-                        height={24}
-                        width={24}
-                    />
-                ) : (
-                    <ChevronDownIcon
-                        title={intl.formatMessage({ id: 'RedigeringPanel.Minimer' })}
-                        height={24}
-                        width={24}
-                    />
-                )}
+                <UtvidIkonKnapp
+                    ikon={
+                        erMinimert ? (
+                            <ChevronUpIcon aria-hidden height={24} width={24} />
+                        ) : (
+                            <ChevronDownIcon aria-hidden height={24} width={24} />
+                        )
+                    }
+                    label={
+                        erMinimert
+                            ? intl.formatMessage({ id: 'RedigeringPanel.Maksimer' })
+                            : intl.formatMessage({ id: 'RedigeringPanel.Minimer' })
+                    }
+                    erUtvidet={!erMinimert}
+                    onClick={() => setErMinimert(!erMinimert)}
+                />
 
                 <HStack gap="space-8" align="center" wrap={false}>
                     <PencilIcon title={intl.formatMessage({ id: 'RedigeringPanel.EndreTil' })} fontSize="1.5rem" />

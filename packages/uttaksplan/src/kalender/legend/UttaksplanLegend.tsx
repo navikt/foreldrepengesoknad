@@ -11,6 +11,7 @@ import { Barn, BrukerRolleSak_fpoversikt, isAdoptertBarn, isFødtBarn } from '@n
 import { CalendarLabel, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { UtvidIkonKnapp } from '../../felles/UtvidIkonKnapp';
 import { LegendLabel } from '../../types/LegendLabel';
 import { UttaksplanperiodeMedKunTapteDager, erPeriodeDto } from '../../types/UttaksplanPeriode';
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
@@ -128,10 +129,11 @@ export const UttaksplanLegend = ({
             {skjulTekstSomDefault && !visHorisontalt && (
                 <HStack gap="space-8" align="center">
                     <FormattedMessage id="UttaksplanLegend.HvaFargeneBetyr" />
-                    <ChevronUpCircleIcon
-                        title={intl.formatMessage({ id: 'UttaksplanLegend.LukkFargeForklaring' })}
-                        fontSize="1.5rem"
-                        className="mb-1 cursor-pointer"
+                    <UtvidIkonKnapp
+                        ikon={<ChevronUpCircleIcon aria-hidden fontSize="1.5rem" />}
+                        label={intl.formatMessage({ id: 'UttaksplanLegend.LukkFargeForklaring' })}
+                        erUtvidet
+                        className="mb-1"
                         onClick={() => setVisHorisontalt(true)}
                     />
                 </HStack>
@@ -146,10 +148,11 @@ export const UttaksplanLegend = ({
                 />
             ))}
             {skjulTekstSomDefault && visHorisontalt && (
-                <ChevronDownCircleIcon
-                    title={intl.formatMessage({ id: 'UttaksplanLegend.ApneFargeForklaring' })}
-                    fontSize="1.5rem"
-                    className="mb-1 cursor-pointer"
+                <UtvidIkonKnapp
+                    ikon={<ChevronDownCircleIcon aria-hidden fontSize="1.5rem" />}
+                    label={intl.formatMessage({ id: 'UttaksplanLegend.ApneFargeForklaring' })}
+                    erUtvidet={false}
+                    className="mb-1"
                     onClick={() => setVisHorisontalt(false)}
                 />
             )}
