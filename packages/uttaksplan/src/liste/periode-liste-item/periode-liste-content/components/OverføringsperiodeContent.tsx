@@ -9,6 +9,7 @@ import { Uttaksdagen, formatDateExtended } from '@navikt/fp-utils';
 import { Uttaksplanperiode, erPeriodeDto } from '../../../../types/UttaksplanPeriode';
 import { getVarighetString } from '../../../../utils/dateUtils';
 import { getStønadskvoteNavn } from '../../../utils/uttaksplanListeUtils';
+import { GraderingTekst } from './GraderingTekst';
 
 interface Props {
     periode: Uttaksplanperiode;
@@ -61,12 +62,11 @@ export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, na
                     </BodyShort>
                     {uttak.gradering !== undefined && (
                         <BodyShort>
-                            <FormattedMessage
-                                id="uttaksplan.periodeListeContent.arbeid"
-                                values={{
-                                    arbeidstidprosent: uttak.gradering.arbeidstidprosent,
-                                    uttaksprosent: 100 - uttak.gradering.arbeidstidprosent,
-                                }}
+                            <GraderingTekst
+                                arbeidstidprosent={uttak.gradering.arbeidstidprosent}
+                                erAnnenPartsPeriode={erPeriodeDto(periode) && !periode.søker}
+                                forelder={uttak.forelder}
+                                navnPåForeldre={navnPåForeldre}
                             />
                         </BodyShort>
                     )}
