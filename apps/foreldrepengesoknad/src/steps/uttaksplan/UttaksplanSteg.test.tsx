@@ -4,9 +4,15 @@ import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
 import { saker } from 'storybookData/saker';
 
+import { loggUmamiEvent } from '@navikt/fp-observability';
 import { UttakDto, UttakPeriodeDto } from '@navikt/fp-types';
 
 import * as stories from './UttaksplanSteg.stories';
+
+vi.mock('@navikt/fp-observability', async (importOriginal) => ({
+    ...(await importOriginal<typeof import('@navikt/fp-observability')>()),
+    loggUmamiEvent: vi.fn(),
+}));
 
 const infoTekst = [
     'I denne søknaden søker du kun for deg selv.',
@@ -184,6 +190,29 @@ describe('<UttaksplanSteg>', () => {
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(await screen.findByText('Du har ikke lagt til noen perioder i planen')).toBeInTheDocument();
+    });
+
+    it('skal logge første endring i listevisning én gang', async () => {
+        vi.mocked(loggUmamiEvent).mockClear();
+        await FødselMorOgFarBeggeHarRett.run();
+
+        expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+        await userEvent.click(screen.getByRole('tab', { name: 'Liste' }));
+
+        const fjernAlt = async () => {
+            await userEvent.click(screen.getByRole('button', { name: 'Fjern alt' }));
+            await userEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Fjern alt' }));
+            await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+        };
+        await fjernAlt();
+        await fjernAlt();
+
+        const endretKall = vi
+            .mocked(loggUmamiEvent)
+            .mock.calls.filter(([event]) => event.eventName === 'uttaksplan endret');
+        expect(endretKall).toEqual([
+            [{ origin: 'foreldrepengesoknad', eventName: 'uttaksplan endret', eventData: { visning: 'liste' } }],
+        ]);
     });
 
     it('skal generere uttaksplan og gå videre når annen part har et vedtak med tomme perioder', async () => {

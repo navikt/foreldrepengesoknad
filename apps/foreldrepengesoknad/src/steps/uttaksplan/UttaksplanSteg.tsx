@@ -78,9 +78,13 @@ export const UttaksplanSteg = ({
 
     const [feilmelding, setFeilmelding] = useState<ReactNode | undefined>();
 
+    const aktivVisningRef = useRef<Visning>('kalender');
+    const loggedeVisningerRef = useRef(new Set<Visning>());
+
     const oppdaterUttaksplanOgFjernFeilmelding = useCallback(
         (perioder: UttakPeriodeDto[] | undefined) => {
             setFeilmelding(undefined);
+            loggFørsteEndringIVisning(aktivVisningRef.current, loggedeVisningerRef.current);
             const gjenbruktPlan =
                 !erEndringssøknad &&
                 erNySøknadPåEksisterendeSak &&
@@ -228,6 +232,7 @@ export const UttaksplanSteg = ({
                         <Tabs
                             defaultValue="kalender"
                             onChange={(value) => {
+                                aktivVisningRef.current = value as Visning;
                                 loggUmamiEvent({
                                     origin: 'foreldrepengesoknad',
                                     eventName: 'tab klikk',
@@ -286,6 +291,20 @@ const utledRettighet = (erAleneOmOmsorg: boolean, erDeltUttak: boolean): Rettigh
         return 'BEGGE_RETT';
     }
     return 'BARE_SØKER_RETT';
+};
+
+type Visning = 'kalender' | 'liste';
+
+const loggFørsteEndringIVisning = (visning: Visning, loggedeVisninger: Set<Visning>) => {
+    if (loggedeVisninger.has(visning)) {
+        return;
+    }
+    loggedeVisninger.add(visning);
+    loggUmamiEvent({
+        origin: 'foreldrepengesoknad',
+        eventName: 'uttaksplan endret',
+        eventData: { visning },
+    });
 };
 
 const loggExpansionCardOpen = (tittel: string) => (open: boolean) => {
