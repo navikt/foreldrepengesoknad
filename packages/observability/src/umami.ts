@@ -21,6 +21,7 @@ type EventNamesTaksonomi =
     | 'skjema fortsett senere'
     | 'skjema avbrutt'
     | 'tab klikk'
+    | 'uttaksplan endret'
     | 'besøk';
 
 export const loggUmamiEvent = ({
