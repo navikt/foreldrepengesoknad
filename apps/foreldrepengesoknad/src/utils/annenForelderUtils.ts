@@ -17,12 +17,18 @@ export const finnAnnenPartsPlan = (
 ): FellesUttaksplanDto | undefined =>
     uttaksplan?.perioder.some((p) => p.annenPart !== undefined) ? uttaksplan : undefined;
 
+// Annen parts perioder uten resultat kan komme fra søkerens egen søknad, så bare perioder med resultat viser annen parts valg.
+export const finnAnnenPartsVedtak = (
+    uttaksplan: FellesUttaksplanDto | null | undefined,
+): FellesUttaksplanDto | undefined =>
+    uttaksplan?.perioder.some((p) => p.annenPart?.resultat !== undefined) ? uttaksplan : undefined;
+
 export const annenPartHarInnvilgetUttak = (uttaksplan: FellesUttaksplanDto | null | undefined): boolean => {
     const annenPartsPlan = finnAnnenPartsPlan(uttaksplan);
     if (!annenPartsPlan) {
         return false;
     }
-    const harVedtak = annenPartsPlan.perioder.some((p) => p.annenPart?.resultat !== undefined);
+    const harVedtak = finnAnnenPartsVedtak(annenPartsPlan) !== undefined;
     return !harVedtak || annenPartsPlan.perioder.some((p) => p.annenPart?.resultat?.innvilget);
 };
 
