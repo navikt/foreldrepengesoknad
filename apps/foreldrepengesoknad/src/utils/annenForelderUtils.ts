@@ -12,20 +12,19 @@ export const getDatoForAleneomsorg = (annenForelder: AnnenForelder): string | un
     return isAnnenForelderOppgitt(annenForelder) ? annenForelder.datoForAleneomsorg : undefined;
 };
 
-declare const annenPartVedtakBrand: unique symbol;
-
-// Merka subtype slik at false-greina av type-predikatet framleis kan vere ein FellesUttaksplanDto
-// (t.d. ein plan med berre søkjaren sine periodar), og ikkje blir snevra inn til null | undefined.
-export type FellesUttaksplanMedAnnenPartVedtak = FellesUttaksplanDto & { readonly [annenPartVedtakBrand]: true };
-
-// Planen kan òg innehalde annan part sin ubehandla søknad. Berre periodar med resultat kjem frå eit vedtak.
-export const annenPartHarVedtak = (
+export const finnAnnenPartsPlan = (
     uttaksplan: FellesUttaksplanDto | null | undefined,
-): uttaksplan is FellesUttaksplanMedAnnenPartVedtak =>
-    !!uttaksplan?.perioder.some((p) => p.annenPart?.resultat !== undefined);
+): FellesUttaksplanDto | undefined =>
+    uttaksplan?.perioder.some((p) => p.annenPart !== undefined) ? uttaksplan : undefined;
 
-export const annenPartHarInnvilgetUttak = (uttaksplan: FellesUttaksplanDto | null | undefined): boolean =>
-    !!uttaksplan?.perioder.some((p) => p.annenPart?.resultat?.innvilget);
+export const annenPartHarInnvilgetUttak = (uttaksplan: FellesUttaksplanDto | null | undefined): boolean => {
+    const annenPartsPlan = finnAnnenPartsPlan(uttaksplan);
+    if (!annenPartsPlan) {
+        return false;
+    }
+    const harVedtak = annenPartsPlan.perioder.some((p) => p.annenPart?.resultat !== undefined);
+    return !harVedtak || annenPartsPlan.perioder.some((p) => p.annenPart?.resultat?.innvilget);
+};
 
 export const annenForelderHarNorskFnr = (annenForelder: AnnenForelder) => {
     const annenPartFnr =

@@ -3,7 +3,7 @@ import { useUttaksplanOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useValgtSak } from 'appData/useValgtSak';
 import { useEffect, useMemo } from 'react';
-import { annenPartHarVedtak } from 'utils/annenForelderUtils';
+import { finnAnnenPartsPlan } from 'utils/annenForelderUtils';
 
 import { FpSak_fpoversikt, UttakPeriodeDto } from '@navikt/fp-types';
 
@@ -41,12 +41,18 @@ export const useTidligereUttaksplan = (
         ) {
             return opprinneligUttaksplan.perioder;
         }
-        if (!annenPartHarVedtak(uttaksplan)) {
+        const annenPartsPlan = finnAnnenPartsPlan(uttaksplan);
+        if (!annenPartsPlan) {
             return;
         }
-        return uttaksplan.perioder.flatMap(({ fom, tom, annenPart }) =>
-            annenPart?.resultat ? { fom, tom, annenPart } : [],
-        );
+        const medSøkersPerioder = valgtEksisterendeSaksnr === undefined;
+        return annenPartsPlan.perioder.flatMap(({ fom, tom, søker, annenPart }) => {
+            const søkersUttak = medSøkersPerioder ? søker : undefined;
+            if (!søkersUttak && !annenPart) {
+                return [];
+            }
+            return { fom, tom, ...(søkersUttak && { søker: søkersUttak }), ...(annenPart && { annenPart }) };
+        });
     }, [
         uttaksplan,
         valgtEksisterendeSaksnr,

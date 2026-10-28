@@ -1,15 +1,18 @@
 import { composeStories } from '@storybook/react-vite';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { getStønadskvoteParams } from 'api/getStønadskvoteParams';
+import { uttaksplanOptions } from 'api/queries';
 import { ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { saker } from 'storybookData/saker';
+import { getUttaksplanParam } from 'utils/annenForelderUtils';
 
 import { BarnType } from '@navikt/fp-constants';
-import { UttakPeriodeDto } from '@navikt/fp-types';
-import { IntlProvider } from '@navikt/fp-ui';
+import { FellesUttaksplanDto, UttakPeriodeDto } from '@navikt/fp-types';
+import { IntlProvider, uiMessages } from '@navikt/fp-ui';
 
 import messages from '../../intl/nb_NO.json';
 import { FordelingSteg } from './FordelingSteg';
@@ -122,6 +125,77 @@ it.each([true, false])(
         expect(await screen.findByText('Uttaksplan åpnet')).toBeInTheDocument();
     },
 );
+
+it('skal bruke mors perioder og skjule oppstartsvalg også når mor kun har søkt (før vedtak)', async () => {
+    vi.setSystemTime(new Date('2024-02-25'));
+    const barn = FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode.args.barnet!;
+    const annenForelder = FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode.args.annenForelder!;
+    const søkersituasjon = FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode.args.søkersituasjon!;
+    const uttaksplanUtenVedtak: FellesUttaksplanDto = {
+        antallBarn: 1,
+        dekningsgrad: 'HUNDRE',
+        perioder: [
+            {
+                fom: '2024-08-11',
+                tom: '2024-08-12',
+                annenPart: {
+                    forelder: 'MOR',
+                    kontoType: 'FELLESPERIODE',
+                    flerbarnsdager: false,
+                },
+            },
+        ],
+    };
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: Infinity } } });
+    client.setQueryData(uttaksplanOptions(getUttaksplanParam(annenForelder, barn)).queryKey, uttaksplanUtenVedtak);
+    client.setQueryData(
+        [
+            'TILGJENGELIGE_STONADSKVOTER',
+            getStønadskvoteParams(barn, annenForelder, søkersituasjon, uttaksplanUtenVedtak),
+        ],
+        {
+            '80': { kontoer: [], minsteretter: { farRundtFødsel: 0, toTette: 0 } },
+            '100': {
+                kontoer: [
+                    { konto: 'MØDREKVOTE', dager: 75 },
+                    { konto: 'FEDREKVOTE', dager: 75 },
+                    { konto: 'FELLESPERIODE', dager: 80 },
+                    { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
+                ],
+                minsteretter: { farRundtFødsel: 10, toTette: 0 },
+            },
+        },
+    );
+
+    const { container } = render(
+        <QueryClientProvider client={client}>
+            <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: { ...messages, ...uiMessages.nb } }}>
+                <FpDataContext
+                    initialState={{
+                        [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                        [ContextDataType.OM_BARNET]: barn,
+                        [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                        [ContextDataType.PERIODE_MED_FORELDREPENGER]: '100',
+                    }}
+                >
+                    <MemoryRouter initialEntries={[SøknadRoutes.FORDELING]}>
+                        <FordelingSteg
+                            person={FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode.args.person!}
+                            arbeidsforhold={[]}
+                            mellomlagreSøknadOgNaviger={vi.fn()}
+                            avbrytSøknad={vi.fn()}
+                        />
+                    </MemoryRouter>
+                </FpDataContext>
+            </IntlProvider>
+        </QueryClientProvider>,
+    );
+
+    const steg = within(container);
+    expect(await steg.findByText('Hannes siste dag med foreldrepenger er mandag 12. august 2024.')).toBeInTheDocument();
+    expect(steg.queryByText('Når vil du starte permisjonen din med foreldrepenger?')).not.toBeInTheDocument();
+    vi.useRealTimers();
+});
 
 describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
     const gåTilNesteSide = vi.fn();
