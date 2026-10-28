@@ -57,12 +57,11 @@ export const erSøkerInfoEndret = (
 
 type UttakIFellesUttaksplan = NonNullable<FellesUttaksplanDto['perioder'][number]['søker']>;
 
-// TODO: Mellombels. Backend har gått frå gradering.aktivitet.type 'ANNET' til at aktivitet manglar (null).
-// Vi ser bort frå denne endringa slik at mellomlagra søknader ikkje blir forkasta. Kan fjernast når
-// mellomlagringar med 'ANNET' ikkje lenger finst.
-const utanAnnetAktivitet = (uttak: UttakIFellesUttaksplan | undefined): UttakIFellesUttaksplan | undefined => {
-    const aktivitet = uttak?.gradering?.aktivitet as { type: string } | null | undefined;
-    if (!uttak?.gradering || (aktivitet !== null && aktivitet?.type !== 'ANNET')) {
+// TODO: Mellombels, saman med fjernAnnetGraderingsaktivitetFraMellomlagring. Mellomlagra 'ANNET' blir gjort om
+// til at aktivitet manglar, medan backend kan sende aktivitet: null. Vi ser difor bort frå null her, slik at
+// mellomlagra søknader ikkje blir forkasta berre på grunn av den overgangen.
+const utanNullAktivitet = (uttak: UttakIFellesUttaksplan | undefined): UttakIFellesUttaksplan | undefined => {
+    if (!uttak?.gradering || (uttak.gradering.aktivitet as unknown) !== null) {
         return uttak;
     }
     return { ...uttak, gradering: { arbeidstidprosent: uttak.gradering.arbeidstidprosent } };
@@ -72,8 +71,8 @@ const normaliserFellesUttaksplan = (plan: FellesUttaksplanDto): FellesUttaksplan
     ...plan,
     perioder: plan.perioder.map((periode) => ({
         ...periode,
-        søker: utanAnnetAktivitet(periode.søker),
-        annenPart: utanAnnetAktivitet(periode.annenPart),
+        søker: utanNullAktivitet(periode.søker),
+        annenPart: utanNullAktivitet(periode.annenPart),
     })),
 });
 

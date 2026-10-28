@@ -149,22 +149,8 @@ describe('erFellesUttaksplanEndret', () => {
             ],
         }) as FellesUttaksplanDto;
 
-    it('skal ikkje sjå det som endring når aktivitet ANNET har blitt null', () => {
-        const lagret = lagPlan({ arbeidstidprosent: 50, aktivitet: { type: 'ANNET' } });
-        const fersk = lagPlan({ arbeidstidprosent: 50, aktivitet: null });
-
-        expect(erFellesUttaksplanEndret(lagret, fersk)).toBe(false);
-    });
-
-    it('skal ikkje sjå det som endring når aktivitet ANNET har blitt fjerna', () => {
-        const lagret = lagPlan({ arbeidstidprosent: 50, aktivitet: { type: 'ANNET' } });
-        const fersk = lagPlan({ arbeidstidprosent: 50 });
-
-        expect(erFellesUttaksplanEndret(lagret, fersk)).toBe(false);
-    });
-
     it('skal sjå det som endring når arbeidstidprosent er endra', () => {
-        const lagret = lagPlan({ arbeidstidprosent: 50, aktivitet: { type: 'ANNET' } });
+        const lagret = lagPlan({ arbeidstidprosent: 50 });
         const fersk = lagPlan({ arbeidstidprosent: 60 });
 
         expect(erFellesUttaksplanEndret(lagret, fersk)).toBe(true);
@@ -177,7 +163,7 @@ describe('erFellesUttaksplanEndret', () => {
     });
 
     it('skal sjå det som endring når aktivitet er endra til ein annan type', () => {
-        const lagret = lagPlan({ arbeidstidprosent: 50, aktivitet: { type: 'ANNET' } });
+        const lagret = lagPlan({ arbeidstidprosent: 50 });
         const fersk = lagPlan({ arbeidstidprosent: 50, aktivitet: { type: 'FRILANS' } });
 
         expect(erFellesUttaksplanEndret(lagret, fersk)).toBe(true);
@@ -203,7 +189,7 @@ describe('erFellesUttaksplanEndret', () => {
         expect(erFellesUttaksplanEndret(lagret, fersk)).toBe(true);
     });
 
-    it('skal normalisere annen part sitt uttak i periodar utan søker', () => {
+    it('skal sjå bort frå aktivitet null for annen part i periodar utan søker', () => {
         const lagAnnenPartPlan = (gradering: unknown): FellesUttaksplanDto =>
             ({
                 antallBarn: 1,
@@ -224,7 +210,7 @@ describe('erFellesUttaksplanEndret', () => {
 
         expect(
             erFellesUttaksplanEndret(
-                lagAnnenPartPlan({ arbeidstidprosent: 50, aktivitet: { type: 'ANNET' } }),
+                lagAnnenPartPlan({ arbeidstidprosent: 50 }),
                 lagAnnenPartPlan({ arbeidstidprosent: 50, aktivitet: null }),
             ),
         ).toBe(false);
@@ -238,7 +224,7 @@ describe('erFellesUttaksplanEndret', () => {
                 forelder: 'MOR',
                 kontoType: 'FELLESPERIODE',
                 flerbarnsdager: false,
-                gradering: { arbeidstidprosent: 50, aktivitet: { type: 'ANNET' } },
+                gradering: { arbeidstidprosent: 50 },
             },
         };
         const periodeB = {

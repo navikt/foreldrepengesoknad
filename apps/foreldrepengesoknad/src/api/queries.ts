@@ -4,6 +4,7 @@ import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import ky, { type ResponsePromise } from 'ky';
 import { getUttaksplanParam } from 'utils/annenForelderUtils';
+import { fjernAnnetGraderingsaktivitet, fjernAnnetGraderingsaktivitetFraMellomlagring } from 'utils/mellomlagringUtils';
 
 import {
     FellesUttaksplanDto,
@@ -78,11 +79,15 @@ export const søkerinfoOptions = () =>
         refetchOnWindowFocus: 'always',
     });
 
+// Stabil referanse, slik at react-query ikkje køyrer select på nytt ved kvar render.
+const velgMellomlagretData = (data: FpMellomlagretData | null) =>
+    data ? fjernAnnetGraderingsaktivitetFraMellomlagring(data) : undefined;
+
 export const mellomlagretInfoOptions = () =>
     queryOptions({
         queryKey: ['MELLOMLAGRET_INFO'],
         queryFn: () => jsonEllerNull<FpMellomlagretData>(ky.get(API_URLS.mellomlagring)),
-        select: (data) => data ?? undefined,
+        select: velgMellomlagretData,
         staleTime: Infinity,
         refetchOnWindowFocus: 'always',
     });
@@ -126,11 +131,15 @@ export const useStønadsKontoerOptions = () => {
     return tilgjengeligeStønadskvoterOptions(stønadskvoteParams);
 };
 
+// Stabil referanse, slik at react-query ikkje køyrer select på nytt ved kvar render.
+const velgUttaksplan = (uttaksplan: FellesUttaksplanDto | null) =>
+    uttaksplan ? { ...uttaksplan, perioder: fjernAnnetGraderingsaktivitet(uttaksplan.perioder) } : undefined;
+
 export const uttaksplanOptions = (data?: FellesUttaksplanRequest_fpoversikt) =>
     queryOptions({
         queryKey: ['UTTAKSPLAN', data],
         queryFn: () => jsonEllerNull<FellesUttaksplanDto>(ky.post(API_URLS.uttaksplan, { json: data })),
-        select: (uttaksplan) => uttaksplan ?? undefined,
+        select: velgUttaksplan,
         throwOnError: true,
     });
 
