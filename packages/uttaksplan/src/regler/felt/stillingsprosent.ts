@@ -3,7 +3,7 @@ import { IntlShape } from 'react-intl';
 import { getFloatFromString } from '@navikt/fp-utils';
 
 import { Feltregel, førsteBrutteFeltregel } from '../types';
-import { harIngenVerdi } from './utils';
+import { harFlereEnnToDesimaler, harIngenVerdi } from './utils';
 
 /**
  * Lager en validator-funksjon som passer rett inn i React Hook Form sin `validate`-prop.
@@ -32,6 +32,12 @@ export const lagStillingsprosentRegler = (intl: IntlShape): ReadonlyArray<Feltre
         beskrivelse: 'Stillingsprosent må være et gyldig tall.',
         erBrutt: ({ value }) => !harIngenVerdi(value) && getFloatFromString(value) === undefined,
         feilmelding: intl.formatMessage({ id: 'leggTilPeriodePanel.stillingsprosent.måVæreEtTall' }),
+    },
+    {
+        id: 'stillingsprosent.maksToDesimaler',
+        beskrivelse: 'Stillingsprosent kan ha maks to desimaler, fordi backend ikke tar imot flere.',
+        erBrutt: ({ value }) => getFloatFromString(value) !== undefined && harFlereEnnToDesimaler(value),
+        feilmelding: intl.formatMessage({ id: 'leggTilPeriodePanel.stillingsprosent.maksToDesimaler' }),
     },
     {
         id: 'stillingsprosent.måVæreStørreEnn0',

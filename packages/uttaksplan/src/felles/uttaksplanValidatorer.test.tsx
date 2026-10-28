@@ -41,6 +41,12 @@ describe('prosentValideringGradering', () => {
         expect(validator('abc')).toBe('Stillingsprosenten må være et tall');
     });
 
+    it('skal returnere feilmelding når stillingsprosent har mer enn to desimaler', () => {
+        const validator = prosentValideringGradering(intlMock, undefined);
+        expect(validator('12,345')).toBe('Stillingsprosenten kan ha maks to desimaler');
+        expect(validator('12.34')).toBeNull();
+    });
+
     it('skal returnere feilmelding når tallet ikke er større enn 0', () => {
         const validator = prosentValideringGradering(intlMock, undefined);
         expect(validator('0')).toBe('Stillingsprosenten må være et tall større enn 0');
@@ -71,6 +77,12 @@ describe('valideringSamtidigUttak', () => {
     it('skal returnere feilmelding når stillingsprosent ikke er et tall', () => {
         const validator = valideringSamtidigUttak(intlMock, undefined);
         expect(validator('abc')).toBe('Prosenten må være et tall');
+    });
+
+    it('skal returnere feilmelding når samtidig uttaksprosent har mer enn to desimaler', () => {
+        const validator = valideringSamtidigUttak(intlMock, undefined);
+        expect(validator('0,125')).toBe('Prosenten kan ha maks to desimaler');
+        expect(validator('33,33')).toBeNull();
     });
 
     it('skal returnere feilmelding når tallet ikke er større enn 0', () => {
