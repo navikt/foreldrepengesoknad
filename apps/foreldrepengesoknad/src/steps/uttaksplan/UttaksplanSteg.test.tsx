@@ -192,7 +192,7 @@ describe('<UttaksplanSteg>', () => {
         expect(await screen.findByText('Du har ikke lagt til noen perioder i planen')).toBeInTheDocument();
     });
 
-    it('skal logge første endring i listevisning én gang', async () => {
+    it('skal logge hver endring i listevisning', async () => {
         vi.mocked(loggUmamiEvent).mockClear();
         await FødselMorOgFarBeggeHarRett.run();
 
@@ -210,9 +210,10 @@ describe('<UttaksplanSteg>', () => {
         const endretKall = vi
             .mocked(loggUmamiEvent)
             .mock.calls.filter(([event]) => event.eventName === 'uttaksplan endret');
-        expect(endretKall).toEqual([
-            [{ origin: 'foreldrepengesoknad', eventName: 'uttaksplan endret', eventData: { visning: 'liste' } }],
-        ]);
+        const forventetKall = [
+            { origin: 'foreldrepengesoknad', eventName: 'uttaksplan endret', eventData: { visning: 'liste' } },
+        ];
+        expect(endretKall).toEqual([forventetKall, forventetKall]);
     });
 
     it('skal generere uttaksplan og gå videre når annen part har et vedtak med tomme perioder', async () => {

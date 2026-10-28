@@ -79,12 +79,11 @@ export const UttaksplanSteg = ({
     const [feilmelding, setFeilmelding] = useState<ReactNode | undefined>();
 
     const aktivVisningRef = useRef<Visning>('kalender');
-    const loggedeVisningerRef = useRef(new Set<Visning>());
 
     const oppdaterUttaksplanOgFjernFeilmelding = useCallback(
         (perioder: UttakPeriodeDto[] | undefined) => {
             setFeilmelding(undefined);
-            loggFørsteEndringIVisning(aktivVisningRef.current, loggedeVisningerRef.current);
+            loggEndringIVisning(aktivVisningRef.current);
             const gjenbruktPlan =
                 !erEndringssøknad &&
                 erNySøknadPåEksisterendeSak &&
@@ -295,11 +294,7 @@ const utledRettighet = (erAleneOmOmsorg: boolean, erDeltUttak: boolean): Rettigh
 
 type Visning = 'kalender' | 'liste';
 
-const loggFørsteEndringIVisning = (visning: Visning, loggedeVisninger: Set<Visning>) => {
-    if (loggedeVisninger.has(visning)) {
-        return;
-    }
-    loggedeVisninger.add(visning);
+const loggEndringIVisning = (visning: Visning) => {
     loggUmamiEvent({
         origin: 'foreldrepengesoknad',
         eventName: 'uttaksplan endret',
