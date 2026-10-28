@@ -3,7 +3,7 @@ import { IntlShape } from 'react-intl';
 import { getFloatFromString } from '@navikt/fp-utils';
 
 import { Feltregel, førsteBrutteFeltregel } from '../types';
-import { harIngenVerdi } from './utils';
+import { harFlereEnnToDesimaler, harIngenVerdi } from './utils';
 
 export const lagSamtidigUttaksprosentValidator =
     (intl: IntlShape, stillingsprosentValue: string | undefined) =>
@@ -31,6 +31,12 @@ export const lagSamtidigUttaksprosentRegler = (
         beskrivelse: 'Samtidig uttaksprosent må være et gyldig tall.',
         erBrutt: ({ value }) => !harIngenVerdi(value) && getFloatFromString(value) === undefined,
         feilmelding: intl.formatMessage({ id: 'leggTilPeriodePanel.samtidiguttaksprosent.måVæreEtTall' }),
+    },
+    {
+        id: 'samtidigUttaksprosent.maksToDesimaler',
+        beskrivelse: 'Samtidig uttaksprosent kan ha maks to desimaler, fordi backend ikke tar imot flere.',
+        erBrutt: ({ value }) => getFloatFromString(value) !== undefined && harFlereEnnToDesimaler(value),
+        feilmelding: intl.formatMessage({ id: 'leggTilPeriodePanel.samtidiguttaksprosent.maksToDesimaler' }),
     },
     {
         id: 'samtidigUttaksprosent.måVæreStørreEnn0',
