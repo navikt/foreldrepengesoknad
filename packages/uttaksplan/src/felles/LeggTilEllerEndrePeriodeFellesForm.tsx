@@ -1104,7 +1104,8 @@ const getGradering = (
     hvorSkalDuJobbe: string | undefined,
     kanVelgeArbeidsgiver: boolean,
 ): Gradering_fpoversikt => {
-    // I planleggaren (kanVelgeArbeidsgiver === false) kan ein ikkje oppgi aktivitet, så graderinga får ingen aktivitet.
+    // Aktivitet blir berre sett når søkjar har valt han i søknaden. I planleggaren (kanVelgeArbeidsgiver === false)
+    // og for annen part kan ein ikkje oppgi aktivitet, så då får graderinga ingen aktivitet.
     if (erSøker && kanVelgeArbeidsgiver && hvorSkalDuJobbe !== undefined) {
         return {
             aktivitet: {
@@ -1120,7 +1121,6 @@ const getGradering = (
         } satisfies Gradering_fpoversikt;
     }
 
-    // Dette må endrast når ein byrjar å lagre annen part sine periodar. Per no så kan ein ikkje oppi aktivitet for denne i skjema.
     return {
         arbeidstidprosent: getFloatFromString(stillingsprosent) ?? 100,
     } satisfies Gradering_fpoversikt;
