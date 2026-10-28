@@ -143,7 +143,7 @@ export const VisAlleMedTekst: Story = {
                 søker: {
                     forelder: 'MOR',
                     kontoType: 'MØDREKVOTE',
-                    gradering: { arbeidstidprosent: 80, aktivitet: { type: 'ANNET' } },
+                    gradering: { arbeidstidprosent: 80 },
                     flerbarnsdager: false,
                 },
                 annenPart: { forelder: 'FAR_MEDMOR', utsettelseÅrsak: 'FERIE', flerbarnsdager: false },

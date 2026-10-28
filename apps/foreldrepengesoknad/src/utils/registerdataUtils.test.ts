@@ -1,7 +1,7 @@
-import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
+import { FellesUttaksplanDto, FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { omitMany } from '@navikt/fp-utils';
 
-import { erSakerEndret, erSøkerInfoEndret } from './registerdataUtils';
+import { erFellesUttaksplanEndret, erSakerEndret, erSøkerInfoEndret } from './registerdataUtils';
 
 const uttakPeriode = {
     fom: '2024-01-01',
@@ -132,5 +132,143 @@ describe('erSøkerInfoEndret', () => {
                 ],
             }),
         ).toBe(true);
+    });
+});
+
+describe('erFellesUttaksplanEndret', () => {
+    const lagPlan = (gradering: unknown): FellesUttaksplanDto =>
+        ({
+            antallBarn: 1,
+            dekningsgrad: 'HUNDRE',
+            perioder: [
+                {
+                    fom: '2024-01-01',
+                    tom: '2024-01-31',
+                    søker: { forelder: 'MOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false, gradering },
+                },
+            ],
+        }) as FellesUttaksplanDto;
+
+    it('skal ikkje sjå det som endring når aktivitet ANNET har blitt null', () => {
+        const lagret = lagPlan({ arbeidstidprosent: 50, aktivitet: { type: 'ANNET' } });
+        const fersk = lagPlan({ arbeidstidprosent: 50, aktivitet: null });
+
+        expect(erFellesUttaksplanEndret(lagret, fersk)).toBe(false);
+    });
+
+    it('skal ikkje sjå det som endring når aktivitet ANNET har blitt fjerna', () => {
+        const lagret = lagPlan({ arbeidstidprosent: 50, aktivitet: { type: 'ANNET' } });
+        const fersk = lagPlan({ arbeidstidprosent: 50 });
+
+        expect(erFellesUttaksplanEndret(lagret, fersk)).toBe(false);
+    });
+
+    it('skal sjå det som endring når arbeidstidprosent er endra', () => {
+        const lagret = lagPlan({ arbeidstidprosent: 50, aktivitet: { type: 'ANNET' } });
+        const fersk = lagPlan({ arbeidstidprosent: 60 });
+
+        expect(erFellesUttaksplanEndret(lagret, fersk)).toBe(true);
+    });
+
+    it('skal sjå det som endring når backend ikkje returnerer nokon plan', () => {
+        const lagret = lagPlan({ arbeidstidprosent: 50 });
+
+        expect(erFellesUttaksplanEndret(lagret, undefined)).toBe(true);
+    });
+
+    it('skal sjå det som endring når aktivitet er endra til ein annan type', () => {
+        const lagret = lagPlan({ arbeidstidprosent: 50, aktivitet: { type: 'ANNET' } });
+        const fersk = lagPlan({ arbeidstidprosent: 50, aktivitet: { type: 'FRILANS' } });
+
+        expect(erFellesUttaksplanEndret(lagret, fersk)).toBe(true);
+    });
+
+    it('skal ikkje sjå det som endring når aktivitet er null på eine sida og manglar på andre', () => {
+        const lagret = lagPlan({ arbeidstidprosent: 50 });
+        const fersk = lagPlan({ arbeidstidprosent: 50, aktivitet: null });
+
+        expect(erFellesUttaksplanEndret(lagret, fersk)).toBe(false);
+    });
+
+    it('skal sjå det som endring når arbeidsgiver-id er endra', () => {
+        const lagret = lagPlan({
+            arbeidstidprosent: 50,
+            aktivitet: { type: 'ORDINÆRT_ARBEID', arbeidsgiver: { id: '111111111' } },
+        });
+        const fersk = lagPlan({
+            arbeidstidprosent: 50,
+            aktivitet: { type: 'ORDINÆRT_ARBEID', arbeidsgiver: { id: '222222222' } },
+        });
+
+        expect(erFellesUttaksplanEndret(lagret, fersk)).toBe(true);
+    });
+
+    it('skal normalisere annen part sitt uttak i periodar utan søker', () => {
+        const lagAnnenPartPlan = (gradering: unknown): FellesUttaksplanDto =>
+            ({
+                antallBarn: 1,
+                dekningsgrad: 'HUNDRE',
+                perioder: [
+                    {
+                        fom: '2024-02-01',
+                        tom: '2024-02-28',
+                        annenPart: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FELLESPERIODE',
+                            flerbarnsdager: false,
+                            gradering,
+                        },
+                    },
+                ],
+            }) as FellesUttaksplanDto;
+
+        expect(
+            erFellesUttaksplanEndret(
+                lagAnnenPartPlan({ arbeidstidprosent: 50, aktivitet: { type: 'ANNET' } }),
+                lagAnnenPartPlan({ arbeidstidprosent: 50, aktivitet: null }),
+            ),
+        ).toBe(false);
+    });
+
+    it('skal ikkje sjå det som endring når periodar og nøklar kjem i ulik rekkefølgje', () => {
+        const periodeA = {
+            fom: '2024-01-01',
+            tom: '2024-01-31',
+            søker: {
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                flerbarnsdager: false,
+                gradering: { arbeidstidprosent: 50, aktivitet: { type: 'ANNET' } },
+            },
+        };
+        const periodeB = {
+            fom: '2024-02-01',
+            tom: '2024-02-28',
+            søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
+        };
+        const lagret = {
+            antallBarn: 1,
+            dekningsgrad: 'HUNDRE',
+            perioder: [periodeA, periodeB],
+        } as unknown as FellesUttaksplanDto;
+        const fersk = {
+            dekningsgrad: 'HUNDRE',
+            antallBarn: 1,
+            perioder: [
+                periodeB,
+                {
+                    søker: {
+                        gradering: { aktivitet: null, arbeidstidprosent: 50 },
+                        flerbarnsdager: false,
+                        kontoType: 'FELLESPERIODE',
+                        forelder: 'MOR',
+                    },
+                    tom: '2024-01-31',
+                    fom: '2024-01-01',
+                },
+            ],
+        } as unknown as FellesUttaksplanDto;
+
+        expect(erFellesUttaksplanEndret(lagret, fersk)).toBe(false);
     });
 });

@@ -269,7 +269,6 @@
     "oppsummering.uttak": "Din plan",
     "oppsummering.uttak.arbeidstaker.label": "Arbeidssted",
     "oppsummering.uttak.frilans": "Jeg skal jobbe som frilans",
-    "oppsummering.uttak.annet": "Ikke oppgitt",
     "oppsummering.uttak.kombineresMedarbeid": "{erSøker, select, true {Jeg} other {{fornavn}}} skal kombinere perioden med arbeid",
     "oppsummering.uttak.samtidigUttak": "Vi skal ha samtidig uttak",
     "oppsummering.uttak.ønskerFlerbarnsdager": "{erSøker, select, true {Jeg} other {{fornavn}}} ønsker å benytte meg av flerbarnsdager",

@@ -1246,9 +1246,6 @@ export const HarPerioderForBådeMorOgFar: Story = {
                     forelder: 'FAR_MEDMOR',
                     kontoType: 'FELLESPERIODE',
                     gradering: {
-                        aktivitet: {
-                            type: 'ANNET',
-                        },
                         arbeidstidprosent: 50,
                     },
                     flerbarnsdager: false,
@@ -1262,9 +1259,6 @@ export const HarPerioderForBådeMorOgFar: Story = {
                     forelder: 'FAR_MEDMOR',
                     kontoType: 'FELLESPERIODE',
                     gradering: {
-                        aktivitet: {
-                            type: 'ANNET',
-                        },
                         arbeidstidprosent: 50,
                     },
                     flerbarnsdager: false,
@@ -1291,9 +1285,6 @@ export const HarPerioderForBådeMorOgFar: Story = {
                     forelder: 'FAR_MEDMOR',
                     kontoType: 'FELLESPERIODE',
                     gradering: {
-                        aktivitet: {
-                            type: 'ANNET',
-                        },
                         arbeidstidprosent: 50,
                     },
                     flerbarnsdager: false,
@@ -1306,9 +1297,6 @@ export const HarPerioderForBådeMorOgFar: Story = {
                     forelder: 'FAR_MEDMOR',
                     kontoType: 'FELLESPERIODE',
                     gradering: {
-                        aktivitet: {
-                            type: 'ANNET',
-                        },
                         arbeidstidprosent: 50,
                     },
                     flerbarnsdager: false,

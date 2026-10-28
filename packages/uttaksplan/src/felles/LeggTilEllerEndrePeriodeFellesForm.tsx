@@ -1104,10 +1104,8 @@ const getGradering = (
     hvorSkalDuJobbe: string | undefined,
     kanVelgeArbeidsgiver: boolean,
 ): Gradering_fpoversikt => {
-    // I planleggaren (kanVelgeArbeidsgiver === false) kan ein ikkje oppi aktivitet, så vi set alltid ANNET.
-    // 'ANNET' i hvorSkalDuJobbe er ein plassholdar (typisk frå planleggar-import) – brukaren har då
-    // ikkje valt ein reell aktivitet, så vi held på ANNET slik at detektoren framleis flaggar perioden.
-    if (erSøker && kanVelgeArbeidsgiver && hvorSkalDuJobbe !== 'ANNET') {
+    // I planleggaren (kanVelgeArbeidsgiver === false) kan ein ikkje oppgi aktivitet, så graderinga får ingen aktivitet.
+    if (erSøker && kanVelgeArbeidsgiver && hvorSkalDuJobbe !== undefined) {
         return {
             aktivitet: {
                 type: finnAktivitetType(hvorSkalDuJobbe),
@@ -1124,9 +1122,6 @@ const getGradering = (
 
     // Dette må endrast når ein byrjar å lagre annen part sine periodar. Per no så kan ein ikkje oppi aktivitet for denne i skjema.
     return {
-        aktivitet: {
-            type: 'ANNET',
-        },
         arbeidstidprosent: getFloatFromString(stillingsprosent) ?? 100,
     } satisfies Gradering_fpoversikt;
 };
