@@ -126,8 +126,7 @@ it.each([true, false])(
     },
 );
 
-it('skal bruke mors perioder og skjule oppstartsvalg også når mor kun har søkt (før vedtak)', async () => {
-    vi.setSystemTime(new Date('2024-02-25'));
+const renderFordelingNårMorHarSøktUtenVedtak = (dekningsgrad: '80' | '100') => {
     const barn = FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode.args.barnet!;
     const annenForelder = FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode.args.annenForelder!;
     const søkersituasjon = FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode.args.søkersituasjon!;
@@ -154,7 +153,15 @@ it('skal bruke mors perioder og skjule oppstartsvalg også når mor kun har søk
             getStønadskvoteParams(barn, annenForelder, søkersituasjon, uttaksplanUtenVedtak),
         ],
         {
-            '80': { kontoer: [], minsteretter: { farRundtFødsel: 0, toTette: 0 } },
+            '80': {
+                kontoer: [
+                    { konto: 'MØDREKVOTE', dager: 95 },
+                    { konto: 'FEDREKVOTE', dager: 95 },
+                    { konto: 'FELLESPERIODE', dager: 90 },
+                    { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
+                ],
+                minsteretter: { farRundtFødsel: 10, toTette: 0 },
+            },
             '100': {
                 kontoer: [
                     { konto: 'MØDREKVOTE', dager: 75 },
@@ -167,7 +174,7 @@ it('skal bruke mors perioder og skjule oppstartsvalg også når mor kun har søk
         },
     );
 
-    const { container } = render(
+    return render(
         <QueryClientProvider client={client}>
             <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: { ...messages, ...uiMessages.nb } }}>
                 <FpDataContext
@@ -175,7 +182,7 @@ it('skal bruke mors perioder og skjule oppstartsvalg også når mor kun har søk
                         [ContextDataType.SØKERSITUASJON]: søkersituasjon,
                         [ContextDataType.OM_BARNET]: barn,
                         [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                        [ContextDataType.PERIODE_MED_FORELDREPENGER]: '100',
+                        [ContextDataType.PERIODE_MED_FORELDREPENGER]: dekningsgrad,
                     }}
                 >
                     <MemoryRouter initialEntries={[SøknadRoutes.FORDELING]}>
@@ -190,10 +197,25 @@ it('skal bruke mors perioder og skjule oppstartsvalg også når mor kun har søk
             </IntlProvider>
         </QueryClientProvider>,
     );
+};
+
+it('skal bruke mors perioder og skjule oppstartsvalg også når mor kun har søkt (før vedtak)', async () => {
+    vi.setSystemTime(new Date('2024-02-25'));
+    const { container } = renderFordelingNårMorHarSøktUtenVedtak('100');
 
     const steg = within(container);
     expect(await steg.findByText('Hannes siste dag med foreldrepenger er mandag 12. august 2024.')).toBeInTheDocument();
     expect(steg.queryByText('Når vil du starte permisjonen din med foreldrepenger?')).not.toBeInTheDocument();
+    vi.useRealTimers();
+});
+
+it('skal ikke bruke mors perioder før vedtak når far har valgt en annen dekningsgrad', async () => {
+    vi.setSystemTime(new Date('2024-02-25'));
+    const { container } = renderFordelingNårMorHarSøktUtenVedtak('80');
+
+    const steg = within(container);
+    expect(await steg.findByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+    expect(steg.queryByText('Hannes siste dag med foreldrepenger er mandag 12. august 2024.')).not.toBeInTheDocument();
     vi.useRealTimers();
 });
 
