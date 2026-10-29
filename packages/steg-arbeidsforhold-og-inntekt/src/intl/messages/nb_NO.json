@@ -13,7 +13,7 @@
     "inntektsinformasjon.inntektsmelding.header": "{antall, plural, one {Din arbeidsgiver kontaktes av Nav} other {Dine arbeidsgivere kontaktes av Nav}}",
     "inntektsinformasjon.inntektsmelding.body": "{antall, plural, one {Arbeidsgiveren din} other {Arbeidsgiverne dine}} blir kontaktet av Nav for å sende opplysninger om inntekten din. Dette vil skje fire uker før du skal starte permisjonen, eller med en gang søknaden er sendt hvis det allerede er mindre enn fire uker til du skal i permisjon.",
     "inntektsinformasjon.infoOmFørstegangstjeneste.tittel": "Informasjon til deg som er i førstegangstjenesten",
-    "inntektsinformasjon.infoOmFørstegangstjeneste.content.del1": "Hvis du er i førstegangstjenesten i forsvaret eller sivilforsvaret, og ønsker å søke om svangerskapspenger må du dessverre søke på papir.",
+    "inntektsinformasjon.infoOmFørstegangstjeneste.content.del1": "Hvis du er i førstegangstjenesten i forsvaret eller sivilforsvaret, og ønsker å søke om svangerskapspenger må du søke på papir.",
     "inntektsinformasjon.infoOmFørstegangstjeneste.content.del2": "Du fyller ut <a>papirsøknad for svangerskapspenger</a> og sender den i posten sammen med <b>skjemaet fra Arbeidstilsynet</b>.",
     "inntektsinformasjon.alert.ingenArbeidsforhold.tittel": "Du kan ikke søke om svangerskapspenger siden du ikke har noen arbeidsforhold.",
     "inntektsinformasjon.alert.ingenArbeidsforhold": "Siden det ikke er registrert noen arbeidsforhold på deg, eller har opplyst at du er frilanser eller selvstendig næringsdrivende, har du dessverre ikke mulighet til å sende søknad om svangerskapspenger.",

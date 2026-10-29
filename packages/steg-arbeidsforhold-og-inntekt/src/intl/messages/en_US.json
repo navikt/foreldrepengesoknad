@@ -13,7 +13,7 @@
     "inntektsinformasjon.inntektsmelding.header": "{antall, plural, one {Your employer} other {Your employers}} will be contacted by Nav.",
     "inntektsinformasjon.inntektsmelding.body": "{antall, plural, one {Your employer} other {Your employers}} will be contacted by Nav to provide information about your income. This will happen four weeks before you start your leave, or immediately after the application is submitted if there are already fewer than four weeks until your leave begins.",
     "inntektsinformasjon.infoOmFørstegangstjeneste.tittel": "Information for Those in Military Service",
-    "inntektsinformasjon.infoOmFørstegangstjeneste.content.del1": "If you are in military or civil service and wish to apply for maternity benefits, you must unfortunately apply on paper.",
+    "inntektsinformasjon.infoOmFørstegangstjeneste.content.del1": "If you are in military or civil service and wish to apply for maternity benefits, you must apply on paper.",
     "inntektsinformasjon.infoOmFørstegangstjeneste.content.del2": "You fill out the <a>paper application for maternity benefits</a> and send it by mail along with the <b>form from the Labor Inspection Authority</b>.",
     "inntektsinformasjon.alert.ingenArbeidsforhold.tittel": "You cannot apply for pregnancy benefits since you have no employment.",
     "inntektsinformasjon.alert.ingenArbeidsforhold": "As there is no registered employment for you, or any information indicating that you are a freelancer or self-employed, you are unfortunately not eligible to apply for maternity benefits.",
