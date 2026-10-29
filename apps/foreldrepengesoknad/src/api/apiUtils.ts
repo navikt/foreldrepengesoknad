@@ -6,6 +6,7 @@ import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { VedleggDataType } from 'types/VedleggDataType';
 import { getEndringstidspunktNy } from 'utils/dateUtils';
 
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
     AnnenForelderDto,
     Attachment,
@@ -309,7 +310,10 @@ const leggTilEndringsdato = (
         dayjs(endringstidspunkt).isBetween(periode.fom, periode.tom, 'day', '[]'),
     );
     if (periodeVedEndringstidspunkt) {
-        return { perioder: uttaksplan, endringsdato: periodeVedEndringstidspunkt.fom };
+        return {
+            perioder: splittPeriodeVedDato(uttaksplan, periodeVedEndringstidspunkt, endringstidspunkt),
+            endringsdato: endringstidspunkt,
+        };
     }
     return {
         perioder: leggTilFriUtsettelse(
@@ -320,6 +324,28 @@ const leggTilEndringsdato = (
         endringsdato: endringstidspunkt,
     };
 };
+
+// Endringsdato flyttes ikke bakover, fordi fpsak da vurderer søknadsfristen for tidligere perioder på nytt.
+const splittPeriodeVedDato = (
+    uttaksplan: UttakPeriodeDto[],
+    periodeSomSplittes: UttakPeriodeDto,
+    dato: string,
+): UttakPeriodeDto[] => {
+    if (dayjs(periodeSomSplittes.fom).isSame(dato, 'day')) {
+        return uttaksplan;
+    }
+    return uttaksplan.flatMap((periode) =>
+        periode === periodeSomSplittes
+            ? [
+                  { ...periode, tom: dagenFør(dato) },
+                  { ...periode, fom: dato },
+              ]
+            : [periode],
+    );
+};
+
+const dagenFør = (dato: string) => dayjs(dato).subtract(1, 'day').format(ISO_DATE_FORMAT);
+const dagenEtter = (dato: string) => dayjs(dato).add(1, 'day').format(ISO_DATE_FORMAT);
 
 // Fri utsettelse legges på søkersiden av radene i tidsrommet, så planen ikke får overlappende rader.
 // Radene her har ingen søkerdel, fordi tidsrommet slutter før neste periode som sendes til fpsak.
@@ -347,7 +373,7 @@ const leggTilFriUtsettelse = (
             continue;
         }
         if (dayjs(periode.fom).isBefore(tidsrom.fom, 'day')) {
-            resultat.push({ ...periode, tom: Uttaksdagen.forrige(tidsrom.fom).getDato() });
+            resultat.push({ ...periode, tom: dagenFør(tidsrom.fom) });
         } else {
             leggTilFriFremTil(periode.fom);
         }
@@ -355,7 +381,7 @@ const leggTilFriUtsettelse = (
         const tom = dayjs(periode.tom).isAfter(tidsrom.tom, 'day') ? tidsrom.tom : periode.tom;
         resultat.push({ ...periode, fom, tom, søker: fri });
         if (dayjs(periode.tom).isAfter(tidsrom.tom, 'day')) {
-            resultat.push({ ...periode, fom: Uttaksdagen.neste(tidsrom.tom).getDato() });
+            resultat.push({ ...periode, fom: dagenEtter(tidsrom.tom) });
         }
         førsteLedigeDag = Uttaksdagen.neste(tom).getDato();
     }
