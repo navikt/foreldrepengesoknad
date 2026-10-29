@@ -1,5 +1,6 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useState } from 'react';
 
 import { BarnType } from '@navikt/fp-constants';
 import { UttakDto, UttakPeriodeDto } from '@navikt/fp-types';
@@ -10,6 +11,7 @@ import { UttaksplanDataProvider } from '../../../context/UttaksplanDataContext';
 import { UttaksplanRedigeringProvider, useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
 import { nyUttaksplanMessages } from '../../../intl/nyUttaksplanMessages';
 import { UttakPeriodeBuilder } from '../../../utils/UttakPeriodeBuilder';
+import { HistoriskEndring, HistoriskEndringModal } from '../HistoriskEndringModal';
 import { KalenderRedigeringProvider, useKalenderRedigeringContext } from './KalenderRedigeringContext';
 
 type Kontekst = ReturnType<typeof useKalenderRedigeringContext>;
@@ -47,6 +49,27 @@ const Knapper = ({ operasjon, etterUtført }: { operasjon: Operasjon; etterUtfø
     );
 };
 
+const KalenderRedigering = ({ operasjon, etterUtført }: { operasjon: Operasjon; etterUtført: () => void }) => {
+    const [historiskEndring, setHistoriskEndring] = useState<HistoriskEndring>();
+    const [erÅpen, setErÅpen] = useState(false);
+    return (
+        <>
+            <KalenderRedigeringProvider
+                valgtePerioder={[]}
+                setValgtePerioder={() => undefined}
+                setEndredePerioder={() => undefined}
+                bekreftHistoriskEndring={(endring) => {
+                    setHistoriskEndring(endring);
+                    setErÅpen(true);
+                }}
+            >
+                <Knapper operasjon={operasjon} etterUtført={etterUtført} />
+            </KalenderRedigeringProvider>
+            <HistoriskEndringModal historiskEndring={historiskEndring} erÅpen={erÅpen} lukk={() => setErÅpen(false)} />
+        </>
+    );
+};
+
 const renderKontekst = ({
     perioder = PLAN,
     erEndringssøknad = true,
@@ -74,13 +97,7 @@ const renderKontekst = ({
                 erEndringssøknad={erEndringssøknad}
             >
                 <UttaksplanRedigeringProvider oppdaterUttaksplan={oppdaterUttaksplan} harEndretPlan={false}>
-                    <KalenderRedigeringProvider
-                        valgtePerioder={[]}
-                        setValgtePerioder={() => undefined}
-                        setEndredePerioder={() => undefined}
-                    >
-                        <Knapper operasjon={operasjon} etterUtført={etterUtført} />
-                    </KalenderRedigeringProvider>
+                    <KalenderRedigering operasjon={operasjon} etterUtført={etterUtført} />
                     <FjernAltIUttaksplanModal />
                 </UttaksplanRedigeringProvider>
             </UttaksplanDataProvider>

@@ -1,8 +1,5 @@
 import dayjs from 'dayjs';
-import { createContext, use, useCallback, useMemo, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
-
-import { Alert, BodyLong, Button, Dialog } from '@navikt/ds-react';
+import { createContext, use, useCallback, useMemo } from 'react';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { UttakPeriodeDto } from '@navikt/fp-types';
@@ -12,19 +9,19 @@ import { notEmpty } from '@navikt/fp-validation';
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
 import { UttakPeriodeBuilder } from '../../../utils/UttakPeriodeBuilder';
+import { HistoriskEndring } from '../HistoriskEndringModal';
 import { harHistoriskFerieEllerGraderingsendring, harHistoriskSletting } from '../utils/historiskEndring';
 import { slåSammenTilstøtendePerioder } from '../utils/kalenderPeriodeUtils';
-
-type TypeHistoriskEndring = 'slettet' | 'endret';
 
 type Props = {
     valgtePerioder: CalendarPeriod[];
     children: React.ReactNode;
     setValgtePerioder: React.Dispatch<React.SetStateAction<CalendarPeriod[]>>;
     setEndredePerioder: (perioder: Array<{ fom: string; tom: string }>) => void;
+    bekreftHistoriskEndring: (endring: HistoriskEndring) => void;
 };
 
-type ContextValues = Omit<Props, 'children' | 'valgtePerioder' | 'oppdaterUttaksplan'> & {
+type ContextValues = Omit<Props, 'children' | 'valgtePerioder' | 'bekreftHistoriskEndring'> & {
     sammenslåtteValgtePerioder: CalendarPeriod[];
     leggTilUttaksplanPerioder: (
         perioder: UttakPeriodeDto[],
@@ -45,6 +42,7 @@ export const KalenderRedigeringProvider = ({
     children,
     setValgtePerioder,
     setEndredePerioder,
+    bekreftHistoriskEndring,
 }: Props) => {
     const {
         perioder,
@@ -55,21 +53,22 @@ export const KalenderRedigeringProvider = ({
     } = useUttaksplanData();
 
     const uttaksplanRedigering = useUttaksplanRedigering();
-    const [ventendeHandling, setVentendeHandling] = useState<() => void>();
-    const [handlingstype, setHandlingstype] = useState<TypeHistoriskEndring>('endret');
 
     const sammenslåtteValgtePerioder = useMemo(() => slåSammenTilstøtendePerioder(valgtePerioder), [valgtePerioder]);
 
     const utførEllerBekreft = useCallback(
-        (type: TypeHistoriskEndring, erHistoriskEndring: (førsteDagIMåneden: string) => boolean, utfør: () => void) => {
+        (
+            type: HistoriskEndring['type'],
+            erHistoriskEndring: (førsteDagIMåneden: string) => boolean,
+            utfør: () => void,
+        ) => {
             if (erEndringssøknad && erHistoriskEndring(dayjs().startOf('month').format(ISO_DATE_FORMAT))) {
-                setHandlingstype(type);
-                setVentendeHandling(() => utfør);
+                bekreftHistoriskEndring({ type, utfør });
             } else {
                 utfør();
             }
         },
-        [erEndringssøknad],
+        [erEndringssøknad, bekreftHistoriskEndring],
     );
 
     const leggTilUttaksplanPerioder = useCallback(
@@ -117,74 +116,24 @@ export const KalenderRedigeringProvider = ({
         [uttaksplanRedigering, perioder, erPeriodeneTilAnnenPartLåst, utførEllerBekreft],
     );
 
-    const value = useMemo(() => {
-        return {
+    const value = useMemo(
+        () => ({
             sammenslåtteValgtePerioder,
             leggTilUttaksplanPerioder,
             slettUttaksplanPerioder,
             setValgtePerioder,
             setEndredePerioder,
-        };
-    }, [
-        sammenslåtteValgtePerioder,
-        leggTilUttaksplanPerioder,
-        slettUttaksplanPerioder,
-        setValgtePerioder,
-        setEndredePerioder,
-    ]);
-
-    const bekreftVentendeHandling = () => {
-        setVentendeHandling(undefined);
-        ventendeHandling?.();
-    };
-
-    return (
-        <KalenderRedigeringContext value={value}>
-            {children}
-            <Dialog
-                open={ventendeHandling !== undefined}
-                onOpenChange={(open) => {
-                    if (!open) {
-                        setVentendeHandling(undefined);
-                    }
-                }}
-            >
-                <Dialog.Popup id="KalenderRedigeringHistoriskEndring">
-                    <Dialog.Header>
-                        <Dialog.Title>
-                            <FormattedMessage
-                                id="KalenderRedigering.HistoriskEndring.Modal.Tittel"
-                                values={{ handlingstype }}
-                            />
-                        </Dialog.Title>
-                    </Dialog.Header>
-                    <Dialog.Body>
-                        <Alert variant="warning">
-                            <BodyLong>
-                                <FormattedMessage
-                                    id="KalenderRedigering.HistoriskEndring.Modal.Advarsel"
-                                    values={{ handlingstype }}
-                                />
-                            </BodyLong>
-                        </Alert>
-                    </Dialog.Body>
-                    <Dialog.Footer>
-                        <Dialog.CloseTrigger>
-                            <Button type="button" variant="secondary">
-                                <FormattedMessage id="KalenderRedigering.HistoriskEndring.Modal.Knapp.Avbryt" />
-                            </Button>
-                        </Dialog.CloseTrigger>
-                        <Button type="button" variant="primary" onClick={bekreftVentendeHandling}>
-                            <FormattedMessage
-                                id="KalenderRedigering.HistoriskEndring.Modal.Knapp.Bekreft"
-                                values={{ handlingstype }}
-                            />
-                        </Button>
-                    </Dialog.Footer>
-                </Dialog.Popup>
-            </Dialog>
-        </KalenderRedigeringContext>
+        }),
+        [
+            sammenslåtteValgtePerioder,
+            leggTilUttaksplanPerioder,
+            slettUttaksplanPerioder,
+            setValgtePerioder,
+            setEndredePerioder,
+        ],
     );
+
+    return <KalenderRedigeringContext value={value}>{children}</KalenderRedigeringContext>;
 };
 
 export const useKalenderRedigeringContext = () => {

@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { Box } from '@navikt/ds-react';
 
 import { CalendarPeriod } from '@navikt/fp-ui';
 
+import { HistoriskEndring, HistoriskEndringModal } from './HistoriskEndringModal';
 import { KalenderRedigeringProvider, useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 import { DagerValgtPanel } from './paneler/DagerValgtPanel';
 import { IngenDagerValgtPanel } from './paneler/IngenDagerValgtPanel';
@@ -22,15 +23,33 @@ export const RedigerKalenderIndex = ({
     setValgtePerioder,
     setEndredePerioder,
     scrollToKvoteOppsummering,
-}: Props) => (
-    <KalenderRedigeringProvider
-        valgtePerioder={valgtePerioder}
-        setValgtePerioder={setValgtePerioder}
-        setEndredePerioder={setEndredePerioder}
-    >
-        <RedigerKalender scrollToKvoteOppsummering={scrollToKvoteOppsummering} labels={labels} />
-    </KalenderRedigeringProvider>
-);
+}: Props) => {
+    const [historiskEndring, setHistoriskEndring] = useState<HistoriskEndring>();
+    const [erHistoriskEndringModalÅpen, setErHistoriskEndringModalÅpen] = useState(false);
+
+    const bekreftHistoriskEndring = useCallback((endring: HistoriskEndring) => {
+        setHistoriskEndring(endring);
+        setErHistoriskEndringModalÅpen(true);
+    }, []);
+
+    return (
+        <>
+            <KalenderRedigeringProvider
+                valgtePerioder={valgtePerioder}
+                setValgtePerioder={setValgtePerioder}
+                setEndredePerioder={setEndredePerioder}
+                bekreftHistoriskEndring={bekreftHistoriskEndring}
+            >
+                <RedigerKalender scrollToKvoteOppsummering={scrollToKvoteOppsummering} labels={labels} />
+            </KalenderRedigeringProvider>
+            <HistoriskEndringModal
+                historiskEndring={historiskEndring}
+                erÅpen={erHistoriskEndringModalÅpen}
+                lukk={() => setErHistoriskEndringModalÅpen(false)}
+            />
+        </>
+    );
+};
 
 const RedigerKalender = ({
     scrollToKvoteOppsummering,
