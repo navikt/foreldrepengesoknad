@@ -177,7 +177,9 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const handleAddPeriode = (nyPeriode: UttakPeriodeDto[], skalForskyve: boolean) => {
         const builder = new UttakPeriodeBuilder(allePerioder, 'liste');
         if (uttaksplanperiode) {
-            builder.fjernUttakPerioder([uttaksplanperiode], false);
+            // Ved forskyving må den gamle perioden også fjernes med forskyving, ellers flyttes resten av
+            // planen med hele lengden til den nye perioden i stedet for bare differansen.
+            builder.fjernUttakPerioder([uttaksplanperiode], skalForskyve, erPeriodeneTilAnnenPartLåst);
         }
         const nyePerioder = builder.leggTilUttakPerioder(nyPeriode, skalForskyve).getUttakPerioder();
         uttaksplanRedigering?.oppdaterUttaksplan?.(nyePerioder);
@@ -232,7 +234,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
             handleAddPeriode(enkelHandlingPerioder, skalForskyve);
         } else if (hvaVilDuGjøre === 'LEGG_TIL_OPPHOLD') {
             const nyeUttakPerioder = new UttakPeriodeBuilder(allePerioder, 'liste')
-                .fjernUttakPerioder([{ fom, tom }], false)
+                .fjernUttakPerioder([{ fom, tom }], false, erPeriodeneTilAnnenPartLåst)
                 .getUttakPerioder();
 
             uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
