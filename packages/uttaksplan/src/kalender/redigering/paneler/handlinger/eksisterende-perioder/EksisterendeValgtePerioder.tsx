@@ -620,9 +620,10 @@ const useSlettPeriodeFn = () => {
                 tom: dayjs(p.tom).isAfter(periodeSomSkalSlettes.tom) ? periodeSomSkalSlettes.tom : p.tom,
             })),
             skalForskyveBakover,
+            () => {
+                setValgtePerioder((oldPeriods) => justerValgteKalenderperioder(oldPeriods, periodeSomSkalSlettes));
+            },
         );
-
-        setValgtePerioder((oldPeriods) => justerValgteKalenderperioder(oldPeriods, periodeSomSkalSlettes));
     };
 };
 
