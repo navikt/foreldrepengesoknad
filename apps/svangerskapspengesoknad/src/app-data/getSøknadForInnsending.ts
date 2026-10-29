@@ -8,7 +8,6 @@ import {
     mapFlereTilretteleggingPerioder,
 } from 'utils/tilretteleggingUtils';
 
-import { erEgenNæringAktiv } from '@navikt/fp-steg-egen-naering';
 import {
     Attachment,
     EksternArbeidsforholdDto_fpoversikt,
@@ -93,8 +92,7 @@ export const getSøknadForInnsending = (
     const tilretteleggingerVedlegg = notEmpty(hentData(ContextDataType.TILRETTELEGGINGER_VEDLEGG));
     const tilretteleggingerPerioder = hentData(ContextDataType.TILRETTELEGGINGER_PERIODER);
     const frilans = hentData(ContextDataType.FRILANS);
-    const råEgenNæring = hentData(ContextDataType.EGEN_NÆRING);
-    const egenNæring = erEgenNæringAktiv(råEgenNæring, 'svangerskapspengesoknad') ? råEgenNæring : undefined;
+    const egenNæring = hentData(ContextDataType.EGEN_NÆRING);
     const ferie = hentData(ContextDataType.FERIE);
 
     return {

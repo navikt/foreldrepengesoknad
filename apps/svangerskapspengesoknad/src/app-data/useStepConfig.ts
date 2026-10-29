@@ -9,7 +9,7 @@ import {
 import { getGyldigeTilretteleggingIder, søkerHarKunEtAktivtArbeid } from 'utils/arbeidsforholdUtils';
 import { getTilretteleggingId, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
 
-import { EGEN_NÆRING_ID, erEgenNæringAktiv, skalViseEgenNæringSteg } from '@navikt/fp-steg-egen-naering';
+import { EGEN_NÆRING_ID, skalViseEgenNæringSteg } from '@navikt/fp-steg-egen-naering';
 import { EksternArbeidsforholdDto_fpoversikt, FRILANS_ID } from '@navikt/fp-types';
 import { ProgressStep } from '@navikt/fp-ui';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
@@ -174,17 +174,12 @@ const getStepConfig = (
         steps.push(createStep(SøknadRoute.ARBEID_I_UTLANDET, intl, currentPath));
     }
 
-    const egenNæring = getStateData(ContextDataType.EGEN_NÆRING);
-    const harAktivEgenNæring =
-        (arbeidsforholdOgInntekt?.harJobbetSomSelvstendigNæringsdrivende || false) &&
-        (egenNæring === undefined || erEgenNæringAktiv(egenNæring, 'svangerskapspengesoknad'));
-
     const harKunEttArbeid = barn?.termindato
         ? søkerHarKunEtAktivtArbeid(
               barn.termindato,
               arbeidsforhold,
               arbeidsforholdOgInntekt?.harJobbetSomFrilans || false,
-              harAktivEgenNæring,
+              arbeidsforholdOgInntekt?.harJobbetSomSelvstendigNæringsdrivende || false,
           )
         : true;
 
@@ -199,7 +194,7 @@ const getStepConfig = (
                   barn.termindato,
                   arbeidsforholdOgInntekt.harJobbetSomFrilans && !!getStateData(ContextDataType.FRILANS),
                   arbeidsforholdOgInntekt.harJobbetSomSelvstendigNæringsdrivende &&
-                      erEgenNæringAktiv(egenNæring, 'svangerskapspengesoknad'),
+                      !!getStateData(ContextDataType.EGEN_NÆRING),
               )
             : [];
     const gyldigeValg =
@@ -230,10 +225,7 @@ const getStepConfig = (
     } else if (barn && arbeidsforholdOgInntekt && (harValgtEnTilrettelegging || harKunEttArbeid)) {
         const tilretteleggingId = harValgtEnTilrettelegging
             ? valgteArbeidsforhold[0]
-            : getTilretteleggingId(arbeidsforhold, barn.termindato, {
-                  ...arbeidsforholdOgInntekt,
-                  harJobbetSomSelvstendigNæringsdrivende: harAktivEgenNæring,
-              });
+            : getTilretteleggingId(arbeidsforhold, barn.termindato, arbeidsforholdOgInntekt);
         const labels = getTilretteleggingLabels(intl, false, arbeidsforhold, tilretteleggingId);
         const typeArbeidsgiver = getTypeArbeidForTilrettelegging(tilretteleggingId!, arbeidsforhold);
 

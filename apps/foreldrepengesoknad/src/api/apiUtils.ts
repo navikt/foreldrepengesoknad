@@ -6,7 +6,6 @@ import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { VedleggDataType } from 'types/VedleggDataType';
 import { getEndringstidspunktNy } from 'utils/dateUtils';
 
-import { erEgenNæringAktiv } from '@navikt/fp-steg-egen-naering';
 import {
     AnnenForelderDto,
     Attachment,
@@ -209,7 +208,7 @@ export const mapTilSøknadDto = (
         rolle: konverterRolle(søkersituasjon.rolle),
         språkkode: hentValgtSpråk(),
         frilans: frilans,
-        egenNæring: erEgenNæringAktiv(egenNæring, 'foreldrepengesoknad') ? egenNæring : undefined,
+        egenNæring: egenNæring,
         andreInntekterSiste10Mnd: andreInntektskilder,
         barn: cleanBarn(barn),
         annenForelder: cleanAnnenforelder(annenForelder),

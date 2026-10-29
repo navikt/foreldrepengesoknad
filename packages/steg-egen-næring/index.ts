@@ -12,4 +12,4 @@ export const egenNæringMessages = {
 
 export { EgenNæringForm, EgenNæringPanel, EGEN_NÆRING_ID } from './src/EgenNæringPanel';
 export { getForhåndsvalgtNæringstype, getPrioritertRegistrertNæring } from './src/getForhåndsvalgtNæringstype';
-export { erEgenNæringAktiv, erSluttdatoForGammel, skalViseEgenNæringSteg } from './src/skalViseEgenNæringSteg';
+export { skalViseEgenNæringSteg } from './src/skalViseEgenNæringSteg';

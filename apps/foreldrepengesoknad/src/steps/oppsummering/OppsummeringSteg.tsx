@@ -13,7 +13,6 @@ import { getErSøkerFarEllerMedmor, getKjønnFromFnrString, getNavnPåForeldre }
 import { Alert, Heading, Link } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { erEgenNæringAktiv } from '@navikt/fp-steg-egen-naering';
 import {
     ArbeidsforholdOppsummering,
     BoIUtlandetOppsummering,
@@ -166,7 +165,7 @@ export const OppsummeringSteg = (props: Props) => {
                     onVilEndreSvar={() => navigator.goToStep(SøknadRoutes.FRILANS)}
                 />
                 <SelvstendigNæringsdrivendeOppsummering
-                    egenNæring={erEgenNæringAktiv(egenNæring, 'foreldrepengesoknad') ? egenNæring : undefined}
+                    egenNæring={egenNæring}
                     registrerteNæringer={registrerteNæringer}
                     onVilEndreSvar={() =>
                         navigator.goToStep(

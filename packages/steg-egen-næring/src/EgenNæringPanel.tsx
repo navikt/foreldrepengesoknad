@@ -34,7 +34,6 @@ import {
 import { OrgnummerEllerLand } from './components/OrgnummerEllerLand';
 import { VarigEndringSpørsmål } from './components/VarigEndringSpørsmål';
 import { getPrioritertRegistrertNæring } from './getForhåndsvalgtNæringstype';
-import { erSluttdatoForGammel } from './skalViseEgenNæringSteg';
 import { NæringFormValues } from './types/NæringFormValues';
 
 dayjs.extend(minMax);
@@ -48,6 +47,8 @@ const getMinInputTilOgMedValue = (fom: string | undefined, otherMinDate: string)
     }
     return min;
 };
+
+const getMaksAntallMånederSidenSluttdato = (appOrigin: AppName) => (appOrigin === 'svangerskapspengesoknad' ? 5 : 13);
 
 const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: string | undefined): boolean => {
     if (!isStringAValidDate(oppstartsdato)) {
@@ -147,7 +148,8 @@ export const EgenNæringForm = ({
         næringsType === 'FISKE' ? `${navnPåNæringSpm} ${intl.formatMessage({ id: 'valgfritt' })}` : navnPåNæringSpm;
 
     const erNyoppstartet = erVirksomhetRegnetSomNyoppstartet(næringFom);
-    const erSluttetForLengeSiden = pågående === false && erSluttdatoForGammel(næringTom, appOrigin);
+    const maksAntallMånederSidenSluttdato = getMaksAntallMånederSidenSluttdato(appOrigin);
+    const tidligsteSluttdato = dayjs().startOf('day').subtract(maksAntallMånederSidenSluttdato, 'month');
 
     const handleSubmit = (values: NæringFormValues) => {
         const valuesUtenPågående = omit(values, ['pågående']);
@@ -345,21 +347,23 @@ export const EgenNæringForm = ({
                             dayjs().add(9, 'month'),
                         ),
                         isAfterOrSame(
+                            intl.formatMessage(
+                                { id: 'valideringsfeil.tilOgMedDato.egenNæring.forLengeSiden' },
+                                { antallMåneder: maksAntallMånederSidenSluttdato },
+                            ),
+                            tidligsteSluttdato,
+                        ),
+                        isAfterOrSame(
                             intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.etterFraDato' }),
                             næringFom,
                         ),
                     ]}
                     maxDate={dayjs().add(9, 'month')}
-                    minDate={getMinInputTilOgMedValue(næringFom, DATE_20_YEARS_AGO)}
+                    minDate={getMinInputTilOgMedValue(næringFom, tidligsteSluttdato.format(ISO_DATE_FORMAT))}
                     showMonthAndYearDropdowns
                 />
             )}
-            {erSluttetForLengeSiden && (
-                <Alert variant="info">
-                    <FormattedMessage id="egenNæring.næring.avsluttetForLengeSiden" />
-                </Alert>
-            )}
-            {!erSluttetForLengeSiden && !erNyoppstartet && (
+            {!erNyoppstartet && (
                 <VarigEndringSpørsmål
                     varigEndring={varigEndring}
                     egenNæringFom={næringFom}
@@ -367,7 +371,7 @@ export const EgenNæringForm = ({
                     appOrigin={appOrigin}
                 />
             )}
-            {!erSluttetForLengeSiden && erNyoppstartet && (
+            {erNyoppstartet && (
                 <>
                     <RhfTextField
                         name="næringsinntekt"
@@ -449,9 +453,7 @@ export const EgenNæringForm = ({
                     )}
                 </>
             )}
-            {!erSluttetForLengeSiden && (
-                <Alert variant="info">{intl.formatMessage({ id: 'egenNæring.veileder' })}</Alert>
-            )}
+            <Alert variant="info">{intl.formatMessage({ id: 'egenNæring.veileder' })}</Alert>
             {children}
             {renderActions?.(() => formMethods.handleSubmit(handleSubmit)())}
         </VStack>

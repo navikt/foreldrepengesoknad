@@ -4,7 +4,7 @@ import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { FormattedMessage } from 'react-intl';
 import { getRuteVelgArbeidEllerSkjema as getRuteSkjemaEllerVelgArbeid } from 'utils/tilretteleggingUtils';
 
-import { EgenNæringPanel, erEgenNæringAktiv } from '@navikt/fp-steg-egen-naering';
+import { EgenNæringPanel } from '@navikt/fp-steg-egen-naering';
 import { NæringDto, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -33,18 +33,12 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, s�
     });
 
     const onSubmit = (values: NæringDto) => {
-        const oppdatertNæring = {
+        oppdaterEgenNæring({
             ...values,
             organisasjonsnummer: values.organisasjonsnummer === '' ? undefined : values.organisasjonsnummer,
-        };
-        oppdaterEgenNæring(oppdatertNæring);
-
-        const nextRoute = getRuteSkjemaEllerVelgArbeid(barnet.termindato, arbeidsforhold, {
-            ...arbeidsforholdOgInntekt,
-            harJobbetSomSelvstendigNæringsdrivende:
-                arbeidsforholdOgInntekt.harJobbetSomSelvstendigNæringsdrivende &&
-                erEgenNæringAktiv(oppdatertNæring, 'svangerskapspengesoknad'),
         });
+
+        const nextRoute = getRuteSkjemaEllerVelgArbeid(barnet.termindato, arbeidsforhold, arbeidsforholdOgInntekt);
         return navigator.goToStep(nextRoute);
     };
 
