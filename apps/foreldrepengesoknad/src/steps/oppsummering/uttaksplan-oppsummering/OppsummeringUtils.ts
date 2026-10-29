@@ -34,9 +34,6 @@ export const getAktivitetTekst = (
         case 'FRILANS': {
             return intl.formatMessage({ id: 'oppsummering.uttak.frilans' });
         }
-        case 'ANNET': {
-            return intl.formatMessage({ id: 'oppsummering.uttak.annet' });
-        }
         // No default
     }
 

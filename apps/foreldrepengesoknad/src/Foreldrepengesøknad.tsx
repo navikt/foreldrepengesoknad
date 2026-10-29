@@ -8,12 +8,12 @@ import ky from 'ky';
 import { ReactNode, Suspense, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { shouldApplyStorage } from 'utils/mellomlagringUtils';
-import { erSakerEndret, erSøkerInfoEndret } from 'utils/registerdataUtils';
+import { erFellesUttaksplanEndret, erSakerEndret, erSøkerInfoEndret } from 'utils/registerdataUtils';
 
 import { erUmyndigFeil } from '@navikt/fp-app-shell';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { ErrorBoundary, ErrorPage, RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
-import { erLikUansettRekkefølge, useDocumentTitle } from '@navikt/fp-utils';
+import { useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ForeldrepengesøknadRoutes } from './ForeldrepengesøknadRoutes';
@@ -136,9 +136,9 @@ const RegisterdataSjekk = ({
     }
 
     const fellesUttaksplanErEndret =
-        harLagretFellesUttaksplan &&
+        mellomlagretData.fellesUttaksplan !== undefined &&
         uttaksplanQuery.isSuccess &&
-        !erLikUansettRekkefølge(uttaksplanQuery.data, mellomlagretData.fellesUttaksplan);
+        erFellesUttaksplanEndret(mellomlagretData.fellesUttaksplan, uttaksplanQuery.data);
 
     const søkerInfoErEndret = erSøkerInfoEndret(mellomlagretData.søkerInfo, søkerInfo);
     const sakerErEndret = erSakerEndret(mellomlagretData.foreldrepengerSaker, foreldrepengerSaker);

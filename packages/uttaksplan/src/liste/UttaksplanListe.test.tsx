@@ -421,9 +421,6 @@ describe('UttaksplanListe', () => {
                 søker: {
                     forelder: 'MOR',
                     gradering: {
-                        aktivitet: {
-                            type: 'ANNET',
-                        },
                         arbeidstidprosent: 50,
                     },
                     kontoType: 'FELLESPERIODE',
@@ -433,9 +430,6 @@ describe('UttaksplanListe', () => {
                 annenPart: {
                     forelder: 'FAR_MEDMOR',
                     gradering: {
-                        aktivitet: {
-                            type: 'ANNET',
-                        },
                         arbeidstidprosent: 50,
                     },
                     kontoType: 'FEDREKVOTE',
@@ -901,7 +895,8 @@ describe('UttaksplanListe', () => {
         render(<FarSøkerEtterAtMorHarSøkt />);
 
         expect(await screen.findAllByText('Ferie')).toHaveLength(3);
-        expect(screen.getByText('Du skal jobbe 50 % og ha 50 % foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Hanne skal jobbe 50 % og ha 50 % foreldrepenger')).toBeInTheDocument();
+        expect(screen.queryByText('Du skal jobbe 50 % og ha 50 % foreldrepenger')).not.toBeInTheDocument();
     });
 
     it('Skal vise begge foreldra sitt uttak når dei har samtidig uttak i same periode', async () => {

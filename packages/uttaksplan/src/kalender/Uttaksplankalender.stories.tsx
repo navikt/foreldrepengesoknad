@@ -97,9 +97,6 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
                     forelder: 'MOR',
                     kontoType: 'FELLESPERIODE',
                     gradering: {
-                        aktivitet: {
-                            type: 'ANNET',
-                        },
                         arbeidstidprosent: 50,
                     },
                     flerbarnsdager: false,
@@ -1109,9 +1106,6 @@ export const FarSøkerEtterAtMorHarSøkt: Story = {
                     forelder: 'MOR',
                     kontoType: 'FELLESPERIODE',
                     gradering: {
-                        aktivitet: {
-                            type: 'ANNET',
-                        },
                         arbeidstidprosent: 50,
                     },
                     flerbarnsdager: false,
@@ -1717,7 +1711,6 @@ export const MarkerPeriodeNårGraderingsaktivitetMangler: Story = {
                     samtidigUttak: 40,
                     gradering: {
                         arbeidstidprosent: 60,
-                        aktivitet: { type: 'ANNET' },
                     },
                     flerbarnsdager: false,
                 },

@@ -30,6 +30,7 @@ const {
     FarSøkerMorMåDokumentereArbeid,
     FarSøkerMorMåIkkeDokumentereArbeidMåDokumenterUtdanning,
     FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon,
+    FarErSøkerOgMorHarSøktUtenVedtak,
     ManglerUttaksplan,
     ManglerUttaksperioderVedInnsending,
 } = composeStories(stories);
@@ -554,9 +555,7 @@ describe('<Oppsummering>', () => {
         expect(screen.getAllByText('Ja')).toHaveLength(6);
 
         expect(
-            screen.getByText(
-                'Periodene til den andre forelderen blir ikke sendt inn. Den andre forelderen må selv huske å sende oss en søknad.',
-            ),
+            await screen.findByText('Den andre forelderen må selv sende oss en søknad for sine perioder.'),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Periodene med foreldrepenger til den andre forelderen')).toBeInTheDocument();
@@ -564,6 +563,21 @@ describe('<Oppsummering>', () => {
         const samtidigUttakLabel = screen.getAllByText('Vi skal ha samtidig uttak:')[0]!;
         expect(samtidigUttakLabel).toBeInTheDocument();
         expect(samtidigUttakLabel.nextSibling).toHaveTextContent('Ja');
+    });
+
+    it('Far er hovedsøker - Skal ikke vise advarsel om annen parts perioder når mor har søkt selv', async () => {
+        await FarErSøkerOgMorHarSøktUtenVedtak.run();
+
+        expect(await screen.findByText('Periodene med foreldrepenger til den andre forelderen')).toBeInTheDocument();
+        // Spørsmålet skjules først når uttaksplan-svaret med mors plan er kommet.
+        await waitFor(() =>
+            expect(
+                screen.queryByText('Har den andre forelderen rett til foreldrepenger i Norge?'),
+            ).not.toBeInTheDocument(),
+        );
+        expect(
+            screen.queryByText('Den andre forelderen må selv sende oss en søknad for sine perioder.'),
+        ).not.toBeInTheDocument();
     });
 
     it('Far er hovedsøker - Skal ikke vise krav om dokumentasjon når mor jobber 75% eller mer', async () => {

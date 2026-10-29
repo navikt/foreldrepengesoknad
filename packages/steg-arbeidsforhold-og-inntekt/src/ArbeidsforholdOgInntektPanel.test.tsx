@@ -77,6 +77,16 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
         expect(toggle).toHaveAttribute('aria-expanded', 'false');
     });
 
+    it('skal vise definisjoner av arbeidsforhold og inntekt for svangerskapspenger', async () => {
+        render(<ForSvangerskapspenger />);
+
+        await screen.findAllByText('Arbeidsforhold og inntekt');
+
+        expect(
+            screen.getByRole('region', { name: 'Hvordan defineres ulike typer arbeidsforhold og inntekt?' }),
+        ).toBeInTheDocument();
+    });
+
     it('skal vise informasjon om arbeidsgiverkontakt under arbeidsforholdene', async () => {
         render(<ForForeldrepengerMedFrilansoppdrag />);
 
@@ -225,18 +235,16 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
         );
     });
 
-    it('skal hoppe over inntektstypesteget når selvstendig næring finnes i registeret', async () => {
+    it('skal vise alle inntektstyper når selvstendig næring finnes i registeret', async () => {
         render(<ForForeldrepengerMedSelvstendigNæring />);
 
         await screen.findAllByText('Arbeidsforhold og inntekt');
         await userEvent.click(screen.getByRole('button', { name: 'Legg til inntekt' }));
 
-        expect(
-            screen.getByRole('radiogroup', {
-                name: 'Hvilken annen type pensjonsgivende inntekt har du hatt de siste 10 månedene?',
-            }),
-        ).toBeInTheDocument();
-        expect(screen.queryByText('Hvilken type inntekt har du hatt?')).not.toBeInTheDocument();
+        expect(screen.getByText('Hvilken type inntekt har du hatt?')).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: /ektefelles virksomhet/ })).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: /fisker eller mannskap/ })).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: /Annen pensjonsgivende inntekt/ })).toBeInTheDocument();
     });
 
     it('skal utlede at søker ikke har hatt arbeid i utlandet når ingen slik inntekt er lagt til', async () => {

@@ -160,7 +160,7 @@ export const ArbeidsforholdInformasjon = ({
             <BodyShort style={{ fontWeight: 'bold' }}>
                 <FormattedMessage id="inntektsinformasjon.arbeidsforhold.label" />
             </BodyShort>
-            {appOrigin === 'foreldrepengesoknad' && <ArbeidsforholdDefinisjoner appOrigin={appOrigin} />}
+            <ArbeidsforholdDefinisjoner appOrigin={appOrigin} />
             <HarIkkeArbeidsforhold harArbeidsforhold={harArbeidsforhold} />
             <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={arbeidsforhold} />
             {harArbeidsforhold && (

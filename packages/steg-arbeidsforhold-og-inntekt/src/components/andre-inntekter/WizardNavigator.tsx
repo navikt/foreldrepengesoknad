@@ -1,16 +1,24 @@
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, type IntlShape, useIntl } from 'react-intl';
 
 import { Button, HStack } from '@navikt/ds-react';
 
 interface Props {
     isLastStep: boolean;
     isNextDisabled?: boolean;
+    isConfirmation?: boolean;
     onCancel: () => void;
     onNext: () => void | Promise<void>;
     onBack?: () => void;
 }
 
-export const WizardNavigator = ({ isLastStep, isNextDisabled = false, onCancel, onNext, onBack }: Props) => {
+export const WizardNavigator = ({
+    isLastStep,
+    isNextDisabled = false,
+    isConfirmation = false,
+    onCancel,
+    onNext,
+    onBack,
+}: Props) => {
     const intl = useIntl();
 
     return (
@@ -25,11 +33,18 @@ export const WizardNavigator = ({ isLastStep, isNextDisabled = false, onCancel, 
                     </Button>
                 )}
                 <Button type="button" disabled={isNextDisabled} onClick={() => void onNext()}>
-                    {isLastStep
-                        ? intl.formatMessage({ id: 'WizardNavigator.LeggTil' })
-                        : intl.formatMessage({ id: 'WizardNavigator.Fortsett' })}
+                    {getNextLabel(intl, isLastStep, isConfirmation)}
                 </Button>
             </HStack>
         </HStack>
     );
+};
+
+const getNextLabel = (intl: IntlShape, isLastStep: boolean, isConfirmation: boolean) => {
+    if (isConfirmation) {
+        return intl.formatMessage({ id: 'WizardNavigator.Ok' });
+    }
+    return isLastStep
+        ? intl.formatMessage({ id: 'WizardNavigator.LeggTil' })
+        : intl.formatMessage({ id: 'WizardNavigator.Fortsett' });
 };
