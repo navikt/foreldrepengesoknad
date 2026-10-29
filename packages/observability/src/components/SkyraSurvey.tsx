@@ -1,5 +1,5 @@
 import { TasklistIcon } from '@navikt/aksel-icons';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HStack, Skeleton, VStack } from '@navikt/ds-react';
@@ -10,11 +10,13 @@ type SkyraEvent =
     | { type: 'surveyStarted'; slug: string }
     | { type: 'surveyCompleted'; slug: string }
     | { type: 'surveyRejected'; slug: string };
+type SurveyStatus = 'loading' | 'ready' | 'error' | 'unavailable';
 
 declare global {
     var skyra:
         | {
               on: (event: SkyraEvent['type'], callback: (event: { slug: string }) => void) => () => void;
+              reload?: () => void;
           }
         | undefined;
 }
@@ -29,8 +31,8 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
     const intl = useIntl();
     const resolvedTitle = intl.formatMessage({ id: 'SkyraSurvey.Tittel' });
     const surveyKey = `skyra-survey-${slug}-completed`;
-    const [isLoaded, setIsLoaded] = useState(false);
-    const [hasFailed, setHasFailed] = useState(false);
+    const hasResolvedSurveyRef = useRef(false);
+    const [surveyStatus, setSurveyStatus] = useState<SurveyStatus>('loading');
     const [hasCompletedSurvey, setHasCompletedSurvey] = useState(() => sessionStorage.getItem(surveyKey) === 'true');
     const [isOpen, setIsOpen] = useState(true);
 
@@ -39,12 +41,16 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
             return;
         }
 
-        let hasLoaded = false;
+        // Reset the custom element when its locale or slug changes.
+        // eslint-disable-next-line @eslint-react/set-state-in-effect, react-you-might-not-need-an-effect/no-adjust-state-on-prop-change
+        setSurveyStatus('loading');
+
+        hasResolvedSurveyRef.current = false;
 
         const unsubscribeSurveyStarted = globalThis.skyra?.on('surveyStarted', (event) => {
             if (event.slug === slug) {
-                hasLoaded = true;
-                setIsLoaded(true);
+                hasResolvedSurveyRef.current = true;
+                setSurveyStatus('ready');
             }
         });
 
@@ -55,16 +61,16 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
                 sessionStorage.setItem(surveyKey, 'true');
             }
         });
-
         const unsubscribeSurveyRejected = globalThis.skyra?.on('surveyRejected', (event) => {
             if (event.slug === slug) {
-                setHasFailed(true);
+                hasResolvedSurveyRef.current = true;
+                setSurveyStatus('unavailable');
             }
         });
 
         const timeout = setTimeout(() => {
-            if (!hasLoaded) {
-                setHasFailed(true);
+            if (!hasResolvedSurveyRef.current) {
+                setSurveyStatus('error');
             }
         }, 30000);
 
@@ -74,31 +80,35 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
             unsubscribeSurveyRejected?.();
             clearTimeout(timeout);
         };
-    }, [slug]);
+    }, [intl.locale, slug]);
 
     if (intl.locale !== 'nb' && intl.locale !== 'nn') {
         return null;
     }
 
-    if (hasFailed) {
+    if (surveyStatus === 'unavailable') {
         return null;
     }
 
-    let surveyContent;
+    let surveyContent = null;
     if (hasCompletedSurvey) {
         surveyContent = (
             <BodyShort>
                 <FormattedMessage id="SkyraSurvey.Takk" />
             </BodyShort>
         );
-    } else if (isLoaded) {
-        surveyContent = null;
-    } else {
+    } else if (surveyStatus === 'error') {
+        surveyContent = (
+            <BodyShort>
+                <FormattedMessage id="SkyraSurvey.Feil" />
+            </BodyShort>
+        );
+    } else if (surveyStatus === 'loading') {
         surveyContent = (
             <VStack gap="space-8">
                 <Skeleton variant="text" />
                 <Skeleton variant="rounded" width="100%" height={30} />
-                <HStack justify={'end'}>
+                <HStack justify="end">
                     <Skeleton variant="rounded" width="30%" height={50} />
                 </HStack>
             </VStack>
@@ -124,15 +134,28 @@ export const SkyraSurvey = ({ slug, titleAs = 'h2' }: SkyraSurveyProps) => {
             <ExpansionCard.Content>
                 <div>
                     {surveyContent}
-                    {!hasCompletedSurvey && (
+                    {!hasCompletedSurvey && surveyStatus !== 'error' && (
                         // @ts-expect-error skyra-survey er et custom element
                         <skyra-survey
                             style={{
-                                opacity: isLoaded ? 1 : 0,
-                                position: isLoaded ? 'relative' : 'absolute',
-                                pointerEvents: isLoaded ? 'auto' : 'none',
+                                opacity: surveyStatus === 'ready' ? 1 : 0,
+                                position: surveyStatus === 'ready' ? 'relative' : 'absolute',
+                                pointerEvents: surveyStatus === 'ready' ? 'auto' : 'none',
                             }}
                             slug={slug}
+                            inline
+                            onReady={() => {
+                                hasResolvedSurveyRef.current = true;
+                                setSurveyStatus('ready');
+                            }}
+                            onError={() => {
+                                hasResolvedSurveyRef.current = true;
+                                setSurveyStatus('error');
+                            }}
+                            onUnavailable={() => {
+                                hasResolvedSurveyRef.current = true;
+                                setSurveyStatus('unavailable');
+                            }}
                         />
                     )}
                 </div>
