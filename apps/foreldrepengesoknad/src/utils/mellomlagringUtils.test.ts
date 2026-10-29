@@ -1,6 +1,14 @@
 import { SøknadRoutes } from 'appData/routes';
+import type { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 
-import { VERSJON_MELLOMLAGRING, shouldApplyStorage } from './mellomlagringUtils';
+import type { UttakPeriodeDto } from '@navikt/fp-types';
+
+import {
+    VERSJON_MELLOMLAGRING,
+    fjernAnnetGraderingsaktivitet,
+    fjernAnnetGraderingsaktivitetFraMellomlagring,
+    shouldApplyStorage,
+} from './mellomlagringUtils';
 
 describe('Test av mellomlagring', () => {
     it('Burde ikke bruke mellomlagrede data hvis versjon ikke er lik current version', () => {
@@ -104,5 +112,68 @@ describe('Test av mellomlagring', () => {
         });
 
         expect(result).toBe(false);
+    });
+});
+
+describe('fjernAnnetGraderingsaktivitet', () => {
+    const lagPeriode = (aktivitet?: { type: string; arbeidsgiver?: { id: string } }) =>
+        ({
+            fom: '2024-01-01',
+            tom: '2024-01-31',
+            søker: {
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                flerbarnsdager: false,
+                gradering: { arbeidstidprosent: 50, ...(aktivitet && { aktivitet }) },
+            },
+            annenPart: {
+                forelder: 'FAR_MEDMOR',
+                kontoType: 'FELLESPERIODE',
+                flerbarnsdager: false,
+                samtidigUttak: 50,
+                gradering: { arbeidstidprosent: 50, ...(aktivitet && { aktivitet }) },
+            },
+        }) as UttakPeriodeDto;
+
+    it('skal fjerne aktivitet ANNET for både søker og annen part', () => {
+        const [periode] = fjernAnnetGraderingsaktivitet([lagPeriode({ type: 'ANNET' })]);
+
+        expect(periode).toEqual(lagPeriode());
+        expect(periode?.søker?.gradering).not.toHaveProperty('aktivitet');
+        expect(periode?.annenPart?.gradering).not.toHaveProperty('aktivitet');
+    });
+
+    it('skal ikkje endre andre aktivitetar', () => {
+        const periode = lagPeriode({ type: 'ORDINÆRT_ARBEID', arbeidsgiver: { id: '123456789' } });
+
+        expect(fjernAnnetGraderingsaktivitet([periode])[0]).toBe(periode);
+    });
+
+    it('skal ikkje endre periodar utan gradering', () => {
+        const periode = { fom: '2024-01-01', tom: '2024-01-31' } as UttakPeriodeDto;
+
+        expect(fjernAnnetGraderingsaktivitet([periode])[0]).toBe(periode);
+    });
+
+    it('skal fjerne ANNET i uttaksplan, opprinneleg uttaksplan og fellesUttaksplan i mellomlagra data', () => {
+        const data = {
+            version: VERSJON_MELLOMLAGRING,
+            UTTAKSPLAN: [lagPeriode({ type: 'ANNET' })],
+            OPPRINNELIG_UTTAKSPLAN: { saksnummer: 'SAK-001', perioder: [lagPeriode({ type: 'ANNET' })] },
+            fellesUttaksplan: { antallBarn: 1, dekningsgrad: 'HUNDRE', perioder: [lagPeriode({ type: 'ANNET' })] },
+        } as unknown as FpMellomlagretData;
+
+        const resultat = fjernAnnetGraderingsaktivitetFraMellomlagring(data);
+
+        expect(resultat.UTTAKSPLAN).toEqual([lagPeriode()]);
+        expect(resultat.OPPRINNELIG_UTTAKSPLAN?.perioder).toEqual([lagPeriode()]);
+        expect(resultat.fellesUttaksplan?.perioder).toEqual([lagPeriode()]);
+        expect(resultat.version).toBe(VERSJON_MELLOMLAGRING);
+    });
+
+    it('skal ikkje leggje til felt som manglar i mellomlagra data', () => {
+        const data = { version: VERSJON_MELLOMLAGRING } as FpMellomlagretData;
+
+        expect(fjernAnnetGraderingsaktivitetFraMellomlagring(data)).toEqual(data);
     });
 });

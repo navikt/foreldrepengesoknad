@@ -1,7 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
+import { UttakPeriodeDto } from '@navikt/fp-types';
+
+import { harPeriodeMedUkjentGraderingsaktivitet } from '../utils/periodeUtils';
 import {
     LeggTilEllerEndrePeriodeFormFormValues,
+    lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm,
     mapFraFormValuesTilPeriodeDto,
 } from './LeggTilEllerEndrePeriodeFellesForm';
 
@@ -35,7 +39,7 @@ describe('mapFraFormValuesTilPeriodeDto', () => {
                 forelder: 'MOR',
                 kontoType: 'MØDREKVOTE',
                 morsAktivitet: 'ARBEID',
-                gradering: { aktivitet: { type: 'ANNET' }, arbeidstidprosent: 30 },
+                gradering: { arbeidstidprosent: 30 },
                 samtidigUttak: 70,
                 overføringÅrsak: undefined,
                 flerbarnsdager: true,
@@ -44,7 +48,7 @@ describe('mapFraFormValuesTilPeriodeDto', () => {
                 forelder: 'FAR_MEDMOR',
                 kontoType: 'FORELDREPENGER',
                 morsAktivitet: 'IKKE_OPPGITT',
-                gradering: { aktivitet: { type: 'ANNET' }, arbeidstidprosent: 60 },
+                gradering: { arbeidstidprosent: 60 },
                 samtidigUttak: 40,
                 overføringÅrsak: undefined,
                 flerbarnsdager: true,
@@ -148,31 +152,65 @@ describe('mapFraFormValuesTilPeriodeDto', () => {
         });
     });
 
-    it('setter gradering-aktivitet til ANNET i planleggaren (kanVelgeArbeidsgiver = false)', () => {
+    it('setter ikkje gradering-aktivitet i planleggaren (kanVelgeArbeidsgiver = false)', () => {
         const values = {
             forelder: 'MOR',
             kontoTypeMor: 'MØDREKVOTE',
             skalDuKombinereArbeidOgUttakMor: true,
             stillingsprosentMor: '50',
+            hvorSkalDuJobbe: '123456789',
         } satisfies LeggTilEllerEndrePeriodeFormFormValues;
 
         const [periode] = mapFraFormValuesTilPeriodeDto(values, PERIODE, 'MOR', false);
 
-        expect(periode?.søker?.gradering?.aktivitet).toEqual({ type: 'ANNET' });
+        expect(periode?.søker?.gradering).toEqual({ arbeidstidprosent: 50 });
     });
 
-    it('beheld ANNET når plassholdaren ANNET ligg i hvorSkalDuJobbe i søknaden (ikkje reelt valg)', () => {
+    it('fjernar markeringa for manglande aktivitet når brukaren vel arbeidsgiver for ein periode med aktivitet null', () => {
+        const periodeUtenAktivitet: UttakPeriodeDto = {
+            ...PERIODE,
+            søker: {
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                flerbarnsdager: false,
+                gradering: { arbeidstidprosent: 50, aktivitet: null as unknown as undefined },
+            },
+        };
+        expect(harPeriodeMedUkjentGraderingsaktivitet([periodeUtenAktivitet], 'MOR')).toBe(true);
+
+        const defaultValues = lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
+            [periodeUtenAktivitet],
+            PERIODE,
+            'MOR',
+            false,
+        );
+        expect(defaultValues?.hvorSkalDuJobbe).toBeUndefined();
+
+        const perioder = mapFraFormValuesTilPeriodeDto(
+            { ...defaultValues, hvorSkalDuJobbe: '123456789' },
+            PERIODE,
+            'MOR',
+            true,
+        );
+
+        expect(perioder[0]?.søker?.gradering?.aktivitet).toEqual({
+            type: 'ORDINÆRT_ARBEID',
+            arbeidsgiver: { id: '123456789' },
+        });
+        expect(harPeriodeMedUkjentGraderingsaktivitet(perioder, 'MOR')).toBe(false);
+    });
+
+    it('setter ikkje gradering-aktivitet når hvorSkalDuJobbe ikkje er valt i søknaden', () => {
         const values = {
             forelder: 'MOR',
             kontoTypeMor: 'MØDREKVOTE',
             skalDuKombinereArbeidOgUttakMor: true,
             stillingsprosentMor: '50',
-            hvorSkalDuJobbe: 'ANNET',
         } satisfies LeggTilEllerEndrePeriodeFormFormValues;
 
         const [periode] = mapFraFormValuesTilPeriodeDto(values, PERIODE, 'MOR', true);
 
-        expect(periode?.søker?.gradering?.aktivitet).toEqual({ type: 'ANNET' });
+        expect(periode?.søker?.gradering).toEqual({ arbeidstidprosent: 50 });
     });
 
     it('nullstiller overføringÅrsak for far/medmor når kontoType endres frå MØDREKVOTE (overføring) til FEDREKVOTE (eigen kvote)', () => {

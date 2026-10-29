@@ -15,6 +15,7 @@ const {
     MorFødselMedTvillingFlerbarnsuker,
     MorFødselAleneomsorgMedTrillingFlerbarnsuker,
     FarEllerMedmorSøkerOgMorHarLagetUttaksplan,
+    FarEllerMedmorSøkerOgMorHarSøktUtenVedtak,
     FarMedMorMedTermin1Juli2024,
     MorMedTermin1Juli2024OgFarsSøknad,
     MorFødselBeggeHarRettFødselFør1Juli2024,
@@ -346,6 +347,31 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: SøknadRoutes.FORDELING,
             key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
+    });
+
+    it('skal la far velge dekningsgrad når mor har søkt, men ikke fått vedtak', async () => {
+        const gåTilNesteSide = vi.fn();
+        await FarEllerMedmorSøkerOgMorHarSøktUtenVedtak.run({
+            args: {
+                ...FarEllerMedmorSøkerOgMorHarSøktUtenVedtak.args,
+                gåTilNesteSide,
+            },
+        });
+
+        expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
+        expect(screen.getByText('Hvor lang periode med foreldrepenger vil dere ha?')).toBeInTheDocument();
+        expect(
+            screen.queryByText('Dette ble valgt av Helga i søknaden hennes, og det kan ikke endres av deg.'),
+        ).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByText(/100 prosent foreldrepenger/));
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: '100',
+            key: ContextDataType.PERIODE_MED_FORELDREPENGER,
             type: 'update',
         });
     });

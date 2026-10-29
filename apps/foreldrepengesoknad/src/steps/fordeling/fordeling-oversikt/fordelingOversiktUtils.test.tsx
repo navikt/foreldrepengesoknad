@@ -58,4 +58,13 @@ describe('getSisteUttaksdagAnnenForelder', () => {
         ];
         expect(getSisteUttaksdagAnnenForelder(true, true, perioder)).toBe('2025-04-30');
     });
+
+    it('ser bort fra ferie etter siste uttaksperiode', () => {
+        const perioder: UttakPeriodeDto[] = [
+            { fom: '2025-04-01', tom: '2025-04-10', annenPart: lagUttak('MOR') },
+            { fom: '2025-04-14', tom: '2025-04-25', annenPart: { ...lagUttak('MOR'), utsettelseÅrsak: 'FERIE' } },
+        ];
+        // 2025-04-10 er en torsdag
+        expect(getSisteUttaksdagAnnenForelder(true, true, perioder)).toBe('2025-04-10');
+    });
 });

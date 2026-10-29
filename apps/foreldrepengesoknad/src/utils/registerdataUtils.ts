@@ -1,4 +1,4 @@
-import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
+import { FellesUttaksplanDto, FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { erLikUansettRekkefølge } from '@navikt/fp-utils';
 
 // Mellomlagringa blir ugyldig berre når felt som søknaden faktisk brukar er endra.
@@ -54,3 +54,31 @@ export const erSøkerInfoEndret = (
         }),
         relevanteSøkerInfoFelt(ferskSøkerInfo),
     );
+
+type UttakIFellesUttaksplan = NonNullable<FellesUttaksplanDto['perioder'][number]['søker']>;
+
+// TODO: Mellombels, saman med fjernAnnetGraderingsaktivitetFraMellomlagring. Mellomlagra 'ANNET' blir gjort om
+// til at aktivitet manglar, medan backend kan sende aktivitet: null. Vi ser difor bort frå null her, slik at
+// mellomlagra søknader ikkje blir forkasta berre på grunn av den overgangen.
+const utanNullAktivitet = (uttak: UttakIFellesUttaksplan | undefined): UttakIFellesUttaksplan | undefined => {
+    if (!uttak?.gradering || (uttak.gradering.aktivitet as unknown) !== null) {
+        return uttak;
+    }
+    return { ...uttak, gradering: { arbeidstidprosent: uttak.gradering.arbeidstidprosent } };
+};
+
+const normaliserFellesUttaksplan = (plan: FellesUttaksplanDto): FellesUttaksplanDto => ({
+    ...plan,
+    perioder: plan.perioder.map((periode) => ({
+        ...periode,
+        søker: utanNullAktivitet(periode.søker),
+        annenPart: utanNullAktivitet(periode.annenPart),
+    })),
+});
+
+export const erFellesUttaksplanEndret = (
+    lagretPlan: FellesUttaksplanDto,
+    ferskPlan: FellesUttaksplanDto | undefined,
+) =>
+    ferskPlan === undefined ||
+    !erLikUansettRekkefølge(normaliserFellesUttaksplan(lagretPlan), normaliserFellesUttaksplan(ferskPlan));

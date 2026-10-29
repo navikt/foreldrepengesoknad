@@ -18,6 +18,7 @@ import {
     ArbeidsforholdOgInntektFp,
     Barn,
     EksternArbeidsforholdDto_fpoversikt,
+    FellesUttaksplanDto,
     FpPersonopplysningerDto_fpoversikt,
     Frilans,
     KontoBeregningDto,
@@ -1168,6 +1169,32 @@ export const FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon:
     },
 };
 
+export const FarErSøkerOgMorHarSøktUtenVedtak: Story = {
+    ...FarErSøkerMorSøkerSamtidigUttakIFellesperiodeKreverDokumentasjon,
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.uttaksplan, () =>
+                HttpResponse.json({
+                    antallBarn: 1,
+                    dekningsgrad: 'HUNDRE',
+                    perioder: [
+                        {
+                            fom: '2022-03-30',
+                            tom: '2022-06-07',
+                            annenPart: {
+                                forelder: 'MOR',
+                                kontoType: 'FELLESPERIODE',
+                                samtidigUttak: 50,
+                                flerbarnsdager: false,
+                            },
+                        },
+                    ],
+                } satisfies FellesUttaksplanDto),
+            ),
+        );
+    },
+};
+
 export const ErEndringssøknad: Story = {
     args: {
         ...Default.args,
@@ -1246,9 +1273,6 @@ export const HarPerioderForBådeMorOgFar: Story = {
                     forelder: 'FAR_MEDMOR',
                     kontoType: 'FELLESPERIODE',
                     gradering: {
-                        aktivitet: {
-                            type: 'ANNET',
-                        },
                         arbeidstidprosent: 50,
                     },
                     flerbarnsdager: false,
@@ -1262,9 +1286,6 @@ export const HarPerioderForBådeMorOgFar: Story = {
                     forelder: 'FAR_MEDMOR',
                     kontoType: 'FELLESPERIODE',
                     gradering: {
-                        aktivitet: {
-                            type: 'ANNET',
-                        },
                         arbeidstidprosent: 50,
                     },
                     flerbarnsdager: false,
@@ -1291,9 +1312,6 @@ export const HarPerioderForBådeMorOgFar: Story = {
                     forelder: 'FAR_MEDMOR',
                     kontoType: 'FELLESPERIODE',
                     gradering: {
-                        aktivitet: {
-                            type: 'ANNET',
-                        },
                         arbeidstidprosent: 50,
                     },
                     flerbarnsdager: false,
@@ -1306,9 +1324,6 @@ export const HarPerioderForBådeMorOgFar: Story = {
                     forelder: 'FAR_MEDMOR',
                     kontoType: 'FELLESPERIODE',
                     gradering: {
-                        aktivitet: {
-                            type: 'ANNET',
-                        },
                         arbeidstidprosent: 50,
                     },
                     flerbarnsdager: false,

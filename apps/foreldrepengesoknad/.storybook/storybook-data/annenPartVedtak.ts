@@ -58,3 +58,20 @@ export const avslåttAnnenPartVedtak = {
     ],
     dekningsgrad: 'HUNDRE',
 } satisfies FellesUttaksplanDto;
+
+export const annenPartSøknad = {
+    termindato: '2022-08-17',
+    antallBarn: 1,
+    perioder: [
+        {
+            fom: '2022-12-12',
+            tom: '2023-02-17',
+            annenPart: {
+                forelder: 'MOR',
+                kontoType: 'MØDREKVOTE',
+                flerbarnsdager: false,
+            },
+        },
+    ],
+    dekningsgrad: 'HUNDRE',
+} satisfies FellesUttaksplanDto;
