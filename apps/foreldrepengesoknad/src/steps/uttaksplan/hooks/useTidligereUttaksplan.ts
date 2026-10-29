@@ -3,7 +3,7 @@ import { useUttaksplanOptions } from 'api/queries';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useValgtSak } from 'appData/useValgtSak';
 import { useEffect, useMemo } from 'react';
-import { finnAnnenPartsPlan } from 'utils/annenForelderUtils';
+import { finnAnnenPartsPlanForDekningsgrad } from 'utils/annenForelderUtils';
 
 import { FpSak_fpoversikt, UttakPeriodeDto } from '@navikt/fp-types';
 
@@ -17,6 +17,7 @@ export const useTidligereUttaksplan = (
     const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
     const opprinneligUttaksplan = useContextGetData(ContextDataType.OPPRINNELIG_UTTAKSPLAN);
     const gjeldendePlan = useContextGetData(ContextDataType.UTTAKSPLAN);
+    const dekningsgrad = useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER);
     const oppdaterOpprinneligUttaksplan = useContextSaveData(ContextDataType.OPPRINNELIG_UTTAKSPLAN);
 
     const { erNySøknadPåEksisterendeSak, isLoading: lasterSak } = useValgtSak(eksisterendeSak);
@@ -41,7 +42,7 @@ export const useTidligereUttaksplan = (
         ) {
             return opprinneligUttaksplan.perioder;
         }
-        const annenPartsPlan = finnAnnenPartsPlan(uttaksplan);
+        const annenPartsPlan = finnAnnenPartsPlanForDekningsgrad(uttaksplan, dekningsgrad);
         if (!annenPartsPlan) {
             return;
         }
@@ -61,6 +62,7 @@ export const useTidligereUttaksplan = (
         skalBevareGjenbruktPlan,
         opprinneligUttaksplan,
         gjeldendePlan,
+        dekningsgrad,
     ]);
     const tidligerePerioder = perioder && perioder.length > 0 ? perioder : undefined;
 

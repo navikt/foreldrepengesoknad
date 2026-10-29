@@ -351,7 +351,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         });
     });
 
-    it('skal bruke mors dekningsgrad når mor har søkt, men ikke fått vedtak', async () => {
+    it('skal la far velge dekningsgrad når mor har søkt, men ikke fått vedtak', async () => {
         const gåTilNesteSide = vi.fn();
         await FarEllerMedmorSøkerOgMorHarSøktUtenVedtak.run({
             args: {
@@ -361,15 +361,16 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         });
 
         expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
-        expect(screen.queryByText('Hvor lang periode med foreldrepenger vil du ha?')).not.toBeInTheDocument();
+        expect(screen.getByText('Hvor lang periode med foreldrepenger vil dere ha?')).toBeInTheDocument();
         expect(
-            screen.getByText('Dette ble valgt av Helga i søknaden hennes, og det kan ikke endres av deg.'),
-        ).toBeInTheDocument();
+            screen.queryByText('Dette ble valgt av Helga i søknaden hennes, og det kan ikke endres av deg.'),
+        ).not.toBeInTheDocument();
 
+        await userEvent.click(screen.getByText(/100 prosent foreldrepenger/));
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: '80',
+            data: '100',
             key: ContextDataType.PERIODE_MED_FORELDREPENGER,
             type: 'update',
         });

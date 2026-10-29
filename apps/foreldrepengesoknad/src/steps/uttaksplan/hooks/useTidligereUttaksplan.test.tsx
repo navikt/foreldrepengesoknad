@@ -279,6 +279,36 @@ describe('useTidligereUttaksplan', () => {
         expect(result.current.perioder).toEqual(PERIODER);
     });
 
+    it('bruker annen parts plan før vedtak når søker har valgt samme dekningsgrad', () => {
+        const { result } = renderHook(() => useTidligereUttaksplan(), {
+            wrapper: getWrapper(lagUttaksplan(PERIODER), { [ContextDataType.PERIODE_MED_FORELDREPENGER]: '100' }),
+        });
+
+        expect(result.current.perioder).toEqual(PERIODER);
+    });
+
+    it('bruker ikke annen parts plan før vedtak når søker har valgt en annen dekningsgrad', () => {
+        const { result } = renderHook(() => useTidligereUttaksplan(), {
+            wrapper: getWrapper(lagUttaksplan(PERIODER), { [ContextDataType.PERIODE_MED_FORELDREPENGER]: '80' }),
+        });
+
+        expect(result.current.perioder).toBeUndefined();
+    });
+
+    it('bruker annen parts vedtak selv om søker har valgt en annen dekningsgrad', () => {
+        const vedtak: UttakPeriodeDto = {
+            ...PERIODER[1]!,
+            annenPart: { ...PERIODER[1]!.annenPart!, resultat: INNVILGET },
+        };
+        const { result } = renderHook(() => useTidligereUttaksplan(), {
+            wrapper: getWrapper(lagUttaksplan([PERIODER[0]!, vedtak]), {
+                [ContextDataType.PERIODE_MED_FORELDREPENGER]: '80',
+            }),
+        });
+
+        expect(result.current.perioder).toEqual([PERIODER[0], vedtak]);
+    });
+
     it('returnerer undefined når planen ikke har perioder for annen part', () => {
         const { result } = renderHook(() => useTidligereUttaksplan(), {
             wrapper: getWrapper(lagUttaksplan([PERIODER[0]!])),
