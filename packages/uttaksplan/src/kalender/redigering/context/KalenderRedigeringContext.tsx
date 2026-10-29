@@ -56,43 +56,35 @@ export const KalenderRedigeringProvider = ({
 
     const sammenslåtteValgtePerioder = useMemo(() => slåSammenTilstøtendePerioder(valgtePerioder), [valgtePerioder]);
 
-    const utførEllerBekreft = useCallback(
-        (
-            type: HistoriskEndring['type'],
-            erHistoriskEndring: (førsteDagIMåneden: string) => boolean,
-            utfør: () => void,
-        ) => {
-            if (erEndringssøknad && erHistoriskEndring(dayjs().startOf('month').format(ISO_DATE_FORMAT))) {
-                bekreftHistoriskEndring({ type, utfør });
-            } else {
-                utfør();
-            }
-        },
-        [erEndringssøknad, bekreftHistoriskEndring],
-    );
-
     const leggTilUttaksplanPerioder = useCallback(
         (nyePerioder: UttakPeriodeDto[], skalForskyvePeriode: boolean, etterUtført: () => void) => {
             const nyeUttakPerioder = new UttakPeriodeBuilder(perioder, 'kalender')
                 .leggTilUttakPerioder(nyePerioder, skalForskyvePeriode)
                 .getUttakPerioder();
-            utførEllerBekreft(
-                'endret',
-                (førsteDagIMåneden) =>
-                    harHistoriskFerieEllerGraderingsendring(
-                        perioder,
-                        nyeUttakPerioder,
-                        søker,
-                        kanVelgeArbeidsgiver,
-                        førsteDagIMåneden,
-                    ),
-                () => {
-                    notEmpty(uttaksplanRedigering).oppdaterUttaksplan(nyeUttakPerioder);
-                    etterUtført();
-                },
-            );
+
+            const utfør = () => {
+                notEmpty(uttaksplanRedigering).oppdaterUttaksplan(nyeUttakPerioder);
+                etterUtført();
+            };
+
+            const førsteDagIMåneden = dayjs().startOf('month').format(ISO_DATE_FORMAT);
+            const erHistoriskEndring =
+                erEndringssøknad &&
+                harHistoriskFerieEllerGraderingsendring(
+                    perioder,
+                    nyeUttakPerioder,
+                    søker,
+                    kanVelgeArbeidsgiver,
+                    førsteDagIMåneden,
+                );
+
+            if (erHistoriskEndring) {
+                bekreftHistoriskEndring({ type: 'endret', utfør });
+            } else {
+                utfør();
+            }
         },
-        [uttaksplanRedigering, perioder, søker, kanVelgeArbeidsgiver, utførEllerBekreft],
+        [uttaksplanRedigering, perioder, søker, kanVelgeArbeidsgiver, erEndringssøknad, bekreftHistoriskEndring],
     );
 
     const slettUttaksplanPerioder = useCallback(
@@ -101,19 +93,25 @@ export const KalenderRedigeringProvider = ({
             skalForskyveBakover: boolean,
             etterUtført: () => void,
         ) => {
-            utførEllerBekreft(
-                'slettet',
-                (førsteDagIMåneden) => harHistoriskSletting(perioder, perioderSomSkalSlettes, førsteDagIMåneden),
-                () => {
-                    const nyeUttakPerioder = new UttakPeriodeBuilder(perioder, 'kalender')
-                        .fjernUttakPerioder(perioderSomSkalSlettes, skalForskyveBakover, erPeriodeneTilAnnenPartLåst)
-                        .getUttakPerioder();
-                    notEmpty(uttaksplanRedigering).oppdaterUttaksplan(nyeUttakPerioder);
-                    etterUtført();
-                },
-            );
+            const utfør = () => {
+                const nyeUttakPerioder = new UttakPeriodeBuilder(perioder, 'kalender')
+                    .fjernUttakPerioder(perioderSomSkalSlettes, skalForskyveBakover, erPeriodeneTilAnnenPartLåst)
+                    .getUttakPerioder();
+                notEmpty(uttaksplanRedigering).oppdaterUttaksplan(nyeUttakPerioder);
+                etterUtført();
+            };
+
+            const førsteDagIMåneden = dayjs().startOf('month').format(ISO_DATE_FORMAT);
+            const erHistoriskSletting =
+                erEndringssøknad && harHistoriskSletting(perioder, perioderSomSkalSlettes, førsteDagIMåneden);
+
+            if (erHistoriskSletting) {
+                bekreftHistoriskEndring({ type: 'slettet', utfør });
+            } else {
+                utfør();
+            }
         },
-        [uttaksplanRedigering, perioder, erPeriodeneTilAnnenPartLåst, utførEllerBekreft],
+        [uttaksplanRedigering, perioder, erPeriodeneTilAnnenPartLåst, erEndringssøknad, bekreftHistoriskEndring],
     );
 
     const value = useMemo(
