@@ -51,9 +51,8 @@ export const useFinnFørsteSubmitFeilmelding = ({
         perioder.length === 0 &&
         (uttaksplan === undefined || !harBrukerKunSlettetPerioder(uttaksplan, opprinneligPlan));
 
-    // Innsendinga inneheld berre søkjaren sine eigne perioder (sjå filtrerUtAnnenPartsPerioder i apiUtils),
-    // så valideringa må sjå på dei same periodane. Ser ein på heile planen, kan annen part sine perioder
-    // "dekke over" at søkjaren ikkje har eigne perioder, og backend svarar då at uttaksplanen er tom.
+    // fpsak behandler bare søkerens egne perioder i en ny søknad, så valideringen må se på dem. Ser en på hele
+    // planen, kan annen parts perioder "dekke over" at søkeren ikke har egne perioder.
     const manglerUttaksperioderForNySøknad = (perioder: UttakPeriodeDto[]) =>
         !erEndringssøknad && !harMinstEnUttaksEllerOverføringsperiode(finnPerioderMedSøker(perioder));
 
@@ -212,7 +211,7 @@ export const harMinstEnUttaksEllerOverføringsperiode = (perioder: UttakPeriodeD
     });
 
 export const erKunUtsettelser = (perioder: UttakPeriodeDto[]) => {
-    // Avslåtte perioder sendes ikke inn (filtrerUtAvslåttePerioder i apiUtils), så de teller ikke som uttak.
+    // Avslåtte perioder teller ikke som uttak.
     const søkersPerioder = perioder.flatMap((periode) =>
         periode.søker && periode.søker.resultat?.innvilget !== false ? [periode.søker] : [],
     );

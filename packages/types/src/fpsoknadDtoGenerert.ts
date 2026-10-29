@@ -26,6 +26,7 @@ export type BrukerRolle = 'MOR' | 'FAR' | 'MEDMOR';
 export type EndringssøknadForeldrepengerDto = {
     annenForelder?: AnnenForelderDto;
     barn: BarnDto;
+    endringsdato?: string;
     mottattdato?: string;
     rolle?: BrukerRolle;
     saksnummer: string;

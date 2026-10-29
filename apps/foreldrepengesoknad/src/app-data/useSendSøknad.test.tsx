@@ -447,6 +447,7 @@ describe('useFpSendSøknad', () => {
                         antallBarn: 1,
                         fødselsdato: '2024-01-01',
                     },
+                    endringsdato: '2024-01-01',
                     uttaksplan: {
                         ønskerJustertUttakVedFødsel: UTTAKSPLAN_METADATA.ønskerJustertUttakVedFødsel,
                         perioder: [UTTAKSPLAN_PERIODE],
