@@ -256,7 +256,7 @@ export const harPeriodeDerMorsAktivitetIkkeErValgt = (
 /**
  * Sjekker om innlogga brukar (søkjar) har ein periode med gradering der aktiviteten ikkje
  * er valt. Dette skjer typisk når ein plan kjem inn frå planleggar-appen (som ikkje veit om
- * søkjar sine arbeidsforhold) – då blir aktivitetstypen sett til 'ANNET' som markør.
+ * søkjar sine arbeidsforhold) – då har graderinga ingen aktivitet.
  * Brukar må velje konkret arbeidsgiver/frilans/sjølvst. før planen kan sendast inn.
  *
  * Berre søkjar sine eigne periodar blir flagga – annen part sine periodar kan ein ikkje
@@ -271,11 +271,12 @@ export const harPeriodeMedUkjentGraderingsaktivitet = (
             return false;
         }
         const søkersUttak = finnUttakForForelder(periode, søker);
-        const aktivitet = søkersUttak?.gradering?.aktivitet;
-        if (!aktivitet) {
+        const gradering = søkersUttak?.gradering;
+        if (!gradering) {
             return false;
         }
-        if (aktivitet.type === 'ANNET') {
+        const aktivitet = gradering.aktivitet;
+        if (!aktivitet) {
             return true;
         }
         // Defensivt for eldre/innkomande planar: ORDINÆRT_ARBEID utan gyldig arbeidsgiver.

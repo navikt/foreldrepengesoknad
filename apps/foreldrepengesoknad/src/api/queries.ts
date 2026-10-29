@@ -4,6 +4,7 @@ import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import ky, { type ResponsePromise } from 'ky';
 import { getUttaksplanParam } from 'utils/annenForelderUtils';
+import { fjernAnnetGraderingsaktivitet, fjernAnnetGraderingsaktivitetFraMellomlagring } from 'utils/mellomlagringUtils';
 
 import {
     FellesUttaksplanDto,
@@ -78,10 +79,16 @@ export const søkerinfoOptions = () =>
         refetchOnWindowFocus: 'always',
     });
 
+// Konverteringa ligg i queryFn (ikkje select), slik at ho òg gjeld for queryClient.fetchQuery.
+const hentMellomlagretData = async () => {
+    const data = await jsonEllerNull<FpMellomlagretData>(ky.get(API_URLS.mellomlagring));
+    return data ? fjernAnnetGraderingsaktivitetFraMellomlagring(data) : null;
+};
+
 export const mellomlagretInfoOptions = () =>
     queryOptions({
         queryKey: ['MELLOMLAGRET_INFO'],
-        queryFn: () => jsonEllerNull<FpMellomlagretData>(ky.get(API_URLS.mellomlagring)),
+        queryFn: hentMellomlagretData,
         select: (data) => data ?? undefined,
         staleTime: Infinity,
         refetchOnWindowFocus: 'always',
@@ -126,10 +133,16 @@ export const useStønadsKontoerOptions = () => {
     return tilgjengeligeStønadskvoterOptions(stønadskvoteParams);
 };
 
+// Konverteringa ligg i queryFn (ikkje select), slik at ho òg gjeld for queryClient.fetchQuery (t.d. useStartSøknad).
+const hentUttaksplan = async (data?: FellesUttaksplanRequest_fpoversikt) => {
+    const uttaksplan = await jsonEllerNull<FellesUttaksplanDto>(ky.post(API_URLS.uttaksplan, { json: data }));
+    return uttaksplan ? { ...uttaksplan, perioder: fjernAnnetGraderingsaktivitet(uttaksplan.perioder) } : null;
+};
+
 export const uttaksplanOptions = (data?: FellesUttaksplanRequest_fpoversikt) =>
     queryOptions({
         queryKey: ['UTTAKSPLAN', data],
-        queryFn: () => jsonEllerNull<FellesUttaksplanDto>(ky.post(API_URLS.uttaksplan, { json: data })),
+        queryFn: () => hentUttaksplan(data),
         select: (uttaksplan) => uttaksplan ?? undefined,
         throwOnError: true,
     });

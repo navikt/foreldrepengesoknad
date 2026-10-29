@@ -421,9 +421,6 @@ describe('UttaksplanListe', () => {
                 søker: {
                     forelder: 'MOR',
                     gradering: {
-                        aktivitet: {
-                            type: 'ANNET',
-                        },
                         arbeidstidprosent: 50,
                     },
                     kontoType: 'FELLESPERIODE',
@@ -433,9 +430,6 @@ describe('UttaksplanListe', () => {
                 annenPart: {
                     forelder: 'FAR_MEDMOR',
                     gradering: {
-                        aktivitet: {
-                            type: 'ANNET',
-                        },
                         arbeidstidprosent: 50,
                     },
                     kontoType: 'FEDREKVOTE',

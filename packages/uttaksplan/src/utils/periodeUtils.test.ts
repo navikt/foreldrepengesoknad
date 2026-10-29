@@ -133,7 +133,7 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
                 søker: lagFarUttak({ samtidigUttak: 50 }),
                 annenPart: lagMorUttak({
                     samtidigUttak: 50,
-                    gradering: { arbeidstidprosent: 50, aktivitet: { type: 'ANNET' } },
+                    gradering: { arbeidstidprosent: 50 },
                 }),
             }),
         ];
@@ -159,7 +159,7 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
                 søker: lagFarUttak({ samtidigUttak: 40 }),
                 annenPart: lagMorUttak({
                     samtidigUttak: 40,
-                    gradering: { arbeidstidprosent: 40, aktivitet: { type: 'ANNET' } },
+                    gradering: { arbeidstidprosent: 40 },
                 }),
             }),
         ];
@@ -176,7 +176,7 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
                 {
                     annenPart: lagMorUttak({
                         samtidigUttak: 50,
-                        gradering: { arbeidstidprosent: 50, aktivitet: { type: 'ANNET' } },
+                        gradering: { arbeidstidprosent: 50 },
                     }),
                 },
                 '2025-08-01',
@@ -199,13 +199,12 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
 });
 
 describe('harPeriodeMedUkjentGraderingsaktivitet', () => {
-    it('skal returnere true når søkers periode har gradering med ANNET (frå planleggaren)', () => {
+    it('skal returnere true når søkers periode har gradering utan aktivitet (frå planleggaren)', () => {
         const perioder = [
             lagPeriode({
                 søker: lagMorUttak({
                     gradering: {
                         arbeidstidprosent: 60,
-                        aktivitet: { type: 'ANNET' },
                     },
                 }),
             }),
@@ -214,14 +213,37 @@ describe('harPeriodeMedUkjentGraderingsaktivitet', () => {
         expect(harPeriodeMedUkjentGraderingsaktivitet(perioder, 'MOR')).toBe(true);
     });
 
-    it('skal returnere false når ANNET-perioden tilhøyrer annen part (ikkje søker)', () => {
+    it('skal returnere false når perioden utan aktivitet tilhøyrer annen part (ikkje søker)', () => {
         const perioder = [
             lagPeriode({
                 annenPart: lagFarUttak({
                     gradering: {
                         arbeidstidprosent: 60,
-                        aktivitet: { type: 'ANNET' },
                     },
+                }),
+            }),
+        ];
+
+        expect(harPeriodeMedUkjentGraderingsaktivitet(perioder, 'MOR')).toBe(false);
+    });
+
+    it('skal returnere true når søkers periode har gradering med aktivitet null (frå backend)', () => {
+        const perioder = [
+            lagPeriode({
+                søker: lagMorUttak({
+                    gradering: { arbeidstidprosent: 60, aktivitet: null as unknown as undefined },
+                }),
+            }),
+        ];
+
+        expect(harPeriodeMedUkjentGraderingsaktivitet(perioder, 'MOR')).toBe(true);
+    });
+
+    it('skal returnere false når annen part har gradering med aktivitet null', () => {
+        const perioder = [
+            lagPeriode({
+                annenPart: lagFarUttak({
+                    gradering: { arbeidstidprosent: 60, aktivitet: null as unknown as undefined },
                 }),
             }),
         ];
