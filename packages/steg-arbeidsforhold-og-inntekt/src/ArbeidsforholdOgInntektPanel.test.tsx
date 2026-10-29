@@ -77,6 +77,16 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
         expect(toggle).toHaveAttribute('aria-expanded', 'false');
     });
 
+    it('skal vise definisjoner av arbeidsforhold og inntekt for svangerskapspenger', async () => {
+        render(<ForSvangerskapspenger />);
+
+        await screen.findAllByText('Arbeidsforhold og inntekt');
+
+        expect(
+            screen.getByRole('region', { name: 'Hvordan defineres ulike typer arbeidsforhold og inntekt?' }),
+        ).toBeInTheDocument();
+    });
+
     it('skal vise informasjon om arbeidsgiverkontakt under arbeidsforholdene', async () => {
         render(<ForForeldrepengerMedFrilansoppdrag />);
 
