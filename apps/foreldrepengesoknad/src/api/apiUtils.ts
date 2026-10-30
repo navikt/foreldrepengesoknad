@@ -78,22 +78,6 @@ const konverterRolle = (rolle: Søkerrolle): BrukerRolle => {
     }
 };
 
-const finnTidsromForFriUtsettelse = (perioder: Array<{ fom: string }>, endringstidspunkt: string) => {
-    const førstePeriodeEtterEndringstidspunkt = perioder.find((periode) =>
-        dayjs(periode.fom).isAfter(endringstidspunkt, 'day'),
-    );
-    const endringsTidspunktPeriodeTom = førstePeriodeEtterEndringstidspunkt
-        ? Uttaksdagen.forrige(førstePeriodeEtterEndringstidspunkt.fom).getDato()
-        : endringstidspunkt;
-
-    return {
-        fom: endringstidspunkt,
-        tom: dayjs(endringsTidspunktPeriodeTom).isBefore(endringstidspunkt, 'day')
-            ? endringstidspunkt
-            : endringsTidspunktPeriodeTom,
-    };
-};
-
 const convertAttachmentsMapToArray = (vedlegg: VedleggDataType | undefined): Attachment[] => {
     if (!vedlegg) {
         return [];
@@ -175,12 +159,12 @@ export const harSøknadenNødvendigeUttaksperioder = (
     helePlanen: UttakPeriodeDto[],
 ): boolean => {
     if (erEndringssøknad) {
-        // Endringssøknaden får en FRI-utsettelse ved endringstidspunktet når søkeren har slettet perioder,
-        // så perioder i søknaden er aldri tom. Sjekk søkerens perioder i hele planen, slik uttaksplan-steget gjør.
-        // Uten endringstidspunkt kan søknaden likevel bli tom når alle søkerens perioder er avslått og filtrert bort.
-        return (
-            (søknad.uttaksplan.perioder ?? []).length > 0 && helePlanen.some((periode) => periode.søker !== undefined)
-        );
+        // Med endringsdato legger fp-soknad selv inn fri utsettelse, så de innsendte periodene trenger ingen
+        // søkerperiode. Søkeren må likevel ha egne perioder i planen.
+        const harSøkerperiodeEllerEndringsdato =
+            ('endringsdato' in søknad && søknad.endringsdato !== undefined) ||
+            (søknad.uttaksplan.perioder ?? []).some((periode) => periode.søker !== undefined);
+        return harSøkerperiodeEllerEndringsdato && helePlanen.some((periode) => periode.søker !== undefined);
     }
     return harMinstEnUttaksEllerOverføringsperiode(søknad.uttaksplan.perioder ?? []);
 };
@@ -270,24 +254,9 @@ export const mapTilEndringssøknadDto = (
 
     const endringstidspunkt = getEndringstidspunktNy(søkersEksisterendePerioder, søkersNyePerioder);
 
-    const perioderForInnsending = endringstidspunkt
-        ? filtrerPerioderFraOgMedEndringstidspunkt(søkersNyePerioder, endringstidspunkt)
-        : søkersNyePerioder;
-
-    const perioderSomSendes = filtrerUtAvslåttePerioder(filtrerUtEøsPeriode(perioderForInnsending));
-
-    const harPeriodeVedEndringstidspunkt = perioderForInnsending.some((periode) =>
-        dayjs(endringstidspunkt).isBetween(periode.fom, periode.tom, 'day', '[]'),
-    );
-    const skalLeggeTilFriUtsettelse = endringstidspunkt && !harPeriodeVedEndringstidspunkt;
-
-    // Midlertidig innsendingstilpasning frem til fpsak tolker endringssøknaden som en fullstendig plan
-    // (TFP-7202): kutt ved endringstidspunktet og filtrer bort annen part og avslag.
-    // Den fullstendige planen i konteksten beholdes.
-    const søkersRolle = søkersituasjon.rolle === 'mor' ? 'MOR' : 'FAR_MEDMOR';
-    const perioder = skalLeggeTilFriUtsettelse
-        ? leggTilFriUtsettelseForInnsending(perioderSomSendes, endringstidspunkt, søkersRolle)
-        : perioderSomSendes;
+    // fp-soknad avviser endringsdato i helg.
+    const endringsdato = endringstidspunkt ? Uttaksdagen.denneEllerNeste(endringstidspunkt).getDato() : undefined;
+    const perioder = fjernSøkersAvslåttePerioder(uttaksplan, endringsdato);
 
     return {
         søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
@@ -297,6 +266,7 @@ export const mapTilEndringssøknadDto = (
         barn: cleanBarn(barn),
         annenForelder: cleanAnnenforelder(annenForelder),
         vedlegg: convertAttachmentsMapToArray(vedlegg),
+        endringsdato,
         uttaksplan: {
             perioder,
             ønskerJustertUttakVedFødsel,
@@ -304,17 +274,19 @@ export const mapTilEndringssøknadDto = (
     };
 };
 
-const leggTilFriUtsettelseForInnsending = (
-    perioder: UttakPeriodeDto[],
-    endringstidspunkt: string,
-    søkersRolle: 'MOR' | 'FAR_MEDMOR',
-): UttakPeriodeDto[] => {
-    const friPeriode: UttakPeriodeDto = {
-        ...finnTidsromForFriUtsettelse(perioder, endringstidspunkt),
-        søker: { forelder: søkersRolle, utsettelseÅrsak: 'FRI', flerbarnsdager: false },
-    };
-    return [...perioder, friPeriode].toSorted((p1, p2) => (dayjs(p1.fom).isBefore(p2.fom, 'day') ? -1 : 1));
-};
+// Søkeren skal ikke søke på nytt om avslåtte perioder som sendes videre til fpsak. fp-soknad sender perioder som
+// slutter på eller etter endringsdato (kuttet ved endringsdato), og hele planen når endringsdato mangler.
+const fjernSøkersAvslåttePerioder = (
+    uttaksplan: UttakPeriodeDto[],
+    endringsdato: string | undefined,
+): UttakPeriodeDto[] =>
+    uttaksplan.flatMap((periode) => {
+        const sendesTilFpsak = endringsdato === undefined || !dayjs(periode.tom).isBefore(endringsdato, 'day');
+        if (!sendesTilFpsak || periode.søker?.resultat?.innvilget !== false) {
+            return [periode];
+        }
+        return periode.annenPart || periode.annenPartEøs ? [omitOne(periode, 'søker')] : [];
+    });
 
 const finnOpprinneligPlan = (
     opprinneligUttaksplan: OpprinneligUttaksplan | undefined,
@@ -329,32 +301,8 @@ const finnOpprinneligPlan = (
     return opprinneligUttaksplan.perioder;
 };
 
-const filtrerPerioderFraOgMedEndringstidspunkt = (
-    perioder: UttakPeriodeDto[],
-    endringstidspunkt: string,
-): UttakPeriodeDto[] => {
-    const endring = dayjs(endringstidspunkt);
-    return perioder.filter(
-        (periode) =>
-            endring.isBetween(periode.fom, periode.tom, 'day', '[]') ||
-            dayjs(periode.fom).isSameOrAfter(endring, 'day'),
-    );
-};
-
-const filtrerUtEøsPeriode = (nyUttaksplan: UttakPeriodeDto[]): UttakPeriodeDto[] => {
-    // Ei "eøs-periode" i det gamle flate modellen var ei rein annenPartEøs-rad utan .søker/.annenPart.
-    // Slike periodar manglar no både .søker og .annenPart.
-    return nyUttaksplan.filter((periode) => periode.søker !== undefined || periode.annenPart !== undefined);
-};
-
-const filtrerUtAvslåttePerioder = (perioder: UttakPeriodeDto[]): UttakPeriodeDto[] => {
-    // Ikke fjern bare søkerdelen: da ville backend tolket et gjenværende uttak hos annen part som et nytt opphold.
-    return perioder.filter((periode) => periode.søker?.resultat?.innvilget !== false);
-};
-
-// Ved endringssøknad blir annan part sitt uttak sendt som opphald, slik opphaldsradene i søkjaren sitt
-// eige vedtak vart sende før. Førstegongssøknaden sender berre søkjaren sine eigne periodar.
-// Annan part sine utsetjingar, avslag og periodar på kontoar utan opphaldsårsak (t.d. FFF) er ikkje opphald.
+// Endringstidspunktet finnes ut fra søkerens perioder og annen parts uttak som tidligere ble sendt som opphold.
+// Annen parts utsettelser, avslag og perioder på kontoer uten oppholdsårsak (f.eks. FFF) er ikke opphold.
 const filtrerUtAnnenPartsPerioder = (uttaksplan: UttakPeriodeDto[]): UttakPeriodeDto[] => {
     return uttaksplan.filter((periode) => periode.søker !== undefined || erOppholdSomKanSendast(periode));
 };
