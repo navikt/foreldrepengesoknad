@@ -3,7 +3,9 @@ import { useEffect, useState } from 'react';
 import { Box } from '@navikt/ds-react';
 
 import { CalendarPeriod } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
 
+import { useUttaksplanRedigering } from '../../context/UttaksplanRedigeringContext';
 import { KalenderRedigeringProvider, useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 import { DagerValgtPanel } from './paneler/DagerValgtPanel';
 import { IngenDagerValgtPanel } from './paneler/IngenDagerValgtPanel';
@@ -22,15 +24,20 @@ export const RedigerKalenderIndex = ({
     setValgtePerioder,
     setEndredePerioder,
     scrollToKvoteOppsummering,
-}: Props) => (
-    <KalenderRedigeringProvider
-        valgtePerioder={valgtePerioder}
-        setValgtePerioder={setValgtePerioder}
-        setEndredePerioder={setEndredePerioder}
-    >
-        <RedigerKalender scrollToKvoteOppsummering={scrollToKvoteOppsummering} labels={labels} />
-    </KalenderRedigeringProvider>
-);
+}: Props) => {
+    const { bekreftHistoriskEndring } = notEmpty(useUttaksplanRedigering());
+
+    return (
+        <KalenderRedigeringProvider
+            valgtePerioder={valgtePerioder}
+            setValgtePerioder={setValgtePerioder}
+            setEndredePerioder={setEndredePerioder}
+            bekreftHistoriskEndring={bekreftHistoriskEndring}
+        >
+            <RedigerKalender scrollToKvoteOppsummering={scrollToKvoteOppsummering} labels={labels} />
+        </KalenderRedigeringProvider>
+    );
+};
 
 const RedigerKalender = ({
     scrollToKvoteOppsummering,

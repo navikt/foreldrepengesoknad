@@ -6,6 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, Button, ErrorMessage, HStack, Heading, Radio, VStack } from '@navikt/ds-react';
 
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { BrukerRolleSak_fpoversikt, UttakPeriodeDto } from '@navikt/fp-types';
 import { Tidsperioden, omitMany } from '@navikt/fp-utils';
@@ -33,6 +34,7 @@ import { useGyldigeKvotetyper } from '../../regler/kvotetype/kvoteRegler';
 import { HvaVilDuGjøreValgSynlighet, useHvaVilDuGjøreValgSynlighet } from '../../regler/synlighet/hvaVilDuGjøreValg';
 import { Uttaksplanperiode, erPeriodeDto, erUttaksplanHull } from '../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../utils/UttakPeriodeBuilder';
+import { harHistoriskFerieEllerGraderingsendring, harHistoriskSletting } from '../../utils/historiskEndring';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../utils/periodeUtils';
 import { TidsperiodeSpørsmål } from './/TidsperiodeSpørsmål';
 
@@ -131,6 +133,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         familiehendelsedato,
         familiesituasjon,
         erPeriodeneTilAnnenPartLåst,
+        erEndringssøknad,
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
 
@@ -180,8 +183,28 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
             builder.fjernUttakPerioder([uttaksplanperiode], false);
         }
         const nyePerioder = builder.leggTilUttakPerioder(nyPeriode, skalForskyve).getUttakPerioder();
-        uttaksplanRedigering?.oppdaterUttaksplan?.(nyePerioder);
-        setIsLeggTilPeriodePanelOpen(false);
+
+        const utfør = () => {
+            notEmpty(uttaksplanRedigering).oppdaterUttaksplan(nyePerioder);
+            setIsLeggTilPeriodePanelOpen(false);
+        };
+
+        const førsteDagIMåneden = dayjs().startOf('month').format(ISO_DATE_FORMAT);
+        const erHistoriskEndring =
+            erEndringssøknad &&
+            harHistoriskFerieEllerGraderingsendring(
+                allePerioder,
+                nyePerioder,
+                søker,
+                kanVelgeArbeidsgiver,
+                førsteDagIMåneden,
+            );
+
+        if (erHistoriskEndring) {
+            notEmpty(uttaksplanRedigering).bekreftHistoriskEndring({ type: 'endret', utfør });
+        } else {
+            utfør();
+        }
     };
 
     const formSubmitValidator = useFormSubmitValidator<FormValues>();
@@ -231,11 +254,23 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         if (enkelHandlingPerioder) {
             handleAddPeriode(enkelHandlingPerioder, skalForskyve);
         } else if (hvaVilDuGjøre === 'LEGG_TIL_OPPHOLD') {
-            const nyeUttakPerioder = new UttakPeriodeBuilder(allePerioder, 'liste')
-                .fjernUttakPerioder([{ fom, tom }], false)
-                .getUttakPerioder();
+            const utfør = () => {
+                const nyeUttakPerioder = new UttakPeriodeBuilder(allePerioder, 'liste')
+                    .fjernUttakPerioder([{ fom, tom }], false)
+                    .getUttakPerioder();
+                notEmpty(uttaksplanRedigering).oppdaterUttaksplan(nyeUttakPerioder);
+                setIsLeggTilPeriodePanelOpen(false);
+            };
 
-            uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
+            const førsteDagIMåneden = dayjs().startOf('month').format(ISO_DATE_FORMAT);
+            const erHistoriskSletting =
+                erEndringssøknad && harHistoriskSletting(allePerioder, [{ fom, tom }], førsteDagIMåneden);
+
+            if (erHistoriskSletting) {
+                notEmpty(uttaksplanRedigering).bekreftHistoriskEndring({ type: 'slettet', utfør });
+            } else {
+                utfør();
+            }
         } else {
             const submitFeilmelding = formSubmitValidator([{ fom, tom }], values);
 
@@ -249,8 +284,6 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                 skalForskyve,
             );
         }
-
-        setIsLeggTilPeriodePanelOpen(false);
     };
 
     const resetFormValuesVedEndringAvForelder = (forelderVerdi: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => {

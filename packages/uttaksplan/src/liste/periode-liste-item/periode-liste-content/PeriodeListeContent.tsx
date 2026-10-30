@@ -1,11 +1,14 @@
 import { CalendarIcon, InformationSquareFillIcon, PencilIcon, TrashIcon } from '@navikt/aksel-icons';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { NavnPåForeldre } from '@navikt/fp-types';
 import { Uttaksdagen, formatDateExtended } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
@@ -17,6 +20,7 @@ import {
 } from '../../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../../utils/UttakPeriodeBuilder';
 import { getVarighetString } from '../../../utils/dateUtils';
+import { harHistoriskSletting } from '../../../utils/historiskEndring';
 import {
     erAvslåttPeriode,
     erOverføringsperiode,
@@ -57,6 +61,7 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
         foreldreInfo: { navnPåForeldre, søker },
         barn,
         erPeriodeneTilAnnenPartLåst,
+        erEndringssøknad,
         perioder,
     } = useUttaksplanData();
 
@@ -79,10 +84,22 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
 
     const handleSlettClick = () => {
         if (uttaksplanperioder.length === 1) {
-            const nyeUttakPerioder = new UttakPeriodeBuilder(perioder, 'liste')
-                .fjernUttakPerioder(uttaksplanperioder, false, erPeriodeneTilAnnenPartLåst)
-                .getUttakPerioder();
-            uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
+            const utfør = () => {
+                const nyeUttakPerioder = new UttakPeriodeBuilder(perioder, 'liste')
+                    .fjernUttakPerioder(uttaksplanperioder, false, erPeriodeneTilAnnenPartLåst)
+                    .getUttakPerioder();
+                notEmpty(uttaksplanRedigering).oppdaterUttaksplan(nyeUttakPerioder);
+            };
+
+            const førsteDagIMåneden = dayjs().startOf('month').format(ISO_DATE_FORMAT);
+            const erHistoriskSletting =
+                erEndringssøknad && harHistoriskSletting(perioder, uttaksplanperioder, førsteDagIMåneden);
+
+            if (erHistoriskSletting) {
+                notEmpty(uttaksplanRedigering).bekreftHistoriskEndring({ type: 'slettet', utfør });
+            } else {
+                utfør();
+            }
         } else {
             setIsSlettPeriodePanelOpen(true);
         }

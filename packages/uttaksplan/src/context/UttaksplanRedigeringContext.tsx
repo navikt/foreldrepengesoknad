@@ -3,6 +3,7 @@ import { createContext, use, useCallback, useEffect, useMemo, useRef, useState }
 import { captureException } from '@navikt/fp-observability';
 import { UttakPeriodeDto } from '@navikt/fp-types';
 
+import { HistoriskEndring, HistoriskEndringModal } from '../felles/HistoriskEndringModal';
 import { finnUgyldigeOverlapp, periodeTilLoggObjekt } from '../utils/UttakPeriodeBuilder';
 import { useUttaksplanData } from './UttaksplanDataContext';
 
@@ -22,6 +23,7 @@ type ContextValues = {
     angreSisteEndring: () => void;
     fjernAltIUttaksplan: () => void;
     oppdaterUttaksplan: (uttaksplan: UttakPeriodeDto[]) => void;
+    bekreftHistoriskEndring: (endring: HistoriskEndring) => void;
     tilbakestillUttaksplan: () => void;
 };
 
@@ -31,6 +33,11 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
     const { oppdaterUttaksplan: oppdater, harEndretPlan, children } = props;
     const [visFjernAltModal, setVisFjernAltModal] = useState(false);
     const [visTilbakestillModal, setVisTilbakestillModal] = useState(false);
+    const [historiskEndring, setHistoriskEndring] = useState<HistoriskEndring>();
+
+    const bekreftHistoriskEndring = useCallback((endring: HistoriskEndring) => {
+        setHistoriskEndring(endring);
+    }, []);
 
     const { perioder, erEndringssøknad } = useUttaksplanData();
 
@@ -108,6 +115,7 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
             uttaksplanVersjoner,
             harEndretPlan,
             oppdaterUttaksplan,
+            bekreftHistoriskEndring,
             angreSisteEndring,
             tilbakestillUttaksplan,
             fjernAltIUttaksplan,
@@ -120,13 +128,23 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
             uttaksplanVersjoner,
             harEndretPlan,
             oppdaterUttaksplan,
+            bekreftHistoriskEndring,
             angreSisteEndring,
             tilbakestillUttaksplan,
             fjernAltIUttaksplan,
         ],
     );
 
-    return <UttaksplanRedigeringContext value={value}>{children}</UttaksplanRedigeringContext>;
+    return (
+        <UttaksplanRedigeringContext value={value}>
+            {children}
+            <HistoriskEndringModal
+                historiskEndring={historiskEndring}
+                erÅpen={historiskEndring !== undefined}
+                lukk={() => setHistoriskEndring(undefined)}
+            />
+        </UttaksplanRedigeringContext>
+    );
 };
 
 export const useUttaksplanRedigering = () => {

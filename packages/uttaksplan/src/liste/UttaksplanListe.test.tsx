@@ -38,6 +38,210 @@ const åpneTidsperiode = async (oppdaterUttaksplan = vi.fn()) => {
     };
 };
 
+describe('historiske endringer i listevisningen', () => {
+    const periode: UttakPeriodeDto = {
+        fom: '2025-08-04',
+        tom: '2025-08-08',
+        søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
+    };
+
+    beforeEach(() => {
+        vi.setSystemTime(new Date('2025-09-16T12:00:00.000Z'));
+    });
+
+    afterEach(() => {
+        vi.useRealTimers();
+    });
+
+    const renderListe = (perioder = [periode], erEndringssøknad = true) => {
+        const oppdaterUttaksplan = vi.fn();
+        render(
+            <Default perioder={perioder} erEndringssøknad={erEndringssøknad} oppdaterUttaksplan={oppdaterUttaksplan} />,
+        );
+        return oppdaterUttaksplan;
+    };
+
+    const åpneEndring = async () => {
+        const header = screen.getByTestId('2025-08-04 - 2025-08-08');
+        await userEvent.click(header);
+        const rad = header.closest<HTMLElement>('.aksel-vstack')!;
+        await userEvent.click(within(rad).getByRole('button', { name: 'Endre' }));
+    };
+
+    it.each(['ferie', 'gradering'])('bekrefter historisk %s før endringen lagres', async (handling) => {
+        const oppdaterUttaksplan = renderListe();
+        await åpneEndring();
+
+        if (handling === 'ferie') {
+            await userEvent.click(screen.getByRole('radio', { name: 'Ferie' }));
+        } else {
+            await userEvent.click(screen.getByRole('radio', { name: 'Ja' }));
+            await userEvent.type(screen.getByLabelText('Hvor mange prosent skal mor jobbe?'), '50');
+        }
+        await userEvent.click(screen.getByRole('button', { name: 'Ferdig, legg til i plan' }));
+
+        const dialog = screen.getByRole('dialog', {
+            name: 'Er du sikker på at du skal endre foreldrepenger tilbake i tid?',
+        });
+        expect(oppdaterUttaksplan).not.toHaveBeenCalled();
+        await userEvent.click(within(dialog).getByRole('button', { name: 'Endre' }));
+
+        expect(oppdaterUttaksplan).toHaveBeenCalledExactlyOnceWith([
+            {
+                ...periode,
+                søker:
+                    handling === 'ferie'
+                        ? { forelder: 'MOR', utsettelseÅrsak: 'FERIE', flerbarnsdager: false }
+                        : { ...periode.søker, gradering: { arbeidstidprosent: 50 } },
+            },
+        ]);
+        await waitFor(() => expect(screen.queryByText('Endre periode')).not.toBeInTheDocument());
+    });
+
+    it.each(['Avbryt', 'Escape', 'Lukk'])('bevarer planen og redigeringen ved %s', async (lukkemåte) => {
+        const oppdaterUttaksplan = renderListe();
+        await åpneEndring();
+        await userEvent.click(screen.getByRole('radio', { name: 'Ferie' }));
+        const lagreKnapp = screen.getByRole('button', { name: 'Ferdig, legg til i plan' });
+        await userEvent.click(lagreKnapp);
+
+        const dialog = screen.getByRole('dialog');
+        if (lukkemåte === 'Escape') {
+            await userEvent.keyboard('{Escape}');
+        } else {
+            await userEvent.click(within(dialog).getByRole('button', { name: new RegExp(lukkemåte, 'i') }));
+        }
+
+        await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+        expect(oppdaterUttaksplan).not.toHaveBeenCalled();
+        expect(screen.getByRole('radio', { name: 'Ferie' })).toBeChecked();
+        expect(screen.getByLabelText('Fra og med dato')).toHaveValue('04.08.2025');
+        expect(screen.getByLabelText('Til og med dato')).toHaveValue('08.08.2025');
+        await waitFor(() => expect(lagreKnapp).toHaveFocus());
+    });
+
+    it('bekrefter direkte sletting og forkaster avbrutt sletting', async () => {
+        const oppdaterUttaksplan = renderListe();
+        await userEvent.click(screen.getByTestId('2025-08-04 - 2025-08-08'));
+        const slettKnapp = screen.getByRole('button', { name: 'Slett' });
+        await userEvent.click(slettKnapp);
+
+        expect(oppdaterUttaksplan).not.toHaveBeenCalled();
+        await userEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Avbryt' }));
+        await waitFor(() => expect(slettKnapp).toHaveFocus());
+        expect(oppdaterUttaksplan).not.toHaveBeenCalled();
+
+        await userEvent.click(slettKnapp);
+        const dialog = screen.getByRole('dialog', {
+            name: 'Er du sikker på at du skal slette foreldrepenger tilbake i tid?',
+        });
+        await userEvent.click(within(dialog).getByRole('button', { name: 'Slett' }));
+
+        expect(oppdaterUttaksplan).toHaveBeenCalledExactlyOnceWith([]);
+        expect(screen.queryByTestId('2025-08-04 - 2025-08-08')).not.toBeInTheDocument();
+    });
+
+    it('bevarer periodevalget ved avbrutt sletting av valgte perioder', async () => {
+        const nestePeriode: UttakPeriodeDto = {
+            ...periode,
+            fom: '2025-08-11',
+            tom: '2025-08-15',
+            søker: { ...periode.søker!, kontoType: 'FELLESPERIODE' },
+        };
+        const oppdaterUttaksplan = renderListe([periode, nestePeriode]);
+        await userEvent.click(screen.getByTestId('2025-08-04 - 2025-08-15'));
+        await userEvent.click(screen.getByRole('button', { name: 'Slett' }));
+        await userEvent.click(screen.getByRole('checkbox', { name: /04\.08\.2025 - 08\.08\.2025/ }));
+        await userEvent.click(screen.getByRole('button', { name: 'Slett valgte perioder' }));
+
+        expect(oppdaterUttaksplan).not.toHaveBeenCalled();
+        await userEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Avbryt' }));
+        await waitFor(() =>
+            expect(screen.getByRole('checkbox', { name: /04\.08\.2025 - 08\.08\.2025/ })).toBeChecked(),
+        );
+        expect(oppdaterUttaksplan).not.toHaveBeenCalled();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Slett valgte perioder' }));
+        await userEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Slett' }));
+        expect(oppdaterUttaksplan).toHaveBeenCalledExactlyOnceWith([nestePeriode]);
+    });
+
+    it('bekrefter sletting når uttak erstattes med en periode uten foreldrepenger', async () => {
+        const oppdaterUttaksplan = renderListe();
+        await åpneEndring();
+        await userEvent.click(screen.getByRole('radio', { name: 'Periode uten foreldrepenger' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Ferdig, legg til i plan' }));
+
+        expect(oppdaterUttaksplan).not.toHaveBeenCalled();
+        const dialog = screen.getByRole('dialog', {
+            name: 'Er du sikker på at du skal slette foreldrepenger tilbake i tid?',
+        });
+        await userEvent.click(within(dialog).getByRole('button', { name: 'Avbryt' }));
+        await waitFor(() => expect(screen.getByRole('radio', { name: 'Periode uten foreldrepenger' })).toBeChecked());
+        expect(oppdaterUttaksplan).not.toHaveBeenCalled();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Ferdig, legg til i plan' }));
+        await userEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Slett' }));
+        expect(oppdaterUttaksplan).toHaveBeenCalledExactlyOnceWith([]);
+    });
+
+    it('varsler når forskyvning endrer historisk gradering utenfor perioden som legges til', async () => {
+        const gradertPeriode: UttakPeriodeDto = {
+            ...periode,
+            fom: '2025-08-11',
+            tom: '2025-08-15',
+            søker: { ...periode.søker!, gradering: { arbeidstidprosent: 50 } },
+        };
+        const oppdaterUttaksplan = renderListe([periode, gradertPeriode]);
+
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til periode' }));
+        await userEvent.type(screen.getByLabelText('Fra og med dato'), '04.08.2025');
+        await userEvent.type(screen.getByLabelText('Til og med dato'), '08.08.2025');
+        await userEvent.tab();
+        await userEvent.click(screen.getByRole('radio', { name: 'Legge til periode med foreldrepenger' }));
+        await userEvent.click(screen.getByRole('radio', { name: 'Mor' }));
+        await userEvent.click(screen.getByRole('radio', { name: 'Mors kvote' }));
+        await userEvent.click(screen.getByRole('radio', { name: 'Nei' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Ferdig, legg til i plan' }));
+        await userEvent.click(screen.getByRole('radio', { name: 'Endre og flytt resten av planen' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
+
+        expect(oppdaterUttaksplan).not.toHaveBeenCalled();
+        await userEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Endre' }));
+
+        expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
+        expect(oppdaterUttaksplan).toHaveBeenCalledWith(
+            expect.arrayContaining([{ ...gradertPeriode, fom: '2025-08-18', tom: '2025-08-22' }]),
+        );
+    });
+
+    it('lagrer historisk kontotypebytte uten varsel når ferie og gradering er uendret', async () => {
+        const oppdaterUttaksplan = renderListe();
+        await åpneEndring();
+        await userEvent.click(screen.getByRole('radio', { name: 'Fellesperiode' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Ferdig, legg til i plan' }));
+
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        expect(oppdaterUttaksplan).toHaveBeenCalledExactlyOnceWith([
+            { ...periode, søker: { ...periode.søker, kontoType: 'FELLESPERIODE' } },
+        ]);
+    });
+
+    it.each([
+        { navn: 'førstegangssøknad', erEndringssøknad: false, dato: '2025-09-16' },
+        { navn: 'inneværende måned', erEndringssøknad: true, dato: '2025-08-20' },
+    ])('lagrer uten historikkvarsel for $navn', async ({ erEndringssøknad, dato }) => {
+        vi.setSystemTime(new Date(`${dato}T12:00:00.000Z`));
+        const oppdaterUttaksplan = renderListe([periode], erEndringssøknad);
+        await åpneEndring();
+        await userEvent.click(screen.getByRole('radio', { name: 'Ferie' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Ferdig, legg til i plan' }));
+
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
+    });
+});
+
 describe('UttaksplanListe', () => {
     it('skal legge til ny periode - ferie', async () => {
         const oppdaterUttaksplan = vi.fn();
