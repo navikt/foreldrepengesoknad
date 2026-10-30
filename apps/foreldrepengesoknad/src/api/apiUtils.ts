@@ -6,7 +6,6 @@ import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { VedleggDataType } from 'types/VedleggDataType';
 import { getEndringstidspunktNy } from 'utils/dateUtils';
 
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
     AnnenForelderDto,
     Attachment,
@@ -255,12 +254,9 @@ export const mapTilEndringssøknadDto = (
 
     const endringstidspunkt = getEndringstidspunktNy(søkersEksisterendePerioder, søkersNyePerioder);
 
-    // fp-soknad avviser endringsdato i helg, og ingen søkerperiode kan krysse endringsdato.
+    // fp-soknad avviser endringsdato i helg.
     const endringsdato = endringstidspunkt ? Uttaksdagen.denneEllerNeste(endringstidspunkt).getDato() : undefined;
-    const perioder = fjernSøkersAvslåttePerioder(
-        endringsdato ? splittSøkerperioderVedDato(uttaksplan, endringsdato) : uttaksplan,
-        endringsdato,
-    );
+    const perioder = fjernSøkersAvslåttePerioder(uttaksplan, endringsdato);
 
     return {
         søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
@@ -278,26 +274,14 @@ export const mapTilEndringssøknadDto = (
     };
 };
 
-const splittSøkerperioderVedDato = (uttaksplan: UttakPeriodeDto[], dato: string): UttakPeriodeDto[] =>
-    uttaksplan.flatMap((periode) =>
-        periode.søker !== undefined &&
-        dayjs(periode.fom).isBefore(dato, 'day') &&
-        !dayjs(periode.tom).isBefore(dato, 'day')
-            ? [
-                  { ...periode, tom: dayjs(dato).subtract(1, 'day').format(ISO_DATE_FORMAT) },
-                  { ...periode, fom: dato },
-              ]
-            : [periode],
-    );
-
-// Søkeren skal ikke søke på nytt om avslåtte perioder som sendes videre til fpsak. Uten endringsdato sender
-// fp-soknad hele planen til fpsak.
+// Søkeren skal ikke søke på nytt om avslåtte perioder som sendes videre til fpsak. fp-soknad sender perioder som
+// slutter på eller etter endringsdato (kuttet ved endringsdato), og hele planen når endringsdato mangler.
 const fjernSøkersAvslåttePerioder = (
     uttaksplan: UttakPeriodeDto[],
     endringsdato: string | undefined,
 ): UttakPeriodeDto[] =>
     uttaksplan.flatMap((periode) => {
-        const sendesTilFpsak = endringsdato === undefined || !dayjs(periode.fom).isBefore(endringsdato, 'day');
+        const sendesTilFpsak = endringsdato === undefined || !dayjs(periode.tom).isBefore(endringsdato, 'day');
         if (!sendesTilFpsak || periode.søker?.resultat?.innvilget !== false) {
             return [periode];
         }

@@ -341,7 +341,7 @@ describe('mapTilEndringssøknadDto', () => {
         expect(endringssøknad.uttaksplan.perioder).toEqual(nyePerioder);
     });
 
-    it('skal flytte endringsdato i helg til mandag og splitte søkerperioden som krysser den', () => {
+    it('skal flytte endringsdato i helg til mandag uten å splitte perioden som krysser den', () => {
         const opprinneligPlan = [
             mor('2024-01-01', '2024-02-02', 'MØDREKVOTE'),
             mor('2024-02-05', '2024-02-16', 'FELLESPERIODE'),
@@ -352,11 +352,31 @@ describe('mapTilEndringssøknadDto', () => {
         const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO);
 
         expect(endringssøknad.endringsdato).toBe('2024-02-05');
-        expect(endringssøknad.uttaksplan.perioder).toEqual([
-            opprinneligPlan[0],
-            mor('2024-02-03', '2024-02-04', 'FELLESPERIODE'),
+        expect(endringssøknad.uttaksplan.perioder).toEqual(nyPlan);
+    });
+
+    it('skal fjerne søkerens avslåtte periode som krysser endringsdato, fordi fp-soknad kutter og sender den', () => {
+        const avslåttPeriode: UttakPeriodeDto = {
+            fom: '2024-02-03',
+            tom: '2024-02-16',
+            søker: {
+                forelder: 'MOR',
+                kontoType: 'FELLESPERIODE',
+                flerbarnsdager: false,
+                resultat: { innvilget: false, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+            },
+        };
+        const opprinneligPlan = [
+            mor('2024-01-01', '2024-02-02', 'MØDREKVOTE'),
             mor('2024-02-05', '2024-02-16', 'FELLESPERIODE'),
-        ]);
+        ];
+        const nyPlan = [opprinneligPlan[0]!, avslåttPeriode];
+        const data = getStateMock(annenForelderMock, barnMock, nyPlan, 'SAK-001', opprinneligPlan);
+
+        const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO);
+
+        expect(endringssøknad.endringsdato).toBe('2024-02-05');
+        expect(endringssøknad.uttaksplan.perioder).toEqual([opprinneligPlan[0]]);
     });
 
     // Scenario fra produksjon: far tok perioden rundt fødsel med 100 % samtidig uttak. Endringstidspunktet
