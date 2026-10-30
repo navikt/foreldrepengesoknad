@@ -526,4 +526,41 @@ describe('useFpSendSøknad', () => {
         expect(postMock).not.toHaveBeenCalled();
         expect(deleteMock).not.toHaveBeenCalled();
     });
+
+    it('skal sende inn endringssøknad når søkeren har fjernet sin del av et samtidig uttak og resten er avslått', async () => {
+        const postMock = vi.spyOn(ky, 'post').mockReturnValue({
+            json: () => Promise.resolve(),
+        } as ResponsePromise<void>);
+        vi.spyOn(ky, 'delete').mockReturnValue(undefined as unknown as ResponsePromise<unknown>);
+
+        const avslåttJanuar = {
+            fom: '2024-01-01',
+            tom: '2024-01-31',
+            søker: {
+                ...UTTAKSPLAN_PERIODE.søker,
+                resultat: { innvilget: false, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+            },
+        } satisfies UttakPeriodeDto;
+        const farsFebruar = {
+            fom: '2024-02-01',
+            tom: '2024-02-29',
+            annenPart: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', samtidigUttak: 50, flerbarnsdager: false },
+        } satisfies UttakPeriodeDto;
+        const samtidigFebruar = {
+            ...farsFebruar,
+            søker: { ...UTTAKSPLAN_PERIODE.søker, samtidigUttak: 50 },
+        } satisfies UttakPeriodeDto;
+
+        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, true, saker), {
+            wrapper: getWrapper([avslåttJanuar, farsFebruar], [avslåttJanuar, samtidigFebruar]),
+        });
+
+        const resultat = await act(() => result.current.sendSøknad());
+
+        expect(resultat).toBe('SENDT');
+        expect(postMock).toHaveBeenCalledWith(
+            API_URLS.endreSøknad,
+            expect.objectContaining({ json: expect.objectContaining({ endringsdato: '2024-02-01' }) }),
+        );
+    });
 });
