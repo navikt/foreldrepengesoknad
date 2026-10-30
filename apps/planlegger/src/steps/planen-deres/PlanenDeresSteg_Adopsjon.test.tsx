@@ -67,7 +67,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(førsteUttaksdag).toBeInTheDocument();
 
         await userEvent.click(førsteUttaksdag);
-        await userEvent.click(screen.getByText('Utvid panel'));
+        await userEvent.click(screen.getByRole('button', { name: 'Redigeringspanel' }));
 
         const eksisterendePeriode = within(
             screen.getByText('Valgte datoer inneholder en eksisterende periode:').closest('div')!.parentElement!

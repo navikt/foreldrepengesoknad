@@ -1,9 +1,10 @@
 import { composeStories } from '@storybook/react-vite';
 import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import * as stories from './Calendar.stories';
 
-const { Default, PeriodsThatSpanOverAYear } = composeStories(stories);
+const { Default, PeriodsThatSpanOverAYear, VisKalenderMedValgAvPerioder } = composeStories(stories);
 
 describe('<Calendar>', () => {
     it('skal vise riktige dagmarkeringer og familiehendelse', () => {
@@ -26,6 +27,46 @@ describe('<Calendar>', () => {
         expect(screen.getByText('Mai 2024')).toBeInTheDocument();
         expect(screen.getByText('Juni 2024')).toBeInTheDocument();
         expect(screen.getByText('Juli 2024')).toBeInTheDocument();
+    });
+
+    it('skal ikke flytte fokus inn i kalenderen ved visning og skal kun ha ett tabstopp', async () => {
+        const { container } = render(<VisKalenderMedValgAvPerioder />);
+
+        expect(document.body).toHaveFocus();
+        expect(container.querySelectorAll('button[tabindex="0"]')).toHaveLength(1);
+
+        await userEvent.tab();
+        const førsteDag = document.activeElement;
+        expect(førsteDag?.tagName).toBe('BUTTON');
+
+        for (let i = 0; i < 25; i++) {
+            await userEvent.keyboard('{ArrowRight}');
+        }
+
+        expect(document.activeElement).not.toBe(førsteDag);
+        expect(container.querySelectorAll('button[tabindex="0"]')).toHaveLength(1);
+        expect(document.activeElement).toHaveAttribute('tabindex', '0');
+    });
+
+    it('skal stoppe piltastnavigering i kanten av kalenderen og beholde ett tabstopp', async () => {
+        const { container } = render(<VisKalenderMedValgAvPerioder />);
+
+        await userEvent.tab();
+        const førsteDag = document.activeElement;
+        expect(førsteDag).toHaveAttribute('data-testid', expect.stringContaining('day:1;'));
+
+        await userEvent.keyboard('{ArrowUp}');
+        expect(document.activeElement).toBe(førsteDag);
+        expect(container.querySelectorAll('button[tabindex="0"]')).toHaveLength(1);
+
+        for (let i = 0; i < 40; i++) {
+            await userEvent.keyboard('{ArrowDown}');
+        }
+
+        const august = screen.getByTestId('year:2024;month:7');
+        expect(august).toContainElement(document.activeElement as HTMLElement);
+        expect(container.querySelectorAll('button[tabindex="0"]')).toHaveLength(1);
+        expect(document.activeElement).toHaveAttribute('tabindex', '0');
     });
 
     it('skal vise korrekte ukenummer i januar (skal ikke telle videre fra forrige år)', async () => {

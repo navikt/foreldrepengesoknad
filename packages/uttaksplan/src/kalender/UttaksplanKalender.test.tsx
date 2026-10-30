@@ -1198,7 +1198,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(april).getByTestId('day:17;dayColor:DARKGRAY'));
         await userEvent.click(within(april).getByTestId('day:23;dayColor:DARKGRAY'));
 
-        await userEvent.click(screen.getByText('Utvid panel'));
+        await userEvent.click(screen.getByRole('button', { name: 'Redigeringspanel' }));
 
         const div = within(
             screen.getByText('Valgte datoer inneholder en eksisterende periode:').closest('div')!.parentElement!
@@ -1221,7 +1221,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(april).getByTestId('day:24;dayColor:BLACKOUTLINE'));
         await userEvent.click(within(april).getByTestId('day:29;dayColor:BLACKOUTLINE'));
 
-        await userEvent.click(screen.getByText('Utvid panel'));
+        await userEvent.click(screen.getByRole('button', { name: 'Redigeringspanel' }));
 
         const div2 = within(
             screen.getByText('Valgte datoer inneholder en eksisterende periode:').closest('div')!.parentElement!

@@ -37,9 +37,31 @@ export const Calendar = ({
     const [focusedDate, setFocusedDate] = useState<dayjs.Dayjs | undefined>();
     const [hoverDate, setHoverDate] = useState<string | undefined>();
 
-    const onDateHover = useCallback((date: string | undefined) => {
-        setHoverDate(date);
-    }, []);
+    const allMonths = useMemo(
+        () => findMonths(firstDateInCalendar, lastDateInCalendar),
+        [firstDateInCalendar, lastDateInCalendar],
+    );
+
+    const erIKalenderen = useCallback((date: dayjs.Dayjs | string) => erDatoIMånedene(allMonths, date), [allMonths]);
+
+    // Navigering med piltaster stopper i kanten, slik at fokus ikke havner på en dato som ikke vises
+    const setFocusedDateInnenforKalenderen = useCallback(
+        (date: dayjs.Dayjs) => {
+            if (erIKalenderen(date)) {
+                setFocusedDate(date);
+            }
+        },
+        [erIKalenderen],
+    );
+
+    const onDateHover = useCallback(
+        (date: string | undefined) => {
+            if (date === undefined || erIKalenderen(date)) {
+                setHoverDate(date);
+            }
+        },
+        [erIKalenderen],
+    );
 
     const pendingFom = useMemo(() => {
         if (!isRangeSelection) {
@@ -48,10 +70,8 @@ export const Calendar = ({
         return periods.find((p) => p.isSelected && p.fom === p.tom)?.fom;
     }, [isRangeSelection, periods]);
 
-    const allMonths = useMemo(
-        () => findMonths(firstDateInCalendar, lastDateInCalendar),
-        [firstDateInCalendar, lastDateInCalendar],
-    );
+    // Første måned får standard-tabstopp når ingen synlig dag har fokus, slik at kalenderen alltid kan nås med Tab
+    const harSynligFokusertDato = focusedDate !== undefined && erIKalenderen(focusedDate);
     const periodsByMonth = useMemo(() => groupPeriodsByMonth(allMonths, periods), [allMonths, periods]);
 
     const dateClickCallback = useCallback(
@@ -69,7 +89,7 @@ export const Calendar = ({
                 return (
                     <Month
                         key={`${year}-${month}`}
-                        isFirstMonth={index === 0}
+                        harStandardTabStopp={index === 0 && !harSynligFokusertDato}
                         year={year}
                         month={month}
                         periods={monthPeriods}
@@ -84,12 +104,17 @@ export const Calendar = ({
                         pendingFom={setSelectedPeriods ? pendingFom : undefined}
                         onDateHover={setSelectedPeriods ? onDateHover : undefined}
                         focusedDate={isMonthInFocus ? focusedDate : undefined}
-                        setFocusedDate={setFocusedDate}
+                        setFocusedDate={setFocusedDateInnenforKalenderen}
                     />
                 );
             })}
         </HGrid>
     );
+};
+
+const erDatoIMånedene = (months: Array<{ month: number; year: number }>, date: dayjs.Dayjs | string): boolean => {
+    const d = dayjs(date);
+    return months.some(({ month, year }) => d.year() === year && d.month() === month);
 };
 
 const findMonths = (

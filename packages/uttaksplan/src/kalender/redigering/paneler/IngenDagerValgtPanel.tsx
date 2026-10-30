@@ -1,4 +1,4 @@
-import { CheckmarkCircleIcon, ChevronDownIcon, ChevronUpIcon, NotePencilIcon } from '@navikt/aksel-icons';
+import { CheckmarkCircleIcon, NotePencilIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -6,6 +6,7 @@ import { BodyShort, Box, Detail, HStack, Heading, Link, Show, Tag, VStack } from
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
+import { MinimerRedigeringspanelKnapp } from '../../../felles/MinimerRedigeringspanelKnapp';
 import { UttaksplanHandlingKnapper } from '../../../felles/UttaksplanHandlingKnapper';
 import { getVarighetString } from '../../../utils/dateUtils';
 import {
@@ -20,8 +21,6 @@ interface Props {
 }
 
 export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Props) => {
-    const intl = useIntl();
-
     const uttaksplanRedigering = useUttaksplanRedigering();
 
     const erDesktop = useErDesktop();
@@ -43,19 +42,7 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
             >
                 <Show below="md">
                     <VStack gap="space-1" align="center">
-                        {erMinimert ? (
-                            <ChevronUpIcon
-                                title={intl.formatMessage({ id: 'RedigeringPanel.Maksimer' })}
-                                height={24}
-                                width={24}
-                            />
-                        ) : (
-                            <ChevronDownIcon
-                                title={intl.formatMessage({ id: 'RedigeringPanel.Minimer' })}
-                                height={24}
-                                width={24}
-                            />
-                        )}
+                        <MinimerRedigeringspanelKnapp erMinimert={erMinimert} setErMinimert={setErMinimert} />
                         <Heading size="small">
                             <HStack gap="space-4" align="center">
                                 <NotePencilIcon aria-hidden height={16} width={16} />

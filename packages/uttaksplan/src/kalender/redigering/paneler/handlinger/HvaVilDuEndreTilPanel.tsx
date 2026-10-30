@@ -1,4 +1,4 @@
-import { ChevronDownIcon, ChevronUpIcon, PencilIcon, PlusIcon } from '@navikt/aksel-icons';
+import { PencilIcon, PlusIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -8,6 +8,7 @@ import { Box, Button, Chips, HStack, Heading, Show, VStack } from '@navikt/ds-re
 import { UttakPeriodeDto } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
+import { MinimerRedigeringspanelKnapp } from '../../../../felles/MinimerRedigeringspanelKnapp';
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { useKanKunErstatte } from '../../../../regler/alert/informasjonsAlertHooks';
@@ -254,19 +255,7 @@ const HeaderForMobil = ({
             className="bg-ax-bg-accent-soft hover:bg-ax-bg-accent-moderate cursor-pointer"
         >
             <VStack gap="space-4" align="center">
-                {erMinimert ? (
-                    <ChevronUpIcon
-                        title={intl.formatMessage({ id: 'RedigeringPanel.Maksimer' })}
-                        height={24}
-                        width={24}
-                    />
-                ) : (
-                    <ChevronDownIcon
-                        title={intl.formatMessage({ id: 'RedigeringPanel.Minimer' })}
-                        height={24}
-                        width={24}
-                    />
-                )}
+                <MinimerRedigeringspanelKnapp erMinimert={erMinimert} setErMinimert={setErMinimert} />
 
                 <HStack gap="space-8" align="center" wrap={false}>
                     <PencilIcon title={intl.formatMessage({ id: 'RedigeringPanel.EndreTil' })} fontSize="1.5rem" />
