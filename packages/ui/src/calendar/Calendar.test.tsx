@@ -48,6 +48,27 @@ describe('<Calendar>', () => {
         expect(document.activeElement).toHaveAttribute('tabindex', '0');
     });
 
+    it('skal stoppe piltastnavigering i kanten av kalenderen og beholde ett tabstopp', async () => {
+        const { container } = render(<VisKalenderMedValgAvPerioder />);
+
+        await userEvent.tab();
+        const førsteDag = document.activeElement;
+        expect(førsteDag).toHaveAttribute('data-testid', expect.stringContaining('day:1;'));
+
+        await userEvent.keyboard('{ArrowUp}');
+        expect(document.activeElement).toBe(førsteDag);
+        expect(container.querySelectorAll('button[tabindex="0"]')).toHaveLength(1);
+
+        for (let i = 0; i < 40; i++) {
+            await userEvent.keyboard('{ArrowDown}');
+        }
+
+        const august = screen.getByTestId('year:2024;month:7');
+        expect(august).toContainElement(document.activeElement as HTMLElement);
+        expect(container.querySelectorAll('button[tabindex="0"]')).toHaveLength(1);
+        expect(document.activeElement).toHaveAttribute('tabindex', '0');
+    });
+
     it('skal vise korrekte ukenummer i januar (skal ikke telle videre fra forrige år)', async () => {
         render(<PeriodsThatSpanOverAYear />);
 

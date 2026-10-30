@@ -131,7 +131,7 @@ export const UttaksplanLegend = ({
                     <FormattedMessage id="UttaksplanLegend.HvaFargeneBetyr" />
                     <UtvidIkonKnapp
                         ikon={<ChevronUpCircleIcon aria-hidden fontSize="1.5rem" />}
-                        label={intl.formatMessage({ id: 'UttaksplanLegend.LukkFargeForklaring' })}
+                        label={intl.formatMessage({ id: 'UttaksplanLegend.Fargeforklaring' })}
                         erUtvidet
                         className="mb-1"
                         onClick={() => setVisHorisontalt(true)}
@@ -150,7 +150,7 @@ export const UttaksplanLegend = ({
             {skjulTekstSomDefault && visHorisontalt && (
                 <UtvidIkonKnapp
                     ikon={<ChevronDownCircleIcon aria-hidden fontSize="1.5rem" />}
-                    label={intl.formatMessage({ id: 'UttaksplanLegend.ApneFargeForklaring' })}
+                    label={intl.formatMessage({ id: 'UttaksplanLegend.Fargeforklaring' })}
                     erUtvidet={false}
                     className="mb-1"
                     onClick={() => setVisHorisontalt(false)}

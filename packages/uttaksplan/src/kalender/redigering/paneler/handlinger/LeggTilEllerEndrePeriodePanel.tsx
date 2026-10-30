@@ -4,6 +4,7 @@ import { useIntl } from 'react-intl';
 
 import { Box, Chips, HStack, Show, VStack } from '@navikt/ds-react';
 
+import { MinimerRedigeringspanelKnapp } from '../../../../felles/MinimerRedigeringspanelKnapp';
 import { UtvidIkonKnapp } from '../../../../felles/UtvidIkonKnapp';
 import { getVarighetString } from '../../../../utils/dateUtils';
 import { useKalenderRedigeringContext } from '../../context/KalenderRedigeringContext';
@@ -78,11 +79,7 @@ const HeaderDesktop = ({ labels }: { labels: React.ReactNode }) => {
                                 <ChevronDownIcon aria-hidden fontSize="1.5rem" />
                             )
                         }
-                        label={
-                            visPeriodeDetaljer
-                                ? intl.formatMessage({ id: 'RedigeringPanel.SkjulDetaljer' })
-                                : intl.formatMessage({ id: 'RedigeringPanel.VisDetaljer' })
-                        }
+                        label={intl.formatMessage({ id: 'RedigeringPanel.Periodeinformasjon' })}
                         erUtvidet={visPeriodeDetaljer}
                         onClick={() => setVisPeriodeDetaljer(!visPeriodeDetaljer)}
                     />
@@ -115,22 +112,7 @@ const HeaderMobil = ({
                 className="bg-ax-bg-accent-soft hover:bg-ax-bg-accent-moderate cursor-pointer"
             >
                 <VStack gap="space-4" align="center">
-                    <UtvidIkonKnapp
-                        ikon={
-                            erMinimert ? (
-                                <ChevronUpIcon aria-hidden height={24} width={24} />
-                            ) : (
-                                <ChevronDownIcon aria-hidden height={24} width={24} />
-                            )
-                        }
-                        label={
-                            erMinimert
-                                ? intl.formatMessage({ id: 'RedigeringPanel.Maksimer' })
-                                : intl.formatMessage({ id: 'RedigeringPanel.Minimer' })
-                        }
-                        erUtvidet={!erMinimert}
-                        onClick={() => setErMinimert(!erMinimert)}
-                    />
+                    <MinimerRedigeringspanelKnapp erMinimert={erMinimert} setErMinimert={setErMinimert} />
 
                     <Chips size="small">
                         <Chips.Removable onDelete={() => setValgtePerioder([])} onClick={(e) => e.stopPropagation()}>
