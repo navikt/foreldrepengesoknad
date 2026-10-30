@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Box } from '@navikt/ds-react';
 
 import { CalendarPeriod } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
 
-import { HistoriskEndring, HistoriskEndringModal } from './HistoriskEndringModal';
+import { useUttaksplanRedigering } from '../../context/UttaksplanRedigeringContext';
 import { KalenderRedigeringProvider, useKalenderRedigeringContext } from './context/KalenderRedigeringContext';
 import { DagerValgtPanel } from './paneler/DagerValgtPanel';
 import { IngenDagerValgtPanel } from './paneler/IngenDagerValgtPanel';
@@ -24,30 +25,17 @@ export const RedigerKalenderIndex = ({
     setEndredePerioder,
     scrollToKvoteOppsummering,
 }: Props) => {
-    const [historiskEndring, setHistoriskEndring] = useState<HistoriskEndring>();
-    const [erHistoriskEndringModalÅpen, setErHistoriskEndringModalÅpen] = useState(false);
-
-    const bekreftHistoriskEndring = useCallback((endring: HistoriskEndring) => {
-        setHistoriskEndring(endring);
-        setErHistoriskEndringModalÅpen(true);
-    }, []);
+    const { bekreftHistoriskEndring } = notEmpty(useUttaksplanRedigering());
 
     return (
-        <>
-            <KalenderRedigeringProvider
-                valgtePerioder={valgtePerioder}
-                setValgtePerioder={setValgtePerioder}
-                setEndredePerioder={setEndredePerioder}
-                bekreftHistoriskEndring={bekreftHistoriskEndring}
-            >
-                <RedigerKalender scrollToKvoteOppsummering={scrollToKvoteOppsummering} labels={labels} />
-            </KalenderRedigeringProvider>
-            <HistoriskEndringModal
-                historiskEndring={historiskEndring}
-                erÅpen={erHistoriskEndringModalÅpen}
-                lukk={() => setErHistoriskEndringModalÅpen(false)}
-            />
-        </>
+        <KalenderRedigeringProvider
+            valgtePerioder={valgtePerioder}
+            setValgtePerioder={setValgtePerioder}
+            setEndredePerioder={setEndredePerioder}
+            bekreftHistoriskEndring={bekreftHistoriskEndring}
+        >
+            <RedigerKalender scrollToKvoteOppsummering={scrollToKvoteOppsummering} labels={labels} />
+        </KalenderRedigeringProvider>
     );
 };
 

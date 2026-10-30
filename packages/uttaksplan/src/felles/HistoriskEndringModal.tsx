@@ -30,7 +30,7 @@ export const HistoriskEndringModal = ({ historiskEndring, erÅpen, lukk }: Props
                 }
             }}
         >
-            <Dialog.Popup id="KalenderRedigeringHistoriskEndring">
+            <Dialog.Popup id="HistoriskEndring">
                 <Dialog.Header>
                     <Dialog.Title>
                         <FormattedMessage

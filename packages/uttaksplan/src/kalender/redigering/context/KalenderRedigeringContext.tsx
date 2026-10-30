@@ -8,8 +8,8 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
+import { HistoriskEndring } from '../../../felles/HistoriskEndringModal';
 import { UttakPeriodeBuilder } from '../../../utils/UttakPeriodeBuilder';
-import { HistoriskEndring } from '../HistoriskEndringModal';
 import { harHistoriskFerieEllerGraderingsendring, harHistoriskSletting } from '../utils/historiskEndring';
 import { slåSammenTilstøtendePerioder } from '../utils/kalenderPeriodeUtils';
 
