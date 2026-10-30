@@ -13,9 +13,9 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../../context/UttaksplanRedigeringContext';
-import { harHistoriskSletting } from '../../../../kalender/redigering/utils/historiskEndring';
 import { Uttaksplanperiode, erPeriodeDto } from '../../../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../../../utils/UttakPeriodeBuilder';
+import { harHistoriskSletting } from '../../../../utils/historiskEndring';
 import { erAvslåttPeriode } from '../../../../utils/periodeUtils';
 import { genererPeriodeKey, getStønadskvoteNavn } from '../../../utils/uttaksplanListeUtils';
 

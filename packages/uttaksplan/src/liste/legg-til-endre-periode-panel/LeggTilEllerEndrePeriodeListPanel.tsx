@@ -28,16 +28,13 @@ import {
     FormValues as UtsettelseFormValues,
 } from '../../felles/utsettelse/LeggTilUtsettelseForm';
 import { useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
-import {
-    harHistoriskFerieEllerGraderingsendring,
-    harHistoriskSletting,
-} from '../../kalender/redigering/utils/historiskEndring';
 import { useKanKunErstatte, useListePanelInfoAlerts } from '../../regler/alert/informasjonsAlertHooks';
 import { lagHvaVilDuGjøreValidatorer } from '../../regler/felt/hvaVilDuGjøre';
 import { useGyldigeKvotetyper } from '../../regler/kvotetype/kvoteRegler';
 import { HvaVilDuGjøreValgSynlighet, useHvaVilDuGjøreValgSynlighet } from '../../regler/synlighet/hvaVilDuGjøreValg';
 import { Uttaksplanperiode, erPeriodeDto, erUttaksplanHull } from '../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../utils/UttakPeriodeBuilder';
+import { harHistoriskFerieEllerGraderingsendring, harHistoriskSletting } from '../../utils/historiskEndring';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../utils/periodeUtils';
 import { TidsperiodeSpørsmål } from './/TidsperiodeSpørsmål';
 

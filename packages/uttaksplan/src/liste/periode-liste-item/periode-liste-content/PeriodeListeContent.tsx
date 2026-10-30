@@ -12,7 +12,6 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
-import { harHistoriskSletting } from '../../../kalender/redigering/utils/historiskEndring';
 import {
     Uttaksplanperiode,
     erPeriodeDto,
@@ -21,6 +20,7 @@ import {
 } from '../../../types/UttaksplanPeriode';
 import { UttakPeriodeBuilder } from '../../../utils/UttakPeriodeBuilder';
 import { getVarighetString } from '../../../utils/dateUtils';
+import { harHistoriskSletting } from '../../../utils/historiskEndring';
 import {
     erAvslåttPeriode,
     erOverføringsperiode,

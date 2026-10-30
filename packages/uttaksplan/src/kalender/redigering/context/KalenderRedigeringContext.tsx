@@ -10,7 +10,7 @@ import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
 import { HistoriskEndring } from '../../../felles/HistoriskEndringModal';
 import { UttakPeriodeBuilder } from '../../../utils/UttakPeriodeBuilder';
-import { harHistoriskFerieEllerGraderingsendring, harHistoriskSletting } from '../utils/historiskEndring';
+import { harHistoriskFerieEllerGraderingsendring, harHistoriskSletting } from '../../../utils/historiskEndring';
 import { slåSammenTilstøtendePerioder } from '../utils/kalenderPeriodeUtils';
 
 type Props = {

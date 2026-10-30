@@ -4,7 +4,7 @@ import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { BrukerRolleSak_fpoversikt, UttakDto, UttakPeriodeDto } from '@navikt/fp-types';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
-import { finnAlleUttak, finnUttakForForelder } from '../../../utils/periodeUtils';
+import { finnAlleUttak, finnUttakForForelder } from './periodeUtils';
 
 type Datointervall = { fom: string; tom: string };
 
