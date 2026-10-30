@@ -128,11 +128,10 @@ export const OppsummeringSteg = ({ stønadskvoter, satser }: Props) => {
                             </VStack>
                         )}
                         <ShareDataInfobox erAlenesøker={erAleneforsørger} />
-                        {((harRettTilForeldrepenger &&
-                            dayjs(familiehendelsedato).isBefore(svangerskapsuke22EllerSenere)) ||
-                            (harRettTilForeldrepenger && erAdoptert)) && (
-                            <SøkOmForeldrepenger erAlenesøker={erAleneforsørger} barnet={barnet} />
-                        )}
+                        {harRettTilForeldrepenger &&
+                            (dayjs(familiehendelsedato).isBefore(svangerskapsuke22EllerSenere) || erAdoptert) && (
+                                <SøkOmForeldrepenger erAlenesøker={erAleneforsørger} barnet={barnet} />
+                            )}
                     </VStack>
 
                     <VStack gap="space-40">
