@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -15,6 +15,7 @@ interface Props {
 
 export const PeriodeListeItem = ({ isReadOnly, uttaksplanperioder, isAllAccordionsOpen }: Props) => {
     const [erPeriodeInnholdÅpen, setErPeriodeInnholdÅpen] = useState(false);
+    const innholdId = useId();
 
     const borderFarge = getBorderFarge(uttaksplanperioder);
 
@@ -28,25 +29,16 @@ export const PeriodeListeItem = ({ isReadOnly, uttaksplanperioder, isAllAccordio
 
     return (
         <VStack gap="space-0" className="border-ax-neutral-100 cursor-pointer border-t border-b">
-            <div
-                className={`hover:bg-ax-accent-300 border-l-8 pt-4 pb-4 select-none ${borderFarge}`}
+            <button
+                type="button"
+                className={`hover:bg-ax-accent-300 w-full cursor-pointer border-l-8 pt-4 pb-4 text-left select-none ${borderFarge}`}
                 onClick={() => setErPeriodeInnholdÅpen(!erPeriodeInnholdÅpen)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        setErPeriodeInnholdÅpen((prev) => !prev);
-                    }
-                }}
+                aria-expanded={erPeriodeInnholdÅpen}
+                aria-controls={innholdId}
             >
                 <PeriodeListeHeader isOpen={erPeriodeInnholdÅpen} uttaksplanperioder={uttaksplanperioder} />
-            </div>
-            <div
-                className={`overflow-hidden transition-all duration-250 ${
-                    erPeriodeInnholdÅpen ? 'opacity-100' : 'max-h-0 opacity-0'
-                }`}
-            >
+            </button>
+            <div id={innholdId} hidden={!erPeriodeInnholdÅpen}>
                 <div
                     // eslint-disable-next-line
                     className={`border-l-8 pt-10 pr-10 pb-10 pl-10 has-[div[data-panel='endre-periode']]:pt-0 has-[div[data-panel='slett-periode']]:pt-0 ${borderFarge}`}

@@ -628,6 +628,28 @@ describe('UttaksplanListe', () => {
         expect(screen.queryByText('12. des. 25 - 15. des. 25')).not.toBeInTheDocument();
     });
 
+    it('Skal skjule Endre- og Slett-knappene for tastatur og skjermleser når perioden er lukket', async () => {
+        render(<Default />);
+
+        const periodeknapp = await screen.findByRole('button', { name: /09\. mai 25\s+- 11\. des\. 25/ });
+        expect(periodeknapp).toHaveAttribute('aria-expanded', 'false');
+        expect(screen.queryByRole('button', { name: 'Slett' })).not.toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: 'Endre' })).not.toBeInTheDocument();
+
+        await userEvent.click(periodeknapp);
+
+        expect(periodeknapp).toHaveAttribute('aria-expanded', 'true');
+        const innhold = document.getElementById(periodeknapp.getAttribute('aria-controls')!);
+        expect(innhold).toBeVisible();
+        expect(within(innhold!).getByRole('button', { name: 'Slett' })).toBeInTheDocument();
+        expect(within(innhold!).getByRole('button', { name: 'Endre' })).toBeInTheDocument();
+
+        await userEvent.click(periodeknapp);
+
+        expect(periodeknapp).toHaveAttribute('aria-expanded', 'false');
+        expect(screen.queryByRole('button', { name: 'Slett' })).not.toBeInTheDocument();
+    });
+
     it('Skal slette periode', async () => {
         const oppdaterUttaksplan = vi.fn();
 

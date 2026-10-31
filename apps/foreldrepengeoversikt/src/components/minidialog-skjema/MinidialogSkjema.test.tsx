@@ -50,6 +50,13 @@ describe('<MinidialogSkjema>', () => {
 
         expect(send).not.toHaveBeenCalled();
         expect(screen.getAllByText('Feltet "Svar på tilbakebetalingen " må inneholde minst 25 tegn.')).toHaveLength(2);
+
+        const feillenke = screen.getByRole('link', {
+            name: 'Feltet "Svar på tilbakebetalingen " må inneholde minst 25 tegn.',
+        });
+        const tekstfelt = screen.getByRole('textbox', { name: 'Svar på tilbakebetalingen:' });
+        expect(tekstfelt.id).not.toBe('');
+        expect(feillenke).toHaveAttribute('href', `#${tekstfelt.id}`);
     });
 
     it('skal velge at en ikke ønsker å uttale seg og så sende inn', async () => {
