@@ -8,16 +8,17 @@ import { OmPlanleggerenSteg } from './OmPlanleggerenSteg';
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
+    lenkeErUgyldig?: boolean;
 };
 
 const meta = {
     title: 'steg/OmPlanleggerenSteg',
     component: OmPlanleggerenSteg,
-    render: ({ gåTilNesteSide = action('button-click') }) => {
+    render: ({ gåTilNesteSide = action('button-click'), lenkeErUgyldig }) => {
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.OM_PLANLEGGEREN]}>
                 <PlanleggerDataContext onDispatch={gåTilNesteSide}>
-                    <OmPlanleggerenSteg />
+                    <OmPlanleggerenSteg lenkeErUgyldig={lenkeErUgyldig} />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );
@@ -30,4 +31,10 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {},
+};
+
+export const MedUgyldigLenke: Story = {
+    args: {
+        lenkeErUgyldig: true,
+    },
 };

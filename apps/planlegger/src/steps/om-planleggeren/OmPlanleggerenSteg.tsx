@@ -2,18 +2,23 @@ import { ArrowRightIcon, CalendarIcon, QuestionmarkIcon } from '@navikt/aksel-ic
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { FormattedMessage } from 'react-intl';
 
-import { BodyShort, Button, HStack, Heading, InlineMessage, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, HStack, Heading, InlineMessage, VStack } from '@navikt/ds-react';
 
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import { PlanleggerForside } from './PlanleggerForside';
 
-export const OmPlanleggerenSteg = () => {
+export const OmPlanleggerenSteg = ({ lenkeErUgyldig = false }: { lenkeErUgyldig?: boolean }) => {
     const navigator = usePlanleggerNavigator();
 
     return (
         <PlanleggerForside>
             <VStack gap={{ xs: 'space-12', sm: 'space-40' }}>
+                {lenkeErUgyldig && (
+                    <Alert variant="warning">
+                        <FormattedMessage id="OmPlanleggerenSteg.UgyldigLenke" />
+                    </Alert>
+                )}
                 <BodyShort size="large">
                     <FormattedMessage id="OmPlanleggerenSteg.Ingress" />
                 </BodyShort>

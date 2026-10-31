@@ -8,10 +8,19 @@ import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { endreFordelingMedSlider } from '../vitest/testHelpers';
 import * as stories from './Planlegger.stories';
 
-const { DefaultMockaStønadskvoterOgSatser, FarFarMockaStønadskvoterOgSatser, MedValidertKontoKall } =
+const { DefaultMockaStønadskvoterOgSatser, FarFarMockaStønadskvoterOgSatser, MedValidertKontoKall, MedUgyldigLenke } =
     composeStories(stories);
 
 describe('<Planlegger>', () => {
+    it('skal starte ny plan og vise melding når lenken har ugyldige data', async () => {
+        await MedUgyldigLenke.run();
+
+        expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
+        expect(
+            screen.getByText('Vi kunne ikke lese planen fra lenken. Du kan lage en ny plan nedenfor.'),
+        ).toBeInTheDocument();
+    });
+
     it('skal gå rett til oppsummering når ingen av foreldrene har rett', async () => {
         await DefaultMockaStønadskvoterOgSatser.run();
 

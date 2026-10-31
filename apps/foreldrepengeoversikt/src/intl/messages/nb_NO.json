@@ -32,6 +32,8 @@
     "oppgaver.tittel.tilbakebetaling": "Svar på varsel om tilbakebetaling",
     "miniDialog.tilbakekreving.tittel": "Nav har sendt deg et varsel om at du har fått for mye utbetalte { sakstype }. Før vi behandler saken, kan du gi en uttalelse og legge ved relevant dokumentasjon om du har det. Du finner relevant informasjon om hva som har skjedd i saken og dine rettigheter i varselet som vi har sendt til deg.",
     "miniDialog.tilbakekreving.undertittel": "Svar på varsel om tilbakebetaling",
+    "miniDialog.feilVedHenting": "Vi har problemer med å hente oppgaven din.",
+    "miniDialog.prøvIgjen": "Prøv igjen",
     "minidialog.hvaLeggerNAVVektPå.tilbakekreving.tittel": "Hva legger Nav vekt på i vurderingen?",
     "minidialog.hvaLeggerNAVVektPå.tilbakekreving.punkt1": "om du forstod eller burde forstått at beløpet du fikk utbetalt var feil",
     "minidialog.hvaLeggerNAVVektPå.tilbakekreving.punkt2": "om du har gitt riktig informasjon til Nav",

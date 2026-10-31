@@ -1,36 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
-import {
-    ContextDataMap,
-    ContextDataType,
-    PlanleggerDataContext,
-    useContextGetData,
-} from 'appData/PlanleggerDataContext';
+import { ContextDataType, PlanleggerDataContext, useContextGetData } from 'appData/PlanleggerDataContext';
 import { API_URLS } from 'appData/queries';
 import ky from 'ky';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { useLocation } from 'react-router';
+import { Navigate, useLocation } from 'react-router';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
 import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
+import { lesPlanleggerdataFraUrl } from 'utils/planleggerdataUtils';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { KontoBeregningResultatDto, OmBarnetPlanlegger } from '@navikt/fp-types';
 import { SimpleErrorPage } from '@navikt/fp-ui';
-import { decompressFromUrl, konverterFlatePerioderTilIntervall } from '@navikt/fp-utils';
 
 import { PlanleggerRouter } from './PlanleggerRouter';
-
-// TODO: Fjern konverteringa frå gammalt flatt format når delte lenker i gammalt format ikkje lenger er i bruk
-// (vurder etter 1. juni 2027).
-const lesPlanleggerdata = (json: string): ContextDataMap => {
-    const data = JSON.parse(json) as ContextDataMap;
-    const uttaksplan = data[ContextDataType.UTTAKSPLAN];
-    return uttaksplan
-        ? { ...data, [ContextDataType.UTTAKSPLAN]: konverterFlatePerioderTilIntervall(uttaksplan) }
-        : data;
-};
 
 const finnBrukerRolle = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett) => {
     return harMorRett(hvemHarRett, hvemPlanlegger) ? 'MOR' : 'FAR';
@@ -81,7 +66,7 @@ const harGyldigDato = (omBarnet?: OmBarnetPlanlegger): boolean =>
         (erBarnetUFødt(omBarnet) && !!omBarnet.termindato) ||
         (erBarnetAdoptert(omBarnet) && !!omBarnet.overtakelsesdato));
 
-export const PlanleggerDataFetcher = () => {
+export const PlanleggerDataFetcher = ({ lenkeErUgyldig = false }: { lenkeErUgyldig?: boolean }) => {
     const omBarnet = useContextGetData(ContextDataType.OM_BARNET);
     const arbeidssituasjon = useContextGetData(ContextDataType.ARBEIDSSITUASJON);
     const hvemPlanlegger = useContextGetData(ContextDataType.HVEM_PLANLEGGER);
@@ -125,7 +110,13 @@ export const PlanleggerDataFetcher = () => {
         return <SimpleErrorPage retryCallback={() => location.reload()} />;
     }
 
-    return <PlanleggerRouter stønadskvoter={stønadskvoterData.data} satser={DEFAULT_SATSER} />;
+    return (
+        <PlanleggerRouter
+            stønadskvoter={stønadskvoterData.data}
+            satser={DEFAULT_SATSER}
+            lenkeErUgyldig={lenkeErUgyldig}
+        />
+    );
 };
 
 export const PlanleggerDataInit = () => {
@@ -133,8 +124,7 @@ export const PlanleggerDataInit = () => {
     const intl = useIntl();
 
     const dataParam = new URLSearchParams(locations.search).get('data');
-    const decompressedData = dataParam ? decompressFromUrl(dataParam) : undefined;
-    const data = decompressedData ? lesPlanleggerdata(decompressedData) : undefined;
+    const [{ data, lenkeErUgyldig }] = useState(() => lesPlanleggerdataFraUrl(dataParam));
 
     // Denne useEffecten kjøres for at skyra-undersøkelsen skal trigges inline på oppsummering-siden
     useEffect(() => {
@@ -155,9 +145,13 @@ export const PlanleggerDataInit = () => {
         }
     }, [locations.pathname, intl.locale]);
 
+    if (lenkeErUgyldig && (dataParam !== null || locations.pathname !== '/')) {
+        return <Navigate to="/" replace />;
+    }
+
     return (
         <PlanleggerDataContext initialState={data}>
-            <PlanleggerDataFetcher />
+            <PlanleggerDataFetcher lenkeErUgyldig={lenkeErUgyldig} />
         </PlanleggerDataContext>
     );
 };

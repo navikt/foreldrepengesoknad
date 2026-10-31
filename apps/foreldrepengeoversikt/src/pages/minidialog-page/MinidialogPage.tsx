@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Navigate, useParams } from 'react-router';
 
-import { Heading, Loader, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, Heading, Loader, VStack } from '@navikt/ds-react';
 
 import { EttersendelseDto } from '@navikt/fp-types';
 import { useDocumentTitle } from '@navikt/fp-utils';
@@ -35,6 +35,28 @@ export const MinidialogPage = () => {
 
     if (minidialogQuery.isPending) {
         return <Loader />;
+    }
+
+    if (minidialogQuery.isError) {
+        return (
+            <PageRouteLayout header={sak ? <DinSakHeader sak={sak} /> : undefined}>
+                <Alert variant="error">
+                    <VStack gap="space-16" align="start">
+                        <BodyShort>
+                            <FormattedMessage id="miniDialog.feilVedHenting" />
+                        </BodyShort>
+                        <Button
+                            size="small"
+                            variant="secondary"
+                            onClick={() => void minidialogQuery.refetch()}
+                            loading={minidialogQuery.isFetching}
+                        >
+                            <FormattedMessage id="miniDialog.prøvIgjen" />
+                        </Button>
+                    </VStack>
+                </Alert>
+            </PageRouteLayout>
+        );
     }
 
     const minidialog = minidialogQuery.data;

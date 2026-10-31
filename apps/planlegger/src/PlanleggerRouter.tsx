@@ -31,12 +31,13 @@ const OppsummeringSteg = lazy(() =>
 interface Props {
     stønadskvoter?: { '100': KontoBeregningDto; '80': KontoBeregningDto };
     satser: Satser;
+    lenkeErUgyldig?: boolean;
 }
 
-export const PlanleggerRouter = ({ stønadskvoter, satser }: Props) => {
+export const PlanleggerRouter = ({ stønadskvoter, satser, lenkeErUgyldig = false }: Props) => {
     return (
         <Routes>
-            <Route path="/" element={<OmPlanleggerenSteg />} />
+            <Route path="/" element={<OmPlanleggerenSteg lenkeErUgyldig={lenkeErUgyldig} />} />
             <Route path={PlanleggerRoutes.HVEM_PLANLEGGER} element={<HvemPlanleggerSteg />} />
             <Route path={PlanleggerRoutes.OM_BARNET} element={<OmBarnetPlanleggerSteg />} />
             <Route path={PlanleggerRoutes.BARNEHAGEPLASS} element={<BarnehageplassSteg />} />
