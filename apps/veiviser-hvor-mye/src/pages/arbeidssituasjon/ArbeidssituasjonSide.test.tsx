@@ -133,6 +133,67 @@ describe('<ArbeidssituasjonSide>', () => {
         });
     });
 
+    it('skal regne gjennomsnitt av lønn med desimalkomma', async () => {
+        const setArbeidssituasjon = vi.fn();
+        const utils = render(<Default setArbeidssituasjon={setArbeidssituasjon} />);
+
+        expect(await screen.findByText('Hvor mye kan jeg få i foreldrepenger?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Arbeidstaker eller frilanser'));
+
+        const forrigeMåned = dayjs().subtract(1, 'month');
+        await userEvent.type(
+            utils.getByLabelText(capitalizeFirstLetter(forrigeMåned.subtract(2, 'month').format('MMMM YYYY'))),
+            '10000,5',
+        );
+        await userEvent.type(
+            utils.getByLabelText(capitalizeFirstLetter(forrigeMåned.subtract(1, 'month').format('MMMM YYYY'))),
+            '10000,5',
+        );
+        await userEvent.type(
+            utils.getByLabelText(capitalizeFirstLetter(forrigeMåned.format('MMMM YYYY'))),
+            '10000,5',
+        );
+
+        expect(screen.getByText('10 001 kr')).toBeInTheDocument();
+        expect(screen.getByText('120 012 kr')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Se resultatet'));
+
+        expect(setArbeidssituasjon).toHaveBeenNthCalledWith(1, {
+            erArbeidstakerEllerFrilanser: true,
+            harUtbetalingFraNav: undefined,
+            erSelvstendigNæringsdrivende: undefined,
+            lønnMåned1: '10000,5',
+            lønnMåned2: '10000,5',
+            lønnMåned3: '10000,5',
+        });
+    });
+
+    it('skal kreve lønn for alle tre månedene', async () => {
+        const setArbeidssituasjon = vi.fn();
+        const utils = render(<Default setArbeidssituasjon={setArbeidssituasjon} />);
+
+        expect(await screen.findByText('Hvor mye kan jeg få i foreldrepenger?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Arbeidstaker eller frilanser'));
+
+        const forrigeMåned = dayjs().subtract(1, 'month');
+        await userEvent.type(
+            utils.getByLabelText(capitalizeFirstLetter(forrigeMåned.subtract(2, 'month').format('MMMM YYYY'))),
+            '30000',
+        );
+        await userEvent.type(
+            utils.getByLabelText(capitalizeFirstLetter(forrigeMåned.subtract(1, 'month').format('MMMM YYYY'))),
+            '30000',
+        );
+
+        expect(screen.getByText('20 000 kr')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Se resultatet'));
+
+        expect(screen.getAllByText('Du må oppgi et beløp.').length).toBeGreaterThan(0);
+        expect(setArbeidssituasjon).not.toHaveBeenCalled();
+    });
+
     it('skal velge at en er selvstendig næringsdrivende og få beskjed om at en ikke kan bruke veiviseren', async () => {
         render(<Default />);
 
