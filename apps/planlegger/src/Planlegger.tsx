@@ -124,7 +124,10 @@ export const PlanleggerDataInit = () => {
     const intl = useIntl();
 
     const dataParam = new URLSearchParams(locations.search).get('data');
-    const [{ data, lenkeErUgyldig }] = useState(() => lesPlanleggerdataFraUrl(dataParam));
+    const [{ data, lenkeErUgyldig, ugyldigDataParam }] = useState(() => ({
+        ...lesPlanleggerdataFraUrl(dataParam),
+        ugyldigDataParam: dataParam,
+    }));
 
     // Denne useEffecten kjøres for at skyra-undersøkelsen skal trigges inline på oppsummering-siden
     useEffect(() => {
@@ -145,7 +148,7 @@ export const PlanleggerDataInit = () => {
         }
     }, [locations.pathname, intl.locale]);
 
-    if (lenkeErUgyldig && (dataParam !== null || locations.pathname !== '/')) {
+    if (lenkeErUgyldig && dataParam === ugyldigDataParam) {
         return <Navigate to="/" replace />;
     }
 
