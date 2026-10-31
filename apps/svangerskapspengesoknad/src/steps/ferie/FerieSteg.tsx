@@ -220,17 +220,22 @@ function FeriePerioder() {
                                     }),
                                     startDatoSvp,
                                 ),
-                                isPeriodNotOverlappingOthers(
-                                    intl.formatMessage(
-                                        {
-                                            id: 'ferie.antallPerioder.validering.dato.overlapp',
-                                        },
-                                        { periode: index },
+                                ...watch('feriePerioder')
+                                    .map((periode, i) => ({ periode, nr: i + 1 }))
+                                    .filter((_, i) => i !== index)
+                                    .map(({ periode, nr }) =>
+                                        isPeriodNotOverlappingOthers(
+                                            intl.formatMessage(
+                                                {
+                                                    id: 'ferie.antallPerioder.validering.dato.overlapp',
+                                                },
+                                                { periode: nr },
+                                            ),
+                                            { date: watch(`feriePerioder.${index}.tom`)!, isStartDate: false },
+                                            // NOTE: tillater å caste til AvtaltFerieDto ettersom required allerede er validert
+                                            [periode as AvtaltFerieDto],
+                                        ),
                                     ),
-                                    { date: watch(`feriePerioder.${index}.tom`)!, isStartDate: false },
-                                    // NOTE: tillater å caste til AvtaltFerieDto ettersom required allerede er validert
-                                    [(watch('feriePerioder')[index - 1] as AvtaltFerieDto) ?? []].flat(),
-                                ),
                             ]}
                             validateTo={[
                                 isRequired(
