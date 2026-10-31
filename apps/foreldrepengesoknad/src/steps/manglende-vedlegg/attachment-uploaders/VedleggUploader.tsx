@@ -11,6 +11,7 @@ import { Attachment, DokumentererType } from '@navikt/fp-types';
 import { formatDateShortYear } from '@navikt/fp-utils';
 
 import { ManglendeVedleggFormData, OppdaterVedlegg } from '../ManglendeVedleggFormData';
+import { useNullstillPågåendeOpplasting } from './useNullstillPågåendeOpplasting';
 
 type Perioder = Array<{
     fom: string;
@@ -59,6 +60,7 @@ export const VedleggUploader = ({
 }: Props) => {
     const { watch } = useFormContext<ManglendeVedleggFormData>();
     const formAttachments = watch(skjemanummer);
+    useNullstillPågåendeOpplasting(skjemanummer, updateAttachments);
 
     useEffect(() => {
         if (formAttachments.length > 0) {
