@@ -10,8 +10,9 @@ describe('dateValidation (datouavhengige funksjoner)', () => {
     describe('isValidDate', () => {
         it('godtar gyldig ISO-dato', () => {
             expect(isValidDate('2025-04-01')).toBe(true);
+            expect(isValidDate('2024-02-29')).toBe(true);
         });
-        it.each([undefined, '', '01.04.2025', '2025-13-01', 'ikke-en-dato', 'x2024-01-01', '2024-1-1'])('avviser %s', (value) => {
+        it.each([undefined, '', '01.04.2025', '2025-13-01', 'ikke-en-dato', 'x2024-01-01', '2024-1-1', '2024-02-31', '2023-02-29', '2024-04-31'])('avviser %s', (value) => {
             expect(isValidDate(value)).toBe(false);
         });
     });

@@ -1,10 +1,14 @@
 import dayjs, { Dayjs } from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 
-import { DATE_TODAY, ISO_DATE_REGEX, SIX_MONTHS_AGO, TIDENES_ENDE } from '@navikt/fp-constants';
+import { DATE_TODAY, SIX_MONTHS_AGO, TIDENES_ENDE } from '@navikt/fp-constants';
 import { halvannetÅrSiden } from '@navikt/fp-utils';
 
-import { isDateRangesOverlapping, isDateWithinRange as isDateWithinRangeUtil } from '../other/dateValidation';
+import {
+    isDateRangesOverlapping,
+    isDateWithinRange as isDateWithinRangeUtil,
+    isValidDate as isValidDateUtil,
+} from '../other/dateValidation';
 import { FormValidationResult, isEmpty } from './generalFormValidation';
 
 dayjs.extend(isBetween);
@@ -16,7 +20,7 @@ const ONE_YEAR_AFTER_TODAY = dayjs().add(1, 'year').startOf('day').toDate();
 export const isValidDate =
     (i18nText: string) =>
     (date: string): FormValidationResult =>
-        isEmpty(date) || ISO_DATE_REGEX.test(date) ? null : i18nText;
+        isEmpty(date) || isValidDateUtil(date) ? null : i18nText;
 
 export const isWeekday =
     (i18nText: string) =>
