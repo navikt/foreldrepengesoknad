@@ -1,19 +1,15 @@
-import { useMutation } from '@tanstack/react-query';
-import { API_URLS } from 'appData/queries';
-import ky from 'ky';
 import { useNavigate } from 'react-router';
 
 import { loggUmamiEvent } from '@navikt/fp-observability';
 
 import { useContextReset } from './SvpDataContext';
 
-export const useAvbrytSøknad = (setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void) => {
+export const useAvbrytSøknad = (
+    setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void,
+    slettMellomlagring: () => Promise<void>,
+) => {
     const navigate = useNavigate();
     const reset = useContextReset();
-
-    const { mutate: slettMellomlagring } = useMutation({
-        mutationFn: () => ky.delete(API_URLS.mellomlagring),
-    });
 
     const avbrytSøknadHandler = () => {
         loggUmamiEvent({ origin: 'svangerskapspengesoknad', eventName: 'skjema avbrutt' });
@@ -22,7 +18,7 @@ export const useAvbrytSøknad = (setHarGodkjentVilkår: (harGodkjentVilkår: boo
 
         setHarGodkjentVilkår(false);
 
-        slettMellomlagring();
+        void slettMellomlagring();
 
         void navigate('/');
     };

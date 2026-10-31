@@ -41,10 +41,18 @@ export const useSvpNavigator = ({
 
     const fortsettSøknadSenere = () => {
         loggUmamiEvent({ origin: 'svangerskapspengesoknad', eventName: 'skjema fortsett senere' });
-        // Berre lagre (ingen navigering – vi forlet appen rett etterpå), med retry
-        // sidan brukaren ikkje får eit nytt forsøk på å lagre endringane sine.
-        void mellomlagreOgNaviger({ naviger: false, medRetry: true }).finally(() => {
-            location.assign('https://nav.no');
+        // Bare lagre (ingen navigering – vi forlater appen rett etterpå), med retry siden brukeren
+        // ikke får et nytt forsøk på å lagre endringene sine. Brukeren sendes ut av appen først når
+        // lagringen gikk bra; ellers blir brukeren værende i søknaden og får en feilmelding.
+        void mellomlagreOgNaviger({
+            naviger: false,
+            medRetry: true,
+            visFeilTilBruker: true,
+            onFerdig: (resultat) => {
+                if (resultat === 'OK') {
+                    location.assign('https://nav.no');
+                }
+            },
         });
     };
 

@@ -68,5 +68,8 @@
     "DekningsgradUtbetalingEksempel.Atti.PerMåned": "NOK 40,000",
     "DekningsgradUtbetalingEksempel.Atti.Totalt": "NOK 564,876",
     "DekningsgradUtbetalingEksempel.Fotnote": "With this salary, the difference is NOK 584. Holiday pay is also approximately the same for both options.",
-    "DekningsgradUtbetalingEksempel.Link": "Calculate how much you can receive at nav.no"
+    "DekningsgradUtbetalingEksempel.Link": "Calculate how much you can receive at nav.no",
+    "MellomlagringFeilmelding.Feilet": "We could not save your application right now, so you are still in the application. Try «Continue later» again in a little while. If you close the page now, you may lose what you have filled in.",
+    "MellomlagringFeilmelding.IngenTilgang": "We could not save your application because you do not have access. If you close the page now, you may lose what you have filled in.",
+    "MellomlagringFeilmelding.Lukk": "Close"
 }

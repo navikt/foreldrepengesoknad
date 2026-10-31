@@ -18,18 +18,15 @@ export const useSendSøknad = (
     søkerinfo: FpPersonopplysningerDto_fpoversikt,
     erEndringssøknad: boolean,
     foreldrepengerSaker: FpSak_fpoversikt[],
+    slettMellomlagring: () => Promise<void>,
 ) => {
     const navigate = useNavigate();
     const intl = useIntl();
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
 
-    const { mutate: slettMellomlagring } = useMutation({
-        mutationFn: () => ky.delete(API_URLS.mellomlagring),
-    });
-
     const fullførInnsending = (): SendSøknadResultat => {
-        slettMellomlagring();
+        void slettMellomlagring();
         void navigate(SøknadRoutes.KVITTERING);
         return 'SENDT';
     };

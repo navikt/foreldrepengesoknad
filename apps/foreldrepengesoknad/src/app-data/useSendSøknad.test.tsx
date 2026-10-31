@@ -312,7 +312,7 @@ describe('useFpSendSøknad', () => {
         const postMock = vi.spyOn(ky, 'post').mockReturnValue({
             json: () => Promise.resolve(),
         } as ResponsePromise<void>);
-        const deleteMock = vi.spyOn(ky, 'delete').mockReturnValue(undefined as unknown as ResponsePromise<unknown>);
+        const slettMellomlagring = vi.fn(() => Promise.resolve());
 
         const søkerinfo = {
             ...DEFAULT_SØKER_INFO,
@@ -321,13 +321,13 @@ describe('useFpSendSøknad', () => {
         };
 
         const erEndringssøknad = false;
-        const { result } = renderHook(() => useSendSøknad(søkerinfo, erEndringssøknad, saker), {
+        const { result } = renderHook(() => useSendSøknad(søkerinfo, erEndringssøknad, saker, slettMellomlagring), {
             wrapper: getWrapper(),
         });
 
         await act(() => result.current.sendSøknad());
 
-        expect(deleteMock).toHaveBeenCalledOnce();
+        expect(slettMellomlagring).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
             API_URLS.sendSøknad,
@@ -409,16 +409,19 @@ describe('useFpSendSøknad', () => {
         const postMock = vi.spyOn(ky, 'post').mockReturnValue({
             json: () => Promise.resolve(),
         } as ResponsePromise<void>);
-        const deleteMock = vi.spyOn(ky, 'delete').mockReturnValue(undefined as unknown as ResponsePromise<unknown>);
+        const slettMellomlagring = vi.fn(() => Promise.resolve());
 
         const erEndringssøknad = true;
-        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, erEndringssøknad, saker), {
-            wrapper: getWrapper(),
-        });
+        const { result } = renderHook(
+            () => useSendSøknad(DEFAULT_SØKER_INFO, erEndringssøknad, saker, slettMellomlagring),
+            {
+                wrapper: getWrapper(),
+            },
+        );
 
         await act(() => result.current.sendSøknad());
 
-        expect(deleteMock).toHaveBeenCalledOnce();
+        expect(slettMellomlagring).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
             API_URLS.endreSøknad,
@@ -474,9 +477,9 @@ describe('useFpSendSøknad', () => {
         'skal ikke sende inn søknad når søkeren har %s',
         async (_beskrivelse, uttaksplan) => {
             const postMock = vi.spyOn(ky, 'post');
-            const deleteMock = vi.spyOn(ky, 'delete');
+            const slettMellomlagring = vi.fn(() => Promise.resolve());
 
-            const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, false, saker), {
+            const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, false, saker, slettMellomlagring), {
                 wrapper: getWrapper(uttaksplan),
             });
 
@@ -484,15 +487,15 @@ describe('useFpSendSøknad', () => {
 
             expect(resultat).toBe('MANGLER_UTTAKSPERIODER');
             expect(postMock).not.toHaveBeenCalled();
-            expect(deleteMock).not.toHaveBeenCalled();
+            expect(slettMellomlagring).not.toHaveBeenCalled();
         },
     );
 
     it('skal ikke sende inn endringssøknad når søkeren har slettet alle sine perioder', async () => {
         const postMock = vi.spyOn(ky, 'post');
-        const deleteMock = vi.spyOn(ky, 'delete');
+        const slettMellomlagring = vi.fn(() => Promise.resolve());
 
-        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, true, saker), {
+        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, true, saker, slettMellomlagring), {
             wrapper: getWrapper([]),
         });
 
@@ -500,12 +503,12 @@ describe('useFpSendSøknad', () => {
 
         expect(resultat).toBe('MANGLER_UTTAKSPERIODER');
         expect(postMock).not.toHaveBeenCalled();
-        expect(deleteMock).not.toHaveBeenCalled();
+        expect(slettMellomlagring).not.toHaveBeenCalled();
     });
 
     it('skal ikke sende inn endringssøknad når søkeren bare har uendrede, avslåtte perioder', async () => {
         const postMock = vi.spyOn(ky, 'post');
-        const deleteMock = vi.spyOn(ky, 'delete');
+        const slettMellomlagring = vi.fn(() => Promise.resolve());
 
         const avslåttPeriode = {
             ...UTTAKSPLAN_PERIODE,
@@ -515,7 +518,7 @@ describe('useFpSendSøknad', () => {
             },
         } satisfies UttakPeriodeDto;
 
-        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, true, saker), {
+        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, true, saker, slettMellomlagring), {
             wrapper: getWrapper([avslåttPeriode], [avslåttPeriode]),
         });
 
@@ -523,6 +526,6 @@ describe('useFpSendSøknad', () => {
 
         expect(resultat).toBe('MANGLER_UTTAKSPERIODER');
         expect(postMock).not.toHaveBeenCalled();
-        expect(deleteMock).not.toHaveBeenCalled();
+        expect(slettMellomlagring).not.toHaveBeenCalled();
     });
 });

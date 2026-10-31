@@ -20,7 +20,10 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetAnyData } from './EsDataContext';
 
-export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt) => {
+export const useEsSendSøknad = (
+    personinfo: EsPersonopplysningerDto_fpoversikt,
+    slettMellomlagring: () => Promise<void>,
+) => {
     const intl = useIntl();
     const navigate = useNavigate();
     const hentData = useContextGetAnyData();
@@ -57,7 +60,7 @@ export const useEsSendSøknad = (personinfo: EsPersonopplysningerDto_fpoversikt)
                 signal,
             });
 
-            void ky.delete(API_URLS.mellomlagring);
+            void slettMellomlagring();
             void navigate(Path.KVITTERING);
         } catch (error: unknown) {
             if (error instanceof HTTPError) {

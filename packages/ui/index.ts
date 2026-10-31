@@ -20,6 +20,8 @@ export { StepButtons } from './src/step/StepButtons';
 export { ScanDocumentInfo } from './src/scan-document-info/ScanDocumentInfo';
 export { HorizontalLine } from './src/horizontal-line/HorizontalLine';
 export { Umyndig } from './src/umyndig/Umyndig';
+export { MellomlagringFeilmelding } from './src/mellomlagring/MellomlagringFeilmelding';
+export type { Mellomlagringsfeil } from './src/mellomlagring/MellomlagringFeilmelding';
 export { IntlProvider } from './src/intl/IntlProvider';
 export { Step } from './src/step/page-step/Step';
 export { StepFooter } from './src/step/page-step/step-footer/StepFooter';

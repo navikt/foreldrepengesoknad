@@ -8,7 +8,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router';
 
 import { EksternArbeidsforholdDto_fpoversikt, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
-import { ErrorPage } from '@navikt/fp-ui';
+import { ErrorPage, MellomlagringFeilmelding } from '@navikt/fp-ui';
 
 import { Forside } from './pages/forside/Forside';
 import { KvitteringPage } from './pages/kvittering/KvitteringPage';
@@ -254,9 +254,12 @@ export const SvangerskapspengesøknadRoutes = ({ søkerInfo, mellomlagretData }:
 
     const [harGodkjentVilkår, setHarGodkjentVilkår] = useState(false);
 
-    const { sendSøknad, errorSendSøknad } = useSendSøknad(søkerInfo);
-    const mellomlagreOgNaviger = useMellomlagreSøknad(søkerInfo, setHarGodkjentVilkår);
-    const avbrytSøknad = useAvbrytSøknad(setHarGodkjentVilkår);
+    const { mellomlagreOgNaviger, slettMellomlagring, lagringsfeil, nullstillLagringsfeil } = useMellomlagreSøknad(
+        søkerInfo,
+        setHarGodkjentVilkår,
+    );
+    const { sendSøknad, errorSendSøknad } = useSendSøknad(søkerInfo, slettMellomlagring);
+    const avbrytSøknad = useAvbrytSøknad(setHarGodkjentVilkår, slettMellomlagring);
 
     useEffect(() => {
         const appRoute = mellomlagretData?.[ContextDataType.APP_ROUTE];
@@ -274,19 +277,22 @@ export const SvangerskapspengesøknadRoutes = ({ søkerInfo, mellomlagretData }:
     }
 
     return (
-        <Routes>
-            <Route
-                path={SøknadRoute.FORSIDE}
-                element={
-                    <Forside
-                        mellomlagreSøknadOgNaviger={mellomlagreOgNaviger}
-                        setHarGodkjentVilkår={setHarGodkjentVilkår}
-                        harGodkjentVilkår={harGodkjentVilkår}
-                    />
-                }
-            />
+        <>
+            {lagringsfeil && <MellomlagringFeilmelding feil={lagringsfeil} lukk={nullstillLagringsfeil} />}
+            <Routes>
+                <Route
+                    path={SøknadRoute.FORSIDE}
+                    element={
+                        <Forside
+                            mellomlagreSøknadOgNaviger={mellomlagreOgNaviger}
+                            setHarGodkjentVilkår={setHarGodkjentVilkår}
+                            harGodkjentVilkår={harGodkjentVilkår}
+                        />
+                    }
+                />
 
-            {renderSøknadRoutes(harGodkjentVilkår, søkerInfo, mellomlagreOgNaviger, avbrytSøknad, sendSøknad)}
-        </Routes>
+                {renderSøknadRoutes(harGodkjentVilkår, søkerInfo, mellomlagreOgNaviger, avbrytSøknad, sendSøknad)}
+            </Routes>
+        </>
     );
 };

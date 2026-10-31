@@ -80,16 +80,15 @@ export const useFpNavigator = ({
 
     const fortsettSøknadSenere = () => {
         loggUmamiEvent({ origin: 'foreldrepengesoknad', eventName: 'skjema fortsett senere' });
-        // Berre lagre (ingen navigering – vi forlet appen rett etterpå), med retry
-        // sidan brukaren ikkje får eit nytt forsøk på å lagre endringane sine. Vi sender
-        // brukaren først ut av appen når lagringa faktisk gjekk bra; feilar den, blir
-        // brukaren verande med søknaden sin og får ei feilmelding.
+        // Bare lagre (ingen navigering – vi forlater appen rett etterpå), med retry siden brukeren
+        // ikke får et nytt forsøk på å lagre endringene sine. Brukeren sendes ut av appen først når
+        // lagringen gikk bra; ellers blir brukeren værende i søknaden og får en feilmelding.
         void mellomlagreOgNaviger({
             naviger: false,
             medRetry: true,
             visFeilTilBruker: true,
             onFerdig: (resultat) => {
-                if (resultat === 'ok') {
+                if (resultat === 'OK') {
                     location.assign('https://nav.no');
                 }
             },

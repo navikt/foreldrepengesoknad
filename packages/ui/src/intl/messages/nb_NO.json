@@ -68,5 +68,8 @@
     "DekningsgradUtbetalingEksempel.Atti.PerMåned": "40 000 kr",
     "DekningsgradUtbetalingEksempel.Atti.Totalt": "564 876 kr",
     "DekningsgradUtbetalingEksempel.Fotnote": "Med denne lønnen er forskjellen 584 kroner. Feriepengene er også tilnærmet lik for begge alternativene.",
-    "DekningsgradUtbetalingEksempel.Link": "Beregn hvor mye du kan få på nav.no"
+    "DekningsgradUtbetalingEksempel.Link": "Beregn hvor mye du kan få på nav.no",
+    "MellomlagringFeilmelding.Feilet": "Vi klarte ikke å lagre søknaden din nå, så du er fortsatt inne i søknaden. Prøv «Fortsett senere» på nytt om litt. Hvis du lukker siden nå, kan du miste det du har fylt ut.",
+    "MellomlagringFeilmelding.IngenTilgang": "Vi klarte ikke å lagre søknaden din fordi du ikke har tilgang. Hvis du lukker siden nå, kan du miste det du har fylt ut.",
+    "MellomlagringFeilmelding.Lukk": "Lukk"
 }

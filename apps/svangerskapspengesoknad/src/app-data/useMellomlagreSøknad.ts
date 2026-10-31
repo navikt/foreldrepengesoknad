@@ -1,11 +1,9 @@
-import { useMutation } from '@tanstack/react-query';
 import { API_URLS } from 'appData/queries';
-import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { ApiError, captureApiError, captureMessage } from '@navikt/fp-observability';
-import { FpSoknadProblemDetails, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
+import { LagreMellomlagringOptions, MellomlagringResultat, useMellomlagringskø } from '@navikt/fp-app-shell';
+import { SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './SvpDataContext';
 
@@ -18,28 +16,18 @@ export type SvpMellomlagretData = {
     søkerInfo: SvpPersonopplysningerDto_fpoversikt;
 } & ContextDataMap;
 
-type MellomlagreSøknadOptions = {
-    // Naviger (react-router) til gjeldande steg før lagring. Default true.
-    // Settast false når kallaren skal forlate appen (t.d. fortsett-seinare).
+type MellomlagreSøknadOptions = LagreMellomlagringOptions & {
+    // Naviger (react-router) til gjeldende steg før lagring. Default true.
+    // Settes false når kalleren skal forlate appen (f.eks. fortsett senere).
     naviger?: boolean;
-    // Prøv kallet på nytt ved transiente feil. Default false.
-    medRetry?: boolean;
+    // Kalles med utfallet av akkurat denne lagringen, f.eks. før brukeren sendes ut av appen.
+    onFerdig?: (resultat: MellomlagringResultat) => void;
 };
 
 export type MellomlagreSøknadFn = (options?: MellomlagreSøknadOptions) => Promise<void>;
 
-const tilMellomlagringsFeil = (error: unknown): Error => {
-    if (error instanceof HTTPError) {
-        if (error.response.status === 401 || error.response.status === 403) {
-            return error;
-        }
-        const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
-        return new ApiError('', 'Feil ved mellomlagring av svangerskapspengesøknad', jsonResponse);
-    }
-    if (error instanceof Error) {
-        return error;
-    }
-    return new Error(String(error), { cause: error });
+type Forespørsel = Required<Omit<MellomlagreSøknadOptions, 'onFerdig'>> & {
+    ferdig: (resultat: MellomlagringResultat) => void;
 };
 
 export const useMellomlagreSøknad = (
@@ -50,93 +38,73 @@ export const useMellomlagreSøknad = (
     const state = useContextComplete();
     const resetState = useContextReset();
 
-    const [forespørsel, setForespørsel] = useState<{ naviger: boolean; medRetry: boolean } | null>(null);
-
-    const promiseRef = useRef<() => void>(null);
-
-    const { mutate: slettMellomlagring } = useMutation({
-        mutationFn: () => ky.delete(API_URLS.mellomlagring),
+    const { lagre, slett, lagringsfeil, nullstillLagringsfeil } = useMellomlagringskø<SvpMellomlagretData>({
+        url: API_URLS.mellomlagring,
+        telemetrimeldingLagring: 'Feil ved mellomlagring av svangerskapspengesøknad',
+        telemetrimeldingSletting: 'Feil ved sletting av mellomlagret svangerskapspengesøknad',
     });
 
+    // Forespurte lagringer ligger i en ref-kø, ikke i state, slik at hvert kall får sitt eget svar
+    // selv om flere kommer før effekten kjører. Sekvensnummeret trigger effekten, slik at vi leser
+    // ferskt context-state etter kallerens dispatcher.
+    const forespørslerRef = useRef<Forespørsel[]>([]);
+    const [seq, setSeq] = useState(0);
+
     useEffect(() => {
-        if (!forespørsel) {
+        const forespørsler = forespørslerRef.current;
+        if (forespørsler.length === 0) {
+            return;
+        }
+        forespørslerRef.current = [];
+
+        const fullfør = (resultat: MellomlagringResultat) => {
+            for (const forespørsel of forespørsler) {
+                forespørsel.ferdig(resultat);
+            }
+        };
+
+        const currentPath = state[ContextDataType.APP_ROUTE];
+        if (!currentPath) {
+            // Ved avbryt settes path til undefined, og mellomlagret data må ryddes opp her
+            setHarGodkjentVilkår(false);
+            resetState();
+            void navigate('/');
+            void slett().then(() => fullfør('OK'));
             return;
         }
 
-        const { naviger, medRetry } = forespørsel;
+        if (forespørsler.some((f) => f.naviger)) {
+            void navigate(currentPath);
+        }
 
-        const lagreEllerSlett = async () => {
-            setForespørsel(null);
+        const data = {
+            version: VERSJON_MELLOMLAGRING,
+            søkerInfo,
+            ...state,
+        } satisfies SvpMellomlagretData;
 
-            const currentPath = state[ContextDataType.APP_ROUTE];
-            if (currentPath) {
-                if (naviger) {
-                    void navigate(currentPath);
-                }
+        void lagre(data, {
+            medRetry: forespørsler.some((f) => f.medRetry),
+            visFeilTilBruker: forespørsler.some((f) => f.visFeilTilBruker),
+        }).then(fullfør);
+    }, [seq]);
 
-                try {
-                    const data = {
-                        version: VERSJON_MELLOMLAGRING,
-                        søkerInfo,
-                        ...state,
-                    } satisfies SvpMellomlagretData;
-                    await ky.post(API_URLS.mellomlagring, {
-                        json: data,
-                        ...(medRetry && {
-                            retry: {
-                                limit: 2,
-                                methods: ['post'],
-                                statusCodes: [408, 429, 500, 502, 503, 504],
-                            },
-                        }),
-                    });
-                } catch (error: unknown) {
-                    throw tilMellomlagringsFeil(error);
-                }
-            } else {
-                setHarGodkjentVilkår(false);
-                resetState();
-                void navigate('/');
+    const mellomlagreOgNaviger = useCallback<MellomlagreSøknadFn>(
+        (options) =>
+            new Promise<void>((resolve) => {
+                forespørslerRef.current.push({
+                    naviger: options?.naviger ?? true,
+                    medRetry: options?.medRetry ?? false,
+                    visFeilTilBruker: options?.visFeilTilBruker ?? false,
+                    ferdig: (resultat) => {
+                        options?.onFerdig?.(resultat);
+                        resolve();
+                    },
+                });
+                setSeq((s) => s + 1);
+            }),
+        [],
+    );
 
-                // Ved avbryt så set ein Path = undefined og må så rydda opp i data her
-                slettMellomlagring();
-            }
-
-            if (promiseRef.current) {
-                promiseRef.current();
-            }
-        };
-
-        const lagreOgHåndterFeil = async () => {
-            try {
-                await lagreEllerSlett();
-            } catch (error: unknown) {
-                const lagringsfeil = error as Error;
-                if (lagringsfeil instanceof ApiError) {
-                    captureApiError(lagringsfeil.telemetryMessage, lagringsfeil.problemDetails);
-                } else {
-                    captureMessage(lagringsfeil.message);
-                }
-
-                if (promiseRef.current) {
-                    promiseRef.current();
-                }
-            }
-        };
-
-        void lagreOgHåndterFeil();
-    }, [forespørsel]);
-
-    const mellomlagreOgNaviger = useCallback<MellomlagreSøknadFn>((options) => {
-        //Må gå via state change sidan ein må få oppdatert context før ein mellomlagrar
-        setForespørsel({ naviger: options?.naviger ?? true, medRetry: options?.medRetry ?? false });
-
-        const promise = new Promise<void>((resolve) => {
-            promiseRef.current = resolve;
-        });
-
-        return promise;
-    }, []);
-
-    return mellomlagreOgNaviger;
+    return { mellomlagreOgNaviger, slettMellomlagring: slett, lagringsfeil, nullstillLagringsfeil };
 };

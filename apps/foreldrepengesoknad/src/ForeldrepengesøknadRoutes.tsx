@@ -8,7 +8,6 @@ import { Forside } from 'pages/forside/Forside';
 import { Søknadsmetadata } from 'pages/forside/utils/useStartSøknad';
 import { KvitteringPage } from 'pages/kvittering/KvitteringPage';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router';
 import { AnnenForelderSteg } from 'steps/annen-forelder/AnnenForelderSteg';
 import { ArbeidsforholdOgInntektSteg } from 'steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg';
@@ -25,10 +24,10 @@ import { TidligereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-tidligere/
 import { UtenlandsoppholdSteg } from 'steps/utenlandsopphold/UtenlandsoppholdSteg';
 import { UttaksplanSteg } from 'steps/uttaksplan/UttaksplanSteg';
 
-import { Alert, Button, VStack } from '@navikt/ds-react';
+import { VStack } from '@navikt/ds-react';
 
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
-import { ErrorPage, Spinner, Umyndig } from '@navikt/fp-ui';
+import { ErrorPage, MellomlagringFeilmelding, Spinner, Umyndig } from '@navikt/fp-ui';
 import { erMyndig } from '@navikt/fp-utils';
 
 interface SøknadRoutesOptions {
@@ -299,15 +298,26 @@ export const ForeldrepengesøknadRoutes = ({
     const [erEndringssøknad, setErEndringssøknad] = useState(lagretErEndringssøknad);
     const [søknadGjelderNyttBarn, setSøknadGjelderNyttBarn] = useState(lagretSøknadGjelderNyttBarn);
 
-    const { sendSøknad, errorSendSøknad } = useSendSøknad(søkerInfo, erEndringssøknad, foreldrepengerSaker);
-
     const {
         mellomlagreSøknad: mellomlagreSøknadOgNaviger,
-        lagringFeilet,
-        nullstillLagringFeilet,
+        slettMellomlagring,
+        lagringsfeil,
+        nullstillLagringsfeil,
     } = useMellomlagreSøknad(foreldrepengerSaker, søkerInfo, erEndringssøknad, søknadGjelderNyttBarn);
 
-    const avbrytSøknad = useAvbrytSøknad(setErEndringssøknad, setHarGodkjentVilkår, setSøknadGjelderNyttBarn);
+    const { sendSøknad, errorSendSøknad } = useSendSøknad(
+        søkerInfo,
+        erEndringssøknad,
+        foreldrepengerSaker,
+        slettMellomlagring,
+    );
+
+    const avbrytSøknad = useAvbrytSøknad(
+        setErEndringssøknad,
+        setHarGodkjentVilkår,
+        setSøknadGjelderNyttBarn,
+        slettMellomlagring,
+    );
 
     const oppdaterSøknadsmetadata = useCallback((metadata: Søknadsmetadata) => {
         setHarGodkjentVilkår(metadata.harGodkjentVilkår);
@@ -355,20 +365,7 @@ export const ForeldrepengesøknadRoutes = ({
 
     return (
         <VStack gap="space-16">
-            {lagringFeilet && (
-                <VStack align="center" paddingBlock="space-16" paddingInline="space-16">
-                    <VStack maxWidth="600px" width="100%">
-                        <Alert variant="error">
-                            <VStack align="start" gap="space-8">
-                                <FormattedMessage id="Mellomlagring.FeiletVedFortsettSenere" />
-                                <Button type="button" variant="secondary" size="small" onClick={nullstillLagringFeilet}>
-                                    <FormattedMessage id="Mellomlagring.FeiletVedFortsettSenere.Lukk" />
-                                </Button>
-                            </VStack>
-                        </Alert>
-                    </VStack>
-                </VStack>
-            )}
+            {lagringsfeil && <MellomlagringFeilmelding feil={lagringsfeil} lukk={nullstillLagringsfeil} />}
             <Routes>
                 <Route
                     path={SøknadRoutes.VELKOMMEN}

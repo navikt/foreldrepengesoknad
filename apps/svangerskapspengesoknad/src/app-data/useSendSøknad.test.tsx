@@ -199,7 +199,7 @@ describe('useSendSøknad', () => {
         const postMock = vi.spyOn(ky, 'post').mockReturnValue({
             json: () => Promise.resolve(),
         } as ResponsePromise<void>);
-        const deleteMock = vi.spyOn(ky, 'delete').mockReturnValue(undefined as unknown as ResponsePromise<unknown>);
+        const slettMellomlagring = vi.fn(() => Promise.resolve());
 
         const tilrettelegginger = {
             [ARBEIDSGIVER_ID]: {
@@ -240,13 +240,13 @@ describe('useSendSøknad', () => {
             },
         } satisfies AvtaltFeriePerArbeidsgiver;
 
-        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO), {
+        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, slettMellomlagring), {
             wrapper: getWrapper(tilrettelegginger, tilretteleggingerVedlegg, undefined, ferie),
         });
 
         await act(() => result.current.sendSøknad());
 
-        expect(deleteMock).toHaveBeenCalledOnce();
+        expect(slettMellomlagring).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
             API_URLS.sendSøknad,
@@ -347,7 +347,7 @@ describe('useSendSøknad', () => {
         const postMock = vi.spyOn(ky, 'post').mockReturnValue({
             json: () => Promise.resolve(),
         } as ResponsePromise<void>);
-        const deleteMock = vi.spyOn(ky, 'delete').mockReturnValue(undefined as unknown as ResponsePromise<unknown>);
+        const slettMellomlagring = vi.fn(() => Promise.resolve());
 
         const søkerinfo = {
             ...DEFAULT_SØKER_INFO,
@@ -379,13 +379,13 @@ describe('useSendSøknad', () => {
             [FRILANS_ID]: [VEDLEGG],
         };
 
-        const { result } = renderHook(() => useSendSøknad(søkerinfo), {
+        const { result } = renderHook(() => useSendSøknad(søkerinfo, slettMellomlagring), {
             wrapper: getWrapper(tilrettelegginger, tilretteleggingerVedlegg),
         });
 
         await act(() => result.current.sendSøknad());
 
-        expect(deleteMock).toHaveBeenCalledOnce();
+        expect(slettMellomlagring).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
             API_URLS.sendSøknad,
@@ -486,7 +486,7 @@ describe('useSendSøknad', () => {
         const postMock = vi.spyOn(ky, 'post').mockReturnValue({
             json: () => Promise.resolve(),
         } as ResponsePromise<void>);
-        const deleteMock = vi.spyOn(ky, 'delete').mockReturnValue(undefined as unknown as ResponsePromise<unknown>);
+        const slettMellomlagring = vi.fn(() => Promise.resolve());
 
         const tilrettelegginger = {
             [ARBEIDSGIVER_ID]: {
@@ -524,13 +524,13 @@ describe('useSendSøknad', () => {
             [ARBEIDSGIVER_ID]: [VEDLEGG],
         };
 
-        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO), {
+        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, slettMellomlagring), {
             wrapper: getWrapper(tilrettelegginger, tilretteleggingerVedlegg, tilretteleggingPerioder),
         });
 
         await act(() => result.current.sendSøknad());
 
-        expect(deleteMock).toHaveBeenCalledOnce();
+        expect(slettMellomlagring).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
             API_URLS.sendSøknad,

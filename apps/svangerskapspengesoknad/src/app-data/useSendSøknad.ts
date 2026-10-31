@@ -13,15 +13,14 @@ import { useAbortSignal } from '@navikt/fp-utils';
 import { useContextGetAnyData } from './SvpDataContext';
 import { getSøknadForInnsending } from './getSøknadForInnsending';
 
-export const useSendSøknad = (søkerinfo: SvpPersonopplysningerDto_fpoversikt) => {
+export const useSendSøknad = (
+    søkerinfo: SvpPersonopplysningerDto_fpoversikt,
+    slettMellomlagring: () => Promise<void>,
+) => {
     const navigate = useNavigate();
     const intl = useIntl();
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
-
-    const { mutate: slettMellomlagring } = useMutation({
-        mutationFn: () => ky.delete(API_URLS.mellomlagring),
-    });
 
     const send = async () => {
         const søknadForInnsending = getSøknadForInnsending(søkerinfo, hentData);
@@ -34,7 +33,7 @@ export const useSendSøknad = (søkerinfo: SvpPersonopplysningerDto_fpoversikt) 
                 signal,
             });
 
-            slettMellomlagring();
+            void slettMellomlagring();
             void navigate(SøknadRoute.KVITTERING);
         } catch (error: unknown) {
             if (error instanceof HTTPError) {

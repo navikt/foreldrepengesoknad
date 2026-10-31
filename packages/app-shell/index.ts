@@ -5,3 +5,6 @@ export type { BootstrapAppOptions } from './src/bootstrapApp';
 export { createDefaultQueryClient } from './src/createDefaultQueryClient';
 export type { CreateDefaultQueryClientOptions } from './src/createDefaultQueryClient';
 export { erUmyndigFeil } from './src/apiErrorUtils';
+export { useMellomlagringskø } from './src/useMellomlagringskø';
+export type { LagreMellomlagringOptions } from './src/useMellomlagringskø';
+export type { MellomlagringResultat } from './src/lagMellomlagringskø';

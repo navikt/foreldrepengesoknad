@@ -103,7 +103,7 @@ describe('useEsSendSøknad', () => {
 
     it('skal sende inn korrekt data ved adopsjon', async () => {
         const postMock = vi.spyOn(ky, 'post').mockResolvedValue({} as unknown as KyResponse);
-        const deleteMock = vi.spyOn(ky, 'delete');
+        const slettMellomlagring = vi.fn(() => Promise.resolve());
 
         const omBarnetAdopsjon: BarnDto = {
             type: 'adopsjon',
@@ -113,13 +113,13 @@ describe('useEsSendSøknad', () => {
             adopsjonAvEktefellesBarn: true,
         };
 
-        const { result } = renderHook(() => useEsSendSøknad(DEFAULT_PERSONINFO), {
+        const { result } = renderHook(() => useEsSendSøknad(DEFAULT_PERSONINFO, slettMellomlagring), {
             wrapper: getWrapper(omBarnetAdopsjon, DOKUMENTASJON),
         });
 
         await act(() => result.current.sendSøknad());
 
-        expect(deleteMock).toHaveBeenCalledOnce();
+        expect(slettMellomlagring).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
             API_URLS.sendSøknad,
@@ -153,7 +153,7 @@ describe('useEsSendSøknad', () => {
 
     it('skal sende inn korrekt data når barnet er født', async () => {
         const postMock = vi.spyOn(ky, 'post').mockResolvedValue({} as unknown as KyResponse);
-        const deleteMock = vi.spyOn(ky, 'delete');
+        const slettMellomlagring = vi.fn(() => Promise.resolve());
 
         const omBarnetErFødt: BarnDto = {
             type: 'fødsel',
@@ -161,13 +161,13 @@ describe('useEsSendSøknad', () => {
             fødselsdato: '2024-01-01',
             termindato: '2024-01-01',
         };
-        const { result } = renderHook(() => useEsSendSøknad(DEFAULT_PERSONINFO), {
+        const { result } = renderHook(() => useEsSendSøknad(DEFAULT_PERSONINFO, slettMellomlagring), {
             wrapper: getWrapper(omBarnetErFødt),
         });
 
         await act(() => result.current.sendSøknad());
 
-        expect(deleteMock).toHaveBeenCalledOnce();
+        expect(slettMellomlagring).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
             API_URLS.sendSøknad,
@@ -193,7 +193,7 @@ describe('useEsSendSøknad', () => {
 
     it('skal sende inn korrekt data når en venter på fødsel', async () => {
         const postMock = vi.spyOn(ky, 'post').mockResolvedValue({} as unknown as KyResponse);
-        const deleteMock = vi.spyOn(ky, 'delete');
+        const slettMellomlagring = vi.fn(() => Promise.resolve());
 
         const omBarnetVenterPåFødsel: BarnDto = {
             type: 'termin',
@@ -201,13 +201,13 @@ describe('useEsSendSøknad', () => {
             termindato: '2024-01-01',
         };
 
-        const { result } = renderHook(() => useEsSendSøknad(DEFAULT_PERSONINFO), {
+        const { result } = renderHook(() => useEsSendSøknad(DEFAULT_PERSONINFO, slettMellomlagring), {
             wrapper: getWrapper(omBarnetVenterPåFødsel, { ...DOKUMENTASJON, terminbekreftelsedato: '2024-01-01' }),
         });
 
         await act(() => result.current.sendSøknad());
 
-        expect(deleteMock).toHaveBeenCalledOnce();
+        expect(slettMellomlagring).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
             API_URLS.sendSøknad,
