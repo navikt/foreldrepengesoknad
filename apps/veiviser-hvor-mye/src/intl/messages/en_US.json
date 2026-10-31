@@ -27,6 +27,7 @@
     "ArbeidssituasjonSide.Dagpenger": "Unemployed benefit",
     "ArbeidssituasjonSide.OmsorgOgPleie": "Care benefit, attendance allowance or training allowance for a sick child",
     "ArbeidssituasjonSide.ValidNumber": "You have entered something that is not a number.",
+    "ArbeidssituasjonSide.Påkrevd": "You must enter an amount.",
     "OppsummeringSide.GjennomsnittligUtbetaling": "Average payment with {erDekningsgrad100, select, true {100} other {80}} % parental benefit for {antallUker} weeks {antallDager, select, 0 {} 1 {and {antallDager} day} other {and {antallDager} days}}",
     "OppsummeringSide.MånedligFørSkatt": "Monthly before tax",
     "OppsummeringSide.DagligFørSkatt": "Daily before tax",

@@ -149,10 +149,7 @@ describe('<ArbeidssituasjonSide>', () => {
             utils.getByLabelText(capitalizeFirstLetter(forrigeMåned.subtract(1, 'month').format('MMMM YYYY'))),
             '10000,5',
         );
-        await userEvent.type(
-            utils.getByLabelText(capitalizeFirstLetter(forrigeMåned.format('MMMM YYYY'))),
-            '10000,5',
-        );
+        await userEvent.type(utils.getByLabelText(capitalizeFirstLetter(forrigeMåned.format('MMMM YYYY'))), '10000,5');
 
         expect(screen.getByText('10 001 kr')).toBeInTheDocument();
         expect(screen.getByText('120 012 kr')).toBeInTheDocument();

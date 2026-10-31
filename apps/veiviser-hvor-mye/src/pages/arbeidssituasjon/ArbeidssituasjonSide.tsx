@@ -13,7 +13,7 @@ import { RhfCheckbox, RhfForm, RhfFormattertTallTextField } from '@navikt/fp-for
 import { Satser } from '@navikt/fp-types';
 import { BluePanel, Infobox, VeiviserPage } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr, formatMånedÅr, useScrollBehaviour } from '@navikt/fp-utils';
-import { formatValue, isValidNumber, isValidNumberForm } from '@navikt/fp-validation';
+import { formatValue, isRequired, isValidNumber, isValidNumberForm } from '@navikt/fp-validation';
 
 import { HarIkkeRettTilFpInfobox } from '../felles/HarIkkeRettTilFpInfobox';
 import { HøyInntektInfobox } from '../felles/HøyInntektInfobox';
@@ -182,6 +182,9 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                                 )}
                                                 className="w-[300px]"
                                                 validate={[
+                                                    isRequired(
+                                                        intl.formatMessage({ id: 'ArbeidssituasjonSide.Påkrevd' }),
+                                                    ),
                                                     isValidNumberForm(
                                                         intl.formatMessage({ id: 'ArbeidssituasjonSide.ValidNumber' }),
                                                     ),
@@ -195,6 +198,9 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                                 )}
                                                 className="w-[300px]"
                                                 validate={[
+                                                    isRequired(
+                                                        intl.formatMessage({ id: 'ArbeidssituasjonSide.Påkrevd' }),
+                                                    ),
                                                     isValidNumberForm(
                                                         intl.formatMessage({ id: 'ArbeidssituasjonSide.ValidNumber' }),
                                                     ),
@@ -206,6 +212,9 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                                 label={capitalizeFirstLetter(formatMånedÅr(forrigeMåned.toDate(), intl))}
                                                 className="w-[300px]"
                                                 validate={[
+                                                    isRequired(
+                                                        intl.formatMessage({ id: 'ArbeidssituasjonSide.Påkrevd' }),
+                                                    ),
                                                     isValidNumberForm(
                                                         intl.formatMessage({ id: 'ArbeidssituasjonSide.ValidNumber' }),
                                                     ),
