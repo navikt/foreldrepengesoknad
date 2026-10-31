@@ -15,12 +15,12 @@ import { Attachment, NavnPåForeldre, UttakPeriodeDto } from '@navikt/fp-types';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
+import { ManglendeVedleggFormData, OppdaterVedlegg } from '../ManglendeVedleggFormData';
 import { PeriodeVisning } from './periodevisning/PeriodeVisning';
 
 interface Props {
     attachments: Attachment[];
-    updateAttachments: (attachments: Attachment[]) => void;
+    updateAttachments: OppdaterVedlegg;
     perioder: UttakPeriodeDto[];
     navnPåForeldre: NavnPåForeldre;
     skjemanummer: GyldigeSkjemanummer;
@@ -97,7 +97,7 @@ export const UttakUploader = ({
             attachmentType={attachmentType}
             skjemanummer={skjemanummer}
             existingAttachments={attachments}
-            updateAttachments={(vedlegg) => {
+            updateAttachments={(vedlegg, hasPendingUploads) => {
                 const attachmentsMedMetadata = vedlegg.map((a) =>
                     addMetadata(a, {
                         type: 'UTTAK',
@@ -108,7 +108,7 @@ export const UttakUploader = ({
                     }),
                 );
 
-                return updateAttachments(attachmentsMedMetadata);
+                updateAttachments(attachmentsMedMetadata, hasPendingUploads);
             }}
             uploadPath={API_URLS.sendVedlegg}
         />

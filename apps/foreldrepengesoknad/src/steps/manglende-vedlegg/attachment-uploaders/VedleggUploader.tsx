@@ -10,7 +10,7 @@ import { FileUploader } from '@navikt/fp-filopplaster';
 import { Attachment, DokumentererType } from '@navikt/fp-types';
 import { formatDateShortYear } from '@navikt/fp-utils';
 
-import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
+import { ManglendeVedleggFormData, OppdaterVedlegg } from '../ManglendeVedleggFormData';
 
 type Perioder = Array<{
     fom: string;
@@ -38,7 +38,7 @@ export const formaterPerioderForVisning = (perioder: Perioder, intl: IntlShape) 
 
 interface Props {
     attachments: Attachment[];
-    updateAttachments: (attachments: Attachment[]) => void;
+    updateAttachments: OppdaterVedlegg;
     skjemanummer: GyldigeSkjemanummer;
     labelText: string;
     description?: string | React.ReactNode;
@@ -81,7 +81,7 @@ export const VedleggUploader = ({
             attachmentType={attachmentType}
             skjemanummer={skjemanummer}
             existingAttachments={attachments}
-            updateAttachments={(vedlegg) => {
+            updateAttachments={(vedlegg, hasPendingUploads) => {
                 const attachmentsMedMetadata = vedlegg.map((a) =>
                     addMetadata(a, {
                         type: metadataType,
@@ -89,7 +89,7 @@ export const VedleggUploader = ({
                     }),
                 );
 
-                updateAttachments(attachmentsMedMetadata);
+                updateAttachments(attachmentsMedMetadata, hasPendingUploads);
             }}
             uploadPath={API_URLS.sendVedlegg}
         />
