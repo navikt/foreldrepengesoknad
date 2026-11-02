@@ -194,6 +194,23 @@ describe('harEndretEgetUttak', () => {
         expect(harEndretEgetUttak([A, B, forkortetC, ferie('2024-12-23', '2024-12-31')], opprinneligPlan)).toBe(true);
     });
 
+    it('returnerer false når like tilstøtende perioder i vedtaket er slått sammen i planen', () => {
+        const AB = { ...A, tom: B.tom };
+        expect(harEndretEgetUttak([AB, C, ferie('2025-01-06', '2025-01-10')], opprinneligPlan)).toBe(false);
+    });
+
+    it('returnerer false når gradert uttak er uendret men deserialisert hver for seg', () => {
+        const gradert = lagPeriode({
+            gradering: {
+                arbeidstidprosent: 50,
+                aktivitet: { type: 'ORDINÆRT_ARBEID', arbeidsgiver: { id: '123456789', type: 'ORGANISASJON' } },
+            },
+        });
+        expect(harEndretEgetUttak([structuredClone(gradert), ferie('2024-08-05', '2024-08-09')], [gradert])).toBe(
+            false,
+        );
+    });
+
     it('returnerer false når bruker bare har slettet en ferie', () => {
         const ferieIVedtak = lagPeriode({
             fom: '2025-01-06',
