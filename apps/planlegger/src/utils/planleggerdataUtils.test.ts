@@ -61,6 +61,10 @@ describe('lesPlanleggerdataFraUrl', () => {
         ['periode som er null', { [ContextDataType.UTTAKSPLAN]: [null] }],
         ['periode uten datoer', { [ContextDataType.UTTAKSPLAN]: [{ forelder: 'MOR' }] }],
         ['ukjent hvem planlegger', { [ContextDataType.HVEM_PLANLEGGER]: { type: 'ukjent' } }],
+        [
+            'navn som ikke er tekst',
+            { [ContextDataType.HVEM_PLANLEGGER]: { type: HvemPlanleggerType.MOR_OG_FAR, navnPåMor: 123 } },
+        ],
         ['om barnet som tekst', { [ContextDataType.OM_BARNET]: 'barn' }],
         ['arbeidssituasjon som null', { [ContextDataType.ARBEIDSSITUASJON]: null }],
         ['fordeling som liste', { [ContextDataType.FORDELING]: [] }],

@@ -10,7 +10,12 @@ const erObjekt = (verdi: unknown): verdi is Objekt =>
 
 const HVEM_PLANLEGGER_TYPER = new Set<unknown>(Object.values(HvemPlanleggerType));
 
-const erGyldigHvemPlanlegger = (verdi: unknown) => erObjekt(verdi) && HVEM_PLANLEGGER_TYPER.has(verdi.type);
+const NAVNEFELT = ['navnPåMor', 'navnPåFar', 'navnPåMedmor', 'navnPåMedfar'] as const;
+
+const erGyldigHvemPlanlegger = (verdi: unknown) =>
+    erObjekt(verdi) &&
+    HVEM_PLANLEGGER_TYPER.has(verdi.type) &&
+    NAVNEFELT.every((felt) => verdi[felt] === undefined || typeof verdi[felt] === 'string');
 
 const erGyldigPeriode = (periode: unknown) =>
     erObjekt(periode) && typeof periode.fom === 'string' && typeof periode.tom === 'string';
