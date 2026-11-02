@@ -33,14 +33,16 @@ export const OmBarnetSteg = ({ kjønn, mellomlagreOgNaviger }: Props) => {
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
     const oppdaterDokumentasjon = useContextSaveData(ContextDataType.DOKUMENTASJON);
 
-    const mapOgLagreOmBarnet = (formValues: FormValues) =>
-        oppdaterOmBarnet(mapBarnFraFormTilDto(formValues, søkersituasjon.situasjon));
+    const mapOgLagreOmBarnet = (formValues: FormValues) => {
+        const nyttBarn = mapBarnFraFormTilDto(formValues, søkersituasjon.situasjon);
+        oppdaterOmBarnet(nyttBarn);
+        if (nyttBarn.type === 'fødsel' || (barn && barn.type !== nyttBarn.type)) {
+            oppdaterDokumentasjon(undefined);
+        }
+    };
 
     const onSubmit = (formValues: FormValues) => {
         mapOgLagreOmBarnet(formValues);
-        if (formValues.erBarnetFødt) {
-            oppdaterDokumentasjon(undefined);
-        }
         return navigator.goToNextDefaultStep();
     };
 
