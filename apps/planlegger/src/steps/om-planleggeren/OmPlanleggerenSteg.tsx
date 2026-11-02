@@ -1,7 +1,8 @@
 import { ArrowRightIcon, CalendarIcon, QuestionmarkIcon } from '@navikt/aksel-icons';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
+import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 import { Alert, BodyShort, Button, HStack, Heading, InlineMessage, VStack } from '@navikt/ds-react';
 
@@ -11,7 +12,18 @@ import { PlanleggerForside } from './PlanleggerForside';
 
 export const OmPlanleggerenSteg = () => {
     const navigator = usePlanleggerNavigator();
-    const lenkeErUgyldig = (useLocation().state as { ugyldigLenke?: boolean } | null)?.ugyldigLenke === true;
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [lenkeErUgyldig] = useState(
+        () => (location.state as { ugyldigLenke?: boolean } | null)?.ugyldigLenke === true,
+    );
+
+    // Fjerner flagget fra historikkoppføringen slik at varselet ikke vises igjen ved tilbakenavigering
+    useEffect(() => {
+        if (lenkeErUgyldig) {
+            void navigate({ pathname: location.pathname, search: location.search }, { replace: true });
+        }
+    }, [lenkeErUgyldig, navigate, location.pathname, location.search]);
 
     return (
         <PlanleggerForside>
