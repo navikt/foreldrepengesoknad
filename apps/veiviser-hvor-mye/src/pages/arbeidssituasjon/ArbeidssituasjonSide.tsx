@@ -13,7 +13,7 @@ import { RhfCheckbox, RhfForm, RhfFormattertTallTextField } from '@navikt/fp-for
 import { Satser } from '@navikt/fp-types';
 import { BluePanel, Infobox, VeiviserPage } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr, formatMånedÅr, useScrollBehaviour } from '@navikt/fp-utils';
-import { isValidNumber, isValidNumberForm } from '@navikt/fp-validation';
+import { formatValue, isValidNumber, isValidNumberForm } from '@navikt/fp-validation';
 
 import { HarIkkeRettTilFpInfobox } from '../felles/HarIkkeRettTilFpInfobox';
 import { HøyInntektInfobox } from '../felles/HøyInntektInfobox';
@@ -35,16 +35,19 @@ const isCheckboxValgt = (arbeidsituasjon?: Arbeidssituasjon) => {
     );
 };
 
-const isNumber = (value?: string) => {
-    return value && isValidNumber(value);
+const tilTall = (value?: string): number => {
+    if (!value || !isValidNumber(value)) {
+        return 0;
+    }
+    return formatValue(value) ?? 0;
 };
 
 export const finnGjennomsnittsMånedslønn = (formValues: Arbeidssituasjon): string | undefined => {
     const { lønnMåned1, lønnMåned2, lønnMåned3 } = formValues;
 
-    const m1 = isNumber(lønnMåned1) ? Number(lønnMåned1) : 0;
-    const m2 = isNumber(lønnMåned2) ? Number(lønnMåned2) : 0;
-    const m3 = isNumber(lønnMåned3) ? Number(lønnMåned3) : 0;
+    const m1 = tilTall(lønnMåned1);
+    const m2 = tilTall(lønnMåned2);
+    const m3 = tilTall(lønnMåned3);
 
     const gjennomsnittslønn = (m1 + m2 + m3) / 3;
     return gjennomsnittslønn > 0 ? gjennomsnittslønn.toFixed(0) : undefined;

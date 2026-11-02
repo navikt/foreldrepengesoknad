@@ -220,16 +220,17 @@ function FeriePerioder() {
                                     }),
                                     startDatoSvp,
                                 ),
-                                isPeriodNotOverlappingOthers(
-                                    intl.formatMessage(
-                                        {
-                                            id: 'ferie.antallPerioder.validering.dato.overlapp',
-                                        },
-                                        { periode: index },
-                                    ),
-                                    { date: watch(`feriePerioder.${index}.tom`)!, isStartDate: false },
-                                    // NOTE: tillater å caste til AvtaltFerieDto ettersom required allerede er validert
-                                    [(watch('feriePerioder')[index - 1] as AvtaltFerieDto) ?? []].flat(),
+                                ...watch('feriePerioder').flatMap((periode, i) =>
+                                    i === index || !periode.fom
+                                        ? []
+                                        : isPeriodNotOverlappingOthers(
+                                              intl.formatMessage(
+                                                  { id: 'ferie.antallPerioder.validering.dato.overlapp' },
+                                                  { periode: i + 1 },
+                                              ),
+                                              { date: watch(`feriePerioder.${index}.tom`), isStartDate: false },
+                                              [{ fom: periode.fom, tom: periode.tom }],
+                                          ),
                                 ),
                             ]}
                             validateTo={[
