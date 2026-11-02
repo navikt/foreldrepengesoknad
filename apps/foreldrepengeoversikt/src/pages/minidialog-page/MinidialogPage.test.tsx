@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react-vite';
-import { focusManager } from '@tanstack/react-query';
+import { QueryClient, focusManager } from '@tanstack/react-query';
 import { act, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -21,22 +21,27 @@ describe('<MinidialogPage>', () => {
     });
 
     it('skal beholde påbegynt svar når en bakgrunnshenting av oppgaven feiler', async () => {
+        const getQueryCache = vi.spyOn(QueryClient.prototype, 'getQueryCache');
         await FeilVedBakgrunnshentingAvMinidialog.run();
 
         await userEvent.click(await screen.findByRole('radio', { name: 'Ja' }));
         await userEvent.type(screen.getByRole('textbox'), 'Mitt svar');
 
+        const queryClient = getQueryCache.mock.contexts[0] as QueryClient;
         act(() => {
             focusManager.setFocused(false);
             focusManager.setFocused(true);
         });
 
-        await waitFor(() => expect(screen.getByRole('textbox')).toHaveValue('Mitt svar'));
-        await new Promise((resolve) => setTimeout(resolve, 100));
+        await waitFor(() => expect(queryClient.getQueryState(['MINIDIALOG'])?.status).toBe('error'));
+        // React Query varsler komponentene med setTimeout(0) etter at feilen er lagret i cachen
+        await act(() => new Promise((resolve) => setTimeout(resolve, 0)));
+
         expect(screen.getByRole('textbox')).toHaveValue('Mitt svar');
         expect(screen.getByRole('radio', { name: 'Ja' })).toBeChecked();
         expect(screen.queryByText('Vi har problemer med å hente oppgaven din.')).not.toBeInTheDocument();
 
         act(() => focusManager.setFocused(undefined));
+        getQueryCache.mockRestore();
     });
 });
