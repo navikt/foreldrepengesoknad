@@ -92,6 +92,11 @@ export const useFinnFørsteSubmitFeilmelding = ({
             message: intl.formatMessage({ id: 'UttaksplanSteg.IngenUttaksperioder' }),
         },
         {
+            gjelder: (_planForValidering, helePlanen) =>
+                erEndringssøknad && opprinneligPlan !== undefined && !harEndretEgetUttak(helePlanen, opprinneligPlan),
+            message: intl.formatMessage({ id: 'UttaksplanSteg.IngenEndringIEgetUttak' }),
+        },
+        {
             gjelder: harOvertrukketDager,
             message: intl.formatMessage({ id: 'UttaksplanSteg.OvertrukketDager' }),
         },
@@ -109,7 +114,7 @@ export const useFinnFørsteSubmitFeilmelding = ({
         },
         {
             // Ved endringssøknad inneholder planForValidering bare nye og endrede perioder. Uendret uttak
-            // fra vedtaket må telle med, ellers ser for eksempel ferie lagt til på slutten ut som en
+            // fra vedtaket må telle med, ellers ser for eksempel ferie lagt midt i planen ut som en
             // plan med bare utsettelser.
             gjelder: (_planForValidering, helePlanen) => erKunUtsettelser(helePlanen),
             message: intl.formatMessage({ id: 'UttaksplanSteg.KunUtsettelser' }),
@@ -188,6 +193,23 @@ export const harBrukerKunSlettetPerioder = (
             søkersOpprinneligePerioder.some((opprinnelig) => erSammePeriodeInkludertDatoer(periode, opprinnelig)),
         )
     );
+};
+
+// En endringssøknad må legge til, endre eller slette søkerens uttak.
+export const harEndretEgetUttak = (perioder: UttakPeriodeDto[], opprinneligPlan: UttakPeriodeDto[]) => {
+    const finnEgetUttak = (plan: UttakPeriodeDto[]) =>
+        finnSøkersPerioder(plan).filter(
+            ({ søker }) =>
+                søker !== undefined &&
+                (Uttaksperioden.erUttaksperiode(søker) || Uttaksperioden.erOverføringsperiode(søker)),
+        );
+    const finnesIkkeI = (plan: UttakPeriodeDto[]) => (periode: UttakPeriodeDto) =>
+        plan.every((annen) => !erSammePeriodeInkludertDatoer(periode, annen));
+
+    const egetUttak = finnEgetUttak(perioder);
+    const opprinneligEgetUttak = finnEgetUttak(opprinneligPlan);
+
+    return egetUttak.some(finnesIkkeI(opprinneligEgetUttak)) || opprinneligEgetUttak.some(finnesIkkeI(egetUttak));
 };
 
 export const erSammePeriodeInkludertDatoer = (a: UttakPeriodeDto, b: UttakPeriodeDto) =>

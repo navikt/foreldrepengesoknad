@@ -4,6 +4,7 @@ import {
     erSammePeriodeInkludertDatoer,
     finnNyeEllerEndredePerioder,
     harBrukerKunSlettetPerioder,
+    harEndretEgetUttak,
     harMinstEnUttaksEllerOverføringsperiode,
 } from './submitValidering';
 
@@ -176,6 +177,60 @@ describe('harMinstEnUttaksEllerOverføringsperiode', () => {
 
     it('returnerer false når planen kun inneholder EØS-perioder', () => {
         expect(harMinstEnUttaksEllerOverføringsperiode([lagEøsPeriode()])).toBe(false);
+    });
+});
+
+describe('harEndretEgetUttak', () => {
+    const opprinneligPlan = [A, B, C];
+    const ferie = (fom: string, tom: string) =>
+        lagPeriode({ fom, tom, kontoType: undefined, utsettelseÅrsak: 'FERIE', resultat: undefined });
+
+    it('returnerer false når bruker bare har lagt til ferie etter siste periode', () => {
+        expect(harEndretEgetUttak([A, B, C, ferie('2025-01-06', '2025-01-10')], opprinneligPlan)).toBe(false);
+    });
+
+    it('returnerer true når ferie er lagt over eksisterende uttak', () => {
+        const forkortetC = lagPeriode({ fom: C.fom, tom: '2024-12-20', kontoType: 'FELLESPERIODE' });
+        expect(harEndretEgetUttak([A, B, forkortetC, ferie('2024-12-23', '2024-12-31')], opprinneligPlan)).toBe(true);
+    });
+
+    it('returnerer false når bruker bare har slettet en ferie', () => {
+        const ferieIVedtak = lagPeriode({
+            fom: '2025-01-06',
+            tom: '2025-01-10',
+            kontoType: undefined,
+            utsettelseÅrsak: 'FERIE',
+        });
+        expect(harEndretEgetUttak([A, B, C], [A, B, C, ferieIVedtak])).toBe(false);
+    });
+
+    it('returnerer true når bruker har lagt til uttak', () => {
+        const nyttUttak = lagPeriode({ fom: '2025-01-06', tom: '2025-01-10', resultat: undefined });
+        expect(harEndretEgetUttak([A, B, C, nyttUttak], opprinneligPlan)).toBe(true);
+    });
+
+    it('returnerer true når bruker har slettet uttak', () => {
+        expect(harEndretEgetUttak([A, B], opprinneligPlan)).toBe(true);
+    });
+
+    it('returnerer false når ferie er lagt over annen parts periode', () => {
+        const annenPartsPeriode = {
+            fom: '2025-01-06',
+            tom: '2025-01-10',
+            annenPart: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false, resultat: innvilget },
+        } satisfies UttakPeriodeDto;
+        expect(harEndretEgetUttak([A, B, C, ferie('2025-01-06', '2025-01-10')], [A, B, C, annenPartsPeriode])).toBe(
+            false,
+        );
+    });
+
+    it('ser bort fra endringer i annen parts perioder', () => {
+        const annenPart = {
+            fom: '2025-01-06',
+            tom: '2025-01-10',
+            annenPart: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
+        } satisfies UttakPeriodeDto;
+        expect(harEndretEgetUttak([A, B, C, annenPart], opprinneligPlan)).toBe(false);
     });
 });
 
