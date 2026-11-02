@@ -516,6 +516,7 @@
     "UttaksplanSteg.IngenUttaksperioder": "Du må ha minst én uttaksperiode i planen.",
     "UttaksplanSteg.KunPerioderForAnnenForelder": "Du har kun lagt til perioder for den andre forelderen i planen. Du må legge inn perioder for deg selv for å kunne søke om foreldrepenger.",
     "UttaksplanSteg.KunUtsettelser": "Du har kun lagt til utsettelser i planen. Du må legge inn minst én uttaksperiode for å kunne søke om foreldrepenger.",
+    "UttaksplanSteg.IngenEndringIEgetUttak": "For å søke om endring må du legge til, endre eller slette en periode der du tar ut foreldrepenger. Det er ikke nok å bare endre ferie eller andre utsettelser.",
     "UttaksplanSteg.IngenNyePerioder": "Du må gjøre en endring for å kunne søke om endring",
     "UttaksplanSteg.AutomatiskJustering.Spørsmål": "Planen din inneholder en periode med din egen kvote rundt fødsel. Siden denne perioden starter ved termin, ønsker du at vi endrer den til å starte fra fødselsdato når {antallBarn, plural, one {barnet} other {barna}} blir født?",
     "UttaksplanSteg.AutomatiskJustering.Svar.Påkrevd": "Du må svare på spørsmålet om automatisk justering av perioden når barnet blir født.",
