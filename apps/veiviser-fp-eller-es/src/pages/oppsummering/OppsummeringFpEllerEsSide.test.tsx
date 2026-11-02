@@ -38,7 +38,6 @@ describe('<OppsummeringFpEllerEsSide>', () => {
             expect(lenkeknapp.tagName).toBe('A');
             expect(lenkeknapp).toHaveAttribute('href');
             expect(lenkeknapp).toHaveAttribute('target', '_blank');
-            expect(lenkeknapp).toHaveAttribute('rel', 'noopener noreferrer');
             expect(lenkeknapp.closest('a')).toBe(lenkeknapp);
             expect(within(lenkeknapp).queryByRole('button')).not.toBeInTheDocument();
         }

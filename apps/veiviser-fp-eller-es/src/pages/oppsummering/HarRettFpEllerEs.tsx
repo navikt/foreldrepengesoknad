@@ -134,16 +134,10 @@ export const HarRettFpEllerEs = ({ fpEllerEsSituasjon, satser }: Props) => {
                 </BodyShort>
             </Infobox>
             <HStack justify="space-around">
-                <Button as="a" href={links.søknadForeldrepenger} target="_blank" rel="noopener noreferrer">
+                <Button as="a" href={links.søknadForeldrepenger} target="_blank">
                     <FormattedMessage id="OppsummeringFpEllerEsSide.SøkOmFp" />
                 </Button>
-                <Button
-                    as="a"
-                    href={links.omForeldrepenger}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    variant="secondary"
-                >
+                <Button as="a" href={links.omForeldrepenger} target="_blank" variant="secondary">
                     <FormattedMessage id="OppsummeringFpEllerEsSide.MerOmFp" />
                 </Button>
             </HStack>
