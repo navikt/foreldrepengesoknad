@@ -33,7 +33,8 @@ export const useSendSøknad = (
                 signal,
             });
 
-            void slettMellomlagring();
+            // Venter slik at brukeren ikke kan forlate kvitteringen før DELETE er sendt. Avviser aldri.
+            await slettMellomlagring();
             void navigate(SøknadRoute.KVITTERING);
         } catch (error: unknown) {
             if (error instanceof HTTPError) {

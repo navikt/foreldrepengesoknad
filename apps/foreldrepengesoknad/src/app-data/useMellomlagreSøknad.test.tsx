@@ -120,6 +120,38 @@ describe('useMellomlagreSøknad', () => {
         expect(deleteMock).toHaveBeenCalledExactlyOnceWith(API_URLS.mellomlagring);
     });
 
+    it('skal forkaste lagring som er bestilt, men ikke sendt, når mellomlagringen slettes', async () => {
+        const lagring = lagDeferred();
+        const postMock = vi
+            .spyOn(ky, 'post')
+            .mockReturnValueOnce(lagring.promise as unknown as ResponsePromise)
+            .mockReturnValue(Promise.resolve() as unknown as ResponsePromise);
+        const deleteMock = vi.spyOn(ky, 'delete').mockReturnValue(Promise.resolve() as unknown as ResponsePromise);
+
+        const { result } = renderMellomlagring();
+
+        act(() => {
+            void result.current.mellomlagreSøknad();
+        });
+        await waitFor(() => expect(postMock).toHaveBeenCalledTimes(1));
+
+        const onFerdig = vi.fn();
+        let sletting: Promise<void> = Promise.resolve();
+        act(() => {
+            void result.current.mellomlagreSøknad({ onFerdig });
+            sletting = result.current.slettMellomlagring();
+        });
+
+        await act(async () => {
+            lagring.resolve();
+            await sletting;
+        });
+
+        expect(postMock).toHaveBeenCalledTimes(1);
+        expect(deleteMock).toHaveBeenCalledOnce();
+        expect(onFerdig).toHaveBeenCalledExactlyOnceWith('FORKASTET');
+    });
+
     it('skal laste siden på nytt når sesjonen er utløpt (401)', async () => {
         vi.spyOn(ky, 'post').mockImplementation(() => Promise.reject(lagHttpError(401)) as unknown as ResponsePromise);
 

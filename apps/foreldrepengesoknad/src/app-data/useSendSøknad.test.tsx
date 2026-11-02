@@ -1,9 +1,9 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { act, renderHook } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { API_URLS } from 'api/queries';
 import ky, { ResponsePromise } from 'ky';
 import { ReactNode } from 'react';
-import { MemoryRouter } from 'react-router';
+import { MemoryRouter, useLocation } from 'react-router';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { AnnenForelder } from 'types/AnnenForelder';
 import { VedleggDataType } from 'types/VedleggDataType';
@@ -29,6 +29,7 @@ import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/nb_NO.json';
 import { ContextDataType, FpDataContext } from './FpDataContext';
+import { SøknadRoutes } from './routes';
 import { useSendSøknad } from './useSendSøknad';
 
 const queryClient = new QueryClient({
@@ -403,6 +404,37 @@ describe('useFpSendSøknad', () => {
                 } satisfies ForeldrepengesøknadDto,
             }),
         );
+    });
+
+    it('skal vente på at mellomlagringen er slettet før kvitteringen vises', async () => {
+        vi.spyOn(ky, 'post').mockReturnValue({
+            json: () => Promise.resolve(),
+        } as ResponsePromise<void>);
+        const sletting = Promise.withResolvers<void>();
+        const slettMellomlagring = vi.fn(() => sletting.promise);
+
+        const { result } = renderHook(
+            () => ({
+                ...useSendSøknad(DEFAULT_SØKER_INFO, false, saker, slettMellomlagring),
+                location: useLocation(),
+            }),
+            { wrapper: getWrapper() },
+        );
+
+        let innsending: Promise<unknown> = Promise.resolve();
+        act(() => {
+            innsending = result.current.sendSøknad();
+        });
+        await waitFor(() => expect(slettMellomlagring).toHaveBeenCalledOnce());
+
+        expect(result.current.location.pathname).not.toBe(SøknadRoutes.KVITTERING);
+
+        await act(async () => {
+            sletting.resolve();
+            await innsending;
+        });
+
+        expect(result.current.location.pathname).toBe(SøknadRoutes.KVITTERING);
     });
 
     it('skal sende inn korrekt endringssøknad', async () => {

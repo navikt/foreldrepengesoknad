@@ -109,5 +109,16 @@ export const useMellomlagreSøknad = (
         [],
     );
 
-    return { mellomlagreSøknad, slettMellomlagring: slett, lagringsfeil, nullstillLagringsfeil };
+    const slettMellomlagring = useCallback(() => {
+        // Lagringer som er bestilt, men ikke sendt til køen ennå, må forkastes her. Ellers havner de
+        // bak DELETE og gjenoppretter utkastet etter sletting.
+        const forkastede = forespørslerRef.current;
+        forespørslerRef.current = [];
+        for (const forespørsel of forkastede) {
+            forespørsel.ferdig('FORKASTET');
+        }
+        return slett();
+    }, [slett]);
+
+    return { mellomlagreSøknad, slettMellomlagring, lagringsfeil, nullstillLagringsfeil };
 };

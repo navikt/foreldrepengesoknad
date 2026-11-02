@@ -25,8 +25,10 @@ export const useSendSøknad = (
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
 
-    const fullførInnsending = (): SendSøknadResultat => {
-        void slettMellomlagring();
+    // Venter på slettingen slik at brukeren ikke kan forlate kvitteringen før DELETE er sendt.
+    // slettMellomlagring avviser aldri, så en slettefeil gjør ikke innsendingen om til en feil.
+    const fullførInnsending = async (): Promise<SendSøknadResultat> => {
+        await slettMellomlagring();
         void navigate(SøknadRoutes.KVITTERING);
         return 'SENDT';
     };
@@ -51,10 +53,10 @@ export const useSendSøknad = (
                 signal: abortSignal,
                 timeout: 120 * 1000,
             });
-            return fullførInnsending();
         } catch (error: unknown) {
-            return håndterInnsendingsfeil(error, abortSignal, intl, fullførInnsending);
+            håndterInnsendingsfeil(error, abortSignal, intl);
         }
+        return fullførInnsending();
     };
 
     const { mutateAsync: sendSøknad, error } = useMutation({
@@ -64,12 +66,7 @@ export const useSendSøknad = (
     return { sendSøknad, errorSendSøknad: error };
 };
 
-function håndterInnsendingsfeil(
-    error: unknown,
-    abortSignal: AbortSignal,
-    intl: IntlShape,
-    fullførInnsending: () => SendSøknadResultat,
-): SendSøknadResultat {
+function håndterInnsendingsfeil(error: unknown, abortSignal: AbortSignal, intl: IntlShape): void {
     if (!(error instanceof HTTPError)) {
         throw error instanceof Error ? error : new Error(String(error), { cause: error });
     }
@@ -81,7 +78,7 @@ function håndterInnsendingsfeil(
     // Hvis man får 409 har man sendt inn nøyaktig samme søknad.
     // Da ønsker vi at de skal følge samme løp som om de fikk 200 og havne på kvitteringssiden slik at de kan se søknad i innsyn.
     if (error.response.status === 409) {
-        return fullførInnsending();
+        return;
     }
 
     const jsonResponse = error.data as FpSoknadProblemDetails | undefined;
