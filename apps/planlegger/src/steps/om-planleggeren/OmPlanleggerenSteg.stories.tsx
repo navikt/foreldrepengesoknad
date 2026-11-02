@@ -16,9 +16,16 @@ const meta = {
     component: OmPlanleggerenSteg,
     render: ({ gåTilNesteSide = action('button-click'), lenkeErUgyldig }) => {
         return (
-            <MemoryRouter initialEntries={[PlanleggerRoutes.OM_PLANLEGGEREN]}>
+            <MemoryRouter
+                initialEntries={[
+                    {
+                        pathname: PlanleggerRoutes.OM_PLANLEGGEREN,
+                        state: lenkeErUgyldig ? { ugyldigLenke: true } : null,
+                    },
+                ]}
+            >
                 <PlanleggerDataContext onDispatch={gåTilNesteSide}>
-                    <OmPlanleggerenSteg lenkeErUgyldig={lenkeErUgyldig} />
+                    <OmPlanleggerenSteg />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );

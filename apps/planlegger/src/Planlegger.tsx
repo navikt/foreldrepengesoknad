@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ContextDataType, PlanleggerDataContext, useContextGetData } from 'appData/PlanleggerDataContext';
 import { API_URLS } from 'appData/queries';
 import ky from 'ky';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { Navigate, useLocation } from 'react-router';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
@@ -66,7 +66,7 @@ const harGyldigDato = (omBarnet?: OmBarnetPlanlegger): boolean =>
         (erBarnetUFødt(omBarnet) && !!omBarnet.termindato) ||
         (erBarnetAdoptert(omBarnet) && !!omBarnet.overtakelsesdato));
 
-export const PlanleggerDataFetcher = ({ lenkeErUgyldig = false }: { lenkeErUgyldig?: boolean }) => {
+export const PlanleggerDataFetcher = () => {
     const omBarnet = useContextGetData(ContextDataType.OM_BARNET);
     const arbeidssituasjon = useContextGetData(ContextDataType.ARBEIDSSITUASJON);
     const hvemPlanlegger = useContextGetData(ContextDataType.HVEM_PLANLEGGER);
@@ -110,13 +110,7 @@ export const PlanleggerDataFetcher = ({ lenkeErUgyldig = false }: { lenkeErUgyld
         return <SimpleErrorPage retryCallback={() => location.reload()} />;
     }
 
-    return (
-        <PlanleggerRouter
-            stønadskvoter={stønadskvoterData.data}
-            satser={DEFAULT_SATSER}
-            lenkeErUgyldig={lenkeErUgyldig}
-        />
-    );
+    return <PlanleggerRouter stønadskvoter={stønadskvoterData.data} satser={DEFAULT_SATSER} />;
 };
 
 export const PlanleggerDataInit = () => {
@@ -124,10 +118,7 @@ export const PlanleggerDataInit = () => {
     const intl = useIntl();
 
     const dataParam = new URLSearchParams(locations.search).get('data');
-    const [{ data, lenkeErUgyldig, ugyldigDataParam }] = useState(() => ({
-        ...lesPlanleggerdataFraUrl(dataParam),
-        ugyldigDataParam: dataParam,
-    }));
+    const { data, lenkeErUgyldig } = useMemo(() => lesPlanleggerdataFraUrl(dataParam), [dataParam]);
 
     // Denne useEffecten kjøres for at skyra-undersøkelsen skal trigges inline på oppsummering-siden
     useEffect(() => {
@@ -148,13 +139,13 @@ export const PlanleggerDataInit = () => {
         }
     }, [locations.pathname, intl.locale]);
 
-    if (lenkeErUgyldig && dataParam === ugyldigDataParam) {
-        return <Navigate to="/" replace />;
+    if (lenkeErUgyldig) {
+        return <Navigate to="/" replace state={{ ugyldigLenke: true }} />;
     }
 
     return (
         <PlanleggerDataContext initialState={data}>
-            <PlanleggerDataFetcher lenkeErUgyldig={lenkeErUgyldig} />
+            <PlanleggerDataFetcher />
         </PlanleggerDataContext>
     );
 };

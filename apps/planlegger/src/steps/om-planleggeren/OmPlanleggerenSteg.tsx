@@ -1,6 +1,7 @@
 import { ArrowRightIcon, CalendarIcon, QuestionmarkIcon } from '@navikt/aksel-icons';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { FormattedMessage } from 'react-intl';
+import { useLocation } from 'react-router';
 
 import { Alert, BodyShort, Button, HStack, Heading, InlineMessage, VStack } from '@navikt/ds-react';
 
@@ -8,8 +9,9 @@ import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import { PlanleggerForside } from './PlanleggerForside';
 
-export const OmPlanleggerenSteg = ({ lenkeErUgyldig = false }: { lenkeErUgyldig?: boolean }) => {
+export const OmPlanleggerenSteg = () => {
     const navigator = usePlanleggerNavigator();
+    const lenkeErUgyldig = (useLocation().state as { ugyldigLenke?: boolean } | null)?.ugyldigLenke === true;
 
     return (
         <PlanleggerForside>

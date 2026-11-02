@@ -23,6 +23,13 @@ describe('<Planlegger>', () => {
         await userEvent.click(screen.getByText('Start'));
 
         await waitFor(() => expect(screen.getAllByText('Hvem planlegger?')).toHaveLength(2));
+
+        await userEvent.click(screen.getByText('Forrige'));
+
+        expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
+        expect(
+            screen.queryByText('Vi kunne ikke lese planen fra lenken. Du kan lage en ny plan nedenfor.'),
+        ).not.toBeInTheDocument();
     });
 
     it('skal gå rett til oppsummering når ingen av foreldrene har rett', async () => {
