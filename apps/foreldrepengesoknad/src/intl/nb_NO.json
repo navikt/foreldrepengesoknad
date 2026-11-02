@@ -534,7 +534,7 @@
     "uttaksplan.utsettelsesårsak.BARN_INNLAGT": "Utsettelse fordi barnet er innlagt i helseinstitusjon",
     "uttaksplan.utsettelsesårsak.HV_ØVELSE": "Utsettelse på grunn av øvelse eller tjeneste i Heimevernet",
     "uttaksplan.utsettelsesårsak.NAV_TILTAK": "Utsettelse på grunn av Nav tiltak som utgjør 100 % arbeid",
-    "uttaksplan.AnnenPartPerioderInfomelding": "I denne søknaden søker du kun for deg selv. Du kan legge inn foreldrepenger for den andre forelderen, men informasjonen vil ikke bli sendt inn. Den andre forelderen må selv huske å sende oss en søknad.",
+    "uttaksplan.AnnenPartPerioderInfomelding": "I denne søknaden søker du bare for deg selv. Periodene til den andre forelderen i planen er ikke en søknad. Den andre forelderen må selv sende oss en søknad.",
     "oppsummering.AnnenPartPerioderInfomelding": "Den andre forelderen må selv sende oss en søknad for sine perioder.",
     "uttaksplan.overføringsårsaktype.ALENEOMSORG": "Jeg har blitt alene om omsorgen",
     "uttaksplan.overføringsårsaktype.IKKE_RETT_ANNEN_FORELDER": "{navnAnnenForelder} har ikke rett til foreldrepenger",
