@@ -291,6 +291,9 @@ export const getTidligstBehandlingsDatoForTidligSøknad = (
                 const utenHelTilrettelegging = a.tilrettelegginger.filter((t) => t.type !== 'HEL');
                 return utenHelTilrettelegging.map((periode) => dayjs(periode.fom));
             }) ?? [];
+        if (tilretteleggingerFomDatoer.length === 0) {
+            return undefined;
+        }
         const datoFørstePeriodeMedSVP = dayjs.min(tilretteleggingerFomDatoer)!.format(ISO_DATE_FORMAT);
         return Uttaksdagen.denneEllerNeste(datoFørstePeriodeMedSVP).getDatoAntallUttaksdagerTidligere(
             4 * UTTAKSDAGER_PER_UKE,

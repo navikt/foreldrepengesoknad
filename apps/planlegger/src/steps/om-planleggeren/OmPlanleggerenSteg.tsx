@@ -1,8 +1,10 @@
 import { ArrowRightIcon, CalendarIcon, QuestionmarkIcon } from '@navikt/aksel-icons';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
+import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { useLocation, useNavigate } from 'react-router';
 
-import { BodyShort, Button, HStack, Heading, InlineMessage, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, HStack, Heading, InlineMessage, VStack } from '@navikt/ds-react';
 
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
@@ -10,10 +12,27 @@ import { PlanleggerForside } from './PlanleggerForside';
 
 export const OmPlanleggerenSteg = () => {
     const navigator = usePlanleggerNavigator();
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [lenkeErUgyldig] = useState(
+        () => (location.state as { ugyldigLenke?: boolean } | null)?.ugyldigLenke === true,
+    );
+
+    // Fjerner flagget fra historikkoppføringen slik at varselet ikke vises igjen ved tilbakenavigering
+    useEffect(() => {
+        if (lenkeErUgyldig) {
+            void navigate({ pathname: location.pathname, search: location.search }, { replace: true });
+        }
+    }, [lenkeErUgyldig, navigate, location.pathname, location.search]);
 
     return (
         <PlanleggerForside>
             <VStack gap={{ xs: 'space-12', sm: 'space-40' }}>
+                {lenkeErUgyldig && (
+                    <Alert variant="warning">
+                        <FormattedMessage id="OmPlanleggerenSteg.UgyldigLenke" />
+                    </Alert>
+                )}
                 <BodyShort size="large">
                     <FormattedMessage id="OmPlanleggerenSteg.Ingress" />
                 </BodyShort>

@@ -55,3 +55,48 @@ export const Default: Story = {
         );
     },
 };
+
+export const FeilVedHentingAvMinidialog: Story = {
+    beforeEach({ msw }) {
+        let antallKall = 0;
+        msw.use(
+            http.get(API_URLS.minidialog, () => {
+                antallKall++;
+                if (antallKall === 1) {
+                    return new HttpResponse(null, { status: 400 });
+                }
+                return HttpResponse.json([
+                    {
+                        saksnummer: '1',
+                        opprettet: '2023-02-09',
+                    },
+                ] satisfies TilbakekrevingUttalelseOppgave_fpoversikt[]);
+            }),
+            http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+            http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
+        );
+    },
+};
+
+export const FeilVedBakgrunnshentingAvMinidialog: Story = {
+    beforeEach({ msw }) {
+        let antallKall = 0;
+        msw.use(
+            http.get(API_URLS.minidialog, async () => {
+                antallKall++;
+                if (antallKall > 1) {
+                    return new HttpResponse(null, { status: 400 });
+                }
+                await delay(20);
+                return HttpResponse.json([
+                    {
+                        saksnummer: '1',
+                        opprettet: '2023-02-09',
+                    },
+                ] satisfies TilbakekrevingUttalelseOppgave_fpoversikt[]);
+            }),
+            http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+            http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
+        );
+    },
+};
