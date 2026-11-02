@@ -220,22 +220,18 @@ function FeriePerioder() {
                                     }),
                                     startDatoSvp,
                                 ),
-                                ...watch('feriePerioder')
-                                    .map((periode, i) => ({ periode, nr: i + 1 }))
-                                    .filter((_, i) => i !== index)
-                                    .map(({ periode, nr }) =>
-                                        isPeriodNotOverlappingOthers(
-                                            intl.formatMessage(
-                                                {
-                                                    id: 'ferie.antallPerioder.validering.dato.overlapp',
-                                                },
-                                                { periode: nr },
-                                            ),
-                                            { date: watch(`feriePerioder.${index}.tom`)!, isStartDate: false },
-                                            // NOTE: tillater å caste til AvtaltFerieDto ettersom required allerede er validert
-                                            [periode as AvtaltFerieDto],
-                                        ),
-                                    ),
+                                ...watch('feriePerioder').flatMap((periode, i) =>
+                                    i === index || !periode.fom
+                                        ? []
+                                        : isPeriodNotOverlappingOthers(
+                                              intl.formatMessage(
+                                                  { id: 'ferie.antallPerioder.validering.dato.overlapp' },
+                                                  { periode: i + 1 },
+                                              ),
+                                              { date: watch(`feriePerioder.${index}.tom`), isStartDate: false },
+                                              [{ fom: periode.fom, tom: periode.tom }],
+                                          ),
+                                ),
                             ]}
                             validateTo={[
                                 isRequired(
