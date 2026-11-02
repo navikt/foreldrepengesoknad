@@ -69,16 +69,10 @@ export const HarIkkeRett = ({ fpEllerEsSituasjon, satser }: Props) => {
                 </VStack>
             </Box>
             <HStack justify="space-around">
-                <Button
-                    as="a"
-                    href={links.omForeldrepenger}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    variant="secondary"
-                >
+                <Button as="a" href={links.omForeldrepenger} target="_blank" variant="secondary">
                     <FormattedMessage id="OppsummeringFpEllerEsSide.MerOmFp" />
                 </Button>
-                <Button as="a" href={links.engangsstonad} target="_blank" rel="noopener noreferrer" variant="secondary">
+                <Button as="a" href={links.engangsstonad} target="_blank" variant="secondary">
                     <FormattedMessage id="OppsummeringFpEllerEsSide.MerOmEs" />
                 </Button>
             </HStack>
