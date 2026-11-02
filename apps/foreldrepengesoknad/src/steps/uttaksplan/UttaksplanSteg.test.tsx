@@ -10,8 +10,7 @@ import * as stories from './UttaksplanSteg.stories';
 
 const infoTekst = [
     'I denne søknaden søker du bare for deg selv.',
-    'Periodene til den andre forelderen i planen er ikke en søknad.',
-    'Den andre forelderen må selv sende oss en søknad.',
+    'Den andre forelderen må bekrefte sin del av planen i sin egen søknad.',
 ].join(' ');
 
 const {
