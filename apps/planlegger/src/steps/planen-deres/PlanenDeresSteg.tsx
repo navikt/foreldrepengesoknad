@@ -314,7 +314,7 @@ const AntallUkerVelger = ({
     const lagreFordeling = useContextSaveData(ContextDataType.FORDELING);
     const lagreHvorLangPeriodePlanlegger = notEmpty(useContextSaveData(ContextDataType.HVOR_LANG_PERIODE));
 
-    const isDesktop = useMedia('screen and (min-width: 480)');
+    const isDesktop = useMedia('screen and (min-width: 480px)');
 
     const oppdaterPeriodeOgFordeling = (value: Dekningsgrad) => {
         const dekningsgrad = value;
