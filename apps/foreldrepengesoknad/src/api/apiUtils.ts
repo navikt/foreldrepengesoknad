@@ -1,5 +1,4 @@
 import { ContextDataMap, ContextDataType, OpprinneligUttaksplan } from 'appData/FpDataContext';
-import dayjs from 'dayjs';
 import { harMinstEnUttaksEllerOverføringsperiode } from 'steps/uttaksplan/submitValidering';
 import { AnnenForelder, isAnnenForelderIkkeOppgitt } from 'types/AnnenForelder';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
@@ -256,7 +255,7 @@ export const mapTilEndringssøknadDto = (
 
     // fp-soknad avviser endringsdato i helg.
     const endringsdato = endringstidspunkt ? Uttaksdagen.denneEllerNeste(endringstidspunkt).getDato() : undefined;
-    const perioder = fjernSøkersAvslåttePerioder(uttaksplan, endringsdato);
+    const perioder = fjernSøkersAvslåttePerioder(uttaksplan);
 
     return {
         søkerinfo: mapSøkerInfoTilSøknadDto(søkerinfo),
@@ -274,15 +273,10 @@ export const mapTilEndringssøknadDto = (
     };
 };
 
-// Søkeren skal ikke søke på nytt om avslåtte perioder som sendes videre til fpsak. fp-soknad sender perioder som
-// slutter på eller etter endringsdato (kuttet ved endringsdato), og hele planen når endringsdato mangler.
-const fjernSøkersAvslåttePerioder = (
-    uttaksplan: UttakPeriodeDto[],
-    endringsdato: string | undefined,
-): UttakPeriodeDto[] =>
+// Søkeren skal ikke søke på nytt om avslåtte perioder.
+const fjernSøkersAvslåttePerioder = (uttaksplan: UttakPeriodeDto[]): UttakPeriodeDto[] =>
     uttaksplan.flatMap((periode) => {
-        const sendesTilFpsak = endringsdato === undefined || !dayjs(periode.tom).isBefore(endringsdato, 'day');
-        if (!sendesTilFpsak || periode.søker?.resultat?.innvilget !== false) {
+        if (periode.søker?.resultat?.innvilget !== false) {
             return [periode];
         }
         return periode.annenPart || periode.annenPartEøs ? [omitOne(periode, 'søker')] : [];

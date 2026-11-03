@@ -268,7 +268,7 @@ describe('mapTilEndringssøknadDto', () => {
         expect(endringssøknad.uttaksplan.perioder).toEqual([plan[0], eøsPeriode]);
     });
 
-    it('skal fjerne søkerens avslåtte perioder fra og med endringsdato og beholde annen parts del', () => {
+    it('skal fjerne søkerens avslåtte perioder også før endringsdato og beholde annen parts del', () => {
         const avslag = { innvilget: false, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' } as const;
         const avslåttJanuar: UttakPeriodeDto = {
             fom: '2024-01-01',
@@ -290,7 +290,6 @@ describe('mapTilEndringssøknadDto', () => {
 
         expect(endringssøknad.endringsdato).toBe('2024-02-01');
         expect(endringssøknad.uttaksplan.perioder).toEqual([
-            avslåttJanuar,
             nyPlan[1],
             { fom: '2024-03-01', tom: '2024-03-29', annenPart: farsDel },
         ]);
