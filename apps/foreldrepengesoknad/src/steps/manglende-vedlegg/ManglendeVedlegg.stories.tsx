@@ -3,7 +3,7 @@ import { API_URLS } from 'api/queries';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
-import { HttpResponse, http } from 'msw';
+import { HttpResponse, delay, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
@@ -382,6 +382,22 @@ export const FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid: Story = {
                 API_URLS.trengerDokumentereMorsArbeid,
                 () => new HttpResponse(JSON.stringify(true), { status: 200 }),
             ),
+        );
+    },
+};
+
+export const MorsArbeidMedTregOpplasting: Story = {
+    args: FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid.args,
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(
+                API_URLS.trengerDokumentereMorsArbeid,
+                () => new HttpResponse(JSON.stringify(true), { status: 200 }),
+            ),
+            http.post(API_URLS.sendVedlegg, async () => {
+                await delay(1000);
+                return new HttpResponse(JSON.stringify('uuid-test'), { status: 200 });
+            }),
         );
     },
 };
