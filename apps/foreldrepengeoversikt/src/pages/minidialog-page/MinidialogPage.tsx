@@ -5,7 +5,6 @@ import { Navigate, useParams } from 'react-router';
 import { Alert, BodyShort, Button, Heading, Loader, VStack } from '@navikt/ds-react';
 
 import { EttersendelseDto } from '@navikt/fp-types';
-import { useDocumentTitle } from '@navikt/fp-utils';
 
 import { minidialogOptions, sendEttersending } from '../../api/queries.ts';
 import { ContentSection } from '../../components/content-section/ContentSection';
@@ -16,6 +15,17 @@ import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
 
 export const MinidialogPage = () => {
+    const intl = useIntl();
+
+    return (
+        <>
+            <title>{`${intl.formatMessage({ id: 'oppgaver.tittel.tilbakebetaling' })} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`}</title>
+            <MinidialogPageInner />
+        </>
+    );
+};
+
+const MinidialogPageInner = () => {
     const params = useParams();
     const minidialogQuery = useQuery({
         ...minidialogOptions(),
@@ -23,11 +33,6 @@ export const MinidialogPage = () => {
     });
 
     const sak = useGetSelectedSak();
-
-    const intl = useIntl();
-    useDocumentTitle(
-        `${intl.formatMessage({ id: 'oppgaver.tittel.tilbakebetaling' })} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
-    );
 
     const { mutate, isPending, isError, isSuccess } = useMutation({
         mutationFn: (ettersendelse: EttersendelseDto) => sendEttersending(ettersendelse),

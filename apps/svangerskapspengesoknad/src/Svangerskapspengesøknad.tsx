@@ -8,7 +8,7 @@ import { useIntl } from 'react-intl';
 import { erUmyndigFeil } from '@navikt/fp-app-shell';
 import { SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 import { RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
-import { erLikUansettRekkefølge, erMyndig, useDocumentTitle } from '@navikt/fp-utils';
+import { erLikUansettRekkefølge, erMyndig } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ApiErrorHandler, SvangerskapspengesøknadRoutes } from './SvangerskapspengesøknadRoutes';
@@ -27,8 +27,16 @@ export const slettMellomlagringOgLastSidePåNytt = async () => {
 
 export const Svangerskapspengesøknad = () => {
     const intl = useIntl();
-    useDocumentTitle(intl.formatMessage({ id: 'Svangerskapspengesøknad.pagetitle' }));
 
+    return (
+        <>
+            <title>{intl.formatMessage({ id: 'Svangerskapspengesøknad.pagetitle' })}</title>
+            <SvangerskapspengesøknadInnhold />
+        </>
+    );
+};
+
+const SvangerskapspengesøknadInnhold = () => {
     const søkerinfo = useQuery(søkerinfoOptions());
 
     const mellomlagretInfo = useQuery(mellomlagretInfoOptions());

@@ -8,7 +8,7 @@ import { Link, useParams } from 'react-router';
 import { Alert, BodyLong, Button, Heading, Loader, Pagination, SortState, Table, VStack } from '@navikt/ds-react';
 
 import { DokumentDto_fpoversikt } from '@navikt/fp-types';
-import { formatDateExtended, useDocumentTitle } from '@navikt/fp-utils';
+import { formatDateExtended } from '@navikt/fp-utils';
 
 import { hentDokumenterOptions } from '../../api/queries.ts';
 import { DokumenterHeader } from '../../components/header/Header';
@@ -21,10 +21,10 @@ import { DokumentLenke } from './components/DokumentLenke';
 export const DokumenterPage = () => {
     const intl = useIntl();
     const title = intl.formatMessage({ id: 'dokumenter' });
-    useDocumentTitle(`${title} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`);
 
     return (
         <PageRouteLayout header={<DokumenterHeader />}>
+            <title>{`${title} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`}</title>
             <DokumenterPageInner />
         </PageRouteLayout>
     );

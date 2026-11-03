@@ -11,7 +11,7 @@ import { Alert, BodyShort, HGrid, HStack, Heading, Skeleton, VStack } from '@nav
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { SkyraSurvey } from '@navikt/fp-observability';
 import { OversiktPersonopplysningerDto_fpoversikt, Satser, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
-import { formatCurrencyWithKr, getLenker, useDocumentTitle } from '@navikt/fp-utils';
+import { formatCurrencyWithKr, getLenker } from '@navikt/fp-utils';
 
 import {
     hentDokumenterOptions,
@@ -73,10 +73,12 @@ const finnEngangstønadForSøknadstidspunkt = (satser: Satser, søknadstidspunkt
 };
 
 export const Saksoversikt = ({ søkerinfo }: Props) => {
+    const intl = useIntl();
     const gjeldendeSak = useGetSelectedSak();
 
     return (
         <PageRouteLayout header={<DinSakHeader sak={gjeldendeSak} />}>
+            <title>{`${getSaksoversiktHeading(gjeldendeSak?.ytelse, intl)} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`}</title>
             <SaksoversiktInner søkerinfo={søkerinfo} />
         </PageRouteLayout>
     );
@@ -90,10 +92,6 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
     useQuery(hentDokumenterOptions(params.saksnummer!));
 
     const gjeldendeSak = useGetSelectedSak();
-
-    useDocumentTitle(
-        `${getSaksoversiktHeading(gjeldendeSak?.ytelse, intl)} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
-    );
 
     const tidslinjeHendelserQuery = useQuery(hentTidslinjehendelserOptions(params.saksnummer!));
     const manglendeVedleggQuery = useQuery(hentManglendeVedleggOptions(params.saksnummer!));

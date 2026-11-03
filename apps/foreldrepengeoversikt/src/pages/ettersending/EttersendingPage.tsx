@@ -21,7 +21,6 @@ import {
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { FileUploader } from '@navikt/fp-filopplaster';
 import { Attachment, EttersendelseDto, Ytelse } from '@navikt/fp-types';
-import { useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { API_URLS, sendEttersending, søkerInfoOptions } from '../../api/queries.ts';
@@ -106,9 +105,6 @@ type Props = {
 
 const EttersendingPageInner = ({ saker }: Props) => {
     const intl = useIntl();
-    useDocumentTitle(
-        `${intl.formatMessage({ id: 'lastOppDokumenter' })} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
-    );
     const params = useParams();
     const søkerInfo = useQuery(søkerInfoOptions()).data;
 
@@ -227,8 +223,11 @@ const EttersendingPageInner = ({ saker }: Props) => {
 };
 
 export function EttersendingPage({ saker }: Props) {
+    const intl = useIntl();
+
     return (
         <PageRouteLayout header={<EttersendingHeader />}>
+            <title>{`${intl.formatMessage({ id: 'lastOppDokumenter' })} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`}</title>
             <EttersendingPageInner saker={saker} />
         </PageRouteLayout>
     );

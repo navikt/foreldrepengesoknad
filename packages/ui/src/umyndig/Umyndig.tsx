@@ -5,7 +5,6 @@ import { Button, GuidePanel, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { AppName } from '@navikt/fp-types';
-import { useDocumentTitle } from '@navikt/fp-utils';
 
 import { SkjemaRotLayout } from '../skjema-rotlayout/SkjemaRotLayout';
 
@@ -30,10 +29,10 @@ export const Umyndig = ({ appName }: Props) => {
     const intl = useIntl();
 
     const titleText = getTitleText(appName, intl);
-    useDocumentTitle(titleText);
 
     return (
         <SkjemaRotLayout pageTitle={titleText}>
+            <title>{titleText}</title>
             <VStack gap="space-40">
                 <GuidePanel poster>
                     <VStack gap="space-32">

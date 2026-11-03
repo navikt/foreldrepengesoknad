@@ -22,7 +22,6 @@ export { omitOne, omitMany, erLikUansettRekkefølge } from './src/objectUtils';
 export { redirect } from './src/loginUtils';
 
 export { useAbortSignal } from './src/hooks/useAbortSignal';
-export { useDocumentTitle } from './src/hooks/useDocumentTitle';
 export { useBeforeUnload } from './src/hooks/useBeforeUnload';
 export { useScrollBehaviour } from './src/hooks/useScrollBehaviour';
 export { useMedia } from './src/hooks/useMedia';

@@ -7,7 +7,7 @@ import { useIntl } from 'react-intl';
 
 import { erUmyndigFeil } from '@navikt/fp-app-shell';
 import { RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
-import { erLikUansettRekkefølge, erMyndig, useDocumentTitle } from '@navikt/fp-utils';
+import { erLikUansettRekkefølge, erMyndig } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ApiErrorHandler, EngangsstønadRoutes } from './EngangsstønadRoutes';
@@ -24,8 +24,16 @@ export const slettMellomlagringOgLastSidePåNytt = async () => {
 
 export const Engangsstønad = () => {
     const intl = useIntl();
-    useDocumentTitle(intl.formatMessage({ id: 'Engangsstønad.Pagetitle' }));
 
+    return (
+        <>
+            <title>{intl.formatMessage({ id: 'Engangsstønad.Pagetitle' })}</title>
+            <EngangsstønadInnhold />
+        </>
+    );
+};
+
+const EngangsstønadInnhold = () => {
     const personinfo = useQuery(personOptions());
 
     const mellomlagretInfo = useQuery(mellomlagretInfoOptions());
