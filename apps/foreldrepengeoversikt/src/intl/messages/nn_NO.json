@@ -44,6 +44,7 @@
     "minidialog.tilbakekreving.tilbakekreving.label": "Svar på tilbakebetalinga: ",
     "minidialog.dokumenter": "Last opp dokument",
     "EttersendingPage.dokumenter": "Last opp dokument",
+    "EttersendingPage.tittel": "Last opp dokument - Dine foreldrepengar",
     "miniDialog.tilbakekreving.sendButton": "Send",
     "minidialog.tilbakekreving.veilederpanel": "Saken blir behandla med dei opplysningane vi har tilgjengeleg. Vi sender deg eit vedtak når saken er ferdig behandla.",
     "miniDialog.tilbakekreving.radioPanelGruppe.legend": " Ønskjer du å gje ei fråsegn i saka før vi behandlar den?",

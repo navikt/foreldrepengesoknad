@@ -44,6 +44,7 @@
     "minidialog.tilbakekreving.tilbakekreving.label": "Reply to the repayment: ",
     "minidialog.dokumenter": "Upload documents",
     "EttersendingPage.dokumenter": "Upload documents",
+    "EttersendingPage.tittel": "Upload documents - Your parental benefit",
     "miniDialog.tilbakekreving.sendButton": "Send",
     "minidialog.tilbakekreving.veilederpanel": "The case will be processed with the information we have available. We will send you a decision when the case is finalized.",
     "miniDialog.tilbakekreving.radioPanelGruppe.legend": "Do you want to make a statement in the case before we process it?",

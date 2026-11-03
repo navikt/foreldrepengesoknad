@@ -227,7 +227,7 @@ export function EttersendingPage({ saker }: Props) {
 
     return (
         <PageRouteLayout header={<EttersendingHeader />}>
-            <title>{`${intl.formatMessage({ id: 'lastOppDokumenter' })} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`}</title>
+            <title>{intl.formatMessage({ id: 'EttersendingPage.tittel' })}</title>
             <EttersendingPageInner saker={saker} />
         </PageRouteLayout>
     );
