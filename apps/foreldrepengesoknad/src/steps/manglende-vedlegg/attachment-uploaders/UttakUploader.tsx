@@ -17,7 +17,7 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { ManglendeVedleggFormData, OppdaterVedlegg } from '../ManglendeVedleggFormData';
 import { PeriodeVisning } from './periodevisning/PeriodeVisning';
-import { useNullstillPågåendeOpplasting } from './useNullstillPågåendeOpplasting';
+import { useNullstillOpplastingVedUnmount } from './useNullstillOpplastingVedUnmount';
 
 interface Props {
     attachments: Attachment[];
@@ -52,7 +52,7 @@ export const UttakUploader = ({
 
     const { watch } = useFormContext<ManglendeVedleggFormData>();
     const formAttachments = watch(skjemanummer);
-    useNullstillPågåendeOpplasting(skjemanummer, updateAttachments);
+    useNullstillOpplastingVedUnmount(skjemanummer, updateAttachments);
 
     useEffect(() => {
         if (formAttachments.length > 0) {

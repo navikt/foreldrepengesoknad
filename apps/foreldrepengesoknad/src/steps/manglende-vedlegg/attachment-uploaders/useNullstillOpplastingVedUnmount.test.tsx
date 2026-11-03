@@ -6,7 +6,7 @@ import { Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
 import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
-import { useNullstillPågåendeOpplasting } from './useNullstillPågåendeOpplasting';
+import { useNullstillOpplastingVedUnmount } from './useNullstillOpplastingVedUnmount';
 
 const vedlegg = [{ id: '1', filename: 'hello.png' } as Attachment];
 
@@ -17,12 +17,12 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
     return <FormProvider {...formMethods}>{children}</FormProvider>;
 };
 
-describe('useNullstillPågåendeOpplasting', () => {
+describe('useNullstillOpplastingVedUnmount', () => {
     it('skal melde at ingen opplasting pågår når uploaderen avmonteres', () => {
         const updateAttachments = vi.fn();
 
         const { rerender, unmount } = renderHook(
-            () => useNullstillPågåendeOpplasting(Skjemanummer.DOK_ARBEID_MOR, updateAttachments),
+            () => useNullstillOpplastingVedUnmount(Skjemanummer.DOK_ARBEID_MOR, updateAttachments),
             { wrapper: Wrapper },
         );
         rerender();
