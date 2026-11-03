@@ -71,17 +71,13 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
     );
 
     const angreSisteEndring = useCallback(() => {
-        setUttaksplanVersjoner((eksisterendeVersjoner) => {
-            if (eksisterendeVersjoner.length === 0) {
-                return eksisterendeVersjoner;
-            }
-            const nyeVersjoner = eksisterendeVersjoner.slice(0, -1);
-
-            oppdater(nyeVersjoner.at(-1));
-
-            return nyeVersjoner;
-        });
-    }, [oppdater]);
+        if (uttaksplanVersjoner.length === 0) {
+            return;
+        }
+        const nyeVersjoner = uttaksplanVersjoner.slice(0, -1);
+        setUttaksplanVersjoner(nyeVersjoner);
+        oppdater(nyeVersjoner.at(-1));
+    }, [oppdater, uttaksplanVersjoner]);
 
     const tilbakestillUttaksplan = useCallback(() => {
         setUttaksplanVersjoner([]);
