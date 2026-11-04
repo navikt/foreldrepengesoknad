@@ -35,6 +35,7 @@ import { BluePanel, Infobox, StepButtons } from '@navikt/fp-ui';
 import { compressToUrl, useBreakpoints, useScrollBehaviour } from '@navikt/fp-utils';
 import {
     FjernAltIUttaksplanModal,
+    HistoriskEndringModal,
     KvoteOppsummering,
     TilbakestillPlanModal,
     UttaksplanDataProvider,
@@ -191,6 +192,7 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
                     >
                         <FjernAltIUttaksplanModal />
                         <TilbakestillPlanModal />
+                        <HistoriskEndringModal />
 
                         <Tabs
                             defaultValue="kalender"
