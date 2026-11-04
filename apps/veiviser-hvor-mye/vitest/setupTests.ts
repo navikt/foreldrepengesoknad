@@ -4,6 +4,12 @@ import '@testing-library/jest-dom/vitest';
 
 import * as globalStorybookConfig from '../.storybook/preview';
 
+// Preview lastes før testfilene, så mocken i AppContainer.test.tsx kom for sent.
+vi.mock('@navikt/nav-dekoratoren-moduler', () => ({
+    setAvailableLanguages: vi.fn(),
+    onLanguageSelect: vi.fn(),
+}));
+
 setProjectAnnotations(globalStorybookConfig);
 
 // Browser-modus er tregare enn jsdom; auk Testing Library sin standard findBy*/waitFor-timeout.
