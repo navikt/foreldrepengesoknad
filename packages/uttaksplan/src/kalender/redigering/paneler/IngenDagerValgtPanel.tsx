@@ -4,6 +4,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Box, Detail, HStack, Heading, Link, Show, Tag, VStack } from '@navikt/ds-react';
 
+import { useBreakpoints } from '@navikt/fp-utils';
+
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
 import { UttaksplanHandlingKnapper } from '../../../felles/UttaksplanHandlingKnapper';
@@ -12,7 +14,7 @@ import {
     useTellDagerIUttaksPeriodene,
     useUbrukteDagerPerKontoKunEnHarRett,
 } from '../../../utils/kvoteOppsummeringUtils';
-import { useErDesktop, useMediaResetMinimering } from '../utils/useMediaActions';
+import { useMediaResetMinimering } from '../utils/useMediaActions';
 
 interface Props {
     scrollToKvoteOppsummering: () => void;
@@ -24,9 +26,9 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
-    const erDesktop = useErDesktop();
+    const { isMinWidth768 } = useBreakpoints();
 
-    const [erMinimert, setErMinimert] = useState(!erDesktop);
+    const [erMinimert, setErMinimert] = useState(!isMinWidth768);
 
     useMediaResetMinimering(setErMinimert);
 
@@ -34,9 +36,9 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
         <VStack gap="space-16">
             <Box
                 padding="space-12"
-                onClick={erDesktop ? undefined : () => setErMinimert(!erMinimert)}
+                onClick={isMinWidth768 ? undefined : () => setErMinimert(!erMinimert)}
                 className={
-                    erDesktop
+                    isMinWidth768
                         ? 'bg-ax-bg-accent-soft'
                         : 'bg-ax-bg-accent-soft hover:bg-ax-bg-accent-moderate cursor-pointer'
                 }

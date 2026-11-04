@@ -32,7 +32,7 @@ import { BodyLong, BodyShort, Box, Heading, InlineMessage, Tabs, ToggleGroup, VS
 import { loggUmamiEvent } from '@navikt/fp-observability';
 import { Dekningsgrad, FordelingPlanlegger, KontoBeregningResultatDto, UttakPeriodeDto } from '@navikt/fp-types';
 import { BluePanel, Infobox, StepButtons } from '@navikt/fp-ui';
-import { compressToUrl, useMedia, useScrollBehaviour } from '@navikt/fp-utils';
+import { compressToUrl, useBreakpoints, useScrollBehaviour } from '@navikt/fp-utils';
 import {
     FjernAltIUttaksplanModal,
     KvoteOppsummering,
@@ -314,7 +314,7 @@ const AntallUkerVelger = ({
     const lagreFordeling = useContextSaveData(ContextDataType.FORDELING);
     const lagreHvorLangPeriodePlanlegger = notEmpty(useContextSaveData(ContextDataType.HVOR_LANG_PERIODE));
 
-    const isDesktop = useMedia('screen and (min-width: 480px)');
+    const { isMinWidth480 } = useBreakpoints();
 
     const oppdaterPeriodeOgFordeling = (value: Dekningsgrad) => {
         const dekningsgrad = value;
@@ -351,7 +351,7 @@ const AntallUkerVelger = ({
             <ToggleGroup
                 data-color="neutral"
                 defaultValue={hvorLangPeriode?.dekningsgrad}
-                size={isDesktop ? 'medium' : 'small'}
+                size={isMinWidth480 ? 'medium' : 'small'}
                 onChange={(value) => oppdaterPeriodeOgFordeling(value as Dekningsgrad)}
                 style={{ width: '100%' }}
             >

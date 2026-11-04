@@ -3,12 +3,12 @@ import { useCallback, useSyncExternalStore } from 'react';
 const harMatchMedia = () => typeof globalThis !== 'undefined' && !!globalThis.matchMedia;
 
 /**
- * @example useMedia("screen and (min-width: 1024px)")
+ * @example useMediaQuery("screen and (min-width: 1024px)")
  * @param media string
  * @param fallback boolean
  * @returns boolean
  */
-export const useMedia = (media: string, fallback = false): boolean => {
+export const useMediaQuery = (media: string, fallback = false): boolean => {
     const subscribe = useCallback(
         (onChange: () => void) => {
             if (!harMatchMedia()) {
