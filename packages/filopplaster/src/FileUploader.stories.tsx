@@ -155,6 +155,7 @@ export const AlleMuligeOpplastningsFeil: Story = {
                 'DUPLIKAT_FORSENDELSE',
                 'MELLOMLAGRING_VEDLEGG_VIRUSSCAN_TIMEOUT',
                 'MELLOMLAGRING_VEDLEGG_PASSORD_BESKYTTET',
+                'MELLOMLAGRING_VEDLEGG_BILDE_FOR_STORT',
                 'SERVER_ERROR',
                 'IKKE_TILGANG',
                 'MELLOMLAGRING',
