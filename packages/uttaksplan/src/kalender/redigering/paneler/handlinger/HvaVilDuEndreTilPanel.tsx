@@ -47,9 +47,9 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
     const { visUtsettelsePanel: visPausePanel, setVisUtsettelsePanel: setVisPausePanel } =
         useVisUtsettelsePanel(sammenslåtteValgtePerioder);
 
-    const { isMinWidth768 } = useBreakpoints();
+    const { isAtLeast768px } = useBreakpoints();
 
-    const [erMinimert, setErMinimert] = useState(!isMinWidth768);
+    const [erMinimert, setErMinimert] = useState(!isAtLeast768px);
 
     useMediaResetMinimering(setErMinimert);
 

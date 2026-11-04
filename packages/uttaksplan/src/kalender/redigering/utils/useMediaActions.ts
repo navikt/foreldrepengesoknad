@@ -4,25 +4,25 @@ import { useBreakpoints } from '@navikt/fp-utils';
 
 export const useMediaRemoveScrollingOnMobile = (erMinimert: boolean) => {
     // For å fjerne scrolling på bakgrunn på mobil
-    const { isMinWidth768 } = useBreakpoints();
+    const { isAtLeast768px } = useBreakpoints();
     useEffect(() => {
         document.body.style.overflow = '';
-        if (!isMinWidth768 && !erMinimert) {
+        if (!isAtLeast768px && !erMinimert) {
             document.body.style.overflow = 'hidden';
         }
         return () => {
             document.body.style.overflow = '';
         };
-    }, [isMinWidth768, erMinimert]);
+    }, [isAtLeast768px, erMinimert]);
 };
 
 export const useMediaResetMinimering = (setErMinimert: (value: boolean) => void) => {
-    const { isMinWidth768 } = useBreakpoints();
+    const { isAtLeast768px } = useBreakpoints();
 
     // For å nullstille minimering når en går fra mobil til desktop
     useEffect(() => {
-        if (isMinWidth768) {
+        if (isAtLeast768px) {
             setErMinimert(false);
         }
-    }, [isMinWidth768, setErMinimert]);
+    }, [isAtLeast768px, setErMinimert]);
 };

@@ -20,7 +20,7 @@ interface Props {
 }
 
 export const DinPlan = ({ navnPåForeldre, sak }: Props) => {
-    const { isMinWidth768 } = useBreakpoints();
+    const { isAtLeast768px } = useBreakpoints();
 
     const [visKalender, setVisKalender] = useState(false);
 
@@ -65,7 +65,7 @@ export const DinPlan = ({ navnPåForeldre, sak }: Props) => {
                 <HStack>
                     <Button
                         className="mt-4"
-                        size={isMinWidth768 ? 'small' : 'medium'}
+                        size={isAtLeast768px ? 'small' : 'medium'}
                         variant="secondary"
                         onClick={() => location.assign(getLenker().foreldrepengesoknad)}
                     >

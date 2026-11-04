@@ -26,9 +26,9 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
 
     const uttaksplanRedigering = useUttaksplanRedigering();
 
-    const { isMinWidth768 } = useBreakpoints();
+    const { isAtLeast768px } = useBreakpoints();
 
-    const [erMinimert, setErMinimert] = useState(!isMinWidth768);
+    const [erMinimert, setErMinimert] = useState(!isAtLeast768px);
 
     useMediaResetMinimering(setErMinimert);
 
@@ -36,9 +36,9 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
         <VStack gap="space-16">
             <Box
                 padding="space-12"
-                onClick={isMinWidth768 ? undefined : () => setErMinimert(!erMinimert)}
+                onClick={isAtLeast768px ? undefined : () => setErMinimert(!erMinimert)}
                 className={
-                    isMinWidth768
+                    isAtLeast768px
                         ? 'bg-ax-bg-accent-soft'
                         : 'bg-ax-bg-accent-soft hover:bg-ax-bg-accent-moderate cursor-pointer'
                 }

@@ -41,12 +41,12 @@ describe('useBreakpoints', () => {
         [767, true, false],
         [768, true, true],
         [1280, true, true],
-    ])('matches inclusive minimum widths at %i px', (viewportWidth, isMinWidth480, isMinWidth768) => {
+    ])('matches inclusive minimum widths at %i px', (viewportWidth, isAtLeast480px, isAtLeast768px) => {
         width = viewportWidth;
 
         const { result } = renderHook(() => useBreakpoints());
 
-        expect(result.current).toEqual({ isMinWidth480, isMinWidth768 });
+        expect(result.current).toEqual({ isAtLeast480px, isAtLeast768px });
     });
 
     it('updates both breakpoints when the viewport grows and shrinks', () => {
@@ -57,14 +57,14 @@ describe('useBreakpoints', () => {
             listeners.forEach((listener) => listener());
         });
 
-        expect(result.current).toEqual({ isMinWidth480: true, isMinWidth768: true });
+        expect(result.current).toEqual({ isAtLeast480px: true, isAtLeast768px: true });
 
         act(() => {
             width = 479;
             listeners.forEach((listener) => listener());
         });
 
-        expect(result.current).toEqual({ isMinWidth480: false, isMinWidth768: false });
+        expect(result.current).toEqual({ isAtLeast480px: false, isAtLeast768px: false });
     });
 
     it('removes subscriptions on unmount', () => {
@@ -82,6 +82,6 @@ describe('useBreakpoints', () => {
 
         const { result } = renderHook(() => useBreakpoints());
 
-        expect(result.current).toEqual({ isMinWidth480: false, isMinWidth768: false });
+        expect(result.current).toEqual({ isAtLeast480px: false, isAtLeast768px: false });
     });
 });

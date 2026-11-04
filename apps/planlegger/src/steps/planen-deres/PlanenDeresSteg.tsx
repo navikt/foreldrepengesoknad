@@ -314,7 +314,7 @@ const AntallUkerVelger = ({
     const lagreFordeling = useContextSaveData(ContextDataType.FORDELING);
     const lagreHvorLangPeriodePlanlegger = notEmpty(useContextSaveData(ContextDataType.HVOR_LANG_PERIODE));
 
-    const { isMinWidth480 } = useBreakpoints();
+    const { isAtLeast480px } = useBreakpoints();
 
     const oppdaterPeriodeOgFordeling = (value: Dekningsgrad) => {
         const dekningsgrad = value;
@@ -351,7 +351,7 @@ const AntallUkerVelger = ({
             <ToggleGroup
                 data-color="neutral"
                 defaultValue={hvorLangPeriode?.dekningsgrad}
-                size={isMinWidth480 ? 'medium' : 'small'}
+                size={isAtLeast480px ? 'medium' : 'small'}
                 onChange={(value) => oppdaterPeriodeOgFordeling(value as Dekningsgrad)}
                 style={{ width: '100%' }}
             >
