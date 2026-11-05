@@ -120,22 +120,11 @@ export const PlanleggerDataInit = () => {
     const dataParam = new URLSearchParams(locations.search).get('data');
     const { data, lenkeErUgyldig } = useMemo(() => lesPlanleggerdataFraUrl(dataParam), [dataParam]);
 
-    // Denne useEffecten kjøres for at skyra-undersøkelsen skal trigges inline på oppsummering-siden
     useEffect(() => {
-        // Skyra støtter kun nb og nn
         const isSupportedLocale = intl.locale === 'nb' || intl.locale === 'nn';
 
-        if (!isSupportedLocale || !locations.pathname.includes('oppsummering')) {
-            return;
-        }
-        const skyraGlobal = globalThis as typeof globalThis & { skyra?: { reload: () => void } };
-        if (typeof skyraGlobal.skyra?.reload === 'function') {
-            skyraGlobal.skyra.reload();
-            // eslint-disable-next-line no-console
-            console.log(`skyra.reload() kjørt på ${locations.pathname}`);
-        } else {
-            // eslint-disable-next-line no-console
-            console.warn('skyra.reload() ikke tilgjengelig');
+        if (isSupportedLocale && locations.pathname.includes('oppsummering')) {
+            globalThis.skyra?.reload?.();
         }
     }, [locations.pathname, intl.locale]);
 

@@ -16,6 +16,7 @@
         "@navikt/aksel-icons": "catalog:",
         "@navikt/ds-react": "catalog:",
         "@navikt/fp-types": "workspace:*",
+        "@navikt/nav-dekoratoren-moduler": "catalog:",
         "react": "catalog:",
         "react-intl": "catalog:"
     },
