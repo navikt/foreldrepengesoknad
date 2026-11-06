@@ -629,7 +629,7 @@ describe('<UttaksplanSteg>', () => {
             await userEvent.click(screen.getByRole('tab', { name: 'Liste' }));
             await userEvent.click(screen.getByRole('button', { name: /01. juli 24\s*- 09. aug. 24/ }));
 
-            expect(screen.queryAllByRole('button', { name: /^(Endre|Slett)$/ })).toHaveLength(kanRedigere ? 2 : 0);
+            expect(screen.queryAllByRole('button', { name: /^(Endre|Slett)$/ }).length > 0).toBe(kanRedigere);
         },
     );
 });

@@ -163,13 +163,6 @@ describe('erFellesUttaksplanEndret', () => {
         expect(erFellesUttaksplanEndret(lagret, fersk)).toBe(true);
     });
 
-    it('skal ikkje sjå det som endring når mellomlagra plan manglar annenPartRedigerbar', () => {
-        const lagret = lagPlan({ arbeidstidprosent: 50 });
-        const fersk = { ...lagPlan({ arbeidstidprosent: 50 }), annenPartRedigerbar: false };
-
-        expect(erFellesUttaksplanEndret(lagret, fersk)).toBe(false);
-    });
-
     it('skal sjå det som endring når backend ikkje returnerer nokon plan', () => {
         const lagret = lagPlan({ arbeidstidprosent: 50 });
 

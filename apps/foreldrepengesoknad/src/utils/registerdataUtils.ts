@@ -78,11 +78,4 @@ const normaliserFellesUttaksplan = (plan: FellesUttaksplanDto): FellesUttaksplan
 
 export const erFellesUttaksplanEndret = (lagretPlan: FellesUttaksplanDto, ferskPlan: FellesUttaksplanDto | undefined) =>
     ferskPlan === undefined ||
-    !erLikUansettRekkefølge(
-        normaliserFellesUttaksplan({
-            ...lagretPlan,
-            // Mellomlagra planar frå før annenPartRedigerbar fanst i kontrakten manglar feltet.
-            annenPartRedigerbar: lagretPlan.annenPartRedigerbar ?? ferskPlan.annenPartRedigerbar,
-        }),
-        normaliserFellesUttaksplan(ferskPlan),
-    );
+    !erLikUansettRekkefølge(normaliserFellesUttaksplan(lagretPlan), normaliserFellesUttaksplan(ferskPlan));
