@@ -1,11 +1,7 @@
 import type { BrukerRolleSak_fpoversikt, Familiesituasjon, RettighetType_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
-import {
-    Uttaksplanperiode,
-    UttaksplanperiodeMedKunTapteDager,
-    erPeriodeDto,
-} from '../../types/UttaksplanPeriode';
+import { Uttaksplanperiode, UttaksplanperiodeMedKunTapteDager, erPeriodeDto } from '../../types/UttaksplanPeriode';
 import { UttaksperiodeValidatorer } from '../../utils/UttaksperiodeValidatorer';
 import { Periode } from '../types';
 import { Synlighetsregel } from './types';
@@ -42,6 +38,7 @@ export const useKnapperIRedigeringspanelSynlighet = (input: {
         skalVisePauseknapp: SKAL_VISE_PAUSEKNAPP.skalVises(kontekst),
         skalViseFerieknapp: SKAL_VISE_FERIEKNAPP.skalVises(kontekst),
         skalViseLeggTilKnappetekst: SKAL_VISE_LEGG_TIL_KNAPPETEKST.skalVises(kontekst),
+        skalDeaktivereFerieknapp: SKAL_DEAKTIVERE_FERIEKNAPP.skalVises(kontekst),
     };
 };
 
@@ -107,10 +104,16 @@ export const SKAL_VISE_LEGG_TIL_KNAPPETEKST: Synlighetsregel<KnapperIRedigerings
         'ferie» i staden — med ett unntak: når den andre partens perioder er låst og det er valgt minst én ' +
         'periode som tilhører den andre forelderen, faller vi tilbake til «Legg til ferie» (fordi vi ikke ' +
         'kan endre den andres perioder).',
-    skalVises: (k) =>
-        k.eksisterendePerioderSomErValgt.length === 0 ||
-        (k.erPeriodeneTilAnnenPartLåst &&
-            k.eksisterendePerioderSomErValgt.some((p) => erPeriodeDto(p) && !!p.annenPart)),
+    skalVises: (k) => k.eksisterendePerioderSomErValgt.length === 0 || harValgtLåstPeriodeTilAnnenPart(k),
+};
+
+export const SKAL_DEAKTIVERE_FERIEKNAPP: Synlighetsregel<KnapperIRedigeringspanelKontekst> = {
+    id: 'knapperIRedigeringspanel.skalDeaktivereFerieknapp',
+    beskrivelse:
+        'Ferie-knappen deaktiveres når den andre partens perioder er låst og minst én av de valgte dagene ' +
+        'tilhører en periode for den andre forelderen. Ferie ville da erstattet den andre forelderens uttak, ' +
+        'og det kan bare den andre forelderen endre selv.',
+    skalVises: (k) => harValgtLåstPeriodeTilAnnenPart(k),
 };
 
 /**
@@ -133,7 +136,11 @@ type KnapperIRedigeringspanelSynlighet = {
     skalVisePauseknapp: boolean;
     skalViseFerieknapp: boolean;
     skalViseLeggTilKnappetekst: boolean;
+    skalDeaktivereFerieknapp: boolean;
 };
 
 const harBareFarRett = (k: KnapperIRedigeringspanelKontekst) =>
     k.søker === 'FAR_MEDMOR' && k.rettighetType === 'BARE_SØKER_RETT';
+
+const harValgtLåstPeriodeTilAnnenPart = (k: KnapperIRedigeringspanelKontekst) =>
+    k.erPeriodeneTilAnnenPartLåst && k.eksisterendePerioderSomErValgt.some((p) => erPeriodeDto(p) && !!p.annenPart);

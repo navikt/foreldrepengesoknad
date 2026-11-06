@@ -3,6 +3,7 @@ import { FellesUttaksplanDto } from '@navikt/fp-types';
 const innvilget = { innvilget: true, trekkerMinsterett: true, trekkerDager: true, årsak: 'ANNET' } as const;
 
 export const uttaksplanMedFarSomAnnenPart = {
+    annenPartRedigerbar: false,
     termindato: '2022-08-17',
     antallBarn: 1,
     dekningsgrad: 'HUNDRE',
@@ -43,6 +44,7 @@ export const uttaksplanMedFarSomAnnenPart = {
 } satisfies FellesUttaksplanDto;
 
 export const uttaksplanMedMorSomAnnenPart = {
+    annenPartRedigerbar: false,
     termindato: '2022-08-17',
     antallBarn: 1,
     dekningsgrad: 'HUNDRE',

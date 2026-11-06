@@ -21,6 +21,7 @@ const {
     NySøknadFørVedtakMedEksisterendeSak,
     FødselMorOgFarBeggeHarRettOverførtFraPlanlegger,
     FødselFarAleneOmOmsorgKunAnnenPartsPerioder,
+    FødselFarSøkerEtterAtMorHarSøkt,
 } = composeStories(stories);
 
 describe('<UttaksplanSteg>', () => {
@@ -613,4 +614,22 @@ describe('<UttaksplanSteg>', () => {
         expect(farPerioder[0]!.fom).toBe('2024-07-01');
         expect(farPerioder[0]!.tom).toBe('2024-07-12');
     });
+
+    it.each([
+        { annenPartRedigerbar: false, kanRedigere: false },
+        { annenPartRedigerbar: true, kanRedigere: true },
+    ])(
+        'skal respektere annenPartRedigerbar=$annenPartRedigerbar for mor sine søkte perioder',
+        async ({ annenPartRedigerbar, kanRedigere }) => {
+            await FødselFarSøkerEtterAtMorHarSøkt.run({
+                args: { ...FødselFarSøkerEtterAtMorHarSøkt.args, annenPartRedigerbar },
+            });
+
+            expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+            await userEvent.click(screen.getByRole('tab', { name: 'Liste' }));
+            await userEvent.click(screen.getByRole('button', { name: /01. juli 24\s*- 09. aug. 24/ }));
+
+            expect(screen.queryAllByRole('button', { name: /^(Endre|Slett)$/ })).toHaveLength(kanRedigere ? 2 : 0);
+        },
+    );
 });

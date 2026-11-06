@@ -78,6 +78,7 @@ const INNVILGET = {
 } as const;
 
 const lagUttaksplan = (perioder: UttakPeriodeDto[]): FellesUttaksplanDto => ({
+    annenPartRedigerbar: true,
     antallBarn: 1,
     dekningsgrad: 'HUNDRE',
     perioder,
@@ -117,6 +118,40 @@ const getWrapper = (
 };
 
 describe('useTidligereUttaksplan', () => {
+    it.each([true, false])('videresender annenPartRedigerbar=%s frå backend', (annenPartRedigerbar) => {
+        const { result } = renderHook(() => useTidligereUttaksplan(), {
+            wrapper: getWrapper(
+                { ...lagUttaksplan(PERIODER), annenPartRedigerbar },
+                undefined,
+                undefined,
+                undefined,
+                null,
+            ),
+        });
+        expect(result.current.erAnnenPartRedigerbar).toBe(annenPartRedigerbar);
+    });
+
+    it('lar annen part vere redigerbar når backend ikkje har nokon plan', () => {
+        const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: Infinity } } });
+        queryClient.setQueryData(['UTTAKSPLAN', getUttaksplanParam(ANNEN_FORELDER, BARN)], null);
+        const { result } = renderHook(() => useTidligereUttaksplan(), {
+            wrapper: ({ children }: { children: ReactNode }) => (
+                <QueryClientProvider client={queryClient}>
+                    <FpDataContext
+                        initialState={{
+                            [ContextDataType.OM_BARNET]: BARN,
+                            [ContextDataType.ANNEN_FORELDER]: ANNEN_FORELDER,
+                        }}
+                    >
+                        {children}
+                    </FpDataContext>
+                </QueryClientProvider>
+            ),
+        });
+        expect(result.current.perioder).toBeUndefined();
+        expect(result.current.erAnnenPartRedigerbar).toBe(true);
+    });
+
     it('beholder tidligere fallback når valgt saksnummer ikke finnes i sakslisten', () => {
         const { result } = renderHook(() => ({ tidligere: useTidligereUttaksplan(), state: useContextComplete() }), {
             wrapper: getWrapper(lagUttaksplan(PERIODER), {

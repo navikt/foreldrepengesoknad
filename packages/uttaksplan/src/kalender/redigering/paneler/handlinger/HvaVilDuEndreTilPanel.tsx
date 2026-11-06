@@ -73,11 +73,16 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
         erGradert: false,
     });
 
-    const { skalViseUtsettelsesknapp, skalVisePauseknapp, skalViseFerieknapp, skalViseLeggTilKnappetekst } =
-        useKnapperIRedigeringspanelSynlighet({
-            sammenslåtteValgtePerioder,
-            eksisterendePerioderSomErValgt,
-        });
+    const {
+        skalViseUtsettelsesknapp,
+        skalVisePauseknapp,
+        skalViseFerieknapp,
+        skalViseLeggTilKnappetekst,
+        skalDeaktivereFerieknapp,
+    } = useKnapperIRedigeringspanelSynlighet({
+        sammenslåtteValgtePerioder,
+        eksisterendePerioderSomErValgt,
+    });
 
     const leggTilEllerForskyvPeriode = (skalForskyve: boolean) => {
         leggTilUttaksplanPerioder(
@@ -162,6 +167,7 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
                                         variant="secondary"
                                         size="small"
                                         className="flex-1"
+                                        disabled={skalDeaktivereFerieknapp}
                                         onClick={() =>
                                             erEksisterendePerioderEtterValgteDager && !kanKunErstatte
                                                 ? setVisEndreEllerForskyvPanel(true)
