@@ -23,7 +23,6 @@ export { redirect } from './src/loginUtils';
 
 export { useAbortSignal } from './src/hooks/useAbortSignal';
 export { useDocumentTitle } from './src/hooks/useDocumentTitle';
-export { useBeforeUnload } from './src/hooks/useBeforeUnload';
 export { useScrollBehaviour } from './src/hooks/useScrollBehaviour';
 export { useBreakpoints } from './src/hooks/useBreakpoints';
 export { useMediaQuery } from './src/hooks/useMediaQuery';
