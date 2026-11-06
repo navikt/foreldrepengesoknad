@@ -9,9 +9,8 @@ import { UttakDto, UttakPeriodeDto } from '@navikt/fp-types';
 import * as stories from './UttaksplanSteg.stories';
 
 const infoTekst = [
-    'I denne søknaden søker du kun for deg selv.',
-    'Du kan legge inn foreldrepenger for den andre forelderen, men informasjonen vil ikke bli sendt inn.',
-    'Den andre forelderen må selv huske å sende oss en søknad.',
+    'I denne søknaden søker du bare for deg selv.',
+    'Den andre forelderen må bekrefte sin del av planen i sin egen søknad.',
 ].join(' ');
 
 const {
