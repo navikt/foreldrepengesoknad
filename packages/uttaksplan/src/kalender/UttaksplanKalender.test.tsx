@@ -1477,6 +1477,54 @@ describe('UttaksplanKalender', () => {
         expect(within(juli).getByTestId('day:15;dayColor:NONE')).toBeInTheDocument();
     });
 
+    it('skal vise årsak for utsettelse på grunn av arbeid i detaljene for valgt periode', async () => {
+        render(
+            <HarUtsettelse
+                perioder={[
+                    ...HarUtsettelse.args.perioder!.slice(0, 2),
+                    {
+                        fom: '2026-01-23',
+                        tom: '2026-01-29',
+                        søker: { forelder: 'MOR', utsettelseÅrsak: 'ARBEID', flerbarnsdager: false },
+                    },
+                    HarUtsettelse.args.perioder![3]!,
+                ]}
+            />,
+        );
+
+        const januar = screen.getByTestId('year:2026;month:0');
+        await userEvent.click(within(januar).getByTestId('day:23;dayColor:BEIGEOUTLINE'));
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        expect(screen.getByText('Heltidsarbeid')).toBeInTheDocument();
+    });
+
+    it('skal vise overføringsårsak i detaljene for valgt periode', async () => {
+        render(
+            <MorOverførerFarsKvote
+                perioder={[
+                    ...MorOverførerFarsKvote.args.perioder!.slice(0, 3),
+                    {
+                        fom: '2026-08-26',
+                        tom: '2026-12-08',
+                        søker: {
+                            forelder: 'MOR',
+                            kontoType: 'FEDREKVOTE',
+                            overføringÅrsak: 'SYKDOM_ANNEN_FORELDER',
+                            flerbarnsdager: false,
+                        },
+                    },
+                ]}
+            />,
+        );
+
+        const september = screen.getByTestId('year:2026;month:8');
+        await userEvent.click(within(september).getByText('7', { exact: true }));
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        expect(screen.getByText('Overført fordi Hans er for syk til å ta seg av barnet')).toBeInTheDocument();
+    });
+
     it('skal ha utsettelse og så legge til en ekstra dag med utsettelse', async () => {
         render(<HarUtsettelse />);
 

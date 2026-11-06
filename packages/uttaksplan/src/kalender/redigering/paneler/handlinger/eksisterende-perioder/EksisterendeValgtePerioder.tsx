@@ -14,7 +14,12 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, BodyShort, Button, HStack, Heading, Spacer, Tooltip, VStack } from '@navikt/ds-react';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { BrukerRolleSak_fpoversikt, NavnPåForeldre, UtsettelseÅrsak } from '@navikt/fp-types';
+import {
+    BrukerRolleSak_fpoversikt,
+    NavnPåForeldre,
+    UtsettelseÅrsak,
+    UttakOverføringÅrsak_fpoversikt,
+} from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
 import { Uttaksdagen, capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 
@@ -98,6 +103,19 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                                     erFarOgFar={erFarOgFar}
                                     navnPåForeldre={navnPåForeldre}
                                 />
+                            )}
+
+                            {uttak?.overføringÅrsak && (
+                                <BodyShort>
+                                    <OverføringÅrsakTekst
+                                        overføringÅrsak={uttak.overføringÅrsak}
+                                        navn={
+                                            uttak.forelder === 'FAR_MEDMOR'
+                                                ? navnPåForeldre.mor
+                                                : navnPåForeldre.farMedmor
+                                        }
+                                    />
+                                </BodyShort>
                             )}
 
                             {!!p.annenPartEøs && (
@@ -513,6 +531,7 @@ const PeriodeKvoteType = ({
     const erForeldrepenger = kontoType === 'FORELDREPENGER';
     const erFellesperiode = kontoType === 'FELLESPERIODE';
     const erAnnenUtsettelseEnnFerie = utsettelseÅrsak !== undefined && utsettelseÅrsak !== 'FERIE';
+    const utsettelseÅrsakTekst = utsettelseÅrsak ? getUtsettelseÅrsakTekst(utsettelseÅrsak) : null;
 
     // Regler i prioritert rekkefølge – første regel som slår til (gjelder === true) avgjør teksten.
     const regler: Array<{ gjelder: boolean; render: () => ReactNode }> = [
@@ -569,13 +588,17 @@ const PeriodeKvoteType = ({
             render: () => <FormattedMessage id="RedigeringPanel.Pause" />,
         },
         {
+            gjelder: erAnnenUtsettelseEnnFerie && utsettelseÅrsakTekst === null,
+            render: () => <FormattedMessage id="RedigeringPanel.Utsettelse" />,
+        },
+        {
             gjelder: erAnnenUtsettelseEnnFerie,
             render: () => (
                 <>
                     <span>
                         <FormattedMessage id="RedigeringPanel.Utsettelse" />:
                     </span>
-                    <BodyShort>{utsettelseÅrsak && getUtsettelseÅrsakTekst(utsettelseÅrsak)}</BodyShort>
+                    <BodyShort>{utsettelseÅrsakTekst}</BodyShort>
                 </>
             ),
         },
@@ -600,8 +623,36 @@ const getUtsettelseÅrsakTekst = (utsettelseÅrsak: UtsettelseÅrsak) => {
             return <FormattedMessage id="LeggTilUtsettelsePanel.SøkerInnlagt" />;
         case 'BARN_INNLAGT':
             return <FormattedMessage id="LeggTilUtsettelsePanel.BarnInnlagt" />;
-        default:
+        case 'ARBEID':
+            return <FormattedMessage id="RedigeringPanel.UtsettelseÅrsak.Arbeid" />;
+        case 'HV_ØVELSE':
+            return <FormattedMessage id="RedigeringPanel.UtsettelseÅrsak.HvØvelse" />;
+        case 'NAV_TILTAK':
+            return <FormattedMessage id="RedigeringPanel.UtsettelseÅrsak.NavTiltak" />;
+        case 'FERIE':
+        case 'FRI':
             return null;
+    }
+};
+
+const OverføringÅrsakTekst = ({
+    overføringÅrsak,
+    navn,
+}: {
+    overføringÅrsak: UttakOverføringÅrsak_fpoversikt;
+    navn: string;
+}) => {
+    switch (overføringÅrsak) {
+        case 'SYKDOM_ANNEN_FORELDER':
+            return <FormattedMessage id="RedigeringPanel.Overføring.SykdomAnnenForelder" values={{ navn }} />;
+        case 'ALENEOMSORG':
+            return <FormattedMessage id="RedigeringPanel.Overføring.Aleneomsorg" values={{ navn }} />;
+        case 'IKKE_RETT_ANNEN_FORELDER':
+            return <FormattedMessage id="RedigeringPanel.Overføring.IkkeRettAnnenForelder" values={{ navn }} />;
+        case 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER':
+            return (
+                <FormattedMessage id="RedigeringPanel.Overføring.InstitusjonsoppholdAnnenForelder" values={{ navn }} />
+            );
     }
 };
 
