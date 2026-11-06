@@ -105,7 +105,7 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
                                 />
                             )}
 
-                            {!erSamtidigUttak && uttak?.overføringÅrsak && (
+                            {uttak?.overføringÅrsak && (
                                 <BodyShort>
                                     <OverføringÅrsakTekst
                                         overføringÅrsak={uttak.overføringÅrsak}
