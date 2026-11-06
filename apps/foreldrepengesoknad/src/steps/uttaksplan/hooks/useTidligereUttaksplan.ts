@@ -12,6 +12,7 @@ export const useTidligereUttaksplan = (
     eksisterendeSak?: FpSak_fpoversikt,
 ): {
     perioder: UttakPeriodeDto[] | undefined;
+    erAnnenPartRedigerbar: boolean;
     isLoading: boolean;
 } => {
     const valgtEksisterendeSaksnr = useContextGetData(ContextDataType.VALGT_EKSISTERENDE_SAKSNR);
@@ -98,5 +99,10 @@ export const useTidligereUttaksplan = (
         gjeldendePlan,
     ]);
 
-    return { perioder: tidligerePerioder, isLoading: uttaksplanQuery.isLoading || (!erEndringssøknad && lasterSak) };
+    return {
+        perioder: tidligerePerioder,
+        // Backend avgjer om annen part sine periodar kan endrast (t.d. ikkje når annen part har søkt eller fått vedtak).
+        erAnnenPartRedigerbar: uttaksplan?.annenPartRedigerbar ?? true,
+        isLoading: uttaksplanQuery.isLoading || (!erEndringssøknad && lasterSak),
+    };
 };

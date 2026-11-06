@@ -204,7 +204,7 @@ export const UttaksplanSteg = ({
                     valgtStønadskvote={valgteStønadskvoter}
                     harAktivitetskravIPeriodeUtenUttak={false}
                     perioder={uttaksplan || defaultUttaksperioder}
-                    erPeriodeneTilAnnenPartLåst={!!tidligereUttaksperioder}
+                    erPeriodeneTilAnnenPartLåst={!tidligereUttaksplan.erAnnenPartRedigerbar}
                     aktiveArbeidsforhold={aktiveArbeidsforhold}
                     erEndringssøknad={erEndringssøknad}
                 >

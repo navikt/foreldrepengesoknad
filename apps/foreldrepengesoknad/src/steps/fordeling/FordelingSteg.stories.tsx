@@ -24,6 +24,7 @@ import { withQueryClient } from '@navikt/fp-utils-test';
 import { FordelingSteg } from './FordelingSteg';
 
 const uttaksplanFar = {
+    annenPartRedigerbar: false,
     antallBarn: 1,
     dekningsgrad: 'HUNDRE',
     perioder: [
@@ -62,6 +63,7 @@ const uttaksplanFar = {
 } satisfies FellesUttaksplanDto;
 
 const uttaksplanMor = {
+    annenPartRedigerbar: false,
     antallBarn: 1,
     dekningsgrad: 'HUNDRE',
     perioder: [

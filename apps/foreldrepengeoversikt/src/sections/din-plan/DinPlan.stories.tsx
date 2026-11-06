@@ -32,6 +32,7 @@ export const Default: Story = {
             http.post(API_URLS.konto, () => HttpResponse.json(stønadskvoter1)),
             http.post(API_URLS.uttaksplan, () =>
                 HttpResponse.json({
+                    annenPartRedigerbar: false,
                     antallBarn: 1,
                     dekningsgrad: 'HUNDRE',
                     termindato: '2022-07-01',
@@ -104,6 +105,7 @@ export const FarSøker: Story = {
             http.post(API_URLS.konto, () => HttpResponse.json(stønadskvoter2)),
             http.post(API_URLS.uttaksplan, () =>
                 HttpResponse.json({
+                    annenPartRedigerbar: false,
                     antallBarn: 1,
                     dekningsgrad: 'HUNDRE',
                     termindato: '2024-10-01',
@@ -235,6 +237,7 @@ export const MorOgFarOgFarGraderer: Story = {
             http.post(API_URLS.konto, () => HttpResponse.json(stønadskvoter2)),
             http.post(API_URLS.uttaksplan, () =>
                 HttpResponse.json({
+                    annenPartRedigerbar: false,
                     antallBarn: 1,
                     dekningsgrad: 'HUNDRE',
                     termindato: '2025-03-25',
@@ -374,6 +377,7 @@ export const MorMedFarSomHarTattOverMødrekvote: Story = {
             http.post(API_URLS.konto, () => HttpResponse.json(stønadskvoter2)),
             http.post(API_URLS.uttaksplan, () =>
                 HttpResponse.json({
+                    annenPartRedigerbar: false,
                     antallBarn: 1,
                     dekningsgrad: 'HUNDRE',
                     termindato: '2025-03-25',

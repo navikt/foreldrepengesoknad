@@ -3,6 +3,7 @@ import { FellesUttaksplanDto, UttakPeriodeDto } from '@navikt/fp-types';
 import { annenPartHarInnvilgetUttak, finnAnnenPartsPlan } from './annenForelderUtils';
 
 const lagPlan = (perioder: UttakPeriodeDto[]): FellesUttaksplanDto => ({
+    annenPartRedigerbar: true,
     antallBarn: 1,
     dekningsgrad: 'HUNDRE',
     perioder,

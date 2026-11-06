@@ -588,6 +588,7 @@ export type TidslinjeHendelseType_fpoversikt =
     | 'UTGÅENDE_VARSEL_TILBAKEBETALING';
 
 export type FellesUttaksplanDto = {
+    annenPartRedigerbar: boolean;
     antallBarn: number;
     dekningsgrad: Dekningsgrad;
     perioder: UttakPeriodeDto[];
