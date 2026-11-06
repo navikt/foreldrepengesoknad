@@ -47,9 +47,9 @@ export const VIS_LEGG_TIL_FERIE_VALG: Synlighetsregel<HvaVilDuGjøreValgKontekst
         '«Legge til ferie» vises for alle søkere, med tre unntak: (1) for mor (ikke ved adopsjon) skjules ' +
         'alternativet når det valgte tidsrommet ligger innenfor de første seks ukene etter familiehendelsesdato ' +
         '— der er utsettelse (barn/bruker innlagt eller bruker sykdom/skade) det eneste gyldige valget, ikke ' +
-        'ferie. (2) For far/medmor med BARE_SØKER_RETT skjules alternativet når hele det valgte tidsrommet ' +
-        'ligger på eller etter seks uker etter familiehendelsesdato — ferie er da ikke aktuelt, og pause er det ' +
-        'riktige valget i stedet. (3) Alternativet skjules alltid når noen del av det valgte tidsrommet ligger ' +
+        'ferie. (2) For far/medmor med BARE_SØKER_RETT skjules alternativet når noen del av det valgte ' +
+        'tidsrommet ligger på eller etter seks uker etter familiehendelsesdato — ferie er da ikke aktuelt, og ' +
+        'pause er det riktige valget i stedet. (3) Alternativet skjules alltid når noen del av det valgte tidsrommet ligger ' +
         'før familiehendelsesdato — det finnes ingen stønadsrettighet å ta ferie fra før dette tidspunktet.',
     skalVises: (k) =>
         !VIS_LEGG_TIL_UTSETTELSE_VALG.skalVises(k) &&
@@ -91,8 +91,8 @@ export const VIS_LEGG_TIL_OPPHOLD_VALG: Synlighetsregel<HvaVilDuGjøreValgKontek
     beskrivelse:
         '«Legge til periode uten foreldrepenger» vises for alle søkere, med samme unntak som ferie: for mor ' +
         '(ikke ved adopsjon) skjules alternativet i de første seks ukene etter familiehendelsesdato, for ' +
-        'far/medmor med BARE_SØKER_RETT skjules alternativet når hele det valgte tidsrommet ligger på eller ' +
-        'etter seks uker etter familiehendelsesdato, og alternativet skjules alltid når noen del av det valgte ' +
+        'far/medmor med BARE_SØKER_RETT skjules alternativet når noen del av det valgte tidsrommet ligger på ' +
+        'eller etter seks uker etter familiehendelsesdato, og alternativet skjules alltid når noen del av det valgte ' +
         'tidsrommet ligger før familiehendelsesdato.',
     skalVises: (k) =>
         !VIS_LEGG_TIL_UTSETTELSE_VALG.skalVises(k) &&
@@ -133,7 +133,7 @@ const harBareFarRett = (k: HvaVilDuGjøreValgKontekst) =>
 
 const erFerieEllerOppholdSkjultForFarMedmorBareRett = (k: HvaVilDuGjøreValgKontekst): boolean =>
     harBareFarRett(k) &&
-    !UttaksperiodeValidatorer.erNoenPerioderFørSeksUkerEtterFamiliehendelsesdato(
+    UttaksperiodeValidatorer.erNoenPerioderLikEllerEtter6UkerEtterFamiliehendelsedato(
         k.valgtePerioder,
         k.familiehendelsedato,
     );

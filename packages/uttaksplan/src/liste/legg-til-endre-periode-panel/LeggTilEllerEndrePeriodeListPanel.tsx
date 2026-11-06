@@ -180,8 +180,8 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
             builder.fjernUttakPerioder([uttaksplanperiode], false);
         }
         const nyePerioder = builder.leggTilUttakPerioder(nyPeriode, skalForskyve).getUttakPerioder();
-        uttaksplanRedigering?.oppdaterUttaksplan?.(nyePerioder);
-        setIsLeggTilPeriodePanelOpen(false);
+
+        notEmpty(uttaksplanRedigering).endreUttaksplanMedVarsel(nyePerioder, () => setIsLeggTilPeriodePanelOpen(false));
     };
 
     const formSubmitValidator = useFormSubmitValidator<FormValues>();
@@ -234,8 +234,9 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
             const nyeUttakPerioder = new UttakPeriodeBuilder(allePerioder, 'liste')
                 .fjernUttakPerioder([{ fom, tom }], false)
                 .getUttakPerioder();
-
-            uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
+            notEmpty(uttaksplanRedigering).slettFraUttaksplanMedVarsel([{ fom, tom }], nyeUttakPerioder, () =>
+                setIsLeggTilPeriodePanelOpen(false),
+            );
         } else {
             const submitFeilmelding = formSubmitValidator([{ fom, tom }], values);
 
@@ -249,8 +250,6 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
                 skalForskyve,
             );
         }
-
-        setIsLeggTilPeriodePanelOpen(false);
     };
 
     const resetFormValuesVedEndringAvForelder = (forelderVerdi: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => {

@@ -1,5 +1,6 @@
 import { composeStories, composeStory } from '@storybook/react-vite';
 import { screen, waitFor, within } from '@testing-library/react';
+import { vi } from 'vitest';
 
 import { getLenker } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -88,6 +89,20 @@ describe('<Saksoversikt>', () => {
     });
 
     describe('Skyra-undersøkelse', () => {
+        // Undersøkelsen vises bare når Dekoratøren har samtykke og Skyra-scriptet har registrert elementet.
+        beforeEach(() => {
+            vi.stubGlobal('webStorageController', {
+                getCurrentConsent: () => ({ consent: { analytics: true, surveys: true } }),
+            });
+            if (!customElements.get('skyra-survey')) {
+                customElements.define('skyra-survey', class extends HTMLElement {});
+            }
+        });
+
+        afterEach(() => {
+            vi.unstubAllGlobals();
+        });
+
         it('skal vise undersøkelsen for førstegangssøker innen 5 minutter på bokmål', async () => {
             await ForeldrepengerTestAvSkyraNyligInnsending.run();
 

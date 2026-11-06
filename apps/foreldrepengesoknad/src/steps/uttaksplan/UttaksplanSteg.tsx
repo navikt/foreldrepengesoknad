@@ -26,6 +26,7 @@ import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { barnehagestartDato, getFamiliehendelsedato } from '@navikt/fp-utils';
 import {
     FjernAltIUttaksplanModal,
+    HistoriskEndringModal,
     HvaErMulig,
     KvoteOppsummering,
     TilbakestillPlanModal,
@@ -227,6 +228,7 @@ export const UttaksplanSteg = ({
                     >
                         <FjernAltIUttaksplanModal />
                         <TilbakestillPlanModal />
+                        <HistoriskEndringModal />
 
                         <Tabs
                             defaultValue="kalender"

@@ -1159,6 +1159,9 @@ importers:
       '@navikt/fp-utils-test':
         specifier: workspace:*
         version: link:../../packages/utils-test
+      '@navikt/nav-dekoratoren-moduler':
+        specifier: 'catalog:'
+        version: 4.5.3(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.1))(react@19.3.1)
       '@storybook/addon-a11y':
         specifier: 'catalog:'
         version: 10.6.4(storybook@10.6.4(@types/react@19.3.0)(prettier@3.9.10)(react@19.3.1))
@@ -1292,6 +1295,9 @@ importers:
       '@navikt/fp-utils-test':
         specifier: workspace:*
         version: link:../../packages/utils-test
+      '@navikt/nav-dekoratoren-moduler':
+        specifier: 'catalog:'
+        version: 4.5.3(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.1))(react@19.3.1)
       '@storybook/addon-a11y':
         specifier: 'catalog:'
         version: 10.6.4(storybook@10.6.4(@types/react@19.3.0)(prettier@3.9.10)(react@19.3.1))
@@ -1710,6 +1716,9 @@ importers:
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
+      '@navikt/nav-dekoratoren-moduler':
+        specifier: 'catalog:'
+        version: 4.5.3(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.1))(react@19.3.1)
       react:
         specifier: 'catalog:'
         version: 19.3.1

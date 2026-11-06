@@ -108,6 +108,9 @@ export const getErrorMessageMap = (intl: IntlShape): Record<FileUploaderError, s
         MELLOMLAGRING_VEDLEGG_PASSORD_BESKYTTET: intl.formatMessage({
             id: 'FailedAttachment.Vedlegg.Feilmelding.MELLOMLAGRING_VEDLEGG_PASSORD_BESKYTTET',
         }),
+        MELLOMLAGRING_VEDLEGG_BILDE_FOR_STORT: intl.formatMessage({
+            id: 'FailedAttachment.Vedlegg.Feilmelding.MELLOMLAGRING_VEDLEGG_BILDE_FOR_STORT',
+        }),
         DUPLIKAT_FORSENDELSE: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.DUPLIKAT_FORSENDELSE' }),
 
         // Mappes som generell feil

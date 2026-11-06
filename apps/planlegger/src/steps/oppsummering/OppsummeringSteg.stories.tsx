@@ -30,6 +30,10 @@ import {
     IKKE_DELT_UTTAK_TO_BARN_80,
     IKKE_DELT_UTTAK_TO_BARN_100,
     MINSTERETTER,
+    type SkyraMockArgs,
+    skyraMockArgTypes,
+    skyraMockArgs,
+    withSkyraMock,
 } from '@navikt/fp-utils-test';
 
 import { OppsummeringSteg } from './OppsummeringSteg';
@@ -608,4 +612,15 @@ export const OppsummeringFarOgFarKunFar2HarRett: Story = {
             },
         },
     },
+};
+
+// Skyra er mocket. Bytt samtykke og svar under Controls. Viser wrapperens tilstander, ikke at den ekte integrasjonen virker.
+export const SkyraMedMock: StoryObj<StoryArgs & SkyraMockArgs> = {
+    ...FlereForsørgereHundreProsentTermin,
+    args: {
+        ...FlereForsørgereHundreProsentTermin.args,
+        ...skyraMockArgs,
+    },
+    argTypes: skyraMockArgTypes,
+    decorators: [withSkyraMock],
 };

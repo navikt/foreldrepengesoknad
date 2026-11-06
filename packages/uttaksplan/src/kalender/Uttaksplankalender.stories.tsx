@@ -5,6 +5,7 @@ import { action } from 'storybook/actions';
 import { BarnType } from '@navikt/fp-constants';
 import { UttakPeriodeDto } from '@navikt/fp-types';
 
+import { HistoriskEndringModal } from '../HistoriskEndringModal';
 import { UttaksplanDataProvider } from '../context/UttaksplanDataContext';
 import { UttaksplanRedigeringProvider } from '../context/UttaksplanRedigeringContext';
 import { UttaksplanKalender } from './UttaksplanKalender';
@@ -58,6 +59,7 @@ const meta = {
                         scrollToKvoteOppsummering={action('button-click')}
                         barnehagestartdato={args.barnehagestartdato}
                     />
+                    <HistoriskEndringModal />
                 </UttaksplanRedigeringProvider>
             </UttaksplanDataProvider>
         );

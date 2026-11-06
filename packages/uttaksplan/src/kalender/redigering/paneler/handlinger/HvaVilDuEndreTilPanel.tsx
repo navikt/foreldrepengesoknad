@@ -6,6 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Box, Button, Chips, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import { UttakPeriodeDto } from '@navikt/fp-types';
+import { useBreakpoints } from '@navikt/fp-utils';
 
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
@@ -17,7 +18,7 @@ import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPer
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from '../../context/KalenderRedigeringContext';
 import { finnAntallDager, finnValgtePerioder } from '../../utils/kalenderPeriodeUtils';
-import { useErDesktop, useMediaResetMinimering } from '../../utils/useMediaActions';
+import { useMediaResetMinimering } from '../../utils/useMediaActions';
 import { PeriodeDetaljerOgInfoMeldinger } from './eksisterende-perioder/PeriodeDetaljerOgInfoMeldinger';
 import { LeggTilPausePanel } from './utsettelse/LeggTilPausePanel';
 import { LeggTilUtsettelsePanel } from './utsettelse/LeggTilUtsettelsePanel';
@@ -46,9 +47,9 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
     const { visUtsettelsePanel: visPausePanel, setVisUtsettelsePanel: setVisPausePanel } =
         useVisUtsettelsePanel(sammenslåtteValgtePerioder);
 
-    const erDesktop = useErDesktop();
+    const { isAtLeast768px } = useBreakpoints();
 
-    const [erMinimert, setErMinimert] = useState(!erDesktop);
+    const [erMinimert, setErMinimert] = useState(!isAtLeast768px);
 
     useMediaResetMinimering(setErMinimert);
 
@@ -94,10 +95,11 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
                     }) satisfies UttakPeriodeDto,
             ),
             skalForskyve,
+            () => {
+                setValgtePerioder([]);
+                setEndredePerioder(sammenslåtteValgtePerioder);
+            },
         );
-
-        setValgtePerioder([]);
-        setEndredePerioder(sammenslåtteValgtePerioder);
     };
 
     return (
