@@ -78,7 +78,7 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Din periode')).toBeInTheDocument();
         expect(screen.getByText('Fødsel')).toBeInTheDocument();
         expect(screen.getByText('Dager du kan miste')).toBeInTheDocument();
-        expect(screen.getByText('Du har ferie')).toBeInTheDocument();
+        expect(screen.getByText('Ferie')).toBeInTheDocument();
         expect(screen.getByText('Helg')).toBeInTheDocument();
         const juli = screen.getByTestId('year:2021;month:6');
         expect(within(juli).getByTestId('day:9;dayColor:NONE')).toBeInTheDocument();
@@ -90,7 +90,7 @@ describe('UttaksplanKalender', () => {
         render(<MorSøkerMedFlereUtsettelser />);
         expect(screen.getByText('Din periode')).toBeInTheDocument();
         expect(screen.getByText('Fødsel')).toBeInTheDocument();
-        expect(screen.getByText('Du har ferie')).toBeInTheDocument();
+        expect(screen.getByText('Ferie')).toBeInTheDocument();
         expect(screen.getByText('Helg')).toBeInTheDocument();
         const juni = screen.getByTestId('year:2021;month:5');
         expect(within(juni).getByTestId('day:15;dayColor:BLUEOUTLINE')).toBeInTheDocument();

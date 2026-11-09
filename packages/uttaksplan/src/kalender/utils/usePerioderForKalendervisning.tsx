@@ -332,8 +332,9 @@ const getKalenderSkjermleserPeriodetekst = (
         }
     }
 
+    // Ferie vises uten forelder, fordi ferie lagres på mor uansett hvem som legger den inn.
     if (erPeriodeDto(periode) && (periode.søker ?? periode.annenPart)?.utsettelseÅrsak === 'FERIE') {
-        return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.LovbestemtFerie' });
+        return intl.formatMessage({ id: 'kalender.srText.LovbestemtFerie' });
     }
 
     return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.Utsettelse' });

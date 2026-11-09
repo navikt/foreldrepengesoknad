@@ -206,7 +206,7 @@
     "kalender.barnehageplass": "Kindergarten",
     "kalender.utsettelse.label": "{erSokersPeriode, select, true {You} other {{navnAnnenPart}}} has postponed the use of parental benefits",
     "kalender.utsettelse.pause.label": "{erSokersPeriode, select, true {You} other {{navnAnnenPart}}} has put the use on hold",
-    "kalender.ferie": "{erSokersPeriode, select, true {You} other {{navnAnnenPart}}} are on vacation",
+    "kalender.ferie": "Vacation",
     "kalender.avslagFratrekkPleiepenger": "Rejection of deduction for care benefits",
     "kalender.srText.AvslåttPeriode": "Rejected period",
     "kalender.avslag": "Rejected period",
