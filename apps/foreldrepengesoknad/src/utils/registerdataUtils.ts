@@ -76,9 +76,6 @@ const normaliserFellesUttaksplan = (plan: FellesUttaksplanDto): FellesUttaksplan
     })),
 });
 
-export const erFellesUttaksplanEndret = (
-    lagretPlan: FellesUttaksplanDto,
-    ferskPlan: FellesUttaksplanDto | undefined,
-) =>
+export const erFellesUttaksplanEndret = (lagretPlan: FellesUttaksplanDto, ferskPlan: FellesUttaksplanDto | undefined) =>
     ferskPlan === undefined ||
     !erLikUansettRekkefølge(normaliserFellesUttaksplan(lagretPlan), normaliserFellesUttaksplan(ferskPlan));

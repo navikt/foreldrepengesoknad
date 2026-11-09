@@ -1,9 +1,19 @@
 import { describe, expect, it } from 'vitest';
 
-import type { BrukerRolleSak_fpoversikt, Familiesituasjon, RettighetType_fpoversikt } from '@navikt/fp-types';
+import type {
+    BrukerRolleSak_fpoversikt,
+    Familiesituasjon,
+    RettighetType_fpoversikt,
+    UttakPeriodeDto,
+} from '@navikt/fp-types';
 
 import { Periode } from '../types';
-import { SKAL_VISE_FERIEKNAPP, SKAL_VISE_PAUSEKNAPP, SKAL_VISE_UTSETTELSESKNAPP } from './knapperIRedigeringspanel';
+import {
+    SKAL_DEAKTIVERE_FERIEKNAPP,
+    SKAL_VISE_FERIEKNAPP,
+    SKAL_VISE_PAUSEKNAPP,
+    SKAL_VISE_UTSETTELSESKNAPP,
+} from './knapperIRedigeringspanel';
 
 // Torsdag. Seks uker etter blir 2024-09-10.
 const FAMILIEHENDELSESDATO = '2024-07-30';
@@ -14,7 +24,7 @@ type Kontekst = {
     familiesituasjon: Familiesituasjon;
     familiehendelsedato: string;
     sammenslåtteValgtePerioder: readonly Periode[];
-    eksisterendePerioderSomErValgt: never[];
+    eksisterendePerioderSomErValgt: UttakPeriodeDto[];
     erPeriodeneTilAnnenPartLåst: boolean;
 };
 
@@ -76,5 +86,48 @@ describe('knapperIRedigeringspanel — eksisterende regler (regresjonssjekk)', (
 
         expect(SKAL_VISE_PAUSEKNAPP.skalVises(kontekst)).toBe(true);
         expect(SKAL_VISE_FERIEKNAPP.skalVises(kontekst)).toBe(false);
+    });
+});
+
+describe('knapperIRedigeringspanel — låste perioder til annen part', () => {
+    const morsPeriode: UttakPeriodeDto = {
+        fom: '2024-09-16',
+        tom: '2024-09-20',
+        annenPart: { forelder: 'MOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false },
+    };
+    const farsPeriode: UttakPeriodeDto = {
+        fom: '2024-09-16',
+        tom: '2024-09-20',
+        søker: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
+    };
+
+    it('skal deaktivere ferie-knappen når en valgt periode tilhører annen part og er låst', () => {
+        const kontekst = lagKontekst({
+            søker: 'FAR_MEDMOR',
+            erPeriodeneTilAnnenPartLåst: true,
+            eksisterendePerioderSomErValgt: [morsPeriode],
+        });
+
+        expect(SKAL_DEAKTIVERE_FERIEKNAPP.skalVises(kontekst)).toBe(true);
+    });
+
+    it('skal ikke deaktivere ferie-knappen når annen part sine perioder ikke er låst', () => {
+        const kontekst = lagKontekst({
+            søker: 'FAR_MEDMOR',
+            erPeriodeneTilAnnenPartLåst: false,
+            eksisterendePerioderSomErValgt: [morsPeriode],
+        });
+
+        expect(SKAL_DEAKTIVERE_FERIEKNAPP.skalVises(kontekst)).toBe(false);
+    });
+
+    it('skal ikke deaktivere ferie-knappen når de valgte periodene kun er søker sine egne', () => {
+        const kontekst = lagKontekst({
+            søker: 'FAR_MEDMOR',
+            erPeriodeneTilAnnenPartLåst: true,
+            eksisterendePerioderSomErValgt: [farsPeriode],
+        });
+
+        expect(SKAL_DEAKTIVERE_FERIEKNAPP.skalVises(kontekst)).toBe(false);
     });
 });
