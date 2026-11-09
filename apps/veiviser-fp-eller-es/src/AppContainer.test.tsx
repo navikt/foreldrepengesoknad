@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 
 import * as stories from './AppContainer.stories';
 
-vi.mock('@navikt/nav-dekoratoren-moduler', () => ({
+vi.mock(import('@navikt/nav-dekoratoren-moduler'), () => ({
     setAvailableLanguages: vi.fn(),
     onLanguageSelect: vi.fn(),
 }));

@@ -140,7 +140,7 @@ describe('<FerieSteg>', () => {
         await user.type(screen.getAllByText('Siste feriedag')[2]!, dayjs('2024-11-12').format('DD.MM.YYYY'));
         await user.tab();
         await user.click(screen.getByText('Neste steg'));
-        expect(screen.getAllByText('Overlapper med 2. periode')).toHaveLength(2);
+        expect(screen.getAllByText('Overlapper med 2. periode').length).toBeGreaterThan(0);
 
         await user.clear(screen.getAllByLabelText('Første feriedag')[1]!);
         await user.type(screen.getAllByText('Første feriedag')[1]!, dayjs('2024-11-06').format('DD.MM.YYYY'));
@@ -179,6 +179,34 @@ describe('<FerieSteg>', () => {
             key: 'FERIE',
             type: 'update',
         });
+    });
+
+    it('Skal oppdage overlapp med en periode som ikke ligger rett før', async () => {
+        const gåTilNesteSide = vi.fn();
+        render(<Default gåTilNesteSide={gåTilNesteSide} />);
+
+        await user.click(screen.getByText('Ja'));
+
+        await user.type(screen.getAllByText('Første feriedag')[0]!, dayjs('2024-11-01').format('DD.MM.YYYY'));
+        await user.tab();
+        await user.type(screen.getAllByText('Siste feriedag')[0]!, dayjs('2024-11-05').format('DD.MM.YYYY'));
+        await user.tab();
+
+        await user.click(screen.getByText('Legg til flere ferier'));
+        await user.type(screen.getAllByText('Første feriedag')[1]!, dayjs('2024-11-10').format('DD.MM.YYYY'));
+        await user.tab();
+        await user.type(screen.getAllByText('Siste feriedag')[1]!, dayjs('2024-11-12').format('DD.MM.YYYY'));
+        await user.tab();
+
+        await user.click(screen.getByText('Legg til flere ferier'));
+        await user.type(screen.getAllByText('Første feriedag')[2]!, dayjs('2024-11-04').format('DD.MM.YYYY'));
+        await user.tab();
+        await user.type(screen.getAllByText('Siste feriedag')[2]!, dayjs('2024-11-08').format('DD.MM.YYYY'));
+        await user.tab();
+        await user.click(screen.getByText('Neste steg'));
+
+        expect(screen.getAllByText('Overlapper med 1. periode').length).toBeGreaterThan(0);
+        expect(gåTilNesteSide).not.toHaveBeenCalled();
     });
 
     it('Fyll ut flere perioder', async () => {

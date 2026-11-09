@@ -4,7 +4,7 @@ import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 
 import { RettighetType_fpoversikt, UttakPeriodeDto } from '@navikt/fp-types';
-import { Uttaksperioden } from '@navikt/fp-utils';
+import { Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
 import {
     erPerioderEkslFomTomLike,
     harPeriodeDerMorsAktivitetIkkeErValgt,
@@ -91,6 +91,11 @@ export const useFinnFørsteSubmitFeilmelding = ({
             message: intl.formatMessage({ id: 'UttaksplanSteg.IngenUttaksperioder' }),
         },
         {
+            gjelder: (_planForValidering, helePlanen) =>
+                erEndringssøknad && opprinneligPlan !== undefined && !harEndretEgetUttak(helePlanen, opprinneligPlan),
+            message: intl.formatMessage({ id: 'UttaksplanSteg.IngenEndringIEgetUttak' }),
+        },
+        {
             gjelder: harOvertrukketDager,
             message: intl.formatMessage({ id: 'UttaksplanSteg.OvertrukketDager' }),
         },
@@ -108,7 +113,7 @@ export const useFinnFørsteSubmitFeilmelding = ({
         },
         {
             // Ved endringssøknad inneholder planForValidering bare nye og endrede perioder. Uendret uttak
-            // fra vedtaket må telle med, ellers ser for eksempel ferie lagt til på slutten ut som en
+            // fra vedtaket må telle med, ellers ser for eksempel ferie lagt midt i planen ut som en
             // plan med bare utsettelser.
             gjelder: (_planForValidering, helePlanen) => erKunUtsettelser(helePlanen),
             message: intl.formatMessage({ id: 'UttaksplanSteg.KunUtsettelser' }),
@@ -187,6 +192,45 @@ export const harBrukerKunSlettetPerioder = (
             søkersOpprinneligePerioder.some((opprinnelig) => erSammePeriodeInkludertDatoer(periode, opprinnelig)),
         )
     );
+};
+
+// En endringssøknad må legge til, endre eller slette søkerens uttak.
+export const harEndretEgetUttak = (perioder: UttakPeriodeDto[], opprinneligPlan: UttakPeriodeDto[]) => {
+    const finnEgetUttak = (plan: UttakPeriodeDto[]) =>
+        slåSammenLikeTilstøtendePerioder(
+            finnSøkersPerioder(plan).filter(
+                ({ søker }) =>
+                    søker !== undefined &&
+                    (Uttaksperioden.erUttaksperiode(søker) || Uttaksperioden.erOverføringsperiode(søker)),
+            ),
+        );
+    const finnesIkkeI = (plan: UttakPeriodeDto[]) => (periode: UttakPeriodeDto) =>
+        plan.every((annen) => !erSammePeriodeInkludertDatoer(periode, annen));
+
+    const egetUttak = finnEgetUttak(perioder);
+    const opprinneligEgetUttak = finnEgetUttak(opprinneligPlan);
+
+    return egetUttak.some(finnesIkkeI(opprinneligEgetUttak)) || opprinneligEgetUttak.some(finnesIkkeI(egetUttak));
+};
+
+// Uttaksplanen slår sammen like perioder som ligger inntil hverandre når den endres, så vedtaket kan være
+// delt opp annerledes enn planen selv om uttaket er det samme.
+const slåSammenLikeTilstøtendePerioder = (perioder: UttakPeriodeDto[]): UttakPeriodeDto[] => {
+    const sammenslått: UttakPeriodeDto[] = [];
+    const sortert = perioder.toSorted((a, b) => a.fom.localeCompare(b.fom));
+    for (const periode of sortert) {
+        const forrige = sammenslått.at(-1);
+        if (
+            forrige &&
+            Uttaksdagen.neste(forrige.tom).getDato() === periode.fom &&
+            erPerioderEkslFomTomLike(forrige, periode)
+        ) {
+            sammenslått[sammenslått.length - 1] = { ...forrige, tom: periode.tom };
+        } else {
+            sammenslått.push(periode);
+        }
+    }
+    return sammenslått;
 };
 
 export const erSammePeriodeInkludertDatoer = (a: UttakPeriodeDto, b: UttakPeriodeDto) =>

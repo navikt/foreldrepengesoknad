@@ -408,7 +408,7 @@ describe('<UttaksplanSteg>', () => {
         expect(navigasjonsAction).toBeUndefined();
     });
 
-    it('TFP-7005: skal kunne gå videre i endringssøknad når ferie legges til etter eksisterende uttak', async () => {
+    it('skal stoppe endringssøknad når bruker bare har lagt til ferie etter eksisterende uttak', async () => {
         const gåTilNesteSide = vi.fn();
         const eksisterendePlan = NySøknadFørVedtakMedEksisterendeSak.args.uttaksplan!;
         const ferie: UttakPeriodeDto = {
@@ -430,7 +430,37 @@ describe('<UttaksplanSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(screen.queryByText(/Du har kun lagt til utsettelser i planen/)).not.toBeInTheDocument();
+        expect(
+            await screen.findByText(/Det er ikke nok å bare endre ferie eller andre utsettelser/),
+        ).toBeInTheDocument();
+        const navigasjonsAction = gåTilNesteSide.mock.calls.find(
+            ([action]) => action.key === ContextDataType.APP_ROUTE,
+        );
+        expect(navigasjonsAction).toBeUndefined();
+    });
+
+    it('TFP-7005: skal kunne gå videre i endringssøknad når ferie legges over eksisterende uttak', async () => {
+        const gåTilNesteSide = vi.fn();
+        const [foreldrepengerFørFødsel, mødrekvote] = NySøknadFørVedtakMedEksisterendeSak.args.uttaksplan!;
+        const ferie: UttakPeriodeDto = {
+            fom: '2024-09-16',
+            tom: '2024-09-20',
+            søker: { forelder: 'MOR', utsettelseÅrsak: 'FERIE', flerbarnsdager: false },
+        };
+
+        await NySøknadFørVedtakMedEksisterendeSak.run({
+            args: {
+                ...NySøknadFørVedtakMedEksisterendeSak.args,
+                gåTilNesteSide,
+                erEndringssøknad: true,
+                uttaksplan: [foreldrepengerFørFødsel!, { ...mødrekvote!, tom: '2024-09-13' }, ferie],
+            },
+        });
+
+        expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
         const navigasjonsAction = gåTilNesteSide.mock.calls.find(
             ([action]) => action.key === ContextDataType.APP_ROUTE,
         );

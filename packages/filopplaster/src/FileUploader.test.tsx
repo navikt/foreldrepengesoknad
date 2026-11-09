@@ -6,7 +6,8 @@ import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
 import * as stories from './FileUploader.stories';
 
-const { Default, OpplastningTimeout, OpplastningNettverksfeilForFørsteFil } = composeStories(stories);
+const { Default, OpplastningTimeout, OpplastningNettverksfeilForFørsteFil, AlleMuligeOpplastningsFeil } =
+    composeStories(stories);
 
 describe('FileUploader', () => {
     it('skal laste opp en fil', async () => {
@@ -251,6 +252,17 @@ describe('FileUploader', () => {
         expect(await screen.findByText('test-document.pdf')).toBeInTheDocument();
         expect(
             await screen.findByText('Det tok for lang tid å laste opp dokumentet ditt.', { exact: false }),
+        ).toBeInTheDocument();
+    });
+
+    it('skal vise egen feilmelding når bildet har for høy oppløsning', async () => {
+        await AlleMuligeOpplastningsFeil.run();
+
+        expect(await screen.findByText('MELLOMLAGRING_VEDLEGG_BILDE_FOR_STORT.pdf')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Bildet har for høy oppløsning. Gjør bildet mindre, eller ta et nytt bilde med lavere oppløsning, og prøv igjen',
+            ),
         ).toBeInTheDocument();
     });
 });

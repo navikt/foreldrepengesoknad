@@ -4,7 +4,18 @@ import { captureException } from '@navikt/fp-observability';
 import { UttakPeriodeDto } from '@navikt/fp-types';
 
 import { finnUgyldigeOverlapp, periodeTilLoggObjekt } from '../utils/UttakPeriodeBuilder';
+import {
+    Datointervall,
+    HistoriskEndringstype,
+    finnHistoriskEndringstype,
+    harHistoriskSletting,
+} from '../utils/historiskEndring';
 import { useUttaksplanData } from './UttaksplanDataContext';
+
+export type HistoriskEndring = {
+    type: HistoriskEndringstype;
+    utfør: () => void;
+};
 
 type Props = {
     harEndretPlan: boolean;
@@ -16,12 +27,22 @@ type ContextValues = {
     uttaksplanVersjoner: UttakPeriodeDto[][];
     visFjernAltModal: boolean;
     visTilbakestillModal: boolean;
+    visHistoriskEndringModal: boolean;
+    historiskEndring: HistoriskEndring | undefined;
     harEndretPlan: boolean;
     setVisFjernAltModal: (open: boolean) => void;
     setVisTilbakestillModal: (open: boolean) => void;
+    setVisHistoriskEndringModal: (open: boolean) => void;
+    nullstillHistoriskEndring: () => void;
     angreSisteEndring: () => void;
     fjernAltIUttaksplan: () => void;
     oppdaterUttaksplan: (uttaksplan: UttakPeriodeDto[]) => void;
+    endreUttaksplanMedVarsel: (nyePerioder: UttakPeriodeDto[], etterEndring?: () => void) => void;
+    slettFraUttaksplanMedVarsel: (
+        perioderSomSlettes: Datointervall[],
+        nyePerioder: UttakPeriodeDto[],
+        etterEndring?: () => void,
+    ) => void;
     tilbakestillUttaksplan: () => void;
 };
 
@@ -31,8 +52,15 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
     const { oppdaterUttaksplan: oppdater, harEndretPlan, children } = props;
     const [visFjernAltModal, setVisFjernAltModal] = useState(false);
     const [visTilbakestillModal, setVisTilbakestillModal] = useState(false);
+    const [historiskEndring, setHistoriskEndring] = useState<HistoriskEndring>();
+    const [visHistoriskEndringModal, setVisHistoriskEndringModal] = useState(false);
 
-    const { perioder, erEndringssøknad } = useUttaksplanData();
+    const {
+        perioder,
+        erEndringssøknad,
+        foreldreInfo: { søker },
+        kanVelgeArbeidsgiver,
+    } = useUttaksplanData();
 
     const harLoggetInitielleOverlappRef = useRef(false);
     useEffect(() => {
@@ -70,18 +98,51 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
         [oppdater],
     );
 
-    const angreSisteEndring = useCallback(() => {
-        setUttaksplanVersjoner((eksisterendeVersjoner) => {
-            if (eksisterendeVersjoner.length === 0) {
-                return eksisterendeVersjoner;
+    const oppdaterEllerBekreft = useCallback(
+        (type: HistoriskEndringstype | undefined, nyePerioder: UttakPeriodeDto[], etterEndring?: () => void) => {
+            const utfør = () => {
+                oppdaterUttaksplan(nyePerioder);
+                etterEndring?.();
+            };
+
+            if (erEndringssøknad && type) {
+                setHistoriskEndring({ type, utfør });
+                setVisHistoriskEndringModal(true);
+            } else {
+                utfør();
             }
-            const nyeVersjoner = eksisterendeVersjoner.slice(0, -1);
+        },
+        [erEndringssøknad, oppdaterUttaksplan],
+    );
 
-            oppdater(nyeVersjoner.at(-1));
+    const endreUttaksplanMedVarsel = useCallback(
+        (nyePerioder: UttakPeriodeDto[], etterEndring?: () => void) =>
+            oppdaterEllerBekreft(
+                finnHistoriskEndringstype(perioder, nyePerioder, søker, kanVelgeArbeidsgiver),
+                nyePerioder,
+                etterEndring,
+            ),
+        [perioder, søker, kanVelgeArbeidsgiver, oppdaterEllerBekreft],
+    );
 
-            return nyeVersjoner;
-        });
-    }, [oppdater]);
+    const slettFraUttaksplanMedVarsel = useCallback(
+        (perioderSomSlettes: Datointervall[], nyePerioder: UttakPeriodeDto[], etterEndring?: () => void) =>
+            oppdaterEllerBekreft(
+                harHistoriskSletting(perioder, perioderSomSlettes) ? 'slettet' : undefined,
+                nyePerioder,
+                etterEndring,
+            ),
+        [perioder, oppdaterEllerBekreft],
+    );
+
+    const angreSisteEndring = useCallback(() => {
+        if (uttaksplanVersjoner.length === 0) {
+            return;
+        }
+        const nyeVersjoner = uttaksplanVersjoner.slice(0, -1);
+        setUttaksplanVersjoner(nyeVersjoner);
+        oppdater(nyeVersjoner.at(-1));
+    }, [oppdater, uttaksplanVersjoner]);
 
     const tilbakestillUttaksplan = useCallback(() => {
         setUttaksplanVersjoner([]);
@@ -101,28 +162,41 @@ export const UttaksplanRedigeringProvider = (props: Props) => {
         oppdater(kunEøsPerioder);
     }, [oppdater, perioder]);
 
+    const nullstillHistoriskEndring = useCallback(() => setHistoriskEndring(undefined), []);
+
     const value = useMemo(
         () => ({
             visFjernAltModal,
             visTilbakestillModal,
+            visHistoriskEndringModal,
+            historiskEndring,
             uttaksplanVersjoner,
             harEndretPlan,
             oppdaterUttaksplan,
+            endreUttaksplanMedVarsel,
+            slettFraUttaksplanMedVarsel,
             angreSisteEndring,
             tilbakestillUttaksplan,
             fjernAltIUttaksplan,
             setVisFjernAltModal,
             setVisTilbakestillModal,
+            setVisHistoriskEndringModal,
+            nullstillHistoriskEndring,
         }),
         [
             visFjernAltModal,
             visTilbakestillModal,
+            visHistoriskEndringModal,
+            historiskEndring,
             uttaksplanVersjoner,
             harEndretPlan,
             oppdaterUttaksplan,
+            endreUttaksplanMedVarsel,
+            slettFraUttaksplanMedVarsel,
             angreSisteEndring,
             tilbakestillUttaksplan,
             fjernAltIUttaksplan,
+            nullstillHistoriskEndring,
         ],
     );
 

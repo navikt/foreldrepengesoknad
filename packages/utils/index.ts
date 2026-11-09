@@ -23,9 +23,9 @@ export { redirect } from './src/loginUtils';
 
 export { useAbortSignal } from './src/hooks/useAbortSignal';
 export { useDocumentTitle } from './src/hooks/useDocumentTitle';
-export { useBeforeUnload } from './src/hooks/useBeforeUnload';
 export { useScrollBehaviour } from './src/hooks/useScrollBehaviour';
-export { useMedia } from './src/hooks/useMedia';
+export { useBreakpoints } from './src/hooks/useBreakpoints';
+export { useMediaQuery } from './src/hooks/useMediaQuery';
 export { trimNumberValue, getFloatFromString, getNumberFromNumberInputValue } from './src/numberUtils';
 export {
     capitalizeFirstLetter,

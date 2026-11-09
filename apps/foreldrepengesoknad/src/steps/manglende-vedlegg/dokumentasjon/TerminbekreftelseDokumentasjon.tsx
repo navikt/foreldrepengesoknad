@@ -9,11 +9,12 @@ import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, Barn, EksternArbeidsforholdDto_fpoversikt, SøkersituasjonFp, isUfødtBarn } from '@navikt/fp-types';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
 
+import { OppdaterVedlegg } from '../ManglendeVedleggFormData';
 import { VedleggUploader } from '../attachment-uploaders/VedleggUploader';
 
 interface Props {
     attachments: Attachment[];
-    updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
+    updateAttachments: (skjemanummer: GyldigeSkjemanummer) => OppdaterVedlegg;
     barn: Barn;
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
     erFarEllerMedmor: boolean;

@@ -25,6 +25,7 @@ const IGNORED_UNICORN_RULES = {
     'unicorn/no-top-level-side-effects': OFF,
     'unicorn/prefer-logical-operator-over-ternary': OFF,
     'unicorn/prefer-minimal-ternary': OFF,
+    'unicorn/prefer-smaller-scope': OFF,
     'unicorn/prefer-ternary': OFF,
     'unicorn/prevent-abbreviations': OFF,
 };

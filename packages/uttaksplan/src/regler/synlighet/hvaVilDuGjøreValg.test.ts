@@ -111,6 +111,18 @@ describe('hvaVilDuGjøreValg', () => {
             expect(VIS_LEGG_TIL_FERIE_VALG.skalVises(kontekst)).toBe(false);
             expect(VIS_LEGG_TIL_PAUSE_VALG.skalVises(kontekst)).toBe(true);
         });
+
+        it('skal verken vise ferie, opphold eller pause når tidsrommet krysser seks-ukersgrensen, som i kalenderen', () => {
+            const kontekst = lagKontekst({
+                søker: 'FAR_MEDMOR',
+                rettighetType: 'BARE_SØKER_RETT',
+                valgtePerioder: [{ fom: '2024-09-04', tom: '2024-09-16' }],
+            });
+
+            expect(VIS_LEGG_TIL_FERIE_VALG.skalVises(kontekst)).toBe(false);
+            expect(VIS_LEGG_TIL_OPPHOLD_VALG.skalVises(kontekst)).toBe(false);
+            expect(VIS_LEGG_TIL_PAUSE_VALG.skalVises(kontekst)).toBe(false);
+        });
     });
 
     describe('periode før familiehendelsesdato', () => {

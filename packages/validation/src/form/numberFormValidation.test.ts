@@ -41,6 +41,13 @@ describe('numberFormValidation', () => {
             expect(validate('5.5')).toBeNull();
             expect(validate('5.55')).toBeNull();
         });
+        it('godtar desimalkomma', () => {
+            expect(validate('5,55')).toBeNull();
+        });
+        it('avviser andre skilletegn enn punktum og komma', () => {
+            expect(validate('5a5')).toBe(FEIL);
+            expect(validate('5 5')).toBe(FEIL);
+        });
         it('avviser mer enn to desimaler', () => {
             expect(validate('5.555')).toBe(FEIL);
         });
@@ -75,6 +82,9 @@ describe('numberFormValidation', () => {
         });
         it('returnerer undefined for tom streng', () => {
             expect(formatValue('')).toBeUndefined();
+        });
+        it('returnerer undefined for verdi som ikke er et tall', () => {
+            expect(formatValue('abc')).toBeUndefined();
         });
     });
 });

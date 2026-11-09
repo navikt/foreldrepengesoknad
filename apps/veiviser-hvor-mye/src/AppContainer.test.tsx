@@ -7,11 +7,6 @@ import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import * as stories from './AppContainer.stories';
 
-vi.mock('@navikt/nav-dekoratoren-moduler', () => ({
-    setAvailableLanguages: vi.fn(),
-    onLanguageSelect: vi.fn(),
-}));
-
 const { HvorMyeVeiviserMockaStønadskvoterOgSatser } = composeStories(stories);
 
 describe('<AppContainer>', () => {

@@ -16,10 +16,18 @@ type Props = {
     setEndredePerioder: (perioder: Array<{ fom: string; tom: string }>) => void;
 };
 
-type ContextValues = Omit<Props, 'children' | 'valgtePerioder' | 'oppdaterUttaksplan'> & {
+type ContextValues = Omit<Props, 'children' | 'valgtePerioder'> & {
     sammenslåtteValgtePerioder: CalendarPeriod[];
-    leggTilUttaksplanPerioder: (perioder: UttakPeriodeDto[], skalForskyvePeriode: boolean) => void;
-    slettUttaksplanPerioder: (perioder: Array<{ fom: string; tom: string }>, skalForskyveBakover: boolean) => void;
+    leggTilUttaksplanPerioder: (
+        perioder: UttakPeriodeDto[],
+        skalForskyvePeriode: boolean,
+        etterUtført: () => void,
+    ) => void;
+    slettUttaksplanPerioder: (
+        perioder: Array<{ fom: string; tom: string }>,
+        skalForskyveBakover: boolean,
+        etterUtført: () => void,
+    ) => void;
 };
 
 const KalenderRedigeringContext = createContext<ContextValues | null>(null);
@@ -32,49 +40,50 @@ export const KalenderRedigeringProvider = ({
 }: Props) => {
     const { perioder, erPeriodeneTilAnnenPartLåst } = useUttaksplanData();
 
-    const uttaksplanRedigering = useUttaksplanRedigering();
+    const { endreUttaksplanMedVarsel, slettFraUttaksplanMedVarsel } = notEmpty(useUttaksplanRedigering());
 
     const sammenslåtteValgtePerioder = useMemo(() => slåSammenTilstøtendePerioder(valgtePerioder), [valgtePerioder]);
 
     const leggTilUttaksplanPerioder = useCallback(
-        (nyePerioder: UttakPeriodeDto[], skalForskyvePeriode: boolean) => {
+        (nyePerioder: UttakPeriodeDto[], skalForskyvePeriode: boolean, etterUtført: () => void) => {
             const nyeUttakPerioder = new UttakPeriodeBuilder(perioder, 'kalender')
                 .leggTilUttakPerioder(nyePerioder, skalForskyvePeriode)
                 .getUttakPerioder();
-
-            notEmpty(uttaksplanRedigering).oppdaterUttaksplan(nyeUttakPerioder);
+            endreUttaksplanMedVarsel(nyeUttakPerioder, etterUtført);
         },
-        [uttaksplanRedigering, perioder],
+        [perioder, endreUttaksplanMedVarsel],
     );
 
     const slettUttaksplanPerioder = useCallback(
-        (perioderSomSkalSlettes: Array<{ fom: string; tom: string }>, skalForskyveBakover: boolean) => {
-            const uttakPeriodeBuilder = new UttakPeriodeBuilder(perioder, 'kalender');
-            uttakPeriodeBuilder.fjernUttakPerioder(
-                perioderSomSkalSlettes,
-                skalForskyveBakover,
-                erPeriodeneTilAnnenPartLåst,
-            );
-            notEmpty(uttaksplanRedigering).oppdaterUttaksplan(uttakPeriodeBuilder.getUttakPerioder());
+        (
+            perioderSomSkalSlettes: Array<{ fom: string; tom: string }>,
+            skalForskyveBakover: boolean,
+            etterUtført: () => void,
+        ) => {
+            const nyeUttakPerioder = new UttakPeriodeBuilder(perioder, 'kalender')
+                .fjernUttakPerioder(perioderSomSkalSlettes, skalForskyveBakover, erPeriodeneTilAnnenPartLåst)
+                .getUttakPerioder();
+            slettFraUttaksplanMedVarsel(perioderSomSkalSlettes, nyeUttakPerioder, etterUtført);
         },
-        [uttaksplanRedigering, perioder, erPeriodeneTilAnnenPartLåst],
+        [perioder, erPeriodeneTilAnnenPartLåst, slettFraUttaksplanMedVarsel],
     );
 
-    const value = useMemo(() => {
-        return {
+    const value = useMemo(
+        () => ({
             sammenslåtteValgtePerioder,
             leggTilUttaksplanPerioder,
             slettUttaksplanPerioder,
             setValgtePerioder,
             setEndredePerioder,
-        };
-    }, [
-        sammenslåtteValgtePerioder,
-        leggTilUttaksplanPerioder,
-        slettUttaksplanPerioder,
-        setValgtePerioder,
-        setEndredePerioder,
-    ]);
+        }),
+        [
+            sammenslåtteValgtePerioder,
+            leggTilUttaksplanPerioder,
+            slettUttaksplanPerioder,
+            setValgtePerioder,
+            setEndredePerioder,
+        ],
+    );
 
     return <KalenderRedigeringContext value={value}>{children}</KalenderRedigeringContext>;
 };

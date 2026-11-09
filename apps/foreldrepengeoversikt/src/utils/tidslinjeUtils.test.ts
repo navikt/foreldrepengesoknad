@@ -3,7 +3,7 @@ import { IntlShape } from 'react-intl';
 
 import { FellesUttaksplanDto, UttakDto } from '@navikt/fp-types';
 
-import { Foreldrepengesak } from '../types/Sak.ts';
+import { Foreldrepengesak, SvangerskapspengeSak } from '../types/Sak.ts';
 import { Tidslinjehendelse2 } from '../types/Tidslinjehendelse.ts';
 import {
     finnesDetFremtidigeTidslinjehendelser,
@@ -90,6 +90,30 @@ describe('getTidligstBehandlingsDatoForTidligSøknad', () => {
 
     it('skal returnere undefined når felles uttaksplan mangler', () => {
         expect(getTidligstBehandlingsDatoForTidligSøknad(fpSak, undefined)).toBeUndefined();
+    });
+
+    it('skal returnere undefined for svangerskapspenger når alle tilrettelegginger er hel tilrettelegging', () => {
+        const svpSak = {
+            ytelse: 'SVANGERSKAPSPENGER',
+            saksnummer: '2',
+            sakAvsluttet: false,
+            oppdatertTidspunkt: '2024-01-01',
+            familiehendelse: { termindato: '2026-06-01', antallBarn: 1 },
+            åpenBehandling: {
+                tilstand: 'VENT_TIDLIG_SØKNAD',
+                søknad: {
+                    arbeidsforhold: [
+                        {
+                            aktivitet: { type: 'ORDINÆRT_ARBEID' },
+                            oppholdsperioder: [],
+                            tilrettelegginger: [{ type: 'HEL', fom: '2026-02-02', tom: '2026-05-10' }],
+                        },
+                    ],
+                },
+            },
+        } satisfies SvangerskapspengeSak;
+
+        expect(getTidligstBehandlingsDatoForTidligSøknad(svpSak, undefined)).toBeUndefined();
     });
 });
 

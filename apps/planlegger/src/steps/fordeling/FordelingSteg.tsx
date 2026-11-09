@@ -69,11 +69,7 @@ export const FordelingSteg = ({ stønadskvoter }: Props) => {
         defaultValues: fordeling ?? { antallDagerSøker1: halvpart },
     });
 
-    const antallDagerSøker1Temp = formMethods.watch('antallDagerSøker1');
-    const antallDagerSøker1 =
-        antallDagerSøker1Temp === undefined || antallDagerSøker1Temp === null
-            ? undefined
-            : Number(antallDagerSøker1Temp);
+    const antallDagerSøker1 = formMethods.watch('antallDagerSøker1') ?? undefined;
 
     const hvemStarterPermisjon = formMethods.watch('hvemStarterPermisjon');
 

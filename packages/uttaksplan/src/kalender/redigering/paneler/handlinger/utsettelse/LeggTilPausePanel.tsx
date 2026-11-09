@@ -42,10 +42,11 @@ export const LeggTilPausePanel = ({ setVisPausePanel }: Props) => {
                     }) satisfies UttakPeriodeDto,
             ),
             false,
+            () => {
+                setValgtePerioder([]);
+                setEndredePerioder(sammenslåtteValgtePerioder);
+            },
         );
-
-        setValgtePerioder([]);
-        setEndredePerioder(sammenslåtteValgtePerioder);
     };
 
     return (

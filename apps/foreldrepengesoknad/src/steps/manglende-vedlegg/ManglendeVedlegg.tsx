@@ -1,6 +1,7 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
@@ -11,12 +12,12 @@ import { Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
 
 import { Skjemanummer } from '@navikt/fp-constants';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Attachment, FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
+import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { ManglendeVedleggFormData } from './ManglendeVedleggFormData';
+import { ManglendeVedleggFormData, OppdaterVedlegg } from './ManglendeVedleggFormData';
 import { AleneomsorgDokumentasjon } from './dokumentasjon/AleneomsorgDokumentasjon';
 import { BarnInnlagtDokumentasjon } from './dokumentasjon/BarnInnlagtDokumentasjon';
 import { EtterlønnEllerSluttvederlagDokumentasjon } from './dokumentasjon/EtterlønnEllerSluttvederlagDokumentasjon';
@@ -76,6 +77,8 @@ export const ManglendeVedlegg = ({
     foreldrepengerSaker,
 }: Props) => {
     const intl = useIntl();
+    const [pågåendeOpplastinger, setPågåendeOpplastinger] = useState<Partial<Record<GyldigeSkjemanummer, boolean>>>({});
+    const harPågåendeOpplasting = Object.values(pågåendeOpplastinger).some(Boolean);
 
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
@@ -195,10 +198,19 @@ export const ManglendeVedlegg = ({
         },
     });
 
-    const updateAttachments = (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => {
-        formMethods.setValue(skjemanummer, attachments, { shouldDirty: true, shouldTouch: true });
-        formMethods.clearErrors(skjemanummer);
-    };
+    const updateAttachments =
+        (skjemanummer: GyldigeSkjemanummer): OppdaterVedlegg =>
+        (attachments, hasPendingUploads) => {
+            if (hasPendingUploads !== undefined) {
+                setPågåendeOpplastinger((forrige) =>
+                    forrige[skjemanummer] === hasPendingUploads
+                        ? forrige
+                        : { ...forrige, [skjemanummer]: hasPendingUploads },
+                );
+            }
+            formMethods.setValue(skjemanummer, attachments, { shouldDirty: true, shouldTouch: true });
+            formMethods.clearErrors(skjemanummer);
+        };
 
     const kreverIngenDokumentasjon =
         [
@@ -328,6 +340,7 @@ export const ManglendeVedlegg = ({
                             goToPreviousStep={navigator.goToPreviousDefaultStep}
                             onAvsluttOgSlett={avbrytSøknad}
                             onFortsettSenere={navigator.fortsettSøknadSenere}
+                            isDisabledAndLoading={harPågåendeOpplasting}
                         />
                     </VStack>
                 </RhfForm>

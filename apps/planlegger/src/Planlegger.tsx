@@ -1,36 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
-import {
-    ContextDataMap,
-    ContextDataType,
-    PlanleggerDataContext,
-    useContextGetData,
-} from 'appData/PlanleggerDataContext';
+import { ContextDataType, PlanleggerDataContext, useContextGetData } from 'appData/PlanleggerDataContext';
 import { API_URLS } from 'appData/queries';
 import ky from 'ky';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { useLocation } from 'react-router';
+import { Navigate, useLocation } from 'react-router';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
 import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
+import { lesPlanleggerdataFraUrl } from 'utils/planleggerdataUtils';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { KontoBeregningResultatDto, OmBarnetPlanlegger } from '@navikt/fp-types';
 import { SimpleErrorPage } from '@navikt/fp-ui';
-import { decompressFromUrl, konverterFlatePerioderTilIntervall } from '@navikt/fp-utils';
 
 import { PlanleggerRouter } from './PlanleggerRouter';
-
-// TODO: Fjern konverteringa frå gammalt flatt format når delte lenker i gammalt format ikkje lenger er i bruk
-// (vurder etter 1. juni 2027).
-const lesPlanleggerdata = (json: string): ContextDataMap => {
-    const data = JSON.parse(json) as ContextDataMap;
-    const uttaksplan = data[ContextDataType.UTTAKSPLAN];
-    return uttaksplan
-        ? { ...data, [ContextDataType.UTTAKSPLAN]: konverterFlatePerioderTilIntervall(uttaksplan) }
-        : data;
-};
 
 const finnBrukerRolle = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett) => {
     return harMorRett(hvemHarRett, hvemPlanlegger) ? 'MOR' : 'FAR';
@@ -133,27 +118,19 @@ export const PlanleggerDataInit = () => {
     const intl = useIntl();
 
     const dataParam = new URLSearchParams(locations.search).get('data');
-    const decompressedData = dataParam ? decompressFromUrl(dataParam) : undefined;
-    const data = decompressedData ? lesPlanleggerdata(decompressedData) : undefined;
+    const { data, lenkeErUgyldig } = useMemo(() => lesPlanleggerdataFraUrl(dataParam), [dataParam]);
 
-    // Denne useEffecten kjøres for at skyra-undersøkelsen skal trigges inline på oppsummering-siden
     useEffect(() => {
-        // Skyra støtter kun nb og nn
         const isSupportedLocale = intl.locale === 'nb' || intl.locale === 'nn';
 
-        if (!isSupportedLocale || !locations.pathname.includes('oppsummering')) {
-            return;
-        }
-        const skyraGlobal = globalThis as typeof globalThis & { skyra?: { reload: () => void } };
-        if (typeof skyraGlobal.skyra?.reload === 'function') {
-            skyraGlobal.skyra.reload();
-            // eslint-disable-next-line no-console
-            console.log(`skyra.reload() kjørt på ${locations.pathname}`);
-        } else {
-            // eslint-disable-next-line no-console
-            console.warn('skyra.reload() ikke tilgjengelig');
+        if (isSupportedLocale && locations.pathname.includes('oppsummering')) {
+            globalThis.skyra?.reload?.();
         }
     }, [locations.pathname, intl.locale]);
+
+    if (lenkeErUgyldig) {
+        return <Navigate to="/" replace state={{ ugyldigLenke: true }} />;
+    }
 
     return (
         <PlanleggerDataContext initialState={data}>

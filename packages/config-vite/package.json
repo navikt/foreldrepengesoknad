@@ -10,7 +10,7 @@
         "playwright": "1.64.1",
         "typescript": "catalog:",
         "vite": "catalog:",
-        "vite-plugin-compression2": "2.5.3",
+        "vite-plugin-compression2": "2.5.4",
         "vitest": "catalog:"
     },
     "scripts": {

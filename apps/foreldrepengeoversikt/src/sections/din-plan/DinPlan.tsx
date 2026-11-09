@@ -7,7 +7,7 @@ import { Foreldrepengesak } from 'types/Sak';
 import { Button, HStack, ToggleGroup, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-types';
-import { getLenker, useMedia } from '@navikt/fp-utils';
+import { getLenker, useBreakpoints } from '@navikt/fp-utils';
 import { KvoteOppsummering, UttaksplanDataProvider, UttaksplanKalender, UttaksplanListe } from '@navikt/fp-uttaksplan';
 
 import { hentUttakskvoteOptions } from '../../api/queries';
@@ -20,7 +20,7 @@ interface Props {
 }
 
 export const DinPlan = ({ navnPåForeldre, sak }: Props) => {
-    const isDesktop = useMedia('screen and (min-width: 768px)');
+    const { isAtLeast768px } = useBreakpoints();
 
     const [visKalender, setVisKalender] = useState(false);
 
@@ -65,7 +65,7 @@ export const DinPlan = ({ navnPåForeldre, sak }: Props) => {
                 <HStack>
                     <Button
                         className="mt-4"
-                        size={isDesktop ? 'small' : 'medium'}
+                        size={isAtLeast768px ? 'small' : 'medium'}
                         variant="secondary"
                         onClick={() => location.assign(getLenker().foreldrepengesoknad)}
                     >

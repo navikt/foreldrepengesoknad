@@ -24,16 +24,23 @@ export const SøkersituasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
     const søkersituasjon = useContextGetData(ContextDataType.SØKERSITUASJON);
     const oppdaterSøkersituasjon = useContextSaveData(ContextDataType.SØKERSITUASJON);
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
+    const oppdaterDokumentasjon = useContextSaveData(ContextDataType.DOKUMENTASJON);
 
     const formMethods = useForm<Søkersituasjon>({
         defaultValues: søkersituasjon,
     });
 
-    const lagre = (formValues: Søkersituasjon) => {
+    const lagreSøkersituasjon = (formValues: Søkersituasjon) => {
         oppdaterSøkersituasjon(formValues);
-        if (søkersituasjon && søkersituasjon.situasjon !== formValues.situasjon) {
-            oppdaterOmBarnet(undefined);
+        if (!søkersituasjon || søkersituasjon.situasjon === formValues.situasjon) {
+            return;
         }
+        oppdaterOmBarnet(undefined);
+        oppdaterDokumentasjon(undefined);
+    };
+
+    const lagre = (formValues: Søkersituasjon) => {
+        lagreSøkersituasjon(formValues);
         return navigator.goToNextDefaultStep();
     };
 
@@ -66,7 +73,7 @@ export const SøkersituasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
                             onAvsluttOgSlett={navigator.avbrytSøknad}
                             onFortsettSenere={navigator.fortsettSøknadSenere}
                             goToPreviousStep={navigator.goToPreviousDefaultStep}
-                            saveDataOnPreviousClick={oppdaterSøkersituasjon}
+                            saveDataOnPreviousClick={lagreSøkersituasjon}
                         />
                     </VStack>
                 </RhfForm>

@@ -1,6 +1,7 @@
 import { composeStories, composeStory } from '@storybook/react-vite';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
 
 import { getLenker } from '@navikt/fp-utils';
 
@@ -249,38 +250,195 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.queryByText('Klara vil få rundt')).not.toBeInTheDocument();
     });
 
-    it('skal vise Skyra-undersøkelse for norsk bokmål', async () => {
-        const StoryWithNorsk = composeStory({ ...stories.FlereForsørgereHundreProsentTermin }, stories.default, {
-            initialGlobals: { locale: 'nb' },
+    describe('Skyra-undersøkelse', () => {
+        const SURVEY_SLUG = 'arbeids-og-velferdsetaten-nav/planlegg-foreldrepenger-inline';
+
+        const settSamtykke = (surveys: boolean) =>
+            vi.stubGlobal('webStorageController', {
+                getCurrentConsent: () => ({ consent: { analytics: surveys, surveys } }),
+            });
+
+        // Skyra-scriptet registrerer elementet når det lastes. Registreringen kan ikke angres,
+        // så testen for ulastet script må kjøre før de andre.
+        const lastSkyraScript = () => {
+            if (!customElements.get('skyra-survey')) {
+                customElements.define('skyra-survey', class extends HTMLElement {});
+            }
+        };
+
+        const renderOppsummering = async (locale: 'nb' | 'nn' | 'en' = 'nb') => {
+            const Story = composeStory({ ...stories.FlereForsørgereHundreProsentTermin }, stories.default, {
+                initialGlobals: { locale },
+            });
+            const result = render(<Story />);
+            expect(await screen.findAllByText(locale === 'en' ? 'Summary' : 'Oppsummering')).toHaveLength(2);
+            return result;
+        };
+
+        const sendSkyraHendelse = (type: string) =>
+            act(() => {
+                document.querySelector('skyra-survey')?.dispatchEvent(new CustomEvent(type, { bubbles: true }));
+            });
+
+        afterEach(() => {
+            vi.unstubAllGlobals();
         });
-        render(<StoryWithNorsk />);
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
 
-        // Sjekk at surveyen rendres med norsk tittel
-        expect(screen.getByText('Frivillig spørreundersøkelse')).toBeInTheDocument();
-    });
+        it('skal ikke vise lasting før Skyra-scriptet er lastet, og vise undersøkelsen når det er lastet', async () => {
+            settSamtykke(true);
+            await renderOppsummering();
 
-    it('skal vise Skyra-undersøkelse for nynorsk', async () => {
-        const StoryWithNynorsk = composeStory({ ...stories.FlereForsørgereHundreProsentTermin }, stories.default, {
-            initialGlobals: { locale: 'nn' },
+            expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();
+            expect(document.querySelector('skyra-survey')).not.toBeInTheDocument();
+
+            lastSkyraScript();
+
+            expect(await screen.findByText('Frivillig spørreundersøkelse')).toBeInTheDocument();
         });
-        render(<StoryWithNynorsk />);
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
 
-        // Sjekk at surveyen rendres med nynorsk tittel
-        expect(screen.getByText('Frivillig spørjeundersøking')).toBeInTheDocument();
-    });
+        it('skal ikke vise undersøkelsen uten samtykke, og følge samtykkeendringer', async () => {
+            lastSkyraScript();
+            settSamtykke(false);
+            await renderOppsummering();
 
-    it('skal ikke vise Skyra-undersøkelse for engelsk', async () => {
-        const StoryWithEnglish = composeStory({ ...stories.FlereForsørgereHundreProsentTermin }, stories.default, {
-            initialGlobals: { locale: 'en' },
+            expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();
+            expect(document.querySelector('skyra-survey')).not.toBeInTheDocument();
+
+            act(() => {
+                dispatchEvent(new CustomEvent('consentAllWebStorage'));
+            });
+            expect(screen.getByText('Frivillig spørreundersøkelse')).toBeInTheDocument();
+
+            act(() => {
+                dispatchEvent(new CustomEvent('refuseOptionalWebStorage'));
+            });
+            expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();
+            expect(document.querySelector('skyra-survey')).not.toBeInTheDocument();
         });
-        render(<StoryWithEnglish />);
-        expect(await screen.findAllByText('Summary')).toHaveLength(2);
 
-        // Sjekk at surveyen ikke rendres (ingen norsk/nynorsk tittel)
-        expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();
-        expect(screen.queryByText('Frivillig spørjeundersøking')).not.toBeInTheDocument();
-        expect(screen.queryByText('Optional survey')).not.toBeInTheDocument();
+        it('skal vise undersøkelsen når dekoratøren lastes etter siden', async () => {
+            lastSkyraScript();
+            await renderOppsummering();
+            expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();
+
+            settSamtykke(true);
+
+            expect(await screen.findByText('Frivillig spørreundersøkelse')).toBeInTheDocument();
+        });
+
+        it('skal vise undersøkelsen når Skyra sender skyra-ready', async () => {
+            lastSkyraScript();
+            settSamtykke(true);
+            await renderOppsummering();
+
+            const element = document.querySelector<HTMLElement>('skyra-survey');
+            expect(element?.style.opacity).toBe('0');
+            expect(element?.getAttribute('slug')).toBe(SURVEY_SLUG);
+
+            sendSkyraHendelse('skyra-ready');
+
+            expect(document.querySelector<HTMLElement>('skyra-survey')?.style.opacity).toBe('1');
+        });
+
+        it('skal skjule undersøkelsen når Skyra sender skyra-unavailable', async () => {
+            lastSkyraScript();
+            settSamtykke(true);
+            await renderOppsummering();
+            expect(screen.getByText('Frivillig spørreundersøkelse')).toBeInTheDocument();
+
+            sendSkyraHendelse('skyra-unavailable');
+
+            expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();
+        });
+
+        it('skal vise feilmelding når Skyra sender skyra-error', async () => {
+            lastSkyraScript();
+            settSamtykke(true);
+            await renderOppsummering();
+
+            sendSkyraHendelse('skyra-error');
+
+            expect(screen.getByText('Kunne ikke laste undersøkelsen.')).toBeInTheDocument();
+            expect(document.querySelector('skyra-survey')).not.toBeInTheDocument();
+        });
+
+        it('skal laste undersøkelsen på nytt når samtykke gis igjen etter skyra-unavailable', async () => {
+            lastSkyraScript();
+            settSamtykke(true);
+            await renderOppsummering();
+
+            sendSkyraHendelse('skyra-unavailable');
+            expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();
+
+            act(() => {
+                dispatchEvent(new CustomEvent('refuseOptionalWebStorage'));
+            });
+            act(() => {
+                dispatchEvent(new CustomEvent('consentAllWebStorage'));
+            });
+
+            expect(screen.getByText('Frivillig spørreundersøkelse')).toBeInTheDocument();
+            expect(document.querySelector('skyra-survey')).toBeInTheDocument();
+        });
+
+        it('skal lese samtykket på nytt når dekoratøren lastes før effekten kjører', async () => {
+            lastSkyraScript();
+            // Første kall skjer under render, før dekoratøren har lastet samtykket.
+            const getCurrentConsent = vi
+                .fn()
+                .mockReturnValueOnce({ consent: { analytics: false, surveys: false } })
+                .mockReturnValue({ consent: { analytics: true, surveys: true } });
+            vi.stubGlobal('webStorageController', { getCurrentConsent });
+
+            await renderOppsummering();
+
+            expect(await screen.findByText('Frivillig spørreundersøkelse')).toBeInTheDocument();
+        });
+
+        it('skal vise Skyra-undersøkelse for nynorsk', async () => {
+            lastSkyraScript();
+            settSamtykke(true);
+            await renderOppsummering('nn');
+
+            expect(screen.getByText('Frivillig spørjeundersøking')).toBeInTheDocument();
+        });
+
+        it('skal ikke vise Skyra-undersøkelse for engelsk', async () => {
+            lastSkyraScript();
+            settSamtykke(true);
+            await renderOppsummering('en');
+
+            expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();
+            expect(screen.queryByText('Frivillig spørjeundersøking')).not.toBeInTheDocument();
+            expect(screen.queryByText('Optional survey')).not.toBeInTheDocument();
+        });
+
+        it('skal takke og melde av lytteren når riktig undersøkelse er fullført', async () => {
+            lastSkyraScript();
+            settSamtykke(true);
+            const callbacks = new Map<string, (event: { slug: string }) => void>();
+            const off = vi.fn();
+            vi.stubGlobal('skyra', {
+                on: vi.fn((event: string, callback: (event: { slug: string }) => void) => {
+                    callbacks.set(event, callback);
+                }),
+                off,
+            });
+            const { unmount } = await renderOppsummering();
+
+            act(() => {
+                callbacks.get('surveyCompleted')?.({ slug: 'en-annen-undersokelse' });
+            });
+            expect(screen.queryByText('Takk for at du svarte på undersøkelsen')).not.toBeInTheDocument();
+
+            act(() => {
+                callbacks.get('surveyCompleted')?.({ slug: SURVEY_SLUG });
+            });
+            expect(screen.getByText('Takk for at du svarte på undersøkelsen')).toBeInTheDocument();
+            expect(Object.keys(sessionStorage).some((key) => key.includes('skyra'))).toBe(false);
+
+            unmount();
+            expect(off).toHaveBeenCalledWith('surveyCompleted', callbacks.get('surveyCompleted'));
+        });
     });
 });

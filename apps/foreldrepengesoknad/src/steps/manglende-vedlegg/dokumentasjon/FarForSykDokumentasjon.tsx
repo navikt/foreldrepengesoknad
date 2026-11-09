@@ -4,11 +4,12 @@ import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, NavnPåForeldre, UttakPeriodeDto } from '@navikt/fp-types';
 
+import { OppdaterVedlegg } from '../ManglendeVedleggFormData';
 import { UttakUploader } from '../attachment-uploaders/UttakUploader';
 
 interface Props {
     attachments: Attachment[];
-    updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
+    updateAttachments: (skjemanummer: GyldigeSkjemanummer) => OppdaterVedlegg;
     perioder: UttakPeriodeDto[];
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
