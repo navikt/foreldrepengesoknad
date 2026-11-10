@@ -4,6 +4,11 @@ import '@testing-library/jest-dom/vitest';
 
 import * as globalStorybookConfig from '../.storybook/preview';
 
+vi.mock(import('@navikt/nav-dekoratoren-moduler'), () => ({
+    setAvailableLanguages: vi.fn(),
+    onLanguageSelect: vi.fn(),
+}));
+
 setProjectAnnotations(globalStorybookConfig);
 
 // Browser-modus er tregare enn jsdom; auk Testing Library sin standard findBy*/waitFor-timeout.
