@@ -398,7 +398,7 @@ const fjernFraPeriode = (
 // Perioder fra saken kan starte eller slutte i en helg. Da kan resten etter en splitt bestå av bare helgedager,
 // og fom havner etter tom når den flyttes til nærmeste uttaksdag.
 const leggTilHvisHarUttaksdager = (perioder: UttakPeriodeDto[], periode: UttakPeriodeDto): void => {
-    if (!toDay(periode.fom).isAfter(toDay(periode.tom))) {
+    if (toDay(periode.fom).isSameOrBefore(toDay(periode.tom))) {
         perioder.push(periode);
     }
 };
