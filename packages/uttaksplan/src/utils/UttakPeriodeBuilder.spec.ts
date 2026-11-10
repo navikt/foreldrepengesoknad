@@ -478,6 +478,67 @@ describe('UttakPeriodeBuilder.fjernUttakPerioder (Forskyv)', () => {
     });
 });
 
+// Perioder fra saken kan starte eller slutte i en helg (2027-01-02 er lørdag, 2027-01-03 er søndag).
+describe('UttakPeriodeBuilder – eksisterende periode med fom/tom i helg', () => {
+    const lagFerie = (fom: string, tom: string) => lagPeriode(fom, tom, { utsettelseÅrsak: 'FERIE' });
+
+    it('skal ikke lage periode med tom før fom når ny periode dekker alle uttaksdager på slutten av eksisterende periode', () => {
+        const builder = new UttakPeriodeBuilder([lagFerie('2026-12-21', '2027-01-02')]);
+
+        builder.leggTilUttakPerioder([lagNyPeriode('2026-12-28', '2027-01-01')], false);
+
+        expect(builder.getUttakPerioder()).toEqual([
+            lagFerie('2026-12-21', '2026-12-25'),
+            lagNyPeriode('2026-12-28', '2027-01-01'),
+        ]);
+    });
+
+    it('skal ikke lage periode med tom før fom når ny periode dekker alle uttaksdager i starten av eksisterende periode', () => {
+        const builder = new UttakPeriodeBuilder([lagFerie('2027-01-03', '2027-01-15')]);
+
+        builder.leggTilUttakPerioder([lagNyPeriode('2027-01-04', '2027-01-08')], false);
+
+        expect(builder.getUttakPerioder()).toEqual([
+            lagNyPeriode('2027-01-04', '2027-01-08'),
+            lagFerie('2027-01-11', '2027-01-15'),
+        ]);
+    });
+
+    it('skal ikke lage periode med tom før fom når en fjerner alle uttaksdager på slutten av eksisterende periode', () => {
+        const builder = new UttakPeriodeBuilder([lagFerie('2026-12-21', '2027-01-02')]);
+
+        builder.fjernUttakPerioder([{ fom: '2026-12-28', tom: '2027-01-01' }], false);
+
+        expect(builder.getUttakPerioder()).toEqual([lagFerie('2026-12-21', '2026-12-25')]);
+    });
+
+    it('skal forskyve eksisterende periode som slutter i en helg', () => {
+        const builder = new UttakPeriodeBuilder([lagFerie('2026-12-21', '2027-01-02')]);
+
+        builder.leggTilUttakPerioder([lagNyPeriode('2026-12-28', '2027-01-01')], SKAL_FORSKYVE);
+
+        expect(builder.getUttakPerioder()).toEqual([
+            lagFerie('2026-12-21', '2026-12-25'),
+            lagNyPeriode('2026-12-28', '2027-01-01'),
+            lagFerie('2027-01-04', '2027-01-08'),
+        ]);
+    });
+
+    it('skal forskyve bakover når en fjerner periode og eksisterende periode slutter i en helg', () => {
+        const builder = new UttakPeriodeBuilder([
+            lagFerie('2026-12-21', '2027-01-02'),
+            lagPeriode('2027-01-04', '2027-01-08'),
+        ]);
+
+        builder.fjernUttakPerioder([{ fom: '2026-12-28', tom: '2027-01-01' }], SKAL_FORSKYVE);
+
+        expect(builder.getUttakPerioder()).toEqual([
+            lagFerie('2026-12-21', '2026-12-25'),
+            lagPeriode('2026-12-28', '2027-01-01'),
+        ]);
+    });
+});
+
 describe('UttakPeriodeBuilder.getUttakPerioder - validering av ugyldig overlapp', () => {
     it('loggar ikkje når planen er gyldig', () => {
         captureExceptionMock.mockClear();
