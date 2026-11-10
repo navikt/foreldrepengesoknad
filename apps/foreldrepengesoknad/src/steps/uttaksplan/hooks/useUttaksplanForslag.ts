@@ -264,10 +264,14 @@ export const useUttaksplanForslag = (
     const stønadskvoter = førFødsel?.kontoer ?? valgtStønadskvote.kontoer;
 
     if (erDeltUttak) {
+        const stønadskvoterForForslag =
+            fordeling.fordelingValg === FellesperiodeFordelingValg.HOPP_OVER_FORDELING
+                ? stønadskvoter.filter((konto) => konto.konto !== 'FELLESPERIODE')
+                : stønadskvoter;
         if (erSøkerFarEllerMedmor) {
             return lagDeltUttakForFarMedmor(
                 Uttaksdagen.denneEllerNeste(familiehendelsedato).getDato(),
-                stønadskvoter,
+                stønadskvoterForForslag,
                 oppstartsdato,
                 førFødsel ? fordelPerioderEtterSøkerrolle(førFødsel.perioder, 'FAR_MEDMOR') : undefined,
             );
@@ -293,7 +297,7 @@ export const useUttaksplanForslag = (
                 ...(førFødsel?.perioder ?? []),
                 ...deltUttak({
                     famDato: familiehendelsedato,
-                    tilgjengeligeStønadskvoter: stønadskvoter,
+                    tilgjengeligeStønadskvoter: stønadskvoterForForslag,
                     fellesperiodeDagerFørsteForelder: førFødsel
                         ? Math.min(fellesperiodeDagerMor, fellesperiodeDagerTilgjengelig)
                         : fellesperiodeDagerMor,
