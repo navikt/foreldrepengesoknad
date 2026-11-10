@@ -18,11 +18,6 @@ import { AppContainer, queryClient } from './AppContainer';
 import * as stories from './AppContainer.stories';
 import messages from './intl/nb_NO.json';
 
-vi.mock('@navikt/nav-dekoratoren-moduler', () => ({
-    setAvailableLanguages: vi.fn(),
-    onLanguageSelect: vi.fn(),
-}));
-
 const { SøkerErMann, SøkerErKvinne } = composeStories(stories);
 
 const PLANLEGGER_DATA =

@@ -6,6 +6,11 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 
 import * as globalStorybookConfig from '../.storybook/preview';
 
+vi.mock(import('@navikt/nav-dekoratoren-moduler'), () => ({
+    setAvailableLanguages: vi.fn(),
+    onLanguageSelect: vi.fn(),
+}));
+
 setProjectAnnotations(globalStorybookConfig);
 
 dayjs.extend(isSameOrAfter);
