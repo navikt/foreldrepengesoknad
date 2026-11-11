@@ -4,7 +4,8 @@ import '@testing-library/jest-dom/vitest';
 
 import * as globalStorybookConfig from '../.storybook/preview';
 
-vi.mock(import('@navikt/nav-dekoratoren-moduler'), () => ({
+vi.mock(import('@navikt/nav-dekoratoren-moduler'), async (importOriginal) => ({
+    ...(await importOriginal()),
     setAvailableLanguages: vi.fn(),
     onLanguageSelect: vi.fn(),
 }));
