@@ -141,6 +141,7 @@ export const Month = React.memo(
                                                 isHoverPreview={hoverPreviewSet.has(formatDateIso(date))}
                                                 Icon={period?.icon}
                                                 iconFull={period?.iconFull}
+                                                VarselIcon={period?.varselIcon}
                                                 shape={getDayShape(date, periodMap, hoverPreviewSet)}
                                                 dateTooltipCallback={dateTooltipCallback}
                                                 dateClickCallback={dateClickCallback}

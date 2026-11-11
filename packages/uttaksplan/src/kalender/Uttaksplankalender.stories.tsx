@@ -1740,3 +1740,37 @@ export const MarkerPeriodeNårGraderingsaktivitetMangler: Story = {
         aktiveArbeidsforhold: [],
     },
 };
+
+export const MarkerFødselsdatoNårGraderingsaktivitetMangler: Story = {
+    args: {
+        perioder: [
+            {
+                fom: '2027-01-04',
+                tom: '2027-01-15',
+                søker: {
+                    kontoType: 'FEDREKVOTE',
+                    forelder: 'FAR_MEDMOR',
+                    samtidigUttak: 50,
+                    gradering: {
+                        arbeidstidprosent: 50,
+                    },
+                    flerbarnsdager: false,
+                },
+            },
+        ] satisfies UttakPeriodeDto[],
+        barn: {
+            type: BarnType.FØDT,
+            fødselsdatoer: ['2027-01-06'],
+            antallBarn: 1,
+        },
+        foreldreInfo: {
+            rettighetType: 'BEGGE_RETT',
+            søker: 'FAR_MEDMOR',
+            navnPåForeldre: { mor: 'Olga', farMedmor: 'Espen' },
+            erMedmorDelAvSøknaden: false,
+        },
+        harAktivitetskravIPeriodeUtenUttak: false,
+        erEndringssøknad: false,
+        aktiveArbeidsforhold: [],
+    },
+};

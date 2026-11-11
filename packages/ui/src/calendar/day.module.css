@@ -216,3 +216,18 @@
     height: 12px;
     pointer-events: none;
 }
+
+.varselIcon {
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
+    width: 10px;
+    height: 10px;
+    pointer-events: none;
+
+    svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+}
