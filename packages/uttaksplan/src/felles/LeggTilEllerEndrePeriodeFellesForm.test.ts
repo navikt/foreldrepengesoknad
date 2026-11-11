@@ -5,6 +5,7 @@ import { UttakPeriodeDto } from '@navikt/fp-types';
 import { harPeriodeMedUkjentGraderingsaktivitet } from '../utils/periodeUtils';
 import {
     LeggTilEllerEndrePeriodeFormFormValues,
+    lagDefaultValuesForValgtePerioder,
     lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm,
     mapFraFormValuesTilPeriodeDto,
 } from './LeggTilEllerEndrePeriodeFellesForm';
@@ -269,6 +270,52 @@ describe('lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm med låst annen par
 
         expect(lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm([periode], PERIODE, 'FAR_MEDMOR', true)).toEqual(
             expect.objectContaining({ forelder: 'BEGGE', kontoTypeMor: 'MØDREKVOTE', samtidigUttaksprosentMor: '50' }),
+        );
+    });
+
+    it('forhåndsfyller fars samtidige uttaksprosent når mor søker mot fars låste periode', () => {
+        const farsPeriode: UttakPeriodeDto = {
+            ...PERIODE,
+            annenPart: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false, samtidigUttak: 50 },
+        };
+
+        expect(lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm([farsPeriode], PERIODE, 'MOR', true)).toEqual(
+            expect.objectContaining({
+                forelder: 'BEGGE',
+                kontoTypeFarMedmor: 'FEDREKVOTE',
+                samtidigUttaksprosentFarMedmor: '50',
+            }),
+        );
+    });
+});
+
+describe('lagDefaultValuesForValgtePerioder med låst annen part', () => {
+    const samtidigPeriode: UttakPeriodeDto = {
+        fom: '2026-01-05',
+        tom: '2026-01-09',
+        annenPart: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false, samtidigUttak: 50 },
+    };
+    const periodeUtenSamtidigUttak: UttakPeriodeDto = {
+        fom: '2026-01-12',
+        tom: '2026-01-16',
+        annenPart: { forelder: 'MOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false },
+    };
+    const perioder = [samtidigPeriode, periodeUtenSamtidigUttak];
+    const valgtSamtidig = { fom: '2026-01-05', tom: '2026-01-05' };
+    const valgtUtenSamtidig = { fom: '2026-01-14', tom: '2026-01-14' };
+
+    it.each([
+        ['samtidig uttak først', [valgtSamtidig, valgtUtenSamtidig]],
+        ['samtidig uttak sist', [valgtUtenSamtidig, valgtSamtidig]],
+    ])('forhåndsutfyller ikke når valgte intervaller ligger i ulike perioder (%s)', (_, valgte) => {
+        expect(lagDefaultValuesForValgtePerioder(perioder, valgte, 'FAR_MEDMOR', true)).toBeUndefined();
+    });
+
+    it('forhåndsvelger begge når alle valgte intervaller ligger i samme periode med samtidig uttak', () => {
+        const valgte = [valgtSamtidig, { fom: '2026-01-08', tom: '2026-01-09' }];
+
+        expect(lagDefaultValuesForValgtePerioder(perioder, valgte, 'FAR_MEDMOR', true)).toEqual(
+            expect.objectContaining({ forelder: 'BEGGE', kontoTypeMor: 'MØDREKVOTE' }),
         );
     });
 });

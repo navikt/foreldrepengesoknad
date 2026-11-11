@@ -146,11 +146,43 @@ describe('knapperIRedigeringspanel — låste perioder til annen part', () => {
         const kontekst = lagKontekst({
             søker: 'FAR_MEDMOR',
             erPeriodeneTilAnnenPartLåst: true,
+            sammenslåtteValgtePerioder: [{ fom: '2024-09-16', tom: '2024-09-17' }],
             eksisterendePerioderSomErValgt: [
                 { ...morsPeriode, annenPart: { ...morsPeriode.annenPart!, samtidigUttak: 50 } },
             ],
         });
 
         expect(SKAL_VISE_LEGG_TIL_KNAPPETEKST.skalVises(kontekst)).toBe(false);
+    });
+
+    it('skal vise «Ny periode» når valgte dager ligger i flere låste perioder til annen part', () => {
+        const samtidigPeriode = { ...morsPeriode, annenPart: { ...morsPeriode.annenPart!, samtidigUttak: 50 } };
+        const kontekst = lagKontekst({
+            søker: 'FAR_MEDMOR',
+            erPeriodeneTilAnnenPartLåst: true,
+            sammenslåtteValgtePerioder: [
+                { fom: '2024-09-16', tom: '2024-09-16' },
+                { fom: '2024-09-24', tom: '2024-09-24' },
+            ],
+            eksisterendePerioderSomErValgt: [
+                samtidigPeriode,
+                { ...samtidigPeriode, fom: '2024-09-23', tom: '2024-09-27' },
+            ],
+        });
+
+        expect(SKAL_VISE_LEGG_TIL_KNAPPETEKST.skalVises(kontekst)).toBe(true);
+    });
+
+    it('skal vise «Ny periode» når valgte dager går utenfor den låste perioden med samtidig uttak', () => {
+        const kontekst = lagKontekst({
+            søker: 'FAR_MEDMOR',
+            erPeriodeneTilAnnenPartLåst: true,
+            sammenslåtteValgtePerioder: [{ fom: '2024-09-19', tom: '2024-09-24' }],
+            eksisterendePerioderSomErValgt: [
+                { ...morsPeriode, annenPart: { ...morsPeriode.annenPart!, samtidigUttak: 50 } },
+            ],
+        });
+
+        expect(SKAL_VISE_LEGG_TIL_KNAPPETEKST.skalVises(kontekst)).toBe(true);
     });
 });

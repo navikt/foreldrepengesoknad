@@ -1,4 +1,4 @@
-import type { BrukerRolleSak_fpoversikt, Familiesituasjon, RettighetType_fpoversikt, UttakDto } from '@navikt/fp-types';
+import type { BrukerRolleSak_fpoversikt, Familiesituasjon, RettighetType_fpoversikt } from '@navikt/fp-types';
 
 import { useUttaksplanData } from '../../context/UttaksplanDataContext';
 import { Uttaksplanperiode, UttaksplanperiodeMedKunTapteDager, erPeriodeDto } from '../../types/UttaksplanPeriode';
@@ -103,11 +103,12 @@ export const SKAL_VISE_LEGG_TIL_KNAPPETEKST: Synlighetsregel<KnapperIRedigerings
         'handlingen reint additiv. Hvis brukeren har valgt eksisterende perioder, sier knappen «Endre til ' +
         'ferie» i staden — med ett unntak: når den andre partens perioder er låst og det er valgt minst én ' +
         'periode som tilhører den andre forelderen, faller vi tilbake til «Legg til ferie» (fordi vi ikke ' +
-        'kan endre den andres perioder). Har den andre forelderen samtidig uttak i perioden, kan søker legge ' +
-        'til sitt eget uttak ved siden av, og da sier knappen «Endre».',
+        'kan endre den andres perioder). Ligger alle valgte dager i én og samme periode der den andre ' +
+        'forelderen har samtidig uttak, kan søker legge til sitt eget uttak ved siden av, og da sier ' +
+        'knappen «Endre».',
     skalVises: (k) =>
         k.eksisterendePerioderSomErValgt.length === 0 ||
-        harValgtLåstPeriodeTilAnnenPart(k, (annenPart) => !annenPart.samtidigUttak),
+        (harValgtLåstPeriodeTilAnnenPart(k) && !harValgtDagerIÉnLåstPeriodeMedSamtidigUttak(k)),
 };
 
 export const SKAL_DEAKTIVERE_FERIEKNAPP: Synlighetsregel<KnapperIRedigeringspanelKontekst> = {
@@ -145,9 +146,16 @@ type KnapperIRedigeringspanelSynlighet = {
 const harBareFarRett = (k: KnapperIRedigeringspanelKontekst) =>
     k.søker === 'FAR_MEDMOR' && k.rettighetType === 'BARE_SØKER_RETT';
 
-const harValgtLåstPeriodeTilAnnenPart = (
-    k: KnapperIRedigeringspanelKontekst,
-    gjelderUttak: (annenPart: UttakDto) => boolean = () => true,
-) =>
-    k.erPeriodeneTilAnnenPartLåst &&
-    k.eksisterendePerioderSomErValgt.some((p) => erPeriodeDto(p) && !!p.annenPart && gjelderUttak(p.annenPart));
+const harValgtLåstPeriodeTilAnnenPart = (k: KnapperIRedigeringspanelKontekst) =>
+    k.erPeriodeneTilAnnenPartLåst && k.eksisterendePerioderSomErValgt.some((p) => erPeriodeDto(p) && !!p.annenPart);
+
+const harValgtDagerIÉnLåstPeriodeMedSamtidigUttak = (k: KnapperIRedigeringspanelKontekst) => {
+    const [periode, ...andre] = k.eksisterendePerioderSomErValgt;
+    return (
+        periode !== undefined &&
+        andre.length === 0 &&
+        erPeriodeDto(periode) &&
+        !!periode.annenPart?.samtidigUttak &&
+        k.sammenslåtteValgtePerioder.every((vp) => vp.fom >= periode.fom && vp.tom <= periode.tom)
+    );
+};

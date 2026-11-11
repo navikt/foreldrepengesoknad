@@ -14,6 +14,7 @@ import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import {
     LeggTilEllerEndrePeriodeFellesForm,
     LeggTilEllerEndrePeriodeFormFormValues,
+    lagDefaultValuesForValgtePerioder,
     lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm,
     mapFraFormValuesTilPeriodeDto,
 } from '../../../../felles/LeggTilEllerEndrePeriodeFellesForm';
@@ -49,9 +50,9 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
     const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } =
         useVisForskyvEllerErstattPanel(sammenslåtteValgtePerioder);
 
-    const defaultValues = lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
+    const defaultValues = lagDefaultValuesForValgtePerioder(
         perioder,
-        sammenslåtteValgtePerioder[0]!,
+        sammenslåtteValgtePerioder,
         søker,
         erPeriodeneTilAnnenPartLåst,
     );
