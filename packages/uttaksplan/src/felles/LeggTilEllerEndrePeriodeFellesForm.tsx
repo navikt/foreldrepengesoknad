@@ -1022,7 +1022,16 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
     const periode = notEmpty(eksisterendePerioder[0]);
 
     if (erPeriodeneTilAnnenPartLåst && !!periode.annenPart) {
-        return undefined;
+        if (!periode.annenPart.samtidigUttak) {
+            return undefined;
+        }
+        const defaultValues = lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
+            uttaksplanperioder,
+            valgtPeriode,
+            søker,
+            false,
+        );
+        return defaultValues ? { ...defaultValues, forelder: 'BEGGE' } : undefined;
     }
 
     const hovedUttak = periode.søker ?? periode.annenPart;

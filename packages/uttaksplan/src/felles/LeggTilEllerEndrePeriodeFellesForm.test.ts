@@ -251,3 +251,24 @@ describe('mapFraFormValuesTilPeriodeDto', () => {
         expect(periode?.søker?.overføringÅrsak).toBe('SYKDOM_ANNEN_FORELDER');
     });
 });
+
+describe('lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm med låst annen part', () => {
+    const morsPeriode: UttakPeriodeDto = {
+        ...PERIODE,
+        annenPart: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
+    };
+
+    it('gir tomt skjema når annen part ikke har samtidig uttak', () => {
+        expect(
+            lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm([morsPeriode], PERIODE, 'FAR_MEDMOR', true),
+        ).toBeUndefined();
+    });
+
+    it('forhåndsvelger begge med annen parts uttak når annen part har samtidig uttak', () => {
+        const periode = { ...morsPeriode, annenPart: { ...morsPeriode.annenPart!, samtidigUttak: 50 } };
+
+        expect(lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm([periode], PERIODE, 'FAR_MEDMOR', true)).toEqual(
+            expect.objectContaining({ forelder: 'BEGGE', kontoTypeMor: 'MØDREKVOTE', samtidigUttaksprosentMor: '50' }),
+        );
+    });
+});

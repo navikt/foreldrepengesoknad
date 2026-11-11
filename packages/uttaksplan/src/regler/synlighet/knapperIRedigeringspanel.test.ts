@@ -11,6 +11,7 @@ import { Periode } from '../types';
 import {
     SKAL_DEAKTIVERE_FERIEKNAPP,
     SKAL_VISE_FERIEKNAPP,
+    SKAL_VISE_LEGG_TIL_KNAPPETEKST,
     SKAL_VISE_PAUSEKNAPP,
     SKAL_VISE_UTSETTELSESKNAPP,
 } from './knapperIRedigeringspanel';
@@ -129,5 +130,27 @@ describe('knapperIRedigeringspanel — låste perioder til annen part', () => {
         });
 
         expect(SKAL_DEAKTIVERE_FERIEKNAPP.skalVises(kontekst)).toBe(false);
+    });
+
+    it('skal vise «Ny periode» når en valgt låst periode tilhører annen part uten samtidig uttak', () => {
+        const kontekst = lagKontekst({
+            søker: 'FAR_MEDMOR',
+            erPeriodeneTilAnnenPartLåst: true,
+            eksisterendePerioderSomErValgt: [morsPeriode],
+        });
+
+        expect(SKAL_VISE_LEGG_TIL_KNAPPETEKST.skalVises(kontekst)).toBe(true);
+    });
+
+    it('skal vise «Endre» når annen part har samtidig uttak i den valgte låste perioden', () => {
+        const kontekst = lagKontekst({
+            søker: 'FAR_MEDMOR',
+            erPeriodeneTilAnnenPartLåst: true,
+            eksisterendePerioderSomErValgt: [
+                { ...morsPeriode, annenPart: { ...morsPeriode.annenPart!, samtidigUttak: 50 } },
+            ],
+        });
+
+        expect(SKAL_VISE_LEGG_TIL_KNAPPETEKST.skalVises(kontekst)).toBe(false);
     });
 });
