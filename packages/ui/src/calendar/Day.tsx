@@ -20,7 +20,7 @@ type Props = {
     isHoverPreview?: boolean;
     Icon?: ReactElement;
     iconFull?: boolean;
-    VarselIcon?: ReactElement;
+    CornerIcon?: ReactElement;
     shape: DayShape;
     dateTooltipCallback?: (date: string) => React.ReactNode | string;
     dateClickCallback?: (date: string) => void;
@@ -38,7 +38,7 @@ export const Day = React.memo(
         isHoverPreview,
         Icon,
         iconFull,
-        VarselIcon,
+        CornerIcon,
         shape,
         dateTooltipCallback,
         dateClickCallback,
@@ -69,7 +69,7 @@ export const Day = React.memo(
             <button
                 ref={setButtonRef}
                 type="button"
-                data-testid={`day:${day};dayColor:${periodeColor}${Icon ? `;with-icon` : ''}${VarselIcon ? `;with-varsel` : ''}`}
+                data-testid={`day:${day};dayColor:${periodeColor}${Icon ? `;with-icon` : ''}${CornerIcon ? `;with-corner-icon` : ''}`}
                 data-shape={shape}
                 data-clickable={isClickable}
                 data-fade-in={isUpdated}
@@ -95,7 +95,7 @@ export const Day = React.memo(
                 {Icon && iconFull && (
                     <>
                         {Icon}
-                        {VarselIcon && <div className={styles.varselIcon}>{VarselIcon}</div>}
+                        {CornerIcon && <div className={styles.cornerIcon}>{CornerIcon}</div>}
                     </>
                 )}
                 {Icon && !iconFull && periodeColor !== 'GRAY' && (

@@ -175,15 +175,15 @@ const lagBarnehageOgfamiliehendelsePeriode = (
     familiehendelsedato: string,
     barnehagedato?: string,
     periode?: UttaksplanperiodeMedKunTapteDager,
-    varselIcon?: ReactElement,
+    varselikon?: ReactElement,
 ): CalendarPeriod[] => {
     const perioder: CalendarPeriod[] = [];
     if (barnehagedato !== undefined && (!periode || Tidsperioden.forPeriode(periode).inneholderDato(barnehagedato))) {
-        perioder.push(lagBarnehagedatoPeriode(barnehagedato, color, intl, varselIcon));
+        perioder.push(lagBarnehagedatoPeriode(barnehagedato, color, intl, varselikon));
     }
 
     if (!periode || Tidsperioden.forPeriode(periode).inneholderDato(familiehendelsedato)) {
-        perioder.push(lagFamiliehendelseDato(familiehendelsedato, color, barn, intl, varselIcon));
+        perioder.push(lagFamiliehendelseDato(familiehendelsedato, color, barn, intl, varselikon));
     }
 
     return perioder;
@@ -459,7 +459,7 @@ const lagFamiliehendelseDato = (
     color: CalendarPeriodColor,
     barn: Barn,
     intl: IntlShape,
-    varselIcon?: ReactElement,
+    varselikon?: ReactElement,
 ): CalendarPeriod => {
     return {
         fom: familiehendelsedato,
@@ -468,7 +468,7 @@ const lagFamiliehendelseDato = (
         srText: getSkjermlesertekstForFamiliehendelse(barn, intl),
         icon: <HeartFillIcon aria-hidden color="var(--ax-bg-brand-magenta-strong)" width={25} height={25} />,
         iconFull: true,
-        varselIcon,
+        cornerIcon: varselikon,
     };
 };
 
@@ -476,7 +476,7 @@ const lagBarnehagedatoPeriode = (
     barnehagedato: string,
     color: CalendarPeriodColor,
     intl: IntlShape,
-    varselIcon?: ReactElement,
+    varselikon?: ReactElement,
 ): CalendarPeriod => {
     return {
         fom: barnehagedato,
@@ -485,6 +485,6 @@ const lagBarnehagedatoPeriode = (
         srText: intl.formatMessage({ id: 'kalender.barnehageplass' }),
         icon: <TeddyBearFillIcon aria-hidden color="var(--ax-brand-beige-800)" width={25} height={25} />,
         iconFull: true,
-        varselIcon,
+        cornerIcon: varselikon,
     };
 };

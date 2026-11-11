@@ -12,13 +12,13 @@ type CalendarPeriodBase = {
 type CalendarPeriodWithoutIcon = CalendarPeriodBase & {
     icon?: never;
     iconFull?: never;
-    varselIcon?: never;
+    cornerIcon?: never;
 };
 
 type CalendarPeriodWithIcon = CalendarPeriodBase & {
     icon: React.ReactElement;
     iconFull: boolean;
-    varselIcon?: React.ReactElement;
+    cornerIcon?: React.ReactElement;
 };
 
 export type CalendarPeriod = CalendarPeriodWithoutIcon | CalendarPeriodWithIcon;

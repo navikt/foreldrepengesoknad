@@ -984,7 +984,9 @@ describe('UttaksplanKalender', () => {
 
         const januar = await screen.findByTestId('year:2027;month:0');
 
-        expect(within(januar).getByTestId('day:6;dayColor:LIGHTBLUEGREEN;with-icon;with-varsel')).toBeInTheDocument();
+        expect(
+            within(januar).getByTestId('day:6;dayColor:LIGHTBLUEGREEN;with-icon;with-corner-icon'),
+        ).toBeInTheDocument();
         expect(within(januar).getByTestId('day:7;dayColor:LIGHTBLUEGREEN;with-icon')).toBeInTheDocument();
     });
 
