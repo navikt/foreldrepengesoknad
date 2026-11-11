@@ -6,6 +6,7 @@ import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { FødtBarn } from '@navikt/fp-types';
 
 import * as stories from './OmBarnetSteg.stories';
 
@@ -777,5 +778,32 @@ describe('<OmBarnetSteg>', () => {
             key: ContextDataType.OM_BARNET,
             type: 'update',
         });
+    });
+
+    it('Termindato søkeren har lagret skal beholdes selv om den andre forelderen har en annen termindato', async () => {
+        const mockTodayDate = new Date('2022-08-05');
+        vi.setSystemTime(mockTodayDate);
+        const gåTilNesteSide = vi.fn();
+        await FarFødselMorHarVedtak.run({
+            args: {
+                ...FarFødselMorHarVedtak.args,
+                barn: { ...(FarFødselMorHarVedtak.args.barn as FødtBarn), termindato: '2022-08-10' },
+                gåTilNesteSide,
+            },
+        });
+
+        expect(await screen.findByText('Barnet du søker foreldrepenger for:')).toBeInTheDocument();
+        expect(
+            screen.queryByText('Termindato er hentet fra søknaden til den andre forelderen'),
+        ).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(
+            1,
+            expect.objectContaining({
+                data: expect.objectContaining({ termindato: '2022-08-10' }),
+                key: ContextDataType.OM_BARNET,
+            }),
+        );
     });
 });

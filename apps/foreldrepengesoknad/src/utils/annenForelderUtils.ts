@@ -8,7 +8,7 @@ import {
     isFødtBarn,
 } from '@navikt/fp-types';
 
-import { getFamiliehendelsedato } from './barnUtils';
+import { getFamiliehendelsedato, getTermindato } from './barnUtils';
 
 export const getErAleneOmOmsorg = (annenForelder: AnnenForelder): boolean => {
     return isAnnenForelderOppgitt(annenForelder) ? annenForelder.erAleneOmOmsorg : true;
@@ -29,13 +29,26 @@ export const finnAnnenPartsVedtak = (
 ): FellesUttaksplanDto | undefined =>
     uttaksplan?.perioder.some((p) => p.annenPart?.resultat !== undefined) ? uttaksplan : undefined;
 
-// Annen parts ubehandlede plan bygger på kvoter for annen parts dekningsgrad, og passer ikke når søkeren velger en annen.
-export const finnAnnenPartsPlanForDekningsgrad = (
+// Annen parts plan bygger på delt uttak og annen parts termindato. Den passer ikke når søkeren oppgir aleneomsorg,
+// at annen part ikke har rett, eller en annen termindato, selv om annen part har vedtak.
+// En ubehandlet plan bygger i tillegg på kvoter for annen parts dekningsgrad.
+export const finnAnnenPartsPlanSomPasserSøknaden = (
     uttaksplan: FellesUttaksplanDto | null | undefined,
-    dekningsgrad: Dekningsgrad | undefined,
+    { dekningsgrad, annenForelder, barn }: { dekningsgrad?: Dekningsgrad; annenForelder: AnnenForelder; barn: Barn },
 ): FellesUttaksplanDto | undefined => {
     const annenPartsPlan = finnAnnenPartsPlan(uttaksplan);
-    if (!annenPartsPlan || dekningsgrad === undefined || finnAnnenPartsVedtak(annenPartsPlan)) {
+    if (!annenPartsPlan || getErAleneOmOmsorg(annenForelder) || !getIsDeltUttak(annenForelder)) {
+        return undefined;
+    }
+    const termindato = getTermindato(barn);
+    if (
+        termindato !== undefined &&
+        annenPartsPlan.termindato !== undefined &&
+        termindato !== annenPartsPlan.termindato
+    ) {
+        return undefined;
+    }
+    if (dekningsgrad === undefined || finnAnnenPartsVedtak(annenPartsPlan)) {
         return annenPartsPlan;
     }
     const annenPartsDekningsgrad = annenPartsPlan.dekningsgrad === 'HUNDRE' ? '100' : '80';
