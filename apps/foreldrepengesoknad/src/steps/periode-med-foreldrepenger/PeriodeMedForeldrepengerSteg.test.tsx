@@ -16,6 +16,7 @@ const {
     MorFødselAleneomsorgMedTrillingFlerbarnsuker,
     FarEllerMedmorSøkerOgMorHarLagetUttaksplan,
     FarEllerMedmorSøkerOgMorHarSøktUtenVedtak,
+    FarEllerMedmorSøkerOgMorHarSøktUtenVedtak80,
     FarMedMorMedTermin1Juli2024,
     MorMedTermin1Juli2024OgFarsSøknad,
     MorFødselBeggeHarRettFødselFør1Juli2024,
@@ -37,6 +38,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
 
         expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
         expect(screen.getByText('Hvor lang periode med foreldrepenger vil du ha?')).toBeInTheDocument();
+        expect(screen.queryByText('Dere kan ikke få foreldrepenger med ulik dekningsgrad')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -362,11 +364,13 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
 
         expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
         expect(screen.getByText('Hvor lang periode med foreldrepenger vil dere ha?')).toBeInTheDocument();
+        expect(screen.queryByText('Dere kan ikke få foreldrepenger med ulik dekningsgrad')).not.toBeInTheDocument();
         expect(
             screen.queryByText('Dette ble valgt av Helga i søknaden hennes, og det kan ikke endres av deg.'),
         ).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText(/100 prosent foreldrepenger/));
+        expect(screen.queryByText('Dere kan ikke få foreldrepenger med ulik dekningsgrad')).not.toBeInTheDocument();
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
@@ -374,6 +378,58 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             key: ContextDataType.PERIODE_MED_FORELDREPENGER,
             type: 'update',
         });
+    });
+
+    it('skal vise advarsel ved ulik dekningsgrad, men la far fortsette med valget', async () => {
+        const gåTilNesteSide = vi.fn();
+        await FarEllerMedmorSøkerOgMorHarSøktUtenVedtak.run({
+            args: {
+                ...FarEllerMedmorSøkerOgMorHarSøktUtenVedtak.args,
+                gåTilNesteSide,
+            },
+        });
+
+        await screen.findByText('Hvor lang periode med foreldrepenger vil dere ha?');
+        await userEvent.click(screen.getByText(/80 prosent foreldrepenger/));
+
+        expect(screen.getByText('Dere kan ikke få foreldrepenger med ulik dekningsgrad')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Den andre forelderen har søkt om 100 %, mens du har valgt 80 %. Vil dere beholde den andre forelderens valg, velger du 100 % her. Du kan også søke om 80 %, men hvis søknaden din blir behandlet først, må den andre forelderens søknad endres. Det er fordi dere ikke kan ha ulik dekningsgrad. Begge må ha samme dekningsgrad, enten 100 % eller 80 %. Snakk sammen før du sender søknaden.',
+            ),
+        ).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: '80',
+            key: ContextDataType.PERIODE_MED_FORELDREPENGER,
+            type: 'update',
+        });
+    });
+
+    it('skal fjerne advarselen når dekningsgraden endres tilbake til 100 prosent', async () => {
+        await FarEllerMedmorSøkerOgMorHarSøktUtenVedtak.run();
+        await screen.findByText('Hvor lang periode med foreldrepenger vil dere ha?');
+
+        await userEvent.click(screen.getByText(/80 prosent foreldrepenger/));
+        expect(screen.getByText('Dere kan ikke få foreldrepenger med ulik dekningsgrad')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText(/100 prosent foreldrepenger/));
+        expect(screen.queryByText('Dere kan ikke få foreldrepenger med ulik dekningsgrad')).not.toBeInTheDocument();
+    });
+
+    it('skal vise advarsel når den andre forelderen har valgt 80 prosent og far velger 100 prosent', async () => {
+        await FarEllerMedmorSøkerOgMorHarSøktUtenVedtak80.run();
+        await screen.findByText('Hvor lang periode med foreldrepenger vil dere ha?');
+
+        await userEvent.click(screen.getByText(/100 prosent foreldrepenger/));
+
+        expect(screen.getByText('Dere kan ikke få foreldrepenger med ulik dekningsgrad')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Den andre forelderen har søkt om 80 %, mens du har valgt 100 %. Vil dere beholde den andre forelderens valg, velger du 80 % her. Du kan også søke om 100 %, men hvis søknaden din blir behandlet først, må den andre forelderens søknad endres. Det er fordi dere ikke kan ha ulik dekningsgrad. Begge må ha samme dekningsgrad, enten 100 % eller 80 %. Snakk sammen før du sender søknaden.',
+            ),
+        ).toBeInTheDocument();
     });
     it(
         'skal vise informasjon om utvidet 80% dekningsgrad for far som søker første gang med barn med termin' +

@@ -353,6 +353,8 @@
     "DekningsgradForm.InformasjonFlereEnnToBarn": "{sokerStorBokstav} får lenger periode med foreldrepengar sidan {soker} skal ha fleire barn",
     "DekningsgradForm.InformasjonFlerbarnUker": "Perioden blir forlenga med {uker100} om {soker} vel 100 % foreldrepengar eller {uker80} om {soker} vel 80 % foreldrepengar.",
     "DekningsgradForm.MåOppgiDekningsgrad": "Du må oppgje kor lang periode {soker} vil ha",
+    "DekningsgradForm.UlikDekningsgrad.Tittel": "De kan ikkje få foreldrepengar med ulik dekningsgrad",
+    "DekningsgradForm.UlikDekningsgrad.Beskrivelse": "Den andre forelderen har søkt om {annenPartsDekningsgrad} %, medan du har valt {valgtDekningsgrad} %. Vil de halde på valet til den andre forelderen, vel du {annenPartsDekningsgrad} % her. Du kan òg søkje om {valgtDekningsgrad} %, men viss søknaden din blir behandla først, må søknaden til den andre forelderen endrast. Det er fordi de ikkje kan ha ulik dekningsgrad. Begge må ha same dekningsgrad, anten 100 % eller 80 %. Snakk saman før du sender søknaden.",
     "DekningsgradValgtAvAnnenPartPanel.Heading": "Dykk har valgt {uker} med {dekningsgrad}% foreldrepengar",
     "DekningsgradValgtAvAnnenPartPanel.ValgtAvHennes": "Dette vart valgt av {navn} i søknaden hennar, og det kan ikkje endras av deg.",
     "DekningsgradValgtAvAnnenPartPanel.ValgtAvHans": "Dette vart valgt av {navn} i søknaden hans, og det kan ikkje endras av deg.",
