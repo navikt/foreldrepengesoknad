@@ -7,11 +7,6 @@ import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './AppContainer.stories';
 
-vi.mock('@navikt/nav-dekoratoren-moduler', () => ({
-    setAvailableLanguages: vi.fn(),
-    onLanguageSelect: vi.fn(),
-}));
-
 const { SøkerErKvinne } = composeStories(stories);
 
 describe('<AppContainer>', () => {
