@@ -1,8 +1,8 @@
-import { setProjectAnnotations } from '@storybook/react-vite';
 import { configure } from '@testing-library/dom';
-import '@testing-library/jest-dom/vitest';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+
+import { setupStorybookTests } from '@navikt/fp-utils-test/vitest';
 
 import * as globalStorybookConfig from '../.storybook/preview';
 
@@ -11,37 +11,11 @@ vi.mock(import('@navikt/nav-dekoratoren-moduler'), () => ({
     onLanguageSelect: vi.fn(),
 }));
 
-setProjectAnnotations(globalStorybookConfig);
+setupStorybookTests(globalStorybookConfig, { scrollTo: true, streams: true });
 
 dayjs.extend(isSameOrAfter);
 
 // Browser-modus er tregare enn jsdom; auk Testing Library sin standard findBy*/waitFor-timeout.
 if (import.meta.env['TEST_MODE'] === 'browser-mode') {
     configure({ asyncUtilTimeout: 10_000 });
-}
-
-if (import.meta.env['TEST_MODE'] === 'jsdom-mode') {
-    Object.assign(globalThis, { scrollTo: () => {} });
-
-    if (globalThis.ReadableStream) {
-        const RS = globalThis.ReadableStream.prototype;
-
-        // Denne var tricky å finne ut av. Den feiler ikke i jsdom, men den blir stående å vente/henge på et eller annet uvisst.
-        // Resolver den derfor umiddelbart. Det er oppførsel (retries, opploadprogress, etc.) som ikke er relevant å teste i jsdom.
-        // Om det i fremtiden skal testes bør det skje i ekte browser - ikke jsdom
-        RS.cancel = function () {
-            return Promise.resolve();
-        };
-    }
-
-    if (globalThis.Blob && !globalThis.Blob.prototype.stream) {
-        globalThis.Blob.prototype.stream = function () {
-            return new ReadableStream({
-                start: async (controller) => {
-                    controller.enqueue(await this.bytes());
-                    controller.close();
-                },
-            });
-        };
-    }
 }
