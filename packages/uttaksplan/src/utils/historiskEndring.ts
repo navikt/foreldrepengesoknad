@@ -44,7 +44,8 @@ export const harHistoriskSletting = (
                 (slettet) =>
                     periode.fom <= slettet.tom &&
                     slettet.fom <= periode.tom &&
-                    (periode.fom > slettet.fom ? periode.fom : slettet.fom) < førsteDagIMåneden,
+                    periode.fom < førsteDagIMåneden &&
+                    slettet.fom < førsteDagIMåneden,
             ),
     );
 
