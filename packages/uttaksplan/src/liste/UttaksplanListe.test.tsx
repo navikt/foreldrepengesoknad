@@ -690,6 +690,42 @@ describe('UttaksplanListe', () => {
         ]);
     });
 
+    it('skal fjerne feilmelding om mer enn to uker rundt fødsel når far reduserer perioden', async () => {
+        const oppdaterUttaksplan = vi.fn();
+
+        render(<Default oppdaterUttaksplan={oppdaterUttaksplan} />);
+
+        expect(await screen.findByText('18. april 25 - 08. mai 25')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Legg til periode'));
+        await userEvent.type(screen.getByLabelText('Fra og med dato'), '12.05.2025');
+        await userEvent.tab();
+        await userEvent.type(screen.getByLabelText('Til og med dato'), '30.05.2025');
+        await userEvent.tab();
+
+        await userEvent.click(screen.getByText('Legge til periode med foreldrepenger'));
+        await userEvent.click(screen.getByText('Begge'));
+        await userEvent.click(screen.getAllByText('Mors kvote')[0]!);
+        await userEvent.click(screen.getAllByText('Fars kvote')[0]!);
+        await userEvent.type(screen.getByLabelText('Hvor mange prosent til mor?'), '100');
+        await userEvent.type(screen.getByLabelText('Hvor mange prosent til far?'), '100');
+        await userEvent.click(screen.getAllByText('Nei')[0]!);
+        await userEvent.click(screen.getAllByText('Nei')[1]!);
+
+        await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
+
+        const feilmelding =
+            'Du kan ikke velge mer enn to uker totalt i perioden to uker før og seks uker etter fødsel/termin';
+        expect(await screen.findByText(feilmelding)).toBeInTheDocument();
+
+        await userEvent.clear(screen.getByLabelText('Til og med dato'));
+        await userEvent.type(screen.getByLabelText('Til og med dato'), '23.05.2025');
+        await userEvent.tab();
+
+        expect(screen.queryByText(feilmelding)).not.toBeInTheDocument();
+        expect(oppdaterUttaksplan).not.toHaveBeenCalled();
+    });
+
     it('Fedrekvote skal ikke arve aktivitetskrav (morsAktivitet) når far bytter kontotype fra fellesperiode', async () => {
         const oppdaterUttaksplan = vi.fn();
 
