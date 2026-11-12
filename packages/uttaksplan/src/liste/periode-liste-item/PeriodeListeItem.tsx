@@ -7,6 +7,11 @@ import { PeriodeListeContent } from './periode-liste-content/PeriodeListeContent
 import { PeriodeListeHeader } from './periode-liste-header/PeriodeListeHeader';
 import { getBorderFarge } from './periode-liste-header/PeriodeListeHeaderUtils';
 
+const HEADER_KNAPP_KLASSER = [
+    'hover:bg-ax-accent-300 w-full cursor-pointer border-l-8 pt-4 pb-4 text-left select-none',
+    'focus-visible:outline-ax-border-focus focus-visible:-outline-offset-3 focus-visible:outline-3 focus-visible:outline-solid',
+].join(' ');
+
 interface Props {
     isReadOnly: boolean;
     uttaksplanperioder: Uttaksplanperiode[];
@@ -31,7 +36,7 @@ export const PeriodeListeItem = ({ isReadOnly, uttaksplanperioder, isAllAccordio
         <VStack gap="space-0" className="border-ax-neutral-100 cursor-pointer border-t border-b">
             <button
                 type="button"
-                className={`hover:bg-ax-accent-300 w-full cursor-pointer border-l-8 pt-4 pb-4 text-left select-none ${borderFarge}`}
+                className={`${HEADER_KNAPP_KLASSER} ${borderFarge}`}
                 onClick={() => setErPeriodeInnholdÅpen(!erPeriodeInnholdÅpen)}
                 aria-expanded={erPeriodeInnholdÅpen}
                 aria-controls={innholdId}

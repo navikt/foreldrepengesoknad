@@ -19,6 +19,11 @@ import { PeriodeListeItem } from './periode-liste-item/PeriodeListeItem';
 import { mapUttaksplanperioderTilRaderIListe } from './utils/mapUttaksplanperioderTilRaderIListe';
 import { getFørsteUttaksplanperiodeFom, getSisteUttaksplanperiodeTom } from './utils/uttaksplanperiodeUtils';
 
+const LEGG_TIL_KNAPP_KLASSER = [
+    'not-focus-visible:outline-(--ax-border-subtle) not-focus-visible:outline-1',
+    'not-focus-visible:-outline-offset-1 not-focus-visible:outline-solid',
+].join(' ');
+
 interface Props {
     isReadOnly: boolean;
 }
@@ -99,7 +104,7 @@ export const UttaksplanListe = ({ isReadOnly }: Props) => {
                     variant="secondary"
                     onClick={() => setIsLeggTilPeriodePanelOpen(true)}
                     icon={<PlusIcon aria-hidden />}
-                    style={{ outline: '1px solid var(--ax-border-subtle)', outlineOffset: '-1px' }}
+                    className={LEGG_TIL_KNAPP_KLASSER}
                 >
                     <FormattedMessage id="uttaksplan.leggTilPeriode" />
                 </Button>
