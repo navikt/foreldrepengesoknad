@@ -8,7 +8,7 @@ import { DatePicker, useDatepicker } from '@navikt/ds-react';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT, TIDENES_ENDE, TIDENES_MORGEN } from '@navikt/fp-constants';
 
-import { ValidationReturnType, getError, getValidationRules } from './formUtils';
+import { ValidationReturnType, getError, getValidationRules, parseDatoInput } from './formUtils';
 
 dayjs.extend(customParseFormat);
 
@@ -120,6 +120,14 @@ export const RhfDatepicker = <T extends FieldValues>({
         [setFieldValue, onChange, field, fieldValue],
     );
 
+    const onBlurInput = (event: React.FocusEvent<HTMLInputElement>) => {
+        inputProps.onBlur?.(event);
+        const dato = parseDatoInput(fieldValue);
+        if (dato.isValid()) {
+            setFieldValue(dato.format(DDMMYYYY_DATE_FORMAT));
+        }
+    };
+
     const fromDate = minDate ? dayjs(minDate).toDate() : undefined;
     const toDate = maxDate ? dayjs(maxDate).toDate() : undefined;
     const disabledDays = useMemo(
@@ -144,6 +152,7 @@ export const RhfDatepicker = <T extends FieldValues>({
                 {...inputProps}
                 ref={field.ref}
                 onChange={onChangeInput}
+                onBlur={onBlurInput}
                 value={fieldValue}
                 label={label}
                 description={description}
@@ -162,7 +171,7 @@ const finnInputverdiEtterEksternEndring = (feltdato: Dayjs, feltverdi: unknown, 
     if (!feltdato.isValid()) {
         return typeof feltverdi === 'string' ? feltverdi : '';
     }
-    const inputdato = dayjs(inputverdi, DDMMYYYY_DATE_FORMAT, true);
+    const inputdato = parseDatoInput(inputverdi);
     if (inputdato.isValid() && inputdato.isSame(feltdato, 'day')) {
         return inputverdi;
     }
@@ -196,7 +205,7 @@ const formatDateInput = ({ nyVerdi, forrigeVerdi }: { nyVerdi: string; forrigeVe
             ? `${tall.slice(0, 2)}.${tall.slice(2, 4)}.${tall.slice(4, 8)}`
             : nyVerdi;
 
-    const dato = dayjs(formatert, DDMMYYYY_DATE_FORMAT, true).format(ISO_DATE_FORMAT);
+    const dato = parseDatoInput(formatert).format(ISO_DATE_FORMAT);
     const erGyldig = isValidDateString(dato);
 
     // Hvis gyldig dato, returner formatert verdi. Ellers returner originalverdi
