@@ -33,7 +33,7 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
     useMediaResetMinimering(setErMinimert);
 
     return (
-        <VStack gap="space-16">
+        <VStack gap="space-16" data-minimert={erMinimert}>
             <Box
                 padding="space-12"
                 onClick={isAtLeast768px ? undefined : () => setErMinimert(!erMinimert)}
