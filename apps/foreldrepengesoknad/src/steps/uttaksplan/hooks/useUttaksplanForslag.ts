@@ -306,14 +306,13 @@ export const useUttaksplanForslag = (
         undefined, // TODO (Andreas) - Må finne ut av hvordan man skal gjøre ting når annen part har perioder
         tilpassTilTermin,
     );
-    const startdatoFørFødsel = erSøkerFarEllerMedmor
-        ? getFørsteUttaksdagForeldrepengerFørFødsel(getTermindato(barn))
-        : oppstartsdato;
+    const getStartdatoFørFødsel = () =>
+        erSøkerFarEllerMedmor ? getFørsteUttaksdagForeldrepengerFørFødsel(getTermindato(barn)) : oppstartsdato;
     const førFødsel = tilpassTilTermin
         ? tilpassForslagForFørstegangssøknad(
               familiehendelsedato,
               notEmpty(getTermindato(barn)),
-              startdatoFørFødsel,
+              getStartdatoFørFødsel(),
               valgtStønadskvote.kontoer,
           )
         : undefined;

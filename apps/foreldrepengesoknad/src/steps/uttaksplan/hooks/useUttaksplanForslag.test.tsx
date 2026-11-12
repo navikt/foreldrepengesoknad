@@ -388,6 +388,15 @@ describe('forslag i førstegangssøknad når fødselsdato avviker fra termin', (
         },
     );
 
+    it('lager forslag for far når født barn mangler termindato', () => {
+        const perioder = lagForslag({
+            rolle: 'far',
+            barn: { type: BarnType.FØDT, fødselsdatoer: [FØDSELSDATO], antallBarn: 1 },
+        });
+
+        expect(perioder.some((periode) => periode.søker?.kontoType === 'FEDREKVOTE')).toBe(true);
+    });
+
     it.each([FellesperiodeFordelingValg.ALT, FellesperiodeFordelingValg.VIL_VELGE])(
         'bruker fellesperiode fra termin til fødsel også med fordelingsvalget %s',
         (fordelingValg) => {
