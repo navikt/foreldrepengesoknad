@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { UseFormReturn, useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
 import { Familiesituasjon } from '@navikt/fp-types';
@@ -59,4 +61,29 @@ export const useFormSubmitValidator = <T extends LeggTilEllerEndrePeriodeFormFor
             },
             intl,
         );
+};
+
+/**
+ * Etter første innsendingsforsøk valideres skjemaet på nytt ved hver endring, slik at
+ * feilmeldingen forsvinner eller oppdateres med en gang brukeren retter opp verdiene.
+ */
+export const useSubmitFeilmelding = <T extends LeggTilEllerEndrePeriodeFormFormValues>(
+    formMethods: UseFormReturn<T>,
+    valgtePerioder: Array<{ fom: string; tom: string }>,
+    skalValideres = true,
+) => {
+    const formSubmitValidator = useFormSubmitValidator<T>();
+    const [harForsøktÅSende, setHarForsøktÅSende] = useState(false);
+
+    useWatch({ control: formMethods.control });
+
+    const finnFeilmelding = () => formSubmitValidator(valgtePerioder, formMethods.getValues()) ?? undefined;
+
+    return {
+        feilmelding: harForsøktÅSende && skalValideres ? finnFeilmelding() : undefined,
+        validerVedInnsending: () => {
+            setHarForsøktÅSende(true);
+            return finnFeilmelding();
+        },
+    };
 };

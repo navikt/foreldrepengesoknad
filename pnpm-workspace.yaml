@@ -10,11 +10,11 @@ catalog:
   '@navikt/ds-react': 8.20.1
   '@navikt/ds-tailwind': 8.20.1
   '@navikt/nav-dekoratoren-moduler': 4.5.3
-  '@storybook/addon-a11y': 10.6.4
-  '@storybook/addon-links': 10.6.4
-  '@storybook/react-vite': 10.6.4
-  '@tanstack/react-query': 5.105.0
-  '@tanstack/react-query-devtools': 5.105.0
+  '@storybook/addon-a11y': 10.6.5
+  '@storybook/addon-links': 10.6.5
+  '@storybook/react-vite': 10.6.5
+  '@tanstack/react-query': 5.105.3
+  '@tanstack/react-query-devtools': 5.105.3
   '@testing-library/dom': 10.4.2
   '@testing-library/jest-dom': 7.0.1
   '@testing-library/react': 16.3.3
@@ -25,9 +25,9 @@ catalog:
   '@types/react': 19.3.0
   '@types/react-dom': 19.3.0
   dayjs: 1.11.23
-  es-toolkit: 1.53.0
+  es-toolkit: 1.53.1
   esbuild: 0.28.2
-  eslint: 10.13.0
+  eslint: 10.14.0
   express: 5.3.0
   http-proxy-middleware: 4.2.1
   i18n-iso-countries: 7.14.0
@@ -39,13 +39,13 @@ catalog:
   react-dom: 19.3.1
   react-hook-form: 7.91.0
   react-intl: 12.1.6
-  react-router: 8.5.0
-  storybook: 10.6.4
+  react-router: 8.5.1
+  storybook: 10.6.5
   storybook-react-intl: 10.2.2
-  tailwindcss: 4.3.3
+  tailwindcss: 4.3.4
   typescript: 6.0.3
   vite: 8.3.5
-  vitest: 5.0.5
+  vitest: 5.1.0
 
 minimumReleaseAge: 4320 # minutter
 

@@ -1,5 +1,5 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
-import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
+import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getDatoForAleneomsorg, getErMorUfør } from 'utils/annenForelderUtils';
 import { getStandardOppstartsdato } from 'utils/oppstartUtils';
 import { getErFarOgFar, getErSøkerFarEllerMedmor } from 'utils/personUtils';
@@ -9,6 +9,7 @@ import {
     KontoBeregningDto,
     KontoDto,
     Rolle,
+    Søkerrolle,
     Tidsperiode,
     UttakPeriodeDto,
     isAdoptertAnnetBarn,
@@ -192,6 +193,58 @@ const fordelPerioderEtterSøkerrolle = (perioder: UttakPeriodeDto[], søkersRoll
         return periode;
     });
 
+const getBareFarMedmorHarRett = (rolle: Søkerrolle, annenForelder: AnnenForelder): boolean =>
+    rolle !== 'mor' &&
+    isAnnenForelderOppgitt(annenForelder) &&
+    (annenForelder.erAleneOmOmsorg ||
+        (!annenForelder.harRettPåForeldrepengerINorge && !annenForelder.harRettPåForeldrepengerIEØS));
+
+const lagDeltUttakForMor = ({
+    familiehendelsedato,
+    stønadskvoter,
+    stønadskvoterForForslag,
+    oppstartsdato,
+    fordeling,
+    førFødsel,
+}: {
+    familiehendelsedato: string;
+    stønadskvoter: KontoDto[];
+    stønadskvoterForForslag: KontoDto[];
+    oppstartsdato: string;
+    fordeling: Fordeling;
+    førFødsel: ReturnType<typeof tilpassForslagForFørstegangssøknad> | undefined;
+}): UttakPeriodeDto[] => {
+    const helgejustertFamDato = Uttaksdagen.denneEllerNeste(familiehendelsedato).getDato();
+    const dagerMellomFamDatoOgStartdato =
+        Uttaksdagen.denne(oppstartsdato).getUttaksdagerFremTilDato(helgejustertFamDato);
+    const dagerMedFellesperiodeFørFødsel =
+        !førFødsel && dagerMellomFamDatoOgStartdato > 15 ? dagerMellomFamDatoOgStartdato - 15 : 0;
+    const fellesperiodeKonto = stønadskvoter.find((k) => k.konto === 'FELLESPERIODE');
+    const fellesperiodeDagerTilgjengelig = fellesperiodeKonto
+        ? fellesperiodeKonto.dager - dagerMedFellesperiodeFørFødsel
+        : 0;
+    const { fellesperiodeDagerMor } = getFellesperioderDagerFordeling(fordeling, fellesperiodeDagerTilgjengelig);
+
+    // deltUttak() kjenner ikke søker-/annenPart-fordelingen for denne saken – alle genererte
+    // perioder (for BÅDE mor og far/medmor) legges på .søker, skilt kun ved periode.søker.forelder.
+    // Søkjar her er MOR, så periodane som eigentleg gjeld far/medmor må flyttast til .annenPart
+    // før forslaget blir brukt som (utgangspunkt for) søkjar sin eigen uttaksplan.
+    return fordelPerioderEtterSøkerrolle(
+        [
+            ...(førFødsel?.perioder ?? []),
+            ...deltUttak({
+                famDato: familiehendelsedato,
+                tilgjengeligeStønadskvoter: stønadskvoterForForslag,
+                fellesperiodeDagerFørsteForelder: førFødsel
+                    ? Math.min(fellesperiodeDagerMor, fellesperiodeDagerTilgjengelig)
+                    : fellesperiodeDagerMor,
+                startdato: førFødsel?.startdatoEtterFødsel ?? oppstartsdato,
+            }),
+        ],
+        'MOR',
+    );
+};
+
 /**
  * Om annen part allerede har uttaksperioder (t.d. eit vedtak), klarer ikkje
  * useUttaksplanForslag å lage eit fornuftig forslag – uansett kva startdato
@@ -253,11 +306,13 @@ export const useUttaksplanForslag = (
         undefined, // TODO (Andreas) - Må finne ut av hvordan man skal gjøre ting når annen part har perioder
         tilpassTilTermin,
     );
+    const getStartdatoFørFødsel = () =>
+        erSøkerFarEllerMedmor ? getFørsteUttaksdagForeldrepengerFørFødsel(getTermindato(barn)) : oppstartsdato;
     const førFødsel = tilpassTilTermin
         ? tilpassForslagForFørstegangssøknad(
               familiehendelsedato,
               notEmpty(getTermindato(barn)),
-              erSøkerFarEllerMedmor ? getFørsteUttaksdagForeldrepengerFørFødsel(getTermindato(barn)) : oppstartsdato,
+              getStartdatoFørFødsel(),
               valgtStønadskvote.kontoer,
           )
         : undefined;
@@ -277,44 +332,18 @@ export const useUttaksplanForslag = (
             );
         }
 
-        const helgejustertFamDato = Uttaksdagen.denneEllerNeste(familiehendelsedato).getDato();
-        const dagerMellomFamDatoOgStartdato =
-            Uttaksdagen.denne(oppstartsdato).getUttaksdagerFremTilDato(helgejustertFamDato);
-        const dagerMedFellesperiodeFørFødsel =
-            !førFødsel && dagerMellomFamDatoOgStartdato > 15 ? dagerMellomFamDatoOgStartdato - 15 : 0;
-        const fellesperiodeKonto = stønadskvoter.find((k) => k.konto === 'FELLESPERIODE');
-        const fellesperiodeDagerTilgjengelig = fellesperiodeKonto
-            ? fellesperiodeKonto.dager - dagerMedFellesperiodeFørFødsel
-            : 0;
-        const { fellesperiodeDagerMor } = getFellesperioderDagerFordeling(fordeling, fellesperiodeDagerTilgjengelig);
-
-        // deltUttak() kjenner ikke søker-/annenPart-fordelingen for denne saken – alle genererte
-        // perioder (for BÅDE mor og far/medmor) legges på .søker, skilt kun ved periode.søker.forelder.
-        // Søkjar her er MOR, så periodane som eigentleg gjeld far/medmor må flyttast til .annenPart
-        // før forslaget blir brukt som (utgangspunkt for) søkjar sin eigen uttaksplan.
-        return fordelPerioderEtterSøkerrolle(
-            [
-                ...(førFødsel?.perioder ?? []),
-                ...deltUttak({
-                    famDato: familiehendelsedato,
-                    tilgjengeligeStønadskvoter: stønadskvoterForForslag,
-                    fellesperiodeDagerFørsteForelder: førFødsel
-                        ? Math.min(fellesperiodeDagerMor, fellesperiodeDagerTilgjengelig)
-                        : fellesperiodeDagerMor,
-                    startdato: førFødsel?.startdatoEtterFødsel ?? oppstartsdato,
-                }),
-            ],
-            'MOR',
-        );
+        return lagDeltUttakForMor({
+            familiehendelsedato,
+            stønadskvoter,
+            stønadskvoterForForslag,
+            oppstartsdato,
+            fordeling,
+            førFødsel,
+        });
     }
 
     const erFarOgFar = getErFarOgFar(søkersituasjon.rolle, annenForelder);
-
-    const bareFarMedmorHarRett =
-        søkersituasjon.rolle !== 'mor' &&
-        isAnnenForelderOppgitt(annenForelder) &&
-        (annenForelder.erAleneOmOmsorg ||
-            (!annenForelder.harRettPåForeldrepengerINorge && !annenForelder.harRettPåForeldrepengerIEØS));
+    const bareFarMedmorHarRett = getBareFarMedmorHarRett(søkersituasjon.rolle, annenForelder);
 
     return [
         ...(førFødsel?.perioder ?? []),

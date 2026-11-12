@@ -20,6 +20,7 @@ const {
     SamtidigUttak,
     MorSøkerOgFarHarEøsPeriode,
     MarkerPeriodeNårFarHarFellesperiodeOgMorsAktivitetMåFyllesUt,
+    MarkerFødselsdatoNårGraderingsaktivitetMangler,
     MarkerPeriodeNårGraderingsaktivitetMangler,
     FarsUttakMorForSyk,
     FarSøkerEtterAtMorHarSøkt,
@@ -976,6 +977,17 @@ describe('UttaksplanKalender', () => {
                 'Du må velge hvor du skal jobbe samtidig som du har foreldrepenger i de markerte periodene',
             ),
         ).toBeInTheDocument();
+    });
+
+    it('skal vise varseltrekant på fødselsdatoen når den ligger i en periode der gradering mangler arbeidsgiver', async () => {
+        render(<MarkerFødselsdatoNårGraderingsaktivitetMangler />);
+
+        const januar = await screen.findByTestId('year:2027;month:0');
+
+        expect(
+            within(januar).getByTestId('day:6;dayColor:LIGHTBLUEGREEN;with-icon;with-corner-icon'),
+        ).toBeInTheDocument();
+        expect(within(januar).getByTestId('day:7;dayColor:LIGHTBLUEGREEN;with-icon')).toBeInTheDocument();
     });
 
     it('skal ikke som far kunne overskrive en dag i perioden to->tre uker før fødselsdato', async () => {

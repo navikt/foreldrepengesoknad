@@ -97,4 +97,44 @@ describe('<FormHooks>', () => {
         await userEvent.keyboard(`${slettTreCharacters}22`);
         expect(screen.getByText('datepickerField: "2023-11-22"')).toBeInTheDocument();
     });
+
+    it('skal tolke dato uten innledende null og vise den med null etter blur', async () => {
+        render(<VisFormkomponenter />);
+
+        const datofelt = screen
+            .getByText('Dette er en datepicker')
+            .closest('div')
+            ?.querySelector('input') as HTMLInputElement;
+
+        await userEvent.type(datofelt, '1.2.2020');
+        expect(screen.getByText('datepickerField: "2020-02-01"')).toBeInTheDocument();
+        expect(datofelt).toHaveValue('1.2.2020');
+
+        fireEvent.blur(datofelt);
+        expect(datofelt).toHaveValue('01.02.2020');
+
+        // Sletter 0 i måned for å skrive 11. Feltet skal ikke legge inn 0 igjen mens brukeren skriver.
+        datofelt.focus();
+        datofelt.setSelectionRange(4, 4);
+        await userEvent.keyboard('{Backspace}');
+        expect(datofelt).toHaveValue('01.2.2020');
+        await userEvent.keyboard('1');
+        expect(datofelt).toHaveValue('01.12.2020');
+        expect(screen.getByText('datepickerField: "2020-12-01"')).toBeInTheDocument();
+
+        await userEvent.clear(datofelt);
+        await userEvent.type(datofelt, '1.2.20');
+        expect(screen.getByText('datepickerField: "1.2.20"')).toBeInTheDocument();
+    });
+
+    it('skal tolke dato uten innledende null i datoperiode', async () => {
+        render(<VisFormkomponenter />);
+
+        const fomFelt = screen.getAllByLabelText('Fom')[0]!;
+        await userEvent.type(fomFelt, '5.8.2024');
+        expect(screen.getByText('dateRangepickerFieldFrom: "2024-08-05"')).toBeInTheDocument();
+
+        fireEvent.blur(fomFelt);
+        expect(fomFelt).toHaveValue('05.08.2024');
+    });
 });

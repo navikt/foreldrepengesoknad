@@ -1,6 +1,16 @@
+import dayjs, { Dayjs } from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { FieldErrors, FieldValues, Path } from 'react-hook-form';
 
+import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
+
+dayjs.extend(customParseFormat);
+
 export type ValidationReturnType = string | null;
+
+const DATO_INPUT_FORMATER = [DDMMYYYY_DATE_FORMAT, 'D.M.YYYY', 'D.MM.YYYY', 'DD.M.YYYY'];
+
+export const parseDatoInput = (verdi: string): Dayjs => dayjs(verdi, DATO_INPUT_FORMATER, true);
 
 export const getValidationRules = <T>(validate: Array<(value: T) => ValidationReturnType>) =>
     validate.reduce(

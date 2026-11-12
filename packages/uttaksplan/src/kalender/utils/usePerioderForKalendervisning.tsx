@@ -1,5 +1,6 @@
 import { ExclamationmarkTriangleFillIcon, HeartFillIcon, TeddyBearFillIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
+import { ReactElement } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
 import {
@@ -73,6 +74,16 @@ export const usePerioderForKalendervisning = (
         const color = getKalenderFargeForPeriode(periode, erFarEllerMedmor);
         const isUpdated = endredePerioder.some((p) => p.fom === periode.fom && p.tom === periode.tom);
 
+        const varselikon = leggTilVarselikonVedManglendeObligatoriskeValg(
+            rettighetType,
+            periode,
+            perioder,
+            kanVelgeArbeidsgiver,
+            søker,
+            erIkkeSøkerSpesifisert ?? false,
+            erFarOgFar,
+        );
+
         const perioderMedBarnehageOgFamiliehendelse = lagBarnehageOgfamiliehendelsePeriode(
             intl,
             barn,
@@ -80,6 +91,7 @@ export const usePerioderForKalendervisning = (
             familiehendelsedato,
             barnehagestartdato,
             periode,
+            varselikon.icon,
         );
 
         if (dayjs(familiehendelsedato).isBetween(periode.fom, periode.tom, 'day', '[]')) {
@@ -136,15 +148,7 @@ export const usePerioderForKalendervisning = (
                 color,
                 srText: getKalenderSkjermlesertekstForPeriode(periode, navnPåForeldre, intl),
                 isUpdated,
-                ...leggTilVarselikonVedManglendeObligatoriskeValg(
-                    rettighetType,
-                    periode,
-                    perioder,
-                    kanVelgeArbeidsgiver,
-                    søker,
-                    erIkkeSøkerSpesifisert ?? false,
-                    erFarOgFar,
-                ),
+                ...varselikon,
             } satisfies CalendarPeriod,
         ];
     }, []);
@@ -171,14 +175,15 @@ const lagBarnehageOgfamiliehendelsePeriode = (
     familiehendelsedato: string,
     barnehagedato?: string,
     periode?: UttaksplanperiodeMedKunTapteDager,
+    varselikon?: ReactElement,
 ): CalendarPeriod[] => {
     const perioder: CalendarPeriod[] = [];
     if (barnehagedato !== undefined && (!periode || Tidsperioden.forPeriode(periode).inneholderDato(barnehagedato))) {
-        perioder.push(lagBarnehagedatoPeriode(barnehagedato, color, intl));
+        perioder.push(lagBarnehagedatoPeriode(barnehagedato, color, intl, varselikon));
     }
 
     if (!periode || Tidsperioden.forPeriode(periode).inneholderDato(familiehendelsedato)) {
-        perioder.push(lagFamiliehendelseDato(familiehendelsedato, color, barn, intl));
+        perioder.push(lagFamiliehendelseDato(familiehendelsedato, color, barn, intl, varselikon));
     }
 
     return perioder;
@@ -455,6 +460,7 @@ const lagFamiliehendelseDato = (
     color: CalendarPeriodColor,
     barn: Barn,
     intl: IntlShape,
+    varselikon?: ReactElement,
 ): CalendarPeriod => {
     return {
         fom: familiehendelsedato,
@@ -463,6 +469,7 @@ const lagFamiliehendelseDato = (
         srText: getSkjermlesertekstForFamiliehendelse(barn, intl),
         icon: <HeartFillIcon aria-hidden color="var(--ax-bg-brand-magenta-strong)" width={25} height={25} />,
         iconFull: true,
+        cornerIcon: varselikon,
     };
 };
 
@@ -470,6 +477,7 @@ const lagBarnehagedatoPeriode = (
     barnehagedato: string,
     color: CalendarPeriodColor,
     intl: IntlShape,
+    varselikon?: ReactElement,
 ): CalendarPeriod => {
     return {
         fom: barnehagedato,
@@ -478,5 +486,6 @@ const lagBarnehagedatoPeriode = (
         srText: intl.formatMessage({ id: 'kalender.barnehageplass' }),
         icon: <TeddyBearFillIcon aria-hidden color="var(--ax-brand-beige-800)" width={25} height={25} />,
         iconFull: true,
+        cornerIcon: varselikon,
     };
 };
