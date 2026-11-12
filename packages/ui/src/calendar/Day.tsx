@@ -69,7 +69,7 @@ export const Day = React.memo(
             <button
                 ref={setButtonRef}
                 type="button"
-                data-testid={`day:${day};dayColor:${periodeColor}${Icon ? `;with-icon` : ''}${CornerIcon ? `;with-corner-icon` : ''}`}
+                data-testid={`day:${day};dayColor:${periodeColor}${Icon ? ';with-icon' : ''}${CornerIcon ? ';with-corner-icon' : ''}`}
                 data-shape={shape}
                 data-clickable={isClickable}
                 data-fade-in={isUpdated}

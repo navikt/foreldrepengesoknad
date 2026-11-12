@@ -247,27 +247,24 @@ const getRadioOptionTreUkerFørFødsel = (barn: Barn, intl: IntlShape): React.Re
     const antallDagerFørFødsel = Uttaksdagen.denne(førsteDagTreUkerFørFødsel).getUttaksdagerFremTilDato(
         Uttaksdagen.denneEllerNeste(getFamiliehendelsedato(barn)).getDato(),
     );
+    const dato = formatDateExtended(førsteDagTreUkerFørFødsel);
+    const getLabel = () => {
+        if (!tilpassTilTermin) {
+            return <FormattedMessage id="fordeling.oppstartValg.treUkerFørFødsel" values={{ dato }} />;
+        }
+        if (antallDagerFørFødsel === 0) {
+            return <FormattedMessage id="fordeling.oppstartValg.fraDato" values={{ dato }} />;
+        }
+        return (
+            <FormattedMessage
+                id="fordeling.oppstartValg.førFødselFraDato"
+                values={{ varighet: getVarighetString(antallDagerFørFødsel, intl), dato }}
+            />
+        );
+    };
     return (
         <Radio key={OppstartValg.TRE_UKER_FØR_FØDSEL} value={OppstartValg.TRE_UKER_FØR_FØDSEL}>
-            {tilpassTilTermin && antallDagerFørFødsel === 0 ? (
-                <FormattedMessage
-                    id="fordeling.oppstartValg.fraDato"
-                    values={{ dato: formatDateExtended(førsteDagTreUkerFørFødsel) }}
-                />
-            ) : tilpassTilTermin ? (
-                <FormattedMessage
-                    id="fordeling.oppstartValg.førFødselFraDato"
-                    values={{
-                        varighet: getVarighetString(antallDagerFørFødsel, intl),
-                        dato: formatDateExtended(førsteDagTreUkerFørFødsel),
-                    }}
-                />
-            ) : (
-                <FormattedMessage
-                    id="fordeling.oppstartValg.treUkerFørFødsel"
-                    values={{ dato: formatDateExtended(førsteDagTreUkerFørFødsel) }}
-                />
-            )}
+            {getLabel()}
         </Radio>
     );
 };
