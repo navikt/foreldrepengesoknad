@@ -9,7 +9,7 @@ import { getFødselsdato, getTermindato } from 'utils/barnUtils';
 import { førsteJuli2024ReglerGjelder, getVarighetString } from 'utils/dateUtils';
 import { getAntallUkerFraStønadskvoter } from 'utils/stønadskvoterUtils';
 
-import { BodyShort, Link, Radio, ReadMore, VStack } from '@navikt/ds-react';
+import { BodyShort, Link, LocalAlert, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
@@ -61,6 +61,7 @@ type Props = {
     søkersituasjon: SøkersituasjonFp;
     stønadskvote100: KontoBeregningDto;
     stønadskvote80: KontoBeregningDto;
+    annenPartsDekningsgrad?: '80' | '100';
 };
 
 const getDekningsgradReadMoreTekst = (erDeltUttak: boolean, barn: Barn) => {
@@ -89,6 +90,7 @@ export const DekningsgradForm = ({
     stønadskvote80,
     onAvsluttOgSlett,
     onFortsettSenere,
+    annenPartsDekningsgrad,
 }: Props) => {
     const intl = useIntl();
 
@@ -99,6 +101,7 @@ export const DekningsgradForm = ({
     const formMethods = useForm<{ dekningsgrad: Dekningsgrad }>({
         defaultValues: { dekningsgrad: periodeMedForeldrepenger },
     });
+    const valgtDekningsgrad = formMethods.watch('dekningsgrad');
 
     const onSubmit = (values: { dekningsgrad: Dekningsgrad }) => {
         if (periodeMedForeldrepenger !== undefined && values.dekningsgrad !== periodeMedForeldrepenger) {
@@ -122,6 +125,10 @@ export const DekningsgradForm = ({
     const søkerAntallTekst = erDeltUttak
         ? intl.formatMessage({ id: 'uttaksplaninfo.Uker.soker.dere' })
         : intl.formatMessage({ id: 'uttaksplaninfo.Uker.soker.du' });
+    const visUlikDekningsgrad =
+        annenPartsDekningsgrad !== undefined &&
+        valgtDekningsgrad !== undefined &&
+        annenPartsDekningsgrad !== valgtDekningsgrad;
 
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
@@ -195,6 +202,24 @@ export const DekningsgradForm = ({
                             />
                         </Radio>
                     </RhfRadioGroup>
+                    {visUlikDekningsgrad && (
+                        <LocalAlert status="warning">
+                            <LocalAlert.Header>
+                                <LocalAlert.Title as="h3">
+                                    <FormattedMessage id="DekningsgradForm.UlikDekningsgrad.Tittel" />
+                                </LocalAlert.Title>
+                            </LocalAlert.Header>
+                            <LocalAlert.Content>
+                                <FormattedMessage
+                                    id="DekningsgradForm.UlikDekningsgrad.Beskrivelse"
+                                    values={{
+                                        annenPartsDekningsgrad,
+                                        valgtDekningsgrad,
+                                    }}
+                                />
+                            </LocalAlert.Content>
+                        </LocalAlert>
+                    )}
                     <ReadMore
                         header={
                             erDeltUttak ? (

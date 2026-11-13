@@ -199,7 +199,7 @@
     "kalender.tapteDager.annenPartPeriode": "Dager {navnAnnenPart} kan miste",
     "kalender.utsettelse.label": "{erSokersPeriode, select, true {Du} other {{navnAnnenPart}}} har utsatt uttaket av foreldrepenger",
     "kalender.utsettelse.pause.label": "{erSokersPeriode, select, true {Du} other {{navnAnnenPart}}} har satt uttaket på pause",
-    "kalender.ferie": "{erSokersPeriode, select, true {Du} other {{navnAnnenPart}}} har ferie",
+    "kalender.ferie": "Ferie",
     "kalender.lastNedSomPdf": "Last ned kalender som PDF",
     "kalender.lastNed": "Last ned",
     "kalender.avbryt": "Avbryt",

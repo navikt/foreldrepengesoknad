@@ -1175,6 +1175,7 @@ export const FarErSøkerOgMorHarSøktUtenVedtak: Story = {
         msw.use(
             http.post(API_URLS.uttaksplan, () =>
                 HttpResponse.json({
+                    annenPartRedigerbar: false,
                     antallBarn: 1,
                     dekningsgrad: 'HUNDRE',
                     perioder: [

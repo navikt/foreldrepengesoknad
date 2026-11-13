@@ -187,8 +187,7 @@ const LEGEND_LABELS: Record<LegendLabel, LegendLabelKonfig> = {
     FERIE: {
         rekkefølge: -1,
         klikkbar: true,
-        tekst: ({ erSøkersPeriode, navnAnnenPart, intl }) =>
-            intl.formatMessage({ id: 'kalender.ferie' }, { erSokersPeriode: erSøkersPeriode, navnAnnenPart }),
+        tekst: ({ intl }) => intl.formatMessage({ id: 'kalender.ferie' }),
     },
     MORS_DEL_EØS: {
         rekkefølge: -1,

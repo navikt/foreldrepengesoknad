@@ -101,6 +101,7 @@ describe('<AppContainer>', () => {
             gjeldendeVedtak: flyt === 'vedtak' ? { perioder: [] } : undefined,
         };
         const fellesPlan: FellesUttaksplanDto = {
+            annenPartRedigerbar: false,
             antallBarn: 2,
             termindato: '2025-05-01',
             dekningsgrad: 'ÅTTI',

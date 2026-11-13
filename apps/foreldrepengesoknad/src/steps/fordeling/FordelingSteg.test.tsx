@@ -131,6 +131,7 @@ const renderFordelingNårMorHarSøktUtenVedtak = (dekningsgrad: '80' | '100') =>
     const annenForelder = FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode.args.annenForelder!;
     const søkersituasjon = FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode.args.søkersituasjon!;
     const uttaksplanUtenVedtak: FellesUttaksplanDto = {
+        annenPartRedigerbar: false,
         antallBarn: 1,
         dekningsgrad: 'HUNDRE',
         perioder: [

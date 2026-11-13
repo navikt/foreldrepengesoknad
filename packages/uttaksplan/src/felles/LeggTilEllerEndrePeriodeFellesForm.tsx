@@ -1000,17 +1000,48 @@ const mapFarMedmorsUttakFraFormValues = (
     };
 };
 
+const finnPerioderSomDekker = (uttaksplanperioder: UttakPeriodeDto[], valgtPeriode: { fom: string; tom: string }) =>
+    uttaksplanperioder.filter(
+        (periode) =>
+            dayjs(valgtPeriode.fom).isSameOrAfter(dayjs(periode.fom), 'day') &&
+            dayjs(valgtPeriode.tom).isSameOrBefore(dayjs(periode.tom), 'day'),
+    );
+
+export const lagDefaultValuesForValgtePerioder = (
+    uttaksplanperioder: UttakPeriodeDto[],
+    valgtePerioder: Array<{ fom: string; tom: string }>,
+    søker: BrukerRolleSak_fpoversikt,
+    erPeriodeneTilAnnenPartLåst: boolean,
+): LeggTilEllerEndrePeriodeFormFormValues | undefined => {
+    const førsteValgte = notEmpty(valgtePerioder[0]);
+    const defaultValues = lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
+        uttaksplanperioder,
+        førsteValgte,
+        søker,
+        erPeriodeneTilAnnenPartLåst,
+    );
+
+    // Skjemaverdiene lagres på alle valgte intervaller. Er annen parts del låst, må alle intervallene
+    // ligge i samme periode, ellers blir annen parts uttak i de andre intervallene overskrevet.
+    if (erPeriodeneTilAnnenPartLåst && defaultValues?.forelder === 'BEGGE') {
+        const førstePeriode = finnPerioderSomDekker(uttaksplanperioder, førsteValgte)[0];
+        const alleISammePeriode = valgtePerioder.every((vp) => {
+            const dekkende = finnPerioderSomDekker(uttaksplanperioder, vp);
+            return dekkende.length === 1 && dekkende[0] === førstePeriode;
+        });
+        return alleISammePeriode ? defaultValues : undefined;
+    }
+
+    return defaultValues;
+};
+
 export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
     uttaksplanperioder: UttakPeriodeDto[],
     valgtPeriode: { fom: string; tom: string },
     søker: BrukerRolleSak_fpoversikt,
     erPeriodeneTilAnnenPartLåst: boolean,
 ): LeggTilEllerEndrePeriodeFormFormValues | undefined => {
-    const eksisterendePerioder = uttaksplanperioder.filter(
-        (periode) =>
-            dayjs(valgtPeriode.fom).isSameOrAfter(dayjs(periode.fom), 'day') &&
-            dayjs(valgtPeriode.tom).isSameOrBefore(dayjs(periode.tom), 'day'),
-    );
+    const eksisterendePerioder = finnPerioderSomDekker(uttaksplanperioder, valgtPeriode);
 
     // Skjemaet handterer kun éin sammanslått periode om gongen (éin PeriodeDto, ev. med
     // uttak for både søkjar og annan part ved samtidig uttak) – fleire tidsintervall samtidig
@@ -1022,7 +1053,16 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
     const periode = notEmpty(eksisterendePerioder[0]);
 
     if (erPeriodeneTilAnnenPartLåst && !!periode.annenPart) {
-        return undefined;
+        if (!periode.annenPart.samtidigUttak) {
+            return undefined;
+        }
+        const defaultValues = lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
+            uttaksplanperioder,
+            valgtPeriode,
+            søker,
+            false,
+        );
+        return defaultValues ? { ...defaultValues, forelder: 'BEGGE' } : undefined;
     }
 
     const hovedUttak = periode.søker ?? periode.annenPart;
@@ -1078,6 +1118,7 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
                     ? 'AKTIVITETSFRI_KVOTE'
                     : eneUttak.kontoType,
             skalDuKombinereArbeidOgUttakFarMedmor: !!eneUttak.gradering,
+            samtidigUttaksprosentFarMedmor: eneUttak.samtidigUttak?.toString(),
             stillingsprosentFarMedmor: eneUttak.gradering?.arbeidstidprosent.toString(),
             hvorSkalDuJobbe: eneUttak.gradering?.aktivitet?.arbeidsgiver?.id ?? eneUttak.gradering?.aktivitet?.type,
             morsAktivitet: eneUttak.morsAktivitet,

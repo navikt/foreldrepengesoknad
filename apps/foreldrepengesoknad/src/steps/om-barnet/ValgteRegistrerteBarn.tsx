@@ -39,11 +39,11 @@ export const ValgteRegistrerteBarn = ({ valgteRegistrerteBarn, skalInkludereTerm
     const fødselsdatoer = sorterteBarn.map((b) => b.fødselsdato);
     const fødselsdato = sorterteBarn[0]!.fødselsdato;
 
-    const harTerminDatoFraVedtak =
-        useQuery({
-            ...useUttaksplanOptions(),
-            select: (uttaksplan) => !!finnAnnenPartsPlan(uttaksplan)?.termindato,
-        }).data ?? false;
+    const annenPartsTermindato = useQuery({
+        ...useUttaksplanOptions(),
+        select: (uttaksplan) => finnAnnenPartsPlan(uttaksplan)?.termindato,
+    }).data;
+    const harTerminDatoFraVedtak = annenPartsTermindato !== undefined && annenPartsTermindato === termindato;
 
     const visInfoOmForlengetPeriode = skalInkludereTermindato && erFødtFørUke33(fødselsdato, termindato);
 

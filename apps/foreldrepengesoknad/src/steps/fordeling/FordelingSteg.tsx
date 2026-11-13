@@ -10,7 +10,7 @@ import { useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { Navigate } from 'react-router';
 import { kanGenerereUttaksplanForslag } from 'steps/uttaksplan/hooks/useUttaksplanForslag';
-import { finnAnnenPartsPlanForDekningsgrad, getIsDeltUttak } from 'utils/annenForelderUtils';
+import { finnAnnenPartsPlanSomPasserSøknaden, getIsDeltUttak } from 'utils/annenForelderUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getNavnPåForeldre } from 'utils/personUtils';
 import { getAntallUkerFellesperiode } from 'utils/stønadskvoterUtils';
@@ -88,10 +88,10 @@ const FordelingStegInnhold = ({
     const uttaksplanQuery = useQuery(useUttaksplanOptions());
     const uttaksplanAnnenPart = useMemo(
         () =>
-            finnAnnenPartsPlanForDekningsgrad(uttaksplanQuery.data, dekningsgrad)?.perioder.flatMap(
+            finnAnnenPartsPlanSomPasserSøknaden(uttaksplanQuery.data, { dekningsgrad, annenForelder, barn })?.perioder.flatMap(
                 ({ fom, tom, annenPart }) => (annenPart ? { fom, tom, annenPart } : []),
             ),
-        [uttaksplanQuery.data, dekningsgrad],
+        [uttaksplanQuery.data, dekningsgrad, annenForelder, barn],
     );
 
     const kontoerOptions = useStønadsKontoerOptions();
