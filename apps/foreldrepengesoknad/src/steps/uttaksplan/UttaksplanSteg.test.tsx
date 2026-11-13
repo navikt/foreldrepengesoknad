@@ -25,6 +25,12 @@ const {
 } = composeStories(stories);
 
 describe('<UttaksplanSteg>', () => {
+    // Storybook avmonterer en story først når neste story kjøres. Uten dette står den siste storyen
+    // montert når jsdom rives ned, og ventende timere (f.eks. i Aksel Tabs) feiler med «window is not defined».
+    afterAll(async () => {
+        await FødselMorOgFarBeggeHarRett.load();
+    });
+
     describe('automatisk justering i endringssøknad før fødsel', () => {
         const innvilgetResultat = {
             innvilget: true,
