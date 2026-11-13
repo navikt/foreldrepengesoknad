@@ -142,7 +142,12 @@ const handleKeyNavigationAndSelection = (
     setFocusedDate: (date: Dayjs) => void,
     onDateHover?: (date: string | undefined) => void,
 ) => {
-    if (e.key === 'Tab') {
+    if (
+        e.ctrlKey ||
+        e.metaKey ||
+        e.altKey ||
+        !['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Enter', ' '].includes(e.key)
+    ) {
         return;
     }
 
