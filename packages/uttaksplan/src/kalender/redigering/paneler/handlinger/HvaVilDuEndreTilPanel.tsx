@@ -105,6 +105,7 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
     return (
         <VStack
             gap="space-16"
+            data-minimert={erMinimert}
             className={erMinimert ? undefined : 'max-h-[calc(100vh-100px)] overflow-y-auto md:max-h-full'}
         >
             <Show above="md">

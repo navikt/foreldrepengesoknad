@@ -25,6 +25,7 @@ export const LeggTilEllerEndrePeriodePanel = ({ lukkRedigeringsmodus, labels }: 
     return (
         <VStack
             gap="space-2"
+            data-minimert={erMinimert}
             className={
                 erMinimert
                     ? undefined
