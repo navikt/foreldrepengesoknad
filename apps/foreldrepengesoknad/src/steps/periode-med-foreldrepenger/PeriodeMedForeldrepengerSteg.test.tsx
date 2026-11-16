@@ -407,6 +407,27 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         });
     });
 
+    it('skal ikke advare om mors dekningsgrad når far søker aleneomsorg', async () => {
+        const annenForelder = FarEllerMedmorSøkerOgMorHarSøktUtenVedtak.args?.annenForelder;
+        if (!annenForelder || annenForelder.kanIkkeOppgis) {
+            throw new Error('Testen trenger en oppgitt annen forelder');
+        }
+        await FarEllerMedmorSøkerOgMorHarSøktUtenVedtak.run({
+            args: {
+                ...FarEllerMedmorSøkerOgMorHarSøktUtenVedtak.args,
+                annenForelder: {
+                    ...annenForelder,
+                    erAleneOmOmsorg: true,
+                },
+            },
+        });
+
+        await screen.findByText('Hvor lang periode med foreldrepenger vil du ha?');
+        await userEvent.click(screen.getByText(/80 prosent foreldrepenger/));
+
+        expect(screen.queryByText('Dere kan ikke få foreldrepenger med ulik dekningsgrad')).not.toBeInTheDocument();
+    });
+
     it('skal fjerne advarselen når dekningsgraden endres tilbake til 100 prosent', async () => {
         await FarEllerMedmorSøkerOgMorHarSøktUtenVedtak.run();
         await screen.findByText('Hvor lang periode med foreldrepenger vil dere ha?');
