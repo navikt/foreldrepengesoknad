@@ -1,4 +1,5 @@
 import { composeStories, composeStory } from '@storybook/react-vite';
+import { focusManager } from '@tanstack/react-query';
 import { act, fireEvent, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { API_URLS, mellomlagretInfoOptions } from 'api/queries';
@@ -355,6 +356,49 @@ describe('<AppContainer>', () => {
         await waitFor(() => expect(queryClient.isFetching({ queryKey: ['UTTAKSPLAN'] })).toBe(0));
         expect(screen.getAllByText('Periode med foreldrepenger')).toHaveLength(2);
         expect(screen.getByText('Steg 6 av 9')).toBeInTheDocument();
+    });
+
+    it('skal ikke sjekke registerdata på nytt for opprinnelig grunnlag når vinduet får fokus', async () => {
+        let returnerEndretPlan = false;
+        const { Historie } = lagOppstartshistorie(
+            {
+                ...stories.MedMellomlagretSøknadPåAnnenForelder,
+                beforeEach: [
+                    ...[stories.MedMellomlagretSøknadPåAnnenForelder.beforeEach ?? []].flat(),
+                    ({ msw }) => {
+                        msw.use(
+                            http.post(API_URLS.uttaksplan, () => {
+                                return HttpResponse.json({
+                                    antallBarn: returnerEndretPlan ? 2 : 1,
+                                    dekningsgrad: 'ÅTTI',
+                                    perioder: [],
+                                } satisfies FellesUttaksplanDto);
+                            }),
+                        );
+                    },
+                ],
+            },
+            '/',
+        );
+        await Historie.run();
+
+        await waitFor(() => expect(screen.getAllByText('Den andre forelderen')).toHaveLength(2));
+
+        await userEvent.click(screen.getByText('Jeg kan ikke oppgi den andre forelderen'));
+        await userEvent.click(screen.getByText('Neste steg'));
+        await waitFor(() => expect(screen.getAllByText('Periode med foreldrepenger')).toHaveLength(2));
+
+        returnerEndretPlan = true;
+
+        act(() => {
+            focusManager.setFocused(false);
+            focusManager.setFocused(true);
+        });
+        await waitFor(() => expect(queryClient.isFetching({ queryKey: ['UTTAKSPLAN'] })).toBe(0));
+
+        expect(screen.queryByText('Opplysninger er endret')).not.toBeInTheDocument();
+        expect(screen.getAllByText('Periode med foreldrepenger')).toHaveLength(2);
+        focusManager.setFocused(undefined);
     });
 
     it('skal gå raskeste vei gjennom applikasjonen som far', async () => {

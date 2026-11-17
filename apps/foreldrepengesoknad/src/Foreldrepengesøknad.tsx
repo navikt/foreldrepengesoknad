@@ -11,7 +11,7 @@ import { shouldApplyStorage } from 'utils/mellomlagringUtils';
 import { erFellesUttaksplanEndret, erSakerEndret, erSøkerInfoEndret } from 'utils/registerdataUtils';
 
 import { erUmyndigFeil } from '@navikt/fp-app-shell';
-import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
+import { FellesUttaksplanDto, FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { ErrorBoundary, ErrorPage, RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
 import { useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -124,16 +124,25 @@ const RegisterdataSjekk = ({
     children: ReactNode;
 }) => {
     const uttaksplanOptions = useUttaksplanOptions();
+    const harLagretFellesUttaksplan = mellomlagretData?.fellesUttaksplan !== undefined;
     // Registerdata sjekkes bare ved oppstart. Ellers ville spørringen fått ny nøkkel når brukeren endrer den andre
     // forelderen eller barnet senere, og spinneren under ville avmontert rutene og sendt brukeren til lagret steg.
+    // Resultatet låses slik at en senere refetch (f.eks. ved vindusfokus) ikke sammenlignes med et grunnlag
+    // brukeren har endret.
     const [uttaksplanOptionsVedOppstart] = useState(uttaksplanOptions);
-    const uttaksplanQuery = useQuery(uttaksplanOptionsVedOppstart);
+    const [låstUttaksplan, setLåstUttaksplan] = useState<{ data: FellesUttaksplanDto | undefined }>();
+    const uttaksplanQuery = useQuery({
+        ...uttaksplanOptionsVedOppstart,
+        enabled: uttaksplanOptionsVedOppstart.enabled && harLagretFellesUttaksplan && låstUttaksplan === undefined,
+    });
+
+    if (låstUttaksplan === undefined && uttaksplanQuery.isSuccess) {
+        setLåstUttaksplan({ data: uttaksplanQuery.data });
+    }
 
     if (!mellomlagretData) {
         return <>{children}</>;
     }
-
-    const harLagretFellesUttaksplan = mellomlagretData.fellesUttaksplan !== undefined;
 
     if (harLagretFellesUttaksplan && uttaksplanQuery.isPending && uttaksplanQuery.fetchStatus !== 'idle') {
         return <Spinner />;
@@ -141,8 +150,8 @@ const RegisterdataSjekk = ({
 
     const fellesUttaksplanErEndret =
         mellomlagretData.fellesUttaksplan !== undefined &&
-        uttaksplanQuery.isSuccess &&
-        erFellesUttaksplanEndret(mellomlagretData.fellesUttaksplan, uttaksplanQuery.data);
+        låstUttaksplan !== undefined &&
+        erFellesUttaksplanEndret(mellomlagretData.fellesUttaksplan, låstUttaksplan.data);
 
     const søkerInfoErEndret = erSøkerInfoEndret(mellomlagretData.søkerInfo, søkerInfo);
     const sakerErEndret = erSakerEndret(mellomlagretData.foreldrepengerSaker, foreldrepengerSaker);
