@@ -124,8 +124,8 @@ const RegisterdataSjekk = ({
     children: ReactNode;
 }) => {
     const uttaksplanOptions = useUttaksplanOptions();
-    // Registerdata skal bare sjekkes ved oppstart. Endrer brukeren den andre forelderen eller barnet senere,
-    // får spørringen ny nøkkel, og spinneren under ville avmontert rutene og sendt brukeren til lagret steg.
+    // Registerdata sjekkes bare ved oppstart. Ellers ville spørringen fått ny nøkkel når brukeren endrer den andre
+    // forelderen eller barnet senere, og spinneren under ville avmontert rutene og sendt brukeren til lagret steg.
     const [uttaksplanOptionsVedOppstart] = useState(uttaksplanOptions);
     const uttaksplanQuery = useQuery(uttaksplanOptionsVedOppstart);
 
