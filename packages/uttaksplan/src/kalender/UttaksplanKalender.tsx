@@ -207,19 +207,21 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                     </div>
                 )}
 
-                <div className="ax-md:flex-row flex flex-col">
-                    <div className={erRedigeringInaktiv ? 'flex-1' : 'ax-md:w-full'}>
-                        {kanLeggeTilFlereMånederPåStarten && !erRedigeringInaktiv && (
-                            <Button
-                                onClick={() => setSkalViseFørsteMuligeDatoIKalender(true)}
-                                type="button"
-                                variant="secondary"
-                                size="small"
-                                className="mb-4 w-full"
-                            >
-                                <FormattedMessage id="UttaksplanKalender.LeggTilMåneder" />
-                            </Button>
-                        )}
+                {/* På mobil er panelet sticky i bunnen, slik at det legger seg mellom kalenderen og
+                    «Vis flere måneder» når brukeren scroller ned, i stedet for å ligge over footeren. */}
+                <div className="ax-md:grid ax-md:grid-cols-[minmax(0,1fr)_auto] flex flex-col">
+                    {kanLeggeTilFlereMånederPåStarten && !erRedigeringInaktiv && (
+                        <Button
+                            onClick={() => setSkalViseFørsteMuligeDatoIKalender(true)}
+                            type="button"
+                            variant="secondary"
+                            size="small"
+                            className="ax-md:col-start-1 mb-4 w-full"
+                        >
+                            <FormattedMessage id="UttaksplanKalender.LeggTilMåneder" />
+                        </Button>
+                    )}
+                    <div className="ax-md:col-start-1">
                         <Calendar
                             periods={perioderForKalendervisning.concat(valgtePerioder).sort(sortPeriods)}
                             setSelectedPeriods={readOnly ? undefined : setRedigeringAktivOgValgtePerioder}
@@ -229,30 +231,17 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                             firstDateInCalendar={førsteDatoIKalender}
                             lastDateInCalendar={sisteDatoIKalender}
                         />
-                        {kanLeggeTilFlereMånederPåSlutten && !erRedigeringInaktiv && (
-                            <Button
-                                onClick={() => setAntallMånederLagtTilPåSluttenAvKalender((value) => value + 3)}
-                                type="button"
-                                variant="secondary"
-                                size="small"
-                                className="mt-4 w-full"
-                            >
-                                <FormattedMessage id="UttaksplanKalender.LeggTilMåneder" />
-                            </Button>
-                        )}
-                        {!kanLeggeTilFlereMånederPåSlutten && !erRedigeringInaktiv && (
-                            <InlineMessage className="mt-2" status="info" role="status">
-                                <FormattedMessage id="UttaksplanKalender.Maks3År" />
-                            </InlineMessage>
-                        )}
                     </div>
                     {!readOnly && !erRedigeringInaktiv && uttaksplanRedigering && scrollToKvoteOppsummering && (
                         <div
                             className={[
-                                'fixed right-0 bottom-0 left-0 z-40 w-full',
+                                // -mx-4 tilsvarer gutters i Aksel Page.Block på mobil,
+                                // slik at panelet går helt ut til kanten.
+                                'sticky bottom-0 z-40 -mx-4 mt-4',
                                 'bg-ax-bg-default ax-md:bg-transparent',
-                                'ax-md:sticky ax-md:top-24 ax-md:ml-4 ax-md:max-w-82 ax-md:self-start',
                                 'pb-[env(safe-area-inset-bottom,1rem)] ax-md:pb-0',
+                                'ax-md:bottom-auto ax-md:top-24 ax-md:mx-0 ax-md:mt-0 ax-md:ml-4 ax-md:max-w-82 ax-md:self-start',
+                                'ax-md:col-start-2 ax-md:row-start-1 ax-md:row-span-3',
                             ].join(' ')}
                         >
                             <RedigerKalenderIndex
@@ -271,6 +260,22 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                                 }
                             />
                         </div>
+                    )}
+                    {kanLeggeTilFlereMånederPåSlutten && !erRedigeringInaktiv && (
+                        <Button
+                            onClick={() => setAntallMånederLagtTilPåSluttenAvKalender((value) => value + 3)}
+                            type="button"
+                            variant="secondary"
+                            size="small"
+                            className="ax-md:col-start-1 mt-4 w-full"
+                        >
+                            <FormattedMessage id="UttaksplanKalender.LeggTilMåneder" />
+                        </Button>
+                    )}
+                    {!kanLeggeTilFlereMånederPåSlutten && !erRedigeringInaktiv && (
+                        <InlineMessage className="ax-md:col-start-1 mt-2" status="info" role="status">
+                            <FormattedMessage id="UttaksplanKalender.Maks3År" />
+                        </InlineMessage>
                     )}
                 </div>
             </VStack>
