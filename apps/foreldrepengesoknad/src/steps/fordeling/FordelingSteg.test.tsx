@@ -8,6 +8,7 @@ import { ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { saker } from 'storybookData/saker';
+import { Fordeling, OppstartValg } from 'types/Fordeling';
 import { getUttaksplanParam } from 'utils/annenForelderUtils';
 
 import { BarnType } from '@navikt/fp-constants';
@@ -126,7 +127,8 @@ it.each([true, false])(
     },
 );
 
-const renderFordelingNårMorHarSøktUtenVedtak = (dekningsgrad: '80' | '100') => {
+const renderFordelingNårMorHarSøktUtenVedtak = (dekningsgrad: '80' | '100', fordeling?: Fordeling) => {
+    const onDispatch = vi.fn();
     const barn = FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode.args.barnet!;
     const annenForelder = FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode.args.annenForelder!;
     const søkersituasjon = FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode.args.søkersituasjon!;
@@ -175,15 +177,17 @@ const renderFordelingNårMorHarSøktUtenVedtak = (dekningsgrad: '80' | '100') =>
         },
     );
 
-    return render(
+    const resultat = render(
         <QueryClientProvider client={client}>
             <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: { ...messages, ...uiMessages.nb } }}>
                 <FpDataContext
+                    onDispatch={onDispatch}
                     initialState={{
                         [ContextDataType.SØKERSITUASJON]: søkersituasjon,
                         [ContextDataType.OM_BARNET]: barn,
                         [ContextDataType.ANNEN_FORELDER]: annenForelder,
                         [ContextDataType.PERIODE_MED_FORELDREPENGER]: dekningsgrad,
+                        [ContextDataType.FORDELING]: fordeling,
                     }}
                 >
                     <MemoryRouter initialEntries={[SøknadRoutes.FORDELING]}>
@@ -198,6 +202,7 @@ const renderFordelingNårMorHarSøktUtenVedtak = (dekningsgrad: '80' | '100') =>
             </IntlProvider>
         </QueryClientProvider>,
     );
+    return { ...resultat, onDispatch };
 };
 
 it('skal bruke mors perioder og skjule oppstartsvalg også når mor kun har søkt (før vedtak)', async () => {
@@ -215,8 +220,29 @@ it('skal ikke bruke mors perioder før vedtak når far har valgt en annen deknin
     const { container } = renderFordelingNårMorHarSøktUtenVedtak('80');
 
     const steg = within(container);
-    expect(await steg.findByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+    expect(
+        await steg.findByText('Vil du bruke to uker av fedrekvoten i forbindelse med fødselen?'),
+    ).toBeInTheDocument();
     expect(steg.queryByText('Hannes siste dag med foreldrepenger er mandag 12. august 2024.')).not.toBeInTheDocument();
+    vi.useRealTimers();
+});
+
+it('gjenopptar gammelt datovalg som nei uten å vise datofelt', async () => {
+    vi.setSystemTime(new Date('2024-02-25'));
+    const { container, onDispatch } = renderFordelingNårMorHarSøktUtenVedtak('80', {
+        oppstartAvForeldrepengerValg: OppstartValg.ANNEN_DATO,
+        oppstartDato: '2024-06-03',
+    });
+
+    const steg = within(container);
+    expect(await steg.findByRole('radio', { name: 'Nei, jeg vil ikke ha foreldrepenger i disse ukene' })).toBeChecked();
+    expect(steg.queryByLabelText('Hvilken dato vil du starte?')).not.toBeInTheDocument();
+    await userEvent.click(steg.getByText('Neste steg'));
+    expect(onDispatch).toHaveBeenCalledWith({
+        type: 'update',
+        key: ContextDataType.FORDELING,
+        data: { oppstartAvForeldrepengerValg: OppstartValg.IKKE_VED_FØDSEL },
+    });
     vi.useRealTimers();
 });
 
@@ -1414,20 +1440,44 @@ describe('Fordeling - FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB', () => {
         expect(
             screen.getByText('kan brukes i perioden rundt fødsel, samtidig med Hanne.', { exact: false }),
         ).toBeInTheDocument();
-        expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+        expect(screen.getByText('Vil du bruke to uker av fedrekvoten i forbindelse med fødselen?')).toBeInTheDocument();
         expect(
-            screen.getByText('Mange får dekket permisjon de første to ukene rundt fødsel fra arbeidsgiveren sin.', {
-                exact: false,
-            }),
+            screen.getByText(
+                'Du kan bruke opptil to uker av fedrekvoten rundt fødselen, samtidig som mor bruker mødrekvoten. Mange får fri med lønn fra arbeidsgiveren i disse to ukene. Hvis du får lønn, kan du spare dagene fra kvoten din til senere.',
+            ),
         ).toBeInTheDocument();
-        expect(screen.getByText('Fra termindato')).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: 'Ja, jeg vil ha foreldrepenger i disse ukene' })).toBeInTheDocument();
         expect(
-            screen.getByText('Jeg vil ha to uker med foreldrepenger som starter på termindato.', { exact: false }),
+            screen.getByRole('radio', { name: 'Nei, jeg vil ikke ha foreldrepenger i disse ukene' }),
         ).toBeInTheDocument();
-        expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+        expect(screen.queryByText('Fra termindato')).not.toBeInTheDocument();
+        expect(screen.queryByText('Jeg vil velge en annen dato')).not.toBeInTheDocument();
+        expect(screen.queryByLabelText('Hvilken dato vil du starte?')).not.toBeInTheDocument();
     });
 
-    it('skal ikke kunne begynne uttaket før 2 uker før termin', async () => {
+    it('skal bruke medmors kvote i spørsmål og valideringsfeil når søker er medmor', async () => {
+        await FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB.run({
+            args: {
+                ...FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB.args,
+                søkersituasjon: { situasjon: 'fødsel', rolle: 'medmor' },
+            },
+        });
+
+        expect(
+            await screen.findByText('Vil du bruke to uker av medmors kvote i forbindelse med fødselen?'),
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Du kan bruke opptil to uker av medmors kvote rundt fødselen, samtidig som mor bruker mødrekvoten. Mange får fri med lønn fra arbeidsgiveren i disse to ukene. Hvis du får lønn, kan du spare dagene fra kvoten din til senere.',
+            ),
+        ).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(
+            screen.getAllByText('Du må svare på om du vil bruke to uker av medmors kvote i forbindelse med fødselen.'),
+        ).toHaveLength(2);
+    });
+
+    it('skal kreve svar og ikke vise datofelt ved valg av ja eller nei før termin', async () => {
         await FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB.run({
             args: {
                 ...FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB.args,
@@ -1436,12 +1486,14 @@ describe('Fordeling - FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB', () => {
             },
         });
         expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-        await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-        const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
-        await userEvent.type(oppstart, '05.07.2024');
-        fireEvent.blur(oppstart);
         await userEvent.click(screen.getByText('Neste steg'));
-        expect(screen.getAllByText(/Oppstartsdato for foreldrepenger kan være tidligst/)).toHaveLength(2);
+        expect(
+            screen.getAllByText('Du må svare på om du vil bruke to uker av fedrekvoten i forbindelse med fødselen.'),
+        ).toHaveLength(2);
+        await userEvent.click(screen.getByRole('radio', { name: 'Ja, jeg vil ha foreldrepenger i disse ukene' }));
+        expect(screen.queryByLabelText('Hvilken dato vil du starte?')).not.toBeInTheDocument();
+        await userEvent.click(screen.getByRole('radio', { name: 'Nei, jeg vil ikke ha foreldrepenger i disse ukene' }));
+        expect(screen.queryByLabelText('Hvilken dato vil du starte?')).not.toBeInTheDocument();
     });
 });
 
@@ -1476,24 +1528,21 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
         ).toBeInTheDocument();
         expect(screen.queryByText('flerbarnsdager')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+        expect(screen.getByText('Vil du bruke to uker av fedrekvoten i forbindelse med fødselen?')).toBeInTheDocument();
         expect(
-            screen.getByText('Mange får dekket permisjon de første to ukene rundt fødsel fra arbeidsgiveren sin.', {
-                exact: false,
-            }),
+            screen.getByText(
+                'Du kan bruke opptil to uker av fedrekvoten rundt fødselen, samtidig som mor bruker mødrekvoten. Mange får fri med lønn fra arbeidsgiveren i disse to ukene. Hvis du får lønn, kan du spare dagene fra kvoten din til senere.',
+            ),
         ).toBeInTheDocument();
-        expect(screen.getByText('Da barnet ble født')).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: 'Ja, jeg vil ha foreldrepenger i disse ukene' })).toBeInTheDocument();
         expect(
-            screen.getByText('Jeg vil ha to uker med foreldrepenger som starter fra datoen barnet ble født.', {
-                exact: false,
-            }),
+            screen.getByRole('radio', { name: 'Nei, jeg vil ikke ha foreldrepenger i disse ukene' }),
         ).toBeInTheDocument();
-        expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+        expect(screen.queryByText('Da barnet ble født')).not.toBeInTheDocument();
+        expect(screen.queryByText('Jeg vil velge en annen dato')).not.toBeInTheDocument();
     });
 
-    it('skal ikke kunne begynne uttaket tidligere enn to uker før fødselsdato', async () => {
-        // Barnet er født mer enn to uker før termin (prematurt). Far/medmor skal da kunne starte
-        // to uker før fødselsdatoen, ikke først fra fødselsdatoen. Se TFP-5892.
+    it('skal kunne velge nei uten å oppgi dato for prematurt født barn', async () => {
         vi.setSystemTime(new Date('2024-02-25'));
         await FarMedmorSøkerDeltUttakEttBarnFødtPrematurt.run({
             args: {
@@ -1503,12 +1552,15 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
             },
         });
         expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-        await userEvent.click(screen.getByText('Jeg vil velge en annen dato'));
-        const oppstart = screen.getByLabelText('Hvilken dato vil du starte?');
-        await userEvent.type(oppstart, '06.02.2024');
-        fireEvent.blur(oppstart);
+        await userEvent.click(screen.getByRole('radio', { name: 'Nei, jeg vil ikke ha foreldrepenger i disse ukene' }));
+        expect(screen.queryByLabelText('Hvilken dato vil du starte?')).not.toBeInTheDocument();
         await userEvent.click(screen.getByText('Neste steg'));
-        expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 07.02.2024.')).toHaveLength(2);
+        expect(gåTilNesteSide).toHaveBeenCalled();
+        expect(gåTilNesteSide).toHaveBeenCalledWith({
+            type: 'update',
+            key: ContextDataType.FORDELING,
+            data: { oppstartAvForeldrepengerValg: 'IKKE_VED_FØDSEL' },
+        });
     });
 });
 

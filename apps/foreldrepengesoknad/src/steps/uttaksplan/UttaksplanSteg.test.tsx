@@ -5,6 +5,7 @@ import { ContextDataType } from 'appData/FpDataContext';
 import { saker } from 'storybookData/saker';
 
 import { UttakDto, UttakPeriodeDto } from '@navikt/fp-types';
+import { Uttaksdagen } from '@navikt/fp-utils';
 
 import * as stories from './UttaksplanSteg.stories';
 
@@ -611,7 +612,7 @@ describe('<UttaksplanSteg>', () => {
         ).toHaveLength(2);
     });
 
-    it('skal kun vise to uker for far i forslaget når far med begge rett starter på termin', async () => {
+    it('skal vise to uker ved termin og resten etter mors siste dag i fars forslag', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -643,12 +644,14 @@ describe('<UttaksplanSteg>', () => {
         const uttaksplan = uttaksplanAction![0].data as UttakPeriodeDto[];
         const farPerioder = uttaksplan.filter((p) => p.søker?.forelder === 'FAR_MEDMOR');
 
-        // Forslaget skal kun inneholde de to ukene ved termin (10 uttaksdager), ikke gjenstående fedrekvote i fremtiden
-        expect(farPerioder).toHaveLength(1);
+        expect(farPerioder).toHaveLength(2);
         expect(farPerioder[0]!.søker!.kontoType).toBe('FEDREKVOTE');
-        // Perioden skal starte på termindato (2024-07-01) og vare nøyaktig 10 uttaksdager (tom: 2024-07-12)
         expect(farPerioder[0]!.fom).toBe('2024-07-01');
         expect(farPerioder[0]!.tom).toBe('2024-07-12');
+        const morsSistePeriode = uttaksplan.findLast((periode) => periode.annenPart?.forelder === 'MOR');
+        expect(morsSistePeriode).toBeDefined();
+        expect(farPerioder[1]!.fom).toBe(Uttaksdagen.neste(morsSistePeriode!.tom).getDato());
+        expect(farPerioder[1]!.søker!.kontoType).toBe('FEDREKVOTE');
     });
 
     it.each([
