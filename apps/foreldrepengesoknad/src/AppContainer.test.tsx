@@ -341,6 +341,22 @@ describe('<AppContainer>', () => {
         }
     });
 
+    it('skal gå videre fra den andre forelderen når uttaksplanen hentes på nytt etter gjenopptak', async () => {
+        const { Historie } = lagOppstartshistorie(stories.MedMellomlagretSøknadPåAnnenForelder, '/');
+        await Historie.run();
+
+        await waitFor(() => expect(screen.getAllByText('Den andre forelderen')).toHaveLength(2));
+        expect(screen.getByText('Steg 5 av 9')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Jeg kan ikke oppgi den andre forelderen'));
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        await waitFor(() => expect(screen.getAllByText('Periode med foreldrepenger')).toHaveLength(2));
+        await waitFor(() => expect(queryClient.isFetching({ queryKey: ['UTTAKSPLAN'] })).toBe(0));
+        expect(screen.getAllByText('Periode med foreldrepenger')).toHaveLength(2);
+        expect(screen.getByText('Steg 6 av 9')).toBeInTheDocument();
+    });
+
     it('skal gå raskeste vei gjennom applikasjonen som far', async () => {
         await SøkerErMann.run();
 

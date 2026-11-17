@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { API_URLS } from 'api/queries';
 import { SøknadRoutes } from 'appData/routes';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
-import { HttpResponse, http } from 'msw';
+import { HttpResponse, delay, http } from 'msw';
 import { MemoryRouter } from 'react-router';
 import { kvittering } from 'storybookData/kvittering';
 import { saker } from 'storybookData/saker';
@@ -11,7 +11,11 @@ import { uttaksplanMedFarSomAnnenPart, uttaksplanMedMorSomAnnenPart } from 'stor
 import { VERSJON_MELLOMLAGRING } from 'utils/mellomlagringUtils';
 
 import { BarnType } from '@navikt/fp-constants';
-import { FellesUttaksplanRequest_fpoversikt, FpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
+import {
+    FellesUttaksplanDto,
+    FellesUttaksplanRequest_fpoversikt,
+    FpPersonopplysningerDto_fpoversikt,
+} from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { AppContainer } from './AppContainer';
@@ -168,6 +172,44 @@ export const MedMellomlagretSøknad: Story = {
 export const MedMellomlagretEndringssøknad: Story = {
     beforeEach({ msw }) {
         msw.use(http.get(API_URLS.mellomlagring, () => HttpResponse.json(mellomlagretEndringssøknad)));
+    },
+};
+
+const fellesUttaksplanUtenPerioder = {
+    antallBarn: 1,
+    dekningsgrad: 'ÅTTI',
+    perioder: [],
+} satisfies FellesUttaksplanDto;
+
+// Gjenopptatt på «Den andre forelderen» med lagret felles uttaksplan. Når brukeren krysser av for at
+// den andre forelderen ikke kan oppgis, hentes uttaksplanen på nytt med ny nøkkel. Bruk «Neste steg»
+// for å sjekke at brukeren går videre og ikke sendes tilbake til steget søknaden ble gjenopptatt på.
+export const MedMellomlagretSøknadPåAnnenForelder: Story = {
+    beforeEach({ msw }) {
+        msw.use(
+            http.get(API_URLS.mellomlagring, () =>
+                HttpResponse.json({
+                    ...mellomlagretSøknad,
+                    APP_ROUTE: SøknadRoutes.ANNEN_FORELDER,
+                    ANNEN_FORELDER: {
+                        kanIkkeOppgis: false,
+                        fornavn: 'Malin',
+                        etternavn: 'Utvikler',
+                        fnr: '12345678910',
+                        utenlandskFnr: false,
+                        harRettPåForeldrepengerINorge: true,
+                        erAleneOmOmsorg: false,
+                        erInformertOmSøknaden: true,
+                    },
+                    UTTAKSPLAN: undefined,
+                    fellesUttaksplan: fellesUttaksplanUtenPerioder,
+                } satisfies FpMellomlagretData),
+            ),
+            http.post(API_URLS.uttaksplan, async () => {
+                await delay(50);
+                return HttpResponse.json(fellesUttaksplanUtenPerioder);
+            }),
+        );
     },
 };
 
