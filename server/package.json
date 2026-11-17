@@ -28,7 +28,7 @@
         "esbuild": "catalog:",
         "eslint": "catalog:",
         "eslint-plugin-unicorn": "79.0.0",
-        "supertest": "7.3.1",
+        "supertest": "7.3.2",
         "typescript": "catalog:",
         "vitest": "catalog:"
     }
