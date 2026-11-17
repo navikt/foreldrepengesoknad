@@ -207,8 +207,8 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                     </div>
                 )}
 
-                {/* På mobil er minimert panel sticky i bunnen, slik at det legger seg mellom kalenderen og
-                    «Vis flere måneder» når brukeren scroller ned. Ekspandert panel ligger fast nederst. */}
+                {/* På mobil er panelet sticky i bunnen, slik at det legger seg mellom kalenderen og
+                    «Vis flere måneder» når brukeren scroller ned, i stedet for å ligge over footeren. */}
                 <div className="ax-md:grid ax-md:grid-cols-[minmax(0,1fr)_auto] flex flex-col">
                     {kanLeggeTilFlereMånederPåStarten && !erRedigeringInaktiv && (
                         <Button
@@ -235,16 +235,13 @@ export const UttaksplanKalender = ({ readOnly, barnehagestartdato, scrollToKvote
                     {!readOnly && !erRedigeringInaktiv && uttaksplanRedigering && scrollToKvoteOppsummering && (
                         <div
                             className={[
-                                'fixed right-0 bottom-0 left-0 z-40 w-full',
-                                'bg-ax-bg-default ax-md:bg-transparent',
-                                'pb-[env(safe-area-inset-bottom,1rem)] ax-md:pb-0',
-                                'ax-md:sticky ax-md:top-24 ax-md:ml-4 ax-md:max-w-82 ax-md:self-start',
-                                'ax-md:col-start-2 ax-md:row-start-1 ax-md:row-span-3',
                                 // -mx-4 tilsvarer gutters i Aksel Page.Block på mobil,
                                 // slik at panelet går helt ut til kanten.
-                                'max-ax-md:has-[[data-minimert=true]]:sticky max-ax-md:has-[[data-minimert=true]]:inset-x-auto',
-                                'max-ax-md:has-[[data-minimert=true]]:-mx-4 max-ax-md:has-[[data-minimert=true]]:mt-4',
-                                'max-ax-md:has-[[data-minimert=true]]:w-auto',
+                                'sticky bottom-0 z-40 -mx-4 mt-4',
+                                'bg-ax-bg-default ax-md:bg-transparent',
+                                'pb-[env(safe-area-inset-bottom,1rem)] ax-md:pb-0',
+                                'ax-md:bottom-auto ax-md:top-24 ax-md:mx-0 ax-md:mt-0 ax-md:ml-4 ax-md:max-w-82 ax-md:self-start',
+                                'ax-md:col-start-2 ax-md:row-start-1 ax-md:row-span-3',
                             ].join(' ')}
                         >
                             <RedigerKalenderIndex
