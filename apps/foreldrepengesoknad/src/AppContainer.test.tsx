@@ -12,7 +12,12 @@ import { MemoryRouter } from 'react-router';
 import { saker } from 'storybookData/saker';
 
 import { BarnType, DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
-import { FellesUttaksplanDto, FpSak_fpoversikt, UttakPeriodeDto } from '@navikt/fp-types';
+import {
+    FellesUttaksplanDto,
+    FellesUttaksplanRequest_fpoversikt,
+    FpSak_fpoversikt,
+    UttakPeriodeDto,
+} from '@navikt/fp-types';
 import { compressToUrl } from '@navikt/fp-utils';
 
 import { AppContainer, queryClient } from './AppContainer';
@@ -398,6 +403,64 @@ describe('<AppContainer>', () => {
 
         expect(screen.queryByText('Opplysninger er endret')).not.toBeInTheDocument();
         expect(screen.getAllByText('Periode med foreldrepenger')).toHaveLength(2);
+        focusManager.setFocused(undefined);
+    });
+
+    it('skal lagre uttaksplanen for gjeldende grunnlag og ikke vise endrede opplysninger når mellomlagringen hentes på nytt', async () => {
+        let hentSisteLagredeUtkast = false;
+        let antallHentingerAvUtkast = 0;
+        const { Historie, lagreUtkast } = lagOppstartshistorie(
+            {
+                ...stories.MedMellomlagretSøknadPåAnnenForelder,
+                beforeEach: [
+                    ...[stories.MedMellomlagretSøknadPåAnnenForelder.beforeEach ?? []].flat(),
+                    ({ msw }) => {
+                        msw.use(
+                            http.post(API_URLS.uttaksplan, async ({ request }) => {
+                                const { annenPartFødselsnummer } =
+                                    (await request.json()) as FellesUttaksplanRequest_fpoversikt;
+                                return HttpResponse.json({
+                                    antallBarn: annenPartFødselsnummer ? 1 : 2,
+                                    dekningsgrad: 'ÅTTI',
+                                    perioder: [],
+                                } satisfies FellesUttaksplanDto);
+                            }),
+                            http.get(API_URLS.mellomlagring, () => {
+                                if (!hentSisteLagredeUtkast) {
+                                    return;
+                                }
+                                antallHentingerAvUtkast++;
+                                return HttpResponse.json(lagreUtkast.mock.lastCall?.[0]);
+                            }),
+                        );
+                    },
+                ],
+            },
+            '/',
+        );
+        await Historie.run();
+
+        await waitFor(() => expect(screen.getAllByText('Den andre forelderen')).toHaveLength(2));
+
+        await userEvent.click(screen.getByText('Jeg kan ikke oppgi den andre forelderen'));
+        await userEvent.click(screen.getByText('Neste steg'));
+        await waitFor(() => expect(screen.getAllByText('Periode med foreldrepenger')).toHaveLength(2));
+        await waitFor(() => expect(queryClient.isFetching({ queryKey: ['UTTAKSPLAN'] })).toBe(0));
+        await userEvent.click(screen.getByText('Forrige steg'));
+        await waitFor(() => expect(screen.getAllByText('Den andre forelderen')).toHaveLength(2));
+        await waitFor(() => expect(lagreUtkast.mock.lastCall?.[0].fellesUttaksplan?.antallBarn).toBe(2));
+
+        hentSisteLagredeUtkast = true;
+
+        act(() => {
+            focusManager.setFocused(false);
+            focusManager.setFocused(true);
+        });
+        await waitFor(() => expect(antallHentingerAvUtkast).toBe(1));
+        await waitFor(() => expect(queryClient.isFetching()).toBe(0));
+
+        expect(screen.queryByText('Opplysninger er endret')).not.toBeInTheDocument();
+        expect(screen.getAllByText('Den andre forelderen')).toHaveLength(2);
         focusManager.setFocused(undefined);
     });
 

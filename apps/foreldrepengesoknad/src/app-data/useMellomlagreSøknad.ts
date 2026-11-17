@@ -93,11 +93,12 @@ export const useMellomlagreSøknad = (
                 foreldrepengerSaker,
                 erEndringssøknad,
                 søknadGjelderEtNyttBarn,
+                ...state,
                 // Lagre kun når kallet faktisk har et resultat, slik at vi ikkje
                 // lagrar undefined når kallet er pending/feila og dermed gir falske
                 // utslag i RegisterdataUtdatert-sjekken ved neste oppstart.
-                ...(uttaksplanQuery.isSuccess && { fellesUttaksplan: uttaksplanQuery.data }),
-                ...state,
+                // Står etter state fordi gjenopptatt state inneholder planen fra forrige mellomlagring.
+                fellesUttaksplan: uttaksplanQuery.isSuccess ? uttaksplanQuery.data : undefined,
             } satisfies FpMellomlagretData;
 
             try {

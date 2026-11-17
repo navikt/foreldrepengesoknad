@@ -11,7 +11,7 @@ import { shouldApplyStorage } from 'utils/mellomlagringUtils';
 import { erFellesUttaksplanEndret, erSakerEndret, erSøkerInfoEndret } from 'utils/registerdataUtils';
 
 import { erUmyndigFeil } from '@navikt/fp-app-shell';
-import { FellesUttaksplanDto, FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
+import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { ErrorBoundary, ErrorPage, RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
 import { useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -124,39 +124,40 @@ const RegisterdataSjekk = ({
     children: ReactNode;
 }) => {
     const uttaksplanOptions = useUttaksplanOptions();
-    const harLagretFellesUttaksplan = mellomlagretData?.fellesUttaksplan !== undefined;
-    // Registerdata sjekkes bare ved oppstart. Ellers ville spørringen fått ny nøkkel når brukeren endrer den andre
-    // forelderen eller barnet senere, og spinneren under ville avmontert rutene og sendt brukeren til lagret steg.
-    // Resultatet låses slik at en senere refetch (f.eks. ved vindusfokus) ikke sammenlignes med et grunnlag
-    // brukeren har endret.
-    const [uttaksplanOptionsVedOppstart] = useState(uttaksplanOptions);
-    const [låstUttaksplan, setLåstUttaksplan] = useState<{ data: FellesUttaksplanDto | undefined }>();
+    // Felles uttaksplan sammenlignes bare ved oppstart, med lagret plan og grunnlag fra oppstart. Ellers ville
+    // spørringen fått ny nøkkel når brukeren endrer den andre forelderen eller barnet senere, og spinneren under
+    // ville avmontert rutene og sendt brukeren til lagret steg. Mellomlagringen hentes også på nytt ved vindusfokus,
+    // og planen den inneholder kan da gjelde et annet grunnlag enn det som ble sjekket.
+    const [oppstart] = useState(() => ({
+        uttaksplanOptions,
+        lagretFellesUttaksplan: mellomlagretData?.fellesUttaksplan,
+    }));
+    const [fellesUttaksplanErEndret, setFellesUttaksplanErEndret] = useState<boolean>();
+    const skalSjekkeFellesUttaksplan =
+        oppstart.lagretFellesUttaksplan !== undefined && fellesUttaksplanErEndret === undefined;
     const uttaksplanQuery = useQuery({
-        ...uttaksplanOptionsVedOppstart,
-        enabled: uttaksplanOptionsVedOppstart.enabled && harLagretFellesUttaksplan && låstUttaksplan === undefined,
+        ...oppstart.uttaksplanOptions,
+        enabled: skalSjekkeFellesUttaksplan && oppstart.uttaksplanOptions.enabled,
     });
 
-    if (låstUttaksplan === undefined && uttaksplanQuery.isSuccess) {
-        setLåstUttaksplan({ data: uttaksplanQuery.data });
+    if (skalSjekkeFellesUttaksplan && uttaksplanQuery.isSuccess) {
+        setFellesUttaksplanErEndret(
+            erFellesUttaksplanEndret(notEmpty(oppstart.lagretFellesUttaksplan), uttaksplanQuery.data),
+        );
     }
 
     if (!mellomlagretData) {
         return <>{children}</>;
     }
 
-    if (harLagretFellesUttaksplan && uttaksplanQuery.isPending && uttaksplanQuery.fetchStatus !== 'idle') {
+    if (skalSjekkeFellesUttaksplan && uttaksplanQuery.isPending && uttaksplanQuery.fetchStatus !== 'idle') {
         return <Spinner />;
     }
-
-    const fellesUttaksplanErEndret =
-        mellomlagretData.fellesUttaksplan !== undefined &&
-        låstUttaksplan !== undefined &&
-        erFellesUttaksplanEndret(mellomlagretData.fellesUttaksplan, låstUttaksplan.data);
 
     const søkerInfoErEndret = erSøkerInfoEndret(mellomlagretData.søkerInfo, søkerInfo);
     const sakerErEndret = erSakerEndret(mellomlagretData.foreldrepengerSaker, foreldrepengerSaker);
 
-    const registerdataErEndret = søkerInfoErEndret || sakerErEndret || fellesUttaksplanErEndret;
+    const registerdataErEndret = søkerInfoErEndret || sakerErEndret || fellesUttaksplanErEndret === true;
 
     if (registerdataErEndret) {
         const avvik = [
