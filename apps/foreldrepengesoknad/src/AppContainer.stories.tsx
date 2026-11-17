@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { API_URLS } from 'api/queries';
 import { SøknadRoutes } from 'appData/routes';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
-import { HttpResponse, delay, http } from 'msw';
+import { HttpResponse, http } from 'msw';
 import { MemoryRouter } from 'react-router';
 import { kvittering } from 'storybookData/kvittering';
 import { saker } from 'storybookData/saker';
@@ -205,10 +205,7 @@ export const MedMellomlagretSøknadPåAnnenForelder: Story = {
                     fellesUttaksplan: fellesUttaksplanUtenPerioder,
                 } satisfies FpMellomlagretData),
             ),
-            http.post(API_URLS.uttaksplan, async () => {
-                await delay(50);
-                return HttpResponse.json(fellesUttaksplanUtenPerioder);
-            }),
+            http.post(API_URLS.uttaksplan, () => HttpResponse.json(fellesUttaksplanUtenPerioder)),
         );
     },
 };
