@@ -25,8 +25,8 @@
     "devDependencies": {
         "@trivago/prettier-plugin-sort-imports": "6.0.2",
         "@types/node": "catalog:",
-        "knip": "6.44.1",
-        "msw": "3.0.3",
+        "knip": "6.44.2",
+        "msw": "3.0.4",
         "msw-storybook-addon": "3.0.3",
         "prettier": "3.9.10",
         "typescript": "catalog:"
