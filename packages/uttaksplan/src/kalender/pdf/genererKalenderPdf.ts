@@ -71,6 +71,7 @@ interface GenererKalenderPdfParams {
     kalenderElement: HTMLElement;
     antallKolonner: 1 | 2 | 3;
     filename: string;
+    signal?: AbortSignal;
 }
 
 interface Rektangel {
@@ -275,6 +276,7 @@ export const genererKalenderPdf = async ({
     kalenderElement,
     antallKolonner,
     filename,
+    signal,
 }: GenererKalenderPdfParams): Promise<void> => {
     const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
 
@@ -353,6 +355,7 @@ export const genererKalenderPdf = async ({
         sentrerTekstForFanging(legendKlone);
 
         const legendCanvas = await fangContainer(legendContainer);
+        signal?.throwIfAborted();
         if (erGyldigCanvas(legendCanvas)) {
             const legendNaturligHøgd = høgdeForBredde(legendCanvas.width, legendCanvas.height, tilgjengeligBredde);
             const legendBredde =
@@ -399,6 +402,7 @@ export const genererKalenderPdf = async ({
                 logging: false,
                 backgroundColor: '#ffffff',
             });
+            signal?.throwIfAborted();
 
             const containerRect = container.getBoundingClientRect();
             const månedCanvaser = bitKloner.map((klone) => {
@@ -423,5 +427,6 @@ export const genererKalenderPdf = async ({
         }
     }
 
+    signal?.throwIfAborted();
     await pdf.save(filename, { returnPromise: true });
 };

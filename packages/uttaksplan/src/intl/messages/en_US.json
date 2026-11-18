@@ -201,6 +201,7 @@
     "kalender.antallKolonner": "Choose number of columns",
     "kalender.lastNed": "Download",
     "kalender.avbryt": "Cancel",
+    "kalender.lastNedFeilet": "We could not create the PDF. Please try again.",
     "kalender.skjermleser.familiehendelse": "{familiehendelsenavn} on {dato}",
     "kalender.skjermleser.periode": "{periodeNavn} from the {fraDato} until the {tilDato}",
     "kalender.barnehageplass": "Kindergarten",
