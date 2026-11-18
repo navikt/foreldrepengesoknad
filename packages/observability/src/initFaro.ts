@@ -26,15 +26,50 @@ type ExceptionItem = FaroItem & {
     payload: ExceptionPayload;
 };
 
-const customPageMeta = () => {
-    const regex = /(planleggerData=)[^&\s]+/;
+type TransportItem = Parameters<NonNullable<NonNullable<Parameters<typeof init>[0]>['beforeSend']>>[0];
 
-    const result: string = regex.test(location.href) ? location.href.replace(regex, '$1*******') : location.href;
+// Planlegger legger hele konteksten (navn, inntekt, familieforhold) i søkestrengen, så bare ruten skal sendes
+const pageMetaUtenSøkOgFragment = () => ({
+    page: {
+        url: `${location.origin}${location.pathname}`,
+    },
+});
+
+const URL_MED_SØK_ELLER_FRAGMENT = /^(https?:\/\/[^?#]*)[?#].*$/is;
+
+const utenSøkOgFragment = (verdi: string) => verdi.replace(URL_MED_SØK_ELLER_FRAGMENT, '$1');
+
+type Strengkart = Record<string, string>;
+
+const vaskUrlVerdier = (verdier: Strengkart): Strengkart => {
+    const vasket = Object.fromEntries(
+        Object.entries(verdier).map(([nøkkel, verdi]) => [
+            nøkkel,
+            typeof verdi === 'string' ? utenSøkOgFragment(verdi) : verdi,
+        ]),
+    );
+    return Object.entries(vasket).some(([nøkkel, verdi]) => verdi !== verdier[nøkkel]) ? vasket : verdier;
+};
+
+const fjernSøkOgFragmentFraUrler = (item: TransportItem): TransportItem => {
+    const payload = item.payload as { attributes?: Strengkart; context?: Strengkart };
+    const attributes = payload.attributes ? vaskUrlVerdier(payload.attributes) : undefined;
+    const context = payload.context ? vaskUrlVerdier(payload.context) : undefined;
+    const pageUrl = item.meta.page?.url;
+    const vasketPageUrl = pageUrl ? utenSøkOgFragment(pageUrl) : pageUrl;
+
+    if (attributes === payload.attributes && context === payload.context && vasketPageUrl === pageUrl) {
+        return item;
+    }
 
     return {
-        page: {
-            url: result,
+        ...item,
+        payload: {
+            ...item.payload,
+            ...(attributes && { attributes }),
+            ...(context && { context }),
         },
+        meta: item.meta.page ? { ...item.meta, page: { ...item.meta.page, url: vasketPageUrl } } : item.meta,
     };
 };
 
@@ -45,37 +80,24 @@ export const initFaro = () => {
 
     init({
         faro: {
-            metas: [customPageMeta],
+            metas: [pageMetaUtenSøkOgFragment],
         },
         beforeSend: (item) => {
-            if (!erExceptionItem(item)) {
-                return item;
-            }
-
-            if (feilVarSomFølgeAvEn401Handling(item)) {
+            if (erExceptionItem(item) && erStøy(item)) {
                 return null;
             }
 
-            if (feilUtenOpprinnelseIVårKode(item)) {
-                return null;
-            }
-
-            if (feilFraBrowserExtensions(item)) {
-                return null;
-            }
-
-            if (feilFraDomOversettelse(item)) {
-                return null;
-            }
-
-            if (feilFraHasFocus(item)) {
-                return null;
-            }
-
-            return item;
+            return fjernSøkOgFragmentFraUrler(item);
         },
     });
 };
+
+const erStøy = (item: ExceptionItem): boolean =>
+    feilVarSomFølgeAvEn401Handling(item) ||
+    feilUtenOpprinnelseIVårKode(item) ||
+    feilFraBrowserExtensions(item) ||
+    feilFraDomOversettelse(item) ||
+    feilFraHasFocus(item);
 
 /**
  * 401 skaper mye støy da det er naturlig at folk sine sesjoner utløper.
