@@ -45,7 +45,7 @@
     "OppsummeringSide.ArbeidstakerEllerFrilanser": "Employee or freelancer",
     "OppsummeringSide.UtbetalingFraNav": "I receive payment from Nav",
     "OppsummeringSide.SammenlignFpOgEs": "You may want to compare parental benefit and lump sum grant",
-    "OppsummeringSide.SammenlignFpOgEsInfoPart1": "With the income you have stated, you will be entitled to parental benefit. It may still be beneficial in your situation to choose a lump sum grant. Lump sum grant is a one-time payment of {engangsstønad}.",
+    "OppsummeringSide.SammenlignFpOgEsInfoPart1": "The income you have stated meets the minimum income requirement for parental benefit. To be entitled to parental benefit, the other conditions must also be met. It may still be beneficial in your situation to choose a lump sum grant. Lump sum grant is a one-time payment of {engangsstønad}.",
     "OppsummeringSide.SammenlignFpOgEsInfoPart2": "Use ",
     "OppsummeringSide.Veiviser": "the wizard",
     "OppsummeringSide.SammenlignFpOgEsInfoPart3": " to see the advantages and disadvantages of choosing lump sum grant or parental benefit.",
