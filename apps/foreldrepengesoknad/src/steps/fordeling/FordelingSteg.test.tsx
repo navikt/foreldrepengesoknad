@@ -215,6 +215,17 @@ it('skal bruke mors perioder og skjule oppstartsvalg også når mor kun har søk
     vi.useRealTimers();
 });
 
+it('viser mors siste dag fra søknaden også etter tre måneder', async () => {
+    vi.setSystemTime(new Date('2024-05-22'));
+    const { container } = renderFordelingNårMorHarSøktUtenVedtak('100');
+
+    const steg = within(container);
+    expect(await steg.findByText('Hannes siste dag med foreldrepenger er mandag 12. august 2024.')).toBeInTheDocument();
+    expect(steg.queryByText('Vi vet ikke når mor har sin siste dag med foreldrepenger')).not.toBeInTheDocument();
+    expect(steg.queryByText('Vil du bruke to uker av fedrekvoten i forbindelse med fødselen?')).not.toBeInTheDocument();
+    vi.useRealTimers();
+});
+
 it('skal ikke bruke mors perioder før vedtak når far har valgt en annen dekningsgrad', async () => {
     vi.setSystemTime(new Date('2024-02-25'));
     const { container } = renderFordelingNårMorHarSøktUtenVedtak('80');
@@ -1337,7 +1348,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021', () => {
             }),
         ).toBeInTheDocument();
 
-        expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+        expect(screen.getByText('Vi vet ikke når mor har sin siste dag med foreldrepenger')).toBeInTheDocument();
         expect(screen.queryByText('På fødselsdato')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
@@ -1354,7 +1365,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021', () => {
         ).toBeInTheDocument();
     });
 
-    it('skal ikke kunne begynne uttaket før fødsel', async () => {
+    it('skal gå videre uten å oppgi startdato når fristen er passert', async () => {
         await FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021.run({
             args: {
                 ...FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021.args,
@@ -1363,11 +1374,11 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021', () => {
             },
         });
         expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-        const oppstart = screen.getByLabelText('Når vil du starte permisjonen din med foreldrepenger?');
-        await userEvent.type(oppstart, '20.07.2021');
-        fireEvent.blur(oppstart);
+        expect(
+            screen.queryByLabelText('Når vil du starte permisjonen din med foreldrepenger?'),
+        ).not.toBeInTheDocument();
         await userEvent.click(screen.getByText('Neste steg'));
-        expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 21.07.2021.')).toHaveLength(2);
+        expect(gåTilNesteSide).toHaveBeenCalled();
     });
 });
 
@@ -1401,11 +1412,11 @@ describe('Fordeling - FarMedmorSøkerDeltUttakTrillingerFødtFørWLB', () => {
             ),
         ).toBeInTheDocument();
 
-        expect(screen.getByText('Når vil du starte permisjonen din med foreldrepenger?')).toBeInTheDocument();
+        expect(screen.getByText('Vi vet ikke når mor har sin siste dag med foreldrepenger')).toBeInTheDocument();
         expect(screen.queryByText('På fødselsdato')).not.toBeInTheDocument();
     });
 
-    it('skal ikke kunne begynne uttaket før fødsel', async () => {
+    it('skal gå videre uten å oppgi startdato når fristen er passert', async () => {
         await FarMedmorSøkerDeltUttakTrillingerFødtFørWLB.run({
             args: {
                 ...FarMedmorSøkerDeltUttakTrillingerFødtFørWLB.args,
@@ -1414,17 +1425,62 @@ describe('Fordeling - FarMedmorSøkerDeltUttakTrillingerFødtFørWLB', () => {
             },
         });
         expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
-        const oppstart = screen.getByLabelText('Når vil du starte permisjonen din med foreldrepenger?');
-        await userEvent.type(oppstart, '20.07.2022');
-        fireEvent.blur(oppstart);
+        expect(
+            screen.queryByLabelText('Når vil du starte permisjonen din med foreldrepenger?'),
+        ).not.toBeInTheDocument();
         await userEvent.click(screen.getByText('Neste steg'));
-        expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 21.07.2022.')).toHaveLength(2);
+        expect(gåTilNesteSide).toHaveBeenCalled();
     });
 });
 
 describe('Fordeling - FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB', () => {
     const gåTilNesteSide = vi.fn();
     const mellomlagreSøknadOgNaviger = vi.fn();
+
+    afterEach(() => {
+        vi.useRealTimers();
+    });
+
+    it.each(['2024-04-14', '2024-04-15'])('viser fødselsvalget til og med tremånedersgrensen %s', async (iDag) => {
+        vi.setSystemTime(new Date(iDag));
+        await FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB.run({
+            args: {
+                ...FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB.args,
+                barnet: {
+                    type: BarnType.FØDT,
+                    antallBarn: 4,
+                    fødselsdatoer: ['2024-01-15'],
+                    termindato: '2024-01-15',
+                },
+            },
+        });
+
+        expect(
+            await screen.findByText('Vil du bruke to uker av fedrekvoten i forbindelse med fødselen?'),
+        ).toBeInTheDocument();
+        expect(screen.queryByText('Vi vet ikke når mor har sin siste dag med foreldrepenger')).not.toBeInTheDocument();
+    });
+
+    it.each(['far', 'medmor'] as const)('skjuler fødselsvalget for %s etter tre måneder', async (rolle) => {
+        vi.setSystemTime(new Date('2024-04-16'));
+        await FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB.run({
+            args: {
+                ...FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB.args,
+                søkersituasjon: { situasjon: 'fødsel', rolle },
+                barnet: {
+                    type: BarnType.FØDT,
+                    antallBarn: 4,
+                    fødselsdatoer: ['2024-01-15'],
+                    termindato: '2024-01-15',
+                },
+            },
+        });
+
+        expect(await screen.findByText('Vi vet ikke når mor har sin siste dag med foreldrepenger')).toBeInTheDocument();
+        expect(screen.queryByRole('radiogroup')).not.toBeInTheDocument();
+        expect(screen.queryByLabelText('Hvilken dato vil du starte?')).not.toBeInTheDocument();
+        expect(screen.getByText('Neste steg')).toBeInTheDocument();
+    });
 
     it('skal vise riktig informasjon til far med delt uttak som søker på trillinger født før 2 aug. 2022', async () => {
         await FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB.run({

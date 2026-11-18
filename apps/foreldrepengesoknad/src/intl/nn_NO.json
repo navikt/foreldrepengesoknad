@@ -474,6 +474,8 @@
     "fordeling.fellesperiodeVisning.resterende": "{varighetString} att",
     "fordeling.morsSisteDag.tittel": "{navnMor} si siste dag med foreldrepengar er {dato}.",
     "fordeling.morsSisteDag.tekst": "Frå {navnMor} si søknad.",
+    "fordeling.morsSisteDag.ukjent.tittel": "Vi veit ikkje når mor har sin siste dag med foreldrepengar",
+    "fordeling.morsSisteDag.ukjent.tekst": "Du kan leggje inn periodane dine i neste steg.",
     "AndreInntektskilderStep.HvilkenTypeAnnenInntekskilder": "Kva for type anna inntektskilde har du hatt dei siste 10 månadene?",
     "AndreInntektskilderStep.RadioButton.Utlandet": "Jobb i utlandet",
     "AndreInntektskilderStep.RadioButton.Etterlønn": "Etterlønn eller sluttvederlag",

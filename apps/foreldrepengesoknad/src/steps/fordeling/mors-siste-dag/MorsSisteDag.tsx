@@ -6,12 +6,25 @@ import { BluePanel } from '@navikt/fp-ui';
 import { formatDateMedUkedag, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 interface Props {
-    morsSisteDag: string;
+    morsSisteDag: string | undefined;
     navnMor: string;
 }
 
 export const MorsSisteDag = ({ morsSisteDag, navnMor }: Props) => {
     const intl = useIntl();
+    if (!morsSisteDag) {
+        return (
+            <BluePanel>
+                <Heading size="xsmall">
+                    <FormattedMessage id="fordeling.morsSisteDag.ukjent.tittel" />
+                </Heading>
+                <Detail>
+                    <FormattedMessage id="fordeling.morsSisteDag.ukjent.tekst" />
+                </Detail>
+            </BluePanel>
+        );
+    }
+
     const sisteDagFormattert = formatDateMedUkedag(morsSisteDag);
     const morsNavnGenitivForm = getNavnGenitivEierform(navnMor, intl.locale);
 

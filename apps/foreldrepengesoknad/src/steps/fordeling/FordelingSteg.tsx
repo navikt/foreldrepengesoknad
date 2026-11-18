@@ -10,7 +10,8 @@ import { useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { Navigate } from 'react-router';
 import { kanGenerereUttaksplanForslag } from 'steps/uttaksplan/hooks/useUttaksplanForslag';
-import { finnAnnenPartsPlanSomPasserSøknaden, getIsDeltUttak } from 'utils/annenForelderUtils';
+import { finnAnnenPartsPlanSomPasserSøknaden, getErAleneOmOmsorg, getIsDeltUttak } from 'utils/annenForelderUtils';
+import { erFødtForMerEnnTreMånederSiden } from 'utils/barnUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getNavnPåForeldre } from 'utils/personUtils';
 import { getAntallUkerFellesperiode } from 'utils/stønadskvoterUtils';
@@ -88,9 +89,11 @@ const FordelingStegInnhold = ({
     const uttaksplanQuery = useQuery(useUttaksplanOptions());
     const uttaksplanAnnenPart = useMemo(
         () =>
-            finnAnnenPartsPlanSomPasserSøknaden(uttaksplanQuery.data, { dekningsgrad, annenForelder, barn })?.perioder.flatMap(
-                ({ fom, tom, annenPart }) => (annenPart ? { fom, tom, annenPart } : []),
-            ),
+            finnAnnenPartsPlanSomPasserSøknaden(uttaksplanQuery.data, {
+                dekningsgrad,
+                annenForelder,
+                barn,
+            })?.perioder.flatMap(({ fom, tom, annenPart }) => (annenPart ? { fom, tom, annenPart } : [])),
         [uttaksplanQuery.data, dekningsgrad, annenForelder, barn],
     );
 
@@ -140,12 +143,18 @@ const FordelingStegInnhold = ({
     // Startdatoen som blir spurt om her blir berre brukt til å generere eit forslag til
     // uttaksplan (useUttaksplanForslag). Om annen part allereie har perioder klarer ikkje den
     // hooken å lage noko forslag uansett kva startdato som blir valgt, så då spør me ikkje.
-    const visOppstartsvalg = kanGenerereUttaksplanForslag(uttaksplanAnnenPart);
+    const erForSentForUttakVedFødsel =
+        erFarEllerMedmor &&
+        søkersituasjon.situasjon === 'fødsel' &&
+        deltUttak &&
+        !getErAleneOmOmsorg(annenForelder) &&
+        erFødtForMerEnnTreMånederSiden(barn);
+    const visOppstartsvalg = kanGenerereUttaksplanForslag(uttaksplanAnnenPart) && !erForSentForUttakVedFødsel;
 
     const førsteDagEtterAnnenForelder = sisteDagAnnenForelder
         ? Uttaksdagen.neste(sisteDagAnnenForelder).getDato()
         : undefined;
-    const visMorsSisteDag = erFarEllerMedmor && sisteDagAnnenForelder;
+    const visMorsSisteDag = (erFarEllerMedmor && sisteDagAnnenForelder) || erForSentForUttakVedFødsel;
 
     return (
         <SkjemaRotLayout pageTitle={intl.formatMessage({ id: 'søknad.pageheading' })}>

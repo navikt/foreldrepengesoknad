@@ -40,6 +40,29 @@ const baseFarDeltUttakContext = {
 };
 
 describe('useUttaksplanForslag – far med delt uttak', () => {
+    beforeEach(() => {
+        vi.setSystemTime(new Date('2024-07-20'));
+    });
+
+    afterEach(() => {
+        vi.useRealTimers();
+    });
+
+    it.each(['far', 'medmor'] as const)('lager ikke forslag fra lagret fødselsvalg etter fristen for %s', (rolle) => {
+        vi.setSystemTime(new Date('2024-10-02'));
+        const { result } = renderHook(() => useUttaksplanForslag(STØNADSKVOTE), {
+            wrapper: getWrapper({
+                ...baseFarDeltUttakContext,
+                [ContextDataType.SØKERSITUASJON]: { situasjon: 'fødsel', rolle },
+                [ContextDataType.FORDELING]: {
+                    oppstartAvForeldrepengerValg: OppstartValg.FAMILIEHENDELSESDATO,
+                },
+            }),
+        });
+
+        expect(result.current).toEqual([]);
+    });
+
     describe('når far starter på familiehendelsesdato (harFødselspermisjon)', () => {
         it('genererer plan med samtidig uttak på familiehendelsesdato', () => {
             const { result } = renderHook(() => useUttaksplanForslag(STØNADSKVOTE), {
@@ -417,6 +440,14 @@ describe('kanGenerereUttaksplanForslag', () => {
 });
 
 describe('forslag i førstegangssøknad når fødselsdato avviker fra termin', () => {
+    beforeEach(() => {
+        vi.setSystemTime(new Date('2024-07-20'));
+    });
+
+    afterEach(() => {
+        vi.useRealTimers();
+    });
+
     const lagForslag = ({
         termindato = '2024-06-17',
         fødselsdato = FØDSELSDATO,

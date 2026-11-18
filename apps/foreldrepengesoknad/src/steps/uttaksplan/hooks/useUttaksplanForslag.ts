@@ -1,6 +1,6 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
-import { getDatoForAleneomsorg, getErMorUfør } from 'utils/annenForelderUtils';
+import { getDatoForAleneomsorg, getErAleneOmOmsorg, getErMorUfør } from 'utils/annenForelderUtils';
 import { getStandardOppstartsdato } from 'utils/oppstartUtils';
 import { getErFarOgFar, getErSøkerFarEllerMedmor } from 'utils/personUtils';
 
@@ -20,7 +20,7 @@ import { deltUttak, ikkeDeltUttak } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { FellesperiodeFordelingValg, Fordeling, OppstartValg } from '../../../types/Fordeling';
-import { getTermindato } from '../../../utils/barnUtils';
+import { erFødtForMerEnnTreMånederSiden, getTermindato } from '../../../utils/barnUtils';
 import { tilpassForslagForFørstegangssøknad } from './lagForslagFørFødsel';
 
 const getFellesperioderDagerFordeling = (fordeling: Fordeling, fellesperiodeDagerTilgjengelig: number) => {
@@ -281,11 +281,20 @@ export const useUttaksplanForslag = (
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
+    const erDeltUttak =
+        isAnnenForelderOppgitt(annenForelder) &&
+        (annenForelder.harRettPåForeldrepengerINorge === true || annenForelder.harRettPåForeldrepengerIEØS === true);
+    const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     if (
         tidligerePerioderLaster ||
         !valgtStønadskvote ||
         !fordeling ||
-        !kanGenerereUttaksplanForslag(tidligerePerioder)
+        !kanGenerereUttaksplanForslag(tidligerePerioder) ||
+        (erSøkerFarEllerMedmor &&
+            erDeltUttak &&
+            søkersituasjon.situasjon === 'fødsel' &&
+            !getErAleneOmOmsorg(annenForelder) &&
+            erFødtForMerEnnTreMånederSiden(barn))
     ) {
         return [];
     }
@@ -297,12 +306,6 @@ export const useUttaksplanForslag = (
     // const annenPartsSisteDag = annenPartsSistePeriode
     //     ? Uttaksdagen.denneEllerForrige(annenPartsSistePeriode.tom).getDato()
     //     : undefined;
-
-    const erDeltUttak =
-        isAnnenForelderOppgitt(annenForelder) &&
-        (annenForelder.harRettPåForeldrepengerINorge === true || annenForelder.harRettPåForeldrepengerIEØS === true);
-
-    const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
 
     const erMorUfør = getErMorUfør(annenForelder, erSøkerFarEllerMedmor);
 
