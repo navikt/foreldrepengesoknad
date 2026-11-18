@@ -28,7 +28,7 @@ type ExceptionItem = FaroItem & {
 
 type TransportItem = Parameters<NonNullable<NonNullable<Parameters<typeof init>[0]>['beforeSend']>>[0];
 
-// Planlegger legger hele konteksten (navn, inntekt, familieforhold) i søkestrengen, så bare ruten skal sendes
+// Søkestreng og fragment kan inneholde personopplysninger, så bare ruten sendes
 const pageMetaUtenSøkOgFragment = () => ({
     page: {
         url: `${location.origin}${location.pathname}`,
