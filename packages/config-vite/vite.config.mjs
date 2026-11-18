@@ -12,7 +12,7 @@ import compression from 'vite-plugin-compression2';
 // app/pakke sin vanlege vite.config). Utan denne plugin-en 404-ar `./mockServiceWorker.js` der,
 // og MSW-workeren i .storybook/preview.tsx (brukt via setProjectAnnotations i setupTests.ts)
 // klarer ikkje å registrere seg. `apply: 'serve'` sikrar at dette berre skjer i dev/test og
-// aldri lek inn i `vite build`.
+// aldri lek inn i `vite build`. Fila blir òg servert under app-basen, som mock-modus treng.
 const mockServiceWorkerPlugin = () => ({
     name: 'serve-mock-service-worker',
     apply: 'serve',
@@ -20,7 +20,9 @@ const mockServiceWorkerPlugin = () => ({
         const filePath = path.resolve(import.meta.dirname, '../../scripts/mock-service-worker/mockServiceWorker.js');
 
         server.middlewares.use((req, res, next) => {
-            if (req.url !== '/mockServiceWorker.js') {
+            const requestPath = req.url?.split('?')[0] ?? '';
+
+            if (!requestPath.endsWith('/mockServiceWorker.js')) {
                 next();
                 return;
             }
@@ -147,3 +149,5 @@ const createConfig = (setupFileDirName) => {
         },
     });
 };
+
+export { fpMockModus } from './mockModus/mockModusPlugin.mjs';

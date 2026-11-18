@@ -20,9 +20,9 @@ Dette monorepoet bruker følgende verktøy:
 5. På https://github.com/settings/tokens siden, velg "Configure SSO" for tokenet ditt og autoriser for navikt.
 6. Opprett en `.npmrc`-fil i hjemmekatalogen din og legg til følgende linje, hvor NODE_AUTH_TOKEN er tokenet du
    genererte i steg 4:
-   ```
-   //npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
-   ```
+    ```
+    //npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+    ```
 
 ### Installere dependencies og teste at alt bygger
 
@@ -64,11 +64,21 @@ Fordelen er at du får brukt helt "ekte" dev data, men med frontend servert fra 
 2. Kjør `pnpm run storybook`
 3. Browser vil automatisk åpne på riktig localhost port
 
-#### 3. Med lokal mock-server
+#### 3. Med mock-modus (MSW og Nav-dekoratøren)
+
+Gjelder foreldrepengeoversikt foreløpig.
+
+1. cd til appen, f.eks `cd apps/foreldrepengeoversikt`
+2. Kjør `pnpm run dev:mock`
+3. Velg scenario med `?scenario=<id>` i URL-en. Valget huskes i fanen. Gyldige scenarioer står i `src/mock/scenarioer.json` og listes på `<base>/__scenarioer`.
+
+`pnpm run test:mock` kjører en røyktest av mock-modusen.
+
+#### 4. Med lokal mock-server
 
 1. cd til `server` og kjør `pnpm build`
 2. cd til appen du ønsker å jobbe med, f.eks `cd apps/foreldrepengeoversikt`
-3. Kjør `pnpm run dev:mock`
+3. Kjør `pnpm run dev:mock` (`pnpm run dev:mock-api` i foreldrepengeoversikt)
 4. Kjør `pnpm run dev:lokal`
 
 ### Autogenere Typescript typer fra backend

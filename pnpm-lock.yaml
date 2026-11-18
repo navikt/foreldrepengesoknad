@@ -1479,6 +1479,9 @@ importers:
 
   packages/config-vite:
     devDependencies:
+      '@navikt/nav-dekoratoren-moduler':
+        specifier: 'catalog:'
+        version: 4.6.0(html-react-parser@6.1.1(@types/react@19.3.0)(react@19.3.1))(react@19.3.1)
       '@tailwindcss/vite':
         specifier: 4.3.5
         version: 4.3.5(vite@8.3.7(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
@@ -1488,6 +1491,9 @@ importers:
       '@vitest/browser-playwright':
         specifier: 5.1.0
         version: 5.1.0(msw@3.0.4(@types/node@26.6.5)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.7(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)))(playwright@1.65.0)(vite@8.3.7(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))(vitest@5.1.0)
+      msw:
+        specifier: 3.0.4
+        version: 3.0.4(@types/node@26.6.5)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.7(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
       playwright:
         specifier: 1.65.0
         version: 1.65.0

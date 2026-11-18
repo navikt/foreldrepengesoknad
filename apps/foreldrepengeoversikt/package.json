@@ -15,7 +15,9 @@
         "tsc": "tsc --noEmit",
         "tsc:watch": "tsc --noEmit --watch",
         "dev:vite": "vite",
-        "dev:mock": "node --env-file-if-exists=.env ./mock-api/mock-api-server.ts",
+        "dev:mock-api": "node --env-file-if-exists=.env ./mock-api/mock-api-server.ts",
+        "dev:mock": "vite --mode mock",
+        "test:mock": "fp-mock-royktest",
         "dev:lokal": "node --env-file-if-exists=.env ./dev-server.cjs",
         "storybook": "storybook dev --quiet -p 7003",
         "clean": "rm -rf ./dist ./node_modules ./.turbo ./.storybook-static-build"

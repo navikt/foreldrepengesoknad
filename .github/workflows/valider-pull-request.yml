@@ -82,6 +82,10 @@ jobs:
         # timeouts (også på screenshots) og userEvent-flytar som ikkje fullfører.
         run: pnpm exec turbo run test:browser --filter=./apps/* --only --continue --concurrency=1
 
+      - name: Røyktest mock-modus
+        # Starter appene i mock-modus med MSW og Nav-dekoratøren, og sjekker at prod-bygget er uten mock-kode.
+        run: pnpm exec turbo run test:mock --filter=./apps/* --only --continue --concurrency=1
+
   knip-it:
     name: Kjør Knip
     runs-on: ubuntu-latest
