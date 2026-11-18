@@ -35,30 +35,20 @@ const pageMetaUtenSøkOgFragment = () => ({
     },
 });
 
-const URL_MED_SØK_ELLER_FRAGMENT = /^(https?:\/\/[^?#]*)[?#].*$/is;
-
-const utenSøkOgFragment = (verdi: string) => verdi.replace(URL_MED_SØK_ELLER_FRAGMENT, '$1');
-
 type Strengkart = Record<string, string>;
 
-const vaskUrlVerdier = (verdier: Strengkart): Strengkart => {
-    const vasket = Object.fromEntries(
+const utenSøkOgFragment = (verdier: Strengkart) =>
+    Object.fromEntries(
         Object.entries(verdier).map(([nøkkel, verdi]) => [
             nøkkel,
-            typeof verdi === 'string' ? utenSøkOgFragment(verdi) : verdi,
+            verdi.replace(/^(https?:\/\/[^?#]*)[?#].*$/is, '$1'),
         ]),
     );
-    return Object.entries(vasket).some(([nøkkel, verdi]) => verdi !== verdier[nøkkel]) ? vasket : verdier;
-};
 
-const fjernSøkOgFragmentFraUrler = (item: TransportItem): TransportItem => {
-    const payload = item.payload as { attributes?: Strengkart; context?: Strengkart };
-    const attributes = payload.attributes ? vaskUrlVerdier(payload.attributes) : undefined;
-    const context = payload.context ? vaskUrlVerdier(payload.context) : undefined;
-    const pageUrl = item.meta.page?.url;
-    const vasketPageUrl = pageUrl ? utenSøkOgFragment(pageUrl) : pageUrl;
-
-    if (attributes === payload.attributes && context === payload.context && vasketPageUrl === pageUrl) {
+// Hendelser som faro.performance.navigation har også hele adressen, f.eks. i attributtet name
+const fjernSøkOgFragmentFraHendelser = (item: TransportItem): TransportItem => {
+    const { attributes, context } = item.payload as { attributes?: Strengkart; context?: Strengkart };
+    if (!attributes && !context) {
         return item;
     }
 
@@ -66,10 +56,9 @@ const fjernSøkOgFragmentFraUrler = (item: TransportItem): TransportItem => {
         ...item,
         payload: {
             ...item.payload,
-            ...(attributes && { attributes }),
-            ...(context && { context }),
+            ...(attributes && { attributes: utenSøkOgFragment(attributes) }),
+            ...(context && { context: utenSøkOgFragment(context) }),
         },
-        meta: item.meta.page ? { ...item.meta, page: { ...item.meta.page, url: vasketPageUrl } } : item.meta,
     };
 };
 
@@ -83,21 +72,34 @@ export const initFaro = () => {
             metas: [pageMetaUtenSøkOgFragment],
         },
         beforeSend: (item) => {
-            if (erExceptionItem(item) && erStøy(item)) {
+            if (!erExceptionItem(item)) {
+                return fjernSøkOgFragmentFraHendelser(item);
+            }
+
+            if (feilVarSomFølgeAvEn401Handling(item)) {
                 return null;
             }
 
-            return fjernSøkOgFragmentFraUrler(item);
+            if (feilUtenOpprinnelseIVårKode(item)) {
+                return null;
+            }
+
+            if (feilFraBrowserExtensions(item)) {
+                return null;
+            }
+
+            if (feilFraDomOversettelse(item)) {
+                return null;
+            }
+
+            if (feilFraHasFocus(item)) {
+                return null;
+            }
+
+            return fjernSøkOgFragmentFraHendelser(item);
         },
     });
 };
-
-const erStøy = (item: ExceptionItem): boolean =>
-    feilVarSomFølgeAvEn401Handling(item) ||
-    feilUtenOpprinnelseIVårKode(item) ||
-    feilFraBrowserExtensions(item) ||
-    feilFraDomOversettelse(item) ||
-    feilFraHasFocus(item);
 
 /**
  * 401 skaper mye støy da det er naturlig at folk sine sesjoner utløper.
