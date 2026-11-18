@@ -1,8 +1,25 @@
 import { HttpResponse, type RequestHandler } from 'msw';
 import { setupWorker } from 'msw/browser';
 
+import { MELLOMLAGRING_NØKKELPREFIKS } from './mockHandlers.ts';
+
+const nullstillMellomlagring = () => {
+    Object.keys(localStorage)
+        .filter((nøkkel) => nøkkel.startsWith(MELLOMLAGRING_NØKKELPREFIKS))
+        .forEach((nøkkel) => localStorage.removeItem(nøkkel));
+
+    const url = new URL(location.href);
+    url.searchParams.delete('reset');
+    history.replaceState(history.state, '', url);
+};
+
 export const startMockModus = async (scenarioer: Record<string, RequestHandler[]>): Promise<void> => {
-    const urlScenario = new URLSearchParams(location.search).get('scenario');
+    const søkeparametre = new URLSearchParams(location.search);
+    const urlScenario = søkeparametre.get('scenario');
+
+    if (søkeparametre.has('reset')) {
+        nullstillMellomlagring();
+    }
 
     if (urlScenario !== null) {
         sessionStorage.setItem('fp-mock-scenario', urlScenario);
@@ -16,6 +33,8 @@ export const startMockModus = async (scenarioer: Record<string, RequestHandler[]
         sessionStorage.removeItem('fp-mock-scenario');
         throw new Error(`Ukjent scenario "${id}". Gyldige scenarioer: ${Object.keys(scenarioer).join(', ')}`);
     }
+
+    document.documentElement.dataset.mockScenario = id;
 
     const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     const worker = setupWorker(...handlers);
@@ -46,6 +65,5 @@ export const startMockModus = async (scenarioer: Record<string, RequestHandler[]
         },
     });
 
-    document.documentElement.dataset.mockScenario = id;
     console.info(`[mock] Scenario: ${id}`);
 };

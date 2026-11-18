@@ -1,0 +1,17 @@
+{
+    "standard": {
+        "beskrivelse": "Starter en ny søknad uten mellomlagring og uten saker.",
+        "startsti": "/",
+        "kjennetegn": "Start søknaden"
+    },
+    "fortsett-soknad": {
+        "beskrivelse": "Fortsetter en mellomlagret søknad på steget om barnet.",
+        "startsti": "/",
+        "kjennetegn": "Er barnet født?"
+    },
+    "endringssoknad": {
+        "beskrivelse": "Søker har en sak som kan endres, slik at endringssøknad tilbys.",
+        "startsti": "/",
+        "kjennetegn": "Saksnummer 352011594"
+    }
+}

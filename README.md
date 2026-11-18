@@ -47,7 +47,7 @@ Den gjør at du kan bruke server som er deployet til dev som utgangspunkt.
 Fordelen er at du får brukt helt "ekte" dev data, men med frontend servert fra din localhost.
 
 1. cd til appen du ønsker å kjøre tester på, f.eks `cd apps/foreldrepengeoversikt`
-2. Kjør `pnpm run lokal:dev`. Nå har du lokal vite-server kjørende på `localhost:5173/foreldrepenger/oversikt`
+2. Kjør `pnpm run dev:vite`. Nå har du lokal vite-server kjørende på `localhost:5173/foreldrepenger/oversikt`
 3. Gå til ingress i dev. f.eks https://foreldrepenger.intern.dev.nav.no/. Logg inn med en testbruker.
 4. **Identifiser appens wonderwall port**:
    Sjekk i Docker hvilken port din app bruker. F.eks. kjører `wonderwall-foreldrepengeoversikt` vanligvis på port `9100`.
@@ -66,20 +66,18 @@ Fordelen er at du får brukt helt "ekte" dev data, men med frontend servert fra 
 
 #### 3. Med mock-modus (MSW og Nav-dekoratøren)
 
-Gjelder foreldrepengeoversikt foreløpig.
+Appen kjører med Vite som i Vite mode, men backend-kallene besvares av MSW i nettleseren. Nav-dekoratøren hentes fra dev, så siden ser ut som i dev og prod. Kall til fpgrunndata (kvoter og satser) går til den åpne dev-tjenesten.
 
 1. cd til appen, f.eks `cd apps/foreldrepengeoversikt`
 2. Kjør `pnpm run dev:mock`
 3. Velg scenario med `?scenario=<id>` i URL-en. Valget huskes i fanen. Gyldige scenarioer står i `src/mock/scenarioer.json` og listes på `<base>/__scenarioer`.
+4. Mellomlagret søknad lagres i `localStorage`, separat per scenario. Legg til `?reset` i URL-en for å starte på nytt.
 
-`pnpm run test:mock` kjører en røyktest av mock-modusen.
+Du kan også velge scenario ved oppstart med `VITE_SCENARIO=<id> pnpm run dev:mock`.
 
-#### 4. Med lokal mock-server
+Nye scenarioer legges til i `src/mock/scenarioer.json` (beskrivelse, startsti og en tekst som kjennetegner scenarioet) og i `src/mock/scenarioer.ts`, der handlerne deles med Storybook.
 
-1. cd til `server` og kjør `pnpm build`
-2. cd til appen du ønsker å jobbe med, f.eks `cd apps/foreldrepengeoversikt`
-3. Kjør `pnpm run dev:mock` (`pnpm run dev:mock-api` i foreldrepengeoversikt)
-4. Kjør `pnpm run dev:lokal`
+`pnpm run test:mock` kjører en røyktest av mock-modusen. Den sjekker også at prod-bygget er uten mock-kode.
 
 ### Autogenere Typescript typer fra backend
 

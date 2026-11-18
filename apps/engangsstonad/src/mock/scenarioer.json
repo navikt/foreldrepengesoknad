@@ -1,0 +1,12 @@
+{
+    "standard": {
+        "beskrivelse": "Starter en ny søknad.",
+        "startsti": "/",
+        "kjennetegn": "Søknad om engangsstønad"
+    },
+    "fortsett-soknad": {
+        "beskrivelse": "Fortsetter en mellomlagret søknad.",
+        "startsti": "/",
+        "kjennetegn": "Hva gjelder for deg?"
+    }
+}

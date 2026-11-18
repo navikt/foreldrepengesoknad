@@ -130,6 +130,7 @@ LIGHTGREEN) and special-day markers (barnehage, helg) are static. When you:
   dekningsgrad, stønadsperiode, etc.)
 - Prefer components from `packages/` and Aksel over custom solutions
 - Follow existing patterns in the app you are working on
-- Apps can be run locally with `pnpm run dev:mock` / `pnpm run dev:lokal` or
-  via Vite mode against the dev environment (see README)
+- Apps can be run locally with `pnpm run dev:mock` (Vite + MSW scenarios + Nav
+  decorator, see the `lokal-kjoring` skill) or via Vite mode against the dev
+  environment (see README)
 - Types are generated from the backend with `pnpm generate` or `pnpm generate:local`

@@ -82,6 +82,14 @@ try {
         ['Nav-dekoratør', () => page.locator('#decorator-header').waitFor({ state: 'visible', timeout: 30000 })],
     ]);
 
+    const dekoratørTekst = await page
+        .locator('#decorator-header')
+        .innerText({ timeout: 1000 })
+        .catch(() => '');
+    if (dekoratørTekst.includes('Ã')) {
+        failures.push('Dekoratøren har feil tegnsett. Mangler <meta charset="utf-8"> i index.html?');
+    }
+
     await page.goto(`${appUrl}${scenario.startsti}`);
     await sjekk('Lagret valg uten parameter', scenarioSjekker);
 
