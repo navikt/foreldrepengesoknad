@@ -149,7 +149,11 @@ const FordelingStegInnhold = ({
         deltUttak &&
         !getErAleneOmOmsorg(annenForelder) &&
         erFødtForMerEnnTreMånederSiden(barn);
-    const visOppstartsvalg = kanGenerereUttaksplanForslag(uttaksplanAnnenPart) && !erForSentForUttakVedFødsel;
+    const visFødselspermisjonSpørsmål =
+        erFarEllerMedmor && søkersituasjon.situasjon === 'fødsel' && deltUttak && !getErAleneOmOmsorg(annenForelder);
+    const visOppstartsvalg =
+        (kanGenerereUttaksplanForslag(uttaksplanAnnenPart) || visFødselspermisjonSpørsmål) &&
+        !erForSentForUttakVedFødsel;
 
     const førsteDagEtterAnnenForelder = sisteDagAnnenForelder
         ? Uttaksdagen.neste(sisteDagAnnenForelder).getDato()

@@ -665,8 +665,14 @@ describe('<UttaksplanSteg>', () => {
             });
 
             expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+            expect(
+                screen.queryByText(
+                    'Mors plan kan ikke endres automatisk her. Se over uttaket rundt fødselen før du sender søknaden.',
+                ) !== null,
+            ).toBe(!kanRedigere);
             await userEvent.click(screen.getByRole('tab', { name: 'Liste' }));
-            await userEvent.click(screen.getByRole('button', { name: /01. juli 24\s*- 09. aug. 24/ }));
+            const morsPeriode = kanRedigere ? /15. juli 24\s*- 09. aug. 24/ : /01. juli 24\s*- 09. aug. 24/;
+            await userEvent.click(screen.getByRole('button', { name: morsPeriode }));
 
             expect(screen.queryAllByRole('button', { name: /^(Endre|Slett)$/ }).length > 0).toBe(kanRedigere);
         },

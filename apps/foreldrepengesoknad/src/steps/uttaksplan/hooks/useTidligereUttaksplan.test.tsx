@@ -26,6 +26,7 @@ import { ErrorBoundary, IntlProvider } from '@navikt/fp-ui';
 import { DELT_UTTAK_100, MINSTERETTER } from '@navikt/fp-utils-test';
 
 import messages from '../../../intl/nb_NO.json';
+import { tilpassFødselspermisjon } from './tilpassFødselspermisjon';
 import { useTidligereUttaksplan } from './useTidligereUttaksplan';
 import { useUttaksplanForslag } from './useUttaksplanForslag';
 
@@ -82,6 +83,172 @@ const lagUttaksplan = (perioder: UttakPeriodeDto[]): FellesUttaksplanDto => ({
     antallBarn: 1,
     dekningsgrad: 'HUNDRE',
     perioder,
+});
+
+describe('fødselspermisjon i mors plan', () => {
+    const mor = { forelder: 'MOR' as const, kontoType: 'MØDREKVOTE' as const, flerbarnsdager: false };
+    const far = { forelder: 'FAR_MEDMOR' as const, kontoType: 'FEDREKVOTE' as const, flerbarnsdager: false };
+    const morsPerioder: UttakPeriodeDto[] = [
+        { fom: '2025-01-01', tom: '2025-01-14', annenPart: mor },
+        { fom: '2025-01-15', tom: '2025-01-28', annenPart: mor },
+    ];
+    const medFødselspermisjon: UttakPeriodeDto[] = [
+        {
+            fom: '2025-01-01',
+            tom: '2025-01-14',
+            søker: { ...far, samtidigUttak: 100 },
+            annenPart: { ...mor, samtidigUttak: 100 },
+        },
+        morsPerioder[1]!,
+    ];
+
+    beforeEach(() => {
+        vi.setSystemTime(new Date('2025-01-15'));
+    });
+
+    afterEach(() => {
+        vi.useRealTimers();
+    });
+
+    it('lar mors plan stå urørt når hun har oppgitt fødselspermisjon og far svarer ja (A)', () => {
+        expect(tilpassFødselspermisjon(medFødselspermisjon, '2025-01-01', true, true)).toEqual({
+            perioder: medFødselspermisjon,
+            kreverManuellTilpasning: false,
+        });
+    });
+
+    it('lar mors plan stå urørt når hun ikke har oppgitt fødselspermisjon og far svarer nei (B)', () => {
+        expect(tilpassFødselspermisjon(morsPerioder, '2025-01-01', false, true)).toEqual({
+            perioder: morsPerioder,
+            kreverManuellTilpasning: false,
+        });
+    });
+
+    it('frigjør ti fedrekvotedager og fjerner samtidig uttak fra mor når far svarer nei (C)', () => {
+        const { perioder, kreverManuellTilpasning } = tilpassFødselspermisjon(
+            medFødselspermisjon,
+            '2025-01-01',
+            false,
+            true,
+        );
+        expect(kreverManuellTilpasning).toBe(false);
+        expect(perioder).toEqual(morsPerioder);
+        expect(medFødselspermisjon[0]!.søker?.samtidigUttak).toBe(100);
+    });
+
+    it('lar resten av en lengre periode stå urørt når far svarer nei', () => {
+        const kilde = [
+            {
+                ...medFødselspermisjon[0]!,
+                tom: '2025-01-21',
+            },
+        ];
+        expect(tilpassFødselspermisjon(kilde, '2025-01-01', false, true).perioder).toEqual([
+            morsPerioder[0],
+            { ...kilde[0], fom: '2025-01-15' },
+        ]);
+    });
+
+    it('legger til ti fedrekvotedager uten å trekke fra senere fedrekvote når far svarer ja (D)', () => {
+        const senereFedrekvote: UttakPeriodeDto = { fom: '2025-02-03', tom: '2025-02-14', søker: far };
+        const kilde = [...morsPerioder, senereFedrekvote];
+        const { perioder, kreverManuellTilpasning } = tilpassFødselspermisjon(kilde, '2025-01-01', true, true);
+
+        expect(kreverManuellTilpasning).toBe(false);
+        expect(perioder).toEqual([...medFødselspermisjon, senereFedrekvote]);
+        expect(kilde).toEqual([...morsPerioder, senereFedrekvote]);
+        expect(tilpassFødselspermisjon(kilde, '2025-01-01', true, true).perioder).toEqual(perioder);
+    });
+
+    it('fyller de manglende dagene når mor bare har oppgitt deler av fødselspermisjonen', () => {
+        const førsteUke = { ...medFødselspermisjon[0]!, tom: '2025-01-07' };
+        const sisteUke = { fom: '2025-01-08', tom: '2025-01-14', annenPart: mor };
+        const kilde = [førsteUke, sisteUke];
+
+        expect(tilpassFødselspermisjon(kilde, '2025-01-01', true, true)).toEqual({
+            perioder: [
+                førsteUke,
+                { ...sisteUke, søker: { ...far, samtidigUttak: 100 }, annenPart: { ...mor, samtidigUttak: 100 } },
+            ],
+            kreverManuellTilpasning: false,
+        });
+        expect(kilde).toEqual([førsteUke, sisteUke]);
+    });
+
+    it('varsler fremfor å overskrive annet uttak eller EØS-uttak ved fødsel', () => {
+        const andreUttak: UttakPeriodeDto[] = [
+            { fom: '2025-01-01', tom: '2025-01-14', søker: { ...far, kontoType: 'FELLESPERIODE' } },
+        ];
+        const eøsUttak: UttakPeriodeDto[] = [
+            { fom: '2025-01-01', tom: '2025-01-14', annenPartEøs: { kontoType: 'FELLESPERIODE', trekkdager: 10 } },
+        ];
+        for (const kilde of [andreUttak, eøsUttak]) {
+            expect(tilpassFødselspermisjon(kilde, '2025-01-01', true, true)).toEqual({
+                perioder: kilde,
+                kreverManuellTilpasning: true,
+            });
+        }
+    });
+
+    it('lar EØS-uttak stå urørt hvis far svarer nei på fødselspermisjon', () => {
+        const kilde: UttakPeriodeDto[] = [
+            {
+                ...medFødselspermisjon[0]!,
+                annenPartEøs: { kontoType: 'FELLESPERIODE', trekkdager: 10 },
+            },
+        ];
+        expect(tilpassFødselspermisjon(kilde, '2025-01-01', false, true)).toEqual({
+            perioder: kilde,
+            kreverManuellTilpasning: true,
+        });
+    });
+
+    it('fyller bare manglende dager når mors uttak starter midt i fødselsperioden', () => {
+        const kilde: UttakPeriodeDto[] = [{ fom: '2025-01-06', tom: '2025-01-24', annenPart: mor }];
+        expect(tilpassFødselspermisjon(kilde, '2025-01-01', true, true).perioder).toEqual([
+            { fom: '2025-01-01', tom: '2025-01-03', søker: far },
+            {
+                fom: '2025-01-06',
+                tom: '2025-01-14',
+                søker: { ...far, samtidigUttak: 100 },
+                annenPart: { ...mor, samtidigUttak: 100 },
+            },
+            { fom: '2025-01-15', tom: '2025-01-24', annenPart: mor },
+        ]);
+    });
+
+    it('bevarer mors låste perioder og varsler når svaret krever en endring', () => {
+        for (const [kilde, svar] of [
+            [medFødselspermisjon, false],
+            [morsPerioder, true],
+        ] as const) {
+            expect(tilpassFødselspermisjon(kilde, '2025-01-01', svar, false)).toEqual({
+                perioder: kilde,
+                kreverManuellTilpasning: true,
+            });
+        }
+    });
+
+    it('bruker fars svar i en ny søknad uten å endre mors innlastede plan', () => {
+        const uttaksplan = lagUttaksplan(medFødselspermisjon);
+        const { result } = renderHook(() => useTidligereUttaksplan(), {
+            wrapper: getWrapper(
+                uttaksplan,
+                {
+                    [ContextDataType.SØKERSITUASJON]: { situasjon: 'fødsel', rolle: 'far' },
+                    [ContextDataType.FORDELING]: {
+                        oppstartAvForeldrepengerValg: OppstartValg.IKKE_VED_FØDSEL,
+                    },
+                },
+                undefined,
+                SøknadRoutes.UTTAKSPLAN,
+                null,
+            ),
+        });
+
+        expect(result.current.perioder).toEqual(morsPerioder);
+        expect(uttaksplan.perioder).toEqual(medFødselspermisjon);
+    });
 });
 
 const getWrapper = (

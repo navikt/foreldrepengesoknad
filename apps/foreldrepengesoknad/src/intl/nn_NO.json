@@ -476,6 +476,7 @@
     "fordeling.morsSisteDag.tekst": "Frå {navnMor} si søknad.",
     "fordeling.morsSisteDag.ukjent.tittel": "Vi veit ikkje når mor har sin siste dag med foreldrepengar",
     "fordeling.morsSisteDag.ukjent.tekst": "Du kan leggje inn periodane dine i neste steg.",
+    "uttaksplan.fødselspermisjon.konflikt": "Planen til mor kan ikkje endrast automatisk her. Sjå over uttaket rundt fødselen før du sender søknaden.",
     "AndreInntektskilderStep.HvilkenTypeAnnenInntekskilder": "Kva for type anna inntektskilde har du hatt dei siste 10 månadene?",
     "AndreInntektskilderStep.RadioButton.Utlandet": "Jobb i utlandet",
     "AndreInntektskilderStep.RadioButton.Etterlønn": "Etterlønn eller sluttvederlag",

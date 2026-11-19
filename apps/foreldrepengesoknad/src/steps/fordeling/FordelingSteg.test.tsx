@@ -127,11 +127,15 @@ it.each([true, false])(
     },
 );
 
-const renderFordelingNårMorHarSøktUtenVedtak = (dekningsgrad: '80' | '100', fordeling?: Fordeling) => {
+const renderFordelingNårMorHarSøktUtenVedtak = (
+    dekningsgrad: '80' | '100',
+    fordeling?: Fordeling,
+    rolle: 'far' | 'medmor' = 'far',
+) => {
     const onDispatch = vi.fn();
     const barn = FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode.args.barnet!;
     const annenForelder = FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode.args.annenForelder!;
-    const søkersituasjon = FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode.args.søkersituasjon!;
+    const søkersituasjon = { ...FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode.args.søkersituasjon!, rolle };
     const uttaksplanUtenVedtak: FellesUttaksplanDto = {
         annenPartRedigerbar: false,
         antallBarn: 1,
@@ -205,13 +209,28 @@ const renderFordelingNårMorHarSøktUtenVedtak = (dekningsgrad: '80' | '100', fo
     return { ...resultat, onDispatch };
 };
 
-it('skal bruke mors perioder og skjule oppstartsvalg også når mor kun har søkt (før vedtak)', async () => {
+it('skal spørre far om fødselspermisjon også når mor kun har søkt (før vedtak)', async () => {
     vi.setSystemTime(new Date('2024-02-25'));
     const { container } = renderFordelingNårMorHarSøktUtenVedtak('100');
 
     const steg = within(container);
     expect(await steg.findByText('Hannes siste dag med foreldrepenger er mandag 12. august 2024.')).toBeInTheDocument();
-    expect(steg.queryByText('Når vil du starte permisjonen din med foreldrepenger?')).not.toBeInTheDocument();
+    expect(steg.getByText('Vil du bruke to uker av fedrekvoten i forbindelse med fødselen?')).toBeInTheDocument();
+    vi.useRealTimers();
+});
+
+it('skal spørre medmor om fødselspermisjon også når mors plan finnes', async () => {
+    vi.setSystemTime(new Date('2024-02-25'));
+    const { container } = renderFordelingNårMorHarSøktUtenVedtak('100', undefined, 'medmor');
+
+    const steg = within(container);
+    expect(
+        await steg.findByText('Vil du bruke to uker av medmors kvote i forbindelse med fødselen?'),
+    ).toBeInTheDocument();
+    await userEvent.click(steg.getByText('Neste steg'));
+    expect(
+        steg.getAllByText('Du må svare på om du vil bruke to uker av medmors kvote i forbindelse med fødselen.'),
+    ).toHaveLength(2);
     vi.useRealTimers();
 });
 

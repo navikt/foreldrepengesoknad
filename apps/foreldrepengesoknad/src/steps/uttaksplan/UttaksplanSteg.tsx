@@ -190,6 +190,11 @@ export const UttaksplanSteg = ({
                         </BodyLong>
                     </Alert>
                 )}
+                {tidligereUttaksplan.kreverManuellTilpasning && (
+                    <Alert variant="info">
+                        <FormattedMessage id="uttaksplan.fødselspermisjon.konflikt" />
+                    </Alert>
+                )}
                 <UttaksplanDataProvider
                     barn={barn}
                     foreldreInfo={{
