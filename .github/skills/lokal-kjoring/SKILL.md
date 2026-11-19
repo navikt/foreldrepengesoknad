@@ -32,8 +32,6 @@ Path and port are `base` and `server.port` in the app's `vite.config.ts`.
 2. Read the URL from the Vite output (`Local: http://localhost:<port>/<path>`). If the configured port is taken, Vite picks another one, so trust the output.
 3. Find the scenarios in the app's `mock/scenarioer.ts`. Each scenario id has `beskrivelse` (description), `kjennetegn` (a text that identifies it) and `handlers`.
 
-You can also pick the scenario at startup with `VITE_SCENARIO=<id> pnpm run dev:mock`.
-
 ## Pick a scenario
 
 - Open `http://localhost:<port><path>/?scenario=<id>`. Keep the `/` after the path, otherwise the page is outside the service worker scope and no calls are mocked.

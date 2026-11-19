@@ -15,7 +15,7 @@ export const startMockModus = async (scenarioer: Record<string, MockScenario>): 
         sessionStorage.setItem('fp-mock-scenario', urlScenario);
     }
 
-    const id = urlScenario ?? sessionStorage.getItem('fp-mock-scenario') ?? import.meta.env.VITE_SCENARIO ?? 'standard';
+    const id = urlScenario ?? sessionStorage.getItem('fp-mock-scenario') ?? 'standard';
     const scenario = Object.hasOwn(scenarioer, id) ? scenarioer[id] : undefined;
 
     if (!scenario) {

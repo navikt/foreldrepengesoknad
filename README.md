@@ -73,8 +73,6 @@ Appen kjører med Vite som i Vite mode, men backend-kallene besvares av MSW i ne
 3. Velg scenario med `?scenario=<id>` i URL-en. Valget huskes i fanen. Gyldige scenarioer står i `mock/scenarioer.ts`.
 4. Mellomlagret søknad lagres i `sessionStorage`, separat per scenario. Åpne en ny fane for å starte på nytt.
 
-Du kan også velge scenario ved oppstart med `VITE_SCENARIO=<id> pnpm run dev:mock`.
-
 Nye scenarioer legges til i `mock/scenarioer.ts` med beskrivelse, en tekst som kjennetegner scenarioet og handlerne, som deles med Storybook.
 
 ### Autogenere Typescript typer fra backend
