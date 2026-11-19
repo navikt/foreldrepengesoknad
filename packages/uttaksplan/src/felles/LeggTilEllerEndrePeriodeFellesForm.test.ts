@@ -5,6 +5,7 @@ import { UttakPeriodeDto } from '@navikt/fp-types';
 import { harPeriodeMedUkjentGraderingsaktivitet } from '../utils/periodeUtils';
 import {
     LeggTilEllerEndrePeriodeFormFormValues,
+    beholdLåstAnnenPartsSamtidigeUttak,
     lagDefaultValuesForValgtePerioder,
     lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm,
     mapFraFormValuesTilPeriodeDto,
@@ -317,5 +318,51 @@ describe('lagDefaultValuesForValgtePerioder med låst annen part', () => {
         expect(lagDefaultValuesForValgtePerioder(perioder, valgte, 'FAR_MEDMOR', true)).toEqual(
             expect.objectContaining({ forelder: 'BEGGE', kontoTypeMor: 'MØDREKVOTE' }),
         );
+    });
+});
+
+describe('beholdLåstAnnenPartsSamtidigeUttak', () => {
+    const farsLåsteUttak = {
+        kontoType: 'FEDREKVOTE',
+        forelder: 'FAR_MEDMOR',
+        samtidigUttak: 50,
+        flerbarnsdager: false,
+        resultat: { innvilget: true, trekkerDager: true, trekkerMinsterett: true, årsak: 'ANNET' },
+    } satisfies UttakPeriodeDto['annenPart'];
+
+    const eksisterende = [
+        {
+            fom: '2026-01-01',
+            tom: '2026-01-31',
+            søker: { kontoType: 'MØDREKVOTE', forelder: 'MOR', samtidigUttak: 50, flerbarnsdager: false },
+            annenPart: farsLåsteUttak,
+        },
+    ] satisfies UttakPeriodeDto[];
+
+    const nyPeriode = {
+        fom: '2026-01-05',
+        tom: '2026-01-09',
+        søker: { kontoType: 'MØDREKVOTE', forelder: 'MOR', samtidigUttak: 60, flerbarnsdager: false },
+        annenPart: { kontoType: 'FEDREKVOTE', forelder: 'FAR_MEDMOR', samtidigUttak: 40, flerbarnsdager: false },
+    } satisfies UttakPeriodeDto;
+
+    it('beholder hele annen parts låste uttak når søker endrer sin del', () => {
+        expect(beholdLåstAnnenPartsSamtidigeUttak([nyPeriode], eksisterende, true)).toEqual([
+            { ...nyPeriode, annenPart: farsLåsteUttak },
+        ]);
+    });
+
+    it('legger ikke annen parts samtidige uttak tilbake når søker ikke har oppgitt samtidig uttak', () => {
+        const kunMor = mapFraFormValuesTilPeriodeDto(
+            { forelder: 'MOR', kontoTypeMor: 'MØDREKVOTE' },
+            { fom: nyPeriode.fom, tom: nyPeriode.tom },
+            'MOR',
+            true,
+        );
+        expect(beholdLåstAnnenPartsSamtidigeUttak(kunMor, eksisterende, true)).toEqual(kunMor);
+    });
+
+    it('endrer ingenting når annen parts perioder ikke er låst', () => {
+        expect(beholdLåstAnnenPartsSamtidigeUttak([nyPeriode], eksisterende, false)).toEqual([nyPeriode]);
     });
 });

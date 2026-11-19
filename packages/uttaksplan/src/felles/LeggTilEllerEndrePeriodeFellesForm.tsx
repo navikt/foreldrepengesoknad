@@ -1000,6 +1000,25 @@ const mapFarMedmorsUttakFraFormValues = (
     };
 };
 
+export const beholdLåstAnnenPartsSamtidigeUttak = (
+    nyePerioder: UttakPeriodeDto[],
+    uttaksplanperioder: UttakPeriodeDto[],
+    erPeriodeneTilAnnenPartLåst: boolean,
+): UttakPeriodeDto[] => {
+    if (!erPeriodeneTilAnnenPartLåst) {
+        return nyePerioder;
+    }
+
+    return nyePerioder.map((nyPeriode) => {
+        const dekkende = finnPerioderSomDekker(uttaksplanperioder, nyPeriode);
+        const annenPart = dekkende.length === 1 ? dekkende[0]?.annenPart : undefined;
+        if (!annenPart?.samtidigUttak || !nyPeriode.søker?.samtidigUttak) {
+            return nyPeriode;
+        }
+        return { ...nyPeriode, annenPart };
+    });
+};
+
 const finnPerioderSomDekker = (uttaksplanperioder: UttakPeriodeDto[], valgtPeriode: { fom: string; tom: string }) =>
     uttaksplanperioder.filter(
         (periode) =>
