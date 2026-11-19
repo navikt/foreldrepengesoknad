@@ -2,7 +2,7 @@ import { HttpResponse, type RequestHandler, http } from 'msw';
 import { ingenSaker } from 'storybookData/saker/saker';
 
 import { mellomlagringHandlers } from '@navikt/fp-config-vite/mockModus/mockHandlers.ts';
-import { SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
+import { ForsendelseStatus, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataType } from '../app-data/SvpDataContext.tsx';
 import { API_URLS } from '../app-data/queries.ts';
@@ -41,7 +41,9 @@ const lagHandlers = (
     http.get(API_URLS.søkerInfo, () => HttpResponse.json(personopplysninger)),
     http.get(API_URLS.saker, () => HttpResponse.json(ingenSaker)),
     http.get(API_URLS.erOppdatert, () => HttpResponse.json(true)),
-    http.get(API_URLS.status, () => HttpResponse.json(kvittering)),
+    http.get(API_URLS.status, () =>
+        HttpResponse.json({ status: 'ENDELIG', saksnummer: '352011080' } satisfies ForsendelseStatus),
+    ),
     http.post(API_URLS.sendSøknad, () => HttpResponse.json(kvittering)),
     ...mellomlagringHandlers(API_URLS.mellomlagring, mellomlagretStartdata),
     http.post(API_URLS.sendVedlegg, () => HttpResponse.json(crypto.randomUUID(), { status: 201 })),

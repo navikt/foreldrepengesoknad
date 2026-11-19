@@ -13,16 +13,19 @@ import {
 import { uttaksplan } from 'storybookData/uttaksplan/uttaksplan';
 
 import { KontoBeregningResultatDto, Saker_fpoversikt, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
+import { notEmpty } from '@navikt/fp-validation';
 
 import { API_URLS, urlPrefiks } from '../api/queries.ts';
 import scenarioMeta from './scenarioer.json' with { type: 'json' };
 
+const saksnummerFra = (request: Request) => new URL(request.url).searchParams.get('saksnummer') ?? '';
+
 export const lagHandlers = ({
     saker,
-    tidslinje,
+    tidslinjePerSak,
 }: {
     saker: Saker_fpoversikt;
-    tidslinje: TidslinjeHendelseDto_fpoversikt[];
+    tidslinjePerSak: Record<string, TidslinjeHendelseDto_fpoversikt[]>;
 }): RequestHandler[] => [
     http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
     http.get(`${API_URLS.saker}/erOppdatert`, () => HttpResponse.json(true)),
@@ -30,8 +33,10 @@ export const lagHandlers = ({
     http.get(API_URLS.minidialog, () => HttpResponse.json(miniDialog)),
     http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
     http.post(API_URLS.uttaksplan, () => HttpResponse.json(uttaksplan)),
-    http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinje)),
-    http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
+    http.get(API_URLS.tidslinje, ({ request }) => HttpResponse.json(tidslinjePerSak[saksnummerFra(request)] ?? [])),
+    http.get(API_URLS.dokumenter, ({ request }) =>
+        HttpResponse.json(dokumenter.filter((dokument) => dokument.saksnummer === saksnummerFra(request))),
+    ),
     http.get(`${urlPrefiks}/fpoversikt/api/dokument`, () => HttpResponse.arrayBuffer(new ArrayBuffer(0))),
     http.get(API_URLS.inntektsmelding, () => HttpResponse.json([])),
     http.post(API_URLS.konto, () => HttpResponse.json(stønadskvoter1 satisfies KontoBeregningResultatDto)),
@@ -59,14 +64,18 @@ const ingenSaker: Saker_fpoversikt = {
 };
 
 export const scenarioer = {
-    standard: lagHandlers({ saker: standardSaker, tidslinje: tidslinjeHendelserFP }),
-    'ingen-saker': lagHandlers({ saker: ingenSaker, tidslinje: [] }),
+    standard: lagHandlers({ saker: standardSaker, tidslinjePerSak: { '352011079': tidslinjeHendelserFP } }),
+    'ingen-saker': lagHandlers({ saker: ingenSaker, tidslinjePerSak: {} }),
     'engangsstonad-under-behandling': lagHandlers({
         saker: saker_ES_under_behandling,
-        tidslinje: tidslinjehendelser_ES_under_behandling,
+        tidslinjePerSak: {
+            [notEmpty(saker_ES_under_behandling.engangsstønad[0]).saksnummer]: tidslinjehendelser_ES_under_behandling,
+        },
     }),
     'svangerskapspenger-innvilget': lagHandlers({
         saker: saker_SVP_innvilget,
-        tidslinje: tidslinjehendelser_SVP_innvilget,
+        tidslinjePerSak: {
+            [notEmpty(saker_SVP_innvilget.svangerskapspenger[0]).saksnummer]: tidslinjehendelser_SVP_innvilget,
+        },
     }),
 } satisfies Record<keyof typeof scenarioMeta, RequestHandler[]>;

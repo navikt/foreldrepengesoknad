@@ -19,7 +19,7 @@ const meta = {
     },
 
     beforeEach({ msw }) {
-        msw.use(...lagHandlers({ saker, tidslinje: tidslinjeHendelserFP }));
+        msw.use(...lagHandlers({ saker, tidslinjePerSak: { '352011079': tidslinjeHendelserFP } }));
     },
 } satisfies Meta<typeof AppContainer>;
 export default meta;

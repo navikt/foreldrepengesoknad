@@ -44,7 +44,8 @@
         },
         "test:mock": {
             "cache": false,
-            "outputs": []
+            "outputs": [],
+            "passThroughEnv": ["FP_MOCK_DEKORATOR"]
         },
         "build:storybook": {
             "outputs": [".storybook-static-build/**"]

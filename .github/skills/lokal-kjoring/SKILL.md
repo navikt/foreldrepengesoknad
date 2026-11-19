@@ -8,7 +8,7 @@ description: Start an app in the foreldrepengesoknad monorepo locally in mock mo
 Every app in `apps/` can run with `pnpm run dev:mock`. This starts Vite in mock mode:
 
 - MSW answers the backend calls in the browser. The handlers are the same as in Storybook.
-- The Nav decorator is fetched from dev, so the page looks as it does in dev and prod.
+- The Nav decorator is fetched from dev, so the page looks as it does in dev and prod. If dev is down, set `FP_MOCK_DEKORATOR=lokal` to use a minimal local placeholder instead (CI does this).
 - Calls to fpgrunndata (quotas and rates) go to the open dev service.
 - A backend call without a handler fails with an `[MSW]` error in the console instead of passing through.
 

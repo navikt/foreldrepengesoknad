@@ -83,8 +83,10 @@ jobs:
         run: pnpm exec turbo run test:browser --filter=./apps/* --only --continue --concurrency=1
 
       - name: Røyktest mock-modus
-        # Starter appene i mock-modus med MSW og Nav-dekoratøren, og sjekker at prod-bygget er uten mock-kode.
+        # Starter appene i mock-modus med MSW og en lokal dekoratør, og sjekker at prod-bygget er uten mock-kode.
         run: pnpm exec turbo run test:mock --filter=./apps/* --only --continue --concurrency=1
+        env:
+          FP_MOCK_DEKORATOR: lokal
 
   knip-it:
     name: Kjør Knip
