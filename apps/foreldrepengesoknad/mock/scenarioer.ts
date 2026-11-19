@@ -1,7 +1,7 @@
 import { HttpResponse, RequestHandler, http } from 'msw';
 import { mellomlagretSøknad } from 'storybookData/mellomlagretSøknad';
 import { saker } from 'storybookData/saker';
-import { søkerinfo } from 'storybookData/søkerinfo';
+import { søkerinfo, søkerinfoKvinne } from 'storybookData/søkerinfo';
 import { uttaksplanMedMorSomAnnenPart } from 'storybookData/uttaksplan';
 
 import {
@@ -30,14 +30,16 @@ export const lagHandlers = ({
 }: {
     søkerinfo: FpPersonopplysningerDto_fpoversikt;
     saker: Saker_fpoversikt;
-    uttaksplan: FellesUttaksplanDto;
+    uttaksplan?: FellesUttaksplanDto;
 }): RequestHandler[] => [
     http.get(API_URLS.søkerInfo, () => HttpResponse.json(personopplysninger)),
     http.get(API_URLS.erOppdatert, () => HttpResponse.json(true)),
     http.get(API_URLS.saker, () => HttpResponse.json(søkersSaker)),
     http.post(API_URLS.uttaksplan, async ({ request }) => {
         const { annenPartFødselsnummer } = (await request.json()) as FellesUttaksplanRequest_fpoversikt;
-        return annenPartFødselsnummer ? HttpResponse.json(uttaksplan) : new HttpResponse(null, { status: 204 });
+        return annenPartFødselsnummer && uttaksplan
+            ? HttpResponse.json(uttaksplan)
+            : new HttpResponse(null, { status: 204 });
     }),
     http.post(API_URLS.trengerDokumentereMorsArbeid, () => HttpResponse.json(false)),
     http.get(API_URLS.status, () =>
@@ -64,26 +66,101 @@ const sakerSomKanEndres: Saker_fpoversikt = {
     foreldrepenger: saker.foreldrepenger.map((sak) => ({ ...sak, kanSøkeOmEndring: true })),
 };
 
-const lagScenario = (søkersSaker: Saker_fpoversikt, mellomlagretData?: unknown): RequestHandler[] => [
-    ...lagHandlers({ søkerinfo, saker: søkersSaker, uttaksplan: uttaksplanMedMorSomAnnenPart }),
+const morsVedtak = { innvilget: true, trekkerMinsterett: true, trekkerDager: true, årsak: 'ANNET' } as const;
+
+const uttaksplanMorHarSøkt = {
+    antallBarn: 1,
+    dekningsgrad: 'HUNDRE',
+    perioder: [
+        {
+            fom: '2026-09-14',
+            tom: '2026-10-02',
+            annenPart: {
+                forelder: 'MOR',
+                kontoType: 'FORELDREPENGER_FØR_FØDSEL',
+                resultat: morsVedtak,
+                flerbarnsdager: false,
+            },
+        },
+        {
+            fom: '2026-10-05',
+            tom: '2027-01-15',
+            annenPart: { forelder: 'MOR', kontoType: 'MØDREKVOTE', resultat: morsVedtak, flerbarnsdager: false },
+        },
+        {
+            fom: '2027-01-18',
+            tom: '2027-03-12',
+            annenPart: { forelder: 'MOR', kontoType: 'FELLESPERIODE', resultat: morsVedtak, flerbarnsdager: false },
+        },
+    ],
+} satisfies FellesUttaksplanDto;
+
+const farMedBarnDerMorHarSøkt = {
+    ...søkerinfo,
+    barn: [
+        {
+            fnr: '1',
+            navn: { fornavn: 'Oriental', etternavn: 'Bokhylle' },
+            kjønn: 'K',
+            fødselsdato: '2026-10-05',
+            annenPart: {
+                fnr: '12345678810',
+                fødselsdato: '1993-04-12',
+                navn: { fornavn: 'Vakker', etternavn: 'Bokhylle' },
+            },
+        },
+    ],
+} satisfies FpPersonopplysningerDto_fpoversikt;
+
+const lagScenario = ({
+    saker: søkersSaker,
+    mellomlagretData,
+    personopplysninger = søkerinfo,
+    uttaksplan,
+}: {
+    saker: Saker_fpoversikt;
+    mellomlagretData?: unknown;
+    personopplysninger?: FpPersonopplysningerDto_fpoversikt;
+    uttaksplan?: FellesUttaksplanDto;
+}): RequestHandler[] => [
+    ...lagHandlers({ søkerinfo: personopplysninger, saker: søkersSaker, uttaksplan }),
     ...mellomlagringHandlers(API_URLS.mellomlagring, mellomlagretData),
     ...fpgrunndataHandlers(urlPrefiks),
 ];
 
 export const scenarioer = {
     standard: {
-        beskrivelse: 'Starter en ny søknad uten mellomlagring og uten saker.',
+        beskrivelse: 'Mor starter en ny søknad uten mellomlagring og uten saker.',
         kjennetegn: 'Start søknaden',
-        handlers: lagScenario(ingenSaker),
+        handlers: lagScenario({ saker: ingenSaker, personopplysninger: søkerinfoKvinne }),
+    },
+    far: {
+        beskrivelse: 'Far starter en ny søknad uten mellomlagring og uten saker.',
+        kjennetegn: 'Start søknaden',
+        handlers: lagScenario({ saker: ingenSaker, uttaksplan: uttaksplanMedMorSomAnnenPart }),
+    },
+    'far-mor-har-sokt': {
+        beskrivelse:
+            'Far søker for et født barn der mor allerede har fått vedtak. Mors perioder hentes når far velger barnet.',
+        kjennetegn: 'Oriental',
+        handlers: lagScenario({
+            saker: ingenSaker,
+            personopplysninger: farMedBarnDerMorHarSøkt,
+            uttaksplan: uttaksplanMorHarSøkt,
+        }),
     },
     'fortsett-soknad': {
         beskrivelse: 'Fortsetter en mellomlagret søknad på steget om barnet.',
         kjennetegn: 'Er barnet født?',
-        handlers: lagScenario(saker, mellomlagretSøknad),
+        handlers: lagScenario({
+            saker,
+            mellomlagretData: mellomlagretSøknad,
+            uttaksplan: uttaksplanMedMorSomAnnenPart,
+        }),
     },
     endringssoknad: {
         beskrivelse: 'Søker har en sak som kan endres, slik at endringssøknad tilbys.',
         kjennetegn: 'Saksnummer 352011594',
-        handlers: lagScenario(sakerSomKanEndres),
+        handlers: lagScenario({ saker: sakerSomKanEndres, uttaksplan: uttaksplanMedMorSomAnnenPart }),
     },
 } satisfies Record<string, MockScenario>;
