@@ -15,7 +15,7 @@ import { uttaksplan } from 'storybookData/uttaksplan/uttaksplan';
 import { KontoBeregningResultatDto, Saker_fpoversikt, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { API_URLS, urlPrefiks } from '../api/queries.ts';
+import { API_URLS, urlPrefiks } from '../src/api/queries.ts';
 import scenarioMeta from './scenarioer.json' with { type: 'json' };
 
 const saksnummerFra = (request: Request) => new URL(request.url).searchParams.get('saksnummer') ?? '';

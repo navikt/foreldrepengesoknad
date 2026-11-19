@@ -9,7 +9,7 @@
         "build:storybook": "storybook build -o .storybook-static-build",
         "test": "vitest --project=jsdom --watch=false",
         "test:browser": "vitest --project=browser",
-        "eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
+        "eslint": "eslint \"./{src,mock}/**/*.{js,ts,tsx}\"",
         "eslint:fix": "eslint --quiet --fix  \"./src/**/*.{js,ts,tsx}\"",
         "prettier:fix": "prettier --write src",
         "tsc": "tsc --noEmit",

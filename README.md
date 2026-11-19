@@ -70,12 +70,12 @@ Appen kjører med Vite som i Vite mode, men backend-kallene besvares av MSW i ne
 
 1. cd til appen, f.eks `cd apps/foreldrepengeoversikt`
 2. Kjør `pnpm run dev:mock`
-3. Velg scenario med `?scenario=<id>` i URL-en. Valget huskes i fanen. Gyldige scenarioer står i `src/mock/scenarioer.json` og listes på `<base>/__scenarioer`.
+3. Velg scenario med `?scenario=<id>` i URL-en. Valget huskes i fanen. Gyldige scenarioer står i `mock/scenarioer.json` og listes på `<base>/__scenarioer`.
 4. Mellomlagret søknad lagres i `localStorage`, separat per scenario. Legg til `?reset` i URL-en for å starte på nytt.
 
 Du kan også velge scenario ved oppstart med `VITE_SCENARIO=<id> pnpm run dev:mock`.
 
-Nye scenarioer legges til i `src/mock/scenarioer.json` (beskrivelse, startsti og en tekst som kjennetegner scenarioet) og i `src/mock/scenarioer.ts`, der handlerne deles med Storybook.
+Nye scenarioer legges til i `mock/scenarioer.json` (beskrivelse, startsti og en tekst som kjennetegner scenarioet) og i `mock/scenarioer.ts`, der handlerne deles med Storybook.
 
 `pnpm run test:mock` kjører en røyktest av mock-modusen. Den sjekker også at prod-bygget er uten mock-kode.
 

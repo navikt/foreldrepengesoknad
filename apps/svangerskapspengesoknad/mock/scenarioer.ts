@@ -4,10 +4,10 @@ import { ingenSaker } from 'storybookData/saker/saker';
 import { mellomlagringHandlers } from '@navikt/fp-config-vite/mockModus/mockHandlers.ts';
 import { ForsendelseStatus, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 
-import { ContextDataType } from '../app-data/SvpDataContext.tsx';
-import { API_URLS } from '../app-data/queries.ts';
-import { SøknadRoute } from '../app-data/routes.ts';
-import { SvpMellomlagretData, VERSJON_MELLOMLAGRING } from '../app-data/useMellomlagreSøknad.ts';
+import { ContextDataType } from '../src/app-data/SvpDataContext.tsx';
+import { API_URLS } from '../src/app-data/queries.ts';
+import { SøknadRoute } from '../src/app-data/routes.ts';
+import { SvpMellomlagretData, VERSJON_MELLOMLAGRING } from '../src/app-data/useMellomlagreSøknad.ts';
 import kvittering from './data/kvittering.json' with { type: 'json' };
 import søkerinfoData from './data/sokerinfo.json' with { type: 'json' };
 import scenarioMeta from './scenarioer.json' with { type: 'json' };

@@ -14,7 +14,7 @@ import {
 } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { API_URLS, urlPrefiks } from '../api/queries.ts';
+import { API_URLS, urlPrefiks } from '../src/api/queries.ts';
 import scenarioMeta from './scenarioer.json' with { type: 'json' };
 
 const kvittering = {

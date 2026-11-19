@@ -11,6 +11,6 @@
         "types": ["@testing-library/jest-dom/vitest", "vitest/globals", "vite/client"]
     },
 
-    "include": ["src", "./@types", "vitest", "../../@types"],
+    "include": ["src", "mock", "./@types", "vitest", "../../@types"],
     "exclude": ["node_modules", "build", "src/build", "dist", "**.js"]
 }

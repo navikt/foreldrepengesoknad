@@ -7,7 +7,7 @@ Kildekoden til frontend-appen for ny innsynsløsning for foreldrepengesøknad, e
 For å kjøre opp appen lokalt:
 
 1.  `pnpm install`.
-2.  `pnpm run dev:mock`. Velg scenario med `?scenario=<id>` (se `src/mock/scenarioer.json`).
+2.  `pnpm run dev:mock`. Velg scenario med `?scenario=<id>` (se `mock/scenarioer.json`).
 
 # Henvendelser
 

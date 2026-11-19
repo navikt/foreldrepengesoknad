@@ -3,10 +3,10 @@ import { HttpResponse, type RequestHandler, http } from 'msw';
 import { mellomlagringHandlers } from '@navikt/fp-config-vite/mockModus/mockHandlers.ts';
 import { EsPersonopplysningerDto_fpoversikt, ForsendelseStatus } from '@navikt/fp-types';
 
-import { ContextDataType } from '../app-data/EsDataContext.tsx';
-import { Path } from '../app-data/paths.ts';
-import { API_URLS } from '../app-data/queries.ts';
-import { EsMellomlagretData, VERSJON_MELLOMLAGRING } from '../app-data/useEsMellomlagring.ts';
+import { ContextDataType } from '../src/app-data/EsDataContext.tsx';
+import { Path } from '../src/app-data/paths.ts';
+import { API_URLS } from '../src/app-data/queries.ts';
+import { EsMellomlagretData, VERSJON_MELLOMLAGRING } from '../src/app-data/useEsMellomlagring.ts';
 import scenarioMeta from './scenarioer.json' with { type: 'json' };
 
 const personinfo = {

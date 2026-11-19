@@ -12,8 +12,8 @@ import { uttaksplanMedFarSomAnnenPart, uttaksplanMedMorSomAnnenPart } from 'stor
 
 import { FellesUttaksplanDto, FpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 
+import { lagHandlers } from '../mock/scenarioer.ts';
 import { AppContainer } from './AppContainer';
-import { lagHandlers } from './mock/scenarioer.ts';
 
 const lagStoryHandlers = (personopplysninger: FpPersonopplysningerDto_fpoversikt, uttaksplan: FellesUttaksplanDto) => [
     http.post(API_URLS.konto, () => HttpResponse.json({ 80: stønadskvoter, 100: stønadskvoter })),

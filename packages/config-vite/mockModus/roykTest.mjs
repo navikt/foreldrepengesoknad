@@ -33,7 +33,7 @@ if (mockKodeIProd.length > 0) {
     process.exit(1);
 }
 
-const scenarioer = JSON.parse(await fs.readFile('src/mock/scenarioer.json', 'utf8'));
+const scenarioer = JSON.parse(await fs.readFile('mock/scenarioer.json', 'utf8'));
 // Et annet scenario enn standardverdien, slik at testen fanger feil i valg og lagring av scenario.
 const scenarioId = Object.keys(scenarioer).find((id) => id !== 'standard') ?? 'standard';
 const scenario = scenarioer[scenarioId];

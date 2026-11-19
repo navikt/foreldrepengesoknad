@@ -3,8 +3,8 @@ import { MemoryRouter } from 'react-router';
 import { saker } from 'storybookData/saker/saker';
 import { tidslinjeHendelserFP } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
 
+import { lagHandlers } from '../mock/scenarioer.ts';
 import { AppContainer } from './AppContainer';
-import { lagHandlers } from './mock/scenarioer.ts';
 
 const meta = {
     title: 'AppContainer',

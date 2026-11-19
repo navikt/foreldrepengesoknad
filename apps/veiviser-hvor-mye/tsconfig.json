@@ -8,6 +8,6 @@
         },
         "types": ["@testing-library/jest-dom/vitest", "vitest/globals", "vite/client"]
     },
-    "include": ["src", "vitest", "../../@types"],
+    "include": ["src", "mock", "vitest", "../../@types"],
     "exclude": ["node_modules"]
 }

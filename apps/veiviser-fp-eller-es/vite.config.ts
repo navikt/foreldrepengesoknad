@@ -15,7 +15,7 @@ export default mergeConfig(createSharedAppConfig(setupFileDirName), {
     base: '/foreldrepenger/foreldrepenger-eller-engangsstonad',
     plugins: [
         fpMockModus({
-            scenarioFil: path.resolve(import.meta.dirname, './src/mock/scenarioer.json'),
+            scenarioFil: path.resolve(import.meta.dirname, './mock/scenarioer.json'),
         }),
     ],
     ...(cdnUrl

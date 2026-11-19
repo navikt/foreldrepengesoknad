@@ -4,7 +4,7 @@ import { AppContainer } from './AppContainer';
 import './index.css';
 
 if (import.meta.env.MODE === 'mock') {
-    const { startMock } = await import('./mock/startMock.ts');
+    const { startMock } = await import('../mock/startMock.ts');
     await startMock();
 }
 

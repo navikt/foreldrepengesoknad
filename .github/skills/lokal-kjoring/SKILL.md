@@ -54,8 +54,8 @@ Use Playwright (installed in `packages/config-vite`) or whichever browser tool y
 
 ## Add a scenario
 
-1. Add the id with `beskrivelse`, `startsti` and `kjennetegn` to `src/mock/scenarioer.json`. `kjennetegn` must be a text that only shows when the scenario has loaded correctly.
-2. Add the handlers under the same id in `src/mock/scenarioer.ts`. Use `lagHandlers(...)` with other test data, preferably from `.storybook/storybook-data`. TypeScript fails if the ids in the two files do not match.
+1. Add the id with `beskrivelse`, `startsti` and `kjennetegn` to `mock/scenarioer.json`. `kjennetegn` must be a text that only shows when the scenario has loaded correctly.
+2. Add the handlers under the same id in `mock/scenarioer.ts`. Use `lagHandlers(...)` with other test data, preferably from `.storybook/storybook-data`. TypeScript fails if the ids in the two files do not match.
 3. Use fictional test persons that already exist in the repo. Never real personal data.
 4. Run `pnpm run test:mock`, `pnpm tsc` and `pnpm eslint` in the app folder.
 
