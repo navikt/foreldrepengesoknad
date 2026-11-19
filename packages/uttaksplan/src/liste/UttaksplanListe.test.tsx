@@ -158,6 +158,51 @@ describe('historiske endringer i listevisningen', () => {
         expect(screen.queryByTestId('2025-08-04 - 2025-08-08')).not.toBeInTheDocument();
     });
 
+    it.each([false, true])('far legger eget uttak over mors graderte uttak med gradering=%s', async (gradert) => {
+        const oppdaterUttaksplan = renderListe(
+            [
+                {
+                    fom: periode.fom,
+                    tom: periode.tom,
+                    annenPart: { ...periode.søker!, gradering: { arbeidstidprosent: 50 } },
+                },
+            ],
+            true,
+            'FAR_MEDMOR',
+        );
+
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til periode' }));
+        await userEvent.type(screen.getByLabelText('Fra og med dato'), '04.08.2025');
+        await userEvent.type(screen.getByLabelText('Til og med dato'), '08.08.2025');
+        await userEvent.tab();
+        await userEvent.click(screen.getByRole('radio', { name: 'Legge til periode med foreldrepenger' }));
+        await userEvent.click(screen.getByRole('radio', { name: 'Far' }));
+        await userEvent.click(screen.getByRole('radio', { name: 'Fars kvote' }));
+        await userEvent.click(screen.getByRole('radio', { name: gradert ? 'Ja' : 'Nei' }));
+        if (gradert) {
+            await userEvent.type(screen.getByLabelText('Hvor mange prosent skal far jobbe?'), '50');
+        }
+        await userEvent.click(screen.getByRole('button', { name: 'Ferdig, legg til i plan' }));
+
+        expect(oppdaterUttaksplan).toHaveBeenCalledTimes(gradert ? 0 : 1);
+        expect(screen.queryAllByRole('dialog')).toHaveLength(gradert ? 1 : 0);
+        if (gradert) {
+            const dialog = screen.getByRole('dialog', {
+                name: 'Er du sikker på at du skal slette foreldrepenger tilbake i tid?',
+            });
+            await userEvent.click(within(dialog).getByRole('button', { name: 'Slett' }));
+        }
+        expect(oppdaterUttaksplan).toHaveBeenCalledExactlyOnceWith([
+            {
+                ...farsPeriode,
+                søker: {
+                    ...farsPeriode.søker,
+                    ...(gradert && { gradering: { arbeidstidprosent: 50 } }),
+                },
+            },
+        ]);
+    });
+
     it('bevarer periodevalget ved avbrutt sletting av valgte perioder', async () => {
         const nestePeriode: UttakPeriodeDto = {
             ...periode,

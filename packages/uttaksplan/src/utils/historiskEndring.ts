@@ -68,6 +68,22 @@ const finnHistoriskeDatoerÅSjekke = (
     });
 };
 
+// Søker har lagt eget uttak i et tidsrom der bare annen part hadde uttak. Annen parts uttak forsvinner da fra
+// planen, men det er ikke en sletting søker skal advares om.
+const erAnnenPartsUttakErstattetAvSøker = (
+    periodeFør: UttakPeriodeDto | undefined,
+    periodeEtter: UttakPeriodeDto | undefined,
+): boolean =>
+    periodeFør?.annenPart !== undefined &&
+    periodeFør.søker === undefined &&
+    periodeEtter?.annenPart === undefined &&
+    periodeEtter?.søker !== undefined &&
+    periodeEtter.søker.utsettelseÅrsak === undefined;
+
+// Når begge er gradert har søker sannsynligvis ment samtidig uttak, men bare valgt seg selv.
+const erTroligFeilvalgtSamtidigUttak = (periodeFør: UttakPeriodeDto, periodeEtter: UttakPeriodeDto): boolean =>
+    periodeFør.annenPart?.gradering !== undefined && periodeEtter.søker?.gradering !== undefined;
+
 export const harHistoriskFjernetUttak = (
     før: UttakPeriodeDto[],
     etter: UttakPeriodeDto[],
@@ -76,6 +92,9 @@ export const harHistoriskFjernetUttak = (
     finnHistoriskeDatoerÅSjekke(før, etter, førsteDagIMåneden).some((dato) => {
         const periodeFør = finnPeriodePåDato(før, dato);
         const periodeEtter = finnPeriodePåDato(etter, dato);
+        if (erAnnenPartsUttakErstattetAvSøker(periodeFør, periodeEtter)) {
+            return erTroligFeilvalgtSamtidigUttak(periodeFør!, periodeEtter!);
+        }
         return PARTER.some((part) => periodeFør?.[part] !== undefined && periodeEtter?.[part] === undefined);
     });
 
@@ -87,18 +106,25 @@ export const harHistoriskFerieEllerGraderingsendring = (
     førsteDagIMåneden: string,
 ): boolean =>
     finnHistoriskeDatoerÅSjekke(før, etter, førsteDagIMåneden).some((dato) => {
+        const periodeFør = finnPeriodePåDato(før, dato);
+        const periodeEtter = finnPeriodePåDato(etter, dato);
         // Listen lagrer ferie med forelder MOR uansett søker, så ferie leses fra søker-delen uten forelderfilter.
-        const varFerie = finnPeriodePåDato(før, dato)?.søker?.utsettelseÅrsak === 'FERIE';
-        const erFerie = finnPeriodePåDato(etter, dato)?.søker?.utsettelseÅrsak === 'FERIE';
+        const varFerie = periodeFør?.søker?.utsettelseÅrsak === 'FERIE';
+        const erFerie = periodeEtter?.søker?.utsettelseÅrsak === 'FERIE';
+        const erstattetForelder = erAnnenPartsUttakErstattetAvSøker(periodeFør, periodeEtter)
+            ? periodeFør?.annenPart?.forelder
+            : undefined;
 
         return (
             varFerie !== erFerie ||
-            FORELDRE.some((forelder) =>
-                harGraderingsendring(
-                    finnUttakPåDato(før, dato, forelder),
-                    finnUttakPåDato(etter, dato, forelder),
-                    forelder === søker && kanVelgeArbeidsgiver,
-                ),
+            FORELDRE.some(
+                (forelder) =>
+                    forelder !== erstattetForelder &&
+                    harGraderingsendring(
+                        finnUttakPåDato(før, dato, forelder),
+                        finnUttakPåDato(etter, dato, forelder),
+                        forelder === søker && kanVelgeArbeidsgiver,
+                    ),
             )
         );
     });

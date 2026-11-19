@@ -136,6 +136,39 @@ describe('KalenderRedigeringContext', () => {
         expect(etterUtført).toHaveBeenCalledTimes(1);
     });
 
+    it.each([false, true])('mor erstatter fars graderte uttak i kalenderen med gradering=%s', async (gradert) => {
+        const user = userEvent.setup();
+        const nyttUttak = periode(UTVALG.fom, UTVALG.tom, gradert ? gradering : {});
+        const { oppdaterUttaksplan, etterUtført } = renderKontekst({
+            perioder: [
+                {
+                    ...UTVALG,
+                    annenPart: {
+                        forelder: 'FAR_MEDMOR',
+                        kontoType: 'FEDREKVOTE',
+                        flerbarnsdager: false,
+                        ...gradering,
+                    },
+                },
+            ],
+            operasjon: leggTil(nyttUttak),
+        });
+
+        await user.click(screen.getByRole('button', { name: 'Utfør' }));
+
+        expect(oppdaterUttaksplan).toHaveBeenCalledTimes(gradert ? 0 : 1);
+        expect(etterUtført).toHaveBeenCalledTimes(gradert ? 0 : 1);
+        expect(screen.queryAllByRole('dialog')).toHaveLength(gradert ? 1 : 0);
+        if (gradert) {
+            const dialog = screen.getByRole('dialog', {
+                name: 'Er du sikker på at du skal slette foreldrepenger tilbake i tid?',
+            });
+            await user.click(within(dialog).getByRole('button', { name: 'Slett' }));
+        }
+        expect(oppdaterUttaksplan).toHaveBeenCalledExactlyOnceWith([nyttUttak]);
+        expect(etterUtført).toHaveBeenCalledTimes(1);
+    });
+
     it.each(['Avbryt', 'Escape', 'Lukk'])('endrer ikke planen når dialogen lukkes med %s', async (lukkemåte) => {
         const user = userEvent.setup();
         const perioder = [periode('2026-09-07', '2026-10-02')];
