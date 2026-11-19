@@ -17,8 +17,8 @@ export const fpMockModus = () => ({
             });
 
         return html
-            .replace(/\{\{\{APP_SETTINGS\}\}\}/g, JSON.stringify({ APP_VERSION: 'Lokal mock' }))
-            .replace(/\{\{\{NAIS_META_TAGS\}\}\}/g, '')
+            .replaceAll('{{{APP_SETTINGS}}}', JSON.stringify({ APP_VERSION: 'Lokal mock' }))
+            .replaceAll('{{{NAIS_META_TAGS}}}', '')
             .replace(/<\/head\s*>/i, (match) => `${DECORATOR_HEAD_ASSETS}${match}`)
             .replace(/<body[^>]*>/i, (match) => `${match}${DECORATOR_HEADER}`)
             .replace(/<\/body\s*>/i, (match) => `${DECORATOR_FOOTER}${DECORATOR_SCRIPTS}${match}`);
