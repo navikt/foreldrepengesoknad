@@ -69,10 +69,5 @@
         "typescript": "catalog:",
         "vite": "catalog:",
         "vitest": "catalog:"
-    },
-    "msw": {
-        "workerDirectory": [
-            "mock-service-worker"
-        ]
     }
 }
