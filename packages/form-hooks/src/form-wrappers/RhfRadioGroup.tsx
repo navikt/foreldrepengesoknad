@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import {
     FieldPath,
     FieldPathValue,
@@ -18,7 +18,7 @@ type Props<TFieldValues extends FieldValues, TName extends FieldPath<TFieldValue
     label?: string | ReactNode;
     validate?: Array<(value: FieldPathValue<TFieldValues, TName>) => ValidationReturnType>;
     onChange?: (value: FieldPathValue<TFieldValues, TName>) => void;
-    children: ReactElement[];
+    children: ReactNode;
     className?: string;
     customErrorFormatter?: (error: string | undefined) => ReactNode;
     control: UseControllerProps<TFieldValues, TName>['control'];
@@ -49,6 +49,8 @@ export const RhfRadioGroup = <TFieldValues extends FieldValues, TName extends Fi
 
     return (
         <RadioGroup
+            // RHF må få et fokusbart input, ikke gruppens fieldset.
+            ref={(fieldset) => field.ref(fieldset?.querySelector('input[type="radio"]:not(:disabled)'))}
             name={name}
             value={field.value !== undefined ? field.value : null}
             legend={label}
@@ -62,16 +64,7 @@ export const RhfRadioGroup = <TFieldValues extends FieldValues, TName extends Fi
             }}
             className={className}
         >
-            {children.map((child, index) => {
-                // Legg til ref på første child for å kunna setta fokus ved feil
-                if (index === 0) {
-                    return React.cloneElement(child as React.ReactElement<React.RefAttributes<HTMLElement>>, {
-                        key: child.key,
-                        ref: field.ref,
-                    });
-                }
-                return child;
-            })}
+            {children}
         </RadioGroup>
     );
 };

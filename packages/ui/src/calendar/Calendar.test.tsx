@@ -1,11 +1,35 @@
 import { composeStories } from '@storybook/react-vite';
 import { render, screen, within } from '@testing-library/react';
 
+import { Calendar } from './Calendar';
 import * as stories from './Calendar.stories';
 
 const { Default, PeriodsThatSpanOverAYear } = composeStories(stories);
 
 describe('<Calendar>', () => {
+    it('lar nettleseren håndtere zoom og andre snarveier når første kalenderdag har fokus', () => {
+        render(<Calendar periods={[]} firstDateInCalendar="2024-01-01" setSelectedPeriods={() => undefined} />);
+
+        const førsteDag = screen.getByRole('button', { name: '1. januar 2024' });
+        expect(førsteDag).toHaveFocus();
+
+        for (const options of [
+            { key: '+', ctrlKey: true },
+            { key: '=', ctrlKey: true },
+            { key: '+', metaKey: true },
+            { key: 'a' },
+            { key: 'ArrowRight', ctrlKey: true },
+        ]) {
+            const event = new KeyboardEvent('keydown', { bubbles: true, cancelable: true, ...options });
+            førsteDag.dispatchEvent(event);
+            expect(event.defaultPrevented).toBe(false);
+        }
+
+        const pilHøyre = new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true });
+        førsteDag.dispatchEvent(pilHøyre);
+        expect(pilHøyre.defaultPrevented).toBe(true);
+    });
+
     it('skal vise riktige dagmarkeringer og familiehendelse', () => {
         const { container } = render(<Default />);
 

@@ -123,27 +123,41 @@ const RegisterdataSjekk = ({
     foreldrepengerSaker: FpSak_fpoversikt[];
     children: ReactNode;
 }) => {
-    const uttaksplanQuery = useQuery(useUttaksplanOptions());
+    const uttaksplanOptions = useUttaksplanOptions();
+    // Felles uttaksplan sammenlignes bare ved oppstart, med lagret plan og grunnlag fra oppstart. Ellers ville
+    // spørringen fått ny nøkkel når brukeren endrer den andre forelderen eller barnet senere, og spinneren under
+    // ville avmontert rutene og sendt brukeren til lagret steg. Mellomlagringen hentes også på nytt ved vindusfokus,
+    // og planen den inneholder kan da gjelde et annet grunnlag enn det som ble sjekket.
+    const [oppstart] = useState(() => ({
+        uttaksplanOptions,
+        lagretFellesUttaksplan: mellomlagretData?.fellesUttaksplan,
+    }));
+    const [fellesUttaksplanErEndret, setFellesUttaksplanErEndret] = useState<boolean>();
+    const skalSjekkeFellesUttaksplan =
+        oppstart.lagretFellesUttaksplan !== undefined && fellesUttaksplanErEndret === undefined;
+    const uttaksplanQuery = useQuery({
+        ...oppstart.uttaksplanOptions,
+        enabled: skalSjekkeFellesUttaksplan && oppstart.uttaksplanOptions.enabled,
+    });
+
+    if (skalSjekkeFellesUttaksplan && uttaksplanQuery.isSuccess) {
+        setFellesUttaksplanErEndret(
+            erFellesUttaksplanEndret(notEmpty(oppstart.lagretFellesUttaksplan), uttaksplanQuery.data),
+        );
+    }
 
     if (!mellomlagretData) {
         return <>{children}</>;
     }
 
-    const harLagretFellesUttaksplan = mellomlagretData.fellesUttaksplan !== undefined;
-
-    if (harLagretFellesUttaksplan && uttaksplanQuery.isPending && uttaksplanQuery.fetchStatus !== 'idle') {
+    if (skalSjekkeFellesUttaksplan && uttaksplanQuery.isPending && uttaksplanQuery.fetchStatus !== 'idle') {
         return <Spinner />;
     }
-
-    const fellesUttaksplanErEndret =
-        mellomlagretData.fellesUttaksplan !== undefined &&
-        uttaksplanQuery.isSuccess &&
-        erFellesUttaksplanEndret(mellomlagretData.fellesUttaksplan, uttaksplanQuery.data);
 
     const søkerInfoErEndret = erSøkerInfoEndret(mellomlagretData.søkerInfo, søkerInfo);
     const sakerErEndret = erSakerEndret(mellomlagretData.foreldrepengerSaker, foreldrepengerSaker);
 
-    const registerdataErEndret = søkerInfoErEndret || sakerErEndret || fellesUttaksplanErEndret;
+    const registerdataErEndret = søkerInfoErEndret || sakerErEndret || fellesUttaksplanErEndret === true;
 
     if (registerdataErEndret) {
         const avvik = [

@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode, useCallback, useMemo } from 'react';
+import { ReactNode, useCallback, useMemo } from 'react';
 import {
     FieldPath,
     FieldPathValue,
@@ -18,7 +18,7 @@ type Props<TFieldValues extends FieldValues, TName extends FieldPath<TFieldValue
     description?: string;
     validate?: Array<(value: FieldPathValue<TFieldValues, TName>) => ValidationReturnType>;
     onChange?: (value: FieldPathValue<TFieldValues, TName>) => void;
-    children: ReactElement[];
+    children: ReactNode;
     control: UseControllerProps<TFieldValues, TName>['control'];
 } & Omit<UseControllerProps<TFieldValues, TName>, 'control'>;
 
@@ -56,6 +56,8 @@ export const RhfCheckboxGroup = <TFieldValues extends FieldValues, TName extends
 
     return (
         <CheckboxGroup
+            // RHF må få et fokusbart input, ikke gruppens fieldset.
+            ref={(fieldset) => field.ref(fieldset?.querySelector('input[type="checkbox"]:not(:disabled)'))}
             name={name}
             description={description}
             value={field.value !== undefined ? field.value : []}

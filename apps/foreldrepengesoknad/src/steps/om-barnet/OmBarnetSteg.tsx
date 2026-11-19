@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import { annenForelderHarNorskFnr, finnAnnenPartsPlan } from 'utils/annenForelderUtils';
+import { annenForelderHarNorskFnr } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
 import {
     andreAugust2022ReglerGjelder,
@@ -93,12 +93,12 @@ type Props = {
 export const OmBarnetSteg = (props: Props) => {
     const annenForelder = useContextGetData(ContextDataType.ANNEN_FORELDER);
     const uttaksplanOptions = useUttaksplanOptions();
-    // Termindato fra vedtak finnes bare når annen part har norsk fnr. Uten sjekken gjøres kallet på nytt
-    // når barnet lagres ved innsending, og spinneren under avmonterer skjemaet før navigeringen er gjort.
+    // Uten sjekken gjøres kallet på nytt når barnet lagres ved innsending, og spinneren under
+    // avmonterer skjemaet før navigeringen er gjort.
     const terminDatoQuery = useQuery({
         ...uttaksplanOptions,
         enabled: uttaksplanOptions.enabled && !!annenForelder && annenForelderHarNorskFnr(annenForelder),
-        select: (uttaksplan) => finnAnnenPartsPlan(uttaksplan)?.termindato,
+        select: (uttaksplan) => uttaksplan?.termindato,
     });
 
     if (terminDatoQuery.isLoading) {
@@ -210,6 +210,7 @@ const OmBarnetStegInner = ({
                             <ValgteRegistrerteBarn
                                 valgteRegistrerteBarn={valgteRegistrerteBarn}
                                 skalInkludereTermindato={skalInkludereTermindato}
+                                termindatoFraTidligereSøknad={termindato}
                             />
                         )}
                         {søkersituasjon.situasjon === 'fødsel' && (

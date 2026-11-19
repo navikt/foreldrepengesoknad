@@ -23,6 +23,7 @@ const {
     RegistrertBarnFødselMor,
     RegistrertBarnTrillingerDerEnErDød,
     FarFødselMorHarVedtak,
+    RegistrertBarnMedTermindatoFraTidligereSøknad,
 } = composeStories(stories);
 
 describe('<OmBarnetSteg>', () => {
@@ -744,6 +745,26 @@ describe('<OmBarnetSteg>', () => {
         vi.useRealTimers();
     });
 
+    it('skal ikke påstå at termindato er hentet fra tidligere søknad når den bare ligger på barnet', async () => {
+        const args = RegistrertBarnFødselMor.args;
+        await RegistrertBarnFødselMor.run({
+            args: {
+                ...args,
+                barn: { ...args.barn!, termindato: '2022-07-17' } as NonNullable<typeof args.barn>,
+            },
+        });
+
+        expect(await screen.findByLabelText('Hva var termindatoen?')).toHaveValue('17.07.2022');
+        expect(screen.queryByText('Termindato er hentet fra en tidligere søknad')).not.toBeInTheDocument();
+    });
+
+    it('skal vise nøytral kildetekst når termindato kommer fra uttaksplan uten annen parts perioder', async () => {
+        await RegistrertBarnMedTermindatoFraTidligereSøknad.run();
+
+        expect(await screen.findByText('Termindato er hentet fra en tidligere søknad')).toBeInTheDocument();
+        expect(screen.getByLabelText('Hva var termindatoen?')).toHaveValue('17.08.2022');
+    });
+
     it('Trillinger der en er død skal vises uten navn', async () => {
         await RegistrertBarnTrillingerDerEnErDød.run();
         expect(await screen.findByText('Barna du søker foreldrepenger for:')).toBeInTheDocument();
@@ -762,9 +783,7 @@ describe('<OmBarnetSteg>', () => {
         });
 
         expect(await screen.findByText('Barnet du søker foreldrepenger for:')).toBeInTheDocument();
-        expect(
-            await screen.findByText('Termindato er hentet fra søknaden til den andre forelderen'),
-        ).toBeInTheDocument();
+        expect(await screen.findByText('Termindato er hentet fra en tidligere søknad')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {

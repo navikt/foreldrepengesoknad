@@ -1,12 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
-import { useUttaksplanOptions } from 'api/queries';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { RegistrertePersonalia } from 'pages/registrerte-personalia/RegistrertePersonalia';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { finnAnnenPartsPlan } from 'utils/annenForelderUtils';
 import { formaterFødselsdatoerPåBarn, getTittelBarnNårNavnSkalIkkeVises } from 'utils/barnUtils';
 import { getVarighetString } from 'utils/dateUtils';
 
@@ -25,9 +22,14 @@ dayjs.extend(isSameOrBefore);
 interface Props {
     valgteRegistrerteBarn: FpBarnDto_fpoversikt[];
     skalInkludereTermindato: boolean;
+    termindatoFraTidligereSøknad?: string;
 }
 
-export const ValgteRegistrerteBarn = ({ valgteRegistrerteBarn, skalInkludereTermindato }: Props) => {
+export const ValgteRegistrerteBarn = ({
+    valgteRegistrerteBarn,
+    skalInkludereTermindato,
+    termindatoFraTidligereSøknad,
+}: Props) => {
     const intl = useIntl();
 
     const formMethods = useFormContext<BarnetFormValues>();
@@ -38,12 +40,6 @@ export const ValgteRegistrerteBarn = ({ valgteRegistrerteBarn, skalInkludereTerm
     const sorterteBarn = [...valgteRegistrerteBarn].toSorted(sorterPersonEtterEldstOgNavn);
     const fødselsdatoer = sorterteBarn.map((b) => b.fødselsdato);
     const fødselsdato = sorterteBarn[0]!.fødselsdato;
-
-    const annenPartsTermindato = useQuery({
-        ...useUttaksplanOptions(),
-        select: (uttaksplan) => finnAnnenPartsPlan(uttaksplan)?.termindato,
-    }).data;
-    const harTerminDatoFraVedtak = annenPartsTermindato !== undefined && annenPartsTermindato === termindato;
 
     const visInfoOmForlengetPeriode = skalInkludereTermindato && erFødtFørUke33(fødselsdato, termindato);
 
@@ -86,7 +82,9 @@ export const ValgteRegistrerteBarn = ({ valgteRegistrerteBarn, skalInkludereTerm
                     name="termindato"
                     control={control}
                     description={
-                        harTerminDatoFraVedtak ? intl.formatMessage({ id: 'omBarnet.termindato.født.beskrivelse' }) : ''
+                        termindatoFraTidligereSøknad
+                            ? intl.formatMessage({ id: 'omBarnet.termindato.født.beskrivelse' })
+                            : ''
                     }
                     label={intl.formatMessage({ id: 'omBarnet.termindato.født' })}
                     defaultMonth={fødselsdato}
