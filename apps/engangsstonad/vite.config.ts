@@ -13,11 +13,7 @@ const cdnUrl = process.env.VITE_CDN_URL;
 // eslint-disable-next-line import-x/no-default-export
 export default mergeConfig(createSharedConfigWithCrossorgin(setupFileDirName), {
     base: '/engangsstonad/soknad',
-    plugins: [
-        fpMockModus({
-            scenarioFil: path.resolve(import.meta.dirname, './mock/scenarioer.json'),
-        }),
-    ],
+    plugins: [fpMockModus()],
     ...(cdnUrl
         ? {
               experimental: {

@@ -5,8 +5,11 @@ import './index.css';
 import './styles/globals.css';
 
 if (import.meta.env.MODE === 'mock') {
-    const { startMock } = await import('../mock/startMock.ts');
-    await startMock();
+    const [{ startMockModus }, { scenarioer }] = await Promise.all([
+        import('@navikt/fp-utils-test/mock'),
+        import('../mock/scenarioer.ts'),
+    ]);
+    await startMockModus(scenarioer);
 }
 
 void bootstrapApp({

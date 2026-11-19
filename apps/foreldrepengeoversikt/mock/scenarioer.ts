@@ -13,10 +13,10 @@ import {
 import { uttaksplan } from 'storybookData/uttaksplan/uttaksplan';
 
 import { KontoBeregningResultatDto, Saker_fpoversikt, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
+import type { MockScenario } from '@navikt/fp-utils-test/mock';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { API_URLS, urlPrefiks } from '../src/api/queries.ts';
-import scenarioMeta from './scenarioer.json' with { type: 'json' };
 
 const saksnummerFra = (request: Request) => new URL(request.url).searchParams.get('saksnummer') ?? '';
 
@@ -64,18 +64,35 @@ const ingenSaker: Saker_fpoversikt = {
 };
 
 export const scenarioer = {
-    standard: lagHandlers({ saker: standardSaker, tidslinjePerSak: { '352011079': tidslinjeHendelserFP } }),
-    'ingen-saker': lagHandlers({ saker: ingenSaker, tidslinjePerSak: {} }),
-    'engangsstonad-under-behandling': lagHandlers({
-        saker: saker_ES_under_behandling,
-        tidslinjePerSak: {
-            [notEmpty(saker_ES_under_behandling.engangsstønad[0]).saksnummer]: tidslinjehendelser_ES_under_behandling,
-        },
-    }),
-    'svangerskapspenger-innvilget': lagHandlers({
-        saker: saker_SVP_innvilget,
-        tidslinjePerSak: {
-            [notEmpty(saker_SVP_innvilget.svangerskapspenger[0]).saksnummer]: tidslinjehendelser_SVP_innvilget,
-        },
-    }),
-} satisfies Record<keyof typeof scenarioMeta, RequestHandler[]>;
+    standard: {
+        beskrivelse: 'Viser en oversikt med foreldrepengesaker.',
+        kjennetegn: 'Barn med termin 21.11.2024',
+        handlers: lagHandlers({ saker: standardSaker, tidslinjePerSak: { '352011079': tidslinjeHendelserFP } }),
+    },
+    'ingen-saker': {
+        beskrivelse: 'Viser oversikten uten saker.',
+        kjennetegn: 'Du har ingen søknader om foreldrepenger, engangsstønad eller svangerskapspenger',
+        handlers: lagHandlers({ saker: ingenSaker, tidslinjePerSak: {} }),
+    },
+    'engangsstonad-under-behandling': {
+        beskrivelse: 'Viser en engangsstønadssak som er under behandling.',
+        kjennetegn: 'Under behandling',
+        handlers: lagHandlers({
+            saker: saker_ES_under_behandling,
+            tidslinjePerSak: {
+                [notEmpty(saker_ES_under_behandling.engangsstønad[0]).saksnummer]:
+                    tidslinjehendelser_ES_under_behandling,
+            },
+        }),
+    },
+    'svangerskapspenger-innvilget': {
+        beskrivelse: 'Viser en innvilget sak om svangerskapspenger.',
+        kjennetegn: 'Barn med termin 25.12.2025',
+        handlers: lagHandlers({
+            saker: saker_SVP_innvilget,
+            tidslinjePerSak: {
+                [notEmpty(saker_SVP_innvilget.svangerskapspenger[0]).saksnummer]: tidslinjehendelser_SVP_innvilget,
+            },
+        }),
+    },
+} satisfies Record<string, MockScenario>;

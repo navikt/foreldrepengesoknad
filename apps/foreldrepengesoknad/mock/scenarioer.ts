@@ -11,11 +11,10 @@ import {
     FpPersonopplysningerDto_fpoversikt,
     Saker_fpoversikt,
 } from '@navikt/fp-types';
-import { fpgrunndataHandlers, mellomlagringHandlers } from '@navikt/fp-utils-test/mock';
+import { type MockScenario, fpgrunndataHandlers, mellomlagringHandlers } from '@navikt/fp-utils-test/mock';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { API_URLS, urlPrefiks } from '../src/api/queries.ts';
-import scenarioMeta from './scenarioer.json' with { type: 'json' };
 
 const kvittering = {
     mottattDato: '2019-02-20T20:39:42.757',
@@ -72,7 +71,19 @@ const lagScenario = (søkersSaker: Saker_fpoversikt, mellomlagretData?: unknown)
 ];
 
 export const scenarioer = {
-    standard: lagScenario(ingenSaker),
-    'fortsett-soknad': lagScenario(saker, mellomlagretSøknad),
-    endringssoknad: lagScenario(sakerSomKanEndres),
-} satisfies Record<keyof typeof scenarioMeta, RequestHandler[]>;
+    standard: {
+        beskrivelse: 'Starter en ny søknad uten mellomlagring og uten saker.',
+        kjennetegn: 'Start søknaden',
+        handlers: lagScenario(ingenSaker),
+    },
+    'fortsett-soknad': {
+        beskrivelse: 'Fortsetter en mellomlagret søknad på steget om barnet.',
+        kjennetegn: 'Er barnet født?',
+        handlers: lagScenario(saker, mellomlagretSøknad),
+    },
+    endringssoknad: {
+        beskrivelse: 'Søker har en sak som kan endres, slik at endringssøknad tilbys.',
+        kjennetegn: 'Saksnummer 352011594',
+        handlers: lagScenario(sakerSomKanEndres),
+    },
+} satisfies Record<string, MockScenario>;

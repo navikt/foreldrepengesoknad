@@ -1,13 +1,12 @@
 import { HttpResponse, type RequestHandler, http } from 'msw';
 
 import { EsPersonopplysningerDto_fpoversikt, ForsendelseStatus } from '@navikt/fp-types';
-import { mellomlagringHandlers } from '@navikt/fp-utils-test/mock';
+import { type MockScenario, mellomlagringHandlers } from '@navikt/fp-utils-test/mock';
 
 import { ContextDataType } from '../src/app-data/EsDataContext.tsx';
 import { Path } from '../src/app-data/paths.ts';
 import { API_URLS } from '../src/app-data/queries.ts';
 import { EsMellomlagretData, VERSJON_MELLOMLAGRING } from '../src/app-data/useEsMellomlagring.ts';
-import scenarioMeta from './scenarioer.json' with { type: 'json' };
 
 const personinfo = {
     fnr: '11111111111',
@@ -49,6 +48,14 @@ const lagHandlers = (startdata?: EsMellomlagretData): RequestHandler[] => [
 ];
 
 export const scenarioer = {
-    standard: lagHandlers(),
-    'fortsett-soknad': lagHandlers(fortsettSøknad),
-} satisfies Record<keyof typeof scenarioMeta, RequestHandler[]>;
+    standard: {
+        beskrivelse: 'Starter en ny søknad.',
+        kjennetegn: 'Søknad om engangsstønad',
+        handlers: lagHandlers(),
+    },
+    'fortsett-soknad': {
+        beskrivelse: 'Fortsetter en mellomlagret søknad.',
+        kjennetegn: 'Hva gjelder for deg?',
+        handlers: lagHandlers(fortsettSøknad),
+    },
+} satisfies Record<string, MockScenario>;

@@ -2,7 +2,7 @@ import { HttpResponse, type RequestHandler, http } from 'msw';
 import { ingenSaker } from 'storybookData/saker/saker';
 
 import { ForsendelseStatus, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
-import { mellomlagringHandlers } from '@navikt/fp-utils-test/mock';
+import { type MockScenario, mellomlagringHandlers } from '@navikt/fp-utils-test/mock';
 
 import { ContextDataType } from '../src/app-data/SvpDataContext.tsx';
 import { API_URLS } from '../src/app-data/queries.ts';
@@ -10,7 +10,6 @@ import { SøknadRoute } from '../src/app-data/routes.ts';
 import { SvpMellomlagretData, VERSJON_MELLOMLAGRING } from '../src/app-data/useMellomlagreSøknad.ts';
 import kvittering from './data/kvittering.json' with { type: 'json' };
 import søkerinfoData from './data/sokerinfo.json' with { type: 'json' };
-import scenarioMeta from './scenarioer.json' with { type: 'json' };
 
 const søkerinfo = {
     ...søkerinfoData,
@@ -52,7 +51,19 @@ const lagHandlers = (
 ];
 
 export const scenarioer = {
-    standard: lagHandlers(søkerinfo),
-    'fortsett-soknad': lagHandlers(søkerinfo, startdata),
-    'uten-arbeidsforhold': lagHandlers(søkerinfoUtenArbeidsforhold),
-} satisfies Record<keyof typeof scenarioMeta, RequestHandler[]>;
+    standard: {
+        beskrivelse: 'Starter en ny søknad uten mellomlagrede data.',
+        kjennetegn: 'Søknad om svangerskapspenger',
+        handlers: lagHandlers(søkerinfo),
+    },
+    'fortsett-soknad': {
+        beskrivelse: 'Fortsetter en søknad som allerede er mellomlagret.',
+        kjennetegn: 'Er barnet født?',
+        handlers: lagHandlers(søkerinfo, startdata),
+    },
+    'uten-arbeidsforhold': {
+        beskrivelse: 'Viser søkerdata uten registrerte arbeidsforhold.',
+        kjennetegn: 'Søknad om svangerskapspenger',
+        handlers: lagHandlers(søkerinfoUtenArbeidsforhold),
+    },
+} satisfies Record<string, MockScenario>;

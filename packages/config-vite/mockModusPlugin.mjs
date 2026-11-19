@@ -1,7 +1,6 @@
 import { fetchDecoratorHtml } from '@navikt/nav-dekoratoren-moduler/ssr/index.js';
-import fs from 'node:fs';
 
-export const fpMockModus = ({ scenarioFil }) => ({
+export const fpMockModus = () => ({
     name: 'fp-mock-modus',
     apply: (_config, { command, mode }) => {
         if (mode === 'mock' && command === 'build') {
@@ -9,19 +8,6 @@ export const fpMockModus = ({ scenarioFil }) => ({
         }
 
         return mode === 'mock' && command === 'serve';
-    },
-    configureServer(server) {
-        server.middlewares.use((req, res, next) => {
-            const requestPath = req.url?.split('?')[0] ?? '';
-
-            if (!requestPath.endsWith('/__scenarioer')) {
-                next();
-                return;
-            }
-
-            res.setHeader('Content-Type', 'application/json; charset=utf-8');
-            res.end(fs.readFileSync(scenarioFil));
-        });
     },
     async transformIndexHtml(html) {
         const { DECORATOR_HEAD_ASSETS, DECORATOR_HEADER, DECORATOR_FOOTER, DECORATOR_SCRIPTS } =
