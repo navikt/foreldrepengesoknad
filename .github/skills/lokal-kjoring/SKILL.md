@@ -1,20 +1,20 @@
 ---
 name: lokal-kjoring
-description: Start en app i foreldrepengesoknad-monorepoet lokalt i mock-modus (Vite, MSW-scenarioer og Nav-dekoratøren), velg eller lag testscenario og bekreft at siden viser det du forventer. Bruk når du skal se, teste eller verifisere en endring i nettleseren, kjøre appen lokalt, vise en bestemt situasjon (f.eks. ingen saker, fortsett søknad, endringssøknad) eller legge til et nytt scenario.
+description: Start an app in the foreldrepengesoknad monorepo locally in mock mode (Vite, MSW scenarios and the Nav decorator), pick or create a test scenario, and confirm that the page shows what you expect. Use when you need to see, test or verify a change in the browser, run an app locally, show a specific situation (e.g. no cases, continue application, change application) or add a new scenario.
 ---
 
-# Lokal kjøring i mock-modus
+# Local run in mock mode
 
-Hver app i `apps/` kan kjøres med `pnpm run dev:mock`. Det starter Vite i mock-modus:
+Every app in `apps/` can run with `pnpm run dev:mock`. This starts Vite in mock mode:
 
-- Backend-kallene besvares av MSW i nettleseren. Handlerne er de samme som i Storybook.
-- Nav-dekoratøren hentes fra dev, så siden ser ut som i dev og prod.
-- Kall til fpgrunndata (kvoter og satser) går til den åpne dev-tjenesten.
-- Et backend-kall uten handler feiler med en `[MSW]`-feil i konsollen i stedet for å gå videre.
+- MSW answers the backend calls in the browser. The handlers are the same as in Storybook.
+- The Nav decorator is fetched from dev, so the page looks as it does in dev and prod.
+- Calls to fpgrunndata (quotas and rates) go to the open dev service.
+- A backend call without a handler fails with an `[MSW]` error in the console instead of passing through.
 
-## Apper og stier
+## Apps and paths
 
-| App                       | Sti                                                  | Port |
+| App                       | Path                                                 | Port |
 | ------------------------- | ---------------------------------------------------- | ---- |
 | `foreldrepengesoknad`     | `/foreldrepenger/soknad`                             | 9114 |
 | `foreldrepengeoversikt`   | `/foreldrepenger/oversikt`                           | 9110 |
@@ -24,46 +24,46 @@ Hver app i `apps/` kan kjøres med `pnpm run dev:mock`. Det starter Vite i mock-
 | `veiviser-hvor-mye`       | `/foreldrepenger/hvor-mye`                           | 8092 |
 | `veiviser-fp-eller-es`    | `/foreldrepenger/foreldrepenger-eller-engangsstonad` | 8091 |
 
-Sti og port står som `base` og `server.port` i appens `vite.config.ts`.
+Path and port are `base` and `server.port` in the app's `vite.config.ts`.
 
-## Start appen
+## Start the app
 
-1. Start serveren som en langvarig bakgrunnsprosess fra app-mappen, f.eks. `cd apps/foreldrepengeoversikt && pnpm run dev:mock`. Prosessen avslutter ikke av seg selv.
-2. Les URL-en fra Vite-utskriften (`Local: http://localhost:<port>/<sti>`). Porten står i `server.port` i appens `vite.config.ts`. Er den opptatt, velger Vite en annen, så stol på utskriften.
-3. Hent scenarioene: `curl -s http://localhost:<port><sti>/__scenarioer`. Svaret har `beskrivelse`, `startsti` og `kjennetegn` per scenario.
+1. Start the server as a long-running background process from the app folder, e.g. `cd apps/foreldrepengeoversikt && pnpm run dev:mock`. The process does not exit by itself.
+2. Read the URL from the Vite output (`Local: http://localhost:<port>/<path>`). If the configured port is taken, Vite picks another one, so trust the output.
+3. List the scenarios: `curl -s http://localhost:<port><path>/__scenarioer`. Each scenario has `beskrivelse` (description), `startsti` (start path) and `kjennetegn` (a text that identifies it).
 
-Du kan også velge scenario ved oppstart med `VITE_SCENARIO=<id> pnpm run dev:mock`.
+You can also pick the scenario at startup with `VITE_SCENARIO=<id> pnpm run dev:mock`.
 
-## Velg scenario
+## Pick a scenario
 
-- Åpne `http://localhost:<port><sti><startsti>?scenario=<id>`.
-- Valget huskes i fanen (sessionStorage), så senere navigering trenger ikke parameteren. Bytt scenario ved å åpne en URL med ny `?scenario=<id>`.
-- Ukjent id gir en feil i konsollen med listen over gyldige scenarioer.
-- Mellomlagret søknad ligger i localStorage, separat per scenario. Legg til `&reset` for å starte søknaden på nytt.
+- Open `http://localhost:<port><path><startsti>?scenario=<id>`.
+- The choice is remembered in the tab (sessionStorage), so later navigation does not need the parameter. Switch scenario by opening a URL with a new `?scenario=<id>`.
+- An unknown id logs an error in the console with the list of valid scenarios.
+- A saved application is kept in localStorage, separately per scenario. Add `&reset` to start the application over.
 
-## Bekreft resultatet
+## Confirm the result
 
-Bruk Playwright (finnes i `packages/config-vite`) eller nettleserverktøyet du har:
+Use Playwright (installed in `packages/config-vite`) or whichever browser tool you have:
 
-1. Vent til `html[data-mock-scenario="<id>"]` finnes (i Playwright: `state: 'attached'`, elementet er ikke synlig).
-2. Vent til teksten i `kjennetegn` er synlig. Da er data for scenarioet lastet.
-3. Sjekk at `#decorator-header` er synlig.
-4. Sjekk at ingen konsollfeil inneholder `[MSW]`. En slik feil betyr at appen kaller et endepunkt som mangler handler. Andre konsollfeil fra dekoratøren, f.eks. «Failed to fetch session» eller CORS mot `oauth2/session`, er forventet lokalt fordi ingen er innlogget.
+1. Wait until `html[data-mock-scenario="<id>"]` exists (in Playwright: `state: 'attached'`, the element is not visible).
+2. Wait until the `kjennetegn` text is visible. The scenario's data is then loaded.
+3. Check that `#decorator-header` is visible.
+4. Check that no console error contains `[MSW]`. Such an error means the app calls an endpoint that has no handler. Other console errors from the decorator, e.g. "Failed to fetch session" or CORS against `oauth2/session`, are expected locally because no one is logged in.
 
-`pnpm run test:mock` i app-mappen gjør en automatisk versjon av dette. Den sjekker også at prod-bygget er uten mock-kode.
+`pnpm run test:mock` in the app folder runs an automated version of this. It also checks that the prod build contains no mock code.
 
-## Legg til et scenario
+## Add a scenario
 
-1. Legg inn id, `beskrivelse`, `startsti` og `kjennetegn` i `src/mock/scenarioer.json`. `kjennetegn` skal være en tekst som bare vises når scenarioet er lastet riktig.
-2. Legg inn handlerne under samme id i `src/mock/scenarioer.ts`. Bruk `lagHandlers(...)` med andre testdata, helst fra `.storybook/storybook-data`. TypeScript feiler hvis id-ene i de to filene ikke stemmer overens.
-3. Bruk fiktive testpersoner som allerede finnes i repoet. Aldri ekte persondata.
-4. Kjør `pnpm run test:mock`, `pnpm tsc` og `pnpm eslint` i app-mappen.
+1. Add the id with `beskrivelse`, `startsti` and `kjennetegn` to `src/mock/scenarioer.json`. `kjennetegn` must be a text that only shows when the scenario has loaded correctly.
+2. Add the handlers under the same id in `src/mock/scenarioer.ts`. Use `lagHandlers(...)` with other test data, preferably from `.storybook/storybook-data`. TypeScript fails if the ids in the two files do not match.
+3. Use fictional test persons that already exist in the repo. Never real personal data.
+4. Run `pnpm run test:mock`, `pnpm tsc` and `pnpm eslint` in the app folder.
 
-Felles hjelpere ligger i `packages/config-vite/mockModus/`:
+Shared helpers live in `packages/config-vite/mockModus/`:
 
-- `mellomlagringHandlers(url, startdata?)` mellomlagrer per scenario. Med `startdata` starter scenarioet med en påbegynt søknad.
-- `fpgrunndataHandlers(urlPrefiks)` sender fpgrunndata-kall til dev.
+- `mellomlagringHandlers(url, startdata?)` stores the saved application per scenario. With `startdata` the scenario starts with an application in progress.
+- `fpgrunndataHandlers(urlPrefiks)` forwards fpgrunndata calls to dev.
 
-## Avslutt
+## Finish
 
-Stopp dev-serveren når du er ferdig, med mindre brukeren vil bruke den videre.
+Stop the dev server when you are done, unless the user wants to keep using it.
