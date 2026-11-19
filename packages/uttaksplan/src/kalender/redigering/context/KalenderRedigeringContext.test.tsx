@@ -136,7 +136,10 @@ describe('KalenderRedigeringContext', () => {
         expect(etterUtført).toHaveBeenCalledTimes(1);
     });
 
-    it.each([false, true])('mor erstatter fars graderte uttak i kalenderen med gradering=%s', async (gradert) => {
+    it.each([
+        { navn: 'uten varsel når bare far er gradert', gradert: false },
+        { navn: 'med slettevarsel når begge er graderte', gradert: true },
+    ])('mor erstatter fars graderte uttak i kalenderen $navn', async ({ gradert }) => {
         const user = userEvent.setup();
         const nyttUttak = periode(UTVALG.fom, UTVALG.tom, gradert ? gradering : {});
         const { oppdaterUttaksplan, etterUtført } = renderKontekst({

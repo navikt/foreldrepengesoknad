@@ -68,8 +68,7 @@ const finnHistoriskeDatoerÅSjekke = (
     });
 };
 
-// Søker har lagt eget uttak i et tidsrom der bare annen part hadde uttak. Annen parts uttak forsvinner da fra
-// planen, men det er ikke en sletting søker skal advares om.
+// Overtakelse skal ikke gi slettevarsel, med mindre begge uttak er graderte og søker kan ha ment samtidig uttak.
 const erAnnenPartsUttakErstattetAvSøker = (
     periodeFør: UttakPeriodeDto | undefined,
     periodeEtter: UttakPeriodeDto | undefined,
@@ -92,8 +91,8 @@ export const harHistoriskFjernetUttak = (
     finnHistoriskeDatoerÅSjekke(før, etter, førsteDagIMåneden).some((dato) => {
         const periodeFør = finnPeriodePåDato(før, dato);
         const periodeEtter = finnPeriodePåDato(etter, dato);
-        if (erAnnenPartsUttakErstattetAvSøker(periodeFør, periodeEtter)) {
-            return erTroligFeilvalgtSamtidigUttak(periodeFør!, periodeEtter!);
+        if (periodeFør && periodeEtter && erAnnenPartsUttakErstattetAvSøker(periodeFør, periodeEtter)) {
+            return erTroligFeilvalgtSamtidigUttak(periodeFør, periodeEtter);
         }
         return PARTER.some((part) => periodeFør?.[part] !== undefined && periodeEtter?.[part] === undefined);
     });

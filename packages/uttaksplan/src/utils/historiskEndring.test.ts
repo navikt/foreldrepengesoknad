@@ -448,6 +448,13 @@ describe('finnHistoriskEndringstype', () => {
             søker: 'FAR_MEDMOR',
         },
         {
+            navn: 'far legger gradert uttak over mors ugraderte uttak',
+            før: [periode('2026-09-07', '2026-09-11', undefined, uttak('MOR'))],
+            etter: [periode('2026-09-07', '2026-09-11', uttak('FAR_MEDMOR', gradert(50)))],
+            forventet: 'endret',
+            søker: 'FAR_MEDMOR',
+        },
+        {
             navn: 'mor legger uttak over fars uttak',
             før: [periode('2026-09-07', '2026-09-11', undefined, uttak('FAR_MEDMOR'))],
             etter: [periode('2026-09-07', '2026-09-11', uttak('MOR'))],

@@ -158,7 +158,11 @@ describe('historiske endringer i listevisningen', () => {
         expect(screen.queryByTestId('2025-08-04 - 2025-08-08')).not.toBeInTheDocument();
     });
 
-    it.each([false, true])('far legger eget uttak over mors graderte uttak med gradering=%s', async (gradert) => {
+    it.each([
+        { navn: 'far legger eget uttak uten varsel når bare mor er gradert', gradert: false, overtarKvote: false },
+        { navn: 'far legger eget uttak med slettevarsel når begge er graderte', gradert: true, overtarKvote: false },
+        { navn: 'far overtar mors kvote ved sykdom uten varsel', gradert: false, overtarKvote: true },
+    ])('$navn', async ({ gradert, overtarKvote }) => {
         const oppdaterUttaksplan = renderListe(
             [
                 {
@@ -177,8 +181,12 @@ describe('historiske endringer i listevisningen', () => {
         await userEvent.tab();
         await userEvent.click(screen.getByRole('radio', { name: 'Legge til periode med foreldrepenger' }));
         await userEvent.click(screen.getByRole('radio', { name: 'Far' }));
-        await userEvent.click(screen.getByRole('radio', { name: 'Fars kvote' }));
-        await userEvent.click(screen.getByRole('radio', { name: gradert ? 'Ja' : 'Nei' }));
+        await userEvent.click(screen.getByRole('radio', { name: overtarKvote ? 'Mors kvote' : 'Fars kvote' }));
+        if (overtarKvote) {
+            await userEvent.click(screen.getByRole('radio', { name: 'Mor er for syk til å ta seg av barnet' }));
+        } else {
+            await userEvent.click(screen.getByRole('radio', { name: gradert ? 'Ja' : 'Nei' }));
+        }
         if (gradert) {
             await userEvent.type(screen.getByLabelText('Hvor mange prosent skal far jobbe?'), '50');
         }
@@ -197,6 +205,10 @@ describe('historiske endringer i listevisningen', () => {
                 ...farsPeriode,
                 søker: {
                     ...farsPeriode.søker,
+                    ...(overtarKvote && {
+                        kontoType: 'MØDREKVOTE',
+                        overføringÅrsak: 'SYKDOM_ANNEN_FORELDER',
+                    }),
                     ...(gradert && { gradering: { arbeidstidprosent: 50 } }),
                 },
             },
