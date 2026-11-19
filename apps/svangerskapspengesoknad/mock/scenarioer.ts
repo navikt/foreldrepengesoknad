@@ -33,6 +33,16 @@ const startdata = {
     },
 } satisfies SvpMellomlagretData;
 
+const startdataUtenArbeidsforhold = {
+    ...startdata,
+    søkerInfo: søkerinfoUtenArbeidsforhold,
+    [ContextDataType.APP_ROUTE]: SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT,
+    [ContextDataType.UTENLANDSOPPHOLD]: {
+        harBoddUtenforNorgeSiste12Mnd: false,
+        skalBoUtenforNorgeNeste12Mnd: false,
+    },
+} satisfies SvpMellomlagretData;
+
 const lagHandlers = (
     personopplysninger: SvpPersonopplysningerDto_fpoversikt,
     mellomlagretStartdata?: SvpMellomlagretData,
@@ -62,8 +72,8 @@ export const scenarioer = {
         handlers: lagHandlers(søkerinfo, startdata),
     },
     'uten-arbeidsforhold': {
-        beskrivelse: 'Viser søkerdata uten registrerte arbeidsforhold.',
-        kjennetegn: 'Søknad om svangerskapspenger',
-        handlers: lagHandlers(søkerinfoUtenArbeidsforhold),
+        beskrivelse: 'Fortsetter en søknad på steget om arbeidsforhold for en søker uten registrerte arbeidsforhold.',
+        kjennetegn: 'Du er ikke registrert som ansatt i Arbeidsgiver- og arbeidstakerregisteret.',
+        handlers: lagHandlers(søkerinfoUtenArbeidsforhold, startdataUtenArbeidsforhold),
     },
 } satisfies Record<string, MockScenario>;

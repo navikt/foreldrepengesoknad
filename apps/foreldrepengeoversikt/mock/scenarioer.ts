@@ -67,7 +67,7 @@ export const scenarioer = {
     standard: {
         beskrivelse: 'Viser en oversikt med foreldrepengesaker.',
         kjennetegn: 'Barn med termin 21.11.2024',
-        handlers: lagHandlers({ saker: standardSaker, tidslinjePerSak: { '352011079': tidslinjeHendelserFP } }),
+        handlers: lagHandlers({ saker: standardSaker, tidslinjePerSak: { '352011080': tidslinjeHendelserFP } }),
     },
     'ingen-saker': {
         beskrivelse: 'Viser oversikten uten saker.',

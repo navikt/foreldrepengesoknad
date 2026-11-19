@@ -7,7 +7,7 @@ description: Start an app in the foreldrepengesoknad monorepo locally in mock mo
 
 Every app in `apps/` can run with `pnpm run dev:mock`. This starts Vite in mock mode:
 
-- MSW answers the backend calls in the browser. The handlers are the same as in Storybook.
+- MSW answers the backend calls in the browser. In `foreldrepengeoversikt` and `foreldrepengesoknad` the handlers are shared with `AppContainer.stories.tsx` through `lagHandlers`. In the other apps Storybook has its own handlers, so a change in `mock/scenarioer.ts` does not reach Storybook.
 - The Nav decorator is fetched from dev, so the page looks as it does in dev and prod.
 - Calls to fpgrunndata (quotas and rates) go to the open dev service.
 - A call to `<path>/fp…/api/` without a handler fails as a network error instead of passing through.
