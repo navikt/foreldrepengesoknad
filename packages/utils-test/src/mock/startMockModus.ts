@@ -1,7 +1,10 @@
 import { HttpResponse, type RequestHandler } from 'msw';
 import { setupWorker } from 'msw/browser';
+import type { HttpNetworkFrame } from 'msw/experimental';
 
 import { MELLOMLAGRING_NØKKELPREFIKS } from './mockHandlers.ts';
+
+const erHttpFrame = (frame: { protocol: string }): frame is HttpNetworkFrame => frame.protocol === 'http';
 
 const nullstillMellomlagring = () => {
     Object.keys(localStorage)
@@ -46,24 +49,22 @@ export const startMockModus = async (scenarioer: Record<string, RequestHandler[]
             options: { scope: `${base}/` },
         },
         // Kall til appens backend-API uten handler skal feile. Alt annet, som dekoratøren og Vite-moduler, slippes gjennom.
-        onUnhandledFrame: async ({ frame, defaults }) => {
-            if (frame.protocol !== 'http') {
+        onUnhandledFrame: ({ frame, defaults }) => {
+            if (!erHttpFrame(frame)) {
                 return;
             }
 
-            const { origin, pathname } = new URL((frame.data as { request: Request }).request.url);
+            const { origin, pathname } = new URL(frame.data.request.url);
             const erBackendKall =
                 origin === location.origin &&
                 pathname.startsWith(base) &&
                 /^\/fp[a-z]+\/api\//.test(pathname.slice(base.length));
 
             if (erBackendKall) {
-                await defaults.error();
-                // defaults.error() logger bare i MSW 3. En kastet Response gir nettverksfeil i stedet for å sende kallet videre.
-                throw HttpResponse.error();
+                defaults.error();
+                // defaults.error() logger bare i MSW 3, uten å stoppe kallet.
+                frame.respondWith(HttpResponse.error());
             }
         },
     });
-
-    console.info(`[mock] Scenario: ${id}`);
 };

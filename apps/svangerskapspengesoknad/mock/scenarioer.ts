@@ -1,8 +1,8 @@
 import { HttpResponse, type RequestHandler, http } from 'msw';
 import { ingenSaker } from 'storybookData/saker/saker';
 
-import { mellomlagringHandlers } from '@navikt/fp-config-vite/mockModus/mockHandlers.ts';
 import { ForsendelseStatus, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
+import { mellomlagringHandlers } from '@navikt/fp-utils-test/mock';
 
 import { ContextDataType } from '../src/app-data/SvpDataContext.tsx';
 import { API_URLS } from '../src/app-data/queries.ts';

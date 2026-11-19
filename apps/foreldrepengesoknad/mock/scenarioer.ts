@@ -4,7 +4,6 @@ import { saker } from 'storybookData/saker';
 import { søkerinfo } from 'storybookData/søkerinfo';
 import { uttaksplanMedMorSomAnnenPart } from 'storybookData/uttaksplan';
 
-import { fpgrunndataHandlers, mellomlagringHandlers } from '@navikt/fp-config-vite/mockModus/mockHandlers.ts';
 import {
     FellesUttaksplanDto,
     FellesUttaksplanRequest_fpoversikt,
@@ -12,6 +11,7 @@ import {
     FpPersonopplysningerDto_fpoversikt,
     Saker_fpoversikt,
 } from '@navikt/fp-types';
+import { fpgrunndataHandlers, mellomlagringHandlers } from '@navikt/fp-utils-test/mock';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { API_URLS, urlPrefiks } from '../src/api/queries.ts';

@@ -12,9 +12,10 @@ const nøkkel = (url: string) => `${MELLOMLAGRING_NØKKELPREFIKS}${document.docu
  */
 export const mellomlagringHandlers = (url: string, startdata?: unknown): RequestHandler[] => [
     http.get(url, () => {
-        const lagret = localStorage.getItem(nøkkel(url));
-        const data = lagret === null ? startdata : JSON.parse(lagret);
-        return data === undefined || data === null ? new HttpResponse(null, { status: 204 }) : HttpResponse.json(data);
+        const lagret = localStorage.getItem(nøkkel(url)) ?? JSON.stringify(startdata ?? null);
+        return lagret === 'null'
+            ? new HttpResponse(null, { status: 204 })
+            : new HttpResponse(lagret, { headers: { 'content-type': 'application/json' } });
     }),
     http.post(url, async ({ request }) => {
         localStorage.setItem(nøkkel(url), await request.text());

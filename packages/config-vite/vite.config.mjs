@@ -150,4 +150,4 @@ const createConfig = (setupFileDirName) => {
     });
 };
 
-export { fpMockModus } from './mockModus/mockModusPlugin.mjs';
+export { fpMockModus } from './mockModusPlugin.mjs';

@@ -1,4 +1,4 @@
-import { startMockModus } from '@navikt/fp-config-vite/mockModus/startMockModus.ts';
+import { startMockModus } from '@navikt/fp-utils-test/mock';
 
 import { scenarioer } from './scenarioer.ts';
 

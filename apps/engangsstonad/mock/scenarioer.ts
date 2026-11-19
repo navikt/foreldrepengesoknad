@@ -1,7 +1,7 @@
 import { HttpResponse, type RequestHandler, http } from 'msw';
 
-import { mellomlagringHandlers } from '@navikt/fp-config-vite/mockModus/mockHandlers.ts';
 import { EsPersonopplysningerDto_fpoversikt, ForsendelseStatus } from '@navikt/fp-types';
+import { mellomlagringHandlers } from '@navikt/fp-utils-test/mock';
 
 import { ContextDataType } from '../src/app-data/EsDataContext.tsx';
 import { Path } from '../src/app-data/paths.ts';

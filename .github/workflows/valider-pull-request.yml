@@ -72,7 +72,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Installer Playwright (chromium)
-        run: pnpm --filter @navikt/fp-config-vite exec playwright install --with-deps chromium
+        run: pnpm --filter @navikt/fp-utils-test exec playwright install --with-deps chromium
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

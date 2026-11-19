@@ -43,7 +43,7 @@ You can also pick the scenario at startup with `VITE_SCENARIO=<id> pnpm run dev:
 
 ## Confirm the result
 
-Use Playwright (installed in `packages/config-vite`) or whichever browser tool you have:
+Use Playwright (installed in `packages/utils-test`) or whichever browser tool you have:
 
 1. Wait until `html[data-mock-scenario="<id>"]` exists (in Playwright: `state: 'attached'`, the element is not visible).
 2. Wait until the `kjennetegn` text is visible. The scenario's data is then loaded.
@@ -59,7 +59,7 @@ Use Playwright (installed in `packages/config-vite`) or whichever browser tool y
 3. Use fictional test persons that already exist in the repo. Never real personal data.
 4. Run `pnpm run test:mock`, `pnpm tsc` and `pnpm eslint` in the app folder.
 
-Shared helpers live in `packages/config-vite/mockModus/`:
+Shared helpers live in `packages/utils-test/src/mock/` (the Vite plugin is in `packages/config-vite/mockModusPlugin.mjs`):
 
 - `mellomlagringHandlers(url, startdata?)` stores the saved application per scenario. With `startdata` the scenario starts with an application in progress.
 - `fpgrunndataHandlers(urlPrefiks)` forwards fpgrunndata calls to dev.

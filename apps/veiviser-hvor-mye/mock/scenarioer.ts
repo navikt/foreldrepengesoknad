@@ -1,6 +1,6 @@
 import type { RequestHandler } from 'msw';
 
-import { fpgrunndataHandlers } from '@navikt/fp-config-vite/mockModus/mockHandlers.ts';
+import { fpgrunndataHandlers } from '@navikt/fp-utils-test/mock';
 
 import scenarioMeta from './scenarioer.json' with { type: 'json' };
 
