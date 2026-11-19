@@ -4,7 +4,7 @@ import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
-import { loggExpansionCardOpen } from 'utils/umamiUtils';
+import { loggExpansionCardToggle } from 'utils/umamiUtils';
 
 import { BodyShort, ExpansionCard, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
@@ -30,7 +30,7 @@ export const BarnehageplassOppsummering = ({ hvemPlanlegger, barnet }: Props) =>
 
     return (
         <VStack gap="space-40">
-            <ExpansionCard aria-label="" onToggle={loggExpansionCardOpen('toggle-oppgitt-informasjon')} size="small">
+            <ExpansionCard aria-label="" onToggle={loggExpansionCardToggle('oppsummering-barnehageplass')} size="small">
                 <ExpansionCard.Header>
                     <HStack gap="space-24" align="center" wrap={false}>
                         <IconCircleWrapper size="medium" color="lightBlue">

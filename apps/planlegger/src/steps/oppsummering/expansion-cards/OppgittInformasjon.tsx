@@ -7,7 +7,7 @@ import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 import { getAntallUkerOgDagerFellesperiode, getUkerOgDager } from 'utils/stønadskvoterUtils';
-import { loggExpansionCardOpen } from 'utils/umamiUtils';
+import { loggExpansionCardToggle } from 'utils/umamiUtils';
 import { finnAntallUkerOgDagerMedForeldrepenger } from 'utils/uttakUtils';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
@@ -86,7 +86,11 @@ export const OppgittInformasjon = ({
 
     return (
         <VStack gap="space-40">
-            <ExpansionCard aria-label="" onToggle={loggExpansionCardOpen('toggle-oppgitt-informasjon')} size="small">
+            <ExpansionCard
+                aria-label=""
+                onToggle={loggExpansionCardToggle('oppsummering-oppgitt-informasjon')}
+                size="small"
+            >
                 <ExpansionCard.Header>
                     <HStack gap="space-24" align="center" wrap={false}>
                         <IconCircleWrapper size="medium" color="lightBlue">
