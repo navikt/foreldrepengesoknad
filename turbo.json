@@ -42,11 +42,6 @@
             "dependsOn": ["build", "^test:browser"],
             "outputs": []
         },
-        "test:mock": {
-            "cache": false,
-            "outputs": [],
-            "passThroughEnv": ["FP_MOCK_DEKORATOR"]
-        },
         "build:storybook": {
             "outputs": [".storybook-static-build/**"]
         },

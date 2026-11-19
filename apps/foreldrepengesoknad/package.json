@@ -16,7 +16,6 @@
         "tsc:watch": "tsc --noEmit --watch",
         "dev:vite": "vite",
         "dev:mock": "vite --mode mock",
-        "test:mock": "fp-mock-royktest",
         "storybook": "storybook dev --quiet -p 7003",
         "clean": "rm -rf ./dist ./node_modules ./.turbo ./.storybook-static-build"
     },

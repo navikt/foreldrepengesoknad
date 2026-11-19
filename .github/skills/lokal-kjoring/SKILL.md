@@ -8,7 +8,7 @@ description: Start an app in the foreldrepengesoknad monorepo locally in mock mo
 Every app in `apps/` can run with `pnpm run dev:mock`. This starts Vite in mock mode:
 
 - MSW answers the backend calls in the browser. The handlers are the same as in Storybook.
-- The Nav decorator is fetched from dev, so the page looks as it does in dev and prod. If dev is down, set `FP_MOCK_DEKORATOR=lokal` to use a minimal local placeholder instead (CI does this).
+- The Nav decorator is fetched from dev, so the page looks as it does in dev and prod.
 - Calls to fpgrunndata (quotas and rates) go to the open dev service.
 - A backend call without a handler fails with an `[MSW]` error in the console instead of passing through.
 
@@ -43,21 +43,19 @@ You can also pick the scenario at startup with `VITE_SCENARIO=<id> pnpm run dev:
 
 ## Confirm the result
 
-Use Playwright (installed in `packages/utils-test`) or whichever browser tool you have:
+Use Playwright (installed in `packages/config-vite`) or whichever browser tool you have:
 
 1. Wait until `html[data-mock-scenario="<id>"]` exists (in Playwright: `state: 'attached'`, the element is not visible).
 2. Wait until the `kjennetegn` text is visible. The scenario's data is then loaded.
 3. Check that `#decorator-header` is visible.
 4. Check that no console error contains `[MSW]`. Such an error means the app calls an endpoint that has no handler. Other console errors from the decorator, e.g. "Failed to fetch session" or CORS against `oauth2/session`, are expected locally because no one is logged in.
 
-`pnpm run test:mock` in the app folder runs an automated version of this. It also checks that the prod build contains no mock code.
-
 ## Add a scenario
 
 1. Add the id with `beskrivelse`, `startsti` and `kjennetegn` to `mock/scenarioer.json`. `kjennetegn` must be a text that only shows when the scenario has loaded correctly.
 2. Add the handlers under the same id in `mock/scenarioer.ts`. Use `lagHandlers(...)` with other test data, preferably from `.storybook/storybook-data`. TypeScript fails if the ids in the two files do not match.
 3. Use fictional test persons that already exist in the repo. Never real personal data.
-4. Run `pnpm run test:mock`, `pnpm tsc` and `pnpm eslint` in the app folder.
+4. Run `pnpm tsc` and `pnpm eslint` in the app folder, and confirm the new scenario in the browser as described above.
 
 Shared helpers live in `packages/utils-test/src/mock/` (the Vite plugin is in `packages/config-vite/mockModusPlugin.mjs`):
 

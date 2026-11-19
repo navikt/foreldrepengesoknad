@@ -77,8 +77,6 @@ Du kan også velge scenario ved oppstart med `VITE_SCENARIO=<id> pnpm run dev:mo
 
 Nye scenarioer legges til i `mock/scenarioer.json` (beskrivelse, startsti og en tekst som kjennetegner scenarioet) og i `mock/scenarioer.ts`, der handlerne deles med Storybook.
 
-`pnpm run test:mock` kjører en røyktest av mock-modusen. Den sjekker også at prod-bygget er uten mock-kode.
-
 ### Autogenere Typescript typer fra backend
 
 Vi autogenerer typer fra backend sin openApi spec. For å synkronisere typene så kjører du:

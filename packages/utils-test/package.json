@@ -4,9 +4,6 @@
     "type": "module",
     "types": "index.ts",
     "sideEffects": false,
-    "bin": {
-        "fp-mock-royktest": "src/mock/roykTest.mjs"
-    },
     "exports": {
         ".": "./index.ts",
         "./a11y": "./src/a11y/uuTest.ts",
@@ -45,7 +42,6 @@
         "jsdom": "catalog:",
         "mockdate": "catalog:",
         "msw": "3.0.4",
-        "playwright": "1.65.0",
         "storybook": "catalog:",
         "vite": "catalog:",
         "vitest": "catalog:"
