@@ -8,7 +8,8 @@
         ".": "./index.ts",
         "./a11y": "./src/a11y/uuTest.ts",
         "./intl": "./src/intl/intlMessagesTest.ts",
-        "./vitest": "./src/vitest/setupTests.ts"
+        "./vitest": "./src/vitest/setupTests.ts",
+        "./mock": "./src/mock/index.ts"
     },
     "scripts": {
         "eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
@@ -40,6 +41,7 @@
         "eslint": "catalog:",
         "jsdom": "catalog:",
         "mockdate": "catalog:",
+        "msw": "3.0.4",
         "storybook": "catalog:",
         "vite": "catalog:",
         "vitest": "catalog:"
