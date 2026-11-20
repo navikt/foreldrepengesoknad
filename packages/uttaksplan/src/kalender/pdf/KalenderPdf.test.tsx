@@ -26,7 +26,7 @@ describe('KalenderPdf', () => {
         await userEvent.click(screen.getByRole('button', { name: 'Last ned kalender som PDF' }));
         await userEvent.click(await screen.findByRole('button', { name: 'Last ned' }));
 
-        expect(await screen.findByRole('alert')).toHaveTextContent('Vi klarte ikke å lage PDF-en. Prøv igjen.');
+        expect(await screen.findByRole('alert')).toHaveTextContent('Vi klarte ikke å lage kalenderen. Prøv igjen.');
 
         await userEvent.click(screen.getByRole('button', { name: 'Last ned' }));
 
