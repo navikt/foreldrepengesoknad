@@ -19,7 +19,7 @@ import {
     getAntallUkerOgDagerFellesperiode,
     getUkerOgDager,
 } from 'utils/stønadskvoterUtils';
-import { loggExpansionCardOpen } from 'utils/umamiUtils';
+import { loggExpansionCardToggle } from 'utils/umamiUtils';
 import { useLagUttaksplanForslag } from 'utils/useLagUttaksplanForslag';
 import { finnAntallUkerOgDagerMedForeldrepenger, getAnnenpartsPerioder, getSøkersPerioder } from 'utils/uttakUtils';
 
@@ -101,7 +101,7 @@ export const OppsummeringHarRett = ({
 
     return (
         <VStack gap="space-40">
-            <ExpansionCard aria-label="" onToggle={loggExpansionCardOpen('toggle-oppgitt-informasjon')} size="small">
+            <ExpansionCard aria-label="" onToggle={loggExpansionCardToggle('oppsummering-planen')} size="small">
                 <ExpansionCard.Header>
                     <HStack gap="space-24" align="center" wrap={false}>
                         <IconCircleWrapper size="medium" color="lightBlue">

@@ -1,11 +1,17 @@
 import { composeStories, composeStory } from '@storybook/react-vite';
-import { act, render, screen } from '@testing-library/react';
+import { act, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 
+import { loggUmamiEvent } from '@navikt/fp-observability';
 import { getLenker } from '@navikt/fp-utils';
 
 import * as stories from './OppsummeringSteg.stories';
+
+vi.mock('@navikt/fp-observability', async (importOriginal) => ({
+    ...(await importOriginal<typeof import('@navikt/fp-observability')>()),
+    loggUmamiEvent: vi.fn(),
+}));
 
 const {
     KunMorHarRett,
@@ -21,6 +27,82 @@ const {
 } = composeStories(stories);
 
 describe('<OppsummeringSteg>', () => {
+    describe('logging av ExpansionCard', () => {
+        beforeEach(() => {
+            vi.mocked(loggUmamiEvent).mockClear();
+        });
+
+        it.each([
+            { overskrift: 'Planen deres', tittel: 'oppsummering-planen' },
+            { overskrift: 'Hvor mye?', tittel: 'oppsummering-hvor-mye' },
+            { overskrift: 'Barnehageplass', tittel: 'oppsummering-barnehageplass' },
+            { overskrift: 'Dette svarte dere', tittel: 'oppsummering-oppgitt-informasjon' },
+        ])('skal logge åpning og lukking av «$overskrift»', async ({ overskrift, tittel }) => {
+            const user = userEvent.setup();
+            render(<FlereForsørgereHundreProsentTermin />);
+
+            expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+            expect(loggUmamiEvent).not.toHaveBeenCalled();
+
+            const heading = screen.getByRole('heading', { name: overskrift });
+            const button = within(heading.closest('section')!).getByRole('button', { expanded: false });
+            expect(button).toHaveAttribute('aria-expanded', 'false');
+
+            await user.click(button);
+            expect(button).toHaveAttribute('aria-expanded', 'true');
+            expect(loggUmamiEvent).toHaveBeenNthCalledWith(1, {
+                origin: 'planlegger',
+                eventName: 'accordion åpnet',
+                eventData: { tittel },
+            });
+
+            await user.click(button);
+            expect(button).toHaveAttribute('aria-expanded', 'false');
+            expect(loggUmamiEvent).toHaveBeenNthCalledWith(2, {
+                origin: 'planlegger',
+                eventName: 'accordion lukket',
+                eventData: { tittel },
+            });
+
+            await user.click(button);
+            expect(button).toHaveAttribute('aria-expanded', 'true');
+            expect(loggUmamiEvent).toHaveBeenNthCalledWith(3, {
+                origin: 'planlegger',
+                eventName: 'accordion åpnet',
+                eventData: { tittel },
+            });
+            expect(loggUmamiEvent).toHaveBeenCalledTimes(3);
+        });
+
+        it('skal logge tastaturåpning og -lukking én gang', async () => {
+            const user = userEvent.setup();
+            render(<FlereForsørgereHundreProsentTermin />);
+
+            expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+            const section = screen.getByRole('heading', { name: 'Planen deres' }).closest('section');
+            const button = within(section!).getByRole('button', { expanded: false });
+            button.focus();
+
+            await user.keyboard('{Enter}');
+            expect(button).toHaveAttribute('aria-expanded', 'true');
+            expect(loggUmamiEvent).toHaveBeenCalledTimes(1);
+            expect(loggUmamiEvent).toHaveBeenLastCalledWith({
+                origin: 'planlegger',
+                eventName: 'accordion åpnet',
+                eventData: { tittel: 'oppsummering-planen' },
+            });
+
+            await user.keyboard(' ');
+            expect(button).toHaveAttribute('aria-expanded', 'false');
+            expect(loggUmamiEvent).toHaveBeenCalledTimes(2);
+            expect(loggUmamiEvent).toHaveBeenLastCalledWith({
+                origin: 'planlegger',
+                eventName: 'accordion lukket',
+                eventData: { tittel: 'oppsummering-planen' },
+            });
+        });
+    });
+
     it('skal vise info der det er flere forsørgere og ingen har rett til foreldrepenger', async () => {
         render(<HarIkkeRett />);
 
