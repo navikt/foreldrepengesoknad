@@ -8,6 +8,7 @@ const innvilget = {
 } as const;
 
 export const uttaksplan = {
+    annenPartRedigerbar: false,
     antallBarn: 1,
     dekningsgrad: 'HUNDRE',
     termindato: '2022-07-01',
@@ -73,6 +74,7 @@ export const uttaksplan = {
 } satisfies FellesUttaksplanDto;
 
 export const uttaksplanUtenPerioder = {
+    annenPartRedigerbar: true,
     antallBarn: 1,
     dekningsgrad: 'HUNDRE',
     termindato: '2023-01-10',
@@ -80,6 +82,7 @@ export const uttaksplanUtenPerioder = {
 } satisfies FellesUttaksplanDto;
 
 export const uttaksplanForTidligSøknad = {
+    annenPartRedigerbar: true,
     antallBarn: 1,
     dekningsgrad: 'HUNDRE',
     termindato: '2026-02-01',
@@ -106,6 +109,7 @@ export const uttaksplanForTidligSøknad = {
 } satisfies FellesUttaksplanDto;
 
 export const uttaksplanAvslått = {
+    annenPartRedigerbar: true,
     antallBarn: 1,
     dekningsgrad: 'HUNDRE',
     termindato: '2025-10-27',

@@ -163,7 +163,7 @@ export const getOmBarnetInitialValues = (
             antallBarn: getAntallBarn(erFlereEnnToBarn, barn),
             antallBarnSelect: getAntallBarnSelect(erFlereEnnToBarn, barn),
             fødselsdatoer: mapFødselsdatoer(barn.fødselsdatoer),
-            termindato: termindatoFraVedtak || barn.termindato,
+            termindato: barn.termindato || termindatoFraVedtak,
         };
     }
 
@@ -172,7 +172,7 @@ export const getOmBarnetInitialValues = (
             arbeidsforhold,
             søkersituasjon.situasjon === 'adopsjon',
             isFarEllerMedmor(søkersituasjon.rolle),
-            termindatoFraVedtak || barn.termindato,
+            barn.termindato,
         );
         if (aktiveArbeidsforhold.length === 0) {
             return {
@@ -180,7 +180,7 @@ export const getOmBarnetInitialValues = (
                 antallBarn: getAntallBarn(erFlereEnnToBarn, barn),
                 antallBarnSelect: getAntallBarnSelect(erFlereEnnToBarn, barn),
                 terminbekreftelsedato: barn.terminbekreftelsedato,
-                termindato: termindatoFraVedtak || barn.termindato,
+                termindato: barn.termindato,
             };
         }
 
@@ -188,7 +188,7 @@ export const getOmBarnetInitialValues = (
             erBarnetFødt: false,
             antallBarn: getAntallBarn(erFlereEnnToBarn, barn),
             antallBarnSelect: getAntallBarnSelect(erFlereEnnToBarn, barn),
-            termindato: termindatoFraVedtak || barn.termindato,
+            termindato: barn.termindato,
         };
     }
 

@@ -178,6 +178,7 @@ export const MedMellomlagretEndringssøknad: Story = {
 const fellesUttaksplanUtenPerioder = {
     antallBarn: 1,
     dekningsgrad: 'ÅTTI',
+    annenPartRedigerbar: false,
     perioder: [],
 } satisfies FellesUttaksplanDto;
 
