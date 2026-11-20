@@ -29,16 +29,23 @@ export const tilpassFødselspermisjon = (
             ? !erFarPåFedrekvote(periode)
             : erFarPåFedrekvote(periode) || periode.annenPart?.samtidigUttak !== undefined,
     );
-    const morsPerioderMåEndres = perioderSomMåEndres.some(
+    const morsPerioderSomMåEndres = perioderSomMåEndres.filter(
         (periode) =>
             periode.annenPart?.forelder === 'MOR' &&
             (ønskerFødselspermisjon || periode.annenPart.samtidigUttak !== undefined),
     );
     const sortertePerioder = perioder.toSorted((a, b) => a.fom.localeCompare(b.fom));
-    const harMorsPerioderMedResultat = perioderSomMåEndres.some(
-        (periode) => periode.annenPart?.forelder === 'MOR' && periode.annenPart.resultat,
-    );
-    const kanIkkeEndreMorsPerioder = morsPerioderMåEndres && (!erAnnenPartRedigerbar || harMorsPerioderMedResultat);
+    const kanIkkeEndreMorsPerioder = morsPerioderSomMåEndres.some((periode) => {
+        const mor = periode.annenPart!;
+        const kunTekniskEndring =
+            mor.kontoType === 'MØDREKVOTE' &&
+            (mor.samtidigUttak === undefined || mor.samtidigUttak === 100) &&
+            !mor.gradering &&
+            !mor.utsettelseÅrsak &&
+            !mor.overføringÅrsak &&
+            (mor.resultat === undefined || (mor.resultat.innvilget && mor.resultat.trekkerDager));
+        return !kunTekniskEndring && (!erAnnenPartRedigerbar || mor.resultat !== undefined);
+    });
     const kanIkkeFjerneFarsPerioder =
         !ønskerFødselspermisjon &&
         berørtePerioder.some(

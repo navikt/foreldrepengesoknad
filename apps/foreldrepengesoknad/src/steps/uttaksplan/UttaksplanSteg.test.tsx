@@ -668,11 +668,13 @@ describe('<UttaksplanSteg>', () => {
             expect(
                 screen.queryByText(
                     'Mors plan kan ikke endres automatisk her. Se over uttaket rundt fødselen før du sender søknaden.',
-                ) !== null,
-            ).toBe(!kanRedigere);
+                ),
+            ).not.toBeInTheDocument();
             await userEvent.click(screen.getByRole('tab', { name: 'Liste' }));
-            const morsPeriode = kanRedigere ? /15. juli 24\s*- 09. aug. 24/ : /01. juli 24\s*- 09. aug. 24/;
-            await userEvent.click(screen.getByRole('button', { name: morsPeriode }));
+            expect(
+                screen.getByRole('button', { name: /01. juli 24\s*- 12. juli 24.*foreldrepenger/ }),
+            ).toBeInTheDocument();
+            await userEvent.click(screen.getByRole('button', { name: /15. juli 24\s*- 09. aug. 24/ }));
 
             expect(screen.queryAllByRole('button', { name: /^(Endre|Slett)$/ }).length > 0).toBe(kanRedigere);
         },

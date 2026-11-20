@@ -149,16 +149,26 @@ describe('fødselspermisjon i mors plan', () => {
         ]);
     });
 
-    it('legger til ti fedrekvotedager uten å trekke fra senere fedrekvote når far svarer ja (D)', () => {
-        const senereFedrekvote: UttakPeriodeDto = { fom: '2025-02-03', tom: '2025-02-14', søker: far };
-        const kilde = [...morsPerioder, senereFedrekvote];
-        const { perioder, kreverManuellTilpasning } = tilpassFødselspermisjon(kilde, '2025-01-01', true, true);
+    it.each([true, false])(
+        'legger til ti fedrekvotedager med samtidig uttak når mor er redigerbar=%s (D)',
+        (erAnnenPartRedigerbar) => {
+            const senereFedrekvote: UttakPeriodeDto = { fom: '2025-02-03', tom: '2025-02-14', søker: far };
+            const kilde = [...morsPerioder, senereFedrekvote];
+            const { perioder, kreverManuellTilpasning } = tilpassFødselspermisjon(
+                kilde,
+                '2025-01-01',
+                true,
+                erAnnenPartRedigerbar,
+            );
 
-        expect(kreverManuellTilpasning).toBe(false);
-        expect(perioder).toEqual([...medFødselspermisjon, senereFedrekvote]);
-        expect(kilde).toEqual([...morsPerioder, senereFedrekvote]);
-        expect(tilpassFødselspermisjon(kilde, '2025-01-01', true, true).perioder).toEqual(perioder);
-    });
+            expect(kreverManuellTilpasning).toBe(false);
+            expect(perioder).toEqual([...medFødselspermisjon, senereFedrekvote]);
+            expect(kilde).toEqual([...morsPerioder, senereFedrekvote]);
+            expect(tilpassFødselspermisjon(kilde, '2025-01-01', true, erAnnenPartRedigerbar).perioder).toEqual(
+                perioder,
+            );
+        },
+    );
 
     it('fyller de manglende dagene når mor bare har oppgitt deler av fødselspermisjonen', () => {
         const førsteUke = { ...medFødselspermisjon[0]!, tom: '2025-01-07' };
@@ -168,7 +178,11 @@ describe('fødselspermisjon i mors plan', () => {
         expect(tilpassFødselspermisjon(kilde, '2025-01-01', true, true)).toEqual({
             perioder: [
                 førsteUke,
-                { ...sisteUke, søker: { ...far, samtidigUttak: 100 }, annenPart: { ...mor, samtidigUttak: 100 } },
+                {
+                    ...sisteUke,
+                    søker: { ...far, samtidigUttak: 100 },
+                    annenPart: { ...mor, samtidigUttak: 100 },
+                },
             ],
             kreverManuellTilpasning: false,
         });
@@ -217,16 +231,77 @@ describe('fødselspermisjon i mors plan', () => {
         ]);
     });
 
-    it('bevarer mors låste perioder og varsler når svaret krever en endring', () => {
-        for (const [kilde, svar] of [
-            [medFødselspermisjon, false],
-            [morsPerioder, true],
-        ] as const) {
-            expect(tilpassFødselspermisjon(kilde, '2025-01-01', svar, false)).toEqual({
+    it('fjerner teknisk samtidig uttak fra mor selv om mors perioder er låst (C)', () => {
+        expect(tilpassFødselspermisjon(medFødselspermisjon, '2025-01-01', false, false)).toEqual({
+            perioder: morsPerioder,
+            kreverManuellTilpasning: false,
+        });
+    });
+
+    it('beholder mors vedtatte uttak på 100 prosent når far legger til eller fjerner fødselspermisjon', () => {
+        const morsVedtatteUttak = {
+            ...mor,
+            resultat: { innvilget: true, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' as const },
+        };
+        const kilde = [{ ...morsPerioder[0]!, annenPart: morsVedtatteUttak }];
+        expect(tilpassFødselspermisjon(kilde, '2025-01-01', true, false)).toEqual({
+            perioder: [
+                {
+                    ...kilde[0],
+                    søker: { ...far, samtidigUttak: 100 },
+                    annenPart: { ...morsVedtatteUttak, samtidigUttak: 100 },
+                },
+            ],
+            kreverManuellTilpasning: false,
+        });
+        const planMedSamtidigUttak = [
+            { ...medFødselspermisjon[0]!, annenPart: { ...morsVedtatteUttak, samtidigUttak: 100 } },
+        ];
+        expect(tilpassFødselspermisjon(planMedSamtidigUttak, '2025-01-01', false, false)).toEqual({
+            perioder: kilde,
+            kreverManuellTilpasning: false,
+        });
+        expect(kilde[0]?.annenPart).toEqual(morsVedtatteUttak);
+    });
+
+    it('overstyrer ikke lås eller vedtak hvis mor ikke tar 100 prosent av mødrekvoten', () => {
+        const morsAndreUttak = [
+            { ...mor, gradering: { arbeidstidprosent: 50 } },
+            { ...mor, samtidigUttak: 50 },
+            { ...mor, kontoType: 'FELLESPERIODE' as const },
+            {
+                ...mor,
+                resultat: { innvilget: false, trekkerDager: false, trekkerMinsterett: false, årsak: 'ANNET' as const },
+            },
+        ];
+        for (const annenPart of morsAndreUttak) {
+            const kilde = [{ ...morsPerioder[0]!, annenPart }];
+            expect(tilpassFødselspermisjon(kilde, '2025-01-01', true, false)).toEqual({
                 perioder: kilde,
                 kreverManuellTilpasning: true,
             });
         }
+    });
+
+    it('bruker fars ja-svar når mors plan er låst', () => {
+        const uttaksplan = { ...lagUttaksplan(morsPerioder), annenPartRedigerbar: false };
+        const { result } = renderHook(() => useTidligereUttaksplan(), {
+            wrapper: getWrapper(
+                uttaksplan,
+                {
+                    [ContextDataType.SØKERSITUASJON]: { situasjon: 'fødsel', rolle: 'far' },
+                    [ContextDataType.FORDELING]: {
+                        oppstartAvForeldrepengerValg: OppstartValg.FAMILIEHENDELSESDATO,
+                    },
+                },
+                undefined,
+                SøknadRoutes.UTTAKSPLAN,
+                null,
+            ),
+        });
+        expect(result.current.perioder).toEqual(medFødselspermisjon);
+        expect(result.current.kreverManuellTilpasning).toBe(false);
+        expect(uttaksplan.perioder).toEqual(morsPerioder);
     });
 
     it('bruker fars svar i en ny søknad uten å endre mors innlastede plan', () => {
