@@ -354,13 +354,67 @@ describe('harHistoriskFjernetUttak', () => {
             etter: [periode('2026-09-07', '2026-09-11', uttak('MOR', { utsettelseÅrsak: 'FRI' }))],
             forventet: false,
         },
+        {
+            navn: 'søker legger eget uttak over annen parts uttak',
+            før: [periode('2026-09-07', '2026-09-11', undefined, uttak('MOR'))],
+            etter: [periode('2026-09-07', '2026-09-11', uttak('FAR_MEDMOR'))],
+            forventet: false,
+        },
+        {
+            navn: 'søker legger eget uttak over deler av annen parts uttak',
+            før: [periode('2026-09-07', '2026-09-18', undefined, uttak('FAR_MEDMOR'))],
+            etter: [
+                periode('2026-09-07', '2026-09-11', undefined, uttak('FAR_MEDMOR')),
+                periode('2026-09-14', '2026-09-18', uttak('MOR')),
+            ],
+            forventet: false,
+        },
+        {
+            navn: 'søker erstatter annen parts uttak og forkorter eget uttak',
+            før: [
+                periode('2026-09-07', '2026-09-11', undefined, uttak('MOR')),
+                periode('2026-09-14', '2026-09-18', uttak('FAR_MEDMOR')),
+            ],
+            etter: [periode('2026-09-07', '2026-09-16', uttak('FAR_MEDMOR'))],
+            forventet: true,
+        },
+        {
+            navn: 'gradert uttak over annen parts graderte uttak',
+            før: [periode('2026-09-07', '2026-09-11', undefined, uttak('MOR', gradert(50)))],
+            etter: [periode('2026-09-07', '2026-09-11', uttak('FAR_MEDMOR', gradert(50)))],
+            forventet: true,
+        },
+        {
+            navn: 'gradert uttak over annen parts ugraderte uttak',
+            før: [periode('2026-09-07', '2026-09-11', undefined, uttak('MOR'))],
+            etter: [periode('2026-09-07', '2026-09-11', uttak('FAR_MEDMOR', gradert(50)))],
+            forventet: false,
+        },
+        {
+            navn: 'pause over annen parts uttak',
+            før: [periode('2026-09-07', '2026-09-11', undefined, uttak('MOR'))],
+            etter: [periode('2026-09-07', '2026-09-11', uttak('FAR_MEDMOR', { utsettelseÅrsak: 'FRI' }))],
+            forventet: true,
+        },
+        {
+            navn: 'annen parts del av samtidig uttak fjernet',
+            før: [periode('2026-09-07', '2026-09-11', uttak('FAR_MEDMOR'), uttak('MOR'))],
+            etter: [periode('2026-09-07', '2026-09-11', uttak('FAR_MEDMOR'))],
+            forventet: true,
+        },
     ])('$navn gir $forventet', ({ før, etter, forventet, førsteDagIMåneden = '2026-10-01' }) => {
         expect(harHistoriskFjernetUttak(før, etter, førsteDagIMåneden)).toBe(forventet);
     });
 });
 
 describe('finnHistoriskEndringstype', () => {
-    it.each<{ navn: string; før: UttakPeriodeDto[]; etter: UttakPeriodeDto[]; forventet: string | undefined }>([
+    it.each<{
+        navn: string;
+        før: UttakPeriodeDto[];
+        etter: UttakPeriodeDto[];
+        forventet: string | undefined;
+        søker?: 'MOR' | 'FAR_MEDMOR';
+    }>([
         {
             navn: 'fjernet uttak går foran graderingsendring',
             før: [periode('2026-09-07', '2026-09-11', uttak('MOR', gradert(50)))],
@@ -379,7 +433,34 @@ describe('finnHistoriskEndringstype', () => {
             etter: [periode('2026-09-07', '2026-09-11', uttak('MOR'))],
             forventet: undefined,
         },
-    ])('$navn gir $forventet', ({ før, etter, forventet }) => {
-        expect(finnHistoriskEndringstype(før, etter, 'MOR', true, '2026-10-01')).toBe(forventet);
+        {
+            navn: 'far legger ugradert uttak over mors graderte uttak',
+            før: [periode('2026-09-07', '2026-09-11', undefined, uttak('MOR', gradert(50)))],
+            etter: [periode('2026-09-07', '2026-09-11', uttak('FAR_MEDMOR'))],
+            forventet: undefined,
+            søker: 'FAR_MEDMOR',
+        },
+        {
+            navn: 'far legger gradert uttak over mors graderte uttak',
+            før: [periode('2026-09-07', '2026-09-11', undefined, uttak('MOR', gradert(50)))],
+            etter: [periode('2026-09-07', '2026-09-11', uttak('FAR_MEDMOR', gradert(50)))],
+            forventet: 'slettet',
+            søker: 'FAR_MEDMOR',
+        },
+        {
+            navn: 'far legger gradert uttak over mors ugraderte uttak',
+            før: [periode('2026-09-07', '2026-09-11', undefined, uttak('MOR'))],
+            etter: [periode('2026-09-07', '2026-09-11', uttak('FAR_MEDMOR', gradert(50)))],
+            forventet: 'endret',
+            søker: 'FAR_MEDMOR',
+        },
+        {
+            navn: 'mor legger uttak over fars uttak',
+            før: [periode('2026-09-07', '2026-09-11', undefined, uttak('FAR_MEDMOR'))],
+            etter: [periode('2026-09-07', '2026-09-11', uttak('MOR'))],
+            forventet: undefined,
+        },
+    ])('$navn gir $forventet', ({ før, etter, forventet, søker = 'MOR' }) => {
+        expect(finnHistoriskEndringstype(før, etter, søker, true, '2026-10-01')).toBe(forventet);
     });
 });
