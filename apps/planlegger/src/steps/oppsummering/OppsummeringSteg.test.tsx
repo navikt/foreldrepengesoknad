@@ -3,15 +3,9 @@ import { act, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 
-import { loggUmamiEvent } from '@navikt/fp-observability';
 import { getLenker } from '@navikt/fp-utils';
 
 import * as stories from './OppsummeringSteg.stories';
-
-vi.mock('@navikt/fp-observability', async (importOriginal) => ({
-    ...(await importOriginal<typeof import('@navikt/fp-observability')>()),
-    loggUmamiEvent: vi.fn(),
-}));
 
 const {
     KunMorHarRett,
@@ -28,8 +22,17 @@ const {
 
 describe('<OppsummeringSteg>', () => {
     describe('logging av ExpansionCard', () => {
+        const dekoratorenAnalytics = vi.fn(() => Promise.resolve());
+
         beforeEach(() => {
-            vi.mocked(loggUmamiEvent).mockClear();
+            vi.stubEnv('MODE', 'production');
+            vi.stubGlobal('dekoratorenAnalytics', dekoratorenAnalytics);
+        });
+
+        afterEach(() => {
+            vi.unstubAllEnvs();
+            vi.unstubAllGlobals();
+            dekoratorenAnalytics.mockClear();
         });
 
         it.each([
@@ -42,7 +45,7 @@ describe('<OppsummeringSteg>', () => {
             render(<FlereForsørgereHundreProsentTermin />);
 
             expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
-            expect(loggUmamiEvent).not.toHaveBeenCalled();
+            expect(dekoratorenAnalytics).not.toHaveBeenCalled();
 
             const heading = screen.getByRole('heading', { name: overskrift });
             const button = within(heading.closest('section')!).getByRole('button', { expanded: false });
@@ -50,7 +53,7 @@ describe('<OppsummeringSteg>', () => {
 
             await user.click(button);
             expect(button).toHaveAttribute('aria-expanded', 'true');
-            expect(loggUmamiEvent).toHaveBeenNthCalledWith(1, {
+            expect(dekoratorenAnalytics).toHaveBeenNthCalledWith(1, {
                 origin: 'planlegger',
                 eventName: 'accordion åpnet',
                 eventData: { tittel },
@@ -58,7 +61,7 @@ describe('<OppsummeringSteg>', () => {
 
             await user.click(button);
             expect(button).toHaveAttribute('aria-expanded', 'false');
-            expect(loggUmamiEvent).toHaveBeenNthCalledWith(2, {
+            expect(dekoratorenAnalytics).toHaveBeenNthCalledWith(2, {
                 origin: 'planlegger',
                 eventName: 'accordion lukket',
                 eventData: { tittel },
@@ -66,12 +69,12 @@ describe('<OppsummeringSteg>', () => {
 
             await user.click(button);
             expect(button).toHaveAttribute('aria-expanded', 'true');
-            expect(loggUmamiEvent).toHaveBeenNthCalledWith(3, {
+            expect(dekoratorenAnalytics).toHaveBeenNthCalledWith(3, {
                 origin: 'planlegger',
                 eventName: 'accordion åpnet',
                 eventData: { tittel },
             });
-            expect(loggUmamiEvent).toHaveBeenCalledTimes(3);
+            expect(dekoratorenAnalytics).toHaveBeenCalledTimes(3);
         });
 
         it('skal logge tastaturåpning og -lukking én gang', async () => {
@@ -85,8 +88,8 @@ describe('<OppsummeringSteg>', () => {
 
             await user.keyboard('{Enter}');
             expect(button).toHaveAttribute('aria-expanded', 'true');
-            expect(loggUmamiEvent).toHaveBeenCalledTimes(1);
-            expect(loggUmamiEvent).toHaveBeenLastCalledWith({
+            expect(dekoratorenAnalytics).toHaveBeenCalledTimes(1);
+            expect(dekoratorenAnalytics).toHaveBeenLastCalledWith({
                 origin: 'planlegger',
                 eventName: 'accordion åpnet',
                 eventData: { tittel: 'oppsummering-planen' },
@@ -94,8 +97,8 @@ describe('<OppsummeringSteg>', () => {
 
             await user.keyboard(' ');
             expect(button).toHaveAttribute('aria-expanded', 'false');
-            expect(loggUmamiEvent).toHaveBeenCalledTimes(2);
-            expect(loggUmamiEvent).toHaveBeenLastCalledWith({
+            expect(dekoratorenAnalytics).toHaveBeenCalledTimes(2);
+            expect(dekoratorenAnalytics).toHaveBeenLastCalledWith({
                 origin: 'planlegger',
                 eventName: 'accordion lukket',
                 eventData: { tittel: 'oppsummering-planen' },
