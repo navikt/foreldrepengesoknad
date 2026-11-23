@@ -1,8 +1,8 @@
 import { DownloadIcon } from '@navikt/aksel-icons';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Button, Dialog, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react';
+import { Button, Dialog, HStack, InlineMessage, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 
 import { Calendar, CalendarPeriod } from '@navikt/fp-ui';
 
@@ -26,6 +26,10 @@ export const KalenderPdf = ({
 
     const [isCreatingPdf, setIsCreatingPdf] = useState(false);
     const [antallKolonner, setAntallKolonner] = useState<1 | 2 | 3>(2);
+    const [visFeilmelding, setVisFeilmelding] = useState(false);
+    const pågåendeForsøkRef = useRef<AbortController | undefined>(undefined);
+
+    useEffect(() => () => pågåendeForsøkRef.current?.abort(), []);
 
     const legendRef = useRef<HTMLDivElement>(null);
     const kalenderRef = useRef<HTMLDivElement>(null);
@@ -37,6 +41,9 @@ export const KalenderPdf = ({
             return;
         }
 
+        const forsøk = new AbortController();
+        pågåendeForsøkRef.current = forsøk;
+        setVisFeilmelding(false);
         setIsCreatingPdf(true);
         try {
             await genererKalenderPdf({
@@ -44,17 +51,31 @@ export const KalenderPdf = ({
                 kalenderElement,
                 antallKolonner,
                 filename: 'Min foreldrepengeplan.pdf',
+                signal: forsøk.signal,
             });
         } catch {
-            // Generering feila (t.d. fordi dialogen blei lukka undervegs).
-            // Brukaren ser berre at lastestatus forsvinn – ingen krasj.
+            if (!forsøk.signal.aborted) {
+                setVisFeilmelding(true);
+            }
         } finally {
+            if (pågåendeForsøkRef.current === forsøk) {
+                pågåendeForsøkRef.current = undefined;
+                setIsCreatingPdf(false);
+            }
+        }
+    };
+
+    const håndterÅpning = (open: boolean) => {
+        if (!open) {
+            pågåendeForsøkRef.current?.abort();
+            pågåendeForsøkRef.current = undefined;
+            setVisFeilmelding(false);
             setIsCreatingPdf(false);
         }
     };
 
     return (
-        <Dialog>
+        <Dialog onOpenChange={håndterÅpning}>
             <Dialog.Trigger>
                 <Button variant="tertiary" icon={<DownloadIcon aria-hidden />} type="button">
                     <FormattedMessage id="kalender.lastNedSomPdf" />
@@ -97,6 +118,11 @@ export const KalenderPdf = ({
                                     </Button>
                                 </Dialog.CloseTrigger>
                             </HStack>
+                            {visFeilmelding && (
+                                <InlineMessage status="error" role="alert">
+                                    <FormattedMessage id="kalender.lastNedFeilet" />
+                                </InlineMessage>
+                            )}
                         </VStack>
                         <VStack gap="space-24">
                             <div ref={legendRef}>

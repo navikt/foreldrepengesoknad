@@ -204,6 +204,7 @@
     "kalender.antallKolonner": "Velg antall kolonner",
     "kalender.lastNed": "Last ned",
     "kalender.avbryt": "Avbryt",
+    "kalender.lastNedFeilet": "Vi klarte ikkje å lage kalenderen. Prøv igjen.",
     "kalender.skjermleser.familiehendelse": "{familiehendelsenavn} den {dato}",
     "kalender.skjermleser.periode": "{periodeNavn} frå den {fraDato} til den {tilDato}",
     "kalender.barnehageplass": "Barnehageplass",
