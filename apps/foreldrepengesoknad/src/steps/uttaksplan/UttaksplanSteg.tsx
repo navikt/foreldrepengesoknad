@@ -150,7 +150,7 @@ export const UttaksplanSteg = ({
         },
     });
 
-    const tidligereUttaksplan = useTidligereUttaksplan(erEndringssøknad, eksisterendeSak);
+    const tidligereUttaksplan = useTidligereUttaksplan({ erEndringssøknad, eksisterendeSak });
     const tidligereUttaksperioder = tidligereUttaksplan.perioder;
 
     const valgteStønadskvoter = tilgjengeligeStønadskvoterQuery.data;
