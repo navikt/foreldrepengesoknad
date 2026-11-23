@@ -132,6 +132,7 @@ const OmBarnetStegInner = ({
     const adopsjonFraPlanlegger = useContextGetData(ContextDataType.ADOPSJON_FRA_PLANLEGGER);
 
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
+    const oppdaterAdopsjonFraPlanlegger = useContextSaveData(ContextDataType.ADOPSJON_FRA_PLANLEGGER);
     const resetUttaksplanData = useResetUttaksplanData();
 
     const { arbeidsforhold, barn: registrerteBarn } = søkerInfo;
@@ -170,16 +171,25 @@ const OmBarnetStegInner = ({
             barnSøktOmFørMenIkkeRegistrert,
         );
 
-        if (
+        const erBarnetEndret =
             omBarnet !== undefined &&
             (getFamiliehendelsedato(omBarnet) !== getFamiliehendelsedato(oppdatertBarn) ||
                 omBarnet.antallBarn !== oppdatertBarn.antallBarn ||
-                (getTermindato(omBarnet) !== undefined && getTermindato(omBarnet) !== getTermindato(oppdatertBarn)))
-        ) {
+                (getTermindato(omBarnet) !== undefined && getTermindato(omBarnet) !== getTermindato(oppdatertBarn)));
+        const erAdopsjonFraPlanleggerEndret =
+            omBarnet === undefined &&
+            adopsjonFraPlanlegger !== undefined &&
+            (adopsjonFraPlanlegger.adopsjonsdato !== getFamiliehendelsedato(oppdatertBarn) ||
+                adopsjonFraPlanlegger.antallBarn !== oppdatertBarn.antallBarn);
+
+        if (erBarnetEndret || erAdopsjonFraPlanleggerEndret) {
             resetUttaksplanData();
         }
 
         oppdaterOmBarnet(oppdatertBarn);
+        if (adopsjonFraPlanlegger !== undefined) {
+            oppdaterAdopsjonFraPlanlegger(undefined);
+        }
 
         return navigator.goToNextStep();
     };

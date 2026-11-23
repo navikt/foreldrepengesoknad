@@ -16,6 +16,7 @@ vi.mock('utils/hooks/useSaveLoadedRoute', () => {
 const {
     MorFødsel,
     ForAdopsjon,
+    AdopsjonFraPlanleggeren,
     FarFødsel,
     MedmorFødsel,
     RegistrertBarnFødselFar,
@@ -320,6 +321,61 @@ describe('<OmBarnetSteg>', () => {
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(screen.getAllByText('Dato på terminbekreftelse kan ikke være frem i tid').length).toBeGreaterThan(0);
+    });
+
+    it('skal beholde uttaksplanen og fjerne forhåndsutfyllingen når adopsjonen fra planleggeren er uendret', async () => {
+        const gåTilNesteSide = vi.fn();
+
+        await AdopsjonFraPlanleggeren.run({ args: { ...AdopsjonFraPlanleggeren.args, gåTilNesteSide } });
+
+        expect(await screen.findByDisplayValue('05.05.2026')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Ja'));
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(3);
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                antallBarn: 1,
+                type: 'adoptertStebarn',
+                adopsjonsdato: '2026-05-05',
+                fødselsdatoer: ['2024-01-10'],
+            },
+            key: ContextDataType.OM_BARNET,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: undefined,
+            key: ContextDataType.ADOPSJON_FRA_PLANLEGGER,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).not.toHaveBeenCalledWith(
+            expect.objectContaining({ key: ContextDataType.UTTAKSPLAN }),
+        );
+    });
+
+    it('skal nullstille uttaksplanen når adopsjonsdatoen fra planleggeren endres', async () => {
+        const gåTilNesteSide = vi.fn();
+
+        await AdopsjonFraPlanleggeren.run({ args: { ...AdopsjonFraPlanleggeren.args, gåTilNesteSide } });
+
+        const adopsjonsdato = await screen.findByDisplayValue('05.05.2026');
+        await userEvent.click(screen.getByText('Ja'));
+        await userEvent.clear(adopsjonsdato);
+        await userEvent.type(adopsjonsdato, '06.05.2026');
+        await userEvent.tab();
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(gåTilNesteSide).toHaveBeenCalledWith({
+            data: undefined,
+            key: ContextDataType.UTTAKSPLAN,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenCalledWith(
+            expect.objectContaining({
+                data: expect.objectContaining({ adopsjonsdato: '2026-05-06' }),
+                key: ContextDataType.OM_BARNET,
+            }),
+        );
     });
 
     it('skal søke stebarnsadopsjon for ett barn', async () => {
