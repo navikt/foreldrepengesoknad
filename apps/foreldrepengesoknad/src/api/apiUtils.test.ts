@@ -243,6 +243,71 @@ describe('mapTilEndringssøknadDto', () => {
         expect(endringssøknad.uttaksplan.perioder).toEqual(nyePerioder);
     });
 
+    it('skal finne fars første endringsdato i samtidig uttak', () => {
+        const opprinneligPlan: UttakPeriodeDto[] = [
+            {
+                fom: '2026-11-09',
+                tom: '2026-11-20',
+                annenPart: { forelder: 'MOR', flerbarnsdager: false, kontoType: 'FORELDREPENGER_FØR_FØDSEL' },
+            },
+            {
+                fom: '2026-11-23',
+                tom: '2026-12-04',
+                søker: {
+                    forelder: 'FAR_MEDMOR',
+                    flerbarnsdager: false,
+                    kontoType: 'FEDREKVOTE',
+                    samtidigUttak: 100,
+                },
+                annenPart: {
+                    forelder: 'MOR',
+                    flerbarnsdager: false,
+                    kontoType: 'MØDREKVOTE',
+                    samtidigUttak: 100,
+                },
+            },
+            {
+                fom: '2026-12-07',
+                tom: '2027-03-05',
+                annenPart: { forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+            },
+        ];
+        const nyPlan: UttakPeriodeDto[] = [
+            ...opprinneligPlan.slice(0, 2),
+            {
+                fom: '2026-12-07',
+                tom: '2027-02-12',
+                annenPart: { forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+            },
+            {
+                fom: '2027-02-15',
+                tom: '2027-02-19',
+                søker: {
+                    forelder: 'FAR_MEDMOR',
+                    flerbarnsdager: false,
+                    kontoType: 'FEDREKVOTE',
+                    samtidigUttak: 50,
+                },
+                annenPart: {
+                    forelder: 'MOR',
+                    flerbarnsdager: false,
+                    kontoType: 'MØDREKVOTE',
+                    samtidigUttak: 50,
+                },
+            },
+            {
+                fom: '2027-02-22',
+                tom: '2027-03-05',
+                annenPart: { forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+            },
+        ];
+        const data = getStateMock(annenForelderMock, barnMock, nyPlan, 'SAK-001', opprinneligPlan);
+
+        const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO);
+
+        expect(endringssøknad.endringsdato).toBe('2027-02-15');
+    });
+
     it('skal fjerne søkerens avslåtte perioder når planen er uendret, fordi hele planen da sendes til fpsak', () => {
         const avslåttPeriode: UttakPeriodeDto = {
             fom: '2024-03-01',
@@ -340,7 +405,8 @@ describe('mapTilEndringssøknadDto', () => {
         expect(endringssøknad.uttaksplan.perioder).toEqual(nyePerioder);
     });
 
-    it('skal flytte endringsdato i helg til mandag uten å splitte perioden som krysser den', () => {
+    // Lørdag og søndag er ikke uttaksdager. Utvides en periode bare inn i helgen, er ingen virkedag endret.
+    it('skal ikke gi endringsdato når bare helgedager er lagt til en periode', () => {
         const opprinneligPlan = [
             mor('2024-01-01', '2024-02-02', 'MØDREKVOTE'),
             mor('2024-02-05', '2024-02-16', 'FELLESPERIODE'),
@@ -350,7 +416,7 @@ describe('mapTilEndringssøknadDto', () => {
 
         const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO);
 
-        expect(endringssøknad.endringsdato).toBe('2024-02-05');
+        expect(endringssøknad.endringsdato).toBeUndefined();
         expect(endringssøknad.uttaksplan.perioder).toEqual(nyPlan);
     });
 
@@ -382,11 +448,18 @@ describe('mapTilEndringssøknadDto', () => {
     // skal utledes fra brukerens faktiske endring og ikke flyttes tilbake til fødselen (som gjorde at
     // perioden fall ut på søknadsfrist i fpsak).
     describe('samtidig uttak rundt fødsel skal ikke regnes som brukerendring', () => {
+        const innvilget = { innvilget: true, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' } as const;
         const opprinneligPlan: UttakPeriodeDto[] = [
             {
                 fom: '2024-01-01',
                 tom: '2024-01-12',
-                søker: { forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE', samtidigUttak: 100 },
+                søker: {
+                    forelder: 'MOR',
+                    flerbarnsdager: false,
+                    kontoType: 'MØDREKVOTE',
+                    samtidigUttak: 100,
+                    resultat: innvilget,
+                },
                 annenPart: {
                     forelder: 'FAR_MEDMOR',
                     flerbarnsdager: false,
@@ -394,19 +467,19 @@ describe('mapTilEndringssøknadDto', () => {
                     samtidigUttak: 100,
                 },
             },
-            mor('2024-01-15', '2024-03-29', 'MØDREKVOTE'),
-            mor('2024-04-01', '2024-04-30', 'FELLESPERIODE'),
+            { ...mor('2024-01-15', '2024-03-29', 'MØDREKVOTE'), søker: { ...mor('2024-01-15', '2024-03-29', 'MØDREKVOTE').søker!, resultat: innvilget } },
+            { ...mor('2024-04-01', '2024-04-30', 'FELLESPERIODE'), søker: { ...mor('2024-04-01', '2024-04-30', 'FELLESPERIODE').søker!, resultat: innvilget } },
         ];
 
-        it('skal utlede endringstidspunkt fra brukerens faktiske endring', () => {
+        it('skal utlede endringstidspunkt fra brukerens faktiske endring også når skjemaredigering fjerner resultat', () => {
             const nyPlan = opprinneligPlan.map((p) =>
-                p.søker?.kontoType === 'FELLESPERIODE' ? { ...p, tom: '2024-05-31' } : p,
+                p.søker?.kontoType === 'FELLESPERIODE' ? mor('2024-04-01', '2024-05-31', 'FELLESPERIODE') : p,
             );
 
             const data = getStateMock(annenForelderMock, barnMock, nyPlan, 'SAK-001', opprinneligPlan);
             const endringssøknad = mapTilEndringssøknadDto(data, DEFAULT_SØKER_INFO);
 
-            expect(endringssøknad.endringsdato).toBe('2024-04-01');
+            expect(endringssøknad.endringsdato).toBe('2024-05-01');
             expect(endringssøknad.uttaksplan.perioder).toEqual(nyPlan);
         });
 

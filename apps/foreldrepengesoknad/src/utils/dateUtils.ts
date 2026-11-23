@@ -9,14 +9,14 @@ import utc from 'dayjs/plugin/utc';
 import { IntlShape } from 'react-intl';
 import { AnnenForelder } from 'types/AnnenForelder';
 
-import { Barn, FpBarnDto_fpoversikt, UttakPeriodeDto, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
-import { Tidsperioden, isISODateString } from '@navikt/fp-utils';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { Barn, FpBarnDto_fpoversikt, UttakDto, UttakPeriodeDto, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
+import { Uttaksdagen, isISODateString } from '@navikt/fp-utils';
 import { hasValue } from '@navikt/fp-validation';
 
 import { FeatureToggle } from '../FeatureToggle';
 import { getIsDeltUttak } from './annenForelderUtils';
 import { getFamiliehendelsedato } from './barnUtils';
-import { erPeriodeIOpprinneligPlan } from './eksisterendeSakUtils';
 import { toggleUtils } from './toggleUtils';
 
 dayjs.extend(isSameOrBefore);
@@ -90,92 +90,74 @@ export const førsteJuli2024ReglerGjelder = (barn: Barn): boolean => {
     return !((isFødtBarn(barn) || isAdoptertBarn(barn)) && dayjs(familiehendelsesdato).isBefore(førsteJuli2024, 'day'));
 };
 
+// Endringstidspunktet er første virkedag der søkerens aktive uttak (periode.søker, uten avslåtte perioder)
+// er ulikt i opprinnelig og ny plan. Planene sammenlignes intervall for intervall mellom bruddpunktene
+// (fom og dagen etter tom) til søkerens perioder, så en periode som bare er delt opp eller kortet inn, gir
+// ingen falsk endring. Vedtaksmetadata (resultat og arbeidsgiver.type) sammenlignes ikke, fordi redigering
+// i skjema fjerner dem på uendrede deler av en periode. Annen parts perioder og rene helgeintervaller telles ikke.
 export const getEndringstidspunktNy = (
-    søkerensOpprinneligePlan: UttakPeriodeDto[],
-    søkerensUpdatedPlan: UttakPeriodeDto[],
+    opprinneligPlan: UttakPeriodeDto[],
+    nyPlan: UttakPeriodeDto[],
 ): string | undefined => {
-    let endringstidspunktNyPlan: string | undefined;
-    let endringstidspunktOpprinneligPlan: string | undefined;
-    if (søkerensOpprinneligePlan) {
-        for (const [index, periode] of søkerensUpdatedPlan.entries()) {
-            if (endringstidspunktNyPlan) {
-                break;
-            }
+    const opprinnelig = filtrerSøkersAktivePerioder(opprinneligPlan);
+    const ny = filtrerSøkersAktivePerioder(nyPlan);
 
-            const { fom } = periode;
-            const opprinneligPeriodeMedSammeFom = søkerensOpprinneligePlan.find((opprinneligPeriode) =>
-                dayjs(opprinneligPeriode.fom).isSame(fom, 'day'),
-            );
+    // ISO-datoer sorteres riktig som tekst.
+    const bruddpunkter = [
+        ...new Set(
+            [...opprinnelig, ...ny].flatMap((periode) => [
+                periode.fom,
+                dayjs(periode.tom).add(1, 'day').format(ISO_DATE_FORMAT),
+            ]),
+        ),
+    ].toSorted((a, b) => a.localeCompare(b));
 
-            if (opprinneligPeriodeMedSammeFom !== undefined) {
-                const perioderErLikeUtenTidSjekk = erPeriodeIOpprinneligPlan([periode], opprinneligPeriodeMedSammeFom);
-                if (
-                    !perioderErLikeUtenTidSjekk ||
-                    (perioderErLikeUtenTidSjekk &&
-                        Tidsperioden.forPeriode(periode).slutterEtter(opprinneligPeriodeMedSammeFom.tom))
-                ) {
-                    endringstidspunktNyPlan = fom;
-                }
-            }
-
-            if (opprinneligPeriodeMedSammeFom === undefined) {
-                endringstidspunktNyPlan = fom;
-            }
-
-            if (
-                opprinneligPeriodeMedSammeFom !== undefined &&
-                søkerensUpdatedPlan.length - 1 === index &&
-                !erPeriodeIOpprinneligPlan([periode], opprinneligPeriodeMedSammeFom)
-            ) {
-                endringstidspunktNyPlan = fom;
-            }
+    // Etter siste bruddpunkt har ingen av planene søkerperioder, så det siste intervallet trengs ikke.
+    const intervallStarter = bruddpunkter.slice(0, -1);
+    for (const [index, intervallFom] of intervallStarter.entries()) {
+        const førsteVirkedag = Uttaksdagen.denneEllerNeste(intervallFom).getDato();
+        if (førsteVirkedag >= bruddpunkter[index + 1]!) {
+            continue;
         }
-
-        for (const periode of søkerensOpprinneligePlan) {
-            if (endringstidspunktOpprinneligPlan) {
-                continue;
-            }
-
-            const { fom } = periode;
-            const nyPeriodeMedSammeFom = søkerensUpdatedPlan.find((nyPeriode) =>
-                dayjs(nyPeriode.fom).isSame(fom, 'day'),
-            );
-
-            if (nyPeriodeMedSammeFom !== undefined && !erPeriodeIOpprinneligPlan([periode], nyPeriodeMedSammeFom)) {
-                endringstidspunktOpprinneligPlan = nyPeriodeMedSammeFom.fom;
-            }
-
-            if (nyPeriodeMedSammeFom === undefined) {
-                endringstidspunktOpprinneligPlan = fom;
-            }
+        // Ingen periode krysser et bruddpunkt, så søkerens uttak er det samme hele intervallet.
+        if (!erLikSøkersUttak(finnSøkersUttak(opprinnelig, intervallFom), finnSøkersUttak(ny, intervallFom))) {
+            return førsteVirkedag;
         }
-    } else if (søkerensUpdatedPlan.length > 0) {
-        // Bruker har slettet opprinnelig plan, send med alt
-        return søkerensUpdatedPlan[0]!.fom;
     }
-
-    return getOldestDateNy(endringstidspunktNyPlan, endringstidspunktOpprinneligPlan);
+    return undefined;
 };
 
-const getOldestDateNy = (
-    endringstidspunktNyPlan: string | undefined,
-    endringstidspunktOpprinneligPlan: string | undefined,
-): string | undefined => {
-    if (endringstidspunktNyPlan === undefined && endringstidspunktOpprinneligPlan === undefined) {
-        return undefined;
-    }
+const filtrerSøkersAktivePerioder = (perioder: UttakPeriodeDto[]): UttakPeriodeDto[] =>
+    perioder.filter((periode) => periode.søker !== undefined && periode.søker.resultat?.innvilget !== false);
 
-    if (endringstidspunktNyPlan !== undefined && endringstidspunktOpprinneligPlan === undefined) {
-        return endringstidspunktNyPlan;
-    }
+const finnSøkersUttak = (perioder: UttakPeriodeDto[], dato: string): UttakDto | undefined =>
+    perioder.find((periode) => periode.fom <= dato && dato <= periode.tom)?.søker;
 
-    if (endringstidspunktNyPlan === undefined && endringstidspunktOpprinneligPlan !== undefined) {
-        return endringstidspunktOpprinneligPlan;
+const erLikSøkersUttak = (a: UttakDto | undefined, b: UttakDto | undefined): boolean => {
+    if (!a || !b) {
+        return a === b;
     }
+    return (
+        a.forelder === b.forelder &&
+        a.kontoType === b.kontoType &&
+        a.flerbarnsdager === b.flerbarnsdager &&
+        erLikGradering(a.gradering, b.gradering) &&
+        a.utsettelseÅrsak === b.utsettelseÅrsak &&
+        a.samtidigUttak === b.samtidigUttak &&
+        a.overføringÅrsak === b.overføringÅrsak &&
+        a.morsAktivitet === b.morsAktivitet
+    );
+};
 
-    return dayjs(endringstidspunktNyPlan).isSameOrBefore(dayjs(endringstidspunktOpprinneligPlan))
-        ? endringstidspunktNyPlan
-        : endringstidspunktOpprinneligPlan;
+const erLikGradering = (a: UttakDto['gradering'], b: UttakDto['gradering']): boolean => {
+    if (!a || !b) {
+        return a === b;
+    }
+    return (
+        a.arbeidstidprosent === b.arbeidstidprosent &&
+        a.aktivitet?.type === b.aktivitet?.type &&
+        a.aktivitet?.arbeidsgiver?.id === b.aktivitet?.arbeidsgiver?.id
+    );
 };
 
 export const getVis1Juli2024Info = (barn: Barn, annenForelder: AnnenForelder) => {

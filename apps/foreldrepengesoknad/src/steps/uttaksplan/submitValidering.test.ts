@@ -249,6 +249,41 @@ describe('harEndretEgetUttak', () => {
         } satisfies UttakPeriodeDto;
         expect(harEndretEgetUttak([A, B, C, annenPart], opprinneligPlan)).toBe(false);
     });
+
+    it('returnerer false når bruker bare har lagt til helgedager på en periode', () => {
+        const utvidetMedHelg = lagPeriode({ fom: '2024-06-29', tom: A.tom, kontoType: 'MØDREKVOTE' });
+        expect(harEndretEgetUttak([utvidetMedHelg, B, C], opprinneligPlan)).toBe(false);
+    });
+
+    it('returnerer false når kun resultat og arbeidsgiver.type mangler etter skjemaredigering uten reell endring', () => {
+        const vedtattGradert = lagPeriode({
+            gradering: {
+                arbeidstidprosent: 50,
+                aktivitet: { type: 'ORDINÆRT_ARBEID', arbeidsgiver: { id: '123456789', type: 'ORGANISASJON' } },
+            },
+            resultat: innvilget,
+        });
+        const lagretISkjema = lagPeriode({
+            gradering: {
+                arbeidstidprosent: 50,
+                aktivitet: { type: 'ORDINÆRT_ARBEID', arbeidsgiver: { id: '123456789' } },
+            },
+            resultat: undefined,
+        });
+        expect(harEndretEgetUttak([lagretISkjema], [vedtattGradert])).toBe(false);
+    });
+
+    it('returnerer false når bruker bare sletter en avslått periode, og true når bruker søker på nytt', () => {
+        const avslått = lagPeriode({
+            fom: '2025-01-06',
+            tom: '2025-01-17',
+            resultat: { innvilget: false, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+        });
+        const omsøktPåNytt = lagPeriode({ fom: '2025-01-06', tom: '2025-01-17', resultat: undefined });
+
+        expect(harEndretEgetUttak([A, B, C], [A, B, C, avslått])).toBe(false);
+        expect(harEndretEgetUttak([A, B, C, omsøktPåNytt], [A, B, C, avslått])).toBe(true);
+    });
 });
 
 describe('finnNyeEllerEndredePerioder og harBrukerKunSlettetPerioder ved samtidig uttak', () => {
