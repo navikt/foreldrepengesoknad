@@ -420,17 +420,14 @@ describe('useTidligereUttaksplan', () => {
                     steps: useStepConfig({ arbeidsforhold: [], harRegistrertNæring: false }),
                 }),
                 {
-                    wrapper: getWrapper(
-                        lagUttaksplan(perioder),
-                        {
-                            initialState: {
-                                [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
-                                [ContextDataType.UTTAKSPLAN]: [],
-                            },
-                            route: SøknadRoutes.UTTAKSPLAN,
-                            valgtSak: { ...SAK_MED_VEDTAK, kanSøkeOmEndring },
+                    wrapper: getWrapper(lagUttaksplan(perioder), {
+                        initialState: {
+                            [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
+                            [ContextDataType.UTTAKSPLAN]: [],
                         },
-                    ),
+                        route: SøknadRoutes.UTTAKSPLAN,
+                        valgtSak: { ...SAK_MED_VEDTAK, kanSøkeOmEndring },
+                    }),
                 },
             );
             expect(result.current.tidligere.perioder).toEqual(perioder);
@@ -453,17 +450,14 @@ describe('useTidligereUttaksplan', () => {
                 steps: useStepConfig({ arbeidsforhold: [], harRegistrertNæring: false }),
             }),
             {
-                wrapper: getWrapper(
-                    lagUttaksplan(PERIODER),
-                    {
-                        initialState: {
-                            [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
-                            [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: snapshot,
-                        },
-                        route: SøknadRoutes.UTTAKSPLAN,
-                        valgtSak: null,
+                wrapper: getWrapper(lagUttaksplan(PERIODER), {
+                    initialState: {
+                        [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
+                        [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: snapshot,
                     },
-                ),
+                    route: SøknadRoutes.UTTAKSPLAN,
+                    valgtSak: null,
+                }),
             },
         );
         expect(result.current.tidligere.isLoading).toBe(true);
@@ -480,15 +474,12 @@ describe('useTidligereUttaksplan', () => {
 
     it('viser bakgrunnsfeil og beholder backendplanen i cache for en sak med vedtak', async () => {
         const onDispatch = vi.fn();
-        const Wrapper = getWrapper(
-            lagUttaksplan(PERIODER),
-            {
-                initialState: { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER },
-                onDispatch,
-                route: SøknadRoutes.UTTAKSPLAN,
-                valgtSak: SAK_MED_VEDTAK,
-            },
-        );
+        const Wrapper = getWrapper(lagUttaksplan(PERIODER), {
+            initialState: { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER },
+            onDispatch,
+            route: SøknadRoutes.UTTAKSPLAN,
+            valgtSak: SAK_MED_VEDTAK,
+        });
         const { result } = renderHook(
             () => ({ tidligere: useTidligereUttaksplan(), client: useQueryClient(), state: useContextComplete() }),
             {
@@ -648,10 +639,10 @@ describe('useTidligereUttaksplan', () => {
         const onDispatch = vi.fn();
 
         renderHook(() => useTidligereUttaksplan({ eksisterendeSak: SAK_MED_VEDTAK }), {
-            wrapper: getWrapper(
-                lagUttaksplan(PERIODER),
-                { initialState: { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER }, onDispatch },
-            ),
+            wrapper: getWrapper(lagUttaksplan(PERIODER), {
+                initialState: { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER },
+                onDispatch,
+            }),
         });
 
         await waitFor(() =>
@@ -680,16 +671,13 @@ describe('useTidligereUttaksplan', () => {
         const onDispatch = vi.fn();
 
         renderHook(() => useTidligereUttaksplan({ eksisterendeSak: SAK_MED_VEDTAK }), {
-            wrapper: getWrapper(
-                lagUttaksplan(PERIODER),
-                {
-                    initialState: {
-                        [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
-                        [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: [] },
-                    },
-                    onDispatch,
+            wrapper: getWrapper(lagUttaksplan(PERIODER), {
+                initialState: {
+                    [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
+                    [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: [] },
                 },
-            ),
+                onDispatch,
+            }),
         });
 
         expect(onDispatch).not.toHaveBeenCalled();
@@ -814,19 +802,16 @@ describe('useTidligereUttaksplan', () => {
                 state: useContextComplete(),
             }),
             {
-                wrapper: getWrapper(
-                    lagUttaksplan(PERIODER),
-                    {
-                        initialState: {
-                            [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: snapshot ? SAKSNUMMER : undefined,
-                            [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: snapshot
-                                ? { saksnummer: SAKSNUMMER, perioder: PERIODER }
-                                : undefined,
-                            [ContextDataType.UTTAKSPLAN]: plan,
-                        },
-                        route: SøknadRoutes.UTTAKSPLAN,
+                wrapper: getWrapper(lagUttaksplan(PERIODER), {
+                    initialState: {
+                        [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: snapshot ? SAKSNUMMER : undefined,
+                        [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: snapshot
+                            ? { saksnummer: SAKSNUMMER, perioder: PERIODER }
+                            : undefined,
+                        [ContextDataType.UTTAKSPLAN]: plan,
                     },
-                ),
+                    route: SøknadRoutes.UTTAKSPLAN,
+                }),
             },
         );
         act(() => result.current.navigator.goToPreviousDefaultStep());
