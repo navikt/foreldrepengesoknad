@@ -318,27 +318,11 @@ export type UttakUkerOgDager = {
 };
 
 export const finnAntallUkerOgDagerMedForeldrepenger = (stønadskvote: KontoBeregningDto): UttakUkerOgDager => {
-    const { kontoer } = stønadskvote;
-    let uker = 0;
-    let totaltAntallDager = 0;
-    let dager = 0;
-
-    const kontoerLength = kontoer.length;
-    for (let index = 0; index < kontoerLength; index++) {
-        if (!Object.hasOwn(kontoer, index)) {
-            continue;
-        }
-
-        const konto = kontoer[index]!;
-        uker += Math.round(konto.dager / 5);
-        totaltAntallDager += konto.dager;
-
-        dager = index === kontoer.length - 1 ? totaltAntallDager % 5 : totaltAntallDager;
-    }
+    const totaltAntallDager = stønadskvote.kontoer.reduce((sum, konto) => sum + konto.dager, 0);
 
     return {
-        uker,
-        dager,
+        uker: Math.floor(totaltAntallDager / 5),
+        dager: totaltAntallDager % 5,
     };
 };
 
