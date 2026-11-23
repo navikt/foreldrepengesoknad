@@ -11,10 +11,10 @@ import { FpSak_fpoversikt, UttakPeriodeDto } from '@navikt/fp-types';
 import { OppstartValg } from '../../../types/Fordeling';
 import { tilpassFødselspermisjon } from './tilpassFødselspermisjon';
 
-export const useTidligereUttaksplan = (
+export const useTidligereUttaksplan = ({
     erEndringssøknad = false,
-    eksisterendeSak?: FpSak_fpoversikt,
-): {
+    eksisterendeSak,
+}: { erEndringssøknad?: boolean; eksisterendeSak?: FpSak_fpoversikt } = {}): {
     perioder: UttakPeriodeDto[] | undefined;
     erAnnenPartRedigerbar: boolean;
     kreverManuellTilpasning: boolean;

@@ -56,8 +56,7 @@ export const mapArbeidsforholdToVelgArbeidOptions = (
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     termindato: string,
     intl: IntlShape,
-    frilans?: Frilans,
-    egenNæring?: NæringDto,
+    { frilans, egenNæring }: { frilans?: Frilans; egenNæring?: NæringDto } = {},
 ): VelgArbeidsforholdOptions[] => {
     const unikeArbeidsforhold = getArbeidsforholdTilretteleggingOptions(arbeidsforhold, termindato, intl);
     const næringValg =

@@ -91,15 +91,19 @@ const OmBarnetEtterStart = ({ person }: { person: FpPersonopplysningerDto_fpover
     ) : null;
 };
 
-const setup = (
-    initialState: ContextDataMap = {},
+const setup = ({
+    initialState = {},
     valgtSak = sak,
-    tidligereSaker: FpSak_fpoversikt[] = [],
-    {
-        visOmBarnet = false,
-        registrerteBarn = [],
-    }: { visOmBarnet?: boolean; registrerteBarn?: FpPersonopplysningerDto_fpoversikt['barn'] } = {},
-) => {
+    tidligereSaker = [],
+    visOmBarnet = false,
+    registrerteBarn = [],
+}: {
+    initialState?: ContextDataMap;
+    valgtSak?: FpSak_fpoversikt;
+    tidligereSaker?: FpSak_fpoversikt[];
+    visOmBarnet?: boolean;
+    registrerteBarn?: FpPersonopplysningerDto_fpoversikt['barn'];
+} = {}) => {
     const client = new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: Infinity } } });
     client.setQueryData(queryKey, tidligerePlan);
     const saker = [valgtSak, ...tidligereSaker];
@@ -165,10 +169,9 @@ describe('useStartSøknad', () => {
     it.each(['2024-01-15', undefined])(
         'henter adopsjonsplan uten barnets fødselsnummer, med fødselsdato %s',
         async (fødselsdato) => {
-            const { result, values, client } = setup(
-                {},
-                { ...adopsjonssak, familiehendelse: { ...adopsjonssak.familiehendelse, fødselsdato } },
-            );
+            const { result, values, client } = setup({
+                valgtSak: { ...adopsjonssak, familiehendelse: { ...adopsjonssak.familiehendelse, fødselsdato } },
+            });
             client.setQueryData(adopsjonQueryKey, tidligerePlan);
             const fetch = vi.spyOn(client, 'fetchQuery');
             await act(() => result.current.startSøknad(values));
@@ -191,7 +194,8 @@ describe('useStartSøknad', () => {
         { registrert: true, endretDato: false },
         { registrert: true, endretDato: true },
     ])('nullstiller adopsjonsplan bare ved endret dato: %j', async ({ registrert, endretDato }) => {
-        const { result, values, client } = setup({}, adopsjonssak, [], {
+        const { result, values, client } = setup({
+            valgtSak: adopsjonssak,
             visOmBarnet: true,
             registrerteBarn: registrert
                 ? [
@@ -237,16 +241,16 @@ describe('useStartSøknad', () => {
 
     it('initialiserer barnet på nytt for samme vedtatte sak uten å nullstille planen', async () => {
         const snapshot = { saksnummer: sak.saksnummer, perioder: tidligerePlan.perioder };
-        const { result, values, client } = setup(
-            {
+        const { result, values, client } = setup({
+            initialState: {
                 [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: sak.saksnummer,
                 [ContextDataType.SØKERSITUASJON]: { situasjon: 'fødsel', rolle: 'mor' },
                 [ContextDataType.OM_BARNET]: { type: BarnType.UFØDT, antallBarn: 2, termindato: '2026-07-01' },
                 [ContextDataType.UTTAKSPLAN]: [],
                 [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: snapshot,
             },
-            { ...sak, gjeldendeVedtak: { perioder: [] } },
-        );
+            valgtSak: { ...sak, gjeldendeVedtak: { perioder: [] } },
+        });
         const fetch = vi.spyOn(client, 'fetchQuery');
         await act(() => result.current.startSøknad(values));
         expect(fetch).not.toHaveBeenCalled();
@@ -269,15 +273,15 @@ describe('useStartSøknad', () => {
             gjeldendeVedtak: utenVedtak ? undefined : { perioder: [] },
         };
         const snapshot = { saksnummer: forrigeSak.saksnummer, perioder: tidligerePlan.perioder };
-        const { result, values } = setup(
-            {
+        const { result, values } = setup({
+            initialState: {
                 [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: forrigeSak.saksnummer,
                 [ContextDataType.UTTAKSPLAN]: tidligerePlan.perioder,
                 [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: snapshot,
             },
-            { ...sak, gjeldendeVedtak: { perioder: [] }, kanSøkeOmEndring: neste === 'endring' },
-            [forrigeSak],
-        );
+            valgtSak: { ...sak, gjeldendeVedtak: { perioder: [] }, kanSøkeOmEndring: neste === 'endring' },
+            tidligereSaker: [forrigeSak],
+        });
         await act(() =>
             result.current.startSøknad({
                 ...values,
@@ -376,9 +380,11 @@ describe('useStartSøknad', () => {
 
     it('henter ikke gammel plan ved gjenopptak av en eldre lagring uten snapshot', async () => {
         const { result, values, client } = setup({
-            [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: sak.saksnummer,
-            [ContextDataType.SØKERSITUASJON]: { situasjon: 'fødsel', rolle: 'mor' },
-            [ContextDataType.OM_BARNET]: { type: BarnType.UFØDT, antallBarn: 2, termindato: '2026-07-01' },
+            initialState: {
+                [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: sak.saksnummer,
+                [ContextDataType.SØKERSITUASJON]: { situasjon: 'fødsel', rolle: 'mor' },
+                [ContextDataType.OM_BARNET]: { type: BarnType.UFØDT, antallBarn: 2, termindato: '2026-07-01' },
+            },
         });
         const fetch = vi.spyOn(client, 'fetchQuery');
         await act(() => result.current.startSøknad(values));
@@ -388,14 +394,13 @@ describe('useStartSøknad', () => {
     });
 
     it('beholder direkte start på uttaksplan for endringssøknad med vedtak', async () => {
-        const { result, values, client } = setup(
-            {},
-            {
+        const { result, values, client } = setup({
+            valgtSak: {
                 ...sak,
                 kanSøkeOmEndring: true,
                 gjeldendeVedtak: { perioder: [] },
             },
-        );
+        });
         const fetch = vi.spyOn(client, 'fetchQuery');
         await act(() => result.current.startSøknad(values));
         expect(fetch).not.toHaveBeenCalled();

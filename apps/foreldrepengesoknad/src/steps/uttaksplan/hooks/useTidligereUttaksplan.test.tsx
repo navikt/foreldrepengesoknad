@@ -286,18 +286,16 @@ describe('fødselspermisjon i mors plan', () => {
     it('bruker fars ja-svar når mors plan er låst', () => {
         const uttaksplan = { ...lagUttaksplan(morsPerioder), annenPartRedigerbar: false };
         const { result } = renderHook(() => useTidligereUttaksplan(), {
-            wrapper: getWrapper(
-                uttaksplan,
-                {
+            wrapper: getWrapper(uttaksplan, {
+                initialState: {
                     [ContextDataType.SØKERSITUASJON]: { situasjon: 'fødsel', rolle: 'far' },
                     [ContextDataType.FORDELING]: {
                         oppstartAvForeldrepengerValg: OppstartValg.FAMILIEHENDELSESDATO,
                     },
                 },
-                undefined,
-                SøknadRoutes.UTTAKSPLAN,
-                null,
-            ),
+                route: SøknadRoutes.UTTAKSPLAN,
+                valgtSak: null,
+            }),
         });
         expect(result.current.perioder).toEqual(medFødselspermisjon);
         expect(result.current.kreverManuellTilpasning).toBe(false);
@@ -307,18 +305,16 @@ describe('fødselspermisjon i mors plan', () => {
     it('bruker fars svar i en ny søknad uten å endre mors innlastede plan', () => {
         const uttaksplan = lagUttaksplan(medFødselspermisjon);
         const { result } = renderHook(() => useTidligereUttaksplan(), {
-            wrapper: getWrapper(
-                uttaksplan,
-                {
+            wrapper: getWrapper(uttaksplan, {
+                initialState: {
                     [ContextDataType.SØKERSITUASJON]: { situasjon: 'fødsel', rolle: 'far' },
                     [ContextDataType.FORDELING]: {
                         oppstartAvForeldrepengerValg: OppstartValg.IKKE_VED_FØDSEL,
                     },
                 },
-                undefined,
-                SøknadRoutes.UTTAKSPLAN,
-                null,
-            ),
+                route: SøknadRoutes.UTTAKSPLAN,
+                valgtSak: null,
+            }),
         });
 
         expect(result.current.perioder).toEqual(morsPerioder);
@@ -328,10 +324,17 @@ describe('fødselspermisjon i mors plan', () => {
 
 const getWrapper = (
     uttaksplan: FellesUttaksplanDto,
-    initialState?: ContextDataMap,
-    onDispatch?: (action: Action) => void,
-    route = SøknadRoutes.PERIODE_MED_FORELDREPENGER,
-    valgtSak: FpSak_fpoversikt | null = SAK_UTEN_VEDTAK,
+    {
+        initialState,
+        onDispatch,
+        route = SøknadRoutes.PERIODE_MED_FORELDREPENGER,
+        valgtSak = SAK_UTEN_VEDTAK,
+    }: {
+        initialState?: ContextDataMap;
+        onDispatch?: (action: Action) => void;
+        route?: SøknadRoutes;
+        valgtSak?: FpSak_fpoversikt | null;
+    } = {},
 ) => {
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: Infinity } } });
     queryClient.setQueryData(['UTTAKSPLAN', getUttaksplanParam(ANNEN_FORELDER, BARN)], uttaksplan);
@@ -362,13 +365,7 @@ const getWrapper = (
 describe('useTidligereUttaksplan', () => {
     it.each([true, false])('videresender annenPartRedigerbar=%s frå backend', (annenPartRedigerbar) => {
         const { result } = renderHook(() => useTidligereUttaksplan(), {
-            wrapper: getWrapper(
-                { ...lagUttaksplan(PERIODER), annenPartRedigerbar },
-                undefined,
-                undefined,
-                undefined,
-                null,
-            ),
+            wrapper: getWrapper({ ...lagUttaksplan(PERIODER), annenPartRedigerbar }, { valgtSak: null }),
         });
         expect(result.current.erAnnenPartRedigerbar).toBe(annenPartRedigerbar);
     });
@@ -397,7 +394,7 @@ describe('useTidligereUttaksplan', () => {
     it('beholder tidligere fallback når valgt saksnummer ikke finnes i sakslisten', () => {
         const { result } = renderHook(() => ({ tidligere: useTidligereUttaksplan(), state: useContextComplete() }), {
             wrapper: getWrapper(lagUttaksplan(PERIODER), {
-                [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: 'annen-sak',
+                initialState: { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: 'annen-sak' },
             }),
         });
         expect(result.current.tidligere.perioder).toEqual(PERIODER);
@@ -423,13 +420,14 @@ describe('useTidligereUttaksplan', () => {
                     steps: useStepConfig({ arbeidsforhold: [], harRegistrertNæring: false }),
                 }),
                 {
-                    wrapper: getWrapper(
-                        lagUttaksplan(perioder),
-                        { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER, [ContextDataType.UTTAKSPLAN]: [] },
-                        undefined,
-                        SøknadRoutes.UTTAKSPLAN,
-                        { ...SAK_MED_VEDTAK, kanSøkeOmEndring },
-                    ),
+                    wrapper: getWrapper(lagUttaksplan(perioder), {
+                        initialState: {
+                            [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
+                            [ContextDataType.UTTAKSPLAN]: [],
+                        },
+                        route: SøknadRoutes.UTTAKSPLAN,
+                        valgtSak: { ...SAK_MED_VEDTAK, kanSøkeOmEndring },
+                    }),
                 },
             );
             expect(result.current.tidligere.perioder).toEqual(perioder);
@@ -452,16 +450,14 @@ describe('useTidligereUttaksplan', () => {
                 steps: useStepConfig({ arbeidsforhold: [], harRegistrertNæring: false }),
             }),
             {
-                wrapper: getWrapper(
-                    lagUttaksplan(PERIODER),
-                    {
+                wrapper: getWrapper(lagUttaksplan(PERIODER), {
+                    initialState: {
                         [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
                         [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: snapshot,
                     },
-                    undefined,
-                    SøknadRoutes.UTTAKSPLAN,
-                    null,
-                ),
+                    route: SøknadRoutes.UTTAKSPLAN,
+                    valgtSak: null,
+                }),
             },
         );
         expect(result.current.tidligere.isLoading).toBe(true);
@@ -478,13 +474,12 @@ describe('useTidligereUttaksplan', () => {
 
     it('viser bakgrunnsfeil og beholder backendplanen i cache for en sak med vedtak', async () => {
         const onDispatch = vi.fn();
-        const Wrapper = getWrapper(
-            lagUttaksplan(PERIODER),
-            { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER },
+        const Wrapper = getWrapper(lagUttaksplan(PERIODER), {
+            initialState: { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER },
             onDispatch,
-            SøknadRoutes.UTTAKSPLAN,
-            SAK_MED_VEDTAK,
-        );
+            route: SøknadRoutes.UTTAKSPLAN,
+            valgtSak: SAK_MED_VEDTAK,
+        });
         const { result } = renderHook(
             () => ({ tidligere: useTidligereUttaksplan(), client: useQueryClient(), state: useContextComplete() }),
             {
@@ -558,7 +553,9 @@ describe('useTidligereUttaksplan', () => {
 
     it('bruker annen parts plan før vedtak når søker har valgt samme dekningsgrad', () => {
         const { result } = renderHook(() => useTidligereUttaksplan(), {
-            wrapper: getWrapper(lagUttaksplan(PERIODER), { [ContextDataType.PERIODE_MED_FORELDREPENGER]: '100' }),
+            wrapper: getWrapper(lagUttaksplan(PERIODER), {
+                initialState: { [ContextDataType.PERIODE_MED_FORELDREPENGER]: '100' },
+            }),
         });
 
         expect(result.current.perioder).toEqual(PERIODER);
@@ -566,7 +563,9 @@ describe('useTidligereUttaksplan', () => {
 
     it('bruker ikke annen parts plan før vedtak når søker har valgt en annen dekningsgrad', () => {
         const { result } = renderHook(() => useTidligereUttaksplan(), {
-            wrapper: getWrapper(lagUttaksplan(PERIODER), { [ContextDataType.PERIODE_MED_FORELDREPENGER]: '80' }),
+            wrapper: getWrapper(lagUttaksplan(PERIODER), {
+                initialState: { [ContextDataType.PERIODE_MED_FORELDREPENGER]: '80' },
+            }),
         });
 
         expect(result.current.perioder).toBeUndefined();
@@ -579,7 +578,7 @@ describe('useTidligereUttaksplan', () => {
         };
         const { result } = renderHook(() => useTidligereUttaksplan(), {
             wrapper: getWrapper(lagUttaksplan([PERIODER[0]!, vedtak]), {
-                [ContextDataType.PERIODE_MED_FORELDREPENGER]: '80',
+                initialState: { [ContextDataType.PERIODE_MED_FORELDREPENGER]: '80' },
             }),
         });
 
@@ -618,8 +617,10 @@ describe('useTidligereUttaksplan', () => {
     });
 
     it('returnerer alle periodane når ei eksisterande sak er valt', () => {
-        const { result } = renderHook(() => useTidligereUttaksplan(false, SAK_MED_VEDTAK), {
-            wrapper: getWrapper(lagUttaksplan(PERIODER), { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER }),
+        const { result } = renderHook(() => useTidligereUttaksplan({ eksisterendeSak: SAK_MED_VEDTAK }), {
+            wrapper: getWrapper(lagUttaksplan(PERIODER), {
+                initialState: { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER },
+            }),
         });
 
         expect(result.current.perioder).toEqual(PERIODER);
@@ -637,12 +638,11 @@ describe('useTidligereUttaksplan', () => {
     it('lagrar snapshot av opprinneleg uttaksplan når ei eksisterande sak er valt', async () => {
         const onDispatch = vi.fn();
 
-        renderHook(() => useTidligereUttaksplan(false, SAK_MED_VEDTAK), {
-            wrapper: getWrapper(
-                lagUttaksplan(PERIODER),
-                { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER },
+        renderHook(() => useTidligereUttaksplan({ eksisterendeSak: SAK_MED_VEDTAK }), {
+            wrapper: getWrapper(lagUttaksplan(PERIODER), {
+                initialState: { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER },
                 onDispatch,
-            ),
+            }),
         });
 
         await waitFor(() =>
@@ -661,7 +661,7 @@ describe('useTidligereUttaksplan', () => {
         const onDispatch = vi.fn();
 
         renderHook(() => useTidligereUttaksplan(), {
-            wrapper: getWrapper(lagUttaksplan(PERIODER), undefined, onDispatch),
+            wrapper: getWrapper(lagUttaksplan(PERIODER), { onDispatch }),
         });
 
         expect(onDispatch).not.toHaveBeenCalled();
@@ -670,15 +670,14 @@ describe('useTidligereUttaksplan', () => {
     it('overskriv ikkje eit eksisterande snapshot ved refetch', () => {
         const onDispatch = vi.fn();
 
-        renderHook(() => useTidligereUttaksplan(false, SAK_MED_VEDTAK), {
-            wrapper: getWrapper(
-                lagUttaksplan(PERIODER),
-                {
+        renderHook(() => useTidligereUttaksplan({ eksisterendeSak: SAK_MED_VEDTAK }), {
+            wrapper: getWrapper(lagUttaksplan(PERIODER), {
+                initialState: {
                     [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
                     [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: [] },
                 },
                 onDispatch,
-            ),
+            }),
         });
 
         expect(onDispatch).not.toHaveBeenCalled();
@@ -687,8 +686,10 @@ describe('useTidligereUttaksplan', () => {
     it.each([undefined, []])('henter ikke tilbake egen plan fra en eldre lagring med uttaksplan %j', (plan) => {
         const { result } = renderHook(() => useTidligereUttaksplan(), {
             wrapper: getWrapper(lagUttaksplan(PERIODER), {
-                [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
-                [ContextDataType.UTTAKSPLAN]: plan,
+                initialState: {
+                    [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
+                    [ContextDataType.UTTAKSPLAN]: plan,
+                },
             }),
         });
 
@@ -705,9 +706,11 @@ describe('useTidligereUttaksplan', () => {
             }),
             {
                 wrapper: getWrapper(lagUttaksplan(PERIODER), {
-                    [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
-                    [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: PERIODER },
-                    [ContextDataType.UTTAKSPLAN]: PERIODER,
+                    initialState: {
+                        [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
+                        [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: PERIODER },
+                        [ContextDataType.UTTAKSPLAN]: PERIODER,
+                    },
                 }),
             },
         );
@@ -734,7 +737,7 @@ describe('useTidligereUttaksplan', () => {
         };
         const { result } = renderHook(() => useTidligereUttaksplan(), {
             wrapper: getWrapper(lagUttaksplan([PERIODER[0]!, { ...PERIODER[1]!, annenPart }, ferie]), {
-                [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
+                initialState: { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER },
             }),
         });
         expect(result.current.perioder).toEqual([{ ...PERIODER[1]!, annenPart }, ferie]);
@@ -743,8 +746,10 @@ describe('useTidligereUttaksplan', () => {
     it('forkaster snapshot fra en eldre lagring når gjeldende plan er undefined', () => {
         const { result } = renderHook(() => ({ tidligere: useTidligereUttaksplan(), state: useContextComplete() }), {
             wrapper: getWrapper(lagUttaksplan(PERIODER), {
-                [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
-                [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: PERIODER },
+                initialState: {
+                    [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
+                    [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: PERIODER },
+                },
             }),
         });
         expect(result.current.tidligere.perioder).toEqual([PERIODER[1]]);
@@ -764,9 +769,11 @@ describe('useTidligereUttaksplan', () => {
             }),
             {
                 wrapper: getWrapper(lagUttaksplan(PERIODER), {
-                    [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
-                    [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: PERIODER },
-                    [ContextDataType.UTTAKSPLAN]: PERIODER,
+                    initialState: {
+                        [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
+                        [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: PERIODER },
+                        [ContextDataType.UTTAKSPLAN]: PERIODER,
+                    },
                 }),
             },
         );
@@ -795,18 +802,16 @@ describe('useTidligereUttaksplan', () => {
                 state: useContextComplete(),
             }),
             {
-                wrapper: getWrapper(
-                    lagUttaksplan(PERIODER),
-                    {
+                wrapper: getWrapper(lagUttaksplan(PERIODER), {
+                    initialState: {
                         [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: snapshot ? SAKSNUMMER : undefined,
                         [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: snapshot
                             ? { saksnummer: SAKSNUMMER, perioder: PERIODER }
                             : undefined,
                         [ContextDataType.UTTAKSPLAN]: plan,
                     },
-                    undefined,
-                    SøknadRoutes.UTTAKSPLAN,
-                ),
+                    route: SøknadRoutes.UTTAKSPLAN,
+                }),
             },
         );
         act(() => result.current.navigator.goToPreviousDefaultStep());
@@ -831,14 +836,16 @@ describe('useTidligereUttaksplan', () => {
             },
             {
                 wrapper: getWrapper(lagUttaksplan([PERIODER[0]!]), {
-                    [ContextDataType.SØKERSITUASJON]: { rolle: 'mor', situasjon: 'fødsel' },
-                    [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
-                    [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: PERIODER },
-                    [ContextDataType.UTTAKSPLAN]: PERIODER,
-                    [ContextDataType.FORDELING]: {
-                        oppstartAvForeldrepengerValg: OppstartValg.ANNEN_DATO,
-                        oppstartDato: '2024-12-11',
-                        fordelingValg: FellesperiodeFordelingValg.ALT,
+                    initialState: {
+                        [ContextDataType.SØKERSITUASJON]: { rolle: 'mor', situasjon: 'fødsel' },
+                        [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
+                        [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: PERIODER },
+                        [ContextDataType.UTTAKSPLAN]: PERIODER,
+                        [ContextDataType.FORDELING]: {
+                            oppstartAvForeldrepengerValg: OppstartValg.ANNEN_DATO,
+                            oppstartDato: '2024-12-11',
+                            fordelingValg: FellesperiodeFordelingValg.ALT,
+                        },
                     },
                 }),
             },
@@ -864,7 +871,7 @@ describe('useTidligereUttaksplan', () => {
                 state: useContextComplete(),
                 client: useQueryClient(),
             }),
-            { wrapper: getWrapper(lagUttaksplan(PERIODER), state) },
+            { wrapper: getWrapper(lagUttaksplan(PERIODER), { initialState: state }) },
         );
         act(() => {
             result.current.client.setQueryData(
@@ -876,7 +883,7 @@ describe('useTidligereUttaksplan', () => {
         expect(result.current.tidligere.perioder).toEqual(PERIODER);
         unmount();
         const gjenopptatt = renderHook(() => ({ tidligere: useTidligereUttaksplan(), state: useContextComplete() }), {
-            wrapper: getWrapper(lagUttaksplan([]), state),
+            wrapper: getWrapper(lagUttaksplan([]), { initialState: state }),
         });
         expect(gjenopptatt.result.current.state.UTTAKSPLAN).toEqual(redigertPlan);
         expect(gjenopptatt.result.current.tidligere.perioder).toEqual(PERIODER);
@@ -906,11 +913,13 @@ describe('useTidligereUttaksplan', () => {
             }),
             {
                 wrapper: getWrapper(vedtak, {
-                    [ContextDataType.KOMMER_FRA_PLANLEGGER]: kommerFraPlanlegger,
-                    [ContextDataType.SØKERSITUASJON]: { rolle: 'far', situasjon: 'fødsel' },
-                    [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
-                    [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: PERIODER },
-                    [ContextDataType.UTTAKSPLAN]: PERIODER,
+                    initialState: {
+                        [ContextDataType.KOMMER_FRA_PLANLEGGER]: kommerFraPlanlegger,
+                        [ContextDataType.SØKERSITUASJON]: { rolle: 'far', situasjon: 'fødsel' },
+                        [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
+                        [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: PERIODER },
+                        [ContextDataType.UTTAKSPLAN]: PERIODER,
+                    },
                 }),
             },
         );
