@@ -162,7 +162,10 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
 
         // Hvis annenPartHarVedtak så har parten rett til foreldrepenger. I det tilfellet vises ikke det valget og verdien er undefined.
         // Derfor settes den true hvis vi har vedtak, og ellers brukes form-verdien
-        const harRettPåForeldrepengerINorge = annenPartHarVedtak || values.harRettPåForeldrepengerINorge;
+        // Ved aleneomsorg vises ikke spørsmålet heller, og da skal annen part ikke regnes å ha rett.
+        const harRettPåForeldrepengerINorge = values.erAleneOmOmsorg
+            ? values.harRettPåForeldrepengerINorge
+            : annenPartHarVedtak || values.harRettPåForeldrepengerINorge;
         const harRettPåForeldrepengerIEØS = values.harOppholdtSegIEØS ? values.harRettPåForeldrepengerIEØS : false;
         const oppdatertAnnenForelder: AnnenForelderOppgitt = {
             ...values,

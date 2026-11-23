@@ -16,6 +16,7 @@ import { useUttaksplanRedigering } from '../../context/UttaksplanRedigeringConte
 import {
     LeggTilEllerEndrePeriodeFellesForm,
     LeggTilEllerEndrePeriodeFormFormValues,
+    beholdLåstAnnenPartsSamtidigeUttak,
     lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm,
     mapFraFormValuesTilPeriodeDto,
 } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
@@ -237,7 +238,11 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
             }
             const mapped = omitMany(values, ['fom', 'tom', 'hvaVilDuGjøre']);
             handleAddPeriode(
-                mapFraFormValuesTilPeriodeDto(mapped, { fom, tom }, søker, kanVelgeArbeidsgiver),
+                beholdLåstAnnenPartsSamtidigeUttak(
+                    mapFraFormValuesTilPeriodeDto(mapped, { fom, tom }, søker, kanVelgeArbeidsgiver),
+                    allePerioder,
+                    erPeriodeneTilAnnenPartLåst,
+                ),
                 skalForskyve,
             );
         }

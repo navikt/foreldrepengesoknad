@@ -107,6 +107,7 @@ describe('<AppContainer>', () => {
             gjeldendeVedtak: flyt === 'vedtak' ? { perioder: [] } : undefined,
         };
         const fellesPlan: FellesUttaksplanDto = {
+            annenPartRedigerbar: false,
             antallBarn: 2,
             termindato: '2025-05-01',
             dekningsgrad: 'ÅTTI',
@@ -376,6 +377,7 @@ describe('<AppContainer>', () => {
                                 return HttpResponse.json({
                                     antallBarn: returnerEndretPlan ? 2 : 1,
                                     dekningsgrad: 'ÅTTI',
+                                    annenPartRedigerbar: false,
                                     perioder: [],
                                 } satisfies FellesUttaksplanDto);
                             }),
@@ -422,6 +424,7 @@ describe('<AppContainer>', () => {
                                 return HttpResponse.json({
                                     antallBarn: annenPartFødselsnummer ? 1 : 2,
                                     dekningsgrad: 'ÅTTI',
+                                    annenPartRedigerbar: false,
                                     perioder: [],
                                 } satisfies FellesUttaksplanDto);
                             }),
