@@ -5,7 +5,7 @@ import { Uttaksdagen } from '@navikt/fp-utils';
 import { deltUttak } from '@navikt/fp-uttaksplan';
 
 import { HvemPlanlegger, HvemPlanleggerType } from '../types/HvemPlanlegger';
-import { finnUttaksdata } from './uttakUtils';
+import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from './uttakUtils';
 
 const KONTOER: KontoDto[] = [
     { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
@@ -101,5 +101,42 @@ describe('finnUttaksdata - delt uttak, fødsel', () => {
         expect(uttaksdata.sluttdatoPeriode1).toEqual(morsPerioder.at(-1)!.tom);
         expect(uttaksdata.startdatoPeriode2).toEqual(farsPerioder[0]!.fom);
         expect(uttaksdata.sluttdatoPeriode2).toEqual(farsPerioder.at(-1)!.tom);
+    });
+});
+
+describe('finnAntallUkerOgDagerMedForeldrepenger', () => {
+    it('skal vise 594 stønadsdager for tre barn med 80 % dekning som 118 uker og 4 dager', () => {
+        const stønadskvote: KontoBeregningDto = {
+            kontoer: [
+                { konto: 'FORELDREPENGER_FØR_FØDSEL', dager: 15 },
+                { konto: 'MØDREKVOTE', dager: 95 },
+                { konto: 'FEDREKVOTE', dager: 95 },
+                { konto: 'FELLESPERIODE', dager: 389 },
+            ],
+            minsteretter: { farRundtFødsel: 10, toTette: 0 },
+            tillegg: { flerbarn: 299, prematur: 0 },
+        };
+
+        expect(finnAntallUkerOgDagerMedForeldrepenger(stønadskvote)).toEqual({ uker: 118, dager: 4 });
+    });
+
+    it('skal gi uker og dager som summerer til totalt antall stønadsdager uavhengig av kontofordeling', () => {
+        const fordelinger = [
+            [3, 3, 3, 3],
+            [2, 2, 2, 2, 2],
+            [97, 98, 99, 300],
+            [15, 95, 95, 389],
+        ];
+
+        for (const dagerPerKonto of fordelinger) {
+            const kontoer: KontoDto[] = dagerPerKonto.map((dager) => ({ konto: 'FELLESPERIODE', dager }));
+            const { uker, dager } = finnAntallUkerOgDagerMedForeldrepenger({
+                kontoer,
+                minsteretter: { farRundtFødsel: 0, toTette: 0 },
+            });
+
+            expect(5 * uker + dager).toBe(dagerPerKonto.reduce((sum, d) => sum + d, 0));
+            expect(dager).toBeLessThan(5);
+        }
     });
 });
