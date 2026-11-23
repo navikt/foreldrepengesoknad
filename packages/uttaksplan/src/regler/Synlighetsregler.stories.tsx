@@ -30,6 +30,7 @@ import {
     VIS_LEGG_TIL_UTSETTELSE_VALG,
 } from './synlighet/hvaVilDuGjøreValg';
 import {
+    SKAL_DEAKTIVERE_FERIEKNAPP,
     SKAL_VISE_FERIEKNAPP,
     SKAL_VISE_LEGG_TIL_KNAPPETEKST,
     SKAL_VISE_PAUSEKNAPP,
@@ -145,7 +146,13 @@ const KNAPPER_I_REDIGERINGSPANEL_OMRÅDE: Synlighetsområde = {
         'Når brukeren har markert én eller flere dager i kalenderen, viser redigeringspanelet ulike ' +
         'handlingsknapper avhengig av søker, rettighet, familiesituasjon og hvor periodene ligger i ' +
         'forhold til familiehendelsesdatoen. Reglene under bestemmer hvilke knapper som faktisk vises.',
-    regler: [SKAL_VISE_UTSETTELSESKNAPP, SKAL_VISE_PAUSEKNAPP, SKAL_VISE_FERIEKNAPP, SKAL_VISE_LEGG_TIL_KNAPPETEKST],
+    regler: [
+        SKAL_VISE_UTSETTELSESKNAPP,
+        SKAL_VISE_PAUSEKNAPP,
+        SKAL_VISE_FERIEKNAPP,
+        SKAL_DEAKTIVERE_FERIEKNAPP,
+        SKAL_VISE_LEGG_TIL_KNAPPETEKST,
+    ],
 };
 
 const ALLE_SYNLIGHETSREGLER: readonly Synlighetsområde[] = [

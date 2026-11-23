@@ -12,6 +12,7 @@ export enum OppstartValg {
     ANKOMSTDATO_NORGE = 'ANKOMSTDATO_NORGE',
     DATO_FOR_ALENEOMSORG = 'DATO_FOR_ALENEOMSORG',
     ANNEN_DATO = 'ANNEN_DATO',
+    IKKE_VED_FØDSEL = 'IKKE_VED_FØDSEL',
 }
 
 export type Fordeling = {
