@@ -1,5 +1,6 @@
 import { BulletListIcon, CalendarIcon, PencilIcon, PersonGroupIcon } from '@navikt/aksel-icons';
 import {
+    ContextDataMap,
     ContextDataType,
     useContextComplete,
     useContextGetData,
@@ -49,6 +50,8 @@ import { PlanleggerStepPage } from '../../components/page/PlanleggerStepPage';
 import { barnehagestartDato } from '../barnehageplass/BarnehageplassSteg';
 import { HvaErMulig } from './hva-er-mulig/HvaErMulig';
 import { UforutsetteEndringer } from './uforutsette-endringer/UforutsetteEndringer';
+
+type AndreEndringer = Pick<ContextDataMap, ContextDataType.HVOR_LANG_PERIODE | ContextDataType.FORDELING>;
 
 interface Props {
     stønadskvoter: KontoBeregningResultatDto;
@@ -102,11 +105,15 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
         intl,
     );
 
-    const lagreUttaksplanOgOppdaterUrl = (oppdatertUttaksplan: UttakPeriodeDto[] | undefined) => {
+    const lagreUttaksplanOgOppdaterUrl = (
+        oppdatertUttaksplan: UttakPeriodeDto[] | undefined,
+        andreEndringer?: AndreEndringer,
+    ) => {
         lagreUttaksplan(oppdatertUttaksplan);
 
         const contextData = {
             ...completeAppContext,
+            ...andreEndringer,
             [ContextDataType.UTTAKSPLAN]: oppdatertUttaksplan,
         };
 
@@ -304,7 +311,10 @@ const AntallUkerVelger = ({
 }: {
     stønadskvoter: KontoBeregningResultatDto;
     hvemHarRett: HvemHarRett;
-    lagreUttaksplanOgOppdaterUrl: (oppdatertUttaksplan: UttakPeriodeDto[] | undefined) => void;
+    lagreUttaksplanOgOppdaterUrl: (
+        oppdatertUttaksplan: UttakPeriodeDto[] | undefined,
+        andreEndringer?: AndreEndringer,
+    ) => void;
 }) => {
     const intl = useIntl();
 
@@ -318,15 +328,19 @@ const AntallUkerVelger = ({
 
     const { isAtLeast480px } = useBreakpoints();
 
-    const oppdaterPeriodeOgFordeling = (value: Dekningsgrad) => {
-        const dekningsgrad = value;
-        lagreHvorLangPeriodePlanlegger({ dekningsgrad });
-        if (fordeling) {
-            lagreFordeling({
-                antallDagerSøker1: finnAntallDagerSøker1(dekningsgrad, stønadskvoter, fordeling),
-            });
+    const oppdaterPeriodeOgFordeling = (dekningsgrad: Dekningsgrad) => {
+        const nyHvorLangPeriode = { dekningsgrad };
+        lagreHvorLangPeriodePlanlegger(nyHvorLangPeriode);
+        const nyFordeling = fordeling
+            ? { antallDagerSøker1: finnAntallDagerSøker1(dekningsgrad, stønadskvoter, fordeling) }
+            : undefined;
+        if (nyFordeling) {
+            lagreFordeling(nyFordeling);
         }
-        lagreUttaksplanOgOppdaterUrl(undefined);
+        lagreUttaksplanOgOppdaterUrl(undefined, {
+            [ContextDataType.HVOR_LANG_PERIODE]: nyHvorLangPeriode,
+            [ContextDataType.FORDELING]: nyFordeling,
+        });
     };
 
     const stønadskvote100 = stønadskvoter['100'];
@@ -389,8 +403,11 @@ const AntallUkerVelger = ({
                             <FordelingSlider
                                 antallDagerSøker1={fordeling?.antallDagerSøker1}
                                 onAntallDagerSøker1Change={(value) => {
-                                    lagreFordeling({ antallDagerSøker1: value });
-                                    lagreUttaksplanOgOppdaterUrl(undefined);
+                                    const nyFordeling = { antallDagerSøker1: value };
+                                    lagreFordeling(nyFordeling);
+                                    lagreUttaksplanOgOppdaterUrl(undefined, {
+                                        [ContextDataType.FORDELING]: nyFordeling,
+                                    });
                                 }}
                                 antallUkerOgDagerFellesperiode={antallUkerOgDagerFellesperiode}
                                 fornavnSøker1={fornavnSøker1}
