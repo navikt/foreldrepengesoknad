@@ -129,6 +129,7 @@ const OmBarnetStegInner = ({
 
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const omBarnet = useContextGetData(ContextDataType.OM_BARNET);
+    const adopsjonFraPlanlegger = useContextGetData(ContextDataType.ADOPSJON_FRA_PLANLEGGER);
 
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
     const resetUttaksplanData = useResetUttaksplanData();
@@ -184,8 +185,8 @@ const OmBarnetStegInner = ({
     };
 
     const defaultValues = useMemo(
-        () => getOmBarnetInitialValues(arbeidsforhold, søkersituasjon, omBarnet, termindato),
-        [arbeidsforhold, omBarnet, termindato],
+        () => getOmBarnetInitialValues(arbeidsforhold, søkersituasjon, omBarnet, termindato, adopsjonFraPlanlegger),
+        [arbeidsforhold, omBarnet, termindato, adopsjonFraPlanlegger],
     );
     const formMethods = useForm<BarnetFormValues>({
         shouldUnregister: true,

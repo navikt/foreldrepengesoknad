@@ -42,12 +42,16 @@ export const SøkersituasjonSteg = ({
     const oppdaterSøkersituasjon = useContextSaveData(ContextDataType.SØKERSITUASJON);
     const barn = useContextGetData(ContextDataType.OM_BARNET);
     const kommerFraPlanlegger = useContextGetData(ContextDataType.KOMMER_FRA_PLANLEGGER);
+    const adopsjonFraPlanlegger = useContextGetData(ContextDataType.ADOPSJON_FRA_PLANLEGGER);
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
     const oppdaterUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
     const resetUttaksplanData = useResetUttaksplanData();
 
-    const situasjonFraBarn = barn && isAdoptertBarn(barn) ? 'adopsjon' : 'fødsel';
-    const defaultSituasjon = kommerFraPlanlegger && barn && !søkersituasjon?.situasjon ? situasjonFraBarn : undefined;
+    const situasjonFraBarn = adopsjonFraPlanlegger || (barn && isAdoptertBarn(barn)) ? 'adopsjon' : 'fødsel';
+    const defaultSituasjon =
+        kommerFraPlanlegger && (barn || adopsjonFraPlanlegger) && !søkersituasjon?.situasjon
+            ? situasjonFraBarn
+            : undefined;
 
     const formMethods = useForm<SøkersituasjonFp>({
         defaultValues: søkersituasjon ?? (defaultSituasjon ? { situasjon: defaultSituasjon } : undefined),

@@ -598,6 +598,49 @@ describe('<AppContainer>', () => {
         expect(screen.getByText('Steg 9 av 9')).toBeInTheDocument();
     });
 
+    it('skal forhåndsutfylle adopsjon fra planleggeren uten å svare på stebarnsadopsjon', async () => {
+        const adopsjonUrl = `/?${new URLSearchParams({
+            planleggerData: compressToUrl(
+                JSON.stringify({
+                    OM_BARNET: {
+                        erFødsel: false,
+                        antallBarn: '2',
+                        overtakelsesdato: '2026-05-05',
+                        fødselsdato: '2024-01-10',
+                    },
+                    HVOR_LANG_PERIODE: { dekningsgrad: '100' },
+                }),
+            ),
+        })}`;
+        const { Historie } = lagOppstartshistorie(stories.SøkerErKvinne, adopsjonUrl);
+
+        await Historie.run();
+
+        await userEvent.click(await screen.findByText('Det planlagte barnet fra planleggeren'));
+        await userEvent.click(screen.getByText('Jeg bekrefter at jeg har lest og forstått'));
+        await userEvent.click(screen.getByText('Start søknaden'));
+
+        await waitFor(() => expect(screen.getAllByText('Din situasjon')).toHaveLength(2));
+        expect(screen.getByLabelText('Adopsjon')).toBeChecked();
+        await userEvent.click(screen.getByText('Mor'));
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        await waitFor(() => expect(screen.getAllByText('Barnet')).toHaveLength(2));
+        expect(await screen.findByDisplayValue('05.05.2026')).toBeInTheDocument();
+        expect(screen.getByDisplayValue('10.01.2024')).toBeInTheDocument();
+        expect(screen.getByLabelText('To barn')).toBeChecked();
+        const stebarnsadopsjon = screen.getByRole('radiogroup', { name: 'Gjelder søknaden din stebarnsadopsjon?' });
+        expect(within(stebarnsadopsjon).getByLabelText('Ja')).not.toBeChecked();
+        expect(within(stebarnsadopsjon).getByLabelText('Nei')).not.toBeChecked();
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(
+            await screen.findAllByText('Du må oppgi om søknaden gjelder stebarnsadopsjon'),
+        ).not.toHaveLength(0);
+        expect(screen.getAllByText('Barnet')).toHaveLength(2);
+    });
+
     it('skal gå gjennom applikasjonen med forhåndsutfylte data fra planleggeren', async () => {
         const planleggerData = PLANLEGGER_DATA;
 
