@@ -286,18 +286,16 @@ describe('fødselspermisjon i mors plan', () => {
     it('bruker fars ja-svar når mors plan er låst', () => {
         const uttaksplan = { ...lagUttaksplan(morsPerioder), annenPartRedigerbar: false };
         const { result } = renderHook(() => useTidligereUttaksplan(), {
-            wrapper: getWrapper(
-                uttaksplan,
-                {
+            wrapper: getWrapper(uttaksplan, {
+                initialState: {
                     [ContextDataType.SØKERSITUASJON]: { situasjon: 'fødsel', rolle: 'far' },
                     [ContextDataType.FORDELING]: {
                         oppstartAvForeldrepengerValg: OppstartValg.FAMILIEHENDELSESDATO,
                     },
                 },
-                undefined,
-                SøknadRoutes.UTTAKSPLAN,
-                null,
-            ),
+                route: SøknadRoutes.UTTAKSPLAN,
+                valgtSak: null,
+            }),
         });
         expect(result.current.perioder).toEqual(medFødselspermisjon);
         expect(result.current.kreverManuellTilpasning).toBe(false);
@@ -307,18 +305,16 @@ describe('fødselspermisjon i mors plan', () => {
     it('bruker fars svar i en ny søknad uten å endre mors innlastede plan', () => {
         const uttaksplan = lagUttaksplan(medFødselspermisjon);
         const { result } = renderHook(() => useTidligereUttaksplan(), {
-            wrapper: getWrapper(
-                uttaksplan,
-                {
+            wrapper: getWrapper(uttaksplan, {
+                initialState: {
                     [ContextDataType.SØKERSITUASJON]: { situasjon: 'fødsel', rolle: 'far' },
                     [ContextDataType.FORDELING]: {
                         oppstartAvForeldrepengerValg: OppstartValg.IKKE_VED_FØDSEL,
                     },
                 },
-                undefined,
-                SøknadRoutes.UTTAKSPLAN,
-                null,
-            ),
+                route: SøknadRoutes.UTTAKSPLAN,
+                valgtSak: null,
+            }),
         });
 
         expect(result.current.perioder).toEqual(morsPerioder);
@@ -369,13 +365,7 @@ const getWrapper = (
 describe('useTidligereUttaksplan', () => {
     it.each([true, false])('videresender annenPartRedigerbar=%s frå backend', (annenPartRedigerbar) => {
         const { result } = renderHook(() => useTidligereUttaksplan(), {
-            wrapper: getWrapper(
-                { ...lagUttaksplan(PERIODER), annenPartRedigerbar },
-                undefined,
-                undefined,
-                undefined,
-                null,
-            ),
+            wrapper: getWrapper({ ...lagUttaksplan(PERIODER), annenPartRedigerbar }, { valgtSak: null }),
         });
         expect(result.current.erAnnenPartRedigerbar).toBe(annenPartRedigerbar);
     });
