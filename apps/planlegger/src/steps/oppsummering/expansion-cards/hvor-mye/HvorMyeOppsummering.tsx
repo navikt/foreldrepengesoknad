@@ -2,7 +2,7 @@ import { SackKronerIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
-import { loggExpansionCardOpen } from 'utils/umamiUtils';
+import { loggExpansionCardToggle } from 'utils/umamiUtils';
 
 import { ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
@@ -29,11 +29,7 @@ export const HvorMyeOppsummering = ({ satser }: Props) => {
     return (
         <VStack gap="space-40">
             {(hvorMye.lønnSøker1 !== undefined || hvorMye.lønnSøker2 !== undefined) && (
-                <ExpansionCard
-                    aria-label=""
-                    onToggle={loggExpansionCardOpen('toggle-oppgitt-informasjon')}
-                    size="small"
-                >
+                <ExpansionCard aria-label="" onToggle={loggExpansionCardToggle('oppsummering-hvor-mye')} size="small">
                     <ExpansionCard.Header>
                         <HStack gap="space-24" align="center" wrap={false}>
                             <IconCircleWrapper size="medium" color="lightBlue">
