@@ -68,7 +68,7 @@ export const SenereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props) =>
                     ),
                 ]}
             >
-                {createCountryOptions().map((o) => (
+                {createCountryOptions(intl.locale).map((o) => (
                     <option key={o[0]} value={o[0]}>
                         {o[1]}
                     </option>
