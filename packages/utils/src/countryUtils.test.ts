@@ -10,13 +10,23 @@ import {
 
 describe('createCountryOptions', () => {
     it('returnerer landkoder som alpha3-koder', () => {
-        const options = createCountryOptions();
+        const options = createCountryOptions('nb');
         const sverige = options.find(([, name]) => name === 'Sverige');
         expect(sverige?.[0]).toBe('SWE');
     });
 
+    it.each([
+        ['nn', 'Sverige'],
+        ['en', 'Sweden'],
+        ['en-US', 'Sweden'],
+    ])('bruker landnavn på valgt språk (%s) med uendret alpha3-kode', (locale, navn) => {
+        const options = createCountryOptions(locale);
+        expect(options.find(([code]) => code === 'SWE')?.[1]).toBe(navn);
+        expect(options.find(([code]) => code === 'XXK')?.[1]).toBe('Kosovo');
+    });
+
     it('filtrerer ut Antarktis', () => {
-        const options = createCountryOptions();
+        const options = createCountryOptions('nb');
         expect(options.some(([code]) => code === 'ATA')).toBe(false);
     });
 });
@@ -50,6 +60,9 @@ describe('countryIsMemberOfEøsOrEfta', () => {
 describe('getCountryName', () => {
     it('slår opp landnavn ut fra alpha3-kode', () => {
         expect(getCountryName('SWE', 'nb')).toBe('Sverige');
+        expect(getCountryName('SWE', 'nn')).toBe('Sverige');
+        expect(getCountryName('SWE', 'en')).toBe('Sweden');
+        expect(getCountryName('DEU', 'en_US')).toBe('Germany');
     });
 
     it('bruker NAV sin egen landkode for Kosovo', () => {

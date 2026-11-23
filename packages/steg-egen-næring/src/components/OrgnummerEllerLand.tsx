@@ -57,7 +57,7 @@ export const OrgnummerEllerLand = ({ orgNummerErValgfritt, registrertINorge }: P
                         isNotEqualValue(intl.formatMessage({ id: 'valideringsfeil.egenNæringLand.ikkeNorge' }), 'NO'),
                     ]}
                 >
-                    {createCountryOptions()
+                    {createCountryOptions(intl.locale)
                         .filter((country) => country[0] !== 'NO')
                         .map((o) => (
                             <option key={o[0]} value={o[0]}>
