@@ -1,7 +1,7 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { useFormContext } from 'react-hook-form';
 import { Fordeling, OppstartValg } from 'types/Fordeling';
-import { getErAleneOmOmsorg } from 'utils/annenForelderUtils';
+import { getErAleneOmOmsorg, getIsDeltUttak } from 'utils/annenForelderUtils';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -31,6 +31,12 @@ export const OppstartAvForeldrepenger = ({
     const { watch } = useFormContext<Fordeling>();
     const erAleneOmOmsorg = getErAleneOmOmsorg(annenForelder);
     const erMorFødsel = søkersituasjon.situasjon === 'fødsel' && !erFarEllerMedmor;
+    const visUttakVedFødselValg =
+        erFarEllerMedmor &&
+        søkersituasjon.situasjon === 'fødsel' &&
+        getIsDeltUttak(annenForelder) &&
+        !erAleneOmOmsorg &&
+        oppstartsvalg.includes(OppstartValg.FAMILIEHENDELSESDATO);
     const oppstartValg = watch('oppstartAvForeldrepengerValg');
 
     const visOppstartsDatoInput =
@@ -45,7 +51,9 @@ export const OppstartAvForeldrepenger = ({
                 førsteDagEtterAnnenForelder={førsteDagEtterAnnenForelder}
             />
             {visOppstartsDatoInput && erMorFødsel && <OppstartDatoMorFødsel oppstartValg={oppstartValg} />}
-            {visOppstartsDatoInput && !erMorFødsel && <OppstartDatoInput oppstartValg={oppstartValg} />}
+            {visOppstartsDatoInput && !erMorFødsel && !visUttakVedFødselValg && (
+                <OppstartDatoInput oppstartValg={oppstartValg} />
+            )}
         </VStack>
     );
 };

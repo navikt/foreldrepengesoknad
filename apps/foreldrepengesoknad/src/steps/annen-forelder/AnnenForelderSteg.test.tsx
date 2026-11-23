@@ -557,6 +557,26 @@ describe('<AnnenForelderSteg>', () => {
         });
     });
 
+    it('skal ikke sette at annenpart har rett når far har aleneomsorg og mor har vedtak', async () => {
+        const gåTilNesteSide = vi.fn();
+        await FarFødtBarnMorHarVedtak.run({ args: { ...FarFødtBarnMorHarVedtak.args, gåTilNesteSide } });
+
+        expect(await screen.findAllByText('Den andre forelderen')).toHaveLength(2);
+        await userEvent.click(screen.getByText('Nei, jeg har aleneomsorg'));
+        await userEvent.type(screen.getByLabelText('Dato du ble alene om omsorgen'), dayjs().format('DD.MM.YYYY'));
+        await userEvent.tab();
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        await waitFor(() =>
+            expect(gåTilNesteSide).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    key: ContextDataType.ANNEN_FORELDER,
+                    data: expect.objectContaining({ erAleneOmOmsorg: true, harRettPåForeldrepengerINorge: undefined }),
+                }),
+            ),
+        );
+    });
+
     it('skal spørre om annenpart har rett hvis annenpart har avslått vedtak', async () => {
         await FarFødtBarnMorHarAvslåttVedtak.run();
 

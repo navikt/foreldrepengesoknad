@@ -762,6 +762,33 @@ export const FarEllerMedmorSøkerOgMorHarSøktUtenVedtak: Story = {
                             annenPart: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
                         },
                     ],
+                    dekningsgrad: 'HUNDRE',
+                }),
+            ),
+            http.post(STØNADSKONTO_URL, () =>
+                HttpResponse.json({
+                    '80': STØNADSKONTO_80,
+                    '100': STØNADSKONTO_100,
+                }),
+            ),
+        );
+    },
+    args: FarEllerMedmorSøkerOgMorHarLagetUttaksplan.args,
+};
+
+export const FarEllerMedmorSøkerOgMorHarSøktUtenVedtak80: Story = {
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(UTTAKSPLAN_URL, () =>
+                HttpResponse.json({
+                    antallBarn: 1,
+                    perioder: [
+                        {
+                            fom: uttaksperiode.fom,
+                            tom: uttaksperiode.tom,
+                            annenPart: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
+                        },
+                    ],
                     dekningsgrad: 'ÅTTI',
                 }),
             ),

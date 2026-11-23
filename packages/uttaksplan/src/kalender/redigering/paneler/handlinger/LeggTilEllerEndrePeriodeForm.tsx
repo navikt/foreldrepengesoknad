@@ -13,6 +13,8 @@ import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import {
     LeggTilEllerEndrePeriodeFellesForm,
     LeggTilEllerEndrePeriodeFormFormValues,
+    beholdLåstAnnenPartsSamtidigeUttak,
+    lagDefaultValuesForValgtePerioder,
     lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm,
     mapFraFormValuesTilPeriodeDto,
 } from '../../../../felles/LeggTilEllerEndrePeriodeFellesForm';
@@ -46,9 +48,9 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
     const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } =
         useVisForskyvEllerErstattPanel(sammenslåtteValgtePerioder);
 
-    const defaultValues = lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
+    const defaultValues = lagDefaultValuesForValgtePerioder(
         perioder,
-        sammenslåtteValgtePerioder[0]!,
+        sammenslåtteValgtePerioder,
         søker,
         erPeriodeneTilAnnenPartLåst,
     );
@@ -131,8 +133,12 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
 
     const leggIKalender = (skalForskyve: boolean) => {
         leggTilUttaksplanPerioder(
-            sammenslåtteValgtePerioder.flatMap((periode) =>
-                mapFraFormValuesTilPeriodeDto(formMethods.getValues(), periode, søker, kanVelgeArbeidsgiver),
+            beholdLåstAnnenPartsSamtidigeUttak(
+                sammenslåtteValgtePerioder.flatMap((periode) =>
+                    mapFraFormValuesTilPeriodeDto(formMethods.getValues(), periode, søker, kanVelgeArbeidsgiver),
+                ),
+                perioder,
+                erPeriodeneTilAnnenPartLåst,
             ),
             skalForskyve,
             () => {

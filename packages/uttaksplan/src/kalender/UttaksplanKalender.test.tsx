@@ -105,7 +105,7 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByText('Din periode')).toBeInTheDocument();
         expect(screen.getByText('Fødsel')).toBeInTheDocument();
         expect(screen.getByText('Dager du kan miste')).toBeInTheDocument();
-        expect(screen.getByText('Du har ferie')).toBeInTheDocument();
+        expect(screen.getByText('Ferie')).toBeInTheDocument();
         expect(screen.getByText('Helg')).toBeInTheDocument();
         const juli = screen.getByTestId('year:2021;month:6');
         expect(within(juli).getByTestId('day:9;dayColor:NONE')).toBeInTheDocument();
@@ -117,7 +117,7 @@ describe('UttaksplanKalender', () => {
         render(<MorSøkerMedFlereUtsettelser />);
         expect(screen.getByText('Din periode')).toBeInTheDocument();
         expect(screen.getByText('Fødsel')).toBeInTheDocument();
-        expect(screen.getByText('Du har ferie')).toBeInTheDocument();
+        expect(screen.getByText('Ferie')).toBeInTheDocument();
         expect(screen.getByText('Helg')).toBeInTheDocument();
         const juni = screen.getByTestId('year:2021;month:5');
         expect(within(juni).getByTestId('day:15;dayColor:BLUEOUTLINE')).toBeInTheDocument();
@@ -1473,6 +1473,43 @@ describe('UttaksplanKalender', () => {
 
         expect(within(april).queryByTestId('day:4;dayColor:NONE;with-icon')).not.toBeInTheDocument();
         expect(within(april).getByTestId('day:4;dayColor:BLUE;with-icon')).toBeInTheDocument();
+    });
+
+    it('skal ikke kunne legge ferie over annen parts låste periode', async () => {
+        render(<FarSøkerEtterAtMorHarSøkt />);
+
+        const april = await screen.findByTestId('year:2024;month:3');
+        await userEvent.click(within(april).getByTestId('day:8;dayColor:BLUE'));
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        expect(screen.getByRole('button', { name: 'Legg til ferie' })).toBeDisabled();
+    });
+
+    it('skal kunne legge ferie på dager uten annen parts låste perioder', async () => {
+        render(<FarSøkerEtterAtMorHarSøkt />);
+
+        const april = await screen.findByTestId('year:2024;month:3');
+        await userEvent.click(within(april).getByTestId('day:22;dayColor:NONE'));
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        expect(screen.getByRole('button', { name: 'Legg til ferie' })).toBeEnabled();
+    });
+
+    it('skal kunne legge til samtidig uttak i annen parts låste periode', async () => {
+        render(<FarSøkerEtterAtMorHarSøkt />);
+
+        const juni = await screen.findByTestId('year:2024;month:5');
+        await userEvent.click(within(juni).getByTestId('day:3;dayColor:BLUE'));
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Ny periode' }));
+        await userEvent.click(screen.getByRole('radio', { name: 'Begge' }));
+        await userEvent.click(screen.getByRole('radio', { name: 'Fars kvote' }));
+        await userEvent.type(screen.getByLabelText('Hvor mange prosent til mor?'), '50');
+        await userEvent.type(screen.getByLabelText('Hvor mange prosent til far?'), '50');
+        await userEvent.click(screen.getAllByRole('radio', { name: 'Nei' })[1]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
+
+        expect(await within(juni).findByTestId('day:3;dayColor:LIGHTBLUEGREEN')).toBeInTheDocument();
     });
 
     it('skal ikke få spørsmål om forskyv/erstatt når en sletter siste dag i kalenderen', async () => {

@@ -3,7 +3,7 @@ import { useUttaksplanOptions } from 'api/queries';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
-import { finnAnnenPartsPlanForDekningsgrad } from 'utils/annenForelderUtils';
+import { finnAnnenPartsPlanSomPasserSøknaden } from 'utils/annenForelderUtils';
 import { getTermindato } from 'utils/barnUtils';
 import { getErSøkerFarEllerMedmor } from 'utils/personUtils';
 import { getStønadskvoteNavn } from 'utils/stønadskvoterUtils';
@@ -44,9 +44,11 @@ export const UttaksplanOppsummeringsliste = ({ navnPåForeldre, registrerteArbei
     const annenPartsPerioder = uttaksplan.filter((periode) => periode.annenPart !== undefined);
 
     const dekningsgrad = useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER);
+    const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenPartsPlanQuery = useQuery({
         ...useUttaksplanOptions(),
-        select: (plan) => finnAnnenPartsPlanForDekningsgrad(plan, dekningsgrad) !== undefined,
+        select: (plan) => finnAnnenPartsPlanSomPasserSøknaden(plan, { dekningsgrad, annenForelder, barn }) !== undefined,
     });
     const søkerHarLagtTilPerioderForAnnenPart =
         annenPartsPlanQuery.isSuccess && !annenPartsPlanQuery.data && annenPartsPerioder.length > 0;

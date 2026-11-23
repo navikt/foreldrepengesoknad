@@ -54,6 +54,7 @@ const søkerInfo: FpPersonopplysningerDto_fpoversikt = {
     selvstendigNæring: [],
 };
 const tidligerePlan: FellesUttaksplanDto = {
+    annenPartRedigerbar: true,
     antallBarn: 1,
     dekningsgrad: 'HUNDRE',
     perioder: [
@@ -420,9 +421,14 @@ describe('useStartSøknad', () => {
         };
         const { result, values, client } = setup();
         client.removeQueries({ queryKey });
-        const postMock = vi.spyOn(ky, 'post').mockReturnValue(
-            Promise.resolve({ status: 200, json: () => Promise.resolve(planMedAnnet) }) as unknown as ResponsePromise,
-        );
+        const postMock = vi
+            .spyOn(ky, 'post')
+            .mockReturnValue(
+                Promise.resolve({
+                    status: 200,
+                    json: () => Promise.resolve(planMedAnnet),
+                }) as unknown as ResponsePromise,
+            );
 
         await act(() => result.current.startSøknad(values));
 
