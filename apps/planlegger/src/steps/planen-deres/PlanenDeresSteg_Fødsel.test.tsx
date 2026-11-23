@@ -561,6 +561,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
     });
 
     it('skal oppdatere data i url-en med ny dekningsgrad og fordeling', async () => {
+        history.replaceState(null, '', '/');
         const utils = render(<MorOgFarBeggeHarRett />);
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
