@@ -48,7 +48,7 @@ export const loggUmamiEvent = ({ origin, eventName, eventData }: UmamiEvent) => 
             void analytics({
                 origin,
                 eventName,
-                eventData: eventData ? { ...eventData } : undefined,
+                eventData: { ...eventData, seksjon: 'ytelse' },
             });
         }
     }
