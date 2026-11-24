@@ -2,7 +2,7 @@
 import path from 'node:path';
 import { mergeConfig } from 'vite';
 
-import { createSharedConfigWithCrossorgin } from '@navikt/fp-config-vite';
+import { createSharedConfigWithCrossorgin, fpMockModus } from '@navikt/fp-config-vite';
 
 const setupFileDirName = path.resolve(import.meta.dirname, './vitest/setupTests.ts');
 
@@ -13,6 +13,7 @@ const cdnUrl = process.env.VITE_CDN_URL;
 // eslint-disable-next-line import-x/no-default-export
 export default mergeConfig(createSharedConfigWithCrossorgin(setupFileDirName), {
     base: '/foreldrepenger/oversikt',
+    plugins: [fpMockModus()],
     ...(cdnUrl
         ? {
               experimental: {

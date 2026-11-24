@@ -4,6 +4,14 @@ import { AppContainer } from './AppContainer';
 import './index.css';
 import './styles/global.css';
 
+if (import.meta.env.MODE === 'mock') {
+    const [{ startMockModus }, { scenarioer }] = await Promise.all([
+        import('@navikt/fp-utils-test/mock'),
+        import('../mock/scenarioer.ts'),
+    ]);
+    await startMockModus(scenarioer);
+}
+
 void bootstrapApp({
     availableLocales: ['nb', 'nn', 'en'],
     app: <AppContainer />,
