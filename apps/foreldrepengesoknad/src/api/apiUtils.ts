@@ -15,7 +15,6 @@ import {
     ForeldrepengesøknadDto,
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
-    KontoType,
     Målform,
     SøkerDto,
     Søkerrolle,
@@ -25,7 +24,7 @@ import {
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-types';
-import { Uttaksdagen, Uttaksperioden, getDecoratorLanguageCookie, omitOne } from '@navikt/fp-utils';
+import { getDecoratorLanguageCookie, omitOne } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 const hentValgtSpråk = (): Målform => {
@@ -158,12 +157,10 @@ export const harSøknadenNødvendigeUttaksperioder = (
     helePlanen: UttakPeriodeDto[],
 ): boolean => {
     if (erEndringssøknad) {
-        // Med endringsdato legger fp-soknad selv inn fri utsettelse, så de innsendte periodene trenger ingen
-        // søkerperiode. Søkeren må likevel ha egne perioder i planen.
-        const harSøkerperiodeEllerEndringsdato =
-            ('endringsdato' in søknad && søknad.endringsdato !== undefined) ||
-            (søknad.uttaksplan.perioder ?? []).some((periode) => periode.søker !== undefined);
-        return harSøkerperiodeEllerEndringsdato && helePlanen.some((periode) => periode.søker !== undefined);
+        // Endringssøknad krever endringsdato (uten den tolker fp-soknad søknaden som en eldre klient uten full plan),
+        // og søkeren må ha egne perioder i planen.
+        const harEndringsdato = 'endringsdato' in søknad && søknad.endringsdato !== undefined;
+        return harEndringsdato && helePlanen.some((periode) => periode.søker !== undefined);
     }
     return harMinstEnUttaksEllerOverføringsperiode(søknad.uttaksplan.perioder ?? []);
 };
@@ -245,16 +242,11 @@ export const mapTilEndringssøknadDto = (
     const ønskerJustertUttakVedFødsel = hentData(ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL);
     const vedlegg = hentData(ContextDataType.VEDLEGG);
 
-    const søkersNyePerioder = filtrerUtAnnenPartsPerioder(uttaksplan);
-
-    const søkersEksisterendePerioder = filtrerUtAnnenPartsPerioder(
+    // Endringstidspunktet er alltid en virkedag. fp-soknad avviser endringsdato i helg.
+    const endringsdato = getEndringstidspunktNy(
         finnOpprinneligPlan(opprinneligUttaksplan, valgtEksisterendeSaksnr),
+        uttaksplan,
     );
-
-    const endringstidspunkt = getEndringstidspunktNy(søkersEksisterendePerioder, søkersNyePerioder);
-
-    // fp-soknad avviser endringsdato i helg.
-    const endringsdato = endringstidspunkt ? Uttaksdagen.denneEllerNeste(endringstidspunkt).getDato() : undefined;
     const perioder = fjernSøkersAvslåttePerioder(uttaksplan);
 
     return {
@@ -294,28 +286,3 @@ const finnOpprinneligPlan = (
     }
     return opprinneligUttaksplan.perioder;
 };
-
-// Endringstidspunktet finnes ut fra søkerens perioder og annen parts uttak som tidligere ble sendt som opphold.
-// Annen parts utsettelser, avslag og perioder på kontoer uten oppholdsårsak (f.eks. FFF) er ikke opphold.
-const filtrerUtAnnenPartsPerioder = (uttaksplan: UttakPeriodeDto[]): UttakPeriodeDto[] => {
-    return uttaksplan.filter((periode) => periode.søker !== undefined || erOppholdSomKanSendast(periode));
-};
-
-const erOppholdSomKanSendast = (periode: UttakPeriodeDto): boolean => {
-    const annenPart = periode.annenPart;
-    return (
-        Uttaksperioden.erOppholdsperiode(periode) &&
-        !!annenPart &&
-        annenPart.utsettelseÅrsak === undefined &&
-        annenPart.resultat?.innvilget !== false &&
-        annenPart.kontoType !== undefined &&
-        KONTOTYPER_MED_OPPHOLDSÅRSAK.has(annenPart.kontoType)
-    );
-};
-
-const KONTOTYPER_MED_OPPHOLDSÅRSAK = new Set<KontoType>([
-    'MØDREKVOTE',
-    'FEDREKVOTE',
-    'FELLESPERIODE',
-    'FORELDREPENGER',
-]);
