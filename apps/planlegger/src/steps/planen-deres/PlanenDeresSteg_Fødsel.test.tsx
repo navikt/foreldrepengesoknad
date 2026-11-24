@@ -3,6 +3,7 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { PlanleggerRoutes } from 'appData/routes';
 
+import { decompressFromUrl } from '@navikt/fp-utils';
 import { DELT_UTTAK_80_TO_BARN, DELT_UTTAK_100_TO_BARN } from '@navikt/fp-utils-test';
 
 import { endreFordelingMedSlider } from '../../../vitest/testHelpers';
@@ -32,6 +33,11 @@ const {
     FarOgFarKunMedfarHarRett,
     BarnetErFødtPlanleggerDagenEtterTermindato,
 } = composeStories(stories);
+
+const hentDataFraUrl = (): unknown => {
+    const data = new URLSearchParams(location.search).get('data');
+    return JSON.parse(decompressFromUrl(data ?? '') ?? '{}');
+};
 
 describe('<PlanenDeresSteg - fødsel>', () => {
     it('skal vise korrekt data for fødsel - mor og far - begge har rett', async () => {
@@ -552,6 +558,27 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         const mai2025 = screen.getByTestId('year:2025;month:4');
         expect(within(mai2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(12);
+    });
+
+    it('skal oppdatere data i url-en med ny dekningsgrad og fordeling', async () => {
+        history.replaceState(null, '', '/');
+        const utils = render(<MorOgFarBeggeHarRett />);
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('80 % i 61 uker + 1 dag'));
+
+        expect(hentDataFraUrl()).toMatchObject({
+            HVOR_LANG_PERIODE: { dekningsgrad: '80' },
+            FORDELING: { antallDagerSøker1: 0 },
+        });
+
+        await endreFordelingMedSlider(utils, 46);
+
+        expect(hentDataFraUrl()).toMatchObject({
+            HVOR_LANG_PERIODE: { dekningsgrad: '80' },
+            FORDELING: { antallDagerSøker1: 46 },
+        });
     });
 
     it('Skal ikke vise ekstra dag info når det ikke er restdager', async () => {
