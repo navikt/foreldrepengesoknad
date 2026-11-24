@@ -28,6 +28,7 @@ import { UttakPeriodeMedAntallDager } from '../../../../../kalender/redigering/u
 import { getForelderVisningsnavnForFarOgFar } from '../../../../../liste/utils/uttaksplanListeUtils';
 import { useEksisterendeValgtePeriodeAlerts } from '../../../../../regler/alert/informasjonsAlertHooks';
 import { getVarighetString } from '../../../../../utils/dateUtils';
+import { erSamtidigUttakMedSøker } from '../../../../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from '../../../context/KalenderRedigeringContext';
 
 interface Props {
@@ -318,7 +319,7 @@ const PeriodeIkon = ({
     const intl = useIntl();
     const uttak = periode.søker ?? periode.annenPart;
 
-    if (uttak?.samtidigUttak !== undefined && uttak.samtidigUttak > 0) {
+    if (erSamtidigUttakMedSøker(periode)) {
         return (
             <PersonGroupIcon
                 title={intl.formatMessage({ id: 'RedigeringPanel.Mor' })}
@@ -476,7 +477,7 @@ const PeriodeHeaderText = ({
             render: () => <FormattedMessage id="RedigeringPanel.Far" />,
         },
         {
-            gjelder: !erEøs && uttak?.samtidigUttak !== undefined,
+            gjelder: !erEøs && erSamtidigUttakMedSøker(periode),
             render: () => <FormattedMessage id="RedigeringPanel.Begge" />,
         },
         {

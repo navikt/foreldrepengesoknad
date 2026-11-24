@@ -7,7 +7,7 @@ import { assertUnreachable } from '@navikt/fp-validation';
 
 import { LegendLabel } from '../../types/LegendLabel';
 import { UttaksplanperiodeMedKunTapteDager, erPeriodeDto, erTapteDagerHull } from '../../types/UttaksplanPeriode';
-import { erAvslåttPeriode } from '../../utils/periodeUtils';
+import { erAvslåttPeriode, erSamtidigUttakMedSøker } from '../../utils/periodeUtils';
 
 export type UttaksplanKalenderLegendInfo = {
     calendarPeriod: CalendarPeriod;
@@ -475,7 +475,7 @@ export const getLegendLabelFromPeriode = (
                     }
 
                     if (uttak?.forelder === 'FAR_MEDMOR') {
-                        if (uttak.samtidigUttak && uttak.samtidigUttak > 0) {
+                        if (erSamtidigUttakMedSøker(p)) {
                             return 'SAMTIDIG_UTTAK';
                         }
 
@@ -486,7 +486,7 @@ export const getLegendLabelFromPeriode = (
                         return 'FARS_DEL';
                     }
 
-                    if (uttak?.samtidigUttak && uttak.samtidigUttak > 0) {
+                    if (erSamtidigUttakMedSøker(p)) {
                         return 'SAMTIDIG_UTTAK';
                     }
 

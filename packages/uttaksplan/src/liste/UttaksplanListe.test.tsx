@@ -1205,7 +1205,7 @@ describe('UttaksplanListe', () => {
             {
                 fom: '2024-04-04',
                 tom: '2024-04-18',
-                annenPart: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
+                annenPart,
             },
         ]);
     });

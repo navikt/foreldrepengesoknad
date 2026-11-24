@@ -23,6 +23,7 @@ import { UttaksplanperiodeMedKunTapteDager, erPeriodeDto, erTapteDagerHull } fro
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
 import {
     erAvslåttPeriode,
+    erSamtidigUttakMedSøker,
     erUttaksperiode,
     finnUttakForForelder,
     harPeriodeDerMorsAktivitetIkkeErValgt,
@@ -211,10 +212,7 @@ export const getKalenderFargeForPeriode = (
 
     // Samtidig uttak kjem no ferdig utfylt på begge partar frå backend, ingen kryss-oppslag mot
     // andre rader trengst lenger (jf. Uttaksperioden.erSamtidigUttak).
-    if (
-        erUttaksperiode(periode) &&
-        (periode.søker?.samtidigUttak !== undefined || periode.annenPart?.samtidigUttak !== undefined)
-    ) {
+    if (erUttaksperiode(periode) && erSamtidigUttakMedSøker(periode)) {
         return erFarEllerMedmor ? 'LIGHTBLUEGREEN' : 'LIGHTGREENBLUE';
     }
 
@@ -331,7 +329,12 @@ const getKalenderSkjermleserPeriodetekst = (
             case 'FELLESPERIODE':
                 return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.Fellesperiode' });
             case 'FORELDREPENGER':
-                return finnSkjermleserTekstForKvoteForeldrepenger(visning, periodenTilhører, intl);
+                return finnSkjermleserTekstForKvoteForeldrepenger(
+                    visning,
+                    erPeriodeDto(periode) && erSamtidigUttakMedSøker(periode),
+                    periodenTilhører,
+                    intl,
+                );
             default:
                 return assertUnreachable('Error: ukjent kontoType i getKalenderSkjermleserPeriodetekst');
         }
@@ -347,6 +350,7 @@ const getKalenderSkjermleserPeriodetekst = (
 
 const finnSkjermleserTekstForKvoteForeldrepenger = (
     visning: VisningsUttak,
+    erSamtidigUttak: boolean,
     periodenTilhører: string,
     intl: IntlShape,
 ): string => {
@@ -364,7 +368,7 @@ const finnSkjermleserTekstForKvoteForeldrepenger = (
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.AktivitetsfrieIkkeGradert' });
     }
 
-    if (uttak.samtidigUttak && uttak.samtidigUttak > 0) {
+    if (erSamtidigUttak) {
         return intl.formatMessage({ id: 'kalender.srText.SamtidigUttaksperiode' });
     }
 
