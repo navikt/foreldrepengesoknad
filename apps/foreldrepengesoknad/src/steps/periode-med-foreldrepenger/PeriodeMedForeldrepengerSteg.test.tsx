@@ -4,6 +4,8 @@ import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 
+import { BarnType } from '@navikt/fp-constants';
+
 import * as stories from './PeriodeMedForeldrepengerSteg.stories';
 
 const {
@@ -423,6 +425,24 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         });
 
         await screen.findByText('Hvor lang periode med foreldrepenger vil du ha?');
+        await userEvent.click(screen.getByText(/80 prosent foreldrepenger/));
+
+        expect(screen.queryByText('Dere kan ikke få foreldrepenger med ulik dekningsgrad')).not.toBeInTheDocument();
+    });
+
+    it('skal ikke advare om mors dekningsgrad når far oppgir en annen termindato enn mor', async () => {
+        await FarEllerMedmorSøkerOgMorHarSøktUtenVedtak.run({
+            args: {
+                ...FarEllerMedmorSøkerOgMorHarSøktUtenVedtak.args,
+                barnet: {
+                    type: BarnType.UFØDT,
+                    termindato: '2021-03-20',
+                    antallBarn: 1,
+                },
+            },
+        });
+
+        await screen.findByText('Hvor lang periode med foreldrepenger vil dere ha?');
         await userEvent.click(screen.getByText(/80 prosent foreldrepenger/));
 
         expect(screen.queryByText('Dere kan ikke få foreldrepenger med ulik dekningsgrad')).not.toBeInTheDocument();

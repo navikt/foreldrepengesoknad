@@ -763,6 +763,7 @@ export const FarEllerMedmorSøkerOgMorHarSøktUtenVedtak: Story = {
                         },
                     ],
                     dekningsgrad: 'HUNDRE',
+                    termindato: '2021-03-10',
                 }),
             ),
             http.post(STØNADSKONTO_URL, () =>

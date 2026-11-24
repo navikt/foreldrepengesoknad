@@ -340,17 +340,18 @@ export const erDetReadonlyPerioderEtterValgtePerioder = (
     valgtePerioder: Array<{ fom: string; tom: string }>,
     forelderSomHarLåstePerioder: BrukerRolleSak_fpoversikt | undefined,
 ) => {
-    const sisteValgteDag = dayjs.max(valgtePerioder.map((p) => dayjs(p.tom)));
-    const perioderEtterValgte = allePerioder.filter((p) => dayjs(p.tom).isAfter(sisteValgteDag));
+    const førsteValgteDag = dayjs.min(valgtePerioder.map((p) => dayjs(p.fom)));
+    // Forskyving flytter alt fra første valgte dag, også perioder som overlapper utvalget.
+    const perioderFraValgte = allePerioder.filter((p) => dayjs(p.tom).isSameOrAfter(førsteValgteDag, 'day'));
 
-    const harEøsEllerPleiepenger = perioderEtterValgte.some(
+    const harEøsEllerPleiepenger = perioderFraValgte.some(
         (p) =>
             !!p.annenPartEøs ||
             p.søker?.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER' ||
             p.annenPart?.resultat?.årsak === 'AVSLAG_FRATREKK_PLEIEPENGER',
     );
     const harAnnenPartSomErLåst = forelderSomHarLåstePerioder
-        ? perioderEtterValgte.some(
+        ? perioderFraValgte.some(
               (p) =>
                   p.søker?.forelder === forelderSomHarLåstePerioder ||
                   p.annenPart?.forelder === forelderSomHarLåstePerioder,

@@ -19,7 +19,7 @@ import type {
     UttakOverføringÅrsak_fpoversikt,
     UttakPeriodeDto,
 } from '@navikt/fp-types';
-import { getFloatFromString, getNavnGenitivEierform } from '@navikt/fp-utils';
+import { Uttaksdagen, getFloatFromString, getNavnGenitivEierform } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../context/UttaksplanDataContext';
@@ -1009,13 +1009,36 @@ export const beholdLåstAnnenPartsSamtidigeUttak = (
         return nyePerioder;
     }
 
-    return nyePerioder.map((nyPeriode) => {
-        const dekkende = finnPerioderSomDekker(uttaksplanperioder, nyPeriode);
-        const annenPart = dekkende.length === 1 ? dekkende[0]?.annenPart : undefined;
-        if (!annenPart?.samtidigUttak || !nyPeriode.søker?.samtidigUttak) {
-            return nyPeriode;
+    return nyePerioder.flatMap((nyPeriode) => {
+        if (!nyPeriode.søker?.samtidigUttak) {
+            return [nyPeriode];
         }
-        return { ...nyPeriode, annenPart };
+        const låstePerioder = uttaksplanperioder
+            .filter(
+                (periode) =>
+                    !!periode.annenPart?.samtidigUttak && periode.fom <= nyPeriode.tom && periode.tom >= nyPeriode.fom,
+            )
+            .sort((a, b) => a.fom.localeCompare(b.fom));
+
+        const deler: UttakPeriodeDto[] = [];
+        let fom = nyPeriode.fom;
+        for (const låst of låstePerioder) {
+            const start = låst.fom > fom ? låst.fom : fom;
+            const slutt = låst.tom < nyPeriode.tom ? låst.tom : nyPeriode.tom;
+            if (Uttaksdagen.denneEllerNeste(start).getDato() > Uttaksdagen.denneEllerForrige(slutt).getDato()) {
+                continue;
+            }
+            const tomFørLåst = Uttaksdagen.forrige(start).getDato();
+            if (start > fom && fom <= tomFørLåst) {
+                deler.push({ ...nyPeriode, fom, tom: tomFørLåst });
+            }
+            deler.push({ ...nyPeriode, fom: start, tom: slutt, annenPart: låst.annenPart });
+            fom = Uttaksdagen.neste(slutt).getDato();
+        }
+        if (fom <= nyPeriode.tom) {
+            deler.push({ ...nyPeriode, fom });
+        }
+        return deler;
     });
 };
 

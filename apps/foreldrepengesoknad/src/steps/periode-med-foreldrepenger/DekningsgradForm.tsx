@@ -127,8 +127,6 @@ export const DekningsgradForm = ({
         ? intl.formatMessage({ id: 'uttaksplaninfo.Uker.soker.dere' })
         : intl.formatMessage({ id: 'uttaksplaninfo.Uker.soker.du' });
     const visUlikDekningsgrad =
-        !annenForelder.kanIkkeOppgis &&
-        !annenForelder.erAleneOmOmsorg &&
         annenPartsDekningsgrad !== undefined &&
         valgtDekningsgrad !== undefined &&
         annenPartsDekningsgrad !== valgtDekningsgrad;

@@ -2,6 +2,7 @@ import { UttakDto, UttakPeriodeDto } from '@navikt/fp-types';
 
 import {
     erAvslåttPeriode,
+    erDetReadonlyPerioderEtterValgtePerioder,
     erPerioderEkslFomTomLike,
     finnAntallTidelerÅTrekkeForUttak,
     harPeriodeDerMorsAktivitetIkkeErValgt,
@@ -405,5 +406,49 @@ describe('erAvslåttPeriode', () => {
 
     it('skal ikkje rekna periode utan partar som avslått', () => {
         expect(erAvslåttPeriode({ fom: FOM, tom: FOM })).toBe(false);
+    });
+});
+
+describe('erDetReadonlyPerioderEtterValgtePerioder', () => {
+    const låstPeriode = {
+        fom: '2025-06-02',
+        tom: '2025-06-06',
+        søker: lagMorUttak({ samtidigUttak: 50 }),
+        annenPart: lagFarUttak({ kontoType: 'FEDREKVOTE', samtidigUttak: 50 }),
+    } satisfies UttakPeriodeDto;
+
+    it('regner låst annen part som overlapper og slutter samme dag som utvalget som readonly', () => {
+        expect(
+            erDetReadonlyPerioderEtterValgtePerioder(
+                [låstPeriode],
+                [{ fom: '2025-06-02', tom: '2025-06-06' }],
+                'FAR_MEDMOR',
+            ),
+        ).toBe(true);
+    });
+
+    it('regner EØS-periode som overlapper utvalget som readonly, selv om den ikke låses', () => {
+        const eøsPeriode = {
+            fom: '2025-06-02',
+            tom: '2025-06-06',
+            annenPartEøs: { kontoType: 'FELLESPERIODE', trekkdager: 5 },
+        } satisfies UttakPeriodeDto;
+        expect(
+            erDetReadonlyPerioderEtterValgtePerioder(
+                [eøsPeriode],
+                [{ fom: '2025-06-02', tom: '2025-06-06' }],
+                undefined,
+            ),
+        ).toBe(true);
+    });
+
+    it('regner ikke låst annen part før utvalget som readonly', () => {
+        expect(
+            erDetReadonlyPerioderEtterValgtePerioder(
+                [låstPeriode],
+                [{ fom: '2025-06-09', tom: '2025-06-13' }],
+                'FAR_MEDMOR',
+            ),
+        ).toBe(false);
     });
 });
