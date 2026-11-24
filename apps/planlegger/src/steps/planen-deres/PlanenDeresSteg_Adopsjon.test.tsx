@@ -2,6 +2,8 @@ import { composeStories } from '@storybook/react-vite';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { decompressFromUrl } from '@navikt/fp-utils';
+
 import * as stories from './PlanenDeresSteg_Adopsjon.stories';
 
 const {
@@ -75,6 +77,21 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         );
         expect(eksisterendePeriode.getByRole('heading', { name: 'Far' })).toBeInTheDocument();
         expect(eksisterendePeriode.getByText('Fars kvote')).toBeInTheDocument();
+    });
+
+    it('skal beholde hvem som starter permisjonen i url-en når dekningsgrad endres', async () => {
+        history.replaceState(null, '', '/');
+        render(<MorOgFarBeggeHarRett fordeling={{ antallDagerSøker1: 0, hvemStarterPermisjon: 'søker2' }} />);
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText(/^80 %/));
+
+        const data = new URLSearchParams(location.search).get('data');
+        expect(JSON.parse(decompressFromUrl(data ?? '') ?? '{}')).toMatchObject({
+            HVOR_LANG_PERIODE: { dekningsgrad: '80' },
+            FORDELING: { hvemStarterPermisjon: 'søker2' },
+        });
     });
 
     it('skal beholde uendret rekkefølge (mor/blå først) for far og far når søker1 starter', async () => {

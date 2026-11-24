@@ -332,7 +332,7 @@ const AntallUkerVelger = ({
         const nyHvorLangPeriode = { dekningsgrad };
         lagreHvorLangPeriodePlanlegger(nyHvorLangPeriode);
         const nyFordeling = fordeling
-            ? { antallDagerSøker1: finnAntallDagerSøker1(dekningsgrad, stønadskvoter, fordeling) }
+            ? { ...fordeling, antallDagerSøker1: finnAntallDagerSøker1(dekningsgrad, stønadskvoter, fordeling) }
             : undefined;
         if (nyFordeling) {
             lagreFordeling(nyFordeling);
@@ -403,7 +403,7 @@ const AntallUkerVelger = ({
                             <FordelingSlider
                                 antallDagerSøker1={fordeling?.antallDagerSøker1}
                                 onAntallDagerSøker1Change={(value) => {
-                                    const nyFordeling = { antallDagerSøker1: value };
+                                    const nyFordeling = { ...fordeling, antallDagerSøker1: value };
                                     lagreFordeling(nyFordeling);
                                     lagreUttaksplanOgOppdaterUrl(undefined, {
                                         [ContextDataType.FORDELING]: nyFordeling,
