@@ -1473,6 +1473,13 @@ describe('UttaksplanKalender', () => {
 
         expect(within(april).queryByTestId('day:4;dayColor:NONE;with-icon')).not.toBeInTheDocument();
         expect(within(april).getByTestId('day:4;dayColor:BLUE;with-icon')).toBeInTheDocument();
+
+        await userEvent.click(within(april).getByTestId('day:4;dayColor:BLUE;with-icon'));
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        const morsPeriode = within(screen.getByTestId(/^eksisterende-periode-2024-04-04/));
+        expect(morsPeriode.getByRole('heading', { name: 'Mor' })).toBeInTheDocument();
+        expect(morsPeriode.queryByText('Begge')).not.toBeInTheDocument();
     });
 
     it('skal ikke kunne legge ferie over annen parts låste periode', async () => {

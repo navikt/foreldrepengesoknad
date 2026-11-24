@@ -329,7 +329,12 @@ const getKalenderSkjermleserPeriodetekst = (
             case 'FELLESPERIODE':
                 return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.Fellesperiode' });
             case 'FORELDREPENGER':
-                return finnSkjermleserTekstForKvoteForeldrepenger(visning, periodenTilhører, intl);
+                return finnSkjermleserTekstForKvoteForeldrepenger(
+                    visning,
+                    erPeriodeDto(periode) && erSamtidigUttakMedSøker(periode),
+                    periodenTilhører,
+                    intl,
+                );
             default:
                 return assertUnreachable('Error: ukjent kontoType i getKalenderSkjermleserPeriodetekst');
         }
@@ -345,6 +350,7 @@ const getKalenderSkjermleserPeriodetekst = (
 
 const finnSkjermleserTekstForKvoteForeldrepenger = (
     visning: VisningsUttak,
+    erSamtidigUttak: boolean,
     periodenTilhører: string,
     intl: IntlShape,
 ): string => {
@@ -362,7 +368,7 @@ const finnSkjermleserTekstForKvoteForeldrepenger = (
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.AktivitetsfrieIkkeGradert' });
     }
 
-    if (uttak.samtidigUttak && uttak.samtidigUttak > 0) {
+    if (erSamtidigUttak) {
         return intl.formatMessage({ id: 'kalender.srText.SamtidigUttaksperiode' });
     }
 
