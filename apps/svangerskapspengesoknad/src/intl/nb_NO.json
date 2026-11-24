@@ -95,6 +95,7 @@
     "valideringsfeil.tilretteleggingPeriodeType.mangler": "Du må oppgi om du skal ha den samme stillingsprosenten gjennom hele svangerskapet.",
     "valideringsfeil.stillingsprosent.required": "Du må oppgi stillingsprosenten du skal jobbe.",
     "valideringsfeil.stillingsprosent.måVæreEtTall": "Stillingsprosent må være et tall.",
+    "valideringsfeil.stillingsprosent.kanIkkeVæreNegativ": "Stillingsprosent kan ikke være mindre enn 0.",
     "valideringsfeil.stillingsprosent.måVæreStørreEnn0": "Stillingsprosent må være større enn 0",
     "valideringsfeil.stillingsprosent.måVæreMindreEllerLikOpprinneligStillingsprosent": "Stillingsprosenten kan ikke være større enn din opprinnelig stillingsprosent på {prosent} %.",
     "valideringsfeil.stillingsprosent.måVæreMindreEnnOpprinneligStillingsprosent": "Stillingsprosent må være mindre enn din opprinnelig stillingsprosent på {prosent} %.",

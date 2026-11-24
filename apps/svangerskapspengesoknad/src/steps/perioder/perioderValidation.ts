@@ -11,9 +11,13 @@ const validerStillingsprosentInput = (intl: IntlShape, value: string) => {
         return intl.formatMessage({ id: 'valideringsfeil.stillingsprosent.required' });
     }
     const stillingsprosent = getFloatFromString(value);
-    return stillingsprosent === undefined
-        ? intl.formatMessage({ id: 'valideringsfeil.stillingsprosent.måVæreEtTall' })
-        : null;
+    if (stillingsprosent === undefined) {
+        return intl.formatMessage({ id: 'valideringsfeil.stillingsprosent.måVæreEtTall' });
+    }
+    if (stillingsprosent < 0) {
+        return intl.formatMessage({ id: 'valideringsfeil.stillingsprosent.kanIkkeVæreNegativ' });
+    }
+    return null;
 };
 
 export const validateStillingsprosentPåPerioder =
