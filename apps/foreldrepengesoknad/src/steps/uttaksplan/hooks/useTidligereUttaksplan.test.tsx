@@ -575,7 +575,7 @@ describe('useTidligereUttaksplan', () => {
         const { result } = renderHook(() => useTidligereUttaksplan(), {
             wrapper: getWrapper(
                 { ...lagUttaksplan(PERIODER), annenPartRedigerbar: false },
-                { [ContextDataType.PERIODE_MED_FORELDREPENGER]: '80' },
+                { initialState: { [ContextDataType.PERIODE_MED_FORELDREPENGER]: '80' } },
             ),
         });
 
