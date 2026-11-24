@@ -55,8 +55,7 @@ export const VelgArbeidSteg = ({
         arbeidsforhold,
         barnet.termindato,
         intl,
-        frilans,
-        egenNæring,
+        { frilans, egenNæring },
     );
 
     const onSubmit = (formValues: VelgArbeidForm) => {

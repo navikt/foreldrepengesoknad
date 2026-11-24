@@ -37,11 +37,15 @@ const finnRettighetstype = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHar
     return 'BARE_SØKER_RETT';
 };
 
-const getStønadskvoter = (
-    omBarnet?: OmBarnetPlanlegger,
-    arbeidssituasjon?: Arbeidssituasjon,
-    hvemPlanlegger?: HvemPlanlegger,
-) => {
+const getStønadskvoter = ({
+    omBarnet,
+    arbeidssituasjon,
+    hvemPlanlegger,
+}: {
+    omBarnet?: OmBarnetPlanlegger;
+    arbeidssituasjon?: Arbeidssituasjon;
+    hvemPlanlegger?: HvemPlanlegger;
+}) => {
     const hvemHarRett = arbeidssituasjon ? utledHvemSomHarRett(arbeidssituasjon) : undefined;
 
     const params = {
@@ -75,7 +79,7 @@ export const PlanleggerDataFetcher = () => {
 
     const stønadskvoterData = useQuery({
         queryKey: ['KVOTER', omBarnet, arbeidssituasjon, hvemPlanlegger],
-        queryFn: () => getStønadskvoter(omBarnet, arbeidssituasjon, hvemPlanlegger),
+        queryFn: () => getStønadskvoter({ omBarnet, arbeidssituasjon, hvemPlanlegger }),
         enabled: hvemHarRett !== undefined && hvemHarRett !== 'ingenHarRett' && harGyldigDato(omBarnet),
         select: (data: KontoBeregningResultatDto): KontoBeregningResultatDto => {
             // TODO (TOR) Dette bør ligga i backend. Verkar pussig å henta kontoar for far-og-far, og så modifisera det her

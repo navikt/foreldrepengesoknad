@@ -4,11 +4,10 @@ Kildekoden til frontend-appen for foreldrepengesøknad.
 
 # Komme i gang:
 
-For å kjøre opp appen lokalt (med mock-API):
+For å kjøre opp appen lokalt:
 
 1.  `pnpm install`.
-2.  `pnpm run dev-api`.
-3.  `pnpm run dev`.
+2.  `pnpm run dev:mock`. Velg scenario med `?scenario=<id>` (se `mock/scenarioer.ts`).
 
 # Henvendelser
 

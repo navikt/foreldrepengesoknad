@@ -1,16 +1,10 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { HttpResponse, http } from 'msw';
 import { MemoryRouter } from 'react-router';
-import { dokumenter } from 'storybookData/dokumenter/dokumenter';
-import { manglendeVedlegg } from 'storybookData/manglendeVedlegg/manglendeVedlegg';
-import { miniDialog } from 'storybookData/miniDialog/miniDialog';
 import { saker } from 'storybookData/saker/saker';
-import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
 import { tidslinjeHendelserFP } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
-import { uttaksplan } from 'storybookData/uttaksplan/uttaksplan';
 
+import { lagHandlers } from '../mock/scenarioer.ts';
 import { AppContainer } from './AppContainer';
-import { API_URLS } from './api/queries.ts';
 
 const meta = {
     title: 'AppContainer',
@@ -25,16 +19,7 @@ const meta = {
     },
 
     beforeEach({ msw }) {
-        msw.use(
-            http.get(API_URLS.minidialog, () => HttpResponse.json(miniDialog)),
-            http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
-            http.get(API_URLS.saker, () => HttpResponse.json(saker)),
-            http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json(manglendeVedlegg)),
-            http.post(API_URLS.uttaksplan, () => HttpResponse.json(uttaksplan)),
-            http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelserFP)),
-            http.get(API_URLS.dokumenter, () => HttpResponse.json(dokumenter)),
-            http.post(API_URLS.lastOppFPVedlegg, () => HttpResponse.json({})),
-        );
+        msw.use(...lagHandlers({ saker, tidslinjePerSak: { '352011080': tidslinjeHendelserFP } }));
     },
 } satisfies Meta<typeof AppContainer>;
 export default meta;

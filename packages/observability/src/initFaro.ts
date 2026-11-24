@@ -26,14 +26,38 @@ type ExceptionItem = FaroItem & {
     payload: ExceptionPayload;
 };
 
-const customPageMeta = () => {
-    const regex = /(planleggerData=)[^&\s]+/;
+type TransportItem = Parameters<NonNullable<NonNullable<Parameters<typeof init>[0]>['beforeSend']>>[0];
 
-    const result: string = regex.test(location.href) ? location.href.replace(regex, '$1*******') : location.href;
+// Søkestreng og fragment kan inneholde personopplysninger, så bare ruten sendes
+const pageMetaUtenSøkOgFragment = () => ({
+    page: {
+        url: `${location.origin}${location.pathname}`,
+    },
+});
+
+type Strengkart = Record<string, string>;
+
+const utenSøkOgFragment = (verdier: Strengkart) =>
+    Object.fromEntries(
+        Object.entries(verdier).map(([nøkkel, verdi]) => [
+            nøkkel,
+            verdi.replace(/^(https?:\/\/[^?#]*)[?#].*$/is, '$1'),
+        ]),
+    );
+
+// Hendelser som faro.performance.navigation har også hele adressen, f.eks. i attributtet name
+const fjernSøkOgFragmentFraHendelser = (item: TransportItem): TransportItem => {
+    const { attributes, context } = item.payload as { attributes?: Strengkart; context?: Strengkart };
+    if (!attributes && !context) {
+        return item;
+    }
 
     return {
-        page: {
-            url: result,
+        ...item,
+        payload: {
+            ...item.payload,
+            ...(attributes && { attributes: utenSøkOgFragment(attributes) }),
+            ...(context && { context: utenSøkOgFragment(context) }),
         },
     };
 };
@@ -45,11 +69,11 @@ export const initFaro = () => {
 
     init({
         faro: {
-            metas: [customPageMeta],
+            metas: [pageMetaUtenSøkOgFragment],
         },
         beforeSend: (item) => {
             if (!erExceptionItem(item)) {
-                return item;
+                return fjernSøkOgFragmentFraHendelser(item);
             }
 
             if (feilVarSomFølgeAvEn401Handling(item)) {
@@ -72,7 +96,7 @@ export const initFaro = () => {
                 return null;
             }
 
-            return item;
+            return fjernSøkOgFragmentFraHendelser(item);
         },
     });
 };
