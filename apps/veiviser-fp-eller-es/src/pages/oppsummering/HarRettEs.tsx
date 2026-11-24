@@ -24,7 +24,6 @@ export const HarRettEs = ({ fpEllerEsSituasjon, satser }: Props) => {
 
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
     const engangsstønad = finnSisteEngangsstønad(satser);
-    const erMor = fpEllerEsSituasjon.situasjon === 'mor';
 
     return (
         <>
@@ -39,11 +38,7 @@ export const HarRettEs = ({ fpEllerEsSituasjon, satser }: Props) => {
                             color="var(--ax-accent-500)"
                         />
                         <Heading size="medium" align="center" className="m-6" level="2">
-                            {erMor ? (
-                                <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarRettPåEs" />
-                            ) : (
-                                <FormattedMessage id="OppsummeringFpEllerEsSide.DuKanHaRettPåEs" />
-                            )}
+                            <FormattedMessage id="OppsummeringFpEllerEsSide.DuKanHaRettPåEs" />
                         </Heading>
                     </VStack>
                     <Box background="default" padding="space-16" borderRadius="8">

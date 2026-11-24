@@ -144,9 +144,9 @@ describe('<OppsummeringFpEllerEsSide>', () => {
 
         const harRettEs = screen.getAllByTestId('harRettEs');
         expect(within(harRettEs[0]!).getByText('Du må være medlem av folketrygden')).toBeInTheDocument();
-        expect(within(harRettEs[0]!).getByText('Du oppfyller dette kravet')).toBeInTheDocument();
+        expect(within(harRettEs[0]!).getByText(/minst 12 måneder rett før termin eller adopsjon/)).toBeInTheDocument();
 
-        expect(screen.getByText('Hvorfor har jeg rett til engangsstønad?')).toBeInTheDocument();
+        expect(screen.getByText('Hvorfor kan jeg ha rett til engangsstønad?')).toBeInTheDocument();
     });
 
     it('skal vise oppsummering for mor som ikke har rett fordi hun bor i utlandet og jobber der', async () => {
@@ -199,18 +199,20 @@ describe('<OppsummeringFpEllerEsSide>', () => {
         expect(screen.getByText('Hvorfor har jeg ikke rett til foreldrepenger?')).toBeInTheDocument();
     });
 
-    it('skal vise oppsummering for mor som har rett til engangsstønad', async () => {
+    it('skal vise oppsummering for mor som kan ha rett til engangsstønad', async () => {
         render(<MorHarRettTilEs />);
         expect(await screen.findByText('Resultat')).toBeInTheDocument();
 
-        expect(screen.getByText('Du har rett til engangsstønad')).toBeInTheDocument();
+        expect(screen.getByText('Du kan ha rett til engangsstønad')).toBeInTheDocument();
+        expect(screen.queryByText('Du har rett til engangsstønad')).not.toBeInTheDocument();
         expect(screen.getByText('Hva er engangsstønad?')).toBeInTheDocument();
 
-        expect(screen.getByText('Hvorfor har jeg rett til engangsstønad?')).toBeInTheDocument();
+        expect(screen.getByText('Hvorfor kan jeg ha rett til engangsstønad?')).toBeInTheDocument();
 
         const harRettEs = screen.getAllByTestId('harRettEs');
         expect(within(harRettEs[0]!).getByText('Du må være medlem av folketrygden')).toBeInTheDocument();
-        expect(within(harRettEs[0]!).getByText('Du oppfyller dette kravet')).toBeInTheDocument();
+        expect(within(harRettEs[0]!).getByText(/minst 12 måneder rett før termin eller adopsjon/)).toBeInTheDocument();
+        expect(within(harRettEs[0]!).queryByText('Du oppfyller dette kravet')).not.toBeInTheDocument();
 
         const harIkkeRettFp = screen.getAllByTestId('harIkkeRettFp');
         expect(within(harIkkeRettFp[1]!).getByText(/Du må i gjennomsnitt tjene/)).toBeInTheDocument();
