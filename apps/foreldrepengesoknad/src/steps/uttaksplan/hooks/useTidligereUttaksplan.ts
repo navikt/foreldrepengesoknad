@@ -138,8 +138,8 @@ export const useTidligereUttaksplan = ({
     return {
         perioder: tidligerePerioder,
         kreverManuellTilpasning: tilpasning.kreverManuellTilpasning,
-        // Backend avgjer om annen part sine periodar kan endrast (t.d. ikkje når annen part har søkt eller fått vedtak).
-        erAnnenPartRedigerbar: uttaksplan?.annenPartRedigerbar ?? true,
+        // Uten tidligere perioder lages et nytt forslag, og annen parts perioder der kommer ikke fra en søknad.
+        erAnnenPartRedigerbar: tidligerePerioder === undefined || (uttaksplan?.annenPartRedigerbar ?? true),
         isLoading: uttaksplanQuery.isLoading || (!erEndringssøknad && lasterSak),
     };
 };
