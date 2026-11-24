@@ -21,6 +21,9 @@ import { TidligereUtenlandsoppholdSteg } from './steg/utenlandsopphold-tidligere
 import { UtenlandsoppholdSteg } from './steg/utenlandsopphold/UtenlandsoppholdSteg';
 import { Velkommen } from './velkommen/Velkommen';
 
+// Definert utenfor komponenten slik at fokus bare settes når feilmeldingen vises, ikke ved hver rendring.
+const fokuser = (element: HTMLDivElement | null) => element?.focus();
+
 export const ApiErrorHandler = ({ error }: { error: Error }) => {
     return <ErrorPage appName="engangsstonad" errorMessage={error.message} retryCallback={() => location.reload()} />;
 };
@@ -61,7 +64,7 @@ export const EngangsstønadRoutes = ({ personinfo, mellomlagretData }: Props) =>
             {lagringFeilet && (
                 <VStack align="center" paddingBlock="space-16" paddingInline="space-16">
                     <VStack maxWidth="600px" width="100%">
-                        <Alert variant="error">
+                        <Alert variant="error" ref={fokuser} tabIndex={-1}>
                             <VStack align="start" gap="space-8">
                                 <FormattedMessage id="Mellomlagring.FeiletVedFortsettSenere" />
                                 <Button type="button" variant="secondary" size="small" onClick={nullstillLagringFeilet}>

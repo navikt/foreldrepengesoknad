@@ -30,6 +30,9 @@ import { TidligereUtenlandsoppholdSteg } from './steps/utenlandsopphold-tidliger
 import { UtenlandsoppholdSteg } from './steps/utenlandsopphold/UtenlandsoppholdSteg';
 import { VelgArbeidSteg } from './steps/velg-arbeidsforhold/VelgArbeidSteg';
 
+// Definert utenfor komponenten slik at fokus bare settes når feilmeldingen vises, ikke ved hver rendring.
+const fokuser = (element: HTMLDivElement | null) => element?.focus();
+
 export const ApiErrorHandler = ({ error }: { error: Error }) => {
     return (
         <ErrorPage
@@ -284,7 +287,7 @@ export const SvangerskapspengesøknadRoutes = ({ søkerInfo, mellomlagretData }:
             {lagringFeilet && (
                 <VStack align="center" paddingBlock="space-16" paddingInline="space-16">
                     <VStack maxWidth="600px" width="100%">
-                        <Alert variant="error">
+                        <Alert variant="error" ref={fokuser} tabIndex={-1}>
                             <VStack align="start" gap="space-8">
                                 <FormattedMessage id="Mellomlagring.FeiletVedFortsettSenere" />
                                 <Button type="button" variant="secondary" size="small" onClick={nullstillLagringFeilet}>

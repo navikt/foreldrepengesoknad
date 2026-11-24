@@ -46,6 +46,7 @@ describe('<AppContainer>', () => {
         expect(
             await screen.findByText(/Vi klarte ikke å lagre søknaden din nå/, undefined, { timeout: 5000 }),
         ).toBeInTheDocument();
+        expect(document.activeElement).toHaveTextContent(/Vi klarte ikke å lagre søknaden din nå/);
         expect(forlatSøknaden).not.toHaveBeenCalled();
         expect(screen.getByText('Steg 1 av 4')).toBeInTheDocument();
     });
