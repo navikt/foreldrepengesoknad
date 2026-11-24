@@ -23,6 +23,7 @@ import { UttaksplanperiodeMedKunTapteDager, erPeriodeDto, erTapteDagerHull } fro
 import { useAlleUttakPerioderInklTapteDager } from '../../utils/lagHullPerioder';
 import {
     erAvslåttPeriode,
+    erSamtidigUttakMedSøker,
     erUttaksperiode,
     finnUttakForForelder,
     harPeriodeDerMorsAktivitetIkkeErValgt,
@@ -211,10 +212,7 @@ export const getKalenderFargeForPeriode = (
 
     // Samtidig uttak kjem no ferdig utfylt på begge partar frå backend, ingen kryss-oppslag mot
     // andre rader trengst lenger (jf. Uttaksperioden.erSamtidigUttak).
-    if (
-        erUttaksperiode(periode) &&
-        (periode.søker?.samtidigUttak !== undefined || periode.annenPart?.samtidigUttak !== undefined)
-    ) {
+    if (erUttaksperiode(periode) && erSamtidigUttakMedSøker(periode)) {
         return erFarEllerMedmor ? 'LIGHTBLUEGREEN' : 'LIGHTGREENBLUE';
     }
 

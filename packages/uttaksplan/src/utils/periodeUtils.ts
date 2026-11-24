@@ -120,6 +120,11 @@ export const finnAntallTidelerÅTrekkeForEøs = (eøs: EøsUttakDto): number => 
 export const erUttaksperiode = (periode: Uttaksplanperiode) =>
     erPeriodeDto(periode) && finnAlleUttak(periode).some((uttak) => Uttaksperioden.erUttaksperiode(uttak));
 
+// Når søker har slettet sin del av et samtidig uttak, beholder annen part samtidigUttak fra vedtaket sitt
+// slik at kvoten trekkes riktig, men perioden skal vises som annen parts eget uttak.
+export const erSamtidigUttakMedSøker = (periode: UttakPeriodeDto) =>
+    !!periode.søker && (periode.søker.samtidigUttak !== undefined || periode.annenPart?.samtidigUttak !== undefined);
+
 export const erPrematuruker = (periode: Uttaksplanperiode) =>
     erPeriodeDto(periode) && finnAlleUttak(periode).some((uttak) => Uttaksperioden.erPrematuruker(uttak));
 
