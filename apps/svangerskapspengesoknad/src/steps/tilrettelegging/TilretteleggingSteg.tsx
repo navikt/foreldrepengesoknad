@@ -139,10 +139,12 @@ export const TilretteleggingSteg = ({
     const labelTiltak = intl.formatMessage({ id: 'tilrettelegging.tilretteleggingstiltak.label' });
     const harSkjema = typeArbeidsforhold === 'virksomhet' || typeArbeidsforhold === 'privat';
 
-    const periode = getPeriodeForTilrettelegging(barnet.termindato, valgtTilretteleggingId, arbeidsforhold, {
-        egenNæring,
-        frilans,
-    });
+    const periode = getPeriodeForTilrettelegging(
+        barnet.termindato,
+        valgtTilretteleggingId,
+        arbeidsforhold,
+        { egenNæring, frilans },
+    );
     const minDatoBehovFom = dayjs.max(dayjs(tiMånederSidenDato(barnet.termindato)), dayjs(periode.fom));
     const maxDatoBehovFom = periode.tom
         ? dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(periode.tom))

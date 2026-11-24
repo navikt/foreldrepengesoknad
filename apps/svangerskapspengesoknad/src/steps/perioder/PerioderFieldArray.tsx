@@ -71,10 +71,12 @@ export const PerioderFieldArray = ({
         arbeidsforhold,
         { egenNæring, frilans },
     );
-    const periode = getPeriodeForTilrettelegging(barn.termindato, valgtTilretteleggingId, arbeidsforhold, {
-        egenNæring,
-        frilans,
-    });
+    const periode = getPeriodeForTilrettelegging(
+        barn.termindato,
+        valgtTilretteleggingId,
+        arbeidsforhold,
+        { egenNæring, frilans },
+    );
 
     const formMethods = useFormContext<PerioderFormValues>();
     const { fields, append, remove } = useFieldArray({

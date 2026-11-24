@@ -204,7 +204,10 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskvoter, satser }: P
                                                 </Heading>
                                                 <Heading size="xsmall" level="5">
                                                     {capitalizeFirstLetter(
-                                                        formatMånedÅr(forrigeMåned.subtract(2, 'month').toDate(), intl),
+                                                        formatMånedÅr(
+                                                            forrigeMåned.subtract(2, 'month').toDate(),
+                                                            intl,
+                                                        ),
                                                     )}
                                                 </Heading>
                                                 <BodyShort>
@@ -218,7 +221,10 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskvoter, satser }: P
                                             <div>
                                                 <Heading size="xsmall" level="5">
                                                     {capitalizeFirstLetter(
-                                                        formatMånedÅr(forrigeMåned.subtract(1, 'month').toDate(), intl),
+                                                        formatMånedÅr(
+                                                            forrigeMåned.subtract(1, 'month').toDate(),
+                                                            intl,
+                                                        ),
                                                     )}
                                                 </Heading>
                                                 <BodyShort>
