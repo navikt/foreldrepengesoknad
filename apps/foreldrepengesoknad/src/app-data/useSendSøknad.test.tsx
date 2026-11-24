@@ -527,6 +527,21 @@ describe('useFpSendSøknad', () => {
         expect(deleteMock).not.toHaveBeenCalled();
     });
 
+    it('skal ikke sende inn endringssøknad når endringsdato er undefined (ingen virkedagsendring i planen)', async () => {
+        const postMock = vi.spyOn(ky, 'post');
+        const deleteMock = vi.spyOn(ky, 'delete');
+
+        const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO, true, saker), {
+            wrapper: getWrapper([UTTAKSPLAN_PERIODE], [UTTAKSPLAN_PERIODE]),
+        });
+
+        const resultat = await act(() => result.current.sendSøknad());
+
+        expect(resultat).toBe('MANGLER_UTTAKSPERIODER');
+        expect(postMock).not.toHaveBeenCalled();
+        expect(deleteMock).not.toHaveBeenCalled();
+    });
+
     it('skal sende inn endringssøknad når søkeren har fjernet sin del av et samtidig uttak og resten er avslått', async () => {
         const postMock = vi.spyOn(ky, 'post').mockReturnValue({
             json: () => Promise.resolve(),

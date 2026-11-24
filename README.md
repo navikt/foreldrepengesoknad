@@ -20,9 +20,9 @@ Dette monorepoet bruker følgende verktøy:
 5. På https://github.com/settings/tokens siden, velg "Configure SSO" for tokenet ditt og autoriser for navikt.
 6. Opprett en `.npmrc`-fil i hjemmekatalogen din og legg til følgende linje, hvor NODE_AUTH_TOKEN er tokenet du
    genererte i steg 4:
-   ```
-   //npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
-   ```
+    ```
+    //npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+    ```
 
 ### Installere dependencies og teste at alt bygger
 
@@ -47,7 +47,7 @@ Den gjør at du kan bruke server som er deployet til dev som utgangspunkt.
 Fordelen er at du får brukt helt "ekte" dev data, men med frontend servert fra din localhost.
 
 1. cd til appen du ønsker å kjøre tester på, f.eks `cd apps/foreldrepengeoversikt`
-2. Kjør `pnpm run lokal:dev`. Nå har du lokal vite-server kjørende på `localhost:5173/foreldrepenger/oversikt`
+2. Kjør `pnpm run dev:vite`. Nå har du lokal vite-server kjørende på `localhost:9110/foreldrepenger/oversikt`. Porten for andre apper står i `server.port` i appens `vite.config.ts`
 3. Gå til ingress i dev. f.eks https://foreldrepenger.intern.dev.nav.no/. Logg inn med en testbruker.
 4. **Identifiser appens wonderwall port**:
    Sjekk i Docker hvilken port din app bruker. F.eks. kjører `wonderwall-foreldrepengeoversikt` vanligvis på port `9100`.
@@ -64,12 +64,16 @@ Fordelen er at du får brukt helt "ekte" dev data, men med frontend servert fra 
 2. Kjør `pnpm run storybook`
 3. Browser vil automatisk åpne på riktig localhost port
 
-#### 3. Med lokal mock-server
+#### 3. Med mock-modus (MSW og Nav-dekoratøren)
 
-1. cd til `server` og kjør `pnpm build`
-2. cd til appen du ønsker å jobbe med, f.eks `cd apps/foreldrepengeoversikt`
-3. Kjør `pnpm run dev:mock`
-4. Kjør `pnpm run dev:lokal`
+Appen kjører med Vite som i Vite mode, men backend-kallene besvares av MSW i nettleseren. Nav-dekoratøren hentes fra dev, så siden ser ut som i dev og prod. Kall til fpgrunndata (kvoter og satser) går til den åpne dev-tjenesten.
+
+1. cd til appen, f.eks `cd apps/foreldrepengeoversikt`
+2. Kjør `pnpm run dev:mock`
+3. Velg scenario med `?scenario=<id>` i URL-en. Valget huskes i fanen. Gyldige scenarioer står i `mock/scenarioer.ts`.
+4. Mellomlagret søknad lagres i `sessionStorage`, separat per scenario. Åpne en ny fane for å starte på nytt.
+
+Nye scenarioer legges til i `mock/scenarioer.ts` med beskrivelse, en tekst som kjennetegner scenarioet og handlerne. I foreldrepengeoversikt og foreldrepengesoknad bruker `AppContainer.stories.tsx` de samme handlerne via `lagHandlers`. I de andre appene har Storybook egne handlere.
 
 ### Autogenere Typescript typer fra backend
 
