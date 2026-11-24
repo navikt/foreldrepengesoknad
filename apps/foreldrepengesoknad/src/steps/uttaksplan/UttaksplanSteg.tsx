@@ -150,20 +150,17 @@ export const UttaksplanSteg = ({
         },
     });
 
-    const tidligereUttaksplan = useTidligereUttaksplan(erEndringssøknad, eksisterendeSak);
+    const tidligereUttaksplan = useTidligereUttaksplan({ erEndringssøknad, eksisterendeSak });
     const tidligereUttaksperioder = tidligereUttaksplan.perioder;
 
     const valgteStønadskvoter = tilgjengeligeStønadskvoterQuery.data;
 
-    // Filtrerer ut periodane til annen part midlertidig fram til me får på plass lagring av desse
-    // periodane. useUttaksplanForslag sørger for at .søker alltid betyr søkjars eigne periodar
-    // (uavhengig av forelderrolle), så det er nok å filtrere på at .søker finst.
     const nyttUttaksplanForslag = useUttaksplanForslag(
         valgteStønadskvoter,
         tidligereUttaksperioder,
         tidligereUttaksplan.isLoading,
         erEndringssøknad,
-    ).filter((periode) => periode.søker !== undefined);
+    );
 
     if (!valgteStønadskvoter || tidligereUttaksplan.isLoading) {
         return null;
@@ -193,6 +190,11 @@ export const UttaksplanSteg = ({
                         </BodyLong>
                     </Alert>
                 )}
+                {tidligereUttaksplan.kreverManuellTilpasning && (
+                    <Alert variant="info">
+                        <FormattedMessage id="uttaksplan.fødselspermisjon.konflikt" />
+                    </Alert>
+                )}
                 <UttaksplanDataProvider
                     barn={barn}
                     foreldreInfo={{
@@ -208,7 +210,7 @@ export const UttaksplanSteg = ({
                     valgtStønadskvote={valgteStønadskvoter}
                     harAktivitetskravIPeriodeUtenUttak={false}
                     perioder={uttaksplan || defaultUttaksperioder}
-                    erPeriodeneTilAnnenPartLåst={!!tidligereUttaksperioder}
+                    erPeriodeneTilAnnenPartLåst={!tidligereUttaksplan.erAnnenPartRedigerbar}
                     aktiveArbeidsforhold={aktiveArbeidsforhold}
                     erEndringssøknad={erEndringssøknad}
                 >

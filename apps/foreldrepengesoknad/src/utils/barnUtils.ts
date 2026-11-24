@@ -51,6 +51,11 @@ export const getFødselsdato = (barn: Barn): string | undefined => {
     return isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined;
 };
 
+export const erFødtForMerEnnTreMånederSiden = (barn: Barn): boolean => {
+    const fødselsdato = getFødselsdato(barn);
+    return fødselsdato !== undefined && dayjs().isAfter(dayjs(fødselsdato).add(3, 'month'), 'day');
+};
+
 export const getDødeBarnetForMerEnn3MånederSiden = (registrerteBarn: FpBarnDto_fpoversikt) => {
     const dato3MånederTilbake = dayjs().subtract(3, 'month');
     return (

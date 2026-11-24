@@ -56,6 +56,7 @@ const lagUttak = (innvilget?: boolean): UttakDto => ({
 });
 
 const lagPlan = (perioder: FellesUttaksplanDto['perioder']): FellesUttaksplanDto => ({
+    annenPartRedigerbar: true,
     antallBarn: 1,
     dekningsgrad: 'HUNDRE',
     perioder,

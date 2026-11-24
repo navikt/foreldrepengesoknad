@@ -88,6 +88,7 @@ type StoryArgs = {
     opprinneligUttaksplan?: OpprinneligUttaksplan;
     kommerFraPlanlegger?: boolean;
     harJustertUttakVedFødsel?: boolean;
+    annenPartRedigerbar?: boolean;
 } & ComponentProps<typeof UttaksplanSteg>;
 
 const meta = {
@@ -611,10 +612,11 @@ export const FødselMorOgFarBeggeHarRettAnnenPartTomtVedtak: Story = {
         msw.use(
             http.post(API_URLS.uttaksplan, () =>
                 HttpResponse.json({
+                    annenPartRedigerbar: false,
                     antallBarn: 1,
                     dekningsgrad: 'HUNDRE',
                     perioder: [],
-                }),
+                } satisfies FellesUttaksplanDto),
             ),
             http.post(API_URLS.konto, () =>
                 HttpResponse.json({
@@ -691,6 +693,57 @@ const INNVILGET_RESULTAT = {
     årsak: 'ANNET',
 } as const;
 
+const MORS_SØKTE_PERIODER: UttakPeriodeDto[] = [
+    {
+        fom: '2024-06-10',
+        tom: '2024-06-28',
+        annenPart: { forelder: 'MOR', kontoType: 'FORELDREPENGER_FØR_FØDSEL', flerbarnsdager: false },
+    },
+    {
+        fom: '2024-07-01',
+        tom: '2024-08-09',
+        annenPart: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
+    },
+    {
+        fom: '2024-08-12',
+        tom: '2024-08-23',
+        annenPart: { forelder: 'MOR', utsettelseÅrsak: 'FERIE', flerbarnsdager: false },
+    },
+];
+
+// Far søker etter at mor har sendt inn søknaden sin. Backend avgjer om mor sine periodar kan endrast.
+export const FødselFarSøkerEtterAtMorHarSøkt: Story = {
+    beforeEach({ msw, args }) {
+        msw.use(
+            http.post(API_URLS.uttaksplan, () =>
+                HttpResponse.json({
+                    annenPartRedigerbar: args.annenPartRedigerbar ?? false,
+                    termindato: '2024-07-01',
+                    antallBarn: 1,
+                    dekningsgrad: 'HUNDRE',
+                    perioder: MORS_SØKTE_PERIODER,
+                } satisfies FellesUttaksplanDto),
+            ),
+            http.post(API_URLS.konto, () =>
+                HttpResponse.json({
+                    '80': {
+                        kontoer: DELT_UTTAK_80,
+                        minsteretter: MINSTERETTER,
+                    },
+                    '100': {
+                        kontoer: DELT_UTTAK_100,
+                        minsteretter: MINSTERETTER,
+                    },
+                }),
+            ),
+        );
+    },
+    args: {
+        ...FødselFarBeggeHarRettStarterPåTermin.args,
+        annenPartRedigerbar: false,
+    },
+};
+
 // Plan lastet fra en eksisterende, ikke-vedtatt sak: alle periodene har resultat (kommer fra gjeldende vedtak).
 const INNVILGET_PLAN_FRA_EKSISTERENDE_SAK: UttakPeriodeDto[] = [
     {
@@ -744,6 +797,7 @@ export const NySøknadFørVedtakMedEksisterendeSak: Story = {
             ),
             http.post(API_URLS.uttaksplan, () =>
                 HttpResponse.json({
+                    annenPartRedigerbar: true,
                     antallBarn: 1,
                     dekningsgrad: 'HUNDRE',
                     perioder: INNVILGET_PLAN_FRA_EKSISTERENDE_SAK,

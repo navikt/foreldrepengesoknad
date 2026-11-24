@@ -1,7 +1,9 @@
 import * as countries from 'i18n-iso-countries';
+import * as langEN from 'i18n-iso-countries/langs/en.json';
 import * as langNB from 'i18n-iso-countries/langs/nb.json';
 import * as langNN from 'i18n-iso-countries/langs/nn.json';
 
+countries.registerLocale(langEN);
 countries.registerLocale(langNB);
 countries.registerLocale(langNN);
 
@@ -53,13 +55,14 @@ export const filteredListEØSCountries = (countryOptionValue: string, shouldFilt
 };
 
 export const getLocaleKey = (locale: string): string => {
-    switch (locale) {
-        case 'nn':
-        case 'no-NN':
-            return 'nn';
-        default:
-            return 'nb';
+    const normalisertLocale = locale.toLowerCase().replace('_', '-');
+    if (normalisertLocale === 'nn' || normalisertLocale === 'no-nn') {
+        return 'nn';
     }
+    if (normalisertLocale === 'en' || normalisertLocale.startsWith('en-')) {
+        return 'en';
+    }
+    return 'nb';
 };
 
 export const getCountryName = (alphaCode: string, locale: string): string => {
@@ -87,8 +90,8 @@ export const countryIsMemberOfEøsOrEfta = (isoCode: string) => filteredListEØS
 
 const getCountries = () => countries;
 
-export const createCountryOptions = (): Array<[string, string]> => {
-    const lang = 'nb';
+export const createCountryOptions = (locale: string): Array<[string, string]> => {
+    const lang = getLocaleKey(locale);
     const land = getCountries();
 
     const names = Object.entries(land.getNames(lang)).map(

@@ -20,9 +20,15 @@ const MESSAGES_GROUPED_BY_LOCALE = {
 const getWrapper =
     (
         route: PlanleggerRoutes,
-        barnet?: OmBarnetPlanlegger,
-        hvemPlanlegger?: HvemPlanlegger,
-        arbeidssituasjon?: Arbeidssituasjon,
+        {
+            barnet,
+            hvemPlanlegger,
+            arbeidssituasjon,
+        }: {
+            barnet?: OmBarnetPlanlegger;
+            hvemPlanlegger?: HvemPlanlegger;
+            arbeidssituasjon?: Arbeidssituasjon;
+        } = {},
     ) =>
     ({ children }: { children: ReactNode }) => (
         <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
@@ -105,7 +111,7 @@ describe('useStepData', () => {
         };
 
         const { result } = renderHook(() => useStepData(), {
-            wrapper: getWrapper(PlanleggerRoutes.OPPSUMMERING, barnet),
+            wrapper: getWrapper(PlanleggerRoutes.OPPSUMMERING, { barnet }),
         });
 
         await waitFor(() =>
@@ -169,7 +175,7 @@ describe('useStepData', () => {
         };
 
         const { result } = renderHook(() => useStepData(), {
-            wrapper: getWrapper(PlanleggerRoutes.OPPSUMMERING, barnet),
+            wrapper: getWrapper(PlanleggerRoutes.OPPSUMMERING, { barnet }),
         });
 
         await waitFor(() =>
@@ -212,7 +218,7 @@ describe('useStepData', () => {
         };
 
         const { result } = renderHook(() => useStepData(), {
-            wrapper: getWrapper(PlanleggerRoutes.OPPSUMMERING, barnet, hvemPlanlegger, arbeidssituasjon),
+            wrapper: getWrapper(PlanleggerRoutes.OPPSUMMERING, { barnet, hvemPlanlegger, arbeidssituasjon }),
         });
 
         await waitFor(() =>
@@ -285,7 +291,7 @@ describe('useStepData', () => {
         };
 
         const { result } = renderHook(() => useStepData(), {
-            wrapper: getWrapper(PlanleggerRoutes.OPPSUMMERING, barnet, hvemPlanlegger, arbeidssituasjon),
+            wrapper: getWrapper(PlanleggerRoutes.OPPSUMMERING, { barnet, hvemPlanlegger, arbeidssituasjon }),
         });
 
         await waitFor(() =>
@@ -353,7 +359,7 @@ describe('useStepData', () => {
         };
 
         const { result } = renderHook(() => useStepData(), {
-            wrapper: getWrapper(PlanleggerRoutes.OPPSUMMERING, barnet, hvemPlanlegger, arbeidssituasjon),
+            wrapper: getWrapper(PlanleggerRoutes.OPPSUMMERING, { barnet, hvemPlanlegger, arbeidssituasjon }),
         });
 
         await waitFor(() =>
@@ -420,7 +426,7 @@ describe('useStepData', () => {
         };
 
         const { result } = renderHook(() => useStepData(), {
-            wrapper: getWrapper(PlanleggerRoutes.OPPSUMMERING, barnet, hvemPlanlegger, arbeidssituasjon),
+            wrapper: getWrapper(PlanleggerRoutes.OPPSUMMERING, { barnet, hvemPlanlegger, arbeidssituasjon }),
         });
 
         await waitFor(() =>
@@ -488,7 +494,7 @@ describe('useStepData', () => {
         };
 
         const { result } = renderHook(() => useStepData(), {
-            wrapper: getWrapper(PlanleggerRoutes.OPPSUMMERING, barnet, hvemPlanlegger, arbeidssituasjon),
+            wrapper: getWrapper(PlanleggerRoutes.OPPSUMMERING, { barnet, hvemPlanlegger, arbeidssituasjon }),
         });
 
         await waitFor(() =>
@@ -556,7 +562,7 @@ describe('useStepData', () => {
         };
 
         const { result } = renderHook(() => useStepData(), {
-            wrapper: getWrapper(PlanleggerRoutes.OPPSUMMERING, barnet, hvemPlanlegger, arbeidssituasjon),
+            wrapper: getWrapper(PlanleggerRoutes.OPPSUMMERING, { barnet, hvemPlanlegger, arbeidssituasjon }),
         });
 
         await waitFor(() =>

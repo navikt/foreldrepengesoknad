@@ -1,8 +1,16 @@
-import { FellesUttaksplanDto, UttakPeriodeDto } from '@navikt/fp-types';
+import { AnnenForelderOppgitt } from 'types/AnnenForelder';
 
-import { annenPartHarInnvilgetUttak, finnAnnenPartsPlan } from './annenForelderUtils';
+import { BarnType } from '@navikt/fp-constants';
+import { FellesUttaksplanDto, UfødtBarn, UttakPeriodeDto } from '@navikt/fp-types';
+
+import {
+    annenPartHarInnvilgetUttak,
+    finnAnnenPartsPlan,
+    finnAnnenPartsPlanSomPasserSøknaden,
+} from './annenForelderUtils';
 
 const lagPlan = (perioder: UttakPeriodeDto[]): FellesUttaksplanDto => ({
+    annenPartRedigerbar: true,
     antallBarn: 1,
     dekningsgrad: 'HUNDRE',
     perioder,
@@ -69,5 +77,55 @@ describe('annenPartHarInnvilgetUttak', () => {
 
     it('skal gi true når annen part har minst én innvilget periode', () => {
         expect(annenPartHarInnvilgetUttak(lagPlan([annenPartsVedtaksperiode(true)]))).toBe(true);
+    });
+});
+
+describe('finnAnnenPartsPlanSomPasserSøknaden', () => {
+    const annenForelder: AnnenForelderOppgitt = {
+        kanIkkeOppgis: false,
+        fornavn: 'Hans',
+        etternavn: 'Olsen',
+        fnr: '12345678910',
+        erAleneOmOmsorg: false,
+        harRettPåForeldrepengerINorge: true,
+    };
+    const barn: UfødtBarn = { type: BarnType.UFØDT, antallBarn: 1, termindato: '2024-01-15' };
+    const vedtak = { ...lagPlan([annenPartsVedtaksperiode(true)]), termindato: '2024-01-15' };
+
+    it('skal gi annen parts vedtak ved delt uttak og lik termindato', () => {
+        expect(finnAnnenPartsPlanSomPasserSøknaden(vedtak, { dekningsgrad: '80', annenForelder, barn })).toBe(vedtak);
+    });
+
+    it('skal ikke gi annen parts vedtak når søkeren har aleneomsorg', () => {
+        expect(
+            finnAnnenPartsPlanSomPasserSøknaden(vedtak, {
+                annenForelder: { ...annenForelder, erAleneOmOmsorg: true },
+                barn,
+            }),
+        ).toBeUndefined();
+    });
+
+    it('skal ikke gi annen parts vedtak når annen part ikke har rett', () => {
+        expect(
+            finnAnnenPartsPlanSomPasserSøknaden(vedtak, {
+                annenForelder: { ...annenForelder, harRettPåForeldrepengerINorge: false },
+                barn,
+            }),
+        ).toBeUndefined();
+    });
+
+    it('skal ikke gi annen parts vedtak når søkeren oppgir en annen termindato', () => {
+        expect(
+            finnAnnenPartsPlanSomPasserSøknaden(vedtak, {
+                annenForelder,
+                barn: { ...barn, termindato: '2024-01-22' },
+            }),
+        ).toBeUndefined();
+    });
+
+    it('skal ikke gi annen parts ubehandlede plan når søkeren velger en annen dekningsgrad', () => {
+        const plan = lagPlan([annenPartsSøknadsperiode]);
+        expect(finnAnnenPartsPlanSomPasserSøknaden(plan, { dekningsgrad: '80', annenForelder, barn })).toBeUndefined();
+        expect(finnAnnenPartsPlanSomPasserSøknaden(plan, { dekningsgrad: '100', annenForelder, barn })).toBe(plan);
     });
 });

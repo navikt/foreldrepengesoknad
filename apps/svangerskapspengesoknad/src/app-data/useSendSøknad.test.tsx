@@ -160,8 +160,13 @@ const getWrapper =
     (
         tilrettelegginger: Record<string, DelvisTilrettelegging | IngenTilrettelegging>,
         tilretteleggingerVedlegg: Record<string, Attachment[]>,
-        tilretteleggingerPerioder?: Record<string, PeriodeMedVariasjon[]>,
-        ferie?: AvtaltFeriePerArbeidsgiver,
+        {
+            tilretteleggingerPerioder,
+            ferie,
+        }: {
+            tilretteleggingerPerioder?: Record<string, PeriodeMedVariasjon[]>;
+            ferie?: AvtaltFeriePerArbeidsgiver;
+        } = {},
     ) =>
     ({ children }: { children: ReactNode }) => (
         <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
@@ -241,7 +246,7 @@ describe('useSendSøknad', () => {
         } satisfies AvtaltFeriePerArbeidsgiver;
 
         const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO), {
-            wrapper: getWrapper(tilrettelegginger, tilretteleggingerVedlegg, undefined, ferie),
+            wrapper: getWrapper(tilrettelegginger, tilretteleggingerVedlegg, { ferie }),
         });
 
         await act(() => result.current.sendSøknad());
@@ -525,7 +530,9 @@ describe('useSendSøknad', () => {
         };
 
         const { result } = renderHook(() => useSendSøknad(DEFAULT_SØKER_INFO), {
-            wrapper: getWrapper(tilrettelegginger, tilretteleggingerVedlegg, tilretteleggingPerioder),
+            wrapper: getWrapper(tilrettelegginger, tilretteleggingerVedlegg, {
+                tilretteleggingerPerioder: tilretteleggingPerioder,
+            }),
         });
 
         await act(() => result.current.sendSøknad());

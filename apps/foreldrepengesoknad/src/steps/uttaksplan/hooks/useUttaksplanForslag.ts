@@ -1,6 +1,6 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
-import { getDatoForAleneomsorg, getErMorUfør } from 'utils/annenForelderUtils';
+import { getDatoForAleneomsorg, getErAleneOmOmsorg, getErMorUfør } from 'utils/annenForelderUtils';
 import { getStandardOppstartsdato } from 'utils/oppstartUtils';
 import { getErFarOgFar, getErSøkerFarEllerMedmor } from 'utils/personUtils';
 
@@ -20,7 +20,7 @@ import { deltUttak, ikkeDeltUttak } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { FellesperiodeFordelingValg, Fordeling, OppstartValg } from '../../../types/Fordeling';
-import { getTermindato } from '../../../utils/barnUtils';
+import { erFødtForMerEnnTreMånederSiden, getTermindato } from '../../../utils/barnUtils';
 import { tilpassForslagForFørstegangssøknad } from './lagForslagFørFødsel';
 
 const getFellesperioderDagerFordeling = (fordeling: Fordeling, fellesperiodeDagerTilgjengelig: number) => {
@@ -47,10 +47,11 @@ const lagDeltUttakForFarMedmor = (
     helgejustertFamDato: string,
     stønadskvoter: KontoDto[],
     startdato: string,
+    ønskerUttakEtterMor: boolean,
     perioderFørFødsel?: UttakPeriodeDto[],
 ): UttakPeriodeDto[] => {
     const farStartdato = Uttaksdagen.denneEllerNeste(startdato).getDato();
-    const harFødselspermisjon = helgejustertFamDato === farStartdato;
+    const harFødselspermisjon = !ønskerUttakEtterMor && helgejustertFamDato === farStartdato;
     const forslag: UttakPeriodeDto[] = [];
 
     const foreldrepengerFørFødsel = stønadskvoter.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
@@ -128,6 +129,17 @@ const lagDeltUttakForFarMedmor = (
                     flerbarnsdager: false,
                 },
             });
+            currentFomDate = Uttaksdagen.neste(tidsperiode.tom).getDato();
+        }
+
+        const resterendeFedrekvote = (fedrekvote?.dager ?? 0) - 10;
+        if (resterendeFedrekvote > 0) {
+            tidsperiode = getTidsperiodeString(currentFomDate, resterendeFedrekvote);
+            forslag.push({
+                fom: tidsperiode.fom,
+                tom: tidsperiode.tom,
+                søker: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
+            });
         }
     } else {
         // Far starter etter familiehendelsesdato: generer mors perioder fra helgejustertFamDato,
@@ -159,9 +171,13 @@ const lagDeltUttakForFarMedmor = (
                     flerbarnsdager: false,
                 },
             });
+            currentMorFomDate = Uttaksdagen.neste(tidsperiode.tom).getDato();
         }
 
-        tidsperiode = getTidsperiodeString(farStartdato, fedrekvote ? fedrekvote.dager : 0);
+        tidsperiode = getTidsperiodeString(
+            ønskerUttakEtterMor ? currentMorFomDate : farStartdato,
+            fedrekvote ? fedrekvote.dager : 0,
+        );
 
         forslag.push({
             fom: tidsperiode.fom,
@@ -265,11 +281,20 @@ export const useUttaksplanForslag = (
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
+    const erDeltUttak =
+        isAnnenForelderOppgitt(annenForelder) &&
+        (annenForelder.harRettPåForeldrepengerINorge === true || annenForelder.harRettPåForeldrepengerIEØS === true);
+    const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
     if (
         tidligerePerioderLaster ||
         !valgtStønadskvote ||
         !fordeling ||
-        !kanGenerereUttaksplanForslag(tidligerePerioder)
+        !kanGenerereUttaksplanForslag(tidligerePerioder) ||
+        (erSøkerFarEllerMedmor &&
+            erDeltUttak &&
+            søkersituasjon.situasjon === 'fødsel' &&
+            !getErAleneOmOmsorg(annenForelder) &&
+            erFødtForMerEnnTreMånederSiden(barn))
     ) {
         return [];
     }
@@ -281,12 +306,6 @@ export const useUttaksplanForslag = (
     // const annenPartsSisteDag = annenPartsSistePeriode
     //     ? Uttaksdagen.denneEllerForrige(annenPartsSistePeriode.tom).getDato()
     //     : undefined;
-
-    const erDeltUttak =
-        isAnnenForelderOppgitt(annenForelder) &&
-        (annenForelder.harRettPåForeldrepengerINorge === true || annenForelder.harRettPåForeldrepengerIEØS === true);
-
-    const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
 
     const erMorUfør = getErMorUfør(annenForelder, erSøkerFarEllerMedmor);
 
@@ -324,10 +343,12 @@ export const useUttaksplanForslag = (
                 ? stønadskvoter.filter((konto) => konto.konto !== 'FELLESPERIODE')
                 : stønadskvoter;
         if (erSøkerFarEllerMedmor) {
+            const ønskerUttakEtterMor = fordeling.oppstartAvForeldrepengerValg === OppstartValg.IKKE_VED_FØDSEL;
             return lagDeltUttakForFarMedmor(
                 Uttaksdagen.denneEllerNeste(familiehendelsedato).getDato(),
                 stønadskvoterForForslag,
                 oppstartsdato,
+                ønskerUttakEtterMor,
                 førFødsel ? fordelPerioderEtterSøkerrolle(førFødsel.perioder, 'FAR_MEDMOR') : undefined,
             );
         }
@@ -415,6 +436,9 @@ const getOppstartsdatoFromFordelingValg = (
             return getStandardOppstartsdato(barn, oppstartValg, tilpassTilTermin);
         }
         case OppstartValg.FAMILIEHENDELSESDATO: {
+            return Uttaksdagen.denneEllerNeste(familiehendelsesdato).getDato();
+        }
+        case OppstartValg.IKKE_VED_FØDSEL: {
             return Uttaksdagen.denneEllerNeste(familiehendelsesdato).getDato();
         }
         case OppstartValg.ANKOMSTDATO_NORGE: {

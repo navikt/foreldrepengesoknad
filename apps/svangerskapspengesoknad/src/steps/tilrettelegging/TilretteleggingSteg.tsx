@@ -129,8 +129,7 @@ export const TilretteleggingSteg = ({
         barnet.termindato,
         valgtTilretteleggingId,
         arbeidsforhold,
-        egenNæring,
-        frilans,
+        { egenNæring, frilans },
     );
 
     const erFlereTilrettelegginger = !!valgteArbeidsforhold && valgteArbeidsforhold.length > 1;
@@ -144,8 +143,7 @@ export const TilretteleggingSteg = ({
         barnet.termindato,
         valgtTilretteleggingId,
         arbeidsforhold,
-        egenNæring,
-        frilans,
+        { egenNæring, frilans },
     );
     const minDatoBehovFom = dayjs.max(dayjs(tiMånederSidenDato(barnet.termindato)), dayjs(periode.fom));
     const maxDatoBehovFom = periode.tom

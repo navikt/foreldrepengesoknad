@@ -70,6 +70,7 @@ const morsVedtak = { innvilget: true, trekkerMinsterett: true, trekkerDager: tru
 
 const uttaksplanMorHarSøkt = {
     antallBarn: 1,
+    annenPartRedigerbar: false,
     dekningsgrad: 'HUNDRE',
     perioder: [
         {

@@ -6,7 +6,7 @@ import { useFpNavigator } from 'appData/useFpNavigator';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useIntl } from 'react-intl';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
-import { finnAnnenPartsVedtak } from 'utils/annenForelderUtils';
+import { finnAnnenPartsPlan, finnAnnenPartsVedtak } from 'utils/annenForelderUtils';
 import { getVis1Juli2024Info } from 'utils/dateUtils';
 import { getKjønnFromFnr } from 'utils/personUtils';
 
@@ -45,10 +45,9 @@ export const PeriodeMedForeldrepengerSteg = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
 
-    const annenPartsVedtak = useQuery({
-        ...useUttaksplanOptions(),
-        select: finnAnnenPartsVedtak,
-    }).data;
+    const uttaksplan = useQuery(useUttaksplanOptions()).data;
+    const annenPartsVedtak = uttaksplan ? finnAnnenPartsVedtak(uttaksplan) : undefined;
+    const annenPartsPlan = uttaksplan ? finnAnnenPartsPlan(uttaksplan) : undefined;
 
     const kontoerOptions = useStønadsKontoerOptions();
     const tilgjengeligeStønadskvoterQuery = useQuery(kontoerOptions);
@@ -101,6 +100,13 @@ export const PeriodeMedForeldrepengerSteg = ({
                                 søkersituasjon={søkersituasjon}
                                 stønadskvote100={tilgjengeligeStønadskvoterQuery.data['100']}
                                 stønadskvote80={tilgjengeligeStønadskvoterQuery.data['80']}
+                                annenPartsDekningsgrad={
+                                    annenPartsPlan
+                                        ? annenPartsPlan.dekningsgrad === 'HUNDRE'
+                                            ? '100'
+                                            : '80'
+                                        : undefined
+                                }
                             />
                         )}
                     </>
