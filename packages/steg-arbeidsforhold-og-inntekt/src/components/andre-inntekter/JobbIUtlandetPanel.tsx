@@ -38,7 +38,7 @@ export const JobbIUtlandetPanel = ({ index, inntektskilde }: Props) => {
                     ),
                 ]}
             >
-                {createCountryOptions(intl.locale).map((o) => (
+                {createCountryOptions(intl.locale, { utenNorge: true }).map((o) => (
                     <option key={o[0]} value={o[0]}>
                         {o[1]}
                     </option>

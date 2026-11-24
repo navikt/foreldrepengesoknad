@@ -29,6 +29,16 @@ describe('createCountryOptions', () => {
         const options = createCountryOptions('nb');
         expect(options.some(([code]) => code === 'ATA')).toBe(false);
     });
+
+    it('tar med Norge som standard', () => {
+        expect(createCountryOptions('nb').some(([code]) => code === 'NOR')).toBe(true);
+    });
+
+    it('filtrerer ut Norge når utenNorge er satt', () => {
+        const options = createCountryOptions('nb', { utenNorge: true });
+        expect(options.some(([code]) => code === 'NOR')).toBe(false);
+        expect(options.some(([code]) => code === 'SWE')).toBe(true);
+    });
 });
 
 describe('filteredListEØSCountries', () => {
