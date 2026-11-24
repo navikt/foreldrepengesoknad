@@ -615,10 +615,11 @@ describe('useFpSendSøknad', () => {
         const sendOgFangFeil = async (sendSøknad: () => Promise<unknown>): Promise<unknown> => {
             let feil: unknown;
             await act(async () => {
-                feil = await sendSøknad().then(
-                    () => undefined,
-                    (error: unknown) => error,
-                );
+                try {
+                    await sendSøknad();
+                } catch (error: unknown) {
+                    feil = error;
+                }
             });
             return feil;
         };
