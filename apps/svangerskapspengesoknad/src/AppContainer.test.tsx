@@ -6,6 +6,9 @@ import dayjs from 'dayjs';
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './AppContainer.stories';
+import { forlatSøknaden } from './app-data/forlatSøknaden';
+
+vi.mock('./app-data/forlatSøknaden', () => ({ forlatSøknaden: vi.fn() }));
 
 const { VisAppKvinneMedArbeid, MellomlagringFeiler } = composeStories(stories);
 
@@ -16,12 +19,10 @@ const fortsettSenere = async () => {
 
 describe('<AppContainer>', () => {
     afterEach(() => {
-        vi.unstubAllGlobals();
+        vi.mocked(forlatSøknaden).mockClear();
     });
 
     it('skal sende brukeren ut av søknaden ved «Fortsett senere» når mellomlagringen går bra', async () => {
-        const assign = vi.fn();
-        vi.stubGlobal('location', { ...location, assign });
         await VisAppKvinneMedArbeid.run();
 
         await userEvent.click(await screen.findByText('Ja, jeg har forstått mine plikter.'));
@@ -30,12 +31,10 @@ describe('<AppContainer>', () => {
 
         await fortsettSenere();
 
-        await waitFor(() => expect(assign).toHaveBeenCalledWith('https://nav.no'));
+        await waitFor(() => expect(forlatSøknaden).toHaveBeenCalled());
     });
 
     it('skal bli værende i søknaden og vise feilmelding ved «Fortsett senere» når mellomlagringen feiler', async () => {
-        const assign = vi.fn();
-        vi.stubGlobal('location', { ...location, assign });
         await MellomlagringFeiler.run();
 
         await userEvent.click(await screen.findByText('Ja, jeg har forstått mine plikter.'));
@@ -47,7 +46,7 @@ describe('<AppContainer>', () => {
         expect(
             await screen.findByText(/Vi klarte ikke å lagre søknaden din nå/, undefined, { timeout: 5000 }),
         ).toBeInTheDocument();
-        expect(assign).not.toHaveBeenCalled();
+        expect(forlatSøknaden).not.toHaveBeenCalled();
         expect(screen.getByText('Steg 1 av 7')).toBeInTheDocument();
     });
 

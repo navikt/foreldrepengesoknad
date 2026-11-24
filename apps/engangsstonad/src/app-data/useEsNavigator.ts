@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { loggUmamiEvent } from '@navikt/fp-observability';
 
 import { ContextDataType, useContextGetAnyData, useContextSaveData } from './EsDataContext';
+import { forlatSøknaden } from './forlatSøknaden';
 import { Path } from './paths';
 import { MellomlagreSøknadFn } from './useEsMellomlagring';
 import { lagAppStegliste, useCurrentPath } from './useStepConfig';
@@ -69,7 +70,7 @@ export const useEsNavigator = (mellomlagreOgNaviger: MellomlagreSøknadFn) => {
             visFeilTilBruker: true,
             onFerdig: (resultat) => {
                 if (resultat === 'ok') {
-                    location.assign('https://nav.no');
+                    forlatSøknaden();
                 }
             },
         });

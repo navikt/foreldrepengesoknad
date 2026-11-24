@@ -2,6 +2,7 @@ import { loggUmamiEvent } from '@navikt/fp-observability';
 import { EksternArbeidsforholdDto_fpoversikt } from '@navikt/fp-types';
 
 import { ContextDataType, useContextSaveData } from './SvpDataContext';
+import { forlatSøknaden } from './forlatSøknaden';
 import { SøknadRoute } from './routes';
 import { MellomlagreSøknadFn } from './useMellomlagreSøknad';
 import { useStepConfig } from './useStepConfig';
@@ -50,7 +51,7 @@ export const useSvpNavigator = ({
             visFeilTilBruker: true,
             onFerdig: (resultat) => {
                 if (resultat === 'ok') {
-                    location.assign('https://nav.no');
+                    forlatSøknaden();
                 }
             },
         });
