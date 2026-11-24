@@ -1,12 +1,14 @@
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import minMax from 'dayjs/plugin/minMax';
 import { ReactNode, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, InlineMessage, Radio, VStack } from '@navikt/ds-react';
 
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { RhfNumericField, RhfRadioGroup, RhfSelect } from '@navikt/fp-form-hooks';
 import type {
     AktivitetType_fpoversikt,
@@ -33,6 +35,7 @@ import { prosentValideringGradering, valideringSamtidigUttak } from './uttakspla
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
+dayjs.extend(minMax);
 
 const SELVSTENDIG_NÆRINGSDRIVENDE = 'SELVSTENDIG_NÆRINGSDRIVENDE' satisfies AktivitetType_fpoversikt;
 const FRILANS = 'FRILANS' satisfies AktivitetType_fpoversikt;
@@ -1023,8 +1026,8 @@ export const beholdLåstAnnenPartsSamtidigeUttak = (
         const deler: UttakPeriodeDto[] = [];
         let fom = nyPeriode.fom;
         for (const låst of låstePerioder) {
-            const start = låst.fom > fom ? låst.fom : fom;
-            const slutt = låst.tom < nyPeriode.tom ? låst.tom : nyPeriode.tom;
+            const start = dayjs.max(dayjs(låst.fom), dayjs(fom)).format(ISO_DATE_FORMAT);
+            const slutt = dayjs.min(dayjs(låst.tom), dayjs(nyPeriode.tom)).format(ISO_DATE_FORMAT);
             if (Uttaksdagen.denneEllerNeste(start).getDato() > Uttaksdagen.denneEllerForrige(slutt).getDato()) {
                 continue;
             }
