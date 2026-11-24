@@ -18,7 +18,7 @@ import {
 } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
-const urlPrefiks = import.meta.env.BASE_URL;
+export const urlPrefiks = import.meta.env.BASE_URL;
 
 /**
 Backend returnerer null for Optional.orElse(null), som JAX-RS oversetter til 204 No Content

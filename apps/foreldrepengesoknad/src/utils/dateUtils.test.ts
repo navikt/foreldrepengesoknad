@@ -135,18 +135,30 @@ describe('dateUtils', () => {
 
     describe('getEndringstidspunktNy', () => {
         const opprinneligPlan: UttakPeriodeDto[] = [
-            { fom: '2019-09-10', tom: '2019-09-30', søker: { flerbarnsdager: false, forelder: 'MOR' } },
-            { fom: '2019-10-01', tom: '2020-01-13', søker: { flerbarnsdager: false, forelder: 'MOR' } },
-            { fom: '2020-01-14', tom: '2020-05-01', søker: { flerbarnsdager: false, forelder: 'MOR' } },
+            {
+                fom: '2019-09-10',
+                tom: '2019-09-30',
+                søker: { flerbarnsdager: false, forelder: 'MOR', kontoType: 'FORELDREPENGER_FØR_FØDSEL' },
+            },
+            {
+                fom: '2019-10-01',
+                tom: '2020-01-13',
+                søker: { flerbarnsdager: false, forelder: 'MOR', kontoType: 'MØDREKVOTE' },
+            },
+            {
+                fom: '2020-01-14',
+                tom: '2020-05-01',
+                søker: { flerbarnsdager: false, forelder: 'MOR', kontoType: 'FELLESPERIODE' },
+            },
         ];
 
         const opprinneligPlanMedHull: UttakPeriodeDto[] = [
-            { fom: '2022-09-21', tom: '2022-10-11', søker: { flerbarnsdager: false, forelder: 'MOR' } },
-            { fom: '2022-10-12', tom: '2022-12-13', søker: { flerbarnsdager: false, forelder: 'MOR' } },
-            { fom: '2022-12-14', tom: '2022-12-27', søker: { flerbarnsdager: false, forelder: 'MOR' } },
-            { fom: '2022-12-28', tom: '2023-01-30', søker: { flerbarnsdager: false, forelder: 'MOR' } },
-            { fom: '2023-01-31', tom: '2023-02-20', søker: { flerbarnsdager: false, forelder: 'MOR' } },
-            { fom: '2023-02-21', tom: '2023-02-27', søker: { flerbarnsdager: false, forelder: 'MOR' } },
+            { fom: '2022-09-21', tom: '2022-10-11', søker: { flerbarnsdager: false, forelder: 'MOR', kontoType: 'MØDREKVOTE' } },
+            { fom: '2022-10-12', tom: '2022-12-13', søker: { flerbarnsdager: false, forelder: 'MOR', kontoType: 'FELLESPERIODE' } },
+            { fom: '2022-12-14', tom: '2022-12-27', søker: { flerbarnsdager: false, forelder: 'MOR', kontoType: 'MØDREKVOTE' } },
+            { fom: '2022-12-28', tom: '2023-01-30', søker: { flerbarnsdager: false, forelder: 'MOR', kontoType: 'FELLESPERIODE' } },
+            { fom: '2023-01-31', tom: '2023-02-20', søker: { flerbarnsdager: false, forelder: 'MOR', kontoType: 'MØDREKVOTE' } },
+            { fom: '2023-02-21', tom: '2023-02-27', søker: { flerbarnsdager: false, forelder: 'MOR', kontoType: 'FELLESPERIODE' } },
         ];
 
         it('Skal returnere undefined når planene er like og tomme', () => {
@@ -216,10 +228,11 @@ describe('dateUtils', () => {
             const endretPlan = [...opprinneligPlan, gradertPeriode];
 
             const endringstidspunkt = getEndringstidspunktNy(opprinneligPlan, endretPlan);
-            expect(endringstidspunkt).toEqual(gradertPeriode.fom);
+            // 2019-05-04 er lørdag, første ulike virkedag er mandag
+            expect(endringstidspunkt).toBe('2019-05-06');
         });
 
-        it('Hvis en ny periode legges til i slutten, skal starten på den første nye perioden være endringstidspunktet', () => {
+        it('Hvis en ny periode legges til i slutten, skal første dag med ulikt uttak være endringstidspunktet', () => {
             const endretPlan: UttakPeriodeDto[] = [
                 ...opprinneligPlan,
                 { fom: '2020-05-02', tom: '2020-05-09', søker: { flerbarnsdager: false, forelder: 'MOR' } },
@@ -227,7 +240,8 @@ describe('dateUtils', () => {
             ];
 
             const endringstidspunkt = getEndringstidspunktNy(opprinneligPlan, endretPlan);
-            expect(endringstidspunkt).toEqual(endretPlan[3]!.fom);
+            // 2020-05-02 er lørdag, første ulike virkedag er mandag
+            expect(endringstidspunkt).toBe('2020-05-04');
         });
 
         it('Skal finne endringstidspunkt gitt at en gammel periode er endret', () => {
@@ -271,7 +285,7 @@ describe('dateUtils', () => {
             expect(endringstidspunkt).toEqual(opprinneligPlan[1]!.fom);
         });
 
-        it('Skal finne endringstidspunkt gitt at en periode har fått senere sluttdato (blitt lenger)', () => {
+        it('Skal finne første dag med ulikt uttak når en periode har fått senere sluttdato (blitt lenger)', () => {
             const endretPlan: UttakPeriodeDto[] = [
                 opprinneligPlan[0]!,
                 { ...opprinneligPlan[1]!, tom: '2020-01-14' },
@@ -279,10 +293,10 @@ describe('dateUtils', () => {
             ];
 
             const endringstidspunkt = getEndringstidspunktNy(opprinneligPlan, endretPlan);
-            expect(endringstidspunkt).toEqual(opprinneligPlan[1]!.fom);
+            expect(endringstidspunkt).toBe('2020-01-14');
         });
 
-        it('Skal finne endringstidspunkt gitt at en periode har fått tidligere sluttdato (blitt kortere)', () => {
+        it('Skal finne første dag med ulikt uttak når en periode har fått tidligere sluttdato (blitt kortere)', () => {
             const endretPlan: UttakPeriodeDto[] = [
                 opprinneligPlan[0]!,
                 { ...opprinneligPlan[1]!, tom: '2020-01-12' },
@@ -290,10 +304,10 @@ describe('dateUtils', () => {
             ];
 
             const endringstidspunkt = getEndringstidspunktNy(opprinneligPlan, endretPlan);
-            expect(endringstidspunkt).toEqual(opprinneligPlan[1]!.fom);
+            expect(endringstidspunkt).toBe('2020-01-13');
         });
 
-        it('Hvis en periode får kortere sluttdato, skal endringstidspunktet være lik starten på den endrede perioden.', () => {
+        it('Hvis en periode får kortere sluttdato, skal første dag med ulikt uttak brukes.', () => {
             const nyPeriode: UttakPeriodeDto = {
                 ...opprinneligPlanMedHull[2]!,
                 tom: '2022-12-26',
@@ -312,10 +326,10 @@ describe('dateUtils', () => {
             ];
 
             const endringstidspunkt = getEndringstidspunktNy(opprinneligPlanMedHull, endretPlanMedHull);
-            expect(endringstidspunkt).toEqual(opprinneligPlanMedHull[2]!.fom);
+            expect(endringstidspunkt).toBe('2022-12-27');
         });
 
-        it('Hvis en periode får lengre sluttdato, skal endringstidspunktet være lik starten på den endrede perioden.', () => {
+        it('Hvis en periode får lengre sluttdato, skal første dag med ulikt uttak brukes.', () => {
             const nyPeriode: UttakPeriodeDto = {
                 ...opprinneligPlanMedHull[2]!,
                 tom: '2022-12-28',
@@ -334,10 +348,10 @@ describe('dateUtils', () => {
             ];
 
             const endringstidspunkt = getEndringstidspunktNy(opprinneligPlanMedHull, endretPlanMedHull);
-            expect(endringstidspunkt).toEqual(nyPeriode.fom);
+            expect(endringstidspunkt).toBe('2022-12-28');
         });
 
-        it('Hvis en foregående periode får lengre sluttdato, skal endringstidspunktet være lik starten på den endrede perioden.', () => {
+        it('Hvis en foregående periode får lengre sluttdato, skal første dag med ulikt uttak brukes.', () => {
             const nyPeriodeUttak: UttakPeriodeDto = {
                 ...opprinneligPlanMedHull[1]!,
                 tom: '2022-12-14',
@@ -356,10 +370,10 @@ describe('dateUtils', () => {
             ];
 
             const endringstidspunkt = getEndringstidspunktNy(opprinneligPlanMedHull, endretPlanMedHull);
-            expect(endringstidspunkt).toEqual(nyPeriodeUttak.fom);
+            expect(endringstidspunkt).toBe('2022-12-14');
         });
 
-        it('Hvis en periode i slutten av planen har fått tidligere sluttdato, skal starten på perioden være endringstidspunktet.', () => {
+        it('Hvis en periode i slutten av planen har fått tidligere sluttdato, skal første dag med ulikt uttak brukes.', () => {
             const endretPlanMedForkortetSistePeriode: UttakPeriodeDto[] = [
                 opprinneligPlan[0]!,
                 opprinneligPlan[1]!,
@@ -367,10 +381,10 @@ describe('dateUtils', () => {
             ];
 
             const endringstidspunkt = getEndringstidspunktNy(opprinneligPlan, endretPlanMedForkortetSistePeriode);
-            expect(endringstidspunkt).toEqual(endretPlanMedForkortetSistePeriode[2]!.fom);
+            expect(endringstidspunkt).toBe('2020-05-01');
         });
 
-        it('Hvis en periode i slutten av planen har fått senere sluttdato, skal starten på perioden være endringstidspunktet.', () => {
+        it('Hvis en periode i slutten av planen har fått senere sluttdato, skal første dag med ulikt uttak brukes.', () => {
             const endretPlanMedForlengetSistePeriode: UttakPeriodeDto[] = [
                 opprinneligPlan[0]!,
                 opprinneligPlan[1]!,
@@ -378,10 +392,11 @@ describe('dateUtils', () => {
             ];
 
             const endringstidspunkt = getEndringstidspunktNy(opprinneligPlan, endretPlanMedForlengetSistePeriode);
-            expect(endringstidspunkt).toEqual(endretPlanMedForlengetSistePeriode[2]!.fom);
+            // 2020-05-02 er lørdag, første ulike virkedag er mandag
+            expect(endringstidspunkt).toBe('2020-05-04');
         });
 
-        it('Hvis en foregående periode har fått kortere sluttdato, skal endringstidspunktet være lik starten på den endrede perioden.', () => {
+        it('Hvis en foregående periode har fått kortere sluttdato, skal første dag med ulikt uttak brukes.', () => {
             const nyPeriodeUttak: UttakPeriodeDto = {
                 ...opprinneligPlanMedHull[1]!,
                 tom: '2022-12-12',
@@ -400,7 +415,7 @@ describe('dateUtils', () => {
             ];
 
             const endringstidspunkt = getEndringstidspunktNy(opprinneligPlanMedHull, endretPlanMedHull);
-            expect(endringstidspunkt).toEqual(nyPeriodeUttak.fom);
+            expect(endringstidspunkt).toBe('2022-12-13');
         });
 
         it('Hvis en ny periode settes inn i starten av planen skal det telle som en endring', () => {
@@ -411,14 +426,15 @@ describe('dateUtils', () => {
             };
             const endretPlan = [nyPeriode, ...opprinneligPlan];
             const endringstidspunkt = getEndringstidspunktNy(opprinneligPlan, endretPlan);
-            expect(endringstidspunkt).toBe(nyPeriode.fom);
+            // 2019-09-01 er søndag, første ulike virkedag er mandag
+            expect(endringstidspunkt).toBe('2019-09-02');
         });
 
-        it('Hvis uttaksplanlogikken deler en periode skal endringstidspunkt være starten av den endrede perioden', () => {
+        it('Hvis uttaksplanlogikken deler en periode skal endringstidspunkt være første virkedag i den nye perioden', () => {
             const deltPeriodeTidligereDel: UttakPeriodeDto = {
                 fom: '2020-01-14',
                 tom: '2020-04-03',
-                søker: { flerbarnsdager: false, forelder: 'MOR' },
+                søker: { flerbarnsdager: false, forelder: 'MOR', kontoType: 'FELLESPERIODE' },
             };
             const periodeSomDeltePeriode: UttakPeriodeDto = {
                 fom: '2020-04-06',
@@ -428,7 +444,7 @@ describe('dateUtils', () => {
             const deltPeriodeSenereDel: UttakPeriodeDto = {
                 fom: '2020-04-20',
                 tom: '2020-05-04',
-                søker: { flerbarnsdager: false, forelder: 'MOR' },
+                søker: { flerbarnsdager: false, forelder: 'MOR', kontoType: 'FELLESPERIODE' },
             };
 
             const endretPlan = [
@@ -439,7 +455,294 @@ describe('dateUtils', () => {
                 deltPeriodeSenereDel,
             ];
             const endringstidspunkt = getEndringstidspunktNy(opprinneligPlan, endretPlan);
-            expect(endringstidspunkt).toBe(deltPeriodeTidligereDel.fom);
+            expect(endringstidspunkt).toBe('2020-04-06');
+        });
+
+        const planMedSamtidigUttak: UttakPeriodeDto[] = [
+            {
+                fom: '2026-11-09',
+                tom: '2026-11-20',
+                annenPart: { forelder: 'MOR', flerbarnsdager: false, kontoType: 'FORELDREPENGER_FØR_FØDSEL' },
+            },
+            {
+                fom: '2026-11-23',
+                tom: '2026-12-04',
+                søker: {
+                    forelder: 'FAR_MEDMOR',
+                    flerbarnsdager: false,
+                    kontoType: 'FEDREKVOTE',
+                    samtidigUttak: 100,
+                },
+                annenPart: {
+                    forelder: 'MOR',
+                    flerbarnsdager: false,
+                    kontoType: 'MØDREKVOTE',
+                    samtidigUttak: 100,
+                },
+            },
+            {
+                fom: '2026-12-07',
+                tom: '2027-03-05',
+                annenPart: { forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+            },
+        ];
+
+        it('fanger endret farsperiode inne i mors uttak', () => {
+            const nyPlan: UttakPeriodeDto[] = [
+                ...planMedSamtidigUttak.slice(0, 2),
+                {
+                    fom: '2026-12-07',
+                    tom: '2027-02-12',
+                    annenPart: { forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+                },
+                {
+                    fom: '2027-02-15',
+                    tom: '2027-02-19',
+                    søker: {
+                        forelder: 'FAR_MEDMOR',
+                        flerbarnsdager: false,
+                        kontoType: 'FEDREKVOTE',
+                        samtidigUttak: 50,
+                    },
+                    annenPart: {
+                        forelder: 'MOR',
+                        flerbarnsdager: false,
+                        kontoType: 'MØDREKVOTE',
+                        samtidigUttak: 50,
+                    },
+                },
+                {
+                    fom: '2027-02-22',
+                    tom: '2027-03-05',
+                    annenPart: { forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+                },
+            ];
+
+            expect(getEndringstidspunktNy(planMedSamtidigUttak, nyPlan)).toBe('2027-02-15');
+        });
+
+        it('ignorerer endring bare i annen parts periode', () => {
+            const nyPlan: UttakPeriodeDto[] = [
+                ...planMedSamtidigUttak.slice(0, 2),
+                {
+                    ...planMedSamtidigUttak[2]!,
+                    annenPart: { forelder: 'MOR', flerbarnsdager: false, kontoType: 'FELLESPERIODE' },
+                },
+            ];
+
+            expect(getEndringstidspunktNy(planMedSamtidigUttak, nyPlan)).toBeUndefined();
+        });
+
+        it('fanger når søker fjerner sin del av samtidig uttak', () => {
+            const nyPlan: UttakPeriodeDto[] = [
+                planMedSamtidigUttak[0]!,
+                {
+                    fom: '2026-11-23',
+                    tom: '2026-12-04',
+                    annenPart: { forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+                },
+                planMedSamtidigUttak[2]!,
+            ];
+
+            expect(getEndringstidspunktNy(planMedSamtidigUttak, nyPlan)).toBe('2026-11-23');
+        });
+
+        // Delte perioder dekker ikke helgen der de møtes (fredag til mandag). Helg teller ikke.
+        it('ignorerer deling av lik søkerperiode, også når helgen mellom delene mangler', () => {
+            const fedrekvoteMars: UttakPeriodeDto[] = [
+                {
+                    fom: '2027-03-01',
+                    tom: '2027-03-31',
+                    søker: { forelder: 'FAR_MEDMOR', flerbarnsdager: false, kontoType: 'FEDREKVOTE' },
+                },
+            ];
+            const nyPlan: UttakPeriodeDto[] = [
+                {
+                    fom: '2027-03-01',
+                    tom: '2027-03-12',
+                    søker: { forelder: 'FAR_MEDMOR', flerbarnsdager: false, kontoType: 'FEDREKVOTE' },
+                },
+                {
+                    fom: '2027-03-15',
+                    tom: '2027-03-31',
+                    søker: { forelder: 'FAR_MEDMOR', flerbarnsdager: false, kontoType: 'FEDREKVOTE' },
+                },
+            ];
+
+            expect(getEndringstidspunktNy(fedrekvoteMars, nyPlan)).toBeUndefined();
+        });
+
+        it('fanger ferie lagt inn i søkerperiode', () => {
+            const fedrekvoteMars: UttakPeriodeDto[] = [
+                {
+                    fom: '2027-03-01',
+                    tom: '2027-03-31',
+                    søker: { forelder: 'FAR_MEDMOR', flerbarnsdager: false, kontoType: 'FEDREKVOTE' },
+                },
+            ];
+            const nyPlan: UttakPeriodeDto[] = [
+                {
+                    fom: '2027-03-01',
+                    tom: '2027-03-07',
+                    søker: { forelder: 'FAR_MEDMOR', flerbarnsdager: false, kontoType: 'FEDREKVOTE' },
+                },
+                {
+                    fom: '2027-03-08',
+                    tom: '2027-03-12',
+                    søker: {
+                        forelder: 'FAR_MEDMOR',
+                        flerbarnsdager: false,
+                        utsettelseÅrsak: 'FERIE',
+                    },
+                },
+                {
+                    fom: '2027-03-13',
+                    tom: '2027-03-31',
+                    søker: { forelder: 'FAR_MEDMOR', flerbarnsdager: false, kontoType: 'FEDREKVOTE' },
+                },
+            ];
+
+            expect(getEndringstidspunktNy(fedrekvoteMars, nyPlan)).toBe('2027-03-08');
+        });
+
+        it('gir kun første endrede virkedag når vedtatt periode forlenges eller forkortes via skjema (resultat faller bort)', () => {
+            const innvilgetResultat = {
+                innvilget: true,
+                trekkerDager: true,
+                trekkerMinsterett: false,
+                årsak: 'ANNET',
+            } as const;
+            const vedtattPlan: UttakPeriodeDto[] = [
+                {
+                    fom: '2026-01-05',
+                    tom: '2026-04-30',
+                    søker: {
+                        forelder: 'MOR',
+                        flerbarnsdager: false,
+                        kontoType: 'FELLESPERIODE',
+                        resultat: innvilgetResultat,
+                    },
+                },
+            ];
+            const forlengetISkjema: UttakPeriodeDto[] = [
+                {
+                    fom: '2026-01-05',
+                    tom: '2026-05-29',
+                    søker: { forelder: 'MOR', flerbarnsdager: false, kontoType: 'FELLESPERIODE' },
+                },
+            ];
+            const forkortetISkjema: UttakPeriodeDto[] = [
+                {
+                    fom: '2026-01-05',
+                    tom: '2026-04-15',
+                    søker: { forelder: 'MOR', flerbarnsdager: false, kontoType: 'FELLESPERIODE' },
+                },
+            ];
+
+            expect(getEndringstidspunktNy(vedtattPlan, forlengetISkjema)).toBe('2026-05-01');
+            expect(getEndringstidspunktNy(vedtattPlan, forkortetISkjema)).toBe('2026-04-16');
+        });
+
+        it('ignorerer manglende arbeidsgiver.type og resultat når gradert vedtatt periode forlenges i skjema', () => {
+            const vedtattGradertPlan: UttakPeriodeDto[] = [
+                {
+                    fom: '2026-03-02',
+                    tom: '2026-03-27',
+                    søker: {
+                        forelder: 'MOR',
+                        flerbarnsdager: false,
+                        kontoType: 'MØDREKVOTE',
+                        gradering: {
+                            arbeidstidprosent: 50,
+                            aktivitet: {
+                                type: 'ORDINÆRT_ARBEID',
+                                arbeidsgiver: { id: '123456789', type: 'ORGANISASJON' },
+                            },
+                        },
+                        resultat: { innvilget: true, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+                    },
+                },
+            ];
+            const forlengetGradertPlan: UttakPeriodeDto[] = [
+                {
+                    fom: '2026-03-02',
+                    tom: '2026-04-10',
+                    søker: {
+                        forelder: 'MOR',
+                        flerbarnsdager: false,
+                        kontoType: 'MØDREKVOTE',
+                        gradering: {
+                            arbeidstidprosent: 50,
+                            aktivitet: {
+                                type: 'ORDINÆRT_ARBEID',
+                                arbeidsgiver: { id: '123456789' },
+                            },
+                        },
+                    },
+                },
+            ];
+
+            expect(getEndringstidspunktNy(vedtattGradertPlan, forlengetGradertPlan)).toBe('2026-03-30');
+        });
+
+        it('flytter ikke endringsdato tilbake til slettet avslått periode når bruker endrer en senere periode', () => {
+            const avslåttJanuar: UttakPeriodeDto = {
+                fom: '2026-01-05',
+                tom: '2026-01-30',
+                søker: {
+                    forelder: 'MOR',
+                    flerbarnsdager: false,
+                    kontoType: 'FELLESPERIODE',
+                    resultat: { innvilget: false, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+                },
+            };
+            const opprinneligMedAvslag: UttakPeriodeDto[] = [
+                avslåttJanuar,
+                {
+                    fom: '2026-02-02',
+                    tom: '2026-02-27',
+                    søker: { forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+                },
+                {
+                    fom: '2026-03-02',
+                    tom: '2026-03-31',
+                    søker: { forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+                },
+            ];
+            const nyUtenAvslåttJanuar: UttakPeriodeDto[] = [
+                opprinneligMedAvslag[1]!,
+                {
+                    fom: '2026-03-02',
+                    tom: '2026-03-31',
+                    søker: { forelder: 'MOR', flerbarnsdager: false, kontoType: 'FELLESPERIODE' },
+                },
+            ];
+
+            expect(getEndringstidspunktNy(opprinneligMedAvslag, nyUtenAvslåttJanuar)).toBe('2026-03-02');
+        });
+
+        it('fanger opp at bruker søker på nytt om samme kontotype oppå en tidligere avslått periode', () => {
+            const opprinneligMedAvslag: UttakPeriodeDto[] = [
+                {
+                    fom: '2026-03-02',
+                    tom: '2026-03-27',
+                    søker: {
+                        forelder: 'MOR',
+                        flerbarnsdager: false,
+                        kontoType: 'MØDREKVOTE',
+                        resultat: { innvilget: false, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' },
+                    },
+                },
+            ];
+            const omsøktPåNytt: UttakPeriodeDto[] = [
+                {
+                    fom: '2026-03-02',
+                    tom: '2026-03-27',
+                    søker: { forelder: 'MOR', flerbarnsdager: false, kontoType: 'MØDREKVOTE' },
+                },
+            ];
+
+            expect(getEndringstidspunktNy(opprinneligMedAvslag, omsøktPåNytt)).toBe('2026-03-02');
         });
 
         it('Bruker legger til en ny periode på slutten, skal endringstidspunktet bli riktig.', () => {
