@@ -71,12 +71,10 @@ export const PerioderFieldArray = ({
         arbeidsforhold,
         { egenNæring, frilans },
     );
-    const periode = getPeriodeForTilrettelegging(
-        barn.termindato,
-        valgtTilretteleggingId,
-        arbeidsforhold,
-        { egenNæring, frilans },
-    );
+    const periode = getPeriodeForTilrettelegging(barn.termindato, valgtTilretteleggingId, arbeidsforhold, {
+        egenNæring,
+        frilans,
+    });
 
     const formMethods = useFormContext<PerioderFormValues>();
     const { fields, append, remove } = useFieldArray({
@@ -244,7 +242,7 @@ export const PerioderFieldArray = ({
                                 onOpenChange={(open) =>
                                     loggUmamiEvent({
                                         origin: 'svangerskapspengesoknad',
-                                        eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                                        eventName: open ? 'les mer åpnet' : 'les mer lukket',
                                         eventData: {
                                             tittel: 'tilrettelegging.varierendePerioderStillingsprosent.info.tittel',
                                         },

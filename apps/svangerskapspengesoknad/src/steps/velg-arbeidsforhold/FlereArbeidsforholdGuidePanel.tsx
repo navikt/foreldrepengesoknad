@@ -5,7 +5,7 @@ import { BodyLong, Box, GuidePanel, List } from '@navikt/ds-react';
 import { loggUmamiEvent } from '@navikt/fp-observability';
 
 export const FlereArbeidsforholdGuidePanel = () => {
-    loggUmamiEvent({ origin: 'svangerskapspengesoknad', eventName: 'besøk', eventData: { tittel: 'umyndig' } });
+    loggUmamiEvent({ origin: 'svangerskapspengesoknad', eventName: 'besøk', eventData: { sidetittel: 'umyndig' } });
 
     return (
         <GuidePanel>

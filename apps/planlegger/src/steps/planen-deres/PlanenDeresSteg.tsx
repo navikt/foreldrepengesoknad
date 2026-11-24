@@ -199,9 +199,9 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
                             onChange={(value) => {
                                 loggUmamiEvent({
                                     origin: 'planlegger',
-                                    eventName: 'tab klikk',
+                                    eventName: 'fane byttet',
                                     eventData: {
-                                        tittel: value,
+                                        tilFane: value,
                                     },
                                 });
                             }}

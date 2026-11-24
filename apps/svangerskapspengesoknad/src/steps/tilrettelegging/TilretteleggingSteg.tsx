@@ -139,12 +139,10 @@ export const TilretteleggingSteg = ({
     const labelTiltak = intl.formatMessage({ id: 'tilrettelegging.tilretteleggingstiltak.label' });
     const harSkjema = typeArbeidsforhold === 'virksomhet' || typeArbeidsforhold === 'privat';
 
-    const periode = getPeriodeForTilrettelegging(
-        barnet.termindato,
-        valgtTilretteleggingId,
-        arbeidsforhold,
-        { egenNæring, frilans },
-    );
+    const periode = getPeriodeForTilrettelegging(barnet.termindato, valgtTilretteleggingId, arbeidsforhold, {
+        egenNæring,
+        frilans,
+    });
     const minDatoBehovFom = dayjs.max(dayjs(tiMånederSidenDato(barnet.termindato)), dayjs(periode.fom));
     const maxDatoBehovFom = periode.tom
         ? dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(periode.tom))
@@ -276,7 +274,7 @@ export const TilretteleggingSteg = ({
                                         onOpenChange={(open) =>
                                             loggUmamiEvent({
                                                 origin: 'svangerskapspengesoknad',
-                                                eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                                                eventName: open ? 'les mer åpnet' : 'les mer lukket',
                                                 eventData: { tittel: 'tilrettelegging.tiltak.info.title' },
                                             })
                                         }
@@ -326,7 +324,7 @@ export const TilretteleggingSteg = ({
                                 onOpenChange={(open) =>
                                     loggUmamiEvent({
                                         origin: 'svangerskapspengesoknad',
-                                        eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                                        eventName: open ? 'les mer åpnet' : 'les mer lukket',
                                         eventData: {
                                             tittel: 'tilrettelegging.tilrettelagtArbeidType.info.tittel',
                                         },

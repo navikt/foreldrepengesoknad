@@ -76,14 +76,14 @@ export const Tidslinje = ({ sak, søkersBarn, tidslinjeHendelser, manglendeVedle
         if (visHeleTidslinjen) {
             loggUmamiEvent({
                 origin: 'foreldrepengeoversikt',
-                eventName: 'button klikk',
-                eventData: { tittel: 'kompakt visning' },
+                eventName: 'knapp klikket',
+                eventData: { tekst: 'kompakt visning' },
             });
         } else {
             loggUmamiEvent({
                 origin: 'foreldrepengeoversikt',
-                eventName: 'button klikk',
-                eventData: { tittel: 'ekspandert visning' },
+                eventName: 'knapp klikket',
+                eventData: { tekst: 'ekspandert visning' },
             });
         }
 

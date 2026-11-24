@@ -238,9 +238,9 @@ export const UttaksplanSteg = ({
                                 aktivVisningRef.current = value as Visning;
                                 loggUmamiEvent({
                                     origin: 'foreldrepengesoknad',
-                                    eventName: 'tab klikk',
+                                    eventName: 'fane byttet',
                                     eventData: {
-                                        tittel: value,
+                                        tilFane: value,
                                     },
                                 });
                             }}
@@ -310,8 +310,8 @@ const loggExpansionCardOpen = (tittel: string) => (open: boolean) => {
     if (open) {
         loggUmamiEvent({
             origin: 'foreldrepengesoknad',
-            eventName: 'accordion åpnet',
-            eventData: { tittel },
+            eventName: 'utvidbart kort åpnet',
+            eventData: { tittel, komponentId: tittel },
         });
     }
 };

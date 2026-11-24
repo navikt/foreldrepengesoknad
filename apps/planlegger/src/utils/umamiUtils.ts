@@ -1,19 +1,28 @@
 import { loggUmamiEvent } from '@navikt/fp-observability';
 
-export const loggExpansionCardOpen = (tittel: string) => (open: boolean) => {
+const kortTitler = {
+    'oppsummering-barnehageplass': 'Barnehageplass',
+    'oppsummering-planen': 'Planen',
+    'oppsummering-hvor-mye': 'Hvor mye',
+    'oppsummering-oppgitt-informasjon': 'Oppgitt informasjon',
+    'toggle-tilpasse-planen': 'Tilpasse planen',
+    'toggle-uforutsette-endringer': 'Uforutsette endringer',
+} as const;
+
+export const loggExpansionCardOpen = (komponentId: keyof typeof kortTitler) => (open: boolean) => {
     if (open) {
         loggUmamiEvent({
             origin: 'planlegger',
-            eventName: 'accordion åpnet',
-            eventData: { tittel },
+            eventName: 'utvidbart kort åpnet',
+            eventData: { tittel: kortTitler[komponentId], komponentId },
         });
     }
 };
 
-export const loggExpansionCardToggle = (tittel: string) => (open: boolean) => {
+export const loggExpansionCardToggle = (komponentId: keyof typeof kortTitler) => (open: boolean) => {
     loggUmamiEvent({
         origin: 'planlegger',
-        eventName: open ? 'accordion åpnet' : 'accordion lukket',
-        eventData: { tittel },
+        eventName: open ? 'utvidbart kort åpnet' : 'utvidbart kort lukket',
+        eventData: { tittel: kortTitler[komponentId], komponentId },
     });
 };
