@@ -127,6 +127,17 @@ describe('<PerioderSteg>', () => {
         expect(screen.getAllByText('Stillingsprosent må være et tall.')[0]).toBeInTheDocument();
     });
 
+    it('validering av negativ stillingsprosent', async () => {
+        render(<Default />);
+
+        expect(await screen.findByText('Til:')).toBeInTheDocument();
+        const stillingsprosentInput = screen.getByLabelText('Hvilken stillingsprosent skal du jobbe i denne perioden?');
+        await user.type(stillingsprosentInput, '-10');
+        await user.click(screen.getByText('Neste steg'));
+
+        expect(screen.getAllByText('Stillingsprosent kan ikke være mindre enn 0.')[0]).toBeInTheDocument();
+    });
+
     it('vis ny periode når legg til ny periode er valgt', async () => {
         render(<Default />);
 
