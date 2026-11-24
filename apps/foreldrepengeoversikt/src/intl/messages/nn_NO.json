@@ -26,7 +26,7 @@
     "saksoversikt.dinPlan.vedtatt": "Planen din",
     "saksoversikt.dinPlan.søktOm": "Dette har du søkt om",
     "saksoversikt.endre.kontonr": "Endre kontonummer",
-    "saksoversikt.engangsstonad": "Eingongsstønad på {sum}",
+    "saksoversikt.engangsstonad": "Eingongsstønad på {sum}{antallBarn, plural, one {} other { for # barn}}",
     "saksoversikt.utbetales": "Blir utbetalt til kontonummer {kontonr} viss søknaden blir godkjend",
     "oppgaver.feilVedHentingAvOppgaver": "Vi har problem med å hente informasjon om oppgåvene i saken din.",
     "oppgaver.tittel.tilbakebetaling": "Svar på varsel om tilbakebetaling",

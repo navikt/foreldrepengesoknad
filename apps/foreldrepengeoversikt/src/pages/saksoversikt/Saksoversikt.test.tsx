@@ -9,6 +9,7 @@ import * as stories from './Saksoversikt.stories';
 
 const {
     Engangsstønad,
+    EngangsstønadTvillinger,
     Foreldrepenger,
     Svangerskapspenger,
     ForeldrepengerTestAvSkyraGammelInnsending,
@@ -38,6 +39,12 @@ describe('<Saksoversikt>', () => {
         expect(screen.getByText('Engangsstønad på 92 648 kr')).toBeInTheDocument();
         expect(screen.getByText('Utbetales til kontonummer 23232323 hvis søknaden innvilges')).toBeInTheDocument();
         expect(screen.getByText('Endre kontonummer')).toBeInTheDocument();
+    });
+
+    it('skal vise samlet engangsstønad for alle barna ved flerlingefødsel', async () => {
+        await EngangsstønadTvillinger.run();
+
+        expect(await screen.findByText('Engangsstønad på 185 296 kr for 2 barn')).toBeInTheDocument();
     });
 
     it('skal lenke til endring av planen i kjøremiljøet for foreldrepenger', async () => {

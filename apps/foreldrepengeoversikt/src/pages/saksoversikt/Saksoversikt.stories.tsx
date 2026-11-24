@@ -99,7 +99,7 @@ export const ForeldrepengerFeilVedHentingAvUttaksplan: Story = {
     },
 };
 
-const engangsstønadHandlers = [
+const lagEngangsstønadHandlers = (antallBarn: number) => [
     http.get(API_URLS.saker, () =>
         HttpResponse.json({
             foreldrepenger: [],
@@ -111,7 +111,7 @@ const engangsstønadHandlers = [
                     familiehendelse: {
                         fødselsdato: '2024-01-01',
                         termindato: '2024-01-01',
-                        antallBarn: 1,
+                        antallBarn,
                     },
                     åpenBehandling: {
                         tilstand: 'UNDER_BEHANDLING',
@@ -128,7 +128,7 @@ const engangsstønadHandlers = [
 export const Engangsstønad: Story = {
     beforeEach({ msw }) {
         msw.use(
-            ...engangsstønadHandlers,
+            ...lagEngangsstønadHandlers(1),
             http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_ES_førstegangssøknad)),
         );
     },
@@ -137,6 +137,17 @@ export const Engangsstønad: Story = {
         søkerinfo: søkerinfo,
         saksnummer: '352011079',
     },
+};
+
+export const EngangsstønadTvillinger: Story = {
+    beforeEach({ msw }) {
+        msw.use(
+            ...lagEngangsstønadHandlers(2),
+            http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_ES_førstegangssøknad)),
+        );
+    },
+
+    args: Engangsstønad.args,
 };
 
 const svangerskapspengerHandlers = [
@@ -220,7 +231,7 @@ export const ForeldrepengerEndringssøknad: Story = {
 export const EngangsstønadTestAvSkyraNyligInnsending: Story = {
     beforeEach({ msw }) {
         msw.use(
-            ...engangsstønadHandlers,
+            ...lagEngangsstønadHandlers(1),
             http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_ES_førstegangssøknad_nylig)),
         );
     },

@@ -122,6 +122,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
     }
 
     const harMinstEttArbeidsforhold = søkerinfo.harArbeidsforhold;
+    const antallBarn = gjeldendeSak.familiehendelse.antallBarn || 1;
 
     // "Dette skjer i saken" er misvisende når tidslinjen kun består av hendelser tilbake i tid, f.eks. for
     // saker med dødt barn der vi ikke viser den fremtidige "barnet fyller 3 år"-hendelsen. Vi kan aldri vite
@@ -243,7 +244,10 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
                                         <Heading size="small">
                                             <FormattedMessage
                                                 id="saksoversikt.engangsstonad"
-                                                values={{ sum: formatCurrencyWithKr(ENGANGSTØNAD) }}
+                                                values={{
+                                                    sum: formatCurrencyWithKr(ENGANGSTØNAD * antallBarn),
+                                                    antallBarn,
+                                                }}
                                             />
                                         </Heading>
                                     )}
