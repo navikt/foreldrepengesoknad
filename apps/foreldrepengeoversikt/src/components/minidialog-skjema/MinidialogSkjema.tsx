@@ -41,6 +41,8 @@ const mapYtelse = (sakstype: Ytelse) => {
     return API_URLS.lastOppSVPVedlegg;
 };
 
+const TILBAKEMELDING_ID = 'minidialog-tilbakemelding';
+
 interface Props {
     ettersendelseErSendt: boolean;
     isSendingEttersendelse: boolean;
@@ -183,6 +185,7 @@ export const MinidialogSkjema = ({
                     <>
                         <div>
                             <Textarea
+                                id={TILBAKEMELDING_ID}
                                 label={intl.formatMessage({
                                     id: 'minidialog.tilbakekreving.tilbakekreving.label',
                                 })}
@@ -218,7 +221,9 @@ export const MinidialogSkjema = ({
                 )}
                 {brukerØnskerÅUttaleSeg && tilbakemeldingValideringsfeil && (
                     <ErrorSummary heading={intl.formatMessage({ id: 'minidialog.feilISkjema' })}>
-                        <ErrorSummary.Item href="#1">{tilbakemeldingValideringsfeil}</ErrorSummary.Item>
+                        <ErrorSummary.Item href={`#${TILBAKEMELDING_ID}`}>
+                            {tilbakemeldingValideringsfeil}
+                        </ErrorSummary.Item>
                     </ErrorSummary>
                 )}
             </VStack>

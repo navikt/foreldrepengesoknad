@@ -1,30 +1,28 @@
 import { useEffect } from 'react';
 
-import { useMedia } from '@navikt/fp-utils';
-
-export const useErDesktop = () => useMedia('screen and (min-width: 768px)');
+import { useBreakpoints } from '@navikt/fp-utils';
 
 export const useMediaRemoveScrollingOnMobile = (erMinimert: boolean) => {
     // For å fjerne scrolling på bakgrunn på mobil
-    const isDesktop = useErDesktop();
+    const { isAtLeast768px } = useBreakpoints();
     useEffect(() => {
         document.body.style.overflow = '';
-        if (!isDesktop && !erMinimert) {
+        if (!isAtLeast768px && !erMinimert) {
             document.body.style.overflow = 'hidden';
         }
         return () => {
             document.body.style.overflow = '';
         };
-    }, [isDesktop, erMinimert]);
+    }, [isAtLeast768px, erMinimert]);
 };
 
 export const useMediaResetMinimering = (setErMinimert: (value: boolean) => void) => {
-    const isDesktop = useMedia('screen and (min-width: 768px)');
+    const { isAtLeast768px } = useBreakpoints();
 
     // For å nullstille minimering når en går fra mobil til desktop
     useEffect(() => {
-        if (isDesktop) {
+        if (isAtLeast768px) {
             setErMinimert(false);
         }
-    }, [isDesktop, setErMinimert]);
+    }, [isAtLeast768px, setErMinimert]);
 };

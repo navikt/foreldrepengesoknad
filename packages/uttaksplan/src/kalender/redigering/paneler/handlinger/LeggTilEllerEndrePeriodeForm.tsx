@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
@@ -14,12 +13,14 @@ import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import {
     LeggTilEllerEndrePeriodeFellesForm,
     LeggTilEllerEndrePeriodeFormFormValues,
+    beholdLåstAnnenPartsSamtidigeUttak,
+    lagDefaultValuesForValgtePerioder,
     lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm,
     mapFraFormValuesTilPeriodeDto,
 } from '../../../../felles/LeggTilEllerEndrePeriodeFellesForm';
 import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/LeggTilPeriodeForskyvEllerErstattPanel';
 import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
-import { useFormSubmitValidator } from '../../../../felles/uttaksplanValidatorer';
+import { useSubmitFeilmelding } from '../../../../felles/uttaksplanValidatorer';
 import { useKanKunErstatte, useLeggTilEndreSkjemaInfoAlerts } from '../../../../regler/alert/informasjonsAlertHooks';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
 import { erDetEksisterendePerioderEtterValgtePerioder, finnUttakForForelder } from '../../../../utils/periodeUtils';
@@ -44,14 +45,12 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
     const { sammenslåtteValgtePerioder, leggTilUttaksplanPerioder, setValgtePerioder, setEndredePerioder } =
         useKalenderRedigeringContext();
 
-    const [feilmelding, setFeilmelding] = useState<string | undefined>();
-
     const { visEndreEllerForskyvPanel, setVisEndreEllerForskyvPanel } =
         useVisForskyvEllerErstattPanel(sammenslåtteValgtePerioder);
 
-    const defaultValues = lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
+    const defaultValues = lagDefaultValuesForValgtePerioder(
         perioder,
-        sammenslåtteValgtePerioder[0]!,
+        sammenslåtteValgtePerioder,
         søker,
         erPeriodeneTilAnnenPartLåst,
     );
@@ -63,7 +62,7 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
     const skalDuKombinereArbeidOgUttakMor = formMethods.watch('skalDuKombinereArbeidOgUttakMor');
     const forelder = formMethods.watch('forelder');
 
-    const formSubmitValidator = useFormSubmitValidator<LeggTilEllerEndrePeriodeFormFormValues>();
+    const { feilmelding, validerVedInnsending } = useSubmitFeilmelding(formMethods, sammenslåtteValgtePerioder);
 
     const resetFormValuesVedEndringAvForelder = (forelderVerdi: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => {
         const erFarMedmorLåst = erPeriodeneTilAnnenPartLåst && søker === 'MOR';
@@ -120,14 +119,10 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
         !morsAktivitetIkkeOppgittAlert &&
         erDetEksisterendePerioderEtterValgtePerioder(perioder, sammenslåtteValgtePerioder);
 
-    const onSubmit = (values: LeggTilEllerEndrePeriodeFormFormValues) => {
-        const submitFeilmelding = formSubmitValidator(sammenslåtteValgtePerioder, values);
-
-        if (submitFeilmelding) {
-            setFeilmelding(submitFeilmelding);
+    const onSubmit = () => {
+        if (validerVedInnsending()) {
             return;
         }
-        setFeilmelding(undefined);
 
         if (harNesteSteg) {
             setVisEndreEllerForskyvPanel(true);
@@ -138,16 +133,20 @@ export const LeggTilEllerEndrePeriodeForm = ({ lukkRedigeringsmodus }: Props) =>
 
     const leggIKalender = (skalForskyve: boolean) => {
         leggTilUttaksplanPerioder(
-            sammenslåtteValgtePerioder.flatMap((periode) =>
-                mapFraFormValuesTilPeriodeDto(formMethods.getValues(), periode, søker, kanVelgeArbeidsgiver),
+            beholdLåstAnnenPartsSamtidigeUttak(
+                sammenslåtteValgtePerioder.flatMap((periode) =>
+                    mapFraFormValuesTilPeriodeDto(formMethods.getValues(), periode, søker, kanVelgeArbeidsgiver),
+                ),
+                perioder,
+                erPeriodeneTilAnnenPartLåst,
             ),
             skalForskyve,
+            () => {
+                setValgtePerioder([]);
+                setEndredePerioder(sammenslåtteValgtePerioder);
+                lukkRedigeringsmodus();
+            },
         );
-
-        setValgtePerioder([]);
-        setEndredePerioder(sammenslåtteValgtePerioder);
-
-        lukkRedigeringsmodus();
     };
 
     return (

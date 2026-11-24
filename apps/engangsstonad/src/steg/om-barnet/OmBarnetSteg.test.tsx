@@ -355,4 +355,88 @@ describe('<OmBarnetSteg>', () => {
 
         expect(mellomlagreOgNaviger).toHaveBeenCalledOnce();
     });
+
+    it('skal nullstille dokumentasjonen når barnetypen endres fra adopsjon til termin', async () => {
+        const gåTilNesteSide = vi.fn();
+
+        const utils = render(
+            <VisSideForFodsel
+                omBarnet={{
+                    type: 'adopsjon',
+                    antallBarn: 1,
+                    adopsjonAvEktefellesBarn: true,
+                    adopsjonsdato: '2026-10-01',
+                    fødselsdatoer: ['2026-01-01'],
+                }}
+                dokumentasjon={{ vedlegg: [] }}
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreOgNaviger={vi.fn()}
+            />,
+        );
+        expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Nei'));
+        const termindato = utils.getByLabelText('Termindato');
+        await userEvent.type(termindato, dayjs().format(DDMMYYYY_DATE_FORMAT));
+        fireEvent.blur(termindato);
+        await userEvent.click(screen.getByText('Ett barn'));
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(gåTilNesteSide).toHaveBeenCalledWith({
+            data: undefined,
+            key: ContextDataType.DOKUMENTASJON,
+            type: 'update',
+        });
+    });
+
+    it('skal nullstille dokumentasjonen når barnetypen endres og bruker går tilbake', async () => {
+        const gåTilNesteSide = vi.fn();
+
+        render(
+            <VisSideForFodsel
+                omBarnet={{ type: 'termin', antallBarn: 1, termindato: dayjs().format(ISO_DATE_FORMAT) }}
+                dokumentasjon={{ terminbekreftelsedato: dayjs().format(ISO_DATE_FORMAT), vedlegg: [] }}
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreOgNaviger={vi.fn()}
+            />,
+        );
+        expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
+
+        await velgSvar('Er barnet født?', 'Ja');
+        await userEvent.click(screen.getByText('Forrige steg'));
+
+        expect(gåTilNesteSide).toHaveBeenCalledWith(
+            expect.objectContaining({
+                key: ContextDataType.OM_BARNET,
+                data: expect.objectContaining({ type: 'fødsel' }),
+            }),
+        );
+        expect(gåTilNesteSide).toHaveBeenCalledWith({
+            data: undefined,
+            key: ContextDataType.DOKUMENTASJON,
+            type: 'update',
+        });
+    });
+
+    it('skal beholde dokumentasjonen når barnetypen er uendret', async () => {
+        const gåTilNesteSide = vi.fn();
+
+        render(
+            <VisSideForFodsel
+                omBarnet={{ type: 'termin', antallBarn: 1, termindato: dayjs().format(ISO_DATE_FORMAT) }}
+                dokumentasjon={{ terminbekreftelsedato: dayjs().format(ISO_DATE_FORMAT), vedlegg: [] }}
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreOgNaviger={vi.fn()}
+            />,
+        );
+        expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+        expect(gåTilNesteSide).not.toHaveBeenCalledWith(
+            expect.objectContaining({ key: ContextDataType.DOKUMENTASJON }),
+        );
+    });
 });

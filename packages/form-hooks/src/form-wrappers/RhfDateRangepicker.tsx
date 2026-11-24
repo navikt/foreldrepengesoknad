@@ -7,7 +7,7 @@ import { DatePicker, HStack, VStack, useRangeDatepicker } from '@navikt/ds-react
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT, TIDENES_ENDE, TIDENES_MORGEN } from '@navikt/fp-constants';
 
-import { ValidationReturnType, getError, getValidationRules } from './formUtils';
+import { ValidationReturnType, getError, getValidationRules, parseDatoInput } from './formUtils';
 
 dayjs.extend(customParseFormat);
 
@@ -35,9 +35,14 @@ const getDefaultSelected = (fieldValue: string, defaultDate: string) =>
     fieldValue && isValidDateString(defaultDate) ? dayjs(fieldValue, ISO_DATE_FORMAT, true).toDate() : undefined;
 
 const onFieldChange = (value: string, onChange: (...event: string[]) => void) => {
-    const verdi = dayjs(value, DDMMYYYY_DATE_FORMAT, true).format(ISO_DATE_FORMAT);
+    const verdi = parseDatoInput(value).format(ISO_DATE_FORMAT);
     const isValidDate = isValidDateString(verdi);
     onChange(isValidDate ? verdi : value);
+};
+
+const formaterGyldigDato = (value: string): string => {
+    const dato = parseDatoInput(value);
+    return dato.isValid() ? dato.format(DDMMYYYY_DATE_FORMAT) : value;
 };
 
 interface Props {
@@ -131,6 +136,16 @@ export const RhfDateRangepicker = ({
         onFieldChange(event.target.value, toField.onChange);
     };
 
+    const onBlurFromInput = (event: React.FocusEvent<HTMLInputElement>) => {
+        fromInputProps.onBlur?.(event);
+        setFromFieldValue(formaterGyldigDato(fromFieldValue));
+    };
+
+    const onBlurToInput = (event: React.FocusEvent<HTMLInputElement>) => {
+        toInputProps.onBlur?.(event);
+        setToFieldValue(formaterGyldigDato(toFieldValue));
+    };
+
     const fromDate = minDate ? dayjs(minDate).toDate() : undefined;
     const toDate = maxDate ? dayjs(maxDate).toDate() : undefined;
     const disabledDays = useMemo(
@@ -154,6 +169,7 @@ export const RhfDateRangepicker = ({
                         ref={fromField.ref}
                         value={fromFieldValue}
                         onChange={onChangeFromInput}
+                        onBlur={onBlurFromInput}
                         label={labelFrom}
                         error={getError(errors, nameFrom)}
                         placeholder="dd.mm.åååå"
@@ -163,6 +179,7 @@ export const RhfDateRangepicker = ({
                         ref={toField.ref}
                         value={toFieldValue}
                         onChange={onChangeToInput}
+                        onBlur={onBlurToInput}
                         label={labelTo}
                         error={getError(errors, nameTo)}
                         placeholder="dd.mm.åååå"

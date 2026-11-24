@@ -1,10 +1,10 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useResetUttaksplanData } from 'appData/useResetUttaksplanData';
-import { isEqual } from 'es-toolkit';
+import { isEqual, omit } from 'es-toolkit';
 import { useForm } from 'react-hook-form';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
-import { Fordeling } from 'types/Fordeling';
-import { getDatoForAleneomsorg } from 'utils/annenForelderUtils';
+import { Fordeling, OppstartValg } from 'types/Fordeling';
+import { getDatoForAleneomsorg, getErAleneOmOmsorg } from 'utils/annenForelderUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { VStack } from '@navikt/ds-react';
@@ -50,9 +50,37 @@ export const FordelingForm = ({
 
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const datoForAleneomsorg = getDatoForAleneomsorg(annenForelder);
+    const oppstartsValgOptions = getValgOptionsForOppstart(
+        søkersituasjon,
+        barn,
+        erDeltUttak,
+        førsteDagEtterAnnenForelder,
+        datoForAleneomsorg,
+    );
+    const visUttakVedFødselValg =
+        erFarEllerMedmor &&
+        søkersituasjon.situasjon === 'fødsel' &&
+        erDeltUttak &&
+        !getErAleneOmOmsorg(annenForelder) &&
+        oppstartsValgOptions.includes(OppstartValg.FAMILIEHENDELSESDATO);
+
+    let defaultValues: Fordeling | undefined = fordelingAvForeldrepenger;
+
+    if (visUttakVedFødselValg && fordelingAvForeldrepenger) {
+        let tidligereValg = fordelingAvForeldrepenger.oppstartAvForeldrepengerValg;
+
+        if (tidligereValg && tidligereValg !== OppstartValg.FAMILIEHENDELSESDATO) {
+            tidligereValg = OppstartValg.IKKE_VED_FØDSEL;
+        }
+
+        defaultValues = {
+            ...omit(fordelingAvForeldrepenger, ['oppstartDato']),
+            oppstartAvForeldrepengerValg: tidligereValg,
+        };
+    }
 
     const formMethods = useForm<Fordeling>({
-        defaultValues: fordelingAvForeldrepenger,
+        defaultValues,
         shouldUnregister: true,
     });
 
@@ -61,14 +89,6 @@ export const FordelingForm = ({
         !erFarEllerMedmor &&
         isAnnenForelderOppgitt(annenForelder) &&
         !annenForelder.harRettPåForeldrepengerIEØS;
-
-    const oppstartsValgOptions = getValgOptionsForOppstart(
-        søkersituasjon,
-        barn,
-        erDeltUttak,
-        førsteDagEtterAnnenForelder,
-        datoForAleneomsorg,
-    );
 
     const onSubmit = (values: Fordeling) => {
         if (fordelingAvForeldrepenger !== undefined && !isEqual(fordelingAvForeldrepenger, values)) {

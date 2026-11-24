@@ -9,3 +9,11 @@ export const loggExpansionCardOpen = (tittel: string) => (open: boolean) => {
         });
     }
 };
+
+export const loggExpansionCardToggle = (tittel: string) => (open: boolean) => {
+    loggUmamiEvent({
+        origin: 'planlegger',
+        eventName: open ? 'accordion åpnet' : 'accordion lukket',
+        eventData: { tittel },
+    });
+};

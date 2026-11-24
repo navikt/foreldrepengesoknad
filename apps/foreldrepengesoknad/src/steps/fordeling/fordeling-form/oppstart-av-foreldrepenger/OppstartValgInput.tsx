@@ -247,27 +247,24 @@ const getRadioOptionTreUkerFørFødsel = (barn: Barn, intl: IntlShape): React.Re
     const antallDagerFørFødsel = Uttaksdagen.denne(førsteDagTreUkerFørFødsel).getUttaksdagerFremTilDato(
         Uttaksdagen.denneEllerNeste(getFamiliehendelsedato(barn)).getDato(),
     );
+    const dato = formatDateExtended(førsteDagTreUkerFørFødsel);
+    const getLabel = () => {
+        if (!tilpassTilTermin) {
+            return <FormattedMessage id="fordeling.oppstartValg.treUkerFørFødsel" values={{ dato }} />;
+        }
+        if (antallDagerFørFødsel === 0) {
+            return <FormattedMessage id="fordeling.oppstartValg.fraDato" values={{ dato }} />;
+        }
+        return (
+            <FormattedMessage
+                id="fordeling.oppstartValg.førFødselFraDato"
+                values={{ varighet: getVarighetString(antallDagerFørFødsel, intl), dato }}
+            />
+        );
+    };
     return (
         <Radio key={OppstartValg.TRE_UKER_FØR_FØDSEL} value={OppstartValg.TRE_UKER_FØR_FØDSEL}>
-            {tilpassTilTermin && antallDagerFørFødsel === 0 ? (
-                <FormattedMessage
-                    id="fordeling.oppstartValg.fraDato"
-                    values={{ dato: formatDateExtended(førsteDagTreUkerFørFødsel) }}
-                />
-            ) : tilpassTilTermin ? (
-                <FormattedMessage
-                    id="fordeling.oppstartValg.førFødselFraDato"
-                    values={{
-                        varighet: getVarighetString(antallDagerFørFødsel, intl),
-                        dato: formatDateExtended(førsteDagTreUkerFørFødsel),
-                    }}
-                />
-            ) : (
-                <FormattedMessage
-                    id="fordeling.oppstartValg.treUkerFørFødsel"
-                    values={{ dato: formatDateExtended(førsteDagTreUkerFørFødsel) }}
-                />
-            )}
+            {getLabel()}
         </Radio>
     );
 };
@@ -358,6 +355,9 @@ const mapOppstartValgToRadioOption = (
         case OppstartValg.ANNEN_DATO: {
             return getRadioOptionAnnenDato();
         }
+        case OppstartValg.IKKE_VED_FØDSEL: {
+            throw new Error('Valget gjelder bare far/medmor ved fødsel.');
+        }
     }
 };
 
@@ -383,15 +383,54 @@ export const OppstartValgInput = ({
 
     const { control } = useFormContext<Fordeling>();
 
-    if (!oppstartsvalg || oppstartsvalg.length <= 1) {
-        return null;
-    }
-
     const bareFarHarRett = getKunFarHarRett(erFarEllerMedmor, annenForelder, erAleneOmOmsorg);
     const navnAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const deltUttak = getIsDeltUttak(annenForelder);
     const datoForAleneomsorg = getDatoForAleneomsorg(annenForelder);
+    const visUttakVedFødselValg =
+        erFarEllerMedmor &&
+        erFødsel &&
+        deltUttak &&
+        !erAleneOmOmsorg &&
+        oppstartsvalg.includes(OppstartValg.FAMILIEHENDELSESDATO);
+
+    if (visUttakVedFødselValg) {
+        return (
+            <RhfRadioGroup
+                name="oppstartAvForeldrepengerValg"
+                control={control}
+                label={
+                    <FormattedMessage id="fordeling.uttakVedFødsel.spørsmål" values={{ rolle: søkersituasjon.rolle }} />
+                }
+                description={
+                    <FormattedMessage
+                        id="fordeling.uttakVedFødsel.beskrivelse"
+                        values={{ rolle: søkersituasjon.rolle }}
+                    />
+                }
+                validate={[
+                    isRequired(
+                        intl.formatMessage(
+                            { id: 'fordeling.uttakVedFødsel.måOppgis' },
+                            { rolle: søkersituasjon.rolle },
+                        ),
+                    ),
+                ]}
+            >
+                <Radio value={OppstartValg.FAMILIEHENDELSESDATO}>
+                    <FormattedMessage id="fordeling.uttakVedFødsel.ja" />
+                </Radio>
+                <Radio value={OppstartValg.IKKE_VED_FØDSEL}>
+                    <FormattedMessage id="fordeling.uttakVedFødsel.nei" />
+                </Radio>
+            </RhfRadioGroup>
+        );
+    }
+
+    if (!oppstartsvalg || oppstartsvalg.length <= 1) {
+        return null;
+    }
 
     const erMorFødsel = !erFarEllerMedmor && erFødsel;
 

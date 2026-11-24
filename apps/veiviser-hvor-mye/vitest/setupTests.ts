@@ -1,10 +1,16 @@
-import { setProjectAnnotations } from '@storybook/react-vite';
 import { configure } from '@testing-library/dom';
-import '@testing-library/jest-dom/vitest';
+
+import { setupStorybookTests } from '@navikt/fp-utils-test/vitest';
 
 import * as globalStorybookConfig from '../.storybook/preview';
 
-setProjectAnnotations(globalStorybookConfig);
+// Preview lastes før testfilene, så mocken i AppContainer.test.tsx kom for sent.
+vi.mock(import('@navikt/nav-dekoratoren-moduler'), () => ({
+    setAvailableLanguages: vi.fn(),
+    onLanguageSelect: vi.fn(),
+}));
+
+setupStorybookTests(globalStorybookConfig, { scrollTo: true });
 
 // Browser-modus er tregare enn jsdom; auk Testing Library sin standard findBy*/waitFor-timeout.
 if (import.meta.env['TEST_MODE'] === 'browser-mode') {
@@ -12,6 +18,5 @@ if (import.meta.env['TEST_MODE'] === 'browser-mode') {
 }
 
 if (import.meta.env['TEST_MODE'] === 'jsdom-mode') {
-    Object.assign(globalThis, { scrollTo: () => {} });
     HTMLElement.prototype.scrollIntoView = function () {};
 }

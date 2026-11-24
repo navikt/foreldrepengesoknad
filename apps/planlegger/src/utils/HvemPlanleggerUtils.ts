@@ -318,7 +318,7 @@ const navnSlutterPåSLyd = (navn: string): boolean => {
 };
 
 export const getNavnGenitivEierform = (navn: string, locale: string): string => {
-    if (locale !== 'nb' && locale !== 'nn' && locale !== 'en') {
+    if (!['nb', 'nn', 'en'].includes(locale)) {
         return navn;
     }
     const slutterPåSLyd = navnSlutterPåSLyd(navn);

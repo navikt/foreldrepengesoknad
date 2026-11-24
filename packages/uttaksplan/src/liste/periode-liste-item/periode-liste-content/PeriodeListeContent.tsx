@@ -6,6 +6,7 @@ import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-types';
 import { Uttaksdagen, formatDateExtended } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../context/UttaksplanRedigeringContext';
@@ -82,7 +83,7 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
             const nyeUttakPerioder = new UttakPeriodeBuilder(perioder, 'liste')
                 .fjernUttakPerioder(uttaksplanperioder, false, erPeriodeneTilAnnenPartLåst)
                 .getUttakPerioder();
-            uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
+            notEmpty(uttaksplanRedigering).slettFraUttaksplanMedVarsel(uttaksplanperioder, nyeUttakPerioder);
         } else {
             setIsSlettPeriodePanelOpen(true);
         }

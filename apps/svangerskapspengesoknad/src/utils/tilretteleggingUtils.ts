@@ -239,8 +239,7 @@ export const getArbeidsgiverStillingerForTilrettelegging = (
     termindato: string,
     tilretteleggingId: string,
     alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
-    egenNæring?: NæringDto,
-    frilans?: Frilans,
+    { egenNæring, frilans }: { egenNæring?: NæringDto; frilans?: Frilans } = {},
 ): Stilling[] => {
     if (tilretteleggingId === EGEN_NÆRING_ID && egenNæring) {
         return [{ fom: egenNæring.fom, tom: egenNæring.tom, stillingsprosent: 100 }];
@@ -277,8 +276,7 @@ export const getPeriodeForTilrettelegging = (
     termindato: string,
     tilretteleggingId: string,
     alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
-    egenNæring?: NæringDto,
-    frilans?: Frilans,
+    { egenNæring, frilans }: { egenNæring?: NæringDto; frilans?: Frilans } = {},
 ): { fom: string; tom?: string } => {
     if (tilretteleggingId === EGEN_NÆRING_ID && egenNæring) {
         return { fom: egenNæring.fom, tom: egenNæring.tom };

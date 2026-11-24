@@ -5,6 +5,7 @@ import { action } from 'storybook/actions';
 import { BarnType } from '@navikt/fp-constants';
 import { UttakPeriodeDto } from '@navikt/fp-types';
 
+import { HistoriskEndringModal } from '../HistoriskEndringModal';
 import { UttaksplanDataProvider } from '../context/UttaksplanDataContext';
 import { UttaksplanRedigeringProvider } from '../context/UttaksplanRedigeringContext';
 import { UttaksplanListe } from './UttaksplanListe';
@@ -44,6 +45,7 @@ const meta = {
                     harEndretPlan={perioder !== undefined}
                 >
                     <UttaksplanListe isReadOnly={args.isReadOnly} />
+                    <HistoriskEndringModal />
                 </UttaksplanRedigeringProvider>
             </UttaksplanDataProvider>
         );

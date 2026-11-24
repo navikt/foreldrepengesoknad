@@ -2,6 +2,7 @@ import { UttakDto, UttakPeriodeDto } from '@navikt/fp-types';
 
 import {
     erAvslåttPeriode,
+    erPerioderEkslFomTomLike,
     finnAntallTidelerÅTrekkeForUttak,
     harPeriodeDerMorsAktivitetIkkeErValgt,
     harPeriodeMedUkjentGraderingsaktivitet,
@@ -195,6 +196,26 @@ describe('harPeriodeDerMorsAktivitetIkkeErValgt', () => {
         const result = harPeriodeDerMorsAktivitetIkkeErValgt('BEGGE_RETT', 'FAR_MEDMOR', false, perioder);
 
         expect(result).toBe(false);
+    });
+});
+
+describe('erPerioderEkslFomTomLike', () => {
+    const lagGradertPeriode = (arbeidsgiverId: string) =>
+        lagPeriode({
+            søker: lagMorUttak({
+                gradering: {
+                    arbeidstidprosent: 50,
+                    aktivitet: { type: 'ORDINÆRT_ARBEID', arbeidsgiver: { id: arbeidsgiverId, type: 'ORGANISASJON' } },
+                },
+            }),
+        });
+
+    it('skal regne graderingsaktiviteter med samme innhold som like selv om de er ulike objekter', () => {
+        expect(erPerioderEkslFomTomLike(lagGradertPeriode('123456789'), lagGradertPeriode('123456789'))).toBe(true);
+    });
+
+    it('skal regne graderingsaktiviteter med ulik arbeidsgiver som ulike', () => {
+        expect(erPerioderEkslFomTomLike(lagGradertPeriode('123456789'), lagGradertPeriode('987654321'))).toBe(false);
     });
 });
 

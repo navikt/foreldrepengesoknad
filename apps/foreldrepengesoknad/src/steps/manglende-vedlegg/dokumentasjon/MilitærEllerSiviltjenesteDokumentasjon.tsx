@@ -5,11 +5,12 @@ import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
+import { OppdaterVedlegg } from '../ManglendeVedleggFormData';
 import { VedleggUploader, formaterPerioderForVisning } from '../attachment-uploaders/VedleggUploader';
 
 interface Props {
     attachments: Attachment[];
-    updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
+    updateAttachments: (skjemanummer: GyldigeSkjemanummer) => OppdaterVedlegg;
     andreInntektskilder?: AndreInntektskilder[];
 }
 

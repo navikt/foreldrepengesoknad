@@ -16,6 +16,7 @@ const {
     Aleneomsorgdokumentasjon,
     FarSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid,
     FarSøkerMorJobberMindreEnn75ProsentMåDokumentereArbeid,
+    MorsArbeidMedTregOpplasting,
     BareFarHarRettSøkerMorJobberMerEnn75ProsentMåIkkeDokumentereArbeid,
     KreverIngenDokumentasjonMenHarOpplastetVedlegg,
 } = composeStories(stories);
@@ -366,6 +367,43 @@ describe('<ManglendeVedlegg>', () => {
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
             data: SøknadRoutes.OPPSUMMERING,
             key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
+    });
+
+    it('skal ikke kunne gå videre mens en opplasting pågår', async () => {
+        const gåTilNesteSide = vi.fn();
+
+        await MorsArbeidMedTregOpplasting.run({
+            args: {
+                ...MorsArbeidMedTregOpplasting.args,
+                gåTilNesteSide,
+            },
+        });
+
+        const fileInput = await screen.findByLabelText('Dokumentasjon på at mor er i arbeid');
+        await userEvent.upload(fileInput, new File(['hello'], 'hello.png', { type: 'image/png' }));
+
+        await waitFor(() => expect(screen.getByText('Neste steg').closest('button')).toBeDisabled());
+
+        await waitFor(() => expect(screen.getByText('Neste steg').closest('button')).toBeEnabled(), {
+            timeout: 3000,
+        });
+        expect(screen.queryByText('Laster opp...')).not.toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: expect.objectContaining({
+                [Skjemanummer.DOK_ARBEID_MOR]: [
+                    expect.objectContaining({
+                        filename: 'hello.png',
+                        innsendingsType: 'LASTET_OPP',
+                        uploaded: true,
+                    }),
+                ],
+            }),
+            key: ContextDataType.VEDLEGG,
             type: 'update',
         });
     });

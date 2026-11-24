@@ -23,6 +23,13 @@
     user-select: none;
     border: 2px solid transparent;
 
+    /* Utvider klikkflaten over marg og avrundede hjørner, så det ikke finnes døde soner mellom dagene */
+    &::before {
+        content: '';
+        position: absolute;
+        inset: -3px;
+    }
+
     &[data-shape='rounded-left'] {
         border-top-left-radius: 14px;
         border-bottom-left-radius: 14px;
@@ -208,4 +215,19 @@
     width: 12px;
     height: 12px;
     pointer-events: none;
+}
+
+.cornerIcon {
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
+    width: 10px;
+    height: 10px;
+    pointer-events: none;
+
+    svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
 }

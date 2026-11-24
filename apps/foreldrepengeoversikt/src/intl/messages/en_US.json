@@ -32,6 +32,8 @@
     "oppgaver.tittel.tilbakebetaling": "Reply to repayment notice",
     "miniDialog.tilbakekreving.tittel": "Nav has sent you a notice that you have received overpaid { sakstype }. Before we process your case, you can provide a statement and attach relevant documentation if you have it. You will find information about what has happened in your case and your rights in the notice that we have sent to you.",
     "miniDialog.tilbakekreving.undertittel": "Reply to repayment notice",
+    "miniDialog.feilVedHenting": "We are having trouble retrieving your task.",
+    "miniDialog.prøvIgjen": "Try again",
     "minidialog.hvaLeggerNAVVektPå.tilbakekreving.tittel": "What does Nav weigh in the assessment?",
     "minidialog.hvaLeggerNAVVektPå.tilbakekreving.punkt1": "whether you understood or should have understood that the amount you received was wrong",
     "minidialog.hvaLeggerNAVVektPå.tilbakekreving.punkt2": "whether you have provided correct information to Nav",

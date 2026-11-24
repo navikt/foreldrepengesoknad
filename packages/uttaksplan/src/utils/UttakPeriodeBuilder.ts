@@ -172,7 +172,7 @@ const fjernOgForskyvPerioderBakover = (
         if (erOverlappende(eFom, eTom, nFom, nTom)) {
             // Del før slettet periode
             if (eFom.isBefore(nFom)) {
-                nyePerioder.push({
+                leggTilHvisHarUttaksdager(nyePerioder, {
                     ...eksisterendePeriode,
                     tom: Uttaksdagen.forrige(periodeSomSkalFjernes.fom).getDato(),
                 });
@@ -184,11 +184,11 @@ const fjernOgForskyvPerioderBakover = (
                     antallUkedager,
                 );
 
-                const nyTom = Uttaksdagen.denne(eksisterendePeriode.tom).getDatoAntallUttaksdagerTidligere(
+                const nyTom = Uttaksdagen.denneEllerForrige(eksisterendePeriode.tom).getDatoAntallUttaksdagerTidligere(
                     antallUkedager,
                 );
 
-                nyePerioder.push({
+                leggTilHvisHarUttaksdager(nyePerioder, {
                     ...eksisterendePeriode,
                     fom: nyFom,
                     tom: nyTom,
@@ -200,10 +200,14 @@ const fjernOgForskyvPerioderBakover = (
 
         // Periode helt etter slettet periode
         if (eFom.isAfter(nTom)) {
-            nyePerioder.push({
+            leggTilHvisHarUttaksdager(nyePerioder, {
                 ...eksisterendePeriode,
-                fom: Uttaksdagen.denne(eksisterendePeriode.fom).getDatoAntallUttaksdagerTidligere(antallUkedager),
-                tom: Uttaksdagen.denne(eksisterendePeriode.tom).getDatoAntallUttaksdagerTidligere(antallUkedager),
+                fom: Uttaksdagen.denneEllerNeste(eksisterendePeriode.fom).getDatoAntallUttaksdagerTidligere(
+                    antallUkedager,
+                ),
+                tom: Uttaksdagen.denneEllerForrige(eksisterendePeriode.tom).getDatoAntallUttaksdagerTidligere(
+                    antallUkedager,
+                ),
             });
             continue;
         }
@@ -231,7 +235,7 @@ const erstattEksisterendePerioder = (
         if (erOverlappende(eFom, eTom, nFom, nTom)) {
             // Starter eksisterende periode før overlappende ny periode
             if (eFom.isBefore(nFom)) {
-                nyePerioder.push({
+                leggTilHvisHarUttaksdager(nyePerioder, {
                     ...eksisterendePeriode,
                     tom: Uttaksdagen.forrige(nyPeriode.fom).getDato(),
                 });
@@ -239,7 +243,7 @@ const erstattEksisterendePerioder = (
 
             // Starter eksisterende periode etter overlappende ny periode
             if (eTom.isAfter(nTom)) {
-                nyePerioder.push({
+                leggTilHvisHarUttaksdager(nyePerioder, {
                     ...eksisterendePeriode,
                     fom: Uttaksdagen.neste(nyPeriode.tom).getDato(),
                 });
@@ -284,26 +288,30 @@ const forskyvEksisterendePerioder = (
             nyPeriodeStarterSamtidigOgSlutterEtterEksisterende ||
             eksisterendeErHeltInniNy
         ) {
-            nyePerioder.push({
+            leggTilHvisHarUttaksdager(nyePerioder, {
                 ...eksisterendePeriode,
-                fom: Uttaksdagen.denne(eksisterendePeriode.fom).getDatoAntallUttaksdagerSenere(antallUkedager),
-                tom: Uttaksdagen.denne(eksisterendePeriode.tom).getDatoAntallUttaksdagerSenere(antallUkedager),
+                fom: Uttaksdagen.denneEllerNeste(eksisterendePeriode.fom).getDatoAntallUttaksdagerSenere(
+                    antallUkedager,
+                ),
+                tom: Uttaksdagen.denneEllerForrige(eksisterendePeriode.tom).getDatoAntallUttaksdagerSenere(
+                    antallUkedager,
+                ),
             });
             continue;
         }
 
         // Legg til evt del av eksistrande periode som ligg før den nye
         if (eFom.isBefore(nFom)) {
-            nyePerioder.push({
+            leggTilHvisHarUttaksdager(nyePerioder, {
                 ...eksisterendePeriode,
                 tom: Uttaksdagen.forrige(nyPeriode.fom).getDato(),
             });
         }
 
-        nyePerioder.push({
+        leggTilHvisHarUttaksdager(nyePerioder, {
             ...eksisterendePeriode,
             fom: Uttaksdagen.neste(nyPeriode.tom).getDato(),
-            tom: Uttaksdagen.denne(eksisterendePeriode.tom).getDatoAntallUttaksdagerSenere(antallUkedager),
+            tom: Uttaksdagen.denneEllerForrige(eksisterendePeriode.tom).getDatoAntallUttaksdagerSenere(antallUkedager),
         });
     }
 
@@ -359,7 +367,10 @@ const fjernFraPeriode = (
     const perioder: UttakPeriodeDto[] = [];
 
     if (starterFør) {
-        perioder.push({ ...eksisterendePeriode, tom: Uttaksdagen.forrige(periodeSomSkalFjernes.fom).getDato() });
+        leggTilHvisHarUttaksdager(perioder, {
+            ...eksisterendePeriode,
+            tom: Uttaksdagen.forrige(periodeSomSkalFjernes.fom).getDato(),
+        });
     }
 
     if (beholdAnnenPart) {
@@ -375,10 +386,21 @@ const fjernFraPeriode = (
     }
 
     if (slutterEtter) {
-        perioder.push({ ...eksisterendePeriode, fom: Uttaksdagen.neste(periodeSomSkalFjernes.tom).getDato() });
+        leggTilHvisHarUttaksdager(perioder, {
+            ...eksisterendePeriode,
+            fom: Uttaksdagen.neste(periodeSomSkalFjernes.tom).getDato(),
+        });
     }
 
     return perioder;
+};
+
+// Perioder fra saken kan starte eller slutte i en helg. Da kan resten etter en splitt bestå av bare helgedager,
+// og fom havner etter tom når den flyttes til nærmeste uttaksdag.
+const leggTilHvisHarUttaksdager = (perioder: UttakPeriodeDto[], periode: UttakPeriodeDto): void => {
+    if (toDay(periode.fom).isSameOrBefore(toDay(periode.tom))) {
+        perioder.push(periode);
+    }
 };
 
 const beholdAnnenPartIOverlapp = (periode: UttakPeriodeDto, fom: string, tom: string): UttakPeriodeDto[] => {

@@ -16,6 +16,34 @@ const {
 
 describe('<OppsummeringFpEllerEsSide>', () => {
     it.each([
+        [
+            'MorHarTjentMerEnn200000OgHarRettTilFp',
+            MorHarTjentMerEnn200000OgHarRettTilFp,
+            ['Søk om foreldrepenger', 'Mer om foreldrepenger'],
+        ],
+        [
+            'MorHarTjentMindreEnn200000OgHarRettTilFpOgEs',
+            MorHarTjentMindreEnn200000OgHarRettTilFpOgEs,
+            ['Søk om foreldrepenger', 'Mer om foreldrepenger'],
+        ],
+        ['MorHarRettTilEs', MorHarRettTilEs, ['Søk om engangsstønad', 'Mer om engangsstønad']],
+        ['FarHarIkkeRett', FarHarIkkeRett, ['Mer om foreldrepenger', 'Mer om engangsstønad']],
+    ])('%s: skal vise lenkeknappene som én lenke uten nøstet knapp', async (_navn, Story, lenketekster) => {
+        render(<Story />);
+
+        expect(await screen.findByText('Resultat')).toBeInTheDocument();
+
+        for (const lenketekst of lenketekster) {
+            const lenkeknapp = screen.getByRole('button', { name: lenketekst });
+            expect(lenkeknapp.tagName).toBe('A');
+            expect(lenkeknapp).toHaveAttribute('href');
+            expect(lenkeknapp).toHaveAttribute('target', '_blank');
+            expect(lenkeknapp.closest('a')).toBe(lenkeknapp);
+            expect(within(lenkeknapp).queryByRole('button')).not.toBeInTheDocument();
+        }
+    });
+
+    it.each([
         ['4999', false],
         ['5000', true],
         ['5001', true],

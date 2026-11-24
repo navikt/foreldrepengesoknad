@@ -26,6 +26,7 @@ import { ErrorBoundary, IntlProvider } from '@navikt/fp-ui';
 import { DELT_UTTAK_100, MINSTERETTER } from '@navikt/fp-utils-test';
 
 import messages from '../../../intl/nb_NO.json';
+import { tilpassFødselspermisjon } from './tilpassFødselspermisjon';
 import { useTidligereUttaksplan } from './useTidligereUttaksplan';
 import { useUttaksplanForslag } from './useUttaksplanForslag';
 
@@ -78,17 +79,262 @@ const INNVILGET = {
 } as const;
 
 const lagUttaksplan = (perioder: UttakPeriodeDto[]): FellesUttaksplanDto => ({
+    annenPartRedigerbar: true,
     antallBarn: 1,
     dekningsgrad: 'HUNDRE',
     perioder,
 });
 
+describe('fødselspermisjon i mors plan', () => {
+    const mor = { forelder: 'MOR' as const, kontoType: 'MØDREKVOTE' as const, flerbarnsdager: false };
+    const far = { forelder: 'FAR_MEDMOR' as const, kontoType: 'FEDREKVOTE' as const, flerbarnsdager: false };
+    const morsPerioder: UttakPeriodeDto[] = [
+        { fom: '2025-01-01', tom: '2025-01-14', annenPart: mor },
+        { fom: '2025-01-15', tom: '2025-01-28', annenPart: mor },
+    ];
+    const medFødselspermisjon: UttakPeriodeDto[] = [
+        {
+            fom: '2025-01-01',
+            tom: '2025-01-14',
+            søker: { ...far, samtidigUttak: 100 },
+            annenPart: { ...mor, samtidigUttak: 100 },
+        },
+        morsPerioder[1]!,
+    ];
+
+    beforeEach(() => {
+        vi.setSystemTime(new Date('2025-01-15'));
+    });
+
+    afterEach(() => {
+        vi.useRealTimers();
+    });
+
+    it('lar mors plan stå urørt når hun har oppgitt fødselspermisjon og far svarer ja (A)', () => {
+        expect(tilpassFødselspermisjon(medFødselspermisjon, '2025-01-01', true, true)).toEqual({
+            perioder: medFødselspermisjon,
+            kreverManuellTilpasning: false,
+        });
+    });
+
+    it('lar mors plan stå urørt når hun ikke har oppgitt fødselspermisjon og far svarer nei (B)', () => {
+        expect(tilpassFødselspermisjon(morsPerioder, '2025-01-01', false, true)).toEqual({
+            perioder: morsPerioder,
+            kreverManuellTilpasning: false,
+        });
+    });
+
+    it('frigjør ti fedrekvotedager og fjerner samtidig uttak fra mor når far svarer nei (C)', () => {
+        const { perioder, kreverManuellTilpasning } = tilpassFødselspermisjon(
+            medFødselspermisjon,
+            '2025-01-01',
+            false,
+            true,
+        );
+        expect(kreverManuellTilpasning).toBe(false);
+        expect(perioder).toEqual(morsPerioder);
+        expect(medFødselspermisjon[0]!.søker?.samtidigUttak).toBe(100);
+    });
+
+    it('lar resten av en lengre periode stå urørt når far svarer nei', () => {
+        const kilde = [
+            {
+                ...medFødselspermisjon[0]!,
+                tom: '2025-01-21',
+            },
+        ];
+        expect(tilpassFødselspermisjon(kilde, '2025-01-01', false, true).perioder).toEqual([
+            morsPerioder[0],
+            { ...kilde[0], fom: '2025-01-15' },
+        ]);
+    });
+
+    it.each([true, false])(
+        'legger til ti fedrekvotedager med samtidig uttak når mor er redigerbar=%s (D)',
+        (erAnnenPartRedigerbar) => {
+            const senereFedrekvote: UttakPeriodeDto = { fom: '2025-02-03', tom: '2025-02-14', søker: far };
+            const kilde = [...morsPerioder, senereFedrekvote];
+            const { perioder, kreverManuellTilpasning } = tilpassFødselspermisjon(
+                kilde,
+                '2025-01-01',
+                true,
+                erAnnenPartRedigerbar,
+            );
+
+            expect(kreverManuellTilpasning).toBe(false);
+            expect(perioder).toEqual([...medFødselspermisjon, senereFedrekvote]);
+            expect(kilde).toEqual([...morsPerioder, senereFedrekvote]);
+            expect(tilpassFødselspermisjon(kilde, '2025-01-01', true, erAnnenPartRedigerbar).perioder).toEqual(
+                perioder,
+            );
+        },
+    );
+
+    it('fyller de manglende dagene når mor bare har oppgitt deler av fødselspermisjonen', () => {
+        const førsteUke = { ...medFødselspermisjon[0]!, tom: '2025-01-07' };
+        const sisteUke = { fom: '2025-01-08', tom: '2025-01-14', annenPart: mor };
+        const kilde = [førsteUke, sisteUke];
+
+        expect(tilpassFødselspermisjon(kilde, '2025-01-01', true, true)).toEqual({
+            perioder: [
+                førsteUke,
+                {
+                    ...sisteUke,
+                    søker: { ...far, samtidigUttak: 100 },
+                    annenPart: { ...mor, samtidigUttak: 100 },
+                },
+            ],
+            kreverManuellTilpasning: false,
+        });
+        expect(kilde).toEqual([førsteUke, sisteUke]);
+    });
+
+    it('varsler fremfor å overskrive annet uttak eller EØS-uttak ved fødsel', () => {
+        const andreUttak: UttakPeriodeDto[] = [
+            { fom: '2025-01-01', tom: '2025-01-14', søker: { ...far, kontoType: 'FELLESPERIODE' } },
+        ];
+        const eøsUttak: UttakPeriodeDto[] = [
+            { fom: '2025-01-01', tom: '2025-01-14', annenPartEøs: { kontoType: 'FELLESPERIODE', trekkdager: 10 } },
+        ];
+        for (const kilde of [andreUttak, eøsUttak]) {
+            expect(tilpassFødselspermisjon(kilde, '2025-01-01', true, true)).toEqual({
+                perioder: kilde,
+                kreverManuellTilpasning: true,
+            });
+        }
+    });
+
+    it('lar EØS-uttak stå urørt hvis far svarer nei på fødselspermisjon', () => {
+        const kilde: UttakPeriodeDto[] = [
+            {
+                ...medFødselspermisjon[0]!,
+                annenPartEøs: { kontoType: 'FELLESPERIODE', trekkdager: 10 },
+            },
+        ];
+        expect(tilpassFødselspermisjon(kilde, '2025-01-01', false, true)).toEqual({
+            perioder: kilde,
+            kreverManuellTilpasning: true,
+        });
+    });
+
+    it('fyller bare manglende dager når mors uttak starter midt i fødselsperioden', () => {
+        const kilde: UttakPeriodeDto[] = [{ fom: '2025-01-06', tom: '2025-01-24', annenPart: mor }];
+        expect(tilpassFødselspermisjon(kilde, '2025-01-01', true, true).perioder).toEqual([
+            { fom: '2025-01-01', tom: '2025-01-03', søker: far },
+            {
+                fom: '2025-01-06',
+                tom: '2025-01-14',
+                søker: { ...far, samtidigUttak: 100 },
+                annenPart: { ...mor, samtidigUttak: 100 },
+            },
+            { fom: '2025-01-15', tom: '2025-01-24', annenPart: mor },
+        ]);
+    });
+
+    it('fjerner teknisk samtidig uttak fra mor selv om mors perioder er låst (C)', () => {
+        expect(tilpassFødselspermisjon(medFødselspermisjon, '2025-01-01', false, false)).toEqual({
+            perioder: morsPerioder,
+            kreverManuellTilpasning: false,
+        });
+    });
+
+    it('beholder mors vedtatte uttak på 100 prosent når far legger til eller fjerner fødselspermisjon', () => {
+        const morsVedtatteUttak = {
+            ...mor,
+            resultat: { innvilget: true, trekkerDager: true, trekkerMinsterett: false, årsak: 'ANNET' as const },
+        };
+        const kilde = [{ ...morsPerioder[0]!, annenPart: morsVedtatteUttak }];
+        expect(tilpassFødselspermisjon(kilde, '2025-01-01', true, false)).toEqual({
+            perioder: [
+                {
+                    ...kilde[0],
+                    søker: { ...far, samtidigUttak: 100 },
+                    annenPart: { ...morsVedtatteUttak, samtidigUttak: 100 },
+                },
+            ],
+            kreverManuellTilpasning: false,
+        });
+        const planMedSamtidigUttak = [
+            { ...medFødselspermisjon[0]!, annenPart: { ...morsVedtatteUttak, samtidigUttak: 100 } },
+        ];
+        expect(tilpassFødselspermisjon(planMedSamtidigUttak, '2025-01-01', false, false)).toEqual({
+            perioder: kilde,
+            kreverManuellTilpasning: false,
+        });
+        expect(kilde[0]?.annenPart).toEqual(morsVedtatteUttak);
+    });
+
+    it('overstyrer ikke lås eller vedtak hvis mor ikke tar 100 prosent av mødrekvoten', () => {
+        const morsAndreUttak = [
+            { ...mor, gradering: { arbeidstidprosent: 50 } },
+            { ...mor, samtidigUttak: 50 },
+            { ...mor, kontoType: 'FELLESPERIODE' as const },
+            {
+                ...mor,
+                resultat: { innvilget: false, trekkerDager: false, trekkerMinsterett: false, årsak: 'ANNET' as const },
+            },
+        ];
+        for (const annenPart of morsAndreUttak) {
+            const kilde = [{ ...morsPerioder[0]!, annenPart }];
+            expect(tilpassFødselspermisjon(kilde, '2025-01-01', true, false)).toEqual({
+                perioder: kilde,
+                kreverManuellTilpasning: true,
+            });
+        }
+    });
+
+    it('bruker fars ja-svar når mors plan er låst', () => {
+        const uttaksplan = { ...lagUttaksplan(morsPerioder), annenPartRedigerbar: false };
+        const { result } = renderHook(() => useTidligereUttaksplan(), {
+            wrapper: getWrapper(uttaksplan, {
+                initialState: {
+                    [ContextDataType.SØKERSITUASJON]: { situasjon: 'fødsel', rolle: 'far' },
+                    [ContextDataType.FORDELING]: {
+                        oppstartAvForeldrepengerValg: OppstartValg.FAMILIEHENDELSESDATO,
+                    },
+                },
+                route: SøknadRoutes.UTTAKSPLAN,
+                valgtSak: null,
+            }),
+        });
+        expect(result.current.perioder).toEqual(medFødselspermisjon);
+        expect(result.current.kreverManuellTilpasning).toBe(false);
+        expect(uttaksplan.perioder).toEqual(morsPerioder);
+    });
+
+    it('bruker fars svar i en ny søknad uten å endre mors innlastede plan', () => {
+        const uttaksplan = lagUttaksplan(medFødselspermisjon);
+        const { result } = renderHook(() => useTidligereUttaksplan(), {
+            wrapper: getWrapper(uttaksplan, {
+                initialState: {
+                    [ContextDataType.SØKERSITUASJON]: { situasjon: 'fødsel', rolle: 'far' },
+                    [ContextDataType.FORDELING]: {
+                        oppstartAvForeldrepengerValg: OppstartValg.IKKE_VED_FØDSEL,
+                    },
+                },
+                route: SøknadRoutes.UTTAKSPLAN,
+                valgtSak: null,
+            }),
+        });
+
+        expect(result.current.perioder).toEqual(morsPerioder);
+        expect(uttaksplan.perioder).toEqual(medFødselspermisjon);
+    });
+});
+
 const getWrapper = (
     uttaksplan: FellesUttaksplanDto,
-    initialState?: ContextDataMap,
-    onDispatch?: (action: Action) => void,
-    route = SøknadRoutes.PERIODE_MED_FORELDREPENGER,
-    valgtSak: FpSak_fpoversikt | null = SAK_UTEN_VEDTAK,
+    {
+        initialState,
+        onDispatch,
+        route = SøknadRoutes.PERIODE_MED_FORELDREPENGER,
+        valgtSak = SAK_UTEN_VEDTAK,
+    }: {
+        initialState?: ContextDataMap;
+        onDispatch?: (action: Action) => void;
+        route?: SøknadRoutes;
+        valgtSak?: FpSak_fpoversikt | null;
+    } = {},
 ) => {
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: Infinity } } });
     queryClient.setQueryData(['UTTAKSPLAN', getUttaksplanParam(ANNEN_FORELDER, BARN)], uttaksplan);
@@ -117,10 +363,38 @@ const getWrapper = (
 };
 
 describe('useTidligereUttaksplan', () => {
+    it.each([true, false])('videresender annenPartRedigerbar=%s frå backend', (annenPartRedigerbar) => {
+        const { result } = renderHook(() => useTidligereUttaksplan(), {
+            wrapper: getWrapper({ ...lagUttaksplan(PERIODER), annenPartRedigerbar }, { valgtSak: null }),
+        });
+        expect(result.current.erAnnenPartRedigerbar).toBe(annenPartRedigerbar);
+    });
+
+    it('lar annen part vere redigerbar når backend ikkje har nokon plan', () => {
+        const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: Infinity } } });
+        queryClient.setQueryData(['UTTAKSPLAN', getUttaksplanParam(ANNEN_FORELDER, BARN)], null);
+        const { result } = renderHook(() => useTidligereUttaksplan(), {
+            wrapper: ({ children }: { children: ReactNode }) => (
+                <QueryClientProvider client={queryClient}>
+                    <FpDataContext
+                        initialState={{
+                            [ContextDataType.OM_BARNET]: BARN,
+                            [ContextDataType.ANNEN_FORELDER]: ANNEN_FORELDER,
+                        }}
+                    >
+                        {children}
+                    </FpDataContext>
+                </QueryClientProvider>
+            ),
+        });
+        expect(result.current.perioder).toBeUndefined();
+        expect(result.current.erAnnenPartRedigerbar).toBe(true);
+    });
+
     it('beholder tidligere fallback når valgt saksnummer ikke finnes i sakslisten', () => {
         const { result } = renderHook(() => ({ tidligere: useTidligereUttaksplan(), state: useContextComplete() }), {
             wrapper: getWrapper(lagUttaksplan(PERIODER), {
-                [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: 'annen-sak',
+                initialState: { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: 'annen-sak' },
             }),
         });
         expect(result.current.tidligere.perioder).toEqual(PERIODER);
@@ -146,13 +420,14 @@ describe('useTidligereUttaksplan', () => {
                     steps: useStepConfig({ arbeidsforhold: [], harRegistrertNæring: false }),
                 }),
                 {
-                    wrapper: getWrapper(
-                        lagUttaksplan(perioder),
-                        { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER, [ContextDataType.UTTAKSPLAN]: [] },
-                        undefined,
-                        SøknadRoutes.UTTAKSPLAN,
-                        { ...SAK_MED_VEDTAK, kanSøkeOmEndring },
-                    ),
+                    wrapper: getWrapper(lagUttaksplan(perioder), {
+                        initialState: {
+                            [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
+                            [ContextDataType.UTTAKSPLAN]: [],
+                        },
+                        route: SøknadRoutes.UTTAKSPLAN,
+                        valgtSak: { ...SAK_MED_VEDTAK, kanSøkeOmEndring },
+                    }),
                 },
             );
             expect(result.current.tidligere.perioder).toEqual(perioder);
@@ -175,16 +450,14 @@ describe('useTidligereUttaksplan', () => {
                 steps: useStepConfig({ arbeidsforhold: [], harRegistrertNæring: false }),
             }),
             {
-                wrapper: getWrapper(
-                    lagUttaksplan(PERIODER),
-                    {
+                wrapper: getWrapper(lagUttaksplan(PERIODER), {
+                    initialState: {
                         [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
                         [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: snapshot,
                     },
-                    undefined,
-                    SøknadRoutes.UTTAKSPLAN,
-                    null,
-                ),
+                    route: SøknadRoutes.UTTAKSPLAN,
+                    valgtSak: null,
+                }),
             },
         );
         expect(result.current.tidligere.isLoading).toBe(true);
@@ -201,13 +474,12 @@ describe('useTidligereUttaksplan', () => {
 
     it('viser bakgrunnsfeil og beholder backendplanen i cache for en sak med vedtak', async () => {
         const onDispatch = vi.fn();
-        const Wrapper = getWrapper(
-            lagUttaksplan(PERIODER),
-            { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER },
+        const Wrapper = getWrapper(lagUttaksplan(PERIODER), {
+            initialState: { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER },
             onDispatch,
-            SøknadRoutes.UTTAKSPLAN,
-            SAK_MED_VEDTAK,
-        );
+            route: SøknadRoutes.UTTAKSPLAN,
+            valgtSak: SAK_MED_VEDTAK,
+        });
         const { result } = renderHook(
             () => ({ tidligere: useTidligereUttaksplan(), client: useQueryClient(), state: useContextComplete() }),
             {
@@ -281,7 +553,9 @@ describe('useTidligereUttaksplan', () => {
 
     it('bruker annen parts plan før vedtak når søker har valgt samme dekningsgrad', () => {
         const { result } = renderHook(() => useTidligereUttaksplan(), {
-            wrapper: getWrapper(lagUttaksplan(PERIODER), { [ContextDataType.PERIODE_MED_FORELDREPENGER]: '100' }),
+            wrapper: getWrapper(lagUttaksplan(PERIODER), {
+                initialState: { [ContextDataType.PERIODE_MED_FORELDREPENGER]: '100' },
+            }),
         });
 
         expect(result.current.perioder).toEqual(PERIODER);
@@ -289,7 +563,9 @@ describe('useTidligereUttaksplan', () => {
 
     it('bruker ikke annen parts plan før vedtak når søker har valgt en annen dekningsgrad', () => {
         const { result } = renderHook(() => useTidligereUttaksplan(), {
-            wrapper: getWrapper(lagUttaksplan(PERIODER), { [ContextDataType.PERIODE_MED_FORELDREPENGER]: '80' }),
+            wrapper: getWrapper(lagUttaksplan(PERIODER), {
+                initialState: { [ContextDataType.PERIODE_MED_FORELDREPENGER]: '80' },
+            }),
         });
 
         expect(result.current.perioder).toBeUndefined();
@@ -302,7 +578,7 @@ describe('useTidligereUttaksplan', () => {
         };
         const { result } = renderHook(() => useTidligereUttaksplan(), {
             wrapper: getWrapper(lagUttaksplan([PERIODER[0]!, vedtak]), {
-                [ContextDataType.PERIODE_MED_FORELDREPENGER]: '80',
+                initialState: { [ContextDataType.PERIODE_MED_FORELDREPENGER]: '80' },
             }),
         });
 
@@ -341,8 +617,10 @@ describe('useTidligereUttaksplan', () => {
     });
 
     it('returnerer alle periodane når ei eksisterande sak er valt', () => {
-        const { result } = renderHook(() => useTidligereUttaksplan(false, SAK_MED_VEDTAK), {
-            wrapper: getWrapper(lagUttaksplan(PERIODER), { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER }),
+        const { result } = renderHook(() => useTidligereUttaksplan({ eksisterendeSak: SAK_MED_VEDTAK }), {
+            wrapper: getWrapper(lagUttaksplan(PERIODER), {
+                initialState: { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER },
+            }),
         });
 
         expect(result.current.perioder).toEqual(PERIODER);
@@ -360,12 +638,11 @@ describe('useTidligereUttaksplan', () => {
     it('lagrar snapshot av opprinneleg uttaksplan når ei eksisterande sak er valt', async () => {
         const onDispatch = vi.fn();
 
-        renderHook(() => useTidligereUttaksplan(false, SAK_MED_VEDTAK), {
-            wrapper: getWrapper(
-                lagUttaksplan(PERIODER),
-                { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER },
+        renderHook(() => useTidligereUttaksplan({ eksisterendeSak: SAK_MED_VEDTAK }), {
+            wrapper: getWrapper(lagUttaksplan(PERIODER), {
+                initialState: { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER },
                 onDispatch,
-            ),
+            }),
         });
 
         await waitFor(() =>
@@ -384,7 +661,7 @@ describe('useTidligereUttaksplan', () => {
         const onDispatch = vi.fn();
 
         renderHook(() => useTidligereUttaksplan(), {
-            wrapper: getWrapper(lagUttaksplan(PERIODER), undefined, onDispatch),
+            wrapper: getWrapper(lagUttaksplan(PERIODER), { onDispatch }),
         });
 
         expect(onDispatch).not.toHaveBeenCalled();
@@ -393,15 +670,14 @@ describe('useTidligereUttaksplan', () => {
     it('overskriv ikkje eit eksisterande snapshot ved refetch', () => {
         const onDispatch = vi.fn();
 
-        renderHook(() => useTidligereUttaksplan(false, SAK_MED_VEDTAK), {
-            wrapper: getWrapper(
-                lagUttaksplan(PERIODER),
-                {
+        renderHook(() => useTidligereUttaksplan({ eksisterendeSak: SAK_MED_VEDTAK }), {
+            wrapper: getWrapper(lagUttaksplan(PERIODER), {
+                initialState: {
                     [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
                     [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: [] },
                 },
                 onDispatch,
-            ),
+            }),
         });
 
         expect(onDispatch).not.toHaveBeenCalled();
@@ -410,8 +686,10 @@ describe('useTidligereUttaksplan', () => {
     it.each([undefined, []])('henter ikke tilbake egen plan fra en eldre lagring med uttaksplan %j', (plan) => {
         const { result } = renderHook(() => useTidligereUttaksplan(), {
             wrapper: getWrapper(lagUttaksplan(PERIODER), {
-                [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
-                [ContextDataType.UTTAKSPLAN]: plan,
+                initialState: {
+                    [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
+                    [ContextDataType.UTTAKSPLAN]: plan,
+                },
             }),
         });
 
@@ -428,9 +706,11 @@ describe('useTidligereUttaksplan', () => {
             }),
             {
                 wrapper: getWrapper(lagUttaksplan(PERIODER), {
-                    [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
-                    [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: PERIODER },
-                    [ContextDataType.UTTAKSPLAN]: PERIODER,
+                    initialState: {
+                        [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
+                        [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: PERIODER },
+                        [ContextDataType.UTTAKSPLAN]: PERIODER,
+                    },
                 }),
             },
         );
@@ -457,7 +737,7 @@ describe('useTidligereUttaksplan', () => {
         };
         const { result } = renderHook(() => useTidligereUttaksplan(), {
             wrapper: getWrapper(lagUttaksplan([PERIODER[0]!, { ...PERIODER[1]!, annenPart }, ferie]), {
-                [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
+                initialState: { [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER },
             }),
         });
         expect(result.current.perioder).toEqual([{ ...PERIODER[1]!, annenPart }, ferie]);
@@ -466,8 +746,10 @@ describe('useTidligereUttaksplan', () => {
     it('forkaster snapshot fra en eldre lagring når gjeldende plan er undefined', () => {
         const { result } = renderHook(() => ({ tidligere: useTidligereUttaksplan(), state: useContextComplete() }), {
             wrapper: getWrapper(lagUttaksplan(PERIODER), {
-                [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
-                [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: PERIODER },
+                initialState: {
+                    [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
+                    [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: PERIODER },
+                },
             }),
         });
         expect(result.current.tidligere.perioder).toEqual([PERIODER[1]]);
@@ -487,9 +769,11 @@ describe('useTidligereUttaksplan', () => {
             }),
             {
                 wrapper: getWrapper(lagUttaksplan(PERIODER), {
-                    [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
-                    [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: PERIODER },
-                    [ContextDataType.UTTAKSPLAN]: PERIODER,
+                    initialState: {
+                        [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
+                        [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: PERIODER },
+                        [ContextDataType.UTTAKSPLAN]: PERIODER,
+                    },
                 }),
             },
         );
@@ -518,18 +802,16 @@ describe('useTidligereUttaksplan', () => {
                 state: useContextComplete(),
             }),
             {
-                wrapper: getWrapper(
-                    lagUttaksplan(PERIODER),
-                    {
+                wrapper: getWrapper(lagUttaksplan(PERIODER), {
+                    initialState: {
                         [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: snapshot ? SAKSNUMMER : undefined,
                         [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: snapshot
                             ? { saksnummer: SAKSNUMMER, perioder: PERIODER }
                             : undefined,
                         [ContextDataType.UTTAKSPLAN]: plan,
                     },
-                    undefined,
-                    SøknadRoutes.UTTAKSPLAN,
-                ),
+                    route: SøknadRoutes.UTTAKSPLAN,
+                }),
             },
         );
         act(() => result.current.navigator.goToPreviousDefaultStep());
@@ -554,14 +836,16 @@ describe('useTidligereUttaksplan', () => {
             },
             {
                 wrapper: getWrapper(lagUttaksplan([PERIODER[0]!]), {
-                    [ContextDataType.SØKERSITUASJON]: { rolle: 'mor', situasjon: 'fødsel' },
-                    [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
-                    [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: PERIODER },
-                    [ContextDataType.UTTAKSPLAN]: PERIODER,
-                    [ContextDataType.FORDELING]: {
-                        oppstartAvForeldrepengerValg: OppstartValg.ANNEN_DATO,
-                        oppstartDato: '2024-12-11',
-                        fordelingValg: FellesperiodeFordelingValg.ALT,
+                    initialState: {
+                        [ContextDataType.SØKERSITUASJON]: { rolle: 'mor', situasjon: 'fødsel' },
+                        [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
+                        [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: PERIODER },
+                        [ContextDataType.UTTAKSPLAN]: PERIODER,
+                        [ContextDataType.FORDELING]: {
+                            oppstartAvForeldrepengerValg: OppstartValg.ANNEN_DATO,
+                            oppstartDato: '2024-12-11',
+                            fordelingValg: FellesperiodeFordelingValg.ALT,
+                        },
                     },
                 }),
             },
@@ -587,7 +871,7 @@ describe('useTidligereUttaksplan', () => {
                 state: useContextComplete(),
                 client: useQueryClient(),
             }),
-            { wrapper: getWrapper(lagUttaksplan(PERIODER), state) },
+            { wrapper: getWrapper(lagUttaksplan(PERIODER), { initialState: state }) },
         );
         act(() => {
             result.current.client.setQueryData(
@@ -599,7 +883,7 @@ describe('useTidligereUttaksplan', () => {
         expect(result.current.tidligere.perioder).toEqual(PERIODER);
         unmount();
         const gjenopptatt = renderHook(() => ({ tidligere: useTidligereUttaksplan(), state: useContextComplete() }), {
-            wrapper: getWrapper(lagUttaksplan([]), state),
+            wrapper: getWrapper(lagUttaksplan([]), { initialState: state }),
         });
         expect(gjenopptatt.result.current.state.UTTAKSPLAN).toEqual(redigertPlan);
         expect(gjenopptatt.result.current.tidligere.perioder).toEqual(PERIODER);
@@ -629,11 +913,13 @@ describe('useTidligereUttaksplan', () => {
             }),
             {
                 wrapper: getWrapper(vedtak, {
-                    [ContextDataType.KOMMER_FRA_PLANLEGGER]: kommerFraPlanlegger,
-                    [ContextDataType.SØKERSITUASJON]: { rolle: 'far', situasjon: 'fødsel' },
-                    [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
-                    [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: PERIODER },
-                    [ContextDataType.UTTAKSPLAN]: PERIODER,
+                    initialState: {
+                        [ContextDataType.KOMMER_FRA_PLANLEGGER]: kommerFraPlanlegger,
+                        [ContextDataType.SØKERSITUASJON]: { rolle: 'far', situasjon: 'fødsel' },
+                        [ContextDataType.VALGT_EKSISTERENDE_SAKSNR]: SAKSNUMMER,
+                        [ContextDataType.OPPRINNELIG_UTTAKSPLAN]: { saksnummer: SAKSNUMMER, perioder: PERIODER },
+                        [ContextDataType.UTTAKSPLAN]: PERIODER,
+                    },
                 }),
             },
         );

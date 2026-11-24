@@ -4,7 +4,7 @@ import { useVeiviserNavigator } from 'appData/useVeiviserNavigator';
 import { FormattedMessage } from 'react-intl';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
-import { BodyShort, Box, Button, HStack, Heading, Link, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, Button, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { Satser } from '@navikt/fp-types';
@@ -79,16 +79,12 @@ export const HarRett = ({ fpEllerEsSituasjon, satser }: Props) => {
                 </Infobox>
             )}
             <HStack justify="space-around">
-                <Link href={links.søknadForeldrepenger} target="_blank" rel="norefferer">
-                    <Button>
-                        <FormattedMessage id="OppsummeringFpEllerEsSide.SøkOmFp" />
-                    </Button>
-                </Link>
-                <Link href={links.omForeldrepenger} target="_blank" rel="norefferer" underline={false}>
-                    <Button variant="secondary">
-                        <FormattedMessage id="OppsummeringFpEllerEsSide.MerOmFp" />
-                    </Button>
-                </Link>
+                <Button as="a" href={links.søknadForeldrepenger} target="_blank">
+                    <FormattedMessage id="OppsummeringFpEllerEsSide.SøkOmFp" />
+                </Button>
+                <Button as="a" href={links.omForeldrepenger} target="_blank" variant="secondary">
+                    <FormattedMessage id="OppsummeringFpEllerEsSide.MerOmFp" />
+                </Button>
             </HStack>
             <HvorforHarJegRettPanel fpEllerEsSituasjon={fpEllerEsSituasjon} grunnbeløpet={grunnbeløpet} />
             <HStack>

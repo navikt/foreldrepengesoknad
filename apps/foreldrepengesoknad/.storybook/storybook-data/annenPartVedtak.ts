@@ -1,6 +1,7 @@
 import { FellesUttaksplanDto } from '@navikt/fp-types';
 
 export const annenPartVedtak = {
+    annenPartRedigerbar: false,
     termindato: '2022-08-17',
     antallBarn: 1,
     perioder: [
@@ -41,6 +42,7 @@ export const annenPartVedtak = {
 } satisfies FellesUttaksplanDto;
 
 export const avslåttAnnenPartVedtak = {
+    annenPartRedigerbar: false,
     termindato: '2022-08-17',
     antallBarn: 1,
     perioder: [
@@ -60,6 +62,7 @@ export const avslåttAnnenPartVedtak = {
 } satisfies FellesUttaksplanDto;
 
 export const annenPartSøknad = {
+    annenPartRedigerbar: false,
     termindato: '2022-08-17',
     antallBarn: 1,
     perioder: [

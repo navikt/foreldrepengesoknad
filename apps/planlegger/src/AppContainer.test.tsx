@@ -8,11 +8,6 @@ import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { endreFordelingMedSlider } from '../vitest/testHelpers';
 import * as stories from './AppContainer.stories';
 
-vi.mock('@navikt/nav-dekoratoren-moduler', () => ({
-    setAvailableLanguages: vi.fn(),
-    onLanguageSelect: vi.fn(),
-}));
-
 const { DefaultMockaStønadskvoterOgSatser } = composeStories(stories);
 
 // Denne testen har kun ein test grunna at context ikkje blir sletta mellom testande. Skriv derfor testane i Planlegger.test.tsx

@@ -1,4 +1,5 @@
 {
     "SkyraSurvey.Tittel": "Optional survey",
-    "SkyraSurvey.Takk": "Thank you for answering the survey"
+    "SkyraSurvey.Takk": "Thank you for answering the survey",
+    "SkyraSurvey.Feil": "Could not load the survey."
 }

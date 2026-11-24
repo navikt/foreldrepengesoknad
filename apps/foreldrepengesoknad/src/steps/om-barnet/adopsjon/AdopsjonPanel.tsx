@@ -100,9 +100,8 @@ export const AdopsjonPanel = ({ søknadGjelderEtNyttBarn }: Props) => {
                             ),
                         ]}
                         onChange={(value) => {
-                            const antall = Number(value);
-                            if (antall < 3) {
-                                oppdaterFødselsdatoer(antall);
+                            if (value < 3) {
+                                oppdaterFødselsdatoer(value);
                             }
                         }}
                     >

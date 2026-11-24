@@ -5,13 +5,13 @@ import { ContextDataType } from 'appData/FpDataContext';
 import { saker } from 'storybookData/saker';
 
 import { UttakDto, UttakPeriodeDto } from '@navikt/fp-types';
+import { Uttaksdagen } from '@navikt/fp-utils';
 
 import * as stories from './UttaksplanSteg.stories';
 
 const infoTekst = [
-    'I denne søknaden søker du kun for deg selv.',
-    'Du kan legge inn foreldrepenger for den andre forelderen, men informasjonen vil ikke bli sendt inn.',
-    'Den andre forelderen må selv huske å sende oss en søknad.',
+    'I denne søknaden søker du bare for deg selv.',
+    'Den andre forelderen må bekrefte sin del av planen i sin egen søknad.',
 ].join(' ');
 
 const {
@@ -22,9 +22,16 @@ const {
     NySøknadFørVedtakMedEksisterendeSak,
     FødselMorOgFarBeggeHarRettOverførtFraPlanlegger,
     FødselFarAleneOmOmsorgKunAnnenPartsPerioder,
+    FødselFarSøkerEtterAtMorHarSøkt,
 } = composeStories(stories);
 
 describe('<UttaksplanSteg>', () => {
+    // Storybook avmonterer en story først når neste story kjøres. Uten dette står den siste storyen
+    // montert når jsdom rives ned, og ventende timere (f.eks. i Aksel Tabs) feiler med «window is not defined».
+    afterAll(async () => {
+        await FødselMorOgFarBeggeHarRett.load();
+    });
+
     describe('automatisk justering i endringssøknad før fødsel', () => {
         const innvilgetResultat = {
             innvilget: true,
@@ -408,7 +415,7 @@ describe('<UttaksplanSteg>', () => {
         expect(navigasjonsAction).toBeUndefined();
     });
 
-    it('TFP-7005: skal kunne gå videre i endringssøknad når ferie legges til etter eksisterende uttak', async () => {
+    it('skal stoppe endringssøknad når bruker bare har lagt til ferie etter eksisterende uttak', async () => {
         const gåTilNesteSide = vi.fn();
         const eksisterendePlan = NySøknadFørVedtakMedEksisterendeSak.args.uttaksplan!;
         const ferie: UttakPeriodeDto = {
@@ -430,7 +437,37 @@ describe('<UttaksplanSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(screen.queryByText(/Du har kun lagt til utsettelser i planen/)).not.toBeInTheDocument();
+        expect(
+            await screen.findByText(/Det er ikke nok å bare endre ferie eller andre utsettelser/),
+        ).toBeInTheDocument();
+        const navigasjonsAction = gåTilNesteSide.mock.calls.find(
+            ([action]) => action.key === ContextDataType.APP_ROUTE,
+        );
+        expect(navigasjonsAction).toBeUndefined();
+    });
+
+    it('TFP-7005: skal kunne gå videre i endringssøknad når ferie legges over eksisterende uttak', async () => {
+        const gåTilNesteSide = vi.fn();
+        const [foreldrepengerFørFødsel, mødrekvote] = NySøknadFørVedtakMedEksisterendeSak.args.uttaksplan!;
+        const ferie: UttakPeriodeDto = {
+            fom: '2024-09-16',
+            tom: '2024-09-20',
+            søker: { forelder: 'MOR', utsettelseÅrsak: 'FERIE', flerbarnsdager: false },
+        };
+
+        await NySøknadFørVedtakMedEksisterendeSak.run({
+            args: {
+                ...NySøknadFørVedtakMedEksisterendeSak.args,
+                gåTilNesteSide,
+                erEndringssøknad: true,
+                uttaksplan: [foreldrepengerFørFødsel!, { ...mødrekvote!, tom: '2024-09-13' }, ferie],
+            },
+        });
+
+        expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
         const navigasjonsAction = gåTilNesteSide.mock.calls.find(
             ([action]) => action.key === ContextDataType.APP_ROUTE,
         );
@@ -575,7 +612,7 @@ describe('<UttaksplanSteg>', () => {
         ).toHaveLength(2);
     });
 
-    it('skal kun vise to uker for far i forslaget når far med begge rett starter på termin', async () => {
+    it('skal vise to uker ved termin og resten etter mors siste dag i fars forslag', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -607,11 +644,39 @@ describe('<UttaksplanSteg>', () => {
         const uttaksplan = uttaksplanAction![0].data as UttakPeriodeDto[];
         const farPerioder = uttaksplan.filter((p) => p.søker?.forelder === 'FAR_MEDMOR');
 
-        // Forslaget skal kun inneholde de to ukene ved termin (10 uttaksdager), ikke gjenstående fedrekvote i fremtiden
-        expect(farPerioder).toHaveLength(1);
+        expect(farPerioder).toHaveLength(2);
         expect(farPerioder[0]!.søker!.kontoType).toBe('FEDREKVOTE');
-        // Perioden skal starte på termindato (2024-07-01) og vare nøyaktig 10 uttaksdager (tom: 2024-07-12)
         expect(farPerioder[0]!.fom).toBe('2024-07-01');
         expect(farPerioder[0]!.tom).toBe('2024-07-12');
+        const morsSistePeriode = uttaksplan.findLast((periode) => periode.annenPart?.forelder === 'MOR');
+        expect(morsSistePeriode).toBeDefined();
+        expect(farPerioder[1]!.fom).toBe(Uttaksdagen.neste(morsSistePeriode!.tom).getDato());
+        expect(farPerioder[1]!.søker!.kontoType).toBe('FEDREKVOTE');
     });
+
+    it.each([
+        { annenPartRedigerbar: false, kanRedigere: false },
+        { annenPartRedigerbar: true, kanRedigere: true },
+    ])(
+        'skal respektere annenPartRedigerbar=$annenPartRedigerbar for mor sine søkte perioder',
+        async ({ annenPartRedigerbar, kanRedigere }) => {
+            await FødselFarSøkerEtterAtMorHarSøkt.run({
+                args: { ...FødselFarSøkerEtterAtMorHarSøkt.args, annenPartRedigerbar },
+            });
+
+            expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
+            expect(
+                screen.queryByText(
+                    'Mors plan kan ikke endres automatisk her. Se over uttaket rundt fødselen før du sender søknaden.',
+                ),
+            ).not.toBeInTheDocument();
+            await userEvent.click(screen.getByRole('tab', { name: 'Liste' }));
+            expect(
+                screen.getByRole('button', { name: /01. juli 24\s*- 12. juli 24.*foreldrepenger/ }),
+            ).toBeInTheDocument();
+            await userEvent.click(screen.getByRole('button', { name: /15. juli 24\s*- 09. aug. 24/ }));
+
+            expect(screen.queryAllByRole('button', { name: /^(Endre|Slett)$/ }).length > 0).toBe(kanRedigere);
+        },
+    );
 });

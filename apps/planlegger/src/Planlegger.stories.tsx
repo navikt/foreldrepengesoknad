@@ -1,15 +1,17 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { API_URLS } from 'appData/queries';
+import { PlanleggerRoutes } from 'appData/routes';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps, StrictMode } from 'react';
 import { MemoryRouter } from 'react-router';
 
 import { KontoBeregningResultatDto } from '@navikt/fp-types';
 import { ErrorBoundary } from '@navikt/fp-ui';
+import { compressToUrl } from '@navikt/fp-utils';
 import { withQueryClient } from '@navikt/fp-utils-test';
 
-import { PlanleggerDataFetcher } from './Planlegger';
+import { PlanleggerDataFetcher, PlanleggerDataInit } from './Planlegger';
 
 const STØNADSKVOTER = {
     '100': {
@@ -105,10 +107,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    args: {
-        changeLocale: () => {},
-        locale: 'nb',
-    },
+    args: {},
 };
 
 export const DefaultMockaStønadskvoterOgSatser: Story = {
@@ -137,6 +136,19 @@ export const MedValidertKontoKall: Story = {
             }),
         );
     },
+};
+
+export const MedUgyldigLenke: Story = {
+    ...DefaultMockaStønadskvoterOgSatser,
+    render: () => (
+        <MemoryRouter
+            initialEntries={[
+                `${PlanleggerRoutes.PLANEN_DERES}?data=${compressToUrl(JSON.stringify({ UTTAKSPLAN: {} }))}`,
+            ]}
+        >
+            <PlanleggerDataInit />
+        </MemoryRouter>
+    ),
 };
 
 export const FarFarMockaStønadskvoterOgSatser: Story = {

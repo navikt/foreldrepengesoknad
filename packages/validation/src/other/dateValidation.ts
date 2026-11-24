@@ -1,10 +1,12 @@
 import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import isBetween from 'dayjs/plugin/isBetween';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 
-import { DATE_TODAY, ISO_DATE_REGEX } from '@navikt/fp-constants';
+import { DATE_TODAY, ISO_DATE_FORMAT, ISO_DATE_REGEX } from '@navikt/fp-constants';
 
+dayjs.extend(customParseFormat);
 dayjs.extend(isBetween);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
@@ -12,7 +14,8 @@ dayjs.extend(isSameOrBefore);
 type DateTypes = string | dayjs.Dayjs;
 type Period = { from: DateTypes; to: DateTypes };
 
-export const isValidDate = (date?: string): boolean => !!date && dayjs(date).isValid() && ISO_DATE_REGEX.test(date);
+export const isValidDate = (date?: string): boolean =>
+    !!date && ISO_DATE_REGEX.test(date) && dayjs(date, ISO_DATE_FORMAT, true).isValid();
 export const isToday = (date: DateTypes): boolean => dayjs(date).isSame(DATE_TODAY, 'day');
 export const isAfterToday = (date: DateTypes): boolean => dayjs(date).isAfter(DATE_TODAY, 'day');
 export const isBeforeToday = (date: DateTypes): boolean => dayjs(date).isBefore(DATE_TODAY, 'day');

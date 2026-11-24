@@ -18,3 +18,5 @@ export interface ManglendeVedleggFormData {
     [Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE]: Attachment[];
     [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]: Attachment[];
 }
+
+export type OppdaterVedlegg = (attachments: Attachment[], hasPendingUploads?: boolean) => void;

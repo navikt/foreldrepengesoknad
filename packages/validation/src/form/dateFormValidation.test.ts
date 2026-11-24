@@ -2,7 +2,21 @@ import dayjs from 'dayjs';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
-import { isPeriodNotOverlappingOthers } from './dateFormValidation';
+import { isPeriodNotOverlappingOthers, isValidDate } from './dateFormValidation';
+
+describe('isValidDate', () => {
+    const validate = isValidDate('feil');
+
+    it('godtar tom verdi og gyldig ISO-dato', () => {
+        expect(validate('')).toBeNull();
+        expect(validate('2024-01-01')).toBeNull();
+        expect(validate('2024-02-29')).toBeNull();
+    });
+
+    it.each(['x2024-01-01', '2024-1-1', '01.01.2024', '2024-02-31', '2023-02-29', '2024-04-31'])('avviser %s', (value) => {
+        expect(validate(value)).toBe('feil');
+    });
+});
 
 describe('isPeriodNotOverlappingOthers', () => {
     it('skal ikke gi feil når periodene ikke overlapper', () => {

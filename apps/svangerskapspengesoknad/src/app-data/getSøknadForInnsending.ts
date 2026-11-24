@@ -28,9 +28,15 @@ const finnTilretteleggingsbehov = (
     alleArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     barn: Barn,
     tilrettelegginger: Record<string, DelvisTilrettelegging | IngenTilrettelegging>,
-    tilretteleggingerPerioder?: Record<string, PeriodeMedVariasjon[]>,
-    egenNæring?: NæringDto,
-    frilans?: Frilans,
+    {
+        tilretteleggingerPerioder,
+        egenNæring,
+        frilans,
+    }: {
+        tilretteleggingerPerioder?: Record<string, PeriodeMedVariasjon[]>;
+        egenNæring?: NæringDto;
+        frilans?: Frilans;
+    } = {},
 ): TilretteleggingbehovDto[] => {
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
 
@@ -41,8 +47,7 @@ const finnTilretteleggingsbehov = (
             barn.termindato,
             tilretteleggingId,
             alleArbeidsforhold,
-            egenNæring,
-            frilans,
+            { egenNæring, frilans },
         );
 
         return {
@@ -128,9 +133,7 @@ export const getSøknadForInnsending = (
             søkerinfo.arbeidsforhold,
             barn,
             tilrettelegginger,
-            tilretteleggingerPerioder,
-            egenNæring,
-            frilans,
+            { tilretteleggingerPerioder, egenNæring, frilans },
         ),
         vedlegg: finnVedlegg(tilretteleggingerVedlegg, søkerinfo.arbeidsforhold),
         avtaltFerie: ferie ? Object.values(ferie).flatMap((f) => f.feriePerioder) : [],

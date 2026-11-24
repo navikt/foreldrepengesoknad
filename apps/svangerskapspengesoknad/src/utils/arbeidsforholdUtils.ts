@@ -115,8 +115,7 @@ export const søkerHarKunEtAktivtArbeid = (
     const aktiveUnikeArbeidsforhold = getUnikeArbeidsforhold(arbeidsforhold, termindato);
     return (
         (aktiveUnikeArbeidsforhold.length === 1 && !erFrilanser && !harEgenNæring) ||
-        (aktiveUnikeArbeidsforhold.length === 0 && erFrilanser && !harEgenNæring) ||
-        (aktiveUnikeArbeidsforhold.length === 0 && !erFrilanser && harEgenNæring)
+        (aktiveUnikeArbeidsforhold.length === 0 && ((erFrilanser && !harEgenNæring) || (!erFrilanser && harEgenNæring)))
     );
 };
 

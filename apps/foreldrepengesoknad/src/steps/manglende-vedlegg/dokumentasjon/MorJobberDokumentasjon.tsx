@@ -23,12 +23,13 @@ import {
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { OppdaterVedlegg } from '../ManglendeVedleggFormData';
 import { UttakUploader } from '../attachment-uploaders/UttakUploader';
 import { IngenDokumentasjonPåkrevd } from './IngenDokumentasjonPåkrevd';
 
 interface Props {
     attachments: Attachment[];
-    updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
+    updateAttachments: (skjemanummer: GyldigeSkjemanummer) => OppdaterVedlegg;
     perioder: UttakPeriodeDto[];
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;

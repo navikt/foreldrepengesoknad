@@ -288,6 +288,11 @@ export const harPeriodeMedUkjentGraderingsaktivitet = (
     });
 };
 
+const erGraderingsaktivitetLik = (a: UttakDto['gradering'], b: UttakDto['gradering']): boolean =>
+    a?.aktivitet?.type === b?.aktivitet?.type &&
+    a?.aktivitet?.arbeidsgiver?.id === b?.aktivitet?.arbeidsgiver?.id &&
+    a?.aktivitet?.arbeidsgiver?.type === b?.aktivitet?.arbeidsgiver?.type;
+
 const erUttakLike = (a: UttakDto | undefined, b: UttakDto | undefined): boolean => {
     if (!a || !b) {
         return a === b;
@@ -297,7 +302,7 @@ const erUttakLike = (a: UttakDto | undefined, b: UttakDto | undefined): boolean 
         a.kontoType === b.kontoType &&
         a.forelder === b.forelder &&
         a.gradering?.arbeidstidprosent === b.gradering?.arbeidstidprosent &&
-        a.gradering?.aktivitet === b.gradering?.aktivitet &&
+        erGraderingsaktivitetLik(a.gradering, b.gradering) &&
         a.morsAktivitet === b.morsAktivitet &&
         a.utsettelseÅrsak === b.utsettelseÅrsak &&
         a.overføringÅrsak === b.overføringÅrsak &&

@@ -51,6 +51,7 @@
         "@navikt/fp-config-typescript": "workspace:*",
         "@navikt/fp-config-vite": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
+        "@navikt/nav-dekoratoren-moduler": "catalog:",
         "@storybook/addon-a11y": "catalog:",
         "@storybook/react-vite": "catalog:",
         "@testing-library/dom": "catalog:",

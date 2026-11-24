@@ -40,6 +40,29 @@ const baseFarDeltUttakContext = {
 };
 
 describe('useUttaksplanForslag – far med delt uttak', () => {
+    beforeEach(() => {
+        vi.setSystemTime(new Date('2024-07-20'));
+    });
+
+    afterEach(() => {
+        vi.useRealTimers();
+    });
+
+    it.each(['far', 'medmor'] as const)('lager ikke forslag fra lagret fødselsvalg etter fristen for %s', (rolle) => {
+        vi.setSystemTime(new Date('2024-10-02'));
+        const { result } = renderHook(() => useUttaksplanForslag(STØNADSKVOTE), {
+            wrapper: getWrapper({
+                ...baseFarDeltUttakContext,
+                [ContextDataType.SØKERSITUASJON]: { situasjon: 'fødsel', rolle },
+                [ContextDataType.FORDELING]: {
+                    oppstartAvForeldrepengerValg: OppstartValg.FAMILIEHENDELSESDATO,
+                },
+            }),
+        });
+
+        expect(result.current).toEqual([]);
+    });
+
     describe('når far starter på familiehendelsesdato (harFødselspermisjon)', () => {
         it('genererer plan med samtidig uttak på familiehendelsesdato', () => {
             const { result } = renderHook(() => useUttaksplanForslag(STØNADSKVOTE), {
@@ -102,9 +125,104 @@ describe('useUttaksplanForslag – far med delt uttak', () => {
                 },
             });
 
-            // FAR har ingen separat FEDREKVOTE utover samtidig uttak
-            expect(perioder).toHaveLength(4);
-            expect(perioder.filter((p) => p.søker?.forelder === 'FAR_MEDMOR')).toHaveLength(1);
+            expect(perioder[4]).toMatchObject({
+                fom: '2025-02-03',
+                søker: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE' },
+            });
+            expect(perioder).toHaveLength(5);
+            expect(perioder.filter((p) => p.søker?.kontoType === 'FEDREKVOTE')).toHaveLength(2);
+            expect(
+                perioder
+                    .filter((p) => p.søker?.kontoType === 'FEDREKVOTE')
+                    .reduce(
+                        (antall, periode) =>
+                            antall + Uttaksdagen.denne(periode.fom).getUttaksdagerFremTilOgMedDato(periode.tom),
+                        0,
+                    ),
+            ).toBe(STØNADSKVOTE.kontoer.find((konto) => konto.konto === 'FEDREKVOTE')!.dager);
+        });
+    });
+
+    it('legger hele fedrekvoten etter mors siste dag når far svarer nei', () => {
+        const { result } = renderHook(() => useUttaksplanForslag(STØNADSKVOTE), {
+            wrapper: getWrapper({
+                ...baseFarDeltUttakContext,
+                [ContextDataType.FORDELING]: {
+                    oppstartAvForeldrepengerValg: OppstartValg.IKKE_VED_FØDSEL,
+                },
+            }),
+        });
+
+        const perioder = result.current;
+        const morsSistePeriode = perioder.findLast((p) => p.annenPart?.forelder === 'MOR')!;
+        const farsPerioder = perioder.filter((p) => p.søker?.kontoType === 'FEDREKVOTE');
+
+        expect(farsPerioder).toHaveLength(1);
+        expect(farsPerioder[0]!.fom).toBe(Uttaksdagen.neste(morsSistePeriode.tom).getDato());
+        expect(Uttaksdagen.denne(farsPerioder[0]!.fom).getUttaksdagerFremTilOgMedDato(farsPerioder[0]!.tom)).toBe(
+            STØNADSKVOTE.kontoer.find((konto) => konto.konto === 'FEDREKVOTE')!.dager,
+        );
+    });
+
+    it('legger to uker fra termindato når barnet ikke er født', () => {
+        const { result } = renderHook(() => useUttaksplanForslag(STØNADSKVOTE), {
+            wrapper: getWrapper({
+                ...baseFarDeltUttakContext,
+                [ContextDataType.OM_BARNET]: {
+                    type: BarnType.UFØDT,
+                    termindato: FØDSELSDATO,
+                    antallBarn: 1,
+                },
+                [ContextDataType.FORDELING]: {
+                    oppstartAvForeldrepengerValg: OppstartValg.FAMILIEHENDELSESDATO,
+                },
+            }),
+        });
+
+        const perioder = result.current;
+        const farsPerioder = perioder.filter((p) => p.søker?.kontoType === 'FEDREKVOTE');
+        expect(farsPerioder[0]).toMatchObject({ fom: FØDSELSDATO, tom: '2024-07-12', søker: { samtidigUttak: 100 } });
+        expect(farsPerioder[1]!.fom).toBe(Uttaksdagen.neste(perioder.at(-2)!.tom).getDato());
+    });
+
+    it('legger to uker fra fødselsdato når barnet ble født før termin', () => {
+        const { result } = renderHook(() => useUttaksplanForslag(STØNADSKVOTE), {
+            wrapper: getWrapper({
+                ...baseFarDeltUttakContext,
+                [ContextDataType.OM_BARNET]: {
+                    ...baseFarDeltUttakContext[ContextDataType.OM_BARNET],
+                    termindato: '2024-07-15',
+                },
+                [ContextDataType.FORDELING]: {
+                    oppstartAvForeldrepengerValg: OppstartValg.FAMILIEHENDELSESDATO,
+                },
+            }),
+        });
+
+        const perioder = result.current;
+        const farsPerioder = perioder.filter((p) => p.søker?.kontoType === 'FEDREKVOTE');
+        const morsSistePeriode = perioder.findLast((p) => p.annenPart?.forelder === 'MOR')!;
+        expect(farsPerioder[0]).toMatchObject({ fom: FØDSELSDATO, tom: '2024-07-12' });
+        expect(farsPerioder[1]!.fom).toBe(Uttaksdagen.neste(morsSistePeriode.tom).getDato());
+    });
+
+    it('legger resten av fedrekvoten etter mødrekvoten når fellesperioden fordeles senere', () => {
+        const { result } = renderHook(() => useUttaksplanForslag(STØNADSKVOTE), {
+            wrapper: getWrapper({
+                ...baseFarDeltUttakContext,
+                [ContextDataType.FORDELING]: {
+                    oppstartAvForeldrepengerValg: OppstartValg.FAMILIEHENDELSESDATO,
+                    fordelingValg: FellesperiodeFordelingValg.HOPP_OVER_FORDELING,
+                },
+            }),
+        });
+
+        const perioder = result.current;
+        const sisteMødrekvote = perioder.find((p) => p.annenPart?.kontoType === 'MØDREKVOTE' && !p.søker)!;
+        expect(perioder.some((p) => p.annenPart?.kontoType === 'FELLESPERIODE')).toBe(false);
+        expect(perioder.at(-1)).toMatchObject({
+            fom: Uttaksdagen.neste(sisteMødrekvote.tom).getDato(),
+            søker: { kontoType: 'FEDREKVOTE' },
         });
     });
 
@@ -322,6 +440,14 @@ describe('kanGenerereUttaksplanForslag', () => {
 });
 
 describe('forslag i førstegangssøknad når fødselsdato avviker fra termin', () => {
+    beforeEach(() => {
+        vi.setSystemTime(new Date('2024-07-20'));
+    });
+
+    afterEach(() => {
+        vi.useRealTimers();
+    });
+
     const lagForslag = ({
         termindato = '2024-06-17',
         fødselsdato = FØDSELSDATO,
@@ -369,33 +495,95 @@ describe('forslag i førstegangssøknad når fødselsdato avviker fra termin', (
             0,
         );
 
-    it.each([
-        FellesperiodeFordelingValg.ALT,
-        FellesperiodeFordelingValg.HOPP_OVER_FORDELING,
-        FellesperiodeFordelingValg.VIL_VELGE,
-    ])('bruker fellesperiode fra termin til fødsel også med fordelingsvalget %s', (fordelingValg) => {
-        const perioder = lagForslag({ fordeling: { fordelingValg } });
-        expect(perioder.slice(0, 3)).toEqual([
-            {
-                fom: '2024-05-27',
-                tom: '2024-06-14',
-                søker: { forelder: 'MOR', kontoType: 'FORELDREPENGER_FØR_FØDSEL', flerbarnsdager: false },
+    it.each(['mor', 'far', 'medmor'] as const)(
+        'foreslår ikke fellesperiode til noen av foreldrene når %s velger å fordele senere',
+        (rolle) => {
+            const perioder = lagForslag({
+                rolle,
+                termindato: FØDSELSDATO,
+                fordeling: { fordelingValg: FellesperiodeFordelingValg.HOPP_OVER_FORDELING },
+            });
+
+            expect(
+                perioder.some((periode) => (periode.søker ?? periode.annenPart)?.kontoType === 'FELLESPERIODE'),
+            ).toBe(false);
+            expect(perioder.some((periode) => periode.søker?.kontoType === 'FEDREKVOTE')).toBe(rolle !== 'mor');
+            expect(perioder.some((periode) => (periode.søker ?? periode.annenPart)?.kontoType === 'MØDREKVOTE')).toBe(
+                true,
+            );
+        },
+    );
+
+    it('lager forslag for far når født barn mangler termindato', () => {
+        const perioder = lagForslag({
+            rolle: 'far',
+            barn: { type: BarnType.FØDT, fødselsdatoer: [FØDSELSDATO], antallBarn: 1 },
+        });
+
+        expect(perioder.some((periode) => periode.søker?.kontoType === 'FEDREKVOTE')).toBe(true);
+    });
+
+    it.each([FellesperiodeFordelingValg.ALT, FellesperiodeFordelingValg.VIL_VELGE])(
+        'bruker fellesperiode fra termin til fødsel også med fordelingsvalget %s',
+        (fordelingValg) => {
+            const perioder = lagForslag({ fordeling: { fordelingValg } });
+            expect(perioder.slice(0, 3)).toEqual([
+                {
+                    fom: '2024-05-27',
+                    tom: '2024-06-14',
+                    søker: { forelder: 'MOR', kontoType: 'FORELDREPENGER_FØR_FØDSEL', flerbarnsdager: false },
+                },
+                {
+                    fom: '2024-06-17',
+                    tom: '2024-06-28',
+                    søker: { forelder: 'MOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false },
+                },
+                {
+                    fom: FØDSELSDATO,
+                    tom: '2024-10-11',
+                    søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
+                },
+            ]);
+            expect(antallDager(perioder.filter((p) => (p.søker ?? p.annenPart)?.kontoType === 'FELLESPERIODE'))).toBe(
+                80,
+            );
+            expect(perioder.filter((p) => p.søker?.kontoType === 'FELLESPERIODE')).toHaveLength(
+                fordelingValg === FellesperiodeFordelingValg.ALT ? 2 : 1,
+            );
+        },
+    );
+
+    it.each(['mor', 'far'] as const)(
+        'beholder bare fellesperioden før fødsel når %s vil fordele resten senere',
+        (rolle) => {
+            const perioder = lagForslag({
+                rolle,
+                fordeling: { fordelingValg: FellesperiodeFordelingValg.HOPP_OVER_FORDELING },
+            });
+            const fellesperioder = perioder.filter(
+                (periode) => (periode.søker ?? periode.annenPart)?.kontoType === 'FELLESPERIODE',
+            );
+
+            expect(fellesperioder).toHaveLength(1);
+            expect(fellesperioder[0]).toMatchObject({ fom: '2024-06-17', tom: '2024-06-28' });
+            expect(antallDager(fellesperioder)).toBe(10);
+        },
+    );
+
+    it('beholder valgt tidlig oppstart uten å fordele fellesperioden etter fødsel', () => {
+        const perioder = lagForslag({
+            termindato: FØDSELSDATO,
+            fordeling: {
+                fordelingValg: FellesperiodeFordelingValg.HOPP_OVER_FORDELING,
+                oppstartAvForeldrepengerValg: OppstartValg.ANNEN_DATO,
+                oppstartDato: '2024-06-03',
             },
-            {
-                fom: '2024-06-17',
-                tom: '2024-06-28',
-                søker: { forelder: 'MOR', kontoType: 'FELLESPERIODE', flerbarnsdager: false },
-            },
-            {
-                fom: FØDSELSDATO,
-                tom: '2024-10-11',
-                søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
-            },
+        });
+
+        expect(perioder.filter((periode) => periode.søker?.kontoType === 'FELLESPERIODE')).toMatchObject([
+            { fom: '2024-06-03', tom: '2024-06-07' },
         ]);
-        expect(antallDager(perioder.filter((p) => (p.søker ?? p.annenPart)?.kontoType === 'FELLESPERIODE'))).toBe(80);
-        expect(perioder.filter((p) => p.søker?.kontoType === 'FELLESPERIODE')).toHaveLength(
-            fordelingValg === FellesperiodeFordelingValg.ALT ? 2 : 1,
-        );
+        expect(perioder.some((periode) => periode.annenPart?.kontoType === 'FELLESPERIODE')).toBe(false);
     });
 
     it('legger resten av mors fellesperiode etter mødrekvoten uten å bruke dagene før fødsel to ganger', () => {

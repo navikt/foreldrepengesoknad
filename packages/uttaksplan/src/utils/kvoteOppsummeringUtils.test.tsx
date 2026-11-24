@@ -398,3 +398,28 @@ describe('tellDagerIUttaksPeriodene – EØS-perioder for annen part', () => {
         expect(resultat.antallOvertrukketDager).toBe(10);
     });
 });
+
+describe('tellDagerIUttaksPeriodene – adopsjon, delt uttak', () => {
+    const ADOPSJON_KONTOER: KontoBeregningDto = {
+        ...KONTOER,
+        kontoer: KONTOER.kontoer.filter((k) => k.konto !== 'FORELDREPENGER_FØR_FØDSEL'),
+    };
+
+    it('skal gi mor ubrukte dager på mødrekvoten selv om det ikke finnes konto for foreldrepenger før fødsel', () => {
+        const perioder = [lagMorsMødrekvotePeriode('2024-04-01', '2024-05-10')];
+
+        const resultat = tellDagerIUttaksPeriodene(perioder, 'adopsjon', ADOPSJON_KONTOER, FAMILIEHENDELSESDATO);
+
+        expect(resultat.ubrukteDagerMor).toBe(45);
+        expect(resultat.antallUbrukteDager).toBe(200);
+    });
+
+    it('skal gi overtrekk når mor bruker mer enn mødrekvoten', () => {
+        const perioder = [lagMorsMødrekvotePeriode('2024-04-01', '2024-07-26')];
+
+        const resultat = tellDagerIUttaksPeriodene(perioder, 'adopsjon', ADOPSJON_KONTOER, FAMILIEHENDELSESDATO);
+
+        expect(resultat.ubrukteDagerMor).toBe(-10);
+        expect(resultat.antallOvertrukketDager).toBe(10);
+    });
+});

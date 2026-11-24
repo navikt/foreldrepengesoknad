@@ -1,6 +1,6 @@
 import { PencilIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { ReactElement, ReactNode, useState } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -16,6 +16,7 @@ import { useUttaksplanRedigering } from '../../context/UttaksplanRedigeringConte
 import {
     LeggTilEllerEndrePeriodeFellesForm,
     LeggTilEllerEndrePeriodeFormFormValues,
+    beholdLåstAnnenPartsSamtidigeUttak,
     lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm,
     mapFraFormValuesTilPeriodeDto,
 } from '../../felles/LeggTilEllerEndrePeriodeFellesForm';
@@ -26,7 +27,7 @@ import {
     LeggTilUtsettelseForm,
     FormValues as UtsettelseFormValues,
 } from '../../felles/utsettelse/LeggTilUtsettelseForm';
-import { useFormSubmitValidator } from '../../felles/uttaksplanValidatorer';
+import { useSubmitFeilmelding } from '../../felles/uttaksplanValidatorer';
 import { useKanKunErstatte, useListePanelInfoAlerts } from '../../regler/alert/informasjonsAlertHooks';
 import { lagHvaVilDuGjøreValidatorer } from '../../regler/felt/hvaVilDuGjøre';
 import { useGyldigeKvotetyper } from '../../regler/kvotetype/kvoteRegler';
@@ -134,8 +135,6 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
         kanVelgeArbeidsgiver,
     } = useUttaksplanData();
 
-    const [feilmelding, setFeilmelding] = useState<string | undefined>();
-
     const uttaksplanRedigering = useUttaksplanRedigering();
 
     const defaultValues = uttaksplanperiode
@@ -180,23 +179,19 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
             builder.fjernUttakPerioder([uttaksplanperiode], false);
         }
         const nyePerioder = builder.leggTilUttakPerioder(nyPeriode, skalForskyve).getUttakPerioder();
-        uttaksplanRedigering?.oppdaterUttaksplan?.(nyePerioder);
-        setIsLeggTilPeriodePanelOpen(false);
+
+        notEmpty(uttaksplanRedigering).endreUttaksplanMedVarsel(nyePerioder, () => setIsLeggTilPeriodePanelOpen(false));
     };
 
-    const formSubmitValidator = useFormSubmitValidator<FormValues>();
+    const { feilmelding, validerVedInnsending } = useSubmitFeilmelding(
+        formMethods,
+        valgtePerioder,
+        hvaVilDuGjøre === 'LEGG_TIL_PERIODE' && valgtePerioder.length > 0,
+    );
 
-    const onSubmit = (values: FormValues) => {
-        setFeilmelding(undefined);
-
-        const fom = notEmpty(values.fom);
-        const tom = notEmpty(values.tom);
-
+    const onSubmit = () => {
         if (hvaVilDuGjøre === 'LEGG_TIL_PERIODE') {
-            const submitFeilmelding = formSubmitValidator([{ fom, tom }], values);
-
-            if (submitFeilmelding) {
-                setFeilmelding(submitFeilmelding);
+            if (validerVedInnsending()) {
                 return;
             }
         } else if (
@@ -234,23 +229,23 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
             const nyeUttakPerioder = new UttakPeriodeBuilder(allePerioder, 'liste')
                 .fjernUttakPerioder([{ fom, tom }], false)
                 .getUttakPerioder();
-
-            uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
+            notEmpty(uttaksplanRedigering).slettFraUttaksplanMedVarsel([{ fom, tom }], nyeUttakPerioder, () =>
+                setIsLeggTilPeriodePanelOpen(false),
+            );
         } else {
-            const submitFeilmelding = formSubmitValidator([{ fom, tom }], values);
-
-            if (submitFeilmelding) {
-                setFeilmelding(submitFeilmelding);
+            if (validerVedInnsending()) {
                 return;
             }
             const mapped = omitMany(values, ['fom', 'tom', 'hvaVilDuGjøre']);
             handleAddPeriode(
-                mapFraFormValuesTilPeriodeDto(mapped, { fom, tom }, søker, kanVelgeArbeidsgiver),
+                beholdLåstAnnenPartsSamtidigeUttak(
+                    mapFraFormValuesTilPeriodeDto(mapped, { fom, tom }, søker, kanVelgeArbeidsgiver),
+                    allePerioder,
+                    erPeriodeneTilAnnenPartLåst,
+                ),
                 skalForskyve,
             );
         }
-
-        setIsLeggTilPeriodePanelOpen(false);
     };
 
     const resetFormValuesVedEndringAvForelder = (forelderVerdi: BrukerRolleSak_fpoversikt | 'BEGGE' | undefined) => {

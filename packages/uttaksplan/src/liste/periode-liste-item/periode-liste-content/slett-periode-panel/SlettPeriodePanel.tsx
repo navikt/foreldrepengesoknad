@@ -7,7 +7,7 @@ import { Button, Checkbox, HStack, Heading, VStack } from '@navikt/ds-react';
 import { RhfCheckboxGroup, RhfForm } from '@navikt/fp-form-hooks';
 import { NavnPåForeldre } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
-import { isRequired } from '@navikt/fp-validation';
+import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { useUttaksplanData } from '../../../../context/UttaksplanDataContext';
 import { useUttaksplanRedigering } from '../../../../context/UttaksplanRedigeringContext';
@@ -56,9 +56,11 @@ export const SlettPeriodePanel = ({ closePanel, uttaksplanperioder, navnPåForel
         const nyeUttakPerioder = new UttakPeriodeBuilder(perioder, 'liste')
             .fjernUttakPerioder(perioderSomSkalSlettes, false, erPeriodeneTilAnnenPartLåst)
             .getUttakPerioder();
-        uttaksplanRedigering?.oppdaterUttaksplan?.(nyeUttakPerioder);
-
-        closePanel();
+        notEmpty(uttaksplanRedigering).slettFraUttaksplanMedVarsel(
+            perioderSomSkalSlettes,
+            nyeUttakPerioder,
+            closePanel,
+        );
     };
 
     return (

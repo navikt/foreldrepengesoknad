@@ -371,3 +371,23 @@ export const FarFødselMorHarVedtak: Story = {
         msw.use(http.post(API_URLS.uttaksplan, () => HttpResponse.json(annenPartVedtak)));
     },
 };
+
+export const RegistrertBarnMedTermindatoFraTidligereSøknad: Story = {
+    args: FarFødselMorHarVedtak.args,
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.uttaksplan, () =>
+                HttpResponse.json({
+                    ...annenPartVedtak,
+                    perioder: [
+                        {
+                            fom: '2022-12-12',
+                            tom: '2023-02-17',
+                            søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
+                        },
+                    ],
+                }),
+            ),
+        );
+    },
+};
