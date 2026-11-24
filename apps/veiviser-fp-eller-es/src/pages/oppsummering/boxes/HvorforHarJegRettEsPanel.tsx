@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const HvorforHarJegRettEsPanel = ({ fpEllerEsSituasjon }: Props) => {
-    const { borDuINorge, jobberDuINorge } = fpEllerEsSituasjon;
+    const { borDuINorge } = fpEllerEsSituasjon;
 
     return (
         <ExpansionCard aria-label="" size="small">
@@ -24,11 +24,7 @@ export const HvorforHarJegRettEsPanel = ({ fpEllerEsSituasjon }: Props) => {
                         <QuestionmarkIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                     </IconCircleWrapper>
                     <ExpansionCard.Title size="small" as="h2">
-                        {fpEllerEsSituasjon.situasjon === 'mor' ? (
-                            <FormattedMessage id="HvorforHarJegRettPanel.HvorforHarJegRettPåEs" />
-                        ) : (
-                            <FormattedMessage id="HvorforHarJegRettPanel.HvorforKanJegHaRettPåEs" />
-                        )}
+                        <FormattedMessage id="HvorforHarJegRettPanel.HvorforKanJegHaRettPåEs" />
                     </ExpansionCard.Title>
                 </HStack>
             </ExpansionCard.Header>
@@ -44,11 +40,10 @@ export const HvorforHarJegRettEsPanel = ({ fpEllerEsSituasjon }: Props) => {
                             headerLevel="3"
                             boxBodyText={
                                 <FormattedMessage
-                                    id="HvorforHarJegRettPanel.OppgittAtDuBorINorge"
+                                    id="HvorforHarJegRettEsPanel.MåHaVærtMedlemI12Måneder"
                                     values={{ borINorge: borDuINorge }}
                                 />
                             }
-                            erOppfylt={borDuINorge || jobberDuINorge}
                         />
                     </VStack>
 

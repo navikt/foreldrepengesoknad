@@ -8,7 +8,7 @@ interface Props {
     headerText: ReactElement;
     headerLevel?: '1' | '2' | '3' | '4' | '5' | '6';
     boxBodyText: ReactElement;
-    erOppfylt: boolean;
+    erOppfylt?: boolean;
     testId?: string;
     jobberINorge?: boolean;
 }
@@ -26,35 +26,39 @@ export const KravinfoBoks = ({
             {headerText}
         </Heading>
         <Box background="brand-blue-moderate" padding="space-16" borderRadius="8">
-            <HStack gap="space-8" wrap={false}>
-                <div>
-                    {erOppfylt && (
-                        <CheckmarkCircleFillIcon
-                            height={24}
-                            width={24}
-                            fontSize="1.5rem"
-                            aria-hidden
-                            color="var(--ax-bg-success-strong)"
-                        />
-                    )}
-                    {!erOppfylt && <XMarkOctagonFillIcon height={24} width={24} fontSize="1.5rem" aria-hidden />}
-                </div>
-                <VStack gap="space-8">
-                    <Heading size="xsmall" level="4">
-                        {erOppfylt && <FormattedMessage id="KravinfoBoks.DuOppfyllerKravet" />}
-                        {!erOppfylt && (
-                            <>
-                                {jobberINorge === undefined || jobberINorge ? (
-                                    <FormattedMessage id="KravinfoBoks.DuIkkeOppfyllerKravet" />
-                                ) : (
-                                    <FormattedMessage id="KravinfoBoks.DuIkkeMestSannsynligOppfyllerKravet" />
-                                )}
-                            </>
+            {erOppfylt === undefined ? (
+                <BodyShort>{boxBodyText}</BodyShort>
+            ) : (
+                <HStack gap="space-8" wrap={false}>
+                    <div>
+                        {erOppfylt && (
+                            <CheckmarkCircleFillIcon
+                                height={24}
+                                width={24}
+                                fontSize="1.5rem"
+                                aria-hidden
+                                color="var(--ax-bg-success-strong)"
+                            />
                         )}
-                    </Heading>
-                    <BodyShort>{boxBodyText}</BodyShort>
-                </VStack>
-            </HStack>
+                        {!erOppfylt && <XMarkOctagonFillIcon height={24} width={24} fontSize="1.5rem" aria-hidden />}
+                    </div>
+                    <VStack gap="space-8">
+                        <Heading size="xsmall" level="4">
+                            {erOppfylt && <FormattedMessage id="KravinfoBoks.DuOppfyllerKravet" />}
+                            {!erOppfylt && (
+                                <>
+                                    {jobberINorge === undefined || jobberINorge ? (
+                                        <FormattedMessage id="KravinfoBoks.DuIkkeOppfyllerKravet" />
+                                    ) : (
+                                        <FormattedMessage id="KravinfoBoks.DuIkkeMestSannsynligOppfyllerKravet" />
+                                    )}
+                                </>
+                            )}
+                        </Heading>
+                        <BodyShort>{boxBodyText}</BodyShort>
+                    </VStack>
+                </HStack>
+            )}
         </Box>
     </VStack>
 );
