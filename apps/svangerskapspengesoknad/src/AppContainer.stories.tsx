@@ -104,6 +104,16 @@ export const VisAppKvinneMedArbeid: Story = {
     },
 };
 
+export const MellomlagringFeiler: Story = {
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 500 })),
+            ...HANDLERS,
+            http.get(API_URLS.søkerInfo, () => HttpResponse.json(defaultSøkerinfo)),
+        );
+    },
+};
+
 export const VisAppKvinneUtenArbeid: Story = {
     beforeEach({ msw }) {
         msw.use(

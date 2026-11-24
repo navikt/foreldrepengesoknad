@@ -7,9 +7,50 @@ import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './AppContainer.stories';
 
-const { VisAppKvinneMedArbeid } = composeStories(stories);
+const { VisAppKvinneMedArbeid, MellomlagringFeiler } = composeStories(stories);
+
+const fortsettSenere = async () => {
+    await userEvent.click(screen.getByRole('button', { name: 'Fortsett senere' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Ok' }));
+};
 
 describe('<AppContainer>', () => {
+    afterEach(() => {
+        vi.unstubAllGlobals();
+    });
+
+    it('skal sende brukeren ut av søknaden ved «Fortsett senere» når mellomlagringen går bra', async () => {
+        const assign = vi.fn();
+        vi.stubGlobal('location', { ...location, assign });
+        await VisAppKvinneMedArbeid.run();
+
+        await userEvent.click(await screen.findByText('Ja, jeg har forstått mine plikter.'));
+        await userEvent.click(screen.getByText('Start søknaden'));
+        expect(await screen.findByText('Steg 1 av 7')).toBeInTheDocument();
+
+        await fortsettSenere();
+
+        await waitFor(() => expect(assign).toHaveBeenCalledWith('https://nav.no'));
+    });
+
+    it('skal bli værende i søknaden og vise feilmelding ved «Fortsett senere» når mellomlagringen feiler', async () => {
+        const assign = vi.fn();
+        vi.stubGlobal('location', { ...location, assign });
+        await MellomlagringFeiler.run();
+
+        await userEvent.click(await screen.findByText('Ja, jeg har forstått mine plikter.'));
+        await userEvent.click(screen.getByText('Start søknaden'));
+        expect(await screen.findByText('Steg 1 av 7')).toBeInTheDocument();
+
+        await fortsettSenere();
+
+        expect(
+            await screen.findByText(/Vi klarte ikke å lagre søknaden din nå/, undefined, { timeout: 5000 }),
+        ).toBeInTheDocument();
+        expect(assign).not.toHaveBeenCalled();
+        expect(screen.getByText('Steg 1 av 7')).toBeInTheDocument();
+    });
+
     it('skal gå raskeste vei gjennom applikasjonen og så tilbake', async () => {
         await VisAppKvinneMedArbeid.run();
 

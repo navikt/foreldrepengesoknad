@@ -5,7 +5,10 @@ import { SvpMellomlagretData, useMellomlagreSøknad } from 'appData/useMellomlag
 import { useSendSøknad } from 'appData/useSendSøknad';
 import { useStepConfig } from 'appData/useStepConfig';
 import { ReactNode, useEffect, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Navigate, Route, Routes, useNavigate } from 'react-router';
+
+import { Alert, Button, VStack } from '@navikt/ds-react';
 
 import { EksternArbeidsforholdDto_fpoversikt, SvpPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
@@ -255,7 +258,10 @@ export const SvangerskapspengesøknadRoutes = ({ søkerInfo, mellomlagretData }:
     const [harGodkjentVilkår, setHarGodkjentVilkår] = useState(false);
 
     const { sendSøknad, errorSendSøknad } = useSendSøknad(søkerInfo);
-    const mellomlagreOgNaviger = useMellomlagreSøknad(søkerInfo, setHarGodkjentVilkår);
+    const { mellomlagreOgNaviger, lagringFeilet, nullstillLagringFeilet } = useMellomlagreSøknad(
+        søkerInfo,
+        setHarGodkjentVilkår,
+    );
     const avbrytSøknad = useAvbrytSøknad(setHarGodkjentVilkår);
 
     useEffect(() => {
@@ -274,19 +280,35 @@ export const SvangerskapspengesøknadRoutes = ({ søkerInfo, mellomlagretData }:
     }
 
     return (
-        <Routes>
-            <Route
-                path={SøknadRoute.FORSIDE}
-                element={
-                    <Forside
-                        mellomlagreSøknadOgNaviger={mellomlagreOgNaviger}
-                        setHarGodkjentVilkår={setHarGodkjentVilkår}
-                        harGodkjentVilkår={harGodkjentVilkår}
-                    />
-                }
-            />
+        <VStack gap="space-16">
+            {lagringFeilet && (
+                <VStack align="center" paddingBlock="space-16" paddingInline="space-16">
+                    <VStack maxWidth="600px" width="100%">
+                        <Alert variant="error">
+                            <VStack align="start" gap="space-8">
+                                <FormattedMessage id="Mellomlagring.FeiletVedFortsettSenere" />
+                                <Button type="button" variant="secondary" size="small" onClick={nullstillLagringFeilet}>
+                                    <FormattedMessage id="Mellomlagring.FeiletVedFortsettSenere.Lukk" />
+                                </Button>
+                            </VStack>
+                        </Alert>
+                    </VStack>
+                </VStack>
+            )}
+            <Routes>
+                <Route
+                    path={SøknadRoute.FORSIDE}
+                    element={
+                        <Forside
+                            mellomlagreSøknadOgNaviger={mellomlagreOgNaviger}
+                            setHarGodkjentVilkår={setHarGodkjentVilkår}
+                            harGodkjentVilkår={harGodkjentVilkår}
+                        />
+                    }
+                />
 
-            {renderSøknadRoutes(harGodkjentVilkår, søkerInfo, mellomlagreOgNaviger, avbrytSøknad, sendSøknad)}
-        </Routes>
+                {renderSøknadRoutes(harGodkjentVilkår, søkerInfo, mellomlagreOgNaviger, avbrytSøknad, sendSøknad)}
+            </Routes>
+        </VStack>
     );
 };

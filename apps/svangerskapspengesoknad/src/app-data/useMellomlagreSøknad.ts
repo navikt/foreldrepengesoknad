@@ -24,6 +24,21 @@ type MellomlagreSøknadOptions = {
     naviger?: boolean;
     // Prøv kallet på nytt ved transiente feil. Default false.
     medRetry?: boolean;
+    // Blir kalt når lagringen er ferdig, med utfallet. Bruk denne når kalleren må
+    // vite om lagringen gikk bra (f.eks. før brukeren sendes ut av appen).
+    onFerdig?: (resultat: MellomlagringResultat) => void;
+    // Vis feilmelding til brukeren dersom lagringen feiler. Default false.
+    visFeilTilBruker?: boolean;
+};
+
+export type MellomlagringResultat = 'ok' | 'feilet';
+
+type Forespørsel = {
+    naviger: boolean;
+    medRetry: boolean;
+    visFeilTilBruker: boolean;
+    onFerdig?: (resultat: MellomlagringResultat) => void;
+    ferdig: () => void;
 };
 
 export type MellomlagreSøknadFn = (options?: MellomlagreSøknadOptions) => Promise<void>;
@@ -50,24 +65,30 @@ export const useMellomlagreSøknad = (
     const state = useContextComplete();
     const resetState = useContextReset();
 
-    const [forespørsel, setForespørsel] = useState<{ naviger: boolean; medRetry: boolean } | null>(null);
+    const [lagringFeilet, setLagringFeilet] = useState(false);
 
-    const promiseRef = useRef<() => void>(null);
+    // Forespurte lagringer ligger i en ref-kø, ikke i state: flere kall kan komme før
+    // effekten rekker å kjøre (f.eks. «neste steg» og «fortsett senere» rett etter hverandre),
+    // og da må alle bli fullført. Sekvensnummeret finnes bare for å trigge effekten,
+    // som er nødvendig for at vi skal lese ferskt context-state etter kallerens dispatcher.
+    const køRef = useRef<Forespørsel[]>([]);
+    const [seq, setSeq] = useState(0);
 
     const { mutate: slettMellomlagring } = useMutation({
         mutationFn: () => ky.delete(API_URLS.mellomlagring),
     });
 
     useEffect(() => {
-        if (!forespørsel) {
+        const forespørsler = køRef.current;
+        if (forespørsler.length === 0) {
             return;
         }
+        køRef.current = [];
 
-        const { naviger, medRetry } = forespørsel;
+        const naviger = forespørsler.some((f) => f.naviger);
+        const medRetry = forespørsler.some((f) => f.medRetry);
 
         const lagreEllerSlett = async () => {
-            setForespørsel(null);
-
             const currentPath = state[ContextDataType.APP_ROUTE];
             if (currentPath) {
                 if (naviger) {
@@ -101,9 +122,15 @@ export const useMellomlagreSøknad = (
                 // Ved avbryt så set ein Path = undefined og må så rydda opp i data her
                 slettMellomlagring();
             }
+        };
 
-            if (promiseRef.current) {
-                promiseRef.current();
+        const fullfør = (resultat: MellomlagringResultat) => {
+            if (resultat === 'feilet' && forespørsler.some((f) => f.visFeilTilBruker)) {
+                setLagringFeilet(true);
+            }
+            for (const forespørsel of forespørsler) {
+                forespørsel.onFerdig?.(resultat);
+                forespørsel.ferdig();
             }
         };
 
@@ -118,25 +145,33 @@ export const useMellomlagreSøknad = (
                     captureMessage(lagringsfeil.message);
                 }
 
-                if (promiseRef.current) {
-                    promiseRef.current();
-                }
+                fullfør('feilet');
+                return;
             }
+
+            fullfør('ok');
         };
 
         void lagreOgHåndterFeil();
-    }, [forespørsel]);
+    }, [seq]);
 
-    const mellomlagreOgNaviger = useCallback<MellomlagreSøknadFn>((options) => {
-        //Må gå via state change sidan ein må få oppdatert context før ein mellomlagrar
-        setForespørsel({ naviger: options?.naviger ?? true, medRetry: options?.medRetry ?? false });
+    const mellomlagreOgNaviger = useCallback<MellomlagreSøknadFn>(
+        (options) =>
+            //Må gå via state change sidan ein må få oppdatert context før ein mellomlagrar
+            new Promise<void>((resolve) => {
+                køRef.current.push({
+                    naviger: options?.naviger ?? true,
+                    medRetry: options?.medRetry ?? false,
+                    visFeilTilBruker: options?.visFeilTilBruker ?? false,
+                    onFerdig: options?.onFerdig,
+                    ferdig: resolve,
+                });
+                setSeq((s) => s + 1);
+            }),
+        [],
+    );
 
-        const promise = new Promise<void>((resolve) => {
-            promiseRef.current = resolve;
-        });
+    const nullstillLagringFeilet = useCallback(() => setLagringFeilet(false), []);
 
-        return promise;
-    }, []);
-
-    return mellomlagreOgNaviger;
+    return { mellomlagreOgNaviger, lagringFeilet, nullstillLagringFeilet };
 };
