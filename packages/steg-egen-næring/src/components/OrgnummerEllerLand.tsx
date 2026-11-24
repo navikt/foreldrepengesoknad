@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 import { IntlShape, useIntl } from 'react-intl';
 
 import { RhfSelect, RhfTextField } from '@navikt/fp-form-hooks';
-import { createCountryOptions } from '@navikt/fp-utils';
+import { NORGE_LANDKODE, createCountryOptions } from '@navikt/fp-utils';
 import { containsWhiteSpace, erGyldigNorskOrgnummer, isNotEqualValue, isRequired } from '@navikt/fp-validation';
 
 import { NæringFormValues } from '../types/NæringFormValues';
@@ -54,16 +54,17 @@ export const OrgnummerEllerLand = ({ orgNummerErValgfritt, registrertINorge }: P
                     label={intl.formatMessage({ id: 'egenNæring.registrertILand' })}
                     validate={[
                         isRequired(intl.formatMessage({ id: 'valideringsfeil.egenNæringLand.påkrevd' })),
-                        isNotEqualValue(intl.formatMessage({ id: 'valideringsfeil.egenNæringLand.ikkeNorge' }), 'NO'),
+                        isNotEqualValue(
+                            intl.formatMessage({ id: 'valideringsfeil.egenNæringLand.ikkeNorge' }),
+                            NORGE_LANDKODE,
+                        ),
                     ]}
                 >
-                    {createCountryOptions(intl.locale)
-                        .filter((country) => country[0] !== 'NO')
-                        .map((o) => (
-                            <option key={o[0]} value={o[0]}>
-                                {o[1]}
-                            </option>
-                        ))}
+                    {createCountryOptions(intl.locale, { utenNorge: true }).map((o) => (
+                        <option key={o[0]} value={o[0]}>
+                            {o[1]}
+                        </option>
+                    ))}
                 </RhfSelect>
             )}
         </>

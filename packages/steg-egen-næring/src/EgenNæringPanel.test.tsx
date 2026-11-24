@@ -156,6 +156,46 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         );
     });
 
+    it('skal ikke tilby eller godta Norge som land når virksomheten ikke er registrert i Norge', async () => {
+        const onSubmit = vi.fn();
+
+        render(
+            <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: { ...formHookMessages.nb, ...nbMessages } }}>
+                <EgenNæringForm
+                    egenNæring={{
+                        fom: '2023-04-30',
+                        harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
+                        navnPåNæringen: 'Utenlandsk virksomhet',
+                        næringsinntekt: 1000,
+                        næringstype: 'ANNEN',
+                        registrertILand: 'NOR',
+                        registrertINorge: false,
+                    }}
+                    appOrigin="foreldrepengesoknad"
+                    onSubmit={onSubmit}
+                    withoutFormElement
+                    renderActions={(submitForm) => (
+                        <Button type="button" onClick={() => void submitForm()}>
+                            Legg til
+                        </Button>
+                    )}
+                />
+            </IntlProvider>,
+        );
+
+        expect(screen.queryByRole('option', { name: 'Norge' })).not.toBeInTheDocument();
+        expect(screen.getByRole('option', { name: 'Sverige' })).toBeInTheDocument();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Legg til' }));
+
+        expect(
+            screen.getAllByText(
+                'Du svarte at virksomheten ikke er registrert i Norge og kan derfor ikke oppgi Norge som landet der næringen er registert.',
+            ).length,
+        ).toBeGreaterThan(0);
+        expect(onSubmit).not.toHaveBeenCalled();
+    });
+
     it('skal vise feilmelding når ingenting er fylt eller huket av', async () => {
         render(<Default />);
 

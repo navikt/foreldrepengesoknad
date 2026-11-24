@@ -13,6 +13,7 @@ export const utilsMessages = {
 export {
     filteredListEØSCountries,
     createCountryOptions,
+    NORGE_LANDKODE,
     countryIsMemberOfEøsOrEfta,
     getAlpha3Code,
     getCountryName,

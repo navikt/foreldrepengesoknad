@@ -90,7 +90,12 @@ export const countryIsMemberOfEøsOrEfta = (isoCode: string) => filteredListEØS
 
 const getCountries = () => countries;
 
-export const createCountryOptions = (locale: string): Array<[string, string]> => {
+export const NORGE_LANDKODE = 'NOR';
+
+export const createCountryOptions = (
+    locale: string,
+    { utenNorge = false }: { utenNorge?: boolean } = {},
+): Array<[string, string]> => {
     const lang = getLocaleKey(locale);
     const land = getCountries();
 
@@ -99,5 +104,6 @@ export const createCountryOptions = (locale: string): Array<[string, string]> =>
     );
     return names
         .sort((a, b) => a[1].localeCompare(b[1], lang))
-        .filter((countryOptionValue) => filteredListEØSCountries(countryOptionValue[0], false));
+        .filter((countryOptionValue) => filteredListEØSCountries(countryOptionValue[0], false))
+        .filter(([landkode]) => !utenNorge || landkode !== NORGE_LANDKODE);
 };
