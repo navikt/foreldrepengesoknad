@@ -70,7 +70,7 @@ describe('<Planlegger>', () => {
         await userEvent.click(screen.getByText('Nei'));
         await userEvent.click(screen.getByText('Neste'));
 
-        await waitFor(() => expect(screen.getAllByText('Oppsummering')).toHaveLength(2));
+        expect(await screen.findByRole('heading', { name: 'Oppsummering' })).toBeInTheDocument();
         expect(screen.getByText('Ingen av dere har rett til foreldrepenger')).toBeInTheDocument();
         // OppsummeringSteg er lazy-lasta, så knappen kan dukke opp asynkront.
         await userEvent.click(await screen.findByText('Tilbake til spørsmålene'));
@@ -122,7 +122,7 @@ describe('<Planlegger>', () => {
         fireEvent.blur(termindato);
         await userEvent.click(screen.getByText('Neste'));
 
-        await waitFor(() => expect(screen.getAllByText('Oppsummering')).toHaveLength(2));
+        expect(await screen.findByRole('heading', { name: 'Oppsummering' })).toBeInTheDocument();
         expect(screen.getByText('Ingen av dere har rett til foreldrepenger')).toBeInTheDocument();
         // OppsummeringSteg er lazy-lasta, så knappen kan dukke opp asynkront.
         await userEvent.click(await screen.findByText('Tilbake til spørsmålene'));

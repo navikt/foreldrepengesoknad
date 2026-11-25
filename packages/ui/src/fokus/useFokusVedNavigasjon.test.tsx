@@ -7,14 +7,9 @@ const Side = ({ nøkkel }: { nøkkel: string }) => {
     return <h2 ref={ref}>{nøkkel}</h2>;
 };
 
-const SideMedHeader = ({ nøkkel }: { nøkkel?: string }) => {
-    const ref = useFokusVedNavigasjon<HTMLDivElement>(nøkkel);
-    return (
-        <div ref={ref}>
-            <p>Ikon</p>
-            {nøkkel && <h1>{nøkkel}</h1>}
-        </div>
-    );
+const SideSomLaster = ({ lastet }: { lastet: boolean }) => {
+    const ref = useFokusVedNavigasjon<HTMLHeadingElement>('/sak/1');
+    return lastet ? <h1 ref={ref}>Din sak</h1> : <p>Laster</p>;
 };
 
 const settBrukeraktivering = (hasBeenActive: boolean) => {
@@ -64,19 +59,12 @@ describe('useFokusVedNavigasjon', () => {
         expect(screen.getByRole('heading', { name: 'Steg B' })).toHaveFocus();
     });
 
-    it('skal fokusere h1 i containeren', () => {
+    it('skal vente med fokus til overskriften er rendret', () => {
         settBrukeraktivering(true);
-        render(<SideMedHeader nøkkel="/sak/1" />);
-
-        expect(screen.getByRole('heading', { level: 1, name: '/sak/1' })).toHaveFocus();
-    });
-
-    it('skal vente med fokus til nøkkelen er satt', () => {
-        settBrukeraktivering(true);
-        const { rerender } = render(<SideMedHeader />);
+        const { rerender } = render(<SideSomLaster lastet={false} />);
         expect(document.body).toHaveFocus();
 
-        rerender(<SideMedHeader nøkkel="/sak/2" />);
-        expect(screen.getByRole('heading', { level: 1, name: '/sak/2' })).toHaveFocus();
+        rerender(<SideSomLaster lastet />);
+        expect(screen.getByRole('heading', { name: 'Din sak' })).toHaveFocus();
     });
 });

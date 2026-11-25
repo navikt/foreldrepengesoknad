@@ -24,7 +24,7 @@ describe('<OppsummeringSteg>', () => {
     it('skal vise info der det er flere forsørgere og ingen har rett til foreldrepenger', async () => {
         render(<HarIkkeRett />);
 
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(1);
         expect(screen.getByText('Ingen av dere har rett til foreldrepenger')).toBeInTheDocument();
 
         expect(
@@ -35,7 +35,7 @@ describe('<OppsummeringSteg>', () => {
     it('skal vise info der det er flere forsørgere og begge har rett til foreldrepenger - fødsel', async () => {
         render(<FlereForsørgereHundreProsentTermin />);
 
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(1);
         expect(screen.getByText('Dette svarte dere')).toBeInTheDocument();
 
         expect(screen.getByText('Barnet')).toBeInTheDocument();
@@ -62,7 +62,7 @@ describe('<OppsummeringSteg>', () => {
     it('skal vise info der det er flere forsørgere og begge har rett til foreldrepenger - adopsjon', async () => {
         render(<FlereForsørgereHundreProsentAdopsjon />);
 
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(1);
         expect(screen.getByText('Dette svarte dere')).toBeInTheDocument();
 
         expect(screen.getByText('Barnet')).toBeInTheDocument();
@@ -88,7 +88,7 @@ describe('<OppsummeringSteg>', () => {
     it('skal vise en periode ved fødsel far og far', async () => {
         render(<FarOgFarFødsel />);
 
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(1);
         expect(screen.getByText('Dere valgte 100 % i 40 uker.')).toBeInTheDocument();
         expect(screen.getByText(/Periode:/)).toBeInTheDocument();
         expect(screen.getByText(/25. nov. 2024 – 31. jan. 2025/)).toBeInTheDocument();
@@ -97,7 +97,7 @@ describe('<OppsummeringSteg>', () => {
     it('skal vise perioder for begge fedrene ved adopsjon far og far', async () => {
         render(<FarOgFarAdopsjonKunFar1HarRett />);
 
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(1);
 
         expect(screen.getByText('Periode:')).toBeInTheDocument();
         expect(screen.getByText('14. okt. 2024 – 18. juli 2025')).toBeInTheDocument();
@@ -107,7 +107,7 @@ describe('<OppsummeringSteg>', () => {
     it('skal vise info der det er flere forsørgere og kun mor har rett til foreldrepenger', async () => {
         render(<KunMorHarRett />);
 
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(1);
         expect(screen.getByText('Dette svarte dere')).toBeInTheDocument();
 
         expect(screen.getByText('Barnet')).toBeInTheDocument();
@@ -130,14 +130,14 @@ describe('<OppsummeringSteg>', () => {
 
     it('skal vise at mor som er ufør aleneforsørger ikke har rett på foreldrepenger', async () => {
         render(<AleneforsørgerMorErUfør />);
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(1);
         expect(screen.getByText('Du har ikke rett til foreldrepenger')).toBeInTheDocument();
     });
 
     it('skal vise info for far og far, kun far 2 har rett', async () => {
         render(<OppsummeringFarOgFarKunFar2HarRett />);
 
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(1);
 
         expect(screen.getByText('Dette svarte dere')).toBeInTheDocument();
 
@@ -165,7 +165,7 @@ describe('<OppsummeringSteg>', () => {
     it('skal vise info om hvor mye-steget der det er flere forsørgere og begge har rett til foreldrepenger - fødsel', async () => {
         render(<FlereForsørgereHundreProsentTermin />);
 
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(1);
 
         expect(screen.getAllByText('Hvor mye?')).toHaveLength(2);
         expect(
@@ -184,7 +184,7 @@ describe('<OppsummeringSteg>', () => {
     it('skal ikke vise info om hvor mye-steget lønn ikke er oppgitt for noen av foreldrene', async () => {
         render(<FlereForsørgereHundreProsentTermin hvorMye={{}} />);
 
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(1);
 
         // Sjekk at ExpansionCard med "Hvor mye?" ikke finnes
         const hvorMyeExpansionCard = screen.queryByRole('heading', { name: 'Hvor mye?' });
@@ -194,7 +194,7 @@ describe('<OppsummeringSteg>', () => {
     it('skal vise info om barnehage - fødsel', async () => {
         render(<FlereForsørgereHundreProsentTermin />);
 
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(1);
 
         expect(screen.getByText('Planen deres')).toBeInTheDocument();
         expect(screen.getAllByText('Hvor mye?')).toHaveLength(2);
@@ -204,7 +204,7 @@ describe('<OppsummeringSteg>', () => {
     it('skal ikke vise info om barnehage –\u{A0}adopsjon', async () => {
         render(<FarOgFarAdopsjonKunFar1HarRett />);
 
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(1);
 
         expect(screen.getByText('Planen deres')).toBeInTheDocument();
         expect(screen.getAllByText('Hvor mye?')).toHaveLength(2);
@@ -214,7 +214,7 @@ describe('<OppsummeringSteg>', () => {
     });
     it('skal kun vise fars uttak i hvor mye-steget, der det er mor og far, men kun far rett til foreldrepenger', async () => {
         render(<MorOgFarKunFarHarRett />);
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(1);
         const hvorMyeHeading = screen.getAllByText('Hvor mye?')[0]!;
         const expansionCard = hvorMyeHeading.closest('.navds-expansioncard');
         if (expansionCard) {
@@ -233,7 +233,7 @@ describe('<OppsummeringSteg>', () => {
 
     it('Skal vise "du" og ikke fornavn når søker er aleneforsørger', async () => {
         render(<AleneforsørgerÅttiProsentFødselToBarn />);
-        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(1);
         const hvorMyeHeading = screen.getAllByText('Dette svarte du')[0]!;
         const expansionCard = hvorMyeHeading.closest('.navds-expansioncard');
         if (expansionCard) {
@@ -271,7 +271,7 @@ describe('<OppsummeringSteg>', () => {
                 initialGlobals: { locale },
             });
             const result = render(<Story />);
-            expect(await screen.findAllByText(locale === 'en' ? 'Summary' : 'Oppsummering')).toHaveLength(2);
+            expect(await screen.findAllByText(locale === 'en' ? 'Summary' : 'Oppsummering')).toHaveLength(1);
             return result;
         };
 

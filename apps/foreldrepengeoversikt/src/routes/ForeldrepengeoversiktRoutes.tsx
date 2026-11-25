@@ -1,8 +1,7 @@
 import { ReactNode, useRef } from 'react';
-import { Navigate, Outlet, Route, Routes, useLocation, useMatch, useNavigate } from 'react-router';
+import { Navigate, Outlet, Route, Routes, useMatch, useNavigate } from 'react-router';
 
 import { OversiktPersonopplysningerDto_fpoversikt } from '@navikt/fp-types';
-import { useFokusVedNavigasjon } from '@navikt/fp-ui';
 
 import { Breadcrumb } from '../components/breadcrumb/Breadcrumb';
 import { Snarveier } from '../components/snarveier/Snarveier';
@@ -82,12 +81,10 @@ function RedirectTilSakHvisDetKunFinnesEn({ saker }: { readonly saker: SakOppsla
 }
 
 export function PageRouteLayout({ header, children }: { readonly header: ReactNode; readonly children: ReactNode }) {
-    const { pathname } = useLocation();
-    const headerRef = useFokusVedNavigasjon<HTMLDivElement>(header ? pathname : undefined);
     return (
         // Merk: index.html har allereie <main id="app">; ikkje legg til eit nytt main her.
         <>
-            <div ref={headerRef}>{header}</div>
+            {header}
             <LayoutWrapper className="ax-md:pb-28 pr-4 pb-4 pl-4">{children}</LayoutWrapper>
             {/*Viktig at Snarveier ligger her slik at den har tilgang til saksnummer fra Route da snarveien er dynamiske*/}
             <Snarveier />

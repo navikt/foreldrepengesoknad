@@ -10,36 +10,27 @@ interface Props {
 }
 
 export const OppsummeringHeader = ({ children }: Props) => {
-    const headerRef = useFokusVedNavigasjon<HTMLDivElement>('oppsummering');
+    const overskriftRef = useFokusVedNavigasjon<HTMLHeadingElement>('oppsummering');
     return (
         <Page
             header={
-                <div ref={headerRef}>
-                    <Show below="md">
-                        <BlueHeading>
-                            <HStack gap="space-16" align="center">
-                                <IconCircleWrapper color="lightBlue" size="large">
-                                    <CheckmarkIcon height={34} width={34} fontSize="1.5rem" aria-hidden />
-                                </IconCircleWrapper>
-                                <Heading size="medium">
-                                    <FormattedMessage id="OppsummeringHeader.Tittel" />
-                                </Heading>
-                            </HStack>
-                        </BlueHeading>
-                    </Show>
-                    <Show above="md">
-                        <BlueHeading>
-                            <HStack gap="space-16" align="center">
-                                <IconCircleWrapper color="lightBlue" size="large">
-                                    <CheckmarkIcon height={30} width={30} fontSize="1.5rem" aria-hidden />
-                                </IconCircleWrapper>
-                                <Heading size="medium">
-                                    <FormattedMessage id="OppsummeringHeader.Tittel" />
-                                </Heading>
-                            </HStack>
-                        </BlueHeading>
-                    </Show>
-                </div>
+                <BlueHeading>
+                    <HStack gap="space-16" align="center">
+                        <Show below="md">
+                            <IconCircleWrapper color="lightBlue" size="large">
+                                <CheckmarkIcon height={34} width={34} fontSize="1.5rem" aria-hidden />
+                            </IconCircleWrapper>
+                        </Show>
+                        <Show above="md">
+                            <IconCircleWrapper color="lightBlue" size="large">
+                                <CheckmarkIcon height={30} width={30} fontSize="1.5rem" aria-hidden />
+                            </IconCircleWrapper>
+                        </Show>
+                        <Heading ref={overskriftRef} size="medium">
+                            <FormattedMessage id="OppsummeringHeader.Tittel" />
+                        </Heading>
+                    </HStack>
+                </BlueHeading>
             }
         >
             {children}
