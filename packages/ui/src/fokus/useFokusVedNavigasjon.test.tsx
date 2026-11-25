@@ -12,6 +12,16 @@ const SideSomLaster = ({ lastet }: { lastet: boolean }) => {
     return lastet ? <h1 ref={ref}>Din sak</h1> : <p>Laster</p>;
 };
 
+const SideMedStegtittel = ({ nøkkel }: { nøkkel: string }) => {
+    const sideRef = useFokusVedNavigasjon<HTMLHeadingElement>(nøkkel);
+    return (
+        <main>
+            <h1 ref={sideRef}>Planlegger</h1>
+            <Side nøkkel={nøkkel} />
+        </main>
+    );
+};
+
 const settBrukeraktivering = (hasBeenActive: boolean) => {
     Object.defineProperty(navigator, 'userActivation', { value: { hasBeenActive }, configurable: true });
 };
@@ -78,5 +88,28 @@ describe('useFokusVedNavigasjon', () => {
 
         rerender(<SideSomLaster lastet />);
         expect(screen.getByRole('heading', { name: 'Din sak' })).toHaveFocus();
+    });
+
+    it('skal fokusere den innerste overskriften når to overskrifter på samme side bruker samme nøkkel', () => {
+        settBrukeraktivering(true);
+        render(<SideMedStegtittel nøkkel="/barnehageplass" />);
+
+        expect(screen.getByRole('heading', { name: '/barnehageplass' })).toHaveFocus();
+    });
+
+    it('skal ikke flytte fokus til overskriften ved fragmentnavigering på samme side', () => {
+        settBrukeraktivering(true);
+        history.replaceState({ key: 'skjema' }, '');
+        const { rerender } = render(<Side nøkkel="Skjema" />);
+        const felt = document.createElement('input');
+        document.body.append(felt);
+        felt.focus();
+
+        history.pushState(null, '', '#felt');
+        window.dispatchEvent(new PopStateEvent('popstate', { state: null }));
+        rerender(<Side nøkkel="Skjema" />);
+
+        expect(felt).toHaveFocus();
+        felt.remove();
     });
 });

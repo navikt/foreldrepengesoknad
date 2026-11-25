@@ -16,7 +16,7 @@ interface Props {
 }
 
 export const VeiviserPage = ({ label, description, children, icon, ref }: Props) => {
-    const overskriftRef = useFokusVedNavigasjon<HTMLHeadingElement>(label);
+    const overskriftRef = useFokusVedNavigasjon<HTMLHeadingElement>(location.pathname);
     return (
         <>
             <Page
