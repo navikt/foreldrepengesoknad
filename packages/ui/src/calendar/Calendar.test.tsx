@@ -31,19 +31,31 @@ describe('<Calendar>', () => {
         expect(pilHøyre.defaultPrevented).toBe(true);
     });
 
-    it('skal vise verktøytips ved fokus, skjule det ved blur og Escape, og koble det til dagen', async () => {
+    it('skal kunne nå verktøytips med piltaster og holde det åpent så lenge dagen har fokus eller peker', async () => {
         render(<MedTooltip />);
 
-        const dag = screen.getByRole('button', { name: '1. februar 2024, Mors periode' });
+        expect(screen.getByRole('button', { name: '1. januar 2024' })).toHaveFocus();
+
+        for (let uke = 0; uke < 5; uke++) {
+            await userEvent.keyboard('{ArrowDown}');
+        }
+
+        const dag = screen.getByRole('button', { name: '5. februar 2024, Mors periode' });
         const verktøytips = within(dag).getByText('Dette er en tooltip').closest('.aksel-popover');
 
+        expect(dag).toHaveFocus();
         expect(dag).toHaveAccessibleDescription(/Dette er en tooltip/);
-        expect(verktøytips).toHaveAttribute('aria-hidden', 'true');
-
-        act(() => dag.focus());
         expect(verktøytips).toHaveAttribute('aria-hidden', 'false');
 
+        await userEvent.hover(dag);
+        await userEvent.unhover(dag);
+        expect(verktøytips).toHaveAttribute('aria-hidden', 'false');
+
+        await userEvent.hover(dag);
         act(() => dag.blur());
+        expect(verktøytips).toHaveAttribute('aria-hidden', 'false');
+
+        await userEvent.unhover(dag);
         expect(verktøytips).toHaveAttribute('aria-hidden', 'true');
 
         act(() => dag.focus());

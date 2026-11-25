@@ -48,8 +48,6 @@ export const Day = React.memo(
         const date = dayjs(isoDate);
         const day = date.date();
 
-        const [isTooltipOpen, setIsTooltipOpen] = useState(false);
-
         const buttonRef = useRef<HTMLButtonElement>(null);
 
         const setButtonRef = React.useCallback(
@@ -64,8 +62,17 @@ export const Day = React.memo(
         );
 
         const isClickable = !!dateClickCallback && !isWeekend(date);
+        const isNavigable = !!dateClickCallback || !!dateTooltipCallback;
         const hasTooltip = !!dateTooltipCallback && isPeriodDifferentFromNoneOrGray(periodeColor);
         const tooltipId = useId();
+        const tooltip = useTooltip(hasTooltip);
+
+        const handleFocus = () => {
+            if (isNavigable && !isWeekend(date)) {
+                setFocusedDate(date);
+            }
+            tooltip.setTrigger('focus', true);
+        };
 
         return (
             <button
@@ -79,25 +86,14 @@ export const Day = React.memo(
                 data-hover-preview={isHoverPreview && !isWeekend(date) && periodeColor !== 'DARKBLUE'}
                 tabIndex={isFocused ? 0 : -1}
                 className={styles.days}
-                onFocus={
-                    isClickable || hasTooltip
-                        ? () => {
-                              if (isClickable) {
-                                  setFocusedDate(date);
-                              }
-                              if (hasTooltip) {
-                                  setIsTooltipOpen(true);
-                              }
-                          }
-                        : undefined
-                }
-                onBlur={hasTooltip ? () => setIsTooltipOpen(false) : undefined}
+                onFocus={handleFocus}
+                onBlur={() => tooltip.setTrigger('focus', false)}
                 onMouseEnter={onDateHover && isClickable ? () => onDateHover(isoDate) : undefined}
-                onMouseOver={hasTooltip ? () => setIsTooltipOpen(true) : undefined}
-                onMouseLeave={hasTooltip ? () => setIsTooltipOpen(false) : undefined}
+                onMouseOver={() => tooltip.setTrigger('hover', true)}
+                onMouseLeave={() => tooltip.setTrigger('hover', false)}
                 onClick={isClickable ? () => dateClickCallback(isoDate) : undefined}
                 onKeyDown={
-                    dateClickCallback
+                    isNavigable
                         ? (e) =>
                               handleKeyNavigationAndSelection(e, date, dateClickCallback, setFocusedDate, onDateHover)
                         : undefined
@@ -120,7 +116,7 @@ export const Day = React.memo(
                     </>
                 )}
                 {hasTooltip && (
-                    <Popover open={isTooltipOpen} onClose={() => setIsTooltipOpen(false)} anchorEl={buttonRef.current}>
+                    <Popover open={tooltip.isOpen} onClose={tooltip.close} anchorEl={buttonRef.current}>
                         <Popover.Content id={tooltipId}>{dateTooltipCallback(isoDate)}</Popover.Content>
                     </Popover>
                 )}
@@ -128,6 +124,23 @@ export const Day = React.memo(
         );
     },
 );
+
+// Tooltipen skal være åpen så lenge dagen har fokus eller pekeren er over den (WCAG 1.4.13).
+const useTooltip = (enabled: boolean) => {
+    const [triggers, setTriggers] = useState({ hover: false, focus: false });
+
+    const setTrigger = (trigger: 'hover' | 'focus', active: boolean) => {
+        if (enabled && triggers[trigger] !== active) {
+            setTriggers((prev) => ({ ...prev, [trigger]: active }));
+        }
+    };
+
+    return {
+        isOpen: triggers.hover || triggers.focus,
+        setTrigger,
+        close: () => setTriggers({ hover: false, focus: false }),
+    };
+};
 
 const isPeriodDifferentFromNoneOrGray = (periodeColor: CalendarPeriodColor): boolean =>
     periodeColor !== 'NONE' && periodeColor !== 'GRAY';
@@ -153,7 +166,7 @@ const skipWeekends = (date: Dayjs, direction: 1 | -1): Dayjs => {
 const handleKeyNavigationAndSelection = (
     e: React.KeyboardEvent,
     date: Dayjs,
-    dateClickCallback: (date: string) => void,
+    dateClickCallback: ((date: string) => void) | undefined,
     setFocusedDate: (date: Dayjs) => void,
     onDateHover?: (date: string | undefined) => void,
 ) => {
@@ -167,8 +180,6 @@ const handleKeyNavigationAndSelection = (
     }
 
     e.preventDefault();
-    const isClickable = !!dateClickCallback && !isWeekend(date);
-
     const navigateTo = (newDate: Dayjs) => {
         setFocusedDate(newDate);
         onDateHover?.(newDate.format(ISO_DATE_FORMAT));
@@ -189,7 +200,7 @@ const handleKeyNavigationAndSelection = (
             break;
         case 'Enter':
         case ' ':
-            if (isClickable) {
+            if (dateClickCallback && !isWeekend(date)) {
                 dateClickCallback(date.format(ISO_DATE_FORMAT));
             }
     }
