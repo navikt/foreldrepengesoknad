@@ -55,7 +55,7 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
             {perioder.map((p) => {
                 const uttak = p.søker ?? p.annenPart;
 
-                const erSamtidigUttak = p.søker?.samtidigUttak !== undefined;
+                const erSamtidigUttak = erSamtidigUttakMedSøker(p);
 
                 const erAnnenPartsPeriodeLåst = erPeriodeneTilAnnenPartLåst && uttak?.forelder !== søker;
 
