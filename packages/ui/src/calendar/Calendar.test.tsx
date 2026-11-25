@@ -1,10 +1,11 @@
 import { composeStories } from '@storybook/react-vite';
-import { render, screen, within } from '@testing-library/react';
+import { act, render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { Calendar } from './Calendar';
 import * as stories from './Calendar.stories';
 
-const { Default, PeriodsThatSpanOverAYear } = composeStories(stories);
+const { Default, PeriodsThatSpanOverAYear, MedTooltip } = composeStories(stories);
 
 describe('<Calendar>', () => {
     it('lar nettleseren håndtere zoom og andre snarveier når første kalenderdag har fokus', () => {
@@ -28,6 +29,26 @@ describe('<Calendar>', () => {
         const pilHøyre = new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true });
         førsteDag.dispatchEvent(pilHøyre);
         expect(pilHøyre.defaultPrevented).toBe(true);
+    });
+
+    it('skal vise verktøytips ved fokus, skjule det ved blur og Escape, og koble det til dagen', async () => {
+        render(<MedTooltip />);
+
+        const dag = screen.getByRole('button', { name: '1. februar 2024, Mors periode' });
+        const verktøytips = within(dag).getByText('Dette er en tooltip').closest('.aksel-popover');
+
+        expect(dag).toHaveAccessibleDescription(/Dette er en tooltip/);
+        expect(verktøytips).toHaveAttribute('aria-hidden', 'true');
+
+        act(() => dag.focus());
+        expect(verktøytips).toHaveAttribute('aria-hidden', 'false');
+
+        act(() => dag.blur());
+        expect(verktøytips).toHaveAttribute('aria-hidden', 'true');
+
+        act(() => dag.focus());
+        await userEvent.keyboard('{Escape}');
+        expect(verktøytips).toHaveAttribute('aria-hidden', 'true');
     });
 
     it('skal vise riktige dagmarkeringer og familiehendelse', () => {

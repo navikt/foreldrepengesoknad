@@ -46,6 +46,8 @@ const historiskKalenderArgs = {
         })),
 };
 
+const SKJULT_LEGENDETEKST = 'script, style, .aksel-typo--visually-hidden';
+
 describe('UttaksplanKalender', () => {
     let opprinneligTid: Date;
     beforeEach(() => {
@@ -147,7 +149,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(januar).getByText('10', { exact: false }));
         await userEvent.click(within(januar).getByText('26', { exact: false }));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         expect(screen.getAllByText('2 uker og 3 dager valgt')).toHaveLength(2);
         expect(
@@ -204,7 +206,7 @@ describe('UttaksplanKalender', () => {
 
         expect(screen.getAllByText('11 uker og 2 dager valgt')).toHaveLength(2);
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         expect(screen.getByText('Valgte datoer inneholder eksisterende perioder:')).toBeInTheDocument();
         expect(
@@ -240,7 +242,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(mars).getByText('28', { exact: false }));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         expect(
             await screen.findByText(
@@ -256,7 +258,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(april).getByText('12', { exact: false }));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         expect(
             await screen.findByText(
@@ -274,7 +276,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(mars).getByTestId('day:13;dayColor:NONE'));
         await userEvent.click(within(april).getByTestId('day:12;dayColor:BLUE'));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         await userEvent.click(screen.getAllByText('Endre')[0]!);
 
@@ -294,7 +296,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(april).getByTestId('day:4;dayColor:BLUE;with-icon'));
         await userEvent.click(within(april).getByTestId('day:18;dayColor:BLUE'));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         await userEvent.click(screen.getAllByText('Endre')[0]!);
 
@@ -317,7 +319,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(mars).getByTestId('day:18;dayColor:BLUE'));
         await userEvent.click(within(april).getByTestId('day:18;dayColor:BLUE'));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         const foreldrepengerFørFødsel = within(screen.getByTestId(`eksisterende-periode-2024-03-14-2024-04-03`));
 
@@ -348,7 +350,7 @@ describe('UttaksplanKalender', () => {
 
         const juli = screen.getByTestId('year:2026;month:8');
         await userEvent.click(within(juli).getByTestId('day:14;dayColor:BLUE'));
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         const periode = within(screen.getByTestId('eksisterende-periode-2026-09-07-2026-09-30'));
         await userEvent.click(periode.getByRole('button', { name: 'Slett dager fra periode' }));
@@ -498,7 +500,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(juni).getByTestId('day:14;dayColor:GREENSTRIPED'));
         await userEvent.click(within(juni).getByTestId('day:21;dayColor:GREENOUTLINE'));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[2]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         expect(await screen.findAllByText('Foreldrepenger uten aktivitetskrav')).toHaveLength(2);
         expect(screen.getByText('Gradering: 50 %')).toBeInTheDocument();
@@ -512,7 +514,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(juni).getByText('10', { exact: false }));
         await userEvent.click(within(juni).getByText('13', { exact: false }));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         await userEvent.click(screen.getAllByText('Endre')[0]!);
 
@@ -555,7 +557,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(juni).getByText('10', { exact: false }));
         await userEvent.click(within(juni).getByText('13', { exact: false }));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         expect(screen.getByText('Begge')).toBeInTheDocument();
         expect(screen.getByText('Mor har 60 % mødrekvote')).toBeInTheDocument();
@@ -579,7 +581,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(september).getByText('7', { exact: true }));
         await userEvent.click(within(september).getByText('18', { exact: false }));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         await userEvent.click(screen.getAllByText('Endre')[0]!);
 
@@ -618,7 +620,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(mars).getByText('14', { exact: true }));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
         await userEvent.click(screen.getAllByText('Endre')[0]!);
 
         expect(screen.getByText('Skal mor kombinere foreldrepenger med arbeid?')).toBeInTheDocument();
@@ -648,7 +650,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(mai).getByText('15', { exact: true }));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
         await userEvent.click(screen.getByText('Ny periode'));
 
         expect(screen.getByText('Hvem skal ha foreldrepenger?')).toBeInTheDocument();
@@ -684,7 +686,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(juli).getByText('15', { exact: true }));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         expect(screen.getByText('Fars kvote')).toBeInTheDocument();
         expect(screen.getByText('EU/EØS-periode')).toBeInTheDocument();
@@ -706,7 +708,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(september).getByText('7', { exact: true }));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
         await userEvent.click(screen.getAllByText('Endre')[0]!);
 
         expect(screen.getByText('Hvem skal ha foreldrepenger?')).toBeInTheDocument();
@@ -757,7 +759,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(september).getByText('7', { exact: true }));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
         await userEvent.click(screen.getAllByText('Endre')[0]!);
 
         expect(screen.getByText('Hvem skal ha foreldrepenger?')).toBeInTheDocument();
@@ -822,7 +824,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(september).getByText('7', { exact: true }));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
         await userEvent.click(screen.getAllByText('Endre')[0]!);
 
         expect(screen.getByText('Hvem skal ha foreldrepenger?')).toBeInTheDocument();
@@ -894,7 +896,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(september).getByText('7', { exact: true }));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
         await userEvent.click(screen.getAllByText('Endre')[0]!);
 
         expect(screen.getByText('Hvem skal ha foreldrepenger?')).toBeInTheDocument();
@@ -950,7 +952,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(juli).getByTestId('day:3;dayColor:GREEN;with-icon'));
         await userEvent.click(within(juli).getByTestId('day:15;dayColor:GREEN;with-icon'));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         expect(screen.getByText('Mors aktivitet er ikke oppgitt')).toBeInTheDocument();
 
@@ -997,7 +999,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(mars).getByTestId('day:14;dayColor:BLUE'));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         await userEvent.click(screen.getByText('Ny periode'));
 
@@ -1015,7 +1017,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(mars).getByTestId('day:28;dayColor:BLUE'));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         await userEvent.click(screen.getByText('Ny periode'));
 
@@ -1031,7 +1033,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(mars).getByTestId('day:28;dayColor:BLUE'));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         const foreldrepengerFørFødsel = within(screen.getByTestId(`eksisterende-periode-2024-03-14-2024-04-03`));
 
@@ -1048,7 +1050,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(juni).getByTestId('day:14;dayColor:BLUESTRIPED'));
         await userEvent.click(within(juni).getByTestId('day:27;dayColor:BLUESTRIPED'));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         await userEvent.click(screen.getByText('Ny periode'));
 
@@ -1103,7 +1105,7 @@ describe('UttaksplanKalender', () => {
             ),
         ).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         await userEvent.click(screen.getAllByText('Endre')[0]!);
 
@@ -1130,7 +1132,7 @@ describe('UttaksplanKalender', () => {
 
         expect(within(juni).getByTestId('day:14;dayColor:BLUESTRIPED')).toBeInTheDocument();
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         await userEvent.click(screen.getByText('Endre til ferie'));
 
@@ -1151,7 +1153,7 @@ describe('UttaksplanKalender', () => {
 
         const juni = screen.getByTestId('year:2026;month:8');
         await userEvent.click(within(juni).getByTestId('day:7;dayColor:BLUE'));
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
         await userEvent.click(screen.getByText('Endre til ferie'));
 
         const valg = skalForskyve ? 'Endre og flytt resten av planen' : 'Endre uten å flytte resten av planen';
@@ -1194,7 +1196,7 @@ describe('UttaksplanKalender', () => {
 
             const september = screen.getByTestId('year:2026;month:8');
             await userEvent.click(within(september).getByTestId('day:14;dayColor:BLUEOUTLINE'));
-            await userEvent.click(screen.getAllByText('Hva vil du endre til?').at(-1)!);
+            await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
             await userEvent.click(screen.getByText('Endre til ferie'));
             await userEvent.click(screen.getByText('Endre og flytt resten av planen'));
             await userEvent.click(screen.getByText('Legg til'));
@@ -1215,7 +1217,7 @@ describe('UttaksplanKalender', () => {
 
         expect(within(april).getByTestId('day:19;dayColor:BLACK')).toBeInTheDocument();
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         // Ferie kan ikke legges til eller endres til før familiehendelsesdato —
         // knappen skal derfor ikke vises når valgte dager ligger før dette
@@ -1236,7 +1238,7 @@ describe('UttaksplanKalender', () => {
         expect(within(april).getByTestId('day:22;dayColor:BLACK')).toBeInTheDocument();
         expect(within(april).getByTestId('day:23;dayColor:BLACK')).toBeInTheDocument();
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         await userEvent.click(screen.getAllByText('Endre')[0]!);
 
@@ -1280,7 +1282,7 @@ describe('UttaksplanKalender', () => {
         expect(within(mai).getByTestId('day:24;dayColor:NONE')).toBeInTheDocument();
         expect(within(mai).getByTestId('day:31;dayColor:BLUE')).toBeInTheDocument();
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         const ferie = within(screen.getByTestId(`eksisterende-periode-2024-05-17-2024-05-23`));
 
@@ -1300,7 +1302,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(juni).getByTestId('day:3;dayColor:BLUE'));
         await userEvent.click(within(juni).getByTestId('day:13;dayColor:BLUE'));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         await userEvent.click(screen.getAllByText('Endre')[0]!);
 
@@ -1324,7 +1326,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(juni).getByTestId('day:3;dayColor:BLUESTRIPED'));
         await userEvent.click(within(juni).getByTestId('day:13;dayColor:BLUESTRIPED'));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         await userEvent.click(screen.getAllByText('Endre')[0]!);
 
@@ -1338,7 +1340,7 @@ describe('UttaksplanKalender', () => {
         const juni = screen.getByTestId('year:2026;month:8');
         await userEvent.click(within(juni).getByTestId('day:7;dayColor:BLUE'));
         await userEvent.click(within(juni).getByTestId('day:17;dayColor:BLUE'));
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
         await userEvent.click(screen.getAllByText('Endre')[0]!);
         await userEvent.click(screen.getByText('Ja'));
         await userEvent.type(screen.getByText('Hvor mange prosent skal mor jobbe?'), '60');
@@ -1371,6 +1373,32 @@ describe('UttaksplanKalender', () => {
         expect(screen.queryByText('Hvor mange prosent skal mor jobbe?')).not.toBeInTheDocument();
     });
 
+    it('skal kunne minimere og maksimere redigeringspanelet med tastatur', async () => {
+        render(<SkalHaPeriodeMedFratrekkForPleiepenger />);
+
+        const april = screen.getByTestId('year:2024;month:3');
+        await userEvent.click(within(april).getByTestId('day:24;dayColor:BLACKOUTLINE'));
+        await userEvent.click(within(april).getByTestId('day:29;dayColor:BLACKOUTLINE'));
+
+        const utvidKnapp = screen.getByRole('button', { name: 'Utvid panel' });
+        expect(utvidKnapp).toHaveAttribute('aria-expanded', 'false');
+        expect(document.getElementById(utvidKnapp.getAttribute('aria-controls')!)).toBeInTheDocument();
+        expect(screen.queryByText('+ Utsettelse')).not.toBeInTheDocument();
+
+        utvidKnapp.focus();
+        await userEvent.keyboard('{Enter}');
+
+        const minimerKnapp = screen.getByRole('button', { name: 'Minimer panel' });
+        expect(minimerKnapp).toHaveAttribute('aria-expanded', 'true');
+        expect(minimerKnapp).toHaveFocus();
+        expect(screen.getByText('+ Utsettelse')).toBeInTheDocument();
+
+        await userEvent.keyboard('{Enter}');
+
+        expect(screen.getByRole('button', { name: 'Utvid panel' })).toHaveAttribute('aria-expanded', 'false');
+        expect(screen.queryByText('+ Utsettelse')).not.toBeInTheDocument();
+    });
+
     it('skal vise perioder for avslag av pleiepenger og annet', async () => {
         render(<SkalHaPeriodeMedFratrekkForPleiepenger />);
 
@@ -1379,7 +1407,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(april).getByTestId('day:17;dayColor:DARKGRAY'));
         await userEvent.click(within(april).getByTestId('day:23;dayColor:DARKGRAY'));
 
-        await userEvent.click(screen.getByText('Utvid panel'));
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         const div = within(
             screen.getByText('Valgte datoer inneholder en eksisterende periode:').closest('div')!.parentElement!
@@ -1402,13 +1430,13 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(april).getByTestId('day:24;dayColor:BLACKOUTLINE'));
         await userEvent.click(within(april).getByTestId('day:29;dayColor:BLACKOUTLINE'));
 
-        await userEvent.click(screen.getByText('Utvid panel'));
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         const div2 = within(
             screen.getByText('Valgte datoer inneholder en eksisterende periode:').closest('div')!.parentElement!
                 .parentElement!,
         );
-        expect(div2.getByText('Avslått periode')).toBeInTheDocument();
+        expect(div2.getByText('Avslått periode', { ignore: SKJULT_LEGENDETEKST })).toBeInTheDocument();
 
         expect(div2.getAllByText('Endre')).toHaveLength(1);
         expect(div2.getByText('+ Utsettelse')).toBeInTheDocument();
@@ -1422,7 +1450,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(juni).getByTestId('day:3;dayColor:BLUE'));
         await userEvent.click(within(juni).getByTestId('day:12;dayColor:BLUE'));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         await userEvent.click(screen.getAllByText('Endre')[0]!);
 
@@ -1467,7 +1495,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(april).getByTestId('day:4;dayColor:LIGHTBLUEGREEN;with-icon'));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         await userEvent.click(screen.getByRole('button', { name: 'Slett dager fra periode' }));
 
@@ -1475,7 +1503,7 @@ describe('UttaksplanKalender', () => {
         expect(within(april).getByTestId('day:4;dayColor:BLUE;with-icon')).toBeInTheDocument();
 
         await userEvent.click(within(april).getByTestId('day:4;dayColor:BLUE;with-icon'));
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         const morsPeriode = within(screen.getByTestId(/^eksisterende-periode-2024-04-04/));
         expect(morsPeriode.getByRole('heading', { name: 'Mor' })).toBeInTheDocument();
@@ -1487,7 +1515,7 @@ describe('UttaksplanKalender', () => {
 
         const april = await screen.findByTestId('year:2024;month:3');
         await userEvent.click(within(april).getByTestId('day:8;dayColor:BLUE'));
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         expect(screen.getByRole('button', { name: 'Legg til ferie' })).toBeDisabled();
     });
@@ -1497,7 +1525,7 @@ describe('UttaksplanKalender', () => {
 
         const april = await screen.findByTestId('year:2024;month:3');
         await userEvent.click(within(april).getByTestId('day:22;dayColor:NONE'));
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         expect(screen.getByRole('button', { name: 'Legg til ferie' })).toBeEnabled();
     });
@@ -1507,7 +1535,7 @@ describe('UttaksplanKalender', () => {
 
         const juni = await screen.findByTestId('year:2024;month:5');
         await userEvent.click(within(juni).getByTestId('day:3;dayColor:BLUE'));
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
         await userEvent.click(screen.getByRole('button', { name: 'Ny periode' }));
         await userEvent.click(screen.getByRole('radio', { name: 'Begge' }));
         await userEvent.click(screen.getByRole('radio', { name: 'Fars kvote' }));
@@ -1526,7 +1554,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(juli).getByTestId('day:15;dayColor:GREEN'));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         await userEvent.click(screen.getByRole('button', { name: 'Slett dager fra periode' }));
 
@@ -1550,7 +1578,7 @@ describe('UttaksplanKalender', () => {
 
         const januar = screen.getByTestId('year:2026;month:0');
         await userEvent.click(within(januar).getByTestId('day:23;dayColor:BEIGEOUTLINE'));
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         expect(screen.getByText('Heltidsarbeid')).toBeInTheDocument();
     });
@@ -1576,7 +1604,7 @@ describe('UttaksplanKalender', () => {
 
         const september = screen.getByTestId('year:2026;month:8');
         await userEvent.click(within(september).getByText('7', { exact: true }));
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         expect(screen.getByText('Overført fordi Hans er for syk til å ta seg av barnet')).toBeInTheDocument();
     });
@@ -1591,7 +1619,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(januar).getByTestId('day:23;dayColor:BEIGEOUTLINE'));
         await userEvent.click(within(januar).getByTestId('day:29;dayColor:BEIGEOUTLINE'));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         expect(screen.getByText('Barnet er innlagt')).toBeInTheDocument();
         expect(screen.getByText('+ Utsettelse')).toBeInTheDocument();
@@ -1616,7 +1644,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(januar).getByTestId('day:22;dayColor:BLUE'));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         await userEvent.click(screen.getByText('+ Utsettelse'));
 
@@ -1637,7 +1665,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(januar).getByTestId('day:20;dayColor:BLUE'));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         // Dag 20 ligger før familiehendelsesdato (2026-01-21) — ferie kan ikke
         // legges til eller endres til her, så knappen skal ikke vises.
@@ -1681,7 +1709,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(juni).getByTestId('day:8;dayColor:BLUE'));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         await userEvent.click(screen.getAllByText('Endre')[0]!);
 
@@ -1709,7 +1737,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(juni).getByTestId('day:8;dayColor:BLUE'));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         await userEvent.click(screen.getAllByText('Endre')[0]!);
 
@@ -1741,7 +1769,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(juni).getByTestId('day:8;dayColor:BLUE'));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         await userEvent.click(screen.getAllByText('Endre')[0]!);
 
@@ -1800,7 +1828,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(juni).getByTestId('day:8;dayColor:BLUE'));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         await userEvent.click(screen.getAllByText('Endre')[0]!);
 
@@ -1857,7 +1885,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(desember).getByTestId('day:1;dayColor:GREEN'));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         expect(screen.getAllByText('Far')).toHaveLength(2);
         expect(screen.getByText('Fars kvote')).toBeInTheDocument();
@@ -1888,7 +1916,7 @@ describe('UttaksplanKalender', () => {
         const september = screen.getByTestId('year:2026;month:8');
         await user.click(within(september).getByTestId('day:14;dayColor:GREENSTRIPED'));
         await user.click(within(september).getByTestId('day:18;dayColor:GREENSTRIPED'));
-        await user.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await user.click(screen.getByRole('button', { name: 'Utvid panel' }));
         await user.click(screen.getByText('Legg til pause'));
         await user.selectOptions(screen.getByLabelText('Hva gjør mor i denne perioden?'), 'ARBEID');
         await user.click(screen.getByRole('button', { name: 'Legg til' }));
@@ -1920,7 +1948,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(mai).getByTestId('day:24;dayColor:BEIGEOUTLINE'));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         expect(screen.getByText('Far')).toBeInTheDocument();
         expect(screen.getByText('Pause')).toBeInTheDocument();
@@ -1928,7 +1956,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(mai).getByTestId('day:24;dayColor:DARKBLUE'));
         await userEvent.click(within(mai).getByTestId('day:30;dayColor:BLACK'));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         await userEvent.click(screen.getByText('Legg til pause'));
 
@@ -1950,7 +1978,7 @@ describe('UttaksplanKalender', () => {
         await userEvent.click(within(juni).getByText('17', { exact: true }));
         await userEvent.click(within(juni).getByText('20', { exact: true }));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
         await userEvent.click(screen.getByText('Ny periode'));
 
         // Når kun far har rett til foreldrepenger, skal spørsmålet om hvem som
@@ -1969,9 +1997,9 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(within(juli).getByTestId('day:14;dayColor:BLACKOUTLINE'));
 
-        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
-        expect(screen.getByText('Avslått periode')).toBeInTheDocument();
+        expect(screen.getByText('Avslått periode', { ignore: SKJULT_LEGENDETEKST })).toBeInTheDocument();
 
         await userEvent.click(screen.getByRole('button', { name: 'Slett dager fra periode' }));
 

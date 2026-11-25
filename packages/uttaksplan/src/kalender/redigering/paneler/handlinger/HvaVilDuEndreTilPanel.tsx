@@ -1,9 +1,9 @@
-import { ChevronDownIcon, ChevronUpIcon, PencilIcon, PlusIcon } from '@navikt/aksel-icons';
+import { PencilIcon, PlusIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Box, Button, Chips, HStack, Heading, Show, VStack } from '@navikt/ds-react';
+import { Box, Button, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import { UttakPeriodeDto } from '@navikt/fp-types';
 import { useBreakpoints } from '@navikt/fp-utils';
@@ -13,12 +13,13 @@ import { LeggTilPeriodeForskyvEllerErstattPanel } from '../../../../felles/forsk
 import { useVisForskyvEllerErstattPanel } from '../../../../felles/forskyvEllerErstatt/useVisForskyvEllerErstattPanel';
 import { useKanKunErstatte } from '../../../../regler/alert/informasjonsAlertHooks';
 import { useKnapperIRedigeringspanelSynlighet } from '../../../../regler/synlighet/knapperIRedigeringspanel';
-import { getVarighetString } from '../../../../utils/dateUtils';
 import { useAlleUttakPerioderInklTapteDager } from '../../../../utils/lagHullPerioder';
 import { erDetEksisterendePerioderEtterValgtePerioder } from '../../../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from '../../context/KalenderRedigeringContext';
-import { finnAntallDager, finnValgtePerioder } from '../../utils/kalenderPeriodeUtils';
+import { finnValgtePerioder } from '../../utils/kalenderPeriodeUtils';
 import { useMediaResetMinimering } from '../../utils/useMediaActions';
+import { MinimerPanelKnapp } from '../MinimerPanelKnapp';
+import { ValgteDagerChip } from './ValgteDagerChip';
 import { PeriodeDetaljerOgInfoMeldinger } from './eksisterende-perioder/PeriodeDetaljerOgInfoMeldinger';
 import { LeggTilPausePanel } from './utsettelse/LeggTilPausePanel';
 import { LeggTilUtsettelsePanel } from './utsettelse/LeggTilUtsettelsePanel';
@@ -52,6 +53,8 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
     const [erMinimert, setErMinimert] = useState(!isAtLeast768px);
 
     useMediaResetMinimering(setErMinimert);
+
+    const innholdId = useId();
 
     const eksisterendePerioderSomErValgt = finnValgtePerioder(
         sammenslåtteValgtePerioder,
@@ -116,101 +119,103 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
                 <HeaderForDesktop />
             </Show>
             <Show below="md">
-                <HeaderForMobil erMinimert={erMinimert} setErMinimert={setErMinimert} />
+                <HeaderForMobil erMinimert={erMinimert} setErMinimert={setErMinimert} innholdId={innholdId} />
             </Show>
 
-            {!erMinimert && visEndreEllerForskyvPanel && (
-                <Box padding="space-24">
-                    <LeggTilPeriodeForskyvEllerErstattPanel
-                        setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
-                        leggTilEllerForskyvPeriode={leggTilEllerForskyvPeriode}
-                    />
-                </Box>
-            )}
+            <div id={innholdId} className="contents">
+                {!erMinimert && visEndreEllerForskyvPanel && (
+                    <Box padding="space-24">
+                        <LeggTilPeriodeForskyvEllerErstattPanel
+                            setVisEndreEllerForskyvPanel={setVisEndreEllerForskyvPanel}
+                            leggTilEllerForskyvPeriode={leggTilEllerForskyvPeriode}
+                        />
+                    </Box>
+                )}
 
-            {!erMinimert && visUtsettelsePanel && (
-                <Box className="pb-6 pr-6 pl-6">
-                    <LeggTilUtsettelsePanel setVisUtsettelsePanel={setVisUtsettelsePanel} />
-                </Box>
-            )}
-            {!erMinimert && visPausePanel && (
-                <Box className="pb-6 pr-6 pl-6">
-                    <LeggTilPausePanel setVisPausePanel={setVisPausePanel} />
-                </Box>
-            )}
+                {!erMinimert && visUtsettelsePanel && (
+                    <Box className="pb-6 pr-6 pl-6">
+                        <LeggTilUtsettelsePanel setVisUtsettelsePanel={setVisUtsettelsePanel} />
+                    </Box>
+                )}
+                {!erMinimert && visPausePanel && (
+                    <Box className="pb-6 pr-6 pl-6">
+                        <LeggTilPausePanel setVisPausePanel={setVisPausePanel} />
+                    </Box>
+                )}
 
-            {!erMinimert && !visEndreEllerForskyvPanel && !visUtsettelsePanel && !visPausePanel && (
-                <div className="block px-4 pb-4">
-                    <VStack gap="space-12">
-                        {labels}
+                {!erMinimert && !visEndreEllerForskyvPanel && !visUtsettelsePanel && !visPausePanel && (
+                    <div className="block px-4 pb-4">
+                        <VStack gap="space-12">
+                            {labels}
 
-                        <PeriodeDetaljerOgInfoMeldinger />
+                            <PeriodeDetaljerOgInfoMeldinger />
 
-                        {harPeriodeMedPleiepenger && (
-                            <HStack justify="end">
-                                <Button
-                                    type="button"
-                                    variant="tertiary"
-                                    size="small"
-                                    onClick={() => setValgtePerioder([])}
-                                >
-                                    <FormattedMessage id="RedigeringPanel.LukkRedigeringsmodus" />
-                                </Button>
-                            </HStack>
-                        )}
-                        {!harPeriodeMedPleiepenger && (
-                            <HStack gap="space-12" wrap={false} className="w-full">
-                                <LeggTilOgEndreKnapp
-                                    åpneRedigeringsmodus={åpneRedigeringsmodus}
-                                    skalViseLeggTilKnappetekst={skalViseLeggTilKnappetekst}
-                                />
-                                {skalViseFerieknapp && (
+                            {harPeriodeMedPleiepenger && (
+                                <HStack justify="end">
                                     <Button
-                                        variant="secondary"
-                                        size="small"
-                                        className="flex-1"
-                                        disabled={skalDeaktivereFerieknapp}
-                                        onClick={() =>
-                                            erEksisterendePerioderEtterValgteDager && !kanKunErstatte
-                                                ? setVisEndreEllerForskyvPanel(true)
-                                                : leggTilEllerForskyvPeriode(false)
-                                        }
                                         type="button"
-                                    >
-                                        {skalViseLeggTilKnappetekst ? (
-                                            <FormattedMessage id="RedigeringPanel.LeggTilFerie" />
-                                        ) : (
-                                            <FormattedMessage id="RedigeringPanel.EndreTilFerie" />
-                                        )}
-                                    </Button>
-                                )}
-                                {skalViseUtsettelsesknapp && (
-                                    <Button
-                                        variant="secondary"
+                                        variant="tertiary"
                                         size="small"
-                                        className="flex-1"
-                                        onClick={() => setVisUtsettelsePanel(true)}
-                                        type="button"
+                                        onClick={() => setValgtePerioder([])}
                                     >
-                                        <FormattedMessage id="RedigeringPanel.LeggTilUtsettelse" />
+                                        <FormattedMessage id="RedigeringPanel.LukkRedigeringsmodus" />
                                     </Button>
-                                )}
-                                {skalVisePauseknapp && (
-                                    <Button
-                                        variant="secondary"
-                                        size="small"
-                                        className="flex-1"
-                                        onClick={() => setVisPausePanel(true)}
-                                        type="button"
-                                    >
-                                        <FormattedMessage id="RedigeringPanel.LeggTilPause" />
-                                    </Button>
-                                )}
-                            </HStack>
-                        )}
-                    </VStack>
-                </div>
-            )}
+                                </HStack>
+                            )}
+                            {!harPeriodeMedPleiepenger && (
+                                <HStack gap="space-12" wrap={false} className="w-full">
+                                    <LeggTilOgEndreKnapp
+                                        åpneRedigeringsmodus={åpneRedigeringsmodus}
+                                        skalViseLeggTilKnappetekst={skalViseLeggTilKnappetekst}
+                                    />
+                                    {skalViseFerieknapp && (
+                                        <Button
+                                            variant="secondary"
+                                            size="small"
+                                            className="flex-1"
+                                            disabled={skalDeaktivereFerieknapp}
+                                            onClick={() =>
+                                                erEksisterendePerioderEtterValgteDager && !kanKunErstatte
+                                                    ? setVisEndreEllerForskyvPanel(true)
+                                                    : leggTilEllerForskyvPeriode(false)
+                                            }
+                                            type="button"
+                                        >
+                                            {skalViseLeggTilKnappetekst ? (
+                                                <FormattedMessage id="RedigeringPanel.LeggTilFerie" />
+                                            ) : (
+                                                <FormattedMessage id="RedigeringPanel.EndreTilFerie" />
+                                            )}
+                                        </Button>
+                                    )}
+                                    {skalViseUtsettelsesknapp && (
+                                        <Button
+                                            variant="secondary"
+                                            size="small"
+                                            className="flex-1"
+                                            onClick={() => setVisUtsettelsePanel(true)}
+                                            type="button"
+                                        >
+                                            <FormattedMessage id="RedigeringPanel.LeggTilUtsettelse" />
+                                        </Button>
+                                    )}
+                                    {skalVisePauseknapp && (
+                                        <Button
+                                            variant="secondary"
+                                            size="small"
+                                            className="flex-1"
+                                            onClick={() => setVisPausePanel(true)}
+                                            type="button"
+                                        >
+                                            <FormattedMessage id="RedigeringPanel.LeggTilPause" />
+                                        </Button>
+                                    )}
+                                </HStack>
+                            )}
+                        </VStack>
+                    </div>
+                )}
+            </div>
         </VStack>
     );
 };
@@ -218,10 +223,8 @@ export const HvaVilDuEndreTilPanel = ({ åpneRedigeringsmodus, labels }: Props) 
 const HeaderForDesktop = () => {
     const intl = useIntl();
 
-    const { sammenslåtteValgtePerioder, setValgtePerioder } = useKalenderRedigeringContext();
-
     return (
-        <Box background="accent-soft" padding="space-8" style={{ cursor: 'pointer' }}>
+        <Box background="accent-soft" padding="space-8">
             <VStack gap="space-8">
                 <HStack gap="space-8" align="center" wrap={false}>
                     <PencilIcon title={intl.formatMessage({ id: 'RedigeringPanel.EndreTil' })} fontSize="1.5rem" />
@@ -229,16 +232,7 @@ const HeaderForDesktop = () => {
                         <FormattedMessage id="RedigeringPanel.EndreTil" />
                     </Heading>
                 </HStack>
-                <Chips size="small">
-                    <Chips.Removable onDelete={() => setValgtePerioder([])} onClick={(e) => e.stopPropagation()}>
-                        {intl.formatMessage(
-                            { id: 'RedigeringPanel.ValgteDager' },
-                            {
-                                varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
-                            },
-                        )}
-                    </Chips.Removable>
-                </Chips>
+                <ValgteDagerChip />
             </VStack>
         </Box>
     );
@@ -247,34 +241,18 @@ const HeaderForDesktop = () => {
 const HeaderForMobil = ({
     erMinimert,
     setErMinimert,
+    innholdId,
 }: {
     erMinimert: boolean;
     setErMinimert: (value: boolean) => void;
+    innholdId: string;
 }) => {
     const intl = useIntl();
 
-    const { sammenslåtteValgtePerioder, setValgtePerioder } = useKalenderRedigeringContext();
-
     return (
-        <Box
-            padding="space-12"
-            onClick={() => setErMinimert(!erMinimert)}
-            className="bg-ax-bg-accent-soft hover:bg-ax-bg-accent-moderate cursor-pointer"
-        >
+        <Box padding="space-12" className="bg-ax-bg-accent-soft">
             <VStack gap="space-4" align="center">
-                {erMinimert ? (
-                    <ChevronUpIcon
-                        title={intl.formatMessage({ id: 'RedigeringPanel.Maksimer' })}
-                        height={24}
-                        width={24}
-                    />
-                ) : (
-                    <ChevronDownIcon
-                        title={intl.formatMessage({ id: 'RedigeringPanel.Minimer' })}
-                        height={24}
-                        width={24}
-                    />
-                )}
+                <MinimerPanelKnapp erMinimert={erMinimert} setErMinimert={setErMinimert} kontrollerer={innholdId} />
 
                 <HStack gap="space-8" align="center" wrap={false}>
                     <PencilIcon title={intl.formatMessage({ id: 'RedigeringPanel.EndreTil' })} fontSize="1.5rem" />
@@ -282,39 +260,11 @@ const HeaderForMobil = ({
                         <Heading size="small">
                             <FormattedMessage id="RedigeringPanel.EndreTil" />
                         </Heading>
-                        {erMinimert && (
-                            <Chips size="small">
-                                <Chips.Removable
-                                    onDelete={() => setValgtePerioder([])}
-                                    onClick={(e) => e.stopPropagation()}
-                                >
-                                    {intl.formatMessage(
-                                        { id: 'RedigeringPanel.ValgteDager' },
-                                        {
-                                            varighet: getVarighetString(
-                                                finnAntallDager(sammenslåtteValgtePerioder),
-                                                intl,
-                                            ),
-                                        },
-                                    )}
-                                </Chips.Removable>
-                            </Chips>
-                        )}
+                        {erMinimert && <ValgteDagerChip />}
                     </HStack>
                 </HStack>
 
-                {!erMinimert && (
-                    <Chips size="small">
-                        <Chips.Removable onDelete={() => setValgtePerioder([])} onClick={(e) => e.stopPropagation()}>
-                            {intl.formatMessage(
-                                { id: 'RedigeringPanel.ValgteDager' },
-                                {
-                                    varighet: getVarighetString(finnAntallDager(sammenslåtteValgtePerioder), intl),
-                                },
-                            )}
-                        </Chips.Removable>
-                    </Chips>
-                )}
+                {!erMinimert && <ValgteDagerChip />}
             </VStack>
         </Box>
     );

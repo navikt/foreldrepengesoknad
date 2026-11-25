@@ -1,5 +1,5 @@
 import dayjs, { Dayjs } from 'dayjs';
-import React, { ReactElement, useRef, useState } from 'react';
+import React, { ReactElement, useId, useRef, useState } from 'react';
 
 import { Popover } from '@navikt/ds-react';
 
@@ -64,6 +64,8 @@ export const Day = React.memo(
         );
 
         const isClickable = !!dateClickCallback && !isWeekend(date);
+        const hasTooltip = !!dateTooltipCallback && isPeriodDifferentFromNoneOrGray(periodeColor);
+        const tooltipId = useId();
 
         return (
             <button
@@ -77,10 +79,22 @@ export const Day = React.memo(
                 data-hover-preview={isHoverPreview && !isWeekend(date) && periodeColor !== 'DARKBLUE'}
                 tabIndex={isFocused ? 0 : -1}
                 className={styles.days}
-                onFocus={isClickable ? () => setFocusedDate(date) : undefined}
+                onFocus={
+                    isClickable || hasTooltip
+                        ? () => {
+                              if (isClickable) {
+                                  setFocusedDate(date);
+                              }
+                              if (hasTooltip) {
+                                  setIsTooltipOpen(true);
+                              }
+                          }
+                        : undefined
+                }
+                onBlur={hasTooltip ? () => setIsTooltipOpen(false) : undefined}
                 onMouseEnter={onDateHover && isClickable ? () => onDateHover(isoDate) : undefined}
-                onMouseOver={dateTooltipCallback ? () => setIsTooltipOpen(true) : undefined}
-                onMouseLeave={dateTooltipCallback ? () => setIsTooltipOpen(false) : undefined}
+                onMouseOver={hasTooltip ? () => setIsTooltipOpen(true) : undefined}
+                onMouseLeave={hasTooltip ? () => setIsTooltipOpen(false) : undefined}
                 onClick={isClickable ? () => dateClickCallback(isoDate) : undefined}
                 onKeyDown={
                     dateClickCallback
@@ -89,6 +103,7 @@ export const Day = React.memo(
                         : undefined
                 }
                 aria-label={formaterDatoUtenDag(date) + (srText ? `, ${srText}` : '')}
+                aria-describedby={hasTooltip ? tooltipId : undefined}
             >
                 {(!Icon || (!iconFull && periodeColor === 'GRAY')) && <span>{day}</span>}
 
@@ -104,9 +119,9 @@ export const Day = React.memo(
                         <div className={styles.icon}>{Icon}</div>
                     </>
                 )}
-                {dateTooltipCallback && isPeriodDifferentFromNoneOrGray(periodeColor) && (
+                {hasTooltip && (
                     <Popover open={isTooltipOpen} onClose={() => setIsTooltipOpen(false)} anchorEl={buttonRef.current}>
-                        <Popover.Content>{dateTooltipCallback(isoDate)}</Popover.Content>
+                        <Popover.Content id={tooltipId}>{dateTooltipCallback(isoDate)}</Popover.Content>
                     </Popover>
                 )}
             </button>

@@ -176,7 +176,7 @@ describe('<UttaksplanSteg>', () => {
         // Lukk aksjonspanel for dag
         await userEvent.click(within(juni).getByTestId('day:10;dayColor:DARKBLUE'));
 
-        await userEvent.click(screen.getAllByText('Du kan velge datoer i kalenderen')[0]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         await userEvent.click(screen.getByText('Fjern alt'));
 
@@ -272,7 +272,7 @@ describe('<UttaksplanSteg>', () => {
 
         // Gå til redigeringsmodus og ekspander mobilpanelet
         await userEvent.click(screen.getByText('Start redigering'));
-        await userEvent.click(screen.getAllByText('Du kan velge datoer i kalenderen')[0]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         // Fjern alt for å aktivere 'Tilbakestill plan'-knappen
         await userEvent.click(screen.getByText('Fjern alt'));
@@ -313,7 +313,7 @@ describe('<UttaksplanSteg>', () => {
 
         // Gå til redigeringsmodus og ekspander mobilpanelet
         await userEvent.click(screen.getByText('Start redigering'));
-        await userEvent.click(screen.getAllByText('Du kan velge datoer i kalenderen')[0]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         // Fjern alt for å aktivere 'Tilbakestill plan'-knappen
         await userEvent.click(screen.getByText('Fjern alt'));
@@ -401,7 +401,7 @@ describe('<UttaksplanSteg>', () => {
 
         expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
         await userEvent.click(screen.getByText('Start redigering'));
-        await userEvent.click(screen.getAllByText('Du kan velge datoer i kalenderen')[0]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
         await userEvent.click(screen.getByRole('button', { name: 'Fjern alt' }));
         await userEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Fjern alt' }));
         await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
@@ -515,7 +515,7 @@ describe('<UttaksplanSteg>', () => {
 
         // Gå til redigeringsmodus og ekspander mobilpanelet
         await userEvent.click(screen.getByText('Start redigering'));
-        await userEvent.click(screen.getAllByText('Du kan velge datoer i kalenderen')[0]!);
+        await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
         // Den overførte planen er utgangspunktet, så "Tilbakestill plan" er deaktivert frå start
         expect(screen.getByRole('button', { name: 'Tilbakestill plan' })).toBeDisabled();
@@ -567,7 +567,7 @@ describe('<UttaksplanSteg>', () => {
             });
             expect(await screen.findAllByText('Din plan med foreldrepenger')).toHaveLength(2);
             await userEvent.click(screen.getByText('Start redigering'));
-            await userEvent.click(screen.getAllByText('Du kan velge datoer i kalenderen')[0]!);
+            await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
             await userEvent.click(screen.getByRole('button', { name: 'Fjern alt' }));
             await userEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Fjern alt' }));
             await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
