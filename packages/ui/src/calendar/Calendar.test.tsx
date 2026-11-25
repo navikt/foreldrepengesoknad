@@ -1,11 +1,10 @@
 import { composeStories } from '@storybook/react-vite';
-import { act, render, screen, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen, within } from '@testing-library/react';
 
 import { Calendar } from './Calendar';
 import * as stories from './Calendar.stories';
 
-const { Default, PeriodsThatSpanOverAYear, MedTooltip } = composeStories(stories);
+const { Default, PeriodsThatSpanOverAYear } = composeStories(stories);
 
 describe('<Calendar>', () => {
     it('lar nettleseren håndtere zoom og andre snarveier når første kalenderdag har fokus', () => {
@@ -29,38 +28,6 @@ describe('<Calendar>', () => {
         const pilHøyre = new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true });
         førsteDag.dispatchEvent(pilHøyre);
         expect(pilHøyre.defaultPrevented).toBe(true);
-    });
-
-    it('skal kunne nå verktøytips med piltaster og holde det åpent så lenge dagen har fokus eller peker', async () => {
-        render(<MedTooltip />);
-
-        expect(screen.getByRole('button', { name: '1. januar 2024' })).toHaveFocus();
-
-        for (let uke = 0; uke < 5; uke++) {
-            await userEvent.keyboard('{ArrowDown}');
-        }
-
-        const dag = screen.getByRole('button', { name: '5. februar 2024, Mors periode' });
-        const verktøytips = within(dag).getByText('Dette er en tooltip').closest('.aksel-popover');
-
-        expect(dag).toHaveFocus();
-        expect(dag).toHaveAccessibleDescription(/Dette er en tooltip/);
-        expect(verktøytips).toHaveAttribute('aria-hidden', 'false');
-
-        await userEvent.hover(dag);
-        await userEvent.unhover(dag);
-        expect(verktøytips).toHaveAttribute('aria-hidden', 'false');
-
-        await userEvent.hover(dag);
-        act(() => dag.blur());
-        expect(verktøytips).toHaveAttribute('aria-hidden', 'false');
-
-        await userEvent.unhover(dag);
-        expect(verktøytips).toHaveAttribute('aria-hidden', 'true');
-
-        act(() => dag.focus());
-        await userEvent.keyboard('{Escape}');
-        expect(verktøytips).toHaveAttribute('aria-hidden', 'true');
     });
 
     it('skal vise riktige dagmarkeringer og familiehendelse', () => {

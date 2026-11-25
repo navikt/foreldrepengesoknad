@@ -1,7 +1,5 @@
 import dayjs, { Dayjs } from 'dayjs';
-import React, { ReactElement, useId, useRef, useState } from 'react';
-
-import { Popover } from '@navikt/ds-react';
+import React, { ReactElement } from 'react';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { formaterDatoUtenDag } from '@navikt/fp-utils';
@@ -22,7 +20,6 @@ type Props = {
     iconFull?: boolean;
     CornerIcon?: ReactElement;
     shape: DayShape;
-    dateTooltipCallback?: (date: string) => React.ReactNode | string;
     dateClickCallback?: (date: string) => void;
     onDateHover?: (date: string | undefined) => void;
     setFocusedDate: (date: Dayjs) => void;
@@ -40,7 +37,6 @@ export const Day = React.memo(
         iconFull,
         CornerIcon,
         shape,
-        dateTooltipCallback,
         dateClickCallback,
         onDateHover,
         setFocusedDate,
@@ -48,12 +44,8 @@ export const Day = React.memo(
         const date = dayjs(isoDate);
         const day = date.date();
 
-        const buttonRef = useRef<HTMLButtonElement>(null);
-
         const setButtonRef = React.useCallback(
             (el: HTMLButtonElement | null) => {
-                buttonRef.current = el;
-
                 if (el && isFocused) {
                     el.focus();
                 }
@@ -62,17 +54,6 @@ export const Day = React.memo(
         );
 
         const isClickable = !!dateClickCallback && !isWeekend(date);
-        const isNavigable = !!dateClickCallback || !!dateTooltipCallback;
-        const hasTooltip = !!dateTooltipCallback && isPeriodDifferentFromNoneOrGray(periodeColor);
-        const tooltipId = useId();
-        const tooltip = useTooltip(hasTooltip);
-
-        const handleFocus = () => {
-            if (isNavigable && !isWeekend(date)) {
-                setFocusedDate(date);
-            }
-            tooltip.setTrigger('focus', true);
-        };
 
         return (
             <button
@@ -86,20 +67,16 @@ export const Day = React.memo(
                 data-hover-preview={isHoverPreview && !isWeekend(date) && periodeColor !== 'DARKBLUE'}
                 tabIndex={isFocused ? 0 : -1}
                 className={styles.days}
-                onFocus={handleFocus}
-                onBlur={() => tooltip.setTrigger('focus', false)}
+                onFocus={isClickable ? () => setFocusedDate(date) : undefined}
                 onMouseEnter={onDateHover && isClickable ? () => onDateHover(isoDate) : undefined}
-                onMouseOver={() => tooltip.setTrigger('hover', true)}
-                onMouseLeave={() => tooltip.setTrigger('hover', false)}
                 onClick={isClickable ? () => dateClickCallback(isoDate) : undefined}
                 onKeyDown={
-                    isNavigable
+                    dateClickCallback
                         ? (e) =>
                               handleKeyNavigationAndSelection(e, date, dateClickCallback, setFocusedDate, onDateHover)
                         : undefined
                 }
                 aria-label={formaterDatoUtenDag(date) + (srText ? `, ${srText}` : '')}
-                aria-describedby={hasTooltip ? tooltipId : undefined}
             >
                 {(!Icon || (!iconFull && periodeColor === 'GRAY')) && <span>{day}</span>}
 
@@ -115,35 +92,10 @@ export const Day = React.memo(
                         <div className={styles.icon}>{Icon}</div>
                     </>
                 )}
-                {hasTooltip && (
-                    <Popover open={tooltip.isOpen} onClose={tooltip.close} anchorEl={buttonRef.current}>
-                        <Popover.Content id={tooltipId}>{dateTooltipCallback(isoDate)}</Popover.Content>
-                    </Popover>
-                )}
             </button>
         );
     },
 );
-
-// Tooltipen skal være åpen så lenge dagen har fokus eller pekeren er over den (WCAG 1.4.13).
-const useTooltip = (enabled: boolean) => {
-    const [triggers, setTriggers] = useState({ hover: false, focus: false });
-
-    const setTrigger = (trigger: 'hover' | 'focus', active: boolean) => {
-        if (enabled && triggers[trigger] !== active) {
-            setTriggers((prev) => ({ ...prev, [trigger]: active }));
-        }
-    };
-
-    return {
-        isOpen: triggers.hover || triggers.focus,
-        setTrigger,
-        close: () => setTriggers({ hover: false, focus: false }),
-    };
-};
-
-const isPeriodDifferentFromNoneOrGray = (periodeColor: CalendarPeriodColor): boolean =>
-    periodeColor !== 'NONE' && periodeColor !== 'GRAY';
 
 export const isWeekend = (date: Dayjs) => date.isoWeekday() === 6 || date.isoWeekday() === 7;
 
@@ -166,7 +118,7 @@ const skipWeekends = (date: Dayjs, direction: 1 | -1): Dayjs => {
 const handleKeyNavigationAndSelection = (
     e: React.KeyboardEvent,
     date: Dayjs,
-    dateClickCallback: ((date: string) => void) | undefined,
+    dateClickCallback: (date: string) => void,
     setFocusedDate: (date: Dayjs) => void,
     onDateHover?: (date: string | undefined) => void,
 ) => {
@@ -180,6 +132,8 @@ const handleKeyNavigationAndSelection = (
     }
 
     e.preventDefault();
+    const isClickable = !!dateClickCallback && !isWeekend(date);
+
     const navigateTo = (newDate: Dayjs) => {
         setFocusedDate(newDate);
         onDateHover?.(newDate.format(ISO_DATE_FORMAT));
@@ -200,7 +154,7 @@ const handleKeyNavigationAndSelection = (
             break;
         case 'Enter':
         case ' ':
-            if (dateClickCallback && !isWeekend(date)) {
+            if (isClickable) {
                 dateClickCallback(date.format(ISO_DATE_FORMAT));
             }
     }
