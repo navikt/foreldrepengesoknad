@@ -69,11 +69,21 @@ export const ErrorSummaryHookForm = () => {
 
     const flattenAndUniqueErrors = dedupErrorsByMessage(findAllErrors(errors));
 
-    const mappedErrors = Object.entries(flattenAndUniqueErrors).map(([fieldName, error]) => ({
-        message: typeof error?.message === 'string' ? error.message : undefined,
-        href: `#${lagFeltId(control, fieldName)}`,
-        focus: () => setFocus(fieldName),
-    }));
+    const mappedErrors = Object.entries(flattenAndUniqueErrors).map(([fieldName, error]) => {
+        const feltId = lagFeltId(control, fieldName);
+        return {
+            message: typeof error?.message === 'string' ? error.message : undefined,
+            href: `#${feltId}`,
+            focus: () => {
+                setFocus(fieldName);
+                // Felt med feil satt via setError (f.eks. filopplaster) har ingen RHF-ref som setFocus kan bruke.
+                const felt = document.getElementById(feltId);
+                if (felt && !felt.contains(document.activeElement)) {
+                    felt.focus();
+                }
+            },
+        };
+    });
 
     return (
         Object.keys(flattenAndUniqueErrors).length > 0 && (

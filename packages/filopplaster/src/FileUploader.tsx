@@ -34,6 +34,7 @@ interface Props {
     multiple?: boolean;
     skjemanummerTextMap?: Record<Skjemanummer, string>;
     uploadPath: string;
+    id?: string;
     timeout?: number; // Kun brukt for å sette custom timeout i test
 }
 
@@ -47,6 +48,7 @@ export const FileUploader = ({
     multiple = true,
     skjemanummerTextMap,
     uploadPath,
+    id,
     timeout,
 }: Props) => {
     const intl = useIntl();
@@ -107,6 +109,7 @@ export const FileUploader = ({
     return (
         <VStack gap="space-24">
             <FileUpload.Dropzone
+                id={id}
                 label={label}
                 description={
                     <VStack gap="space-8">

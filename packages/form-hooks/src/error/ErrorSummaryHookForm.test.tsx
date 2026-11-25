@@ -9,6 +9,7 @@ import { IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { RhfForm } from '../form-wrappers/RhfForm';
 import { RhfRadioGroup } from '../form-wrappers/RhfRadioGroup';
 import { RhfTextField } from '../form-wrappers/RhfTextField';
+import { useFeltId } from '../form-wrappers/feltId';
 import { ErrorSummaryHookForm } from './ErrorSummaryHookForm';
 
 type FormValues = {
@@ -78,5 +79,34 @@ describe('<ErrorSummaryHookForm>', () => {
 
         await userEvent.click(screen.getByRole('link', { name: 'Svar mangler' }));
         expect(screen.getByRole('radio')).toHaveFocus();
+    });
+
+    it('skal flytte fokus til element med feltets id når feilen er satt med setError', async () => {
+        const SkjemaMedVedlegg = () => {
+            const formMethods = useForm<{ vedlegg: string[] }>({ defaultValues: { vedlegg: [] } });
+            const vedleggId = useFeltId('vedlegg', formMethods.control);
+            return (
+                <IntlProvider locale="nb" messagesGroupedByLocale={{ nb: uiMessages.nb }}>
+                    <RhfForm
+                        formMethods={formMethods}
+                        onSubmit={() => formMethods.setError('vedlegg', { message: 'Vedlegg mangler' })}
+                    >
+                        <ErrorSummaryHookForm />
+                        <button type="button" id={vedleggId}>
+                            Velg fil
+                        </button>
+                        <button type="submit">Send</button>
+                    </RhfForm>
+                </IntlProvider>
+            );
+        };
+        render(<SkjemaMedVedlegg />);
+
+        await userEvent.click(screen.getByRole('button', { name: 'Send' }));
+        const lenke = await screen.findByRole('link', { name: 'Vedlegg mangler' });
+
+        expect(lenke).toHaveAttribute('href', `#${screen.getByRole('button', { name: 'Velg fil' }).id}`);
+        await userEvent.click(lenke);
+        expect(screen.getByRole('button', { name: 'Velg fil' })).toHaveFocus();
     });
 });

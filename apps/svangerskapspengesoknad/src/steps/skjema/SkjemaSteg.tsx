@@ -13,7 +13,7 @@ import { Link, VStack } from '@navikt/ds-react';
 
 import { AttachmentType, Skjemanummer, links } from '@navikt/fp-constants';
 import { FileUploader } from '@navikt/fp-filopplaster';
-import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm, useFeltId } from '@navikt/fp-form-hooks';
 import { EGEN_NÆRING_ID } from '@navikt/fp-steg-egen-naering';
 import { Attachment, EksternArbeidsforholdDto_fpoversikt, FRILANS_ID } from '@navikt/fp-types';
 import { SkjemaRotLayout, Step } from '@navikt/fp-ui';
@@ -105,6 +105,7 @@ export const SkjemaSteg = ({
     const formMethods = useForm<SkjemaFormData>({
         defaultValues: defaultValues,
     });
+    const vedleggId = useFeltId('vedlegg', formMethods.control);
 
     const updateAttachments = (attachments: Attachment[], hasPendingUploads: boolean) => {
         setAvventerVedlegg(hasPendingUploads);
@@ -157,6 +158,7 @@ export const SkjemaSteg = ({
                                 existingAttachments={defaultValues?.vedlegg}
                                 updateAttachments={updateAttachments}
                                 uploadPath={API_URLS.sendVedlegg}
+                                id={vedleggId}
                             />
                         </VStack>
                         <StepButtonsHookForm
