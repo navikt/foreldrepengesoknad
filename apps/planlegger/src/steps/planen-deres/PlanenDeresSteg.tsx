@@ -122,7 +122,7 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
         const currentPath = location.pathname;
         const newUrl = `${currentPath}?data=${encodedData}`;
 
-        history.replaceState(null, '', newUrl);
+        history.replaceState(history.state, '', newUrl);
     };
 
     const planforslag = useLagUttaksplanForslag(valgtStønadskvote);
