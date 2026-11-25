@@ -254,6 +254,69 @@ describe('mapFraFormValuesTilPeriodeDto', () => {
     });
 });
 
+describe('lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm med samtidig uttak', () => {
+    const periode: UttakPeriodeDto = {
+        fom: '2027-03-15',
+        tom: '2027-04-02',
+        søker: {
+            forelder: 'FAR_MEDMOR',
+            kontoType: 'FELLESPERIODE',
+            morsAktivitet: 'ARBEID',
+            samtidigUttak: 50,
+            flerbarnsdager: false,
+        },
+        annenPart: {
+            forelder: 'MOR',
+            kontoType: 'FELLESPERIODE',
+            samtidigUttak: 50,
+            flerbarnsdager: false,
+        },
+    };
+
+    it.each([false, true])(
+        'forhåndsfyller mors aktivitet oppgitt av far/medmor når annen part er låst: %s',
+        (erLåst) => {
+            expect(
+                lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm([periode], periode, 'FAR_MEDMOR', erLåst)
+                    ?.morsAktivitet,
+            ).toBe('ARBEID');
+        },
+    );
+
+    it('bruker mors aktivitet når far/medmor ikke har oppgitt den', () => {
+        const periodeMedAktivitetHosMor: UttakPeriodeDto = {
+            ...periode,
+            søker: { ...periode.søker!, morsAktivitet: undefined },
+            annenPart: { ...periode.annenPart!, morsAktivitet: 'UTDANNING' },
+        };
+
+        expect(
+            lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
+                [periodeMedAktivitetHosMor],
+                periodeMedAktivitetHosMor,
+                'FAR_MEDMOR',
+                false,
+            )?.morsAktivitet,
+        ).toBe('UTDANNING');
+    });
+
+    it('prioriterer fars/medmors oppgitte mors aktivitet når begge har verdi', () => {
+        const periodeMedUlikeAktiviteter: UttakPeriodeDto = {
+            ...periode,
+            annenPart: { ...periode.annenPart!, morsAktivitet: 'UTDANNING' },
+        };
+
+        expect(
+            lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
+                [periodeMedUlikeAktiviteter],
+                periodeMedUlikeAktiviteter,
+                'FAR_MEDMOR',
+                false,
+            )?.morsAktivitet,
+        ).toBe('ARBEID');
+    });
+});
+
 describe('lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm med låst annen part', () => {
     const morsPeriode: UttakPeriodeDto = {
         ...PERIODE,

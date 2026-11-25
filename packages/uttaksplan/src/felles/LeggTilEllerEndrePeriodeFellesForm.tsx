@@ -1120,7 +1120,7 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
             skalDuKombinereArbeidOgUttakFarMedmor: !!farMedmorUttak.gradering,
             stillingsprosentMor: morsUttak.gradering?.arbeidstidprosent.toString(),
             stillingsprosentFarMedmor: farMedmorUttak.gradering?.arbeidstidprosent.toString(),
-            morsAktivitet: morsUttak.morsAktivitet,
+            morsAktivitet: farMedmorUttak.morsAktivitet ?? morsUttak.morsAktivitet,
             hvorSkalDuJobbe:
                 søkersUttak.gradering?.aktivitet?.arbeidsgiver?.id ?? søkersUttak.gradering?.aktivitet?.type,
             ønskerFlerbarnsdager: morsUttak.flerbarnsdager || farMedmorUttak.flerbarnsdager,
