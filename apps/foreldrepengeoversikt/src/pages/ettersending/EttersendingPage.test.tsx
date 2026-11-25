@@ -5,7 +5,17 @@ import { afterEach, describe, expect } from 'vitest';
 
 import * as stories from './EttersendingPage.stories';
 
-const { SkalIkkeFeileOpplasting, SkalFeileOpplasting } = composeStories(stories);
+const { SkalIkkeFeileOpplasting, SkalFeileOpplasting, SkalSendeEttersending, SkalFeileInnsending } =
+    composeStories(stories);
+
+const lastOppOgSend = async () => {
+    await userEvent.selectOptions(await screen.findByLabelText('Hva inneholder dokumentene dine?'), 'I000060');
+    await userEvent.upload(
+        screen.getByLabelText('Last opp dokumenter'),
+        new File(['hello'], 'hello.png', { type: 'image/png' }),
+    );
+    await userEvent.click(await screen.findByRole('button', { name: 'Legg ved sak' }));
+};
 
 afterEach(() => {
     document.body.replaceChildren();
@@ -123,5 +133,28 @@ describe('<EttersendingPage>', () => {
         const preselectedOption = () => within(select).getByRole('option', { selected: true });
 
         expect(preselectedOption().textContent).toBe('Terminbekreftelse');
+    });
+
+    it('skal lese opp kvittering i en statusregion som finnes før innsending', async () => {
+        await SkalSendeEttersending.run();
+
+        const statusregion = await screen.findByRole('status');
+        expect(statusregion).toBeEmptyDOMElement();
+
+        await lastOppOgSend();
+
+        expect(await within(statusregion).findByText('Dokumentene er sendt')).toBeInTheDocument();
+        expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    });
+
+    it('skal varsle med alert når innsending feiler', async () => {
+        await SkalFeileInnsending.run();
+
+        await lastOppOgSend();
+
+        const varsel = await screen.findByRole('alert');
+        expect(varsel).toHaveTextContent('Dokumentene ble ikke sendt');
+        expect(varsel).toHaveTextContent('Vi klarte ikke å sende inn dokumentasjonen din.');
+        expect(screen.getByRole('status')).toBeEmptyDOMElement();
     });
 });

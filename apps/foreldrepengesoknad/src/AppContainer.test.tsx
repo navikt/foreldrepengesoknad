@@ -322,6 +322,32 @@ describe('<AppContainer>', () => {
         expect(slettUtkast).not.toHaveBeenCalled();
     });
 
+    it('skal varsle skjermleser med alert når lagring feiler ved fortsett senere', async () => {
+        const Historie = composeStory(
+            {
+                ...stories.MedMellomlagretSøknad,
+                beforeEach: [
+                    ...[stories.MedMellomlagretSøknad.beforeEach ?? []].flat(),
+                    ({ msw }) => {
+                        msw.use(http.post(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 400 })));
+                    },
+                ],
+            },
+            stories.default,
+        );
+        await Historie.run();
+
+        await userEvent.click(await screen.findByRole('button', { name: 'Fortsett senere' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Ok' }));
+
+        const varsel = await screen.findByRole('alert');
+        expect(varsel).toHaveTextContent(messages['Mellomlagring.FeiletVedFortsettSenere.Tittel']);
+        expect(varsel).toHaveTextContent(messages['Mellomlagring.FeiletVedFortsettSenere']);
+
+        await userEvent.click(within(varsel).getByRole('button', { name: 'Lukk' }));
+        expect(screen.queryByText(messages['Mellomlagring.FeiletVedFortsettSenere'])).not.toBeInTheDocument();
+    });
+
     it('skal forkaste importen og lagret saksinformasjon når brukeren velger et annet barn', async () => {
         const { Historie, lagreUtkast } = lagOppstartshistorie(stories.MedMellomlagretEndringssøknad, importUrl);
         await Historie.run();

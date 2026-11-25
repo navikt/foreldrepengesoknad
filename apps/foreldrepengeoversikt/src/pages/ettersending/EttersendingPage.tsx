@@ -7,12 +7,12 @@ import { Sak } from 'types/Sak.ts';
 import { SakOppslag } from 'types/SakOppslag.ts';
 
 import {
-    Alert,
     BodyLong,
     BodyShort,
     Button,
     GuidePanel,
     HStack,
+    LocalAlert,
     Link as NAVLink,
     Select,
     VStack,
@@ -136,30 +136,6 @@ const EttersendingPageInner = ({ saker }: Props) => {
         mutationFn: (valuesToSend: EttersendelseDto) => sendEttersending(valuesToSend),
     });
 
-    if (isSuccess || isError) {
-        return (
-            <>
-                <ScrollToTop />
-                <VStack gap="space-16">
-                    {isSuccess && (
-                        <Alert variant="success">
-                            <FormattedMessage id="ettersending.dokumenterSendt" />
-                        </Alert>
-                    )}
-                    {isError && (
-                        <Alert variant="error">
-                            Vi klarte ikke å sende inn dokumentasjonen din. Prøv igjen senere og hvis problemet vedvarer
-                            kontakt brukerstøtte.
-                        </Alert>
-                    )}
-                    <NAVLink as={Link} to={`/sak/${sak!.saksnummer}`}>
-                        <FormattedMessage id="miniDialog.kvittering.gåTilbakeTilSaken" />
-                    </NAVLink>
-                </VStack>
-            </>
-        );
-    }
-
     const onSubmit = (e: FormEvent) => {
         e.preventDefault();
 
@@ -172,57 +148,92 @@ const EttersendingPageInner = ({ saker }: Props) => {
     };
 
     return (
-        <form onSubmit={onSubmit}>
-            <VStack gap="space-16">
-                <BodyLong>
-                    Dokumentene du laster opp vil bli lagt ved søknaden din. Du må velge hva dokumentene inneholder for
-                    at saksbehandlerene i Nav skal kunne behandle saken din.
-                </BodyLong>
-                <BodyShort>
-                    <FormattedMessage id="ettersending.formatInformasjon" />
-                </BodyShort>
-                <NAVLink target="_blank" href="https://www.nav.no/brukerstotte#sende-soknad-pa-nett">
-                    <FormattedMessage id="ettersending.bildeGuide" />
-                </NAVLink>
-                <Select
-                    className="mb-4"
-                    label={intl.formatMessage({ id: 'ettersending.hva' })}
-                    onChange={(event) => setType(konverterSelectVerdi(event.target.value))}
-                    value={type}
-                >
-                    {getAttachmentTypeSelectOptions(intl, manglendeSkjemanummer, sak)}
-                </Select>
-                {type !== DEFAULT_OPTION && (
-                    <FileUploader
-                        label={intl.formatMessage({ id: 'EttersendingPage.dokumenter' })}
-                        updateAttachments={updateAttachments}
-                        attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
-                        skjemanummer={type}
-                        existingAttachments={vedlegg}
-                        uploadPath={mapYtelse(sak!.ytelse)}
-                        skjemanummerTextMap={sak ? getSkjemanummerTextMap(intl, sak) : undefined}
-                    />
+        <>
+            {/* role="status" må finnes i DOM før kvitteringen settes inn for at skjermlesere skal lese den opp */}
+            <div role="status" className={isSuccess ? 'mb-4' : undefined}>
+                {isSuccess && (
+                    <LocalAlert status="success" role="none">
+                        <LocalAlert.Header>
+                            <LocalAlert.Title>
+                                <FormattedMessage id="ettersending.dokumenterSendt" />
+                            </LocalAlert.Title>
+                        </LocalAlert.Header>
+                    </LocalAlert>
                 )}
-                {vedlegg && vedlegg.length > 0 && vedlegg.length <= 40 && (
-                    <HStack>
-                        <Button
-                            type="submit"
-                            icon={<PlusIcon aria-hidden={true} />}
-                            loading={isPending || avventerVedlegg}
-                            disabled={isPending || avventerVedlegg}
+            </div>
+            {isSuccess || isError ? (
+                <VStack gap="space-16">
+                    <ScrollToTop />
+                    {isError && (
+                        <LocalAlert status="error">
+                            <LocalAlert.Header>
+                                <LocalAlert.Title>
+                                    <FormattedMessage id="ettersending.sendingFeilet.tittel" />
+                                </LocalAlert.Title>
+                            </LocalAlert.Header>
+                            <LocalAlert.Content>
+                                <FormattedMessage id="ettersending.sendingFeilet" />
+                            </LocalAlert.Content>
+                        </LocalAlert>
+                    )}
+                    <NAVLink as={Link} to={`/sak/${sak!.saksnummer}`}>
+                        <FormattedMessage id="miniDialog.kvittering.gåTilbakeTilSaken" />
+                    </NAVLink>
+                </VStack>
+            ) : (
+                <form onSubmit={onSubmit}>
+                    <VStack gap="space-16">
+                        <BodyLong>
+                            Dokumentene du laster opp vil bli lagt ved søknaden din. Du må velge hva dokumentene
+                            inneholder for at saksbehandlerene i Nav skal kunne behandle saken din.
+                        </BodyLong>
+                        <BodyShort>
+                            <FormattedMessage id="ettersending.formatInformasjon" />
+                        </BodyShort>
+                        <NAVLink target="_blank" href="https://www.nav.no/brukerstotte#sende-soknad-pa-nett">
+                            <FormattedMessage id="ettersending.bildeGuide" />
+                        </NAVLink>
+                        <Select
+                            className="mb-4"
+                            label={intl.formatMessage({ id: 'ettersending.hva' })}
+                            onChange={(event) => setType(konverterSelectVerdi(event.target.value))}
+                            value={type}
                         >
-                            Legg ved sak
-                        </Button>
-                    </HStack>
-                )}
-                {vedlegg && vedlegg.length > 40 && (
-                    <GuidePanel>
-                        Du kan bare laste opp 40 dokumenter på en gang. Hvis du skal laste opp flere enn 40 dokumenter
-                        kan du gjøre det i flere omganger.
-                    </GuidePanel>
-                )}
-            </VStack>
-        </form>
+                            {getAttachmentTypeSelectOptions(intl, manglendeSkjemanummer, sak)}
+                        </Select>
+                        {type !== DEFAULT_OPTION && (
+                            <FileUploader
+                                label={intl.formatMessage({ id: 'EttersendingPage.dokumenter' })}
+                                updateAttachments={updateAttachments}
+                                attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
+                                skjemanummer={type}
+                                existingAttachments={vedlegg}
+                                uploadPath={mapYtelse(sak!.ytelse)}
+                                skjemanummerTextMap={sak ? getSkjemanummerTextMap(intl, sak) : undefined}
+                            />
+                        )}
+                        {vedlegg && vedlegg.length > 0 && vedlegg.length <= 40 && (
+                            <HStack>
+                                <Button
+                                    type="submit"
+                                    icon={<PlusIcon aria-hidden={true} />}
+                                    loading={isPending || avventerVedlegg}
+                                    disabled={isPending || avventerVedlegg}
+                                >
+                                    Legg ved sak
+                                </Button>
+                            </HStack>
+                        )}
+                        {vedlegg && vedlegg.length > 40 && (
+                            <GuidePanel>
+                                Du kan bare laste opp 40 dokumenter på en gang. Hvis du skal laste opp flere enn 40
+                                dokumenter kan du gjøre det i flere omganger.
+                            </GuidePanel>
+                        )}
+                    </VStack>
+                </form>
+            )}
+        </>
     );
 };
 

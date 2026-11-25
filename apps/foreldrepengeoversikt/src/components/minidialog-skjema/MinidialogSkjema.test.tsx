@@ -7,9 +7,17 @@ import { EttersendelseDto } from '@navikt/fp-types';
 
 import * as stories from './MinidialogSkjema.stories';
 
-const { SkalIkkeFeileOpplasting } = composeStories(stories);
+const { SkalIkkeFeileOpplasting, SkalViseFeilVedInnsending } = composeStories(stories);
 
 describe('<MinidialogSkjema>', () => {
+    it('skal varsle med alert når innsending feiler', async () => {
+        await SkalViseFeilVedInnsending.run();
+
+        const varsel = screen.getByRole('alert');
+        expect(varsel).toHaveTextContent('Svaret ble ikke sendt');
+        expect(varsel).toHaveTextContent('Vi klarte ikke å sende inn informasjonen din.');
+    });
+
     it('skal vise og sende samme uttalelse etter at brukeren velger ja, nei og ja igjen', async () => {
         const send = vi.fn();
         const uttalelse = 'Dette er uttalelsen jeg ønsker å sende til Nav.';

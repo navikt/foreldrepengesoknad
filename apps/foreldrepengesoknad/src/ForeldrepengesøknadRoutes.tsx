@@ -25,7 +25,7 @@ import { TidligereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-tidligere/
 import { UtenlandsoppholdSteg } from 'steps/utenlandsopphold/UtenlandsoppholdSteg';
 import { UttaksplanSteg } from 'steps/uttaksplan/UttaksplanSteg';
 
-import { Alert, Button, VStack } from '@navikt/ds-react';
+import { LocalAlert, VStack } from '@navikt/ds-react';
 
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
 import { ErrorPage, Spinner, Umyndig } from '@navikt/fp-ui';
@@ -358,14 +358,17 @@ export const ForeldrepengesøknadRoutes = ({
             {lagringFeilet && (
                 <VStack align="center" paddingBlock="space-16" paddingInline="space-16">
                     <VStack maxWidth="600px" width="100%">
-                        <Alert variant="error">
-                            <VStack align="start" gap="space-8">
+                        <LocalAlert status="error">
+                            <LocalAlert.Header>
+                                <LocalAlert.Title>
+                                    <FormattedMessage id="Mellomlagring.FeiletVedFortsettSenere.Tittel" />
+                                </LocalAlert.Title>
+                                <LocalAlert.CloseButton onClick={nullstillLagringFeilet} />
+                            </LocalAlert.Header>
+                            <LocalAlert.Content>
                                 <FormattedMessage id="Mellomlagring.FeiletVedFortsettSenere" />
-                                <Button type="button" variant="secondary" size="small" onClick={nullstillLagringFeilet}>
-                                    <FormattedMessage id="Mellomlagring.FeiletVedFortsettSenere.Lukk" />
-                                </Button>
-                            </VStack>
-                        </Alert>
+                            </LocalAlert.Content>
+                        </LocalAlert>
                     </VStack>
                 </VStack>
             )}
