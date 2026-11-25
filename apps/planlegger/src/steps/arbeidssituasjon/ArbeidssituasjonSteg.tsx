@@ -196,7 +196,7 @@ export const ArbeidssituasjonSteg = ({ satser }: Props) => {
                                         ),
                                     ]}
                                     shouldFadeIn
-                                    shouldAutofocus
+                                    shouldAutofocus={arbeidssituasjon?.status === undefined}
                                     onChange={scrollToBottom}
                                 >
                                     <Radio value={true}>

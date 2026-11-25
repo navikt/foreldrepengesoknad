@@ -83,7 +83,7 @@ function RedirectTilSakHvisDetKunFinnesEn({ saker }: { readonly saker: SakOppsla
 
 export function PageRouteLayout({ header, children }: { readonly header: ReactNode; readonly children: ReactNode }) {
     const { pathname } = useLocation();
-    const headerRef = useFokusVedNavigasjon<HTMLDivElement>(pathname);
+    const headerRef = useFokusVedNavigasjon<HTMLDivElement>(header ? pathname : undefined);
     return (
         // Merk: index.html har allereie <main id="app">; ikkje legg til eit nytt main her.
         <>

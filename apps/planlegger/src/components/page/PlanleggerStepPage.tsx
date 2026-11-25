@@ -13,8 +13,15 @@ interface Props {
     ref?: Ref<HTMLDivElement>;
 }
 
+// Tittelen i headeren er lik på alle steg, så stegoverskriften i innholdet foretrekkes.
+const finnStegoverskrift = (tittel: HTMLHeadingElement) =>
+    tittel.closest('main')?.querySelector<HTMLHeadingElement>('h2') ?? tittel;
+
 export const PlanleggerStepPage = ({ steps, children, goToStep, ref }: Props) => {
-    const overskriftRef = useFokusVedNavigasjon<HTMLHeadingElement>(steps.find((s) => s.isSelected)?.id);
+    const overskriftRef = useFokusVedNavigasjon<HTMLHeadingElement>(
+        steps.find((s) => s.isSelected)?.id,
+        finnStegoverskrift,
+    );
     return (
         <>
             <Page
