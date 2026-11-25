@@ -17,17 +17,18 @@ import { notEmpty } from '@navikt/fp-validation';
 type SubmitValideringsregel = {
     gjelder: (planForValidering: UttakPeriodeDto[], helePlanen: UttakPeriodeDto[]) => boolean;
     message: string;
+    visSomFeilmelding?: boolean;
 };
 
-interface UseFinnFørsteSubmitFeilmeldingProps {
+interface UseFinnFørsteSubmitValideringsregelProps {
     opprinneligPlan: UttakPeriodeDto[] | undefined;
     erEndringssøknad: boolean;
 }
 
-export const useFinnFørsteSubmitFeilmelding = ({
+export const useFinnFørsteSubmitValideringsregel = ({
     opprinneligPlan,
     erEndringssøknad,
-}: UseFinnFørsteSubmitFeilmeldingProps) => {
+}: UseFinnFørsteSubmitValideringsregelProps) => {
     const intl = useIntl();
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
@@ -103,10 +104,12 @@ export const useFinnFørsteSubmitFeilmelding = ({
         {
             gjelder: manglerMorsAktivitetDerPåkrevd,
             message: intl.formatMessage({ id: 'UttaksplanSteg.MorsAktivitetIkkeValgt' }),
+            visSomFeilmelding: false,
         },
         {
             gjelder: manglerGraderingsaktivitet,
             message: intl.formatMessage({ id: 'UttaksplanSteg.GraderingsaktivitetIkkeValgt' }),
+            visSomFeilmelding: false,
         },
         {
             gjelder: harKunPerioderForDenAndreForelderen,
@@ -121,9 +124,11 @@ export const useFinnFørsteSubmitFeilmelding = ({
         },
     ];
 
-    return (planForValidering: UttakPeriodeDto[], helePlanen: UttakPeriodeDto[]): string | undefined => {
-        const valideringsfeil = submitValideringsregler.find((regel) => regel.gjelder(planForValidering, helePlanen));
-        return valideringsfeil?.message;
+    return (
+        planForValidering: UttakPeriodeDto[],
+        helePlanen: UttakPeriodeDto[],
+    ): SubmitValideringsregel | undefined => {
+        return submitValideringsregler.find((regel) => regel.gjelder(planForValidering, helePlanen));
     };
 };
 

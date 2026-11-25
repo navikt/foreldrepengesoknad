@@ -193,6 +193,67 @@ describe('<UttaksplanSteg>', () => {
         expect(await screen.findByText('Du har ikke lagt til noen perioder i planen')).toBeInTheDocument();
     });
 
+    it('skal bare vise gult varsel når søker mangler graderingsaktivitet og prøver å gå videre', async () => {
+        const gåTilNesteSide = vi.fn();
+        const varseltekst = 'Du må velge hvor du skal jobbe samtidig som du har foreldrepenger i de markerte periodene';
+
+        await FødselFarSøkerEtterAtMorHarSøkt.run({
+            args: {
+                ...FødselFarSøkerEtterAtMorHarSøkt.args,
+                gåTilNesteSide,
+                uttaksplan: [
+                    {
+                        fom: '2024-08-05',
+                        tom: '2024-08-09',
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FEDREKVOTE',
+                            gradering: { arbeidstidprosent: 50 },
+                            flerbarnsdager: false,
+                        },
+                    },
+                ],
+            },
+        });
+
+        expect(await screen.findByText(varseltekst)).toBeInTheDocument();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Neste steg' }));
+
+        expect(screen.getAllByText(varseltekst)).toHaveLength(1);
+        expect(gåTilNesteSide.mock.calls.some(([action]) => action.key === ContextDataType.APP_ROUTE)).toBe(false);
+    });
+
+    it('skal bare vise gult varsel når søker mangler mors aktivitet og prøver å gå videre', async () => {
+        const gåTilNesteSide = vi.fn();
+        const varseltekst = 'Du må fylle ut informasjon om mors aktivitet i de markerte periodene';
+
+        await FødselFarSøkerEtterAtMorHarSøkt.run({
+            args: {
+                ...FødselFarSøkerEtterAtMorHarSøkt.args,
+                gåTilNesteSide,
+                uttaksplan: [
+                    {
+                        fom: '2024-08-05',
+                        tom: '2024-08-09',
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FELLESPERIODE',
+                            flerbarnsdager: false,
+                        },
+                    },
+                ],
+            },
+        });
+
+        expect(await screen.findByText(varseltekst)).toBeInTheDocument();
+
+        await userEvent.click(screen.getByRole('button', { name: 'Neste steg' }));
+
+        expect(screen.getAllByText(varseltekst)).toHaveLength(1);
+        expect(gåTilNesteSide.mock.calls.some(([action]) => action.key === ContextDataType.APP_ROUTE)).toBe(false);
+    });
+
     it('skal generere uttaksplan og gå videre når annen part har et vedtak med tomme perioder', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
@@ -609,7 +670,7 @@ describe('<UttaksplanSteg>', () => {
 
         expect(
             await screen.findAllByText('Du må fylle ut informasjon om mors aktivitet i de markerte periodene'),
-        ).toHaveLength(2);
+        ).toHaveLength(1);
     });
 
     it('skal vise to uker ved termin og resten etter mors siste dag i fars forslag', async () => {
