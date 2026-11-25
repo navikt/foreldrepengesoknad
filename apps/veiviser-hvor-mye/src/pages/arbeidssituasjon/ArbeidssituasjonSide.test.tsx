@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 
+import { SidetittelProvider } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import * as stories from './ArbeidssituasjonSide.stories';
@@ -10,6 +11,17 @@ import * as stories from './ArbeidssituasjonSide.stories';
 const { Default } = composeStories(stories);
 
 describe('<ArbeidssituasjonSide>', () => {
+    it('skal sette en sidetittel som inkluderer sidens overskrift', async () => {
+        render(
+            <SidetittelProvider appTittel="Hvor mye kan jeg få i foreldrepenger?">
+                <Default />
+            </SidetittelProvider>,
+        );
+
+        expect(await screen.findByText('Hva er din nåværende arbeidssituasjon?')).toBeInTheDocument();
+        expect(document.title).toBe('Hva er din nåværende arbeidssituasjon? – Hvor mye kan jeg få i foreldrepenger?');
+    });
+
     it('skal velge arbeidstaker eller frilanser', async () => {
         const setArbeidssituasjon = vi.fn();
         const utils = render(<Default setArbeidssituasjon={setArbeidssituasjon} />);

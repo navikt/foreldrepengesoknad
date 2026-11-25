@@ -44,6 +44,7 @@
     "SimpleErrorPage.TryAgain": "Try planning again",
     "Step.HarValgfrieFelt": "All fields must be filled in, except fields marked with (optional).",
     "Step.HarObligatoriskeFelt": "All fields must be filled in.",
+    "Step.Sidetittel": "{stegnavn} – Step {stegnummer} of {antallSteg}",
     "FrontPage.Start": "Start",
     "RegisterdataUtdatert.Engangsstønad": "Lump-sum grant",
     "RegisterdataUtdatert.Foreldrepenger": "Parental benefit",

@@ -11,7 +11,7 @@ import { BodyShort, Box, Button, Heading, Label, Link, List, ReadMore, Spacer, V
 import { links } from '@navikt/fp-constants';
 import { RhfCheckbox, RhfForm, RhfFormattertTallTextField } from '@navikt/fp-form-hooks';
 import { Satser } from '@navikt/fp-types';
-import { BluePanel, Infobox, VeiviserPage } from '@navikt/fp-ui';
+import { BluePanel, Infobox, VeiviserPage, useSidetittel } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr, formatMånedÅr, useScrollBehaviour } from '@navikt/fp-utils';
 import { formatValue, isValidNumber, isValidNumberForm } from '@navikt/fp-validation';
 
@@ -61,6 +61,7 @@ interface Props {
 
 export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, satser }: Props) => {
     const intl = useIntl();
+    useSidetittel(intl.formatMessage({ id: 'ArbeidssituasjonSide.Arbeidssituasjon' }));
     const { goToRoute } = useVeiviserNavigator();
 
     const formMethods = useForm<Arbeidssituasjon>({
@@ -203,7 +204,9 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                             <RhfFormattertTallTextField
                                                 name="lønnMåned3"
                                                 control={formMethods.control}
-                                                label={capitalizeFirstLetter(formatMånedÅr(forrigeMåned.toDate(), intl))}
+                                                label={capitalizeFirstLetter(
+                                                    formatMånedÅr(forrigeMåned.toDate(), intl),
+                                                )}
                                                 className="w-[300px]"
                                                 validate={[
                                                     isValidNumberForm(

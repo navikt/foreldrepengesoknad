@@ -1,10 +1,10 @@
 import { CheckmarkCircleFillIcon, ChevronRightIcon } from '@navikt/aksel-icons';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Button, HStack, Heading, Loader, VStack } from '@navikt/ds-react';
 
 import { ForsendelseStatus } from '@navikt/fp-types';
-import { SkjemaRotLayout } from '@navikt/fp-ui';
+import { SkjemaRotLayout, useSidetittel } from '@navikt/fp-ui';
 import { getLenker } from '@navikt/fp-utils';
 
 export const Kvittering = ({
@@ -14,6 +14,9 @@ export const Kvittering = ({
     pageTitle: React.ReactNode;
     forsendelseStatus?: ForsendelseStatus;
 }) => {
+    const intl = useIntl();
+    useSidetittel(intl.formatMessage({ id: 'header.title' }));
+
     return (
         <SkjemaRotLayout pageTitle={pageTitle}>
             <KvitteringsInnhold forsendelseStatus={forsendelseStatus} />

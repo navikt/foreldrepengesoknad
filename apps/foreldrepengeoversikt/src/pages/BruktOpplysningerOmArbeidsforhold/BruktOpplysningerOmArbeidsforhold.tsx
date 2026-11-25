@@ -1,13 +1,17 @@
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
+import { useSidetittel } from '@navikt/fp-ui';
 import { getLenker } from '@navikt/fp-utils';
 
 import { LayoutWrapper } from '../../sections/LayoutWrapper.tsx';
 
 export const BruktOpplysningerOmArbeidsforhold = () => {
+    const intl = useIntl();
+    useSidetittel(intl.formatMessage({ id: 'BruktOpplysningerOmArbeidsforhold.tittel' }));
+
     return (
         // Merk: index.html har allereie <main id="app">; ikkje legg til eit nytt main her.
         <LayoutWrapper className="ax-md:pb-28 p-4">

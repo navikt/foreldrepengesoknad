@@ -2,7 +2,7 @@ import { ArrowLeftIcon, TasklistStartIcon, WalletIcon } from '@navikt/aksel-icon
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import dayjs from 'dayjs';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { erAlenesøker } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
@@ -12,7 +12,7 @@ import { BodyShort, Box, Button, HStack, Heading, Link, LinkCard, VStack } from 
 import { DATE_3_YEARS_AGO, links } from '@navikt/fp-constants';
 import { SkyraSurvey } from '@navikt/fp-observability';
 import { KontoBeregningResultatDto, Satser } from '@navikt/fp-types';
-import { Infobox } from '@navikt/fp-ui';
+import { Infobox, useSidetittel } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -30,9 +30,11 @@ interface Props {
 }
 
 export const OppsummeringSteg = ({ stønadskvoter, satser }: Props) => {
+    const intl = useIntl();
     const navigator = usePlanleggerNavigator();
 
     useScrollBehaviour();
+    useSidetittel(intl.formatMessage({ id: 'OppsummeringHeader.Tittel' }));
 
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));

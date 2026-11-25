@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { tilgjengeligeStønadskvoterOptions } from 'appData/queries';
 import dayjs from 'dayjs';
+import { useIntl } from 'react-intl';
 
 import { DEFAULT_SATSER, ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { SimpleErrorPage, Spinner } from '@navikt/fp-ui';
+import { SidetittelProvider, SimpleErrorPage, Spinner } from '@navikt/fp-ui';
 
 import { HvorMyeRouter } from './HvorMyeRouter';
 
@@ -16,6 +17,16 @@ const STØNADSKONTO_PARAMS = {
 };
 
 export const HvorMyeVeiviser = () => {
+    const intl = useIntl();
+
+    return (
+        <SidetittelProvider appTittel={intl.formatMessage({ id: 'HvorMyeForside.Title' })}>
+            <HvorMyeVeiviserInnhold />
+        </SidetittelProvider>
+    );
+};
+
+const HvorMyeVeiviserInnhold = () => {
     const stønadskvoterData = useQuery(tilgjengeligeStønadskvoterOptions(STØNADSKONTO_PARAMS));
 
     if (stønadskvoterData.error) {

@@ -1,10 +1,11 @@
 import { Buildings3Icon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Navigate, useParams } from 'react-router';
 
 import { Alert, BodyShort, Loader, Tag, VStack } from '@navikt/ds-react';
 
+import { useSidetittel } from '@navikt/fp-ui';
 import { formaterDatoUtenDag } from '@navikt/fp-utils';
 
 import { hentInntektsmelding } from '../../api/queries.ts';
@@ -13,6 +14,9 @@ import { LenkePanel } from '../../components/lenke-panel/LenkePanel';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 
 export const InntektsmeldingOversiktPage = () => {
+    const intl = useIntl();
+    useSidetittel(intl.formatMessage({ id: 'header.inntektRapportert' }));
+
     const params = useParams();
     const inntektsmeldingerQuery = useQuery(hentInntektsmelding(params.saksnummer!));
 
