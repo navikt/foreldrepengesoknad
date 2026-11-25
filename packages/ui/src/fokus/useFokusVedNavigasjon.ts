@@ -2,6 +2,11 @@ import { useEffect, useRef } from 'react';
 
 let sistFokuserteBesøk: string | undefined;
 
+// Tilbake/fram gjenoppretter en tidligere history-key, så besøket må glemmes for at overskriften skal fokuseres igjen.
+window.addEventListener('popstate', () => {
+    sistFokuserteBesøk = undefined;
+});
+
 // Skiller innlasting (også automatisk navigering til mellomlagret steg) fra navigering brukeren har utløst.
 const harBrukerenSamhandletMedSiden = () =>
     (navigator as Navigator & { userActivation?: { hasBeenActive: boolean } }).userActivation?.hasBeenActive ?? false;

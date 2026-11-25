@@ -59,6 +59,18 @@ describe('useFokusVedNavigasjon', () => {
         expect(screen.getByRole('heading', { name: 'Steg B' })).toHaveFocus();
     });
 
+    it('skal flytte fokus når brukeren går tilbake til en side via nettleserens tilbake-knapp', () => {
+        settBrukeraktivering(true);
+        history.replaceState({ key: 'steg' }, '');
+        const { unmount } = render(<Side nøkkel="Steg C" />);
+        expect(screen.getByRole('heading', { name: 'Steg C' })).toHaveFocus();
+        unmount();
+
+        window.dispatchEvent(new PopStateEvent('popstate', { state: { key: 'steg' } }));
+        render(<Side nøkkel="Steg C" />);
+        expect(screen.getByRole('heading', { name: 'Steg C' })).toHaveFocus();
+    });
+
     it('skal vente med fokus til overskriften er rendret', () => {
         settBrukeraktivering(true);
         const { rerender } = render(<SideSomLaster lastet={false} />);
