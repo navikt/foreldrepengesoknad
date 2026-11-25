@@ -4,6 +4,7 @@ import { ErrorSummary } from '@navikt/ds-react';
 
 export type ErrorSummaryError = {
     message?: string;
+    href: string;
     focus?: () => void;
 };
 
@@ -23,8 +24,11 @@ export const ErrorSummaryFelles = ({ errorRef, errors }: Props) => {
             {Object.values(errors).map((error) => (
                 <ErrorSummary.Item
                     key={error.message}
-                    onClick={() => {
+                    href={error.href}
+                    onClick={(event) => {
                         if (error.focus) {
+                            // Standardhoppet treffer fieldset for radio-/avkrysningsgrupper, som ikke kan få fokus.
+                            event.preventDefault();
                             error.focus();
                         }
                     }}

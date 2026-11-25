@@ -11,9 +11,10 @@ interface Props {
     name?: string;
     onBlur?: () => void;
     checkboxRef?: Ref<HTMLInputElement>;
+    id?: string;
 }
 
-export const SamtykkePanel = ({ label, checked, onChange, error, children, name, onBlur, checkboxRef }: Props) => {
+export const SamtykkePanel = ({ label, checked, onChange, error, children, name, onBlur, checkboxRef, id }: Props) => {
     const background = getBackground(checked, !!error);
 
     return (
@@ -21,6 +22,7 @@ export const SamtykkePanel = ({ label, checked, onChange, error, children, name,
             <VStack gap="space-16">
                 {children}
                 <Checkbox
+                    id={id}
                     ref={checkboxRef}
                     name={name}
                     onBlur={onBlur}

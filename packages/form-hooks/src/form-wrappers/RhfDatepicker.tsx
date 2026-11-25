@@ -8,6 +8,7 @@ import { DatePicker, useDatepicker } from '@navikt/ds-react';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT, TIDENES_ENDE, TIDENES_MORGEN } from '@navikt/fp-constants';
 
+import { useFeltId } from './feltId';
 import { ValidationReturnType, getError, getValidationRules, parseDatoInput } from './formUtils';
 
 dayjs.extend(customParseFormat);
@@ -53,6 +54,8 @@ export const RhfDatepicker = <T extends FieldValues>({
     const {
         formState: { errors },
     } = useFormContext();
+
+    const feltId = useFeltId(name, control);
 
     const { field } = useController({
         name,
@@ -150,6 +153,7 @@ export const RhfDatepicker = <T extends FieldValues>({
         >
             <DatePicker.Input
                 {...inputProps}
+                id={feltId}
                 ref={field.ref}
                 onChange={onChangeInput}
                 onBlur={onBlurInput}

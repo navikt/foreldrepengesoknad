@@ -3,6 +3,8 @@ import { FieldErrors, FieldValues, useFormContext } from 'react-hook-form';
 
 import { ErrorSummaryFelles } from '@navikt/fp-ui';
 
+import { lagFeltId } from '../form-wrappers/feltId';
+
 const findAllErrors = (errors: FieldErrors<FieldValues>, pathPrefix = ''): FieldErrors<FieldValues> => {
     return Object.keys(errors).reduce<FieldErrors<FieldValues>>((acc, fieldKey) => {
         const fieldValue = errors[fieldKey];
@@ -52,6 +54,7 @@ export const ErrorSummaryHookForm = () => {
     const {
         formState: { errors, submitCount },
         setFocus,
+        control,
     } = useFormContext();
 
     // `errors` gets a new object reference on every keystroke once the form has been submitted once
@@ -68,6 +71,7 @@ export const ErrorSummaryHookForm = () => {
 
     const mappedErrors = Object.entries(flattenAndUniqueErrors).map(([fieldName, error]) => ({
         message: typeof error?.message === 'string' ? error.message : undefined,
+        href: `#${lagFeltId(control, fieldName)}`,
         focus: () => setFocus(fieldName),
     }));
 

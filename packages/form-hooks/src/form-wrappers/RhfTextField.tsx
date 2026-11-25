@@ -5,6 +5,7 @@ import { TextFieldProps as DsTextFieldProps, TextField } from '@navikt/ds-react'
 
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-utils';
 
+import { useFeltId } from './feltId';
 import { ValidationReturnType, getError, getValidationRules } from './formUtils';
 
 type Props<T extends FieldValues> = {
@@ -20,7 +21,7 @@ type Props<T extends FieldValues> = {
     autofocusWhenEmpty?: boolean;
     customErrorFormatter?: (error: string | undefined) => ReactNode;
     control: UseControllerProps<T>['control'];
-} & DsTextFieldProps &
+} & Omit<DsTextFieldProps, 'id'> &
     Omit<UseControllerProps<T>, 'control'>;
 
 export const RhfTextField = <T extends FieldValues>({
@@ -42,6 +43,8 @@ export const RhfTextField = <T extends FieldValues>({
     const {
         formState: { errors },
     } = useFormContext<T>();
+
+    const feltId = useFeltId(name, control);
 
     const { field } = useController({
         name,
@@ -101,6 +104,7 @@ export const RhfTextField = <T extends FieldValues>({
             style={style}
             onChange={onChangeFn}
             {...rest}
+            id={feltId}
             onBlur={onBlurFn}
         />
     );
