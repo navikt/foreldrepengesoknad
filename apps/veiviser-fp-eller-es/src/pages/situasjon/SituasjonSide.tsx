@@ -103,7 +103,7 @@ export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjo
                         label={<FormattedMessage id="SituasjonSide.HvemErDu" />}
                         onChange={resetFieldsAndScroll('situasjon')}
                     >
-                        <Radio value={'mor' satisfies Situasjon} autoFocus>
+                        <Radio value={'mor' satisfies Situasjon}>
                             <FormattedMessage id="SituasjonSide.Mor" />
                         </Radio>
                         <Radio value={'far' satisfies Situasjon}>

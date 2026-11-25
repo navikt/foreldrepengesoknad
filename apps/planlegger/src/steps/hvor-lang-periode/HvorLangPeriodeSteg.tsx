@@ -195,7 +195,7 @@ export const HvorLangPeriodeSteg = ({ stønadskvoter }: Props) => {
                             ]}
                             onChange={scrollToBottom}
                         >
-                            <Radio value={'100'} autoFocus>
+                            <Radio value={'100'}>
                                 <FormattedMessage
                                     id="HvorLangPeriodeSteg.100"
                                     values={{

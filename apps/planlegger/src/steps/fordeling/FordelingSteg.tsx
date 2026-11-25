@@ -147,7 +147,7 @@ export const FordelingSteg = ({ stønadskvoter }: Props) => {
                                         ),
                                     ]}
                                 >
-                                    <Radio value="søker1" autoFocus>
+                                    <Radio value="søker1">
                                         {navnForHvemStarterPermisjon.navnSøker1}
                                     </Radio>
                                     <Radio value="søker2">{navnForHvemStarterPermisjon.navnSøker2}</Radio>

@@ -98,7 +98,7 @@ export const OmBarnetPlanleggerSteg = () => {
                                 scrollToBottom();
                             }}
                         >
-                            <Radio value={true} autoFocus>
+                            <Radio value={true}>
                                 <FormattedMessage id="OmBarnetSteg.Fødsel" />
                             </Radio>
                             <Radio value={false} disabled={erMorOgMedmor}>

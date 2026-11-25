@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { Heading, VStack } from '@navikt/ds-react';
 
-import { BlueHeading, Page, ProgressStep, ProgressStepper } from '@navikt/fp-ui';
+import { BlueHeading, Page, ProgressStep, ProgressStepper, useFokusVedNavigasjon } from '@navikt/fp-ui';
 
 interface Props {
     steps: Array<ProgressStep<PlanleggerRoutes>>;
@@ -13,22 +13,25 @@ interface Props {
     ref?: Ref<HTMLDivElement>;
 }
 
-export const PlanleggerStepPage = ({ steps, children, goToStep, ref }: Props) => (
-    <>
-        <Page
-            header={
-                <BlueHeading>
-                    <VStack gap="space-16">
-                        <Heading size="large">
-                            <FormattedMessage id="PlanleggerStepPage.Tittel" />
-                        </Heading>
-                        <ProgressStepper steps={steps} onStepChange={goToStep} hideHeader />
-                    </VStack>
-                </BlueHeading>
-            }
-        >
-            {children}
-        </Page>
-        <div ref={ref} />
-    </>
-);
+export const PlanleggerStepPage = ({ steps, children, goToStep, ref }: Props) => {
+    const overskriftRef = useFokusVedNavigasjon<HTMLHeadingElement>(steps.find((s) => s.isSelected)?.id);
+    return (
+        <>
+            <Page
+                header={
+                    <BlueHeading>
+                        <VStack gap="space-16">
+                            <Heading ref={overskriftRef} size="large">
+                                <FormattedMessage id="PlanleggerStepPage.Tittel" />
+                            </Heading>
+                            <ProgressStepper steps={steps} onStepChange={goToStep} hideHeader />
+                        </VStack>
+                    </BlueHeading>
+                }
+            >
+                {children}
+            </Page>
+            <div ref={ref} />
+        </>
+    );
+};

@@ -110,7 +110,7 @@ export const ArbeidssituasjonSteg = ({ satser }: Props) => {
                                 ]}
                                 onChange={scrollToBottom}
                             >
-                                <Radio value={Arbeidsstatus.JOBBER} autoFocus>
+                                <Radio value={Arbeidsstatus.JOBBER}>
                                     <FormattedMessage id="DefaultMessage.Ja" />
                                 </Radio>
                                 <Radio value={Arbeidsstatus.INGEN}>
