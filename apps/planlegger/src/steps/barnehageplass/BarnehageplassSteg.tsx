@@ -2,6 +2,7 @@ import { BabyWrappedIcon, InformationIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
+import { PlanleggerStegTittel } from 'components/page/PlanleggerStegTittel';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getFamiliehendelsedato } from 'steps/oppsummering/expansion-cards/BarnehageplassOppsummering';
@@ -9,7 +10,7 @@ import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { Uttaksdata } from 'utils/uttakUtils';
 
-import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react';
+import { BodyLong, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { OmBarnetPlanlegger } from '@navikt/fp-types';
@@ -46,9 +47,9 @@ export const BarnehageplassSteg = ({ uttaksdata }: Props) => {
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
             <VStack gap="space-32">
-                <Heading size="medium" level="2">
+                <PlanleggerStegTittel>
                     <FormattedMessage id="BarnehageplassSteg.Tittel" />
-                </Heading>
+                </PlanleggerStegTittel>
                 <VStack gap="space-20">
                     <BodyLong>
                         <FormattedMessage

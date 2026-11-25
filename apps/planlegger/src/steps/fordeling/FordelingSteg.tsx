@@ -3,6 +3,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
 import { BlueRadioGroup } from 'components/form-wrappers/BlueRadioGroup';
+import { PlanleggerStegTittel } from 'components/page/PlanleggerStegTittel';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -127,9 +128,9 @@ export const FordelingSteg = ({ stønadskvoter }: Props) => {
             <RhfForm formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
                 <VStack gap="space-40" style={{ flex: 1 }}>
                     <VStack gap="space-32">
-                        <Heading size="medium" spacing level="2">
+                        <PlanleggerStegTittel spacing>
                             <FormattedMessage id="FordelingSteg.Tittel" />
-                        </Heading>
+                        </PlanleggerStegTittel>
                         {skalSpørreOmHvemSomStarterPermisjonen && navnForHvemStarterPermisjon && (
                             <>
                                 <BlueRadioGroup

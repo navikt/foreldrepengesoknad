@@ -3,6 +3,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { PlanleggerRoutes } from 'appData/routes';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
+import { PlanleggerStegTittel } from 'components/page/PlanleggerStegTittel';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -11,7 +12,7 @@ import { erAlenesøker, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
-import { BodyShort, Heading, Link, Spacer, VStack } from '@navikt/ds-react';
+import { BodyShort, Link, Spacer, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { RhfForm, RhfFormattertTallTextField, StepButtonsHookForm } from '@navikt/fp-form-hooks';
@@ -88,9 +89,9 @@ export const HvorMyeSteg = ({ satser }: Props) => {
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
                 <VStack gap="space-40" style={{ flex: 1 }}>
                     <VStack gap="space-24">
-                        <Heading size="medium" spacing level="2">
+                        <PlanleggerStegTittel spacing>
                             <FormattedMessage id="HvorMyeSteg.Tittel" />
-                        </Heading>
+                        </PlanleggerStegTittel>
                         <VStack gap="space-8">
                             <BluePanel isDarkBlue={true}>
                                 <RhfFormattertTallTextField

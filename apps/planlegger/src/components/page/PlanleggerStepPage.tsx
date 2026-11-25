@@ -1,6 +1,7 @@
 import { PlanleggerRoutes } from 'appData/routes';
 import { Ref } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { useLocation } from 'react-router';
 
 import { Heading, VStack } from '@navikt/ds-react';
 
@@ -13,15 +14,10 @@ interface Props {
     ref?: Ref<HTMLDivElement>;
 }
 
-// Tittelen i headeren er lik på alle steg, så stegoverskriften i innholdet foretrekkes.
-const finnStegoverskrift = (tittel: HTMLHeadingElement) =>
-    tittel.closest('main')?.querySelector<HTMLHeadingElement>('h2') ?? tittel;
-
 export const PlanleggerStepPage = ({ steps, children, goToStep, ref }: Props) => {
-    const overskriftRef = useFokusVedNavigasjon<HTMLHeadingElement>(
-        steps.find((s) => s.isSelected)?.id,
-        finnStegoverskrift,
-    );
+    const { pathname } = useLocation();
+    // Reserve for steg uten PlanleggerStegTittel. Har steget en, har den allerede tatt fokus siden barnas effekter kjører først.
+    const overskriftRef = useFokusVedNavigasjon<HTMLHeadingElement>(pathname);
     return (
         <>
             <Page

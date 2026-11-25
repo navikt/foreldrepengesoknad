@@ -3,6 +3,7 @@ import { PlanleggerRoutes } from 'appData/routes';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
 import { BlueRadioGroup } from 'components/form-wrappers/BlueRadioGroup';
+import { PlanleggerStegTittel } from 'components/page/PlanleggerStegTittel';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -11,7 +12,7 @@ import { HvemPlanleggerType } from 'types/HvemPlanlegger';
 import { erAlenesøker as erAlene, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
-import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
+import { Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Satser } from '@navikt/fp-types';
@@ -85,9 +86,9 @@ export const ArbeidssituasjonSteg = ({ satser }: Props) => {
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
                 <VStack gap="space-40" style={{ flex: 1 }}>
                     <VStack gap="space-32">
-                        <Heading level="2" size="medium">
+                        <PlanleggerStegTittel>
                             <FormattedMessage id="ArbeidssituasjonSteg.Tittel" />
-                        </Heading>
+                        </PlanleggerStegTittel>
                         {(erAlenesøker || erFarOgFar) && (
                             <BlueRadioGroup
                                 name="status"

@@ -3,6 +3,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { PlanleggerRoutes } from 'appData/routes';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
+import { PlanleggerStegTittel } from 'components/page/PlanleggerStegTittel';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import dayjs from 'dayjs';
 import { isEqual } from 'es-toolkit';
@@ -11,7 +12,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { erAlenesøker as erAlene, erFarOgFar, erMedmorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 
-import { BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
+import { BodyShort, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { DATE_3_YEARS_AGO, links } from '@navikt/fp-constants';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
@@ -76,9 +77,9 @@ export const OmBarnetPlanleggerSteg = () => {
             <RhfForm formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
                 <VStack gap="space-40" style={{ flex: 1 }}>
                     <VStack gap="space-32">
-                        <Heading level="2" size="medium">
+                        <PlanleggerStegTittel>
                             <FormattedMessage id="OmBarnetSteg.Tittel" />
-                        </Heading>
+                        </PlanleggerStegTittel>
                         <BlueRadioGroup
                             name="erFødsel"
                             control={formMethods.control}

@@ -22,10 +22,7 @@ const finnOverskrift = (element: HTMLElement) =>
  * Ref-en settes på overskriften, eller på en container der første synlige h1 får fokus.
  * `nøkkel` identifiserer siden. Er den undefined, venter hooken (f.eks. til innholdet er lastet).
  */
-export const useFokusVedNavigasjon = <T extends HTMLElement>(
-    nøkkel: string | undefined,
-    finnMål: (element: T) => HTMLElement = finnOverskrift,
-) => {
+export const useFokusVedNavigasjon = <T extends HTMLElement>(nøkkel: string | undefined) => {
     const ref = useRef<T>(null);
 
     useEffect(() => {
@@ -43,7 +40,7 @@ export const useFokusVedNavigasjon = <T extends HTMLElement>(
             return;
         }
 
-        const mål = finnMål(element);
+        const mål = finnOverskrift(element);
         mål.setAttribute('tabindex', '-1');
         mål.focus();
     }, [nøkkel]);

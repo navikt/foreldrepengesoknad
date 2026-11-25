@@ -4,6 +4,7 @@ import { PlanleggerRoutes } from 'appData/routes';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
 import { BlueRadioGroup } from 'components/form-wrappers/BlueRadioGroup';
+import { PlanleggerStegTittel } from 'components/page/PlanleggerStegTittel';
 import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -14,7 +15,7 @@ import { erBarnetAdoptert } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
-import { BodyShort, Heading, Link, Radio, ReadMore, Spacer, VStack } from '@navikt/ds-react';
+import { BodyShort, Link, Radio, ReadMore, Spacer, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
@@ -102,9 +103,9 @@ export const HvorLangPeriodeSteg = ({ stønadskvoter }: Props) => {
             <RhfForm formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
                 <VStack gap="space-40" style={{ flex: 1 }}>
                     <VStack gap="space-32">
-                        <Heading size="medium" spacing level="2">
+                        <PlanleggerStegTittel spacing>
                             <FormattedMessage id="HvorLangPeriodeSteg.Tittel" />
-                        </Heading>
+                        </PlanleggerStegTittel>
                         <Infobox
                             header={<FormattedMessage id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTittel" />}
                             icon={
