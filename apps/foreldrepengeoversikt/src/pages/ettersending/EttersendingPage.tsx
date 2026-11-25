@@ -149,8 +149,8 @@ const EttersendingPageInner = ({ saker }: Props) => {
 
     return (
         <>
-            {/* role="status" må finnes i DOM før kvitteringen settes inn for at skjermlesere skal lese den opp */}
-            <div role="status" className={isSuccess ? 'mb-4' : undefined}>
+            {/* Statusregionen (<output>) må finnes i DOM før kvitteringen settes inn for at skjermlesere skal lese den opp */}
+            <output className={isSuccess ? 'mb-4 block' : undefined}>
                 {isSuccess && (
                     <LocalAlert status="success" role="none">
                         <LocalAlert.Header>
@@ -160,7 +160,7 @@ const EttersendingPageInner = ({ saker }: Props) => {
                         </LocalAlert.Header>
                     </LocalAlert>
                 )}
-            </div>
+            </output>
             {isSuccess || isError ? (
                 <VStack gap="space-16">
                     <ScrollToTop />

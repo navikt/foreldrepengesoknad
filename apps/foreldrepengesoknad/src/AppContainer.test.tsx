@@ -344,6 +344,7 @@ describe('<AppContainer>', () => {
         expect(varsel).toHaveTextContent(messages['Mellomlagring.FeiletVedFortsettSenere.Tittel']);
         expect(varsel).toHaveTextContent(messages['Mellomlagring.FeiletVedFortsettSenere']);
 
+        await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
         await userEvent.click(within(varsel).getByRole('button', { name: 'Lukk' }));
         expect(screen.queryByText(messages['Mellomlagring.FeiletVedFortsettSenere'])).not.toBeInTheDocument();
     });
