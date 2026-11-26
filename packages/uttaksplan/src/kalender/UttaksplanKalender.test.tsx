@@ -46,8 +46,6 @@ const historiskKalenderArgs = {
         })),
 };
 
-const SKJULT_LEGENDETEKST = 'script, style, .aksel-typo--visually-hidden';
-
 describe('UttaksplanKalender', () => {
     let opprinneligTid: Date;
     beforeEach(() => {
@@ -1436,7 +1434,7 @@ describe('UttaksplanKalender', () => {
             screen.getByText('Valgte datoer inneholder en eksisterende periode:').closest('div')!.parentElement!
                 .parentElement!,
         );
-        expect(div2.getByText('Avslått periode', { ignore: SKJULT_LEGENDETEKST })).toBeInTheDocument();
+        expect(div2.getByText('Avslått periode')).toBeInTheDocument();
 
         expect(div2.getAllByText('Endre')).toHaveLength(1);
         expect(div2.getByText('+ Utsettelse')).toBeInTheDocument();
@@ -1999,7 +1997,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getByRole('button', { name: 'Utvid panel' }));
 
-        expect(screen.getByText('Avslått periode', { ignore: SKJULT_LEGENDETEKST })).toBeInTheDocument();
+        expect(screen.getByText('Avslått periode')).toBeInTheDocument();
 
         await userEvent.click(screen.getByRole('button', { name: 'Slett dager fra periode' }));
 

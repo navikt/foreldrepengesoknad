@@ -29,11 +29,11 @@ describe('<UttaksplanLegend>', () => {
         expect(screen.getByRole('button', { name: 'Åpne fargeforklaring' })).toHaveFocus();
     });
 
-    it('skal vise ikke-klikkbare fargebokser som tekst for skjermleser og ikke som deaktiverte knapper', () => {
+    it('skal skjule ikke-klikkbare fargebokser uten tekst for skjermleser og ikke vise dem som deaktiverte knapper', () => {
         render(<VisAlleUtenTekst />);
 
         expect(screen.getAllByRole('button')).toHaveLength(1);
-        expect(screen.getByText('Helg')).toBeInTheDocument();
+        expect(screen.queryByText('Helg')).not.toBeInTheDocument();
     });
 
     it('skal vise valgt tilstand med aria-pressed på klikkbare forklaringer', async () => {

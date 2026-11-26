@@ -311,12 +311,17 @@ const LabelButton = ({
                     {visTekst && <BodyShort className="text-left">{label}</BodyShort>}
                 </CalendarLabel>
             )}
-            {!visTekst && <BodyShort visuallyHidden>{label}</BodyShort>}
+            {!visTekst && erKlikkbar && <BodyShort visuallyHidden>{label}</BodyShort>}
         </>
     );
 
     if (!erKlikkbar) {
-        return <div className="rounded-sm">{innhold}</div>;
+        // Dagene i kalenderen leser selv opp perioden, så fargeboksene uten tekst gir ingenting til skjermleser.
+        return (
+            <div className="rounded-sm" aria-hidden={!visTekst || undefined}>
+                {innhold}
+            </div>
+        );
     }
 
     return (
