@@ -176,7 +176,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
     const handleAddPeriode = (nyPeriode: UttakPeriodeDto[], skalForskyve: boolean) => {
         const builder = new UttakPeriodeBuilder(allePerioder, 'liste');
         if (uttaksplanperiode) {
-            builder.fjernUttakPerioder([uttaksplanperiode], false);
+            builder.fjernUttakPerioder([uttaksplanperiode], false, erPeriodeneTilAnnenPartLåst);
         }
         const nyePerioder = builder.leggTilUttakPerioder(nyPeriode, skalForskyve).getUttakPerioder();
 
@@ -227,7 +227,7 @@ export const LeggTilEllerEndrePeriodeListPanel = ({
             handleAddPeriode(enkelHandlingPerioder, skalForskyve);
         } else if (hvaVilDuGjøre === 'LEGG_TIL_OPPHOLD') {
             const nyeUttakPerioder = new UttakPeriodeBuilder(allePerioder, 'liste')
-                .fjernUttakPerioder([{ fom, tom }], false)
+                .fjernUttakPerioder([{ fom, tom }], false, erPeriodeneTilAnnenPartLåst)
                 .getUttakPerioder();
             notEmpty(uttaksplanRedigering).slettFraUttaksplanMedVarsel([{ fom, tom }], nyeUttakPerioder, () =>
                 setIsLeggTilPeriodePanelOpen(false),

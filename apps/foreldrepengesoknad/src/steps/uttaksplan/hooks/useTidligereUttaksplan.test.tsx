@@ -571,6 +571,18 @@ describe('useTidligereUttaksplan', () => {
         expect(result.current.perioder).toBeUndefined();
     });
 
+    it('låser ikke annen parts perioder når annen parts plan forkastes og et nytt forslag lages', () => {
+        const { result } = renderHook(() => useTidligereUttaksplan(), {
+            wrapper: getWrapper(
+                { ...lagUttaksplan(PERIODER), annenPartRedigerbar: false },
+                { initialState: { [ContextDataType.PERIODE_MED_FORELDREPENGER]: '80' } },
+            ),
+        });
+
+        expect(result.current.perioder).toBeUndefined();
+        expect(result.current.erAnnenPartRedigerbar).toBe(true);
+    });
+
     it('bruker annen parts vedtak selv om søker har valgt en annen dekningsgrad', () => {
         const vedtak: UttakPeriodeDto = {
             ...PERIODER[1]!,

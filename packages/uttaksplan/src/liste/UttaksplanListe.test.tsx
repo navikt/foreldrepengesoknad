@@ -1210,6 +1210,58 @@ describe('UttaksplanListe', () => {
         ]);
     });
 
+    it('Skal beholde annen parts låste uttak når søker forkorter et samtidig uttak', async () => {
+        const oppdaterUttaksplan = vi.fn();
+        const annenPart = {
+            forelder: 'MOR',
+            kontoType: 'MØDREKVOTE',
+            samtidigUttak: 50,
+            gradering: { arbeidstidprosent: 50 },
+            flerbarnsdager: false,
+        } as const;
+        const søker = {
+            forelder: 'FAR_MEDMOR',
+            kontoType: 'FEDREKVOTE',
+            samtidigUttak: 50,
+            gradering: { arbeidstidprosent: 50 },
+            flerbarnsdager: false,
+        } as const;
+
+        render(
+            <FarSøkerEtterAtMorHarSøkt
+                oppdaterUttaksplan={oppdaterUttaksplan}
+                perioder={[{ fom: '2024-06-03', tom: '2024-06-14', søker, annenPart }]}
+            />,
+        );
+
+        const header = await screen.findByTestId('2024-06-03 - 2024-06-14');
+        await userEvent.click(header);
+        await userEvent.click(
+            within(header.closest<HTMLElement>('.aksel-vstack')!).getByRole('button', { name: 'Endre' }),
+        );
+        const uker = screen.getByRole('textbox', { name: 'Uker' });
+        await userEvent.clear(uker);
+        await userEvent.type(uker, '1');
+        await userEvent.tab();
+        expect(screen.getByLabelText('Til og med dato')).toHaveValue('07.06.2024');
+        await userEvent.click(screen.getByText('Ferdig, legg til i plan'));
+
+        expect(oppdaterUttaksplan).toHaveBeenCalledTimes(1);
+        expect(oppdaterUttaksplan).toHaveBeenNthCalledWith(1, [
+            { fom: '2024-06-03', tom: '2024-06-07', søker, annenPart },
+            {
+                fom: '2024-06-10',
+                tom: '2024-06-14',
+                annenPart: {
+                    forelder: 'MOR',
+                    kontoType: 'MØDREKVOTE',
+                    gradering: { arbeidstidprosent: 50 },
+                    flerbarnsdager: false,
+                },
+            },
+        ]);
+    });
+
     it('Skal slette samtidig uttak for begge når annen parts perioder ikke er låst', async () => {
         const oppdaterUttaksplan = vi.fn();
 

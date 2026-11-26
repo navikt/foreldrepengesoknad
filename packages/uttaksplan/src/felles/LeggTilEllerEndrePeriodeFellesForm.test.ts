@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { UttakPeriodeDto } from '@navikt/fp-types';
+import { notEmpty } from '@navikt/fp-validation';
 
 import { harPeriodeMedUkjentGraderingsaktivitet } from '../utils/periodeUtils';
 import {
@@ -427,5 +428,44 @@ describe('beholdLåstAnnenPartsSamtidigeUttak', () => {
 
     it('endrer ingenting når annen parts perioder ikke er låst', () => {
         expect(beholdLåstAnnenPartsSamtidigeUttak([nyPeriode], eksisterende, false)).toEqual([nyPeriode]);
+    });
+
+    it('deler søkers periode ved grensen når den går forbi annen parts låste uttak', () => {
+        const forbi = { ...nyPeriode, fom: '2026-01-26', tom: '2026-02-06' };
+        expect(beholdLåstAnnenPartsSamtidigeUttak([forbi], eksisterende, true)).toEqual([
+            { ...forbi, tom: '2026-01-31', annenPart: farsLåsteUttak },
+            { ...forbi, fom: '2026-02-02' },
+        ]);
+    });
+
+    it('lager ingen helgeperiode når søkers periode bare berører helgen i en låst periode', () => {
+        const fraLørdag = { ...nyPeriode, fom: '2026-01-31', tom: '2026-02-06' };
+        expect(beholdLåstAnnenPartsSamtidigeUttak([fraLørdag], eksisterende, true)).toEqual([fraLørdag]);
+    });
+
+    it('lager ingen helgeperiode mellom to låste perioder på hver sin side av en helg', () => {
+        const farsAndreUttak = { ...farsLåsteUttak, samtidigUttak: 30 };
+        const låste = [
+            { ...notEmpty(eksisterende[0]), fom: '2026-01-12', tom: '2026-01-16' },
+            { ...notEmpty(eksisterende[0]), fom: '2026-01-19', tom: '2026-01-23', annenPart: farsAndreUttak },
+        ];
+        const over = { ...nyPeriode, fom: '2026-01-12', tom: '2026-01-23' };
+        expect(beholdLåstAnnenPartsSamtidigeUttak([over], låste, true)).toEqual([
+            { ...over, tom: '2026-01-16', annenPart: farsLåsteUttak },
+            { ...over, fom: '2026-01-19', annenPart: farsAndreUttak },
+        ]);
+    });
+
+    it('beholder annen parts låste uttak i hver periode når søkers periode går over to låste perioder', () => {
+        const farsAndreUttak = { ...farsLåsteUttak, samtidigUttak: 30 };
+        const toPerioder = [
+            { ...notEmpty(eksisterende[0]), tom: '2026-01-15' },
+            { ...notEmpty(eksisterende[0]), fom: '2026-01-16', annenPart: farsAndreUttak },
+        ];
+        const over = { ...nyPeriode, fom: '2026-01-12', tom: '2026-01-23' };
+        expect(beholdLåstAnnenPartsSamtidigeUttak([over], toPerioder, true)).toEqual([
+            { ...over, tom: '2026-01-15', annenPart: farsLåsteUttak },
+            { ...over, fom: '2026-01-16', annenPart: farsAndreUttak },
+        ]);
     });
 });
