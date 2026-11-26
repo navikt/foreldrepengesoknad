@@ -3,7 +3,9 @@ import { UttakDto, UttakPeriodeDto } from '@navikt/fp-types';
 import {
     erAvslåttPeriode,
     erPerioderEkslFomTomLike,
+    erSamtidigUttakMedSøker,
     finnAntallTidelerÅTrekkeForUttak,
+    finnSamtidigUttaksprosent,
     harPeriodeDerMorsAktivitetIkkeErValgt,
     harPeriodeMedUkjentGraderingsaktivitet,
     sorterUttakPerioder,
@@ -405,5 +407,42 @@ describe('erAvslåttPeriode', () => {
 
     it('skal ikkje rekna periode utan partar som avslått', () => {
         expect(erAvslåttPeriode({ fom: FOM, tom: FOM })).toBe(false);
+    });
+});
+
+describe('erSamtidigUttakMedSøker', () => {
+    const morsUttak: UttakDto = { forelder: 'MOR', kontoType: 'MØDREKVOTE', samtidigUttak: 100, flerbarnsdager: false };
+
+    it('skal være samtidig uttak når begge har uttak og én har samtidigUttak', () => {
+        expect(erSamtidigUttakMedSøker({ fom: FOM, tom: TOM, søker: morsUttak, annenPart: lagFarUttak() })).toBe(true);
+    });
+
+    it('skal ikke være samtidig uttak når den andre parten har ferie', () => {
+        expect(
+            erSamtidigUttakMedSøker({
+                fom: FOM,
+                tom: TOM,
+                søker: morsUttak,
+                annenPart: lagFarUttak({ kontoType: undefined, utsettelseÅrsak: 'FERIE' }),
+            }),
+        ).toBe(false);
+    });
+
+    it('skal ikke være samtidig uttak når bare søker har periode', () => {
+        expect(erSamtidigUttakMedSøker({ fom: FOM, tom: TOM, søker: morsUttak })).toBe(false);
+    });
+});
+
+describe('finnSamtidigUttaksprosent', () => {
+    it('skal bruke oppgitt samtidigUttak', () => {
+        expect(finnSamtidigUttaksprosent(lagFarUttak({ samtidigUttak: 40 }))).toBe(40);
+    });
+
+    it('skal regne ut og runde av uttaksprosent fra gradering når samtidigUttak mangler', () => {
+        expect(
+            finnSamtidigUttaksprosent(
+                lagFarUttak({ gradering: { arbeidstidprosent: 80.1, aktivitet: { type: 'ORDINÆRT_ARBEID' } } }),
+            ),
+        ).toBe(19.9);
     });
 });

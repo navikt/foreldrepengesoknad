@@ -125,7 +125,12 @@ export const erUttaksperiode = (periode: Uttaksplanperiode) =>
 export const erSamtidigUttakMedSøker = (periode: UttakPeriodeDto) =>
     !!periode.søker &&
     !!periode.annenPart &&
+    Uttaksperioden.erUttaksperiode(periode.søker) &&
+    Uttaksperioden.erUttaksperiode(periode.annenPart) &&
     (periode.søker.samtidigUttak !== undefined || periode.annenPart.samtidigUttak !== undefined);
+
+export const finnSamtidigUttaksprosent = (uttak: UttakDto) =>
+    uttak.samtidigUttak ?? Math.round((100 - (uttak.gradering?.arbeidstidprosent ?? 0)) * 100) / 100;
 
 export const erPrematuruker = (periode: Uttaksplanperiode) =>
     erPeriodeDto(periode) && finnAlleUttak(periode).some((uttak) => Uttaksperioden.erPrematuruker(uttak));

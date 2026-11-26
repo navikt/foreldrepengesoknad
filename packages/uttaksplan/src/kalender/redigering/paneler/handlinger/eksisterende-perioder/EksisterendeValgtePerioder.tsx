@@ -18,7 +18,6 @@ import {
     BrukerRolleSak_fpoversikt,
     NavnPåForeldre,
     UtsettelseÅrsak,
-    UttakDto,
     UttakOverføringÅrsak_fpoversikt,
 } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
@@ -29,7 +28,7 @@ import { UttakPeriodeMedAntallDager } from '../../../../../kalender/redigering/u
 import { getForelderVisningsnavnForFarOgFar } from '../../../../../liste/utils/uttaksplanListeUtils';
 import { useEksisterendeValgtePeriodeAlerts } from '../../../../../regler/alert/informasjonsAlertHooks';
 import { getVarighetString } from '../../../../../utils/dateUtils';
-import { erSamtidigUttakMedSøker } from '../../../../../utils/periodeUtils';
+import { erSamtidigUttakMedSøker, finnSamtidigUttaksprosent } from '../../../../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from '../../../context/KalenderRedigeringContext';
 
 interface Props {
@@ -200,9 +199,6 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
         </VStack>
     );
 };
-
-const finnSamtidigUttaksprosent = (uttak: UttakDto) =>
-    uttak.samtidigUttak ?? 100 - (uttak.gradering?.arbeidstidprosent ?? 0);
 
 const SamtidigUttak = ({
     periode,

@@ -2,7 +2,7 @@ import { useIntl } from 'react-intl';
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 
 import { Barn, EksternArbeidsforholdDto_fpoversikt, UttakDto } from '@navikt/fp-types';
-import { skalBesvareFlerbarnsdager } from '@navikt/fp-uttaksplan/flerbarnsdager';
+import { finnSamtidigUttaksprosent, skalBesvareFlerbarnsdager } from '@navikt/fp-uttaksplan/periode-utils';
 
 import { getAktivitetTekst } from '../OppsummeringUtils';
 import { Feltoppsummering } from './Feltoppsummering';
@@ -28,13 +28,13 @@ export const Uttaksperiodedetaljer = ({
     const intl = useIntl();
 
     const erDeltUttakINorge = isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge;
-    const samtidigUttak = erSamtidigUttak ? uttak.samtidigUttak : undefined;
+    const samtidigUttak = erSamtidigUttak ? finnSamtidigUttaksprosent(uttak) : undefined;
 
     const skalViseFlerbarnsdager = skalBesvareFlerbarnsdager(
         barn.antallBarn,
         uttak.forelder,
         uttak.kontoType,
-        uttak.samtidigUttak,
+        samtidigUttak,
     );
 
     return (

@@ -636,7 +636,34 @@ describe('<Oppsummering>', () => {
         ).toBeInTheDocument();
     });
 
-    it('Skal ikke vise samtidig uttak når bare søker har uttak i perioden', async () => {
+    it('Skal ikke vise samtidig uttak når annen part har ferie i perioden', async () => {
+        render(
+            <FarMedMorSomHarRettINorge
+                uttaksplan={[
+                    {
+                        fom: '2022-04-13',
+                        tom: '2022-04-26',
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FEDREKVOTE',
+                            samtidigUttak: 100,
+                            flerbarnsdager: false,
+                        },
+                        annenPart: {
+                            forelder: 'MOR',
+                            utsettelseÅrsak: 'FERIE',
+                            flerbarnsdager: false,
+                        },
+                    },
+                ]}
+            />,
+        );
+
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(screen.queryByText('Vi skal ha samtidig uttak:')).not.toBeInTheDocument();
+    });
+
+    it('Skal vise samtidig uttak for begge foreldre selv om bare én har oppgitt prosent, men ikke når bare søker har uttak', async () => {
         render(
             <FarMedMorSomHarRettINorge
                 uttaksplan={[
@@ -652,7 +679,6 @@ describe('<Oppsummering>', () => {
                         annenPart: {
                             forelder: 'MOR',
                             kontoType: 'MØDREKVOTE',
-                            samtidigUttak: 50,
                             flerbarnsdager: false,
                         },
                     },

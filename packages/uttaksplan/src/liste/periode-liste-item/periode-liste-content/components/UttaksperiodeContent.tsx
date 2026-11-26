@@ -12,6 +12,7 @@ import { Uttaksplanperiode, erPeriodeDto } from '../../../../types/UttaksplanPer
 import { getVarighetString } from '../../../../utils/dateUtils';
 import {
     erAvslåttPeriode,
+    finnSamtidigUttaksprosent,
     finnUttakForForelder,
     harPeriodeDerMorsAktivitetIkkeErValgt,
     harPeriodeMedUkjentGraderingsaktivitet,
@@ -181,8 +182,13 @@ const getTekstForArbeidOgSamtidigUttak = (
         );
     }
 
-    if (erSamtidigUttak && uttak.samtidigUttak !== undefined) {
-        return getSamtidigUttakTekst(uttak.samtidigUttak, uttak.forelder, erFarEllerMedmor, navnPåForeldre);
+    if (erSamtidigUttak) {
+        return getSamtidigUttakTekst(
+            finnSamtidigUttaksprosent(uttak),
+            uttak.forelder,
+            erFarEllerMedmor,
+            navnPåForeldre,
+        );
     }
 
     return undefined;

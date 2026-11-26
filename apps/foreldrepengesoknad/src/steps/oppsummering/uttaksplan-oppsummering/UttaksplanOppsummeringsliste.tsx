@@ -25,6 +25,7 @@ import {
     formatDateMedUkedagShortMonth,
     getFamiliehendelsedato,
 } from '@navikt/fp-utils';
+import { erSamtidigUttakMedSøker } from '@navikt/fp-uttaksplan/periode-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { uttaksperiodeKanJusteresVedFødsel } from './OppsummeringUtils';
@@ -200,7 +201,7 @@ const UttaksplanListe = ({
                                             {getUttaksperiodeNavn(periode, uttak)}
                                             <Uttaksperiodedetaljer
                                                 uttak={uttak}
-                                                erSamtidigUttak={!!periode.søker && !!periode.annenPart}
+                                                erSamtidigUttak={erSamtidigUttakMedSøker(periode)}
                                                 registrerteArbeidsforhold={registrerteArbeidsforhold}
                                                 annenForelder={annenForelder}
                                                 barn={barn}

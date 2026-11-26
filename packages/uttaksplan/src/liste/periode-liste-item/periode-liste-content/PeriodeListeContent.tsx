@@ -22,6 +22,7 @@ import {
     erAvslåttPeriode,
     erOverføringsperiode,
     erPrematuruker,
+    erSamtidigUttakMedSøker,
     erUtsettelsesperiode,
     erUttaksperiode,
 } from '../../../utils/periodeUtils';
@@ -105,7 +106,9 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
                                     periode={periode}
                                     navnPåForeldre={navnPåForeldre}
                                     erFarEllerMedmor={søker === 'FAR_MEDMOR'}
-                                    erSamtidigUttak={erUttaksplanperiodeSamtidigUttak([uttaksplanperiode])}
+                                    erSamtidigUttak={
+                                        erPeriodeDto(uttaksplanperiode) && erSamtidigUttakMedSøker(uttaksplanperiode)
+                                    }
                                     inneholderKunEnPeriode={inneholderKunEnPeriode}
                                 />
                             )),

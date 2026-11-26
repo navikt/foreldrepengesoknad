@@ -78,6 +78,12 @@ describe('UttaksplanKalender', () => {
         expect(within(april).getByTestId('day:17;dayColor:LIGHTGREENBLUE')).toBeInTheDocument();
         expect(within(april).getByTestId('day:18;dayColor:BLUE')).toBeInTheDocument();
         expect(within(april).getAllByTestId('dayColor:LIGHTGREENBLUE', { exact: false })).toHaveLength(10);
+        expect(within(april).getByTestId('day:17;dayColor:LIGHTGREENBLUE')).toHaveAccessibleName(
+            expect.stringContaining('Samtidig uttaksperiode'),
+        );
+        expect(within(april).getByTestId('day:18;dayColor:BLUE')).toHaveAccessibleName(
+            expect.stringContaining('Mødrekvote'),
+        );
     });
 
     it('skal vise 100 % for forelderen uten samtidigUttak når bare den andre har oppgitt prosent', async () => {
@@ -106,6 +112,11 @@ describe('UttaksplanKalender', () => {
         const panel = screen.getByTestId('eksisterende-periode-2024-04-04-2024-04-17');
         expect(within(panel).getByText('Mor har 100 % mødrekvote')).toBeInTheDocument();
         expect(within(panel).getByText('Far har 100 % fedrekvote')).toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Endre')[0]!);
+
+        expect(screen.getByLabelText('Hvor mange prosent til mor?')).toHaveValue('100');
+        expect(screen.getByLabelText('Hvor mange prosent til far?')).toHaveValue('100');
     });
 
     it('skal vise riktige labels og farger på periodene i kalender med gradering, samtidig uttak og tapte dager', () => {
