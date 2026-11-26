@@ -18,7 +18,6 @@ import { LeggTilAndreInntekterWizard } from './components/andre-inntekter/LeggTi
 import { ArbeidsforholdInformasjon } from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
 import { BrukerKanIkkeSøke } from './components/bruker-kan-ikke-søke/BrukerKanIkkeSøke';
 import { InfoOmArbeidIUtlandet } from './components/info-om-arbeid-i-utlandet/InfoOmArbeidIUtlandet';
-import { InfoOmFørstegangstjeneste } from './components/info-om-førstegangstjeneste/InfoOmFørstegangstjeneste';
 import { AndreInntektskilder, AndreInntektskilderUtkast, erFerdigUtfylt } from './types/AndreInntektskilder';
 
 interface Props<TYPE> {
@@ -126,7 +125,6 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                         />
                         {erSvp && <InfoOmArbeidIUtlandet />}
                     </VStack>
-                    <VStack gap="space-16">{erSvp && <InfoOmFørstegangstjeneste />}</VStack>
                     {erSvp && kanIkkeSøke && <BrukerKanIkkeSøke />}
                     <StepButtons
                         onFortsettSenere={onFortsettSenere}
