@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Navigate, useParams } from 'react-router';
 
-import { Alert, BodyShort, Button, Heading, Loader, VStack } from '@navikt/ds-react';
+import { Button, Heading, Loader, LocalAlert, VStack } from '@navikt/ds-react';
 
 import { EttersendelseDto } from '@navikt/fp-types';
 import { useSidetittel } from '@navikt/fp-ui';
@@ -38,11 +38,13 @@ export const MinidialogPage = () => {
     if (minidialogQuery.isError && !minidialogQuery.data) {
         return (
             <PageRouteLayout header={sak ? <DinSakHeader sak={sak} /> : undefined}>
-                <Alert variant="error">
-                    <VStack gap="space-16" align="start">
-                        <BodyShort>
+                <LocalAlert status="error">
+                    <LocalAlert.Header>
+                        <LocalAlert.Title>
                             <FormattedMessage id="miniDialog.feilVedHenting" />
-                        </BodyShort>
+                        </LocalAlert.Title>
+                    </LocalAlert.Header>
+                    <LocalAlert.Content>
                         <Button
                             size="small"
                             variant="secondary"
@@ -51,8 +53,8 @@ export const MinidialogPage = () => {
                         >
                             <FormattedMessage id="miniDialog.prøvIgjen" />
                         </Button>
-                    </VStack>
-                </Alert>
+                    </LocalAlert.Content>
+                </LocalAlert>
             </PageRouteLayout>
         );
     }

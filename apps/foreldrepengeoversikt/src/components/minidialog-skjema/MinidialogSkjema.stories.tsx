@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
+import { MemoryRouter } from 'react-router';
 import { action } from 'storybook/actions';
 import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo.ts';
 
@@ -14,9 +15,11 @@ const meta = {
     decorators: [withQueryClient],
     render: (props) => {
         return (
-            <div style={{ backgroundColor: 'white', padding: '50px' }}>
-                <MinidialogSkjema {...props} />
-            </div>
+            <MemoryRouter>
+                <div style={{ backgroundColor: 'white', padding: '50px' }}>
+                    <MinidialogSkjema {...props} />
+                </div>
+            </MemoryRouter>
         );
     },
 } satisfies Meta<typeof MinidialogSkjema>;
@@ -54,4 +57,11 @@ export const SkalFeileOpplasting: Story = {
     },
 
     args: SkalIkkeFeileOpplasting.args,
+};
+
+export const SkalViseFeilVedInnsending: Story = {
+    args: {
+        ...SkalIkkeFeileOpplasting.args,
+        ettersendelseError: 'Vi klarte ikke å sende inn informasjonen din.',
+    },
 };

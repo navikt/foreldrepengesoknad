@@ -5,13 +5,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router';
 
 import {
-    Alert,
     Button,
     Chat,
     ErrorSummary,
     GuidePanel,
     HStack,
     Link,
+    LocalAlert,
     Radio,
     RadioGroup,
     Textarea,
@@ -111,7 +111,14 @@ export const MinidialogSkjema = ({
         return (
             <VStack gap="space-16">
                 <ScrollToTop />
-                <Alert variant="error"> {ettersendelseError}</Alert>
+                <LocalAlert status="error">
+                    <LocalAlert.Header>
+                        <LocalAlert.Title as="h3">
+                            <FormattedMessage id="miniDialog.sendingFeilet.tittel" />
+                        </LocalAlert.Title>
+                    </LocalAlert.Header>
+                    <LocalAlert.Content>{ettersendelseError}</LocalAlert.Content>
+                </LocalAlert>
                 <Link as={RouterLink} to={`/sak/${minidialog.saksnummer}`}>
                     <FormattedMessage id="miniDialog.kvittering.gåTilbakeTilSaken" />
                 </Link>
