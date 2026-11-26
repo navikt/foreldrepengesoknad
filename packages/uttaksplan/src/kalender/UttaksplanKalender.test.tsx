@@ -119,6 +119,40 @@ describe('UttaksplanKalender', () => {
         expect(screen.getByLabelText('Hvor mange prosent til far?')).toHaveValue('100');
     });
 
+    it('skal vise medmorkvote for medmor som annen part i samtidig uttak', async () => {
+        render(
+            <MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering
+                foreldreInfo={{
+                    rettighetType: 'BEGGE_RETT',
+                    søker: 'MOR',
+                    navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hilde' },
+                    erMedmorDelAvSøknaden: true,
+                }}
+                perioder={[
+                    {
+                        fom: '2024-04-04',
+                        tom: '2024-04-17',
+                        søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
+                        annenPart: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FEDREKVOTE',
+                            samtidigUttak: 100,
+                            flerbarnsdager: false,
+                        },
+                    },
+                ]}
+            />,
+        );
+
+        const april = screen.getByTestId('year:2024;month:3');
+        await userEvent.click(within(april).getByTestId('day:10;dayColor:LIGHTGREENBLUE'));
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        const panel = screen.getByTestId('eksisterende-periode-2024-04-04-2024-04-17');
+        expect(within(panel).getByText('Mor har 100 % mødrekvote')).toBeInTheDocument();
+        expect(within(panel).getByText('Medmor har 100 % medmorkvote')).toBeInTheDocument();
+    });
+
     it('skal vise riktige labels og farger på periodene i kalender med gradering, samtidig uttak og tapte dager', () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 

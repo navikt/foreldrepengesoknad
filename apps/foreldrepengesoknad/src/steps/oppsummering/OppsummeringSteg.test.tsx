@@ -6,7 +6,7 @@ import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
 import { vi } from 'vitest';
 
-import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
+import { BarnType, DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { notEmpty } from '@navikt/fp-validation';
 
 import * as stories from './OppsummeringSteg.stories';
@@ -698,5 +698,33 @@ describe('<Oppsummering>', () => {
 
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
         expect(screen.getAllByText('Vi skal ha samtidig uttak:')).toHaveLength(2);
+    });
+    it('Skal vise registrert valg om flerbarnsdager selv om perioden ikke lenger er samtidig uttak', async () => {
+        render(
+            <FarMedMorSomHarRettINorge
+                barn={{ type: BarnType.FØDT, fødselsdatoer: ['2021-03-15'], antallBarn: 2 }}
+                uttaksplan={[
+                    {
+                        fom: '2022-03-30',
+                        tom: '2022-04-12',
+                        søker: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
+                    },
+                    {
+                        fom: '2022-04-13',
+                        tom: '2022-04-26',
+                        annenPart: {
+                            forelder: 'MOR',
+                            kontoType: 'MØDREKVOTE',
+                            samtidigUttak: 100,
+                            flerbarnsdager: true,
+                        },
+                    },
+                ]}
+            />,
+        );
+
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(screen.getByText('Frida ønsker å benytte meg av flerbarnsdager:')).toBeInTheDocument();
+        expect(screen.queryByText('Vi skal ha samtidig uttak:')).not.toBeInTheDocument();
     });
 });

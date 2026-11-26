@@ -30,12 +30,9 @@ export const Uttaksperiodedetaljer = ({
     const erDeltUttakINorge = isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge;
     const samtidigUttak = erSamtidigUttak ? finnSamtidigUttaksprosent(uttak) : undefined;
 
-    const skalViseFlerbarnsdager = skalBesvareFlerbarnsdager(
-        barn.antallBarn,
-        uttak.forelder,
-        uttak.kontoType,
-        samtidigUttak,
-    );
+    const skalViseFlerbarnsdager =
+        uttak.flerbarnsdager ||
+        skalBesvareFlerbarnsdager(barn.antallBarn, uttak.forelder, uttak.kontoType, samtidigUttak);
 
     return (
         <>

@@ -244,7 +244,7 @@ const SamtidigUttak = ({
                         values={{
                             kvote: annenPart.kontoType,
                             prosent: finnSamtidigUttaksprosent(annenPart),
-                            erMedmor: søker?.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden,
+                            erMedmor: annenPart.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden,
                         }}
                     />
                 </BodyShort>
