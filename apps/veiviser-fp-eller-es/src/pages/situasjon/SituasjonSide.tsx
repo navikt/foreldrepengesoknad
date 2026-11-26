@@ -11,7 +11,7 @@ import { BodyShort, Box, Button, Heading, Label, Link, List, Radio, ReadMore, Sp
 import { links } from '@navikt/fp-constants';
 import { RhfForm, RhfNumericField } from '@navikt/fp-form-hooks';
 import { Satser } from '@navikt/fp-types';
-import { BluePanel, Infobox, VeiviserPage } from '@navikt/fp-ui';
+import { BluePanel, Infobox, VeiviserPage, useSidetittel } from '@navikt/fp-ui';
 import { formatCurrencyWithKr, useScrollBehaviour } from '@navikt/fp-utils';
 import { formatValue, isValidDecimal, isValidNumberForm } from '@navikt/fp-validation';
 
@@ -62,6 +62,7 @@ interface Props {
 
 export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjon }: Props) => {
     const intl = useIntl();
+    useSidetittel(intl.formatMessage({ id: 'SituasjonSide.HvemErDu' }));
     const [visUnder6GMelding, setVisUnder6GMelding] = useState(false);
     const { goToRoute } = useVeiviserNavigator();
 

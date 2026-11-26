@@ -5,6 +5,7 @@ import { Textarea } from '@navikt/ds-react';
 
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-utils';
 
+import { useFeltId } from './feltId';
 import { ValidationReturnType, getError, getValidationRules } from './formUtils';
 
 type Props<T extends FieldValues> = {
@@ -31,6 +32,8 @@ export const RhfTextarea = <T extends FieldValues>({
     const {
         formState: { errors },
     } = useFormContext();
+
+    const feltId = useFeltId(name, control);
 
     const { field } = useController({
         name,
@@ -65,6 +68,7 @@ export const RhfTextarea = <T extends FieldValues>({
 
     return (
         <Textarea
+            id={feltId}
             label={label}
             description={description}
             className={className}

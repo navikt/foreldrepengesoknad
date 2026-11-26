@@ -23,6 +23,7 @@ export { Umyndig } from './src/umyndig/Umyndig';
 export { IntlProvider } from './src/intl/IntlProvider';
 export { Step } from './src/step/page-step/Step';
 export { useFokusVedNavigasjon } from './src/fokus/useFokusVedNavigasjon';
+export { SidetittelProvider, useSidetittel, useStegSidetittel } from './src/sidetittel/Sidetittel';
 export { StepFooter } from './src/step/page-step/step-footer/StepFooter';
 export { ProgressStepper } from './src/step/progress-stepper/ProgressStepper';
 export { Card } from './src/card/Card';

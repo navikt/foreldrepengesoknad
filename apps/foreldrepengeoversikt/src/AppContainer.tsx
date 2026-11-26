@@ -1,10 +1,11 @@
+import { useIntl } from 'react-intl';
 import { Route, Routes } from 'react-router';
 
 import { AppShell, createDefaultQueryClient } from '@navikt/fp-app-shell';
 import { filopplasterMessages } from '@navikt/fp-filopplaster';
 import { formHookMessages } from '@navikt/fp-form-hooks';
 import { observabilityMessages } from '@navikt/fp-observability';
-import { uiMessages } from '@navikt/fp-ui';
+import { SidetittelProvider, uiMessages } from '@navikt/fp-ui';
 import { utilsMessages } from '@navikt/fp-utils';
 import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan/intl';
 
@@ -59,6 +60,23 @@ const queryClient = createDefaultQueryClient({
     apiQueryErrorMessage: 'API query-feil i foreldrepengeoversikt',
 });
 
+const AppInnhold = () => {
+    const intl = useIntl();
+
+    return (
+        <SidetittelProvider appTittel={intl.formatMessage({ id: 'dineForeldrepenger' })}>
+            <Routes>
+                {/* Informasjonssiden er plassert her for å unngå fetching av persondata vi ikke har grunnlag for */}
+                <Route
+                    path={OversiktRoutes.BRUKT_OPPLYSNINGER_OM_ARBEIDSFORHOLD}
+                    element={<BruktOpplysningerOmArbeidsforhold />}
+                />
+                <Route path="*" element={<Foreldrepengeoversikt />} />
+            </Routes>
+        </SidetittelProvider>
+    );
+};
+
 export const AppContainer = () => (
     <AppShell
         appName="foreldrepengeoversikt"
@@ -67,13 +85,6 @@ export const AppContainer = () => (
         queryClient={queryClient}
         renderErrorBoundary={(children) => <ErrorBoundary>{children}</ErrorBoundary>}
     >
-        <Routes>
-            {/* Informasjonssiden er plassert her for å unngå fetching av persondata vi ikke har grunnlag for */}
-            <Route
-                path={OversiktRoutes.BRUKT_OPPLYSNINGER_OM_ARBEIDSFORHOLD}
-                element={<BruktOpplysningerOmArbeidsforhold />}
-            />
-            <Route path="*" element={<Foreldrepengeoversikt />} />
-        </Routes>
+        <AppInnhold />
     </AppShell>
 );

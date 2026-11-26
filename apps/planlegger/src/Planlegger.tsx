@@ -13,7 +13,7 @@ import { lesPlanleggerdataFraUrl } from 'utils/planleggerdataUtils';
 
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { KontoBeregningResultatDto, OmBarnetPlanlegger } from '@navikt/fp-types';
-import { SimpleErrorPage } from '@navikt/fp-ui';
+import { SidetittelProvider, SimpleErrorPage } from '@navikt/fp-ui';
 
 import { PlanleggerRouter } from './PlanleggerRouter';
 
@@ -118,6 +118,16 @@ export const PlanleggerDataFetcher = () => {
 };
 
 export const PlanleggerDataInit = () => {
+    const intl = useIntl();
+
+    return (
+        <SidetittelProvider appTittel={intl.formatMessage({ id: 'PlanleggerStepPage.Tittel' })}>
+            <PlanleggerDataInitContent />
+        </SidetittelProvider>
+    );
+};
+
+const PlanleggerDataInitContent = () => {
     const locations = useLocation();
     const intl = useIntl();
 

@@ -1,8 +1,10 @@
+import { useIntl } from 'react-intl';
+
 import { AppShell, createDefaultQueryClient } from '@navikt/fp-app-shell';
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { formHookMessages } from '@navikt/fp-form-hooks';
 import { observabilityMessages } from '@navikt/fp-observability';
-import { SimpleErrorPage, uiMessages } from '@navikt/fp-ui';
+import { SidetittelProvider, SimpleErrorPage, uiMessages } from '@navikt/fp-ui';
 import { utilsMessages } from '@navikt/fp-utils';
 
 import { FpEllerEsRouter } from './FpEllerEsRouter';
@@ -35,6 +37,16 @@ const MESSAGES_GROUPED_BY_LOCALE = {
 
 const queryClient = createDefaultQueryClient();
 
+const AppContent = () => {
+    const intl = useIntl();
+
+    return (
+        <SidetittelProvider appTittel={intl.formatMessage({ id: 'FpEllerEsForside.Title' })}>
+            <FpEllerEsRouter satser={DEFAULT_SATSER} />
+        </SidetittelProvider>
+    );
+};
+
 export const AppContainer = () => (
     <AppShell
         appName="veiviser-fp-eller-es"
@@ -43,6 +55,6 @@ export const AppContainer = () => (
         queryClient={queryClient}
         customErrorPage={<SimpleErrorPage retryCallback={() => location.reload()} />}
     >
-        <FpEllerEsRouter satser={DEFAULT_SATSER} />
+        <AppContent />
     </AppShell>
 );

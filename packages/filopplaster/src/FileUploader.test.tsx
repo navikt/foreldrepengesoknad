@@ -265,4 +265,21 @@ describe('FileUploader', () => {
             ),
         ).toBeInTheDocument();
     });
+
+    it('skal ha et fokuserbart element med id både før og etter at fillimit er nådd', async () => {
+        await Default.run({ args: { ...Default.args, id: 'vedlegg-id', multiple: false } });
+
+        expect(await screen.findByRole('button', { name: /Velg fil/ })).toHaveAttribute('id', 'vedlegg-id');
+
+        await userEvent.upload(
+            screen.getByLabelText('Last opp fil'),
+            new File(['hello'], 'test-document.pdf', { type: 'application/pdf' }),
+        );
+        expect(await screen.findByText('test-document.pdf')).toBeInTheDocument();
+        await waitFor(() => expect(screen.queryByRole('button', { name: /Velg fil/ })).not.toBeInTheDocument());
+
+        const felt = document.getElementById('vedlegg-id');
+        felt?.focus();
+        expect(felt).toHaveFocus();
+    });
 });

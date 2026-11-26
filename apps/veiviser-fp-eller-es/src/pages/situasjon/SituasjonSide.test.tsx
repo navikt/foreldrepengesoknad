@@ -2,6 +2,8 @@ import { composeStories } from '@storybook/react-vite';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { SidetittelProvider } from '@navikt/fp-ui';
+
 import * as stories from './SituasjonSide.stories';
 
 const { Default } = composeStories(stories);
@@ -23,6 +25,17 @@ const jobberDuINorge = 'Jobber du i Norge?';
 const harAndreInntektskilder = 'Har du andre inntektskilder?';
 
 describe('<SituasjonSide>', () => {
+    it('setter sidetittelen for situasjonssiden', async () => {
+        render(
+            <SidetittelProvider appTittel="Foreldrepenger eller engangsstønad?">
+                <Default />
+            </SidetittelProvider>,
+        );
+
+        expect(await screen.findByText('Hvem er du?')).toBeInTheDocument();
+        expect(document.title).toBe('Hvem er du? – Foreldrepenger eller engangsstønad?');
+    });
+
     it('skal ha rett til foreldrepenger når mor er i arbeid, har inntekt over grensen og bor i Norge', async () => {
         const setFpEllerEsSituasjon = vi.fn();
         const utils = render(<Default setFpEllerEsSituasjon={setFpEllerEsSituasjon} />);

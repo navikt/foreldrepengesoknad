@@ -3,6 +3,7 @@ import { FieldValues, UseControllerProps, useController, useFormContext } from '
 
 import { SamtykkePanel } from '@navikt/fp-ui';
 
+import { useFeltId } from './feltId';
 import { ValidationReturnType, getError, getValidationRules } from './formUtils';
 
 type Props<T extends FieldValues> = {
@@ -24,6 +25,8 @@ export const RhfConfirmationPanel = <T extends FieldValues>({
         formState: { errors },
     } = useFormContext();
 
+    const feltId = useFeltId(name, control);
+
     const { field } = useController({
         name,
         control,
@@ -36,6 +39,7 @@ export const RhfConfirmationPanel = <T extends FieldValues>({
 
     return (
         <SamtykkePanel
+            id={feltId}
             label={label}
             checked={field.value ?? false}
             onChange={(checked) => field.onChange(checked)}

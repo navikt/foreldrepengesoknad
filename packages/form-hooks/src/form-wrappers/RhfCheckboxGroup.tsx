@@ -11,6 +11,7 @@ import {
 
 import { CheckboxGroup } from '@navikt/ds-react';
 
+import { useFeltId } from './feltId';
 import { ValidationReturnType, getError, getValidationRules } from './formUtils';
 
 type Props<TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>> = {
@@ -36,6 +37,8 @@ export const RhfCheckboxGroup = <TFieldValues extends FieldValues, TName extends
         formState: { errors },
     } = useFormContext();
 
+    const feltId = useFeltId(name, control);
+
     const { field } = useController({
         name,
         control,
@@ -56,6 +59,7 @@ export const RhfCheckboxGroup = <TFieldValues extends FieldValues, TName extends
 
     return (
         <CheckboxGroup
+            id={feltId}
             // RHF må få et fokusbart input, ikke gruppens fieldset.
             ref={(fieldset) => field.ref(fieldset?.querySelector('input[type="checkbox"]:not(:disabled)'))}
             name={name}

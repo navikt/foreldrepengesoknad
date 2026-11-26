@@ -24,7 +24,7 @@ import { Uttaksdagen, Uttaksperioden } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { GåTilbakeModal } from './GåTilbakeModal';
-import { finnNyeEllerEndredePerioder, useFinnFørsteSubmitFeilmelding } from './submitValidering';
+import { finnNyeEllerEndredePerioder, useFinnFørsteSubmitValideringsregel } from './submitValidering';
 
 type FormValues = {
     ønskerJustertUttakVedFødsel?: boolean;
@@ -99,14 +99,14 @@ export const UttaksplanForm = ({
         barn.termindato !== undefined &&
         kanJustereFarsUttakRundtFødsel(farMedmorPerioder, barn.termindato);
 
-    const finnFørsteSubmitFeilmelding = useFinnFørsteSubmitFeilmelding({ opprinneligPlan, erEndringssøknad });
+    const finnFørsteSubmitValideringsregel = useFinnFørsteSubmitValideringsregel({ opprinneligPlan, erEndringssøknad });
 
     const onSubmit = (formValues: FormValues) => {
         const planForValidering = gjeldendeUttaksplan ?? defaultUttaksperioder;
-        const feilmelding = finnFørsteSubmitFeilmelding(planForValidering, planForVisning);
+        const valideringsregel = finnFørsteSubmitValideringsregel(planForValidering, planForVisning);
 
-        if (feilmelding) {
-            setFeilmelding(feilmelding);
+        if (valideringsregel) {
+            setFeilmelding(valideringsregel.visSomFeilmelding === false ? undefined : valideringsregel.message);
             scrollToKvoteOppsummering();
 
             return;

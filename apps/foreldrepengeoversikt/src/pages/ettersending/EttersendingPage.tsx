@@ -21,7 +21,7 @@ import {
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { FileUploader } from '@navikt/fp-filopplaster';
 import { Attachment, EttersendelseDto, Ytelse } from '@navikt/fp-types';
-import { useDocumentTitle } from '@navikt/fp-utils';
+import { useSidetittel } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { API_URLS, sendEttersending, søkerInfoOptions } from '../../api/queries.ts';
@@ -106,9 +106,7 @@ type Props = {
 
 const EttersendingPageInner = ({ saker }: Props) => {
     const intl = useIntl();
-    useDocumentTitle(
-        `${intl.formatMessage({ id: 'lastOppDokumenter' })} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
-    );
+    useSidetittel(intl.formatMessage({ id: 'lastOppDokumenter' }));
     const params = useParams();
     const søkerInfo = useQuery(søkerInfoOptions()).data;
 

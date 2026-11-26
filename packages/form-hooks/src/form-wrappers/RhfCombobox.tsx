@@ -3,6 +3,7 @@ import { FieldValues, UseControllerProps, useController, useFormContext } from '
 
 import { UNSAFE_Combobox } from '@navikt/ds-react';
 
+import { useFeltId } from './feltId';
 import { ValidationReturnType, getError, getValidationRules } from './formUtils';
 
 type Props<T extends FieldValues> = {
@@ -28,6 +29,8 @@ export const RhfCombobox = <T extends FieldValues>({
         formState: { errors },
     } = useFormContext();
 
+    const feltId = useFeltId(name, control);
+
     const { field } = useController({
         name,
         control,
@@ -47,6 +50,7 @@ export const RhfCombobox = <T extends FieldValues>({
 
     return (
         <UNSAFE_Combobox
+            id={feltId}
             ref={field.ref}
             label={label}
             selectedOptions={field.value ? [field.value] : undefined}

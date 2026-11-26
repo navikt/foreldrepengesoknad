@@ -344,14 +344,8 @@ describe('finnNyeEllerEndredePerioder og harBrukerKunSlettetPerioder ved samtidi
     });
 });
 
-/**
- * erSammePeriodeInkludertDatoer brukes i UttaksplanForm til å avgjøre om en saksperiode
- * er uendret (og da skal filtreres ut fra planForValidering), eller endret (og da skal
- * inkluderes). Dette er fiksen for at forkortelse av en periode ikke lenger gir
- * "ingen endringer"-feilmeldingen i endringssøknad.
- */
 describe('erSammePeriodeInkludertDatoer', () => {
-    describe('uendrede perioder skal ekskluderes fra planForValidering', () => {
+    describe('like perioder', () => {
         it('returnerer true når perioden er identisk (samme fom, tom og kontoType)', () => {
             const kopi = { ...A };
             expect(erSammePeriodeInkludertDatoer(kopi, A)).toBe(true);
@@ -364,7 +358,7 @@ describe('erSammePeriodeInkludertDatoer', () => {
         });
     });
 
-    describe('endrede perioder skal inkluderes i planForValidering', () => {
+    describe('ulike perioder', () => {
         it('returnerer false når tom er forkortet med én dag (bruker har slettet en dag)', () => {
             const forkortet = lagPeriode({ fom: C.fom, tom: '2024-12-30', kontoType: C.søker!.kontoType });
             expect(erSammePeriodeInkludertDatoer(forkortet, C)).toBe(false);
@@ -386,49 +380,22 @@ describe('erSammePeriodeInkludertDatoer', () => {
         });
     });
 
-    describe('filterlogikken i endringssøknad (regresjon: forkortet periode skal ikke gi ingen-endringer-feil)', () => {
-        it('en forkortet saksperiode finnes ikke i opprinneligPlan via erSammePeriodeInkludertDatoer', () => {
-            const opprinneligPlan = [A, B, C];
-            const cForkortet = lagPeriode({ fom: C.fom, tom: '2024-12-30', kontoType: C.søker!.kontoType });
-            const uttaksplan = [A, B, cForkortet];
+});
 
-            // Simulerer filteret i UttaksplanForm: inkluder saksperioder som IKKE finnes i opprinneligPlan
-            const uttaksplanMedKunNyeEllerEndredePerioder = uttaksplan.filter(
-                (p) =>
-                    p.søker?.resultat === undefined ||
-                    opprinneligPlan.every((o) => !erSammePeriodeInkludertDatoer(p, o)),
-            );
+describe('finnNyeEllerEndredePerioder i endringssøknad', () => {
+    it('tar med en forkortet saksperiode, slik at forkortelse ikke gir ingen-endringer-feil', () => {
+        const cForkortet = lagPeriode({ fom: C.fom, tom: '2024-12-30', kontoType: C.søker!.kontoType });
 
-            expect(uttaksplanMedKunNyeEllerEndredePerioder).toHaveLength(1);
-            expect(uttaksplanMedKunNyeEllerEndredePerioder[0]).toMatchObject({ fom: C.fom, tom: '2024-12-30' });
-        });
+        expect(finnNyeEllerEndredePerioder([A, B, cForkortet], [A, B, C])).toEqual([cForkortet]);
+    });
 
-        it('uendrede perioder filtreres ut slik at planForValidering ikke inneholder unødvendige perioder', () => {
-            const opprinneligPlan = [A, B, C];
-            const uttaksplan = [A, B, C]; // ingenting endret
+    it('tar ikke med uendrede perioder', () => {
+        expect(finnNyeEllerEndredePerioder([A, B, C], [A, B, C])).toEqual([]);
+    });
 
-            const uttaksplanMedKunNyeEllerEndredePerioder = uttaksplan.filter(
-                (p) =>
-                    p.søker?.resultat === undefined ||
-                    opprinneligPlan.every((o) => !erSammePeriodeInkludertDatoer(p, o)),
-            );
+    it('tar med ny periode uten resultat', () => {
+        const nyPeriode = lagPeriode({ fom: '2025-01-01', tom: '2025-01-31', resultat: undefined });
 
-            expect(uttaksplanMedKunNyeEllerEndredePerioder).toHaveLength(0);
-        });
-
-        it('ny brukerperiode (uten resultat) inkluderes alltid uavhengig av opprinneligPlan', () => {
-            const opprinneligPlan = [A, B, C];
-            const nyPeriode = lagPeriode({ fom: '2025-01-01', tom: '2025-01-31', resultat: undefined });
-            const uttaksplan = [A, B, C, nyPeriode];
-
-            const uttaksplanMedKunNyeEllerEndredePerioder = uttaksplan.filter(
-                (p) =>
-                    p.søker?.resultat === undefined ||
-                    opprinneligPlan.every((o) => !erSammePeriodeInkludertDatoer(p, o)),
-            );
-
-            expect(uttaksplanMedKunNyeEllerEndredePerioder).toHaveLength(1);
-            expect(uttaksplanMedKunNyeEllerEndredePerioder[0]).toMatchObject({ fom: '2025-01-01', tom: '2025-01-31' });
-        });
+        expect(finnNyeEllerEndredePerioder([A, B, C, nyPeriode], [A, B, C])).toEqual([nyPeriode]);
     });
 });
