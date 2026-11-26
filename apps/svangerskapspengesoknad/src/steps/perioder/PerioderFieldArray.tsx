@@ -110,7 +110,14 @@ export const PerioderFieldArray = ({
                 );
                 const minDatoTom = getMinDatoTom(alleVarierendePerioder[index]!.fom, behovForTilretteleggingFom);
                 const defaultMonthTom = getDefaultMonth(minDatoTom, maxDato);
-                const slettKontekst = lagSlettKnappKontekst(intl, alleVarierendePerioder[index]!);
+                const varierendePeriode = alleVarierendePerioder[index]!;
+                const slettKontekst = lagSlettKnappKontekst(intl, {
+                    fom: varierendePeriode.fom,
+                    tom:
+                        varierendePeriode.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP
+                            ? sisteDagForSvangerskapspenger
+                            : varierendePeriode.tom,
+                });
 
                 return (
                     <Fragment key={field.id}>

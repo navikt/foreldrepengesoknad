@@ -196,6 +196,19 @@ describe('<PerioderSteg>', () => {
         expect(screen.queryByText('30.10.2023 - 3 uker før termin (12 uker 6 dager)')).not.toBeInTheDocument();
     });
 
+    it('slettknappen skal bruke siste dag med svangerskapspenger når det er valgt etter en til-dato', async () => {
+        render(<Default />);
+
+        await user.click(await screen.findByText('Legg til ny periode'));
+        await user.type(screen.getAllByText('Du skal jobbe fra:')[1]!, '01.01.2024');
+        await user.click(screen.getAllByText('Frem til en dato')[1]!);
+        await user.type(screen.getByText('Til og med dato'), '10.01.2024');
+        await user.tab();
+        await user.click(screen.getAllByText('Frem til tre uker før termin')[1]!);
+
+        expect(screen.getByRole('button', { name: 'Fjern perioden, 01.01.2024 til 27.01.2024' })).toBeInTheDocument();
+    });
+
     it('feilmelding ved overlappende perioder', async () => {
         render(<Default />);
 
