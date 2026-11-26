@@ -2,7 +2,7 @@ import { useIntl } from 'react-intl';
 import { AnnenForelder, isAnnenForelderOppgitt } from 'types/AnnenForelder';
 
 import { Barn, EksternArbeidsforholdDto_fpoversikt, UttakDto } from '@navikt/fp-types';
-import { skalBesvareFlerbarnsdager } from '@navikt/fp-uttaksplan/flerbarnsdager';
+import { finnSamtidigUttaksprosent, skalBesvareFlerbarnsdager } from '@navikt/fp-uttaksplan/periode-utils';
 
 import { getAktivitetTekst } from '../OppsummeringUtils';
 import { Feltoppsummering } from './Feltoppsummering';
@@ -10,23 +10,29 @@ import { MorsAktivitetDetaljer } from './MorsaktiviteterDetaljer';
 
 interface Props {
     uttak: UttakDto;
+    erSamtidigUttak: boolean;
     registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[] | undefined;
     annenForelder: AnnenForelder;
     barn: Barn;
     erSøker: boolean;
 }
 
-export const Uttaksperiodedetaljer = ({ uttak, annenForelder, registrerteArbeidsforhold, barn, erSøker }: Props) => {
+export const Uttaksperiodedetaljer = ({
+    uttak,
+    erSamtidigUttak,
+    annenForelder,
+    registrerteArbeidsforhold,
+    barn,
+    erSøker,
+}: Props) => {
     const intl = useIntl();
 
     const erDeltUttakINorge = isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge;
+    const samtidigUttak = erSamtidigUttak ? finnSamtidigUttaksprosent(uttak) : undefined;
 
-    const skalViseFlerbarnsdager = skalBesvareFlerbarnsdager(
-        barn.antallBarn,
-        uttak.forelder,
-        uttak.kontoType,
-        uttak.samtidigUttak,
-    );
+    const skalViseFlerbarnsdager =
+        uttak.flerbarnsdager ||
+        skalBesvareFlerbarnsdager(barn.antallBarn, uttak.forelder, uttak.kontoType, samtidigUttak);
 
     return (
         <>
@@ -39,13 +45,13 @@ export const Uttaksperiodedetaljer = ({ uttak, annenForelder, registrerteArbeids
                     verdi={uttak.flerbarnsdager ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
                 />
             )}
-            {uttak.samtidigUttak !== undefined && erDeltUttakINorge && (
+            {samtidigUttak !== undefined && erDeltUttakINorge && (
                 <Feltoppsummering
                     feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.samtidigUttak' })}
-                    verdi={uttak.samtidigUttak ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
+                    verdi={samtidigUttak ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
                 />
             )}
-            {uttak.kontoType !== 'FORELDREPENGER_FØR_FØDSEL' && !uttak.samtidigUttak && (
+            {uttak.kontoType !== 'FORELDREPENGER_FØR_FØDSEL' && !samtidigUttak && (
                 <Feltoppsummering
                     feltnavn={intl.formatMessage(
                         { id: 'oppsummering.uttak.kombineresMedarbeid' },

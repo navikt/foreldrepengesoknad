@@ -28,7 +28,7 @@ import { UttakPeriodeMedAntallDager } from '../../../../../kalender/redigering/u
 import { getForelderVisningsnavnForFarOgFar } from '../../../../../liste/utils/uttaksplanListeUtils';
 import { useEksisterendeValgtePeriodeAlerts } from '../../../../../regler/alert/informasjonsAlertHooks';
 import { getVarighetString } from '../../../../../utils/dateUtils';
-import { erSamtidigUttakMedSøker } from '../../../../../utils/periodeUtils';
+import { erSamtidigUttakMedSøker, finnSamtidigUttaksprosent } from '../../../../../utils/periodeUtils';
 import { useKalenderRedigeringContext } from '../../../context/KalenderRedigeringContext';
 
 interface Props {
@@ -55,7 +55,7 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
             {perioder.map((p) => {
                 const uttak = p.søker ?? p.annenPart;
 
-                const erSamtidigUttak = p.søker?.samtidigUttak !== undefined;
+                const erSamtidigUttak = erSamtidigUttakMedSøker(p);
 
                 const erAnnenPartsPeriodeLåst = erPeriodeneTilAnnenPartLåst && uttak?.forelder !== søker;
 
@@ -224,7 +224,7 @@ const SamtidigUttak = ({
                         id="RedigeringPanel.SamtidigUttak"
                         values={{
                             kvote: søker.kontoType,
-                            prosent: søker.samtidigUttak,
+                            prosent: finnSamtidigUttaksprosent(søker),
                             erMedmor: søker.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden,
                         }}
                     />
@@ -243,8 +243,8 @@ const SamtidigUttak = ({
                         id="RedigeringPanel.SamtidigUttak"
                         values={{
                             kvote: annenPart.kontoType,
-                            prosent: annenPart.samtidigUttak,
-                            erMedmor: søker?.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden,
+                            prosent: finnSamtidigUttaksprosent(annenPart),
+                            erMedmor: annenPart.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden,
                         }}
                     />
                 </BodyShort>

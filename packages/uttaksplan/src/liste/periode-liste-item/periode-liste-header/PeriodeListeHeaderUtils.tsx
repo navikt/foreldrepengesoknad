@@ -20,10 +20,10 @@ import {
     erUttaksplanperiodeErForelderMor,
     erUttaksplanperiodeEøs,
     erUttaksplanperiodeFamiliehendelseDato,
-    erUttaksplanperiodeSamtidigUttak,
     erUttaksplanperiodeTapteDager,
     erUttaksplanperiodeUtenUttak,
     erUttaksplanperiodeUtsettelse,
+    erUttaksplanperiodeVistSomSamtidigUttak,
     getSisteUttaksplanperiodeTom,
     getUttaksplanperiodeForelder,
     getUttaksplanperiodeUtsettelseÅrsak,
@@ -59,7 +59,7 @@ export const finnBakgrunnsfarge = (
         return 'bg-ax-warning-200';
     }
 
-    if (erUttaksplanperiodeSamtidigUttak(uttaksplanperioder)) {
+    if (erUttaksplanperiodeVistSomSamtidigUttak(uttaksplanperioder)) {
         return 'bg-[linear-gradient(135deg,var(--ax-success-200)_0%,var(--ax-success-200)_50%,var(--ax-accent-100)_50%,var(--ax-accent-100)_100%)]';
     }
 
@@ -193,7 +193,7 @@ export const getTekst = (
         return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.periodeUtenUttak' });
     }
 
-    if (erUttaksplanperiodeSamtidigUttak(uttaksplanperioder)) {
+    if (erUttaksplanperiodeVistSomSamtidigUttak(uttaksplanperioder)) {
         return intl.formatMessage({ id: 'uttaksplan.periodeListeHeader.samtidigUttak' });
     }
 
@@ -272,7 +272,7 @@ export const getBorderFarge = (uttaksplanperioder: Uttaksplanperiode[]) => {
         return 'border-ax-warning-200';
     }
 
-    if (erUttaksplanperiodeSamtidigUttak(uttaksplanperioder)) {
+    if (erUttaksplanperiodeVistSomSamtidigUttak(uttaksplanperioder)) {
         return 'border-ax-success-200 border-double';
     }
 

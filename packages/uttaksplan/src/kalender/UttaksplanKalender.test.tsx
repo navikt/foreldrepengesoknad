@@ -55,6 +55,104 @@ describe('UttaksplanKalender', () => {
         vi.setSystemTime(opprinneligTid);
     });
 
+    it('skal ikke vise samtidig uttak der bare søker har samtidigUttak etter at annen part har fjernet sin del', () => {
+        render(
+            <MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering
+                perioder={[
+                    {
+                        fom: '2024-04-04',
+                        tom: '2024-04-17',
+                        søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', samtidigUttak: 100, flerbarnsdager: false },
+                        annenPart: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
+                    },
+                    {
+                        fom: '2024-04-18',
+                        tom: '2024-05-01',
+                        søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', samtidigUttak: 100, flerbarnsdager: false },
+                    },
+                ]}
+            />,
+        );
+
+        const april = screen.getByTestId('year:2024;month:3');
+        expect(within(april).getByTestId('day:17;dayColor:LIGHTGREENBLUE')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:18;dayColor:BLUE')).toBeInTheDocument();
+        expect(within(april).getAllByTestId('dayColor:LIGHTGREENBLUE', { exact: false })).toHaveLength(10);
+        expect(within(april).getByTestId('day:17;dayColor:LIGHTGREENBLUE')).toHaveAccessibleName(
+            expect.stringContaining('Samtidig uttaksperiode'),
+        );
+        expect(within(april).getByTestId('day:18;dayColor:BLUE')).toHaveAccessibleName(
+            expect.stringContaining('Mødrekvote'),
+        );
+    });
+
+    it('skal vise 100 % for forelderen uten samtidigUttak, uten å forhåndsfylle prosenten i skjemaet', async () => {
+        render(
+            <MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering
+                perioder={[
+                    {
+                        fom: '2024-04-04',
+                        tom: '2024-04-17',
+                        søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
+                        annenPart: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FEDREKVOTE',
+                            samtidigUttak: 100,
+                            flerbarnsdager: false,
+                        },
+                    },
+                ]}
+            />,
+        );
+
+        const april = screen.getByTestId('year:2024;month:3');
+        await userEvent.click(within(april).getByTestId('day:10;dayColor:LIGHTGREENBLUE'));
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        const panel = screen.getByTestId('eksisterende-periode-2024-04-04-2024-04-17');
+        expect(within(panel).getByText('Mor har 100 % mødrekvote')).toBeInTheDocument();
+        expect(within(panel).getByText('Far har 100 % fedrekvote')).toBeInTheDocument();
+
+        await userEvent.click(screen.getAllByText('Endre')[0]!);
+
+        expect(screen.getByLabelText('Hvor mange prosent til mor?')).toHaveValue('');
+        expect(screen.getByLabelText('Hvor mange prosent til far?')).toHaveValue('100');
+    });
+
+    it('skal vise medmorkvote for medmor som annen part i samtidig uttak', async () => {
+        render(
+            <MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering
+                foreldreInfo={{
+                    rettighetType: 'BEGGE_RETT',
+                    søker: 'MOR',
+                    navnPåForeldre: { mor: 'Hanne', farMedmor: 'Hilde' },
+                    erMedmorDelAvSøknaden: true,
+                }}
+                perioder={[
+                    {
+                        fom: '2024-04-04',
+                        tom: '2024-04-17',
+                        søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
+                        annenPart: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FEDREKVOTE',
+                            samtidigUttak: 100,
+                            flerbarnsdager: false,
+                        },
+                    },
+                ]}
+            />,
+        );
+
+        const april = screen.getByTestId('year:2024;month:3');
+        await userEvent.click(within(april).getByTestId('day:10;dayColor:LIGHTGREENBLUE'));
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        const panel = screen.getByTestId('eksisterende-periode-2024-04-04-2024-04-17');
+        expect(within(panel).getByText('Mor har 100 % mødrekvote')).toBeInTheDocument();
+        expect(within(panel).getByText('Medmor har 100 % medmorkvote')).toBeInTheDocument();
+    });
+
     it('skal vise riktige labels og farger på periodene i kalender med gradering, samtidig uttak og tapte dager', () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 
@@ -985,9 +1083,15 @@ describe('UttaksplanKalender', () => {
         const januar = await screen.findByTestId('year:2027;month:0');
 
         expect(
-            within(januar).getByTestId('day:6;dayColor:LIGHTBLUEGREEN;with-icon;with-corner-icon'),
+            within(januar).getByTestId('day:6;dayColor:GREENSTRIPED;with-icon;with-corner-icon'),
         ).toBeInTheDocument();
-        expect(within(januar).getByTestId('day:7;dayColor:LIGHTBLUEGREEN;with-icon')).toBeInTheDocument();
+        expect(within(januar).getByTestId('day:7;dayColor:GREENSTRIPED;with-icon')).toBeInTheDocument();
+
+        await userEvent.click(within(januar).getByTestId('day:7;dayColor:GREENSTRIPED;with-icon'));
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        const periode = within(screen.getByTestId('eksisterende-periode-2027-01-04-2027-01-15'));
+        expect(periode.getByText('Gradering: 50 %')).toBeInTheDocument();
     });
 
     it('skal ikke som far kunne overskrive en dag i perioden to->tre uker før fødselsdato', async () => {

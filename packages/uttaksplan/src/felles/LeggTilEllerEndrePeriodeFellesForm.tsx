@@ -28,7 +28,7 @@ import { useBlokkerendeAlert, useSkjemaKontekstuelleAlerts } from '../regler/ale
 import { useFeltSynlighet } from '../regler/synlighet/feltSynlighet';
 import { useForelderValgSynlighet } from '../regler/synlighet/forelderValg';
 import { ForelderValg } from '../regler/synlighet/types';
-import { getAktivitetskravOptions, getAktivitetskravTekst } from '../utils/periodeUtils';
+import { erSamtidigUttakMedSøker, getAktivitetskravOptions, getAktivitetskravTekst } from '../utils/periodeUtils';
 import { prosentValideringGradering, valideringSamtidigUttak } from './uttaksplanValidatorer';
 
 dayjs.extend(isSameOrBefore);
@@ -1098,8 +1098,8 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
     }
 
     if (morsUttak && farMedmorUttak) {
-        if (!morsUttak.samtidigUttak || !farMedmorUttak.samtidigUttak) {
-            throw new Error('Forventer samtidig uttak på begge partar når søker og annenPart er valgt samtidig.');
+        if (!erSamtidigUttakMedSøker(periode)) {
+            return undefined;
         }
 
         const søkersUttak = søker === 'MOR' ? morsUttak : farMedmorUttak;

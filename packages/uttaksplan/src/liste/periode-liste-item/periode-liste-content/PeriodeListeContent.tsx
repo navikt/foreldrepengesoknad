@@ -22,6 +22,7 @@ import {
     erAvslåttPeriode,
     erOverføringsperiode,
     erPrematuruker,
+    erSamtidigUttakMedSøker,
     erUtsettelsesperiode,
     erUttaksperiode,
 } from '../../../utils/periodeUtils';
@@ -98,15 +99,20 @@ export const PeriodeListeContent = ({ isReadOnly, uttaksplanperioder }: Props) =
             {!isEndrePeriodePanelOpen && !isSlettPeriodePanelOpen && (
                 <>
                     <VStack gap="space-16">
-                        {uttaksplanperioder.flatMap(splittPerUttak).map((periode) => (
-                            <Periode
-                                key={genererPeriodeKey(periode)}
-                                periode={periode}
-                                navnPåForeldre={navnPåForeldre}
-                                erFarEllerMedmor={søker === 'FAR_MEDMOR'}
-                                inneholderKunEnPeriode={inneholderKunEnPeriode}
-                            />
-                        ))}
+                        {uttaksplanperioder.flatMap((uttaksplanperiode) =>
+                            splittPerUttak(uttaksplanperiode).map((periode) => (
+                                <Periode
+                                    key={genererPeriodeKey(periode)}
+                                    periode={periode}
+                                    navnPåForeldre={navnPåForeldre}
+                                    erFarEllerMedmor={søker === 'FAR_MEDMOR'}
+                                    erSamtidigUttak={
+                                        erPeriodeDto(uttaksplanperiode) && erSamtidigUttakMedSøker(uttaksplanperiode)
+                                    }
+                                    inneholderKunEnPeriode={inneholderKunEnPeriode}
+                                />
+                            )),
+                        )}
                         <SkalJobbeContent uttaksplanperioder={uttaksplanperioder} />
                     </VStack>
                     <EndreOgSlettKnapper
@@ -148,11 +154,13 @@ const Periode = ({
     periode,
     navnPåForeldre,
     erFarEllerMedmor,
+    erSamtidigUttak,
     inneholderKunEnPeriode,
 }: {
     periode: Uttaksplanperiode;
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
+    erSamtidigUttak: boolean;
     inneholderKunEnPeriode: boolean;
 }) => {
     if (erOverføringsperiode(periode)) {
@@ -195,6 +203,7 @@ const Periode = ({
                 inneholderKunEnPeriode={inneholderKunEnPeriode}
                 periode={periode}
                 erFarEllerMedmor={erFarEllerMedmor}
+                erSamtidigUttak={erSamtidigUttak}
                 navnPåForeldre={navnPåForeldre}
             />
         );

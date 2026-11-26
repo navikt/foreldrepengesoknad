@@ -315,6 +315,47 @@ describe('lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm med samtidig uttak'
             )?.morsAktivitet,
         ).toBe('ARBEID');
     });
+
+    it('gir ingen startverdier når den andre forelderen har utsettelse i perioden', () => {
+        const periodeMedUtsettelse: UttakPeriodeDto = {
+            ...periode,
+            annenPart: { forelder: 'MOR', utsettelseÅrsak: 'ARBEID', flerbarnsdager: false },
+        };
+
+        expect(
+            lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
+                [periodeMedUtsettelse],
+                periodeMedUtsettelse,
+                'FAR_MEDMOR',
+                false,
+            ),
+        ).toBeUndefined();
+    });
+
+    it('forhåndsfyller ikke prosent som mangler, slik at den ikke lagres uten at brukeren oppgir den', () => {
+        const periodeUtenSøkersProsent: UttakPeriodeDto = {
+            ...periode,
+            søker: { ...periode.søker!, samtidigUttak: undefined },
+        };
+
+        const defaultValues = lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm(
+            [periodeUtenSøkersProsent],
+            periodeUtenSøkersProsent,
+            'FAR_MEDMOR',
+            true,
+        );
+
+        expect(defaultValues?.samtidigUttaksprosentFarMedmor).toBeUndefined();
+        expect(defaultValues?.samtidigUttaksprosentMor).toBe('50');
+        expect(
+            mapFraFormValuesTilPeriodeDto(
+                { ...defaultValues, morsAktivitet: 'UTDANNING' },
+                periodeUtenSøkersProsent,
+                'FAR_MEDMOR',
+                false,
+            )[0]?.søker?.samtidigUttak,
+        ).toBeUndefined();
+    });
 });
 
 describe('lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm med låst annen part', () => {

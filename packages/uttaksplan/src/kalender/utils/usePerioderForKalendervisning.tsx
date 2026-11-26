@@ -317,6 +317,10 @@ const getKalenderSkjermleserPeriodetekst = (
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.TapteDager' });
     }
 
+    if (erPeriodeDto(periode) && erSamtidigUttakMedSøker(periode)) {
+        return intl.formatMessage({ id: 'kalender.srText.SamtidigUttaksperiode' });
+    }
+
     const kontoType = visning?.uttak.kontoType;
     if (kontoType) {
         switch (kontoType) {
@@ -329,12 +333,7 @@ const getKalenderSkjermleserPeriodetekst = (
             case 'FELLESPERIODE':
                 return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.Fellesperiode' });
             case 'FORELDREPENGER':
-                return finnSkjermleserTekstForKvoteForeldrepenger(
-                    visning,
-                    erPeriodeDto(periode) && erSamtidigUttakMedSøker(periode),
-                    periodenTilhører,
-                    intl,
-                );
+                return finnSkjermleserTekstForKvoteForeldrepenger(visning, periodenTilhører, intl);
             default:
                 return assertUnreachable('Error: ukjent kontoType i getKalenderSkjermleserPeriodetekst');
         }
@@ -350,7 +349,6 @@ const getKalenderSkjermleserPeriodetekst = (
 
 const finnSkjermleserTekstForKvoteForeldrepenger = (
     visning: VisningsUttak,
-    erSamtidigUttak: boolean,
     periodenTilhører: string,
     intl: IntlShape,
 ): string => {
@@ -366,10 +364,6 @@ const finnSkjermleserTekstForKvoteForeldrepenger = (
         }
 
         return periodenTilhører + intl.formatMessage({ id: 'kalender.srText.AktivitetsfrieIkkeGradert' });
-    }
-
-    if (erSamtidigUttak) {
-        return intl.formatMessage({ id: 'kalender.srText.SamtidigUttaksperiode' });
     }
 
     if (uttak.gradering?.arbeidstidprosent) {

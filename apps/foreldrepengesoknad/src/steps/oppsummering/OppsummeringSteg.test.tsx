@@ -6,7 +6,7 @@ import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
 import { vi } from 'vitest';
 
-import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
+import { BarnType, DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { notEmpty } from '@navikt/fp-validation';
 
 import * as stories from './OppsummeringSteg.stories';
@@ -634,5 +634,97 @@ describe('<Oppsummering>', () => {
         expect(
             screen.getByText('har mor søkt om permisjon fra studiet en periode må dette komme frem i dokumentasjonen'),
         ).toBeInTheDocument();
+    });
+
+    it('Skal ikke vise samtidig uttak når annen part har ferie i perioden', async () => {
+        render(
+            <FarMedMorSomHarRettINorge
+                uttaksplan={[
+                    {
+                        fom: '2022-04-13',
+                        tom: '2022-04-26',
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FEDREKVOTE',
+                            samtidigUttak: 100,
+                            flerbarnsdager: false,
+                        },
+                        annenPart: {
+                            forelder: 'MOR',
+                            utsettelseÅrsak: 'FERIE',
+                            flerbarnsdager: false,
+                        },
+                    },
+                ]}
+            />,
+        );
+
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(screen.queryByText('Vi skal ha samtidig uttak:')).not.toBeInTheDocument();
+    });
+
+    it('Skal vise samtidig uttak for begge foreldre selv om bare én har oppgitt prosent, men ikke når bare søker har uttak', async () => {
+        render(
+            <FarMedMorSomHarRettINorge
+                uttaksplan={[
+                    {
+                        fom: '2022-03-30',
+                        tom: '2022-04-12',
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FEDREKVOTE',
+                            samtidigUttak: 50,
+                            flerbarnsdager: false,
+                        },
+                        annenPart: {
+                            forelder: 'MOR',
+                            kontoType: 'MØDREKVOTE',
+                            flerbarnsdager: false,
+                        },
+                    },
+                    {
+                        fom: '2022-04-13',
+                        tom: '2022-04-26',
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FEDREKVOTE',
+                            samtidigUttak: 100,
+                            flerbarnsdager: false,
+                        },
+                    },
+                ]}
+            />,
+        );
+
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(screen.getAllByText('Vi skal ha samtidig uttak:')).toHaveLength(2);
+    });
+    it('Skal vise registrert valg om flerbarnsdager selv om perioden ikke lenger er samtidig uttak', async () => {
+        render(
+            <FarMedMorSomHarRettINorge
+                barn={{ type: BarnType.FØDT, fødselsdatoer: ['2021-03-15'], antallBarn: 2 }}
+                uttaksplan={[
+                    {
+                        fom: '2022-03-30',
+                        tom: '2022-04-12',
+                        søker: { forelder: 'FAR_MEDMOR', kontoType: 'FEDREKVOTE', flerbarnsdager: false },
+                    },
+                    {
+                        fom: '2022-04-13',
+                        tom: '2022-04-26',
+                        annenPart: {
+                            forelder: 'MOR',
+                            kontoType: 'MØDREKVOTE',
+                            samtidigUttak: 100,
+                            flerbarnsdager: true,
+                        },
+                    },
+                ]}
+            />,
+        );
+
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(screen.getByText('Frida ønsker å benytte meg av flerbarnsdager:')).toBeInTheDocument();
+        expect(screen.queryByText('Vi skal ha samtidig uttak:')).not.toBeInTheDocument();
     });
 });
