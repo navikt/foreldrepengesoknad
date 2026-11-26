@@ -274,5 +274,11 @@ export function DinSakHeader({ sak }: { sak?: Sak }) {
                   </HeaderWrapper>
               );
           })()
-        : null;
+        : (
+              <SimpleHeaderWrapper>
+                  <Heading level="1" size="medium">
+                      <FormattedMessage id="header.dinSak" />
+                  </Heading>
+              </SimpleHeaderWrapper>
+          );
 }

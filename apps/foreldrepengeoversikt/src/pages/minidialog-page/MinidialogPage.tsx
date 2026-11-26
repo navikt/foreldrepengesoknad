@@ -37,7 +37,7 @@ export const MinidialogPage = () => {
 
     if (minidialogQuery.isError && !minidialogQuery.data) {
         return (
-            <PageRouteLayout header={sak ? <DinSakHeader sak={sak} /> : undefined}>
+            <PageRouteLayout header={<DinSakHeader sak={sak} />}>
                 <LocalAlert status="error">
                     <LocalAlert.Header>
                         <LocalAlert.Title>

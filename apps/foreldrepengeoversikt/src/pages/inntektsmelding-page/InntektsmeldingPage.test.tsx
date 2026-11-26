@@ -10,6 +10,8 @@ const {
     EnBortfaltNaturalytelse,
     FlereBortfalteNaturalytelser,
     Refusjonsperioder,
+    LasterInntektsmelding,
+    FeilVedHentingAvInntektsmelding,
 } = composeStories(stories);
 
 describe('<InntektsmeldingPage>', () => {
@@ -88,6 +90,24 @@ describe('<InntektsmeldingPage>', () => {
         ).toBeInTheDocument();
         expect(
             await screen.findByText('01.01.2025 får du ikke lenger Elektrisk kommunikasjon til en verdi av 200 kr.'),
+        ).toBeInTheDocument();
+    });
+
+    it('skal ha en h1 mens inntektsmeldingen lastes', async () => {
+        await LasterInntektsmelding.run();
+
+        expect(await screen.findByText('Henter inntektsmelding…')).toBeInTheDocument();
+        expect(
+            screen.getByRole('heading', { level: 1, name: 'Inntekt rapportert av dine arbeidsgivere' }),
+        ).toBeInTheDocument();
+    });
+
+    it('skal ha en h1 når henting av inntektsmelding feiler', async () => {
+        await FeilVedHentingAvInntektsmelding.run();
+
+        expect(await screen.findByText('Noe gikk galt. Prøv igjen senere')).toBeInTheDocument();
+        expect(
+            screen.getByRole('heading', { level: 1, name: 'Inntekt rapportert av dine arbeidsgivere' }),
         ).toBeInTheDocument();
     });
 });

@@ -17,6 +17,7 @@ const {
     ForeldrepengerEndringssøknad,
     ForeldrepengerUtenUttaksplan,
     ForeldrepengerFeilVedHentingAvUttaksplan,
+    UkjentSak,
     EngangsstønadTestAvSkyraNyligInnsending,
     SvangerskapspengerTestAvSkyraNyligInnsending,
 } = composeStories(stories);
@@ -71,11 +72,18 @@ describe('<Saksoversikt>', () => {
         expect(await screen.findByText('Noe gikk galt. Prøv igjen senere')).toBeInTheDocument();
     });
 
+    it('skal ha en h1 når saken ikke finnes', async () => {
+        await UkjentSak.run();
+
+        expect(await screen.findByText('Vi finner ingen sak med saksnummer: 999999999')).toBeInTheDocument();
+        expect(screen.getByRole('heading', { level: 1, name: 'Din sak' })).toBeInTheDocument();
+    });
+
     it('skal IKKE vise Endre plan lenke for svangerskapspenger', async () => {
         await Svangerskapspenger.run();
 
-        // Sjekk at tittel er på plass sånn at vi vet siden har lastet ...
-        expect(await screen.findByText('Din sak')).toBeInTheDocument();
+        // Sjekk at innholdet er på plass sånn at vi vet siden har lastet ...
+        expect(await screen.findByText('Ettersend dokumenter')).toBeInTheDocument();
         const svangerskapspengerTekster = await screen.findAllByText('Svangerskapspenger');
         expect(svangerskapspengerTekster.length).toBeGreaterThan(0);
 
@@ -86,8 +94,8 @@ describe('<Saksoversikt>', () => {
     it('skal IKKE vise Endre plan lenke for engangsstønad', async () => {
         await Engangsstønad.run();
 
-        // Sjekk at tittel er på plass sånn at vi vet siden har lastet ...
-        expect(await screen.findByText('Din sak')).toBeInTheDocument();
+        // Sjekk at innholdet er på plass sånn at vi vet siden har lastet ...
+        expect(await screen.findByText('Ettersend dokumenter')).toBeInTheDocument();
         const engangsstønadTekster = await screen.findAllByText('Engangsstønad');
         expect(engangsstønadTekster.length).toBeGreaterThan(0);
 
@@ -119,7 +127,7 @@ describe('<Saksoversikt>', () => {
         it('skal IKKE vise undersøkelsen for førstegangssøknad eldre enn 5 minutter', async () => {
             await ForeldrepengerTestAvSkyraGammelInnsending.run();
 
-            expect(await screen.findByText('Din sak')).toBeInTheDocument();
+            expect(await screen.findByText('Ettersend dokumenter')).toBeInTheDocument();
             expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();
         });
 
@@ -132,28 +140,28 @@ describe('<Saksoversikt>', () => {
         it('skal IKKE vise undersøkelsen på engelsk', async () => {
             await ForeldrepengerSkyraEN.run();
 
-            expect(await screen.findByText('Your case')).toBeInTheDocument();
+            expect(await screen.findByText('Submit additional documents')).toBeInTheDocument();
             expect(screen.queryByText('Optional survey')).not.toBeInTheDocument();
         });
 
         it('skal IKKE vise undersøkelsen for endringssøknad selv om den er nylig', async () => {
             await ForeldrepengerEndringssøknad.run();
 
-            expect(await screen.findByText('Din sak')).toBeInTheDocument();
+            expect(await screen.findByText('Ettersend dokumenter')).toBeInTheDocument();
             expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();
         });
 
         it('skal IKKE vise undersøkelsen for engangsstønad selv om den er nylig', async () => {
             await EngangsstønadTestAvSkyraNyligInnsending.run();
 
-            expect(await screen.findByText('Din sak')).toBeInTheDocument();
+            expect(await screen.findByText('Ettersend dokumenter')).toBeInTheDocument();
             expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();
         });
 
         it('skal IKKE vise undersøkelsen for svangerskapspenger selv om den er nylig!', async () => {
             await SvangerskapspengerTestAvSkyraNyligInnsending.run();
 
-            expect(await screen.findByText('Din sak')).toBeInTheDocument();
+            expect(await screen.findByText('Ettersend dokumenter')).toBeInTheDocument();
             expect(screen.queryByText('Frivillig spørreundersøkelse')).not.toBeInTheDocument();
         });
     });

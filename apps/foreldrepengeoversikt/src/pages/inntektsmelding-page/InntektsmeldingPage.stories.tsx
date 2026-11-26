@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { HttpResponse, http } from 'msw';
+import { HttpResponse, delay, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { enBortfaltNaturalytelse } from 'storybookData/inntektsmeldinger/enBortfaltNaturalytelse';
 import { flereBortfalteNaturalytelser } from 'storybookData/inntektsmeldinger/flereBortfalteNaturalytelser';
@@ -111,6 +111,35 @@ export const Refusjonsperioder: Story = {
         msw.use(
             ...HANDLERS,
             http.get(API_URLS.inntektsmelding, () => HttpResponse.json(medRefusjonsPerioder)),
+        );
+    },
+    args: {
+        saksnummer: '352011079',
+        journalpostId: '1017115920',
+    },
+};
+
+export const LasterInntektsmelding: Story = {
+    beforeEach({ msw }) {
+        msw.use(
+            ...HANDLERS,
+            http.get(API_URLS.inntektsmelding, async () => {
+                await delay('infinite');
+                return HttpResponse.json([]);
+            }),
+        );
+    },
+    args: {
+        saksnummer: '352011079',
+        journalpostId: '1017115920',
+    },
+};
+
+export const FeilVedHentingAvInntektsmelding: Story = {
+    beforeEach({ msw }) {
+        msw.use(
+            ...HANDLERS,
+            http.get(API_URLS.inntektsmelding, () => new HttpResponse(null, { status: 500 })),
         );
     },
     args: {

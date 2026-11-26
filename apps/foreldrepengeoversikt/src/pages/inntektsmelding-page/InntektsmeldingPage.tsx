@@ -16,7 +16,7 @@ import { useSidetittel } from '@navikt/fp-ui';
 import { capitalizeFirstLetterInEveryWordOnly, formatCurrencyWithKr, formatDate } from '@navikt/fp-utils';
 
 import { hentInntektsmelding, hentSakerOptions } from '../../api/queries.ts';
-import { InntektsmeldingHeader } from '../../components/header/Header';
+import { InntektsmeldingHeader, InntektsmeldingOversiktHeader } from '../../components/header/Header';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
 import { getAlleYtelser, mapSakerDTOToSaker } from '../../utils/sakerUtils';
@@ -58,7 +58,7 @@ export const InntektsmeldingPage = () => {
 
     if (inntektsmeldingerQuery.isPending) {
         return (
-            <PageRouteLayout header="">
+            <PageRouteLayout header={<InntektsmeldingOversiktHeader />}>
                 <div className="flex flex-col items-center justify-center gap-4">
                     <Loader size="2xlarge" />
                     <BodyShort>
@@ -70,7 +70,7 @@ export const InntektsmeldingPage = () => {
     }
     if (inntektsmeldingerQuery.isError) {
         return (
-            <PageRouteLayout header="">
+            <PageRouteLayout header={<InntektsmeldingOversiktHeader />}>
                 <Alert variant="error">
                     <FormattedMessage id={'felles.feil.prøvSenere'} />
                 </Alert>
