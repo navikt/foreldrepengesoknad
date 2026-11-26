@@ -32,9 +32,10 @@ interface Props {
     attachments?: Attachment[];
     updateAttachments: (attachments: Attachment[], hasPendingUploads: boolean) => void;
     termindato: string;
+    vedleggId: string;
 }
 
-export const TerminDokPanel = ({ attachments, updateAttachments, termindato }: Props) => {
+export const TerminDokPanel = ({ attachments, updateAttachments, termindato, vedleggId }: Props) => {
     const intl = useIntl();
 
     const { control } = useFormContext<Dokumentasjon>();
@@ -66,6 +67,7 @@ export const TerminDokPanel = ({ attachments, updateAttachments, termindato }: P
                 existingAttachments={attachments}
                 updateAttachments={updateAttachments}
                 uploadPath={API_URLS.sendVedlegg}
+                id={vedleggId}
             />
         </>
     );

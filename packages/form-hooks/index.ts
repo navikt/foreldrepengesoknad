@@ -16,6 +16,7 @@ export { RhfNumericField } from './src/form-wrappers/RhfNumericField';
 export { RhfConfirmationPanel } from './src/form-wrappers/RhfConfirmationPanel';
 export { StepButtonsHookForm } from './src/StepButtonsHookForm';
 export { ErrorSummaryHookForm } from './src/error/ErrorSummaryHookForm';
+export { useFeltId } from './src/form-wrappers/feltId';
 export { trimStringValues } from './src/form-wrappers/formUtils';
 
 export type { FormHooksMessageId } from './src/intl/messageIds';
