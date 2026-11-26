@@ -1319,6 +1319,44 @@ describe('UttaksplanListe', () => {
         expect(screen.queryByText('Hanne skal ha 100 % foreldrepenger')).not.toBeInTheDocument();
     });
 
+    it('Skal ikke vise overskrift for samtidig uttak når annen part har ferie i perioden', async () => {
+        render(
+            <FarSøkerEtterAtMorHarSøkt
+                perioder={[
+                    {
+                        fom: '2024-04-04',
+                        tom: '2024-04-18',
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FEDREKVOTE',
+                            samtidigUttak: 50,
+                            flerbarnsdager: false,
+                        },
+                        annenPart: {
+                            forelder: 'MOR',
+                            kontoType: 'MØDREKVOTE',
+                            samtidigUttak: 50,
+                            flerbarnsdager: false,
+                        },
+                    },
+                    {
+                        fom: '2024-04-19',
+                        tom: '2024-05-02',
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FEDREKVOTE',
+                            samtidigUttak: 100,
+                            flerbarnsdager: false,
+                        },
+                        annenPart: { forelder: 'MOR', utsettelseÅrsak: 'FERIE', flerbarnsdager: false },
+                    },
+                ]}
+            />,
+        );
+
+        expect(await screen.findAllByText('Dere har foreldrepenger')).toHaveLength(2);
+    });
+
     it('Skal ikkje vise heile samtidig uttak som avslått når berre den eine parten har fått avslag', async () => {
         render(
             <FarSøkerEtterAtMorHarSøkt

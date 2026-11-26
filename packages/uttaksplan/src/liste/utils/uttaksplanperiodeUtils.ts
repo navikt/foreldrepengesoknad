@@ -5,7 +5,13 @@ import {
     erPeriodeUtenUttakHull,
     erTapteDagerHull,
 } from '../../types/UttaksplanPeriode';
-import { erAvslåttPeriode, erOppholdsperiode, erPrematuruker, finnAlleUttak } from '../../utils/periodeUtils';
+import {
+    erAvslåttPeriode,
+    erOppholdsperiode,
+    erPrematuruker,
+    erSamtidigUttakMedSøker,
+    finnAlleUttak,
+} from '../../utils/periodeUtils';
 
 export const getFørsteUttaksplanperiodeFom = (uttaksplanperioder: Uttaksplanperiode[]) => {
     return uttaksplanperioder.at(0)!.fom;
@@ -36,6 +42,14 @@ export const erUttaksplanperiodeSamtidigUttak = (uttaksplanperioder: Uttaksplanp
     }
     const periode = uttaksplanperioder.at(0)!;
     return erPeriodeDto(periode) && !!periode.søker && !!periode.annenPart;
+};
+
+export const erUttaksplanperiodeVistSomSamtidigUttak = (uttaksplanperioder: Uttaksplanperiode[]) => {
+    if (uttaksplanperioder.length !== 1) {
+        return false;
+    }
+    const periode = uttaksplanperioder.at(0)!;
+    return erPeriodeDto(periode) && erSamtidigUttakMedSøker(periode);
 };
 
 export const harUttaksplanperiodePrematuruker = (uttaksplanperioder: Uttaksplanperiode[]) => {
@@ -88,7 +102,7 @@ export const erUttaksplanperiodeUtsettelse = (uttaksplanperioder: Uttaksplanperi
  * innlogga brukaren sin eigen rolle.
  */
 export const getUttaksplanperiodeForelder = (uttaksplanperioder: Uttaksplanperiode[]) => {
-    if (erUttaksplanperiodeSamtidigUttak(uttaksplanperioder)) {
+    if (erUttaksplanperiodeVistSomSamtidigUttak(uttaksplanperioder)) {
         return undefined;
     }
     const periode = uttaksplanperioder.at(0)!;

@@ -86,7 +86,7 @@ describe('UttaksplanKalender', () => {
         );
     });
 
-    it('skal vise 100 % for forelderen uten samtidigUttak når bare den andre har oppgitt prosent', async () => {
+    it('skal vise 100 % for forelderen uten samtidigUttak, uten å forhåndsfylle prosenten i skjemaet', async () => {
         render(
             <MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering
                 perioder={[
@@ -115,7 +115,7 @@ describe('UttaksplanKalender', () => {
 
         await userEvent.click(screen.getAllByText('Endre')[0]!);
 
-        expect(screen.getByLabelText('Hvor mange prosent til mor?')).toHaveValue('100');
+        expect(screen.getByLabelText('Hvor mange prosent til mor?')).toHaveValue('');
         expect(screen.getByLabelText('Hvor mange prosent til far?')).toHaveValue('100');
     });
 

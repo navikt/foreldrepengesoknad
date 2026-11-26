@@ -28,7 +28,7 @@ import { useBlokkerendeAlert, useSkjemaKontekstuelleAlerts } from '../regler/ale
 import { useFeltSynlighet } from '../regler/synlighet/feltSynlighet';
 import { useForelderValgSynlighet } from '../regler/synlighet/forelderValg';
 import { ForelderValg } from '../regler/synlighet/types';
-import { finnSamtidigUttaksprosent, getAktivitetskravOptions, getAktivitetskravTekst } from '../utils/periodeUtils';
+import { erSamtidigUttakMedSøker, getAktivitetskravOptions, getAktivitetskravTekst } from '../utils/periodeUtils';
 import { prosentValideringGradering, valideringSamtidigUttak } from './uttaksplanValidatorer';
 
 dayjs.extend(isSameOrBefore);
@@ -1098,8 +1098,8 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
     }
 
     if (morsUttak && farMedmorUttak) {
-        if (morsUttak.samtidigUttak === undefined && farMedmorUttak.samtidigUttak === undefined) {
-            throw new Error('Forventer samtidig uttak på minst én part når søker og annenPart er valgt samtidig.');
+        if (!erSamtidigUttakMedSøker(periode)) {
+            return undefined;
         }
 
         const søkersUttak = søker === 'MOR' ? morsUttak : farMedmorUttak;
@@ -1114,8 +1114,8 @@ export const lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm = (
                 farMedmorUttak.kontoType === 'FORELDREPENGER' && farMedmorUttak.morsAktivitet === 'IKKE_OPPGITT'
                     ? 'AKTIVITETSFRI_KVOTE'
                     : farMedmorUttak.kontoType,
-            samtidigUttaksprosentMor: finnSamtidigUttaksprosent(morsUttak).toString(),
-            samtidigUttaksprosentFarMedmor: finnSamtidigUttaksprosent(farMedmorUttak).toString(),
+            samtidigUttaksprosentMor: morsUttak.samtidigUttak?.toString(),
+            samtidigUttaksprosentFarMedmor: farMedmorUttak.samtidigUttak?.toString(),
             skalDuKombinereArbeidOgUttakMor: !!morsUttak.gradering,
             skalDuKombinereArbeidOgUttakFarMedmor: !!farMedmorUttak.gradering,
             stillingsprosentMor: morsUttak.gradering?.arbeidstidprosent.toString(),
