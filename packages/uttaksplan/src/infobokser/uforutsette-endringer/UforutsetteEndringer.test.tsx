@@ -23,6 +23,10 @@ const {
 } = composeStories(stories);
 
 describe('<UforutsetteEndringer>', () => {
+    it('skal gi kortet et tilgjengelig navn fra den synlige tittelen', async () => {
+        render(<FødselMorOgFarBeggeHarRett />);
+        expect(await screen.findByRole('region', { name: 'Uforutsette endringer' })).toBeInTheDocument();
+    });
     //MorOgFar
     it('skal vise info for mor og far adopsjon hvor begge har rett', async () => {
         render(<AdopsjonMorOgFarBeggeHarRett />);

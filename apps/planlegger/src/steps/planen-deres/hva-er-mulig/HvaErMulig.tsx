@@ -1,4 +1,5 @@
 import { PencilWritingIcon } from '@navikt/aksel-icons';
+import { useId } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
@@ -43,9 +44,11 @@ export const HvaErMulig = ({ hvemPlanlegger, arbeidssituasjon, barnet }: Props) 
         (hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_MEDMOR ||
             hvemPlanlegger.type === HvemPlanleggerType.MOR_OG_FAR);
 
+    const tittelId = useId();
+
     return (
         <ExpansionCard
-            aria-label="Expansion card"
+            aria-labelledby={tittelId}
             onToggle={loggExpansionCardOpen('toggle-tilpasse-planen')}
             size="small"
         >
@@ -57,7 +60,7 @@ export const HvaErMulig = ({ hvemPlanlegger, arbeidssituasjon, barnet }: Props) 
                         </IconCircleWrapper>
                     </div>
                     <div>
-                        <ExpansionCard.Title size="small">
+                        <ExpansionCard.Title size="small" id={tittelId}>
                             <FormattedMessage id="HvaErMulig.Tittel" />
                         </ExpansionCard.Title>
                     </div>

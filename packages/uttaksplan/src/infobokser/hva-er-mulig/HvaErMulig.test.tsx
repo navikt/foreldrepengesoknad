@@ -20,6 +20,11 @@ const {
 } = composeStories(stories);
 
 describe('<HvaErMulig>', () => {
+    it('skal gi kortet et tilgjengelig navn fra den synlige tittelen', async () => {
+        render(<FødselMorOgFarBeggeHarRett />);
+        expect(await screen.findByRole('region', { name: 'Hva er mulig å endre i søknaden' })).toBeInTheDocument();
+    });
+
     it('skal vise info for mor og far fødsel hvor begge har rett', async () => {
         render(<FødselMorOgFarBeggeHarRett />);
         expect(await screen.findByText('Hva er mulig å endre i søknaden')).toBeInTheDocument();
