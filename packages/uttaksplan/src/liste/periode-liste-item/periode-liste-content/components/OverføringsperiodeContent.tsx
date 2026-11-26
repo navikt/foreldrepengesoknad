@@ -21,7 +21,7 @@ export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, na
     const intl = useIntl();
 
     const uttak = erPeriodeDto(periode) ? (periode.søker ?? periode.annenPart) : undefined;
-    if (!uttak) {
+    if (!uttak?.overføringÅrsak) {
         return null;
     }
 
@@ -79,7 +79,7 @@ export const OverføringsperiodeContent = ({ periode, inneholderKunEnPeriode, na
 const getOverføringsTekst = (
     stønadskvoteNavn: string,
     navnPåAnnenForelder: string,
-    overføringsÅrsak: UttakOverføringÅrsak_fpoversikt | undefined,
+    overføringsÅrsak: UttakOverføringÅrsak_fpoversikt,
 ) => {
     switch (overføringsÅrsak) {
         case 'SYKDOM_ANNEN_FORELDER':
@@ -110,7 +110,5 @@ const getOverføringsTekst = (
                     values={{ stønadskvoteNavn, navnPåAnnenForelder }}
                 />
             );
-        default:
-            return 'Ingen overføringsårsak oppgitt';
     }
 };
