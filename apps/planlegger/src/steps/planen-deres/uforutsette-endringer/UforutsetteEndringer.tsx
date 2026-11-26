@@ -1,4 +1,5 @@
 import { ExclamationmarkIcon } from '@navikt/aksel-icons';
+import { useId } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger, HvemPlanleggerType } from 'types/HvemPlanlegger';
@@ -46,8 +47,14 @@ export const UforutsetteEndringer = ({ hvemPlanlegger, arbeidssituasjon, barnet 
     const erFarOgFarKunMedfarHarRett =
         hvemPlanlegger.type === HvemPlanleggerType.FAR_OG_FAR && kunFarEllerMedmorHarRett;
 
+    const tittelId = useId();
+
     return (
-        <ExpansionCard aria-label="." onToggle={loggExpansionCardOpen('toggle-uforutsette-endringer')} size="small">
+        <ExpansionCard
+            aria-labelledby={tittelId}
+            onToggle={loggExpansionCardOpen('toggle-uforutsette-endringer')}
+            size="small"
+        >
             <ExpansionCard.Header>
                 <HStack gap="space-24" align="center" wrap={false}>
                     <div>
@@ -56,7 +63,7 @@ export const UforutsetteEndringer = ({ hvemPlanlegger, arbeidssituasjon, barnet 
                         </IconCircleWrapper>
                     </div>
                     <div>
-                        <ExpansionCard.Title size="small">
+                        <ExpansionCard.Title size="small" id={tittelId}>
                             <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer" />
                         </ExpansionCard.Title>
                     </div>

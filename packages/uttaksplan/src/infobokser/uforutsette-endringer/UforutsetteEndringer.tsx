@@ -1,4 +1,5 @@
 import { ExclamationmarkIcon } from '@navikt/aksel-icons';
+import { useId } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { ExpansionCard, HStack, VStack } from '@navikt/ds-react';
@@ -43,8 +44,14 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
 
     const erFarOgFarKunMedfarHarRett = erFarOgFar && rettighetType === 'BARE_SØKER_RETT';
 
+    const tittelId = useId();
+
     return (
-        <ExpansionCard aria-label="." onToggle={loggExpansionCardOpen('toggle-uforutsette-endringer')} size="small">
+        <ExpansionCard
+            aria-labelledby={tittelId}
+            onToggle={loggExpansionCardOpen('toggle-uforutsette-endringer')}
+            size="small"
+        >
             <ExpansionCard.Header>
                 <HStack gap="space-24" align="center" wrap={false}>
                     <div>
@@ -53,7 +60,7 @@ export const UforutsetteEndringer = ({ erFarOgFar, loggExpansionCardOpen }: Prop
                         </IconCircleWrapper>
                     </div>
                     <div>
-                        <ExpansionCard.Title size="small">
+                        <ExpansionCard.Title size="small" id={tittelId}>
                             <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer" />
                         </ExpansionCard.Title>
                     </div>

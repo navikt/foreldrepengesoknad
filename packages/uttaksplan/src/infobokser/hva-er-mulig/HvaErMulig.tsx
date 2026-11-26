@@ -1,4 +1,5 @@
 import { PencilWritingIcon } from '@navikt/aksel-icons';
+import { useId } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
@@ -37,9 +38,11 @@ export const HvaErMulig = ({ loggExpansionCardOpen, erFarOgFar }: Props) => {
 
     const kunFarMedmorBareRett = !erFarOgFar && rettighetType === 'BARE_SØKER_RETT' && søker === 'FAR_MEDMOR';
 
+    const tittelId = useId();
+
     return (
         <ExpansionCard
-            aria-label="Expansion card"
+            aria-labelledby={tittelId}
             onToggle={loggExpansionCardOpen('toggle-tilpasse-planen')}
             size="small"
         >
@@ -51,7 +54,7 @@ export const HvaErMulig = ({ loggExpansionCardOpen, erFarOgFar }: Props) => {
                         </IconCircleWrapper>
                     </div>
                     <div>
-                        <ExpansionCard.Title size="small">
+                        <ExpansionCard.Title size="small" id={tittelId}>
                             <FormattedMessage id="HvaErMulig.Tittel" />
                         </ExpansionCard.Title>
                     </div>

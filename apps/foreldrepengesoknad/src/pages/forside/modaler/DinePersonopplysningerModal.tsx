@@ -1,19 +1,19 @@
 import { FormattedMessage } from 'react-intl';
 
-import { BodyLong, BodyShort, Box, Dialog, HStack, Link, List, VStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, Box, Button, Dialog, HStack, Link, List, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 
 export const DinePersonopplysningerModal = () => {
     return (
         <Dialog>
-            <Dialog.Trigger>
-                <HStack justify="center">
-                    <Link href="#">
+            <HStack justify="center">
+                <Dialog.Trigger>
+                    <Button type="button" variant="tertiary">
                         <FormattedMessage id="velkommen.lesMerOmPersonopplysninger" />
-                    </Link>
-                </HStack>
-            </Dialog.Trigger>
+                    </Button>
+                </Dialog.Trigger>
+            </HStack>
             <Dialog.Popup>
                 <Dialog.Header>
                     <Dialog.Title>
