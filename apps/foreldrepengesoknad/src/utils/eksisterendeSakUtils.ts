@@ -11,17 +11,13 @@ import { BarnType, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
     AnnenForelderDto_fpoversikt,
     Barn,
-    EøsUttakDto,
     FellesUttaksplanDto,
     FpBarnDto_fpoversikt,
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
-    Gradering_fpoversikt,
     Person_fpoversikt,
     Situasjon,
     Søkerrolle,
-    UttakDto,
-    UttakPeriodeDto,
     isAdoptertBarn,
     isFødtBarn,
     isUfødtBarn,
@@ -445,50 +441,3 @@ export const lagEndringsSøknad = (
         ønskerJustertUttakVedFødsel: ønskerJustertUttakVedFødsel,
     };
 };
-
-export const erPeriodeIOpprinneligPlan = (
-    eksisterendePerioder: UttakPeriodeDto[],
-    nyPeriode: UttakPeriodeDto,
-): boolean => {
-    return eksisterendePerioder.some((p) => erLikPeriode(nyPeriode, p));
-};
-
-const erLikPeriode = (a: UttakPeriodeDto, b: UttakPeriodeDto): boolean =>
-    a.fom === b.fom &&
-    a.tom === b.tom &&
-    erLikUttakDto(a.søker, b.søker) &&
-    erLikUttakDto(a.annenPart, b.annenPart) &&
-    erLikEøsUttakDto(a.annenPartEøs, b.annenPartEøs);
-
-const erLikUttakDto = (a: UttakDto | undefined, b: UttakDto | undefined): boolean => {
-    if (!a || !b) {
-        return a === b;
-    }
-    return (
-        a.forelder === b.forelder &&
-        a.kontoType === b.kontoType &&
-        a.flerbarnsdager === b.flerbarnsdager &&
-        erLikGradering(a.gradering, b.gradering) &&
-        a.utsettelseÅrsak === b.utsettelseÅrsak &&
-        a.samtidigUttak === b.samtidigUttak &&
-        a.resultat?.innvilget === b.resultat?.innvilget &&
-        a.resultat?.trekkerDager === b.resultat?.trekkerDager &&
-        a.resultat?.trekkerMinsterett === b.resultat?.trekkerMinsterett &&
-        a.resultat?.årsak === b.resultat?.årsak &&
-        a.overføringÅrsak === b.overføringÅrsak &&
-        a.morsAktivitet === b.morsAktivitet
-    );
-};
-
-const erLikEøsUttakDto = (a: EøsUttakDto | undefined, b: EøsUttakDto | undefined): boolean => {
-    if (!a || !b) {
-        return a === b;
-    }
-    return a.kontoType === b.kontoType && a.trekkdager === b.trekkdager;
-};
-
-const erLikGradering = (a: Gradering_fpoversikt | undefined, b: Gradering_fpoversikt | undefined): boolean =>
-    a?.arbeidstidprosent === b?.arbeidstidprosent &&
-    a?.aktivitet?.type === b?.aktivitet?.type &&
-    a?.aktivitet?.arbeidsgiver?.id === b?.aktivitet?.arbeidsgiver?.id &&
-    a?.aktivitet?.arbeidsgiver?.type === b?.aktivitet?.arbeidsgiver?.type;

@@ -171,7 +171,7 @@ describe('mapTilSøknadDto', () => {
         expect(Object.hasOwn(søknad, 'søkersituasjon')).toBe(false);
     });
 
-    it('skal berre inkludere søkers periodar i uttaksplanen', () => {
+    it('skal sende hele planen, også annen parts perioder', () => {
         const morsUttak: UttakPeriodeDto = {
             fom: '2021-01-01',
             tom: '2021-01-10',
@@ -308,7 +308,7 @@ describe('mapTilEndringssøknadDto', () => {
         expect(endringssøknad.endringsdato).toBe('2027-02-15');
     });
 
-    it('skal fjerne søkerens avslåtte perioder når planen er uendret, fordi hele planen da sendes til fpsak', () => {
+    it('skal fjerne søkerens avslåtte perioder og ikke sette endringsdato når planen er uendret', () => {
         const avslåttPeriode: UttakPeriodeDto = {
             fom: '2024-03-01',
             tom: '2024-03-29',
