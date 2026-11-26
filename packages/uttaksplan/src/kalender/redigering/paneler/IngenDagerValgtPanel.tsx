@@ -1,5 +1,5 @@
-import { CheckmarkCircleIcon, ChevronDownIcon, ChevronUpIcon, NotePencilIcon } from '@navikt/aksel-icons';
-import { useState } from 'react';
+import { CheckmarkCircleIcon, NotePencilIcon } from '@navikt/aksel-icons';
+import { useId, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Box, Detail, HStack, Heading, Link, Show, Tag, VStack } from '@navikt/ds-react';
@@ -15,6 +15,7 @@ import {
     useUbrukteDagerPerKontoKunEnHarRett,
 } from '../../../utils/kvoteOppsummeringUtils';
 import { useMediaResetMinimering } from '../utils/useMediaActions';
+import { MinimerPanelKnapp } from './MinimerPanelKnapp';
 
 interface Props {
     scrollToKvoteOppsummering: () => void;
@@ -22,8 +23,6 @@ interface Props {
 }
 
 export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Props) => {
-    const intl = useIntl();
-
     const uttaksplanRedigering = useUttaksplanRedigering();
 
     const { isAtLeast768px } = useBreakpoints();
@@ -32,32 +31,18 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
 
     useMediaResetMinimering(setErMinimert);
 
+    const innholdId = useId();
+
     return (
         <VStack gap="space-16">
-            <Box
-                padding="space-12"
-                onClick={isAtLeast768px ? undefined : () => setErMinimert(!erMinimert)}
-                className={
-                    isAtLeast768px
-                        ? 'bg-ax-bg-accent-soft'
-                        : 'bg-ax-bg-accent-soft hover:bg-ax-bg-accent-moderate cursor-pointer'
-                }
-            >
+            <Box padding="space-12" className="bg-ax-bg-accent-soft">
                 <Show below="md">
                     <VStack gap="space-1" align="center">
-                        {erMinimert ? (
-                            <ChevronUpIcon
-                                title={intl.formatMessage({ id: 'RedigeringPanel.Maksimer' })}
-                                height={24}
-                                width={24}
-                            />
-                        ) : (
-                            <ChevronDownIcon
-                                title={intl.formatMessage({ id: 'RedigeringPanel.Minimer' })}
-                                height={24}
-                                width={24}
-                            />
-                        )}
+                        <MinimerPanelKnapp
+                            erMinimert={erMinimert}
+                            setErMinimert={setErMinimert}
+                            kontrollerer={innholdId}
+                        />
                         <Heading size="small">
                             <HStack gap="space-4" align="center">
                                 <NotePencilIcon aria-hidden height={16} width={16} />
@@ -74,7 +59,7 @@ export const IngenDagerValgtPanel = ({ scrollToKvoteOppsummering, labels }: Prop
                     </VStack>
                 </Show>
             </Box>
-            <div style={erMinimert ? { display: 'none' } : undefined}>
+            <div id={innholdId} style={erMinimert ? { display: 'none' } : undefined}>
                 <VStack gap="space-16" className="px-4 pb-4">
                     {labels}
                     <VStack gap="space-8">

@@ -23,7 +23,6 @@ interface Props {
     focusedDate: Dayjs | undefined;
     pendingFom: string | undefined;
     hoverDate: string | undefined;
-    dateTooltipCallback?: (date: string) => React.ReactElement | string;
     dateClickCallback?: (date: string) => void;
     onDateHover?: (date: string | undefined) => void;
     setFocusedDate: (date: Dayjs) => void;
@@ -39,7 +38,6 @@ export const Month = React.memo(
         focusedDate,
         pendingFom,
         hoverDate,
-        dateTooltipCallback,
         dateClickCallback,
         onDateHover,
         setFocusedDate,
@@ -143,7 +141,6 @@ export const Month = React.memo(
                                                 iconFull={period?.iconFull}
                                                 CornerIcon={period?.cornerIcon}
                                                 shape={getDayShape(date, periodMap, hoverPreviewSet)}
-                                                dateTooltipCallback={dateTooltipCallback}
                                                 dateClickCallback={dateClickCallback}
                                                 onDateHover={onDateHover}
                                                 isFocused={

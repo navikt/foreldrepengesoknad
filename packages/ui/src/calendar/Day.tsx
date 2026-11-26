@@ -1,7 +1,5 @@
 import dayjs, { Dayjs } from 'dayjs';
-import React, { ReactElement, useRef, useState } from 'react';
-
-import { Popover } from '@navikt/ds-react';
+import React, { ReactElement } from 'react';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { formaterDatoUtenDag } from '@navikt/fp-utils';
@@ -22,7 +20,6 @@ type Props = {
     iconFull?: boolean;
     CornerIcon?: ReactElement;
     shape: DayShape;
-    dateTooltipCallback?: (date: string) => React.ReactNode | string;
     dateClickCallback?: (date: string) => void;
     onDateHover?: (date: string | undefined) => void;
     setFocusedDate: (date: Dayjs) => void;
@@ -40,7 +37,6 @@ export const Day = React.memo(
         iconFull,
         CornerIcon,
         shape,
-        dateTooltipCallback,
         dateClickCallback,
         onDateHover,
         setFocusedDate,
@@ -48,14 +44,8 @@ export const Day = React.memo(
         const date = dayjs(isoDate);
         const day = date.date();
 
-        const [isTooltipOpen, setIsTooltipOpen] = useState(false);
-
-        const buttonRef = useRef<HTMLButtonElement>(null);
-
         const setButtonRef = React.useCallback(
             (el: HTMLButtonElement | null) => {
-                buttonRef.current = el;
-
                 if (el && isFocused) {
                     el.focus();
                 }
@@ -79,8 +69,6 @@ export const Day = React.memo(
                 className={styles.days}
                 onFocus={isClickable ? () => setFocusedDate(date) : undefined}
                 onMouseEnter={onDateHover && isClickable ? () => onDateHover(isoDate) : undefined}
-                onMouseOver={dateTooltipCallback ? () => setIsTooltipOpen(true) : undefined}
-                onMouseLeave={dateTooltipCallback ? () => setIsTooltipOpen(false) : undefined}
                 onClick={isClickable ? () => dateClickCallback(isoDate) : undefined}
                 onKeyDown={
                     dateClickCallback
@@ -104,18 +92,10 @@ export const Day = React.memo(
                         <div className={styles.icon}>{Icon}</div>
                     </>
                 )}
-                {dateTooltipCallback && isPeriodDifferentFromNoneOrGray(periodeColor) && (
-                    <Popover open={isTooltipOpen} onClose={() => setIsTooltipOpen(false)} anchorEl={buttonRef.current}>
-                        <Popover.Content>{dateTooltipCallback(isoDate)}</Popover.Content>
-                    </Popover>
-                )}
             </button>
         );
     },
 );
-
-const isPeriodDifferentFromNoneOrGray = (periodeColor: CalendarPeriodColor): boolean =>
-    periodeColor !== 'NONE' && periodeColor !== 'GRAY';
 
 export const isWeekend = (date: Dayjs) => date.isoWeekday() === 6 || date.isoWeekday() === 7;
 

@@ -3,8 +3,6 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { action } from 'storybook/actions';
 
-import { BodyShort, Detail, VStack } from '@navikt/ds-react';
-
 import { Calendar } from './Calendar';
 import { CalendarPeriod } from './types/CalendarPeriod';
 import { CalendarPeriodColor } from './types/CalendarPeriodColor';
@@ -57,17 +55,6 @@ export const Default: Story = {};
 export const IkkeVisUkenr: Story = {
     args: {
         showWeekNumbers: false,
-    },
-};
-
-export const MedTooltip: Story = {
-    args: {
-        dateTooltipCallback: (date: string) => (
-            <VStack gap="space-4">
-                <BodyShort>Dette er en tooltip</BodyShort>
-                <Detail>{date}</Detail>
-            </VStack>
-        ),
     },
 };
 
@@ -235,8 +222,5 @@ export const AllePeriodefarger: Story = {
             color,
             srText: color,
         })),
-        dateTooltipCallback: (date: string) => (
-            <BodyShort>{allePeriodefarger.find(([dato]) => dato === date)?.[1]}</BodyShort>
-        ),
     },
 };

@@ -2,10 +2,10 @@ import { ChevronDownCircleIcon, ChevronUpCircleIcon, HeartFillIcon, TeddyBearFil
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, HStack, Tooltip, VStack } from '@navikt/ds-react';
+import { BodyShort, Button, HStack, Tooltip, VStack } from '@navikt/ds-react';
 
 import { Barn, BrukerRolleSak_fpoversikt, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
 import { CalendarLabel, CalendarPeriod, CalendarPeriodColor } from '@navikt/fp-ui';
@@ -48,6 +48,21 @@ export const UttaksplanLegend = ({
     const intl = useIntl();
 
     const [visHorisontalt, setVisHorisontalt] = useState(true);
+    const skalFlytteFokus = useRef(false);
+    const visningsknappRef = useRef<HTMLButtonElement>(null);
+
+    // Åpne- og lukkeknappen bytter plass, så fokus må flyttes til den nye knappen.
+    useEffect(() => {
+        if (skalFlytteFokus.current) {
+            skalFlytteFokus.current = false;
+            visningsknappRef.current?.focus();
+        }
+    }, [visHorisontalt]);
+
+    const byttVisning = (horisontalt: boolean) => {
+        skalFlytteFokus.current = true;
+        setVisHorisontalt(horisontalt);
+    };
 
     const {
         foreldreInfo: { søker },
@@ -128,11 +143,16 @@ export const UttaksplanLegend = ({
             {skjulTekstSomDefault && !visHorisontalt && (
                 <HStack gap="space-8" align="center">
                     <FormattedMessage id="UttaksplanLegend.HvaFargeneBetyr" />
-                    <ChevronUpCircleIcon
-                        title={intl.formatMessage({ id: 'UttaksplanLegend.LukkFargeForklaring' })}
-                        fontSize="1.5rem"
-                        className="mb-1 cursor-pointer"
-                        onClick={() => setVisHorisontalt(true)}
+                    <Button
+                        ref={visningsknappRef}
+                        type="button"
+                        variant="tertiary"
+                        size="small"
+                        className="mb-1"
+                        aria-label={intl.formatMessage({ id: 'UttaksplanLegend.LukkFargeForklaring' })}
+                        aria-expanded
+                        icon={<ChevronUpCircleIcon aria-hidden fontSize="1.5rem" />}
+                        onClick={() => byttVisning(true)}
                     />
                 </HStack>
             )}
@@ -146,11 +166,16 @@ export const UttaksplanLegend = ({
                 />
             ))}
             {skjulTekstSomDefault && visHorisontalt && (
-                <ChevronDownCircleIcon
-                    title={intl.formatMessage({ id: 'UttaksplanLegend.ApneFargeForklaring' })}
-                    fontSize="1.5rem"
-                    className="mb-1 cursor-pointer"
-                    onClick={() => setVisHorisontalt(false)}
+                <Button
+                    ref={visningsknappRef}
+                    type="button"
+                    variant="tertiary"
+                    size="small"
+                    className="mb-1"
+                    aria-label={intl.formatMessage({ id: 'UttaksplanLegend.ApneFargeForklaring' })}
+                    aria-expanded={false}
+                    icon={<ChevronDownCircleIcon aria-hidden fontSize="1.5rem" />}
+                    onClick={() => byttVisning(false)}
                 />
             )}
         </HStackEllerVStack>
@@ -256,7 +281,7 @@ const LabelButton = ({
 }: {
     info: UttaksplanKalenderLegendInfo;
     selectLegend?: (color: CalendarPeriodColor) => void;
-    label?: React.ReactNode;
+    label: string;
     readOnly: boolean;
     visTekst: boolean;
 }) => {
@@ -265,25 +290,10 @@ const LabelButton = ({
     const klikkbar = erLegendLabelKlikkbar(info.label);
     const ikon = getLegendIkon(info.label);
     const erKlikkbar = !!selectLegend && klikkbar && !readOnly;
+    const erValgt = selectedLabel === info.label;
 
-    return (
-        <button
-            type="button"
-            onClick={
-                erKlikkbar
-                    ? () => {
-                          selectLegend(info.calendarPeriod.color);
-                          setSelectedLabel(selectedLabel === info.label ? undefined : info.label);
-                      }
-                    : undefined
-            }
-            className={
-                `rounded-sm ${getSelectableStyle(erKlikkbar)}` +
-                ` ${getFocusStyle(info.calendarPeriod.color)} ${getSelectedStyle(selectedLabel === info.label, info.calendarPeriod.color)} `
-            }
-            tabIndex={erKlikkbar ? 0 : -1}
-            disabled={!erKlikkbar}
-        >
+    const innhold = (
+        <>
             {ikon === 'FAMILIEHENDELSE' && (
                 <HStack gap="space-4">
                     <HeartFillIcon aria-hidden color="var(--ax-bg-brand-magenta-strong)" width={25} height={25} />
@@ -301,6 +311,33 @@ const LabelButton = ({
                     {visTekst && <BodyShort className="text-left">{label}</BodyShort>}
                 </CalendarLabel>
             )}
+            {!visTekst && erKlikkbar && <BodyShort visuallyHidden>{label}</BodyShort>}
+        </>
+    );
+
+    if (!erKlikkbar) {
+        // Dagene i kalenderen leser selv opp perioden, så fargeboksene uten tekst gir ingenting til skjermleser.
+        return (
+            <div className="rounded-sm" aria-hidden={!visTekst || undefined}>
+                {innhold}
+            </div>
+        );
+    }
+
+    return (
+        <button
+            type="button"
+            onClick={() => {
+                selectLegend(info.calendarPeriod.color);
+                setSelectedLabel(erValgt ? undefined : info.label);
+            }}
+            className={
+                `rounded-sm ${getSelectableStyle(true)}` +
+                ` ${getFocusStyle(info.calendarPeriod.color)} ${getSelectedStyle(erValgt, info.calendarPeriod.color)} `
+            }
+            aria-pressed={erValgt}
+        >
+            {innhold}
         </button>
     );
 };

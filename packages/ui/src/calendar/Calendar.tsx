@@ -18,7 +18,6 @@ interface Props {
     isRangeSelection?: boolean;
     firstDateInCalendar: string;
     lastDateInCalendar?: string;
-    dateTooltipCallback?: (date: string) => React.ReactElement | string;
     setSelectedPeriods?: (value: React.SetStateAction<CalendarPeriod[]>) => void;
     getSrTextForSelectedPeriod?: (period: { fom: string; tom: string }) => string;
 }
@@ -30,7 +29,6 @@ export const Calendar = ({
     isRangeSelection = false,
     firstDateInCalendar,
     lastDateInCalendar,
-    dateTooltipCallback,
     setSelectedPeriods,
     getSrTextForSelectedPeriod,
 }: Props) => {
@@ -79,7 +77,6 @@ export const Calendar = ({
                                 : undefined
                         }
                         showWeekNumbers={showWeekNumbers}
-                        dateTooltipCallback={dateTooltipCallback}
                         dateClickCallback={setSelectedPeriods ? dateClickCallback : undefined}
                         pendingFom={setSelectedPeriods ? pendingFom : undefined}
                         onDateHover={setSelectedPeriods ? onDateHover : undefined}
