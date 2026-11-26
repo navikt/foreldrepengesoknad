@@ -102,12 +102,15 @@ export const AndreInntektskilderBox = ({ andreInntektskilder, onRemove }: Props)
                             className="self-start"
                             onClick={() => onRemove(index)}
                         >
-                            {intl.formatMessage({ id: 'AndreInntektskilderBox.Fjern' })}{' '}
+                            <FormattedMessage id="AndreInntektskilderBox.Fjern" />{' '}
                             <span className="sr-only">
-                                {intl.formatMessage(
-                                    { id: 'AndreInntektskilderBox.Fjern.Kontekst' },
-                                    { inntektstype: getTittel(intl, inntekt.type), periode: getPeriode(intl, inntekt) },
-                                )}
+                                <FormattedMessage
+                                    id="AndreInntektskilderBox.Fjern.Kontekst"
+                                    values={{
+                                        inntektstype: getTittel(intl, inntekt.type),
+                                        periode: getPeriode(intl, inntekt),
+                                    }}
+                                />
                             </span>
                         </Button>
                     </VStack>

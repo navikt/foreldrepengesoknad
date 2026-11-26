@@ -117,7 +117,7 @@ export const ManueltLagtTilNæring = ({ egenNæring, onRemove }: Props) => {
                     >
                         <FormattedMessage id="ManueltLagtTilNæring.Fjern" />{' '}
                         <span className="sr-only">
-                            {intl.formatMessage({ id: 'ManueltLagtTilNæring.Fjern.Kontekst' }, { navn, periode })}
+                            <FormattedMessage id="ManueltLagtTilNæring.Fjern.Kontekst" values={{ navn, periode }} />
                         </span>
                     </Button>
                 )}
