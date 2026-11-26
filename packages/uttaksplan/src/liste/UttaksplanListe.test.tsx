@@ -1281,6 +1281,44 @@ describe('UttaksplanListe', () => {
         expect(screen.getByText('Hanne skal ha 50 % foreldrepenger')).toBeInTheDocument();
     });
 
+    it('Skal ikke vise samtidig uttak-tekst når bare den ene forelderen har uttak i perioden', async () => {
+        render(
+            <FarSøkerEtterAtMorHarSøkt
+                perioder={[
+                    {
+                        fom: '2024-04-04',
+                        tom: '2024-04-18',
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FEDREKVOTE',
+                            samtidigUttak: 50,
+                            flerbarnsdager: false,
+                        },
+                        annenPart: {
+                            forelder: 'MOR',
+                            kontoType: 'MØDREKVOTE',
+                            samtidigUttak: 50,
+                            flerbarnsdager: false,
+                        },
+                    },
+                    {
+                        fom: '2024-04-19',
+                        tom: '2024-05-02',
+                        annenPart: {
+                            forelder: 'MOR',
+                            kontoType: 'MØDREKVOTE',
+                            samtidigUttak: 100,
+                            flerbarnsdager: false,
+                        },
+                    },
+                ]}
+            />,
+        );
+
+        expect(await screen.findByText('Hanne skal ha 50 % foreldrepenger')).toBeInTheDocument();
+        expect(screen.queryByText('Hanne skal ha 100 % foreldrepenger')).not.toBeInTheDocument();
+    });
+
     it('Skal ikkje vise heile samtidig uttak som avslått når berre den eine parten har fått avslag', async () => {
         render(
             <FarSøkerEtterAtMorHarSøkt

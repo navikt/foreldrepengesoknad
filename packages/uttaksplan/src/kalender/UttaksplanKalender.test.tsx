@@ -80,6 +80,34 @@ describe('UttaksplanKalender', () => {
         expect(within(april).getAllByTestId('dayColor:LIGHTGREENBLUE', { exact: false })).toHaveLength(10);
     });
 
+    it('skal vise 100 % for forelderen uten samtidigUttak når bare den andre har oppgitt prosent', async () => {
+        render(
+            <MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering
+                perioder={[
+                    {
+                        fom: '2024-04-04',
+                        tom: '2024-04-17',
+                        søker: { forelder: 'MOR', kontoType: 'MØDREKVOTE', flerbarnsdager: false },
+                        annenPart: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FEDREKVOTE',
+                            samtidigUttak: 100,
+                            flerbarnsdager: false,
+                        },
+                    },
+                ]}
+            />,
+        );
+
+        const april = screen.getByTestId('year:2024;month:3');
+        await userEvent.click(within(april).getByTestId('day:10;dayColor:LIGHTGREENBLUE'));
+        await userEvent.click(screen.getAllByText('Hva vil du endre til?')[3]!);
+
+        const panel = screen.getByTestId('eksisterende-periode-2024-04-04-2024-04-17');
+        expect(within(panel).getByText('Mor har 100 % mødrekvote')).toBeInTheDocument();
+        expect(within(panel).getByText('Far har 100 % fedrekvote')).toBeInTheDocument();
+    });
+
     it('skal vise riktige labels og farger på periodene i kalender med gradering, samtidig uttak og tapte dager', () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 

@@ -24,9 +24,16 @@ interface Props {
     inneholderKunEnPeriode: boolean;
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
+    erSamtidigUttak: boolean;
 }
 
-export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåForeldre, erFarEllerMedmor }: Props) => {
+export const UttaksperiodeContent = ({
+    periode,
+    inneholderKunEnPeriode,
+    navnPåForeldre,
+    erFarEllerMedmor,
+    erSamtidigUttak,
+}: Props) => {
     const intl = useIntl();
     const {
         foreldreInfo: { rettighetType, søker, erIkkeSøkerSpesifisert, erFarOgFar },
@@ -102,7 +109,12 @@ export const UttaksperiodeContent = ({ periode, inneholderKunEnPeriode, navnPåF
                         </BodyShort>
                     ) : (
                         <BodyShort>
-                            {getTekstForArbeidOgSamtidigUttak(periode, erFarEllerMedmor, navnPåForeldre)}
+                            {getTekstForArbeidOgSamtidigUttak(
+                                periode,
+                                erSamtidigUttak,
+                                erFarEllerMedmor,
+                                navnPåForeldre,
+                            )}
                         </BodyShort>
                     )}
                 </VStack>
@@ -146,6 +158,7 @@ export const getMorsAktivitetTekst = (intl: IntlShape, aktivitet: MorsAktivitet)
 
 const getTekstForArbeidOgSamtidigUttak = (
     periode: Uttaksplanperiode,
+    erSamtidigUttak: boolean,
     erFarEllerMedmor: boolean,
     navnPåForeldre: NavnPåForeldre,
 ) => {
@@ -168,7 +181,7 @@ const getTekstForArbeidOgSamtidigUttak = (
         );
     }
 
-    if (uttak.samtidigUttak !== undefined) {
+    if (erSamtidigUttak && uttak.samtidigUttak !== undefined) {
         return getSamtidigUttakTekst(uttak.samtidigUttak, uttak.forelder, erFarEllerMedmor, navnPåForeldre);
     }
 

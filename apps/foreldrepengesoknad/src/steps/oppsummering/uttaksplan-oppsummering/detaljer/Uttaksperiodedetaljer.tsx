@@ -10,16 +10,25 @@ import { MorsAktivitetDetaljer } from './MorsaktiviteterDetaljer';
 
 interface Props {
     uttak: UttakDto;
+    erSamtidigUttak: boolean;
     registrerteArbeidsforhold: EksternArbeidsforholdDto_fpoversikt[] | undefined;
     annenForelder: AnnenForelder;
     barn: Barn;
     erSøker: boolean;
 }
 
-export const Uttaksperiodedetaljer = ({ uttak, annenForelder, registrerteArbeidsforhold, barn, erSøker }: Props) => {
+export const Uttaksperiodedetaljer = ({
+    uttak,
+    erSamtidigUttak,
+    annenForelder,
+    registrerteArbeidsforhold,
+    barn,
+    erSøker,
+}: Props) => {
     const intl = useIntl();
 
     const erDeltUttakINorge = isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerINorge;
+    const samtidigUttak = erSamtidigUttak ? uttak.samtidigUttak : undefined;
 
     const skalViseFlerbarnsdager = skalBesvareFlerbarnsdager(
         barn.antallBarn,
@@ -39,13 +48,13 @@ export const Uttaksperiodedetaljer = ({ uttak, annenForelder, registrerteArbeids
                     verdi={uttak.flerbarnsdager ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
                 />
             )}
-            {uttak.samtidigUttak !== undefined && erDeltUttakINorge && (
+            {samtidigUttak !== undefined && erDeltUttakINorge && (
                 <Feltoppsummering
                     feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.samtidigUttak' })}
-                    verdi={uttak.samtidigUttak ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
+                    verdi={samtidigUttak ? intl.formatMessage({ id: 'ja' }) : intl.formatMessage({ id: 'nei' })}
                 />
             )}
-            {uttak.kontoType !== 'FORELDREPENGER_FØR_FØDSEL' && !uttak.samtidigUttak && (
+            {uttak.kontoType !== 'FORELDREPENGER_FØR_FØDSEL' && !samtidigUttak && (
                 <Feltoppsummering
                     feltnavn={intl.formatMessage(
                         { id: 'oppsummering.uttak.kombineresMedarbeid' },

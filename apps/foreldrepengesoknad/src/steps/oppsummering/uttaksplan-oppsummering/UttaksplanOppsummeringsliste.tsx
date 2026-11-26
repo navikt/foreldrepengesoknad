@@ -200,6 +200,7 @@ const UttaksplanListe = ({
                                             {getUttaksperiodeNavn(periode, uttak)}
                                             <Uttaksperiodedetaljer
                                                 uttak={uttak}
+                                                erSamtidigUttak={!!periode.søker && !!periode.annenPart}
                                                 registrerteArbeidsforhold={registrerteArbeidsforhold}
                                                 annenForelder={annenForelder}
                                                 barn={barn}

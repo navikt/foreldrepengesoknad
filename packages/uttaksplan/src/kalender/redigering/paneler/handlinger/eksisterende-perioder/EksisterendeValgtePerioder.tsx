@@ -18,6 +18,7 @@ import {
     BrukerRolleSak_fpoversikt,
     NavnPåForeldre,
     UtsettelseÅrsak,
+    UttakDto,
     UttakOverføringÅrsak_fpoversikt,
 } from '@navikt/fp-types';
 import { CalendarPeriod } from '@navikt/fp-ui';
@@ -200,6 +201,9 @@ export const EksisterendeValgtePerioder = ({ perioder }: Props) => {
     );
 };
 
+const finnSamtidigUttaksprosent = (uttak: UttakDto) =>
+    uttak.samtidigUttak ?? 100 - (uttak.gradering?.arbeidstidprosent ?? 0);
+
 const SamtidigUttak = ({
     periode,
     erMedmorDelAvSøknaden,
@@ -224,7 +228,7 @@ const SamtidigUttak = ({
                         id="RedigeringPanel.SamtidigUttak"
                         values={{
                             kvote: søker.kontoType,
-                            prosent: søker.samtidigUttak,
+                            prosent: finnSamtidigUttaksprosent(søker),
                             erMedmor: søker.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden,
                         }}
                     />
@@ -243,7 +247,7 @@ const SamtidigUttak = ({
                         id="RedigeringPanel.SamtidigUttak"
                         values={{
                             kvote: annenPart.kontoType,
-                            prosent: annenPart.samtidigUttak,
+                            prosent: finnSamtidigUttaksprosent(annenPart),
                             erMedmor: søker?.forelder === 'FAR_MEDMOR' && erMedmorDelAvSøknaden,
                         }}
                     />

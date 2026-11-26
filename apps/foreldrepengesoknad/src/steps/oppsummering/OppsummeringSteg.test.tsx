@@ -635,4 +635,42 @@ describe('<Oppsummering>', () => {
             screen.getByText('har mor søkt om permisjon fra studiet en periode må dette komme frem i dokumentasjonen'),
         ).toBeInTheDocument();
     });
+
+    it('Skal ikke vise samtidig uttak når bare søker har uttak i perioden', async () => {
+        render(
+            <FarMedMorSomHarRettINorge
+                uttaksplan={[
+                    {
+                        fom: '2022-03-30',
+                        tom: '2022-04-12',
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FEDREKVOTE',
+                            samtidigUttak: 50,
+                            flerbarnsdager: false,
+                        },
+                        annenPart: {
+                            forelder: 'MOR',
+                            kontoType: 'MØDREKVOTE',
+                            samtidigUttak: 50,
+                            flerbarnsdager: false,
+                        },
+                    },
+                    {
+                        fom: '2022-04-13',
+                        tom: '2022-04-26',
+                        søker: {
+                            forelder: 'FAR_MEDMOR',
+                            kontoType: 'FEDREKVOTE',
+                            samtidigUttak: 100,
+                            flerbarnsdager: false,
+                        },
+                    },
+                ]}
+            />,
+        );
+
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(screen.getAllByText('Vi skal ha samtidig uttak:')).toHaveLength(2);
+    });
 });
