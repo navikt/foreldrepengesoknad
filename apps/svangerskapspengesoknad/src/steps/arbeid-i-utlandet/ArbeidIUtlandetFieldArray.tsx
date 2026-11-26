@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { ArbeidIUtlandet, ArbeidIUtlandetType } from 'types/ArbeidIUtlandet';
+import { lagSlettKnappKontekst } from 'utils/slettKnappUtils';
 import { getMinInputTilOgMedValue } from 'utils/validationUtils';
 
 import { Button, HStack, Radio, VStack } from '@navikt/ds-react';
@@ -41,6 +42,14 @@ export const ArbeidIUtlandetFieldArray = () => {
 
     const alleArbeidIUtlandet = formMethods.watch(`arbeidIUtlandet`);
 
+    const slettKontekster = alleArbeidIUtlandet.map((arbeid) =>
+        lagSlettKnappKontekst(intl, {
+            land: arbeid.land,
+            fom: arbeid.fom,
+            tom: arbeid.pågående ? undefined : arbeid.tom,
+        }),
+    );
+
     const navnPåArbeidsgiverLabel = intl.formatMessage({ id: 'ArbeidIUtlandetFieldArray.navn' });
 
     return (
@@ -71,6 +80,9 @@ export const ArbeidIUtlandetFieldArray = () => {
                                 onClick={() => remove(index)}
                             >
                                 <FormattedMessage id="perioder.varierende.slett" />
+                                {slettKontekster[index] && (
+                                    <span className="sr-only">{`, ${slettKontekster[index]}`}</span>
+                                )}
                             </Button>
                         )}
                     </HStack>

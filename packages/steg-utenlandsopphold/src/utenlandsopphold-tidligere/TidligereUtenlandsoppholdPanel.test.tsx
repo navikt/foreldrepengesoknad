@@ -133,6 +133,29 @@ describe('<TidligereUtenlandsoppholdPanel>', () => {
         expect(screen.getByText('Hvilket land bodde du i?')).toBeInTheDocument();
     });
 
+    it('skal gi slettknappene ulike navn med land og periode', async () => {
+        const fom = dayjs().subtract(30, 'day').format(DDMMYYYY_DATE_FORMAT);
+        const tom = dayjs().subtract(25, 'day').format(DDMMYYYY_DATE_FORMAT);
+        render(<Default />);
+
+        await userEvent.click(await screen.findByText('Legg til flere opphold i utlandet'));
+        await userEvent.click(screen.getByText('Legg til flere opphold i utlandet'));
+
+        await userEvent.selectOptions(screen.getAllByLabelText('Hvilket land bodde du i?')[1]!, 'CAN');
+        await userEvent.selectOptions(screen.getAllByLabelText('Hvilket land bodde du i?')[2]!, 'SWE');
+
+        const fraOgMed = screen.getAllByLabelText('Fra og med')[2]!;
+        await userEvent.type(fraOgMed, fom);
+        fireEvent.blur(fraOgMed);
+        const tilOgMed = screen.getAllByLabelText('Til og med')[2]!;
+        await userEvent.type(tilOgMed, tom);
+        fireEvent.blur(tilOgMed);
+
+        expect(
+            screen.getAllByRole('button', { name: /^Slett dette oppholdet/ }).map((knapp) => knapp.textContent),
+        ).toEqual(['Slett dette oppholdet, Canada', `Slett dette oppholdet, Sverige, ${fom} til ${tom}`]);
+    });
+
     it('skal lagre uvalidert data når en går til forrige steg', async () => {
         const saveOnPrevious = vi.fn();
         const goToPreviousStep = vi.fn();

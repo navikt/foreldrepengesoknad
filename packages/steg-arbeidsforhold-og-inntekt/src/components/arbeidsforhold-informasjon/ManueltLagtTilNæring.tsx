@@ -42,6 +42,14 @@ export const ManueltLagtTilNæring = ({ egenNæring, onRemove }: Props) => {
 
     const næringstype = næringstypeTekst(egenNæring.næringstype);
 
+    const periode = intl.formatMessage(
+        { id: 'inntektsinformasjon.arbeidsforhold.periode' },
+        {
+            fom: formatDate(egenNæring.fom),
+            tom: egenNæring.tom ? formatDate(egenNæring.tom) : intl.formatMessage({ id: 'HarArbeidsforhold.pågående' }),
+        },
+    );
+
     return (
         <Box
             ref={næringRef}
@@ -94,10 +102,7 @@ export const ManueltLagtTilNæring = ({ egenNæring, onRemove }: Props) => {
                         <FormattedMessage id="SelvstendigNæringDrivende.Dato" />
                     </Label>
                     <BodyShort className="text-ax-text-neutral-subtle" size="small">
-                        {formatDate(egenNæring.fom)} -{' '}
-                        {egenNæring.tom
-                            ? formatDate(egenNæring.tom)
-                            : intl.formatMessage({ id: 'HarArbeidsforhold.pågående' })}
+                        {periode}
                     </BodyShort>
                 </HStack>
                 {onRemove && (
@@ -108,10 +113,12 @@ export const ManueltLagtTilNæring = ({ egenNæring, onRemove }: Props) => {
                         data-color="danger"
                         icon={<TrashIcon aria-hidden />}
                         className="self-start"
-                        aria-label={intl.formatMessage({ id: 'ManueltLagtTilNæring.FjernAriaLabel' }, { navn })}
                         onClick={onRemove}
                     >
-                        <FormattedMessage id="ManueltLagtTilNæring.Fjern" />
+                        <FormattedMessage id="ManueltLagtTilNæring.Fjern" />{' '}
+                        <span className="sr-only">
+                            {intl.formatMessage({ id: 'ManueltLagtTilNæring.Fjern.Kontekst' }, { navn, periode })}
+                        </span>
                     </Button>
                 )}
             </VStack>

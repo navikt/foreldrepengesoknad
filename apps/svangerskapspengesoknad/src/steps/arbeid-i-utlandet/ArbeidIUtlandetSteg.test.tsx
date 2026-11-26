@@ -192,8 +192,8 @@ describe('<ArbeidIUtlandetSteg>', () => {
 
         expect(screen.getByDisplayValue('Arbeidsgivernavn')).toBeInTheDocument();
 
-        expect(screen.getAllByText('Fjern perioden', { exact: false })[0]).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Fjern perioden')[0]!);
+        expect(screen.getAllByRole('button', { name: /^Fjern perioden/ })[0]).toBeInTheDocument();
+        await userEvent.click(screen.getAllByRole('button', { name: /^Fjern perioden/ })[0]!);
 
         expect(screen.queryByDisplayValue('Arbeidsgivernavn')).not.toBeInTheDocument();
     });

@@ -8,6 +8,7 @@ import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router';
 import { getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
+import { lagSlettKnappKontekst } from 'utils/slettKnappUtils';
 import { getNesteTilretteleggingId, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
 
 import { BodyShort, Button, HStack, Radio, ReadMore, Tag, VStack } from '@navikt/ds-react';
@@ -151,6 +152,7 @@ function FeriePerioder() {
 
     const { watch } = useFormContext<FerieFormData>();
     const skalHaFerie = watch('skalHaFerie');
+    const feriePerioder = watch('feriePerioder');
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barnet);
 
@@ -177,10 +179,18 @@ function FeriePerioder() {
                                     size="small"
                                     variant="tertiary"
                                     type="button"
-                                    aria-label={`Fjern ${index + 1}. periode`}
-                                    icon={<XMarkIcon />}
+                                    icon={<XMarkIcon aria-hidden />}
                                 >
                                     <FormattedMessage id="ferie.periode.slett" />
+                                    <span className="sr-only">
+                                        {`, ${
+                                            lagSlettKnappKontekst(intl, feriePerioder[index] ?? {}) ??
+                                            intl.formatMessage(
+                                                { id: 'ferie.periode.slett.nummer' },
+                                                { nummer: index + 1 },
+                                            )
+                                        }`}
+                                    </span>
                                 </Button>
                             )}
                         </HStack>

@@ -166,7 +166,7 @@ describe('<PerioderSteg>', () => {
         expect(stillingInput1).toHaveValue('45');
         expect(screen.getAllByLabelText('Frem til tre uker før termin')[1]).toBeChecked();
 
-        await user.click(screen.getAllByText('Fjern perioden')[0]!);
+        await user.click(screen.getAllByRole('button', { name: /^Fjern perioden/ })[0]!);
         await user.click(screen.getByText('Legg til ny periode'));
         expect(fradatoInput1).toHaveValue('16.01.2024');
         expect(screen.getAllByLabelText('Hvilken stillingsprosent skal du jobbe i denne perioden?')[1]).toHaveValue('');
@@ -190,8 +190,8 @@ describe('<PerioderSteg>', () => {
         expect(screen.getAllByText('Til:')[1]).toBeInTheDocument();
         await user.click(screen.getAllByText('Frem til tre uker før termin')[1]!);
 
-        expect(screen.getAllByText('Fjern perioden', { exact: false })[0]).toBeInTheDocument();
-        await user.click(screen.getAllByText('Fjern perioden')[0]!);
+        expect(screen.getAllByRole('button', { name: /^Fjern perioden/ })[0]).toBeInTheDocument();
+        await user.click(screen.getAllByRole('button', { name: /^Fjern perioden/ })[0]!);
 
         expect(screen.queryByText('30.10.2023 - 3 uker før termin (12 uker 6 dager)')).not.toBeInTheDocument();
     });

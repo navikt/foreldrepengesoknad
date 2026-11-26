@@ -20,6 +20,8 @@ import {
     isValidDate,
 } from '@navikt/fp-validation';
 
+import { lagSlettOppholdKontekst } from '../lagSlettOppholdKontekst';
+
 interface Props {
     index: number;
     fjernOpphold: (index: number) => void;
@@ -38,6 +40,8 @@ export const TidligereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props)
     const alleAndreUtenlandsopphold = watch(`utenlandsoppholdSiste12Mnd`).filter((_u, i) => i !== index);
     const fom = watch(`utenlandsoppholdSiste12Mnd.${index}.fom`);
     const tom = watch(`utenlandsoppholdSiste12Mnd.${index}.tom`);
+    const landkode = watch(`utenlandsoppholdSiste12Mnd.${index}.landkode`);
+    const slettKontekst = lagSlettOppholdKontekst(intl, landkode, fom, tom);
 
     const minDateFom = DATE_1_YEAR_AGO;
     const maxDateFom = tom ? dayjs(tom).subtract(1, 'days').format(ISO_DATE_FORMAT) : DATE_TODAY;
@@ -156,6 +160,7 @@ export const TidligereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props)
                     onClick={() => fjernOpphold(index)}
                 >
                     <FormattedMessage id="TidligereUtenlandsoppholdSteg.Knapp.SlettOpphold" />
+                    {slettKontekst && <span className="sr-only">{`, ${slettKontekst}`}</span>}
                 </Button>
             )}
         </VStack>
