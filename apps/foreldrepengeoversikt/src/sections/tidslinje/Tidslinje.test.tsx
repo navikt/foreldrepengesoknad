@@ -6,6 +6,7 @@ import * as stories from './Tidslinje.stories.tsx';
 
 const {
     FPAdopsjon,
+    FPEttersendingUtenTittel,
     FPTerminInnvilget,
     FPMedTilbakekreving,
     FPEtterlysIM,
@@ -57,6 +58,12 @@ describe('<Tidslinje>', () => {
         expect(within(timelineEvents[0]!).getByText(/barnet ble adoptert/i)).toBeInTheDocument();
         expect(within(timelineEvents[1]!).getByText(/du søkte om foreldrepenger/i)).toBeInTheDocument();
         expect(within(timelineEvents[2]!).getByText(/du vil få et svar på søknaden din/i)).toBeInTheDocument();
+    });
+
+    it('FP - dokument uten tittel får reservetekst som lenketekst', async () => {
+        await FPEttersendingUtenTittel.run();
+
+        expect(await screen.findByRole('link', { name: 'Dokument uten tittel' })).toBeInTheDocument();
     });
 
     it('FP- Termin innvilget', async () => {

@@ -36,7 +36,7 @@ import {
 } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.ts';
 import { uttaksplan, uttaksplanAvslått, uttaksplanForTidligSøknad } from 'storybookData/uttaksplan/uttaksplan.ts';
 
-import { FellesUttaksplanDto, OversiktBarnDto_fpoversikt } from '@navikt/fp-types';
+import { FellesUttaksplanDto, OversiktBarnDto_fpoversikt, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
 import { withMockDate, withQueryClient } from '@navikt/fp-utils-test';
 
 import { API_URLS, hentManglendeVedleggOptions, hentTidslinjehendelserOptions } from '../../api/queries.ts';
@@ -134,6 +134,32 @@ export const FPAdopsjon: Story = {
             http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
             http.get(API_URLS.saker, () => HttpResponse.json(saker_FP_adopsjon)),
             http.get(API_URLS.tidslinje, () => HttpResponse.json(tidslinjeHendelser_FP_Adopsjon)),
+            http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json([])),
+        );
+    },
+
+    args: {
+        søkersBarn,
+        saksnummer: '818',
+    },
+};
+
+export const FPEttersendingUtenTittel: Story = {
+    beforeEach({ msw }) {
+        msw.use(
+            http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
+            http.get(API_URLS.saker, () => HttpResponse.json(saker_FP_adopsjon)),
+            http.get(API_URLS.tidslinje, () =>
+                HttpResponse.json([
+                    ...tidslinjeHendelser_FP_Adopsjon,
+                    {
+                        opprettet: '2025-11-27T01:30:00',
+                        aktørType: 'BRUKER',
+                        tidslinjeHendelseType: 'ETTERSENDING',
+                        dokumenter: [{ journalpostId: '112091675', dokumentId: '112091675', tittel: '' }],
+                    },
+                ] satisfies TidslinjeHendelseDto_fpoversikt[]),
+            ),
             http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json([])),
         );
     },
