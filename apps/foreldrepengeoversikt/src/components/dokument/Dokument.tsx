@@ -7,6 +7,7 @@ import { DokumentDto_fpoversikt, JournalpostType_fpoversikt } from '@navikt/fp-t
 import { formatDateExtended } from '@navikt/fp-utils';
 
 import { API_URLS } from '../../api/queries.ts';
+import { DokumentTittel } from './DokumentTittel.tsx';
 
 interface Props {
     readonly dokument: DokumentDto_fpoversikt;
@@ -21,7 +22,7 @@ function DokumentLenke({ dokument }: { dokument: DokumentDto_fpoversikt }) {
                 target="_blank"
                 className="block overflow-hidden overflow-ellipsis whitespace-nowrap"
             >
-                {dokument.tittel}
+                <DokumentTittel tittel={dokument.tittel} />
             </Link>
         </>
     );

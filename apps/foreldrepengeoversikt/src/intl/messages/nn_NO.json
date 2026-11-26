@@ -258,6 +258,7 @@
     "ytelse.SVANGERSKAPSPENGER": "svangerskapspengar",
     "dokument.avsender.nav": "Nav",
     "dokument.avsender.du": "Du",
+    "dokument.utenTittel": "Dokument utan tittel",
     "dokumenter.antall": "{count, plural, one {1 dokument} other {# dokument}}",
     "inntektsmelding.for": "for {arbeidsgiverNavn}",
     "breadcrumb.minSide": "Mi side",

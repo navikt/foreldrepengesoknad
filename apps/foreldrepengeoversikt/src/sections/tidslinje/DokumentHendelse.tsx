@@ -8,6 +8,7 @@ import { HStack, Link } from '@navikt/ds-react';
 import { Dokument_fpoversikt } from '@navikt/fp-types';
 
 import { API_URLS, hentInntektsmelding } from '../../api/queries.ts';
+import { DokumentTittel } from '../../components/dokument/DokumentTittel.tsx';
 import { OversiktRoutes } from '../../routes/routes';
 
 interface Props {
@@ -30,7 +31,7 @@ export const DokumentHendelse = ({ dokument, visesITidslinjen }: Props) => {
                 className="min-w-[24px]"
                 target="_blank"
             >
-                {dokument.tittel}
+                <DokumentTittel tittel={dokument.tittel} />
             </Link>
         </HStack>
     );
@@ -38,7 +39,6 @@ export const DokumentHendelse = ({ dokument, visesITidslinjen }: Props) => {
 
 export const InntektsmeldingDokumentHendelse = ({ dokument, visesITidslinjen }: Props) => {
     const { saksnummer } = useParams();
-    const { tittel } = dokument;
 
     const arbeidsgiverNavn = (useQuery(hentInntektsmelding(saksnummer!)).data ?? []).find(
         (im) => im.journalpostId === dokument.journalpostId,
@@ -58,7 +58,7 @@ export const InntektsmeldingDokumentHendelse = ({ dokument, visesITidslinjen }: 
                 to={`${OversiktRoutes.SAKSOVERSIKT}/${saksnummer}/${OversiktRoutes.INNTEKTSMELDING}/${dokument.journalpostId}`}
                 className="min-w-[24px]"
             >
-                {tittel}
+                <DokumentTittel tittel={dokument.tittel} />
                 {arbeidsgiverNavn && (
                     <>
                         {' '}
