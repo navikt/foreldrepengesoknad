@@ -70,7 +70,7 @@ describe('<Planlegger>', () => {
         await userEvent.click(screen.getByText('Nei'));
         await userEvent.click(screen.getByText('Neste'));
 
-        await waitFor(() => expect(screen.getAllByText('Oppsummering')).toHaveLength(2));
+        expect(await screen.findByRole('heading', { name: 'Oppsummering' })).toBeInTheDocument();
         expect(screen.getByText('Ingen av dere har rett til foreldrepenger')).toBeInTheDocument();
         // OppsummeringSteg er lazy-lasta, så knappen kan dukke opp asynkront.
         await userEvent.click(await screen.findByText('Tilbake til spørsmålene'));
@@ -122,7 +122,7 @@ describe('<Planlegger>', () => {
         fireEvent.blur(termindato);
         await userEvent.click(screen.getByText('Neste'));
 
-        await waitFor(() => expect(screen.getAllByText('Oppsummering')).toHaveLength(2));
+        expect(await screen.findByRole('heading', { name: 'Oppsummering' })).toBeInTheDocument();
         expect(screen.getByText('Ingen av dere har rett til foreldrepenger')).toBeInTheDocument();
         // OppsummeringSteg er lazy-lasta, så knappen kan dukke opp asynkront.
         await userEvent.click(await screen.findByText('Tilbake til spørsmålene'));
@@ -190,7 +190,7 @@ describe('<Planlegger>', () => {
         expect(screen.getByText('Steg 7 av 8')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Oppsummering')[1]!);
 
-        expect(screen.getAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findByRole('heading', { name: 'Oppsummering' })).toBeInTheDocument();
         expect(screen.getByText('Planen deres')).toBeInTheDocument();
         // OppsummeringSteg er lazy-lasta, så knappen kan dukke opp asynkront.
         await userEvent.click(await screen.findByText('Tilbake til spørsmålene'));
@@ -286,7 +286,7 @@ describe('<Planlegger>', () => {
         expect(screen.getByText('Steg 7 av 8')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Oppsummering')[1]!);
 
-        expect(screen.getAllByText('Oppsummering')).toHaveLength(2);
+        expect(await screen.findByRole('heading', { name: 'Oppsummering' })).toBeInTheDocument();
         // OppsummeringSteg er lazy-lasta, så knappen kan dukke opp asynkront.
         await userEvent.click(await screen.findByText('Tilbake til spørsmålene'));
 

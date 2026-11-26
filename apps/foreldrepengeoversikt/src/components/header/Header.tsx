@@ -2,7 +2,7 @@ import { BabyWrappedIcon, PersonPregnantIcon, StrollerIcon } from '@navikt/aksel
 import { useQuery } from '@tanstack/react-query';
 import { ReactNode, createElement } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useParams } from 'react-router';
+import { useLocation, useParams } from 'react-router';
 import { Sak } from 'types/Sak.ts';
 
 import { Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
@@ -12,6 +12,7 @@ import {
     OversiktPersonopplysningerDto_fpoversikt,
     Ytelse,
 } from '@navikt/fp-types';
+import { useFokusVedNavigasjon } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, capitalizeFirstLetterInEveryWordOnly, formatDateMedUkedag } from '@navikt/fp-utils';
 
 import { hentSakerOptions, søkerInfoOptions } from '../../api/queries.ts';
@@ -37,6 +38,16 @@ export const getSaksoversiktHeading = (ytelse: Ytelse | undefined, intl: ReturnT
 
     return intl.formatMessage({ id: 'header.dinSak' });
 };
+
+function SideOverskrift({ children }: { children: ReactNode }) {
+    const { pathname } = useLocation();
+    const overskriftRef = useFokusVedNavigasjon<HTMLHeadingElement>(pathname);
+    return (
+        <Heading ref={overskriftRef} level="1" size="medium">
+            {children}
+        </Heading>
+    );
+}
 
 function HeaderWrapper({ children }: { children: ReactNode }) {
     return (
@@ -100,9 +111,9 @@ export function ForsideHeader() {
             <HGrid columns="max-content 1fr" gap="space-24" align="start">
                 <BabyIkon ytelse={undefined} />
                 <VStack>
-                    <Heading level="1" size="medium">
+                    <SideOverskrift>
                         <FormattedMessage id="header.oversikt" />
-                    </Heading>
+                    </SideOverskrift>
                     <Detail textColor="subtle">
                         <FormattedMessage id="header.dineSaker" />
                     </Detail>
@@ -125,9 +136,9 @@ export function DokumenterHeader() {
     const { saksnummer } = useParams();
     return (
         <SimpleHeaderWrapper>
-            <Heading level="1" size="medium">
+            <SideOverskrift>
                 <FormattedMessage id="header.dokumenter" />
-            </Heading>
+            </SideOverskrift>
             <Detail textColor="subtle">
                 <FormattedMessage id="header.dokumenterFra" values={{ saksnummer }} />
             </Detail>
@@ -138,9 +149,9 @@ export function DokumenterHeader() {
 export function EttersendingHeader() {
     return (
         <SimpleHeaderWrapper>
-            <Heading level="1" size="medium">
+            <SideOverskrift>
                 <FormattedMessage id="header.lastOppDokumenter" />
-            </Heading>
+            </SideOverskrift>
         </SimpleHeaderWrapper>
     );
 }
@@ -152,14 +163,14 @@ export const InntektsmeldingHeader = ({
 }) => {
     return (
         <SimpleHeaderWrapper>
-            <Heading level="1" size="medium">
+            <SideOverskrift>
                 <FormattedMessage
                     id="header.dinInntekt"
                     values={{
                         arbeidsgiverNavn: capitalizeFirstLetterInEveryWordOnly(inntektsmelding.arbeidsgiverNavn),
                     }}
                 />
-            </Heading>
+            </SideOverskrift>
             <Detail textColor="subtle">
                 <FormattedMessage
                     id="header.endret"
@@ -173,9 +184,9 @@ export const InntektsmeldingHeader = ({
 export const InntektsmeldingOversiktHeader = () => {
     return (
         <SimpleHeaderWrapper>
-            <Heading level="1" size="medium">
+            <SideOverskrift>
                 <FormattedMessage id="header.inntektRapportert" />
-            </Heading>
+            </SideOverskrift>
         </SimpleHeaderWrapper>
     );
 };
@@ -235,9 +246,9 @@ export function DinSakHeader({ sak }: { sak?: Sak }) {
                           <BabyIkon ytelse={sak.ytelse} />
                           <VStack>
                               <HStack gap="space-24" align="center">
-                                  <Heading level="1" size="medium">
+                                  <SideOverskrift>
                                       <FormattedMessage id="header.dinSak" />
-                                  </Heading>
+                                  </SideOverskrift>
                                   <StatusTag sak={sak} harMinstEttArbeidsforhold={harMinstEttArbeidsforhold} />
                               </HStack>
                               <Show above="md">

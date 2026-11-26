@@ -10,6 +10,7 @@ import { useEffektivHvemPlanlegger } from 'appData/useEffektivHvemPlanlegger';
 import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { useStepData } from 'appData/useStepData';
 import { FordelingSlider } from 'components/FordelingSlider';
+import { PlanleggerStegTittel } from 'components/page/PlanleggerStegTittel';
 import { useEffect, useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { HvemPlanleggerType } from 'types/HvemPlanlegger';
@@ -121,7 +122,7 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
         const currentPath = location.pathname;
         const newUrl = `${currentPath}?data=${encodedData}`;
 
-        history.replaceState(null, '', newUrl);
+        history.replaceState(history.state, '', newUrl);
     };
 
     const planforslag = useLagUttaksplanForslag(valgtStønadskvote);
@@ -150,9 +151,9 @@ export const PlanenDeresSteg = ({ stønadskvoter }: Props) => {
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
             <VStack gap="space-24">
-                <Heading size="medium" spacing level="2">
+                <PlanleggerStegTittel spacing>
                     <FormattedMessage id="OversiktSteg.Tittel" values={{ erAleneforsørger: erAleneOmOmsorg }} />
-                </Heading>
+                </PlanleggerStegTittel>
 
                 <UttaksplanDataProvider
                     barn={mapOmBarnetPlanleggerTilBarn(omBarnet)}

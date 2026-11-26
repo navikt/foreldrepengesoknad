@@ -1,11 +1,19 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { PlanleggerRoutes } from 'appData/routes';
+import { MemoryRouter } from 'react-router';
 
 import { PlanleggerStepPage } from './PlanleggerStepPage';
 
 const meta = {
     title: 'components/PlanleggerStepPage',
     component: PlanleggerStepPage,
+    decorators: [
+        (Story) => (
+            <MemoryRouter>
+                <Story />
+            </MemoryRouter>
+        ),
+    ],
 } satisfies Meta<typeof PlanleggerStepPage>;
 export default meta;
 

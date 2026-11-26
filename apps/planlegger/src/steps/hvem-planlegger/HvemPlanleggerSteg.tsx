@@ -85,7 +85,7 @@ export const HvemPlanleggerSteg = () => {
                             ]}
                             onChange={scrollToBottom}
                         >
-                            <Radio value={HvemPlanleggerType.MOR_OG_FAR} autoFocus>
+                            <Radio value={HvemPlanleggerType.MOR_OG_FAR}>
                                 <FormattedMessage id="HvemPlanleggerSteg.MorOgFar" />
                             </Radio>
                             <Radio value={HvemPlanleggerType.MOR_OG_MEDMOR}>

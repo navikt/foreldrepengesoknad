@@ -1,10 +1,18 @@
 import { PlanleggerRoutes } from 'appData/routes';
 import { Ref } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { useLocation } from 'react-router';
 
 import { Heading, VStack } from '@navikt/ds-react';
 
-import { BlueHeading, Page, ProgressStep, ProgressStepper, useStegSidetittel } from '@navikt/fp-ui';
+import {
+    BlueHeading,
+    Page,
+    ProgressStep,
+    ProgressStepper,
+    useFokusVedNavigasjon,
+    useStegSidetittel,
+} from '@navikt/fp-ui';
 
 interface Props {
     steps: Array<ProgressStep<PlanleggerRoutes>>;
@@ -14,6 +22,9 @@ interface Props {
 }
 
 export const PlanleggerStepPage = ({ steps, children, goToStep, ref }: Props) => {
+    const { pathname } = useLocation();
+    // Reserve for steg uten PlanleggerStegTittel. Har steget en, har den allerede tatt fokus siden barnas effekter kjører først.
+    const overskriftRef = useFokusVedNavigasjon<HTMLHeadingElement>(pathname);
     const selectedStepIndex = steps.findIndex((step) => step.isSelected);
     const selectedStep = steps[selectedStepIndex];
 
@@ -30,7 +41,7 @@ export const PlanleggerStepPage = ({ steps, children, goToStep, ref }: Props) =>
                 header={
                     <BlueHeading>
                         <VStack gap="space-16">
-                            <Heading size="large">
+                            <Heading ref={overskriftRef} size="large">
                                 <FormattedMessage id="PlanleggerStepPage.Tittel" />
                             </Heading>
                             <ProgressStepper steps={steps} onStepChange={goToStep} hideHeader />

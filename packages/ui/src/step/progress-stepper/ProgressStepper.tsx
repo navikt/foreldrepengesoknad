@@ -3,6 +3,8 @@ import { useIntl } from 'react-intl';
 
 import { FormProgress, Heading, VStack } from '@navikt/ds-react';
 
+import { useFokusVedNavigasjon } from '../../fokus/useFokusVedNavigasjon';
+
 export type ProgressStep<TYPE> = {
     id: TYPE;
     label: string;
@@ -24,6 +26,7 @@ export const ProgressStepper = <TYPE extends string>({
 
     const currentStepIndex = steps.findIndex((s) => s.isSelected);
     const [activeStep, setActiveStep] = useState(currentStepIndex + 1);
+    const overskriftRef = useFokusVedNavigasjon<HTMLHeadingElement>(steps[currentStepIndex]?.id);
 
     if (currentStepIndex === -1) {
         throw new Error('No selected step in step-config');
@@ -32,7 +35,7 @@ export const ProgressStepper = <TYPE extends string>({
     return (
         <VStack gap="space-16">
             {!hideHeader && (
-                <Heading size="large" level="2">
+                <Heading ref={overskriftRef} size="large" level="2">
                     {steps[currentStepIndex]!.label}
                 </Heading>
             )}
