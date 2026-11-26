@@ -5,8 +5,8 @@ import { Button, GuidePanel, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { AppName } from '@navikt/fp-types';
-import { useDocumentTitle } from '@navikt/fp-utils';
 
+import { useSidetittel } from '../sidetittel/Sidetittel';
 import { SkjemaRotLayout } from '../skjema-rotlayout/SkjemaRotLayout';
 
 interface Props {
@@ -30,7 +30,7 @@ export const Umyndig = ({ appName }: Props) => {
     const intl = useIntl();
 
     const titleText = getTitleText(appName, intl);
-    useDocumentTitle(titleText);
+    useSidetittel(intl.formatMessage({ id: 'Umyndig.Tittel' }));
 
     return (
         <SkjemaRotLayout pageTitle={titleText}>

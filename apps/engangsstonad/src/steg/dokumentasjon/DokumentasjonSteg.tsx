@@ -8,7 +8,7 @@ import { Dokumentasjon } from 'types/Dokumentasjon';
 
 import { VStack } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm, useFeltId } from '@navikt/fp-form-hooks';
 import { Attachment } from '@navikt/fp-types';
 import { ScanDocumentInfo, SkjemaRotLayout, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -37,6 +37,7 @@ export const DokumentasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
     const formMethods = useForm<Dokumentasjon>({
         defaultValues: dokumentasjon,
     });
+    const vedleggId = useFeltId('vedlegg', formMethods.control);
 
     const lagre = (formValues: Dokumentasjon) => {
         if (formValues.vedlegg.length === 0) {
@@ -67,12 +68,14 @@ export const DokumentasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
                             <AdopsjonDokPanel
                                 attachments={dokumentasjon?.vedlegg}
                                 updateAttachments={updateAttachments}
+                                vedleggId={vedleggId}
                             />
                         )}
                         {harTermindato && (
                             <TerminDokPanel
                                 attachments={dokumentasjon?.vedlegg}
                                 updateAttachments={updateAttachments}
+                                vedleggId={vedleggId}
                                 termindato={barn.type === 'termin' ? barn.termindato : ''}
                             />
                         )}

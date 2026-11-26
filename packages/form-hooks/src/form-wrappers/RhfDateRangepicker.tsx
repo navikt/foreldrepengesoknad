@@ -7,6 +7,7 @@ import { DatePicker, HStack, VStack, useRangeDatepicker } from '@navikt/ds-react
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT, TIDENES_ENDE, TIDENES_MORGEN } from '@navikt/fp-constants';
 
+import { useFeltId } from './feltId';
 import { ValidationReturnType, getError, getValidationRules, parseDatoInput } from './formUtils';
 
 dayjs.extend(customParseFormat);
@@ -75,6 +76,9 @@ export const RhfDateRangepicker = ({
     const {
         formState: { errors },
     } = useFormContext();
+
+    const fromFeltId = useFeltId(nameFrom);
+    const toFeltId = useFeltId(nameTo);
 
     const { field: fromField } = useController({
         name: nameFrom,
@@ -166,6 +170,7 @@ export const RhfDateRangepicker = ({
                 <HStack wrap={false} gap="space-16" align="start">
                     <DatePicker.Input
                         {...fromInputProps}
+                        id={fromFeltId}
                         ref={fromField.ref}
                         value={fromFieldValue}
                         onChange={onChangeFromInput}
@@ -176,6 +181,7 @@ export const RhfDateRangepicker = ({
                     />
                     <DatePicker.Input
                         {...toInputProps}
+                        id={toFeltId}
                         ref={toField.ref}
                         value={toFieldValue}
                         onChange={onChangeToInput}

@@ -34,6 +34,7 @@ interface Props {
     multiple?: boolean;
     skjemanummerTextMap?: Record<Skjemanummer, string>;
     uploadPath: string;
+    id?: string;
     timeout?: number; // Kun brukt for å sette custom timeout i test
 }
 
@@ -47,6 +48,7 @@ export const FileUploader = ({
     multiple = true,
     skjemanummerTextMap,
     uploadPath,
+    id,
     timeout,
 }: Props) => {
     const intl = useIntl();
@@ -104,27 +106,34 @@ export const FileUploader = ({
         ];
     }, [acceptedAttachments, skjemanummerTextMap, intl]);
 
+    const fileLimit = { max: multiple ? 40 : 1, current: acceptedAttachments.length };
+    const fileLimitReached = fileLimit.current >= fileLimit.max;
+
     return (
         <VStack gap="space-24">
-            <FileUpload.Dropzone
-                label={label}
-                description={
-                    <VStack gap="space-8">
-                        {description}
-                        <BodyShort>
-                            <FormattedMessage
-                                id="FileInput.Vedlegg.Lovlige"
-                                values={{ maxStørrelse: MAX_FIL_STØRRELSE_MB }}
-                            />
-                        </BodyShort>
-                    </VStack>
-                }
-                accept={VALID_EXTENSIONS.join(', ')}
-                maxSizeInBytes={MAX_FIL_STØRRELSE_BYTES}
-                fileLimit={{ max: multiple ? 40 : 1, current: acceptedAttachments.length }}
-                onSelect={saveFiles}
-                validator={(file: File) => (file.size === 0 ? ('NO_DATA' satisfies AttachmentError) : true)}
-            />
+            {/* Aksel fjerner knappen når fileLimit er nådd, så id-en må ligge på et element som alltid finnes og kan få fokus. */}
+            <div id={fileLimitReached ? id : undefined} tabIndex={fileLimitReached ? -1 : undefined}>
+                <FileUpload.Dropzone
+                    id={fileLimitReached ? undefined : id}
+                    label={label}
+                    description={
+                        <VStack gap="space-8">
+                            {description}
+                            <BodyShort>
+                                <FormattedMessage
+                                    id="FileInput.Vedlegg.Lovlige"
+                                    values={{ maxStørrelse: MAX_FIL_STØRRELSE_MB }}
+                                />
+                            </BodyShort>
+                        </VStack>
+                    }
+                    accept={VALID_EXTENSIONS.join(', ')}
+                    maxSizeInBytes={MAX_FIL_STØRRELSE_BYTES}
+                    fileLimit={fileLimit}
+                    onSelect={saveFiles}
+                    validator={(file: File) => (file.size === 0 ? ('NO_DATA' satisfies AttachmentError) : true)}
+                />
+            </div>
             {acceptedGroups.map((group) => (
                 <AttachmentList
                     key={group.key}

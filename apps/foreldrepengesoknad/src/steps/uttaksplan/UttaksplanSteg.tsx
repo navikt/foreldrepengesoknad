@@ -9,7 +9,6 @@ import { ReactNode, useCallback, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isAnnenForelderOppgitt } from 'types/AnnenForelder';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
-import { erPeriodeIOpprinneligPlan } from 'utils/eksisterendeSakUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getErFarOgFar, getErSøkerFarEllerMedmor, getKjønnFromFnr, getNavnPåForeldre } from 'utils/personUtils';
 
@@ -41,6 +40,7 @@ import { notEmpty } from '@navikt/fp-validation';
 import { UttaksplanForm } from './UttaksplanForm';
 import { useTidligereUttaksplan } from './hooks/useTidligereUttaksplan';
 import { useUttaksplanForslag } from './hooks/useUttaksplanForslag';
+import { erSammePeriodeInkludertDatoer } from './submitValidering';
 
 interface Props {
     søkerInfo: FpPersonopplysningerDto_fpoversikt;
@@ -168,10 +168,11 @@ export const UttaksplanSteg = ({
 
     const defaultUttaksperioder = opprinneligPlanleggerplan ?? tidligereUttaksperioder ?? nyttUttaksplanForslag;
 
+    const finnesIUttaksplan = (defaultPeriode: UttakPeriodeDto) =>
+        uttaksplan?.some((periode) => erSammePeriodeInkludertDatoer(defaultPeriode, periode)) ?? false;
     const erPlanenEndret =
         uttaksplan !== undefined &&
-        (uttaksplan.length !== defaultUttaksperioder.length ||
-            defaultUttaksperioder.some((defaultPeriode) => !erPeriodeIOpprinneligPlan(uttaksplan, defaultPeriode)));
+        (uttaksplan.length !== defaultUttaksperioder.length || !defaultUttaksperioder.every(finnesIUttaksplan));
 
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(
         søkerInfo.arbeidsforhold,

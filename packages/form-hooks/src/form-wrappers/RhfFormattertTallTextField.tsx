@@ -3,12 +3,13 @@ import { FieldValues, UseControllerProps, useController, useWatch } from 'react-
 
 import { TextFieldProps as DsTextFieldProps, TextField } from '@navikt/ds-react';
 
+import { useFeltId } from './feltId';
 import { ValidationReturnType, getValidationRules } from './formUtils.ts';
 
 type Props<T extends FieldValues> = {
     validate?: Array<(value: string) => ValidationReturnType>;
     control: UseControllerProps<T>['control'];
-} & DsTextFieldProps &
+} & Omit<DsTextFieldProps, 'id'> &
     Omit<UseControllerProps<T>, 'control'>;
 
 /** Et tekstfelt som formaterer innholdet til et tall med tusenvise mellomrom. */
@@ -18,6 +19,7 @@ export const RhfFormattertTallTextField = <T extends FieldValues>({
     control,
     ...rest
 }: Props<T>) => {
+    const feltId = useFeltId(name, control);
     const { field, fieldState } = useController({
         name,
         rules: {
@@ -35,6 +37,7 @@ export const RhfFormattertTallTextField = <T extends FieldValues>({
     return (
         <TextField
             {...rest}
+            id={feltId}
             autoComplete="off"
             error={fieldState.error?.message}
             onChange={(e) => {

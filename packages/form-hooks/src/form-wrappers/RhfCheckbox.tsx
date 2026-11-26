@@ -3,6 +3,7 @@ import { FieldValues, UseControllerProps, useController, useFormContext } from '
 
 import { Checkbox, ErrorMessage } from '@navikt/ds-react';
 
+import { useFeltId } from './feltId';
 import { ValidationReturnType, getError, getValidationRules } from './formUtils';
 
 type Props<T extends FieldValues> = {
@@ -25,6 +26,8 @@ export const RhfCheckbox = <T extends FieldValues>({
     const {
         formState: { errors },
     } = useFormContext();
+
+    const feltId = useFeltId(name, control);
 
     const { field } = useController({
         name,
@@ -49,6 +52,7 @@ export const RhfCheckbox = <T extends FieldValues>({
     return (
         <>
             <Checkbox
+                id={feltId}
                 ref={field.ref}
                 value={field.value}
                 disabled={disabled}

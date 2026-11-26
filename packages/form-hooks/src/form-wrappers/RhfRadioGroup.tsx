@@ -11,6 +11,7 @@ import {
 
 import { RadioGroup } from '@navikt/ds-react';
 
+import { useFeltId } from './feltId';
 import { ValidationReturnType, getError, getValidationRules } from './formUtils';
 
 type Props<TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>> = {
@@ -39,6 +40,7 @@ export const RhfRadioGroup = <TFieldValues extends FieldValues, TName extends Fi
     const {
         formState: { errors },
     } = useFormContext();
+    const feltId = useFeltId(name, control);
     const { field } = useController({
         name,
         control,
@@ -49,6 +51,7 @@ export const RhfRadioGroup = <TFieldValues extends FieldValues, TName extends Fi
 
     return (
         <RadioGroup
+            id={feltId}
             // RHF må få et fokusbart input, ikke gruppens fieldset.
             ref={(fieldset) => field.ref(fieldset?.querySelector('input[type="radio"]:not(:disabled)'))}
             name={name}

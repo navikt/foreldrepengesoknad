@@ -8,9 +8,10 @@ import { Attachment } from '@navikt/fp-types';
 interface Props {
     attachments?: Attachment[];
     updateAttachments: (attachments: Attachment[], hasPendingUploads: boolean) => void;
+    vedleggId: string;
 }
 
-export const AdopsjonDokPanel = ({ attachments, updateAttachments }: Props) => {
+export const AdopsjonDokPanel = ({ attachments, updateAttachments, vedleggId }: Props) => {
     const intl = useIntl();
     return (
         <FileUploader
@@ -21,6 +22,7 @@ export const AdopsjonDokPanel = ({ attachments, updateAttachments }: Props) => {
             existingAttachments={attachments}
             updateAttachments={updateAttachments}
             uploadPath={API_URLS.sendVedlegg}
+            id={vedleggId}
         />
     );
 };

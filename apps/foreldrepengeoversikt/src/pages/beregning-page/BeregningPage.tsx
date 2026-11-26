@@ -26,6 +26,7 @@ import {
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { SkyraSurvey } from '@navikt/fp-observability';
 import { AktivitetStatus, BeregningsAndel_fpoversikt, TilkjentYtelsePeriode_fpoversikt } from '@navikt/fp-types';
+import { useSidetittel } from '@navikt/fp-ui';
 import {
     capitalizeFirstLetter,
     erLokaltEllerDev,
@@ -46,7 +47,13 @@ dayjs.extend(isSameOrBefore);
 dayjs.locale(getDecoratorLanguageCookie('decorator-language'));
 
 export const BeregningPage = () => {
+    const intl = useIntl();
     const gjeldendeSak = useGetSelectedSak();
+
+    const overskriftId =
+        gjeldendeSak?.ytelse === 'SVANGERSKAPSPENGER' ? 'beregning.page.heading.svp' : 'beregning.page.heading';
+    useSidetittel(intl.formatMessage({ id: overskriftId }));
+
     if (!gjeldendeSak || gjeldendeSak.ytelse === 'ENGANGSSTØNAD') {
         return;
     }

@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router';
+import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo.ts';
 
 import { withQueryClient } from '@navikt/fp-utils-test';
 
@@ -71,6 +72,30 @@ export const SkalFeileOpplasting: Story = {
             http.post(API_URLS.lastOppESVedlegg, () => {
                 return new HttpResponse(null, { status: 400 });
             }),
+        );
+    },
+
+    args: SkalIkkeFeileOpplasting.args,
+};
+
+export const SkalSendeEttersending: Story = {
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.lastOppESVedlegg, () => new HttpResponse(JSON.stringify('test-uuid'), { status: 200 })),
+            http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
+            http.post(API_URLS.ettersend, () => new HttpResponse(null, { status: 200 })),
+        );
+    },
+
+    args: SkalIkkeFeileOpplasting.args,
+};
+
+export const SkalFeileInnsending: Story = {
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.lastOppESVedlegg, () => new HttpResponse(JSON.stringify('test-uuid'), { status: 200 })),
+            http.get(API_URLS.søkerInfo, () => HttpResponse.json(søkerinfo)),
+            http.post(API_URLS.ettersend, () => new HttpResponse(null, { status: 400 })),
         );
     },
 

@@ -3,6 +3,8 @@ import { FieldErrors, FieldValues, useFormContext } from 'react-hook-form';
 
 import { ErrorSummaryFelles } from '@navikt/fp-ui';
 
+import { lagFeltId } from '../form-wrappers/feltId';
+
 const findAllErrors = (errors: FieldErrors<FieldValues>, pathPrefix = ''): FieldErrors<FieldValues> => {
     return Object.keys(errors).reduce<FieldErrors<FieldValues>>((acc, fieldKey) => {
         const fieldValue = errors[fieldKey];
@@ -52,6 +54,7 @@ export const ErrorSummaryHookForm = () => {
     const {
         formState: { errors, submitCount },
         setFocus,
+        control,
     } = useFormContext();
 
     // `errors` gets a new object reference on every keystroke once the form has been submitted once
@@ -66,10 +69,21 @@ export const ErrorSummaryHookForm = () => {
 
     const flattenAndUniqueErrors = dedupErrorsByMessage(findAllErrors(errors));
 
-    const mappedErrors = Object.entries(flattenAndUniqueErrors).map(([fieldName, error]) => ({
-        message: typeof error?.message === 'string' ? error.message : undefined,
-        focus: () => setFocus(fieldName),
-    }));
+    const mappedErrors = Object.entries(flattenAndUniqueErrors).map(([fieldName, error]) => {
+        const feltId = lagFeltId(control, fieldName);
+        return {
+            message: typeof error?.message === 'string' ? error.message : undefined,
+            href: `#${feltId}`,
+            focus: () => {
+                setFocus(fieldName);
+                // Felt med feil satt via setError (f.eks. filopplaster) har ingen RHF-ref som setFocus kan bruke.
+                const felt = document.getElementById(feltId);
+                if (felt && !felt.contains(document.activeElement)) {
+                    felt.focus();
+                }
+            },
+        };
+    });
 
     return (
         Object.keys(flattenAndUniqueErrors).length > 0 && (

@@ -11,7 +11,7 @@ import { BodyShort, Button, ExpansionCard, HStack, Heading, Link, VStack } from 
 import { links } from '@navikt/fp-constants';
 import { loggUmamiEvent } from '@navikt/fp-observability';
 import { KontoBeregningDto, Satser } from '@navikt/fp-types';
-import { BluePanel, IconCircleWrapper, Infobox, VeiviserPage } from '@navikt/fp-ui';
+import { BluePanel, IconCircleWrapper, Infobox, VeiviserPage, useSidetittel } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr, formatMånedÅr, useScrollBehaviour } from '@navikt/fp-utils';
 import { isValidNumber, notEmpty } from '@navikt/fp-validation';
 
@@ -47,6 +47,7 @@ interface Props {
 
 export const OppsummeringSide = ({ arbeidssituasjon, stønadskvoter, satser }: Props) => {
     const intl = useIntl();
+    useSidetittel(intl.formatMessage({ id: 'OppsummeringSide.Oppsummering' }));
     const { goToRoute } = useVeiviserNavigator();
     const { ref } = useScrollBehaviour();
 
@@ -218,10 +219,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskvoter, satser }: P
                                                 </Heading>
                                                 <Heading size="xsmall" level="5">
                                                     {capitalizeFirstLetter(
-                                                        formatMånedÅr(
-                                                            forrigeMåned.subtract(2, 'month').toDate(),
-                                                            intl,
-                                                        ),
+                                                        formatMånedÅr(forrigeMåned.subtract(2, 'month').toDate(), intl),
                                                     )}
                                                 </Heading>
                                                 <BodyShort>
@@ -235,10 +233,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskvoter, satser }: P
                                             <div>
                                                 <Heading size="xsmall" level="5">
                                                     {capitalizeFirstLetter(
-                                                        formatMånedÅr(
-                                                            forrigeMåned.subtract(1, 'month').toDate(),
-                                                            intl,
-                                                        ),
+                                                        formatMånedÅr(forrigeMåned.subtract(1, 'month').toDate(), intl),
                                                     )}
                                                 </Heading>
                                                 <BodyShort>

@@ -3,6 +3,7 @@ import { FieldValues, UseControllerProps, useController, useFormContext } from '
 
 import { TextField } from '@navikt/ds-react';
 
+import { useFeltId } from './feltId';
 import { ValidationReturnType, getError, getValidationRules } from './formUtils';
 
 type Props<T extends FieldValues> = {
@@ -38,6 +39,8 @@ export const RhfNumericField = <T extends FieldValues>({
         formState: { errors },
     } = useFormContext();
 
+    const feltId = useFeltId(name, control);
+
     const { field } = useController({
         name,
         control,
@@ -58,6 +61,7 @@ export const RhfNumericField = <T extends FieldValues>({
 
     return (
         <TextField
+            id={feltId}
             ref={field.ref}
             value={field.value ?? ''}
             label={label}

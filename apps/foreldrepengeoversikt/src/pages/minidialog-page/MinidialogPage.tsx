@@ -2,10 +2,10 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Navigate, useParams } from 'react-router';
 
-import { Alert, BodyShort, Button, Heading, Loader, VStack } from '@navikt/ds-react';
+import { Button, Heading, Loader, LocalAlert, VStack } from '@navikt/ds-react';
 
 import { EttersendelseDto } from '@navikt/fp-types';
-import { useDocumentTitle } from '@navikt/fp-utils';
+import { useSidetittel } from '@navikt/fp-ui';
 
 import { minidialogOptions, sendEttersending } from '../../api/queries.ts';
 import { ContentSection } from '../../components/content-section/ContentSection';
@@ -25,9 +25,7 @@ export const MinidialogPage = () => {
     const sak = useGetSelectedSak();
 
     const intl = useIntl();
-    useDocumentTitle(
-        `${intl.formatMessage({ id: 'oppgaver.tittel.tilbakebetaling' })} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
-    );
+    useSidetittel(intl.formatMessage({ id: 'oppgaver.tittel.tilbakebetaling' }));
 
     const { mutate, isPending, isError, isSuccess } = useMutation({
         mutationFn: (ettersendelse: EttersendelseDto) => sendEttersending(ettersendelse),
@@ -40,11 +38,13 @@ export const MinidialogPage = () => {
     if (minidialogQuery.isError && !minidialogQuery.data) {
         return (
             <PageRouteLayout header={sak ? <DinSakHeader sak={sak} /> : undefined}>
-                <Alert variant="error">
-                    <VStack gap="space-16" align="start">
-                        <BodyShort>
+                <LocalAlert status="error">
+                    <LocalAlert.Header>
+                        <LocalAlert.Title>
                             <FormattedMessage id="miniDialog.feilVedHenting" />
-                        </BodyShort>
+                        </LocalAlert.Title>
+                    </LocalAlert.Header>
+                    <LocalAlert.Content>
                         <Button
                             size="small"
                             variant="secondary"
@@ -53,8 +53,8 @@ export const MinidialogPage = () => {
                         >
                             <FormattedMessage id="miniDialog.prøvIgjen" />
                         </Button>
-                    </VStack>
-                </Alert>
+                    </LocalAlert.Content>
+                </LocalAlert>
             </PageRouteLayout>
         );
     }
