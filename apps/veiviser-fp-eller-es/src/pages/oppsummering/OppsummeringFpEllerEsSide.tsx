@@ -4,7 +4,7 @@ import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 import { VStack } from '@navikt/ds-react';
 
 import { Satser } from '@navikt/fp-types';
-import { VeiviserPage } from '@navikt/fp-ui';
+import { VeiviserPage, useSidetittel } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils';
 import { formatValue } from '@navikt/fp-validation';
 
@@ -65,6 +65,7 @@ interface Props {
 
 export const OppsummeringFpEllerEsSide = ({ fpEllerEsSituasjon, satser }: Props) => {
     const intl = useIntl();
+    useSidetittel(intl.formatMessage({ id: 'OppsummeringFpEllerEsSide.Oppsummering' }));
     const { ref } = useScrollBehaviour();
 
     const hvemHarRett = finnHvemSomHarRett(fpEllerEsSituasjon, satser);

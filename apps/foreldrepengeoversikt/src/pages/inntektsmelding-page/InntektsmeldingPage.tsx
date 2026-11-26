@@ -12,7 +12,8 @@ import {
     FpOversiktInntektsmeldingDto_fpoversikt,
     NaturalytelseType_fpoversikt,
 } from '@navikt/fp-types';
-import { formatCurrencyWithKr, formatDate } from '@navikt/fp-utils';
+import { useSidetittel } from '@navikt/fp-ui';
+import { capitalizeFirstLetterInEveryWordOnly, formatCurrencyWithKr, formatDate } from '@navikt/fp-utils';
 
 import { hentInntektsmelding, hentSakerOptions } from '../../api/queries.ts';
 import { InntektsmeldingHeader } from '../../components/header/Header';
@@ -44,6 +45,17 @@ export const InntektsmeldingPage = () => {
 
     const params = useParams();
     const inntektsmeldingerQuery = useQuery(hentInntektsmelding(params.saksnummer!));
+    const inntektsmelding = inntektsmeldingerQuery.data?.find((i) => i.journalpostId === params.journalpostId);
+
+    useSidetittel(
+        intl.formatMessage(
+            { id: inntektsmelding ? 'header.dinInntekt' : 'header.inntektRapportert' },
+            inntektsmelding
+                ? { arbeidsgiverNavn: capitalizeFirstLetterInEveryWordOnly(inntektsmelding.arbeidsgiverNavn) }
+                : {},
+        ),
+    );
+
     if (inntektsmeldingerQuery.isPending) {
         return (
             <PageRouteLayout header="">
@@ -65,8 +77,6 @@ export const InntektsmeldingPage = () => {
             </PageRouteLayout>
         );
     }
-
-    const inntektsmelding = inntektsmeldingerQuery.data.find((i) => i.journalpostId === params.journalpostId);
 
     if (!inntektsmelding) {
         return <Navigate replace to={`${OversiktRoutes.SAKSOVERSIKT}/${params.saksnummer}`} />;

@@ -12,8 +12,7 @@ import { erFellesUttaksplanEndret, erSakerEndret, erSøkerInfoEndret } from 'uti
 
 import { erUmyndigFeil } from '@navikt/fp-app-shell';
 import { FpPersonopplysningerDto_fpoversikt, FpSak_fpoversikt } from '@navikt/fp-types';
-import { ErrorBoundary, ErrorPage, RegisterdataUtdatert, Spinner, Umyndig } from '@navikt/fp-ui';
-import { useDocumentTitle } from '@navikt/fp-utils';
+import { ErrorBoundary, ErrorPage, RegisterdataUtdatert, SidetittelProvider, Spinner, Umyndig } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ForeldrepengesøknadRoutes } from './ForeldrepengesøknadRoutes';
@@ -31,18 +30,18 @@ export const slettMellomlagringOgLastSidePåNytt = async () => {
 export const Foreldrepengesøknad = () => {
     const intl = useIntl();
 
-    useDocumentTitle(intl.formatMessage({ id: 'søknad.pagetitle' }));
-
     return (
-        <ErrorBoundary
-            appName="foreldrepengesoknad"
-            retryCallback={() => void slettMellomlagringOgLastSidePåNytt()}
-            getErrorPage={getForeldrepengesøknadErrorPage}
-        >
-            <Suspense fallback={<Spinner />}>
-                <ForeldrepengesøknadInnhold />
-            </Suspense>
-        </ErrorBoundary>
+        <SidetittelProvider appTittel={intl.formatMessage({ id: 'søknad.pagetitle' })}>
+            <ErrorBoundary
+                appName="foreldrepengesoknad"
+                retryCallback={() => void slettMellomlagringOgLastSidePåNytt()}
+                getErrorPage={getForeldrepengesøknadErrorPage}
+            >
+                <Suspense fallback={<Spinner />}>
+                    <ForeldrepengesøknadInnhold />
+                </Suspense>
+            </ErrorBoundary>
+        </SidetittelProvider>
     );
 };
 

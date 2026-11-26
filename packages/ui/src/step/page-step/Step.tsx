@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
 
+import { useStegSidetittel } from '../../sidetittel/Sidetittel';
 import { ProgressStep, ProgressStepper } from '../progress-stepper/ProgressStepper';
 
 interface StepProps<TYPE> {
@@ -28,6 +29,8 @@ export const Step = <TYPE extends string>({
     }
 
     const title = steps[currentStepIndex]!.label;
+
+    useStegSidetittel(title, currentStepIndex + 1, steps.length);
 
     return (
         <VStack gap="space-24">

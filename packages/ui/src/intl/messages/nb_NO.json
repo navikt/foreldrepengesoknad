@@ -44,6 +44,7 @@
     "SimpleErrorPage.TryAgain": "Planlegg på nytt",
     "Step.HarValgfrieFelt": "Alle felt må fylles ut, unntatt felt markert med (valgfritt).",
     "Step.HarObligatoriskeFelt": "Alle felt må fylles ut.",
+    "Step.Sidetittel": "{stegnavn} – Steg {stegnummer} av {antallSteg}",
     "FrontPage.Start": "Start",
     "RegisterdataUtdatert.Engangsstønad": "Engangsstønad",
     "RegisterdataUtdatert.Foreldrepenger": "Foreldrepenger",

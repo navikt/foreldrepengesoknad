@@ -11,7 +11,8 @@ import { Alert, BodyShort, HGrid, HStack, Heading, Skeleton, VStack } from '@nav
 import { DEFAULT_SATSER } from '@navikt/fp-constants';
 import { SkyraSurvey } from '@navikt/fp-observability';
 import { OversiktPersonopplysningerDto_fpoversikt, Satser, TidslinjeHendelseDto_fpoversikt } from '@navikt/fp-types';
-import { formatCurrencyWithKr, getLenker, useDocumentTitle } from '@navikt/fp-utils';
+import { useSidetittel } from '@navikt/fp-ui';
+import { formatCurrencyWithKr, getLenker } from '@navikt/fp-utils';
 
 import {
     hentDokumenterOptions,
@@ -91,9 +92,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
 
     const gjeldendeSak = useGetSelectedSak();
 
-    useDocumentTitle(
-        `${getSaksoversiktHeading(gjeldendeSak?.ytelse, intl)} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
-    );
+    useSidetittel(getSaksoversiktHeading(gjeldendeSak?.ytelse, intl));
 
     const tidslinjeHendelserQuery = useQuery(hentTidslinjehendelserOptions(params.saksnummer!));
     const manglendeVedleggQuery = useQuery(hentManglendeVedleggOptions(params.saksnummer!));
