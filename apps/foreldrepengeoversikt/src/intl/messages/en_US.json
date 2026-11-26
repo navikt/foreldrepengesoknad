@@ -258,6 +258,7 @@
     "ytelse.SVANGERSKAPSPENGER": "pregnancy benefits",
     "dokument.avsender.nav": "Nav",
     "dokument.avsender.du": "You",
+    "dokument.utenTittel": "Untitled document",
     "dokumenter.antall": "{count, plural, one {1 document} other {# documents}}",
     "inntektsmelding.for": "for {arbeidsgiverNavn}",
     "breadcrumb.minSide": "My page",

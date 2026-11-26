@@ -1,6 +1,6 @@
 import { FormattedMessage } from 'react-intl';
 
-import { Alert, BodyShort, Box, Button, HStack, Heading, Label, Link, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Box, Button, HStack, Heading, Label, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { AppName } from '@navikt/fp-types';
@@ -35,11 +35,17 @@ export const ErrorPage = ({ appName, errorMessage, retryCallback }: Props) => (
                 </VStack>
             </Alert>
             <HStack gap="space-16" justify="center">
-                <Link href={links.kontaktOss} target="_blank">
-                    <Button type="button" variant="secondary">
-                        <FormattedMessage id="ErrorPage.Contact" />
-                    </Button>
-                </Link>
+                {/* Aksel setter role="button" når as="a". Lenken navigerer, så den skal ha lenkerolle. */}
+                <Button
+                    as="a"
+                    role="link"
+                    href={links.kontaktOss}
+                    target="_blank"
+                    rel="noreferrer"
+                    variant="secondary"
+                >
+                    <FormattedMessage id="ErrorPage.Contact" />
+                </Button>
                 <Button type="button" variant="primary" onClick={retryCallback}>
                     <FormattedMessage id="ErrorPage.TryAgain" />
                 </Button>

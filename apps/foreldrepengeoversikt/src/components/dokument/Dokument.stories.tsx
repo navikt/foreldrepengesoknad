@@ -22,3 +22,15 @@ export const Default: Story = {
         },
     },
 };
+
+export const UtenTittel: Story = {
+    args: {
+        dokument: {
+            type: 'UTGÅENDE_DOKUMENT',
+            dokumentId: '1',
+            journalpostId: '2',
+            saksnummer: '12234',
+            mottatt: new Date().toISOString(),
+        },
+    },
+};
