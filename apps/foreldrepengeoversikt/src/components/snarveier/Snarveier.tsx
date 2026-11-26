@@ -79,7 +79,7 @@ export const Snarveier = () => {
     return (
         <div className="bg-ax-bg-default p-8">
             <div className="ax-md:w-[704px] m-auto w-full">
-                <Heading spacing size="medium">
+                <Heading spacing size="medium" level="2">
                     {intl.formatMessage({ id: 'saksoversikt.snarveier' })}
                 </Heading>
                 <HGrid gap="space-16" columns={{ sm: 1, md: 2 }}>

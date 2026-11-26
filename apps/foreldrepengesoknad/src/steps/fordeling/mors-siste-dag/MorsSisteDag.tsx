@@ -15,7 +15,7 @@ export const MorsSisteDag = ({ morsSisteDag, navnMor }: Props) => {
     if (!morsSisteDag) {
         return (
             <BluePanel>
-                <Heading size="xsmall">
+                <Heading size="xsmall" level="3">
                     <FormattedMessage id="fordeling.morsSisteDag.ukjent.tittel" />
                 </Heading>
                 <Detail>
@@ -30,7 +30,7 @@ export const MorsSisteDag = ({ morsSisteDag, navnMor }: Props) => {
 
     return (
         <BluePanel>
-            <Heading size="xsmall">
+            <Heading size="xsmall" level="3">
                 <FormattedMessage
                     id="fordeling.morsSisteDag.tittel"
                     values={{ navnMor: morsNavnGenitivForm, dato: sisteDagFormattert }}

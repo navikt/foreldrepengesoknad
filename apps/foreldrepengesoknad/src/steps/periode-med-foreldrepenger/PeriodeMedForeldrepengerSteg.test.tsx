@@ -468,9 +468,10 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             });
 
             expect(
-                await screen.findByText(
-                    'Hvis barnet deres blir født etter 1. juli, vil dere få en lengre periode hvis dere velger 80 prosent foreldrepenger',
-                ),
+                await screen.findByRole('heading', {
+                    level: 3,
+                    name: 'Hvis barnet deres blir født etter 1. juli, vil dere få en lengre periode hvis dere velger 80 prosent foreldrepenger',
+                }),
             ).toBeInTheDocument();
             vi.useRealTimers();
         },
@@ -510,9 +511,10 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             });
 
             expect(
-                await screen.findByText(
-                    'Hvis barnet deres blir født etter 1. juli, vil dere få en lengre periode hvis dere velger 80 prosent foreldrepenger',
-                ),
+                await screen.findByRole('heading', {
+                    level: 4,
+                    name: 'Hvis barnet deres blir født etter 1. juli, vil dere få en lengre periode hvis dere velger 80 prosent foreldrepenger',
+                }),
             ).toBeInTheDocument();
             vi.useRealTimers();
         },

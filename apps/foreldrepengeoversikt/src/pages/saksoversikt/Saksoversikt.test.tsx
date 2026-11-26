@@ -36,7 +36,7 @@ describe('<Saksoversikt>', () => {
 
         expect(await screen.findByText('Dette har du søkt om')).toBeInTheDocument();
 
-        expect(screen.getByText('Engangsstønad på 92 648 kr')).toBeInTheDocument();
+        expect(screen.getByText('Engangsstønad på 92 648 kr', { selector: 'p' })).toBeInTheDocument();
         expect(screen.getByText('Utbetales til kontonummer 23232323 hvis søknaden innvilges')).toBeInTheDocument();
         expect(screen.getByText('Endre kontonummer')).toBeInTheDocument();
     });

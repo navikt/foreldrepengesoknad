@@ -91,7 +91,7 @@ export const DekningsgradValgtAvAnnenPartPanel = ({
                 </BodyShort>
                 {vis1Juli2024Info && (
                     <div style={{ paddingTop: '1.5rem' }}>
-                        <InfoOmUtvidet80ProsentPeriode />
+                        <InfoOmUtvidet80ProsentPeriode headingLevel="4" />
                     </div>
                 )}
             </Infobox>

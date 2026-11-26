@@ -67,7 +67,7 @@ export const PeriodeMedForeldrepengerSteg = ({
                         {vis1Juli2024Info && (
                             <Box padding="space-16" background="brand-blue-moderate" style={{ marginBottom: '2rem' }}>
                                 <HStack justify="space-between" align="start">
-                                    <InfoOmUtvidet80ProsentPeriode />
+                                    <InfoOmUtvidet80ProsentPeriode headingLevel="3" />
                                     <IconCircleWrapper color="lightBlue" size="medium">
                                         <CalendarIcon height={24} width={24} />
                                     </IconCircleWrapper>
