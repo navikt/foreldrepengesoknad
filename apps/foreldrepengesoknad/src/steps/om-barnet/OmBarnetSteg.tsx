@@ -195,7 +195,11 @@ const OmBarnetStegInner = ({
     };
 
     const defaultValues = useMemo(
-        () => getOmBarnetInitialValues(arbeidsforhold, søkersituasjon, omBarnet, termindato, adopsjonFraPlanlegger),
+        () =>
+            getOmBarnetInitialValues(arbeidsforhold, søkersituasjon, omBarnet, {
+                termindatoFraVedtak: termindato,
+                adopsjonFraPlanlegger,
+            }),
         [arbeidsforhold, omBarnet, termindato, adopsjonFraPlanlegger],
     );
     const formMethods = useForm<BarnetFormValues>({

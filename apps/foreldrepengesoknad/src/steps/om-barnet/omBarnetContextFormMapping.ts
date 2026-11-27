@@ -150,9 +150,11 @@ const mapFødselsdatoer = (fødselsdatoer: string[]): Array<{ dato?: string }> =
 export const getOmBarnetInitialValues = (
     arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
     søkersituasjon: SøkersituasjonFp,
-    barn?: Barn,
-    termindatoFraVedtak?: string,
-    adopsjonFraPlanlegger?: AdopsjonFraPlanlegger,
+    barn: Barn | undefined,
+    {
+        termindatoFraVedtak,
+        adopsjonFraPlanlegger,
+    }: { termindatoFraVedtak?: string; adopsjonFraPlanlegger?: AdopsjonFraPlanlegger } = {},
 ): BarnetFormValues => {
     if (!barn) {
         if (adopsjonFraPlanlegger && søkersituasjon.situasjon === 'adopsjon') {
