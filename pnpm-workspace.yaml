@@ -53,7 +53,6 @@ minimumReleaseAgeExclude:
   - '@navikt/*'
 
 allowBuilds:
-  msw: true
   '@parcel/watcher': false
   esbuild: false
   core-js: false

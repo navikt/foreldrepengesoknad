@@ -1407,6 +1407,9 @@ importers:
       '@vitest/browser-playwright':
         specifier: 5.1.1
         version: 5.1.1(msw@3.0.7(@types/node@26.6.6)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)))(playwright@1.65.1)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))(vitest@5.1.1)
+      msw:
+        specifier: 3.0.7
+        version: 3.0.7(@types/node@26.6.6)(graphql@16.14.2)(typescript@6.0.3)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
       playwright:
         specifier: 1.65.1
         version: 1.65.1
