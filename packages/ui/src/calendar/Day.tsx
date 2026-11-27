@@ -12,7 +12,8 @@ export type DayShape = 'square' | 'rounded-right' | 'rounded-left';
 type Props = {
     isoDate: string;
     periodeColor: CalendarPeriodColor;
-    isFocused: boolean;
+    isActive: boolean;
+    shouldMoveFocus: boolean;
     srText?: string;
     isUpdated?: boolean;
     isHoverPreview?: boolean;
@@ -22,14 +23,16 @@ type Props = {
     shape: DayShape;
     dateClickCallback?: (date: string) => void;
     onDateHover?: (date: string | undefined) => void;
-    setFocusedDate: (date: Dayjs) => void;
+    onDayFocus: (date: Dayjs) => void;
+    onKeyboardNavigation: (date: Dayjs) => void;
 };
 
 export const Day = React.memo(
     ({
         isoDate,
         periodeColor,
-        isFocused,
+        isActive,
+        shouldMoveFocus,
         srText,
         isUpdated,
         isHoverPreview,
@@ -39,25 +42,25 @@ export const Day = React.memo(
         shape,
         dateClickCallback,
         onDateHover,
-        setFocusedDate,
+        onDayFocus,
+        onKeyboardNavigation,
     }: Props) => {
         const date = dayjs(isoDate);
         const day = date.date();
 
-        const setButtonRef = React.useCallback(
-            (el: HTMLButtonElement | null) => {
-                if (el && isFocused) {
-                    el.focus();
-                }
-            },
-            [isFocused],
-        );
+        const buttonRef = React.useRef<HTMLButtonElement>(null);
+
+        React.useEffect(() => {
+            if (shouldMoveFocus) {
+                buttonRef.current?.focus();
+            }
+        }, [shouldMoveFocus]);
 
         const isClickable = !!dateClickCallback && !isWeekend(date);
 
         return (
             <button
-                ref={setButtonRef}
+                ref={buttonRef}
                 type="button"
                 data-testid={`day:${day};dayColor:${periodeColor}${Icon ? ';with-icon' : ''}${CornerIcon ? ';with-corner-icon' : ''}`}
                 data-shape={shape}
@@ -65,15 +68,21 @@ export const Day = React.memo(
                 data-fade-in={isUpdated}
                 data-periode-color={periodeColor}
                 data-hover-preview={isHoverPreview && !isWeekend(date) && periodeColor !== 'DARKBLUE'}
-                tabIndex={isFocused ? 0 : -1}
+                tabIndex={isActive ? 0 : -1}
                 className={styles.days}
-                onFocus={isClickable ? () => setFocusedDate(date) : undefined}
+                onFocus={isClickable ? () => onDayFocus(date) : undefined}
                 onMouseEnter={onDateHover && isClickable ? () => onDateHover(isoDate) : undefined}
                 onClick={isClickable ? () => dateClickCallback(isoDate) : undefined}
                 onKeyDown={
                     dateClickCallback
                         ? (e) =>
-                              handleKeyNavigationAndSelection(e, date, dateClickCallback, setFocusedDate, onDateHover)
+                              handleKeyNavigationAndSelection(
+                                  e,
+                                  date,
+                                  dateClickCallback,
+                                  onKeyboardNavigation,
+                                  onDateHover,
+                              )
                         : undefined
                 }
                 aria-label={formaterDatoUtenDag(date) + (srText ? `, ${srText}` : '')}
@@ -119,7 +128,7 @@ const handleKeyNavigationAndSelection = (
     e: React.KeyboardEvent,
     date: Dayjs,
     dateClickCallback: (date: string) => void,
-    setFocusedDate: (date: Dayjs) => void,
+    onKeyboardNavigation: (date: Dayjs) => void,
     onDateHover?: (date: string | undefined) => void,
 ) => {
     if (
@@ -135,7 +144,7 @@ const handleKeyNavigationAndSelection = (
     const isClickable = !!dateClickCallback && !isWeekend(date);
 
     const navigateTo = (newDate: Dayjs) => {
-        setFocusedDate(newDate);
+        onKeyboardNavigation(newDate);
         onDateHover?.(newDate.format(ISO_DATE_FORMAT));
     };
 

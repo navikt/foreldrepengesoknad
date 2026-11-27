@@ -17,30 +17,32 @@ dayjs.extend(isoWeek);
 interface Props {
     year: number;
     month: number;
-    isFirstMonth: boolean;
     showWeekNumbers: boolean;
     periods: CalendarPeriod[];
-    focusedDate: Dayjs | undefined;
+    activeDate: Dayjs | undefined;
+    moveFocusToActiveDate: boolean;
     pendingFom: string | undefined;
     hoverDate: string | undefined;
     dateClickCallback?: (date: string) => void;
     onDateHover?: (date: string | undefined) => void;
-    setFocusedDate: (date: Dayjs) => void;
+    onDayFocus: (date: Dayjs) => void;
+    onKeyboardNavigation: (date: Dayjs) => void;
 }
 
 export const Month = React.memo(
     ({
         year,
         month,
-        isFirstMonth,
         showWeekNumbers,
         periods,
-        focusedDate,
+        activeDate,
+        moveFocusToActiveDate,
         pendingFom,
         hoverDate,
         dateClickCallback,
         onDateHover,
-        setFocusedDate,
+        onDayFocus,
+        onKeyboardNavigation,
     }: Props) => {
         logOnLocalhost(`Rendering Month: ${month}-${year}`);
 
@@ -128,6 +130,7 @@ export const Month = React.memo(
                                         const date = firstDayOfMonth.add(cellIndex - (startWeekDay - 1), 'day');
 
                                         const period = periodMap.get(formatDateIso(date));
+                                        const isActive = !!activeDate?.isSame(date, 'day');
 
                                         return (
                                             <Day
@@ -143,12 +146,10 @@ export const Month = React.memo(
                                                 shape={getDayShape(date, periodMap, hoverPreviewSet)}
                                                 dateClickCallback={dateClickCallback}
                                                 onDateHover={onDateHover}
-                                                isFocused={
-                                                    focusedDate?.isSame(date, 'day') ??
-                                                    (isFirstMonth && cellIndex === startWeekDay - 1) ??
-                                                    false
-                                                }
-                                                setFocusedDate={setFocusedDate}
+                                                isActive={isActive}
+                                                shouldMoveFocus={isActive && moveFocusToActiveDate}
+                                                onDayFocus={onDayFocus}
+                                                onKeyboardNavigation={onKeyboardNavigation}
                                             />
                                         );
                                     })}

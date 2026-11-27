@@ -32,7 +32,7 @@ export const Calendar = ({
     setSelectedPeriods,
     getSrTextForSelectedPeriod,
 }: Props) => {
-    const [focusedDate, setFocusedDate] = useState<dayjs.Dayjs | undefined>();
+    const [activeDay, setActiveDay] = useState<{ date: dayjs.Dayjs; moveFocus: boolean } | undefined>();
     const [hoverDate, setHoverDate] = useState<string | undefined>();
 
     const onDateHover = useCallback((date: string | undefined) => {
@@ -52,6 +52,22 @@ export const Calendar = ({
     );
     const periodsByMonth = useMemo(() => groupPeriodsByMonth(allMonths, periods), [allMonths, periods]);
 
+    const validActiveDay = activeDay && isDateInMonths(activeDay.date, allMonths) ? activeDay : undefined;
+    const activeDate = validActiveDay?.date ?? findFirstWeekdayInMonth(allMonths[0]!);
+
+    const onDayFocus = useCallback((date: dayjs.Dayjs) => {
+        setActiveDay({ date, moveFocus: false });
+    }, []);
+
+    const onKeyboardNavigation = useCallback(
+        (date: dayjs.Dayjs) => {
+            if (isDateInMonths(date, allMonths)) {
+                setActiveDay({ date, moveFocus: true });
+            }
+        },
+        [allMonths],
+    );
+
     const dateClickCallback = useCallback(
         (selectedDate: string) =>
             getDateClickCallback(isRangeSelection, getSrTextForSelectedPeriod, setSelectedPeriods)(selectedDate),
@@ -60,14 +76,13 @@ export const Calendar = ({
 
     return (
         <HGrid gap="space-12" columns={{ sm: 1, md: nrOfColumns }} onMouseLeave={() => setHoverDate(undefined)}>
-            {allMonths.map(({ month, year }, index) => {
+            {allMonths.map(({ month, year }) => {
                 const monthPeriods = periodsByMonth.get(getMonthKey(year, month)) ?? [];
-                const isMonthInFocus = focusedDate?.year() === year && focusedDate?.month() === month;
+                const isActiveMonth = activeDate.year() === year && activeDate.month() === month;
 
                 return (
                     <Month
                         key={`${year}-${month}`}
-                        isFirstMonth={index === 0}
                         year={year}
                         month={month}
                         periods={monthPeriods}
@@ -80,8 +95,10 @@ export const Calendar = ({
                         dateClickCallback={setSelectedPeriods ? dateClickCallback : undefined}
                         pendingFom={setSelectedPeriods ? pendingFom : undefined}
                         onDateHover={setSelectedPeriods ? onDateHover : undefined}
-                        focusedDate={isMonthInFocus ? focusedDate : undefined}
-                        setFocusedDate={setFocusedDate}
+                        activeDate={isActiveMonth ? activeDate : undefined}
+                        moveFocusToActiveDate={isActiveMonth && !!validActiveDay?.moveFocus}
+                        onDayFocus={onDayFocus}
+                        onKeyboardNavigation={onKeyboardNavigation}
                     />
                 );
             })}
@@ -109,6 +126,17 @@ const monthDiff = (d1: dayjs.Dayjs, d2: dayjs.Dayjs): number => {
     months += d2.month() - d1.month();
     return Math.max(months, 0);
 };
+
+const findFirstWeekdayInMonth = ({ year, month }: { month: number; year: number }): dayjs.Dayjs => {
+    let date = dayjs().year(year).month(month).startOf('month');
+    while (date.isoWeekday() > 5) {
+        date = date.add(1, 'day');
+    }
+    return date;
+};
+
+const isDateInMonths = (date: dayjs.Dayjs, months: Array<{ month: number; year: number }>): boolean =>
+    months.some(({ year, month }) => date.year() === year && date.month() === month);
 
 const getMonthKey = (year: number, month: number): string => `${year}-${month}`;
 
