@@ -284,6 +284,11 @@ export type LeggTilEllerEndrePeriodeFormFormValues = {
     ønskerFlerbarnsdager?: boolean;
 };
 
+export const finnUnikeArbeidsgivere = <T extends { arbeidsgiverId: string }>(arbeidsforhold: T[] | undefined): T[] =>
+    (arbeidsforhold ?? []).filter(
+        (a, index, alle) => alle.findIndex((b) => b.arbeidsgiverId === a.arbeidsgiverId) === index,
+    );
+
 interface Props {
     valgtePerioder: Array<{ fom: string; tom: string }>;
     resetFormValuesVedEndringAvForelder: (forelder: ForelderValg) => void;
@@ -298,6 +303,8 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
     } = useUttaksplanData();
 
     const formMethods = useFormContext<LeggTilEllerEndrePeriodeFormFormValues>();
+    // Gradering velges per arbeidsgiver, så flere arbeidsforhold hos samme arbeidsgiver skal gi ett valg.
+    const unikeArbeidsgivere = finnUnikeArbeidsgivere(aktiveArbeidsforhold);
 
     const {
         forelder,
@@ -802,7 +809,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                                         ]}
                                     >
                                         <>
-                                            {aktiveArbeidsforhold.map((a) => (
+                                            {unikeArbeidsgivere.map((a) => (
                                                 <Radio key={a.arbeidsgiverId} value={a.arbeidsgiverId}>
                                                     {a.arbeidsgiverNavn}
                                                 </Radio>
@@ -888,7 +895,7 @@ export const LeggTilEllerEndrePeriodeFellesForm = ({ valgtePerioder, resetFormVa
                                         ]}
                                     >
                                         <>
-                                            {aktiveArbeidsforhold.map((a) => (
+                                            {unikeArbeidsgivere.map((a) => (
                                                 <Radio key={a.arbeidsgiverId} value={a.arbeidsgiverId}>
                                                     {a.arbeidsgiverNavn}
                                                 </Radio>
