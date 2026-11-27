@@ -25,20 +25,6 @@ const isNumber = (value?: string) => {
     return value && isValidNumber(value);
 };
 
-const finnHendelse = (
-    harIkkeRettTilFp: boolean,
-    erMellomMinÅrslønnOg1Komma5G: boolean,
-    ikkeRettTilÅFåDekketAlt: boolean,
-) => {
-    if (harIkkeRettTilFp) {
-        return 'UNDER_MIN_ÅRSLØNN';
-    }
-    if (erMellomMinÅrslønnOg1Komma5G) {
-        return 'MELLOM_MIN_ÅRSLØNN_OG_1.5_G';
-    }
-    return ikkeRettTilÅFåDekketAlt ? 'OVER G*6' : 'HAR_RETT';
-};
-
 interface Props {
     arbeidssituasjon: Arbeidssituasjon;
     stønadskvoter: { '100': KontoBeregningDto; '80': KontoBeregningDto };
@@ -70,7 +56,7 @@ export const OppsummeringSide = ({ arbeidssituasjon, stønadskvoter, satser }: P
             origin: 'veiviser-hvor-mye',
             eventName: 'besøk',
             eventData: {
-                tittel: finnHendelse(harIkkeRettTilFp, erMellomMinÅrslønnOg1Komma5G, årslønn > grunnbeløpetGanger6),
+                sidetittel: 'Oppsummering',
             },
         });
     }, []);

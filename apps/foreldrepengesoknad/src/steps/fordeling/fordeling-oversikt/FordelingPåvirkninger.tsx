@@ -101,7 +101,7 @@ export const FordelingPåvirkninger = ({
                     if (open) {
                         loggUmamiEvent({
                             origin: 'foreldrepengesoknad',
-                            eventName: 'accordion åpnet',
+                            eventName: 'utvidbart kort åpnet',
                             eventData: { tittel: heading },
                         });
                     }

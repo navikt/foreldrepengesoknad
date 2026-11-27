@@ -11,7 +11,7 @@ export const IkkeKvinne = () => {
     loggUmamiEvent({
         origin: 'svangerskapspengesoknad',
         eventName: 'besøk',
-        eventData: { tittel: 'ikkeKvinne' },
+        eventData: { sidetittel: 'ikkeKvinne' },
     });
 
     return (

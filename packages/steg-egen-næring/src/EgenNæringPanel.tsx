@@ -384,7 +384,7 @@ export const EgenNæringForm = ({
                         onOpenChange={(open) =>
                             loggUmamiEvent({
                                 origin: appOrigin,
-                                eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                                eventName: open ? 'les mer åpnet' : 'les mer lukket',
                                 eventData: { tittel: 'egenNæring.næringsinntekt.info.apneLabel' },
                             })
                         }

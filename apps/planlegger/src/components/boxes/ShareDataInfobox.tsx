@@ -9,8 +9,8 @@ import { Infobox } from '@navikt/fp-ui';
 const logCopyEvent = () => {
     loggUmamiEvent({
         origin: 'planlegger',
-        eventName: 'kopier',
-        eventData: { tittel: 'OppsummeringSteg.KopierUrl' },
+        eventName: 'kopier-lenke',
+        eventData: { komponentId: 'OppsummeringSteg.KopierUrl' },
     });
 };
 

@@ -252,7 +252,7 @@ export const PerioderFieldArray = ({
                                 onOpenChange={(open) =>
                                     loggUmamiEvent({
                                         origin: 'svangerskapspengesoknad',
-                                        eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                                        eventName: open ? 'les mer åpnet' : 'les mer lukket',
                                         eventData: {
                                             tittel: 'tilrettelegging.varierendePerioderStillingsprosent.info.tittel',
                                         },

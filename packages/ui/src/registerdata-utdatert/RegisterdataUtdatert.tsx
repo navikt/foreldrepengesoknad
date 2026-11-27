@@ -22,8 +22,8 @@ export const RegisterdataUtdatert = ({ slettMellomlagringOgLastSidePåNytt, appN
     useEffect(() => {
         loggUmamiEvent({
             origin: appName,
-            eventName: 'besøk',
-            eventData: { tittel: 'registerdataUtdatert', ...(avvik ? { avvik } : {}) },
+            eventName: 'registerdata utdatert',
+            eventData: { ...(avvik ? { avvik } : {}) },
         });
     }, [appName, avvik]);
 

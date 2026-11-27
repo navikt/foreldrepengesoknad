@@ -1,7 +1,15 @@
 import { composeStories } from '@storybook/react-vite';
 import { render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
+
+import { loggUmamiEvent } from '@navikt/fp-observability';
 
 import * as stories from './OppsummeringSide.stories';
+
+vi.mock('@navikt/fp-observability', async (importOriginal) => ({
+    ...(await importOriginal<typeof import('@navikt/fp-observability')>()),
+    loggUmamiEvent: vi.fn(),
+}));
 
 const {
     ArbeidstakerMed20000Imåneden,
@@ -11,6 +19,22 @@ const {
 } = composeStories(stories);
 
 describe('<OppsummeringSide>', () => {
+    it.each([ArbeidstakerMed1000Imåneden, ArbeidstakerMed100000Imåneden])(
+        'skal logge samme sidebesøk uten inntekts- eller rettighetskategori',
+        async (Oppsummering) => {
+            vi.mocked(loggUmamiEvent).mockClear();
+
+            render(<Oppsummering />);
+            expect(await screen.findByText('Oppsummering')).toBeInTheDocument();
+
+            expect(loggUmamiEvent).toHaveBeenCalledExactlyOnceWith({
+                origin: 'veiviser-hvor-mye',
+                eventName: 'besøk',
+                eventData: { sidetittel: 'Oppsummering' },
+            });
+        },
+    );
+
     it('skal vise oppsummering for arbeidstaker med 20000 i måneden', async () => {
         render(<ArbeidstakerMed20000Imåneden />);
 

@@ -61,7 +61,7 @@ export const VarigEndringSpørsmål = ({ egenNæringFom, egenNæringTom, varigEn
                 onOpenChange={(open) =>
                     loggUmamiEvent({
                         origin: appOrigin,
-                        eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                        eventName: open ? 'les mer åpnet' : 'les mer lukket',
                         eventData: { tittel: 'egenNæring.egenNæringHattVarigEndringDeSiste4Årene.info.åpneLabel' },
                     })
                 }

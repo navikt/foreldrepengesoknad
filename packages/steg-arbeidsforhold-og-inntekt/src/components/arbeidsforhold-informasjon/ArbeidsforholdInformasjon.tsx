@@ -54,7 +54,7 @@ const ArbeidsforholdDefinisjoner = ({ appOrigin }: { appOrigin: AppName }) => {
             onToggle={(open) =>
                 loggUmamiEvent({
                     origin: appOrigin,
-                    eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                    eventName: open ? 'utvidbart kort åpnet' : 'utvidbart kort lukket',
                     eventData: {
                         tittel: 'ArbeidsforholdOgInntektPanel.Definisjoner.Tittel',
                     },
@@ -188,7 +188,7 @@ export const ArbeidsforholdInformasjon = ({
                 onOpenChange={(open) =>
                     loggUmamiEvent({
                         origin: appOrigin,
-                        eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                        eventName: open ? 'les mer åpnet' : 'les mer lukket',
                         eventData: { tittel: 'inntektsinformasjon.arbeidsforhold.info' },
                     })
                 }

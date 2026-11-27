@@ -276,7 +276,7 @@ export const TilretteleggingSteg = ({
                                         onOpenChange={(open) =>
                                             loggUmamiEvent({
                                                 origin: 'svangerskapspengesoknad',
-                                                eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                                                eventName: open ? 'les mer åpnet' : 'les mer lukket',
                                                 eventData: { tittel: 'tilrettelegging.tiltak.info.title' },
                                             })
                                         }
@@ -326,7 +326,7 @@ export const TilretteleggingSteg = ({
                                 onOpenChange={(open) =>
                                     loggUmamiEvent({
                                         origin: 'svangerskapspengesoknad',
-                                        eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                                        eventName: open ? 'les mer åpnet' : 'les mer lukket',
                                         eventData: {
                                             tittel: 'tilrettelegging.tilrettelagtArbeidType.info.tittel',
                                         },
