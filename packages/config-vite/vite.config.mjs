@@ -8,7 +8,28 @@ import compression from 'vite-plugin-compression2';
 
 // I worker-only-modus legg msw-pluginen workeren i alle klient-bygg. `apply: 'serve'` hindrer at
 // den havner i produksjonsbygget til appene.
-const mockServiceWorkerPlugin = () => ({ ...msw({ mode: 'worker-only' }), apply: 'serve' });
+// msw serverer workeren bare under `base`, men Storybook dev og Vitest browser-mode henter
+// `./mockServiceWorker.js` relativt til en side utenfor `base`. Derfor sendes alle slike kall dit.
+const mockServiceWorkerPlugin = () => {
+    const plugin = msw({ mode: 'worker-only' });
+
+    return {
+        ...plugin,
+        apply: 'serve',
+        configureServer(server) {
+            const workerUrl = `${server.config.base.replace(/\/?$/, '/')}mockServiceWorker.js`;
+
+            server.middlewares.use((req, _res, next) => {
+                if (req.url?.split('?')[0].endsWith('/mockServiceWorker.js')) {
+                    req.url = workerUrl;
+                }
+                next();
+            });
+
+            return plugin.configureServer(server);
+        },
+    };
+};
 
 export const storybookMockServiceWorker = () => msw({ mode: 'worker-only' });
 
