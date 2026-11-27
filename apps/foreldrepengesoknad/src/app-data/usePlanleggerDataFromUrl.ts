@@ -7,6 +7,7 @@ import {
     Barn,
     BarnetErAdoptertPlanlegger,
     BarnetErFødtPlanlegger,
+    BarnetErIkkeFødtPlanlegger,
     FordelingPlanlegger,
     HvorLangPeriodePlanlegger,
     Kjønn_fpoversikt,
@@ -17,7 +18,7 @@ import {
 } from '@navikt/fp-types';
 import { decompressFromUrl, konverterFlatePerioderTilIntervall } from '@navikt/fp-utils';
 
-import { ContextDataMap, ContextDataType } from './FpDataContext';
+import { AdopsjonFraPlanlegger, ContextDataMap, ContextDataType } from './FpDataContext';
 
 type PlanleggerDataFromUrl = {
     OM_BARNET?: OmBarnetPlanlegger;
@@ -35,17 +36,14 @@ const erBarnetFødt = (barnet: OmBarnetPlanlegger): barnet is BarnetErFødtPlanl
 const utledRolleForSøker = (kjønn: Kjønn_fpoversikt | undefined): Søkerrolle | undefined =>
     kjønn === 'M' ? 'far' : undefined;
 
-const mapOmBarnetTilBarn = (barnet: OmBarnetPlanlegger): Barn => {
-    const antallBarn = Number(barnet.antallBarn);
+const mapAdoptertBarnTilForhåndsutfylling = (barnet: BarnetErAdoptertPlanlegger): AdopsjonFraPlanlegger => ({
+    adopsjonsdato: barnet.overtakelsesdato,
+    fødselsdatoer: [barnet.fødselsdato],
+    antallBarn: Number(barnet.antallBarn),
+});
 
-    if (erBarnetAdoptert(barnet)) {
-        return {
-            type: BarnType.ADOPTERT_STEBARN,
-            antallBarn,
-            adopsjonsdato: barnet.overtakelsesdato,
-            fødselsdatoer: [barnet.fødselsdato],
-        };
-    }
+const mapFødselTilBarn = (barnet: BarnetErFødtPlanlegger | BarnetErIkkeFødtPlanlegger): Barn => {
+    const antallBarn = Number(barnet.antallBarn);
 
     if (erBarnetFødt(barnet)) {
         return {
@@ -76,7 +74,11 @@ const mapPlanleggerDataToSøknadState = (
         if (rolle) {
             result[ContextDataType.SØKERSITUASJON] = { situasjon, rolle } satisfies SøkersituasjonFp;
         }
-        result[ContextDataType.OM_BARNET] = mapOmBarnetTilBarn(barnet);
+        if (erBarnetAdoptert(barnet)) {
+            result[ContextDataType.ADOPSJON_FRA_PLANLEGGER] = mapAdoptertBarnTilForhåndsutfylling(barnet);
+        } else {
+            result[ContextDataType.OM_BARNET] = mapFødselTilBarn(barnet);
+        }
     }
 
     if (periode) {

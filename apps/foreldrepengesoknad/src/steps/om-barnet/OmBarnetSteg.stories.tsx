@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { API_URLS } from 'api/queries';
-import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
+import { Action, AdopsjonFraPlanlegger, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
@@ -83,6 +83,7 @@ type StoryArgs = {
     barn?: Barn;
     gåTilNesteSide?: (action: Action) => void;
     annenForelder?: AnnenForelder;
+    adopsjonFraPlanlegger?: AdopsjonFraPlanlegger;
 } & ComponentProps<typeof OmBarnetSteg>;
 
 const meta = {
@@ -100,6 +101,7 @@ const meta = {
         barn,
         gåTilNesteSide = action('button-click'),
         annenForelder = { kanIkkeOppgis: true },
+        adopsjonFraPlanlegger,
         ...rest
     }) => {
         return (
@@ -110,6 +112,7 @@ const meta = {
                         [ContextDataType.SØKERSITUASJON]: søkersituasjon,
                         [ContextDataType.OM_BARNET]: barn,
                         [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                        [ContextDataType.ADOPSJON_FRA_PLANLEGGER]: adopsjonFraPlanlegger,
                     }}
                 >
                     <OmBarnetSteg {...rest} />
@@ -159,6 +162,17 @@ export const ForAdopsjon: Story = {
         søkersituasjon: {
             situasjon: 'adopsjon',
             rolle: 'mor',
+        },
+    },
+};
+
+export const AdopsjonFraPlanleggeren: Story = {
+    args: {
+        ...ForAdopsjon.args,
+        adopsjonFraPlanlegger: {
+            adopsjonsdato: '2026-05-05',
+            fødselsdatoer: ['2024-01-10'],
+            antallBarn: 1,
         },
     },
 };

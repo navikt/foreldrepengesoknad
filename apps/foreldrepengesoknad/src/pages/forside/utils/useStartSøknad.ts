@@ -124,6 +124,7 @@ export const useStartSøknad = ({
         oppdaterDataIState(ContextDataType.PERIODE_MED_FORELDREPENGER, undefined);
         oppdaterDataIState(ContextDataType.UTTAKSPLAN, undefined);
         oppdaterDataIState(ContextDataType.KOMMER_FRA_PLANLEGGER, undefined);
+        oppdaterDataIState(ContextDataType.ADOPSJON_FRA_PLANLEGGER, undefined);
     };
 
     const startSomNySøknad = () => {

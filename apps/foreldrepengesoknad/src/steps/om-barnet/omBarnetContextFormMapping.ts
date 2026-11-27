@@ -1,3 +1,4 @@
+import { AdopsjonFraPlanlegger } from 'appData/FpDataContext';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
@@ -133,8 +134,9 @@ export const mapOmBarnetFormDataToState = (
     throw new Error('Unreachable code');
 };
 
-const getAntallBarn = (erFlereEnnToBarn: boolean, barn: Barn): number => (erFlereEnnToBarn ? 3 : barn.antallBarn);
-const getAntallBarnSelect = (erFlereEnnToBarn: boolean, barn: Barn): string | undefined =>
+const getAntallBarn = (erFlereEnnToBarn: boolean, barn: { antallBarn: number }): number =>
+    erFlereEnnToBarn ? 3 : barn.antallBarn;
+const getAntallBarnSelect = (erFlereEnnToBarn: boolean, barn: { antallBarn: number }): string | undefined =>
     erFlereEnnToBarn ? barn.antallBarn.toString() : undefined;
 
 // Sikrer at skjemaet aldri får et tomt fødselsdatoer-array som defaultValue. Et tomt array er
@@ -150,8 +152,18 @@ export const getOmBarnetInitialValues = (
     søkersituasjon: SøkersituasjonFp,
     barn?: Barn,
     termindatoFraVedtak?: string,
+    adopsjonFraPlanlegger?: AdopsjonFraPlanlegger,
 ): BarnetFormValues => {
     if (!barn) {
+        if (adopsjonFraPlanlegger && søkersituasjon.situasjon === 'adopsjon') {
+            const erFlereEnnToBarn = adopsjonFraPlanlegger.antallBarn > 2;
+            return {
+                adopsjonsdato: adopsjonFraPlanlegger.adopsjonsdato,
+                antallBarn: getAntallBarn(erFlereEnnToBarn, adopsjonFraPlanlegger),
+                antallBarnSelect: getAntallBarnSelect(erFlereEnnToBarn, adopsjonFraPlanlegger),
+                fødselsdatoer: mapFødselsdatoer(adopsjonFraPlanlegger.fødselsdatoer),
+            };
+        }
         return { fødselsdatoer: [{ dato: undefined }] };
     }
 
