@@ -196,7 +196,10 @@ const OmBarnetStegInner = ({
 
     const defaultValues = useMemo(
         () =>
-            getOmBarnetInitialValues(arbeidsforhold, søkersituasjon, omBarnet, {
+            getOmBarnetInitialValues({
+                arbeidsforhold,
+                søkersituasjon,
+                barn: omBarnet,
                 termindatoFraVedtak: termindato,
                 adopsjonFraPlanlegger,
             }),
