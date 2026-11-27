@@ -6,6 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Barn } from 'types/Barn';
 import { PeriodeMedVariasjonFormValues, TilOgMedDatoType } from 'types/Tilrettelegging';
 import { getDefaultMonth, getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
+import { lagSlettKnappKontekst } from 'utils/slettKnappUtils';
 import {
     getArbeidsgiverNavnForTilrettelegging,
     getArbeidsgiverStillingerForTilrettelegging,
@@ -71,12 +72,10 @@ export const PerioderFieldArray = ({
         arbeidsforhold,
         { egenNæring, frilans },
     );
-    const periode = getPeriodeForTilrettelegging(
-        barn.termindato,
-        valgtTilretteleggingId,
-        arbeidsforhold,
-        { egenNæring, frilans },
-    );
+    const periode = getPeriodeForTilrettelegging(barn.termindato, valgtTilretteleggingId, arbeidsforhold, {
+        egenNæring,
+        frilans,
+    });
 
     const formMethods = useFormContext<PerioderFormValues>();
     const { fields, append, remove } = useFieldArray({
@@ -111,6 +110,14 @@ export const PerioderFieldArray = ({
                 );
                 const minDatoTom = getMinDatoTom(alleVarierendePerioder[index]!.fom, behovForTilretteleggingFom);
                 const defaultMonthTom = getDefaultMonth(minDatoTom, maxDato);
+                const varierendePeriode = alleVarierendePerioder[index]!;
+                const slettKontekst = lagSlettKnappKontekst(intl, {
+                    fom: varierendePeriode.fom,
+                    tom:
+                        varierendePeriode.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP
+                            ? sisteDagForSvangerskapspenger
+                            : varierendePeriode.tom,
+                });
 
                 return (
                     <Fragment key={field.id}>
@@ -134,6 +141,7 @@ export const PerioderFieldArray = ({
                                         onClick={() => remove(index)}
                                     >
                                         <FormattedMessage id="perioder.varierende.slett" />
+                                        {slettKontekst && <span className="sr-only">{`, ${slettKontekst}`}</span>}
                                     </Button>
                                 )}
                             </HStack>

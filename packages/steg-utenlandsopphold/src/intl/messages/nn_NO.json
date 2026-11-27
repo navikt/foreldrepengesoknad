@@ -52,6 +52,8 @@
     "SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Tilogmed": "Til og med",
     "SenereUtenlandsoppholdSteg.TomErLikFom": "Til og med dato kan ikkje vera same som frå og med dato",
     "SenereUtenlandsoppholdSteg.Knapp.SlettOpphold": "Slett dette opphaldet",
+    "UtenlandsoppholdPeriode.Slett.Periode": "{fom} til {tom}",
+    "UtenlandsoppholdPeriode.Slett.FraDato": "frå {fom}",
     "SenereUtenlandsoppholdSteg.FraOgMedDato.GyldigDato": "Frå og med dato må vera ein gyldig dato på formatet dd.mm.åååå",
     "SenereUtenlandsoppholdSteg.TilOgMedDato.GyldigDato": "Til og med dato må vera ein gyldig dato på formatet dd.mm.åååå",
     "SenereUtenlandsoppholdSteg.DateOutsideRangeFom": "Frå og med dato for utenlandsopphald må vera mellom {min} og {max}",

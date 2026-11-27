@@ -154,10 +154,10 @@ describe('<FerieSteg>', () => {
         await user.tab();
         expect(screen.queryAllByText('Overlapper med 2. periode')).toHaveLength(0);
 
-        expect(screen.getAllByText('Fjern perioden')).toHaveLength(2);
-        await user.click(screen.getByLabelText('Fjern 3. periode'));
-        await user.click(screen.getByLabelText('Fjern 2. periode'));
-        expect(screen.queryAllByText('Fjern perioden')).toHaveLength(0);
+        expect(screen.getAllByRole('button', { name: /^Fjern perioden/ })).toHaveLength(2);
+        await user.click(screen.getAllByRole('button', { name: /^Fjern perioden/ })[1]!);
+        await user.click(screen.getAllByRole('button', { name: /^Fjern perioden/ })[0]!);
+        expect(screen.queryAllByRole('button', { name: /^Fjern perioden/ })).toHaveLength(0);
 
         await user.click(screen.getByText('Neste steg'));
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
@@ -223,7 +223,7 @@ describe('<FerieSteg>', () => {
         await user.click(screen.getByText('Legg til flere ferier'));
         await user.click(screen.getByText('Legg til flere ferier'));
 
-        expect(screen.getAllByText('Fjern perioden')).toHaveLength(2);
+        expect(screen.getAllByRole('button', { name: /^Fjern perioden/ })).toHaveLength(2);
 
         await user.type(screen.getAllByText('Første feriedag')[1]!, dayjs('2024-11-01').format('DD.MM.YYYY'));
         await user.tab();
@@ -235,7 +235,12 @@ describe('<FerieSteg>', () => {
         await user.type(screen.getAllByText('Siste feriedag')[2]!, dayjs('2024-11-08').format('DD.MM.YYYY'));
         await user.tab();
 
-        await user.click(screen.getByLabelText('Fjern 3. periode'));
+        expect(screen.getAllByRole('button', { name: /^Fjern perioden/ }).map((knapp) => knapp.textContent)).toEqual([
+            'Fjern perioden, 01.11.2024 til 04.11.2024',
+            'Fjern perioden, 06.11.2024 til 08.11.2024',
+        ]);
+
+        await user.click(screen.getAllByRole('button', { name: /^Fjern perioden/ })[1]!);
 
         await user.click(screen.getByText('Neste steg'));
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {

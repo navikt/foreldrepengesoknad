@@ -41,7 +41,7 @@ describe('<ManueltLagtTilNæring>', () => {
         expect(screen.getByText('Fiske')).toBeInTheDocument();
         expect(screen.getByText('998877665')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByRole('button', { name: 'Fjern Fiskebåten' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fjern Fiskebåten, 01.01.2023 - Pågående' }));
 
         expect(onRemove).toHaveBeenCalledTimes(1);
     });
@@ -70,7 +70,7 @@ describe('<ManueltLagtTilNæring>', () => {
         );
 
         expect(screen.getByRole('heading', { name: 'Fiskebåten' })).toBeInTheDocument();
-        expect(screen.queryByRole('button', { name: 'Fjern Fiskebåten' })).not.toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: /^Fjern/ })).not.toBeInTheDocument();
     });
 
     it('skal vise landsnavn i stedet for landskode for utenlandsk næring', () => {

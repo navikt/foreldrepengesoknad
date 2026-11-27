@@ -166,7 +166,7 @@ describe('<PerioderSteg>', () => {
         expect(stillingInput1).toHaveValue('45');
         expect(screen.getAllByLabelText('Frem til tre uker før termin')[1]).toBeChecked();
 
-        await user.click(screen.getAllByText('Fjern perioden')[0]!);
+        await user.click(screen.getAllByRole('button', { name: /^Fjern perioden/ })[0]!);
         await user.click(screen.getByText('Legg til ny periode'));
         expect(fradatoInput1).toHaveValue('16.01.2024');
         expect(screen.getAllByLabelText('Hvilken stillingsprosent skal du jobbe i denne perioden?')[1]).toHaveValue('');
@@ -190,10 +190,25 @@ describe('<PerioderSteg>', () => {
         expect(screen.getAllByText('Til:')[1]).toBeInTheDocument();
         await user.click(screen.getAllByText('Frem til tre uker før termin')[1]!);
 
-        expect(screen.getAllByText('Fjern perioden', { exact: false })[0]).toBeInTheDocument();
-        await user.click(screen.getAllByText('Fjern perioden')[0]!);
+        expect(screen.getAllByRole('button', { name: /^Fjern perioden/ })[0]).toBeInTheDocument();
+        await user.click(screen.getAllByRole('button', { name: /^Fjern perioden/ })[0]!);
 
         expect(screen.queryByText('30.10.2023 - 3 uker før termin (12 uker 6 dager)')).not.toBeInTheDocument();
+    });
+
+    it('slettknappen skal bruke siste dag med svangerskapspenger når det er valgt etter en til-dato', async () => {
+        render(<Default />);
+
+        await user.click(await screen.findByText('Legg til ny periode'));
+        await user.type(screen.getAllByText('Du skal jobbe fra:')[1]!, '01.01.2024');
+        await user.click(screen.getAllByText('Frem til en dato')[1]!);
+        await user.type(screen.getByText('Til og med dato'), '10.01.2024');
+        await user.tab();
+        await user.click(screen.getAllByText('Frem til tre uker før termin')[1]!);
+
+        expect(screen.getByRole('button', { name: /^Fjern perioden/ })).toHaveTextContent(
+            'Fjern perioden, 01.01.2024 til 27.01.2024',
+        );
     });
 
     it('feilmelding ved overlappende perioder', async () => {

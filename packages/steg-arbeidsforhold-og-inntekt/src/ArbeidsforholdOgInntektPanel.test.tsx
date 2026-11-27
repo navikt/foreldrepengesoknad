@@ -125,7 +125,7 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
         render(<ForForeldrepengerMedAndreInntekter saveAndreInntektskilder={saveAndreInntektskilder} />);
 
         await screen.findAllByText('Arbeidsforhold og inntekt');
-        await userEvent.click(screen.getByRole('button', { name: 'Fjern Jobb i utlandet' }));
+        await userEvent.click(screen.getByRole('button', { name: /^Fjern Jobb i utlandet,/ }));
 
         expect(saveAndreInntektskilder).toHaveBeenCalledWith([]);
         expect(screen.queryByRole('heading', { name: 'Jobb i utlandet' })).not.toBeInTheDocument();
@@ -169,7 +169,7 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
         render(<ForForeldrepenger egenNæring={manueltLagtTilNæring} saveEgenNæring={saveEgenNæring} />);
 
         await screen.findAllByText('Arbeidsforhold og inntekt');
-        await userEvent.click(screen.getByRole('button', { name: 'Fjern Fiskebåten' }));
+        await userEvent.click(screen.getByRole('button', { name: /^Fjern Fiskebåten,/ }));
 
         expect(saveEgenNæring).toHaveBeenCalledWith(undefined);
         expect(screen.queryByRole('heading', { name: 'Fiskebåten' })).not.toBeInTheDocument();

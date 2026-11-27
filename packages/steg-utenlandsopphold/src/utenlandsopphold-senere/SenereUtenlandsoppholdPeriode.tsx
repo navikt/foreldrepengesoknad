@@ -20,6 +20,8 @@ import {
     isValidDate,
 } from '@navikt/fp-validation';
 
+import { lagSlettOppholdKontekst } from '../lagSlettOppholdKontekst';
+
 // tomUkjent finst berre i skjematilstanden og blir stripa vekk før innsending, sjå SenereUtenlandsoppholdPanel.
 export type SenereUtenlandsoppholdSkjemaPeriode = UtenlandsoppholdPeriode & { tomUkjent?: boolean };
 
@@ -43,6 +45,8 @@ export const SenereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props) =>
     const fom = watch(`utenlandsoppholdNeste12Mnd.${index}.fom`);
     const tom = watch(`utenlandsoppholdNeste12Mnd.${index}.tom`);
     const tomUkjent = watch(`utenlandsoppholdNeste12Mnd.${index}.tomUkjent`);
+    const landkode = watch(`utenlandsoppholdNeste12Mnd.${index}.landkode`);
+    const slettKontekst = lagSlettOppholdKontekst(intl, landkode, fom, tom);
 
     const minDateFom = DATE_TODAY;
     const maxDateFom = tom ? dayjs(tom).subtract(1, 'days').format(ISO_DATE_FORMAT) : DATE_1_YEAR_FROM_NOW;
@@ -116,9 +120,7 @@ export const SenereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props) =>
             <RhfCheckbox
                 name={`utenlandsoppholdNeste12Mnd.${index}.tomUkjent`}
                 control={control}
-                label={
-                    <FormattedMessage id="SenereUtenlandsoppholdSteg.VetIkkeNårTilbake" />
-                }
+                label={<FormattedMessage id="SenereUtenlandsoppholdSteg.VetIkkeNårTilbake" />}
                 onChange={(erKryssetAv) => {
                     if (erKryssetAv) {
                         setValue(`utenlandsoppholdNeste12Mnd.${index}.tom`, undefined);
@@ -179,6 +181,7 @@ export const SenereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props) =>
                     onClick={() => fjernOpphold(index)}
                 >
                     <FormattedMessage id="SenereUtenlandsoppholdSteg.Knapp.SlettOpphold" />
+                    {slettKontekst && <span className="sr-only">{`, ${slettKontekst}`}</span>}
                 </Button>
             )}
         </VStack>

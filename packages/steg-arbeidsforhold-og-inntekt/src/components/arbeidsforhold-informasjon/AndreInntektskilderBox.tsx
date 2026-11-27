@@ -24,6 +24,15 @@ const getTittel = (intl: ReturnType<typeof useIntl>, type: AndreInntektskilder['
     }
 };
 
+const getPeriode = (intl: ReturnType<typeof useIntl>, inntekt: AndreInntektskilder) =>
+    intl.formatMessage(
+        { id: 'inntektsinformasjon.arbeidsforhold.periode' },
+        {
+            fom: formatDate(inntekt.fom),
+            tom: inntekt.tom ? formatDate(inntekt.tom) : intl.formatMessage({ id: 'HarArbeidsforhold.pågående' }),
+        },
+    );
+
 const DetaljRad = ({ label, children }: { label: React.ReactNode; children: React.ReactNode }) => (
     <HStack gap={{ md: 'space-8' }} justify={{ xs: 'space-between', md: 'start' }}>
         <Label>{label}</Label>
@@ -49,15 +58,7 @@ const Inntektsdetaljer = ({ inntekt }: { inntekt: AndreInntektskilder }) => {
                 </>
             )}
             <DetaljRad label={<FormattedMessage id="AndreInntektskilderBox.Dato" />}>
-                <FormattedMessage
-                    id="inntektsinformasjon.arbeidsforhold.periode"
-                    values={{
-                        fom: formatDate(inntekt.fom),
-                        tom: inntekt.tom
-                            ? formatDate(inntekt.tom)
-                            : intl.formatMessage({ id: 'HarArbeidsforhold.pågående' }),
-                    }}
-                />
+                {getPeriode(intl, inntekt)}
             </DetaljRad>
         </>
     );
@@ -99,10 +100,18 @@ export const AndreInntektskilderBox = ({ andreInntektskilder, onRemove }: Props)
                             data-color="danger"
                             icon={<TrashIcon aria-hidden />}
                             className="self-start"
-                            aria-label={`Fjern ${getTittel(intl, inntekt.type)}`}
                             onClick={() => onRemove(index)}
                         >
-                            {intl.formatMessage({ id: 'AndreInntektskilderBox.Fjern' })}
+                            <FormattedMessage id="AndreInntektskilderBox.Fjern" />{' '}
+                            <span className="sr-only">
+                                <FormattedMessage
+                                    id="AndreInntektskilderBox.Fjern.Kontekst"
+                                    values={{
+                                        inntektstype: getTittel(intl, inntekt.type),
+                                        periode: getPeriode(intl, inntekt),
+                                    }}
+                                />
+                            </span>
                         </Button>
                     </VStack>
                 </Box>

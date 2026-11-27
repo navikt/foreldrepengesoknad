@@ -75,9 +75,24 @@ describe('<AndreInntektskilderBox>', () => {
         const onRemove = vi.fn();
         renderInntektskilder(inntektskilder, onRemove);
 
-        await userEvent.click(screen.getByRole('button', { name: 'Fjern Etterlønn eller sluttvederlag' }));
+        await userEvent.click(
+            screen.getByRole('button', { name: 'Fjern Etterlønn eller sluttvederlag, 01.02.2024 - 31.03.2024' }),
+        );
 
         expect(onRemove).toHaveBeenCalledWith(1);
+    });
+
+    it('skal gi fjern-knappene ulike navn når samme inntektstype finnes flere ganger', () => {
+        renderInntektskilder([
+            inntektskilder[1]!,
+            { type: 'ETTERLØNN_SLUTTPAKKE', fom: '2024-05-01', tom: '2024-06-30' },
+        ]);
+
+        const knapper = screen.getAllByRole('button', { name: /^Fjern Etterlønn eller sluttvederlag/ });
+        expect(knapper.map((knapp) => knapp.textContent)).toEqual([
+            'Fjern Etterlønn eller sluttvederlag, 01.02.2024 - 31.03.2024',
+            'Fjern Etterlønn eller sluttvederlag, 01.05.2024 - 30.06.2024',
+        ]);
     });
 
     it('skal scrolle den nye inntekten inn i synsfeltet', () => {
