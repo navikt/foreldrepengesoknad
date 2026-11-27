@@ -39,9 +39,9 @@ export const getSaksoversiktHeading = (ytelse: Ytelse | undefined, intl: ReturnT
     return intl.formatMessage({ id: 'header.dinSak' });
 };
 
-function SideOverskrift({ children }: { children: ReactNode }) {
+function SideOverskrift({ children, flyttFokus = true }: { children: ReactNode; flyttFokus?: boolean }) {
     const { pathname } = useLocation();
-    const overskriftRef = useFokusVedNavigasjon<HTMLHeadingElement>(pathname);
+    const overskriftRef = useFokusVedNavigasjon<HTMLHeadingElement>(flyttFokus ? pathname : undefined);
     return (
         <Heading ref={overskriftRef} level="1" size="medium">
             {children}
@@ -181,10 +181,10 @@ export const InntektsmeldingHeader = ({
     );
 };
 
-export const InntektsmeldingOversiktHeader = () => {
+export const InntektsmeldingOversiktHeader = ({ flyttFokus }: { flyttFokus?: boolean }) => {
     return (
         <SimpleHeaderWrapper>
-            <SideOverskrift>
+            <SideOverskrift flyttFokus={flyttFokus}>
                 <FormattedMessage id="header.inntektRapportert" />
             </SideOverskrift>
         </SimpleHeaderWrapper>

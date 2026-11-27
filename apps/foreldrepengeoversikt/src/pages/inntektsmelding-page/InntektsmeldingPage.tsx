@@ -58,7 +58,8 @@ export const InntektsmeldingPage = () => {
 
     if (inntektsmeldingerQuery.isPending) {
         return (
-            <PageRouteLayout header={<InntektsmeldingOversiktHeader />}>
+            // Overskriften byttes ut når inntektsmeldingen er lastet. Fokus skal derfor flyttes til den endelige overskriften, ikke denne.
+            <PageRouteLayout header={<InntektsmeldingOversiktHeader flyttFokus={false} />}>
                 <div className="flex flex-col items-center justify-center gap-4">
                     <Loader size="2xlarge" />
                     <BodyShort>
