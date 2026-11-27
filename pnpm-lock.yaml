@@ -255,8 +255,8 @@ catalogs:
       specifier: 19.3.1
       version: 19.3.1
     react-hook-form:
-      specifier: 7.91.0
-      version: 7.91.0
+      specifier: 7.92.0
+      version: 7.92.0
     react-intl:
       specifier: 12.2.1
       version: 12.2.1
@@ -393,7 +393,7 @@ importers:
         version: 19.3.1(react@19.3.1)
       react-hook-form:
         specifier: 'catalog:'
-        version: 7.91.0(@types/react@19.3.0)(react@19.3.1)
+        version: 7.92.0(@types/react@19.3.0)(react@19.3.1)
       react-intl:
         specifier: 'catalog:'
         version: 12.2.1(@types/react@19.3.0)(react@19.3.1)
@@ -683,7 +683,7 @@ importers:
         version: 19.3.1(react@19.3.1)
       react-hook-form:
         specifier: 'catalog:'
-        version: 7.91.0(@types/react@19.3.0)(react@19.3.1)
+        version: 7.92.0(@types/react@19.3.0)(react@19.3.1)
       react-intl:
         specifier: 'catalog:'
         version: 12.2.1(@types/react@19.3.0)(react@19.3.1)
@@ -816,7 +816,7 @@ importers:
         version: 19.3.1(react@19.3.1)
       react-hook-form:
         specifier: 'catalog:'
-        version: 7.91.0(@types/react@19.3.0)(react@19.3.1)
+        version: 7.92.0(@types/react@19.3.0)(react@19.3.1)
       react-intl:
         specifier: 'catalog:'
         version: 12.2.1(@types/react@19.3.0)(react@19.3.1)
@@ -964,7 +964,7 @@ importers:
         version: 19.3.1(react@19.3.1)
       react-hook-form:
         specifier: 'catalog:'
-        version: 7.91.0(@types/react@19.3.0)(react@19.3.1)
+        version: 7.92.0(@types/react@19.3.0)(react@19.3.1)
       react-intl:
         specifier: 'catalog:'
         version: 12.2.1(@types/react@19.3.0)(react@19.3.1)
@@ -1079,7 +1079,7 @@ importers:
         version: 19.3.1(react@19.3.1)
       react-hook-form:
         specifier: 'catalog:'
-        version: 7.91.0(@types/react@19.3.0)(react@19.3.1)
+        version: 7.92.0(@types/react@19.3.0)(react@19.3.1)
       react-intl:
         specifier: 'catalog:'
         version: 12.2.1(@types/react@19.3.0)(react@19.3.1)
@@ -1203,7 +1203,7 @@ importers:
         version: 19.3.1(react@19.3.1)
       react-hook-form:
         specifier: 'catalog:'
-        version: 7.91.0(@types/react@19.3.0)(react@19.3.1)
+        version: 7.92.0(@types/react@19.3.0)(react@19.3.1)
       react-intl:
         specifier: 'catalog:'
         version: 12.2.1(@types/react@19.3.0)(react@19.3.1)
@@ -1555,7 +1555,7 @@ importers:
         version: 19.3.1(react@19.3.1)
       react-hook-form:
         specifier: 'catalog:'
-        version: 7.91.0(@types/react@19.3.0)(react@19.3.1)
+        version: 7.92.0(@types/react@19.3.0)(react@19.3.1)
       react-intl:
         specifier: 'catalog:'
         version: 12.2.1(@types/react@19.3.0)(react@19.3.1)
@@ -1765,7 +1765,7 @@ importers:
         version: 19.3.1(react@19.3.1)
       react-hook-form:
         specifier: 'catalog:'
-        version: 7.91.0(@types/react@19.3.0)(react@19.3.1)
+        version: 7.92.0(@types/react@19.3.0)(react@19.3.1)
       react-intl:
         specifier: 'catalog:'
         version: 12.2.1(@types/react@19.3.0)(react@19.3.1)
@@ -1871,7 +1871,7 @@ importers:
         version: 19.3.1(react@19.3.1)
       react-hook-form:
         specifier: 'catalog:'
-        version: 7.91.0(@types/react@19.3.0)(react@19.3.1)
+        version: 7.92.0(@types/react@19.3.0)(react@19.3.1)
       react-intl:
         specifier: 'catalog:'
         version: 12.2.1(@types/react@19.3.0)(react@19.3.1)
@@ -1971,7 +1971,7 @@ importers:
         version: 19.3.1(react@19.3.1)
       react-hook-form:
         specifier: 'catalog:'
-        version: 7.91.0(@types/react@19.3.0)(react@19.3.1)
+        version: 7.92.0(@types/react@19.3.0)(react@19.3.1)
       react-intl:
         specifier: 'catalog:'
         version: 12.2.1(@types/react@19.3.0)(react@19.3.1)
@@ -2262,7 +2262,7 @@ importers:
         version: 19.3.1(react@19.3.1)
       react-hook-form:
         specifier: 'catalog:'
-        version: 7.91.0(@types/react@19.3.0)(react@19.3.1)
+        version: 7.92.0(@types/react@19.3.0)(react@19.3.1)
       react-intl:
         specifier: 'catalog:'
         version: 12.2.1(@types/react@19.3.0)(react@19.3.1)
@@ -2630,7 +2630,7 @@ importers:
         version: 19.3.1
       react-hook-form:
         specifier: 'catalog:'
-        version: 7.91.0(@types/react@19.3.0)(react@19.3.1)
+        version: 7.92.0(@types/react@19.3.0)(react@19.3.1)
       react-intl:
         specifier: 'catalog:'
         version: 12.2.1(@types/react@19.3.0)(react@19.3.1)
@@ -6710,8 +6710,8 @@ packages:
     peerDependencies:
       react: ^19.3.1
 
-  react-hook-form@7.91.0:
-    resolution: {integrity: sha512-5BEBUnCBwa28AFXYTYmOaB/+CSpJ/+CWVASHEvIGUzFdHyUiPHeRhG7r5hOZ8nZi0yP7pbHdFNXO/p31EKTJFQ==}
+  react-hook-form@7.92.0:
+    resolution: {integrity: sha512-O5ILyY5fYHN7N13Pfxpe55KboyNFsJdM03BHpshQkClJd8raugiAUGY7VjifITrfhVxyx81ko25azXCoayhf1w==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       '@types/react': 19.3.0
@@ -11271,7 +11271,7 @@ snapshots:
       react: 19.3.1
       scheduler: 0.28.0
 
-  react-hook-form@7.91.0(@types/react@19.3.0)(react@19.3.1):
+  react-hook-form@7.92.0(@types/react@19.3.0)(react@19.3.1):
     dependencies:
       react: 19.3.1
     optionalDependencies:
