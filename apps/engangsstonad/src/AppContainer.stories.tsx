@@ -59,6 +59,17 @@ export const SøkerErKvinne: Story = {
     },
 };
 
+export const MellomlagringFeiler: Story = {
+    beforeEach({ msw }) {
+        msw.use(
+            http.post(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 500 })),
+            ...HANDLERS,
+            http.get(API_URLS.personInfo, () => HttpResponse.json(DEFAULT_PERSONINFO)),
+            http.get(API_URLS.mellomlagring, () => new HttpResponse(null, { status: 204 })),
+        );
+    },
+};
+
 export const SøkerErKvinneMedMellomlagretData: Story = {
     beforeEach({ msw }) {
         msw.use(

@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { loggUmamiEvent } from '@navikt/fp-observability';
 
 import { ContextDataType, useContextGetAnyData, useContextSaveData } from './EsDataContext';
+import { forlatSøknaden } from './forlatSøknaden';
 import { Path } from './paths';
 import { MellomlagreSøknadFn } from './useEsMellomlagring';
 import { lagAppStegliste, useCurrentPath } from './useStepConfig';
@@ -60,10 +61,18 @@ export const useEsNavigator = (mellomlagreOgNaviger: MellomlagreSøknadFn) => {
 
     const fortsettSøknadSenere = () => {
         loggUmamiEvent({ origin: 'engangsstonad', eventName: 'skjema fortsett senere' });
-        // Berre lagre (ingen navigering – vi forlet appen rett etterpå), med retry
-        // sidan brukaren ikkje får eit nytt forsøk på å lagre endringane sine.
-        void mellomlagreOgNaviger({ naviger: false, medRetry: true }).finally(() => {
-            location.assign('https://nav.no');
+        // Bare lagre (ingen navigering – vi forlater appen rett etterpå), med retry
+        // siden brukeren ikke får et nytt forsøk på å lagre endringene sine. Brukeren
+        // sendes først ut når lagringen gikk bra; ellers vises en feilmelding.
+        void mellomlagreOgNaviger({
+            naviger: false,
+            medRetry: true,
+            visFeilTilBruker: true,
+            onFerdig: (resultat) => {
+                if (resultat === 'ok') {
+                    forlatSøknaden();
+                }
+            },
         });
     };
 

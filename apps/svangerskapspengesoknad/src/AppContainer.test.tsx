@@ -6,10 +6,51 @@ import dayjs from 'dayjs';
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './AppContainer.stories';
+import { forlatSøknaden } from './app-data/forlatSøknaden';
 
-const { VisAppKvinneMedArbeid } = composeStories(stories);
+vi.mock('./app-data/forlatSøknaden', () => ({ forlatSøknaden: vi.fn() }));
+
+const { VisAppKvinneMedArbeid, MellomlagringFeiler } = composeStories(stories);
+
+const fortsettSenere = async () => {
+    await userEvent.click(screen.getByRole('button', { name: 'Fortsett senere' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Ok' }));
+};
 
 describe('<AppContainer>', () => {
+    afterEach(() => {
+        vi.mocked(forlatSøknaden).mockClear();
+    });
+
+    it('skal sende brukeren ut av søknaden ved «Fortsett senere» når mellomlagringen går bra', async () => {
+        await VisAppKvinneMedArbeid.run();
+
+        await userEvent.click(await screen.findByText('Ja, jeg har forstått mine plikter.'));
+        await userEvent.click(screen.getByText('Start søknaden'));
+        expect(await screen.findByText('Steg 1 av 7')).toBeInTheDocument();
+
+        await fortsettSenere();
+
+        await waitFor(() => expect(forlatSøknaden).toHaveBeenCalled());
+    });
+
+    it('skal bli værende i søknaden og vise feilmelding ved «Fortsett senere» når mellomlagringen feiler', async () => {
+        await MellomlagringFeiler.run();
+
+        await userEvent.click(await screen.findByText('Ja, jeg har forstått mine plikter.'));
+        await userEvent.click(screen.getByText('Start søknaden'));
+        expect(await screen.findByText('Steg 1 av 7')).toBeInTheDocument();
+
+        await fortsettSenere();
+
+        expect(
+            await screen.findByText(/Vi klarte ikke å lagre søknaden din nå/, undefined, { timeout: 5000 }),
+        ).toBeInTheDocument();
+        expect(document.activeElement).toHaveTextContent(/Vi klarte ikke å lagre søknaden din nå/);
+        expect(forlatSøknaden).not.toHaveBeenCalled();
+        expect(screen.getByText('Steg 1 av 7')).toBeInTheDocument();
+    });
+
     it('skal gå raskeste vei gjennom applikasjonen og så tilbake', async () => {
         await VisAppKvinneMedArbeid.run();
 

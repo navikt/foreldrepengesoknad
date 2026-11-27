@@ -1,4 +1,6 @@
 {
+    "Mellomlagring.FeiletVedFortsettSenere": "We could not save your application right now, so you are still in the application. Try «Continue later» again in a little while. If you close the page now, you may lose what you have filled in.",
+    "Mellomlagring.FeiletVedFortsettSenere.Lukk": "Close",
     "Engangsstønad.Pagetitle": "Application for lump-sum grant",
     "Søknad.Pageheading": "Application for lump-sum grant",
     "Velkommen.Ingress.Del1": "You can get lump-sum grant if you are expecting a child and have not had income that entitles you to parental benefit for 6 of the last 10 months. With a lump sum grant, you get the entire amount paid at once. If you have parental benefit, you will receive money once a month.",
