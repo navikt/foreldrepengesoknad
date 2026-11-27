@@ -147,13 +147,19 @@ const getAntallBarnSelect = (erFlereEnnToBarn: boolean, barn: { antallBarn: numb
 const mapFødselsdatoer = (fødselsdatoer: string[]): Array<{ dato?: string }> =>
     fødselsdatoer.length > 0 ? fødselsdatoer.map((f) => ({ dato: f })) : [{ dato: undefined }];
 
-export const getOmBarnetInitialValues = (
-    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[],
-    søkersituasjon: SøkersituasjonFp,
-    barn?: Barn,
-    termindatoFraVedtak?: string,
-    adopsjonFraPlanlegger?: AdopsjonFraPlanlegger,
-): BarnetFormValues => {
+export const getOmBarnetInitialValues = ({
+    arbeidsforhold,
+    søkersituasjon,
+    barn,
+    termindatoFraVedtak,
+    adopsjonFraPlanlegger,
+}: {
+    arbeidsforhold: EksternArbeidsforholdDto_fpoversikt[];
+    søkersituasjon: SøkersituasjonFp;
+    barn: Barn | undefined;
+    termindatoFraVedtak?: string;
+    adopsjonFraPlanlegger?: AdopsjonFraPlanlegger;
+}): BarnetFormValues => {
     if (!barn) {
         if (adopsjonFraPlanlegger && søkersituasjon.situasjon === 'adopsjon') {
             const erFlereEnnToBarn = adopsjonFraPlanlegger.antallBarn > 2;

@@ -2,36 +2,36 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { playwright } from '@vitest/browser-playwright';
-import fs from 'node:fs';
-import path from 'node:path';
+import { msw } from 'msw/vite';
 import { defineConfig, mergeConfig } from 'vite';
 import compression from 'vite-plugin-compression2';
 
-// Storybook sin `staticDirs` gjer at mockServiceWorker.js vert servert av Storybook sin eigen
-// dev-/build-server, men den gjeld ikkje for Vitest sin browser-mode-server (som brukar
-// app/pakke sin vanlege vite.config). Utan denne plugin-en 404-ar `./mockServiceWorker.js` der,
-// og MSW-workeren i .storybook/preview.tsx (brukt via setProjectAnnotations i setupTests.ts)
-// klarer ikkje å registrere seg. `apply: 'serve'` sikrar at dette berre skjer i dev/test og
-// aldri lek inn i `vite build`. Fila blir òg servert under app-basen, som mock-modus treng.
-const mockServiceWorkerPlugin = () => ({
-    name: 'serve-mock-service-worker',
-    apply: 'serve',
-    configureServer(server) {
-        const filePath = path.resolve(import.meta.dirname, '../../scripts/mock-service-worker/mockServiceWorker.js');
+// I worker-only-modus legg msw-pluginen workeren i alle klient-bygg. `apply: 'serve'` hindrer at
+// den havner i produksjonsbygget til appene.
+// msw serverer workeren bare under `base`, men Storybook dev og Vitest browser-mode henter
+// `./mockServiceWorker.js` relativt til en side utenfor `base`. Derfor sendes alle slike kall dit.
+const mockServiceWorkerPlugin = () => {
+    const plugin = msw({ mode: 'worker-only' });
 
-        server.middlewares.use((req, res, next) => {
-            const requestPath = req.url?.split('?')[0] ?? '';
+    return {
+        ...plugin,
+        apply: 'serve',
+        configureServer(server) {
+            const workerUrl = `${server.config.base.replace(/\/?$/, '/')}mockServiceWorker.js`;
 
-            if (!requestPath.endsWith('/mockServiceWorker.js')) {
+            server.middlewares.use((req, _res, next) => {
+                if (req.url?.split('?')[0].endsWith('/mockServiceWorker.js')) {
+                    req.url = workerUrl;
+                }
                 next();
-                return;
-            }
+            });
 
-            res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
-            res.end(fs.readFileSync(filePath));
-        });
-    },
-});
+            return plugin.configureServer(server);
+        },
+    };
+};
+
+export const storybookMockServiceWorker = () => msw({ mode: 'worker-only' });
 
 export const createSharedConfigWithCrossorgin = (setupFileDirName) =>
     mergeConfig(createSharedAppConfig(setupFileDirName), {
