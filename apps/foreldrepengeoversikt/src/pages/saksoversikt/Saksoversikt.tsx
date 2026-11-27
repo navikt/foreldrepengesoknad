@@ -240,7 +240,7 @@ const SaksoversiktInner = ({ søkerinfo }: Props) => {
 
                                 <VStack gap="space-8">
                                     {ENGANGSTØNAD && (
-                                        <Heading size="small">
+                                        <Heading size="small" as="p">
                                             <FormattedMessage
                                                 id="saksoversikt.engangsstonad"
                                                 values={{

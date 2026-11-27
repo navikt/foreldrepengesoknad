@@ -12,7 +12,7 @@ export const KontaktOss = () => {
     return (
         <div className="bg-ax-bg-default p-8">
             <LayoutWrapper>
-                <Heading size="medium" spacing>
+                <Heading size="medium" level="2" spacing>
                     <FormattedMessage id="saksoversikt.kontaktOss" />
                 </Heading>
                 <HGrid gap="space-16" columns={{ sm: 1, md: 3 }}>

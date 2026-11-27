@@ -2,10 +2,14 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Heading, VStack } from '@navikt/ds-react';
 
-export const InfoOmUtvidet80ProsentPeriode = () => {
+type Props = {
+    headingLevel: '3' | '4';
+};
+
+export const InfoOmUtvidet80ProsentPeriode = ({ headingLevel }: Props) => {
     return (
         <VStack gap="space-16" style={{ width: '85%' }}>
-            <Heading size="xsmall">
+            <Heading size="xsmall" level={headingLevel}>
                 <FormattedMessage id="InfoOmUtvidet80ProsentPeriode.Heading" />
             </Heading>
             <BodyShort>

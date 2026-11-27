@@ -214,7 +214,12 @@ it('skal spørre far om fødselspermisjon også når mor kun har søkt (før ved
     const { container } = renderFordelingNårMorHarSøktUtenVedtak('100');
 
     const steg = within(container);
-    expect(await steg.findByText('Hannes siste dag med foreldrepenger er mandag 12. august 2024.')).toBeInTheDocument();
+    expect(
+        await steg.findByRole('heading', {
+            level: 3,
+            name: 'Hannes siste dag med foreldrepenger er mandag 12. august 2024.',
+        }),
+    ).toBeInTheDocument();
     expect(steg.getByText('Vil du bruke to uker av fedrekvoten i forbindelse med fødselen?')).toBeInTheDocument();
     vi.useRealTimers();
 });
@@ -961,7 +966,9 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
         expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
         expect(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge hvor mye av fellesperioden jeg skal ha'));
-        expect(screen.getByText('Hvor mye av fellesperioden skal du ha?')).toBeInTheDocument();
+        expect(
+            screen.getByRole('heading', { level: 3, name: 'Hvor mye av fellesperioden skal du ha?' }),
+        ).toBeInTheDocument();
         const ukerInput = screen.getByLabelText('Uker');
         await userEvent.type(ukerInput, '3');
         fireEvent.blur(ukerInput);
@@ -1367,7 +1374,9 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021', () => {
             }),
         ).toBeInTheDocument();
 
-        expect(screen.getByText('Vi vet ikke når mor har sin siste dag med foreldrepenger')).toBeInTheDocument();
+        expect(
+            screen.getByRole('heading', { level: 3, name: 'Vi vet ikke når mor har sin siste dag med foreldrepenger' }),
+        ).toBeInTheDocument();
         expect(screen.queryByText('På fødselsdato')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Situasjoner som kan påvirke perioden med foreldrepenger'));
