@@ -6,7 +6,7 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Label, List, Radio, ReadMore, VStack, omit } from '@navikt/ds-react';
 
-import { DATE_5_MONTHS_AGO, DATE_20_YEARS_AGO, ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { DATE_20_YEARS_AGO, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import {
     ErrorSummaryHookForm,
     RhfDatepicker,
@@ -18,7 +18,6 @@ import {
 import { loggUmamiEvent } from '@navikt/fp-observability';
 import { AppName, NæringDto, SelvstendigNæringDto_fpoversikt } from '@navikt/fp-types';
 import { ProgressStep, Step } from '@navikt/fp-ui';
-import { femMånederSiden } from '@navikt/fp-utils';
 import {
     hasLegalChars,
     hasMaxLength,
@@ -48,6 +47,8 @@ const getMinInputTilOgMedValue = (fom: string | undefined, otherMinDate: string)
     }
     return min;
 };
+
+const getMaksAntallMånederSidenSluttdato = (appOrigin: AppName) => (appOrigin === 'svangerskapspengesoknad' ? 5 : 13);
 
 const erVirksomhetRegnetSomNyoppstartet = (oppstartsdato: string | undefined): boolean => {
     if (!isStringAValidDate(oppstartsdato)) {
@@ -147,6 +148,8 @@ export const EgenNæringForm = ({
         næringsType === 'FISKE' ? `${navnPåNæringSpm} ${intl.formatMessage({ id: 'valgfritt' })}` : navnPåNæringSpm;
 
     const erNyoppstartet = erVirksomhetRegnetSomNyoppstartet(næringFom);
+    const maksAntallMånederSidenSluttdato = getMaksAntallMånederSidenSluttdato(appOrigin);
+    const tidligsteSluttdato = dayjs().startOf('day').subtract(maksAntallMånederSidenSluttdato, 'month');
 
     const handleSubmit = (values: NæringFormValues) => {
         const valuesUtenPågående = omit(values, ['pågående']);
@@ -344,10 +347,11 @@ export const EgenNæringForm = ({
                             dayjs().add(9, 'month'),
                         ),
                         isAfterOrSame(
-                            intl.formatMessage({
-                                id: 'valideringsfeil.tilOgMedDato.egenNæring.merEnn5MånederSiden',
-                            }),
-                            femMånederSiden(),
+                            intl.formatMessage(
+                                { id: 'valideringsfeil.tilOgMedDato.egenNæring.forLengeSiden' },
+                                { antallMåneder: maksAntallMånederSidenSluttdato },
+                            ),
+                            tidligsteSluttdato,
                         ),
                         isAfterOrSame(
                             intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.etterFraDato' }),
@@ -355,7 +359,7 @@ export const EgenNæringForm = ({
                         ),
                     ]}
                     maxDate={dayjs().add(9, 'month')}
-                    minDate={getMinInputTilOgMedValue(næringFom, DATE_5_MONTHS_AGO)}
+                    minDate={getMinInputTilOgMedValue(næringFom, tidligsteSluttdato.format(ISO_DATE_FORMAT))}
                     showMonthAndYearDropdowns
                 />
             )}

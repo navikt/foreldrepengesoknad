@@ -233,11 +233,11 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         await userEvent.type(startdatoInput, dayjs('2023-04-30').format('DD.MM.YYYY'));
         await userEvent.tab();
 
-        expect(screen.getByText('Jobber du der fortsatt?')).toBeInTheDocument();
+        expect(screen.getByText('Jobber du fortsatt som selvstendig næringsdrivende?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[0]!);
 
         const næringsresultatInput = screen.getByLabelText(
-            'Hva var næringsresultatet ditt før skatt de siste 12 månedene?',
+            'Hva var personinntekt fra næring før skatt de siste 12 månedene?',
         );
         await userEvent.type(næringsresultatInput, '1000');
 
@@ -275,7 +275,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
             await userEvent.tab();
 
             expect(
-                screen.queryByLabelText('Hva var næringsresultatet ditt før skatt de siste 12 månedene?') !== null,
+                screen.queryByLabelText('Hva var personinntekt fra næring før skatt de siste 12 månedene?') !== null,
             ).toBe(spørOmNæringsresultat);
             expect(
                 screen.queryByText(
@@ -300,7 +300,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         await userEvent.type(startdatoInput, 'ikemfke');
         await userEvent.tab();
 
-        expect(screen.getByText('Jobber du der fortsatt?')).toBeInTheDocument();
+        expect(screen.getByText('Jobber du fortsatt som selvstendig næringsdrivende?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Nei')[0]!);
 
         expect(screen.getByText('Når avsluttet du virksomheten?')).toBeInTheDocument();
@@ -392,4 +392,51 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         expect(onStepChange).toHaveBeenCalledTimes(1);
         expect(onStepChange).toHaveBeenNthCalledWith(1, 'BARNET_PATH');
     });
+
+    const fyllUtAvsluttetNæring = async (sluttdato: dayjs.Dayjs) => {
+        const startdatoInput = await screen.findByLabelText('Når startet du virksomheten?');
+        await userEvent.type(startdatoInput, '01.01.2019');
+        await userEvent.tab();
+
+        await userEvent.click(screen.getAllByText('Nei')[0]!);
+
+        const sluttdatoInput = screen.getByLabelText('Når avsluttet du virksomheten?');
+        await userEvent.type(sluttdatoInput, sluttdato.format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        await userEvent.click(screen.getByText('Neste steg'));
+    };
+
+    const sluttdatoForLengeSidenFeil = (antallMåneder: number) =>
+        `Datoen er før ${antallMåneder} måneder siden. ` +
+        `Hvis du avsluttet virksomheten for mer enn ${antallMåneder} måneder siden, trenger du ikke å oppgi virksomheten til Nav.`;
+
+    it.each([
+        { appOrigin: 'foreldrepengesoknad', månederSiden: 14, maksMåneder: 13 },
+        { appOrigin: 'svangerskapspengesoknad', månederSiden: 6, maksMåneder: 5 },
+    ] as const)(
+        'skal gi feilmelding når sluttdato er $månederSiden måneder tilbake i tid i $appOrigin',
+        async ({ appOrigin, månederSiden, maksMåneder }) => {
+            render(<Default appOrigin={appOrigin} />);
+
+            await fyllUtAvsluttetNæring(dayjs().subtract(månederSiden, 'month'));
+
+            expect(screen.getAllByText(sluttdatoForLengeSidenFeil(maksMåneder))[0]).toBeInTheDocument();
+        },
+    );
+
+    it.each([
+        { appOrigin: 'foreldrepengesoknad', månederSiden: 12, maksMåneder: 13 },
+        { appOrigin: 'svangerskapspengesoknad', månederSiden: 4, maksMåneder: 5 },
+    ] as const)(
+        'skal tillate sluttdato $månederSiden måneder tilbake i tid i $appOrigin',
+        async ({ appOrigin, månederSiden, maksMåneder }) => {
+            render(<Default appOrigin={appOrigin} />);
+
+            await fyllUtAvsluttetNæring(dayjs().subtract(månederSiden, 'month'));
+
+            expect(screen.getAllByText('Du må oppgi type virksomhet du har.')[0]).toBeInTheDocument();
+            expect(screen.queryByText(sluttdatoForLengeSidenFeil(maksMåneder))).not.toBeInTheDocument();
+        },
+    );
 });

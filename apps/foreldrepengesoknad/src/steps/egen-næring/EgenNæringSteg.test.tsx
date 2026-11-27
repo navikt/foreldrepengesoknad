@@ -28,11 +28,11 @@ describe('<EgenNæringSteg>', () => {
         await userEvent.type(startdatoInput, dayjs('2023-04-30').format('DD.MM.YYYY'));
         await userEvent.tab();
 
-        expect(screen.getByText('Jobber du der fortsatt?')).toBeInTheDocument();
+        expect(screen.getByText('Jobber du fortsatt som selvstendig næringsdrivende?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[0]!);
 
         const næringsresultatInput = screen.getByLabelText(
-            'Hva var næringsresultatet ditt før skatt de siste 12 månedene?',
+            'Hva var personinntekt fra næring før skatt de siste 12 månedene?',
         );
         await userEvent.type(næringsresultatInput, '1000');
 
