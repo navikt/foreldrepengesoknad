@@ -206,7 +206,9 @@ describe('<PerioderSteg>', () => {
         await user.tab();
         await user.click(screen.getAllByText('Frem til tre uker før termin')[1]!);
 
-        expect(screen.getByRole('button', { name: 'Fjern perioden, 01.01.2024 til 27.01.2024' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /^Fjern perioden/ })).toHaveTextContent(
+            'Fjern perioden, 01.01.2024 til 27.01.2024',
+        );
     });
 
     it('feilmelding ved overlappende perioder', async () => {
