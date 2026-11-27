@@ -7,7 +7,7 @@
         "@navikt/nav-dekoratoren-moduler": "catalog:",
         "@tailwindcss/vite": "4.3.5",
         "@vitejs/plugin-react": "6.3.0",
-        "@vitest/browser-playwright": "5.1.0",
+        "@vitest/browser-playwright": "5.1.1",
         "playwright": "1.65.1",
         "typescript": "catalog:",
         "vite": "catalog:",
