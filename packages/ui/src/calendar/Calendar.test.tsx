@@ -50,6 +50,32 @@ describe('<Calendar>', () => {
         expect(finnDagerMedTabIndex0(container)[0]).toHaveAccessibleName('1. juli 2024');
     });
 
+    it('skal ha én dag i tab-rekkefølgen når måneden med aktiv dag forsvinner', () => {
+        const { container, rerender } = render(
+            <Calendar
+                periods={[]}
+                firstDateInCalendar="2024-01-01"
+                lastDateInCalendar="2024-03-31"
+                setSelectedPeriods={() => undefined}
+            />,
+        );
+
+        fireEvent.focus(screen.getByRole('button', { name: '1. mars 2024' }));
+
+        rerender(
+            <Calendar
+                periods={[]}
+                firstDateInCalendar="2024-01-01"
+                lastDateInCalendar="2024-02-29"
+                setSelectedPeriods={() => undefined}
+            />,
+        );
+
+        expect(finnDagerMedTabIndex0(container)).toHaveLength(1);
+        expect(finnDagerMedTabIndex0(container)[0]).toHaveAccessibleName('1. januar 2024');
+        expect(document.body).toHaveFocus();
+    });
+
     it('skal flytte fokus med piltaster, også til neste måned', async () => {
         render(
             <Calendar

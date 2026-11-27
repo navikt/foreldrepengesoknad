@@ -52,7 +52,8 @@ export const Calendar = ({
     );
     const periodsByMonth = useMemo(() => groupPeriodsByMonth(allMonths, periods), [allMonths, periods]);
 
-    const activeDate = activeDay?.date ?? findFirstWeekdayInMonth(allMonths[0]!);
+    const validActiveDay = activeDay && isDateInMonths(activeDay.date, allMonths) ? activeDay : undefined;
+    const activeDate = validActiveDay?.date ?? findFirstWeekdayInMonth(allMonths[0]!);
 
     const onDayFocus = useCallback((date: dayjs.Dayjs) => {
         setActiveDay({ date, moveFocus: false });
@@ -95,7 +96,7 @@ export const Calendar = ({
                         pendingFom={setSelectedPeriods ? pendingFom : undefined}
                         onDateHover={setSelectedPeriods ? onDateHover : undefined}
                         activeDate={isActiveMonth ? activeDate : undefined}
-                        moveFocusToActiveDate={isActiveMonth && !!activeDay?.moveFocus}
+                        moveFocusToActiveDate={isActiveMonth && !!validActiveDay?.moveFocus}
                         onDayFocus={onDayFocus}
                         onKeyboardNavigation={onKeyboardNavigation}
                     />
