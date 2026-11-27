@@ -37,11 +37,19 @@ export enum ContextDataType {
     HAR_JUSTERT_UTTAK_VED_FØDSEL = 'HAR_JUSTERT_UTTAK_VED_FØDSEL',
     VEDLEGG = 'VEDLEGG',
     KOMMER_FRA_PLANLEGGER = 'KOMMER_FRA_PLANLEGGER',
+    ADOPSJON_FRA_PLANLEGGER = 'ADOPSJON_FRA_PLANLEGGER',
 }
 
 export type OpprinneligUttaksplan = {
     saksnummer: string;
     perioder: UttakPeriodeDto[];
+};
+
+// Planleggeren spør ikke om stebarnsadopsjon. Dette er derfor bare forhåndsutfylling til «Om barnet», ikke en gyldig Barn.
+export type AdopsjonFraPlanlegger = {
+    adopsjonsdato: string;
+    fødselsdatoer: string[];
+    antallBarn: number;
 };
 
 export type ContextDataMap = {
@@ -64,6 +72,7 @@ export type ContextDataMap = {
     [ContextDataType.HAR_JUSTERT_UTTAK_VED_FØDSEL]?: boolean;
     [ContextDataType.VEDLEGG]?: VedleggDataType;
     [ContextDataType.KOMMER_FRA_PLANLEGGER]?: boolean;
+    [ContextDataType.ADOPSJON_FRA_PLANLEGGER]?: AdopsjonFraPlanlegger;
 };
 
 const defaultInitialState = {} as ContextDataMap;
