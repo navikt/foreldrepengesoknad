@@ -99,6 +99,22 @@ export const ForeldrepengerFeilVedHentingAvUttaksplan: Story = {
     },
 };
 
+export const UkjentSak: Story = {
+    beforeEach({ msw }) {
+        msw.use(
+            http.get(API_URLS.dokumenter, () => HttpResponse.json([])),
+            http.get(API_URLS.saker, () => HttpResponse.json(saker)),
+            http.get(API_URLS.tidslinje, () => HttpResponse.json([])),
+            http.get(API_URLS.manglendeVedlegg, () => HttpResponse.json([])),
+        );
+    },
+
+    args: {
+        søkerinfo: søkerinfo,
+        saksnummer: '999999999',
+    },
+};
+
 const lagEngangsstønadHandlers = (antallBarn: number) => [
     http.get(API_URLS.saker, () =>
         HttpResponse.json({
