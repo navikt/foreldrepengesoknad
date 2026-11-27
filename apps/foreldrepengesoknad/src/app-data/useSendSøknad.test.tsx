@@ -1,14 +1,16 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { act, renderHook } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { API_URLS } from 'api/queries';
-import ky, { ResponsePromise } from 'ky';
+import { SøknadRoutes } from 'appData/routes';
+import ky, { HTTPError, NetworkError, ResponsePromise, TimeoutError } from 'ky';
 import { ReactNode } from 'react';
-import { MemoryRouter } from 'react-router';
+import { MemoryRouter, useLocation } from 'react-router';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { AnnenForelder } from 'types/AnnenForelder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
 import { AttachmentType, BarnType, Skjemanummer } from '@navikt/fp-constants';
+import { ApiError } from '@navikt/fp-observability';
 import {
     AnnenInntektDto,
     Barn,
@@ -17,6 +19,7 @@ import {
     ForeldrepengesøknadDto,
     FpPersonopplysningerDto_fpoversikt,
     FpSak_fpoversikt,
+    FpSoknadProblemDetails,
     Frilans,
     NæringDto,
     SelvstendigNæringDto_fpoversikt,
@@ -577,5 +580,106 @@ describe('useFpSendSøknad', () => {
             API_URLS.endreSøknad,
             expect.objectContaining({ json: expect.objectContaining({ endringsdato: '2024-02-01' }) }),
         );
+    });
+
+    describe('feil ved innsending', () => {
+        const FEILMELDING_UTEN_CALL_ID = nbMessages['useSendSøknad.FeilVedInnsending.UtenCallId'];
+
+        const lagHttpError = (status: number, data?: FpSoknadProblemDetails): HTTPError => {
+            const error = new HTTPError(
+                new Response(null, { status }),
+                new Request(`https://example.com${API_URLS.sendSøknad}`),
+                {} as never,
+            );
+            error.data = data;
+            return error;
+        };
+
+        const mockInnsendingsfeil = (error: Error) => {
+            const postMock = vi.spyOn(ky, 'post').mockImplementation(() => {
+                throw error;
+            });
+            const deleteMock = vi.spyOn(ky, 'delete').mockReturnValue(undefined as unknown as ResponsePromise<unknown>);
+            return { postMock, deleteMock };
+        };
+
+        const renderSendSøknad = (erEndringssøknad: boolean) =>
+            renderHook(
+                () => ({
+                    ...useSendSøknad(DEFAULT_SØKER_INFO, erEndringssøknad, saker),
+                    location: useLocation(),
+                }),
+                { wrapper: getWrapper() },
+            );
+
+        const sendOgFangFeil = async (sendSøknad: () => Promise<unknown>): Promise<unknown> => {
+            let feil: unknown;
+            await act(async () => {
+                try {
+                    await sendSøknad();
+                } catch (error: unknown) {
+                    feil = error;
+                }
+            });
+            return feil;
+        };
+
+        describe.each([false, true])('når erEndringssøknad=%s', (erEndringssøknad) => {
+            it.each([400, 404, 413, 422, 500, 501, 502, 503, 504])(
+                'skal gi feil og ikke vise kvittering ved HTTP %i',
+                async (status) => {
+                    const { postMock, deleteMock } = mockInnsendingsfeil(lagHttpError(status));
+                    const { result } = renderSendSøknad(erEndringssøknad);
+
+                    const feil = await sendOgFangFeil(result.current.sendSøknad);
+
+                    expect(feil).toBeInstanceOf(ApiError);
+                    expect((feil as ApiError).message).toBe(FEILMELDING_UTEN_CALL_ID);
+                    expect(postMock).toHaveBeenCalledOnce();
+                    expect(deleteMock).not.toHaveBeenCalled();
+                    expect(result.current.location.pathname).not.toBe(SøknadRoutes.KVITTERING);
+                    await waitFor(() => expect(result.current.errorSendSøknad).toBe(feil));
+                },
+            );
+
+            it.each([
+                ['timeout', new TimeoutError(new Request(`https://example.com${API_URLS.sendSøknad}`))],
+                ['nettverksfeil', new NetworkError(new Request(`https://example.com${API_URLS.sendSøknad}`))],
+                ['401 (utløpt sesjon)', lagHttpError(401)],
+                ['403', lagHttpError(403)],
+            ])('skal gi feil og ikke vise kvittering ved %s', async (_beskrivelse, error) => {
+                const { deleteMock } = mockInnsendingsfeil(error);
+                const { result } = renderSendSøknad(erEndringssøknad);
+
+                const feil = await sendOgFangFeil(result.current.sendSøknad);
+
+                expect(feil).toBe(error);
+                expect(deleteMock).not.toHaveBeenCalled();
+                expect(result.current.location.pathname).not.toBe(SøknadRoutes.KVITTERING);
+                await waitFor(() => expect(result.current.errorSendSøknad).toBe(error));
+            });
+        });
+
+        it('skal vise de første seks tegnene i callId i feilmeldingen', async () => {
+            mockInnsendingsfeil(
+                lagHttpError(500, { feilkode: 'GENERELL', feilmelding: 'Noe gikk galt', callId: 'abc123def456' }),
+            );
+            const { result } = renderSendSøknad(false);
+
+            const feil = await sendOgFangFeil(result.current.sendSøknad);
+
+            expect((feil as ApiError).message).toMatch(/feil-id: abc123$/);
+        });
+
+        it('skal vise kvittering og slette mellomlagring ved 409, fordi samme søknad allerede er mottatt', async () => {
+            const { deleteMock } = mockInnsendingsfeil(lagHttpError(409));
+            const { result } = renderSendSøknad(false);
+
+            const resultat = await act(() => result.current.sendSøknad());
+
+            expect(resultat).toBe('SENDT');
+            expect(deleteMock).toHaveBeenCalledOnce();
+            expect(result.current.location.pathname).toBe(SøknadRoutes.KVITTERING);
+        });
     });
 });
