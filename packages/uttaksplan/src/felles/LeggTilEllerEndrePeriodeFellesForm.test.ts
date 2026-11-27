@@ -6,6 +6,7 @@ import { harPeriodeMedUkjentGraderingsaktivitet } from '../utils/periodeUtils';
 import {
     LeggTilEllerEndrePeriodeFormFormValues,
     beholdLåstAnnenPartsSamtidigeUttak,
+    finnUnikeArbeidsgivere,
     lagDefaultValuesForValgtePerioder,
     lagDefaultValuesLeggTilEllerEndrePeriodeFellesForm,
     mapFraFormValuesTilPeriodeDto,
@@ -468,5 +469,21 @@ describe('beholdLåstAnnenPartsSamtidigeUttak', () => {
 
     it('endrer ingenting når annen parts perioder ikke er låst', () => {
         expect(beholdLåstAnnenPartsSamtidigeUttak([nyPeriode], eksisterende, false)).toEqual([nyPeriode]);
+    });
+});
+
+describe('finnUnikeArbeidsgivere', () => {
+    it('skal gi ett valg per arbeidsgiver når søker har flere arbeidsforhold hos samme arbeidsgiver', () => {
+        const arbeidsforhold = [
+            { arbeidsgiverId: '889640782', arbeidsgiverNavn: 'ARBEIDS- OG VELFERDSETATEN', stillingsprosent: 50 },
+            { arbeidsgiverId: '889640782', arbeidsgiverNavn: 'ARBEIDS- OG VELFERDSETATEN', stillingsprosent: 50 },
+            { arbeidsgiverId: '990983666', arbeidsgiverNavn: 'ANNEN ARBEIDSGIVER', stillingsprosent: 100 },
+        ];
+
+        expect(finnUnikeArbeidsgivere(arbeidsforhold).map((a) => a.arbeidsgiverId)).toEqual(['889640782', '990983666']);
+    });
+
+    it('skal gi tom liste når arbeidsforhold mangler', () => {
+        expect(finnUnikeArbeidsgivere(undefined)).toEqual([]);
     });
 });
